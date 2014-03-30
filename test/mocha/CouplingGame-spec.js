@@ -2,7 +2,7 @@ var CouplingGame = require('../../lib/CouplingGame');
 var should = require('should');
 var sinon = require('sinon');
 
-describe("Couple Wheel", function () {
+describe("Coupling Game", function () {
 
     function badSpin(players) {
         return players[0];
