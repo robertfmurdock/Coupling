@@ -1,0 +1,90 @@
+var PairingHistory = require('../../lib/PairingHistory');
+var should = require('should');
+
+describe('Pairing History', function () {
+
+    it('should be retrievable', function () {
+        var historyDocuments = [
+            makePairListDocument([
+                {name: 'bill'},
+                {name: 'Ted'}
+            ], new Date(2014, 3, 30))
+        ];
+
+        var pairingHistory = new PairingHistory(historyDocuments);
+
+        should(historyDocuments).eql(pairingHistory.historyDocuments);
+    });
+
+    function makePairListDocument(pairs, date) {
+        return {pairs: pairs, date: date};
+    }
+
+
+    describe('should determine possible pairs by choosing players', function () {
+        var bruce = {name: 'Batman'};
+
+        var jezebel = {name: 'Jezebel Jett'};
+        var talia = {name: 'Talia'};
+        var selena = {name: 'Catwoman'};
+        var availableOtherPlayers = [
+            selena,
+            talia,
+            jezebel
+        ];
+
+        describe('who have never paired', function () {
+            it('with no history', function () {
+                var historyDocuments = [];
+                var pairingHistory = new PairingHistory(historyDocuments);
+
+                var candidates = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                availableOtherPlayers.should.eql(candidates);
+            });
+
+            it('with plenty of history', function () {
+                var historyDocuments = [
+                    makePairListDocument([
+                        bruce,
+                        {name: 'Robin'}
+                    ], new Date(2014, 3, 29)),
+                    makePairListDocument([
+                        bruce,
+                        {name: 'Batgirl'}
+                    ], new Date(2014, 3, 30))
+                ];
+                var pairingHistory = new PairingHistory(historyDocuments);
+
+                var candidates = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                availableOtherPlayers.should.eql(candidates);
+            });
+        });
+
+        describe('who have not paired recently', function () {
+            it('when there is clearly someone who has been the longest', function () {
+                var expectedPartner = jezebel;
+                var historyDocuments = [
+                    makePairListDocument([
+                        expectedPartner,
+                        bruce
+                    ], new Date(2014, 1, 30)),
+                    makePairListDocument([
+                        bruce,
+                        talia
+                    ], new Date(2014, 3, 29)),
+                    makePairListDocument([
+                        bruce,
+                        selena
+                    ], new Date(2014, 3, 30))
+                ];
+                var pairingHistory = new PairingHistory(historyDocuments);
+
+                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+
+                report.should.eql([expectedPartner]);
+            });
+        });
+    });
+
+
+});
