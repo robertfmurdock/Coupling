@@ -36,9 +36,11 @@ describe('Pairing History', function () {
                 var historyDocuments = [];
                 var pairingHistory = new PairingHistory(historyDocuments);
 
-                var candidates = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(candidates.partnerCandidates);
+                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                availableOtherPlayers.should.eql(report.partnerCandidates);
                 should.not.exist(availableOtherPlayers.timeSinceLastPaired);
+
+                bruce.should.equal(report.player);
             });
 
             it('with plenty of history', function () {
@@ -51,9 +53,10 @@ describe('Pairing History', function () {
                 ];
                 var pairingHistory = new PairingHistory(historyDocuments);
 
-                var candidates = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(candidates.partnerCandidates);
-                should.not.exist(candidates.timeSinceLastPaired);
+                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                availableOtherPlayers.should.eql(report.partnerCandidates);
+                should.not.exist(report.timeSinceLastPaired);
+                bruce.should.equal(report.player);
             });
         });
 
@@ -77,6 +80,7 @@ describe('Pairing History', function () {
 
                 report.partnerCandidates.should.eql([expectedPartner]);
                 report.timeSinceLastPaired.should.eql(2);
+                bruce.should.equal(report.player);
             });
         });
     });

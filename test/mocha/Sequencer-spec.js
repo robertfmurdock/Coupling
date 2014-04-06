@@ -1,4 +1,5 @@
 var Sequencer = require('../../lib/Sequencer');
+var PairHistoryReport = require('../../lib/PairHistoryReport');
 require('should');
 var sinon = require('sinon');
 
@@ -17,13 +18,13 @@ describe('Sequencer', function () {
             getPairCandidateReport: getReportStub
         };
 
-        var billsPairCandidates = { timeSinceLastPaired: 3};
+        var billsPairCandidates = new PairHistoryReport(bill, [], 3);
         getReportStub.withArgs(bill, [ted, amadeus, shorty]).returns(billsPairCandidates);
-        var tedsPairCandidates = { timeSinceLastPaired: 7};
+        var tedsPairCandidates = new PairHistoryReport(ted, [], 7);
         getReportStub.withArgs(ted, [bill, amadeus, shorty]).returns(tedsPairCandidates);
-        var amadeusPairCandidates = { timeSinceLastPaired: 4};
+        var amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
         getReportStub.withArgs(amadeus, [bill, ted, shorty]).returns(amadeusPairCandidates);
-        var shortyPairCandidates = { timeSinceLastPaired: 5};
+        var shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
         getReportStub.withArgs(shorty, [bill, ted, amadeus]).returns(shortyPairCandidates);
 
         var sequencer = new Sequencer(pairingHistory);
@@ -41,11 +42,11 @@ describe('Sequencer', function () {
             getPairCandidateReport: getReportStub
         };
 
-        var billsPairCandidates = { timeSinceLastPaired: 3};
+        var billsPairCandidates = new PairHistoryReport(bill, [], 3);
         getReportStub.withArgs(bill, [ amadeus, shorty]).returns(billsPairCandidates);
-        var amadeusPairCandidates = { timeSinceLastPaired: 4};
+        var amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
         getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
-        var shortyPairCandidates = { timeSinceLastPaired: 5};
+        var shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
         getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
 
         var sequencer = new Sequencer(pairingHistory);
