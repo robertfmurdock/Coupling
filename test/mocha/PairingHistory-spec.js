@@ -28,9 +28,7 @@ describe('Pairing History', function () {
         var talia = {name: 'Talia'};
         var selena = {name: 'Catwoman'};
         var availableOtherPlayers = [
-            selena,
-            talia,
-            jezebel
+            selena, talia, jezebel
         ];
 
         describe('who has never paired', function () {
@@ -46,13 +44,10 @@ describe('Pairing History', function () {
             it('with plenty of history', function () {
                 var historyDocuments = [
                     makePairListDocument([
-                        bruce,
-                        {name: 'Robin'}
-                    ], new Date(2014, 3, 29)),
-                    makePairListDocument([
-                        bruce,
-                        {name: 'Batgirl'}
-                    ], new Date(2014, 3, 30))
+                        bruce, {name: 'Batgirl'}
+                    ], new Date(2014, 3, 30)), makePairListDocument([
+                        bruce, {name: 'Robin'}
+                    ], new Date(2014, 3, 29))
                 ];
                 var pairingHistory = new PairingHistory(historyDocuments);
 
@@ -67,17 +62,14 @@ describe('Pairing History', function () {
                 var expectedPartner = jezebel;
                 var historyDocuments = [
                     makePairListDocument([
-                        expectedPartner,
-                        bruce
-                    ], new Date(2014, 1, 30)),
+                        bruce, selena
+                    ], new Date(2014, 3, 30)),
                     makePairListDocument([
-                        bruce,
-                        talia
+                        bruce, talia
                     ], new Date(2014, 3, 29)),
                     makePairListDocument([
-                        bruce,
-                        selena
-                    ], new Date(2014, 3, 30))
+                        expectedPartner, bruce
+                    ], new Date(2014, 1, 30))
                 ];
                 var pairingHistory = new PairingHistory(historyDocuments);
 
