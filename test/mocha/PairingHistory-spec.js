@@ -21,7 +21,7 @@ describe('Pairing History', function () {
     }
 
 
-    describe('should determine possible pairs by choosing players', function () {
+    describe('should determine possible partners for a player by choosing a partner', function () {
         var bruce = {name: 'Batman'};
 
         var jezebel = {name: 'Jezebel Jett'};
@@ -33,13 +33,14 @@ describe('Pairing History', function () {
             jezebel
         ];
 
-        describe('who have never paired', function () {
+        describe('who has never paired', function () {
             it('with no history', function () {
                 var historyDocuments = [];
                 var pairingHistory = new PairingHistory(historyDocuments);
 
                 var candidates = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(candidates);
+                availableOtherPlayers.should.eql(candidates.partnerCandidates);
+                should.not.exist(availableOtherPlayers.timeSinceLastPaired);
             });
 
             it('with plenty of history', function () {
@@ -56,11 +57,12 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
 
                 var candidates = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(candidates);
+                availableOtherPlayers.should.eql(candidates.partnerCandidates);
+                should.not.exist(candidates.timeSinceLastPaired);
             });
         });
 
-        describe('who have not paired recently', function () {
+        describe('who has not paired recently', function () {
             it('when there is clearly someone who has been the longest', function () {
                 var expectedPartner = jezebel;
                 var historyDocuments = [
@@ -81,7 +83,8 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                report.should.eql([expectedPartner]);
+                report.partnerCandidates.should.eql([expectedPartner]);
+                report.timeSinceLastPaired.should.eql(2);
             });
         });
     });
