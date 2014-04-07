@@ -55,20 +55,23 @@ describe('Coupling Wheel Factory', function () {
         pairSetTwo, pairSetThree, pairSetOne
     ];
 
+    var historyCollection = database.get('history');
+
     before(function (beforeIsDone) {
         var playersCollection = database.get('players');
         playersCollection.drop();
         playersCollection.insert(expectedPlayers);
 
-        var historyCollection = database.get('history');
         historyCollection.drop();
         historyCollection.insert(unorderedHistory, beforeIsDone);
     });
 
     it('starts with all the players in the database and all the history in order from ', function (testIsDone) {
-        CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+        CouplingDatabaseAdapter(mongoUrl, function (players, history, historyCollection) {
             should(expectedPlayers).eql(players);
             should(expectedHistory).eql(history);
+
+            should(historyCollection).equal(historyCollection);
             testIsDone();
         });
     });
