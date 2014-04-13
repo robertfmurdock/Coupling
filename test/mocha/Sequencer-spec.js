@@ -53,4 +53,53 @@ describe('Sequencer', function () {
         var next = sequencer.getNextInSequence(players);
         next.should.eql(shortyPairCandidates);
     });
+
+    it('will use the Pairing History to get the next in sequence for when a player has never paired.', function () {
+        var players = [ bill, amadeus, shorty];
+
+        var getReportStub = sinon.stub();
+        var pairingHistory = {
+            getPairCandidateReport: getReportStub
+        };
+
+        var billsPairCandidates = new PairHistoryReport(bill, [], 3);
+        getReportStub.withArgs(bill, [ amadeus, shorty]).returns(billsPairCandidates);
+        var amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
+        getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
+        var shortyPairCandidates = new PairHistoryReport(shorty, [], null);
+        getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
+
+        var sequencer = new Sequencer(pairingHistory);
+        var next = sequencer.getNextInSequence(players);
+        next.should.eql(shortyPairCandidates);
+    });
+
+    it('will prioritize the report with fewest players when equal amounts of time.', function () {
+        var players = [ bill, amadeus, shorty];
+
+        var getReportStub = sinon.stub();
+        var pairingHistory = {
+            getPairCandidateReport: getReportStub
+        };
+
+        var billsPairCandidates = new PairHistoryReport(bill, [
+            {},
+            {},
+            {}
+        ], null);
+        getReportStub.withArgs(bill, [ amadeus, shorty]).returns(billsPairCandidates);
+        var amadeusPairCandidates = new PairHistoryReport(amadeus, [
+            {}
+        ], null);
+        getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
+        var shortyPairCandidates = new PairHistoryReport(shorty, [
+            {},
+            {}
+        ], null);
+        getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
+
+        var sequencer = new Sequencer(pairingHistory);
+        var next = sequencer.getNextInSequence(players);
+        next.should.eql(amadeusPairCandidates);
+    });
 });

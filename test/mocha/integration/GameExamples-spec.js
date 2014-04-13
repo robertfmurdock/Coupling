@@ -62,19 +62,20 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        var history = [];
-        history.push(new PairAssignmentDocument(new Date(2014, 1, 10), [
-            [bruce, clark]
-        ]));
-        history.push(new PairAssignmentDocument(new Date(2014, 1, 9), [
-            [bruce, diana]
-        ]));
-        history.push(new PairAssignmentDocument(new Date(2014, 1, 8), [
-            [bruce, hal]
-        ]));
-        history.push(new PairAssignmentDocument(new Date(2014, 1, 7), [
-            [bruce, barry]
-        ]));
+        var history = [
+            new PairAssignmentDocument(new Date(2014, 1, 10), [
+                [bruce, clark]
+            ]),
+            new PairAssignmentDocument(new Date(2014, 1, 9), [
+                [bruce, diana]
+            ]),
+            new PairAssignmentDocument(new Date(2014, 1, 8), [
+                [bruce, hal]
+            ]),
+            new PairAssignmentDocument(new Date(2014, 1, 7), [
+                [bruce, barry]
+            ])
+        ];
 
         historyCollection.insert(history, function () {
             CouplingDatabaseAdapter(mongoUrl, function (players, history, historyCollection) {
