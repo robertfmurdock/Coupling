@@ -1,17 +1,24 @@
 var GameRunner = require('../../../lib/GameRunner');
 var CouplingGameFactory = require('../../../lib/CouplingGameFactory');
 var CouplingDatabaseAdapter = require('../../../lib/CouplingDatabaseAdapter');
+var PairAssignmentDocument = require('../../../lib/PairAssignmentDocument');
 var should = require('should');
 var monk = require('monk');
 
 describe('The game', function () {
+    var clark = {name: "Superman"};
+    var bruce = {name: "Batman"};
+    var diana = {name: "Wonder Woman"};
+    var hal = {name: "Green Lantern"};
+    var barry = {name: "Flash"};
+    var john = {name: "Martian Manhunter"};
     var playerRoster = [
-        {name: "Superman"},
-        {name: "Batman"},
-        {name: "Wonder Woman"},
-        {name: "Green Lantern"},
-        {name: "Flash"},
-        {name: "Martian Manhunter"}
+        clark,
+        bruce,
+        diana,
+        hal,
+        barry,
+        john
     ];
 
     var mongoUrl = 'localhost/CouplingTest';
@@ -20,9 +27,12 @@ describe('The game', function () {
 
     before(function (done) {
         var playersCollection = database.get('players');
-        historyCollection.drop();
         playersCollection.drop();
         playersCollection.insert(playerRoster, done);
+    });
+
+    beforeEach(function () {
+        historyCollection.drop();
     });
 
     it('works with no history', function (testIsComplete) {
@@ -45,6 +55,50 @@ describe('The game', function () {
                 testIsComplete();
             });
 
+        });
+    });
+
+    it('will always pair someone who has paired with everyone but one person with that one person', function (testIsComplete) {
+        var couplingGameFactory = new CouplingGameFactory();
+        var gameRunner = new GameRunner(couplingGameFactory);
+
+        var history = [];
+        history.push(new PairAssignmentDocument(new Date(2014, 1, 10), [
+            [bruce, clark]
+        ]));
+        history.push(new PairAssignmentDocument(new Date(2014, 1, 9), [
+            [bruce, diana]
+        ]));
+        history.push(new PairAssignmentDocument(new Date(2014, 1, 8), [
+            [bruce, hal]
+        ]));
+        history.push(new PairAssignmentDocument(new Date(2014, 1, 7), [
+            [bruce, barry]
+        ]));
+
+        historyCollection.insert(history, function () {
+            CouplingDatabaseAdapter(mongoUrl, function (players, history, historyCollection) {
+                gameRunner.run(players, history, historyCollection);
+                var sortNewestToOldest = {sort: {date: -1}};
+                historyCollection.find({}, sortNewestToOldest, function (error, documents) {
+
+                    var foundBruceAndJohn = documents[0].pairs.some(function (pair) {
+                        should(pair.length).eql(2);
+                        if (pair[0]._id.toHexString() === bruce._id.toHexString()) {
+                            pair[1]._id.toHexString().should.equal(john._id.toHexString());
+                            return true;
+                        }
+                        if (pair[0]._id.toHexString() === bruce._id.toHexString()) {
+                            pair[1]._id.toHexString().should.equal(john._id.toHexString());
+                            return true;
+                        }
+                    });
+
+                    foundBruceAndJohn.should.be.true;
+                    testIsComplete();
+                });
+
+            });
         });
     });
 });
