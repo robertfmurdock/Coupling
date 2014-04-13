@@ -1,4 +1,5 @@
 var CouplingGame = require('../../lib/CouplingGame');
+var PairHistoryReport = require('../../lib/PairHistoryReport');
 var should = require('should');
 var sinon = require('sinon');
 
@@ -23,14 +24,15 @@ describe("Coupling Game", function () {
         var player2 = {name: 'ted'};
         var allPlayers = [player1, player2];
         var spinFunction;
+        var nextInSequenceFunction;
         var game;
 
         beforeEach(function () {
                 spinFunction = sinon.stub();
-                game = new CouplingGame({spin: spinFunction});
-
-                spinFunction.onFirstCall().returns(player2);
-                spinFunction.onSecondCall().returns(player1);
+                nextInSequenceFunction = sinon.stub();
+                game = new CouplingGame({getNextInSequence: nextInSequenceFunction}, {spin: spinFunction});
+                nextInSequenceFunction.returns(new PairHistoryReport(player2, [player1]));
+                spinFunction.returns(player1);
             }
         );
 
@@ -38,8 +40,8 @@ describe("Coupling Game", function () {
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            should(spinFunction.args[0]).eql([allPlayers]);
-            should(spinFunction.args[1]).eql([
+            should(nextInSequenceFunction.args[0]).eql([allPlayers]);
+            should(spinFunction.args[0]).eql([
                 [player1]
             ]);
         });
@@ -59,15 +61,17 @@ describe("Coupling Game", function () {
         var player3 = {name: 'mozart'};
         var allPlayers = [player1, player2, player3];
         var spinFunction;
+        var nextInSequenceFunction;
         var game;
 
         beforeEach(function () {
                 spinFunction = sinon.stub();
-                game = new CouplingGame({spin: spinFunction});
+                nextInSequenceFunction = sinon.stub();
+                game = new CouplingGame({getNextInSequence: nextInSequenceFunction}, {spin: spinFunction});
 
-                spinFunction.onFirstCall().returns(player3);
-                spinFunction.onSecondCall().returns(player1);
-                spinFunction.onThirdCall().returns(player2);
+                nextInSequenceFunction.onFirstCall().returns(new PairHistoryReport(player3, [player1, player2]));
+                spinFunction.returns(player1);
+                nextInSequenceFunction.onSecondCall().returns(new PairHistoryReport(player2, []));
             }
         );
 
@@ -75,11 +79,11 @@ describe("Coupling Game", function () {
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            should(spinFunction.args[0]).eql([allPlayers]);
-            should(spinFunction.args[1]).eql([
+            should(nextInSequenceFunction.args[0]).eql([allPlayers]);
+            should(spinFunction.args[0]).eql([
                 [player1, player2]
             ]);
-            should(spinFunction.args[2]).eql([
+            should(nextInSequenceFunction.args[1]).eql([
                 [ player2]
             ]);
         });
@@ -94,11 +98,14 @@ describe("Coupling Game", function () {
     });
 
     it("should one pair two players", function () {
-        var game = new CouplingGame({spin: badSpin});
+        var nextInSequenceFunction = sinon.stub();
+        var game = new CouplingGame({getNextInSequence: nextInSequenceFunction}, {spin: badSpin});
 
         var player1 = {name: 'bill'};
         var player2 = {name: 'ted'};
         var allPlayers = [player1, player2];
+
+        nextInSequenceFunction.returns(new PairHistoryReport(player1, [player2]));
 
         var results = game.play(allPlayers);
 
