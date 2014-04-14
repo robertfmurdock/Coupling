@@ -2,6 +2,7 @@ var GameRunner = require('../../../lib/GameRunner');
 var CouplingGameFactory = require('../../../lib/CouplingGameFactory');
 var CouplingDatabaseAdapter = require('../../../lib/CouplingDatabaseAdapter');
 var PairAssignmentDocument = require('../../../lib/PairAssignmentDocument');
+var PairComparator = require('../../../lib/PairComparator');
 var should = require('should');
 var monk = require('monk');
 
@@ -84,15 +85,7 @@ describe('The game', function () {
                 historyCollection.find({}, sortNewestToOldest, function (error, documents) {
 
                     var foundBruceAndJohn = documents[0].pairs.some(function (pair) {
-                        should(pair.length).eql(2);
-                        if (pair[0]._id.toHexString() === bruce._id.toHexString()) {
-                            pair[1]._id.toHexString().should.equal(john._id.toHexString());
-                            return true;
-                        }
-                        if (pair[0]._id.toHexString() === bruce._id.toHexString()) {
-                            pair[1]._id.toHexString().should.equal(john._id.toHexString());
-                            return true;
-                        }
+                        return PairComparator.areEqual([bruce, john], pair);
                     });
                     foundBruceAndJohn.should.be.true;
                     testIsComplete();
