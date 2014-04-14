@@ -94,11 +94,9 @@ describe('The game', function () {
                             return true;
                         }
                     });
-
                     foundBruceAndJohn.should.be.true;
                     testIsComplete();
                 });
-
             });
         });
     });
