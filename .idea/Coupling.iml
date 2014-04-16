@@ -13,6 +13,8 @@
     <orderEntry type="library" name="Node.js v0.10.26 Core Modules" level="application" />
     <orderEntry type="library" name="should-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="sinon-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="greasemonkey-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
   </component>
 </module>
 

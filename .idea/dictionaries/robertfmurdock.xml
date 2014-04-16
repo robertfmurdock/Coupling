@@ -3,6 +3,7 @@
     <words>
       <w>mongo</w>
       <w>sinon</w>
+      <w>supertest</w>
     </words>
   </dictionary>
 </component>

@@ -36,7 +36,6 @@ describe('Pairing History', function () {
             it('with no history', function () {
                 var historyDocuments = [];
                 var pairingHistory = new PairingHistory(historyDocuments);
-
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 availableOtherPlayers.should.eql(report.partnerCandidates);
                 should.not.exist(availableOtherPlayers.timeSinceLastPaired);

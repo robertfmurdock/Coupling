@@ -25,10 +25,11 @@ describe('Game Runner', function () {
         playStub.returns(pairingAssignments);
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        gameRunner.run(players, history, historyCollection);
+        var result = gameRunner.run(players, history, historyCollection);
 
         var lastInsertedPairingAssignments = insertStub.args[0][0];
         lastInsertedPairingAssignments.date.should.eql(new Date());
         should(lastInsertedPairingAssignments.pairs).equal(pairingAssignments);
+        result.should.equal(pairingAssignments);
     }));
 });
