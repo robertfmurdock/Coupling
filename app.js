@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -10,7 +9,7 @@ var players = require('./routes/players');
 var game = require('./routes/game');
 var http = require('http');
 var path = require('path');
-var databaseUrl = 'localhost:27017/Coupling';
+var config = require('./config');
 
 var app = express();
 
@@ -27,17 +26,16 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 app.get('/', routes.index);
-app.get('/history', history(databaseUrl));
-app.get('/players', players(databaseUrl));
-app.get('/game', game(databaseUrl));
+app.get('/history', history(config.mongoUrl));
+app.get('/players', players(config.mongoUrl));
+app.get('/game', game(config.mongoUrl));
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(app).listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
 });
