@@ -1,0 +1,5 @@
+div
+    p(ng-model=date)
+    div(ng-repeat='pair in pairs') Pair!
+        ul
+            li(ng-repeat='player in pair') Name:  {{player.name}}

@@ -43,6 +43,18 @@ describe('Pairing History', function () {
                 bruce.should.equal(report.player);
             });
 
+            it('with history document that has no pairs', function () {
+                var historyDocuments = [
+                    {pairs: null}
+                ];
+                var pairingHistory = new PairingHistory(historyDocuments);
+                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                availableOtherPlayers.should.eql(report.partnerCandidates);
+                should.not.exist(availableOtherPlayers.timeSinceLastPaired);
+
+                bruce.should.equal(report.player);
+            });
+
             it('with plenty of history', function () {
                 var historyDocuments = [
                     new PairAssignmentDocument(new Date(2014, 3, 30), [
