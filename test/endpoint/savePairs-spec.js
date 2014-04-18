@@ -5,6 +5,8 @@ var adapter = require('../../lib/CouplingDatabaseAdapter');
 var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
 var config = require('../../config');
 
+var host = 'http://localhost:3000';
+var path = '/api/savePairs';
 describe('SavePairs Route', function () {
 
     it('should add when given a valid pair assignment document.', function (done) {
@@ -14,7 +16,7 @@ describe('SavePairs Route', function () {
                 {name: "Scooby"}
             ]
         ]);
-        supertest('http://localhost:3000').post('/savePairs').
+        supertest(host).post(path).
             send(pairs)
             .expect('Content-Type', /json/).
             end(function (error, response) {
@@ -33,7 +35,7 @@ describe('SavePairs Route', function () {
                 {name: "Scooby"}
             ]
         ]};
-        supertest('http://localhost:3000').post('/savePairs').
+        supertest(host).post(path).
             send(pairs)
             .expect('Content-Type', /json/).
             end(function (error, response) {
@@ -44,7 +46,7 @@ describe('SavePairs Route', function () {
     });
     it('should not add when given a document without pairs', function (done) {
         var pairs = { date: new Date()};
-        supertest('http://localhost:3000').post('/savePairs').
+        supertest(host).post(path).
             send(pairs)
             .expect('Content-Type', /json/).
             end(function (error, response) {
@@ -54,7 +56,7 @@ describe('SavePairs Route', function () {
             });
     });
     it('should not add when not given a submission', function (done) {
-        supertest('http://localhost:3000').post('/savePairs')
+        supertest(host).post(path)
             .expect('Content-Type', /json/).
             end(function (error, response) {
                 response.status.should.equal(400);
