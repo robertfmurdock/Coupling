@@ -6,6 +6,9 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     Coupling.getPlayers(function (players) {
         scope.players = players;
         scope.selectionMap = [];
+        _.each(players, function (player) {
+            scope.selectionMap[player._id] = true;
+        });
     });
 
     scope.spin = function () {
