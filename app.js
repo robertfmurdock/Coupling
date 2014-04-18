@@ -7,6 +7,7 @@ var routes = require('./routes');
 var history = require('./routes/history');
 var players = require('./routes/players');
 var game = require('./routes/game');
+var savePairs = require('./routes/savePairs');
 var http = require('http');
 var path = require('path');
 var config = require('./config');
@@ -34,6 +35,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/history', history(config.mongoUrl));
 app.get('/players', players(config.mongoUrl));
+app.post('/savePairs', savePairs(config.mongoUrl));
 app.get('/game', game(config.mongoUrl));
 
 http.createServer(app).listen(app.get('port'), function () {

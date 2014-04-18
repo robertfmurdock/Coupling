@@ -83,7 +83,6 @@ describe('The game', function () {
                 gameRunner.run(players, history, historyCollection);
                 var sortNewestToOldest = {sort: {date: -1}};
                 historyCollection.find({}, sortNewestToOldest, function (error, documents) {
-
                     var foundBruceAndJohn = documents[0].pairs.some(function (pair) {
                         return Comparators.areEqualPairs([bruce, john], pair);
                     });
