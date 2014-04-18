@@ -53,6 +53,17 @@ describe('The game', function () {
         });
     });
 
+    it('works with an odd number of players history', function (testIsComplete) {
+        var couplingGameFactory = new CouplingGameFactory();
+        var gameRunner = new GameRunner(couplingGameFactory);
+
+        CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+            var result = gameRunner.run([clark, bruce, diana], history);
+            should(result.pairs.length).eql(2);
+            testIsComplete();
+        });
+    });
+
     it('will always pair someone who has paired with everyone but one person with that one person', function (testIsComplete) {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);

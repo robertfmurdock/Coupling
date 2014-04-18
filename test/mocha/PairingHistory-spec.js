@@ -1,3 +1,4 @@
+"use strict";
 var PairingHistory = require('../../lib/PairingHistory');
 var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
 var ObjectID = require('mongodb').ObjectID;
@@ -19,6 +20,13 @@ describe('Pairing History', function () {
         var pairingHistory = new PairingHistory(historyDocuments);
 
         should(historyDocuments).eql(pairingHistory.historyDocuments);
+    });
+
+    it('should return empty array when no partners are available', function () {
+        var historyDocuments = [];
+        var pairingHistory = new PairingHistory(historyDocuments);
+        var report = pairingHistory.getPairCandidateReport({name: 'player'}, []);
+        report.partnerCandidates.should.eql([]);
     });
 
 

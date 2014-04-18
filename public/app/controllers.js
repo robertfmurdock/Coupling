@@ -5,6 +5,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 
     Coupling.getPlayers(function (players) {
         scope.players = players;
+        scope.selectionMap = [];
     });
 
     scope.spin = function () {
@@ -24,7 +25,10 @@ controllers.controller('PairAssignmentsController', ['$scope', '$routeParams', '
     }
 
     if (params.pairAssignmentsId == "new") {
-        Coupling.spin(putPairAssignmentDocumentOnScope);
+        var selectedPlayers = _.filter(scope.players, function (player) {
+            return scope.selectionMap[player._id];
+        });
+        Coupling.spin(selectedPlayers, putPairAssignmentDocumentOnScope);
     }
 
     scope.save = function () {

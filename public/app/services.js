@@ -3,8 +3,9 @@ var services = angular.module("coupling.services", []);
 
 services.service("Coupling", function ($http) {
     var Coupling = this;
-    this.spin = function (callback) {
-        var getPromise = $http.get('/api/game');
+
+    this.spin = function (players, callback) {
+        var getPromise = $http.post('/api/game', players);
         getPromise.success(function (pairAssignmentDocument) {
             Coupling.currentPairAssignments = pairAssignmentDocument;
             callback();

@@ -8,11 +8,12 @@ var Game = function (mongoUrl) {
     var gameRunner = new GameRunner(couplingGameFactory);
 
     return function (request, response) {
+        var availablePlayers = request.body;
+        console.info(availablePlayers);
         databaseAdapter(mongoUrl, function (players, history) {
-            var result = gameRunner.run(players, history);
+            var result = gameRunner.run(availablePlayers, history);
             response.send(result);
         });
-
     };
 };
 

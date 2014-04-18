@@ -8,4 +8,5 @@ block content
     div(ng-cloak)
         h2 Players:
         div(ng-repeat="player in players") Name: {{player.name}}
+            input(type="checkbox" value="{{player.name}}" ng-model="selectionMap[player._id]")
     div(ng-view)
