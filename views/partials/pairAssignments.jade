@@ -1,5 +1,7 @@
 div
-    p(ng-model=date)
+    h4 {{date}}
     div(ng-repeat='pair in pairs') Pair!
         ul
             li(ng-repeat='player in pair') Name:  {{player.name}}
+
+    input(type="button" value="Save!" ng-click="save()" ng-hide="pairAssignmentDocument._id")
