@@ -4,7 +4,7 @@ var controllers = angular.module('coupling.controllers', []);
 controllers.controller('CouplingController', ['$scope', '$http', '$location', function (scope, http, location) {
     scope.spin = function () {
         http({method: 'GET', url: '/api/game'}).success(function (data) {
-            scope.pairs = data;
+            scope.pairs = data.pairs;
         }).error(function (error) {
             console.log(error)
         });
@@ -13,6 +13,5 @@ controllers.controller('CouplingController', ['$scope', '$http', '$location', fu
 }]);
 
 controllers.controller('PairAssignmentsController', ['$scope', function (scope) {
-
 }]);
 

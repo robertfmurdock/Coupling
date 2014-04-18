@@ -8,8 +8,8 @@ var Game = function (mongoUrl) {
     var gameRunner = new GameRunner(couplingGameFactory);
 
     return function (request, response) {
-        databaseAdapter(mongoUrl, function (players, history, historyCollection) {
-            var result = gameRunner.run(players, history, historyCollection);
+        databaseAdapter(mongoUrl, function (players, history) {
+            var result = gameRunner.run(players, history);
             response.send(result);
         });
 

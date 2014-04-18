@@ -5,13 +5,10 @@ var should = require('should');
 
 describe('Game Runner', function () {
 
-    it('will build a game, run with all available players, and then save the results to history', sinon.test(function () {
+    it('will build a game, run with all available players, and then return the results', sinon.test(function () {
         this.clock.tick(2039810);
         var players = [];
         var history = [];
-
-        var insertStub = this.stub();
-        var historyCollection = {insert: insertStub};
 
         var couplingGameFactory = new CouplingGameFactory();
         var buildStub = this.stub(couplingGameFactory, 'buildGame');
@@ -25,11 +22,9 @@ describe('Game Runner', function () {
         playStub.returns(pairingAssignments);
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        var result = gameRunner.run(players, history, historyCollection);
+        var result = gameRunner.run(players, history);
 
-        var lastInsertedPairingAssignments = insertStub.args[0][0];
-        lastInsertedPairingAssignments.date.should.eql(new Date());
-        should(lastInsertedPairingAssignments.pairs).equal(pairingAssignments);
-        result.should.equal(pairingAssignments);
+        result.date.should.eql(new Date());
+        should(result.pairs).equal(pairingAssignments);
     }));
 });

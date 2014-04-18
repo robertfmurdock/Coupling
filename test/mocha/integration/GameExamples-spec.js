@@ -40,22 +40,16 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        CouplingDatabaseAdapter(mongoUrl, function (players, history, historyCollection) {
-            gameRunner.run(players, history, historyCollection);
-
-            historyCollection.find({}, function (error, documents) {
-                should(documents.length).be.eql(1);
-
-                var foundPlayers = [];
-                documents[0].pairs.forEach(function (pair) {
-                    should(pair.length).eql(2);
-                    foundPlayers = foundPlayers.concat(pair);
-                });
-
-                should(foundPlayers.length).eql(6);
-                testIsComplete();
+        CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+            var result = gameRunner.run(players, history);
+            var foundPlayers = [];
+            result.pairs.forEach(function (pair) {
+                should(pair.length).eql(2);
+                foundPlayers = foundPlayers.concat(pair);
             });
 
+            should(foundPlayers.length).eql(6);
+            testIsComplete();
         });
     });
 
@@ -79,16 +73,13 @@ describe('The game', function () {
         ];
 
         historyCollection.insert(history, function () {
-            CouplingDatabaseAdapter(mongoUrl, function (players, history, historyCollection) {
-                gameRunner.run(players, history, historyCollection);
-                var sortNewestToOldest = {sort: {date: -1}};
-                historyCollection.find({}, sortNewestToOldest, function (error, documents) {
-                    var foundBruceAndJohn = documents[0].pairs.some(function (pair) {
-                        return Comparators.areEqualPairs([bruce, john], pair);
-                    });
-                    foundBruceAndJohn.should.be.true;
-                    testIsComplete();
+            CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+                var pairAssignments = gameRunner.run(players, history);
+                var foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
+                    return Comparators.areEqualPairs([bruce, john], pair);
                 });
+                foundBruceAndJohn.should.be.true;
+                testIsComplete();
             });
         });
     });
