@@ -82,6 +82,20 @@ describe('Pairing History', function () {
                 should.not.exist(report.timeSinceLastPaired);
                 bruce.should.equal(report.player);
             });
+
+            it('with only the person you were with last time', function () {
+                var historyDocuments = [
+                    new PairAssignmentDocument(new Date(2014, 3, 30), [
+                        [bruce, selena]
+                    ])
+                ];
+                var pairingHistory = new PairingHistory(historyDocuments);
+
+                var report = pairingHistory.getPairCandidateReport(bruce, [selena]);
+                [selena].should.eql(report.partnerCandidates);
+                report.timeSinceLastPaired.should.equal(0);
+                bruce.should.equal(report.player);
+            });
         });
 
         describe('who has not paired recently', function () {
