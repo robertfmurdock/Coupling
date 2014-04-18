@@ -17,24 +17,39 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 
 }]);
 
-controllers.controller('PairAssignmentsController', ['$scope', '$routeParams', 'Coupling', function (scope, params, Coupling) {
-    var formatDate = function (date) {
-        return date.getMonth() + 1 + '/' + date.getDate() + "/" + date.getFullYear();
-    };
+var formatDate = function (date) {
+    return date.getMonth() + 1 + '/' + date.getDate() + "/" + date.getFullYear() + "  (created at " + [date.getHours(),
+        date.getMinutes(),
+        date.getSeconds()].join(':') + ")";
+};
 
-    function putPairAssignmentDocumentOnScope() {
+function makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling) {
+    return function () {
         scope.formattedDate = formatDate(new Date(Coupling.currentPairAssignments.date));
         scope.pairAssignmentDocument = Coupling.currentPairAssignments;
-    }
+    };
+}
 
-    if (params.pairAssignmentsId == "new") {
-        var selectedPlayers = _.filter(scope.players, function (player) {
-            return scope.selectionMap[player._id];
-        });
-        Coupling.spin(selectedPlayers, putPairAssignmentDocumentOnScope);
-    }
+controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
+    var putPairAssignmentDocumentOnScope = makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling);
+
+    var selectedPlayers = _.filter(scope.players, function (player) {
+        return scope.selectionMap[player._id];
+    });
+    Coupling.spin(selectedPlayers, putPairAssignmentDocumentOnScope);
 
     scope.save = function () {
         Coupling.saveCurrentPairAssignments(putPairAssignmentDocumentOnScope);
+        location.path("/pairAssignments/current");
     }
+}]);
+
+
+controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', function (scope, Coupling) {
+    var putPairAssignmentDocumentOnScope = makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling);
+    Coupling.getHistory(function (history) {
+        Coupling.currentPairAssignments = history[0];
+        putPairAssignmentDocumentOnScope();
+    });
+
 }]);

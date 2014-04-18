@@ -4,10 +4,10 @@ block content
     h1= title
     p Welcome to #{title}.
 
-    input(type="button" ng-click="spin()", value="Spin!")
-    div(ng-cloak)
+    a(type="button" class="super pink button" ng-click="spin()") Spin!
+    div(ng-cloak class="player-roster")
         h2 Players:
-        div(ng-repeat="player in players") Name: {{player.name}}
-            img(gravatar-src="'{{player.email}}'" gravatar-size="100")
+        div(ng-repeat="player in players" class="player" ) {{player.name}}
+            img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
             input(type="checkbox" value="{{player.name}}" ng-model="selectionMap[player._id]")
-    div(ng-view)
+    div(ng-view id="main-view")

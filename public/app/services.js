@@ -21,9 +21,10 @@ services.service("Coupling", function ($http) {
     };
 
     this.getPlayers = function (callback) {
-        var getPlayersPromise = $http.get('/api/players');
-        getPlayersPromise.success(function (players) {
-            callback(players);
-        }).error(console.log);
-    }
+        $http.get('/api/players').success(callback).error(console.log);
+    };
+
+    this.getHistory = function (callback) {
+        $http.get('/api/history').success(callback).error(console.log);
+    };
 });

@@ -5,7 +5,8 @@ app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
 }]);
 app.config(['$routeProvider', function (routeProvider) {
-    routeProvider.when('/pairAssignments/:pairAssignmentsId/', {templateUrl: '/partials/pairAssignments/', controller: "PairAssignmentsController"});
+    routeProvider.when('/pairAssignments/current/', {templateUrl: '/partials/pairAssignments/', controller: "CurrentPairAssignmentsController"});
+    routeProvider.when('/pairAssignments/new/', {templateUrl: '/partials/pairAssignments/', controller: "NewPairAssignmentsController"});
 }]);
 console.info(angular.module('ui.gravatar'));
 angular.module('ui.gravatar').config([
