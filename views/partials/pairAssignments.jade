@@ -1,6 +1,6 @@
 div
-    h4 {{date}}
-    div(ng-repeat='pair in pairs') Pair!
+    h4 {{formattedDate}}
+    div(ng-repeat='pair in pairAssignmentDocument.pairs') Pair!
         ul
             li(ng-repeat='player in pair') Name:  {{player.name}}
 

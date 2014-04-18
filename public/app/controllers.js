@@ -7,18 +7,18 @@ controllers.controller('CouplingController', ['$scope', '$http', '$location', fu
     };
 
     function putPairAssignmentDocumentOnScope(pairAssignmentDocument) {
-        scope.date = formatDate(new Date(pairAssignmentDocument.date));
-        scope.pairs = pairAssignmentDocument.pairs;
+        scope.formattedDate = formatDate(new Date(pairAssignmentDocument.date));
         scope.pairAssignmentDocument = pairAssignmentDocument;
     }
 
     scope.spin = function () {
+        location.path("/pairAssignments/new");
+
         http.get('/api/game').success(function (pairAssignmentDocument) {
             putPairAssignmentDocumentOnScope(pairAssignmentDocument);
         }).error(function (error) {
             console.log(error)
         });
-        location.path("/pairAssignments");
     };
 
     scope.save = function () {
@@ -32,6 +32,6 @@ controllers.controller('CouplingController', ['$scope', '$http', '$location', fu
     }
 }]);
 
-controllers.controller('PairAssignmentsController', ['$scope', function (scope) {
+controllers.controller('PairAssignmentsController', ['$scope', '$routeParams', function (scope, params) {
+    console.info(params.pairAssignmentsId);
 }]);
-
