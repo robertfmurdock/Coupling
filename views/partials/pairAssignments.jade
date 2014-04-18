@@ -1,7 +1,7 @@
-div
-    h4 {{formattedDate}}
-    div(ng-repeat='pair in pairAssignmentDocument.pairs') Pair!
-        ul
-            li(ng-repeat='player in pair') Name:  {{player.name}}
+div(ng-cloak)
+    h2 Pairing Assignments for {{formattedDate}}:
+    div(ng-repeat='pair in pairAssignmentDocument.pairs')
+        div
+            span(ng-repeat='player in pair')  / {{player.name}}
 
     input(type="button" value="Save!" ng-click="save()" ng-hide="pairAssignmentDocument._id")

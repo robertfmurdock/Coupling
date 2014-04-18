@@ -1,37 +1,33 @@
 "use strict";
-var controllers = angular.module('coupling.controllers', []);
+var controllers = angular.module('coupling.controllers', ['coupling.services']);
 
-controllers.controller('CouplingController', ['$scope', '$http', '$location', function (scope, http, location) {
+controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
+
+    Coupling.getPlayers(function (players) {
+        scope.players = players;
+    });
+
+    scope.spin = function () {
+        location.path("/pairAssignments/new");
+    };
+
+}]);
+
+controllers.controller('PairAssignmentsController', ['$scope', '$routeParams', 'Coupling', function (scope, params, Coupling) {
     var formatDate = function (date) {
         return date.getMonth() + 1 + '/' + date.getDate() + "/" + date.getFullYear();
     };
 
-    function putPairAssignmentDocumentOnScope(pairAssignmentDocument) {
-        scope.formattedDate = formatDate(new Date(pairAssignmentDocument.date));
-        scope.pairAssignmentDocument = pairAssignmentDocument;
+    function putPairAssignmentDocumentOnScope() {
+        scope.formattedDate = formatDate(new Date(Coupling.currentPairAssignments.date));
+        scope.pairAssignmentDocument = Coupling.currentPairAssignments;
     }
 
-    scope.spin = function () {
-        location.path("/pairAssignments/new");
-
-        http.get('/api/game').success(function (pairAssignmentDocument) {
-            putPairAssignmentDocumentOnScope(pairAssignmentDocument);
-        }).error(function (error) {
-            console.log(error)
-        });
-    };
+    if (params.pairAssignmentsId == "new") {
+        Coupling.spin(putPairAssignmentDocumentOnScope);
+    }
 
     scope.save = function () {
-        var postPromise = http.post('/api/savePairs', scope.pairAssignmentDocument);
-        postPromise.success(function (updatedPairAssignmentDocument) {
-            putPairAssignmentDocumentOnScope(updatedPairAssignmentDocument);
-        });
-        postPromise.error(function (error) {
-            console.log(error);
-        });
+        Coupling.saveCurrentPairAssignments(putPairAssignmentDocumentOnScope);
     }
-}]);
-
-controllers.controller('PairAssignmentsController', ['$scope', '$routeParams', function (scope, params) {
-    console.info(params.pairAssignmentsId);
 }]);

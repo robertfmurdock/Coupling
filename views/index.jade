@@ -5,4 +5,7 @@ block content
     p Welcome to #{title}.
 
     input(type="button" ng-click="spin()", value="Spin!")
+    div(ng-cloak)
+        h2 Players:
+        div(ng-repeat="player in players") Name: {{player.name}}
     div(ng-view)
