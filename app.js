@@ -23,9 +23,8 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
@@ -38,6 +37,7 @@ app.get('/api/players', players(config.mongoUrl));
 app.post('/api/savePairs', savePairs(config.mongoUrl));
 app.get('/api/game', game(config.mongoUrl));
 app.get('/partials/:name', routes.partials);
+app.get('*', routes.index);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
