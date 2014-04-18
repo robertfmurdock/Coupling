@@ -2,7 +2,6 @@
 var controllers = angular.module('coupling.controllers', ['coupling.services']);
 
 controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
-
     Coupling.getPlayers(function (players) {
         scope.players = players;
         scope.selectionMap = [];
@@ -14,7 +13,6 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.spin = function () {
         location.path("/pairAssignments/new");
     };
-
 }]);
 
 var formatDate = function (date) {
@@ -44,12 +42,10 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
     }
 }]);
 
-
 controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', function (scope, Coupling) {
     var putPairAssignmentDocumentOnScope = makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling);
     Coupling.getHistory(function (history) {
         Coupling.currentPairAssignments = history[0];
         putPairAssignmentDocumentOnScope();
     });
-
 }]);
