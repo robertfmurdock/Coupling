@@ -1,9 +1,10 @@
 "use strict";
-var databaseAdapter = require('../lib/CouplingDatabaseAdapter');
+var DataService = require('../lib/CouplingDataService');
 
 module.exports = function (mongoUrl) {
+    var dataService = new DataService(mongoUrl);
     return function (request, response) {
-        databaseAdapter(mongoUrl, function (players, history) {
+        dataService.requestHistory(function (history) {
             response.send(history);
         }, response.send);
     };

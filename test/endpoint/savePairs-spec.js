@@ -1,7 +1,7 @@
 "use strict";
 var should = require('should');
 var supertest = require('supertest');
-var adapter = require('../../lib/CouplingDatabaseAdapter');
+var DataService = require('../../lib/CouplingDataService');
 var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
 var config = require('../../config');
 
@@ -22,7 +22,7 @@ describe('SavePairs Route', function () {
             end(function (error, response) {
                 response.status.should.equal(200);
                 var pairsAsSaved = response.body;
-                adapter(config.mongoUrl, function (players, history) {
+                new DataService(config.mongoUrl).requestHistory(function (history) {
                     JSON.stringify(history[0]).should.equal(JSON.stringify(pairsAsSaved));
                     done();
                 }, function (error) {

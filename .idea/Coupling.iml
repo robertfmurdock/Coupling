@@ -15,6 +15,7 @@
     <orderEntry type="library" name="sinon-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="greasemonkey-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="es6-promises-DefinitelyTyped" level="application" />
   </component>
 </module>
 

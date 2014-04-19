@@ -1,16 +1,15 @@
 "use strict";
-var databaseAdapter = require('../lib/CouplingDatabaseAdapter');
+var DataService = require('../lib/CouplingDataService');
 var GameRunner = require('../lib/GameRunner');
 var CouplingGameFactory = require('../lib/CouplingGameFactory');
 
 var Game = function (mongoUrl) {
     var couplingGameFactory = new CouplingGameFactory();
     var gameRunner = new GameRunner(couplingGameFactory);
-
+    var dataService = new DataService(mongoUrl);
     return function (request, response) {
-        var availablePlayers = request.body;
-        console.info(availablePlayers);
-        databaseAdapter(mongoUrl, function (players, history) {
+        dataService.requestPlayersAndHistory(function (players, history) {
+            var availablePlayers = request.body;
             var result = gameRunner.run(availablePlayers, history);
             response.send(result);
         }, response.send);

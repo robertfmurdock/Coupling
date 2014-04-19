@@ -1,10 +1,10 @@
-var CouplingDatabaseAdapter = require('../../lib/CouplingDatabaseAdapter');
+var CouplingDataService = require('../../lib/CouplingDataService');
 var should = require('should');
 var mongoUrl = 'localhost/CouplingTest';
 var monk = require('monk');
 var database = monk(mongoUrl);
 
-describe('Coupling Wheel Factory', function () {
+describe('Coupling Database Adapter', function () {
 
     var expectedPlayers = [
         {name: 'Gandalf'},
@@ -66,12 +66,27 @@ describe('Coupling Wheel Factory', function () {
         historyCollection.insert(unorderedHistory, beforeIsDone);
     });
 
-    it('starts with all the players in the database and all the history in order from ', function (testIsDone) {
-        CouplingDatabaseAdapter(mongoUrl, function (players, history, historyCollection) {
+    it('can retrieve all the players in the database and all the history in new to old order', function (testIsDone) {
+        var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
+        couplingDatabaseAdapter.requestPlayersAndHistory(function (players, history) {
             should(expectedPlayers).eql(players);
             should(expectedHistory).eql(history);
+            testIsDone();
+        });
+    });
 
-            should(historyCollection).equal(historyCollection);
+    it('can retrieve all the players', function (testIsDone) {
+        var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
+        couplingDatabaseAdapter.requestPlayers(function (players) {
+            should(expectedPlayers).eql(players);
+            testIsDone();
+        });
+    });
+
+    it('can retrieve all the history in new to old order', function (testIsDone) {
+        var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
+        couplingDatabaseAdapter.requestHistory(function (history) {
+            should(expectedHistory).eql(history);
             testIsDone();
         });
     });

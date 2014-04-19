@@ -1,14 +1,14 @@
 "use strict";
-var monk = require('monk');
+var DataService = require('../lib/CouplingDataService');
 
 module.exports = function (mongoUrl) {
+    var dataService = new DataService(mongoUrl);
     return function (request, response) {
         var pairs = request.body;
         if (pairs.date && pairs.pairs) {
-            var database = monk(mongoUrl);
-            var historyCollection = database.get('history');
             pairs.date = new Date(pairs.date);
-            historyCollection.insert(pairs, function () {
+
+            dataService.savePairAssignmentsToHistory(pairs, function () {
                 response.send(pairs);
             });
         }

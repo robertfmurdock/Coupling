@@ -1,6 +1,6 @@
 var GameRunner = require('../../../lib/GameRunner');
 var CouplingGameFactory = require('../../../lib/CouplingGameFactory');
-var CouplingDatabaseAdapter = require('../../../lib/CouplingDatabaseAdapter');
+var CouplingDataService = require('../../../lib/CouplingDataService');
 var PairAssignmentDocument = require('../../../lib/PairAssignmentDocument');
 var Comparators = require('../../../lib/Comparators');
 var should = require('should');
@@ -40,7 +40,7 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+        new CouplingDataService(mongoUrl).requestPlayersAndHistory(function (players, history) {
             var result = gameRunner.run(players, history);
             var foundPlayers = [];
             result.pairs.forEach(function (pair) {
@@ -57,7 +57,7 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+        new CouplingDataService(mongoUrl).requestHistory(function (history) {
             var result = gameRunner.run([clark, bruce, diana], history);
             should(result.pairs.length).eql(2);
             testIsComplete();
@@ -84,7 +84,7 @@ describe('The game', function () {
         ];
 
         historyCollection.insert(history, function () {
-            CouplingDatabaseAdapter(mongoUrl, function (players, history) {
+            new CouplingDataService(mongoUrl).requestPlayersAndHistory(function (players, history) {
                 var pairAssignments = gameRunner.run(players, history);
                 var foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
                     return Comparators.areEqualPairs([bruce, john], pair);
