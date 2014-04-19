@@ -8,19 +8,26 @@ a {
 }
 
 .player-roster {
-    float: left;
+
 }
 
 .player-roster .player {
     clear: both;
-    width: 250px;
-    border: 5px outset aquamarine;
-    background-color: thistle;
+    display: inline-block;
+    border: 3px outset gold;
+    background-color: darkseagreen;
     padding: 6px;
+    text-align: center;
+}
+
+.player-roster .player h4 {
+    background-color: silver;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 6px;
 }
 
 .player-roster .player .player-icon {
-    float: left;
+
 }
 
 .pair {

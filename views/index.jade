@@ -5,9 +5,10 @@ block content
     p Welcome to #{title}.
 
     a(type="button" class="super pink button" ng-click="spin()") Spin!
+    div(ng-view id="main-view")
     div(ng-cloak class="player-roster")
         h2 Players:
-        div(ng-repeat="player in players" class="player" ) {{player.name}}
+        span(ng-repeat="player in players" class="player" )
+            h4 {{player.name}}
             img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
             input(type="checkbox" value="{{player.name}}" ng-model="selectionMap[player._id]")
-    div(ng-view id="main-view")

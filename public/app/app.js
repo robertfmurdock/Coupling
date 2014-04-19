@@ -8,7 +8,7 @@ app.config(['$routeProvider', function (routeProvider) {
     routeProvider.when('/pairAssignments/current/', {templateUrl: '/partials/pairAssignments/', controller: "CurrentPairAssignmentsController"});
     routeProvider.when('/pairAssignments/new/', {templateUrl: '/partials/pairAssignments/', controller: "NewPairAssignmentsController"});
 }]);
-console.info(angular.module('ui.gravatar'));
+
 angular.module('ui.gravatar').config([
     'gravatarServiceProvider', function (gravatarServiceProvider) {
         gravatarServiceProvider.defaults = {

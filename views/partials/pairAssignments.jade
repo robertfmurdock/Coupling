@@ -1,7 +1,7 @@
 div(ng-cloak id="pair-assignments")
     h2 Pairing Assignments for {{formattedDate}}:
     span(ng-repeat='pair in pairAssignmentDocument.pairs' class="pair")
-        span(ng-repeat='player in pair' class="player")  / {{player.name}}
+        span(ng-repeat='player in pair' class="player")  {{player.name}}
             img(gravatar-src="'{{player.email}}'" gravatar-size="45")
     div
         a(id="save-button" class="super green button" ng-click="save()" ng-hide="pairAssignmentDocument._id") Save!
