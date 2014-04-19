@@ -11,16 +11,31 @@ a {
 
 }
 
-.player-roster .player {
+.player {
+    background: #222 url(../images/overlay.png) repeat-x;
     clear: both;
     display: inline-block;
     border: 3px outset gold;
     background-color: darkseagreen;
     padding: 6px;
     text-align: center;
+
+    text-decoration: none;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+
+    color: black;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    font-size: x-large;
+
 }
 
-.player-roster .player h4 {
+.player h4 {
+    background: #222 url(../images/overlay.png) repeat-x;
     background-color: silver;
     -webkit-margin-before: 0px;
     -webkit-margin-after: 6px;

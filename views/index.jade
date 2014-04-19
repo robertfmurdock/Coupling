@@ -9,6 +9,7 @@ block content
     div(ng-cloak class="player-roster")
         h2 Players:
         span(ng-repeat="player in players" class="player" )
-            h4 {{player.name}}
             img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
-            input(type="checkbox" value="{{player.name}}" ng-model="selectionMap[player._id]")
+            h4 {{player.name}}
+            div
+                input(type="checkbox" value="{{player.name}}" ng-model="selectionMap[player._id]")
