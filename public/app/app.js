@@ -1,5 +1,5 @@
 "use strict";
-var app = angular.module('coupling', ["ngRoute", 'ui.gravatar', 'coupling.controllers']);
+var app = angular.module('coupling', ["ngRoute", 'ui.gravatar', 'coupling.controllers', 'coupling.animations']);
 
 app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);

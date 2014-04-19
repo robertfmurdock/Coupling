@@ -1,11 +1,13 @@
 extends layout
 
 block content
-    h1= title
-    p Welcome to #{title}.
+    div(id="CouplingTitleBlock")
+        h1= title
+        p Welcome to #{title}.
 
-    a(type="button" class="super pink button" ng-click="spin()") Spin!
-    div(ng-view id="main-view")
+        a(type="button" class="super pink button" ng-click="spin()") Spin!
+    div(class="view-container")
+        div(ng-view id="main-view" class="view-frame")
     div(ng-cloak class="player-roster")
         h2 Players:
         span(ng-repeat="player in players" class="player" ng-class="{disabled:!selectionMap[player._id]}" ng-click="selectionMap[player._id] = !selectionMap[player._id]")

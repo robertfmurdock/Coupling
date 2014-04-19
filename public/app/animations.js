@@ -1,0 +1,1 @@
+var couplingAnimations = angular.module('coupling.animations', ['ngAnimate']);
