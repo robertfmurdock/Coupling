@@ -50,6 +50,7 @@ a {
 }
 
 .player-roster .player {
+    top: 0px;
     margin-bottom: 25px;
 }
 

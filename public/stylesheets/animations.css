@@ -1,3 +1,13 @@
+.player-roster .player {
+    -webkit-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+}
+
+.player-roster .disabled {
+    -webkit-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+}
+
 .view-container {
     position: relative;
 }
