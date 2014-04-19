@@ -21,43 +21,38 @@ a {
 
 .player {
     position: relative;
-    background: #222 url(../images/overlay.png) repeat-x;
     clear: both;
     display: inline-block;
     border: 3px outset gold;
-    background-color: darkseagreen;
+    background: darkseagreen url(../images/overlay.png) repeat-x;
     padding: 6px;
     text-align: center;
 
     text-decoration: none;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     color: black;
-    -webkit-text-fill-color: white;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+    text-fill-color: white;
+    text-stroke-width: 1px;
+    text-stroke-color: black;
     font-size: x-large;
 }
 
 .player h4 {
-    background: #222 url(../images/overlay.png) repeat-x;
-    background-color: silver;
-    -webkit-margin-before: 0px;
-    -webkit-margin-after: 6px;
+    background: silver url(../images/overlay.png) repeat-x;
+    margin-before: 0px;
+    margin-after: 6px;
 }
 
 .player-roster .player {
-    top: 0px;
+    top: 0;
     margin-bottom: 25px;
 }
 
 .player-roster .disabled {
     top: 30px;
     background-color: darkred;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .pair {
@@ -86,10 +81,8 @@ a {
     padding: 5px 10px 6px;
     color: #fff;
     text-decoration: none;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     position: relative;

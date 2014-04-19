@@ -1,7 +1,9 @@
+"use strict";
 var CouplingDataService = require('../../lib/CouplingDataService');
 var should = require('should');
 var mongoUrl = 'localhost/CouplingTest';
 var monk = require('monk');
+var Comparators = require('../../lib/Comparators');
 var database = monk(mongoUrl);
 
 describe('Coupling Database Adapter', function () {
@@ -55,6 +57,8 @@ describe('Coupling Database Adapter', function () {
         pairSetTwo, pairSetThree, pairSetOne
     ];
 
+    var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
+
     var historyCollection = database.get('history');
 
     before(function (beforeIsDone) {
@@ -67,7 +71,6 @@ describe('Coupling Database Adapter', function () {
     });
 
     it('can retrieve all the players in the database and all the history in new to old order', function (testIsDone) {
-        var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
         couplingDatabaseAdapter.requestPlayersAndHistory(function (players, history) {
             should(expectedPlayers).eql(players);
             should(expectedHistory).eql(history);
@@ -76,7 +79,6 @@ describe('Coupling Database Adapter', function () {
     });
 
     it('can retrieve all the players', function (testIsDone) {
-        var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
         couplingDatabaseAdapter.requestPlayers(function (players) {
             should(expectedPlayers).eql(players);
             testIsDone();
@@ -84,11 +86,27 @@ describe('Coupling Database Adapter', function () {
     });
 
     it('can retrieve all the history in new to old order', function (testIsDone) {
-        var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
         couplingDatabaseAdapter.requestHistory(function (history) {
             should(expectedHistory).eql(history);
             testIsDone();
         });
     });
+
+    it('can save a new player', function (testIsDone) {
+        var player = {name: 'Tom', email: 'Bombadil@shire.gov'};
+        couplingDatabaseAdapter.savePlayer(player, function () {
+            couplingDatabaseAdapter.requestPlayers(function (players) {
+                var found = players.some(function (listedPlayer) {
+                    return Comparators.areEqualPlayers(player, listedPlayer);
+                });
+                found.should.be.true;
+                testIsDone();
+            });
+        }, function (error) {
+            should.not.exist(error);
+            testIsDone();
+        });
+    });
+
 
 });

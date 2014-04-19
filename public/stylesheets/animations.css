@@ -1,10 +1,8 @@
 .player-roster .player {
-    -webkit-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;
 }
 
 .player-roster .disabled {
-    -webkit-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;
 }
 
@@ -21,17 +19,13 @@
 }
 
 .view-frame.ng-enter {
-    -webkit-transition: 1s fade-in;
-    -moz-animation: 1s fade-in;
-    -o-animation: 1s fade-in;
+    transition: 1s fade-in;
     animation: 1s fade-in;
     z-index: 100;
 }
 
 .view-frame.ng-leave {
-    -webkit-transition: all 1s ease;
-    -moz-animation: 1s fade-out;
-    -o-animation: 1s fade-out;
+    transition: all 1s ease;
     animation: 1s fade-out;
     z-index: 99;
 }
@@ -45,7 +39,7 @@
     }
 }
 
-@-moz-keyframes fade-in {
+@keyframes fade-in {
     from {
         opacity: 0;
     }
@@ -54,7 +48,7 @@
     }
 }
 
-@-webkit-keyframes fade-in {
+@keyframes fade-in {
     from {
         opacity: 0;
     }
@@ -72,7 +66,7 @@
     }
 }
 
-@-moz-keyframes fade-out {
+@keyframes fade-out {
     from {
         opacity: 1;
     }
@@ -81,7 +75,7 @@
     }
 }
 
-@-webkit-keyframes fade-out {
+@keyframes fade-out {
     from {
         opacity: 1;
     }
