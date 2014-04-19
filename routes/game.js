@@ -13,7 +13,7 @@ var Game = function (mongoUrl) {
         databaseAdapter(mongoUrl, function (players, history) {
             var result = gameRunner.run(availablePlayers, history);
             response.send(result);
-        });
+        }, response.send);
     };
 };
 

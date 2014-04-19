@@ -1,6 +1,6 @@
 "use strict";
 var supertest = require('supertest');
-require('should');
+var should = require('should');
 var adapter = require('../../lib/CouplingDatabaseAdapter');
 var config = require('./../../config');
 
@@ -17,6 +17,9 @@ describe('api/game', function () {
                 JSON.stringify(response.body.pairs).should.equal(JSON.stringify([onlyEnoughPlayersForOnePair]));
                 done();
             });
+        }, function (error) {
+            should.not.exist(error);
+            done();
         });
 
     });

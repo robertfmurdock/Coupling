@@ -1,6 +1,6 @@
 "use strict";
 var supertest = require('supertest');
-require('should');
+var should = require('should');
 var adapter = require('../../lib/CouplingDatabaseAdapter');
 var config = require('./../../config');
 
@@ -13,6 +13,9 @@ describe('Routing', function () {
                 JSON.stringify(response.body).should.equal(JSON.stringify(players));
                 done();
             });
+        }, function (error) {
+            should.not.exist(error);
+            done();
         });
 
     });

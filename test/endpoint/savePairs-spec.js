@@ -1,6 +1,6 @@
 "use strict";
+var should = require('should');
 var supertest = require('supertest');
-require('should');
 var adapter = require('../../lib/CouplingDatabaseAdapter');
 var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
 var config = require('../../config');
@@ -24,6 +24,9 @@ describe('SavePairs Route', function () {
                 var pairsAsSaved = response.body;
                 adapter(config.mongoUrl, function (players, history) {
                     JSON.stringify(history[0]).should.equal(JSON.stringify(pairsAsSaved));
+                    done();
+                }, function (error) {
+                    should.not.exist(error);
                     done();
                 });
             });
