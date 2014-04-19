@@ -32,7 +32,6 @@ a {
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     font-size: x-large;
-
 }
 
 .player h4 {
@@ -42,13 +41,14 @@ a {
     -webkit-margin-after: 6px;
 }
 
-.player-roster .player .player-icon {
-
+.player-roster .player {
+    margin-bottom: 25px;
 }
 
-.disabled {
-    top: 40px;
+.player-roster .disabled {
+    top: 30px;
     background-color: darkred;
+    margin-bottom: 0px;
 }
 
 .pair {
