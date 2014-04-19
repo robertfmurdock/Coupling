@@ -21,7 +21,7 @@
 }
 
 .view-frame.ng-enter {
-    -webkit-animation: 1s fade-in;
+    -webkit-transition: 1s fade-in;
     -moz-animation: 1s fade-in;
     -o-animation: 1s fade-in;
     animation: 1s fade-in;
@@ -29,7 +29,7 @@
 }
 
 .view-frame.ng-leave {
-    -webkit-animation: 1s fade-out;
+    -webkit-transition: all 1s ease;
     -moz-animation: 1s fade-out;
     -o-animation: 1s fade-out;
     animation: 1s fade-out;
