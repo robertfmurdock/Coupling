@@ -12,6 +12,7 @@ a {
 }
 
 .player {
+    position: relative;
     background: #222 url(../images/overlay.png) repeat-x;
     clear: both;
     display: inline-block;
@@ -43,6 +44,11 @@ a {
 
 .player-roster .player .player-icon {
 
+}
+
+.disabled {
+    top: 40px;
+    background-color: darkred;
 }
 
 .pair {
