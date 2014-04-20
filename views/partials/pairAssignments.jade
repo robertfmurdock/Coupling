@@ -2,7 +2,7 @@ div(ng-cloak id="pair-assignments")
     h2 Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} (created at {{data.currentPairAssignments.date | date: HH:mm:ss}}):
     span(ng-repeat='pair in data.currentPairAssignments.pairs' class="pair")
         span(ng-repeat='player in pair' class="player")
-            img(gravatar-src="'{{player.email}}'" gravatar-size="45")
+            img(ng-src="{{player.email | gravatarUrl:{size:45} }}")
             h4 {{player.name}}
     div
         a(id="save-button" class="super green button" ng-click="save()" ng-hide="data.currentPairAssignments._id") Save!
