@@ -1,7 +1,7 @@
 h2 Player
 span(class="player")
     h4(ng-hide="player._id") NEW!
-    img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
+    img(ng-src="{{player.email | gravatarUrl}}" gravatar-size="100" class="player-icon")
     form
         div
             label(for="player-name") Name:

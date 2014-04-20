@@ -3,18 +3,25 @@ var services = angular.module("coupling.services", []);
 
 services.service("Coupling", function ($http) {
     var Coupling = this;
-
+    var makeErrorHandler = function (url) {
+        return function (data, status, headers, config) {
+            alert("There was a problem loading " + url + data + " " + status + " " + headers + " " + config);
+            console.log(error);
+        }
+    };
     var requestPlayers = function () {
-        $http.get('/api/players').success(function (players) {
+        var url = '/api/players';
+        $http.get(url).success(function (players) {
             Coupling.data.players = players;
-        }).error(console.log);
+        }).error(makeErrorHandler(url));
     };
 
     var requestHistory = function () {
-        $http.get('/api/history').success(function (history) {
+        var url = '/api/history';
+        $http.get(url).success(function (history) {
             Coupling.data.history = history;
             Coupling.data.currentPairAssignments = history[0];
-        }).error(console.log);
+        }).error(makeErrorHandler(url));
     };
 
     var post = function (url, player, callback) {
@@ -22,7 +29,7 @@ services.service("Coupling", function ($http) {
         if (callback) {
             postPromise.success(callback);
         }
-        postPromise.error(console.log);
+        postPromise.error(makeErrorHandler(url));
     };
 
     this.spin = function (players) {
