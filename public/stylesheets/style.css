@@ -19,6 +19,20 @@ a {
     background-color: lightgoldenrodyellow;
 }
 
+#player-view.player {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px;
+    border-width: 11px;
+}
+
+#player-view.player h2 {
+    background: darkcyan url(../images/overlay.png) repeat-x;
+    margin-before: 0px;
+    margin-after: 6px;
+    border-radius: 20px;
+}
+
 .view-container {
     display: inline-block;
     width: 800px;
@@ -50,12 +64,14 @@ a {
     text-stroke-width: 1px;
     text-stroke-color: black;
     font-size: x-large;
+    margin: 0 2px 0 2px;
 }
 
 .player h4 {
-    background: silver url(../images/overlay.png) repeat-x;
+    background: darkcyan url(../images/overlay.png) repeat-x;
     margin-before: 0px;
     margin-after: 6px;
+    border-radius: 15px;
 }
 
 .player-roster .player {
@@ -70,11 +86,13 @@ a {
 }
 
 .pair {
-    border: 8px outset aquamarine;
-    background-color: thistle;
-    padding: 10px;
+    border: 3px outset dimgray;
+    background-color: aliceblue;
+    padding: 5px;
     display: inline-block;
 
+    border-radius: 40px;
+    margin: 0 2px 0 2px;
 }
 
 #main-view {
