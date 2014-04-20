@@ -44,8 +44,11 @@ controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location'
 }]);
 
 controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', function (scope, Coupling, params) {
-    scope.original = _.findWhere(Coupling.data.players, {_id: params.id});
-    scope.player = angular.copy(scope.original);
+    Coupling.findPlayerById(params.id, function (player) {
+        scope.original = player;
+        scope.player = angular.copy(player);
+    });
+
     scope.savePlayer = function () {
         Coupling.savePlayer(scope.player);
     };
@@ -58,4 +61,5 @@ controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routePar
             }
         }
     });
+
 }]);

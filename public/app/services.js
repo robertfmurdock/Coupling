@@ -9,10 +9,13 @@ services.service("Coupling", function ($http) {
             console.log(error);
         }
     };
-    var requestPlayers = function () {
+    var requestPlayers = function (callback) {
         var url = '/api/players';
         $http.get(url).success(function (players) {
             Coupling.data.players = players;
+            if (callback) {
+                callback(players);
+            }
         }).error(makeErrorHandler(url));
     };
 
@@ -52,4 +55,11 @@ services.service("Coupling", function ($http) {
     Coupling.data = {players: [], history: []};
     requestPlayers();
     requestHistory();
+
+    this.findPlayerById = function (id, callback) {
+        requestPlayers(function (players) {
+            callback(_.findWhere(players, {_id: id}));
+        });
+    };
+
 });
