@@ -1,5 +1,6 @@
 div(ng-cloak id="pair-assignments")
-    h2 Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} (created at {{data.currentPairAssignments.date | date: HH:mm:ss}}):
+    h2
+        text Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} (created at {{data.currentPairAssignments.date | date: 'HH:mm:ss'}}):
     span(ng-repeat='pair in data.currentPairAssignments.pairs' class="pair")
         span(ng-repeat='player in pair' class="player")
             img(ng-src="{{player | gravatarUrl:{size:45} }}" width="45" height="45")
