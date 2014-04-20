@@ -44,8 +44,18 @@ controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location'
 }]);
 
 controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', function (scope, Coupling, params) {
-    scope.player = _.findWhere(Coupling.data.players, {_id: params.id});
+    scope.original = _.findWhere(Coupling.data.players, {_id: params.id});
+    scope.player = angular.copy(scope.original);
     scope.savePlayer = function () {
         Coupling.savePlayer(scope.player);
-    }
+    };
+
+    scope.$on('$locationChangeStart', function () {
+        if (!angular.equals(scope.original, scope.player)) {
+            var answer = confirm("You have unsaved data. Would you like to save before you leave?");
+            if (answer) {
+                Coupling.savePlayer(scope.player);
+            }
+        }
+    });
 }]);
