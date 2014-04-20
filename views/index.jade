@@ -1,16 +1,18 @@
 extends layout
 
 block content
-    div(id="CouplingTitleBlock")
-        h1= title
-        p Welcome to #{title}.
+    div(id="top-section")
+        span(id="CouplingTitleBlock")
+            h1= title
+            p Welcome to #{title}.
 
-        a(type="button" class="super pink button" ng-click="spin()") Spin!
-    div(class="view-container")
-        div(ng-view id="main-view" class="view-frame")
+            a(type="button" class="super pink button" ng-click="spin()") Spin!
+        span(class="view-container")
+            div(ng-view id="main-view" class="view-frame" autoscroll)
     div(ng-cloak class="player-roster")
         h2 Players:
         span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="flipSelection(player)")
             img(ng-src="{{player.email | gravatarUrl:{size:100} }}" class="player-icon")
             h4(ng-click="viewPlayer(player._id, $event)") {{player.name}}
-            div
+        div
+            a(type="button" class="large orange button" href="/player/new/") Add a new player!

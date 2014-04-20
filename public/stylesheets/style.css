@@ -1,5 +1,4 @@
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -7,12 +6,23 @@ a {
     color: #00B7FF;
 }
 
-#CouplingTitleBlock {
+#top-section {
+    height: 275px;
+}
 
+#CouplingTitleBlock {
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 20px;
+    padding: 10px;
+    border: 11px outset darkorange;
+    background-color: lightgoldenrodyellow;
 }
 
 .view-container {
-    height: 320px;
+    display: inline-block;
+    width: 800px;
+    vertical-align: top;
 }
 
 .player-roster {
