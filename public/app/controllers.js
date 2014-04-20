@@ -13,44 +13,25 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
         location.path("/player/" + id);
     };
 
-    scope.flipSelection = function () {
+    scope.flipSelection = function (player) {
         scope.deselectionMap[player._id] = !scope.deselectionMap[player._id];
     }
 }]);
 
-var formatDate = function (date) {
-    return date.getMonth() + 1 + '/' + date.getDate() + "/" + date.getFullYear() + "  (created at " + [date.getHours(),
-        date.getMinutes(),
-        date.getSeconds()].join(':') + ")";
-};
-
-function makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling) {
-    return function () {
-        scope.formattedDate = formatDate(new Date(Coupling.currentPairAssignments.date));
-        scope.pairAssignmentDocument = Coupling.currentPairAssignments;
-    };
-}
-
 controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
-    var putPairAssignmentDocumentOnScope = makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling);
-
     var selectedPlayers = _.filter(Coupling.data.players, function (player) {
         return !scope.deselectionMap[player._id];
     });
-    Coupling.spin(selectedPlayers, putPairAssignmentDocumentOnScope);
+    Coupling.spin(selectedPlayers);
 
     scope.save = function () {
-        Coupling.saveCurrentPairAssignments(putPairAssignmentDocumentOnScope);
+        Coupling.saveCurrentPairAssignments();
         location.path("/pairAssignments/current");
     }
 }]);
 
 controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', function (scope, Coupling) {
-    var putPairAssignmentDocumentOnScope = makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling);
-    Coupling.getHistory(function (history) {
-        Coupling.currentPairAssignments = history[0];
-        putPairAssignmentDocumentOnScope();
-    });
+    scope.data.currentPairAssignments = Coupling.data.history[0];
 }]);
 
 controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', function (scope, Coupling, location) {

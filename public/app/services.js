@@ -10,34 +10,39 @@ services.service("Coupling", function ($http) {
         }).error(console.log);
     };
 
-    this.spin = function (players, callback) {
-        var getPromise = $http.post('/api/game', players);
-        getPromise.success(function (pairAssignmentDocument) {
-            Coupling.currentPairAssignments = pairAssignmentDocument;
-            callback();
+    var requestHistory = function () {
+        $http.get('/api/history').success(function (history) {
+            Coupling.data.history = history;
+            Coupling.data.currentPairAssignments = history[0];
         }).error(console.log);
     };
 
-    this.saveCurrentPairAssignments = function (callback) {
-        var postPromise = $http.post('/api/savePairs', Coupling.currentPairAssignments);
-        postPromise.success(function (updatedPairAssignmentDocument) {
-            Coupling.currentPairAssignments = updatedPairAssignmentDocument;
-            callback();
-        }).error(console.log);
+    var post = function (url, player, callback) {
+        var postPromise = $http.post(url, player);
+        if (callback) {
+            postPromise.success(callback);
+        }
+        postPromise.error(console.log);
+    };
+
+    this.spin = function (players) {
+        post('/api/game', players, function (pairAssignmentDocument) {
+            Coupling.data.currentPairAssignments = pairAssignmentDocument;
+        });
+    };
+
+    this.saveCurrentPairAssignments = function () {
+        post('/api/savePairs', Coupling.data.currentPairAssignments, function (updatedPairAssignmentDocument) {
+            Coupling.data.currentPairAssignments = updatedPairAssignmentDocument;
+        });
     };
 
     this.savePlayer = function (player, callback) {
-        callback = callback ? callback : function () {
-        };
-        var postPromise = $http.post('/api/savePlayer', player);
-        postPromise.success(callback).error(console.log);
+        post('/api/savePlayer', player, callback);
         requestPlayers();
     };
 
-    Coupling.data = {players: []};
+    Coupling.data = {players: [], history: []};
     requestPlayers();
-
-    this.getHistory = function (callback) {
-        $http.get('/api/history').success(callback).error(console.log);
-    };
+    requestHistory();
 });
