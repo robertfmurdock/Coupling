@@ -12,5 +12,5 @@ block content
         h2 Players:
         span(ng-repeat="player in players" class="player" ng-class="{disabled:!selectionMap[player._id]}" ng-click="selectionMap[player._id] = !selectionMap[player._id]")
             img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
-            h4 {{player.name}}
+            h4(ng-click="viewPlayer(player._id, $event)") {{player.name}}
             div

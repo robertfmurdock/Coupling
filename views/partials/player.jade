@@ -1,11 +1,12 @@
 h2 Player
 span(class="player")
-    h4 NEW!
+    h4(ng-hide="player._id") NEW!
     img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
-    div
-        label(for="player-name") Name:
-        input(id="player-name" type="text" ng-model="player.name")
-    div
-        label(for="player-email") Email:
-        input(id="player-email" type="text" ng-model="player.email")
-    a(class="large blue button" ng-click="savePlayer()") Save
+    form
+        div
+            label(for="player-name") Name:
+            input(id="player-name" type="text" ng-model="player.name")
+        div
+            label(for="player-email") Email:
+            input(id="player-email" type="text" ng-model="player.email")
+        input(type="button" class="large blue button" ng-click="savePlayer()" tabIndex="0" value="Save")

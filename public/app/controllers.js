@@ -13,6 +13,10 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.spin = function () {
         location.path("/pairAssignments/new");
     };
+    scope.viewPlayer = function (id, $event) {
+        if ($event.stopPropagation) $event.stopPropagation();
+        location.path("/player/" + id);
+    }
 }]);
 
 var formatDate = function (date) {
@@ -50,8 +54,19 @@ controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling'
     });
 }]);
 
-controllers.controller('NewPlayerController', ['$scope', 'Coupling', function (scope, Coupling) {
+controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', function (scope, Coupling, location) {
     scope.player = {};
+    scope.savePlayer = function () {
+        Coupling.savePlayer(scope.player, function (updatedPlayer) {
+            location.path("/player/" + updatedPlayer._id);
+        });
+    }
+}]);
+
+controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', function (scope, Coupling, params) {
+    Coupling.getPlayers(function (players) {
+        scope.player = _.findWhere(players, {_id: params.id});
+    });
     scope.savePlayer = function () {
         Coupling.savePlayer(scope.player);
     }

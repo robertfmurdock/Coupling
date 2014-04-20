@@ -20,12 +20,9 @@ services.service("Coupling", function ($http) {
         }).error(console.log);
     };
 
-    this.savePlayer = function (player) {
+    this.savePlayer = function (player, callback) {
         var postPromise = $http.post('/api/savePlayer', player);
-        postPromise.success(function (updatedPlayer) {
-            console.log('saved! Wooo!');
-            console.info(updatedPlayer);
-        }).error(console.log);
+        postPromise.success(callback).error(console.log);
     };
 
     this.getPlayers = function (callback) {

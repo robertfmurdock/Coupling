@@ -8,18 +8,19 @@ var database = monk(mongoUrl);
 
 describe('Coupling Database Adapter', function () {
 
+    var frodo = {name: 'Frodo'};
     var expectedPlayers = [
         {name: 'Gandalf'},
         {name: 'Sam'},
         {name: 'Merry'},
         {name: 'Pippin'},
-        {name: 'Frodo'}
+        frodo
     ];
 
     var pairSetOne = {pairs: [
         [
             {name: 'Gandalf'},
-            {name: 'Frodo'}
+            frodo
         ],
         [
             {name: 'Merry'},
@@ -29,7 +30,7 @@ describe('Coupling Database Adapter', function () {
 
     var pairSetTwo = {pairs: [
         [
-            {name: 'Frodo'},
+            frodo,
             {name: 'Gandalf'}
         ],
         [
@@ -41,7 +42,7 @@ describe('Coupling Database Adapter', function () {
     var pairSetThree = {pairs: [
         [
             {name: 'Merry'},
-            {name: 'Frodo'}
+            frodo
         ],
         [
             {name: 'Gandalf'},
@@ -98,6 +99,22 @@ describe('Coupling Database Adapter', function () {
             couplingDatabaseAdapter.requestPlayers(function (players) {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(player, listedPlayer);
+                });
+                found.should.be.true;
+                testIsDone();
+            });
+        }, function (error) {
+            should.not.exist(error);
+            testIsDone();
+        });
+    });
+
+    it('can update an existing player', function (testIsDone) {
+        frodo.name = "F. Swaggins";
+        couplingDatabaseAdapter.savePlayer(frodo, function () {
+            couplingDatabaseAdapter.requestPlayers(function (players) {
+                var found = players.some(function (listedPlayer) {
+                    return Comparators.areEqualPlayers(frodo, listedPlayer);
                 });
                 found.should.be.true;
                 testIsDone();
