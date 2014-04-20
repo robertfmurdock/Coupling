@@ -6,6 +6,10 @@
     transition: all 0.25s ease-out;
 }
 
+.player-roster .ng-leave {
+    transition: none;
+}
+
 .view-container {
     position: relative;
 }
