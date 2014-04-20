@@ -2,13 +2,8 @@
 var controllers = angular.module('coupling.controllers', ['coupling.services']);
 
 controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
-    Coupling.getPlayers(function (players) {
-        scope.players = players;
-        scope.selectionMap = [];
-        _.each(players, function (player) {
-            scope.selectionMap[player._id] = true;
-        });
-    });
+    scope.data = Coupling.data;
+    scope.deselectionMap = [];
 
     scope.spin = function () {
         location.path("/pairAssignments/new");
@@ -16,6 +11,10 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.viewPlayer = function (id, $event) {
         if ($event.stopPropagation) $event.stopPropagation();
         location.path("/player/" + id);
+    };
+
+    scope.flipSelection = function () {
+        scope.deselectionMap[player._id] = !scope.deselectionMap[player._id];
     }
 }]);
 
@@ -35,8 +34,8 @@ function makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling) {
 controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
     var putPairAssignmentDocumentOnScope = makeUpdateScopeWithPairAssignmentsFunction(scope, Coupling);
 
-    var selectedPlayers = _.filter(scope.players, function (player) {
-        return scope.selectionMap[player._id];
+    var selectedPlayers = _.filter(Coupling.data.players, function (player) {
+        return !scope.deselectionMap[player._id];
     });
     Coupling.spin(selectedPlayers, putPairAssignmentDocumentOnScope);
 
@@ -64,9 +63,7 @@ controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location'
 }]);
 
 controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', function (scope, Coupling, params) {
-    Coupling.getPlayers(function (players) {
-        scope.player = _.findWhere(players, {_id: params.id});
-    });
+    scope.player = _.findWhere(Coupling.data.players, {_id: params.id});
     scope.savePlayer = function () {
         Coupling.savePlayer(scope.player);
     }

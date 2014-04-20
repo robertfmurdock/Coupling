@@ -10,7 +10,7 @@ block content
         div(ng-view id="main-view" class="view-frame")
     div(ng-cloak class="player-roster")
         h2 Players:
-        span(ng-repeat="player in players" class="player" ng-class="{disabled:!selectionMap[player._id]}" ng-click="selectionMap[player._id] = !selectionMap[player._id]")
+        span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="flipSelection(player)")
             img(gravatar-src="'{{player.email}}'" gravatar-size="100" class="player-icon")
             h4(ng-click="viewPlayer(player._id, $event)") {{player.name}}
             div
