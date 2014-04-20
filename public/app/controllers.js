@@ -49,3 +49,10 @@ controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling'
         putPairAssignmentDocumentOnScope();
     });
 }]);
+
+controllers.controller('NewPlayerController', ['$scope', 'Coupling', function (scope, Coupling) {
+    scope.player = {};
+    scope.savePlayer = function () {
+        Coupling.savePlayer(scope.player);
+    }
+}]);

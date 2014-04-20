@@ -7,6 +7,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 app.config(['$routeProvider', function (routeProvider) {
     routeProvider.when('/pairAssignments/current/', {templateUrl: '/partials/pairAssignments/', controller: "CurrentPairAssignmentsController"});
     routeProvider.when('/pairAssignments/new/', {templateUrl: '/partials/pairAssignments/', controller: "NewPairAssignmentsController"});
+    routeProvider.when('/player/new/', {templateUrl: '/partials/player/', controller: "NewPlayerController"});
 }]);
 
 angular.module('ui.gravatar').config([
