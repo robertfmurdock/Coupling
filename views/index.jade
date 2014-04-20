@@ -12,7 +12,7 @@ block content
     div(ng-cloak class="player-roster")
         h2 Players:
         span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="flipSelection(player)")
-            img(ng-src="{{player.email | gravatarUrl:{size:100} }}" class="player-icon")
+            img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
             h4(ng-click="viewPlayer(player._id, $event)") {{player.name}}
         div
             a(type="button" class="large orange button" href="/player/new/") Add a new player!

@@ -2,7 +2,7 @@ span(id="player-view" class="player")
     h2
         text(ng-hide="player._id") NEW -
         text {{player.name}}
-    img(ng-src="{{player.email | gravatarUrl:{size:125} }}" class="player-icon")
+    img(ng-src="{{player | gravatarUrl:{size:125} }}" class="player-icon" width="125" height="125")
     form
         div
             label(for="player-name") Name:

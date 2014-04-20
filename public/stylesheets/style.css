@@ -24,6 +24,7 @@ a {
     border-radius: 20px;
     padding: 10px;
     border-width: 11px;
+    margin: 0 110px;
 }
 
 #player-view.player h2 {
@@ -31,6 +32,10 @@ a {
     margin-before: 0px;
     margin-after: 6px;
     border-radius: 20px;
+}
+
+#player-view input[type="text"] {
+    width: 150px;
 }
 
 .view-container {
