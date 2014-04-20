@@ -7,7 +7,7 @@ a {
 }
 
 #top-section {
-    height: 275px;
+    height: 300px;
 }
 
 #CouplingTitleBlock {
@@ -26,7 +26,11 @@ a {
 }
 
 .player-roster {
-
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px;
+    border: 11px outset tan;
+    background-color: wheat;
 }
 
 .player {
@@ -83,6 +87,10 @@ a {
 
 #pair-assignments {
     display: inline-block;
+    border-radius: 20px;
+    padding: 10px;
+    border: 11px outset brown;
+    background-color: seagreen;
 }
 
 input.button {
@@ -105,6 +113,7 @@ input.button {
     text-fill-color: initial;
     text-stroke-width: initial;
     text-stroke-color: initial;
+    margin: 2px;
 }
 
 .small.button, .small.button:visited {
