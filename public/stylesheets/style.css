@@ -38,6 +38,17 @@ a {
     width: 150px;
 }
 
+#player-view form div label {
+    display: inline-block;
+    text-align: right;
+    width: 75px;
+}
+
+#player-view form div input {
+    text-fill-color: black;
+    text-stroke-width: 0;
+}
+
 .view-container {
     display: inline-block;
     width: 800px;
