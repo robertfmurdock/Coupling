@@ -27,6 +27,30 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
     scope.save = function () {
         Coupling.saveCurrentPairAssignments();
         location.path("/pairAssignments/current");
+    };
+
+    function findPairContainingPlayer(player) {
+        return _.find(scope.data.currentPairAssignments.pairs, function (pair) {
+            return _.findWhere(pair, {_id: player._id});
+        });
+    }
+
+    function swapPlayers(pair, swapOutPlayer, swapInPlayer) {
+        _.each(pair, function (player, index) {
+            if (swapOutPlayer._id === player._id) {
+                pair[index] = swapInPlayer;
+            }
+        });
+    }
+
+    scope.onDrop = function ($event, draggedPlayer, droppedPlayer) {
+        var pairWithDraggedPlayer = findPairContainingPlayer(draggedPlayer);
+        var pairWithDroppedPlayer = findPairContainingPlayer(droppedPlayer);
+
+        if (pairWithDraggedPlayer != pairWithDroppedPlayer) {
+            swapPlayers(pairWithDraggedPlayer, draggedPlayer, droppedPlayer);
+            swapPlayers(pairWithDroppedPlayer, droppedPlayer, draggedPlayer);
+        }
     }
 }]);
 
