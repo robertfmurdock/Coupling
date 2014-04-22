@@ -127,6 +127,13 @@ a {
     background-color: seagreen;
 }
 
+#pair-assignments .on-drag-enter {
+}
+
+#pair-assignments .on-drag-hover {
+    background-color: orange;
+}
+
 input.button {
     border: 0;
 }

@@ -34,6 +34,27 @@
     z-index: 99;
 }
 
+#pair-assignments .on-drag-hover {
+    animation: .25s wiggle;
+    animation-iteration-count: infinite;
+}
+
+#pair-assignments .ng-leave {
+    animation: none;
+}
+
+@keyframes wiggle {
+    0% {
+        transform: rotate(4deg);
+    }
+    50% {
+        transform: rotate(-4deg);
+    }
+    100% {
+        transform: rotate(4deg);
+    }
+}
+
 @keyframes fade-in {
     from {
         /*opacity: 0;*/
