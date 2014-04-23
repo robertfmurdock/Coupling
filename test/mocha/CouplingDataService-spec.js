@@ -63,7 +63,7 @@ describe('CouplingDataService', function () {
     var historyCollection = database.get('history');
     var playersCollection = database.get('players');
 
-    before(function (beforeIsDone) {
+    beforeEach(function (beforeIsDone) {
         playersCollection.drop();
         playersCollection.insert(expectedPlayers);
 
@@ -87,7 +87,7 @@ describe('CouplingDataService', function () {
     });
 
     it('can retrieve all the history in new to old order', function (testIsDone) {
-        couplingDatabaseAdapter.requestHistory(function (history) {
+        couplingDatabaseAdapter.requestHistory(null, function (history) {
             should(expectedHistory).eql(history);
             testIsDone();
         });
@@ -127,19 +127,35 @@ describe('CouplingDataService', function () {
 
     describe('will filter based on the tribe name', function () {
         var tribeId = 'Blackrock';
+        var ogrim = {tribe: tribeId, name: 'Orgrim' };
+        var garrosh = {tribe: tribeId, name: 'Garrosh' };
         var blackrockPlayers = [
-            {tribe: tribeId, name: 'Orgrim' },
-            {tribe: tribeId, name: 'Garrosh' }
+            ogrim,
+            garrosh
         ];
 
+        var blackrockPairAssignments = {
+            tribe: tribeId,
+            pairs: [
+                [garrosh, ogrim]
+            ]
+        };
+
         beforeEach(function (beforeIsDone) {
-            playersCollection.insert(blackrockPlayers, beforeIsDone);
-//            historyCollection.insert(unorderedHistory, beforeIsDone);
+            playersCollection.insert(blackrockPlayers);
+            historyCollection.insert(blackrockPairAssignments, beforeIsDone);
         });
 
         it('and get the correct players.', function (done) {
             couplingDatabaseAdapter.requestPlayers(tribeId, function (players) {
                 should(blackrockPlayers).eql(players);
+                done();
+            });
+        });
+
+        it('and get the correct history.', function (done) {
+            couplingDatabaseAdapter.requestHistory(tribeId, function (history) {
+                should([blackrockPairAssignments]).eql(history);
                 done();
             });
         });

@@ -22,7 +22,7 @@ describe('SavePairs Route', function () {
             end(function (error, response) {
                 response.status.should.equal(200);
                 var pairsAsSaved = response.body;
-                new DataService(config.mongoUrl).requestHistory(function (history) {
+                new DataService(config.mongoUrl).requestHistory(null, function (history) {
                     JSON.stringify(history[0]).should.equal(JSON.stringify(pairsAsSaved));
                     done();
                 }, function (error) {

@@ -57,7 +57,7 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        new CouplingDataService(mongoUrl).requestHistory(function (history) {
+        new CouplingDataService(mongoUrl).requestHistory(null, function (history) {
             var result = gameRunner.run([clark, bruce, diana], history);
             should(result.pairs.length).eql(2);
             testIsComplete();

@@ -4,7 +4,7 @@ var DataService = require('../lib/CouplingDataService');
 module.exports = function (mongoUrl) {
     var dataService = new DataService(mongoUrl);
     return function (request, response) {
-        dataService.requestHistory(function (history) {
+        dataService.requestHistory(null, function (history) {
             response.send(history);
         }, response.send);
     };
