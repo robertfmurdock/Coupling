@@ -40,7 +40,7 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        new CouplingDataService(mongoUrl).requestPlayersAndHistory(function (players, history) {
+        new CouplingDataService(mongoUrl).requestPlayersAndHistory(null, function (players, history) {
             var result = gameRunner.run(players, history);
             var foundPlayers = [];
             result.pairs.forEach(function (pair) {
@@ -84,7 +84,7 @@ describe('The game', function () {
         ];
 
         historyCollection.insert(history, function () {
-            new CouplingDataService(mongoUrl).requestPlayersAndHistory(function (players, history) {
+            new CouplingDataService(mongoUrl).requestPlayersAndHistory(null, function (players, history) {
                 var pairAssignments = gameRunner.run(players, history);
                 var foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
                     return Comparators.areEqualPairs([bruce, john], pair);

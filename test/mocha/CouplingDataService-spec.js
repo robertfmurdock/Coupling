@@ -6,7 +6,7 @@ var monk = require('monk');
 var Comparators = require('../../lib/Comparators');
 var database = monk(mongoUrl);
 
-describe('Coupling Database Adapter', function () {
+describe('CouplingDataService', function () {
 
     var frodo = {name: 'Frodo'};
     var expectedPlayers = [
@@ -61,9 +61,9 @@ describe('Coupling Database Adapter', function () {
     var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
 
     var historyCollection = database.get('history');
+    var playersCollection = database.get('players');
 
     before(function (beforeIsDone) {
-        var playersCollection = database.get('players');
         playersCollection.drop();
         playersCollection.insert(expectedPlayers);
 
@@ -72,7 +72,7 @@ describe('Coupling Database Adapter', function () {
     });
 
     it('can retrieve all the players in the database and all the history in new to old order', function (testIsDone) {
-        couplingDatabaseAdapter.requestPlayersAndHistory(function (players, history) {
+        couplingDatabaseAdapter.requestPlayersAndHistory(null, function (players, history) {
             should(expectedPlayers).eql(players);
             should(expectedHistory).eql(history);
             testIsDone();
@@ -80,7 +80,7 @@ describe('Coupling Database Adapter', function () {
     });
 
     it('can retrieve all the players', function (testIsDone) {
-        couplingDatabaseAdapter.requestPlayers(function (players) {
+        couplingDatabaseAdapter.requestPlayers(null, function (players) {
             should(expectedPlayers).eql(players);
             testIsDone();
         });
@@ -96,7 +96,7 @@ describe('Coupling Database Adapter', function () {
     it('can save a new player', function (testIsDone) {
         var player = {name: 'Tom', email: 'Bombadil@shire.gov'};
         couplingDatabaseAdapter.savePlayer(player, function () {
-            couplingDatabaseAdapter.requestPlayers(function (players) {
+            couplingDatabaseAdapter.requestPlayers(null, function (players) {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(player, listedPlayer);
                 });
@@ -112,7 +112,7 @@ describe('Coupling Database Adapter', function () {
     it('can update an existing player', function (testIsDone) {
         frodo.name = "F. Swaggins";
         couplingDatabaseAdapter.savePlayer(frodo, function () {
-            couplingDatabaseAdapter.requestPlayers(function (players) {
+            couplingDatabaseAdapter.requestPlayers(null, function (players) {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(frodo, listedPlayer);
                 });
@@ -125,5 +125,24 @@ describe('Coupling Database Adapter', function () {
         });
     });
 
+    describe('will filter based on the tribe name', function () {
+        var tribeId = 'Blackrock';
+        var blackrockPlayers = [
+            {tribe: tribeId, name: 'Orgrim' },
+            {tribe: tribeId, name: 'Garrosh' }
+        ];
+
+        beforeEach(function (beforeIsDone) {
+            playersCollection.insert(blackrockPlayers, beforeIsDone);
+//            historyCollection.insert(unorderedHistory, beforeIsDone);
+        });
+
+        it('and get the correct players.', function (done) {
+            couplingDatabaseAdapter.requestPlayers(tribeId, function (players) {
+                should(blackrockPlayers).eql(players);
+                done();
+            });
+        });
+    });
 
 });

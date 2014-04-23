@@ -8,7 +8,7 @@ var Game = function (mongoUrl) {
     var gameRunner = new GameRunner(couplingGameFactory);
     var dataService = new DataService(mongoUrl);
     return function (request, response) {
-        dataService.requestPlayersAndHistory(function (players, history) {
+        dataService.requestPlayersAndHistory(null, function (players, history) {
             var availablePlayers = request.body;
             var result = gameRunner.run(availablePlayers, history);
             response.send(result);
