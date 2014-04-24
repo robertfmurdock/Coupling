@@ -8,6 +8,11 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.spin = function () {
         location.path("/pairAssignments/new");
     };
+
+    scope.showOrHidePlayers = function () {
+        scope.showPlayers = !scope.showPlayers;
+    };
+
     scope.viewPlayer = function (id, $event) {
         if ($event.stopPropagation) $event.stopPropagation();
         location.path("/player/" + id);
