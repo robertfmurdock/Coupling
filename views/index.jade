@@ -3,14 +3,14 @@ extends layout
 block content
     div(id="top-section")
         span(id="CouplingTitleBlock")
-            h1= title
+            div(class="title")= title
             p Welcome to #{title}.
 
             a(type="button" class="super pink button" ng-click="spin()") Spin!
         span(class="view-container")
             div(ng-view id="main-view" class="view-frame" autoscroll)
     div(ng-cloak class="player-roster")
-        h2 Players:
+        div(class="roster-header") Players:
         span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="flipSelection(player)")
             img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
             h4(ng-click="viewPlayer(player._id, $event)") {{player.name}}

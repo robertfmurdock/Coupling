@@ -6,6 +6,25 @@ a {
     color: #00B7FF;
 }
 
+.title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.view-header {
+    font-size: 1.5em;
+    margin-before: 0.2em;
+    margin-after: 0.58em;
+    font-weight: bold;
+}
+
+.roster-header {
+    font-size: 1.5em;
+    margin-before: 0.2em;
+    margin-after: 0.58em;
+    font-weight: bold;
+}
+
 #top-section {
     height: 300px;
 }

@@ -1,9 +1,9 @@
 div(ng-cloak id="pair-assignments")
-    h2
-        text Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} (created at {{data.currentPairAssignments.date | date: 'HH:mm:ss'}}):
+    div(class="view-header")
+        text Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} - {{data.currentPairAssignments.date | date: 'HH:mm:ss'}}
+        a(id="save-button" class="super green button" ng-click="save()" ng-hide="data.currentPairAssignments._id") Save!
     span(ng-repeat='pair in data.currentPairAssignments.pairs' class="pair")
         span(ng-repeat='player in pair' class="player" ui-draggable="true" drag="player" ui-on-Drop="onDrop($event,$data,player)")
             img(ng-src="{{player | gravatarUrl:{size:45} }}" width="45" height="45")
             h4 {{player.name}}
     div
-        a(id="save-button" class="super green button" ng-click="save()" ng-hide="data.currentPairAssignments._id") Save!
