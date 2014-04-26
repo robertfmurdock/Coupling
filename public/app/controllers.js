@@ -15,7 +15,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 
     scope.viewPlayer = function (id, $event) {
         if ($event.stopPropagation) $event.stopPropagation();
-        location.path(tribe._id + "/player/" + id);
+        location.path("/" + tribe._id + "/player/" + id);
     };
 
     scope.flipSelection = function (player) {
@@ -26,7 +26,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 controllers.controller('TribesController', function ($scope, Coupling, $location) {
     $scope.tribes = Coupling.data.tribes;
     $scope.selectTribe = function (tribe) {
-        $location.path(tribe._id + "/pairAssignments/current");
+        $location.path("/" + tribe._id + "/pairAssignments/current");
     }
 });
 
@@ -40,7 +40,7 @@ controllers.controller('NewPairAssignmentsController', function ($scope, $locati
 
     $scope.save = function () {
         Coupling.saveCurrentPairAssignments();
-        $location.path($routeParams.tribeId + "/pairAssignments/current");
+        $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
     };
 
     function findPairContainingPlayer(player) {
@@ -73,14 +73,14 @@ controllers.controller('CurrentPairAssignmentsController', function ($scope, Cou
     $scope.data.currentPairAssignments = Coupling.data.history[0];
 });
 
-controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', function (scope, Coupling, location) {
-    scope.player = {};
-    scope.savePlayer = function () {
-        Coupling.savePlayer(scope.player, function (updatedPlayer) {
-            location.path($routeParams.tribeId + "/player/" + updatedPlayer._id);
+controllers.controller('NewPlayerController', function ($scope, Coupling, $location, $routeParams) {
+    $scope.player = {tribe: $routeParams.tribeId};
+    $scope.savePlayer = function () {
+        Coupling.savePlayer($scope.player, function (updatedPlayer) {
+            $location.path("/" + $routeParams.tribeId + "/player/" + updatedPlayer._id);
         });
     }
-}]);
+});
 
 controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', function (scope, Coupling, params) {
     Coupling.findPlayerById(params.id, function (player) {
