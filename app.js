@@ -39,7 +39,7 @@ app.get('/api/:tribeId/history', history(config.mongoUrl));
 app.get('/api/:tribeId/players', players(config.mongoUrl));
 app.post('/api/savePairs', savePairs(config.mongoUrl));
 app.post('/api/savePlayer', savePlayer(config.mongoUrl));
-app.post('/api/game', game(config.mongoUrl));
+app.post('/api/:tribeId/game', game(config.mongoUrl));
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);
 

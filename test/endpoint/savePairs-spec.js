@@ -9,15 +9,24 @@ var host = 'http://localhost:3000';
 var path = '/api/savePairs';
 describe(path, function () {
 
+    var validPairs = new PairAssignmentDocument(new Date(), [
+        [
+            {name: "Shaggy"},
+            {name: "Scooby"}
+        ]
+    ]);
+    validPairs._id = "mysterymachine";
+
+    afterEach(function () {
+        var monk = require('monk');
+        var database = monk(config.mongoUrl);
+        var historyCollection = database.get('history');
+        historyCollection.remove({_id: validPairs._id}, false);
+    });
+
     it('should add when given a valid pair assignment document.', function (done) {
-        var pairs = new PairAssignmentDocument(new Date(), [
-            [
-                {name: "Shaggy"},
-                {name: "Scooby"}
-            ]
-        ]);
         supertest(host).post(path).
-            send(pairs)
+            send(validPairs)
             .expect('Content-Type', /json/).
             end(function (error, response) {
                 response.status.should.equal(200);

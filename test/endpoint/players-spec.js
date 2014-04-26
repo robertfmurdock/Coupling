@@ -4,13 +4,12 @@ var should = require('should');
 var CouplingDataService = require('../../lib/CouplingDataService');
 var config = require('./../../config');
 
-var tribeId = 'cxp';
+var tribeId = 'test';
 var path = '/api/' + tribeId + '/players';
 describe(path, function () {
 
     it('will return all available players on team.', function (done) {
         var service = new CouplingDataService(config.mongoUrl);
-
 
         service.requestPlayers(tribeId, function (players) {
             supertest('http://localhost:3000').get(path).expect('Content-Type', /json/).end(function (error, response) {
@@ -23,7 +22,5 @@ describe(path, function () {
             should.not.exist(error);
             done();
         });
-
     });
-
 });

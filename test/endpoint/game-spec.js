@@ -2,7 +2,7 @@
 var supertest = require('supertest');
 var should = require('should');
 
-var path = '/api/game';
+var path = '/api/test/game';
 describe(path, function () {
 
     it('will take the players given and use those for pairing.', function (done) {

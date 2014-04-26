@@ -47,7 +47,7 @@ services.service("Coupling", function ($http) {
     };
 
     this.spin = function (players) {
-        post('/api/game', players, function (pairAssignmentDocument) {
+        post('/api/' + Coupling.data.selectedTribeId + '/game', players, function (pairAssignmentDocument) {
             Coupling.data.currentPairAssignments = pairAssignmentDocument;
         });
     };
@@ -72,15 +72,14 @@ services.service("Coupling", function ($http) {
         requestHistory(tribeId, callbackWhenComplete);
     };
 
-    Coupling.data = {players: null, history: [], tribes: []};
-    requestPlayers();
-    requestHistory();
-    requestTribes();
-
     this.findPlayerById = function (id, callback) {
         requestPlayers(Coupling.data.selectedTribeId, function (players) {
             callback(_.findWhere(players, {_id: id}));
         });
     };
 
+    Coupling.data = {players: null, history: [], tribes: []};
+    requestPlayers();
+    requestHistory();
+    requestTribes();
 });
