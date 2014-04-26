@@ -19,6 +19,7 @@ a {
 }
 
 .roster-header {
+    display: inline-block;
     font-size: 1.5em;
     margin-before: 0.2em;
     margin-after: 0.58em;
@@ -130,7 +131,7 @@ a {
     margin: 0 2px 0 2px;
 }
 
-#main-view {
+.view-frame {
     overflow: auto;
 }
 
@@ -138,7 +139,7 @@ a {
     float: right;
 }
 
-#pair-assignments {
+.pair-assignments {
     display: inline-block;
     border-radius: 20px;
     padding: 10px;
@@ -146,10 +147,10 @@ a {
     background-color: seagreen;
 }
 
-#pair-assignments .on-drag-enter {
+.pair-assignments .on-drag-enter {
 }
 
-#pair-assignments .on-drag-hover {
+.pair-assignments .on-drag-hover {
     background-color: orange;
 }
 

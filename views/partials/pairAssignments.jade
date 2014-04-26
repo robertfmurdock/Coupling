@@ -1,4 +1,4 @@
-div(ng-cloak id="pair-assignments" ng-show="data.currentPairAssignments")
+div(ng-cloak class="pair-assignments" ng-show="data.currentPairAssignments")
     div(class="view-header")
         text Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} - {{data.currentPairAssignments.date | date: 'HH:mm:ss'}}
         a(id="save-button" class="super green button" ng-click="save()" ng-hide="data.currentPairAssignments._id") Save!

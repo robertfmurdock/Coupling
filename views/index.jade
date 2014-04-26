@@ -11,8 +11,8 @@ block content
                 a(href="/tribes")
                     p Browse the tribes available!
                 a(type="button" class="super pink button" ng-click="spin()") Spin!
-        span(class="view-container")
-            div(ng-view id="main-view" class="view-frame" autoscroll)
+        div(class="view-container")
+            div(ng-view class="view-frame")
     div(ng-cloak class="player-roster" ng-show="data.players")
         div(class="roster-header" ng-click="showOrHidePlayers()") Players:
         div(class="player-listing" ng-hide="showPlayers")

@@ -2,12 +2,17 @@
     transition: all 0.25s ease-out;
 }
 
-.player-roster .disabled {
+.player-roster .player.disabled {
     transition: all 0.25s ease-out;
 }
 
-.player-roster .ng-leave {
+.player-roster .player.ng-enter {
+    transition: all 0.25s ease-out;
+}
+
+.player-roster .player.ng-leave {
     transition: none;
+    animation: none;
 }
 
 .view-container {
@@ -23,28 +28,26 @@
 }
 
 .view-frame.ng-enter {
-    transition: 1s fade-in;
-    animation: 1s fade-in;
+    transition: 1s spin-in;
+    animation: 1s spin-in;
     z-index: 100;
 }
 
 .view-frame.ng-leave {
-    transition: all 1s ease;
-    animation: 1s fade-out;
+}
+
+.view-frame.ng-leave.ng-leave-active {
+    transition: all ease-in 1s;
     z-index: 99;
 }
 
-#pair-assignments .on-drag-hover {
+.pair-assignments .on-drag-hover {
     animation: .25s wiggle;
     animation-iteration-count: infinite;
 }
 
-#pair-assignments .ng-leave {
-    animation: none;
-}
-
-#pair-assignments.ng-hide-add,
-#pair-assignments.ng-hide-remove {
+.pair-assignments.ng-hide-add,
+.pair-assignments.ng-hide-remove {
     display: inline-block !important;
     transition: all ease-in .2s;
 }
@@ -55,11 +58,7 @@
     transition: all ease-in .2s;
 }
 
-.ng-hide-add.ng-hide-add-active,
-.ng-hide-remove.ng-hide-remove-active {
-}
-
-.ng-hide {
+.player-roster.ng-hide {
     display: inline-block;
     opacity: 0;
 }
@@ -76,7 +75,7 @@
     }
 }
 
-@keyframes fade-in {
+@keyframes spin-in {
     from {
         /*opacity: 0;*/
         transform: scale(0);
@@ -89,15 +88,15 @@
     }
 }
 
-@keyframes fade-out {
+@keyframes spin-out {
     from {
         /*opacity: 1;*/
         transform: scale(1);
-        transform-origin: 0 0;
+        transform-origin: 50% 50%;
     }
     to {
         /*opacity: 0;*/
         transform: scale(0);
-        transform-origin: 50% 50%;
+        transform-origin: 0% 0%;
     }
 }

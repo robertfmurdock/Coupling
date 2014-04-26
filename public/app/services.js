@@ -64,12 +64,14 @@ services.service("Coupling", function ($http) {
     };
 
     this.selectTribe = function (tribeId, callbackWhenComplete) {
-        Coupling.data.selectedTribeId = tribeId;
-        Coupling.data.players = null;
-        Coupling.data.currentPairAssignments = null;
-        Coupling.data.history = [];
-        requestPlayers(tribeId, callbackWhenComplete);
-        requestHistory(tribeId, callbackWhenComplete);
+        if (Coupling.data.selectedTribeId != tribeId) {
+            Coupling.data.selectedTribeId = tribeId;
+            Coupling.data.players = null;
+            Coupling.data.currentPairAssignments = null;
+            Coupling.data.history = [];
+            requestPlayers(tribeId, callbackWhenComplete);
+            requestHistory(tribeId, callbackWhenComplete);
+        }
     };
 
     this.findPlayerById = function (id, callback) {
