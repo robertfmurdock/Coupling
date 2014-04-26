@@ -23,6 +23,13 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     }
 }]);
 
+controllers.controller('TribesController', function ($scope, Coupling) {
+    $scope.tribes = Coupling.data.tribes;
+    $scope.selectTribe = function (tribe) {
+        $scope.selectedTribe = tribe;
+    }
+});
+
 controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
     var selectedPlayers = _.filter(Coupling.data.players, function (player) {
         return !scope.deselectionMap[player._id];

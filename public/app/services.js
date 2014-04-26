@@ -6,9 +6,20 @@ services.service("Coupling", function ($http) {
     var makeErrorHandler = function (url) {
         return function (data, status, headers, config) {
             alert("There was a problem loading " + url + data + " " + status + " " + headers + " " + config);
-            console.log(error);
+            console.log(data);
         }
     };
+
+    var requestTribes = function (callback) {
+        var url = '/api/tribes';
+        $http.get(url).success(function (tribes) {
+            Coupling.data.tribes = tribes;
+            if (callback) {
+                callback(tribes);
+            }
+        }).error(makeErrorHandler(url));
+    };
+
     var requestPlayers = function (callback) {
         var url = '/api/players';
         $http.get(url).success(function (players) {
@@ -52,9 +63,10 @@ services.service("Coupling", function ($http) {
         requestPlayers();
     };
 
-    Coupling.data = {players: [], history: []};
+    Coupling.data = {players: [], history: [], tribes: []};
     requestPlayers();
     requestHistory();
+    requestTribes();
 
     this.findPlayerById = function (id, callback) {
         requestPlayers(function (players) {
