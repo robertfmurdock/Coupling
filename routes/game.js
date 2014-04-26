@@ -8,9 +8,11 @@ var Game = function (mongoUrl) {
     var gameRunner = new GameRunner(couplingGameFactory);
     var dataService = new DataService(mongoUrl);
     return function (request, response) {
-        dataService.requestPlayersAndHistory(request.params.tribeId, function (players, history) {
+        var tribeId = request.params.tribeId;
+        dataService.requestPlayersAndHistory(tribeId, function (players, history) {
             var availablePlayers = request.body;
             var result = gameRunner.run(availablePlayers, history);
+            result.tribe = tribeId;
             response.send(result);
         }, response.send);
     };
