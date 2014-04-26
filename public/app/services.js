@@ -78,7 +78,7 @@ services.service("Coupling", function ($http) {
     requestTribes();
 
     this.findPlayerById = function (id, callback) {
-        requestPlayers(tribeId, function (players) {
+        requestPlayers(Coupling.data.selectedTribeId, function (players) {
             callback(_.findWhere(players, {_id: id}));
         });
     };

@@ -4,6 +4,9 @@ var controllers = angular.module('coupling.controllers', ['coupling.services']);
 controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
     scope.data = Coupling.data;
     scope.deselectionMap = [];
+    if (location.path() === "/") {
+        location.path("/tribes");
+    }
 
     scope.spin = function () {
         location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
@@ -15,7 +18,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 
     scope.viewPlayer = function (id, $event) {
         if ($event.stopPropagation) $event.stopPropagation();
-        location.path("/" + tribe._id + "/player/" + id);
+        location.path("/" + Coupling.data.selectedTribeId + "/player/" + id);
     };
 
     scope.flipSelection = function (player) {
@@ -25,6 +28,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 
 controllers.controller('TribesController', function ($scope, Coupling, $location) {
     $scope.tribes = Coupling.data.tribes;
+    Coupling.selectTribe(null);
     $scope.selectTribe = function (tribe) {
         $location.path("/" + tribe._id + "/pairAssignments/current");
     }

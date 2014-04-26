@@ -5,9 +5,12 @@ block content
         span(id="CouplingTitleBlock")
             div(class="title")= title
             p Welcome to #{title}.
-            a(href="/{{data.selectedTribeId}}/pairAssignments/current")
-                p Check out the current pairs!
-            a(type="button" class="super pink button" ng-click="spin()") Spin!
+            span(ng-show="data.selectedTribeId")
+                a(href="/{{data.selectedTribeId}}/pairAssignments/current")
+                    p Check out the current pairs!
+                a(href="/tribes")
+                    p Browse the tribes available!
+                a(type="button" class="super pink button" ng-click="spin()") Spin!
         span(class="view-container")
             div(ng-view id="main-view" class="view-frame" autoscroll)
     div(ng-cloak class="player-roster" ng-show="data.players")
