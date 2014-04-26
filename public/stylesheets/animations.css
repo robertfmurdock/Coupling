@@ -43,6 +43,27 @@
     animation: none;
 }
 
+#pair-assignments.ng-hide-add,
+#pair-assignments.ng-hide-remove {
+    display: inline-block !important;
+    transition: all ease-in .2s;
+}
+
+.player-roster.ng-hide-add,
+.player-roster.ng-hide-remove {
+    display: inline-block !important;
+    transition: all ease-in .2s;
+}
+
+.ng-hide-add.ng-hide-add-active,
+.ng-hide-remove.ng-hide-remove-active {
+}
+
+.ng-hide {
+    display: inline-block;
+    opacity: 0;
+}
+
 @keyframes wiggle {
     0% {
         transform: rotate(4deg);

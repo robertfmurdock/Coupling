@@ -65,13 +65,14 @@ services.service("Coupling", function ($http) {
 
     this.selectTribe = function (tribeId, callbackWhenComplete) {
         Coupling.data.selectedTribeId = tribeId;
-        Coupling.data.players = [];
+        Coupling.data.players = null;
+        Coupling.data.currentPairAssignments = null;
         Coupling.data.history = [];
         requestPlayers(tribeId, callbackWhenComplete);
         requestHistory(tribeId, callbackWhenComplete);
     };
 
-    Coupling.data = {players: [], history: [], tribes: []};
+    Coupling.data = {players: null, history: [], tribes: []};
     requestPlayers();
     requestHistory();
     requestTribes();

@@ -10,7 +10,7 @@ block content
             a(type="button" class="super pink button" ng-click="spin()") Spin!
         span(class="view-container")
             div(ng-view id="main-view" class="view-frame" autoscroll)
-    div(ng-cloak class="player-roster")
+    div(ng-cloak class="player-roster" ng-show="data.players")
         div(class="roster-header" ng-click="showOrHidePlayers()") Players:
         div(class="player-listing" ng-hide="showPlayers")
             span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="flipSelection(player)")
