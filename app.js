@@ -34,9 +34,9 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/api/history', history(config.mongoUrl));
-app.get('/api/players', players(config.mongoUrl));
 app.get('/api/tribes', tribes(config.mongoUrl));
+app.get('/api/:tribeId/history', history(config.mongoUrl));
+app.get('/api/:tribeId/players', players(config.mongoUrl));
 app.post('/api/savePairs', savePairs(config.mongoUrl));
 app.post('/api/savePlayer', savePlayer(config.mongoUrl));
 app.post('/api/game', game(config.mongoUrl));

@@ -1,4 +1,4 @@
 div(id="tribe-listing")
-    span(ng-repeat='tribe in tribes' class="tribe")
+    span(ng-repeat='tribe in tribes' class="tribe" ng-click="selectTribe(tribe)")
         h4 {{tribe.name}}
         img(ng-src="{{tribe.image}}" width="150" height="150")

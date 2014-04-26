@@ -5,7 +5,7 @@ block content
         span(id="CouplingTitleBlock")
             div(class="title")= title
             p Welcome to #{title}.
-            a(href="/pairAssignments/current")
+            a(href="/{{data.selectedTribeId}}/pairAssignments/current")
                 p Check out the current pairs!
             a(type="button" class="super pink button" ng-click="spin()") Spin!
         span(class="view-container")

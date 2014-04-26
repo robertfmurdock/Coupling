@@ -2,9 +2,9 @@
 var DataService = require('../lib/CouplingDataService');
 
 module.exports = function (mongoUrl) {
+    var dataService = new DataService(mongoUrl);
     return function (request, response) {
-        var dataService = new DataService(mongoUrl);
-        dataService.requestPlayers(null, function (players) {
+        dataService.requestPlayers(request.params.tribeId, function (players) {
             response.send(players);
         }, function (error) {
             response.send(error);

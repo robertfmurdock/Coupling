@@ -6,7 +6,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.deselectionMap = [];
 
     scope.spin = function () {
-        location.path("/pairAssignments/new");
+        location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
     };
 
     scope.showOrHidePlayers = function () {
@@ -15,7 +15,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 
     scope.viewPlayer = function (id, $event) {
         if ($event.stopPropagation) $event.stopPropagation();
-        location.path("/player/" + id);
+        location.path(tribe._id + "/player/" + id);
     };
 
     scope.flipSelection = function (player) {
@@ -23,26 +23,28 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     }
 }]);
 
-controllers.controller('TribesController', function ($scope, Coupling) {
+controllers.controller('TribesController', function ($scope, Coupling, $location) {
     $scope.tribes = Coupling.data.tribes;
     $scope.selectTribe = function (tribe) {
-        $scope.selectedTribe = tribe;
+        $location.path(tribe._id + "/pairAssignments/current");
     }
 });
 
-controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
-    var selectedPlayers = _.filter(Coupling.data.players, function (player) {
-        return !scope.deselectionMap[player._id];
+controllers.controller('NewPairAssignmentsController', function ($scope, $location, Coupling, $routeParams) {
+    Coupling.selectTribe($routeParams.tribeId, function (players) {
+        var selectedPlayers = _.filter(players, function (player) {
+            return !$scope.deselectionMap[player._id];
+        });
+        Coupling.spin(selectedPlayers);
     });
-    Coupling.spin(selectedPlayers);
 
-    scope.save = function () {
+    $scope.save = function () {
         Coupling.saveCurrentPairAssignments();
-        location.path("/pairAssignments/current");
+        $location.path($routeParams.tribeId + "/pairAssignments/current");
     };
 
     function findPairContainingPlayer(player) {
-        return _.find(scope.data.currentPairAssignments.pairs, function (pair) {
+        return _.find($scope.data.currentPairAssignments.pairs, function (pair) {
             return _.findWhere(pair, {_id: player._id});
         });
     }
@@ -55,7 +57,7 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
         });
     }
 
-    scope.onDrop = function ($event, draggedPlayer, droppedPlayer) {
+    $scope.onDrop = function ($event, draggedPlayer, droppedPlayer) {
         var pairWithDraggedPlayer = findPairContainingPlayer(draggedPlayer);
         var pairWithDroppedPlayer = findPairContainingPlayer(droppedPlayer);
 
@@ -64,17 +66,18 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
             swapPlayers(pairWithDroppedPlayer, droppedPlayer, draggedPlayer);
         }
     }
-}]);
+});
 
-controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', function (scope, Coupling) {
-    scope.data.currentPairAssignments = Coupling.data.history[0];
-}]);
+controllers.controller('CurrentPairAssignmentsController', function ($scope, Coupling, $routeParams) {
+    Coupling.selectTribe($routeParams.tribeId);
+    $scope.data.currentPairAssignments = Coupling.data.history[0];
+});
 
 controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', function (scope, Coupling, location) {
     scope.player = {};
     scope.savePlayer = function () {
         Coupling.savePlayer(scope.player, function (updatedPlayer) {
-            location.path("/player/" + updatedPlayer._id);
+            location.path($routeParams.tribeId + "/player/" + updatedPlayer._id);
         });
     }
 }]);

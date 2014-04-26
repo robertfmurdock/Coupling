@@ -20,8 +20,8 @@ services.service("Coupling", function ($http) {
         }).error(makeErrorHandler(url));
     };
 
-    var requestPlayers = function (callback) {
-        var url = '/api/players';
+    var requestPlayers = function (tribeId, callback) {
+        var url = '/api/' + tribeId + '/players';
         $http.get(url).success(function (players) {
             Coupling.data.players = players;
             if (callback) {
@@ -30,8 +30,8 @@ services.service("Coupling", function ($http) {
         }).error(makeErrorHandler(url));
     };
 
-    var requestHistory = function () {
-        var url = '/api/history';
+    var requestHistory = function (tribeId) {
+        var url = '/api/' + tribeId + '/history';
         $http.get(url).success(function (history) {
             Coupling.data.history = history;
             Coupling.data.currentPairAssignments = history[0];
@@ -63,13 +63,21 @@ services.service("Coupling", function ($http) {
         requestPlayers();
     };
 
+    this.selectTribe = function (tribeId, callbackWhenComplete) {
+        Coupling.data.selectedTribeId = tribeId;
+        Coupling.data.players = [];
+        Coupling.data.history = [];
+        requestPlayers(tribeId, callbackWhenComplete);
+        requestHistory(tribeId, callbackWhenComplete);
+    };
+
     Coupling.data = {players: [], history: [], tribes: []};
     requestPlayers();
     requestHistory();
     requestTribes();
 
     this.findPlayerById = function (id, callback) {
-        requestPlayers(function (players) {
+        requestPlayers(tribeId, function (players) {
             callback(_.findWhere(players, {_id: id}));
         });
     };
