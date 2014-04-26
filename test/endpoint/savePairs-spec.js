@@ -7,7 +7,7 @@ var config = require('../../config');
 
 var host = 'http://localhost:3000';
 var path = '/api/savePairs';
-describe('SavePairs Route', function () {
+describe(path, function () {
 
     it('should add when given a valid pair assignment document.', function (done) {
         var pairs = new PairAssignmentDocument(new Date(), [

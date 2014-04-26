@@ -58,17 +58,27 @@ describe('CouplingDataService', function () {
         pairSetTwo, pairSetThree, pairSetOne
     ];
 
+    var expectedTribes = [
+        {name: "JLA"},
+        {name: "Avengers"},
+        {name: "Superfriends"}
+    ];
+
     var couplingDatabaseAdapter = new CouplingDataService(mongoUrl);
 
     var historyCollection = database.get('history');
     var playersCollection = database.get('players');
+    var tribesCollection = database.get('tribes');
 
     beforeEach(function (beforeIsDone) {
         playersCollection.drop();
         playersCollection.insert(expectedPlayers);
 
         historyCollection.drop();
-        historyCollection.insert(unorderedHistory, beforeIsDone);
+        historyCollection.insert(unorderedHistory);
+
+        tribesCollection.drop();
+        tribesCollection.insert(expectedTribes, beforeIsDone);
     });
 
     it('can retrieve all the players in the database and all the history in new to old order', function (testIsDone) {
@@ -90,6 +100,16 @@ describe('CouplingDataService', function () {
         couplingDatabaseAdapter.requestHistory(null, function (history) {
             should(expectedHistory).eql(history);
             testIsDone();
+        });
+    });
+
+    it('can retrieve all the tribes.', function (done) {
+        couplingDatabaseAdapter.requestTribes(function (tribes) {
+            should(expectedTribes).eql(tribes);
+            done();
+        }, function (error) {
+            should.not.exist(error);
+            done();
         });
     });
 
@@ -159,6 +179,15 @@ describe('CouplingDataService', function () {
                 done();
             });
         });
+
+        it('and get the correct player and history together.', function (done) {
+            couplingDatabaseAdapter.requestPlayersAndHistory(tribeId, function (players, history) {
+                should(blackrockPlayers).eql(players);
+                should([blackrockPairAssignments]).eql(history);
+                done();
+            });
+        });
+
     });
 
 });

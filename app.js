@@ -6,6 +6,7 @@ var express = require('express');
 var routes = require('./routes');
 var history = require('./routes/history');
 var players = require('./routes/players');
+var tribes = require('./routes/tribes');
 var game = require('./routes/game');
 var savePairs = require('./routes/savePairs');
 var savePlayer = require('./routes/savePlayer');
@@ -35,6 +36,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/api/history', history(config.mongoUrl));
 app.get('/api/players', players(config.mongoUrl));
+app.get('/api/tribes', tribes(config.mongoUrl));
 app.post('/api/savePairs', savePairs(config.mongoUrl));
 app.post('/api/savePlayer', savePlayer(config.mongoUrl));
 app.post('/api/game', game(config.mongoUrl));
