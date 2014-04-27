@@ -39,8 +39,6 @@
 }
 
 .view-frame.ng-leave.ng-leave-active {
-    z-index: 99;
-    background-color: pink;
 }
 
 .pair-assignments .on-drag-hover {
@@ -78,12 +76,10 @@
 
 @keyframes spin-in {
     from {
-        /*opacity: 0;*/
         transform: scale(0);
         transform-origin: 50% 50%;
     }
     to {
-        /*opacity: 1;*/
         transform: scale(1);
         transform-origin: 0 0;
     }
@@ -91,12 +87,10 @@
 
 @keyframes spin-out {
     from {
-        /*opacity: 1;*/
         transform: scale(1);
         transform-origin: 50% 50%;
     }
     to {
-        /*opacity: 0;*/
         transform: scale(0);
         transform-origin: 0% 0%;
     }
