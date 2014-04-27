@@ -35,8 +35,8 @@ controllers.controller('TribesController', function ($scope, Coupling, $location
 });
 
 controllers.controller('NewPairAssignmentsController', function ($scope, $location, Coupling, $routeParams) {
-    Coupling.selectTribe($routeParams.tribeId, function (players) {
-        var selectedPlayers = _.filter(players, function (player) {
+    Coupling.selectTribe($routeParams.tribeId, function () {
+        var selectedPlayers = _.filter(Coupling.data.players, function (player) {
             return !$scope.deselectionMap[player._id];
         });
         Coupling.spin(selectedPlayers);

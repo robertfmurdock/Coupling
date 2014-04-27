@@ -4,8 +4,8 @@
 
 var express = require('express');
 var routes = require('./routes');
-var history = require('./routes/history');
-var players = require('./routes/players');
+var HistoryRoutes = require('./routes/history');
+var PlayerRoutes = require('./routes/players');
 var tribes = require('./routes/tribes');
 var game = require('./routes/game');
 var http = require('http');
@@ -33,11 +33,18 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/api/tribes', tribes(config.mongoUrl));
-app.get('/api/:tribeId/history', history(config.mongoUrl).list);
-app.get('/api/:tribeId/players', players(config.mongoUrl).listTribeMembers);
-app.post('/api/savePairs', history(config.mongoUrl).savePairs);
-app.post('/api/savePlayer', players(config.mongoUrl).savePlayer);
 app.post('/api/:tribeId/game', game(config.mongoUrl));
+
+var history = new HistoryRoutes(config.mongoUrl);
+var historyRoute = '/api/:tribeId/history';
+app.get(historyRoute, history.list);
+app.post(historyRoute, history.savePairs);
+
+var players = new PlayerRoutes(config.mongoUrl);
+var playersRoute = '/api/:tribeId/players';
+app.get(playersRoute, players.listTribeMembers);
+app.post(playersRoute, players.savePlayer);
+
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);
 

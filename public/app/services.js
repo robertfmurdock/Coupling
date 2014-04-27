@@ -53,24 +53,27 @@ services.service("Coupling", function ($http) {
     };
 
     this.saveCurrentPairAssignments = function () {
-        post('/api/savePairs', Coupling.data.currentPairAssignments, function (updatedPairAssignmentDocument) {
+        post('/api/' + Coupling.data.selectedTribeId + '/history', Coupling.data.currentPairAssignments, function (updatedPairAssignmentDocument) {
             Coupling.data.currentPairAssignments = updatedPairAssignmentDocument;
         });
     };
 
     this.savePlayer = function (player, callback) {
-        post('/api/savePlayer', player, callback);
+        post('/api/' + Coupling.data.selectedTribeId + '/players', player, callback);
         requestPlayers();
     };
 
     this.selectTribe = function (tribeId, callbackWhenComplete) {
-        if (Coupling.data.selectedTribeId != tribeId) {
+        var shouldReload = Coupling.data.selectedTribeId != tribeId || Coupling.data.players == null;
+        if (shouldReload) {
             Coupling.data.selectedTribeId = tribeId;
             Coupling.data.players = null;
             Coupling.data.currentPairAssignments = null;
             Coupling.data.history = [];
             requestPlayers(tribeId, callbackWhenComplete);
             requestHistory(tribeId, callbackWhenComplete);
+        } else {
+            callbackWhenComplete();
         }
     };
 
