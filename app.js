@@ -8,8 +8,6 @@ var history = require('./routes/history');
 var players = require('./routes/players');
 var tribes = require('./routes/tribes');
 var game = require('./routes/game');
-var savePairs = require('./routes/savePairs');
-var savePlayer = require('./routes/savePlayer');
 var http = require('http');
 var path = require('path');
 var config = require('./config');
@@ -35,10 +33,10 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/api/tribes', tribes(config.mongoUrl));
-app.get('/api/:tribeId/history', history(config.mongoUrl));
-app.get('/api/:tribeId/players', players(config.mongoUrl));
-app.post('/api/savePairs', savePairs(config.mongoUrl));
-app.post('/api/savePlayer', savePlayer(config.mongoUrl));
+app.get('/api/:tribeId/history', history(config.mongoUrl).list);
+app.get('/api/:tribeId/players', players(config.mongoUrl).listTribeMembers);
+app.post('/api/savePairs', history(config.mongoUrl).savePairs);
+app.post('/api/savePlayer', players(config.mongoUrl).savePlayer);
 app.post('/api/:tribeId/game', game(config.mongoUrl));
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);

@@ -246,7 +246,5 @@ describe('CouplingDataService', function () {
                 done();
             });
         });
-
     });
-
 });
