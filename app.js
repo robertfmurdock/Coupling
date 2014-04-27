@@ -40,6 +40,8 @@ var historyRoute = '/api/:tribeId/history';
 app.get(historyRoute, history.list);
 app.post(historyRoute, history.savePairs);
 
+app.delete(historyRoute + '/:id', history.deleteMember);
+
 var players = new PlayerRoutes(config.mongoUrl);
 var playersRoute = '/api/:tribeId/players';
 app.get(playersRoute, players.listTribeMembers);

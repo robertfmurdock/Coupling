@@ -162,7 +162,10 @@ describe('DataService', function () {
 
     describe('can remove old pair assignments', function () {
         beforeEach(function (done) {
-            couplingDataService.removePairAssignments(pairSetOne._id, done);
+            couplingDataService.removePairAssignments(pairSetOne._id, function (error) {
+                should.not.exist(error);
+                done();
+            });
         });
 
         it('such that it no longer appears in history', function (done) {
@@ -185,6 +188,13 @@ describe('DataService', function () {
                     done();
                 });
             });
+        });
+    });
+
+    it('will report an error on the callback when it does not remove pair assignments', function (done) {
+        couplingDataService.removePairAssignments("fakeId", function (error) {
+            error.message.should.equal('Pair Assignments could not be deleted because they do not exist.');
+            done();
         });
     });
 

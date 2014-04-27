@@ -24,4 +24,15 @@ module.exports = function (mongoUrl) {
             response.send({error: 'Pairs were not valid.'});
         }
     };
+
+    this.deleteMember = function (request, response) {
+        dataService.removePairAssignments(request.params.id, function (error) {
+            if (error) {
+                response.statusCode = 404;
+                response.send(error);
+            } else {
+                response.send({message: 'SUCCESS'});
+            }
+        });
+    }
 };
