@@ -26,7 +26,6 @@
 }
 
 .view-frame.ng-enter, .view-frame.ng-leave {
-    background: white;
     position: absolute;
 }
 
