@@ -15,6 +15,12 @@
     animation: none;
 }
 
+.player-roster.ng-hide-add,
+.player-roster.ng-hide-remove {
+    display: inline-block !important;
+    transition: all ease-in .2s;
+}
+
 .view-container {
     position: relative;
 }
@@ -22,23 +28,20 @@
 .view-frame.ng-enter, .view-frame.ng-leave {
     background: white;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
 }
 
 .view-frame.ng-enter {
-    transition: 1s spin-in;
     animation: 1s spin-in;
     z-index: 100;
 }
 
 .view-frame.ng-leave {
+
 }
 
 .view-frame.ng-leave.ng-leave-active {
-    transition: all ease-in 1s;
     z-index: 99;
+    background-color: pink;
 }
 
 .pair-assignments .on-drag-hover {
@@ -52,15 +55,14 @@
     transition: all ease-in .2s;
 }
 
-.player-roster.ng-hide-add,
-.player-roster.ng-hide-remove {
-    display: inline-block !important;
-    transition: all ease-in .2s;
+.pair-assignments .ng-hide {
+    display: inline-block;
+    animation: none;
+    opacity: 0;
 }
 
-.player-roster.ng-hide {
-    display: inline-block;
-    opacity: 0;
+.pair-assignments .ng-leave {
+    animation: none;
 }
 
 @keyframes wiggle {
