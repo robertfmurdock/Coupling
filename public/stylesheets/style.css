@@ -54,6 +54,18 @@ a {
     border-radius: 20px;
 }
 
+#player-view .save-button {
+    float: left;
+    top: 15px;
+    left: -15px;
+}
+
+#player-view .delete-button {
+    float: right;
+    top: 20px;
+    left: 15px;
+}
+
 #player-view input[type="text"] {
     width: 150px;
 }

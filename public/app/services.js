@@ -46,6 +46,14 @@ services.service("Coupling", function ($http) {
         postPromise.error(makeErrorHandler(url));
     };
 
+    var httpDelete = function (url, callback) {
+        var postPromise = $http.delete(url);
+        if (callback) {
+            postPromise.success(callback);
+        }
+        postPromise.error(makeErrorHandler(url));
+    };
+
     this.spin = function (players) {
         post('/api/' + Coupling.data.selectedTribeId + '/game', players, function (pairAssignmentDocument) {
             Coupling.data.currentPairAssignments = pairAssignmentDocument;
@@ -60,7 +68,12 @@ services.service("Coupling", function ($http) {
 
     this.savePlayer = function (player, callback) {
         post('/api/' + Coupling.data.selectedTribeId + '/players', player, callback);
-        requestPlayers();
+        requestPlayers(Coupling.data.selectedTribeId);
+    };
+
+    this.removePlayer = function (player, callback) {
+        httpDelete('/api/' + Coupling.data.selectedTribeId + '/players/' + player._id, callback);
+        requestPlayers(Coupling.data.selectedTribeId);
     };
 
     this.selectTribe = function (tribeId, callbackWhenComplete) {
@@ -72,7 +85,7 @@ services.service("Coupling", function ($http) {
             Coupling.data.history = [];
             requestPlayers(tribeId, callbackWhenComplete);
             requestHistory(tribeId, callbackWhenComplete);
-        } else {
+        } else if (callbackWhenComplete) {
             callbackWhenComplete();
         }
     };
