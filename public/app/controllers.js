@@ -99,9 +99,11 @@ controllers.controller('EditPlayerController', function ($scope, Coupling, $rout
     };
 
     $scope.removePlayer = function () {
-        Coupling.removePlayer($scope.player, function () {
-            $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
-        });
+        if (confirm("Are you sure you want to delete this player?")) {
+            Coupling.removePlayer($scope.player, function () {
+                $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
+            });
+        }
     };
 
     $scope.$on('$locationChangeStart', function () {
