@@ -17,4 +17,14 @@ module.exports = function (mongoUrl) {
             response.send(player);
         });
     };
+    this.removePlayer = function (request, response) {
+        dataService.removePlayer(request.params.playerId, function (error) {
+            if (error) {
+                response.statusCode = 404;
+                response.send(error);
+            } else {
+                response.send({});
+            }
+        });
+    }
 };
