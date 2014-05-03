@@ -12,10 +12,10 @@ block content
                     p Browse the tribes available!
                 a(type="button" class="super pink button" ng-click="spin()") Spin!
         div(class="view-container")
-            div(ng-view class="view-frame")
+            div(ng-view class="view-frame" ng-class="{minimized : !hidePlayers}")
     div(ng-cloak class="player-roster" ng-show="data.players")
         div(class="roster-header" ng-click="showOrHidePlayers()") Players:
-        div(class="player-listing" ng-hide="showPlayers")
+        div(class="player-listing" ng-hide="hidePlayers")
             span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="flipSelection(player)")
                 img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
                 h4(ng-click="viewPlayer(player._id, $event)") {{player.name}}

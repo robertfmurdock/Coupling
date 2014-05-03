@@ -26,7 +26,7 @@ a {
     font-weight: bold;
 }
 
-#top-section {
+#top-section, .minimized {
     height: 300px;
 }
 
@@ -151,8 +151,11 @@ a {
     float: right;
 }
 
-.pair-assignments {
+.current.pair-assignments {
     display: inline-block;
+}
+
+.pair-assignments {
     border-radius: 20px;
     padding: 10px;
     border: 11px outset brown;

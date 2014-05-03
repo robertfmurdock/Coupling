@@ -1,0 +1,8 @@
+span(id="history-view")
+    div(class="view-header") History
+    div(ng-repeat='pairAssignments in data.history' class="pair-assignments")
+        div(class="view-header") {{pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.date | date: 'HH:mm:ss'}}
+        div
+            span(ng-repeat='pair in pairAssignments.pairs' class="pair")
+                span(ng-repeat='player in pair' class="player" ui-draggable="true" drag="player" ui-on-Drop="onDrop($event,$data,player)")
+                    h4 {{player.name}}

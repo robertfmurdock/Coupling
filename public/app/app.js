@@ -6,6 +6,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 }]);
 app.config(['$routeProvider', function (routeProvider) {
     routeProvider.when('/tribes/', {templateUrl: '/partials/tribes/', controller: "TribesController"});
+    routeProvider.when('/:tribeId/history', {templateUrl: '/partials/history/', controller: "HistoryController"});
     routeProvider.when('/:tribeId/pairAssignments/current/', {templateUrl: '/partials/pairAssignments/', controller: "CurrentPairAssignmentsController"});
     routeProvider.when('/:tribeId/pairAssignments/new/', {templateUrl: '/partials/pairAssignments/', controller: "NewPairAssignmentsController"});
     routeProvider.when('/:tribeId/player/new/', {templateUrl: '/partials/player/', controller: "NewPlayerController"});

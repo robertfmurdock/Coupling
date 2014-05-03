@@ -13,7 +13,13 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     };
 
     scope.showOrHidePlayers = function () {
-        scope.showPlayers = !scope.showPlayers;
+        scope.hidePlayers = !scope.hidePlayers;
+    };
+    scope.showPlayers = function () {
+        scope.hidePlayers = false;
+    };
+    scope.hidePlayers = function () {
+        scope.hidePlayers = true;
     };
 
     scope.viewPlayer = function (id, $event) {
@@ -32,6 +38,11 @@ controllers.controller('TribesController', function ($scope, Coupling, $location
     $scope.selectTribe = function (tribe) {
         $location.path("/" + tribe._id + "/pairAssignments/current");
     }
+});
+
+controllers.controller('HistoryController', function ($scope, Coupling, $routeParams) {
+    Coupling.selectTribe($routeParams.tribeId);
+    $scope.hidePlayers();
 });
 
 controllers.controller('NewPairAssignmentsController', function ($scope, $location, Coupling, $routeParams) {
@@ -75,6 +86,7 @@ controllers.controller('NewPairAssignmentsController', function ($scope, $locati
 controllers.controller('CurrentPairAssignmentsController', function ($scope, Coupling, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
     $scope.data.currentPairAssignments = Coupling.data.history[0];
+    $scope.showPlayers();
 });
 
 controllers.controller('NewPlayerController', function ($scope, Coupling, $location, $routeParams) {
