@@ -80,6 +80,7 @@ services.service("Coupling", function ($http) {
         var shouldReload = Coupling.data.selectedTribeId != tribeId || Coupling.data.players == null;
         if (shouldReload) {
             Coupling.data.selectedTribeId = tribeId;
+            Coupling.data.selectedTribe = _.findWhere(Coupling.data.tribes, {_id: tribeId});
             Coupling.data.players = null;
             Coupling.data.currentPairAssignments = null;
             Coupling.data.history = [];

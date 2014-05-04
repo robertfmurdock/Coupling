@@ -15,11 +15,8 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.showOrHidePlayers = function () {
         scope.hidePlayers = !scope.hidePlayers;
     };
-    scope.showPlayers = function () {
-        scope.hidePlayers = false;
-    };
-    scope.hidePlayers = function () {
-        scope.hidePlayers = true;
+    scope.setHidePlayers = function (shouldHide) {
+        scope.hidePlayers = shouldHide;
     };
 
     scope.viewPlayer = function (id, $event) {
@@ -42,7 +39,7 @@ controllers.controller('TribesController', function ($scope, Coupling, $location
 
 controllers.controller('HistoryController', function ($scope, Coupling, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
-    $scope.hidePlayers();
+    $scope.setHidePlayers(true);
 });
 
 controllers.controller('NewPairAssignmentsController', function ($scope, $location, Coupling, $routeParams) {
@@ -86,11 +83,12 @@ controllers.controller('NewPairAssignmentsController', function ($scope, $locati
 controllers.controller('CurrentPairAssignmentsController', function ($scope, Coupling, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
     $scope.data.currentPairAssignments = Coupling.data.history[0];
-    $scope.showPlayers();
+    $scope.setHidePlayers(false);
 });
 
 controllers.controller('NewPlayerController', function ($scope, Coupling, $location, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
+    $scope.setHidePlayers(false);
     $scope.player = {tribe: $routeParams.tribeId};
     $scope.savePlayer = function () {
         Coupling.savePlayer($scope.player, function (updatedPlayer) {
@@ -101,6 +99,7 @@ controllers.controller('NewPlayerController', function ($scope, Coupling, $locat
 
 controllers.controller('EditPlayerController', function ($scope, Coupling, $routeParams, $location) {
     Coupling.selectTribe($routeParams.tribeId);
+    $scope.setHidePlayers(false);
     Coupling.findPlayerById($routeParams.id, function (player) {
         $scope.original = player;
         $scope.player = angular.copy(player);
