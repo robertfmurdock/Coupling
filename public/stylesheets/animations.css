@@ -52,6 +52,16 @@
     transition: all ease-in .2s;
 }
 
+.current.pair-assignments.ng-hide {
+    animation: none;
+    transition: none;
+}
+
+.current.pair-assignments.ng-hide-add {
+    animation: none;
+    transition: none;
+}
+
 .pair-assignments .ng-hide {
     display: inline-block;
     animation: none;

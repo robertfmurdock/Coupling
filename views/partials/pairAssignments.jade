@@ -6,3 +6,5 @@ div(ng-cloak class="current pair-assignments" ng-show="data.currentPairAssignmen
         span(ng-repeat='player in pair' class="player" ui-draggable="true" drag="player" ui-on-Drop="onDrop($event,$data,player)")
             img(ng-src="{{player | gravatarUrl:{size:45} }}" width="45" height="45")
             h4 {{player.name}}
+
+div(ng-cloak class="current pair-assignments" ng-hide="data.currentPairAssignments") No pair assignments yet!

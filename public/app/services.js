@@ -30,11 +30,13 @@ services.service("Coupling", function ($http) {
         }).error(makeErrorHandler(url));
     };
 
-    var requestHistory = function (tribeId) {
+    var requestHistory = function (tribeId, callback) {
         var url = '/api/' + tribeId + '/history';
         $http.get(url).success(function (history) {
             Coupling.data.history = history;
-            Coupling.data.currentPairAssignments = history[0];
+            if (callback) {
+                callback(history);
+            }
         }).error(makeErrorHandler(url));
     };
 
@@ -85,8 +87,11 @@ services.service("Coupling", function ($http) {
             Coupling.data.currentPairAssignments = null;
             Coupling.data.history = null;
             if (tribeId != null) {
-                requestPlayers(tribeId, callbackWhenComplete);
-                requestHistory(tribeId, callbackWhenComplete);
+                requestPlayers(tribeId, function (players) {
+                    requestHistory(tribeId, function (history) {
+                        callbackWhenComplete(players, history);
+                    });
+                });
             }
         } else if (callbackWhenComplete) {
             callbackWhenComplete();
@@ -104,7 +109,5 @@ services.service("Coupling", function ($http) {
     };
 
     Coupling.data = {players: null, history: null, tribes: null};
-    requestPlayers();
-    requestHistory();
     requestTribes();
 });
