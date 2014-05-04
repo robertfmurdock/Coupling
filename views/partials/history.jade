@@ -1,5 +1,5 @@
 span(id="history-view")
-    div(class="view-header") History
+    div(class="header") History!
     div(ng-repeat='pairAssignments in data.history' class="pair-assignments")
         div(class="pair-assignments-header") {{pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.date | date: 'HH:mm:ss'}}
         div
