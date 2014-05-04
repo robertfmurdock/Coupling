@@ -1,7 +1,7 @@
 div(class="tribe-listing-frame")
     div(class="tribe-listing")
         span(ng-repeat='tribe in tribes' class="tribe" ng-click="selectTribe(tribe)")
-            div(class="tribe-name") {{tribe.name}}
+            div(class="tribe-name" ng-click="editTribe(tribe)") {{tribe.name}}
             img(ng-src="{{tribe | tribeImageUrl}}" width="150" height="150")
     div
         a(type="button" class="super green button" href="/new-tribe") Add a new tribe!

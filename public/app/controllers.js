@@ -35,12 +35,25 @@ controllers.controller('TribeListController', function ($scope, Coupling, $locat
     Coupling.selectTribe(null);
     $scope.selectTribe = function (tribe) {
         $location.path("/" + tribe._id + "/pairAssignments/current");
-    }
+    };
+    $scope.editTribe = function (tribe) {
+        $location.path("/" + tribe._id);
+    };
 });
 
 controllers.controller('NewTribeController', function ($scope, Coupling, $location) {
     $scope.tribe = {name: 'New Tribe'};
     Coupling.selectTribe(null);
+    $scope.saveTribe = function () {
+        Coupling.saveTribe($scope.tribe, function () {
+            $location.path("/" + $scope.tribe._id + "/pairAssignments/current");
+        });
+    }
+});
+
+controllers.controller('EditTribeController', function ($scope, Coupling, $location, $routeParams) {
+    Coupling.selectTribe($routeParams.tribeId);
+    $scope.tribe = Coupling.data.selectedTribe;
     $scope.saveTribe = function () {
         Coupling.saveTribe($scope.tribe, function () {
             $location.path("/" + $scope.tribe._id + "/pairAssignments/current");

@@ -89,12 +89,14 @@ services.service("Coupling", function ($http) {
             if (tribeId != null) {
                 requestPlayers(tribeId, function (players) {
                     requestHistory(tribeId, function (history) {
-                        callbackWhenComplete(players, history);
+                        if (callbackWhenComplete) {
+                            callbackWhenComplete(players, history);
+                        }
                     });
                 });
             }
         } else if (callbackWhenComplete) {
-            callbackWhenComplete();
+            callbackWhenComplete(Coupling.data.players, Coupling.data.history);
         }
     };
 

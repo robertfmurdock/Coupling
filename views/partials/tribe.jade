@@ -6,7 +6,7 @@ div(class="tribe-view")
             div
                 label(for="tribe-name") Name:
                 input(id="tribe-name" type="text" ng-model="tribe.name")
-            div
+            div(ng-hide="tribe._id")
                 label(for="tribe-id") Unique Id:
                 input(id="tribe-id" type="text" ng-model="tribe._id")
         div
