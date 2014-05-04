@@ -15,7 +15,7 @@ filters.filter('tribeImageUrl', function () {
         if (tribe && tribe.image) {
             return "/images/icons/tribes/" + tribe.image;
         } else {
-            return "/images/icons/tribes/no-tribe-icon.jpg";
+            return "/images/icons/tribes/no-tribe.png";
         }
     }
 });
