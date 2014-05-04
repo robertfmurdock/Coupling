@@ -11,6 +11,8 @@ var game = require('./routes/game');
 var http = require('http');
 var path = require('path');
 var config = require('./config');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google').Strategy;
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var methodOverride = require('method-override');
@@ -28,14 +30,40 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.cookieParser());
+app.use(express.session({ secret: config.secret }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
 
-var tribes = new TribeRoutes(config.mongoUrl);
+passport.serializeUser(function (user, done) {
+    done(null, '1');
+});
 
+passport.deserializeUser(function (id, done) {
+    done(null, id);
+});
+
+passport.use(new GoogleStrategy({
+        returnURL: 'http://localhost:3000/auth/google/return',
+        realm: 'http://localhost:3000/'
+    },
+    function (identifier, profile, done) {
+        done(null, {id: '1'});
+    }
+));
+
+app.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google/return',
+    passport.authenticate('google', { successRedirect: '/',
+        failureRedirect: '/auth/google'  }));
+
+var tribes = new TribeRoutes(config.mongoUrl);
 app.get('/', routes.index);
 app.get('/api/tribes', tribes.list);
 app.post('/api/tribes', tribes.save);

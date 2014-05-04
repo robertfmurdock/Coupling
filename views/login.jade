@@ -1,0 +1,7 @@
+span(id="CouplingTitleBlock")
+    div(class="title")= title
+    p(ng-hide="data.selectedTribe") Welcome to #{title}.
+    form(name="login" method="post")
+        input(type="text" name="email")
+        input(type="password" name="password")
+        input(type="button" name="submit" value="Log in!")
