@@ -1,5 +1,4 @@
 "use strict";
-var supertest = require('supertest');
 var monk = require("monk");
 var config = require("../../config");
 
