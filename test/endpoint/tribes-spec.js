@@ -8,7 +8,7 @@ var _ = require('underscore');
 var path = '/api/tribes';
 describe(path, function () {
 
-    var host = supertest('http://localhost:3000');
+    var host = supertest('http://localhost:' + config.port);
     var database = monk(config.mongoUrl);
     var teamCollection = database.get('tribes');
     it('GET will return all available tribes.', function (done) {

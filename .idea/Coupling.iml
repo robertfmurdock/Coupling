@@ -19,6 +19,7 @@
     <orderEntry type="library" name="angular-ui-bootstrap-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="angular-ui-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="angularjs-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="angular-protractor-DefinitelyTyped" level="application" />
   </component>
 </module>
 
