@@ -29,11 +29,18 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     }
 }]);
 
-controllers.controller('TribesController', function ($scope, Coupling, $location) {
+controllers.controller('TribeListController', function ($scope, Coupling, $location) {
     $scope.tribes = Coupling.data.tribes;
     Coupling.selectTribe(null);
     $scope.selectTribe = function (tribe) {
         $location.path("/" + tribe._id + "/pairAssignments/current");
+    }
+});
+
+controllers.controller('NewTribeController', function ($scope, Coupling) {
+    $scope.tribe = {name: 'New Tribe'};
+    $scope.saveTribe = function () {
+        Coupling.saveTribe($scope.tribe);
     }
 });
 
@@ -82,7 +89,6 @@ controllers.controller('NewPairAssignmentsController', function ($scope, $locati
 
 controllers.controller('CurrentPairAssignmentsController', function ($scope, Coupling, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
-    $scope.data.currentPairAssignments = Coupling.data.history[0];
     $scope.setHidePlayers(false);
 });
 

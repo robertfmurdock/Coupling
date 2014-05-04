@@ -197,6 +197,11 @@ a {
     background-color: indianred;
 }
 
+.tribe-listing-frame .button {
+    left: -7px;
+    bottom: -14px;
+}
+
 .tribe-listing {
     margin: -10px;
 }
@@ -233,13 +238,6 @@ a {
     font-size: 24px;
 }
 
-#CouplingTitleBlock img {
-    float: left;
-    margin: 10px;
-    /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
-    -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
-}
-
 .tribe-name {
     font-weight: bold;
     margin-bottom: 5px;
@@ -247,6 +245,47 @@ a {
     text-fill-color: white;
     text-stroke-width: 1px;
     text-stroke-color: black;
+}
+
+.tribe-icon {
+    margin: 10px;
+    /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
+    -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
+}
+
+#CouplingTitleBlock .tribe-icon {
+    float: left;
+}
+
+.tribe-view .tribe-icon {
+    display: inline-block;
+}
+
+.tribe-view .tribe-editor {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.tribe-view .tribe-editor label {
+    clear: both;
+    float: left;
+}
+
+.tribe-view .tribe-editor input[type="text"] {
+    text-align: right;
+    float: right;
+    text-fill-color: black;
+    text-stroke-width: 0;
+    width: 150px;
+    margin: 5px;
+}
+
+.tribe-view .tribe-editor div {
+    clear: both;
+}
+
+.tribe-view input[type="button"] {
+
 }
 
 input.button {

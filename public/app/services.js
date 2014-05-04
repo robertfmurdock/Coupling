@@ -83,12 +83,18 @@ services.service("Coupling", function ($http) {
             Coupling.data.selectedTribe = _.findWhere(Coupling.data.tribes, {_id: tribeId});
             Coupling.data.players = null;
             Coupling.data.currentPairAssignments = null;
-            Coupling.data.history = [];
-            requestPlayers(tribeId, callbackWhenComplete);
-            requestHistory(tribeId, callbackWhenComplete);
+            Coupling.data.history = null;
+            if (tribeId != null) {
+                requestPlayers(tribeId, callbackWhenComplete);
+                requestHistory(tribeId, callbackWhenComplete);
+            }
         } else if (callbackWhenComplete) {
             callbackWhenComplete();
         }
+    };
+
+    this.saveTribe = function (tribe, callback) {
+        post('/api/tribes', tribe, callback);
     };
 
     this.findPlayerById = function (id, callback) {
@@ -97,7 +103,7 @@ services.service("Coupling", function ($http) {
         });
     };
 
-    Coupling.data = {players: null, history: [], tribes: []};
+    Coupling.data = {players: null, history: null, tribes: null};
     requestPlayers();
     requestHistory();
     requestTribes();

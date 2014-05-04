@@ -3,3 +3,5 @@ div(class="tribe-listing-frame")
         span(ng-repeat='tribe in tribes' class="tribe" ng-click="selectTribe(tribe)")
             div(class="tribe-name") {{tribe.name}}
             img(ng-src="{{tribe | tribeImageUrl}}" width="150" height="150")
+    div
+        a(type="button" class="super green button" href="/new-tribe") Add a new tribe!

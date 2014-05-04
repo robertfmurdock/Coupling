@@ -7,7 +7,7 @@ block content
             p(ng-hide="data.selectedTribe") Welcome to #{title}.
             div(ng-show="data.selectedTribe")
                 div(class="tribe-name") {{data.selectedTribe.name}}
-                img(ng-src="{{data.selectedTribe | tribeImageUrl}}" width="75" height="75")
+                img(ng-src="{{data.selectedTribe | tribeImageUrl}}" class = "tribe-icon" width="75" height="75")
             span(ng-show="data.selectedTribeId")
                 a(href="/{{data.selectedTribeId}}/pairAssignments/current")
                     p Check out the current pairs!
@@ -18,7 +18,7 @@ block content
                 a(type="button" class="super pink button" ng-click="spin()") Spin!
         div(class="view-container")
             div(ng-view class="view-frame" ng-class="{minimized : !hidePlayers}")
-    div(ng-cloak class="player-roster" ng-show="data.players")
+    div(ng-cloak class="player-roster" ng-show="data.players != null")
         div(class="roster-header" ng-click="showOrHidePlayers()") Players:
         span(ng-hide="hidePlayers")
             div(class="player-listing")

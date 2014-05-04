@@ -1,0 +1,13 @@
+div(class="tribe-view")
+    span(class="tribe")
+        div(class="tribe-name") {{tribe.name}}
+        img(ng-src="{{tribe | tribeImageUrl}}" class="tribe-icon" width="150" height="150")
+        div(class="tribe-editor")
+            div
+                label(for="tribe-name") Name:
+                input(id="tribe-name" type="text" ng-model="tribe.name")
+            div
+                label(for="tribe-id") Unique Id:
+                input(id="tribe-id" type="text" ng-model="tribe._id")
+        div
+            input(type="button" class="super blue button save-button" ng-click="saveTribe()" tabIndex="0" value="Save")
