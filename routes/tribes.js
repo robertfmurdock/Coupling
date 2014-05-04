@@ -6,6 +6,9 @@ module.exports = function (mongoUrl) {
     return function (request, response) {
         dataService.requestTribes(function (tribes) {
             response.send(tribes);
+        }, function (error) {
+            response.statusCode = 500;
+            response.send(error.message);
         });
     };
 };

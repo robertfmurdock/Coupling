@@ -7,7 +7,10 @@ module.exports = function (mongoUrl) {
     this.list = function (request, response) {
         dataService.requestHistory(request.params.tribeId, function (history) {
             response.send(history);
-        }, response.send);
+        }, function (error) {
+            response.statusCode = 500;
+            response.send(error.message);
+        });
     };
 
     this.savePairs = function (request, response) {
