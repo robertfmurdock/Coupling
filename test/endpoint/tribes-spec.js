@@ -1,4 +1,3 @@
-"use strict";
 var supertest = require('supertest');
 var should = require('should');
 var config = require('./../../config');
@@ -6,7 +5,9 @@ var monk = require('monk');
 var _ = require('underscore');
 
 var path = '/api/tribes';
+
 describe(path, function () {
+    'use strict';
 
     var host = supertest('http://localhost:' + config.port);
     var database = monk(config.mongoUrl);
