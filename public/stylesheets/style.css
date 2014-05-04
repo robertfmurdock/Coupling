@@ -166,6 +166,7 @@ a {
 .pair-assignments {
     border-radius: 20px;
     padding: 10px;
+    margin: 5px 0;
     border: 11px outset brown;
     background-color: seagreen;
 }
