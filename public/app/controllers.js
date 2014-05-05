@@ -12,6 +12,7 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
         location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
     };
 
+    scope.hidePlayers = false;
     scope.showOrHidePlayers = function () {
         scope.hidePlayers = !scope.hidePlayers;
     };
