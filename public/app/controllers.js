@@ -8,24 +8,24 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
         location.path("/tribes");
     }
 
-    scope.spin = function () {
+    scope.pressSpinButton = function () {
         location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
     };
 
     scope.hidePlayers = false;
-    scope.showOrHidePlayers = function () {
+    scope.clickPlayerRosterHeader = function () {
         scope.hidePlayers = !scope.hidePlayers;
     };
     scope.setHidePlayers = function (shouldHide) {
         scope.hidePlayers = shouldHide;
     };
 
-    scope.viewPlayer = function (id, $event) {
+    scope.clickPlayerName = function (id, $event) {
         if ($event.stopPropagation) $event.stopPropagation();
         location.path("/" + Coupling.data.selectedTribeId + "/player/" + id);
     };
 
-    scope.flipSelection = function (player) {
+    scope.clickPlayerCard = function (player) {
         scope.deselectionMap[player._id] = !scope.deselectionMap[player._id];
     }
 }]);
