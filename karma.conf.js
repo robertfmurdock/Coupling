@@ -10,15 +10,29 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine', 'requirejs'],
+        frameworks: ['jasmine'],
 
 
         // list of files / patterns to load in the browser
         files: [
-            {pattern: 'public/**/*.js', included: false},
-            {pattern: 'routes/**/*.js', included: false},
-            {pattern: 'test/jasmine/**/*-spec.js', included: false},
-            'test/jasmine/test-main.js'
+            {pattern: 'node_modules/requirejs/**/*.js', included: false},
+            "public/javascripts/bower_components/angular/angular.js",
+            "public/javascripts/bower_components/angular-route/angular-route.min.js",
+            "public/javascripts/bower_components/underscore/underscore.js",
+            "public/javascripts/bower_components/angular-gravatar/build/angular-gravatar.js",
+            "public/javascripts/bower_components/angular-gravatar/build/md5.js",
+            "public/javascripts/bower_components/angular-animate/angular-animate.min.js",
+            "public/javascripts/prefixfree.min.js",
+            "public/javascripts/draganddrop.js",
+            "public/app/app.js",
+            "public/app/services.js",
+            "public/app/controllers.js",
+            "public/app/animations.js",
+            "public/app/filters.js",
+
+            "public/javascripts/bower_components/angular-mocks/angular-mocks.js",
+            "public/javascripts/bower_components/jasmine/lib/jasmine-core/jasmine.js",
+            'test/jasmine/**/*-spec.js'
         ],
 
         // list of files to exclude

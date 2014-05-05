@@ -2,8 +2,8 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{Coupling node_modules}" />
-    <file url="file://$PROJECT_DIR$/test/jasmine/players-spec.js" libraries="{jasmine-DefinitelyTyped}" />
-    <file url="PROJECT" libraries="{Node.js v0.10.26 Core Modules, angular-protractor-DefinitelyTyped, angular-ui-DefinitelyTyped, angular-ui-bootstrap-DefinitelyTyped, angularjs-DefinitelyTyped, es6-promises-DefinitelyTyped, express-DefinitelyTyped, greasemonkey-DefinitelyTyped, jasmine-DefinitelyTyped, jasmine-matchers-DefinitelyTyped, karma-jasmine-DefinitelyTyped, should-DefinitelyTyped, sinon-DefinitelyTyped}" />
+    <file url="file://$PROJECT_DIR$/test/jasmine/controllers-spec.js" libraries="{jasmine-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{Coupling node_modules, Node.js v0.10.26 Core Modules, angular-protractor-DefinitelyTyped, angular-ui-DefinitelyTyped, angular-ui-bootstrap-DefinitelyTyped, angularjs-DefinitelyTyped, es6-promises-DefinitelyTyped, express-DefinitelyTyped, greasemonkey-DefinitelyTyped, jasmine-DefinitelyTyped, jasmine-matchers-DefinitelyTyped, karma-jasmine-DefinitelyTyped, should-DefinitelyTyped, sinon-DefinitelyTyped, underscore-DefinitelyTyped}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
 </project>
