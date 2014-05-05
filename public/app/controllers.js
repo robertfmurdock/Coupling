@@ -4,11 +4,12 @@ var controllers = angular.module('coupling.controllers', ['coupling.services']);
 controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
     scope.data = Coupling.data;
     scope.deselectionMap = [];
+
     if (location.path() === "/") {
         location.path("/tribes");
     }
 
-    scope.pressSpinButton = function () {
+    scope.clickSpinButton = function () {
         location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
     };
 
@@ -20,15 +21,20 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
         scope.hidePlayers = shouldHide;
     };
 
-    scope.clickPlayerName = function (id, $event) {
-        if ($event.stopPropagation) $event.stopPropagation();
-        location.path("/" + Coupling.data.selectedTribeId + "/player/" + id);
-    };
-
-    scope.clickPlayerCard = function (player) {
-        scope.deselectionMap[player._id] = !scope.deselectionMap[player._id];
-    }
 }]);
+
+controllers.controller('SelectedPlayerCardController', function ($scope, $location, Coupling) {
+    $scope.isDisabled = $scope.deselectionMap[$scope.player._id] == true;
+
+    $scope.clickPlayerCard = function () {
+        $scope.isDisabled = !$scope.isDisabled;
+        $scope.deselectionMap[$scope.player._id] = $scope.isDisabled;
+    };
+    $scope.clickPlayerName = function ($event) {
+        if ($event.stopPropagation) $event.stopPropagation();
+        $location.path("/" + Coupling.data.selectedTribeId + "/player/" + $scope.player._id);
+    };
+});
 
 controllers.controller('TribeListController', function ($scope, Coupling, $location) {
     $scope.tribes = Coupling.data.tribes;

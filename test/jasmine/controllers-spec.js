@@ -48,15 +48,11 @@ describe('The controller named ', function () {
                 expect(scope.data).toBe(Coupling.data);
             });
 
-            it('will start with all players selected', function () {
-                expect(scope.deselectionMap).toBeDefined();
-                expect(scope.deselectionMap.length).toEqual(0);
-            });
 
             describe('spin', function () {
                 it('will redirect to the new pair assignments page', function () {
                     expect(location.path).not.toHaveBeenCalledWith(Coupling.data.selectedTribeId + '/pairAssignments/new');
-                    scope.pressSpinButton();
+                    scope.clickSpinButton();
                     expect(location.path).toHaveBeenCalledWith(Coupling.data.selectedTribeId + '/pairAssignments/new');
                 });
             });
@@ -85,34 +81,51 @@ describe('The controller named ', function () {
                 });
             });
 
-            describe('clickPlayerName', function () {
-                it('will redirect to the players page', function () {
-                    var id = 'PrettyGreatPlayerId';
-                    var expectedPath = '/' + Coupling.data.selectedTribeId + '/player/' + id;
-                    expect(location.path).not.toHaveBeenCalledWith(expectedPath);
-                    var event = {};
-                    scope.clickPlayerName(id, event);
-                    expect(location.path).toHaveBeenCalledWith(expectedPath);
+
+            describe('SelectedPlayerCardController', function () {
+
+                beforeEach(function () {
+                    scope.player = {name: 'Chad', _id: 'PrettyGreatPlayerId'};
+                    inject(function ($controller) {
+                        $controller('SelectedPlayerCardController', {
+                            $scope: scope,
+                            $location: location,
+                            Coupling: Coupling
+                        })
+                    })
                 });
 
-                it('will stop propagation to other click events', function () {
-                    var id = 'PrettyGreatPlayerId';
-                    var event = {stopPropagation: jasmine.createSpy('stopPropagation')};
-                    scope.clickPlayerName(id, event);
-                    expect(event.stopPropagation).toHaveBeenCalled();
+                describe('clickPlayerName', function () {
+                    it('will redirect to the players page', function () {
+                        var expectedPath = '/' + Coupling.data.selectedTribeId + '/player/' + scope.player._id;
+                        expect(location.path).not.toHaveBeenCalledWith(expectedPath);
+                        var event = {};
+                        scope.clickPlayerName(scope.player._id, event);
+                        expect(location.path).toHaveBeenCalledWith(expectedPath);
+                    });
+
+                    it('will stop propagation to other click events', function () {
+                        var event = {stopPropagation: jasmine.createSpy('stopPropagation')};
+                        scope.clickPlayerName(event);
+                        expect(event.stopPropagation).toHaveBeenCalled();
+                    });
+                });
+
+                it('player is initially selected', function () {
+                    expect(scope.isDisabled).toBe(false);
+                });
+
+                describe('clickPlayerCard', function () {
+                    it('will change a players selection in the map', function () {
+                        expect(scope.isDisabled).toBe(false);
+                        scope.clickPlayerCard();
+                        expect(scope.isDisabled).toBe(true);
+                        scope.clickPlayerCard();
+                        expect(scope.isDisabled).toBe(false);
+                    });
                 });
             });
 
-            describe('clickPlayerCard', function () {
-                it('will change a players selection in the map', function () {
-                    var player = {name: 'Chad', _id: 'merp'};
-                    expect(scope.deselectionMap[player._id]).toBeFalsy();
-                    scope.clickPlayerCard(player);
-                    expect(scope.deselectionMap[player._id]).toBeTruthy();
-                    scope.clickPlayerCard(player);
-                    expect(scope.deselectionMap[player._id]).toBeFalsy();
-                });
-            });
         });
     });
 });

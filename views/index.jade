@@ -15,15 +15,15 @@ block content
                     p Or maybe you'd prefer history!
                 a(href="/tribes")
                     p Browse the tribes available!
-                a(type="button" class="super pink button" ng-click="pressSpinButton()") Spin!
+                a(class="super pink button" ng-click="clickSpinButton()") Spin!
         div(class="view-container")
             div(ng-view class="view-frame" ng-class="{minimized : !hidePlayers}")
     div(ng-cloak class="player-roster" ng-show="data.players != null")
         div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players:
         span(ng-hide="hidePlayers")
             div(class="player-listing")
-                span(ng-repeat="player in data.players" class="player" ng-class="{disabled:deselectionMap[player._id]}" ng-click="clickPlayerCard(player)")
+                span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:isDisabled}" ng-click="clickPlayerCard()")
                     img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
-                    h4(ng-click="clickPlayerName(player._id, $event)") {{player.name}}
+                    h4(ng-click="clickPlayerName($event)") {{player.name}}
             div
-                a(type="button" class="large orange button" href="/{{data.selectedTribeId}}/player/new/") Add a new player!
+                a(class="large orange button" href="/{{data.selectedTribeId}}/player/new/") Add a new player!
