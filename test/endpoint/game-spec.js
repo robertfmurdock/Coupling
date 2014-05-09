@@ -10,9 +10,7 @@ describe(path, function () {
             {name: "dude1"},
             {name: "dude2"}
         ];
-        console.info('go');
         supertest('http://localhost:3000').post(path).send(onlyEnoughPlayersForOnePair).expect('Content-Type', /json/).end(function (error, response) {
-            console.info(response.body);
             response.status.should.equal(200);
             response.body.tribe.should.equal(tribeId);
             JSON.stringify(response.body.pairs).should.equal(JSON.stringify([onlyEnoughPlayersForOnePair]));

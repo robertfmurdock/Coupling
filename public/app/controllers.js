@@ -20,7 +20,6 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
     scope.setHidePlayers = function (shouldHide) {
         scope.hidePlayers = shouldHide;
     };
-
 }]);
 
 controllers.controller('SelectedPlayerCardController', function ($scope, $location, Coupling) {
