@@ -10,6 +10,7 @@ Have fun!
 
 
 To install and run, you'll need to have mongo and node installed. Once you've got that...
+
 1. Clone the Coupling repository.
 2. In the Coupling directory, run "node app.js"
 3. Now you can browse to the Coupling website in a browser at http://localhost:3000 to confirm it works.
