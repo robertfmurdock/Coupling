@@ -59,28 +59,19 @@ describe('The controller named ', function () {
 
             describe('the hide players state', function () {
                 it('starts as default', function () {
-                    expect(scope.hidePlayers).toBe(false);
+                    expect(scope.playerRoster.minimized).toBe(false);
                 });
 
                 it('clickPlayerRosterHeader will flip the hide players state', function () {
                     scope.clickPlayerRosterHeader();
-                    expect(scope.hidePlayers).toBe(true);
+                    expect(scope.playerRoster.minimized).toBe(true);
                     scope.clickPlayerRosterHeader();
-                    expect(scope.hidePlayers).toBe(false);
+                    expect(scope.playerRoster.minimized).toBe(false);
                     scope.clickPlayerRosterHeader();
-                    expect(scope.hidePlayers).toBe(true);
+                    expect(scope.playerRoster.minimized).toBe(true);
                 });
 
-                it('can be set via a setter', function () {
-                    scope.setHidePlayers(true);
-                    expect(scope.hidePlayers).toBe(true);
-                    scope.setHidePlayers(true);
-                    expect(scope.hidePlayers).toBe(true);
-                    scope.setHidePlayers(false);
-                    expect(scope.hidePlayers).toBe(false);
-                });
             });
-
 
             describe('SelectedPlayerCardController', function () {
 
@@ -126,60 +117,57 @@ describe('The controller named ', function () {
                 });
             });
 
-        });
-    });
+            describe('TribeListController', function () {
+                function injectController(controllerName, scope, location, Coupling) {
+                    inject(function ($controller) {
+                        $controller(controllerName, {
+                            $scope: scope,
+                            $location: location,
+                            Coupling: Coupling
+                        });
+                    });
+                }
 
-    describe('TribeListController', function () {
-
-        function injectController(controllerName, scope, location, Coupling) {
-            inject(function ($controller) {
-                $controller(controllerName, {
-                    $scope: scope,
-                    $location: location,
-                    Coupling: Coupling
+                var Coupling, location;
+                beforeEach(function () {
+                    location = {path: jasmine.createSpy('path')};
+                    Coupling = {data: {}, selectTribe: jasmine.createSpy('selectTribe')};
                 });
-            });
-        }
 
-        var scope, Coupling, location;
-        beforeEach(function () {
-            scope = {unique: "value", setHidePlayers: jasmine.createSpy('setHidePlayers')};
-            location = {path: jasmine.createSpy('path')};
-            Coupling = {data: {}, selectTribe: jasmine.createSpy('selectTribe')};
-        });
-
-        it('will deselect tribe', function () {
-            expect(Coupling.selectTribe).not.toHaveBeenCalled();
-            injectController('TribeListController', scope, location, Coupling);
-            expect(Coupling.selectTribe).toHaveBeenCalledWith(null);
-        });
-
-        it('will hide players', function () {
-            expect(scope.setHidePlayers).not.toHaveBeenCalled();
-            injectController('TribeListController', scope, location, Coupling);
-            expect(scope.setHidePlayers).toHaveBeenCalledWith(true);
-        });
-
-        describe('scopes a function named', function () {
-            beforeEach(function () {
-                injectController('TribeListController', scope, location, Coupling);
-            });
-
-            describe('clickOnTribeCard', function () {
-                it('that changes location to that tribe\'s current pair assignments', function () {
-                    var tribe = {_id: 'amazingMagicId'};
-                    expect(location.path).not.toHaveBeenCalled();
-                    scope.clickOnTribeCard(tribe);
-                    expect(location.path).toHaveBeenCalledWith("/" + tribe._id + "/pairAssignments/current");
+                it('will deselect tribe', function () {
+                    expect(Coupling.selectTribe).not.toHaveBeenCalled();
+                    injectController('TribeListController', scope, location, Coupling);
+                    expect(Coupling.selectTribe).toHaveBeenCalledWith(null);
                 });
-            });
 
-            describe('clickOnTribeName', function () {
-                it('that changes location to that tribe', function () {
-                    var tribe = {_id: 'amazingMagicId'};
-                    expect(location.path).not.toHaveBeenCalled();
-                    scope.clickOnTribeName(tribe);
-                    expect(location.path).toHaveBeenCalledWith("/" + tribe._id);
+                it('will hide players', function () {
+                    scope.playerRoster.minimized = false;
+                    injectController('TribeListController', scope, location, Coupling);
+                    expect(scope.playerRoster.minimized).toBe(true);
+                });
+
+                describe('scopes a function named', function () {
+                    beforeEach(function () {
+                        injectController('TribeListController', scope, location, Coupling);
+                    });
+
+                    describe('clickOnTribeCard', function () {
+                        it('that changes location to that tribe\'s current pair assignments', function () {
+                            var tribe = {_id: 'amazingMagicId'};
+                            expect(location.path).not.toHaveBeenCalled();
+                            scope.clickOnTribeCard(tribe);
+                            expect(location.path).toHaveBeenCalledWith("/" + tribe._id + "/pairAssignments/current");
+                        });
+                    });
+
+                    describe('clickOnTribeName', function () {
+                        it('that changes location to that tribe', function () {
+                            var tribe = {_id: 'amazingMagicId'};
+                            expect(location.path).not.toHaveBeenCalled();
+                            scope.clickOnTribeName(tribe);
+                            expect(location.path).toHaveBeenCalledWith("/" + tribe._id);
+                        });
+                    });
                 });
             });
         });

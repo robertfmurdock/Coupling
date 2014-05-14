@@ -13,12 +13,9 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
         location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
     };
 
-    scope.hidePlayers = false;
+    scope.playerRoster = {minimized: false};
     scope.clickPlayerRosterHeader = function () {
-        scope.hidePlayers = !scope.hidePlayers;
-    };
-    scope.setHidePlayers = function (shouldHide) {
-        scope.hidePlayers = shouldHide;
+        scope.playerRoster.minimized = !scope.playerRoster.minimized;
     };
 }]);
 
@@ -37,7 +34,7 @@ controllers.controller('SelectedPlayerCardController', function ($scope, $locati
 
 controllers.controller('TribeListController', function ($scope, $location, Coupling) {
     $scope.tribes = Coupling.data.tribes;
-    $scope.setHidePlayers(true);
+    $scope.playerRoster.minimized = true;
     Coupling.selectTribe(null);
     $scope.clickOnTribeCard = function (tribe) {
         $location.path("/" + tribe._id + "/pairAssignments/current");
@@ -69,7 +66,7 @@ controllers.controller('EditTribeController', function ($scope, Coupling, $locat
 
 controllers.controller('HistoryController', function ($scope, Coupling, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
-    $scope.setHidePlayers(true);
+    $scope.playerRoster.minimized = true;
 });
 
 controllers.controller('NewPairAssignmentsController', function ($scope, $location, Coupling, $routeParams) {
@@ -114,12 +111,12 @@ controllers.controller('CurrentPairAssignmentsController', function ($scope, Cou
     Coupling.selectTribe($routeParams.tribeId, function () {
         Coupling.data.currentPairAssignments = Coupling.data.history[0];
     });
-    $scope.setHidePlayers(false);
+    $scope.playerRoster.minimized = false;
 });
 
 controllers.controller('NewPlayerController', function ($scope, Coupling, $location, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId);
-    $scope.setHidePlayers(false);
+    $scope.playerRoster.minimized = false;
     $scope.player = {tribe: $routeParams.tribeId};
     $scope.savePlayer = function () {
         Coupling.savePlayer($scope.player, function (updatedPlayer) {
@@ -130,7 +127,7 @@ controllers.controller('NewPlayerController', function ($scope, Coupling, $locat
 
 controllers.controller('EditPlayerController', function ($scope, Coupling, $routeParams, $location) {
     Coupling.selectTribe($routeParams.tribeId);
-    $scope.setHidePlayers(false);
+    $scope.playerRoster.minimized = false;
     Coupling.findPlayerById($routeParams.id, function (player) {
         $scope.original = player;
         $scope.player = angular.copy(player);

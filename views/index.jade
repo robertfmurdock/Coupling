@@ -17,10 +17,10 @@ block content
                     p Browse the tribes available!
                 a(class="super pink button" ng-click="clickSpinButton()") Spin!
         div(class="view-container")
-            div(ng-view class="view-frame" ng-class="{minimized : !hidePlayers}")
+            div(ng-view class="view-frame" ng-class="{minimized : !playerRoster.minimized}")
     div(ng-cloak class="player-roster" ng-show="data.players != null")
         div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players:
-        span(ng-hide="hidePlayers")
+        span(ng-hide="playerRoster.minimized")
             div(class="player-listing")
                 span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:isDisabled}" ng-click="clickPlayerCard()")
                     img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
