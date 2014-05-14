@@ -35,14 +35,14 @@ controllers.controller('SelectedPlayerCardController', function ($scope, $locati
     };
 });
 
-controllers.controller('TribeListController', function ($scope, Coupling, $location) {
+controllers.controller('TribeListController', function ($scope, $location, Coupling) {
     $scope.tribes = Coupling.data.tribes;
     $scope.setHidePlayers(true);
     Coupling.selectTribe(null);
-    $scope.selectTribe = function (tribe) {
+    $scope.clickOnTribeCard = function (tribe) {
         $location.path("/" + tribe._id + "/pairAssignments/current");
     };
-    $scope.editTribe = function (tribe) {
+    $scope.clickOnTribeName = function (tribe) {
         $location.path("/" + tribe._id);
     };
 });

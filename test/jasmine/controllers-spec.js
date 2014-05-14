@@ -15,12 +15,12 @@ describe('The controller named ', function () {
             var Coupling = {data: {}};
 
             pathSpy.and.returnValue('/');
-            couplingControllerFactory(scope, location, Coupling);
+            initializeCouplingControllerFactory(scope, location, Coupling);
             expect(pathSpy).toHaveBeenCalledWith('/tribes');
         });
 
-        function couplingControllerFactory(scope, location, Coupling) {
-            return inject(function ($controller) {
+        function initializeCouplingControllerFactory(scope, location, Coupling) {
+            inject(function ($controller) {
                 $controller('CouplingController', {
                     $scope: scope,
                     $location: location,
@@ -37,7 +37,7 @@ describe('The controller named ', function () {
                 scope = {unique: "value"};
                 location = {path: jasmine.createSpy('path')};
                 Coupling = {data: {selectedTribeId: 'AwesomeTribe'}};
-                couplingControllerFactory(scope, location, Coupling)
+                initializeCouplingControllerFactory(scope, location, Coupling)
             });
 
             it('will not redirect', function () {
@@ -126,6 +126,62 @@ describe('The controller named ', function () {
                 });
             });
 
+        });
+    });
+
+    describe('TribeListController', function () {
+
+        function injectController(controllerName, scope, location, Coupling) {
+            inject(function ($controller) {
+                $controller(controllerName, {
+                    $scope: scope,
+                    $location: location,
+                    Coupling: Coupling
+                });
+            });
+        }
+
+        var scope, Coupling, location;
+        beforeEach(function () {
+            scope = {unique: "value", setHidePlayers: jasmine.createSpy('setHidePlayers')};
+            location = {path: jasmine.createSpy('path')};
+            Coupling = {data: {}, selectTribe: jasmine.createSpy('selectTribe')};
+        });
+
+        it('will deselect tribe', function () {
+            expect(Coupling.selectTribe).not.toHaveBeenCalled();
+            injectController('TribeListController', scope, location, Coupling);
+            expect(Coupling.selectTribe).toHaveBeenCalledWith(null);
+        });
+
+        it('will hide players', function () {
+            expect(scope.setHidePlayers).not.toHaveBeenCalled();
+            injectController('TribeListController', scope, location, Coupling);
+            expect(scope.setHidePlayers).toHaveBeenCalledWith(true);
+        });
+
+        describe('scopes a function named', function () {
+            beforeEach(function () {
+                injectController('TribeListController', scope, location, Coupling);
+            });
+
+            describe('clickOnTribeCard', function () {
+                it('that changes location to that tribe\'s current pair assignments', function () {
+                    var tribe = {_id: 'amazingMagicId'};
+                    expect(location.path).not.toHaveBeenCalled();
+                    scope.clickOnTribeCard(tribe);
+                    expect(location.path).toHaveBeenCalledWith("/" + tribe._id + "/pairAssignments/current");
+                });
+            });
+
+            describe('clickOnTribeName', function () {
+                it('that changes location to that tribe', function () {
+                    var tribe = {_id: 'amazingMagicId'};
+                    expect(location.path).not.toHaveBeenCalled();
+                    scope.clickOnTribeName(tribe);
+                    expect(location.path).toHaveBeenCalledWith("/" + tribe._id);
+                });
+            });
         });
     });
 });
