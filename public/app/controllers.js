@@ -44,12 +44,12 @@ controllers.controller('TribeListController', function ($scope, $location, Coupl
     };
 });
 
-controllers.controller('NewTribeController', function ($scope, Coupling, $location) {
+controllers.controller('NewTribeController', function ($scope, $location, Coupling) {
     $scope.tribe = {name: 'New Tribe'};
     Coupling.selectTribe(null);
-    $scope.saveTribe = function () {
-        Coupling.saveTribe($scope.tribe, function () {
-            $location.path("/" + $scope.tribe._id + "/pairAssignments/current");
+    $scope.clickSaveButton = function () {
+        Coupling.saveTribe($scope.tribe, function (updatedTribe) {
+            $location.path("/" + updatedTribe._id + "/pairAssignments/current");
         });
     }
 });
