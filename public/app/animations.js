@@ -1,1 +1,1 @@
-var couplingAnimations = angular.module('coupling.animations', ['ngAnimate']);
+angular.module('coupling.animations', ['ngAnimate']);
