@@ -117,19 +117,20 @@ describe('The controller named ', function () {
                 });
             });
 
-            function injectController(controllerName, scope, location, Coupling) {
+            function injectController(controllerName, scope, location, Coupling, routeParams) {
                 inject(function ($controller) {
                     $controller(controllerName, {
                         $scope: scope,
                         $location: location,
-                        Coupling: Coupling
+                        Coupling: Coupling,
+                        $routeParams: routeParams
                     });
                 });
             }
 
-            function checkControllerWillDeselectTribe(Coupling, location, controllerName) {
+            function checkControllerWillDeselectTribe(controllerName, Coupling, location, routeParams) {
                 expect(Coupling.selectTribe).not.toHaveBeenCalled();
-                injectController(controllerName, scope, location, Coupling);
+                injectController(controllerName, scope, location, Coupling, routeParams);
                 expect(Coupling.selectTribe).toHaveBeenCalledWith(null);
             }
 
@@ -143,7 +144,7 @@ describe('The controller named ', function () {
                 });
 
                 it('will deselect tribe', function () {
-                    checkControllerWillDeselectTribe(Coupling, location, 'TribeListController');
+                    checkControllerWillDeselectTribe('TribeListController', Coupling, location);
                 });
 
                 it('will hide players', function () {
@@ -196,10 +197,10 @@ describe('The controller named ', function () {
                 });
 
                 it('will deselect tribe', function () {
-                    checkControllerWillDeselectTribe(Coupling, location, NewTribeController);
+                    checkControllerWillDeselectTribe(NewTribeController, Coupling, location);
                 });
 
-                describe('pressing the save button ', function () {
+                describe('when pressing the save button ', function () {
                     beforeEach(function () {
                         Coupling.saveTribe = jasmine.createSpy('save tribe spy');
                         injectController(NewTribeController, scope, location, Coupling);
@@ -214,7 +215,6 @@ describe('The controller named ', function () {
                     });
 
                     describe('when the save is complete', function () {
-
                         var callback;
                         beforeEach(function () {
                             scope.clickSaveButton();
@@ -230,7 +230,66 @@ describe('The controller named ', function () {
                             callback(updatedTribe);
                             expect(location.path).toHaveBeenCalledWith(expectedPath);
                         });
+                    });
+                });
+            });
 
+
+            var EditTribeController = 'EditTribeController';
+            describe(EditTribeController, function () {
+
+                var Coupling, location, routeParams;
+                beforeEach(function () {
+                    location = {path: jasmine.createSpy('path')};
+                    var selectedTribe = {name: 'Party tribe.', _id: 'party'};
+                    Coupling = {data: {selectedTribe: selectedTribe}, selectTribe: jasmine.createSpy('selectTribe')};
+                    routeParams = {tribeId: selectedTribe._id};
+                });
+
+                it('puts the selected tribe on the scope', function () {
+                    var previouslyScopedTribe = {name: 'This should not be the tribe after injection.'};
+                    scope.tribe = previouslyScopedTribe;
+                    injectController(EditTribeController, scope, location, Coupling, routeParams);
+                    expect(scope.tribe).not.toBe(previouslyScopedTribe);
+                    expect(scope.tribe).toBe(Coupling.data.selectedTribe);
+                });
+
+                it('will deselect tribe', function () {
+                    expect(Coupling.selectTribe).not.toHaveBeenCalled();
+                    injectController(EditTribeController, scope, location, Coupling, routeParams);
+                    expect(Coupling.selectTribe).toHaveBeenCalledWith(Coupling.data.selectedTribe._id);
+                });
+
+                describe('when pressing the save button ', function () {
+                    beforeEach(function () {
+                        Coupling.saveTribe = jasmine.createSpy('save tribe spy');
+                        injectController(EditTribeController, scope, location, Coupling, routeParams);
+                    });
+
+                    it('will use the Coupling service to save the tribe', function () {
+                        scope.clickSaveButton();
+
+                        expect(Coupling.saveTribe).toHaveBeenCalled();
+                        var saveTribeArgs = Coupling.saveTribe.calls.argsFor(0);
+                        expect(saveTribeArgs[0]).toBe(scope.tribe);
+                    });
+
+                    describe('when the save is complete', function () {
+                        var callback;
+                        beforeEach(function () {
+                            scope.clickSaveButton();
+                            callback = Coupling.saveTribe.calls.argsFor(0)[1];
+                        });
+
+                        it('will change the location to the current pair assignments', function () {
+                            var newTribeId = 'expectedId';
+                            var expectedPath = '/' + newTribeId + '/pairAssignments/current';
+                            expect(location.path).not.toHaveBeenCalledWith(expectedPath);
+
+                            var updatedTribe = {_id: newTribeId};
+                            callback(updatedTribe);
+                            expect(location.path).toHaveBeenCalledWith(expectedPath);
+                        });
                     });
                 });
             });
