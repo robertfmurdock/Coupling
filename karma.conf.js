@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Sun Mar 23 2014 15:13:25 GMT-0400 (EDT)
+// Generated on Tue Jul 01 2014 20:59:56 GMT-0400 (EDT)
 
 module.exports = function (config) {
     config.set({
@@ -31,9 +31,9 @@ module.exports = function (config) {
             "public/app/filters.js",
 
             "public/javascripts/bower_components/angular-mocks/angular-mocks.js",
-            "public/javascripts/bower_components/jasmine/lib/jasmine-core/jasmine.js",
             'test/jasmine/**/*-spec.js'
         ],
+
 
         // list of files to exclude
         exclude: [
