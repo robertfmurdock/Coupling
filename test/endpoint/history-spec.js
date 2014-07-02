@@ -33,23 +33,25 @@ describe(path, function () {
     describe("POST will save pairs", function () {
 
         it('should add when given a valid pair assignment document.', function (done) {
-            setTimeout(function () {
-                supertest(host).post(path).
-                    send(validPairs)
-                    .expect('Content-Type', /json/).
-                    end(function (error, response) {
-                        response.status.should.equal(200);
-                        var pairsAsSaved = response.body;
+            supertest(host).post(path).
+                send(validPairs)
+                .expect('Content-Type', /json/).
+                end(function (error, response) {
+                    response.status.should.equal(200);
+                    var pairsAsSaved = response.body;
 
-                        new DataService(config.mongoUrl).requestHistory(tribeId, function (history) {
-                            JSON.stringify(history[0]).should.equal(JSON.stringify(pairsAsSaved));
-                            done();
-                        }, function (error) {
-                            should.not.exist(error);
-                            done();
-                        });
+                    new DataService(config.mongoUrl).requestHistory(tribeId, function (history) {
+                        var latestEntryInHistory = history[0];
+                        for (var parameterName in pairsAsSaved) {
+                            var actualParameterValue = latestEntryInHistory[parameterName];
+                            var expectedParameterValue = pairsAsSaved[parameterName];
+                            JSON.stringify(actualParameterValue).should.equal(JSON.stringify(expectedParameterValue));
+                        }
+                        done();
+                    }, function (error) {
+                        done(error);
                     });
-            });
+                });
         });
         it('should not add when given a document without a date', function (done) {
             var pairs = { pairs: [
