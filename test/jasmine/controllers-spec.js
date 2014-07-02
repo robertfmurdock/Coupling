@@ -294,6 +294,68 @@ describe('The controller named ', function () {
                 });
             });
 
+
+            var HistoryController = 'HistoryController';
+            describe(HistoryController, function () {
+
+                var Coupling, location, routeParams;
+                beforeEach(function () {
+                    location = {path: jasmine.createSpy('path')};
+                    var selectedTribe = {name: 'Party tribe.', _id: 'party'};
+                    Coupling = {data: {selectedTribe: selectedTribe}, selectTribe: jasmine.createSpy('selectTribe')};
+                    routeParams = {tribeId: selectedTribe._id};
+                });
+
+                it('will select tribe', function () {
+                    expect(Coupling.selectTribe).not.toHaveBeenCalled();
+                    injectController(HistoryController, scope, location, Coupling, routeParams);
+                    expect(Coupling.selectTribe).toHaveBeenCalledWith(Coupling.data.selectedTribe._id);
+                });
+
+                it('will minimize the player roster', function () {
+                    scope.playerRoster.minimized = false;
+                    injectController(HistoryController, scope, location, Coupling, routeParams);
+                    expect(scope.playerRoster.minimized).toBe(true);
+                });
+
+            });
+
+
+            describe('NewPairAssignmentsController', function () {
+                var ControllerName = 'NewPairAssignmentsController';
+                var Coupling, location, routeParams;
+
+                beforeEach(function () {
+                    location = {path: jasmine.createSpy('path')};
+                    var selectedTribe = {name: 'Party tribe.', _id: 'party'};
+                    Coupling = {data: {selectedTribe: selectedTribe}, selectTribe: jasmine.createSpy('selectTribe'), spin: jasmine.createSpy('spin')};
+                    routeParams = {tribeId: selectedTribe._id};
+                });
+
+                it('will select tribe and spin all selected players', function () {
+                    expect(Coupling.selectTribe).not.toHaveBeenCalled();
+                    injectController(ControllerName, scope, location, Coupling, routeParams);
+
+                    expect(Coupling.selectTribe.calls.count()).toBe(1);
+                    var callArgs = Coupling.selectTribe.calls.argsFor(0);
+                    expect(callArgs[0]).toBe(Coupling.data.selectedTribe._id);
+                    var callback = callArgs[1];
+                    var players = [
+                        {_id: 'h8'},
+                        {_id: '3r'},
+                        {_id: '8d3'}
+                    ];
+
+                    scope.deselectionMap[players[0]._id] = true;
+                    scope.deselectionMap[players[1]._id] = false;
+                    scope.deselectionMap[players[2]._id] = false;
+
+                    callback(players);
+
+                    expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]]);
+                });
+
+            });
         });
     });
 });
