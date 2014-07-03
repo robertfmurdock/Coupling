@@ -103,16 +103,16 @@ describe('The controller named ', function () {
                 });
 
                 it('player is initially selected', function () {
-                    expect(scope.isDisabled).toBe(false);
+                    expect(scope.player.isAvailable).toBe(true);
                 });
 
                 describe('clickPlayerCard', function () {
                     it('will change a players selection in the map', function () {
-                        expect(scope.isDisabled).toBe(false);
+                        expect(scope.player.isAvailable).toBe(true);
                         scope.clickPlayerCard();
-                        expect(scope.isDisabled).toBe(true);
+                        expect(scope.player.isAvailable).toBe(false);
                         scope.clickPlayerCard();
-                        expect(scope.isDisabled).toBe(false);
+                        expect(scope.player.isAvailable).toBe(true);
                     });
                 });
             });
@@ -341,14 +341,10 @@ describe('The controller named ', function () {
                     expect(callArgs[0]).toBe(Coupling.data.selectedTribe._id);
                     var callback = callArgs[1];
                     var players = [
-                        {_id: 'h8'},
-                        {_id: '3r'},
-                        {_id: '8d3'}
+                        {_id: 'h8', isAvailable: false},
+                        {_id: '3r', isAvailable: true},
+                        {_id: '8d3', isAvailable: true}
                     ];
-
-                    scope.deselectionMap[players[0]._id] = true;
-                    scope.deselectionMap[players[1]._id] = false;
-                    scope.deselectionMap[players[2]._id] = false;
 
                     callback(players);
 

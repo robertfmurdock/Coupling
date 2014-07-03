@@ -22,7 +22,7 @@ block content
         div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players:
         span(ng-hide="playerRoster.minimized")
             div(class="player-listing")
-                span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:isDisabled}" ng-click="clickPlayerCard()")
+                span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")
                     img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
                     h4(ng-click="clickPlayerName($event)") {{player.name}}
             div

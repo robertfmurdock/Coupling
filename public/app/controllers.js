@@ -3,7 +3,6 @@ var controllers = angular.module('coupling.controllers', ['coupling.services']);
 
 controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
     scope.data = Coupling.data;
-    scope.deselectionMap = [];
 
     if (location.path() === "/") {
         location.path("/tribes");
@@ -20,11 +19,11 @@ controllers.controller('CouplingController', ['$scope', '$location', 'Coupling',
 }]);
 
 controllers.controller('SelectedPlayerCardController', function ($scope, $location, Coupling) {
-    $scope.isDisabled = $scope.deselectionMap[$scope.player._id] == true;
-
+    if ($scope.player.isAvailable == null) {
+        $scope.player.isAvailable = true;
+    }
     $scope.clickPlayerCard = function () {
-        $scope.isDisabled = !$scope.isDisabled;
-        $scope.deselectionMap[$scope.player._id] = $scope.isDisabled;
+        $scope.player.isAvailable = !$scope.player.isAvailable;
     };
     $scope.clickPlayerName = function ($event) {
         if ($event.stopPropagation) $event.stopPropagation();
@@ -69,7 +68,7 @@ controllers.controller('HistoryController', function ($scope, Coupling, $routePa
 controllers.controller('NewPairAssignmentsController', function ($scope, $location, Coupling, $routeParams) {
     Coupling.selectTribe($routeParams.tribeId, function (players) {
         var selectedPlayers = _.filter(players, function (player) {
-            return !$scope.deselectionMap[player._id];
+            return player.isAvailable;
         });
         Coupling.spin(selectedPlayers);
     });
