@@ -328,7 +328,13 @@ describe('The controller named ', function () {
                 beforeEach(function () {
                     location = {path: jasmine.createSpy('path')};
                     var selectedTribe = {name: 'Party tribe.', _id: 'party'};
-                    Coupling = {data: {selectedTribe: selectedTribe}, selectTribe: jasmine.createSpy('selectTribe'), spin: jasmine.createSpy('spin')};
+                    Coupling = {
+                        data: {selectedTribe: selectedTribe},
+                        selectTribe: jasmine.createSpy('selectTribe'),
+                        spin: jasmine.createSpy('spin'),
+                        saveCurrentPairAssignments: jasmine.createSpy('save')
+                    };
+                    scope.data = Coupling.data;
                     routeParams = {tribeId: selectedTribe._id};
                 });
 
@@ -351,6 +357,57 @@ describe('The controller named ', function () {
                     expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]]);
                 });
 
+
+                it('save will use Coupling service to save and then will redirect to the current pair assignments page', function () {
+                    injectController(ControllerName, scope, location, Coupling, routeParams);
+                    expect(Coupling.saveCurrentPairAssignments).not.toHaveBeenCalled();
+                    scope.save();
+                    expect(Coupling.saveCurrentPairAssignments).toHaveBeenCalled();
+                    expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/pairAssignments/current");
+                });
+
+                it('onDrop will take two players and swap their places', function () {
+                    injectController(ControllerName, scope, location, Coupling, routeParams);
+                    var player1 = {_id: '1'};
+                    var player2 = {_id: '2'};
+                    var player3 = {_id: '3'};
+                    var player4 = {_id: '4'};
+
+                    Coupling.data.currentPairAssignments =
+                    {
+                        pairs: [
+                            [player1, player2],
+                            [player3, player4]
+                        ]
+                    };
+
+                    scope.onDrop(event, player2, player3);
+                    expect(Coupling.data.currentPairAssignments.pairs).toEqual([
+                        [player1, player3],
+                        [player2, player4]
+                    ]);
+                });
+                it('onDrop will not swap players that are already paired', function () {
+                    injectController(ControllerName, scope, location, Coupling, routeParams);
+                    var player1 = {_id: '1'};
+                    var player2 = {_id: '2'};
+                    var player3 = {_id: '3'};
+                    var player4 = {_id: '4'};
+
+                    Coupling.data.currentPairAssignments =
+                    {
+                        pairs: [
+                            [player1, player2],
+                            [player3, player4]
+                        ]
+                    };
+
+                    scope.onDrop(event, player4, player3);
+                    expect(Coupling.data.currentPairAssignments.pairs).toEqual([
+                        [player1, player2],
+                        [player3, player4]
+                    ]);
+                });
             });
         });
     });
