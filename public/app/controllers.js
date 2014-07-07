@@ -104,8 +104,8 @@ controllers.controller('NewPairAssignmentsController', function ($scope, $locati
 });
 
 controllers.controller('CurrentPairAssignmentsController', function ($scope, Coupling, $routeParams) {
-    Coupling.selectTribe($routeParams.tribeId, function () {
-        Coupling.data.currentPairAssignments = Coupling.data.history[0];
+    Coupling.selectTribe($routeParams.tribeId, function (players, history) {
+        Coupling.data.currentPairAssignments = history[0];
     });
     $scope.playerRoster.minimized = false;
 });

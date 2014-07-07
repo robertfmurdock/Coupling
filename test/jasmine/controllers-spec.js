@@ -409,6 +409,47 @@ describe('The controller named ', function () {
                     ]);
                 });
             });
+
+            describe('CurrentPairAssignmentsController', function () {
+                var ControllerName = 'CurrentPairAssignmentsController';
+                var Coupling, location, routeParams;
+
+                beforeEach(function () {
+                    location = {path: jasmine.createSpy('path')};
+                    var selectedTribe = {name: 'Party tribe.', _id: 'party'};
+                    Coupling = {
+                        data: {selectedTribe: selectedTribe},
+                        selectTribe: jasmine.createSpy('selectTribe'),
+                        spin: jasmine.createSpy('spin'),
+                        saveCurrentPairAssignments: jasmine.createSpy('save')
+                    };
+                    scope.data = Coupling.data;
+                    routeParams = {tribeId: selectedTribe._id};
+                });
+
+                it('will select tribe and then select the latest pairs', function () {
+                    expect(Coupling.selectTribe).not.toHaveBeenCalled();
+                    injectController(ControllerName, scope, location, Coupling, routeParams);
+
+                    expect(Coupling.selectTribe.calls.count()).toBe(1);
+                    var callArgs = Coupling.selectTribe.calls.argsFor(0);
+                    expect(callArgs[0]).toBe(Coupling.data.selectedTribe._id);
+                    var callback = callArgs[1];
+
+                    var currentPairs = [
+                        ['tom', 'jerry']
+                    ];
+                    var history = [ currentPairs];
+                    expect(Coupling.data.currentPairAssignments).not.toBe(currentPairs);
+                    callback(null, history);
+                    expect(Coupling.data.currentPairAssignments).toBe(currentPairs);
+                });
+                it('will maximize player roster', function () {
+                    scope.playerRoster.minimized = true;
+                    injectController(ControllerName, scope, location, Coupling, routeParams);
+                    expect(scope.playerRoster.minimized).toBe(false);
+                });
+            });
         });
     });
 });
