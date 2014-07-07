@@ -587,6 +587,47 @@ describe('The controller named ', function () {
                     expect(location.path).not.toHaveBeenCalledWith('/' + routeParams.tribeId + '/pairAssignments/current');
                 });
 
+                describe('on location change', function () {
+                    var onLocationChange;
+                    beforeEach(function () {
+                        injectController(ControllerName, scope, location, Coupling, routeParams);
+
+                        expect(scope.$on).toHaveBeenCalled();
+                        var args = scope.$on.calls.argsFor(0);
+                        expect(args[0]).toBe('$locationChangeStart');
+                        onLocationChange = args[1];
+                    });
+
+                    describe('it will prompt the user to save if the player has changed', function () {
+
+                        beforeEach(function () {
+                            window.confirm = jasmine.createSpy('confirm');
+                            scope.original = {name: 'O.G.'};
+                            scope.player = {name: "differentName"};
+                        });
+
+                        it('and if they confirm it will save', function () {
+                            window.confirm.and.returnValue(true);
+                            onLocationChange();
+                            expect(Coupling.savePlayer).toHaveBeenCalledWith(scope.player);
+                        });
+
+                        it('and if they do not confirm it will not save', function () {
+                            window.confirm.and.returnValue(false);
+                            onLocationChange();
+                            expect(Coupling.savePlayer).not.toHaveBeenCalledWith(scope.player);
+                        });
+
+                    });
+                    it('it will not prompt the user to save if the player is unchanged', function () {
+                        window.confirm = jasmine.createSpy('confirm');
+                        scope.original = {name: 'O.G.'};
+                        scope.player = {name: scope.original.name};
+                        onLocationChange();
+                        expect(window.confirm).not.toHaveBeenCalled();
+                        expect(Coupling.savePlayer).not.toHaveBeenCalled();
+                    });
+                });
             });
 
         });
