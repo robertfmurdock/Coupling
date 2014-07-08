@@ -32,7 +32,10 @@ controllers.controller('SelectedPlayerCardController', function ($scope, $locati
 });
 
 controllers.controller('TribeListController', function ($scope, $location, Coupling) {
-    $scope.tribes = Coupling.data.tribes;
+    Coupling.getTribes(function (tribes) {
+        $scope.tribes = tribes;
+    });
+
     $scope.playerRoster.minimized = true;
     Coupling.selectTribe(null);
     $scope.clickOnTribeCard = function (tribe) {
