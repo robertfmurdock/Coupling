@@ -18,5 +18,6 @@ To install and run, you'll need to have mongo and node installed. Once you've go
 5. Try it out and let me know what you think!
 
 
-What is pairing?
+What is Pairing?
+----------------
   Pairing is the act of two specialists in one profession working together on the same task concurrently. This allows for constant collaboration when brainstorming for solutions, reinforcement of cultural standards and norms, and immediate review of all work being produced. This helps build trust that all the content created by the pair is valuable and safe.
