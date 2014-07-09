@@ -6,7 +6,6 @@ services.service("Coupling", function ($http) {
     var makeErrorHandler = function (url) {
         return function (data, statusCode) {
             alert("There was a problem loading " + url + " " + data + " Got status code: " + statusCode);
-            console.log(data);
         }
     };
 
