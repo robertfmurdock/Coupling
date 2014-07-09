@@ -576,7 +576,7 @@ describe('The controller named ', function () {
                 });
 
                 it('remove player will remove and reroute to current pair assignments when confirmed', function () {
-                    window.confirm = jasmine.createSpy('confirm');
+                    spyOn(window,'confirm');
 
                     injectController(ControllerName, scope, location, Coupling, routeParams);
 
