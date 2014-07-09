@@ -77,6 +77,7 @@ describe('Service: ', function () {
                 httpBackend.flush();
 
                 expect(expectedPlayers).toEqual(loadedPlayers);
+                expect(expectedHistory).toEqual(loadedHistory);
             });
         });
 
