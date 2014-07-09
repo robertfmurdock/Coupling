@@ -21,3 +21,7 @@ To install and run, you'll need to have mongo and node installed. Once you've go
 What is Pairing?
 ----------------
   Pairing is the act of two specialists in one profession working together on the same task concurrently. This allows for constant collaboration when brainstorming for solutions, reinforcement of cultural standards and norms, and immediate review of all work being produced. This helps build trust that all the content created by the pair is valuable and safe.
+
+Why Should Pairs Be Rotated?
+----------------------------
+  For better or for worse, teams are made up of people, and people have different skill levels, opinions, temperments and philosophies. Rotating pairs is intended to help make sure that senior people will get to synchronize with other senior people periodically. Similarly, junior team members should get the opportunity to work with other junior team members - this gives them the opportunity to test their growth. Regular rotation of pairs also helps discourage project knowledge from being reserved for a few 'smart' individuals... at the very least, many other team members should see and participate in decisions regularly.
