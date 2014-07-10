@@ -54,3 +54,13 @@ How Does my Player Card Get One of Those Fancy Pictures?
 
 Currently, the picture your player uses as its icon is determined by your email - Coupling uses your email to find your Gravatar. If you don't yet have a Gravatar, you can make one here! https://en.gravatar.com/
 There is also a manual workaround if you want to add images locally to the server. I'm sure those of you who are clever will be able to figure that one out by yourselves.
+
+I Don't Have a Real Team, But I Still Want To Try Coupling!
+-----------------------------------------------------------
+
+For people who just want to play with the program and understand its features, I've included a demo dataset in the file Coupling Demo Data.zip. Unzip the file, then use mongorestore to add it to your local mongo database. A tribe with a set of players and history will be available to you the next time you connect to Coupling.
+
+Is This Really Just For Work?
+-----------------------------
+
+Nope! Feel free to use this for anything - field trips and buddy systems, pairing up for murder mysteries, impromptu fight clubs... All I ask is that you send me a nice note telling me about your innovative use of the program.
