@@ -20,7 +20,7 @@ To install and run, you'll need to have mongo and node installed. Once you've go
 
 What is Pairing?
 ----------------
-  Pairing is the act of two specialists in one profession working together on the same task concurrently. This allows for constant collaboration when brainstorming for solutions, reinforcement of cultural standards and norms, and immediate review of all work being produced. This helps build trust that all the content created by the pair is valuable and safe.
+  Pairing is the act of two specialists in one profession working together on the same task concurrently. This allows for constant collaboration when brainstorming for solutions, reinforcement of standards and cultural norms, and immediate peer-review of all work being produced. This helps build trust that all the content created by the pair is valuable and safe.
 
 Why Should Pairs Be Rotated?
 ----------------------------
