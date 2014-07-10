@@ -36,6 +36,7 @@ How Does Coupling Choose Pairs?
 -------------------------------
 
 Coupling remembers the history of every pair its ever made. The longer you use it, the more it knows! This is important, because Coupling follows these rules:
+
 1. Whoever has not paired together for the longest time will be automatically paired together.
 2. When there are multiple potential pairs that have been apart for the longest time, one is chosen at random. Rules continue as normal with the remaining players.
 
