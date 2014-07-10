@@ -42,3 +42,9 @@ Coupling remembers the history of every pair its ever made. The longer you use i
 
 Those rules are repeated until there are no players remaining to be paired together. This encourages teams to let everybody work together, and that helps build relationships among team members. The best way to learn how to work together is to actually, directly work together.
 
+Oh no! Someone is sick this week! What should I do?
+---------------------------------------------------
+
+Fret not! Coupling is prepared to deal with your problem. When you know someone won't be available for a whole pairing cycle, tap on their face in the Player Roster (at the bottom of the screen) before spinning for new pairs. They'll be excluded from this week's roster and Coupling will automatically compensate for their absense.
+
+If someone is only available for part of a pairing cycle, Coupling recommends that you pair them anyway, possibly using the drag-and-drop manual override to pair them with someone similarly partially available. Part-time pairing with someone is better then not pairing with them at all!
