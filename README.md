@@ -48,3 +48,9 @@ Oh no! Someone is sick this week! What should I do?
 Fret not! Coupling is prepared to deal with your problem. When you know someone won't be available for a whole pairing cycle, tap on their face in the Player Roster (at the bottom of the screen) before spinning for new pairs. They'll be excluded from this week's roster and Coupling will automatically compensate for their absense.
 
 If someone is only available for part of a pairing cycle, Coupling recommends that you pair them anyway, possibly using the drag-and-drop manual override to pair them with someone similarly partially available. Part-time pairing with someone is better then not pairing with them at all!
+
+How Does my Player Card Get One of Those Fancy Pictures?
+--------------------------------------------------------
+
+Currently, the picture your player uses as its icon is determined by your email - Coupling uses your email to find your Gravatar. If you don't yet have a Gravatar, you can make one here! https://en.gravatar.com/
+There is also a manual workaround if you want to add images locally to the server. I'm sure those of you who are clever will be able to figure that one out by yourselves.
