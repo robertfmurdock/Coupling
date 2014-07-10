@@ -30,3 +30,14 @@ What Makes For Good Pairing? What Doesn't?
 ------------------------------------------
 
 TBD
+
+
+How Does Coupling Choose Pairs?
+-------------------------------
+
+Coupling remembers the history of every pair its ever made. The longer you use it, the more it knows! This is important, because Coupling follows these rules:
+1. Whoever has not paired together for the longest time will be automatically paired together.
+2. When there are multiple potential pairs that have been apart for the longest time, one is chosen at random. Rules continue as normal with the remaining players.
+
+Those rules are repeated until there are no players remaining to be paired together. This encourages teams to let everybody work together, and that helps build relationships among team members. The best way to learn how to work together is to actually, directly work together.
+
