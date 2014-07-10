@@ -62,22 +62,44 @@ describe('Service: ', function () {
                     {name: 'player2'}
                 ];
 
-                var expectedHistory = [{time: 'before'}, {time: 'after'}];
+                var expectedHistory = [
+                    {time: 'before'},
+                    {time: 'after'}
+                ];
 
                 httpBackend.whenGET('/api/tribes').respond(200, []);
                 httpBackend.whenGET('/api/' + tribeId + '/players').respond(200, expectedPlayers);
                 httpBackend.whenGET('/api/' + tribeId + '/history').respond(200, expectedHistory);
 
                 var loadedPlayers = null, loadedHistory = null;
-                Coupling.selectTribe(tribeId, function (_players_, _history_) {
-                    loadedPlayers = _players_;
-                    loadedHistory = _history_;
+                Coupling.selectTribe(tribeId, function (players, history) {
+                    loadedPlayers = players;
+                    loadedHistory = history;
                 });
 
                 httpBackend.flush();
 
                 expect(expectedPlayers).toEqual(loadedPlayers);
                 expect(expectedHistory).toEqual(loadedHistory);
+            });
+        });
+
+        describe('save tribe', function () {
+            it('will post to persistence and callback', function () {
+
+                httpBackend.whenPOST('/api/tribes').respond(200);
+                var tribe = {name: 'Navi'};
+                var callbackCallCount = 0;
+                Coupling.saveTribe(tribe, function () {
+                    callbackCallCount++;
+                });
+
+                httpBackend.flush();
+                expect(callbackCallCount).toBe(1);
+            });
+
+            xit('will report error and not callback on error', function () {
+                fail();
             });
         });
 
