@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-protractor-webdriver');
     grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     grunt.initConfig({
         karma: {
@@ -12,6 +13,20 @@ module.exports = function (grunt) {
                 singleRun: true,
                 browsers: ['PhantomJS'],
                 reporters: ['dots']
+            }
+        },
+        mochaTest: {
+            unit: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: ['test/mocha/**/*.js']
+            },
+            endpoint: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: ['test/endpoint/**/*.js']
             }
         },
         express: {
@@ -37,6 +52,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('default', ['karma:unit', 'express:dev', 'protractor_webdriver:start', 'protractor:e2e']);
+    grunt.registerTask('default', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
+        'protractor_webdriver:start', 'protractor:e2e']);
 
 };
