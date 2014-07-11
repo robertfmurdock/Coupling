@@ -19,7 +19,9 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-app.set('port', process.env.PORT || config.port);
+var port = process.env.PORT || config.port;
+var mongoUrl = process.env.MONGOHQ_URL_MONGOURL || config.mongoUrl;
+app.set('port', port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon('public/images/favicon.ico'));
@@ -34,7 +36,6 @@ if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
 
-var mongoUrl = process.env.MONGOHQ_URL_MONGOURL || config.mongoUrl;
 var tribes = new TribeRoutes(mongoUrl);
 
 app.get('/', routes.index);
