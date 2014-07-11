@@ -34,20 +34,21 @@ if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
 
-var tribes = new TribeRoutes(config.mongoUrl);
+var mongoUrl = process.env.MONGOHQ_URL_MONGOURL || config.mongoUrl;
+var tribes = new TribeRoutes(mongoUrl);
 
 app.get('/', routes.index);
 app.get('/api/tribes', tribes.list);
 app.post('/api/tribes', tribes.save);
-app.post('/api/:tribeId/game', game(config.mongoUrl));
+app.post('/api/:tribeId/game', game(mongoUrl));
 
-var history = new HistoryRoutes(config.mongoUrl);
+var history = new HistoryRoutes(mongoUrl);
 var historyRoute = '/api/:tribeId/history';
 app.get(historyRoute, history.list);
 app.post(historyRoute, history.savePairs);
 app.delete(historyRoute + '/:id', history.deleteMember);
 
-var players = new PlayerRoutes(config.mongoUrl);
+var players = new PlayerRoutes(mongoUrl);
 
 app.get('/api/:tribeId/players', players.listTribeMembers);
 app.post('/api/:tribeId/players', players.savePlayer);
