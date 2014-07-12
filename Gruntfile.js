@@ -48,11 +48,21 @@ module.exports = function (grunt) {
                 noColor: false,
                 args: {}
             },
-            e2e: {}
+            e2e: {},
+            jenkins: {
+                options: {
+                    args: {
+                        browser: 'chrome_headless'
+                    }
+                }
+            }
         }
     });
 
-    grunt.registerTask('default', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
-        'protractor_webdriver:start', 'protractor:e2e']);
+    grunt.registerTask('standard', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
+        'protractor_webdriver:start']);
+
+    grunt.registerTask('default', ['standard','protractor:e2e']);
+    grunt.registerTask('jenkins', ['standard','protractor:jenkins']);
 
 };
