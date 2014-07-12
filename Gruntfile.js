@@ -52,7 +52,7 @@ module.exports = function (grunt) {
             jenkins: {
                 options: {
                     args: {
-                        browser: 'chrome_headless'
+                        browser: 'firefox'
                     }
                 }
             }
