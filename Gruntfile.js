@@ -63,6 +63,6 @@ module.exports = function (grunt) {
         'protractor_webdriver:start']);
 
     grunt.registerTask('default', ['standard','protractor:e2e']);
-    grunt.registerTask('jenkins', ['standard']);
+    grunt.registerTask('jenkins', ['standard','protractor:jenkins']);
 
 };
