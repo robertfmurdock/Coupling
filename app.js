@@ -19,8 +19,8 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var port = process.env.PORT || config.port;
-var mongoUrl = process.env.MONGOHQ_URL_MONGOURL || config.mongoUrl;
+var port = config.port;
+var mongoUrl = config.mongoUrl;
 
 app.set('port', port);
 app.set('views', path.join(__dirname, 'views'));
