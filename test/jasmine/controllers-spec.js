@@ -223,11 +223,15 @@ describe('The controller named ', function () {
                     });
 
                     it('will use the Coupling service to save the tribe', function () {
+                        var expectedId = 'importantId';
+                        scope.tribe.requestedId = expectedId;
                         scope.clickSaveButton();
 
                         expect(Coupling.saveTribe).toHaveBeenCalled();
                         var saveTribeArgs = Coupling.saveTribe.calls.argsFor(0);
                         expect(saveTribeArgs[0]).toBe(scope.tribe);
+                        expect(saveTribeArgs[0]._id).toBe(expectedId);
+                        expect(saveTribeArgs[0].requestedId).toBeUndefined();
                     });
 
                     describe('when the save is complete', function () {

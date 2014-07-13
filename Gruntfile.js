@@ -46,7 +46,9 @@ module.exports = function (grunt) {
                 configFile: "test/e2e/protractor-conf.js",
                 keepAlive: false,
                 noColor: false,
-                args: {}
+                args: {
+                    browser: 'chrome'
+                }
             },
             e2e: {},
             jenkins: {
@@ -62,7 +64,7 @@ module.exports = function (grunt) {
     grunt.registerTask('standard', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
         'protractor_webdriver:start']);
 
-    grunt.registerTask('default', ['standard','protractor:e2e']);
+    grunt.registerTask('default', ['standard', 'protractor:e2e']);
     grunt.registerTask('jenkins', ['standard']);
 
 };
