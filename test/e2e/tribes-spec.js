@@ -24,7 +24,6 @@ describe('The default tribes page', function () {
     });
 
     describe('when a tribe exists, on the tribe page', function () {
-
         var expectedTribe;
         beforeEach(function (done) {
             browser.get(hostName);
@@ -46,5 +45,21 @@ describe('The default tribes page', function () {
             });
         });
     });
+
+    describe('after navigating to the new tribe page', function () {
+        beforeEach(function () {
+            browser.get(hostName);
+            element(By.id('new-tribe-button')).click();
+            expect(protractor.getInstance().getCurrentUrl()).toBe(hostName + '/new-tribe/');
+        });
+
+        it('the id field shows and does not disappear when text is added', function () {
+            element(By.id('tribe-id')).then(function (tribeIdElement) {
+                tribeIdElement.sendKeys('oopsie');
+                expect(tribeIdElement.isDisplayed()).toBe(true);
+            });
+        });
+    });
+
 });
 
