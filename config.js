@@ -4,6 +4,12 @@ var config = {
     },
     get mongoUrl() {
         return  process.env.MONGOHQ_URL_MONGOURL || "localhost/Coupling";
+    },
+    get secret() {
+        return  "maythefourthbewithyou";
+    },
+    get requiresAuthentication() {
+        return false;
     }
 };
 module.exports = config;

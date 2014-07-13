@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var routes = require('./routes');
 var HistoryRoutes = require('./routes/history');
@@ -18,6 +14,8 @@ var logger = require('morgan');
 var methodOverride = require('method-override');
 var errorHandler = require('errorhandler');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 var app = express();
 
@@ -30,11 +28,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.cookieParser());
-app.use(express.session({ secret: config.secret }));
+app.use(cookieParser());
+app.use(session({
+    secret: config.secret,
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
@@ -50,8 +51,8 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(new GoogleStrategy({
-        returnURL: 'http://localhost:3000/auth/google/return',
-        realm: 'http://localhost:3000/'
+        returnURL: 'http://localhost:' + config.port + '/auth/google/return',
+        realm: 'http://localhost:' + config.port + '/'
     },
     function (identifier, profile, done) {
         done(null, {id: '1'});
@@ -60,11 +61,24 @@ passport.use(new GoogleStrategy({
 
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/return',
-    passport.authenticate('google', { successRedirect: '/',
-        failureRedirect: '/auth/google'  }));
+    passport.authenticate('google', {
+        successRedirect: '/',
+        failureRedirect: '/auth/google'
+    }));
+
+var checkApiAccess = function (req, res, next) {
+    if (config.requiresAuthentication && !req.isAuthenticated())
+        res.send(401);
+    else
+        next();
+};
 
 var tribes = new TribeRoutes(config.mongoUrl);
 app.get('/', routes.index);
+app.get('/api/*', checkApiAccess);
+app.post('/api/*', checkApiAccess);
+app.delete('/api/*', checkApiAccess);
+
 app.get('/api/tribes', tribes.list);
 app.post('/api/tribes', tribes.save);
 app.post('/api/:tribeId/game', game(config.mongoUrl));
@@ -76,7 +90,6 @@ app.post(historyRoute, history.savePairs);
 app.delete(historyRoute + '/:id', history.deleteMember);
 
 var players = new PlayerRoutes(config.mongoUrl);
-
 app.get('/api/:tribeId/players', players.listTribeMembers);
 app.post('/api/:tribeId/players', players.savePlayer);
 app.delete('/api/:tribeId/players/:playerId', players.removePlayer);

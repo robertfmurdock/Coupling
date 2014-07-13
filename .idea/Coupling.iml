@@ -25,6 +25,7 @@
     <orderEntry type="library" name="underscore-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="Node.js v0.10.28 Core Modules" level="application" />
     <orderEntry type="library" name="gruntjs-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="passport-DefinitelyTyped" level="application" />
   </component>
 </module>
 

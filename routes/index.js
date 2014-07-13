@@ -1,8 +1,10 @@
+var config = require('../config');
+
 exports.index = function (request, response) {
-    if (request.session.passport.user) {
-        response.render('index', { title: 'Coupling' });
-    } else {
+    if (config.requiresAuthentication && !request.isAuthenticated()) {
         response.redirect('/auth/google');
+    } else {
+        response.render('index', { title: 'Coupling' });
     }
 };
 
