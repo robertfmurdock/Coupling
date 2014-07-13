@@ -7,7 +7,7 @@ var Comparators = require('../../lib/Comparators');
 var monk = require('monk');
 var config = require('../../config');
 
-var host = 'http://localhost:3000';
+var host = 'http://localhost:' + config.port;
 var tribeId = 'test';
 var path = '/api/' + tribeId + '/history';
 
@@ -43,9 +43,13 @@ describe(path, function () {
                     new DataService(config.mongoUrl).requestHistory(tribeId, function (history) {
                         var latestEntryInHistory = history[0];
                         for (var parameterName in pairsAsSaved) {
-                            var actualParameterValue = latestEntryInHistory[parameterName];
-                            var expectedParameterValue = pairsAsSaved[parameterName];
-                            JSON.stringify(actualParameterValue).should.equal(JSON.stringify(expectedParameterValue));
+                            if (pairsAsSaved.hasOwnProperty(parameterName)) {
+                                var actualParameterValue = latestEntryInHistory[parameterName];
+                                var expectedParameterValue = pairsAsSaved[parameterName];
+                                JSON.stringify(actualParameterValue).should.equal(JSON.stringify(expectedParameterValue));
+                            } else {
+                                should.fail;
+                            }
                         }
                         done();
                     }, function (error) {

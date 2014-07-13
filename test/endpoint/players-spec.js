@@ -6,7 +6,7 @@ var Comparators = require('../../lib/Comparators');
 
 var config = require('./../../config');
 var tribeId = 'test';
-var server = 'http://localhost:3000';
+var server = 'http://localhost:' + config.port;
 var couplingServer = supertest(server);
 var path = '/api/' + tribeId + '/players';
 

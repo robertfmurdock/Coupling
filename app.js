@@ -19,10 +19,7 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var port = config.port;
-var mongoUrl = config.mongoUrl;
-
-app.set('port', port);
+app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon('public/images/favicon.ico'));
@@ -37,20 +34,20 @@ if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
 
-var tribes = new TribeRoutes(mongoUrl);
+var tribes = new TribeRoutes(config.mongoUrl);
 
 app.get('/', routes.index);
 app.get('/api/tribes', tribes.list);
 app.post('/api/tribes', tribes.save);
-app.post('/api/:tribeId/game', game(mongoUrl));
+app.post('/api/:tribeId/game', game(config.mongoUrl));
 
-var history = new HistoryRoutes(mongoUrl);
+var history = new HistoryRoutes(config.mongoUrl);
 var historyRoute = '/api/:tribeId/history';
 app.get(historyRoute, history.list);
 app.post(historyRoute, history.savePairs);
 app.delete(historyRoute + '/:id', history.deleteMember);
 
-var players = new PlayerRoutes(mongoUrl);
+var players = new PlayerRoutes(config.mongoUrl);
 
 app.get('/api/:tribeId/players', players.listTribeMembers);
 app.post('/api/:tribeId/players', players.savePlayer);

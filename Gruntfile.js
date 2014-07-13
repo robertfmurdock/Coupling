@@ -1,10 +1,10 @@
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-protractor-webdriver');
-    grunt.loadNpmTasks('grunt-express-server');
-    grunt.loadNpmTasks('grunt-mocha-test');
 
     grunt.initConfig({
         karma: {
@@ -33,7 +33,8 @@ module.exports = function (grunt) {
             options: {},
             dev: {
                 options: {
-                    script: 'app.js'
+                    script: 'app.js',
+                    port: 3001
                 }
             }
         },
