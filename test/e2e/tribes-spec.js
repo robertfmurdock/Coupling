@@ -23,4 +23,28 @@ describe('The default tribes page', function () {
         });
     });
 
+    describe('when a tribe exists, on the tribe page', function () {
+
+        var expectedTribe;
+        beforeEach(function (done) {
+            browser.get(hostName);
+            var all = element.all(by.repeater('tribe in tribes'));
+            all.first().then(function (tribeElement) {
+                tribeElement.element(By.css('.tribe-name')).click();
+
+                tribeCollection.find({}, {}, function (error, tribeDocuments) {
+                    expectedTribe = tribeDocuments[0];
+                    done();
+                });
+            });
+        });
+
+        it('the tribe name is shown', function (done) {
+            element.all(By.id('tribe-name')).first().then(function (tribeNameElement) {
+                expect(tribeNameElement.getAttribute('value')).toEqual(expectedTribe.name);
+                done();
+            });
+        });
+    });
 });
+

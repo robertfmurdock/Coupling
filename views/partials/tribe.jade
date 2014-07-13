@@ -1,4 +1,4 @@
-div(class="tribe-view")
+div(class="tribe-view" ng-show="tribe")
     span(class="tribe")
         div(class="tribe-name") {{tribe.name}}
         img(ng-src="{{tribe | tribeImageUrl}}" class="tribe-icon" width="150" height="150")

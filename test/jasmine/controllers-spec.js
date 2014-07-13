@@ -267,13 +267,14 @@ describe('The controller named ', function () {
                     scope.tribe = previouslyScopedTribe;
                     injectController(EditTribeController, scope, location, Coupling, routeParams);
                     expect(scope.tribe).not.toBe(previouslyScopedTribe);
-                    expect(scope.tribe).toBe(Coupling.data.selectedTribe);
-                });
+                    expect(scope.tribe).toBe(null);
 
-                it('will deselect tribe', function () {
-                    expect(Coupling.selectTribe).not.toHaveBeenCalled();
-                    injectController(EditTribeController, scope, location, Coupling, routeParams);
-                    expect(Coupling.selectTribe).toHaveBeenCalledWith(Coupling.data.selectedTribe._id);
+                    expect(Coupling.selectTribe).toHaveBeenCalled();
+                    var callArgs = Coupling.selectTribe.calls.argsFor(0);
+                    expect(callArgs[0]).toBe(Coupling.data.selectedTribe._id);
+                    var callback = callArgs[1];
+                    callback();
+                    expect(scope.tribe).toBe(Coupling.data.selectedTribe);
                 });
 
                 describe('when pressing the save button ', function () {

@@ -46,9 +46,7 @@ controllers.controller('TribeListController', function ($scope, $location, Coupl
     };
 });
 
-function tribeController(tribe, tribeId, $scope, Coupling, $location) {
-    Coupling.selectTribe(tribeId);
-    $scope.tribe = tribe;
+function tribeController($scope, Coupling, $location) {
     $scope.clickSaveButton = function () {
         Coupling.saveTribe($scope.tribe, function (updatedTribe) {
             $location.path("/" + updatedTribe._id + "/pairAssignments/current");
@@ -56,11 +54,17 @@ function tribeController(tribe, tribeId, $scope, Coupling, $location) {
     }
 }
 controllers.controller('NewTribeController', function ($scope, $location, Coupling) {
-    tribeController({name: 'New Tribe'}, null, $scope, Coupling, $location);
+    $scope.tribe = {name: 'New Tribe'};
+    Coupling.selectTribe(null);
+    tribeController($scope, Coupling, $location);
 });
 
 controllers.controller('EditTribeController', function ($scope, Coupling, $location, $routeParams) {
-    tribeController(Coupling.data.selectedTribe, $routeParams.tribeId, $scope, Coupling, $location);
+    $scope.tribe = null;
+    Coupling.selectTribe($routeParams.tribeId, function () {
+        $scope.tribe = Coupling.data.selectedTribe;
+    });
+    tribeController($scope, Coupling, $location);
 });
 
 controllers.controller('HistoryController', function ($scope, Coupling, $routeParams) {
