@@ -12,7 +12,7 @@ var config = {
         return  "maythefourthbewithyou";
     },
     get requiresAuthentication() {
-        return true;
+        return false;
     }
 };
 module.exports = config;
