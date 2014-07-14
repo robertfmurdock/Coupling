@@ -52,8 +52,8 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(new GoogleStrategy({
-        returnURL: 'http://localhost:' + config.port + '/auth/google/return',
-        realm: 'http://localhost:' + config.port + '/'
+        returnURL: config.publicUrl + '/auth/google/return',
+        realm: config.publicUrl + '/'
     },
     function (identifier, profile, done) {
         done(null, {id: '1'});
