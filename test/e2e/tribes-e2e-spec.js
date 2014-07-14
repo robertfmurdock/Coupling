@@ -4,6 +4,10 @@ var config = require("../../config");
 
 describe('The default tribes page', function () {
 
+    beforeEach(function(){
+        browser.get(hostName + '/test-login?username="username"&password="pw"');
+    });
+
     var hostName = 'http://localhost:' + config.port;
     var database = monk(config.mongoUrl);
     var tribeCollection = database.get('tribes');

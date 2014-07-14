@@ -1,6 +1,6 @@
 "use strict";
 var should = require('should');
-var supertest = require('supertest');
+var Supertest = require('supertest');
 var DataService = require('../../lib/CouplingDataService');
 var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
 var Comparators = require('../../lib/Comparators');
@@ -26,6 +26,16 @@ describe(path, function () {
 
     historyCollection.remove({_id: validPairs._id}, false);
 
+    var supertest = Supertest('http://localhost:' + config.port);
+    var Cookies;
+
+    beforeEach(function (done) {
+        supertest.get('/test-login?username="name"&password="pw"').end(function (err, res) {
+            Cookies = res.headers['set-cookie'].pop().split(';')[0];
+            done();
+        });
+    });
+
     afterEach(function () {
         historyCollection.remove({_id: validPairs._id}, false);
     });
@@ -33,7 +43,9 @@ describe(path, function () {
     describe("POST will save pairs", function () {
 
         it('should add when given a valid pair assignment document.', function (done) {
-            supertest(host).post(path).
+            var post = supertest.post(path);
+            post.cookies = Cookies;
+            post.
                 send(validPairs)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
@@ -64,8 +76,9 @@ describe(path, function () {
                     {name: "Scooby"}
                 ]
             ]};
-            supertest(host).post(path).
-                send(pairs)
+            var post = supertest.post(path);
+            post.cookies = Cookies;
+            post.send(pairs)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
                     response.status.should.equal(400);
@@ -75,8 +88,9 @@ describe(path, function () {
         });
         it('should not add when given a document without pairs', function (done) {
             var pairs = { date: new Date()};
-            supertest(host).post(path).
-                send(pairs)
+            var post = supertest.post(path);
+            post.cookies = Cookies;
+            post.send(pairs)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
                     response.status.should.equal(400);
@@ -85,8 +99,9 @@ describe(path, function () {
                 });
         });
         it('should not add when not given a submission', function (done) {
-            supertest(host).post(path)
-                .expect('Content-Type', /json/).
+            var post = supertest.post(path);
+            post.cookies = Cookies;
+            post.expect('Content-Type', /json/).
                 end(function (error, response) {
                     response.status.should.equal(400);
                     response.body.should.eql({error: 'Pairs were not valid.' });
@@ -97,7 +112,9 @@ describe(path, function () {
 
     describe("DELETE", function () {
         beforeEach(function (done) {
-            supertest(host).post(path).send(validPairs)
+            var post = supertest.post(path);
+            post.cookies = Cookies;
+            post.send(validPairs)
                 .end(function (error) {
                     should.not.exist(error);
                     done();
@@ -106,12 +123,16 @@ describe(path, function () {
 
         it('will remove a set of pair assignments.', function (done) {
             setTimeout(function () {
-                supertest(host).delete(path + '/' + validPairs._id).end(function (error, response) {
+                var httpDelete = supertest.delete(path + '/' + validPairs._id);
+                httpDelete.cookies = Cookies;
+                httpDelete.end(function (error, response) {
                     should.not.exist(error);
                     response.status.should.equal(200);
                     response.body.should.eql({ message: 'SUCCESS' });
 
-                    supertest(host).get(path).end(function (error, response) {
+                    var httpGet = supertest.get(path);
+                    httpGet.cookies = Cookies;
+                    httpGet.end(function (error, response) {
                         var result = response.body.some(function (pairAssignments) {
                             return validPairs._id == pairAssignments._id;
                         });
@@ -126,7 +147,9 @@ describe(path, function () {
         it('will return an error when specific pair assignments do not exist.', function (done) {
             setTimeout(function () {
                 var badId = "veryBadId";
-                supertest(host).delete(path + '/' + badId).end(function (error, response) {
+                var httpDelete = supertest.delete(path + '/' + badId);
+                httpDelete.cookies = Cookies;
+                httpDelete.end(function (error, response) {
                     should.not.exist(error);
                     response.status.should.equal(404);
                     response.body.should.eql({ message: 'Pair Assignments could not be deleted because they do not exist.' });

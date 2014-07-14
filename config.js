@@ -9,7 +9,7 @@ var config = {
         return  "maythefourthbewithyou";
     },
     get requiresAuthentication() {
-        return false;
+        return true;
     }
 };
 module.exports = config;

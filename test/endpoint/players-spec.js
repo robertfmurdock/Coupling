@@ -1,5 +1,5 @@
 "use strict";
-var supertest = require('supertest');
+var Supertest = require('supertest');
 var should = require('should');
 var DataService = require('../../lib/CouplingDataService');
 var Comparators = require('../../lib/Comparators');
@@ -7,7 +7,6 @@ var Comparators = require('../../lib/Comparators');
 var config = require('./../../config');
 var tribeId = 'test';
 var server = 'http://localhost:' + config.port;
-var couplingServer = supertest(server);
 var path = '/api/' + tribeId + '/players';
 
 var monk = require('monk');
@@ -16,12 +15,25 @@ var playersCollection = database.get('players');
 
 
 describe(path, function () {
+
+    var couplingServer = Supertest('http://localhost:' + config.port);
+    var Cookies;
+
+    beforeEach(function (done) {
+        couplingServer.get('/test-login?username="name"&password="pw"').end(function (err, res) {
+            Cookies = res.headers['set-cookie'].pop().split(';')[0];
+            done();
+        });
+    });
+
     describe("GET", function () {
         it('will return all available players on team.', function (done) {
             var service = new DataService(config.mongoUrl);
 
             service.requestPlayers(tribeId, function (players) {
-                couplingServer.get(path).expect('Content-Type', /json/).end(function (error, response) {
+                var httpGet = couplingServer.get(path);
+                httpGet.cookies = Cookies;
+                httpGet.expect('Content-Type', /json/).end(function (error, response) {
                     should.not.exist(error);
                     response.status.should.equal(200);
                     JSON.stringify(response.body).should.equal(JSON.stringify(players));
@@ -40,7 +52,9 @@ describe(path, function () {
     describe("DELETE", function () {
         var newPlayer = {name: "Awesome-O", tribe: tribeId};
         beforeEach(function (done) {
-            couplingServer.post(path).send(newPlayer).end(function (error, responseContainingTheNewId) {
+            var httpPost = couplingServer.post(path);
+            httpPost.cookies = Cookies;
+            httpPost.send(newPlayer).end(function (error, responseContainingTheNewId) {
                 should.not.exist(error);
                 newPlayer = responseContainingTheNewId.body;
                 done();
@@ -52,11 +66,15 @@ describe(path, function () {
         });
 
         it('will remove a given player.', function (done) {
-            couplingServer.delete(path + "/" + newPlayer._id).end(function (error, response) {
+            var httpDelete = couplingServer.delete(path + "/" + newPlayer._id);
+            httpDelete.cookies = Cookies;
+            httpDelete.end(function (error, response) {
                 should.not.exist(error);
                 response.status.should.equal(200);
 
-                supertest(server).get(path).end(function (error, response) {
+                var httpGet = couplingServer.get(path);
+                httpGet.cookies = Cookies;
+                httpGet.end(function (error, response) {
                     var result = response.body.some(function (player) {
                         return Comparators.areEqualPlayers(newPlayer, player);
                     });
@@ -68,7 +86,9 @@ describe(path, function () {
 
         it('will return an error when the player does not exist.', function (done) {
             var badId = "terribleTerribleIdentifier";
-            couplingServer.delete(path + "/" + badId).end(function (error, response) {
+            var httpDelete = couplingServer.delete(path + "/" + badId);
+            httpDelete.cookies = Cookies;
+            httpDelete.end(function (error, response) {
                 should.not.exist(error);
                 response.status.should.equal(404);
                 response.body.should.eql({message: 'Failed to remove the player because it did not exist.'});
