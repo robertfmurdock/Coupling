@@ -19,6 +19,14 @@ var config = {
     },
     get googleClientSecret() {
         return process.env.GOOGLE_CLIENT_SECRET || 'ZVTj-iV5ZzW3-6so_1Q-bSPQ';
+    },
+    get gitRev() {
+        try {
+            var fileJSON = require('./version');
+            return fileJSON.gitRev;
+        } catch (err) {
+            return 'None';
+        }
     }
 };
 module.exports = config;
