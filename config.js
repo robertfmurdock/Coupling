@@ -15,10 +15,10 @@ var config = {
         return true;
     },
     get googleClientID() {
-        return process.env.GOOGLE_CLIENT_ID || '1043188507506-kg32jar07pr5eir8f7ee4gffock7i7sq.apps.googleusercontent.com';
+        return process.env.GOOGLE_CLIENT_ID || '24452716216-9lqe1p511qcf53kuihamdhggb05gbt4p.apps.googleusercontent.com';
     },
     get googleClientSecret() {
-        return process.env.GOOGLE_CLIENT_SECRET || 'q-GTcE4Cv7l_wex2ITdF6VmG';
+        return process.env.GOOGLE_CLIENT_SECRET || 'ZVTj-iV5ZzW3-6so_1Q-bSPQ';
     }
 };
 module.exports = config;
