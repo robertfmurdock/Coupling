@@ -17,6 +17,7 @@ var errorHandler = require('errorhandler');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
@@ -33,7 +34,12 @@ app.use(cookieParser());
 app.use(session({
     secret: config.secret,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new MongoStore({
+        url: config.mongoUrl
+    }, function(){
+        console.log('Finished starting up session storage.');
+    })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
