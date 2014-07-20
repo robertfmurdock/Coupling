@@ -9,7 +9,7 @@ var path = require('path');
 var config = require('./config');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var GoogleStrategy = require('passport-google').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var methodOverride = require('method-override');
@@ -52,16 +52,18 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(new GoogleStrategy({
-        returnURL: config.publicUrl + '/auth/google/return',
-        realm: config.publicUrl + '/'
+        clientID: config.googleClientID,
+        clientSecret: config.googleClientSecret,
+        callbackURL: config.publicUrl + '/auth/google/callback',
+        scope: 'https://www.googleapis.com/auth/plus.login'
     },
-    function (identifier, profile, done) {
+    function (accessToken, refreshToken, profile, done) {
         done(null, {id: '1'});
     }
 ));
 
 app.get('/auth/google', passport.authenticate('google'));
-app.get('/auth/google/return', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/auth/google' }));
+app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/auth/google' }));
 
 if ('development' == app.get('env')) {
     console.log('Dev Environment: enabling test login');
