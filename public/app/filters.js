@@ -10,10 +10,16 @@ filters.filter('gravatarUrl', function (gravatarService) {
     }
 });
 
-filters.filter('tribeImageUrl', function () {
+filters.filter('tribeImageUrl', function (gravatarService) {
     return function (tribe) {
-        if (tribe && tribe.image) {
-            return "/images/icons/tribes/" + tribe.image;
+        if (tribe) {
+            if (tribe.imageURL) {
+                return tribe.imageURL;
+            } else if (tribe.image) {
+                return "/images/icons/tribes/" + tribe.image;
+            } else if (tribe.email) {
+                return gravatarService.url(tribe.email, {size: 75});
+            }
         } else {
             return "/images/icons/tribes/no-tribe.png";
         }
