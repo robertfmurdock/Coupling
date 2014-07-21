@@ -20,8 +20,7 @@ filters.filter('tribeImageUrl', function (gravatarService) {
             } else if (tribe.email) {
                 return gravatarService.url(tribe.email, {size: 75});
             }
-        } else {
-            return "/images/icons/tribes/no-tribe.png";
         }
+        return "/images/icons/tribes/no-tribe.png";
     }
 });
