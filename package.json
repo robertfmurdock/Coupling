@@ -1,5 +1,5 @@
 {
-    "name": "application-name",
+    "name": "Coupling",
     "version": "0.0.1",
     "private": true,
     "scripts": {
@@ -20,5 +20,26 @@
         "karma-chrome-launcher": "^0.1.4",
         "karma-jasmine": "^0.2.2",
         "karma-phantomjs-launcher": "^0.1.4"
-    }
+    },
+    "description": "Coupling ========",
+    "main": "app.js",
+    "directories": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/robertfmurdock/Coupling.git"
+    },
+    "keywords": [
+        "pairing",
+        "coupling",
+        "switch",
+        "fun"
+    ],
+    "author": "RMUR",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/robertfmurdock/Coupling/issues"
+    },
+    "homepage": "https://github.com/robertfmurdock/Coupling"
 }
