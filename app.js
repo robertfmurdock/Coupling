@@ -61,9 +61,13 @@ passport.use(new GoogleStrategy({
         clientID: config.googleClientID,
         clientSecret: config.googleClientSecret,
         callbackURL: config.publicUrl + '/auth/google/callback',
-        scope: 'https://www.googleapis.com/auth/plus.login'
+        scope: 'https://www.googleapis.com/auth/plus.login email'
     },
     function (accessToken, refreshToken, profile, done) {
+        console.info(accessToken);
+        console.info(refreshToken);
+        console.info(profile.emails);
+        console.info(profile);
         done(null, {id: '1'});
     }
 ));
