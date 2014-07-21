@@ -3,7 +3,7 @@ extends layout
 block content
     div(id="top-section")
         span(id="CouplingTitleBlock")
-            div(class="title")= title
+            div(class="title" title="Built on #{buildDate}. #{gitRev}")= title
             p(ng-hide="data.selectedTribe") Welcome to #{title}.
             div(ng-show="data.selectedTribe")
                 div(class="tribe-name") {{data.selectedTribe.name}}

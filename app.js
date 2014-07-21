@@ -37,7 +37,7 @@ app.use(session({
     saveUninitialized: true,
     store: new MongoStore({
         url: config.mongoUrl
-    }, function(){
+    }, function () {
         console.log('Finished starting up session storage.');
     })
 }));
@@ -114,5 +114,6 @@ app.get('*', routes.index);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
+    console.log('Deployed at: ' + config.buildDate);
     console.log('Git revision: ' + config.gitRev);
 });

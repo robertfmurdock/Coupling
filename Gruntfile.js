@@ -71,7 +71,11 @@ module.exports = function (grunt) {
 
     grunt.registerTask('saveRevision', function () {
             grunt.event.once('git-describe', function (rev) {
-                grunt.file.write('version.json', JSON.stringify({gitRev: rev.toString() }));
+                var info = {
+                    gitRev: rev.toString(),
+                    date: new Date()
+                };
+                grunt.file.write('version.json', JSON.stringify(info));
                 grunt.option('gitRevision', rev);
             });
             grunt.task.run('git-describe');

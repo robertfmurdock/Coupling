@@ -27,6 +27,14 @@ var config = {
         } catch (err) {
             return 'None';
         }
+    },
+    get buildDate() {
+        try {
+            var fileJSON = require('./version');
+            return fileJSON.date;
+        } catch (err) {
+            return 'None';
+        }
     }
 };
 module.exports = config;
