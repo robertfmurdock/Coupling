@@ -140,6 +140,7 @@ controllers.controller('EditPlayerController', function ($scope, Coupling, $rout
     });
 
     $scope.savePlayer = function () {
+        $scope.playerForm.$setPristine();
         Coupling.savePlayer($scope.player);
     };
 

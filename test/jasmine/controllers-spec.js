@@ -575,9 +575,10 @@ describe('The controller named ', function () {
 
                 it('can save player using Coupling service and redirects to player page on callback', function () {
                     injectController(ControllerName, scope, location, Coupling, routeParams);
-
+                    scope.playerForm = {$setPristine: jasmine.createSpy('pristine')};
                     scope.savePlayer();
                     expect(Coupling.savePlayer).toHaveBeenCalledWith(scope.player);
+                    expect(scope.playerForm.$setPristine).toHaveBeenCalled();
                 });
 
                 it('remove player will remove and reroute to current pair assignments when confirmed', function () {

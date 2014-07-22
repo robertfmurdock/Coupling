@@ -20,30 +20,33 @@ describe('The edit player page', function () {
     });
 
     afterEach(function () {
-        protractor.getInstance().switchTo().alert().then(function (alert) {
-            alert.dismiss();
-        }, function (thereIsNoAlert) {
-        });
         tribeCollection.remove({_id: tribe._id}, false);
         playersCollection.remove({_id: player._id}, false);
     });
 
-    it('should not alert on leaving when nothing has changed.', function (done) {
+    it('should not alert on leaving when nothing has changed.', function () {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
         element(By.id('spin-button')).click();
-        protractor.getInstance().switchTo().alert().then(function (alert) {
-            expect(alert).toBeUndefined();
-        }, function () {
-            done();
-        });
+        expect(protractor.getInstance().getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
     });
 
-    it('should get alert on leaving when name is changed.', function () {
+    it('should get alert on leaving when name is changed.', function (done) {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
         element(By.id('player-name')).sendKeys('completely different name');
         element(By.id('spin-button')).click();
-        var alertDialog = protractor.getInstance().switchTo().alert();
-        expect(alertDialog).toBeDefined();
-        alertDialog.dismiss();
+        protractor.getInstance().switchTo().alert().then(function (alertDialog) {
+            alertDialog.dismiss();
+            done();
+        }, function (error) {
+            done(error);
+        });
+    });
+
+    it('should not get alert on leaving when name is changed after save.', function () {
+        browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
+        element(By.id('player-name')).sendKeys('completely different name');
+        element(By.id('save-player-button')).click();
+        element(By.id('spin-button')).click();
+        expect(protractor.getInstance().getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
     });
 });

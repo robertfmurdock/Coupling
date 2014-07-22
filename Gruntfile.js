@@ -40,7 +40,7 @@ module.exports = function (grunt) {
             }
         },
         protractor_webdriver: {
-            options: {},
+            options: {keepAlive: true},
             start: {}
         },
         protractor: {
