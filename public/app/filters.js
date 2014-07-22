@@ -15,8 +15,6 @@ filters.filter('tribeImageUrl', function (gravatarService) {
         if (tribe) {
             if (tribe.imageURL) {
                 return tribe.imageURL;
-            } else if (tribe.image) {
-                return "/images/icons/tribes/" + tribe.image;
             } else if (tribe.email) {
                 return gravatarService.url(tribe.email, options);
             }
