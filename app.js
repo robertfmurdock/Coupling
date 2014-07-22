@@ -38,7 +38,7 @@ app.use(session({
     store: new MongoStore({
         url: config.mongoUrl
     }, function () {
-        console.log('Finished starting up session storage.');
+        console.log('Finished initializing session storage.');
     })
 }));
 app.use(passport.initialize());
