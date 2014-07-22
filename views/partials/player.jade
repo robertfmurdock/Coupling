@@ -10,5 +10,8 @@ span(id="player-view" class="player")
         div
             label(for="player-email") Email:
             input(id="player-email" type="text" ng-model="player.email")
+        div
+            label(for="player-img-url") Image URL:
+            input(id="player-img-url" type="text" ng-model="player.imageURL")
         input(type="button" class="large blue button save-button" ng-click="savePlayer()" tabIndex="0" value="Save")
         div(ng-show="player._id" class="small red button delete-button" ng-click="removePlayer()") DELETE
