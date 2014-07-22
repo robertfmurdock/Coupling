@@ -16,7 +16,7 @@ var playersCollection = database.get('players');
 
 describe(path, function () {
 
-    var couplingServer = Supertest('http://localhost:' + config.port);
+    var couplingServer = Supertest(server);
     var Cookies;
 
     beforeEach(function (done) {
