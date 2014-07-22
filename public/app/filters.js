@@ -1,8 +1,8 @@
 var filters = angular.module("coupling.filters", []);
 filters.filter('gravatarUrl', function (gravatarService) {
     return function (player, options) {
-        if (player && player.image) {
-            return "/images/icons/players/" + player.image;
+        if (player && player.imageURL) {
+            return player.imageURL;
         } else {
             var email = player && player.email ? player.email : "";
             return gravatarService.url(email, options);
