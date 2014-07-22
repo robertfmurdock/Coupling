@@ -26,7 +26,7 @@ What is Pairing?
 
 Why Should Pairs Be Rotated?
 ----------------------------
-  For better or for worse, teams are made up of people, and people have different skill levels, opinions, temperments and philosophies. Rotating pairs is intended to help make sure that senior people will get to synchronize with other senior people periodically. Similarly, junior team members should get the opportunity to work with other junior team members - this gives them the opportunity to test their growth. Regular rotation of pairs also helps discourage project knowledge from being reserved for a few 'smart' individuals... at the very least, many other team members should see and participate in decisions regularly.
+  For better or for worse, teams are made up of people, and people have different skill levels, opinions, temperments and philosophies. Rotating pairs is intended to help make sure that senior people will get to synchronize with other senior people periodically. Similarly, junior team members should get the opportunity to work with other junior team members - this gives them the opportunity to test their growth. Regular rotation of pairs also helps discourage project knowledge from being reserved for a few 'smart' individuals... at the very least, many team members should see and participate in decisions regularly.
 
 What Makes For Good Pairing? What Doesn't?
 ------------------------------------------
@@ -51,11 +51,11 @@ Fret not! Coupling is prepared to deal with your problem. When you know someone 
 
 If someone is only available for part of a pairing cycle, Coupling recommends that you pair them anyway, possibly using the drag-and-drop manual override to pair them with someone similarly partially available. Part-time pairing with someone is better then not pairing with them at all!
 
-How Does my Player Card Get One of Those Fancy Pictures?
+How Does my Tribe or Player Card Get One of Those Fancy Pictures?
 --------------------------------------------------------
 
-Currently, the picture your player uses as its icon is determined by your email - Coupling uses your email to find your Gravatar. If you don't yet have a Gravatar, you can make one here! https://en.gravatar.com/
-There is also a manual workaround if you want to add images locally to the server. I'm sure those of you who are clever will be able to figure that one out by yourselves.
+There are multiple options! If you already have the images you want hosted somewhere, you can enter the URL to the image in the 'Image URL' field for your tribe or player. If you don't have hosting, you can associate a tribe or player with an email address and connect it to [Gravatar](http://www.gravatar.com), and [Gravatar](http://www.gravatar.com) will provide your icon.
+
 
 I Don't Have a Real Team, But I Still Want To Try Coupling!
 -----------------------------------------------------------
