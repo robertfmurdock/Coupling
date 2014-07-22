@@ -6,8 +6,14 @@ div(class="tribe-view" ng-show="tribe")
             div
                 label(for="tribe-name") Name:
                 input(id="tribe-name" type="text" ng-model="tribe.name")
-            div(ng-hide="tribe._id")
+            div
+                label(for="tribe-img-url") Image URL:
+                input(id="tribe-img-url" type="text" ng-model="tribe.imageURL")
+            div
+                label(for="tribe-email") Email:
+                input(id="tribe-email" type="text" ng-model="tribe.email")
+        div(ng-hide="tribe._id")
                 label(for="tribe-id") Unique Id:
                 input(id="tribe-id" type="text" ng-model="tribe.requestedId")
         div
-            input(type="button" class="super blue button save-button" ng-click="clickSaveButton()" tabIndex="0" value="Save")
+            input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="clickSaveButton()" tabIndex="0" value="Save")

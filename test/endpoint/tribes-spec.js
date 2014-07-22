@@ -50,7 +50,8 @@ describe(path, function () {
                 httpGet.expect('Content-Type', /json/).end(function (error, response) {
                     should.not.exist(error);
                     response.status.should.equal(200);
-                    _.findWhere(response.body, newTribe).should.exist;
+                    console.info(response.body);
+                    should.exist(_.findWhere(response.body, newTribe));
                     done();
                 });
             });

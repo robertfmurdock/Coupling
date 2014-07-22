@@ -16,8 +16,16 @@ module.exports = function (mongoUrl) {
     var database = monk(mongoUrl);
     var tribesCollection = database.get('tribes');
     this.save = function (request, response) {
-        tribesCollection.insert(request.body, function () {
-            response.send(request.body);
+
+        var tribeJSON = request.body;
+        tribesCollection.updateById(tribeJSON._id, tribeJSON, function (error, modifiedRecordCount) {
+            if (modifiedRecordCount != 0) {
+                response.send(request.body);
+            } else {
+                tribesCollection.insert(tribeJSON, function () {
+                    response.send(request.body);
+                });
+            }
         });
     }
 };

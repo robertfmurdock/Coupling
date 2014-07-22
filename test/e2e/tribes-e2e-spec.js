@@ -2,15 +2,16 @@
 var monk = require("monk");
 var config = require("../../config");
 
+var hostName = 'http://localhost:' + config.port;
+var database = monk(config.mongoUrl);
+var tribeCollection = database.get('tribes');
+
 describe('The default tribes page', function () {
 
-    beforeEach(function(){
+    beforeEach(function () {
         browser.get(hostName + '/test-login?username="username"&password="pw"');
     });
 
-    var hostName = 'http://localhost:' + config.port;
-    var database = monk(config.mongoUrl);
-    var tribeCollection = database.get('tribes');
 
     it('should have a section for each tribe.', function () {
         browser.get(hostName);
@@ -48,6 +49,22 @@ describe('The default tribes page', function () {
                 done();
             });
         });
+
+        it('the tribe image url is shown', function (done) {
+            element.all(By.id('tribe-img-url')).first().then(function (tribeNameElement) {
+                var expectedValue = expectedTribe.imgURL || '';
+                expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
+                done();
+            });
+        });
+
+        it('the tribe email is shown', function (done) {
+            element.all(By.id('tribe-email')).first().then(function (tribeNameElement) {
+                var expectedValue = expectedTribe.email || '';
+                expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
+                done();
+            });
+        });
     });
 
     describe('after navigating to the new tribe page', function () {
@@ -63,6 +80,31 @@ describe('The default tribes page', function () {
                 expect(tribeIdElement.isDisplayed()).toBe(true);
             });
         });
+    });
+});
+
+describe('The edit tribe page', function () {
+    var tribe = {_id: 'delete_me', name: 'Change Me'};
+    beforeEach(function () {
+        tribeCollection.insert(tribe);
+    });
+
+    afterEach(function () {
+        tribeCollection.remove({_id: tribe._id}, false);
+    });
+
+    it('can save edits to a tribe correctly', function () {
+        browser.get(hostName + '/' + tribe._id);
+
+        var expectedNewName = 'Different name';
+        element(By.id('tribe-name')).clear();
+        element(By.id('tribe-name')).sendKeys(expectedNewName);
+        console.log('BEFORE SAVE----');
+        element(By.id('save-tribe-button')).click();
+
+        browser.get(hostName + '/' + tribe._id);
+
+        expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
     });
 
 });
