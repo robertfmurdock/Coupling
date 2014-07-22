@@ -99,7 +99,6 @@ describe('The edit tribe page', function () {
         var expectedNewName = 'Different name';
         element(By.id('tribe-name')).clear();
         element(By.id('tribe-name')).sendKeys(expectedNewName);
-        console.log('BEFORE SAVE----');
         element(By.id('save-tribe-button')).click();
 
         browser.get(hostName + '/' + tribe._id);

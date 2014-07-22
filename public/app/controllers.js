@@ -152,7 +152,7 @@ controllers.controller('EditPlayerController', function ($scope, Coupling, $rout
     };
 
     $scope.$on('$locationChangeStart', function () {
-        if (!angular.equals($scope.original, $scope.player)) {
+        if ($scope.playerForm.$dirty) {
             var answer = confirm("You have unsaved data. Would you like to save before you leave?");
             if (answer) {
                 Coupling.savePlayer($scope.player);

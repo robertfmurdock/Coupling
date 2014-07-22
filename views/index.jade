@@ -15,7 +15,7 @@ block content
                     p Or maybe you'd prefer history!
                 a(href="/tribes")
                     p Browse the tribes available!
-                a(class="super pink button" ng-click="clickSpinButton()") Spin!
+                a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
         div(class="view-container")
             div(ng-view class="view-frame" ng-class="{minimized : !playerRoster.minimized}")
     div(ng-cloak class="player-roster" ng-show="data.players != null")
