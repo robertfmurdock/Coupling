@@ -581,7 +581,7 @@ describe('The controller named ', function () {
                 });
 
                 it('remove player will remove and reroute to current pair assignments when confirmed', function () {
-                    spyOn(window,'confirm');
+                    spyOn(window, 'confirm');
 
                     injectController(ControllerName, scope, location, Coupling, routeParams);
 
@@ -623,6 +623,7 @@ describe('The controller named ', function () {
 
                         beforeEach(function () {
                             window.confirm = jasmine.createSpy('confirm');
+                            scope.playerForm = { $dirty: true};
                             scope.original = {name: 'O.G.'};
                             scope.player = {name: "differentName"};
                         });
@@ -642,6 +643,7 @@ describe('The controller named ', function () {
                     });
                     it('it will not prompt the user to save if the player is unchanged', function () {
                         window.confirm = jasmine.createSpy('confirm');
+                        scope.playerForm = { $dirty: false};
                         scope.original = {name: 'O.G.'};
                         scope.player = {name: scope.original.name};
                         onLocationChange();
