@@ -52,13 +52,8 @@ if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
 
-passport.serializeUser(function (user, done) {
-    done(null, user._id);
-});
-
-passport.deserializeUser(function (id, done) {
-    done(null, {_id: id});
-});
+passport.serializeUser(userDataService.serializeUser);
+passport.deserializeUser(userDataService.deserializeUser);
 
 passport.use(new GoogleStrategy({
         clientID: config.googleClientID,
@@ -80,8 +75,8 @@ if ('development' == app.get('env')) {
     console.log('Dev Environment: enabling test login');
     passport.use(new LocalStrategy(function (username, password, done) {
         console.log('logging in locally');
-        process.nextTick(function () {
-            done(null, {_id: '1'});
+        userDataService.findOrCreate('dev@dev.dev', function (user) {
+            done(null, user);
         });
     }));
     app.get('/test-login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }));
