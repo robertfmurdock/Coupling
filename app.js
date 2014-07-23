@@ -53,11 +53,11 @@ if ('development' == app.get('env')) {
 }
 
 passport.serializeUser(function (user, done) {
-    done(null, '1');
+    done(null, user._id);
 });
 
 passport.deserializeUser(function (id, done) {
-    done(null, id);
+    done(null, {_id: id});
 });
 
 passport.use(new GoogleStrategy({
@@ -81,7 +81,7 @@ if ('development' == app.get('env')) {
     passport.use(new LocalStrategy(function (username, password, done) {
         console.log('logging in locally');
         process.nextTick(function () {
-            done(null, {id: '1'});
+            done(null, {_id: '1'});
         });
     }));
     app.get('/test-login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }));

@@ -8,7 +8,7 @@ var database = monk(mongoUrl);
 var UserDataService = require("../../lib/UserDataService");
 var userDataService = new UserDataService(mongoUrl);
 
-describe.only('UserDataService', function () {
+describe('UserDataService', function () {
 
     var usersCollection = database.get('users');
 
@@ -45,4 +45,25 @@ describe.only('UserDataService', function () {
             });
         });
     });
+
+
+    describe('serialize user', function () {
+        it('will return the _id', function (done) {
+            var user = {_id: 'amazingId'};
+            userDataService.serializeUser(user, function (error, id) {
+                id.should.equal(user._id);
+                done(error);
+            });
+        });
+
+        it('will return error if there is no _id', function (done) {
+            var user = {notId: 'amazingId'};
+            userDataService.serializeUser(user, function (error) {
+                error.should.equal('The user did not have an id to serialize.');
+                done();
+            });
+        });
+    });
+
+
 });
