@@ -8,7 +8,7 @@ var database = monk(mongoUrl);
 var UserDataService = require("../../lib/UserDataService");
 var userDataService = new UserDataService(mongoUrl);
 
-describe('UserDataService', function () {
+describe.only('UserDataService', function () {
 
     var usersCollection = database.get('users');
 
@@ -27,6 +27,20 @@ describe('UserDataService', function () {
                     docs.length.should.equal(1);
                     docs[0].should.eql(user);
                     done(error);
+                });
+            });
+        });
+
+        it('will get existing user when the user with that email already exists', function (done) {
+            var email = 'awesome.o@super.coo';
+            userDataService.findOrCreate(email, function (newlyCreatedUser) {
+                userDataService.findOrCreate(email, function (existingUser) {
+                    existingUser.should.eql(newlyCreatedUser);
+                    usersCollection.find({}, function (error, docs) {
+                        docs.length.should.equal(1);
+                        docs[0].should.eql(existingUser);
+                        done(error);
+                    });
                 });
             });
         });
