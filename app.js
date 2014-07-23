@@ -1,12 +1,6 @@
 var express = require('express');
-var routes = require('./routes');
-var HistoryRoutes = require('./routes/history');
-var PlayerRoutes = require('./routes/players');
-var TribeRoutes = require('./routes/tribes');
-var game = require('./routes/game');
 var http = require('http');
 var path = require('path');
-var config = require('./config');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -18,6 +12,15 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+
+var UserDataService = require('./lib/UserDataService');
+var routes = require('./routes');
+var HistoryRoutes = require('./routes/history');
+var PlayerRoutes = require('./routes/players');
+var TribeRoutes = require('./routes/tribes');
+var game = require('./routes/game');
+var config = require('./config');
+var userDataService = new UserDataService(config.mongoUrl);
 
 var app = express();
 
@@ -64,11 +67,9 @@ passport.use(new GoogleStrategy({
         scope: 'https://www.googleapis.com/auth/plus.login email'
     },
     function (accessToken, refreshToken, profile, done) {
-        console.info(accessToken);
-        console.info(refreshToken);
-        console.info(profile.emails);
-        console.info(profile);
-        done(null, {id: '1'});
+        userDataService.findOrCreate(profile.emails[0].value, function (user) {
+            done(null, user);
+        });
     }
 ));
 
