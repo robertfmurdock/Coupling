@@ -46,7 +46,6 @@ describe('UserDataService', function () {
         });
     });
 
-
     describe('serialize user', function () {
         it('will return the _id', function (done) {
             var user = {_id: 'amazingId'};
@@ -65,5 +64,24 @@ describe('UserDataService', function () {
         });
     });
 
+    describe('deserialize user', function () {
+        it('will return object in the users collection from mongo', function (done) {
+            var expectedUser = {_id: 'amazingId', uniqueValue: 'bloopers'};
+            usersCollection.insert(expectedUser);
+
+            userDataService.deserializeUser(expectedUser._id, function (error, loadedUser) {
+                loadedUser.should.eql(expectedUser);
+                done(error);
+            });
+        });
+
+        it('will return error when user is not in mongo', function (done) {
+            var expectedUser = {_id: 'amazingId', uniqueValue: 'bloopers'};
+            userDataService.deserializeUser(expectedUser._id, function (error) {
+                error.should.eql('The user could not be found in the database.');
+                done();
+            });
+        });
+    });
 
 });
