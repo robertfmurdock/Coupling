@@ -11,22 +11,27 @@ module.exports = function (mongoUrl) {
     var usersCollection = database.get('users');
 
     var dataService = new DataService(mongoUrl);
-    this.list = function (request, response) {
-        playersCollection.find({email: request.user.email}, function (error, documents) {
+
+    function findAuthorizedTribeIds(user, callback) {
+        playersCollection.find({email: user.email}, function (error, documents) {
             var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
-            var authorizedTribes = _.union(request.user.tribes, allTribesThatHaveMembership);
+            var authorizedTribes = _.union(user.tribes, allTribesThatHaveMembership);
+            callback(authorizedTribes);
+        });
+    }
+
+    this.list = function (request, response) {
+        findAuthorizedTribeIds(request.user, function (authorizedTribes) {
             dataService.requestTribes(function (tribes) {
                 var filteredTribes = _.filter(tribes, function (value) {
                     return _.contains(authorizedTribes, value._id);
                 });
-
                 response.send(filteredTribes);
             }, function (error) {
                 response.statusCode = 500;
                 response.send(error.message);
             });
         });
-
     };
 
     this.save = function (request, response) {
