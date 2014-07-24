@@ -40,8 +40,8 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        new CouplingDataService(mongoUrl).requestPlayersAndHistory(null, function (players, history) {
-            var result = gameRunner.run(players, history);
+        new CouplingDataService(mongoUrl).requestPlayersAndHistory(null).then(function (both) {
+            var result = gameRunner.run(both.players, both.history);
             var foundPlayers = [];
             result.pairs.forEach(function (pair) {
                 should(pair.length).eql(2);
@@ -57,7 +57,7 @@ describe('The game', function () {
         var couplingGameFactory = new CouplingGameFactory();
         var gameRunner = new GameRunner(couplingGameFactory);
 
-        new CouplingDataService(mongoUrl).requestHistory(null, function (history) {
+        new CouplingDataService(mongoUrl).requestHistory(null).then(function (history) {
             var result = gameRunner.run([clark, bruce, diana], history);
             should(result.pairs.length).eql(2);
             testIsComplete();
@@ -84,8 +84,8 @@ describe('The game', function () {
         ];
 
         historyCollection.insert(history, function () {
-            new CouplingDataService(mongoUrl).requestPlayersAndHistory(null, function (players, history) {
-                var pairAssignments = gameRunner.run(players, history);
+            new CouplingDataService(mongoUrl).requestPlayersAndHistory(null).then(function (both) {
+                var pairAssignments = gameRunner.run(both.players, both.history);
                 var foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
                     return Comparators.areEqualPairs([bruce, john], pair);
                 });

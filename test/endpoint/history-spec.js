@@ -26,7 +26,7 @@ describe(path, function () {
 
     historyCollection.remove({_id: validPairs._id}, false);
 
-    var supertest = Supertest('http://localhost:' + config.port);
+    var supertest = Supertest(host);
     var Cookies;
 
     beforeEach(function (done) {
@@ -52,7 +52,7 @@ describe(path, function () {
                     response.status.should.equal(200);
                     var pairsAsSaved = response.body;
 
-                    new DataService(config.mongoUrl).requestHistory(tribeId, function (history) {
+                    new DataService(config.mongoUrl).requestHistory(tribeId).then(function (history) {
                         var latestEntryInHistory = history[0];
                         for (var parameterName in pairsAsSaved) {
                             if (pairsAsSaved.hasOwnProperty(parameterName)) {

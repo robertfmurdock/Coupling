@@ -5,7 +5,7 @@ module.exports = function (mongoUrl) {
     var dataService = new DataService(mongoUrl);
 
     this.list = function (request, response) {
-        dataService.requestHistory(request.params.tribeId, function (history) {
+        dataService.requestHistory(request.params.tribeId).then(function (history) {
             response.send(history);
         }, function (error) {
             response.statusCode = 500;

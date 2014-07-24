@@ -5,7 +5,7 @@ module.exports = function (mongoUrl) {
     var dataService = new DataService(mongoUrl);
 
     this.listTribeMembers = function (request, response) {
-        dataService.requestPlayers(request.params.tribeId, function (players) {
+        dataService.requestPlayers(request.params.tribeId).then(function (players) {
             response.send(players);
         }, function (error) {
             response.send(error);

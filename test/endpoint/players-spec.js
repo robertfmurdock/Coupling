@@ -30,7 +30,7 @@ describe(path, function () {
         it('will return all available players on team.', function (done) {
             var service = new DataService(config.mongoUrl);
 
-            service.requestPlayers(tribeId, function (players) {
+            service.requestPlayers(tribeId).then(function (players) {
                 var httpGet = couplingServer.get(path);
                 httpGet.cookies = Cookies;
                 httpGet.expect('Content-Type', /json/).end(function (error, response) {

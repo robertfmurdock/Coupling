@@ -30,7 +30,7 @@ module.exports = function (mongoUrl) {
         var authorizedTribeIdsPromise = loadAuthorizedTribeIds(user);
 
         var tribesPromise = new Promise(function (resolve, error) {
-            dataService.requestTribes(resolve, error);
+            dataService.requestTribes().then(resolve, error);
         });
 
         return Promise.all([tribesPromise, authorizedTribeIdsPromise]).then(spread(function (tribes, authorizedTribes) {

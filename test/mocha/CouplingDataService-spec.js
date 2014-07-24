@@ -84,30 +84,30 @@ describe('DataService', function () {
 
     it('can retrieve all the players in the database and all the history in new to old order', function (testIsDone) {
         setTimeout(function () {
-            couplingDataService.requestPlayersAndHistory(null, function (players, history) {
-                should(expectedPlayers).eql(players);
-                should(expectedHistory).eql(history);
+            couplingDataService.requestPlayersAndHistory(null).then(function (both) {
+                should(expectedPlayers).eql(both.players);
+                should(expectedHistory).eql(both.history);
                 testIsDone();
             });
         });
     });
 
     it('can retrieve all the players', function (testIsDone) {
-        couplingDataService.requestPlayers(null, function (players) {
+        couplingDataService.requestPlayers(null).then(function (players) {
             should(expectedPlayers).eql(players);
             testIsDone();
         });
     });
 
     it('can retrieve all the history in new to old order', function (testIsDone) {
-        couplingDataService.requestHistory(null, function (history) {
+        couplingDataService.requestHistory(null).then(function (history) {
             should(expectedHistory).eql(history);
             testIsDone();
         });
     });
 
     it('can retrieve all the tribes.', function (done) {
-        couplingDataService.requestTribes(function (tribes) {
+        couplingDataService.requestTribes().then(function (tribes) {
             should(expectedTribes).eql(tribes);
             done();
         }, function (error) {
@@ -119,7 +119,7 @@ describe('DataService', function () {
     it('can save a new player', function (testIsDone) {
         var player = {name: 'Tom', email: 'Bombadil@shire.gov'};
         couplingDataService.savePlayer(player, function () {
-            couplingDataService.requestPlayers(null, function (players) {
+            couplingDataService.requestPlayers(null).then(function (players) {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(player, listedPlayer);
                 });
@@ -138,7 +138,7 @@ describe('DataService', function () {
         });
 
         it('such that it no longer appears in the players list', function (done) {
-            couplingDataService.requestPlayers(null, function (players) {
+            couplingDataService.requestPlayers(null).then(function (players) {
                 setTimeout(function () {
                     var result = players.some(function (player) {
                         return Comparators.areEqualPlayers(frodo, player);
@@ -169,7 +169,7 @@ describe('DataService', function () {
         });
 
         it('such that it no longer appears in history', function (done) {
-            couplingDataService.requestHistory(null, function (historyDocuments) {
+            couplingDataService.requestHistory(null).then(function (historyDocuments) {
                 setTimeout(function () {
                     var result = historyDocuments.some(function (assignments) {
                         return Comparators.areEqualObjectIds(pairSetOne._id, assignments._id);
@@ -201,7 +201,7 @@ describe('DataService', function () {
     it('can update an existing player', function (testIsDone) {
         frodo.name = "F. Swaggins";
         couplingDataService.savePlayer(frodo, function () {
-            couplingDataService.requestPlayers(null, function (players) {
+            couplingDataService.requestPlayers(null).then(function (players) {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(frodo, listedPlayer);
                 });
@@ -236,23 +236,23 @@ describe('DataService', function () {
         });
 
         it('and get the correct players.', function (done) {
-            couplingDataService.requestPlayers(tribeId, function (players) {
+            couplingDataService.requestPlayers(tribeId).then(function (players) {
                 should(blackrockPlayers).eql(players);
                 done();
             });
         });
 
         it('and get the correct history.', function (done) {
-            couplingDataService.requestHistory(tribeId, function (history) {
+            couplingDataService.requestHistory(tribeId).then(function (history) {
                 should([blackrockPairAssignments]).eql(history);
                 done();
             });
         });
 
         it('and get the correct player and history together.', function (done) {
-            couplingDataService.requestPlayersAndHistory(tribeId, function (players, history) {
-                should(blackrockPlayers).eql(players);
-                should([blackrockPairAssignments]).eql(history);
+            couplingDataService.requestPlayersAndHistory(tribeId).then(function (both) {
+                should(blackrockPlayers).eql(both.players);
+                should([blackrockPairAssignments]).eql(both.history);
                 done();
             });
         });
