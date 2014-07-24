@@ -21,7 +21,8 @@ describe(path, function () {
     });
 
     var database = monk(config.mongoUrl);
-    var teamCollection = database.get('tribes');
+    var tribesCollection = database.get('tribes');
+    var playersCollection = database.get('players');
     var usersCollection = database.get('users');
 
 
@@ -30,7 +31,7 @@ describe(path, function () {
     }
 
     it('GET will return all available tribes.', function (done) {
-        teamCollection.find({}, {}, function (error, tribeDocuments) {
+        tribesCollection.find({}, {}, function (error, tribeDocuments) {
             var authorizedTribes = _.pluck(tribeDocuments, '_id');
             authorizeUserForTribes(authorizedTribes);
 
@@ -45,7 +46,26 @@ describe(path, function () {
         });
     });
 
-    it('GET will not return all available tribes when the user does not have permission.', function (done) {
+    it('GET will return all any tribe that has a player with the given email.', function (done) {
+        var tribe = {_id: 'delete-me', name: 'tribe-from-endpoint-tests'};
+        tribesCollection.insert(tribe);
+        playersCollection.insert({_id: 'delete-me', name: 'delete-me', tribe: 'delete-me', email: userEmail});
+
+        authorizeUserForTribes([]);
+
+        var httpGet = host.get(path);
+        httpGet.cookies = Cookies;
+        httpGet.expect('Content-Type', /json/).end(function (error, response) {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            JSON.stringify(response.body).should.equal(JSON.stringify([tribe]));
+
+            tribesCollection.remove({_id: 'delete-me'});
+            playersCollection.remove({_id: 'delete-me'}, done);
+        });
+    });
+
+    it('GET will not return all available tribes when the user does not have explicit permission.', function (done) {
         authorizeUserForTribes([]);
         var httpGet = host.get(path);
         httpGet.cookies = Cookies;
@@ -80,7 +100,7 @@ describe(path, function () {
         });
 
         after(function () {
-            teamCollection.remove({_id: newTribe._id}, false);
+            tribesCollection.remove({_id: newTribe._id}, false);
         });
     });
 });
