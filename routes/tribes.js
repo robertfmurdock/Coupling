@@ -20,17 +20,23 @@ module.exports = function (mongoUrl) {
         });
     }
 
-    this.list = function (request, response) {
-        findAuthorizedTribeIds(request.user, function (authorizedTribes) {
+    function findAuthorizedTribes(user, successCallback, failureCallback) {
+        findAuthorizedTribeIds(user, function (authorizedTribes) {
             dataService.requestTribes(function (tribes) {
                 var filteredTribes = _.filter(tribes, function (value) {
                     return _.contains(authorizedTribes, value._id);
                 });
-                response.send(filteredTribes);
-            }, function (error) {
-                response.statusCode = 500;
-                response.send(error.message);
-            });
+                successCallback(filteredTribes);
+            }, failureCallback);
+        });
+    }
+
+    this.list = function (request, response) {
+        findAuthorizedTribes(request.user, function (authorizedTribes) {
+            response.send(authorizedTribes);
+        }, function (error) {
+            response.statusCode = 500;
+            response.send(error.message);
         });
     };
 
