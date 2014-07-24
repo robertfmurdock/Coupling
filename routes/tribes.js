@@ -6,7 +6,7 @@ var _ = require('underscore');
 
 function spread(extracted) {
     return function (results) {
-        extracted.apply(null, results);
+        return extracted.apply(null, results);
     };
 }
 
@@ -19,42 +19,34 @@ module.exports = function (mongoUrl) {
 
     var dataService = new DataService(mongoUrl);
 
-    function findAuthorizedTribeIds(user) {
-        return new Promise(function (resolve) {
-            playersCollection.find({email: user.email})
-                .success(function (documents) {
-                    var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
-                    var authorizedTribes = _.union(user.tribes, allTribesThatHaveMembership);
-                    resolve(authorizedTribes);
-                });
+    function loadAuthorizedTribeIds(user) {
+        return playersCollection.find({email: user.email}).then(function (documents) {
+            var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
+            return _.union(user.tribes, allTribesThatHaveMembership);
         });
     }
 
-    function findAuthorizedTribes(user) {
-        return new Promise(function (resolve, reject) {
-            var authorizedTribeIdsPromise = findAuthorizedTribeIds(user);
+    function loadAuthorizedTribes(user) {
+        var authorizedTribeIdsPromise = loadAuthorizedTribeIds(user);
 
-            var tribesPromise = new Promise(function (resolve, error) {
-                dataService.requestTribes(resolve, error);
-            });
-
-            Promise.all([tribesPromise, authorizedTribeIdsPromise]).then(spread(function (tribes, authorizedTribes) {
-                var filteredTribes = _.filter(tribes, function (value) {
-                    return _.contains(authorizedTribes, value._id);
-                });
-                resolve(filteredTribes);
-            }), reject)
+        var tribesPromise = new Promise(function (resolve, error) {
+            dataService.requestTribes(resolve, error);
         });
+
+        return Promise.all([tribesPromise, authorizedTribeIdsPromise]).then(spread(function (tribes, authorizedTribes) {
+            return _.filter(tribes, function (value) {
+                return _.contains(authorizedTribes, value._id);
+            });
+        }));
     }
 
     this.list = function (request, response) {
-        findAuthorizedTribes(request.user)
-            .then(function (authorizedTribes) {
-                response.send(authorizedTribes);
-            }, function (error) {
-                response.statusCode = 500;
-                response.send(error.message);
-            });
+        loadAuthorizedTribes(request.user).then(function (authorizedTribes) {
+            response.send(authorizedTribes);
+        }, function (error) {
+            response.statusCode = 500;
+            response.send(error.message);
+        });
     };
 
     this.save = function (request, response) {
