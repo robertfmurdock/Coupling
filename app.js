@@ -74,17 +74,16 @@ app.get('/auth/google/callback', passport.authenticate('google', { successRedire
 if ('development' == app.get('env')) {
     console.log('Dev Environment: enabling test login');
     passport.use(new LocalStrategy(function (username, password, done) {
-        console.log('logging in locally');
-        userDataService.findOrCreate('dev@dev.dev', function (user) {
+        userDataService.findOrCreate(username, function (user) {
             done(null, user);
         });
     }));
     app.get('/test-login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }));
 }
 
-var checkApiAccess = function (req, res, next) {
-    if (config.requiresAuthentication && !req.isAuthenticated())
-        res.send(401);
+var checkApiAccess = function (request, response, next) {
+    if (config.requiresAuthentication && !request.isAuthenticated())
+        response.send(401);
     else
         next();
 };

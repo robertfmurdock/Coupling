@@ -1,15 +1,39 @@
 "use strict";
 var monk = require("monk");
 var config = require("../../config");
+var _ = require('underscore');
 
 var hostName = 'http://localhost:' + config.port;
 var database = monk(config.mongoUrl);
 var tribeCollection = database.get('tribes');
+var usersCollection = database.get('users');
+
+var userEmail = 'protractor@test.goo';
+
+function authorizeUserForTribes(authorizedTribes, callback) {
+    usersCollection.update({email: userEmail}, {$set: {tribes: authorizedTribes}}, function (error, updateCount) {
+        if (updateCount == 0) {
+            usersCollection.insert({email: userEmail, tribes: authorizedTribes}, callback);
+        } else {
+            callback();
+        }
+    });
+}
+
+function authorizeAllTribes(callback) {
+    tribeCollection.find({}, {}, function (error, tribeDocuments) {
+        var authorizedTribes = _.pluck(tribeDocuments, '_id');
+        authorizeUserForTribes(authorizedTribes, callback);
+    });
+}
 
 describe('The default tribes page', function () {
 
-    beforeEach(function () {
-        browser.get(hostName + '/test-login?username="username"&password="pw"');
+    beforeEach(function (done) {
+        authorizeAllTribes(function () {
+            browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+            done();
+        });
     });
 
 
@@ -85,8 +109,9 @@ describe('The default tribes page', function () {
 
 describe('The edit tribe page', function () {
     var tribe = {_id: 'delete_me', name: 'Change Me'};
-    beforeEach(function () {
+    beforeEach(function (done) {
         tribeCollection.insert(tribe);
+        authorizeAllTribes(done);
     });
 
     afterEach(function () {

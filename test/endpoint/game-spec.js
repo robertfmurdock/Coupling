@@ -27,7 +27,6 @@ describe(path, function () {
             .expect('Content-Type', /json/)
             .end(function (error, response) {
             should.not.exist(error);
-            console.info(response);
             response.status.should.equal(200);
             response.body.tribe.should.equal(tribeId);
             JSON.stringify(response.body.pairs).should.equal(JSON.stringify([onlyEnoughPlayersForOnePair]));

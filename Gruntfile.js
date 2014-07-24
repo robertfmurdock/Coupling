@@ -1,5 +1,7 @@
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-express-server');
@@ -8,12 +10,36 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-git-describe');
 
     grunt.initConfig({
+        env: {
+            jenkinsUnit: {
+                JUNIT_REPORT_PATH: 'test-output/unit.xml'
+            },
+            jenkinsEndpoint: {
+                JUNIT_REPORT_PATH: 'test-output/endpoint.xml'
+            }
+        },
+        mkdir: {
+            testOutput: {
+                options: {
+                    create: ['test-output']
+                }
+            }
+        },
         karma: {
             unit: {
                 configFile: 'karma.conf.js',
                 singleRun: true,
                 browsers: ['PhantomJS'],
                 reporters: ['dots']
+            },
+            jenkins: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS'],
+                reporters: ['junit'],
+                junitReporter: {
+                    outputFile: 'test-output/test-results.xml'
+                }
             }
         },
         mochaTest: {
@@ -23,9 +49,21 @@ module.exports = function (grunt) {
                 },
                 src: ['test/mocha/**/*.js']
             },
+            jenkinsUnit: {
+                options: {
+                    reporter: 'mocha-jenkins-reporter'
+                },
+                src: ['test/mocha/**/*.js']
+            },
             endpoint: {
                 options: {
                     reporter: 'spec'
+                },
+                src: ['test/endpoint/**/*.js']
+            },
+            jenkinsEndpoint: {
+                options: {
+                    reporter: 'mocha-jenkins-reporter'
                 },
                 src: ['test/endpoint/**/*.js']
             }
@@ -85,11 +123,13 @@ module.exports = function (grunt) {
         grunt.file.write('version.json', JSON.stringify({gitRev: 'DEVELOPMENT' }));
     });
 
-    grunt.registerTask('standard', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
-        'protractor_webdriver:start']);
+    grunt.registerTask('jenkinsMochaUnit', ['env:jenkinsUnit', 'mochaTest:jenkinsUnit']);
+    grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
-    grunt.registerTask('default', ['standard', 'protractor:e2e', 'markAsDevelopmentBuild']);
-    grunt.registerTask('jenkins', ['standard', 'saveRevision']);
+    grunt.registerTask('default', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
+        'protractor_webdriver:start', 'protractor:e2e', 'markAsDevelopmentBuild']);
+    grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint',
+        'protractor_webdriver:start', 'saveRevision']);
 
 }
 ;
