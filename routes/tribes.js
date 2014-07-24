@@ -1,7 +1,14 @@
 "use strict";
 var DataService = require('../lib/CouplingDataService');
 var monk = require('monk');
+var Promise = require('rsvp').Promise;
 var _ = require('underscore');
+
+function spread(extracted) {
+    return function (results) {
+        extracted.apply(null, results);
+    };
+}
 
 module.exports = function (mongoUrl) {
 
@@ -12,32 +19,42 @@ module.exports = function (mongoUrl) {
 
     var dataService = new DataService(mongoUrl);
 
-    function findAuthorizedTribeIds(user, callback) {
-        playersCollection.find({email: user.email}, function (error, documents) {
-            var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
-            var authorizedTribes = _.union(user.tribes, allTribesThatHaveMembership);
-            callback(authorizedTribes);
+    function findAuthorizedTribeIds(user) {
+        return new Promise(function (resolve) {
+            playersCollection.find({email: user.email})
+                .success(function (documents) {
+                    var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
+                    var authorizedTribes = _.union(user.tribes, allTribesThatHaveMembership);
+                    resolve(authorizedTribes);
+                });
         });
     }
 
-    function findAuthorizedTribes(user, successCallback, failureCallback) {
-        findAuthorizedTribeIds(user, function (authorizedTribes) {
-            dataService.requestTribes(function (tribes) {
+    function findAuthorizedTribes(user) {
+        return new Promise(function (resolve, reject) {
+            var authorizedTribeIdsPromise = findAuthorizedTribeIds(user);
+
+            var tribesPromise = new Promise(function (resolve, error) {
+                dataService.requestTribes(resolve, error);
+            });
+
+            Promise.all([tribesPromise, authorizedTribeIdsPromise]).then(spread(function (tribes, authorizedTribes) {
                 var filteredTribes = _.filter(tribes, function (value) {
                     return _.contains(authorizedTribes, value._id);
                 });
-                successCallback(filteredTribes);
-            }, failureCallback);
+                resolve(filteredTribes);
+            }), reject)
         });
     }
 
     this.list = function (request, response) {
-        findAuthorizedTribes(request.user, function (authorizedTribes) {
-            response.send(authorizedTribes);
-        }, function (error) {
-            response.statusCode = 500;
-            response.send(error.message);
-        });
+        findAuthorizedTribes(request.user)
+            .then(function (authorizedTribes) {
+                response.send(authorizedTribes);
+            }, function (error) {
+                response.statusCode = 500;
+                response.send(error.message);
+            });
     };
 
     this.save = function (request, response) {
