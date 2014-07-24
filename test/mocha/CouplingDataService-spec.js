@@ -116,7 +116,7 @@ describe('DataService', function () {
         });
     });
 
-    it('can save a new player', function (testIsDone) {
+    it('can save a new player', function (done) {
         var player = {name: 'Tom', email: 'Bombadil@shire.gov'};
         couplingDataService.savePlayer(player, function () {
             couplingDataService.requestPlayers(null).then(function (players) {
@@ -124,11 +124,11 @@ describe('DataService', function () {
                     return Comparators.areEqualPlayers(player, listedPlayer);
                 });
                 found.should.be.true;
-                testIsDone();
+                done();
             });
         }, function (error) {
             should.not.exist(error);
-            testIsDone();
+            done();
         });
     });
 
