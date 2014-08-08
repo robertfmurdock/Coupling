@@ -1,0 +1,5 @@
+test-output/endpoint.xml
+test-output/test-results.xml
+test-output/unit.xml
+version.json
+.idea/workspace.xml
