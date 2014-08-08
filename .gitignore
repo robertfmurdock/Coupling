@@ -1,5 +1,4 @@
-test-output/endpoint.xml
-test-output/test-results.xml
-test-output/unit.xml
+test-output/*
 version.json
 .idea/workspace.xml
+Coupling.iws
