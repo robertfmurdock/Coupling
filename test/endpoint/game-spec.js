@@ -11,6 +11,7 @@ describe(path, function () {
 
     beforeEach(function (done) {
         supertest.get('/test-login?username="name"&password="pw"').end(function (err, res) {
+            should.not.exist(err)
             Cookies = res.headers['set-cookie'].pop().split(';')[0];
             done();
         });
