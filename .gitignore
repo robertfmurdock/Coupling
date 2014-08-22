@@ -2,3 +2,4 @@ test-output/*
 version.json
 .idea/workspace.xml
 Coupling.iws
+.DS_Store
