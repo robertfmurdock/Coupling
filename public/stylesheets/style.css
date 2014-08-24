@@ -1,5 +1,6 @@
 body {
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -19,7 +20,7 @@ a {
     font-weight: bold;
 
     text-fill-color: white;
-    text-stroke-width: 1px;
+    text-stroke-width: 1.5px;
     text-stroke-color: black;
     border-radius: 15px;
     background: darkred url(../images/overlay.png) repeat-x;
@@ -34,7 +35,7 @@ a {
 }
 
 #top-section, .minimized {
-    height: 330px;
+    height: 400px;
 }
 
 #CouplingTitleBlock {
@@ -117,7 +118,7 @@ a {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     color: black;
     text-fill-color: white;
-    text-stroke-width: 1px;
+    text-stroke-width: 1.5px;
     text-stroke-color: black;
     font-size: x-large;
     margin: 0 2px 0 2px;
@@ -184,7 +185,7 @@ a {
     padding: 10px;
     margin: 10px;
     text-fill-color: white;
-    text-stroke-width: 1px;
+    text-stroke-width: 1.5px;
     text-stroke-color: darkred;
     font-size: xx-large;
     background: steelblue url(../images/overlay.png) repeat-x;
@@ -218,7 +219,7 @@ a {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     color: black;
     text-fill-color: white;
-    text-stroke-width: 1px;
+    text-stroke-width: 1.5px;
     text-stroke-color: black;
     font-size: x-large;
     margin: 0 2px 4px 2px;
@@ -243,7 +244,7 @@ a {
     margin-bottom: 5px;
     border-radius: 15px;
     text-fill-color: white;
-    text-stroke-width: 1px;
+    text-stroke-width: 1.5px;
     text-stroke-color: black;
 }
 
