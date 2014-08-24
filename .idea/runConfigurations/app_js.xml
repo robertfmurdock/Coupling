@@ -3,8 +3,6 @@
     <browser url="http://localhost:3000" />
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="NodeJS.run" />
-    <method>
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_Services_Restart Local MongoDB" />
-    </method>
+    <method />
   </configuration>
 </component>
