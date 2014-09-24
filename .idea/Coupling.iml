@@ -9,25 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jasmine-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="jasmine-matchers-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="karma-jasmine-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="Coupling node_modules" level="project" />
-    <orderEntry type="library" name="should-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="sinon-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="greasemonkey-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="es6-promises-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="angular-ui-bootstrap-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="angular-ui-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="angularjs-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="angular-protractor-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="underscore-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="Node.js v0.10.28 Core Modules" level="application" />
-    <orderEntry type="library" name="gruntjs-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="passport-DefinitelyTyped" level="application" />
-    <orderEntry type="library" name="Node.js v0.10.30 Core Modules" level="application" />
     <orderEntry type="library" name="Node.js v0.10.31 Core Modules" level="application" />
+    <orderEntry type="library" name="Node.js v0.10.32 Core Modules" level="application" />
   </component>
 </module>
 
