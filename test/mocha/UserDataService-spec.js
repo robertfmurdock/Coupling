@@ -70,7 +70,7 @@ describe('UserDataService', function () {
             usersCollection.insert(expectedUser);
 
             userDataService.deserializeUser(expectedUser._id, function (error, loadedUser) {
-                loadedUser.should.eql(expectedUser);
+                should(loadedUser).eql(expectedUser);
                 done(error);
             });
         });
