@@ -18,7 +18,7 @@ var routes = require('./routes');
 var HistoryRoutes = require('./routes/history');
 var PlayerRoutes = require('./routes/players');
 var TribeRoutes = require('./routes/tribes');
-var game = require('./routes/game');
+var spin = require('./routes/spin');
 var config = require('./config');
 var userDataService = new UserDataService(config.mongoUrl);
 
@@ -94,7 +94,7 @@ app.all('/api/*', checkApiAccess);
 app.route('/api/tribes')
     .get(tribes.list)
     .post(tribes.save);
-app.post('/api/:tribeId/game', game(config.mongoUrl));
+app.post('/api/:tribeId/spin', spin(config.mongoUrl));
 
 var history = new HistoryRoutes(config.mongoUrl);
 app.route('/api/:tribeId/history')

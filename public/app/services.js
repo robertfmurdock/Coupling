@@ -55,7 +55,7 @@ services.service("Coupling", function ($http) {
     };
 
     this.spin = function (players) {
-        post('/api/' + Coupling.data.selectedTribeId + '/game', players, function (pairAssignmentDocument) {
+        post('/api/' + Coupling.data.selectedTribeId + '/spin', players, function (pairAssignmentDocument) {
             Coupling.data.currentPairAssignments = pairAssignmentDocument;
         });
     };

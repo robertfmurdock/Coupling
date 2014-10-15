@@ -3,7 +3,7 @@ var Supertest = require('supertest');
 var should = require('should');
 var config = require('../../config');
 var tribeId = 'test';
-var path = '/api/' + tribeId + '/game';
+var path = '/api/' + tribeId + '/spin';
 
 describe(path, function () {
     var supertest = Supertest('http://localhost:' + config.port);
