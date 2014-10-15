@@ -9,9 +9,9 @@ var Game = function (mongoUrl) {
     var dataService = new DataService(mongoUrl);
     return function (request, response) {
         var tribeId = request.params.tribeId;
-        dataService.requestHistory(tribeId).then(function (history) {
+        dataService.requestPinsAndHistory(tribeId).then(function (values) {
             var availablePlayers = request.body;
-            var result = gameRunner.run(availablePlayers, history);
+            var result = gameRunner.run(availablePlayers, values.pins, values.history);
             result.tribe = tribeId;
             response.send(result);
         }, response.send);

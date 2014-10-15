@@ -65,10 +65,16 @@ describe('DataService', function () {
         {name: "Superfriends"}
     ];
 
+    var pinsWithoutTribes = [
+        {name: 'pin1'},
+        {name: 'pin2'}
+    ];
+
     var couplingDataService = new CouplingDataService(mongoUrl);
 
     var historyCollection = database.get('history');
     var playersCollection = database.get('players');
+    var pinCollection = database.get('pins');
     var tribesCollection = database.get('tribes');
 
     beforeEach(function (beforeIsDone) {
@@ -78,31 +84,37 @@ describe('DataService', function () {
         historyCollection.drop();
         historyCollection.insert(unorderedHistory);
 
+        pinCollection.drop();
+        pinCollection.insert(pinsWithoutTribes);
+
         tribesCollection.drop();
         tribesCollection.insert(expectedTribes, beforeIsDone);
     });
 
-    it('can retrieve all the players in the database and all the history in new to old order', function (testIsDone) {
-        setTimeout(function () {
-            couplingDataService.requestPlayersAndHistory(null).then(function (both) {
-                should(expectedPlayers).eql(both.players);
-                should(expectedHistory).eql(both.history);
+    describe('will null tribe id', function () {
+
+        it('can retrieve the players in the database and all the history in new to old order', function (testIsDone) {
+            setTimeout(function () {
+                couplingDataService.requestPlayersAndHistory(null).then(function (both) {
+                    should(expectedPlayers).eql(both.players);
+                    should(expectedHistory).eql(both.history);
+                    testIsDone();
+                });
+            });
+        });
+
+        it('can retrieve the players', function (testIsDone) {
+            couplingDataService.requestPlayers(null).then(function (players) {
+                should(expectedPlayers).eql(players);
                 testIsDone();
             });
         });
-    });
 
-    it('can retrieve all the players', function (testIsDone) {
-        couplingDataService.requestPlayers(null).then(function (players) {
-            should(expectedPlayers).eql(players);
-            testIsDone();
-        });
-    });
-
-    it('can retrieve all the history in new to old order', function (testIsDone) {
-        couplingDataService.requestHistory(null).then(function (history) {
-            should(expectedHistory).eql(history);
-            testIsDone();
+        it('can retrieve the history in new to old order', function (testIsDone) {
+            couplingDataService.requestHistory(null).then(function (history) {
+                should(expectedHistory).eql(history);
+                testIsDone();
+            });
         });
     });
 
@@ -223,6 +235,11 @@ describe('DataService', function () {
             garrosh
         ];
 
+        var blackrockPins = [
+            {name: "Chief", tribe: tribeId},
+            {name: "Warrior", tribe: tribeId}
+        ];
+
         var blackrockPairAssignments = {
             tribe: tribeId,
             pairs: [
@@ -232,12 +249,20 @@ describe('DataService', function () {
 
         beforeEach(function (beforeIsDone) {
             playersCollection.insert(blackrockPlayers);
+            pinCollection.insert(blackrockPins);
             historyCollection.insert(blackrockPairAssignments, beforeIsDone);
         });
 
         it('and get the correct players.', function (done) {
             couplingDataService.requestPlayers(tribeId).then(function (players) {
                 should(blackrockPlayers).eql(players);
+                done();
+            });
+        });
+
+        it('get the correct pins', function (done) {
+            couplingDataService.requestPins(tribeId).then(function (pins) {
+                should(blackrockPins).eql(pins);
                 done();
             });
         });
@@ -252,6 +277,14 @@ describe('DataService', function () {
         it('and get the correct player and history together.', function (done) {
             couplingDataService.requestPlayersAndHistory(tribeId).then(function (both) {
                 should(blackrockPlayers).eql(both.players);
+                should([blackrockPairAssignments]).eql(both.history);
+                done();
+            });
+        });
+
+        it('and get the correct pins and history together.', function (done) {
+            couplingDataService.requestPinsAndHistory(tribeId).then(function (both) {
+                should(blackrockPins).eql(both.pins);
                 should([blackrockPairAssignments]).eql(both.history);
                 done();
             });
