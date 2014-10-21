@@ -29,7 +29,6 @@ module.exports = function (config) {
             "public/app/controllers.js",
             "public/app/animations.js",
             "public/app/filters.js",
-
             "public/javascripts/bower_components/angular-mocks/angular-mocks.js",
             'test/jasmine/**/*-spec.js'
         ],
