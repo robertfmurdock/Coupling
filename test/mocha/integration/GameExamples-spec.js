@@ -50,7 +50,7 @@ describe('The game', function () {
 
             should(foundPlayers.length).eql(6);
             testIsComplete();
-        });
+        }).catch(testIsComplete);
     });
 
     it('works with an odd number of players history', function (testIsComplete) {
@@ -61,7 +61,7 @@ describe('The game', function () {
             var result = gameRunner.run([clark, bruce, diana], [], history);
             should(result.pairs.length).eql(2);
             testIsComplete();
-        });
+        }).catch(testIsComplete);
     });
 
     it('will always pair someone who has paired with everyone but one person with that one person', function (testIsComplete) {
@@ -91,7 +91,7 @@ describe('The game', function () {
                 });
                 foundBruceAndJohn.should.be.true;
                 testIsComplete();
-            });
+            }).catch(testIsComplete);
         });
     });
 });
