@@ -17,6 +17,7 @@ var UserDataService = require('./lib/UserDataService');
 var routes = require('./routes');
 var HistoryRoutes = require('./routes/history');
 var PlayerRoutes = require('./routes/players');
+var PinRoutes = require('./routes/pins');
 var TribeRoutes = require('./routes/tribes');
 var spin = require('./routes/spin');
 var config = require('./config');
@@ -107,6 +108,10 @@ app.route('/api/:tribeId/players')
     .get(players.listTribeMembers)
     .post(players.savePlayer);
 app.delete('/api/:tribeId/players/:playerId', players.removePlayer);
+
+var pins = new PinRoutes(config.mongoUrl);
+app.route('/api/:tribeId/pins')
+    .get(pins.list);
 
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);
