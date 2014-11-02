@@ -3,7 +3,8 @@ var Supertest = require('supertest');
 var expect = require('chai').expect;
 var config = require('../../config');
 var monk = require('monk');
-
+var CouplingDataService = require('../../lib/CouplingDataService');
+var dataService = new CouplingDataService(config.mongoUrl);
 var tribeId = 'test';
 var path = '/api/' + tribeId + '/pins';
 var badTribePath = '/api/does-not-exist/pins';
@@ -32,20 +33,21 @@ describe(path, function () {
         ];
 
         beforeEach(function (done) {
+            pinCollection.remove({tribe: tribeId});
             pinCollection.insert(expectedPins, done);
         });
 
         afterEach(function () {
-            expectedPins.forEach(function (pin) {
-                pinCollection.remove({_id: pin._id}, false);
-            });
+            pinCollection.remove({tribe: tribeId});
         });
 
-        it('will return all available pins on team.', function (done) {
+        it('will return all available pins on tribe.', function (done) {
             var httpGet = supertest.get(path);
             httpGet.cookies = Cookies;
             httpGet.expect('Content-Type', /json/).end(function (error, response) {
-                expect(error).to.not.exist;
+                if (error) {
+                    done(error);
+                }
                 response.status.should.equal(200);
                 JSON.stringify(response.body).should.equal(JSON.stringify(expectedPins));
                 done();
@@ -56,9 +58,53 @@ describe(path, function () {
             var httpGet = supertest.get(badTribePath);
             httpGet.cookies = Cookies;
             httpGet.expect('Content-Type', /json/).end(function (error, response) {
+                if (error) {
+                    done(error);
+                }
+
                 expect(response.body).to.eql([]);
                 done();
             });
+        });
+    });
+
+    describe("POST", function () {
+        var resultPins = [
+            {_id: 'pin1', tribe: tribeId},
+            {_id: 'pin2', tribe: tribeId},
+            {_id: 'pin3', tribe: tribeId}
+        ];
+
+        beforeEach(function (done) {
+            pinCollection.insert(resultPins, done);
+        });
+
+        afterEach(function () {
+            pinCollection.remove({tribe: tribeId});
+        });
+
+        it("will add pin to tribe", function (done) {
+            var newPin = {_id: 'pin4', tribe: tribeId};
+            var httpPost = supertest.post(path);
+            httpPost.cookies = Cookies;
+            httpPost.send(newPin)
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (error, response) {
+                    if (error) {
+                        done(error);
+                    }
+
+                    var expectedPins = resultPins.concat(newPin);
+                    expect(response.body).to.eql(newPin);
+
+                    dataService.requestPins(tribeId)
+                        .then(function (results) {
+                            expect(results).eql(expectedPins);
+                            done(error);
+                        })
+                        .catch(done);
+                });
         });
     });
 });

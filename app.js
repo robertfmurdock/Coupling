@@ -111,7 +111,8 @@ app.delete('/api/:tribeId/players/:playerId', players.removePlayer);
 
 var pins = new PinRoutes(config.mongoUrl);
 app.route('/api/:tribeId/pins')
-    .get(pins.list);
+    .get(pins.list)
+    .post(pins.savePin);
 
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);

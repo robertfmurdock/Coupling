@@ -16,6 +16,10 @@ describe(path, function () {
     var supertest = Supertest(host);
     var Cookies;
 
+    before(function(){
+        removeTestPin();
+    });
+
     beforeEach(function (done) {
         supertest.get('/test-login?username="name"&password="pw"').end(function (err, res) {
             should.not.exist(err);
@@ -25,10 +29,8 @@ describe(path, function () {
     });
 
     function removeTestPin() {
-        pinCollection.remove({_id: pinId}, false);
+        pinCollection.remove({tribe: tribeId});
     }
-
-    removeTestPin();
 
     afterEach(function () {
         removeTestPin();
@@ -65,7 +67,7 @@ describe(path, function () {
         var pin = {_id: pinId, tribe: tribeId, name: 'super test pin'};
         beforeEach(function (done) {
             pinCollection.insert(pin, done);
-        })
+        });
 
         it('will assign one pin to a player', function (done) {
             var players = [
@@ -79,9 +81,9 @@ describe(path, function () {
                     should.not.exist(error);
                     response.status.should.equal(200);
                     response.body.tribe.should.equal(tribeId);
-                    var expectedPinnedPlayer = {name: "dude1", pins: [ pin ]};
+                    var expectedPinnedPlayer = {name: "dude1", pins: [pin]};
                     var expectedPairAssignments = [
-                        [ expectedPinnedPlayer ]
+                        [expectedPinnedPlayer]
                     ];
                     JSON.stringify(response.body.pairs).should.equal(JSON.stringify(expectedPairAssignments));
                     done();

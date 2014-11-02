@@ -9,4 +9,11 @@ module.exports = function (mongoUrl) {
             response.send(pins);
         });
     };
+
+    this.savePin = function (request, response) {
+        var pin = request.body;
+        dataService.savePin(pin, function () {
+            response.send(pin);
+        });
+    };
 };
