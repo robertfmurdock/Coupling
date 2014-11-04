@@ -100,10 +100,8 @@ module.exports = function (grunt) {
             }
         },
         "git-describe": {
-            "options": {
-            },
-            "jenkins": {
-            }
+            "options": {},
+            "jenkins": {}
         }
     });
 
@@ -120,7 +118,7 @@ module.exports = function (grunt) {
         }
     );
     grunt.registerTask('markAsDevelopmentBuild', function () {
-        grunt.file.write('version.json', JSON.stringify({gitRev: 'DEVELOPMENT' }));
+        grunt.file.write('version.json', JSON.stringify({gitRev: 'DEVELOPMENT'}));
     });
 
     grunt.registerTask('jenkinsMochaUnit', ['env:jenkinsUnit', 'mochaTest:jenkinsUnit']);
@@ -128,8 +126,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
         'protractor_webdriver:start', 'protractor:e2e', 'markAsDevelopmentBuild']);
-    grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint',
-        'protractor_webdriver:start', 'saveRevision']);
+    grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
 
 }
 ;
