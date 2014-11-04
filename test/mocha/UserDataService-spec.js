@@ -78,7 +78,7 @@ describe('UserDataService', function () {
         it('will return error when user is not in mongo', function (done) {
             var expectedUser = {_id: 'amazingId', uniqueValue: 'bloopers'};
             userDataService.deserializeUser(expectedUser._id, function (error) {
-                error.should.eql('The user with id: amazingId could not be found in the database.');
+                should(error).eql('The user with id: amazingId could not be found in the database.');
                 done();
             });
         });
