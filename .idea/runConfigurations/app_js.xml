@@ -8,7 +8,7 @@
     <ConfigurationWrapper RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="debuggableProgram" />
     <method>
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_External Tools_Restart Local MongoDB" />
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_Services_Restart Local MongoDB" />
     </method>
   </configuration>
 </component>

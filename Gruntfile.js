@@ -73,7 +73,8 @@ module.exports = function (grunt) {
             dev: {
                 options: {
                     script: 'app.js',
-                    port: 3001
+                    port: 3001,
+                    output: 'Finished initializing session storage'
                 }
             }
         },
