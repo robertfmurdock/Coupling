@@ -6,5 +6,6 @@ before_install:
   - npm install -g grunt-cli
   - npm install mongodb
   - npm install bson
+  - npm install karma-phantomjs-launcher
 services:
   - mongodb
