@@ -74,8 +74,10 @@ module.exports = function (grunt) {
                 options: {
                     script: 'app.js',
                     port: 3001,
-                    output: 'Finished initializing session storage'
+                    //output: 'Finished initializing session storage'
+                    delay: 4000
                 }
+
             }
         },
         protractor_webdriver: {
