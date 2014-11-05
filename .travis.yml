@@ -4,7 +4,6 @@ node_js:
   - "0.10"
 before_install:
   - npm install -g grunt-cli
-  - npm install karma-phantomjs-launcher
   - rm -rf node_modules
   - npm cache clean
 install: npm install
