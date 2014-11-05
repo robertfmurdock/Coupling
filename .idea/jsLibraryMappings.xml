@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{Coupling node_modules}" />
-    <file url="PROJECT" libraries="{Coupling node_modules, Node.js v0.10.33 Core Modules, chai-DefinitelyTyped, jasmine-DefinitelyTyped, mocha-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{Coupling node_modules, Node.js v0.10.33 Core Modules, chai-DefinitelyTyped, express-DefinitelyTyped, gruntjs-DefinitelyTyped, jasmine-DefinitelyTyped, mocha-DefinitelyTyped}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
 </project>

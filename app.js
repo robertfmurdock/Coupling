@@ -75,7 +75,10 @@ passport.use(new GoogleStrategy({
 console.log("Adding routing!");
 
 app.get('/auth/google', passport.authenticate('google'));
-app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/auth/google' }));
+app.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/auth/google'
+}));
 
 if ('development' == app.get('env')) {
     console.log('Dev Environment: enabling test login');
@@ -84,12 +87,12 @@ if ('development' == app.get('env')) {
             done(null, user);
         });
     }));
-    app.get('/test-login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }));
+    app.get('/test-login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
 }
 
 var checkApiAccess = function (request, response, next) {
     if (config.requiresAuthentication && !request.isAuthenticated())
-        response.send(401);
+        response.sendStatus(401);
     else
         next();
 };
@@ -118,6 +121,7 @@ var pins = new PinRoutes(config.mongoUrl);
 app.route('/api/:tribeId/pins')
     .get(pins.list)
     .post(pins.savePin);
+app.delete('/api/:tribeId/pins/:pinId', pins.removePin);
 
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);
@@ -128,4 +132,4 @@ http.createServer(app).listen(app.get('port'), function () {
     console.log('Deployed at: ' + config.buildDate);
     console.log('Git revision: ' + config.gitRev);
 });
-console.log('Finished Express init!')
+console.log('Finished Express init!');

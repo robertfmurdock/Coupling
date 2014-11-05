@@ -50,7 +50,7 @@ describe(path, function () {
     });
 
     describe("DELETE", function () {
-        var newPlayer = {name: "Awesome-O", tribe: tribeId};
+        var newPlayer = {_id: 'playerOne', name: "Awesome-O", tribe: tribeId};
         beforeEach(function (done) {
             var httpPost = couplingServer.post(path);
             httpPost.cookies = Cookies;
@@ -62,7 +62,7 @@ describe(path, function () {
         });
 
         afterEach(function () {
-            playersCollection.remove({_id: newPlayer._id}, false);
+            playersCollection.remove({tribe: tribeId}, false);
         });
 
         it('will remove a given player.', function (done) {

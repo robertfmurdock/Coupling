@@ -16,4 +16,15 @@ module.exports = function (mongoUrl) {
             response.send(pin);
         });
     };
+
+    this.removePin = function (request, response) {
+        dataService.removePin(request.params.pinId, function (error) {
+            if (error) {
+                response.statusCode = 404;
+                response.send(error);
+            } else {
+                response.send({});
+            }
+        });
+    };
 };

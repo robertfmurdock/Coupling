@@ -76,6 +76,7 @@ describe(path, function () {
         ];
 
         beforeEach(function (done) {
+            pinCollection.remove({tribe: tribeId});
             pinCollection.insert(resultPins, done);
         });
 
@@ -104,6 +105,63 @@ describe(path, function () {
                             done(error);
                         })
                         .catch(done);
+                });
+        });
+    });
+    describe("DELETE", function () {
+        var resultPins = [
+            {_id: 'pin1', tribe: tribeId},
+            {_id: 'pin2', tribe: tribeId},
+            {_id: 'pin3', tribe: tribeId}
+        ];
+
+        beforeEach(function (done) {
+            pinCollection.insert(resultPins, done);
+        });
+
+        afterEach(function () {
+            pinCollection.remove({tribe: tribeId});
+        });
+
+        it('will no longer display the deleted pin', function (done) {
+            var httpDelete = supertest.delete(path + "/" + resultPins[1]._id);
+            httpDelete.cookies = Cookies;
+            httpDelete
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function (error, response) {
+                    if (error) {
+                        done(error);
+                    }
+
+                    expect(response.body).to.eql({});
+
+                    var httpGet = supertest.get(path);
+                    httpGet.cookies = Cookies;
+                    httpGet.expect('Content-Type', /json/).end(function (error, response) {
+                        if (error) {
+                            done(error);
+                        }
+                        response.status.should.equal(200);
+                        JSON.stringify(response.body).should.equal(JSON.stringify([resultPins[0], resultPins[2]]));
+                        done();
+                    });
+                });
+        });
+
+        it('will fail when pin does not exist', function (done) {
+            var httpDelete = supertest.delete(path + "/imaginary");
+            httpDelete.cookies = Cookies;
+            httpDelete
+                .expect('Content-Type', /json/)
+                .expect(404)
+                .end(function (error, response) {
+                    if (error) {
+                        done(error);
+                    }
+
+                    expect(response.body).to.eql({message: 'Failed to remove the pin because it did not exist.'});
+                    done();
                 });
         });
     });
