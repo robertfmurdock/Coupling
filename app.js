@@ -1,3 +1,4 @@
+console.log("Starting express init!");
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -122,3 +123,4 @@ http.createServer(app).listen(app.get('port'), function () {
     console.log('Deployed at: ' + config.buildDate);
     console.log('Git revision: ' + config.gitRev);
 });
+console.log('Finished Express init!')
