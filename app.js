@@ -24,6 +24,7 @@ var spin = require('./routes/spin');
 var config = require('./config');
 var userDataService = new UserDataService(config.mongoUrl);
 
+console.log("Finished requires, starting express!");
 var app = express();
 
 app.set('port', config.port);
@@ -53,6 +54,7 @@ app.use(passport.session());
 if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
+console.log("Adding passport!");
 
 passport.serializeUser(userDataService.serializeUser);
 passport.deserializeUser(userDataService.deserializeUser);
@@ -69,6 +71,8 @@ passport.use(new GoogleStrategy({
         });
     }
 ));
+
+console.log("Adding routing!");
 
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/callback', passport.authenticate('google', { successRedirect: '/', failureRedirect: '/auth/google' }));
@@ -118,6 +122,7 @@ app.route('/api/:tribeId/pins')
 app.get('/partials/:name', routes.partials);
 app.get('*', routes.index);
 
+console.log("creating server!");
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
     console.log('Deployed at: ' + config.buildDate);
