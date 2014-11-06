@@ -1,6 +1,7 @@
 "use strict";
 var Supertest = require('supertest');
 var should = require('should');
+var expect = require('chai').expect;
 var DataService = require('../../lib/CouplingDataService');
 var Comparators = require('../../lib/Comparators');
 
@@ -26,6 +27,10 @@ describe(path, function () {
         });
     });
 
+    afterEach(function () {
+        playersCollection.remove({tribe: tribeId}, false);
+    });
+
     describe("GET", function () {
         it('will return all available players on team.', function (done) {
             var service = new DataService(config.mongoUrl);
@@ -47,6 +52,25 @@ describe(path, function () {
     });
 
     describe("POST", function () {
+
+        it('will add player to tribe', function(done){
+            var newPlayer = {_id: 'playerOne', name: "Awesome-O", tribe: tribeId};
+            var httpPost = couplingServer.post(path);
+            httpPost.cookies = Cookies;
+            httpPost.send(newPlayer).end(function (error, responseContainingTheNewId) {
+                should.not.exist(error);
+                expect(responseContainingTheNewId.body).to.eql(newPlayer);
+
+                var httpGet = couplingServer.get(path);
+                httpGet.cookies = Cookies;
+                httpGet.expect('Content-Type', /json/).end(function (error, response) {
+                    should.not.exist(error);
+                    response.status.should.equal(200);
+                    expect(response.body).to.eql([newPlayer]);
+                    done();
+                });
+            });
+        });
     });
 
     describe("DELETE", function () {
@@ -59,10 +83,6 @@ describe(path, function () {
                 newPlayer = responseContainingTheNewId.body;
                 done();
             });
-        });
-
-        afterEach(function () {
-            playersCollection.remove({tribe: tribeId}, false);
         });
 
         it('will remove a given player.', function (done) {
