@@ -3,6 +3,7 @@ node_js:
   - "0.11"
   - "0.10"
 before_install:
+  - webdriver-manager update --standalone
   - npm install -g grunt-cli
   - rm -rf node_modules
   - npm cache clean
