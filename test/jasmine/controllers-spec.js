@@ -402,7 +402,7 @@ describe('The controller named ', function () {
                         ]
                     };
 
-                    scope.onDrop(event, player2, player3);
+                    scope.onDrop(null, player2, player3);
                     expect(Coupling.data.currentPairAssignments.pairs).toEqual([
                         [player1, player3],
                         [player2, player4]
@@ -423,7 +423,7 @@ describe('The controller named ', function () {
                         ]
                     };
 
-                    scope.onDrop(event, player4, player3);
+                    scope.onDrop(null, player4, player3);
                     expect(Coupling.data.currentPairAssignments.pairs).toEqual([
                         [player1, player2],
                         [player3, player4]

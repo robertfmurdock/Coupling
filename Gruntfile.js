@@ -29,7 +29,7 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'karma.conf.js',
                 singleRun: true,
-                browsers: ['PhantomJS'],
+                browsers: ['PhantomJS', 'Chrome', 'Firefox', 'Safari'],
                 reporters: ['dots']
             },
             jenkins: {
@@ -40,6 +40,12 @@ module.exports = function (grunt) {
                 junitReporter: {
                     outputFile: 'test-output/test-results.xml'
                 }
+            },
+            travis: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS', 'Chrome', 'Firefox'],
+                reporters: ['dots']
             }
         },
         mochaTest: {
@@ -92,11 +98,24 @@ module.exports = function (grunt) {
                     browser: 'chrome'
                 }
             },
-            e2e: {},
-            jenkins: {
+            chrome: {
                 options: {
                     args: {
                         browser: 'chrome'
+                    }
+                }
+            },
+            firefox: {
+                options: {
+                    args: {
+                        browser: 'firefox'
+                    }
+                }
+            },
+            safari: {
+                options: {
+                    args: {
+                        browser: 'safari'
                     }
                 }
             }
@@ -127,7 +146,7 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
     grunt.registerTask('default', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
-        'protractor_webdriver:start', 'protractor:e2e', 'markAsDevelopmentBuild']);
+        'protractor_webdriver:start', 'protractor:chrome', 'markAsDevelopmentBuild']);
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
 
 }
