@@ -1,3 +1,4 @@
 dependencies:
   override:
-    - npm rebuild
+    - npm cache clean
+    - npm install
