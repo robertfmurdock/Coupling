@@ -54,7 +54,7 @@
     "mocha": "^2.0.1"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt jenkins"
   },
   "repository": {
     "type": "git",
