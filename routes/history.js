@@ -1,11 +1,9 @@
 "use strict";
 var DataService = require('../lib/CouplingDataService');
 
-module.exports = function (mongoUrl) {
-    var dataService = new DataService(mongoUrl);
-
+module.exports = function () {
     this.list = function (request, response) {
-        dataService.requestHistory(request.params.tribeId).then(function (history) {
+        request.dataService.requestHistory(request.params.tribeId).then(function (history) {
             response.send(history);
         }, function (error) {
             response.statusCode = 500;
@@ -18,7 +16,7 @@ module.exports = function (mongoUrl) {
         if (pairs.date && pairs.pairs) {
             pairs.date = new Date(pairs.date);
 
-            dataService.savePairAssignmentsToHistory(pairs, function () {
+            request.dataService.savePairAssignmentsToHistory(pairs, function () {
                 response.send(pairs);
             });
         }
@@ -29,7 +27,7 @@ module.exports = function (mongoUrl) {
     };
 
     this.deleteMember = function (request, response) {
-        dataService.removePairAssignments(request.params.id, function (error) {
+        request.dataService.removePairAssignments(request.params.id, function (error) {
             if (error) {
                 response.statusCode = 404;
                 response.send(error);

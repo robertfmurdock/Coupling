@@ -17,8 +17,6 @@ module.exports = function (mongoUrl) {
     var playersCollection = database.get('players');
     var usersCollection = database.get('users');
 
-    var dataService = new DataService(mongoUrl);
-
     function loadAuthorizedTribeIds(user) {
         return playersCollection.find({email: user.email}).then(function (documents) {
             var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
@@ -26,7 +24,7 @@ module.exports = function (mongoUrl) {
         });
     }
 
-    function requestAuthorizedTribes(user) {
+    function requestAuthorizedTribes(user, dataService) {
         return requestAll([dataService.requestTribes(), loadAuthorizedTribeIds(user)], function (tribes, authorizedTribes) {
             return _.filter(tribes, function (value) {
                 return _.contains(authorizedTribes, value._id);
@@ -35,7 +33,7 @@ module.exports = function (mongoUrl) {
     }
 
     this.list = function (request, response) {
-        requestAuthorizedTribes(request.user).then(function (authorizedTribes) {
+        requestAuthorizedTribes(request.user, request.dataService).then(function (authorizedTribes) {
             response.send(authorizedTribes);
         }).catch(function (error) {
             response.statusCode = 500;

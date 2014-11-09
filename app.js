@@ -22,6 +22,7 @@ var PinRoutes = require('./routes/pins');
 var TribeRoutes = require('./routes/tribes');
 var spin = require('./routes/spin');
 var config = require('./config');
+var DataService = require('./lib/CouplingDataService');
 var userDataService = new UserDataService(config.mongoUrl);
 
 console.log("Finished requires, starting express!");
@@ -90,11 +91,14 @@ if ('development' == app.get('env')) {
     app.get('/test-login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
 }
 
+var dataService = new DataService(config.mongoUrl);
 var checkApiAccess = function (request, response, next) {
     if (config.requiresAuthentication && !request.isAuthenticated())
         response.sendStatus(401);
-    else
+    else {
+        request.dataService = dataService;
         next();
+    }
 };
 
 var tribes = new TribeRoutes(config.mongoUrl);
