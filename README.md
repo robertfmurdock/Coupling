@@ -1,4 +1,4 @@
-Coupling [![Build Status](https://travis-ci.org/robertfmurdock/Coupling.svg?branch=master)](https://travis-ci.org/robertfmurdock/Coupling)
+Coupling [![Build Status](https://travis-ci.org/robertfmurdock/Coupling.svg?branch=master)](https://travis-ci.org/robertfmurdock/Coupling) [![Circle CI](https://circleci.com/gh/robertfmurdock/Coupling.png?style=badge)](https://circleci.com/gh/robertfmurdock/Coupling)
 ========
 
 This is a web site that will automatically assign pairs for any given iteration.
