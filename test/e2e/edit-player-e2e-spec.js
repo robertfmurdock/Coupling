@@ -4,13 +4,12 @@ var _ = require('underscore');
 var config = require("../../config");
 
 var hostName = 'http://localhost:' + config.port;
-var database = monk(config.mongoUrl);
+var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
-var usersCollection = database.get('users');
+var usersCollection = monk(config.mongoUrl).get('users');
 
 describe('The edit player page', function () {
-
 
     var userEmail = 'protractor@test.goo';
 

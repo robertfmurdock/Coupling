@@ -20,14 +20,13 @@ describe(path, function () {
         });
     });
 
-    var database = monk(config.mongoUrl);
+    var database = monk(config.tempMongoUrl);
     var tribesCollection = database.get('tribes');
     var playersCollection = database.get('players');
-    var usersCollection = database.get('users');
-
+    var usersCollection = monk(config.mongoUrl).get('users');
 
     function authorizeUserForTribes(authorizedTribes) {
-        usersCollection.update({email: userEmail}, {$set: {tribes: authorizedTribes}});
+        usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
     }
 
     it('GET will return all available tribes.', function (done) {

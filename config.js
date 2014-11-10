@@ -6,10 +6,13 @@ var config = {
         return process.env.PORT || 3000;
     },
     get mongoUrl() {
-        return  process.env.MONGOHQ_URL_MONGOURL || "localhost/Coupling";
+        return process.env.MONGOHQ_URL_MONGOURL || "localhost/Coupling";
+    },
+    get tempMongoUrl() {
+        return "localhost/CouplingTemp";
     },
     get secret() {
-        return  "maythefourthbewithyou";
+        return "maythefourthbewithyou";
     },
     get requiresAuthentication() {
         return true;

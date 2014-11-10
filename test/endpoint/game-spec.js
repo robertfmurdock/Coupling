@@ -9,7 +9,7 @@ var pinId = 'testPin';
 var path = '/api/' + tribeId + '/spin';
 var host = 'http://localhost:' + config.port;
 
-var database = monk(config.mongoUrl);
+var database = monk(config.tempMongoUrl);
 var pinCollection = database.get('pins');
 
 describe(path, function () {

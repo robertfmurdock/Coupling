@@ -11,7 +11,7 @@ var server = 'http://localhost:' + config.port;
 var path = '/api/' + tribeId + '/players';
 
 var monk = require('monk');
-var database = monk(config.mongoUrl);
+var database = monk(config.tempMongoUrl);
 var playersCollection = database.get('players');
 
 
@@ -33,7 +33,7 @@ describe(path, function () {
 
     describe("GET", function () {
         it('will return all available players on team.', function (done) {
-            var service = new DataService(config.mongoUrl);
+            var service = new DataService(config.tempMongoUrl);
 
             service.requestPlayers(tribeId).then(function (players) {
                 var httpGet = couplingServer.get(path);

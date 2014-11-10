@@ -4,13 +4,13 @@ var expect = require('chai').expect;
 var config = require('../../config');
 var monk = require('monk');
 var CouplingDataService = require('../../lib/CouplingDataService');
-var dataService = new CouplingDataService(config.mongoUrl);
+var dataService = new CouplingDataService(config.tempMongoUrl);
 var tribeId = 'test';
 var path = '/api/' + tribeId + '/pins';
 var badTribePath = '/api/does-not-exist/pins';
 var host = 'http://localhost:' + config.port;
 
-var database = monk(config.mongoUrl);
+var database = monk(config.tempMongoUrl);
 var pinCollection = database.get('pins');
 
 describe(path, function () {

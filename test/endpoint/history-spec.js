@@ -11,7 +11,7 @@ var host = 'http://localhost:' + config.port;
 var tribeId = 'test';
 var path = '/api/' + tribeId + '/history';
 
-var database = monk(config.mongoUrl);
+var database = monk(config.tempMongoUrl);
 var historyCollection = database.get('history');
 
 describe(path, function () {
@@ -52,7 +52,7 @@ describe(path, function () {
                     response.status.should.equal(200);
                     var pairsAsSaved = response.body;
 
-                    new DataService(config.mongoUrl).requestHistory(tribeId).then(function (history) {
+                    new DataService(config.tempMongoUrl).requestHistory(tribeId).then(function (history) {
                         var latestEntryInHistory = history[0];
                         for (var parameterName in pairsAsSaved) {
                             if (pairsAsSaved.hasOwnProperty(parameterName)) {

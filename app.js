@@ -84,7 +84,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
 if ('development' == app.get('env')) {
     console.log('Dev Environment: enabling test login');
     passport.use(new LocalStrategy(function (username, password, done) {
-        userDataService.findOrCreate(username, function (user) {
+        userDataService.findOrCreate(username + "._temp", function (user) {
             done(null, user);
         });
     }));
@@ -92,36 +92,41 @@ if ('development' == app.get('env')) {
 }
 
 var dataService = new DataService(config.mongoUrl);
+var tempDataService = new DataService(config.tempMongoUrl);
 var checkApiAccess = function (request, response, next) {
-    if (config.requiresAuthentication && !request.isAuthenticated())
+    if (config.requiresAuthentication && !request.isAuthenticated()) {
         response.sendStatus(401);
-    else {
-        request.dataService = dataService;
+    } else {
+        if (request.user.email.indexOf('._temp') != -1) {
+            request.dataService = tempDataService;
+        } else {
+            request.dataService = dataService;
+        }
         next();
     }
 };
 
-var tribes = new TribeRoutes(config.mongoUrl);
+var tribes = new TribeRoutes();
 app.get('/', routes.index);
 app.all('/api/*', checkApiAccess);
 app.route('/api/tribes')
     .get(tribes.list)
     .post(tribes.save);
-app.post('/api/:tribeId/spin', spin(config.mongoUrl));
+app.post('/api/:tribeId/spin', spin());
 
-var history = new HistoryRoutes(config.mongoUrl);
+var history = new HistoryRoutes();
 app.route('/api/:tribeId/history')
     .get(history.list)
     .post(history.savePairs);
 app.delete('/api/:tribeId/history/:id', history.deleteMember);
 
-var players = new PlayerRoutes(config.mongoUrl);
+var players = new PlayerRoutes();
 app.route('/api/:tribeId/players')
     .get(players.listTribeMembers)
     .post(players.savePlayer);
 app.delete('/api/:tribeId/players/:playerId', players.removePlayer);
 
-var pins = new PinRoutes(config.mongoUrl);
+var pins = new PinRoutes();
 app.route('/api/:tribeId/pins')
     .get(pins.list)
     .post(pins.savePin);
