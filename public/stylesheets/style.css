@@ -55,11 +55,13 @@ a {
     margin: 0 110px;
 }
 
-#player-view.player h2 {
+#player-view.player .player-header {
     background: darkcyan url(../images/overlay.png) repeat-x;
-    margin-before: 0px;
-    margin-after: 6px;
+    margin-top: 0px;
+    margin-bottom: 6px;
     border-radius: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 #player-view .save-button {
