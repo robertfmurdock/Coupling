@@ -124,11 +124,12 @@ a {
     margin: 0 2px 0 2px;
 }
 
-.player h4 {
+.player .player-header {
     background: darkcyan url(../images/overlay.png) repeat-x;
     margin-before: 0px;
     margin-after: 6px;
     border-radius: 15px;
+    font-weight: bold;
 }
 
 .player-roster .player {

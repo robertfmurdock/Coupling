@@ -5,4 +5,4 @@ span(id="history-view")
         div
             span(ng-repeat='pair in pairAssignments.pairs' class="pair")
                 span(ng-repeat='player in pair' class="player" ui-draggable="true" drag="player" ui-on-Drop="onDrop($event,$data,player)")
-                    h4 {{player.name}}
+                    div(class="player-header") {{player.name}}
