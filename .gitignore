@@ -3,8 +3,10 @@ version.json
 .idea/workspace.xml
 Coupling.iws
 .DS_Store
+**/Release/*
 **/*.node
 **/*.a
 **/*.o
 **/*.dylib
 **/*.gypi
+**/*.log
