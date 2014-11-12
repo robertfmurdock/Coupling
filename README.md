@@ -3,7 +3,7 @@ Coupling [![Build Status](https://travis-ci.org/robertfmurdock/Coupling.svg?bran
 
 This is a web site that will automatically assign pairs for any given iteration.
 
-The latest build is currently hosted at http://coupling.robertfmurdock.cloudbees.net/. Please note that because the app is currently still developing, there's no guarentee that information stored there currently won't be lost during the course of development (though if it is, that will certainly not be intentional).  
+The latest build is currently hosted at https://armored-coupling.herokuapp.com/ and http://coupling.robertfmurdock.cloudbees.net/. Please note that because the app is currently still developing, there's no guarentee that information stored there currently won't be lost during the course of development (though if it is, that will certainly not be intentional).  
 
 
 Intended to make it quick and easy to pair off, and encourage people to pair with people who they haven't paired with in a while.
