@@ -57,7 +57,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "prepublish": "npm install grunt-cli -g ;grunt saveRevision",
+    //"prepublish": "npm install grunt-cli -g ;grunt saveRevision",
     "test": "grunt travis"
   },
   "repository": {
