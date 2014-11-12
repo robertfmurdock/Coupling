@@ -56,6 +56,8 @@
     "supertest": "^0.14.0"
   },
   "scripts": {
+    "start": "node app.js",
+    "prepublish": "grunt saveRevision",
     "test": "grunt travis"
   },
   "repository": {
