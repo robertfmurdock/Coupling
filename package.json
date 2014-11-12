@@ -1,7 +1,7 @@
 {
   "name": "Coupling",
   "version": "1.0.0",
-  "description": "Coupling [![Build Status](https://travis-ci.org/robertfmurdock/Coupling.svg?branch=master)](https://travis-ci.org/robertfmurdock/Coupling) ========",
+  "description": "Coupling",
   "main": "app.js",
   "directories": {
     "test": "test"
