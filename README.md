@@ -66,5 +66,3 @@ Is This Really Just For Work?
 -----------------------------
 
 Nope! Feel free to use this for anything - field trips and buddy systems, pairing up for murder mysteries, impromptu fight clubs... All I ask is that you send me a nice note telling me about your innovative use of the program.
-
-- Rob Murdock, (RMUR).
