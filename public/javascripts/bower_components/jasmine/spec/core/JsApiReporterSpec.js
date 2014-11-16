@@ -178,6 +178,43 @@ describe("JsApiReporter", function() {
     });
   });
 
+  describe("#suiteResults", function(){
+    var reporter, suiteResult1, suiteResult2;
+    beforeEach(function() {
+      reporter = new j$.JsApiReporter({});
+      suiteStarted1 = {
+        id: 1
+      };
+      suiteResult1 = {
+        id: 1,
+        status: 'failed',
+        failedExpectations: [{ message: 'My After All Exception' }]
+      };
+      suiteResult2 = {
+        id: 2,
+        status: 'finished'
+      };
+
+      reporter.suiteStarted(suiteStarted1);
+      reporter.suiteDone(suiteResult1);
+      reporter.suiteDone(suiteResult2);
+    });
+
+    it('should not include suite starts', function(){
+      expect(reporter.suiteResults(0,3).length).toEqual(2);
+    });
+
+    it("should return a slice of results", function() {
+      expect(reporter.suiteResults(0, 1)).toEqual([suiteResult1]);
+      expect(reporter.suiteResults(1, 1)).toEqual([suiteResult2]);
+    });
+
+    it("returns nothing for out of bounds indicies", function() {
+      expect(reporter.suiteResults(0, 3)).toEqual([suiteResult1, suiteResult2]);
+      expect(reporter.suiteResults(2, 3)).toEqual([]);
+    });
+  });
+
   describe("#executionTime", function() {
     it("should start the timer when jasmine starts", function() {
       var timerSpy = jasmine.createSpyObj('timer', ['start', 'elapsed']),

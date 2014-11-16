@@ -2,6 +2,7 @@
 // Dropdown menus
 // --------------------------------------------------
 
+
 // Dropdown arrow/caret
 .caret {
   display: inline-block;
@@ -9,9 +10,9 @@
   height: 0;
   margin-left: 2px;
   vertical-align: middle;
-  border-top: @caret-width-base solid;
+  border-top:   @caret-width-base solid;
   border-right: @caret-width-base solid transparent;
-  border-left: @caret-width-base solid transparent;
+  border-left:  @caret-width-base solid transparent;
 }
 
 // The dropdown wrapper (div)
@@ -37,11 +38,12 @@
   margin: 2px 0 0; // override default ul
   list-style: none;
   font-size: @font-size-base;
+  text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
   background-color: @dropdown-bg;
   border: 1px solid @dropdown-fallback-border; // IE8 fallback
   border: 1px solid @dropdown-border;
   border-radius: @border-radius-base;
-  .box-shadow(0 6px 12px rgba(0, 0, 0, .175));
+  .box-shadow(0 6px 12px rgba(0,0,0,.175));
   background-clip: padding-box;
 
   // Aligns the dropdown menu to right
@@ -101,17 +103,15 @@
   &:focus {
     color: @dropdown-link-disabled-color;
   }
-}
 
-// Nuke hover/focus effects
-.dropdown-menu > .disabled > a {
+  // Nuke hover/focus effects
   &:hover,
   &:focus {
     text-decoration: none;
     background-color: transparent;
     background-image: none; // Remove CSS gradient
     .reset-filter();
-    cursor: not-allowed;
+    cursor: @cursor-disabled;
   }
 }
 
@@ -136,7 +136,6 @@
   left: auto; // Reset the default from `.dropdown-menu`
   right: 0;
 }
-
 // With v3, we enabled auto-flipping if you have a dropdown within a right
 // aligned nav component. To enable the undoing of that, we provide an override
 // to restore the default dropdown menu alignment.
@@ -155,6 +154,7 @@
   font-size: @font-size-small;
   line-height: @line-height-base;
   color: @dropdown-header-color;
+  white-space: nowrap; // as with > li > a
 }
 
 // Backdrop to catch body clicks on mobile, etc.
@@ -194,6 +194,7 @@
   }
 }
 
+
 // Component alignment
 //
 // Reiterate per navbar.less and the modified component alignment there.
@@ -210,4 +211,3 @@
     }
   }
 }
-

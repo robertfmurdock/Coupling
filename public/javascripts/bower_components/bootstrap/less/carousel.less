@@ -2,6 +2,7 @@
 // Carousel
 // --------------------------------------------------
 
+
 // Wrapper for the slide container and indicators
 .carousel {
   position: relative;
@@ -22,6 +23,30 @@
     > a > img {
       &:extend(.img-responsive);
       line-height: 1;
+    }
+
+    // WebKit CSS3 transforms for supported devices
+    @media all and (transform-3d), (-webkit-transform-3d) {
+      transition: transform .6s ease-in-out;
+      backface-visibility: hidden;
+      perspective: 1000;
+
+      &.next,
+      &.active.right {
+        transform: translate3d(100%, 0, 0);
+        left: 0;
+      }
+      &.prev,
+      &.active.left {
+        transform: translate3d(-100%, 0, 0);
+        left: 0;
+      }
+      &.next.left,
+      &.prev.right,
+      &.active {
+        transform: translate3d(0, 0, 0);
+        left: 0;
+      }
     }
   }
 
@@ -92,7 +117,7 @@
   // Hover/focus state
   &:hover,
   &:focus {
-    outline: none;
+    outline: 0;
     color: @carousel-control-color;
     text-decoration: none;
     .opacity(.9);
@@ -111,28 +136,30 @@
   .icon-prev,
   .glyphicon-chevron-left {
     left: 50%;
+    margin-left: -10px;
   }
   .icon-next,
   .glyphicon-chevron-right {
     right: 50%;
+    margin-right: -10px;
   }
   .icon-prev,
   .icon-next {
-    width: 20px;
+    width:  20px;
     height: 20px;
     margin-top: -10px;
-    margin-left: -10px;
     font-family: serif;
   }
 
+
   .icon-prev {
     &:before {
-      content: '\2039'; // SINGLE LEFT-POINTING ANGLE QUOTATION MARK (U+2039)
+      content: '\2039';// SINGLE LEFT-POINTING ANGLE QUOTATION MARK (U+2039)
     }
   }
   .icon-next {
     &:before {
-      content: '\203a'; // SINGLE RIGHT-POINTING ANGLE QUOTATION MARK (U+203A)
+      content: '\203a';// SINGLE RIGHT-POINTING ANGLE QUOTATION MARK (U+203A)
     }
   }
 }
@@ -155,7 +182,7 @@
 
   li {
     display: inline-block;
-    width: 10px;
+    width:  10px;
     height: 10px;
     margin: 1px;
     text-indent: -999px;
@@ -172,11 +199,11 @@
     // For IE8, we set solid black as it doesn't support `rgba()`. For IE9, we
     // set alpha transparency for the best results possible.
     background-color: #000 \9; // IE8
-    background-color: rgba(0, 0, 0, 0); // IE9
+    background-color: rgba(0,0,0,0); // IE9
   }
   .active {
     margin: 0;
-    width: 12px;
+    width:  12px;
     height: 12px;
     background-color: @carousel-indicator-active-bg;
   }
@@ -201,6 +228,7 @@
   }
 }
 
+
 // Scale up controls for tablets and up
 @media screen and (min-width: @screen-sm-min) {
 
@@ -213,8 +241,15 @@
       width: 30px;
       height: 30px;
       margin-top: -15px;
-      margin-left: -15px;
       font-size: 30px;
+    }
+    .glyphicon-chevron-left,
+    .icon-prev {
+      margin-left: -15px;
+    }
+    .glyphicon-chevron-right,
+    .icon-next {
+      margin-right: -15px;
     }
   }
 

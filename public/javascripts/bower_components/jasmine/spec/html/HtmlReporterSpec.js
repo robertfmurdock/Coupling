@@ -65,8 +65,8 @@ describe("New HtmlReporter", function() {
 
   describe("when a spec is done", function() {
     it("logs errors to the console and prints a special symbol if it is an empty spec", function() {
-      if (!window.console) {
-        window.console = { error: function(){} };
+      if (typeof console === "undefined") {
+        console = { error: function(){} };
       }
 
       var env = new j$.Env(),
@@ -176,6 +176,34 @@ describe("New HtmlReporter", function() {
       var specEl = container.querySelector(".symbol-summary li");
       expect(specEl.getAttribute("class")).toEqual("failed");
       expect(specEl.getAttribute("id")).toEqual("spec_345");
+    });
+  });
+
+  describe("when there are suite failures", function () {
+    it("displays the exceptions in their own alert bars", function(){
+      var env = new j$.Env(),
+        container = document.createElement("div"),
+        getContainer = function() { return container; },
+        reporter = new j$.HtmlReporter({
+          env: env,
+          getContainer: getContainer,
+          createElement: function() { return document.createElement.apply(document, arguments); },
+          createTextNode: function() { return document.createTextNode.apply(document, arguments); }
+        });
+
+      reporter.initialize();
+
+      reporter.jasmineStarted({});
+      reporter.suiteDone({ status: 'failed', failedExpectations: [{ message: 'My After All Exception' }] });
+      reporter.suiteDone({ status: 'failed', failedExpectations: [{ message: 'My Other Exception' }] });
+      reporter.jasmineDone({});
+
+      var alertBars = container.querySelectorAll(".alert .bar");
+
+      expect(alertBars.length).toEqual(3);
+      expect(alertBars[1].innerHTML).toMatch(/My After All Exception/);
+      expect(alertBars[1].getAttribute("class")).toEqual('bar errored');
+      expect(alertBars[2].innerHTML).toMatch(/My Other Exception/);
     });
   });
 

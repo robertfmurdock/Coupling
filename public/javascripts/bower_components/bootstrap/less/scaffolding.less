@@ -2,6 +2,7 @@
 // Scaffolding
 // --------------------------------------------------
 
+
 // Reset the box-sizing
 //
 // Heads up! This reset may cause conflicts with some third-party widgets.
@@ -10,17 +11,17 @@
 * {
   .box-sizing(border-box);
 }
-
 *:before,
 *:after {
   .box-sizing(border-box);
 }
 
+
 // Body reset
 
 html {
-  font-size: 62.5%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-size: 10px;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 body {
@@ -41,6 +42,7 @@ textarea {
   line-height: inherit;
 }
 
+
 // Links
 
 a {
@@ -50,13 +52,14 @@ a {
   &:hover,
   &:focus {
     color: @link-hover-color;
-    text-decoration: underline;
+    text-decoration: @link-hover-decoration;
   }
 
   &:focus {
     .tab-focus();
   }
 }
+
 
 // Figures
 //
@@ -66,6 +69,7 @@ a {
 figure {
   margin: 0;
 }
+
 
 // Images
 
@@ -103,14 +107,16 @@ img {
   border-radius: 50%; // set radius in percents
 }
 
+
 // Horizontal rules
 
 hr {
-  margin-top: @line-height-computed;
+  margin-top:    @line-height-computed;
   margin-bottom: @line-height-computed;
   border: 0;
   border-top: 1px solid @hr-border;
 }
+
 
 // Only display content to screen readers
 //
@@ -123,6 +129,22 @@ hr {
   margin: -1px;
   padding: 0;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   border: 0;
+}
+
+// Use in conjunction with .sr-only to only display content when it's focused.
+// Useful for "Skip to main content" links; see http://www.w3.org/TR/2013/NOTE-WCAG20-TECHS-20130905/G1
+// Credit: HTML5 Boilerplate
+
+.sr-only-focusable {
+  &:active,
+  &:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+  }
 }

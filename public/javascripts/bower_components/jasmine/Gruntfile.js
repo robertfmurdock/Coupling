@@ -37,10 +37,19 @@ module.exports = function(grunt) {
   grunt.registerTask("execSpecsInNode",
     "Run Jasmine core specs in Node.js",
     function() {
-      var exitInfo = require("shelljs").exec("node_modules/.bin/jasmine");
-      if (exitInfo.code !== 0) {
-        grunt.fail.fatal("Specs Failed", exitInfo.code);
-      }
+      var done = this.async(),
+          Jasmine = require('jasmine'),
+          jasmineCore = require('./lib/jasmine-core.js'),
+          jasmine = new Jasmine({jasmineCore: jasmineCore});
+
+      jasmine.loadConfigFile('./spec/support/jasmine.json');
+      jasmine.configureDefaultReporter({
+        onComplete: function(passed) {
+          done(passed);
+        }
+      });
+
+      jasmine.execute();
     }
   );
 

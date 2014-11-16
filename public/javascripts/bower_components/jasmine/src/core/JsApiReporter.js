@@ -30,26 +30,31 @@ getJasmineRequireObj().JsApiReporter = function() {
       return status;
     };
 
-    var suites = {};
+    var suites = [],
+      suites_hash = {};
 
     this.suiteStarted = function(result) {
-      storeSuite(result);
+      suites_hash[result.id] = result;
     };
 
     this.suiteDone = function(result) {
       storeSuite(result);
     };
 
+    this.suiteResults = function(index, length) {
+      return suites.slice(index, index + length);
+    };
+
     function storeSuite(result) {
-      suites[result.id] = result;
+      suites.push(result);
+      suites_hash[result.id] = result;
     }
 
     this.suites = function() {
-      return suites;
+      return suites_hash;
     };
 
     var specs = [];
-    this.specStarted = function(result) { };
 
     this.specDone = function(result) {
       specs.push(result);

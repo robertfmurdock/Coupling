@@ -1,6 +1,6 @@
 {
   "name": "angular-gravatar",
-  "version": "0.1.6",
+  "version": "0.2.3",
   "author": {
     "name": "Sebastian Wallin"
   },
@@ -24,7 +24,7 @@
     "src"
   ],
   "dependencies": {
-    "angular": "~1.2.x"
+    "angular": ">=1.0.0 <1.4.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.x"
@@ -33,13 +33,13 @@
     "type": "git",
     "url": "git://github.com/wallin/angular-gravatar.git"
   },
-  "_release": "0.1.6",
+  "_release": "0.2.3",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.6",
-    "commit": "24c038ba6cb505ea371daf7ee71b40772299a16c"
+    "tag": "0.2.3",
+    "commit": "5345c969f77a018738f2d658b5398fc9a3734771"
   },
   "_source": "git://github.com/wallin/angular-gravatar.git",
-  "_target": "~0.1.4",
+  "_target": "~0.2.3",
   "_originalSource": "angular-gravatar"
 }
