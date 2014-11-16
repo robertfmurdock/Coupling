@@ -22,6 +22,10 @@ a {
     background-color: lightgoldenrodyellow;
 }
 
+#enter-button-container {
+    padding-top: 35px;
+}
+
 .title {
     font-size: 2em;
     font-weight: bold;
