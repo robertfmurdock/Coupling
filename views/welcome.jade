@@ -1,0 +1,13 @@
+doctype html
+html(ng-app="coupling")
+   head
+      title= title
+      link(rel='stylesheet', href='/stylesheets/style.css')
+      link(rel='stylesheet', href='/stylesheets/animations.css')
+   body
+      block content
+         div(id="welcome-container")
+            span(id="welcome")
+               p Coupling!
+            div
+               a(href="/auth/google") Come on in!

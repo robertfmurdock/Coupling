@@ -6,6 +6,21 @@ body {
 a {
     color: #00B7FF;
 }
+#welcome-container {
+    text-align: center;
+    padding-top: 75px;
+}
+
+#welcome {
+    display: inline-block;
+    font-size: 72px;
+    font-weight: bold;
+    vertical-align: top;
+    border-radius: 82px;
+    padding: 42px;
+    border: 24px outset darkorange;
+    background-color: lightgoldenrodyellow;
+}
 
 .title {
     font-size: 2em;

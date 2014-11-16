@@ -75,6 +75,7 @@ passport.use(new GoogleStrategy({
 
 console.log("Adding routing!");
 
+app.get('/welcome', routes.welcome);
 app.get('/auth/google', passport.authenticate('google'));
 app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
