@@ -1,18 +1,39 @@
 [![Build Status](https://travis-ci.org/wallin/angular-gravatar.png?branch=master)](https://travis-ci.org/wallin/angular-gravatar)
+[![Bower version](https://badge.fury.io/bo/angular-gravatar.png)](http://badge.fury.io/bo/angular-gravatar)
+[![NPM version](https://badge.fury.io/js/angular-gravatar.png)](http://badge.fury.io/js/angular-gravatar)
 
 angular-gravatar
 ==============
 
 Angular.JS directive for [Gravatar](http://www.gravatar.com).
 
-Copyright (C) 2013, Sebastian Wallin <sebastian.wallin@gmail.com>
+Copyright (C) 2014, Sebastian Wallin <sebastian.wallin@gmail.com>
+
+Requirements
+-----
+
+* AngularJS (http://angularjs.org)
+
+Install with Bower
+-----
+
+```
+bower install angular-gravatar
+```
+
+Install with NPM
+-----
+
+```
+npm install angular-gravatar
+```
 
 Usage
 -----
 Include both md5.js and angular-gravatar.js in your application.
 
 ```html
-<script src="components/angular-gravatar/src/md5.js"></script>
+<script src="components/angular-gravatar/build/md5.js"></script>
 <script src="components/angular-gravatar/build/angular-gravatar.js"></script>
 ```
 
@@ -55,4 +76,12 @@ angular.module('ui.gravatar').config([
 All the available options can be seen over at the [Gravatar docs for image
 requests](https://sv.gravatar.com/site/implement/images/)
 
+License
+-----
 
+MIT
+
+Contributors
+-----
+* Alexander Makarenko (https://github.com/estliberitas)
+* Eduardo Garcia (https://github.com/thewarpaint)
