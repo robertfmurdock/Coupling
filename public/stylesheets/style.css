@@ -24,6 +24,7 @@ a {
 
 #enter-button-container {
     padding-top: 35px;
+    display: inline-block;
 }
 
 .title {
