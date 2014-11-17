@@ -35,10 +35,10 @@ app.set('view engine', 'jade');
 app.use(favicon('public/images/favicon.ico'));
 app.use(sassMiddleware({
     src: __dirname + '/sass',
-    dest: __dirname + '/public/',
+    dest: __dirname + '/public/stylesheets',
     debug: true,
     outputStyle: 'compressed',
-    prefix: 'public'
+    prefix: 'stylesheets'
 }));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
