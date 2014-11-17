@@ -198,7 +198,7 @@ a {
   font-size: x-large;
   margin: 0 2px 4px 2px; }
   .tribe img {
-    /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6); */
+    /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
     -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5)); }
 
 .tribe-listing .tribe-name {
@@ -218,7 +218,7 @@ a {
 
 .tribe-icon {
   margin: 10px;
-  /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6); */
+  /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
   -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5)); }
 
 #CouplingTitleBlock .tribe-icon {
@@ -348,5 +348,3 @@ input.button {
     background-color: #ffb515; }
   .yellow.button:hover {
     background-color: #fc9200; }
-
-/*# sourceMappingURL=style.css.map */
