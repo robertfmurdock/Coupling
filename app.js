@@ -23,6 +23,7 @@ var TribeRoutes = require('./routes/tribes');
 var spin = require('./routes/spin');
 var config = require('./config');
 var DataService = require('./lib/CouplingDataService');
+var sassMiddleware = require('node-sass-middleware')
 var userDataService = new UserDataService(config.mongoUrl);
 
 console.log("Finished requires, starting express!");
@@ -32,6 +33,13 @@ app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon('public/images/favicon.ico'));
+app.use(sassMiddleware({
+    src: __dirname + '/sass',
+    dest: __dirname + '/public/',
+    debug: true,
+    outputStyle: 'compressed',
+    prefix: 'public'
+}));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
