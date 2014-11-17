@@ -36,7 +36,7 @@ app.use(favicon('public/images/favicon.ico'));
 app.use(sassMiddleware({
     src: __dirname + '/sass',
     dest: __dirname + '/public/stylesheets',
-    debug: true,
+    debug: false,
     outputStyle: 'expanded',
     prefix: '/stylesheets'
 }));
