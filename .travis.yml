@@ -7,7 +7,7 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
   - webdriver-manager update --standalone
   - npm install -g grunt-cli
-  - npm install
+  - npm install node-sass-middleware
 install: npm rebuild
 services:
   - mongodb

@@ -1,6 +1,6 @@
 dependencies:
   override:
-    - npm install
+    - npm install node-sass-middleware
     - npm rebuild
 deployment:
   staging:
