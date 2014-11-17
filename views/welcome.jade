@@ -4,10 +4,23 @@ html(ng-app="coupling")
       title= title
       link(rel='stylesheet', href='/stylesheets/style.css')
       link(rel='stylesheet', href='/stylesheets/animations.css')
-   body
+      script(src="/javascripts/bower_components/angular/angular.min.js",type="application/javascript")
+      script(src="/javascripts/bower_components/angular-route/angular-route.min.js",type="application/javascript")
+      script(src="/javascripts/bower_components/underscore/underscore.js",type="application/javascript")
+      script(src="/javascripts/bower_components/angular-gravatar/build/angular-gravatar.js",type="application/javascript")
+      script(src="/javascripts/bower_components/angular-gravatar/build/md5.js",type="application/javascript")
+      script(src="/javascripts/bower_components/angular-animate/angular-animate.min.js",type="application/javascript")
+      script(src="/javascripts/prefixfree.min.js",type="application/javascript")
+      script(src="/javascripts/draganddrop.js",type="application/javascript")
+      script(src="/app/app.js",type="application/javascript")
+      script(src="/app/services.js",type="application/javascript")
+      script(src="/app/controllers.js",type="application/javascript")
+      script(src="/app/animations.js",type="application/javascript")
+      script(src="/app/filters.js",type="application/javascript")
+   body(ng-controller="WelcomeController")
       block content
-         div(id="welcome-container")
+         div(id="welcome-container" ng-show="show")
             span(id="welcome")
                p Coupling!
             div(id="enter-button-container")
-               a(href="/auth/google" class="super pink button") Come on in!
+               a(id="enter-button" href="/auth/google" class="super pink button") Come on in!

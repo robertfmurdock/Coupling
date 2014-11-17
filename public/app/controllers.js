@@ -1,6 +1,14 @@
 "use strict";
 var controllers = angular.module('coupling.controllers', ['coupling.services']);
 
+controllers.controller('WelcomeController', function ($scope, $timeout) {
+    $scope.show = false;
+
+    $timeout(function () {
+        $scope.show = true;
+    }, 0);
+});
+
 controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
     scope.data = Coupling.data;
 

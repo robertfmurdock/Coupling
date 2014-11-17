@@ -19,6 +19,8 @@ app.config(['$routeProvider', function (routeProvider) {
     });
     routeProvider.when('/:tribeId/player/new/', {templateUrl: '/partials/player/', controller: "NewPlayerController"});
     routeProvider.when('/:tribeId/player/:id/', {templateUrl: '/partials/player/', controller: "EditPlayerController"});
+
+    routeProvider.when('/auth/google', {redirectTo: '/auth/google'});
 }]);
 
 angular.module('ui.gravatar').config([
