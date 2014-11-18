@@ -18,6 +18,16 @@
   }
 }
 
+#welcome .player.left {
+  transition: all ease-out 0.25s;
+}
+
+#welcome .player.left:hover {
+  transition: all ease-in 0.4s;
+  z-index: 1;
+  transform: rotate(0deg) scale(1.5);
+}
+
 #welcome .player.right {
   &.ng-hide-remove {
     transition: all ease-out 5s;
@@ -25,6 +35,16 @@
     animation-name: slide-up-right;
     animation-iteration-count: 1;
   }
+}
+
+#welcome .player.right {
+  transition: all ease-out 0.25s;
+}
+
+#welcome .player.right:hover {
+  transition: all ease-in 0.4s;
+  z-index: 1;
+  transform: rotate(0deg) scale(1.5);
 }
 
 .welcome-proverb {

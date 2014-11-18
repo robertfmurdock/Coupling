@@ -29,10 +29,12 @@ a {
 }
 
 #welcome .player.left {
+  position: relative;
   transform: rotate(-8deg);
 }
 
 #welcome .player.right {
+  position: relative;
   transform: rotate(8deg);
 }
 
