@@ -14,13 +14,36 @@ a {
 
 #welcome {
   display: inline-block;
-  font-size: 72px;
-  font-weight: bold;
   vertical-align: top;
   border-radius: 82px;
-  padding: 42px;
+  padding: 0px 42px 42px;
   border: 24px outset darkorange;
   background-color: lightgoldenrodyellow;
+}
+
+.welcome-title {
+  margin-top: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 72px;
+  font-weight: bold;
+}
+
+#welcome .player.left {
+  position: relative;
+  transform: rotate(-8deg);
+}
+
+#welcome .player.right {
+  position: relative;
+  transform: rotate(8deg);
+}
+
+.welcome-proverb {
+  display: inline-block;
+  border-radius: 15px;
+  transform: rotate(0deg);
+  padding: 4px;
+  background: goldenrod url(../images/overlay.png) repeat-x;
 }
 
 #enter-button-container {
@@ -189,7 +212,8 @@ a {
   margin: 5px 0;
   border: 11px outset brown;
   background-color: seagreen;
-  .on-drag-enter {}
+  .on-drag-enter {
+  }
   .on-drag-hover {
     background-color: orange;
   }
@@ -294,7 +318,8 @@ a {
       clear: both;
     }
   }
-  input[type="button"] {}
+  input[type="button"] {
+  }
 }
 
 input.button {
