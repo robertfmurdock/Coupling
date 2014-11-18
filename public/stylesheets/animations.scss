@@ -9,6 +9,36 @@
   }
 }
 
+#welcome .player.left {
+  &.ng-hide-remove {
+    transition: all ease-out 4s;
+    animation-duration: 4s;
+    animation-name: slide-up-left;
+    animation-iteration-count: 1;
+  }
+}
+
+#welcome .player.right {
+  &.ng-hide-remove {
+    transition: all ease-out 5s;
+    animation-duration: 5s;
+    animation-name: slide-up-right;
+    animation-iteration-count: 1;
+  }
+}
+
+.welcome-proverb {
+  &.ng-hide {
+    opacity: 0;
+  }
+  &.ng-hide-remove {
+    transition-delay: 5s;
+    transition-property: all;
+    transition-timing-function: ease-in;
+    transition-duration: 1s;
+  }
+}
+
 #enter-button-container {
   animation: 2s pulsate;
   animation-iteration-count: infinite;
@@ -57,7 +87,8 @@
     animation: 1s spin-in;
     z-index: 100;
   }
-  &.ng-leave.ng-leave-active {}
+  &.ng-leave.ng-leave-active {
+  }
 }
 
 .pair-assignments {
@@ -101,7 +132,6 @@
   }
 }
 
-
 @keyframes curious-tilt {
   0% {
     transform: rotate(0deg);
@@ -120,6 +150,41 @@
   }
 }
 
+@keyframes slide-up-left {
+  0% {
+    left: 20px;
+    top: 800px;
+    transform: rotate(75deg);
+  }
+  70% {
+    left: 20px;
+    top: 800px;
+    transform: rotate(75deg);
+  }
+  100% {
+    left: 0;
+    top: 0;
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes slide-up-right {
+  0% {
+    left: -20px;
+    top: 800px;
+    transform: rotate(75deg);
+  }
+  80% {
+    left: -20px;
+    top: 800px;
+    transform: rotate(75deg);
+  }
+  100% {
+    left: 0;
+    top: 0;
+    transform: rotate(8deg);
+  }
+}
 
 @keyframes pulsate {
   0% {
@@ -136,7 +201,6 @@
   }
 }
 
-
 @keyframes spin-in {
   from {
     transform: scale(0);
@@ -147,7 +211,6 @@
     transform-origin: 0 0;
   }
 }
-
 
 @keyframes spin-out {
   from {

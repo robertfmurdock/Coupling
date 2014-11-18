@@ -34,7 +34,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon('public/images/favicon.ico'));
 app.use(sassMiddleware({
-    src: __dirname + '/sass',
+    src: __dirname + '/public/stylesheets',
     dest: __dirname + '/public/stylesheets',
     debug: false,
     outputStyle: 'expanded',
