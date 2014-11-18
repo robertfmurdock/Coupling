@@ -17,6 +17,7 @@ html(ng-app="coupling")
       script(src="/app/controllers.js",type="application/javascript")
       script(src="/app/animations.js",type="application/javascript")
       script(src="/app/filters.js",type="application/javascript")
+      meta(name="viewport" content="height=device-height")
    body(ng-controller="WelcomeController")
       block content
          div(id="welcome-container" ng-show="show")
