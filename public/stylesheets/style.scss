@@ -7,9 +7,13 @@ a {
   color: #00B7FF;
 }
 
-#welcome-container {
+#welcome-body {
   text-align: center;
   padding-top: 75px;
+}
+
+#welcome-container {
+  display: inline-block;
   overflow: hidden;
 }
 
