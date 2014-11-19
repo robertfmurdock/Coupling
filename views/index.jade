@@ -1,29 +1,29 @@
 extends layout
-
 block content
-    div(id="top-section")
-        span(id="CouplingTitleBlock")
-            div(class="title" title="Built on #{buildDate}. #{gitRev}")= title
-            p(ng-hide="data.selectedTribe") Welcome to #{title}.
-            div(ng-show="data.selectedTribe")
-                div(class="tribe-name") {{data.selectedTribe.name}}
-                img(ng-src="{{data.selectedTribe | tribeImageUrl: {size: 75} }}" class = "tribe-icon" width="75" height="75")
-            span(ng-show="data.selectedTribeId")
-                a(href="/{{data.selectedTribeId}}/pairAssignments/current")
-                    p Check out the current pairs!
-                a(href="/{{data.selectedTribeId}}/history")
-                    p Or maybe you'd prefer history!
-                a(href="/tribes")
-                    p Browse the tribes available!
-                a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
-        span(class="view-container")
-            div(ng-view class="view-frame" ng-class="{minimized : !playerRoster.minimized}")
-    div(ng-cloak class="player-roster" ng-show="data.players != null")
-        div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players:
-        span(ng-hide="playerRoster.minimized")
-            div(class="player-listing")
-                span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")
-                    img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
-                    div(class="player-header" ng-click="clickPlayerName($event)") {{player.name}}
-            div
-                a(class="large orange button" href="/{{data.selectedTribeId}}/player/new/") Add a new player!
+    body(ng-controller="CouplingController")
+        div(id="top-section")
+            span(id="CouplingTitleBlock")
+                div(class="title" title="Built on #{buildDate}. #{gitRev}")= title
+                p(ng-hide="data.selectedTribe") Welcome to #{title}.
+                div(ng-show="data.selectedTribe")
+                    div(class="tribe-name") {{data.selectedTribe.name}}
+                    img(ng-src="{{data.selectedTribe | tribeImageUrl: {size: 75} }}" class = "tribe-icon" width="75" height="75")
+                span(ng-show="data.selectedTribeId")
+                    a(href="/{{data.selectedTribeId}}/pairAssignments/current")
+                        p Check out the current pairs!
+                    a(href="/{{data.selectedTribeId}}/history")
+                        p Or maybe you'd prefer history!
+                    a(href="/tribes")
+                        p Browse the tribes available!
+                    a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
+            span(class="view-container")
+                div(ng-view class="view-frame" ng-class="{minimized : !playerRoster.minimized}")
+        div(ng-cloak class="player-roster" ng-show="data.players != null")
+            div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players:
+            span(ng-hide="playerRoster.minimized")
+                div(class="player-listing")
+                    span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")
+                        img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
+                        div(class="player-header" ng-click="clickPlayerName($event)") {{player.name}}
+                div
+                    a(class="large orange button" href="/{{data.selectedTribeId}}/player/new/") Add a new player!
