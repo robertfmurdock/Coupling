@@ -3,8 +3,12 @@ version.json
 .idea/workspace.xml
 Coupling.iws
 .DS_Store
-/public/stylesheets/*.css
-**/Release/*
+public/stylesheets/*.css
+node_modules/**/bson/build/*
+node_modules/**/Release/*
+node_modules/**/kerberos/build/*
+node_modules/**/fsevents/build/*
+node_modules/**/ws/build/*
 **/*.node
 **/*.a
 **/*.o
