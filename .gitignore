@@ -4,7 +4,6 @@ version.json
 Coupling.iws
 .DS_Store
 /public/stylesheets/*.css
-node_modules/node-sass-middleware/
 **/Release/*
 **/*.node
 **/*.a

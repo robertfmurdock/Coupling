@@ -146,7 +146,7 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
     grunt.registerTask('default', ['mochaTest:unit', 'karma:unit', 'express:dev', 'mochaTest:endpoint',
-        'protractor_webdriver:start', 'protractor:chrome','protractor:firefox', 'markAsDevelopmentBuild']);
+        'protractor_webdriver:start', 'protractor:chrome', 'markAsDevelopmentBuild']);
 
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
 
