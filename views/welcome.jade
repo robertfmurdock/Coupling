@@ -8,12 +8,12 @@ block content
                      div(class="welcome-title") Coupling!
                      div
                         span(class="player left" ng-show="show")
-                           img(ng-src="/images/icons/players/frodo-icon.png" class="player-icon" width="100" height="100")
-                           div(class="player-header") Frodo
+                           img(ng-src="/images/icons/players/{{leftCard.imagePath}}" class="player-icon" width="100" height="100")
+                           div(class="player-header") {{leftCard.name}}
                         span(class="player right" ng-show="show")
-                           img(ng-src="/images/icons/players/samwise-icon.png" class="player-icon" width="100" height="100")
-                           div(class="player-header") Sam
-                     div(class="welcome-proverb" ng-show="show") Together, climb mountains.
+                           img(ng-src="/images/icons/players/{{rightCard.imagePath}}" class="player-icon" width="100" height="100")
+                           div(class="player-header") {{rightCard.name}}
+                     div(class="welcome-proverb" ng-show="show") {{proverb}}
                div
                   div(id="enter-button-container")
                      a(id="enter-button" href="/auth/google" class="super pink button") Come on in!

@@ -118,3 +118,10 @@ services.service("Coupling", function ($http) {
 
     Coupling.data = {players: null, history: null};
 });
+
+services.service('randomizer', function () {
+    this.next = function (maxValue) {
+        var floatValue = Math.random() * maxValue;
+        return Math.round(floatValue);
+    }
+});
