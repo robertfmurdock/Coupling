@@ -8,6 +8,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-protractor-webdriver');
     grunt.loadNpmTasks('grunt-git-describe');
+    grunt.loadNpmTasks('grunt-wiredep');
 
     grunt.initConfig({
         env: {
@@ -123,6 +124,35 @@ module.exports = function (grunt) {
         "git-describe": {
             "options": {},
             "jenkins": {}
+        },
+        wiredep: {
+            productionTask: {
+                src: [
+                    'views/layout.jade'
+                ],
+                options: {
+                    ignorePath: '../public'
+                }
+            },
+            karmaTask: {
+                src: [
+                    'karma.conf.js'
+                ],
+                fileTypes: {
+                    js: {
+                        block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
+                        detect: {
+                            js: /'(.*\.js)'/gi
+                        },
+                        replace: {
+                            js: '\'{{filePath}}\','
+                        }
+                    }
+                },
+                options: {
+                    devDependencies: true
+                }
+            }
         }
     });
 

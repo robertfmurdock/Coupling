@@ -16,12 +16,17 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             {pattern: 'node_modules/requirejs/**/*.js', included: false},
-            "public/javascripts/bower_components/angular/angular.js",
-            "public/javascripts/bower_components/angular-route/angular-route.min.js",
-            "public/javascripts/bower_components/underscore/underscore.js",
-            "public/javascripts/bower_components/angular-gravatar/build/angular-gravatar.js",
-            "public/javascripts/bower_components/angular-gravatar/build/md5.js",
-            "public/javascripts/bower_components/angular-animate/angular-animate.min.js",
+            // bower:
+            'public/javascripts/bower_components/jquery/dist/jquery.js',
+            'public/javascripts/bower_components/angular/angular.js',
+            'public/javascripts/bower_components/angular-animate/angular-animate.js',
+            'public/javascripts/bower_components/angular-gravatar/build/md5.js',
+            'public/javascripts/bower_components/angular-gravatar/build/angular-gravatar.js',
+            'public/javascripts/bower_components/angular-mocks/angular-mocks.js',
+            'public/javascripts/bower_components/angular-route/angular-route.js',
+            'public/javascripts/bower_components/bootstrap/dist/js/bootstrap.js',
+            'public/javascripts/bower_components/underscore/underscore.js',
+            // endbower
             "public/javascripts/prefixfree.min.js",
             "public/javascripts/draganddrop.js",
             "public/app/app.js",
@@ -29,7 +34,6 @@ module.exports = function (config) {
             "public/app/controllers.js",
             "public/app/animations.js",
             "public/app/filters.js",
-            "public/javascripts/bower_components/angular-mocks/angular-mocks.js",
             'test/jasmine/**/*-spec.js'
         ],
 
