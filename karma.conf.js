@@ -21,11 +21,11 @@ module.exports = function (config) {
             'public/javascripts/bower_components/angular-animate/angular-animate.js',
             'public/javascripts/bower_components/angular-gravatar/build/md5.js',
             'public/javascripts/bower_components/angular-gravatar/build/angular-gravatar.js',
-            'public/javascripts/bower_components/angular-mocks/angular-mocks.js',
             'public/javascripts/bower_components/angular-route/angular-route.js',
             'public/javascripts/bower_components/underscore/underscore.js',
             'public/javascripts/bower_components/prefixfree/prefixfree.min.js',
             'public/javascripts/bower_components/angular-native-dragdrop/draganddrop.js',
+            'public/javascripts/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             "public/app/app.js",
             "public/app/services.js",
