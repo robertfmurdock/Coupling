@@ -26,9 +26,9 @@ module.exports = function (config) {
             'public/javascripts/bower_components/angular-route/angular-route.js',
             'public/javascripts/bower_components/bootstrap/dist/js/bootstrap.js',
             'public/javascripts/bower_components/underscore/underscore.js',
+            'public/javascripts/bower_components/prefixfree/prefixfree.min.js',
+            'public/javascripts/bower_components/angular-native-dragdrop/draganddrop.js',
             // endbower
-            "public/javascripts/prefixfree.min.js",
-            "public/javascripts/draganddrop.js",
             "public/app/app.js",
             "public/app/services.js",
             "public/app/controllers.js",
