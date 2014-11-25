@@ -14,9 +14,6 @@ var config = {
     get secret() {
         return "maythefourthbewithyou";
     },
-    get requiresAuthentication() {
-        return true;
-    },
     get googleClientID() {
         return process.env.GOOGLE_CLIENT_ID || '24452716216-9lqe1p511qcf53kuihamdhggb05gbt4p.apps.googleusercontent.com';
     },

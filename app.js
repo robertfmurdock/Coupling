@@ -103,7 +103,7 @@ if ('development' == app.get('env')) {
 var dataService = new DataService(config.mongoUrl);
 var tempDataService = new DataService(config.tempMongoUrl);
 var checkApiAccess = function (request, response, next) {
-    if (config.requiresAuthentication && !request.isAuthenticated()) {
+    if (!request.isAuthenticated()) {
         response.sendStatus(401);
     } else {
         if (request.user.email.indexOf('._temp') != -1) {
