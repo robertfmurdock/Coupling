@@ -3,9 +3,9 @@ var should = require('should');
 var mongoUrl = 'localhost/UsersTest';
 var monk = require('monk');
 var _ = require('underscore');
-var Comparators = require('../../lib/Comparators');
+var Comparators = require('../../server/lib/Comparators');
 var database = monk(mongoUrl);
-var UserDataService = require("../../lib/UserDataService");
+var UserDataService = require("../../server/lib/UserDataService");
 var userDataService = new UserDataService(mongoUrl);
 
 describe('UserDataService', function () {

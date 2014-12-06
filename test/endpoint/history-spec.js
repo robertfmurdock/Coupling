@@ -1,9 +1,9 @@
 "use strict";
 var should = require('should');
 var Supertest = require('supertest');
-var DataService = require('../../lib/CouplingDataService');
-var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
-var Comparators = require('../../lib/Comparators');
+var DataService = require('../../server/lib/CouplingDataService');
+var PairAssignmentDocument = require('../../server/lib/PairAssignmentDocument');
+var Comparators = require('../../server/lib/Comparators');
 var monk = require('monk');
 var config = require('../../config');
 

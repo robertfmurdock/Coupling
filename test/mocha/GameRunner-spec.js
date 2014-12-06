@@ -1,5 +1,5 @@
-var CouplingGameFactory = require('../../lib/CouplingGameFactory');
-var GameRunner = require('../../lib/GameRunner');
+var CouplingGameFactory = require('../../server/lib/CouplingGameFactory');
+var GameRunner = require('../../server/lib/GameRunner');
 var sinon = require('sinon');
 var should = require('should');
 

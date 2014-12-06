@@ -1,5 +1,5 @@
 "use strict";
-var Comparators = require("../../lib/Comparators");
+var Comparators = require("../../server/lib/Comparators");
 
 describe('Comparators', function () {
     describe("pairs", function () {

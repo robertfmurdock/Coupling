@@ -1,4 +1,4 @@
-var CouplingWheel = require('../../lib/CouplingWheel');
+var CouplingWheel = require('../../server/lib/CouplingWheel');
 var should = require('should');
 var sinon = require('sinon');
 

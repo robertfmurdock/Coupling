@@ -3,7 +3,7 @@ var DataService = require('../lib/CouplingDataService');
 var monk = require('monk');
 var Promise = require('rsvp').Promise;
 var _ = require('underscore');
-var config = require('../config');
+var config = require('../../config');
 
 function requestAll(promiseArray, callback) {
     return Promise.all(promiseArray).then(function (results) {

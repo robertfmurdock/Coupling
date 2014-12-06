@@ -1,5 +1,5 @@
-var CouplingGame = require('../../lib/CouplingGame');
-var PairHistoryReport = require('../../lib/PairHistoryReport');
+var CouplingGame = require('../../server/lib/CouplingGame');
+var PairHistoryReport = require('../../server/lib/PairHistoryReport');
 var should = require('should');
 var sinon = require('sinon');
 

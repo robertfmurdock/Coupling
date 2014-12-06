@@ -2,7 +2,7 @@
 
 var should = require('should');
 
-var PinAssigner = require('../../lib/PinAssigner');
+var PinAssigner = require('../../server/lib/PinAssigner');
 
 describe('PinAssigner', function () {
 

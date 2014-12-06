@@ -1,4 +1,4 @@
-var config = require('../config');
+var config = require('../../config');
 
 exports.index = function (request, response) {
     if (!request.isAuthenticated()) {

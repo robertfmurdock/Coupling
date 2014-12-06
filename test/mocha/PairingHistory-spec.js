@@ -1,6 +1,6 @@
 "use strict";
-var PairingHistory = require('../../lib/PairingHistory');
-var PairAssignmentDocument = require('../../lib/PairAssignmentDocument');
+var PairingHistory = require('../../server/lib/PairingHistory');
+var PairAssignmentDocument = require('../../server/lib/PairAssignmentDocument');
 var ObjectID = require('mongodb').ObjectID;
 var should = require('should');
 

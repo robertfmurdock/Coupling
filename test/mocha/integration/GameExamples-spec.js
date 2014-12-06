@@ -1,8 +1,8 @@
-var GameRunner = require('../../../lib/GameRunner');
-var CouplingGameFactory = require('../../../lib/CouplingGameFactory');
-var CouplingDataService = require('../../../lib/CouplingDataService');
-var PairAssignmentDocument = require('../../../lib/PairAssignmentDocument');
-var Comparators = require('../../../lib/Comparators');
+var GameRunner = require('../../../server/lib/GameRunner');
+var CouplingGameFactory = require('../../../server/lib/CouplingGameFactory');
+var CouplingDataService = require('../../../server/lib/CouplingDataService');
+var PairAssignmentDocument = require('../../../server/lib/PairAssignmentDocument');
+var Comparators = require('../../../server/lib/Comparators');
 var should = require('should');
 var monk = require('monk');
 

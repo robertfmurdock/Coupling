@@ -1,6 +1,6 @@
-var CouplingGameFactory = require('../../lib/CouplingGameFactory');
-var CouplingGame = require('../../lib/CouplingGame');
-var CouplingWheel = require('../../lib/CouplingWheel');
+var CouplingGameFactory = require('../../server/lib/CouplingGameFactory');
+var CouplingGame = require('../../server/lib/CouplingGame');
+var CouplingWheel = require('../../server/lib/CouplingWheel');
 require('should');
 
 describe('Coupling Game Factory', function () {

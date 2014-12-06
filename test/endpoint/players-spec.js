@@ -2,8 +2,8 @@
 var Supertest = require('supertest');
 var should = require('should');
 var expect = require('chai').expect;
-var DataService = require('../../lib/CouplingDataService');
-var Comparators = require('../../lib/Comparators');
+var DataService = require('../../server/lib/CouplingDataService');
+var Comparators = require('../../server/lib/Comparators');
 
 var config = require('./../../config');
 var tribeId = 'test';

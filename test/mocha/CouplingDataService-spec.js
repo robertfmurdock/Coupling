@@ -1,11 +1,11 @@
 "use strict";
-var CouplingDataService = require('../../lib/CouplingDataService');
+var CouplingDataService = require('../../server/lib/CouplingDataService');
 var should = require('should');
 var expect = require('chai').expect;
 var mongoUrl = 'localhost/CouplingTest';
 var monk = require('monk');
 var _ = require('underscore');
-var Comparators = require('../../lib/Comparators');
+var Comparators = require('../../server/lib/Comparators');
 var database = monk(mongoUrl);
 
 describe('DataService', function () {
