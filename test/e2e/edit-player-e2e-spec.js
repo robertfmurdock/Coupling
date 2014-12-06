@@ -27,6 +27,7 @@ describe('The edit player page', function () {
     var player = {_id: 'delete_me', tribe: 'delete_me', name: 'Voidman'};
 
     beforeEach(function (done) {
+        protractor.getInstance().ignoreSynchronization = true;
         tribeCollection.insert(tribe);
         tribeCollection.find({}, {}, function (error, tribeDocuments) {
             var authorizedTribes = _.pluck(tribeDocuments, '_id');

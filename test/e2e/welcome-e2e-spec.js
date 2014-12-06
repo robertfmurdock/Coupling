@@ -9,6 +9,7 @@ var database = monk(config.tempMongoUrl);
 describe('The welcome page', function () {
 
     it('will have a clickable enter button', function () {
+        protractor.getInstance().ignoreSynchronization = false;
         browser.get(hostName + '/welcome');
         element(By.id('enter-button')).click();
         expect(protractor.getInstance().getCurrentUrl()).toBe(hostName + '/auth/google');

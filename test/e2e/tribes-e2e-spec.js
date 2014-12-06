@@ -30,6 +30,7 @@ function authorizeAllTribes(callback) {
 describe('The default tribes page', function () {
 
     beforeEach(function (done) {
+        protractor.getInstance().ignoreSynchronization = true;
         tribeCollection.drop();
         tribeCollection.insert([{_id: 'e2e1', name: 'E2E Example Tribe 1'},
             {_id: 'e2e2', name: 'E2E Example Tribe 2'}], function () {
