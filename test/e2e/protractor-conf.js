@@ -1,3 +1,4 @@
+"use strict";
 exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
 
@@ -13,5 +14,15 @@ exports.config = {
     jasmineNodeOpts: {
         showColors: true,
         defaultTimeoutInterval: 30000
+    },
+    onPrepare: function () {
+
+        var disableNgAnimate = function () {
+            angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {
+                $animate.enabled(false);
+            }]);
+        };
+
+        browser.addMockModule('disableNgAnimate', disableNgAnimate);
     }
 };
