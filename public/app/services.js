@@ -1,7 +1,7 @@
 "use strict";
 var services = angular.module("coupling.services", []);
 
-services.service("Coupling", function ($http) {
+services.service("Coupling", ['$http', function ($http) {
     var Coupling = this;
     var makeErrorHandler = function (url) {
         return function (data, statusCode) {
@@ -117,7 +117,7 @@ services.service("Coupling", function ($http) {
     };
 
     Coupling.data = {players: null, history: null};
-});
+}]);
 
 services.service('randomizer', function () {
     this.next = function (maxValue) {

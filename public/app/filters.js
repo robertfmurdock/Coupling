@@ -1,5 +1,5 @@
 var filters = angular.module("coupling.filters", []);
-filters.filter('gravatarUrl', function (gravatarService) {
+filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {
     return function (player, options) {
         if (player && player.imageURL) {
             return player.imageURL;
@@ -8,9 +8,9 @@ filters.filter('gravatarUrl', function (gravatarService) {
             return gravatarService.url(email, options);
         }
     }
-});
+}]);
 
-filters.filter('tribeImageUrl', function (gravatarService) {
+filters.filter('tribeImageUrl', ['gravatarService', function (gravatarService) {
     return function (tribe, options) {
         if (tribe) {
             if (tribe.imageURL) {
@@ -21,4 +21,4 @@ filters.filter('tribeImageUrl', function (gravatarService) {
         }
         return "/images/icons/tribes/no-tribe.png";
     }
-});
+}]);

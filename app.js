@@ -1,5 +1,7 @@
 console.log("Starting express init!");
 var express = require('express');
+var compression = require('compression');
+var minify = require('express-minify');
 var http = require('http');
 var path = require('path');
 var passport = require('passport');
@@ -23,11 +25,14 @@ var TribeRoutes = require('./routes/tribes');
 var spin = require('./routes/spin');
 var config = require('./config');
 var DataService = require('./lib/CouplingDataService');
-var sassMiddleware = require('node-sass-middleware')
+var sassMiddleware = require('node-sass-middleware');
 var userDataService = new UserDataService(config.mongoUrl);
 
 console.log("Finished requires, starting express!");
 var app = express();
+
+app.use(compression());
+app.use(minify({cache: __dirname + '/cache'}));
 
 app.set('port', config.port);
 app.set('views', path.join(__dirname, 'views'));

@@ -3,7 +3,7 @@ exports.config = {
     seleniumAddress: 'http://localhost:4444/wd/hub',
 
     capabilities: {
-        'browserName': ['chrome', 'firefox']
+        'browserName': 'chrome'
     },
 
     // Spec patterns are relative to the current working directly when
