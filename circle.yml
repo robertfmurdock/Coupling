@@ -1,6 +1,7 @@
 dependencies:
   override:
     - npm rebuild
+    - node node_modules/protractor/bin/webdriver-manager update --standalone
 deployment:
   staging:
     branch: master
