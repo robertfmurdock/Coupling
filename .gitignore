@@ -9,6 +9,7 @@ node_modules/**/Release/*
 node_modules/**/kerberos/build/*
 node_modules/**/fsevents/build/*
 node_modules/**/ws/build/*
+node_modules/protractor/selenium
 **/*.node
 **/*.a
 **/*.o
