@@ -38,38 +38,38 @@ describe(path, function () {
             service.requestPlayers(tribeId).then(function (players) {
                 var httpGet = couplingServer.get(path);
                 httpGet.cookies = Cookies;
-                httpGet.expect('Content-Type', /json/).end(function (error, response) {
-                    should.not.exist(error);
-                    response.status.should.equal(200);
-                    JSON.stringify(response.body).should.equal(JSON.stringify(players));
-                    done();
-                });
-            }, function (error) {
-                should.not.exist(error);
-                done();
-            });
+                httpGet.expect(200)
+                    .expect('Content-Type', /json/)
+                    .end(function (error, response) {
+                        JSON.stringify(response.body).should.equal(JSON.stringify(players));
+                        done(error);
+                    });
+            }, done);
         });
     });
 
     describe("POST", function () {
 
-        it('will add player to tribe', function(done){
+        it('will add player to tribe', function (done) {
             var newPlayer = {_id: 'playerOne', name: "Awesome-O", tribe: tribeId};
             var httpPost = couplingServer.post(path);
             httpPost.cookies = Cookies;
-            httpPost.send(newPlayer).end(function (error, responseContainingTheNewId) {
-                should.not.exist(error);
-                expect(responseContainingTheNewId.body).to.eql(newPlayer);
-
-                var httpGet = couplingServer.get(path);
-                httpGet.cookies = Cookies;
-                httpGet.expect('Content-Type', /json/).end(function (error, response) {
-                    should.not.exist(error);
-                    response.status.should.equal(200);
-                    expect(response.body).to.eql([newPlayer]);
-                    done();
+            httpPost.send(newPlayer)
+                .expect(200, newPlayer)
+                .end(function (error) {
+                    if (error) {
+                        done(error);
+                    } else {
+                        var httpGet = couplingServer.get(path);
+                        httpGet.cookies = Cookies;
+                        httpGet
+                            .expect('Content-Type', /json/)
+                            .expect(200, function (error, response) {
+                                expect(response.body).to.eql([newPlayer]);
+                                done(error);
+                            });
+                    }
                 });
-            });
         });
     });
 
@@ -79,19 +79,15 @@ describe(path, function () {
             var httpPost = couplingServer.post(path);
             httpPost.cookies = Cookies;
             httpPost.send(newPlayer).end(function (error, responseContainingTheNewId) {
-                should.not.exist(error);
                 newPlayer = responseContainingTheNewId.body;
-                done();
+                done(error);
             });
         });
 
         it('will remove a given player.', function (done) {
             var httpDelete = couplingServer.delete(path + "/" + newPlayer._id);
             httpDelete.cookies = Cookies;
-            httpDelete.end(function (error, response) {
-                should.not.exist(error);
-                response.status.should.equal(200);
-
+            httpDelete.expect(200, function () {
                 var httpGet = couplingServer.get(path);
                 httpGet.cookies = Cookies;
                 httpGet.end(function (error, response) {
@@ -99,7 +95,7 @@ describe(path, function () {
                         return Comparators.areEqualPlayers(newPlayer, player);
                     });
                     result.should.be.false;
-                    done();
+                    done(error);
                 });
             });
         });
@@ -108,12 +104,9 @@ describe(path, function () {
             var badId = "terribleTerribleIdentifier";
             var httpDelete = couplingServer.delete(path + "/" + badId);
             httpDelete.cookies = Cookies;
-            httpDelete.end(function (error, response) {
-                should.not.exist(error);
-                response.status.should.equal(404);
-                response.body.should.eql({message: 'Failed to remove the player because it did not exist.'});
-                done();
-            });
+            httpDelete
+                .expect(404, {message: 'Failed to remove the player because it did not exist.'})
+                .end(done);
         });
     });
 });
