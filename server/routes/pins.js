@@ -1,7 +1,8 @@
 "use strict";
+var express = require('express');
 var DataService = require('../lib/CouplingDataService');
 
-module.exports = function () {
+var PinRoutes = function () {
     this.list = function (request, response) {
         request.dataService.requestPins(request.params.tribeId).then(function (pins) {
             response.send(pins);
@@ -26,3 +27,12 @@ module.exports = function () {
         });
     };
 };
+
+var pins = new PinRoutes();
+var router = express.Router({mergeParams: true});
+router.route('/')
+    .get(pins.list)
+    .post(pins.savePin);
+router.delete('/:pinId', pins.removePin);
+
+module.exports = router;
