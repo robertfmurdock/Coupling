@@ -1,7 +1,8 @@
 "use strict";
+var express = require('express');
 var DataService = require('../lib/CouplingDataService');
 
-module.exports = function () {
+var PlayerRoutes = function () {
     this.listTribeMembers = function (request, response) {
         request.dataService.requestPlayers(request.params.tribeId).then(function (players) {
             response.send(players);
@@ -26,3 +27,12 @@ module.exports = function () {
         });
     }
 };
+
+var players = new PlayerRoutes();
+var router = express.Router({mergeParams: true});
+router.route('/')
+    .get(players.listTribeMembers)
+    .post(players.savePlayer);
+router.delete('/:playerId', players.removePlayer);
+
+module.exports = router;
