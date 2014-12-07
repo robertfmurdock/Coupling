@@ -1,8 +1,8 @@
 "use strict";
 var should = require('should');
+var expect = require('chai').expect;
 var Supertest = require('supertest');
 var DataService = require('../../server/lib/CouplingDataService');
-var PairAssignmentDocument = require('../../server/lib/PairAssignmentDocument');
 var Comparators = require('../../server/lib/Comparators');
 var monk = require('monk');
 var config = require('../../config');
@@ -15,12 +15,15 @@ var database = monk(config.tempMongoUrl);
 var historyCollection = database.get('history');
 
 describe(path, function () {
-    var validPairs = new PairAssignmentDocument(new Date(), [
-        [
-            {name: "Shaggy"},
-            {name: "Scooby"}
+    var validPairs = {
+        date: new Date().toISOString(),
+        pairs: [
+            [
+                {name: "Shaggy"},
+                {name: "Scooby"}
+            ]
         ]
-    ]);
+    };
     validPairs._id = "mysterymachine";
     validPairs.tribe = tribeId;
 
@@ -38,6 +41,41 @@ describe(path, function () {
 
     afterEach(function () {
         historyCollection.remove({_id: validPairs._id}, false);
+    });
+
+    describe('GET', function () {
+
+        beforeEach(function (done) {
+            var post = supertest.post(path);
+            post.cookies = Cookies;
+            post.send(validPairs)
+                .expect('Content-Type', /json/).
+                end(function (error) {
+                    done(error);
+                });
+        });
+
+        it('will show history of tribe that has history.', function (done) {
+            var httpGet = supertest.get(path);
+            httpGet.cookies = Cookies;
+            httpGet
+                .expect('Content-Type', /json/)
+                .end(function (error, response) {
+                    expect([validPairs]).to.eql(response.body);
+                    done();
+                });
+        });
+
+        it('will show history of tribe that has no history.', function (done) {
+            var httpGet = supertest.get('/api/test2/history');
+            httpGet.cookies = Cookies;
+            httpGet
+                .expect('Content-Type', /json/)
+                .end(function (error, response) {
+                    expect([]).to.eql(response.body);
+                    done();
+                });
+        });
     });
 
     describe("POST will save pairs", function () {
@@ -70,12 +108,14 @@ describe(path, function () {
                 });
         });
         it('should not add when given a document without a date', function (done) {
-            var pairs = { pairs: [
-                [
-                    {name: "Shaggy"},
-                    {name: "Scooby"}
+            var pairs = {
+                pairs: [
+                    [
+                        {name: "Shaggy"},
+                        {name: "Scooby"}
+                    ]
                 ]
-            ]};
+            };
             var post = supertest.post(path);
             post.cookies = Cookies;
             post.send(pairs)
@@ -87,14 +127,14 @@ describe(path, function () {
                 });
         });
         it('should not add when given a document without pairs', function (done) {
-            var pairs = { date: new Date()};
+            var pairs = {date: new Date()};
             var post = supertest.post(path);
             post.cookies = Cookies;
             post.send(pairs)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
                     response.status.should.equal(400);
-                    response.body.should.eql({error: 'Pairs were not valid.' });
+                    response.body.should.eql({error: 'Pairs were not valid.'});
                     done();
                 });
         });
@@ -104,7 +144,7 @@ describe(path, function () {
             post.expect('Content-Type', /json/).
                 end(function (error, response) {
                     response.status.should.equal(400);
-                    response.body.should.eql({error: 'Pairs were not valid.' });
+                    response.body.should.eql({error: 'Pairs were not valid.'});
                     done();
                 });
         });
@@ -128,7 +168,7 @@ describe(path, function () {
                 httpDelete.end(function (error, response) {
                     should.not.exist(error);
                     response.status.should.equal(200);
-                    response.body.should.eql({ message: 'SUCCESS' });
+                    response.body.should.eql({message: 'SUCCESS'});
 
                     var httpGet = supertest.get(path);
                     httpGet.cookies = Cookies;
@@ -152,7 +192,7 @@ describe(path, function () {
                 httpDelete.end(function (error, response) {
                     should.not.exist(error);
                     response.status.should.equal(404);
-                    response.body.should.eql({ message: 'Pair Assignments could not be deleted because they do not exist.' });
+                    response.body.should.eql({message: 'Pair Assignments could not be deleted because they do not exist.'});
                     done();
                 });
             });

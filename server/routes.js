@@ -2,7 +2,6 @@
 
 var passport = require('passport');
 var routes = require('./routes/index');
-var HistoryRoutes = require('./routes/history');
 var PlayerRoutes = require('./routes/players');
 var PinRoutes = require('./routes/pins');
 var apiGuard = require('./routes/api-guard');
@@ -24,18 +23,8 @@ module.exports = function (app) {
     app.all('/api/*', apiGuard);
     app.use('/api/tribes', require('./routes/tribes'));
     app.post('/api/:tribeId/spin', spin());
-
-    var history = new HistoryRoutes();
-    app.route('/api/:tribeId/history')
-        .get(history.list)
-        .post(history.savePairs);
-    app.delete('/api/:tribeId/history/:id', history.deleteMember);
-
-    var players = new PlayerRoutes();
-    app.route('/api/:tribeId/players')
-        .get(players.listTribeMembers)
-        .post(players.savePlayer);
-    app.delete('/api/:tribeId/players/:playerId', players.removePlayer);
+    app.use('/api/:tribeId/history', require('./routes/history'));
+    app.use('/api/:tribeId/players', require('./routes/players'));
 
     var pins = new PinRoutes();
     app.route('/api/:tribeId/pins')

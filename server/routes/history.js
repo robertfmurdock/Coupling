@@ -1,7 +1,8 @@
 "use strict";
+var express = require('express');
 var DataService = require('../lib/CouplingDataService');
 
-module.exports = function () {
+var HistoryRoutes = function () {
     this.list = function (request, response) {
         request.dataService.requestHistory(request.params.tribeId).then(function (history) {
             response.send(history);
@@ -37,3 +38,12 @@ module.exports = function () {
         });
     }
 };
+
+var history = new HistoryRoutes();
+var router = express.Router({mergeParams: true});
+router.route('/')
+    .get(history.list)
+    .post(history.savePairs);
+router.delete('/:id', history.deleteMember);
+
+module.exports = router;
