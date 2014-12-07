@@ -2,9 +2,6 @@
 
 var passport = require('passport');
 var routes = require('./routes/index');
-var PinRoutes = require('./routes/pins');
-var apiGuard = require('./routes/api-guard');
-var spin = require('./routes/spin');
 var config = require('./../config');
 
 module.exports = function (app) {
@@ -19,13 +16,9 @@ module.exports = function (app) {
     }
 
     app.get('/', routes.index);
-    app.all('/api/*', apiGuard);
-    app.use('/api/tribes', require('./routes/tribes'));
-    app.post('/api/:tribeId/spin', spin());
-    app.use('/api/:tribeId/history', require('./routes/history'));
-    app.use('/api/:tribeId/players', require('./routes/players'));
-    app.use('/api/:tribeId/pins', require('./routes/pins'));
-
+    app.all('/api/*', require('./routes/api-guard'));
+    app.use('/api/tribes', require('./routes/tribeList'));
+    app.use('/api/:tribeId', require('./routes/tribe'));
     app.get('/partials/:name', routes.partials);
     app.get('*', routes.index);
 };
