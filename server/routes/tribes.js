@@ -1,4 +1,5 @@
 "use strict";
+var express = require('express');
 var DataService = require('../lib/CouplingDataService');
 var monk = require('monk');
 var Promise = require('rsvp').Promise;
@@ -11,7 +12,7 @@ function requestAll(promiseArray, callback) {
     });
 }
 
-module.exports = function () {
+var TribeRoutes = function () {
 
     function loadAuthorizedTribeIds(user, mongoUrl) {
         var database = monk(mongoUrl);
@@ -56,3 +57,10 @@ module.exports = function () {
         });
     }
 };
+
+var tribes = new TribeRoutes();
+var router = express.Router();
+router.route('/')
+    .get(tribes.list)
+    .post(tribes.save);
+module.exports = router;
