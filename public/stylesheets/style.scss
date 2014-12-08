@@ -62,17 +62,28 @@ a {
   font-weight: bold;
 }
 
+#save-button {
+  margin: 4px;
+}
+
 .pair-assignments-header {
   display: inline-block;
-  font-size: 1.5em;
-  margin-before: 0.2em;
-  margin-after: 0.58em;
+  font-size: 28px;
   font-weight: bold;
   text-fill-color: white;
   text-stroke-width: 1.5px;
   text-stroke-color: black;
   border-radius: 15px;
+  padding-left: 40px;
+  padding-right: 5px;
   background: darkred url(../images/overlay.png) repeat-x;
+}
+
+#pair-assignments-content {
+  white-space: pre-line;
+  .player-header {
+    font-size: 20px;
+  }
 }
 
 .roster-header {
@@ -83,9 +94,12 @@ a {
   font-weight: bold;
 }
 
+#top-section {
+  white-space: nowrap;
+}
+
 #top-section, .minimized {
   height: 400px;
-  white-space: nowrap;
 }
 
 #CouplingTitleBlock {
@@ -157,6 +171,7 @@ a {
 
 .view-container {
   display: inline-block;
+  white-space: normal;
   width: 800px;
   vertical-align: top;
   margin: 0 10px;
@@ -221,17 +236,13 @@ a {
   overflow: auto;
 }
 
-#save-button {
-  float: right;
-}
-
 .current.pair-assignments {
   display: inline-block;
 }
 
 .pair-assignments {
   border-radius: 20px;
-  padding: 10px;
+  padding: 5px;
   margin: 5px 0;
   border: 11px outset brown;
   background-color: seagreen;

@@ -1,11 +1,12 @@
 div(ng-cloak class="current pair-assignments" ng-show="data.currentPairAssignments")
-    div(class="pair-assignments-header")
-        text Pairing Assignments for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} - {{data.currentPairAssignments.date | date: 'HH:mm:ss'}}
-    a(id="save-button" class="super green button" ng-click="save()" ng-hide="data.currentPairAssignments._id") Save!
     div
+        a(id="save-button" class="super green button" ng-click="save()" ng-hide="data.currentPairAssignments._id") Save!
+        div(class="pair-assignments-header")
+            text Couples for {{data.currentPairAssignments.date | date:'MM/dd/yyyy'}} - {{data.currentPairAssignments.date | date: 'HH:mm:ss'}}
+    div(id="pair-assignments-content")
         span(ng-repeat='pair in data.currentPairAssignments.pairs' class="pair")
             span(ng-repeat='player in pair' class="player" ui-draggable="true" drag="player" ui-on-Drop="onDrop($event,$data,player)")
-                img(ng-src="{{player | gravatarUrl:{size:45} }}" width="45" height="45")
+                img(ng-src="{{player | gravatarUrl:{size:75} }}" width="75" height="75")
                 div(class="player-header") {{player.name}}
 
 div(ng-cloak class="current pair-assignments" ng-hide="data.currentPairAssignments") No pair assignments yet!
