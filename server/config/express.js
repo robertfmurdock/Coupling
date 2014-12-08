@@ -25,8 +25,8 @@ module.exports = function (app, userDataService) {
     app.set('view engine', 'jade');
     app.use(favicon('public/images/favicon.ico'));
     app.use(sassMiddleware({
-        src: __dirname + '../../public/stylesheets',
-        dest: __dirname + '../../public/stylesheets',
+        src: __dirname + '/../../public/stylesheets',
+        dest: __dirname + '/../../public/stylesheets',
         debug: false,
         outputStyle: 'expanded',
         prefix: '/stylesheets'

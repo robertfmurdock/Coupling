@@ -62,17 +62,28 @@ a {
   font-weight: bold;
 }
 
+#save-button {
+  margin: 4px;
+}
+
 .pair-assignments-header {
   display: inline-block;
-  font-size: 1.5em;
-  margin-before: 0.2em;
-  margin-after: 0.58em;
+  font-size: 28px;
   font-weight: bold;
   text-fill-color: white;
   text-stroke-width: 1.5px;
   text-stroke-color: black;
   border-radius: 15px;
+  padding-left: 40px;
+  padding-right: 5px;
   background: darkred url(../images/overlay.png) repeat-x;
+}
+
+#pair-assignments-content {
+  white-space: pre-line;
+  .player-header {
+    font-size: 20px;
+  }
 }
 
 .roster-header {
@@ -83,11 +94,16 @@ a {
   font-weight: bold;
 }
 
+#top-section {
+  white-space: nowrap;
+}
+
 #top-section, .minimized {
   height: 400px;
 }
 
 #CouplingTitleBlock {
+  white-space: normal;
   display: inline-block;
   vertical-align: top;
   border-radius: 20px;
@@ -97,15 +113,17 @@ a {
 }
 
 #player-view {
-  &.player {
+  .player {
     display: inline-block;
+    vertical-align: top;
     border-radius: 20px;
     padding: 10px;
     border-width: 11px;
-    margin: 0 110px;
+    width: 250px;
+    height: 315px;
     .player-header {
       background: darkcyan url(../images/overlay.png) repeat-x;
-      margin-top: 0px;
+      margin-top: 0;
       margin-bottom: 6px;
       border-radius: 20px;
       font-size: 1.5em;
@@ -123,13 +141,26 @@ a {
     left: 15px;
   }
   input[type="text"] {
-    width: 150px;
+    width: 215px;
+    font-size: large;
+    border-radius: 20px;
+    border-width: 4px;
+    padding: 4px;
   }
   form div {
     label {
-      display: inline-block;
-      text-align: right;
-      width: 75px;
+      background: darkcyan url(../images/overlay.png) repeat-x;
+      border-radius: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      display: table;
+      text-align: left;
+      color: #ffffff;
+      padding: 2px 15px 2px 18px;
+      text-fill-color: initial;
+      text-stroke-width: 1.5px;
+      text-stroke-color: initial;
+
     }
     input {
       text-fill-color: black;
@@ -140,6 +171,7 @@ a {
 
 .view-container {
   display: inline-block;
+  white-space: normal;
   width: 800px;
   vertical-align: top;
   margin: 0 10px;
@@ -204,17 +236,13 @@ a {
   overflow: auto;
 }
 
-#save-button {
-  float: right;
-}
-
 .current.pair-assignments {
   display: inline-block;
 }
 
 .pair-assignments {
   border-radius: 20px;
-  padding: 10px;
+  padding: 5px;
   margin: 5px 0;
   border: 11px outset brown;
   background-color: seagreen;

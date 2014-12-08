@@ -23,7 +23,7 @@ describe(path, function () {
     beforeEach(function (done) {
         couplingServer.get('/test-login?username="name"&password="pw"').end(function (err, res) {
             Cookies = res.headers['set-cookie'].pop().split(';')[0];
-            done();
+            done(err);
         });
     });
 
