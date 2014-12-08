@@ -85,9 +85,11 @@ a {
 
 #top-section, .minimized {
   height: 400px;
+  white-space: nowrap;
 }
 
 #CouplingTitleBlock {
+  white-space: normal;
   display: inline-block;
   vertical-align: top;
   border-radius: 20px;
@@ -97,15 +99,17 @@ a {
 }
 
 #player-view {
-  &.player {
+  .player {
     display: inline-block;
+    vertical-align: top;
     border-radius: 20px;
     padding: 10px;
     border-width: 11px;
-    margin: 0 110px;
+    width: 250px;
+    height: 315px;
     .player-header {
       background: darkcyan url(../images/overlay.png) repeat-x;
-      margin-top: 0px;
+      margin-top: 0;
       margin-bottom: 6px;
       border-radius: 20px;
       font-size: 1.5em;
@@ -123,13 +127,26 @@ a {
     left: 15px;
   }
   input[type="text"] {
-    width: 150px;
+    width: 215px;
+    font-size: large;
+    border-radius: 20px;
+    border-width: 4px;
+    padding: 4px;
   }
   form div {
     label {
-      display: inline-block;
-      text-align: right;
-      width: 75px;
+      background: darkcyan url(../images/overlay.png) repeat-x;
+      border-radius: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      display: table;
+      text-align: left;
+      color: #ffffff;
+      padding: 2px 15px 2px 18px;
+      text-fill-color: initial;
+      text-stroke-width: 1.5px;
+      text-stroke-color: initial;
+
     }
     input {
       text-fill-color: black;
