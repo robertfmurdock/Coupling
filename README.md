@@ -21,6 +21,7 @@ To install and run, you'll need to have mongo and node installed. Once you've go
 6. Try it out and let me know what you think!
 
 For developers:
+
 7. If you don't already have it, install the grunt command line interface by running: npm install grunt-cli -g
 8. You'll need to install the appropriate webdriver tools in order to run the functional tests. You can do this by running: node node_modules/protractor/bin/webdriver-manager update --standalone
 9. Run: grunt. All tests should run, including selenium tests. Hooray!
