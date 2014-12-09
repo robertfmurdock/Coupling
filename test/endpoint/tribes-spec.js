@@ -1,6 +1,6 @@
 'use strict';
 var supertest = require('supertest');
-var should = require('should');
+var expect = require('chai').expect;
 var config = require('./../../config');
 var monk = require('monk');
 var _ = require('underscore');
@@ -36,11 +36,9 @@ describe(path, function () {
 
             var httpGet = host.get(path);
             httpGet.cookies = Cookies;
-            httpGet.expect('Content-Type', /json/).end(function (error, response) {
-                should.not.exist(error);
-                response.status.should.equal(200);
-                JSON.stringify(response.body).should.equal(JSON.stringify(tribeDocuments));
-                done();
+            httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
+                expect(response.body).to.eql(tribeDocuments);
+                done(error);
             });
         });
     });
@@ -54,13 +52,16 @@ describe(path, function () {
 
         var httpGet = host.get(path);
         httpGet.cookies = Cookies;
-        httpGet.expect('Content-Type', /json/).end(function (error, response) {
-            should.not.exist(error);
-            response.status.should.equal(200);
-            JSON.stringify(response.body).should.equal(JSON.stringify([tribe]));
+        httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
+            expect(JSON.stringify(response.body)).to.equal(JSON.stringify([tribe]));
 
             tribesCollection.remove({_id: 'delete-me'});
-            playersCollection.remove({_id: 'delete-me'}, done);
+            playersCollection.remove({_id: 'delete-me'}, function (anotherError) {
+                if (anotherError) {
+                    error = anotherError;
+                }
+                done(error);
+            });
         });
     });
 
@@ -68,11 +69,9 @@ describe(path, function () {
         authorizeUserForTribes([]);
         var httpGet = host.get(path);
         httpGet.cookies = Cookies;
-        httpGet.expect('Content-Type', /json/).end(function (error, response) {
-            should.not.exist(error);
-            response.status.should.equal(200);
-            JSON.stringify(response.body).should.equal(JSON.stringify([]));
-            done();
+        httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
+            expect(response.body).to.eql([]);
+            done(error);
         });
     });
 
@@ -82,17 +81,15 @@ describe(path, function () {
         it('will create a tribe and authorize it.', function (done) {
             var httpPost = host.post(path);
             httpPost.cookies = Cookies;
-            httpPost.send(newTribe).expect('Content-Type', /json/).end(function (error, response) {
-                should.not.exist(error);
-                response.status.should.equal(200);
-                JSON.stringify(response.body).should.equal(JSON.stringify(newTribe));
+            httpPost.send(newTribe).expect(200).expect('Content-Type', /json/).end(function (error, response) {
+                expect(error).to.not.exist();
+                expect(JSON.stringify(response.body)).to.equal(JSON.stringify(newTribe));
 
                 var httpGet = host.get(path);
                 httpGet.cookies = Cookies;
-                httpGet.expect('Content-Type', /json/).end(function (error, response) {
-                    should.not.exist(error);
-                    response.status.should.equal(200);
-                    should.exist(_.findWhere(response.body, newTribe));
+                httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
+                    expect(error).to.not.exist();
+                    expect(_.findWhere(response.body, newTribe)).to.exist();
                     done();
                 });
             });

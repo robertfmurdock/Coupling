@@ -1,5 +1,4 @@
 "use strict";
-var should = require('should');
 var mongoUrl = 'localhost/UsersTest';
 var monk = require('monk');
 var _ = require('underscore');
@@ -7,9 +6,8 @@ var Comparators = require('../../server/lib/Comparators');
 var database = monk(mongoUrl);
 var UserDataService = require("../../server/lib/UserDataService");
 var userDataService = new UserDataService(mongoUrl);
-
+var expect = require('chai').expect;
 describe('UserDataService', function () {
-
     var usersCollection = database.get('users');
 
     beforeEach(function () {
@@ -20,12 +18,12 @@ describe('UserDataService', function () {
         it('will create a user if it does not already exist', function (done) {
             var email = 'awesome.o@super.coo';
             userDataService.findOrCreate(email, function (user) {
-                should.exist(user);
-                user.email.should.equal(email);
+                expect(user).to.exist();
+                expect(user.email).to.equal(email);
 
                 usersCollection.find({}, function (error, docs) {
-                    docs.length.should.equal(1);
-                    docs[0].should.eql(user);
+                    expect(docs.length).to.equal(1);
+                    expect(docs[0]).to.eql(user);
                     done(error);
                 });
             });
@@ -35,10 +33,10 @@ describe('UserDataService', function () {
             var email = 'awesome.o@super.coo';
             userDataService.findOrCreate(email, function (newlyCreatedUser) {
                 userDataService.findOrCreate(email, function (existingUser) {
-                    existingUser.should.eql(newlyCreatedUser);
+                    expect(existingUser).to.eql(newlyCreatedUser);
                     usersCollection.find({}, function (error, docs) {
-                        docs.length.should.equal(1);
-                        docs[0].should.eql(existingUser);
+                        expect(docs.length).to.equal(1);
+                        expect(docs[0]).to.eql(existingUser);
                         done(error);
                     });
                 });
@@ -50,7 +48,7 @@ describe('UserDataService', function () {
         it('will return the _id', function (done) {
             var user = {_id: 'amazingId'};
             userDataService.serializeUser(user, function (error, id) {
-                id.should.equal(user._id);
+                expect(id).to.equal(user._id);
                 done(error);
             });
         });
@@ -58,7 +56,7 @@ describe('UserDataService', function () {
         it('will return error if there is no _id', function (done) {
             var user = {notId: 'amazingId'};
             userDataService.serializeUser(user, function (error) {
-                error.should.equal('The user did not have an id to serialize.');
+                expect(error).to.equal('The user did not have an id to serialize.');
                 done();
             });
         });
@@ -70,7 +68,7 @@ describe('UserDataService', function () {
             usersCollection.insert(expectedUser);
 
             userDataService.deserializeUser(expectedUser._id, function (error, loadedUser) {
-                should(loadedUser).eql(expectedUser);
+                expect(loadedUser).eql(expectedUser);
                 done(error);
             });
         });
@@ -78,7 +76,7 @@ describe('UserDataService', function () {
         it('will return error when user is not in mongo', function (done) {
             var expectedUser = {_id: 'amazingId', uniqueValue: 'bloopers'};
             userDataService.deserializeUser(expectedUser._id, function (error) {
-                should(error).eql('The user with id: amazingId could not be found in the database.');
+                expect(error).eql('The user with id: amazingId could not be found in the database.');
                 done();
             });
         });

@@ -3,7 +3,7 @@ var CouplingGameFactory = require('../../../server/lib/CouplingGameFactory');
 var CouplingDataService = require('../../../server/lib/CouplingDataService');
 var PairAssignmentDocument = require('../../../server/lib/PairAssignmentDocument');
 var Comparators = require('../../../server/lib/Comparators');
-var should = require('should');
+var expect = require('chai').expect;
 var monk = require('monk');
 
 describe('The game', function () {
@@ -44,11 +44,11 @@ describe('The game', function () {
             var result = gameRunner.run(both.players, [], both.history);
             var foundPlayers = [];
             result.pairs.forEach(function (pair) {
-                should(pair.length).eql(2);
+                expect(pair.length).eql(2);
                 foundPlayers = foundPlayers.concat(pair);
             });
 
-            should(foundPlayers.length).eql(6);
+            expect(foundPlayers.length).eql(6);
             testIsComplete();
         }).catch(testIsComplete);
     });
@@ -59,7 +59,7 @@ describe('The game', function () {
 
         new CouplingDataService(mongoUrl).requestHistory(null).then(function (history) {
             var result = gameRunner.run([clark, bruce, diana], [], history);
-            should(result.pairs.length).eql(2);
+            expect(result.pairs.length).eql(2);
             testIsComplete();
         }).catch(testIsComplete);
     });
@@ -89,7 +89,7 @@ describe('The game', function () {
                 var foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
                     return Comparators.areEqualPairs([bruce, john], pair);
                 });
-                foundBruceAndJohn.should.be.true;
+                expect(foundBruceAndJohn).to.be.true;
                 testIsComplete();
             }).catch(testIsComplete);
         });

@@ -1,5 +1,5 @@
 "use strict";
-var should = require('should');
+
 var expect = require('chai').expect;
 var Supertest = require('supertest');
 var DataService = require('../../server/lib/CouplingDataService');
@@ -73,7 +73,7 @@ describe(path, function () {
                 .expect('Content-Type', /json/)
                 .end(function (error, response) {
                     expect([]).to.eql(response.body);
-                    done();
+                    done(error);
                 });
         });
     });
@@ -85,9 +85,9 @@ describe(path, function () {
             post.cookies = Cookies;
             post.
                 send(validPairs)
+                .expect(200)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
-                    response.status.should.equal(200);
                     var pairsAsSaved = response.body;
 
                     new DataService(config.tempMongoUrl).requestHistory(tribeId).then(function (history) {
@@ -96,13 +96,18 @@ describe(path, function () {
                             if (pairsAsSaved.hasOwnProperty(parameterName)) {
                                 var actualParameterValue = latestEntryInHistory[parameterName];
                                 var expectedParameterValue = pairsAsSaved[parameterName];
-                                JSON.stringify(actualParameterValue).should.equal(JSON.stringify(expectedParameterValue));
+                                if (actualParameterValue instanceof Date) {
+                                    expect(actualParameterValue.toISOString()).to.eql(expectedParameterValue);
+                                } else {
+                                    expect(actualParameterValue).to.eql(expectedParameterValue);
+                                }
+
                             } else {
-                                should.fail;
+                                done("This should not be hit");
                             }
                         }
                         done();
-                    }, function (error) {
+                    }).catch(function (error) {
                         done(error);
                     });
                 });
@@ -119,33 +124,31 @@ describe(path, function () {
             var post = supertest.post(path);
             post.cookies = Cookies;
             post.send(pairs)
+                .expect(400)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
-                    response.status.should.equal(400);
-                    response.body.should.eql({error: 'Pairs were not valid.'});
-                    done();
+                    expect(response.body).to.eql({error: 'Pairs were not valid.'});
+                    done(error);
                 });
         });
         it('should not add when given a document without pairs', function (done) {
             var pairs = {date: new Date()};
             var post = supertest.post(path);
             post.cookies = Cookies;
-            post.send(pairs)
+            post.send(pairs).expect(400)
                 .expect('Content-Type', /json/).
                 end(function (error, response) {
-                    response.status.should.equal(400);
-                    response.body.should.eql({error: 'Pairs were not valid.'});
-                    done();
+                    expect(response.body).to.eql({error: 'Pairs were not valid.'});
+                    done(error);
                 });
         });
         it('should not add when not given a submission', function (done) {
             var post = supertest.post(path);
             post.cookies = Cookies;
-            post.expect('Content-Type', /json/).
+            post.expect(400).expect('Content-Type', /json/).
                 end(function (error, response) {
-                    response.status.should.equal(400);
-                    response.body.should.eql({error: 'Pairs were not valid.'});
-                    done();
+                    expect(response.body).to.eql({error: 'Pairs were not valid.'});
+                    done(error);
                 });
         });
     });
@@ -156,8 +159,7 @@ describe(path, function () {
             post.cookies = Cookies;
             post.send(validPairs)
                 .end(function (error) {
-                    should.not.exist(error);
-                    done();
+                    done(error);
                 });
         });
 
@@ -165,20 +167,19 @@ describe(path, function () {
             setTimeout(function () {
                 var httpDelete = supertest.delete(path + '/' + validPairs._id);
                 httpDelete.cookies = Cookies;
-                httpDelete.end(function (error, response) {
-                    should.not.exist(error);
-                    response.status.should.equal(200);
-                    response.body.should.eql({message: 'SUCCESS'});
+                httpDelete.expect(200).end(function (error, response) {
+                    expect(response.body).to.eql({message: 'SUCCESS'});
 
                     var httpGet = supertest.get(path);
                     httpGet.cookies = Cookies;
-                    httpGet.end(function (error, response) {
+                    httpGet.end(function (error2, response) {
+                        error = error || error2;
                         var result = response.body.some(function (pairAssignments) {
                             return validPairs._id == pairAssignments._id;
                         });
 
-                        result.should.be.false;
-                        done();
+                        expect(result).to.be.false;
+                        done(error);
                     });
                 });
             });
@@ -189,11 +190,9 @@ describe(path, function () {
                 var badId = "veryBadId";
                 var httpDelete = supertest.delete(path + '/' + badId);
                 httpDelete.cookies = Cookies;
-                httpDelete.end(function (error, response) {
-                    should.not.exist(error);
-                    response.status.should.equal(404);
-                    response.body.should.eql({message: 'Pair Assignments could not be deleted because they do not exist.'});
-                    done();
+                httpDelete.expect(404).end(function (error, response) {
+                    expect(response.body).to.eql({message: 'Pair Assignments could not be deleted because they do not exist.'});
+                    done(error);
                 });
             });
         });

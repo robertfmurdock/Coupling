@@ -1,6 +1,6 @@
 "use strict";
 
-var should = require('should');
+var expect = require('chai').expect;
 
 var PinAssigner = require('../../server/lib/PinAssigner');
 
@@ -16,7 +16,7 @@ describe('PinAssigner', function () {
 
         pinAssigner.assignPins(pins, players);
 
-        player.pins.should.eql(pins);
+        expect(player.pins).to.eql(pins);
     });
 
     it('will assign no pins when there are no players', function () {
@@ -28,7 +28,7 @@ describe('PinAssigner', function () {
 
         pinAssigner.assignPins(pins, players);
 
-        players.length.should.eql(0);
+        expect(players.length).to.eql(0);
     });
 
 });

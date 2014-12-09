@@ -2,11 +2,9 @@
 var PairingHistory = require('../../server/lib/PairingHistory');
 var PairAssignmentDocument = require('../../server/lib/PairAssignmentDocument');
 var ObjectID = require('mongodb').ObjectID;
-var should = require('should');
-
+var expect = require('chai').expect;
 
 describe('Pairing History', function () {
-
     it('should be retrievable', function () {
         var historyDocuments = [
             new PairAssignmentDocument(new Date(2014, 3, 30)), [
@@ -19,14 +17,14 @@ describe('Pairing History', function () {
 
         var pairingHistory = new PairingHistory(historyDocuments);
 
-        should(historyDocuments).eql(pairingHistory.historyDocuments);
+        expect(historyDocuments).eql(pairingHistory.historyDocuments);
     });
 
     it('should return empty array when no partners are available', function () {
         var historyDocuments = [];
         var pairingHistory = new PairingHistory(historyDocuments);
         var report = pairingHistory.getPairCandidateReport({name: 'player'}, []);
-        report.partnerCandidates.should.eql([]);
+        expect(report.partnerCandidates).eql([]);
     });
 
 
@@ -45,10 +43,10 @@ describe('Pairing History', function () {
                 var historyDocuments = [];
                 var pairingHistory = new PairingHistory(historyDocuments);
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(report.partnerCandidates);
-                should.not.exist(availableOtherPlayers.timeSinceLastPaired);
+                expect(availableOtherPlayers).eql(report.partnerCandidates);
+                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist();
 
-                bruce.should.equal(report.player);
+                expect(bruce).to.equal(report.player);
             });
 
             it('with history document that has no pairs', function () {
@@ -57,10 +55,10 @@ describe('Pairing History', function () {
                 ];
                 var pairingHistory = new PairingHistory(historyDocuments);
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(report.partnerCandidates);
-                should.not.exist(availableOtherPlayers.timeSinceLastPaired);
+                expect(availableOtherPlayers).to.eql(report.partnerCandidates);
+                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist();
 
-                bruce.should.equal(report.player);
+                expect(bruce).to.equal(report.player);
             });
 
             it('with plenty of history', function () {
@@ -78,9 +76,9 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                availableOtherPlayers.should.eql(report.partnerCandidates);
-                should.not.exist(report.timeSinceLastPaired);
-                bruce.should.equal(report.player);
+                expect(availableOtherPlayers).to.eql(report.partnerCandidates);
+                expect(report.timeSinceLastPaired).to.not.exist();
+                expect(bruce).to.equal(report.player);
             });
 
             it('with only the person you were with last time', function () {
@@ -92,9 +90,9 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
 
                 var report = pairingHistory.getPairCandidateReport(bruce, [selena]);
-                [selena].should.eql(report.partnerCandidates);
-                report.timeSinceLastPaired.should.equal(0);
-                bruce.should.equal(report.player);
+                expect([selena]).to.eql(report.partnerCandidates);
+                expect(report.timeSinceLastPaired).to.equal(0);
+                expect(bruce).to.equal(report.player);
             });
         });
 
@@ -122,9 +120,9 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                report.partnerCandidates.should.eql([expectedPartner]);
-                report.timeSinceLastPaired.should.eql(2);
-                bruce.should.equal(report.player);
+                expect(report.partnerCandidates).to.eql([expectedPartner]);
+                expect(report.timeSinceLastPaired).to.eql(2);
+                expect(bruce).to.equal(report.player);
             });
 
             it('when there is clearly someone who has been the longest and they are not the same object instances so you have to match with id', function () {
@@ -152,9 +150,9 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                report.partnerCandidates.should.eql([expectedPartner]);
-                report.timeSinceLastPaired.should.eql(2);
-                bruce.should.equal(report.player);
+                expect(report.partnerCandidates).to.eql([expectedPartner]);
+                expect(report.timeSinceLastPaired).to.eql(2);
+                expect(bruce).to.equal(report.player);
             });
 
             it('when there is one person who has paired but no one else', function () {
@@ -169,9 +167,9 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                report.partnerCandidates.should.eql([talia, jezebel]);
-                should.not.exist(report.timeSinceLastPaired);
-                bruce.should.equal(report.player);
+                expect(report.partnerCandidates).to.eql([talia, jezebel]);
+                expect(report.timeSinceLastPaired).to.not.exist();
+                expect(bruce).to.equal(report.player);
             });
 
         });

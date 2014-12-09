@@ -1,10 +1,9 @@
 var CouplingGame = require('../../server/lib/CouplingGame');
 var PairHistoryReport = require('../../server/lib/PairHistoryReport');
-var should = require('should');
+var expect = require('chai').expect;
 var sinon = require('sinon');
 
 describe("Coupling Game", function () {
-
     function badSpin(players) {
         return players[0];
     }
@@ -15,7 +14,7 @@ describe("Coupling Game", function () {
 
         var results = game.play(players);
 
-        should(results).eql([]);
+        expect(results).eql([]);
     });
 
     describe("with two players", function () {
@@ -40,15 +39,15 @@ describe("Coupling Game", function () {
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            should(nextInSequenceFunction.args[0]).eql([allPlayers]);
-            should(spinFunction.args[0]).eql([
+            expect(nextInSequenceFunction.args[0]).eql([allPlayers]);
+            expect(spinFunction.args[0]).eql([
                 [player1]
             ]);
         });
 
         it("should make one pair in order determined by the wheel", function () {
             var results = game.play(allPlayers);
-            should(results).eql([
+            expect(results).eql([
                 [player2, player1]
             ]);
         });
@@ -79,18 +78,18 @@ describe("Coupling Game", function () {
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            should(nextInSequenceFunction.args[0]).eql([allPlayers]);
-            should(spinFunction.args[0]).eql([
+            expect(nextInSequenceFunction.args[0]).eql([allPlayers]);
+            expect(spinFunction.args[0]).eql([
                 [player1, player2]
             ]);
-            should(nextInSequenceFunction.args[1]).eql([
+            expect(nextInSequenceFunction.args[1]).eql([
                 [ player2]
             ]);
         });
 
         it("should make two pairs in order determined by the wheel", function () {
             var results = game.play(allPlayers);
-            should(results).eql([
+            expect(results).eql([
                 [player3, player1],
                 [player2]
             ]);
@@ -109,7 +108,7 @@ describe("Coupling Game", function () {
 
         var results = game.play(allPlayers);
 
-        should(results).eql([
+        expect(results).eql([
             [player1, player2]
         ]);
     });

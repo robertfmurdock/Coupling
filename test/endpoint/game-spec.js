@@ -1,6 +1,6 @@
 "use strict";
 var Supertest = require('supertest');
-var should = require('should');
+var expect = require('chai').expect;
 var config = require('../../config');
 var monk = require('monk');
 
@@ -22,9 +22,8 @@ describe(path, function () {
 
     beforeEach(function (done) {
         supertest.get('/test-login?username="name"&password="pw"').end(function (err, res) {
-            should.not.exist(err);
             Cookies = res.headers['set-cookie'].pop().split(';')[0];
-            done();
+            done(err);
         });
     });
 
@@ -50,15 +49,14 @@ describe(path, function () {
         var post = supertest.post(path);
         post.cookies = Cookies;
         post.send(onlyEnoughPlayersForOnePair)
+            .expect(200)
             .expect('Content-Type', /json/)
             .end(function (error, response) {
-                should.not.exist(error);
-                response.status.should.equal(200);
-                response.body.tribe.should.equal(tribeId);
+                expect(response.body.tribe).to.equal(tribeId);
                 decorateWithPins(onlyEnoughPlayersForOnePair)
                 var expectedPairAssignments = [onlyEnoughPlayersForOnePair];
-                JSON.stringify(response.body.pairs).should.equal(JSON.stringify(expectedPairAssignments));
-                done();
+                expect(response.body.pairs).to.eql(expectedPairAssignments);
+                done(error);
             });
     });
 
@@ -75,18 +73,16 @@ describe(path, function () {
             ];
             var post = supertest.post(path);
             post.cookies = Cookies;
-            post.send(players)
+            post.send(players).expect(200)
                 .expect('Content-Type', /json/)
                 .end(function (error, response) {
-                    should.not.exist(error);
-                    response.status.should.equal(200);
-                    response.body.tribe.should.equal(tribeId);
+                    expect(response.body.tribe).to.equal(tribeId);
                     var expectedPinnedPlayer = {name: "dude1", pins: [pin]};
                     var expectedPairAssignments = [
                         [expectedPinnedPlayer]
                     ];
-                    JSON.stringify(response.body.pairs).should.equal(JSON.stringify(expectedPairAssignments));
-                    done();
+                    expect(response.body.pairs).to.eql(expectedPairAssignments);
+                    done(error);
                 });
         });
     });

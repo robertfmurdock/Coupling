@@ -1,7 +1,7 @@
 "use strict";
 var CouplingDataService = require('../../server/lib/CouplingDataService');
-var should = require('should');
 var expect = require('chai').expect;
+
 var mongoUrl = 'localhost/CouplingTest';
 var monk = require('monk');
 var _ = require('underscore');
@@ -9,7 +9,6 @@ var Comparators = require('../../server/lib/Comparators');
 var database = monk(mongoUrl);
 
 describe('DataService', function () {
-
     var frodo = {name: 'Frodo'};
     var expectedPlayers = [
         {name: 'Gandalf'},
@@ -102,22 +101,22 @@ describe('DataService', function () {
 
         it('can retrieve the players in the database and all the history in new to old order', function (testIsDone) {
             couplingDataService.requestPlayersAndHistory(null).then(function (both) {
-                should(expectedPlayers).eql(both.players);
-                should(expectedHistory).eql(both.history);
+                expect(expectedPlayers).to.eql(both.players);
+                expect(expectedHistory).to.eql(both.history);
                 testIsDone();
             }).catch(testIsDone);
         });
 
         it('can retrieve the players', function (testIsDone) {
             couplingDataService.requestPlayers(null).then(function (players) {
-                should(expectedPlayers).eql(players);
+                expect(expectedPlayers).to.eql(players);
                 testIsDone();
             }).catch(testIsDone);
         });
 
         it('can retrieve the history in new to old order', function (testIsDone) {
             couplingDataService.requestHistory(null).then(function (history) {
-                should(expectedHistory).eql(history);
+                expect(expectedHistory).eql(history);
                 testIsDone();
             }).catch(testIsDone);
         });
@@ -125,11 +124,10 @@ describe('DataService', function () {
 
     it('can retrieve all the tribes.', function (done) {
         couplingDataService.requestTribes().then(function (tribes) {
-            should(expectedTribes).eql(tribes);
+            expect(expectedTribes).eql(tribes);
             done();
         }, function (error) {
-            should.not.exist(error);
-            done();
+            done(error);
         });
     });
 
@@ -140,7 +138,7 @@ describe('DataService', function () {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(player, listedPlayer);
                 });
-                found.should.be.true;
+                expect(found).to.be.true;
                 done(error);
             }).catch(done);
         });
@@ -156,16 +154,15 @@ describe('DataService', function () {
                 var result = players.some(function (player) {
                     return Comparators.areEqualPlayers(frodo, player);
                 });
-                result.should.be.false;
+                expect(result).to.be.false;
                 done();
             }).catch(done);
         });
 
         it('such that it still exists in the database', function (done) {
             playersCollection.find({_id: frodo._id}, {}, function (error, documents) {
-                should.not.exist(error);
-                Comparators.areEqualPlayers(documents[0], frodo).should.be.true;
-                done();
+                expect(Comparators.areEqualPlayers(documents[0], frodo)).to.be.true;
+                done(error);
             });
         });
     });
@@ -173,8 +170,7 @@ describe('DataService', function () {
     describe('can remove old pair assignments', function () {
         beforeEach(function (done) {
             couplingDataService.removePairAssignments(pairSetOne._id, function (error) {
-                should.not.exist(error);
-                done();
+                done(error);
             });
         });
 
@@ -183,23 +179,22 @@ describe('DataService', function () {
                 var result = historyDocuments.some(function (assignments) {
                     return Comparators.areEqualObjectIds(pairSetOne._id, assignments._id);
                 });
-                result.should.be.false;
+                expect(result).to.be.false;
                 done();
             }).catch(done);
         });
 
         it('such that it still exists in the database', function (done) {
             historyCollection.find({_id: pairSetOne._id}, {}, function (error, documents) {
-                should.not.exist(error);
-                Comparators.areEqualObjectIds(documents[0]._id, pairSetOne._id).should.be.true;
-                done();
+                expect(Comparators.areEqualObjectIds(documents[0]._id, pairSetOne._id)).to.be.true;
+                done(error);
             });
         });
     });
 
     it('will report an error on the callback when it does not remove pair assignments', function (done) {
         couplingDataService.removePairAssignments("fakeId", function (error) {
-            error.message.should.equal('Pair Assignments could not be deleted because they do not exist.');
+            expect(error.message).to.equal('Pair Assignments could not be deleted because they do not exist.');
             done();
         });
     });
@@ -211,7 +206,7 @@ describe('DataService', function () {
                 var found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(frodo, listedPlayer);
                 });
-                found.should.be.true;
+                expect(found).to.be.true;
                 testIsDone(error);
             }).catch(testIsDone);
         });
@@ -246,29 +241,29 @@ describe('DataService', function () {
 
         it('and get the correct players.', function (done) {
             couplingDataService.requestPlayers(tribeId).then(function (players) {
-                should(blackrockPlayers).eql(players);
+                expect(blackrockPlayers).eql(players);
                 done();
             }).catch(done);
         });
 
         it('get the correct pins', function (done) {
             couplingDataService.requestPins(tribeId).then(function (pins) {
-                should(blackrockPins).eql(pins);
+                expect(blackrockPins).eql(pins);
                 done();
             }).catch(done);
         });
 
         it('and get the correct history.', function (done) {
             couplingDataService.requestHistory(tribeId).then(function (history) {
-                should([blackrockPairAssignments]).eql(history);
+                expect([blackrockPairAssignments]).eql(history);
                 done();
             }).catch(done);
         });
 
         it('and get the correct player and history together.', function (done) {
             couplingDataService.requestPlayersAndHistory(tribeId).then(function (both) {
-                should(blackrockPlayers).eql(both.players);
-                should([blackrockPairAssignments]).eql(both.history);
+                expect(blackrockPlayers).eql(both.players);
+                expect([blackrockPairAssignments]).eql(both.history);
                 done();
             }).catch(done);
         });

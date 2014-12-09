@@ -44,13 +44,9 @@ describe(path, function () {
         it('will return all available pins on tribe.', function (done) {
             var httpGet = supertest.get(path);
             httpGet.cookies = Cookies;
-            httpGet.expect('Content-Type', /json/).end(function (error, response) {
-                if (error) {
-                    done(error);
-                }
-                response.status.should.equal(200);
-                JSON.stringify(response.body).should.equal(JSON.stringify(expectedPins));
-                done();
+            httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
+                expect(response.body).to.eql(expectedPins);
+                done(error);
             });
         });
 
@@ -138,13 +134,13 @@ describe(path, function () {
 
                     var httpGet = supertest.get(path);
                     httpGet.cookies = Cookies;
-                    httpGet.expect('Content-Type', /json/).end(function (error, response) {
+                    httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
                         if (error) {
                             done(error);
+                        } else {
+                            expect(response.body).to.eql([resultPins[0], resultPins[2]]);
+                            done();
                         }
-                        response.status.should.equal(200);
-                        JSON.stringify(response.body).should.equal(JSON.stringify([resultPins[0], resultPins[2]]));
-                        done();
                     });
                 });
         });

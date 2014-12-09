@@ -1,7 +1,7 @@
 var Sequencer = require('../../server/lib/Sequencer');
 var PairHistoryReport = require('../../server/lib/PairHistoryReport');
-require('should');
 var sinon = require('sinon');
+var expect = require('chai').expect;
 
 describe('Sequencer', function () {
 
@@ -11,7 +11,7 @@ describe('Sequencer', function () {
     var shorty = "Napoleon";
 
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
-        var players = [ bill, ted, amadeus, shorty];
+        var players = [bill, ted, amadeus, shorty];
 
         var getReportStub = sinon.stub();
         var pairingHistory = {
@@ -31,11 +31,11 @@ describe('Sequencer', function () {
 
         var next = sequencer.getNextInSequence(players);
 
-        next.should.eql(tedsPairCandidates);
+        expect(next).to.eql(tedsPairCandidates);
     });
 
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
-        var players = [ bill, amadeus, shorty];
+        var players = [bill, amadeus, shorty];
 
         var getReportStub = sinon.stub();
         var pairingHistory = {
@@ -43,7 +43,7 @@ describe('Sequencer', function () {
         };
 
         var billsPairCandidates = new PairHistoryReport(bill, [], 3);
-        getReportStub.withArgs(bill, [ amadeus, shorty]).returns(billsPairCandidates);
+        getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
         var amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
         getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
         var shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
@@ -51,11 +51,11 @@ describe('Sequencer', function () {
 
         var sequencer = new Sequencer(pairingHistory);
         var next = sequencer.getNextInSequence(players);
-        next.should.eql(shortyPairCandidates);
+        expect(next).to.eql(shortyPairCandidates);
     });
 
     it('will use the Pairing History to get the next in sequence for when a player has never paired.', function () {
-        var players = [ bill, amadeus, shorty];
+        var players = [bill, amadeus, shorty];
 
         var getReportStub = sinon.stub();
         var pairingHistory = {
@@ -63,7 +63,7 @@ describe('Sequencer', function () {
         };
 
         var billsPairCandidates = new PairHistoryReport(bill, [], 3);
-        getReportStub.withArgs(bill, [ amadeus, shorty]).returns(billsPairCandidates);
+        getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
         var amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
         getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
         var shortyPairCandidates = new PairHistoryReport(shorty, [], null);
@@ -71,11 +71,11 @@ describe('Sequencer', function () {
 
         var sequencer = new Sequencer(pairingHistory);
         var next = sequencer.getNextInSequence(players);
-        next.should.eql(shortyPairCandidates);
+        expect(next).to.eql(shortyPairCandidates);
     });
 
     it('will prioritize the report with fewest players when equal amounts of time.', function () {
-        var players = [ bill, amadeus, shorty];
+        var players = [bill, amadeus, shorty];
 
         var getReportStub = sinon.stub();
         var pairingHistory = {
@@ -87,7 +87,7 @@ describe('Sequencer', function () {
             {},
             {}
         ], null);
-        getReportStub.withArgs(bill, [ amadeus, shorty]).returns(billsPairCandidates);
+        getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
         var amadeusPairCandidates = new PairHistoryReport(amadeus, [
             {}
         ], null);
@@ -100,6 +100,6 @@ describe('Sequencer', function () {
 
         var sequencer = new Sequencer(pairingHistory);
         var next = sequencer.getNextInSequence(players);
-        next.should.eql(amadeusPairCandidates);
+        expect(next).to.eql(amadeusPairCandidates);
     });
 });

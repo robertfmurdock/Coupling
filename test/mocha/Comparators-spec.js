@@ -1,4 +1,5 @@
 "use strict";
+var expect = require('chai').expect;
 var Comparators = require("../../server/lib/Comparators");
 
 describe('Comparators', function () {
@@ -14,22 +15,22 @@ describe('Comparators', function () {
                 {_id: '7'}
             ];
 
-            Comparators.areEqualPairs(pair1, pair2).should.be.true;
+            expect(Comparators.areEqualPairs(pair1, pair2)).to.be.true;
         });
     });
 
     describe("players", function () {
         it('player will not be equal to null', function () {
-            Comparators.areEqualPlayers({name: "duder"}, null).should.be.false;
-            Comparators.areEqualPlayers(null, {name: "duder"}).should.be.false;
+            expect(Comparators.areEqualPlayers({name: "duder"}, null)).to.be.false;
+            expect(Comparators.areEqualPlayers(null, {name: "duder"})).to.be.false;
         });
 
         it("equal players with string ids are equal", function () {
             var batman = { name: 'Batman', _id: '5351790026c06ff51400000a' };
             var anotherBatman = { name: 'Batman', _id: '5351790026c06ff51400000a'};
 
-            Comparators.areEqualPlayers(batman, anotherBatman).should.be.true;
-            Comparators.areEqualPlayers(anotherBatman, batman).should.be.true;
+            expect(Comparators.areEqualPlayers(batman, anotherBatman)).to.be.true;
+            expect(Comparators.areEqualPlayers(anotherBatman, batman)).to.be.true;
         });
     });
 });

@@ -1,9 +1,8 @@
 var CouplingWheel = require('../../server/lib/CouplingWheel');
-var should = require('should');
+var expect = require('chai').expect;
 var sinon = require('sinon');
 
 describe('Coupling Wheel', function () {
-
     it('randomly chooses a person on the wheel', sinon.test(function () {
         var players = ['Scooby', 'Shaggy', 'Scrappy'];
         var randomStub = this.stub(Math, 'random');
@@ -13,7 +12,7 @@ describe('Coupling Wheel', function () {
             var couplingWheel = new CouplingWheel();
             var foundPlayer = couplingWheel.spin(players);
             var expectedPlayer = players[expectedIndex];
-            should(expectedPlayer).eql(foundPlayer);
+            expect(expectedPlayer).eql(foundPlayer);
         }
 
         checkWorksForIndex(1);
@@ -29,7 +28,7 @@ describe('Coupling Wheel', function () {
         var couplingWheel = new CouplingWheel();
         var foundPlayer = couplingWheel.spin(players);
         var expectedPlayer = players[1];
-        should(expectedPlayer).eql(foundPlayer);
+        expect(expectedPlayer).eql(foundPlayer);
     }));
 });
 

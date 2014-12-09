@@ -1,7 +1,7 @@
 var CouplingGameFactory = require('../../server/lib/CouplingGameFactory');
 var CouplingGame = require('../../server/lib/CouplingGame');
 var CouplingWheel = require('../../server/lib/CouplingWheel');
-require('should');
+var expect = require('chai').expect;
 
 describe('Coupling Game Factory', function () {
     it('will construct a Coupling Game', function () {
@@ -10,11 +10,10 @@ describe('Coupling Game Factory', function () {
         var history = null;
         var factory = new CouplingGameFactory(players, history);
 
-
         var game = factory.buildGame();
 
-        game.should.be.instanceof(CouplingGame);
+        expect(game).to.be.instanceof(CouplingGame);
 
-        game.wheel.should.be.instanceof(CouplingWheel);
+        expect(game.wheel).to.be.instanceof(CouplingWheel);
     });
 });

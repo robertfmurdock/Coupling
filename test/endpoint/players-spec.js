@@ -1,6 +1,5 @@
 "use strict";
 var Supertest = require('supertest');
-var should = require('should');
 var expect = require('chai').expect;
 var DataService = require('../../server/lib/CouplingDataService');
 var Comparators = require('../../server/lib/Comparators');
@@ -41,7 +40,7 @@ describe(path, function () {
                 httpGet.expect(200)
                     .expect('Content-Type', /json/)
                     .end(function (error, response) {
-                        JSON.stringify(response.body).should.equal(JSON.stringify(players));
+                        expect(response.body).to.eql(players);
                         done(error);
                     });
             }, done);
@@ -94,7 +93,7 @@ describe(path, function () {
                     var result = response.body.some(function (player) {
                         return Comparators.areEqualPlayers(newPlayer, player);
                     });
-                    result.should.be.false;
+                    expect(result).to.be.false;
                     done(error);
                 });
             });
