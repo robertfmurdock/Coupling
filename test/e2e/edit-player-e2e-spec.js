@@ -27,7 +27,7 @@ describe('The edit player page', function () {
     var player = {_id: 'delete_me', tribe: 'delete_me', name: 'Voidman'};
 
     beforeEach(function (done) {
-        protractor.getInstance().ignoreSynchronization = true;
+        browser.ignoreSynchronization = true;
         tribeCollection.insert(tribe);
         tribeCollection.find({}, {}, function (error, tribeDocuments) {
             var authorizedTribes = _.pluck(tribeDocuments, '_id');
@@ -48,14 +48,14 @@ describe('The edit player page', function () {
     it('should not alert on leaving when nothing has changed.', function () {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
         element(By.id('spin-button')).click();
-        expect(protractor.getInstance().getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
     });
 
     it('should get alert on leaving when name is changed.', function (done) {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
         element(By.id('player-name')).sendKeys('completely different name');
         element(By.id('spin-button')).click();
-        protractor.getInstance().switchTo().alert().then(function (alertDialog) {
+        browser.switchTo().alert().then(function (alertDialog) {
             alertDialog.dismiss();
             done();
         }, function (error) {
@@ -68,6 +68,6 @@ describe('The edit player page', function () {
         element(By.id('player-name')).sendKeys('completely different name');
         element(By.id('save-player-button')).click();
         element(By.id('spin-button')).click();
-        expect(protractor.getInstance().getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
     });
 });
