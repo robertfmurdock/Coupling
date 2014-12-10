@@ -41,7 +41,7 @@ describe('The default tribes page', function () {
         });
     });
 
-    xit('should have a section for each tribe.', function () {
+    it('should have a section for each tribe.', function () {
         browser.get(hostName);
 
         var all = element.all(by.repeater('tribe in tribes'));
@@ -86,7 +86,7 @@ describe('The default tribes page', function () {
             });
         });
 
-        xit('the tribe email is shown', function (done) {
+        it('the tribe email is shown', function (done) {
             element.all(By.id('tribe-email')).first().then(function (tribeNameElement) {
                 var expectedValue = expectedTribe.email || '';
                 expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
@@ -114,6 +114,7 @@ describe('The default tribes page', function () {
 describe('The edit tribe page', function () {
     var tribe = {_id: 'delete_me', name: 'Change Me'};
     beforeEach(function (done) {
+        browser.ignoreSynchronization = true;
         tribeCollection.insert(tribe);
         authorizeAllTribes(done);
     });
