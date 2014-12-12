@@ -5,7 +5,7 @@ dependencies:
 test:
   override:
     - npm test
-    - npm protractor
+    - npm run protractor
 deployment:
   staging:
     branch: master
