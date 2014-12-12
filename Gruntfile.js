@@ -83,7 +83,6 @@ module.exports = function (grunt) {
                     port: 3001,
                     output: 'Finished initializing session storage'
                 }
-
             }
         },
         protractor_webdriver: {
@@ -96,10 +95,19 @@ module.exports = function (grunt) {
                 keepAlive: false,
                 noColor: false,
                 args: {
-                    browser: 'chrome'
+                    browser: 'chrome',
+                    seleniumAddress: 'http://localhost:4444/wd/hub'
                 }
             },
             chrome: {
+                options: {
+                    args: {
+                        browser: 'chrome',
+                        seleniumAddress: 'http://localhost:4444/wd/hub'
+                    }
+                }
+            },
+            circle-chrome: {
                 options: {
                     args: {
                         browser: 'chrome'
@@ -109,14 +117,16 @@ module.exports = function (grunt) {
             firefox: {
                 options: {
                     args: {
-                        browser: 'firefox'
+                        browser: 'firefox',
+                        seleniumAddress: 'http://localhost:4444/wd/hub'
                     }
                 }
             },
             safari: {
                 options: {
                     args: {
-                        browser: 'safari'
+                        browser: 'safari',
+                        seleniumAddress: 'http://localhost:4444/wd/hub'
                     }
                 }
             }
@@ -175,7 +185,7 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkinsMochaUnit', ['env:jenkinsUnit', 'mochaTest:jenkinsUnit']);
     grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
-    grunt.registerTask('end2end', ['express:dev', 'protractor:chrome']);
+    grunt.registerTask('end2end', ['express:dev', 'protractor:circle-chrome']);
 
     grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
         'protractor_webdriver:start', 'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild']);
