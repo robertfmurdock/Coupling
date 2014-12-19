@@ -107,13 +107,6 @@ module.exports = function (grunt) {
                     }
                 }
             },
-            circleChrome: {
-                options: {
-                    args: {
-                        browser: 'chrome'
-                    }
-                }
-            },
             firefox: {
                 options: {
                     args: {
@@ -185,7 +178,7 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkinsMochaUnit', ['env:jenkinsUnit', 'mochaTest:jenkinsUnit']);
     grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
-    grunt.registerTask('end2end', ['express:dev', 'protractor:circleChrome']);
+    grunt.registerTask('end2end', ['express:dev', 'protractor:chrome']);
 
     grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
         'protractor_webdriver:start', 'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild']);
