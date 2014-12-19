@@ -3,6 +3,7 @@ dependencies:
     - npm rebuild
     - node node_modules/protractor/bin/webdriver-manager update --standalone
 test:
+  override:
     - npm test
     - npm run protractor
 deployment:
