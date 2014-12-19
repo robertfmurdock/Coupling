@@ -67,7 +67,7 @@
     "preupdate-webdriver": "npm rebuild",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
-    "protractor" : "grunt end2end"
+    "protractor" : "protractor test/e2e/protractor-conf.js"
   },
   "repository": {
     "type": "git",
