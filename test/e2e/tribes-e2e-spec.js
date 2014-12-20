@@ -66,7 +66,7 @@ describe('The default tribes page', function () {
 
                 tribeCollection.find({}, {}, function (error, tribeDocuments) {
                     expectedTribe = tribeDocuments[0];
-                    done();
+                    done(error);
                 });
             });
         });
