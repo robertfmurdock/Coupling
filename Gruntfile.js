@@ -107,13 +107,6 @@ module.exports = function (grunt) {
                     }
                 }
             },
-            circleChrome: {
-                options: {
-                    args: {
-                        browser: 'chrome'
-                    }
-                }
-            },
             firefox: {
                 options: {
                     args: {
