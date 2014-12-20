@@ -64,10 +64,9 @@
   "scripts": {
     "start": "node server/app.js",
     "test": "grunt travis",
-    "preupdate-webdriver": "npm rebuild",
-    "update-webdriver": "webdriver-manager update",
+    "update-webdriver": "node node_modules/protractor/bin/webdriver-manager update --standalone",
     "preprotractor": "npm run update-webdriver",
-    "protractor" : "protractor test/e2e/protractor-conf.js"
+    "protractor" : "grunt end2end"
   },
   "repository": {
     "type": "git",
