@@ -8,10 +8,6 @@ services.service("Coupling", ['$http', function ($http) {
             alert("There was a problem loading " + url + "\n" +
             "Data was: <" + data + ">\n" +
             "Status code: " + statusCode);
-            console.info(data);
-            console.info(statusCode);
-            console.info(headers);
-            console.info(config);
         }
     };
 

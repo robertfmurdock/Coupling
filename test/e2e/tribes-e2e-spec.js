@@ -15,7 +15,7 @@ function authorizeUserForTribes(authorizedTribes, callback) {
         if (updateCount == 0) {
             usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes}, callback);
         } else {
-            callback();
+            callback(error);
         }
     });
 }
@@ -23,20 +23,24 @@ function authorizeUserForTribes(authorizedTribes, callback) {
 function authorizeAllTribes(callback) {
     tribeCollection.find({}, {}, function (error, tribeDocuments) {
         var authorizedTribes = _.pluck(tribeDocuments, '_id');
-        authorizeUserForTribes(authorizedTribes, callback);
+        if (error) {
+            callback(error);
+        } else {
+            authorizeUserForTribes(authorizedTribes, callback);
+        }
     });
 }
 
-xdescribe('The default tribes page', function () {
+describe('The default tribes page', function () {
 
     beforeEach(function (done) {
         browser.ignoreSynchronization = true;
         tribeCollection.drop();
         tribeCollection.insert([{_id: 'e2e1', name: 'E2E Example Tribe 1'},
             {_id: 'e2e2', name: 'E2E Example Tribe 2'}], function () {
-            authorizeAllTribes(function () {
+            authorizeAllTribes(function (error) {
                 browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-                done();
+                done(error);
             });
         });
     });
@@ -56,7 +60,7 @@ xdescribe('The default tribes page', function () {
         });
     });
 
-    describe('when a tribe exists, on the tribe page', function () {
+    xdescribe('when a tribe exists, on the tribe page', function () {
         var expectedTribe;
         beforeEach(function (done) {
             browser.get(hostName);
@@ -95,7 +99,7 @@ xdescribe('The default tribes page', function () {
         });
     });
 
-    describe('after navigating to the new tribe page', function () {
+    xdescribe('after navigating to the new tribe page', function () {
         beforeEach(function () {
             browser.get(hostName);
             element(By.id('new-tribe-button')).click();
