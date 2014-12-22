@@ -4,8 +4,14 @@ var services = angular.module("coupling.services", []);
 services.service("Coupling", ['$http', function ($http) {
     var Coupling = this;
     var makeErrorHandler = function (url) {
-        return function (data, statusCode) {
-            alert("There was a problem loading " + url + " " + data + " Got status code: " + statusCode);
+        return function (data, statusCode, headers, config) {
+            alert("There was a problem loading " + url + "\r\n" +
+            "Data was: <" + data + ">\r\n" +
+            "Status code: " + statusCode + "\r\n");
+            console.info(data);
+            console.info(statusCode);
+            console.info(headers);
+            console.info(config);
         }
     };
 
