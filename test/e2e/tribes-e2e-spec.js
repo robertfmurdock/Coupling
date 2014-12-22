@@ -111,7 +111,7 @@ xdescribe('The default tribes page', function () {
     });
 });
 
-describe('The edit tribe page', function () {
+xdescribe('The edit tribe page', function () {
     var tribe = {_id: 'delete_me', name: 'Change Me'};
     beforeEach(function (done) {
         browser.ignoreSynchronization = true;
