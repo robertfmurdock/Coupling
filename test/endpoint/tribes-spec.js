@@ -7,7 +7,7 @@ var _ = require('underscore');
 
 var path = '/api/tribes';
 
-describe(path, function () {
+xdescribe(path, function () {
     var host = supertest('http://localhost:' + config.port);
     var Cookies;
 
