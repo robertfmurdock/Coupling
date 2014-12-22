@@ -6,7 +6,7 @@ var config = require("../../config");
 var hostName = 'http://localhost:' + config.port;
 var database = monk(config.tempMongoUrl);
 
-describe('The welcome page', function () {
+ddescribe('The welcome page', function () {
 
     it('will have a clickable enter button', function () {
         browser.ignoreSynchronization = false;
