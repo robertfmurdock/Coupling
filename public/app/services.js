@@ -5,9 +5,9 @@ services.service("Coupling", ['$http', function ($http) {
     var Coupling = this;
     var makeErrorHandler = function (url) {
         return function (data, statusCode, headers, config) {
-            alert("There was a problem loading " + url + "\r\n" +
-            "Data was: <" + data + ">\r\n" +
-            "Status code: " + statusCode + "\r\n");
+            alert("There was a problem loading " + url + "\n" +
+            "Data was: <" + data + ">\n" +
+            "Status code: " + statusCode);
             console.info(data);
             console.info(statusCode);
             console.info(headers);

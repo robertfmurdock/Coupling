@@ -49,7 +49,9 @@ describe('Service: ', function () {
                 var alertSpy = spyOn(window, 'alert');
                 httpBackend.flush();
                 expect(callCount).toBe(0);
-                expect(alertSpy).toHaveBeenCalledWith('There was a problem loading ' + url + ' ' + expectedData + ' Got status code: ' + statusCode);
+                expect(alertSpy).toHaveBeenCalledWith('There was a problem loading ' + url + '\n' +
+                'Data was: <' + expectedData + '>\n' +
+                'Status code: ' + statusCode);
             });
         });
 
