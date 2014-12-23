@@ -460,7 +460,7 @@ describe('The controller named ', function () {
                     var currentPairs = [
                         ['tom', 'jerry']
                     ];
-                    var history = [ currentPairs];
+                    var history = [currentPairs];
                     expect(Coupling.data.currentPairAssignments).not.toBe(currentPairs);
                     callback(null, history);
                     expect(Coupling.data.currentPairAssignments).toBe(currentPairs);
@@ -624,7 +624,7 @@ describe('The controller named ', function () {
 
                         beforeEach(function () {
                             window.confirm = jasmine.createSpy('confirm');
-                            scope.playerForm = { $dirty: true};
+                            scope.playerForm = {$dirty: true};
                             scope.original = {name: 'O.G.'};
                             scope.player = {name: "differentName"};
                         });
@@ -644,7 +644,7 @@ describe('The controller named ', function () {
                     });
                     it('it will not prompt the user to save if the player is unchanged', function () {
                         window.confirm = jasmine.createSpy('confirm');
-                        scope.playerForm = { $dirty: false};
+                        scope.playerForm = {$dirty: false};
                         scope.original = {name: 'O.G.'};
                         scope.player = {name: scope.original.name};
                         onLocationChange();
@@ -654,6 +654,42 @@ describe('The controller named ', function () {
                 });
             });
 
+            describe('PinListController', function () {
+
+                var routeParams;
+
+                function runPinListController() {
+                    inject(function ($controller) {
+                        $controller('PinListController', {
+                            $scope: scope,
+                            Coupling: Coupling,
+                            $routeParams: routeParams
+                        });
+                    });
+                }
+
+                it('puts the tribe\'s pins on the scope', function (done) {
+                    scope = {};
+                    Coupling = {
+                        promisePins: jasmine.createSpy()
+                    };
+                    routeParams = {tribeId: 'Somsosomsa'};
+                    var pins = [{name: 'pin1'}, {name: 'pin2'}, {name: 'pin2'}];
+                    var promise = new RSVP.Promise(function (resolve) {
+                        resolve(pins);
+                    });
+
+                    Coupling.promisePins.and.returnValue(promise);
+                    runPinListController();
+
+                    promise.then(function(){
+                        expect(Coupling.promisePins).toHaveBeenCalledWith(routeParams.tribeId);
+                        expect(scope.pins).toEqual(pins);
+                        done();
+
+                    }).catch(done);
+                });
+            });
         });
     });
 });

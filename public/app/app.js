@@ -9,6 +9,7 @@ app.config(['$routeProvider', function (routeProvider) {
     routeProvider.when('/new-tribe/', {templateUrl: '/partials/tribe/', controller: "NewTribeController"});
     routeProvider.when('/:tribeId/', {templateUrl: '/partials/tribe/', controller: "EditTribeController"});
     routeProvider.when('/:tribeId/history', {templateUrl: '/partials/history/', controller: "HistoryController"});
+    routeProvider.when('/:tribeId/pins', {templateUrl: '/partials/pin-list/', controller: 'PinListController'});
     routeProvider.when('/:tribeId/pairAssignments/current/', {
         templateUrl: '/partials/pairAssignments/',
         controller: "CurrentPairAssignmentsController"

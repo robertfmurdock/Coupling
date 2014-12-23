@@ -194,3 +194,10 @@ controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routePar
         }
     });
 }]);
+
+controllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
+    var promisePins = Coupling.promisePins($routeParams.tribeId);
+    promisePins.then(function (pins) {
+        $scope.pins = pins;
+    });
+}]);

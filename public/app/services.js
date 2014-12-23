@@ -4,7 +4,7 @@ var services = angular.module("coupling.services", []);
 services.service("Coupling", ['$http', function ($http) {
     var Coupling = this;
     var makeErrorHandler = function (url) {
-        return function (data, statusCode, headers, config) {
+        return function (data, statusCode) {
             alert("There was a problem loading " + url + "\n" +
             "Data was: <" + data + ">\n" +
             "Status code: " + statusCode);
@@ -112,6 +112,19 @@ services.service("Coupling", ['$http', function ($http) {
         post('/api/tribes', tribe, callback);
     };
 
+    this.promisePins = function (tribeId) {
+        var url = '/api/' + tribeId + '/pins';
+        var httpPromise = $http.get(url);
+        httpPromise.error(function(data, status){
+            var message = 'Communication error with server. URL: ' + url + '\n' +
+                'Data: <' + data + '>\n' +
+                'Status: ' + status;
+            alert(message);
+        });
+        return httpPromise.then(function(response){
+            return response.data;
+        });
+    };
     this.findPlayerById = function (id, callback) {
         requestPlayers(Coupling.data.selectedTribeId, function (players) {
             callback(_.findWhere(players, {_id: id}));

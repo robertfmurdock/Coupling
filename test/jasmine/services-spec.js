@@ -100,11 +100,39 @@ describe('Service: ', function () {
                 expect(callbackCallCount).toBe(1);
             });
 
-            xit('will report error and not callback on error', function () {
-                fail();
-            });
         });
 
+        describe('list all pins', function () {
+            var tribeId = 'scruff';
+            var url = '/api/' + tribeId + '/pins';
 
+            it('will list all pins for a tribe', function (done) {
+                var expectedPins = [{stuff: 'maguff'}, {stuff: 'mcduff'}];
+                httpBackend.whenGET(url).respond(200, expectedPins);
+
+                var pinsPromise = Coupling.promisePins(tribeId);
+                pinsPromise.then(function (pins) {
+                    expect(pins).toEqual(expectedPins);
+                    done();
+                }).catch(done);
+                httpBackend.flush();
+            });
+
+            it('shows error on failure', function (done) {
+                var statusCode = 404;
+                var expectedData = 'nonsense';
+                httpBackend.whenGET(url).respond(statusCode, expectedData);
+                var alertSpy = spyOn(window, 'alert');
+                Coupling.promisePins(tribeId).then(function () {
+                    done("This should not succeed.");
+                }).catch(function () {
+                    expect(alertSpy).toHaveBeenCalledWith('Communication error with server. URL: ' + url + '\n' +
+                    'Data: <' + expectedData + '>\n' +
+                    'Status: ' + statusCode);
+                    done();
+                });
+                httpBackend.flush();
+            });
+        });
     });
 });
