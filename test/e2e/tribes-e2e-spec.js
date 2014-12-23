@@ -31,7 +31,7 @@ function authorizeAllTribes(callback) {
     });
 }
 
-describe('The default tribes page', function () {
+xdescribe('The default tribes page', function () {
 
     beforeEach(function (done) {
         browser.ignoreSynchronization = true;
@@ -139,6 +139,5 @@ xdescribe('The edit tribe page', function () {
 
         expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
     });
-
 });
 
