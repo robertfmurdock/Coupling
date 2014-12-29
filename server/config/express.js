@@ -43,10 +43,12 @@ module.exports = function (app, userDataService) {
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({
-            url: config.mongoUrl
-        }, function () {
-            console.log('Finished initializing session storage.');
-        })
+            url: 'mongodb://' + config.mongoUrl
+        }
+        //    , function () {
+        //    console.log('Finished initializing session storage.');
+        //}
+        )
     }));
     app.use(passport.initialize());
     app.use(passport.session());
