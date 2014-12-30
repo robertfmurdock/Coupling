@@ -11,8 +11,12 @@ before_install:
   - node node_modules/protractor/bin/webdriver-manager update --standalone
   - npm install -g grunt-cli
 install: npm rebuild
+cache:
+  directories:
+  - node_modules
 services:
   - mongodb
+sudo: false
 matrix:
   fast_finish: true
   allow_failures:
