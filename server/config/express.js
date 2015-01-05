@@ -38,13 +38,12 @@ module.exports = function (app, userDataService) {
 
     app.use(express.static(path.join(__dirname, '../../public')));
     app.use(cookieParser());
-    console.log('mongodb://' + config.mongoUrl);
     app.use(session({
         secret: config.secret,
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({
-            url: 'mongodb://' + config.mongoUrl
+            url: config.mongoUrl
         })
     }));
     app.use(passport.initialize());

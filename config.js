@@ -6,7 +6,7 @@ var config = {
         return process.env.PORT || 3000;
     },
     get mongoUrl() {
-        return process.env.MONGOHQ_URL_MONGOURL || process.env.MONGOHQ_URL || "localhost/Coupling";
+        return process.env.MONGOHQ_URL_MONGOURL || process.env.MONGOHQ_URL || 'mongodb://' + "localhost/Coupling";
     },
     get tempMongoUrl() {
         return "localhost/CouplingTemp";
