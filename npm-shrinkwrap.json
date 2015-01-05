@@ -311,7 +311,7 @@
       "dependencies": {
         "accepts": {
           "version": "1.1.4",
-          "from": "accepts@>=1.1.4 <1.2.0",
+          "from": "accepts@1.1.4",
           "resolved": "https://registry.npmjs.org/accepts/-/accepts-1.1.4.tgz",
           "dependencies": {
             "mime-types": {
@@ -468,7 +468,7 @@
             },
             "on-finished": {
               "version": "2.1.1",
-              "from": "on-finished@>=2.1.1 <2.2.0",
+              "from": "on-finished@2.1.1",
               "resolved": "https://registry.npmjs.org/on-finished/-/on-finished-2.1.1.tgz",
               "dependencies": {
                 "ee-first": {
@@ -643,7 +643,7 @@
                 },
                 "mime-types": {
                   "version": "1.0.2",
-                  "from": "mime-types@>=1.0.1 <1.1.0",
+                  "from": "mime-types@1.0.2",
                   "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-1.0.2.tgz"
                 },
                 "node-uuid": {
@@ -674,14 +674,14 @@
                   }
                 },
                 "http-signature": {
-                  "version": "0.10.0",
-                  "from": "http-signature@>=0.10.0 <0.11.0",
-                  "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-0.10.0.tgz",
+                  "version": "0.10.1",
+                  "from": "http-signature@0.10.1",
+                  "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-0.10.1.tgz",
                   "dependencies": {
                     "assert-plus": {
-                      "version": "0.1.2",
-                      "from": "assert-plus@0.1.2",
-                      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.2.tgz"
+                      "version": "0.1.5",
+                      "from": "assert-plus@>=0.1.5 <0.2.0",
+                      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.5.tgz"
                     },
                     "asn1": {
                       "version": "0.1.11",
@@ -689,15 +689,15 @@
                       "resolved": "https://registry.npmjs.org/asn1/-/asn1-0.1.11.tgz"
                     },
                     "ctype": {
-                      "version": "0.5.2",
-                      "from": "ctype@0.5.2",
-                      "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.2.tgz"
+                      "version": "0.5.3",
+                      "from": "ctype@0.5.3",
+                      "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.3.tgz"
                     }
                   }
                 },
                 "oauth-sign": {
                   "version": "0.5.0",
-                  "from": "oauth-sign@>=0.5.0 <0.6.0",
+                  "from": "oauth-sign@0.5.0",
                   "resolved": "https://registry.npmjs.org/oauth-sign/-/oauth-sign-0.5.0.tgz"
                 },
                 "hawk": {
@@ -782,7 +782,7 @@
               "dependencies": {
                 "asap": {
                   "version": "1.0.0",
-                  "from": "asap@>=1.0.0 <1.1.0",
+                  "from": "asap@1.0.0",
                   "resolved": "https://registry.npmjs.org/asap/-/asap-1.0.0.tgz"
                 }
               }
@@ -1112,7 +1112,7 @@
                         },
                         "inherits": {
                           "version": "2.0.1",
-                          "from": "inherits@>=2.0.0 <3.0.0",
+                          "from": "inherits@>=2.0.1 <2.1.0",
                           "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
                         }
                       }
@@ -1191,14 +1191,14 @@
                   }
                 },
                 "http-signature": {
-                  "version": "0.10.0",
+                  "version": "0.10.1",
                   "from": "http-signature@>=0.10.0 <0.11.0",
-                  "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-0.10.0.tgz",
+                  "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-0.10.1.tgz",
                   "dependencies": {
                     "assert-plus": {
-                      "version": "0.1.2",
-                      "from": "assert-plus@0.1.2",
-                      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.2.tgz"
+                      "version": "0.1.5",
+                      "from": "assert-plus@>=0.1.5 <0.2.0",
+                      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.5.tgz"
                     },
                     "asn1": {
                       "version": "0.1.11",
@@ -1206,9 +1206,9 @@
                       "resolved": "https://registry.npmjs.org/asn1/-/asn1-0.1.11.tgz"
                     },
                     "ctype": {
-                      "version": "0.5.2",
-                      "from": "ctype@0.5.2",
-                      "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.2.tgz"
+                      "version": "0.5.3",
+                      "from": "ctype@0.5.3",
+                      "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.3.tgz"
                     }
                   }
                 },
@@ -1399,9 +1399,9 @@
       }
     },
     "express-session": {
-      "version": "1.9.3",
-      "from": "express-session@1.9.3",
-      "resolved": "https://registry.npmjs.org/express-session/-/express-session-1.9.3.tgz",
+      "version": "1.10.0",
+      "from": "express-session@1.10.0",
+      "resolved": "https://registry.npmjs.org/express-session/-/express-session-1.10.0.tgz",
       "dependencies": {
         "cookie": {
           "version": "0.1.2",
@@ -1420,7 +1420,7 @@
         },
         "debug": {
           "version": "2.1.1",
-          "from": "debug@2.1.1",
+          "from": "debug@*",
           "resolved": "https://registry.npmjs.org/debug/-/debug-2.1.1.tgz",
           "dependencies": {
             "ms": {
@@ -1452,7 +1452,7 @@
           "dependencies": {
             "mz": {
               "version": "1.2.1",
-              "from": "mz@1.2.1",
+              "from": "mz@>=1.0.0 <2.0.0",
               "resolved": "https://registry.npmjs.org/mz/-/mz-1.2.1.tgz",
               "dependencies": {
                 "native-or-bluebird": {
@@ -1474,7 +1474,7 @@
             },
             "base64-url": {
               "version": "1.1.0",
-              "from": "base64-url@1.1.0",
+              "from": "base64-url@>=1.0.0 <2.0.0",
               "resolved": "https://registry.npmjs.org/base64-url/-/base64-url-1.1.0.tgz"
             }
           }
@@ -2134,7 +2134,7 @@
                         },
                         "inherits": {
                           "version": "2.0.1",
-                          "from": "inherits@>=2.0.0 <3.0.0",
+                          "from": "inherits@>=2.0.1 <2.1.0",
                           "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
                         }
                       }
@@ -2213,14 +2213,14 @@
                   }
                 },
                 "http-signature": {
-                  "version": "0.10.0",
+                  "version": "0.10.1",
                   "from": "http-signature@>=0.10.0 <0.11.0",
-                  "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-0.10.0.tgz",
+                  "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-0.10.1.tgz",
                   "dependencies": {
                     "assert-plus": {
-                      "version": "0.1.2",
-                      "from": "assert-plus@0.1.2",
-                      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.2.tgz"
+                      "version": "0.1.5",
+                      "from": "assert-plus@>=0.1.5 <0.2.0",
+                      "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-0.1.5.tgz"
                     },
                     "asn1": {
                       "version": "0.1.11",
@@ -2228,9 +2228,9 @@
                       "resolved": "https://registry.npmjs.org/asn1/-/asn1-0.1.11.tgz"
                     },
                     "ctype": {
-                      "version": "0.5.2",
-                      "from": "ctype@0.5.2",
-                      "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.2.tgz"
+                      "version": "0.5.3",
+                      "from": "ctype@0.5.3",
+                      "resolved": "https://registry.npmjs.org/ctype/-/ctype-0.5.3.tgz"
                     }
                   }
                 },
