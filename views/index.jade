@@ -19,7 +19,10 @@ block content
             span(class="view-container")
                 div(ng-view class="view-frame" ng-class="{minimized : !playerRoster.minimized}")
         div(ng-cloak class="player-roster" ng-show="data.players != null")
-            div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players:
+            div(class="roster-header" ng-click="clickPlayerRosterHeader()") Players
+                i(class="pin-icon fa fa-fw fa-chevron-circle-down" ng-hide="playerRoster.minimized")
+                i(class="pin-icon fa fa-fw fa-chevron-circle-right" ng-show="playerRoster.minimized")
+            span(ng-hide="playerRoster.minimized") Green players will participate in the next spin! Tap a player to leave them out for now.
             span(ng-hide="playerRoster.minimized")
                 div(class="player-listing")
                     span(ng-repeat="player in data.players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")
