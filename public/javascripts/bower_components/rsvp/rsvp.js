@@ -3,12 +3,49 @@
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/tildeio/rsvp.js/master/LICENSE
- * @version   3.0.16
+ * @version   3.0.17
  */
 
 (function() {
     "use strict";
-    function $$rsvp$events$$indexOf(callbacks, callback) {
+    function lib$rsvp$utils$$objectOrFunction(x) {
+      return typeof x === 'function' || (typeof x === 'object' && x !== null);
+    }
+
+    function lib$rsvp$utils$$isFunction(x) {
+      return typeof x === 'function';
+    }
+
+    function lib$rsvp$utils$$isMaybeThenable(x) {
+      return typeof x === 'object' && x !== null;
+    }
+
+    var lib$rsvp$utils$$_isArray;
+    if (!Array.isArray) {
+      lib$rsvp$utils$$_isArray = function (x) {
+        return Object.prototype.toString.call(x) === '[object Array]';
+      };
+    } else {
+      lib$rsvp$utils$$_isArray = Array.isArray;
+    }
+
+    var lib$rsvp$utils$$isArray = lib$rsvp$utils$$_isArray;
+
+    var lib$rsvp$utils$$now = Date.now || function() { return new Date().getTime(); };
+
+    function lib$rsvp$utils$$F() { }
+
+    var lib$rsvp$utils$$o_create = (Object.create || function (o) {
+      if (arguments.length > 1) {
+        throw new Error('Second argument not supported');
+      }
+      if (typeof o !== 'object') {
+        throw new TypeError('Argument must be an object');
+      }
+      lib$rsvp$utils$$F.prototype = o;
+      return new lib$rsvp$utils$$F();
+    });
+    function lib$rsvp$events$$indexOf(callbacks, callback) {
       for (var i=0, l=callbacks.length; i<l; i++) {
         if (callbacks[i] === callback) { return i; }
       }
@@ -16,7 +53,7 @@
       return -1;
     }
 
-    function $$rsvp$events$$callbacksFor(object) {
+    function lib$rsvp$events$$callbacksFor(object) {
       var callbacks = object._promiseCallbacks;
 
       if (!callbacks) {
@@ -26,7 +63,7 @@
       return callbacks;
     }
 
-    var $$rsvp$events$$default = {
+    var lib$rsvp$events$$default = {
 
       /**
         `RSVP.EventTarget.mixin` extends an object with EventTarget methods. For
@@ -96,7 +133,7 @@
         @param {Function} callback function to be called when the event is triggered.
       */
       'on': function(eventName, callback) {
-        var allCallbacks = $$rsvp$events$$callbacksFor(this), callbacks;
+        var allCallbacks = lib$rsvp$events$$callbacksFor(this), callbacks;
 
         callbacks = allCallbacks[eventName];
 
@@ -104,7 +141,7 @@
           callbacks = allCallbacks[eventName] = [];
         }
 
-        if ($$rsvp$events$$indexOf(callbacks, callback) === -1) {
+        if (lib$rsvp$events$$indexOf(callbacks, callback) === -1) {
           callbacks.push(callback);
         }
       },
@@ -149,7 +186,7 @@
         queue.
       */
       'off': function(eventName, callback) {
-        var allCallbacks = $$rsvp$events$$callbacksFor(this), callbacks, index;
+        var allCallbacks = lib$rsvp$events$$callbacksFor(this), callbacks, index;
 
         if (!callback) {
           allCallbacks[eventName] = [];
@@ -158,7 +195,7 @@
 
         callbacks = allCallbacks[eventName];
 
-        index = $$rsvp$events$$indexOf(callbacks, callback);
+        index = lib$rsvp$events$$indexOf(callbacks, callback);
 
         if (index !== -1) { callbacks.splice(index, 1); }
       },
@@ -194,7 +231,7 @@
         the given `eventName`
       */
       'trigger': function(eventName, options) {
-        var allCallbacks = $$rsvp$events$$callbacksFor(this), callbacks, callback;
+        var allCallbacks = lib$rsvp$events$$callbacksFor(this), callbacks, callback;
 
         if (callbacks = allCallbacks[eventName]) {
           // Don't cache the callbacks.length since it may grow
@@ -207,73 +244,35 @@
       }
     };
 
-    var $$rsvp$config$$config = {
+    var lib$rsvp$config$$config = {
       instrument: false
     };
 
-    $$rsvp$events$$default['mixin']($$rsvp$config$$config);
+    lib$rsvp$events$$default['mixin'](lib$rsvp$config$$config);
 
-    function $$rsvp$config$$configure(name, value) {
+    function lib$rsvp$config$$configure(name, value) {
       if (name === 'onerror') {
         // handle for legacy users that expect the actual
         // error to be passed to their function added via
         // `RSVP.configure('onerror', someFunctionHere);`
-        $$rsvp$config$$config['on']('error', value);
+        lib$rsvp$config$$config['on']('error', value);
         return;
       }
 
       if (arguments.length === 2) {
-        $$rsvp$config$$config[name] = value;
+        lib$rsvp$config$$config[name] = value;
       } else {
-        return $$rsvp$config$$config[name];
+        return lib$rsvp$config$$config[name];
       }
     }
 
-    function $$utils$$objectOrFunction(x) {
-      return typeof x === 'function' || (typeof x === 'object' && x !== null);
-    }
+    var lib$rsvp$instrument$$queue = [];
 
-    function $$utils$$isFunction(x) {
-      return typeof x === 'function';
-    }
-
-    function $$utils$$isMaybeThenable(x) {
-      return typeof x === 'object' && x !== null;
-    }
-
-    var $$utils$$_isArray;
-    if (!Array.isArray) {
-      $$utils$$_isArray = function (x) {
-        return Object.prototype.toString.call(x) === '[object Array]';
-      };
-    } else {
-      $$utils$$_isArray = Array.isArray;
-    }
-
-    var $$utils$$isArray = $$utils$$_isArray;
-
-    var $$utils$$now = Date.now || function() { return new Date().getTime(); };
-
-    function $$utils$$F() { }
-
-    var $$utils$$o_create = (Object.create || function (o) {
-      if (arguments.length > 1) {
-        throw new Error('Second argument not supported');
-      }
-      if (typeof o !== 'object') {
-        throw new TypeError('Argument must be an object');
-      }
-      $$utils$$F.prototype = o;
-      return new $$utils$$F();
-    });
-
-    var $$instrument$$queue = [];
-
-    function $$instrument$$scheduleFlush() {
+    function lib$rsvp$instrument$$scheduleFlush() {
       setTimeout(function() {
         var entry;
-        for (var i = 0; i < $$instrument$$queue.length; i++) {
-          entry = $$instrument$$queue[i];
+        for (var i = 0; i < lib$rsvp$instrument$$queue.length; i++) {
+          entry = lib$rsvp$instrument$$queue[i];
 
           var payload = entry.payload;
 
@@ -283,14 +282,14 @@
             payload.stack = payload.error.stack;
           }
 
-          $$rsvp$config$$config['trigger'](entry.name, entry.payload);
+          lib$rsvp$config$$config['trigger'](entry.name, entry.payload);
         }
-        $$instrument$$queue.length = 0;
+        lib$rsvp$instrument$$queue.length = 0;
       }, 50);
     }
 
-    function $$instrument$$instrument(eventName, promise, child) {
-      if (1 === $$instrument$$queue.push({
+    function lib$rsvp$instrument$$instrument(eventName, promise, child) {
+      if (1 === lib$rsvp$instrument$$queue.push({
           name: eventName,
           payload: {
             key: promise._guidKey,
@@ -299,36 +298,36 @@
             detail: promise._result,
             childId: child && child._id,
             label: promise._label,
-            timeStamp: $$utils$$now(),
-            error: $$rsvp$config$$config["instrument-with-stack"] ? new Error(promise._label) : null
+            timeStamp: lib$rsvp$utils$$now(),
+            error: lib$rsvp$config$$config["instrument-with-stack"] ? new Error(promise._label) : null
           }})) {
-            $$instrument$$scheduleFlush();
+            lib$rsvp$instrument$$scheduleFlush();
           }
       }
-    var $$instrument$$default = $$instrument$$instrument;
+    var lib$rsvp$instrument$$default = lib$rsvp$instrument$$instrument;
 
-    function  $$$internal$$withOwnPromise() {
+    function  lib$rsvp$$internal$$withOwnPromise() {
       return new TypeError('A promises callback cannot return that same promise.');
     }
 
-    function $$$internal$$noop() {}
+    function lib$rsvp$$internal$$noop() {}
 
-    var $$$internal$$PENDING   = void 0;
-    var $$$internal$$FULFILLED = 1;
-    var $$$internal$$REJECTED  = 2;
+    var lib$rsvp$$internal$$PENDING   = void 0;
+    var lib$rsvp$$internal$$FULFILLED = 1;
+    var lib$rsvp$$internal$$REJECTED  = 2;
 
-    var $$$internal$$GET_THEN_ERROR = new $$$internal$$ErrorObject();
+    var lib$rsvp$$internal$$GET_THEN_ERROR = new lib$rsvp$$internal$$ErrorObject();
 
-    function $$$internal$$getThen(promise) {
+    function lib$rsvp$$internal$$getThen(promise) {
       try {
         return promise.then;
       } catch(error) {
-        $$$internal$$GET_THEN_ERROR.error = error;
-        return $$$internal$$GET_THEN_ERROR;
+        lib$rsvp$$internal$$GET_THEN_ERROR.error = error;
+        return lib$rsvp$$internal$$GET_THEN_ERROR;
       }
     }
 
-    function $$$internal$$tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+    function lib$rsvp$$internal$$tryThen(then, value, fulfillmentHandler, rejectionHandler) {
       try {
         then.call(value, fulfillmentHandler, rejectionHandler);
       } catch(e) {
@@ -336,129 +335,129 @@
       }
     }
 
-    function $$$internal$$handleForeignThenable(promise, thenable, then) {
-      $$rsvp$config$$config.async(function(promise) {
+    function lib$rsvp$$internal$$handleForeignThenable(promise, thenable, then) {
+      lib$rsvp$config$$config.async(function(promise) {
         var sealed = false;
-        var error = $$$internal$$tryThen(then, thenable, function(value) {
+        var error = lib$rsvp$$internal$$tryThen(then, thenable, function(value) {
           if (sealed) { return; }
           sealed = true;
           if (thenable !== value) {
-            $$$internal$$resolve(promise, value);
+            lib$rsvp$$internal$$resolve(promise, value);
           } else {
-            $$$internal$$fulfill(promise, value);
+            lib$rsvp$$internal$$fulfill(promise, value);
           }
         }, function(reason) {
           if (sealed) { return; }
           sealed = true;
 
-          $$$internal$$reject(promise, reason);
+          lib$rsvp$$internal$$reject(promise, reason);
         }, 'Settle: ' + (promise._label || ' unknown promise'));
 
         if (!sealed && error) {
           sealed = true;
-          $$$internal$$reject(promise, error);
+          lib$rsvp$$internal$$reject(promise, error);
         }
       }, promise);
     }
 
-    function $$$internal$$handleOwnThenable(promise, thenable) {
-      if (thenable._state === $$$internal$$FULFILLED) {
-        $$$internal$$fulfill(promise, thenable._result);
-      } else if (thenable._state === $$$internal$$REJECTED) {
+    function lib$rsvp$$internal$$handleOwnThenable(promise, thenable) {
+      if (thenable._state === lib$rsvp$$internal$$FULFILLED) {
+        lib$rsvp$$internal$$fulfill(promise, thenable._result);
+      } else if (thenable._state === lib$rsvp$$internal$$REJECTED) {
         thenable._onError = null;
-        $$$internal$$reject(promise, thenable._result);
+        lib$rsvp$$internal$$reject(promise, thenable._result);
       } else {
-        $$$internal$$subscribe(thenable, undefined, function(value) {
+        lib$rsvp$$internal$$subscribe(thenable, undefined, function(value) {
           if (thenable !== value) {
-            $$$internal$$resolve(promise, value);
+            lib$rsvp$$internal$$resolve(promise, value);
           } else {
-            $$$internal$$fulfill(promise, value);
+            lib$rsvp$$internal$$fulfill(promise, value);
           }
         }, function(reason) {
-          $$$internal$$reject(promise, reason);
+          lib$rsvp$$internal$$reject(promise, reason);
         });
       }
     }
 
-    function $$$internal$$handleMaybeThenable(promise, maybeThenable) {
+    function lib$rsvp$$internal$$handleMaybeThenable(promise, maybeThenable) {
       if (maybeThenable.constructor === promise.constructor) {
-        $$$internal$$handleOwnThenable(promise, maybeThenable);
+        lib$rsvp$$internal$$handleOwnThenable(promise, maybeThenable);
       } else {
-        var then = $$$internal$$getThen(maybeThenable);
+        var then = lib$rsvp$$internal$$getThen(maybeThenable);
 
-        if (then === $$$internal$$GET_THEN_ERROR) {
-          $$$internal$$reject(promise, $$$internal$$GET_THEN_ERROR.error);
+        if (then === lib$rsvp$$internal$$GET_THEN_ERROR) {
+          lib$rsvp$$internal$$reject(promise, lib$rsvp$$internal$$GET_THEN_ERROR.error);
         } else if (then === undefined) {
-          $$$internal$$fulfill(promise, maybeThenable);
-        } else if ($$utils$$isFunction(then)) {
-          $$$internal$$handleForeignThenable(promise, maybeThenable, then);
+          lib$rsvp$$internal$$fulfill(promise, maybeThenable);
+        } else if (lib$rsvp$utils$$isFunction(then)) {
+          lib$rsvp$$internal$$handleForeignThenable(promise, maybeThenable, then);
         } else {
-          $$$internal$$fulfill(promise, maybeThenable);
+          lib$rsvp$$internal$$fulfill(promise, maybeThenable);
         }
       }
     }
 
-    function $$$internal$$resolve(promise, value) {
+    function lib$rsvp$$internal$$resolve(promise, value) {
       if (promise === value) {
-        $$$internal$$fulfill(promise, value);
-      } else if ($$utils$$objectOrFunction(value)) {
-        $$$internal$$handleMaybeThenable(promise, value);
+        lib$rsvp$$internal$$fulfill(promise, value);
+      } else if (lib$rsvp$utils$$objectOrFunction(value)) {
+        lib$rsvp$$internal$$handleMaybeThenable(promise, value);
       } else {
-        $$$internal$$fulfill(promise, value);
+        lib$rsvp$$internal$$fulfill(promise, value);
       }
     }
 
-    function $$$internal$$publishRejection(promise) {
+    function lib$rsvp$$internal$$publishRejection(promise) {
       if (promise._onError) {
         promise._onError(promise._result);
       }
 
-      $$$internal$$publish(promise);
+      lib$rsvp$$internal$$publish(promise);
     }
 
-    function $$$internal$$fulfill(promise, value) {
-      if (promise._state !== $$$internal$$PENDING) { return; }
+    function lib$rsvp$$internal$$fulfill(promise, value) {
+      if (promise._state !== lib$rsvp$$internal$$PENDING) { return; }
 
       promise._result = value;
-      promise._state = $$$internal$$FULFILLED;
+      promise._state = lib$rsvp$$internal$$FULFILLED;
 
       if (promise._subscribers.length === 0) {
-        if ($$rsvp$config$$config.instrument) {
-          $$instrument$$default('fulfilled', promise);
+        if (lib$rsvp$config$$config.instrument) {
+          lib$rsvp$instrument$$default('fulfilled', promise);
         }
       } else {
-        $$rsvp$config$$config.async($$$internal$$publish, promise);
+        lib$rsvp$config$$config.async(lib$rsvp$$internal$$publish, promise);
       }
     }
 
-    function $$$internal$$reject(promise, reason) {
-      if (promise._state !== $$$internal$$PENDING) { return; }
-      promise._state = $$$internal$$REJECTED;
+    function lib$rsvp$$internal$$reject(promise, reason) {
+      if (promise._state !== lib$rsvp$$internal$$PENDING) { return; }
+      promise._state = lib$rsvp$$internal$$REJECTED;
       promise._result = reason;
-      $$rsvp$config$$config.async($$$internal$$publishRejection, promise);
+      lib$rsvp$config$$config.async(lib$rsvp$$internal$$publishRejection, promise);
     }
 
-    function $$$internal$$subscribe(parent, child, onFulfillment, onRejection) {
+    function lib$rsvp$$internal$$subscribe(parent, child, onFulfillment, onRejection) {
       var subscribers = parent._subscribers;
       var length = subscribers.length;
 
       parent._onError = null;
 
       subscribers[length] = child;
-      subscribers[length + $$$internal$$FULFILLED] = onFulfillment;
-      subscribers[length + $$$internal$$REJECTED]  = onRejection;
+      subscribers[length + lib$rsvp$$internal$$FULFILLED] = onFulfillment;
+      subscribers[length + lib$rsvp$$internal$$REJECTED]  = onRejection;
 
       if (length === 0 && parent._state) {
-        $$rsvp$config$$config.async($$$internal$$publish, parent);
+        lib$rsvp$config$$config.async(lib$rsvp$$internal$$publish, parent);
       }
     }
 
-    function $$$internal$$publish(promise) {
+    function lib$rsvp$$internal$$publish(promise) {
       var subscribers = promise._subscribers;
       var settled = promise._state;
 
-      if ($$rsvp$config$$config.instrument) {
-        $$instrument$$default(settled === $$$internal$$FULFILLED ? 'fulfilled' : 'rejected', promise);
+      if (lib$rsvp$config$$config.instrument) {
+        lib$rsvp$instrument$$default(settled === lib$rsvp$$internal$$FULFILLED ? 'fulfilled' : 'rejected', promise);
       }
 
       if (subscribers.length === 0) { return; }
@@ -470,7 +469,7 @@
         callback = subscribers[i + settled];
 
         if (child) {
-          $$$internal$$invokeCallback(settled, child, callback, detail);
+          lib$rsvp$$internal$$invokeCallback(settled, child, callback, detail);
         } else {
           callback(detail);
         }
@@ -479,29 +478,29 @@
       promise._subscribers.length = 0;
     }
 
-    function $$$internal$$ErrorObject() {
+    function lib$rsvp$$internal$$ErrorObject() {
       this.error = null;
     }
 
-    var $$$internal$$TRY_CATCH_ERROR = new $$$internal$$ErrorObject();
+    var lib$rsvp$$internal$$TRY_CATCH_ERROR = new lib$rsvp$$internal$$ErrorObject();
 
-    function $$$internal$$tryCatch(callback, detail) {
+    function lib$rsvp$$internal$$tryCatch(callback, detail) {
       try {
         return callback(detail);
       } catch(e) {
-        $$$internal$$TRY_CATCH_ERROR.error = e;
-        return $$$internal$$TRY_CATCH_ERROR;
+        lib$rsvp$$internal$$TRY_CATCH_ERROR.error = e;
+        return lib$rsvp$$internal$$TRY_CATCH_ERROR;
       }
     }
 
-    function $$$internal$$invokeCallback(settled, promise, callback, detail) {
-      var hasCallback = $$utils$$isFunction(callback),
+    function lib$rsvp$$internal$$invokeCallback(settled, promise, callback, detail) {
+      var hasCallback = lib$rsvp$utils$$isFunction(callback),
           value, error, succeeded, failed;
 
       if (hasCallback) {
-        value = $$$internal$$tryCatch(callback, detail);
+        value = lib$rsvp$$internal$$tryCatch(callback, detail);
 
-        if (value === $$$internal$$TRY_CATCH_ERROR) {
+        if (value === lib$rsvp$$internal$$TRY_CATCH_ERROR) {
           failed = true;
           error = value.error;
           value = null;
@@ -510,7 +509,7 @@
         }
 
         if (promise === value) {
-          $$$internal$$reject(promise, $$$internal$$withOwnPromise());
+          lib$rsvp$$internal$$reject(promise, lib$rsvp$$internal$$withOwnPromise());
           return;
         }
 
@@ -519,38 +518,38 @@
         succeeded = true;
       }
 
-      if (promise._state !== $$$internal$$PENDING) {
+      if (promise._state !== lib$rsvp$$internal$$PENDING) {
         // noop
       } else if (hasCallback && succeeded) {
-        $$$internal$$resolve(promise, value);
+        lib$rsvp$$internal$$resolve(promise, value);
       } else if (failed) {
-        $$$internal$$reject(promise, error);
-      } else if (settled === $$$internal$$FULFILLED) {
-        $$$internal$$fulfill(promise, value);
-      } else if (settled === $$$internal$$REJECTED) {
-        $$$internal$$reject(promise, value);
+        lib$rsvp$$internal$$reject(promise, error);
+      } else if (settled === lib$rsvp$$internal$$FULFILLED) {
+        lib$rsvp$$internal$$fulfill(promise, value);
+      } else if (settled === lib$rsvp$$internal$$REJECTED) {
+        lib$rsvp$$internal$$reject(promise, value);
       }
     }
 
-    function $$$internal$$initializePromise(promise, resolver) {
+    function lib$rsvp$$internal$$initializePromise(promise, resolver) {
       var resolved = false;
       try {
         resolver(function resolvePromise(value){
           if (resolved) { return; }
           resolved = true;
-          $$$internal$$resolve(promise, value);
+          lib$rsvp$$internal$$resolve(promise, value);
         }, function rejectPromise(reason) {
           if (resolved) { return; }
           resolved = true;
-          $$$internal$$reject(promise, reason);
+          lib$rsvp$$internal$$reject(promise, reason);
         });
       } catch(e) {
-        $$$internal$$reject(promise, e);
+        lib$rsvp$$internal$$reject(promise, e);
       }
     }
 
-    function $$enumerator$$makeSettledResult(state, position, value) {
-      if (state === $$$internal$$FULFILLED) {
+    function lib$rsvp$enumerator$$makeSettledResult(state, position, value) {
+      if (state === lib$rsvp$$internal$$FULFILLED) {
         return {
           state: 'fulfilled',
           value: value
@@ -563,9 +562,9 @@
       }
     }
 
-    function $$enumerator$$Enumerator(Constructor, input, abortOnReject, label) {
+    function lib$rsvp$enumerator$$Enumerator(Constructor, input, abortOnReject, label) {
       this._instanceConstructor = Constructor;
-      this.promise = new Constructor($$$internal$$noop, label);
+      this.promise = new Constructor(lib$rsvp$$internal$$noop, label);
       this._abortOnReject = abortOnReject;
 
       if (this._validateInput(input)) {
@@ -576,47 +575,47 @@
         this._init();
 
         if (this.length === 0) {
-          $$$internal$$fulfill(this.promise, this._result);
+          lib$rsvp$$internal$$fulfill(this.promise, this._result);
         } else {
           this.length = this.length || 0;
           this._enumerate();
           if (this._remaining === 0) {
-            $$$internal$$fulfill(this.promise, this._result);
+            lib$rsvp$$internal$$fulfill(this.promise, this._result);
           }
         }
       } else {
-        $$$internal$$reject(this.promise, this._validationError());
+        lib$rsvp$$internal$$reject(this.promise, this._validationError());
       }
     }
 
-    var $$enumerator$$default = $$enumerator$$Enumerator;
+    var lib$rsvp$enumerator$$default = lib$rsvp$enumerator$$Enumerator;
 
-    $$enumerator$$Enumerator.prototype._validateInput = function(input) {
-      return $$utils$$isArray(input);
+    lib$rsvp$enumerator$$Enumerator.prototype._validateInput = function(input) {
+      return lib$rsvp$utils$$isArray(input);
     };
 
-    $$enumerator$$Enumerator.prototype._validationError = function() {
+    lib$rsvp$enumerator$$Enumerator.prototype._validationError = function() {
       return new Error('Array Methods must be provided an Array');
     };
 
-    $$enumerator$$Enumerator.prototype._init = function() {
+    lib$rsvp$enumerator$$Enumerator.prototype._init = function() {
       this._result = new Array(this.length);
     };
 
-    $$enumerator$$Enumerator.prototype._enumerate = function() {
+    lib$rsvp$enumerator$$Enumerator.prototype._enumerate = function() {
       var length  = this.length;
       var promise = this.promise;
       var input   = this._input;
 
-      for (var i = 0; promise._state === $$$internal$$PENDING && i < length; i++) {
+      for (var i = 0; promise._state === lib$rsvp$$internal$$PENDING && i < length; i++) {
         this._eachEntry(input[i], i);
       }
     };
 
-    $$enumerator$$Enumerator.prototype._eachEntry = function(entry, i) {
+    lib$rsvp$enumerator$$Enumerator.prototype._eachEntry = function(entry, i) {
       var c = this._instanceConstructor;
-      if ($$utils$$isMaybeThenable(entry)) {
-        if (entry.constructor === c && entry._state !== $$$internal$$PENDING) {
+      if (lib$rsvp$utils$$isMaybeThenable(entry)) {
+        if (entry.constructor === c && entry._state !== lib$rsvp$$internal$$PENDING) {
           entry._onError = null;
           this._settledAt(entry._state, i, entry._result);
         } else {
@@ -624,74 +623,74 @@
         }
       } else {
         this._remaining--;
-        this._result[i] = this._makeResult($$$internal$$FULFILLED, i, entry);
+        this._result[i] = this._makeResult(lib$rsvp$$internal$$FULFILLED, i, entry);
       }
     };
 
-    $$enumerator$$Enumerator.prototype._settledAt = function(state, i, value) {
+    lib$rsvp$enumerator$$Enumerator.prototype._settledAt = function(state, i, value) {
       var promise = this.promise;
 
-      if (promise._state === $$$internal$$PENDING) {
+      if (promise._state === lib$rsvp$$internal$$PENDING) {
         this._remaining--;
 
-        if (this._abortOnReject && state === $$$internal$$REJECTED) {
-          $$$internal$$reject(promise, value);
+        if (this._abortOnReject && state === lib$rsvp$$internal$$REJECTED) {
+          lib$rsvp$$internal$$reject(promise, value);
         } else {
           this._result[i] = this._makeResult(state, i, value);
         }
       }
 
       if (this._remaining === 0) {
-        $$$internal$$fulfill(promise, this._result);
+        lib$rsvp$$internal$$fulfill(promise, this._result);
       }
     };
 
-    $$enumerator$$Enumerator.prototype._makeResult = function(state, i, value) {
+    lib$rsvp$enumerator$$Enumerator.prototype._makeResult = function(state, i, value) {
       return value;
     };
 
-    $$enumerator$$Enumerator.prototype._willSettleAt = function(promise, i) {
+    lib$rsvp$enumerator$$Enumerator.prototype._willSettleAt = function(promise, i) {
       var enumerator = this;
 
-      $$$internal$$subscribe(promise, undefined, function(value) {
-        enumerator._settledAt($$$internal$$FULFILLED, i, value);
+      lib$rsvp$$internal$$subscribe(promise, undefined, function(value) {
+        enumerator._settledAt(lib$rsvp$$internal$$FULFILLED, i, value);
       }, function(reason) {
-        enumerator._settledAt($$$internal$$REJECTED, i, reason);
+        enumerator._settledAt(lib$rsvp$$internal$$REJECTED, i, reason);
       });
     };
-    function $$promise$all$$all(entries, label) {
-      return new $$enumerator$$default(this, entries, true /* abort on reject */, label).promise;
+    function lib$rsvp$promise$all$$all(entries, label) {
+      return new lib$rsvp$enumerator$$default(this, entries, true /* abort on reject */, label).promise;
     }
-    var $$promise$all$$default = $$promise$all$$all;
-    function $$promise$race$$race(entries, label) {
+    var lib$rsvp$promise$all$$default = lib$rsvp$promise$all$$all;
+    function lib$rsvp$promise$race$$race(entries, label) {
       /*jshint validthis:true */
       var Constructor = this;
 
-      var promise = new Constructor($$$internal$$noop, label);
+      var promise = new Constructor(lib$rsvp$$internal$$noop, label);
 
-      if (!$$utils$$isArray(entries)) {
-        $$$internal$$reject(promise, new TypeError('You must pass an array to race.'));
+      if (!lib$rsvp$utils$$isArray(entries)) {
+        lib$rsvp$$internal$$reject(promise, new TypeError('You must pass an array to race.'));
         return promise;
       }
 
       var length = entries.length;
 
       function onFulfillment(value) {
-        $$$internal$$resolve(promise, value);
+        lib$rsvp$$internal$$resolve(promise, value);
       }
 
       function onRejection(reason) {
-        $$$internal$$reject(promise, reason);
+        lib$rsvp$$internal$$reject(promise, reason);
       }
 
-      for (var i = 0; promise._state === $$$internal$$PENDING && i < length; i++) {
-        $$$internal$$subscribe(Constructor.resolve(entries[i]), undefined, onFulfillment, onRejection);
+      for (var i = 0; promise._state === lib$rsvp$$internal$$PENDING && i < length; i++) {
+        lib$rsvp$$internal$$subscribe(Constructor.resolve(entries[i]), undefined, onFulfillment, onRejection);
       }
 
       return promise;
     }
-    var $$promise$race$$default = $$promise$race$$race;
-    function $$promise$resolve$$resolve(object, label) {
+    var lib$rsvp$promise$race$$default = lib$rsvp$promise$race$$race;
+    function lib$rsvp$promise$resolve$$resolve(object, label) {
       /*jshint validthis:true */
       var Constructor = this;
 
@@ -699,28 +698,28 @@
         return object;
       }
 
-      var promise = new Constructor($$$internal$$noop, label);
-      $$$internal$$resolve(promise, object);
+      var promise = new Constructor(lib$rsvp$$internal$$noop, label);
+      lib$rsvp$$internal$$resolve(promise, object);
       return promise;
     }
-    var $$promise$resolve$$default = $$promise$resolve$$resolve;
-    function $$promise$reject$$reject(reason, label) {
+    var lib$rsvp$promise$resolve$$default = lib$rsvp$promise$resolve$$resolve;
+    function lib$rsvp$promise$reject$$reject(reason, label) {
       /*jshint validthis:true */
       var Constructor = this;
-      var promise = new Constructor($$$internal$$noop, label);
-      $$$internal$$reject(promise, reason);
+      var promise = new Constructor(lib$rsvp$$internal$$noop, label);
+      lib$rsvp$$internal$$reject(promise, reason);
       return promise;
     }
-    var $$promise$reject$$default = $$promise$reject$$reject;
+    var lib$rsvp$promise$reject$$default = lib$rsvp$promise$reject$$reject;
 
-    var $$rsvp$promise$$guidKey = 'rsvp_' + $$utils$$now() + '-';
-    var $$rsvp$promise$$counter = 0;
+    var lib$rsvp$promise$$guidKey = 'rsvp_' + lib$rsvp$utils$$now() + '-';
+    var lib$rsvp$promise$$counter = 0;
 
-    function $$rsvp$promise$$needsResolver() {
+    function lib$rsvp$promise$$needsResolver() {
       throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
     }
 
-    function $$rsvp$promise$$needsNew() {
+    function lib$rsvp$promise$$needsNew() {
       throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
     }
 
@@ -828,49 +827,49 @@
       Useful for tooling.
       @constructor
     */
-    function $$rsvp$promise$$Promise(resolver, label) {
-      this._id = $$rsvp$promise$$counter++;
+    function lib$rsvp$promise$$Promise(resolver, label) {
+      this._id = lib$rsvp$promise$$counter++;
       this._label = label;
       this._state = undefined;
       this._result = undefined;
       this._subscribers = [];
 
-      if ($$rsvp$config$$config.instrument) {
-        $$instrument$$default('created', this);
+      if (lib$rsvp$config$$config.instrument) {
+        lib$rsvp$instrument$$default('created', this);
       }
 
-      if ($$$internal$$noop !== resolver) {
-        if (!$$utils$$isFunction(resolver)) {
-          $$rsvp$promise$$needsResolver();
+      if (lib$rsvp$$internal$$noop !== resolver) {
+        if (!lib$rsvp$utils$$isFunction(resolver)) {
+          lib$rsvp$promise$$needsResolver();
         }
 
-        if (!(this instanceof $$rsvp$promise$$Promise)) {
-          $$rsvp$promise$$needsNew();
+        if (!(this instanceof lib$rsvp$promise$$Promise)) {
+          lib$rsvp$promise$$needsNew();
         }
 
-        $$$internal$$initializePromise(this, resolver);
+        lib$rsvp$$internal$$initializePromise(this, resolver);
       }
     }
 
-    var $$rsvp$promise$$default = $$rsvp$promise$$Promise;
+    var lib$rsvp$promise$$default = lib$rsvp$promise$$Promise;
 
     // deprecated
-    $$rsvp$promise$$Promise.cast = $$promise$resolve$$default;
-    $$rsvp$promise$$Promise.all = $$promise$all$$default;
-    $$rsvp$promise$$Promise.race = $$promise$race$$default;
-    $$rsvp$promise$$Promise.resolve = $$promise$resolve$$default;
-    $$rsvp$promise$$Promise.reject = $$promise$reject$$default;
+    lib$rsvp$promise$$Promise.cast = lib$rsvp$promise$resolve$$default;
+    lib$rsvp$promise$$Promise.all = lib$rsvp$promise$all$$default;
+    lib$rsvp$promise$$Promise.race = lib$rsvp$promise$race$$default;
+    lib$rsvp$promise$$Promise.resolve = lib$rsvp$promise$resolve$$default;
+    lib$rsvp$promise$$Promise.reject = lib$rsvp$promise$reject$$default;
 
-    $$rsvp$promise$$Promise.prototype = {
-      constructor: $$rsvp$promise$$Promise,
+    lib$rsvp$promise$$Promise.prototype = {
+      constructor: lib$rsvp$promise$$Promise,
 
-      _guidKey: $$rsvp$promise$$guidKey,
+      _guidKey: lib$rsvp$promise$$guidKey,
 
       _onError: function (reason) {
-        $$rsvp$config$$config.async(function(promise) {
+        lib$rsvp$config$$config.async(function(promise) {
           setTimeout(function() {
             if (promise._onError) {
-              $$rsvp$config$$config['trigger']('error', reason);
+              lib$rsvp$config$$config['trigger']('error', reason);
             }
           }, 0);
         }, this);
@@ -1074,29 +1073,29 @@
         var parent = this;
         var state = parent._state;
 
-        if (state === $$$internal$$FULFILLED && !onFulfillment || state === $$$internal$$REJECTED && !onRejection) {
-          if ($$rsvp$config$$config.instrument) {
-            $$instrument$$default('chained', this, this);
+        if (state === lib$rsvp$$internal$$FULFILLED && !onFulfillment || state === lib$rsvp$$internal$$REJECTED && !onRejection) {
+          if (lib$rsvp$config$$config.instrument) {
+            lib$rsvp$instrument$$default('chained', this, this);
           }
           return this;
         }
 
         parent._onError = null;
 
-        var child = new this.constructor($$$internal$$noop, label);
+        var child = new this.constructor(lib$rsvp$$internal$$noop, label);
         var result = parent._result;
 
-        if ($$rsvp$config$$config.instrument) {
-          $$instrument$$default('chained', parent, child);
+        if (lib$rsvp$config$$config.instrument) {
+          lib$rsvp$instrument$$default('chained', parent, child);
         }
 
         if (state) {
           var callback = arguments[state - 1];
-          $$rsvp$config$$config.async(function(){
-            $$$internal$$invokeCallback(state, child, callback, result);
+          lib$rsvp$config$$config.async(function(){
+            lib$rsvp$$internal$$invokeCallback(state, child, callback, result);
           });
         } else {
-          $$$internal$$subscribe(parent, child, onFulfillment, onRejection);
+          lib$rsvp$$internal$$subscribe(parent, child, onFulfillment, onRejection);
         }
 
         return child;
@@ -1189,33 +1188,290 @@
       }
     };
 
-    function $$rsvp$node$$Result() {
+    function lib$rsvp$all$settled$$AllSettled(Constructor, entries, label) {
+      this._superConstructor(Constructor, entries, false /* don't abort on reject */, label);
+    }
+
+    lib$rsvp$all$settled$$AllSettled.prototype = lib$rsvp$utils$$o_create(lib$rsvp$enumerator$$default.prototype);
+    lib$rsvp$all$settled$$AllSettled.prototype._superConstructor = lib$rsvp$enumerator$$default;
+    lib$rsvp$all$settled$$AllSettled.prototype._makeResult = lib$rsvp$enumerator$$makeSettledResult;
+    lib$rsvp$all$settled$$AllSettled.prototype._validationError = function() {
+      return new Error('allSettled must be called with an array');
+    };
+
+    function lib$rsvp$all$settled$$allSettled(entries, label) {
+      return new lib$rsvp$all$settled$$AllSettled(lib$rsvp$promise$$default, entries, label).promise;
+    }
+    var lib$rsvp$all$settled$$default = lib$rsvp$all$settled$$allSettled;
+    function lib$rsvp$all$$all(array, label) {
+      return lib$rsvp$promise$$default.all(array, label);
+    }
+    var lib$rsvp$all$$default = lib$rsvp$all$$all;
+    var lib$rsvp$asap$$len = 0;
+    var lib$rsvp$asap$$toString = {}.toString;
+    var lib$rsvp$asap$$vertxNext;
+    function lib$rsvp$asap$$asap(callback, arg) {
+      lib$rsvp$asap$$queue[lib$rsvp$asap$$len] = callback;
+      lib$rsvp$asap$$queue[lib$rsvp$asap$$len + 1] = arg;
+      lib$rsvp$asap$$len += 2;
+      if (lib$rsvp$asap$$len === 2) {
+        // If len is 1, that means that we need to schedule an async flush.
+        // If additional callbacks are queued before the queue is flushed, they
+        // will be processed by this flush that we are scheduling.
+        lib$rsvp$asap$$scheduleFlush();
+      }
+    }
+
+    var lib$rsvp$asap$$default = lib$rsvp$asap$$asap;
+
+    var lib$rsvp$asap$$browserWindow = (typeof window !== 'undefined') ? window : undefined;
+    var lib$rsvp$asap$$browserGlobal = lib$rsvp$asap$$browserWindow || {};
+    var lib$rsvp$asap$$BrowserMutationObserver = lib$rsvp$asap$$browserGlobal.MutationObserver || lib$rsvp$asap$$browserGlobal.WebKitMutationObserver;
+    var lib$rsvp$asap$$isNode = typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
+
+    // test for web worker but not in IE10
+    var lib$rsvp$asap$$isWorker = typeof Uint8ClampedArray !== 'undefined' &&
+      typeof importScripts !== 'undefined' &&
+      typeof MessageChannel !== 'undefined';
+
+    // node
+    function lib$rsvp$asap$$useNextTick() {
+      var nextTick = process.nextTick;
+      // node version 0.10.x displays a deprecation warning when nextTick is used recursively
+      // setImmediate should be used instead instead
+      var version = process.versions.node.match(/^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)$/);
+      if (Array.isArray(version) && version[1] === '0' && version[2] === '10') {
+        nextTick = setImmediate;
+      }
+      return function() {
+        nextTick(lib$rsvp$asap$$flush);
+      };
+    }
+
+    // vertx
+    function lib$rsvp$asap$$useVertxTimer() {
+      return function() {
+        lib$rsvp$asap$$vertxNext(lib$rsvp$asap$$flush);
+      };
+    }
+
+    function lib$rsvp$asap$$useMutationObserver() {
+      var iterations = 0;
+      var observer = new lib$rsvp$asap$$BrowserMutationObserver(lib$rsvp$asap$$flush);
+      var node = document.createTextNode('');
+      observer.observe(node, { characterData: true });
+
+      return function() {
+        node.data = (iterations = ++iterations % 2);
+      };
+    }
+
+    // web worker
+    function lib$rsvp$asap$$useMessageChannel() {
+      var channel = new MessageChannel();
+      channel.port1.onmessage = lib$rsvp$asap$$flush;
+      return function () {
+        channel.port2.postMessage(0);
+      };
+    }
+
+    function lib$rsvp$asap$$useSetTimeout() {
+      return function() {
+        setTimeout(lib$rsvp$asap$$flush, 1);
+      };
+    }
+
+    var lib$rsvp$asap$$queue = new Array(1000);
+    function lib$rsvp$asap$$flush() {
+      for (var i = 0; i < lib$rsvp$asap$$len; i+=2) {
+        var callback = lib$rsvp$asap$$queue[i];
+        var arg = lib$rsvp$asap$$queue[i+1];
+
+        callback(arg);
+
+        lib$rsvp$asap$$queue[i] = undefined;
+        lib$rsvp$asap$$queue[i+1] = undefined;
+      }
+
+      lib$rsvp$asap$$len = 0;
+    }
+
+    function lib$rsvp$asap$$attemptVertex() {
+      try {
+        var r = require;
+        var vertx = r('vertx');
+        lib$rsvp$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
+        return lib$rsvp$asap$$useVertxTimer();
+      } catch(e) {
+        return lib$rsvp$asap$$useSetTimeout();
+      }
+    }
+
+    var lib$rsvp$asap$$scheduleFlush;
+    // Decide what async method to use to triggering processing of queued callbacks:
+    if (lib$rsvp$asap$$isNode) {
+      lib$rsvp$asap$$scheduleFlush = lib$rsvp$asap$$useNextTick();
+    } else if (lib$rsvp$asap$$BrowserMutationObserver) {
+      lib$rsvp$asap$$scheduleFlush = lib$rsvp$asap$$useMutationObserver();
+    } else if (lib$rsvp$asap$$isWorker) {
+      lib$rsvp$asap$$scheduleFlush = lib$rsvp$asap$$useMessageChannel();
+    } else if (lib$rsvp$asap$$browserWindow === undefined && typeof require === 'function') {
+      lib$rsvp$asap$$scheduleFlush = lib$rsvp$asap$$attemptVertex();
+    } else {
+      lib$rsvp$asap$$scheduleFlush = lib$rsvp$asap$$useSetTimeout();
+    }
+    function lib$rsvp$defer$$defer(label) {
+      var deferred = { };
+
+      deferred['promise'] = new lib$rsvp$promise$$default(function(resolve, reject) {
+        deferred['resolve'] = resolve;
+        deferred['reject'] = reject;
+      }, label);
+
+      return deferred;
+    }
+    var lib$rsvp$defer$$default = lib$rsvp$defer$$defer;
+    function lib$rsvp$filter$$filter(promises, filterFn, label) {
+      return lib$rsvp$promise$$default.all(promises, label).then(function(values) {
+        if (!lib$rsvp$utils$$isFunction(filterFn)) {
+          throw new TypeError("You must pass a function as filter's second argument.");
+        }
+
+        var length = values.length;
+        var filtered = new Array(length);
+
+        for (var i = 0; i < length; i++) {
+          filtered[i] = filterFn(values[i]);
+        }
+
+        return lib$rsvp$promise$$default.all(filtered, label).then(function(filtered) {
+          var results = new Array(length);
+          var newLength = 0;
+
+          for (var i = 0; i < length; i++) {
+            if (filtered[i]) {
+              results[newLength] = values[i];
+              newLength++;
+            }
+          }
+
+          results.length = newLength;
+
+          return results;
+        });
+      });
+    }
+    var lib$rsvp$filter$$default = lib$rsvp$filter$$filter;
+
+    function lib$rsvp$promise$hash$$PromiseHash(Constructor, object, label) {
+      this._superConstructor(Constructor, object, true, label);
+    }
+
+    var lib$rsvp$promise$hash$$default = lib$rsvp$promise$hash$$PromiseHash;
+
+    lib$rsvp$promise$hash$$PromiseHash.prototype = lib$rsvp$utils$$o_create(lib$rsvp$enumerator$$default.prototype);
+    lib$rsvp$promise$hash$$PromiseHash.prototype._superConstructor = lib$rsvp$enumerator$$default;
+    lib$rsvp$promise$hash$$PromiseHash.prototype._init = function() {
+      this._result = {};
+    };
+
+    lib$rsvp$promise$hash$$PromiseHash.prototype._validateInput = function(input) {
+      return input && typeof input === 'object';
+    };
+
+    lib$rsvp$promise$hash$$PromiseHash.prototype._validationError = function() {
+      return new Error('Promise.hash must be called with an object');
+    };
+
+    lib$rsvp$promise$hash$$PromiseHash.prototype._enumerate = function() {
+      var promise = this.promise;
+      var input   = this._input;
+      var results = [];
+
+      for (var key in input) {
+        if (promise._state === lib$rsvp$$internal$$PENDING && input.hasOwnProperty(key)) {
+          results.push({
+            position: key,
+            entry: input[key]
+          });
+        }
+      }
+
+      var length = results.length;
+      this._remaining = length;
+      var result;
+
+      for (var i = 0; promise._state === lib$rsvp$$internal$$PENDING && i < length; i++) {
+        result = results[i];
+        this._eachEntry(result.entry, result.position);
+      }
+    };
+
+    function lib$rsvp$hash$settled$$HashSettled(Constructor, object, label) {
+      this._superConstructor(Constructor, object, false, label);
+    }
+
+    lib$rsvp$hash$settled$$HashSettled.prototype = lib$rsvp$utils$$o_create(lib$rsvp$promise$hash$$default.prototype);
+    lib$rsvp$hash$settled$$HashSettled.prototype._superConstructor = lib$rsvp$enumerator$$default;
+    lib$rsvp$hash$settled$$HashSettled.prototype._makeResult = lib$rsvp$enumerator$$makeSettledResult;
+
+    lib$rsvp$hash$settled$$HashSettled.prototype._validationError = function() {
+      return new Error('hashSettled must be called with an object');
+    };
+
+    function lib$rsvp$hash$settled$$hashSettled(object, label) {
+      return new lib$rsvp$hash$settled$$HashSettled(lib$rsvp$promise$$default, object, label).promise;
+    }
+    var lib$rsvp$hash$settled$$default = lib$rsvp$hash$settled$$hashSettled;
+    function lib$rsvp$hash$$hash(object, label) {
+      return new lib$rsvp$promise$hash$$default(lib$rsvp$promise$$default, object, label).promise;
+    }
+    var lib$rsvp$hash$$default = lib$rsvp$hash$$hash;
+    function lib$rsvp$map$$map(promises, mapFn, label) {
+      return lib$rsvp$promise$$default.all(promises, label).then(function(values) {
+        if (!lib$rsvp$utils$$isFunction(mapFn)) {
+          throw new TypeError("You must pass a function as map's second argument.");
+        }
+
+        var length = values.length;
+        var results = new Array(length);
+
+        for (var i = 0; i < length; i++) {
+          results[i] = mapFn(values[i]);
+        }
+
+        return lib$rsvp$promise$$default.all(results, label);
+      });
+    }
+    var lib$rsvp$map$$default = lib$rsvp$map$$map;
+
+    function lib$rsvp$node$$Result() {
       this.value = undefined;
     }
 
-    var $$rsvp$node$$ERROR = new $$rsvp$node$$Result();
-    var $$rsvp$node$$GET_THEN_ERROR = new $$rsvp$node$$Result();
+    var lib$rsvp$node$$ERROR = new lib$rsvp$node$$Result();
+    var lib$rsvp$node$$GET_THEN_ERROR = new lib$rsvp$node$$Result();
 
-    function $$rsvp$node$$getThen(obj) {
+    function lib$rsvp$node$$getThen(obj) {
       try {
        return obj.then;
       } catch(error) {
-        $$rsvp$node$$ERROR.value= error;
-        return $$rsvp$node$$ERROR;
+        lib$rsvp$node$$ERROR.value= error;
+        return lib$rsvp$node$$ERROR;
       }
     }
 
 
-    function $$rsvp$node$$tryApply(f, s, a) {
+    function lib$rsvp$node$$tryApply(f, s, a) {
       try {
         f.apply(s, a);
       } catch(error) {
-        $$rsvp$node$$ERROR.value = error;
-        return $$rsvp$node$$ERROR;
+        lib$rsvp$node$$ERROR.value = error;
+        return lib$rsvp$node$$ERROR;
       }
     }
 
-    function $$rsvp$node$$makeObject(_, argumentNames) {
+    function lib$rsvp$node$$makeObject(_, argumentNames) {
       var obj = {};
       var name;
       var i;
@@ -1234,7 +1490,7 @@
       return obj;
     }
 
-    function $$rsvp$node$$arrayResult(_) {
+    function lib$rsvp$node$$arrayResult(_) {
       var length = _.length;
       var args = new Array(length - 1);
 
@@ -1245,7 +1501,7 @@
       return args;
     }
 
-    function $$rsvp$node$$wrapThenable(then, promise) {
+    function lib$rsvp$node$$wrapThenable(then, promise) {
       return {
         then: function(onFulFillment, onRejection) {
           return then.call(promise, onFulFillment, onRejection);
@@ -1253,7 +1509,7 @@
       };
     }
 
-    function $$rsvp$node$$denodeify(nodeFunc, options) {
+    function lib$rsvp$node$$denodeify(nodeFunc, options) {
       var fn = function() {
         var self = this;
         var l = arguments.length;
@@ -1266,37 +1522,37 @@
 
           if (!promiseInput) {
             // TODO: clean this up
-            promiseInput = $$rsvp$node$$needsPromiseInput(arg);
-            if (promiseInput === $$rsvp$node$$GET_THEN_ERROR) {
-              var p = new $$rsvp$promise$$default($$$internal$$noop);
-              $$$internal$$reject(p, $$rsvp$node$$GET_THEN_ERROR.value);
+            promiseInput = lib$rsvp$node$$needsPromiseInput(arg);
+            if (promiseInput === lib$rsvp$node$$GET_THEN_ERROR) {
+              var p = new lib$rsvp$promise$$default(lib$rsvp$$internal$$noop);
+              lib$rsvp$$internal$$reject(p, lib$rsvp$node$$GET_THEN_ERROR.value);
               return p;
             } else if (promiseInput && promiseInput !== true) {
-              arg = $$rsvp$node$$wrapThenable(promiseInput, arg);
+              arg = lib$rsvp$node$$wrapThenable(promiseInput, arg);
             }
           }
           args[i] = arg;
         }
 
-        var promise = new $$rsvp$promise$$default($$$internal$$noop);
+        var promise = new lib$rsvp$promise$$default(lib$rsvp$$internal$$noop);
 
         args[l] = function(err, val) {
           if (err)
-            $$$internal$$reject(promise, err);
+            lib$rsvp$$internal$$reject(promise, err);
           else if (options === undefined)
-            $$$internal$$resolve(promise, val);
+            lib$rsvp$$internal$$resolve(promise, val);
           else if (options === true)
-            $$$internal$$resolve(promise, $$rsvp$node$$arrayResult(arguments));
-          else if ($$utils$$isArray(options))
-            $$$internal$$resolve(promise, $$rsvp$node$$makeObject(arguments, options));
+            lib$rsvp$$internal$$resolve(promise, lib$rsvp$node$$arrayResult(arguments));
+          else if (lib$rsvp$utils$$isArray(options))
+            lib$rsvp$$internal$$resolve(promise, lib$rsvp$node$$makeObject(arguments, options));
           else
-            $$$internal$$resolve(promise, val);
+            lib$rsvp$$internal$$resolve(promise, val);
         };
 
         if (promiseInput) {
-          return $$rsvp$node$$handlePromiseInput(promise, args, nodeFunc, self);
+          return lib$rsvp$node$$handlePromiseInput(promise, args, nodeFunc, self);
         } else {
-          return $$rsvp$node$$handleValueInput(promise, args, nodeFunc, self);
+          return lib$rsvp$node$$handleValueInput(promise, args, nodeFunc, self);
         }
       };
 
@@ -1305,367 +1561,111 @@
       return fn;
     }
 
-    var $$rsvp$node$$default = $$rsvp$node$$denodeify;
+    var lib$rsvp$node$$default = lib$rsvp$node$$denodeify;
 
-    function $$rsvp$node$$handleValueInput(promise, args, nodeFunc, self) {
-      var result = $$rsvp$node$$tryApply(nodeFunc, self, args);
-      if (result === $$rsvp$node$$ERROR) {
-        $$$internal$$reject(promise, result.value);
+    function lib$rsvp$node$$handleValueInput(promise, args, nodeFunc, self) {
+      var result = lib$rsvp$node$$tryApply(nodeFunc, self, args);
+      if (result === lib$rsvp$node$$ERROR) {
+        lib$rsvp$$internal$$reject(promise, result.value);
       }
       return promise;
     }
 
-    function $$rsvp$node$$handlePromiseInput(promise, args, nodeFunc, self){
-      return $$rsvp$promise$$default.all(args).then(function(args){
-        var result = $$rsvp$node$$tryApply(nodeFunc, self, args);
-        if (result === $$rsvp$node$$ERROR) {
-          $$$internal$$reject(promise, result.value);
+    function lib$rsvp$node$$handlePromiseInput(promise, args, nodeFunc, self){
+      return lib$rsvp$promise$$default.all(args).then(function(args){
+        var result = lib$rsvp$node$$tryApply(nodeFunc, self, args);
+        if (result === lib$rsvp$node$$ERROR) {
+          lib$rsvp$$internal$$reject(promise, result.value);
         }
         return promise;
       });
     }
 
-    function $$rsvp$node$$needsPromiseInput(arg) {
+    function lib$rsvp$node$$needsPromiseInput(arg) {
       if (arg && typeof arg === 'object') {
-        if (arg.constructor === $$rsvp$promise$$default) {
+        if (arg.constructor === lib$rsvp$promise$$default) {
           return true;
         } else {
-          return $$rsvp$node$$getThen(arg);
+          return lib$rsvp$node$$getThen(arg);
         }
       } else {
         return false;
       }
     }
-    function $$rsvp$all$$all(array, label) {
-      return $$rsvp$promise$$default.all(array, label);
+    function lib$rsvp$race$$race(array, label) {
+      return lib$rsvp$promise$$default.race(array, label);
     }
-    var $$rsvp$all$$default = $$rsvp$all$$all;
-
-    function $$rsvp$all$settled$$AllSettled(Constructor, entries, label) {
-      this._superConstructor(Constructor, entries, false /* don't abort on reject */, label);
+    var lib$rsvp$race$$default = lib$rsvp$race$$race;
+    function lib$rsvp$reject$$reject(reason, label) {
+      return lib$rsvp$promise$$default.reject(reason, label);
     }
-
-    $$rsvp$all$settled$$AllSettled.prototype = $$utils$$o_create($$enumerator$$default.prototype);
-    $$rsvp$all$settled$$AllSettled.prototype._superConstructor = $$enumerator$$default;
-    $$rsvp$all$settled$$AllSettled.prototype._makeResult = $$enumerator$$makeSettledResult;
-    $$rsvp$all$settled$$AllSettled.prototype._validationError = function() {
-      return new Error('allSettled must be called with an array');
-    };
-
-    function $$rsvp$all$settled$$allSettled(entries, label) {
-      return new $$rsvp$all$settled$$AllSettled($$rsvp$promise$$default, entries, label).promise;
+    var lib$rsvp$reject$$default = lib$rsvp$reject$$reject;
+    function lib$rsvp$resolve$$resolve(value, label) {
+      return lib$rsvp$promise$$default.resolve(value, label);
     }
-    var $$rsvp$all$settled$$default = $$rsvp$all$settled$$allSettled;
-    function $$rsvp$race$$race(array, label) {
-      return $$rsvp$promise$$default.race(array, label);
-    }
-    var $$rsvp$race$$default = $$rsvp$race$$race;
-
-    function $$promise$hash$$PromiseHash(Constructor, object, label) {
-      this._superConstructor(Constructor, object, true, label);
-    }
-
-    var $$promise$hash$$default = $$promise$hash$$PromiseHash;
-
-    $$promise$hash$$PromiseHash.prototype = $$utils$$o_create($$enumerator$$default.prototype);
-    $$promise$hash$$PromiseHash.prototype._superConstructor = $$enumerator$$default;
-    $$promise$hash$$PromiseHash.prototype._init = function() {
-      this._result = {};
-    };
-
-    $$promise$hash$$PromiseHash.prototype._validateInput = function(input) {
-      return input && typeof input === 'object';
-    };
-
-    $$promise$hash$$PromiseHash.prototype._validationError = function() {
-      return new Error('Promise.hash must be called with an object');
-    };
-
-    $$promise$hash$$PromiseHash.prototype._enumerate = function() {
-      var promise = this.promise;
-      var input   = this._input;
-      var results = [];
-
-      for (var key in input) {
-        if (promise._state === $$$internal$$PENDING && input.hasOwnProperty(key)) {
-          results.push({
-            position: key,
-            entry: input[key]
-          });
-        }
-      }
-
-      var length = results.length;
-      this._remaining = length;
-      var result;
-
-      for (var i = 0; promise._state === $$$internal$$PENDING && i < length; i++) {
-        result = results[i];
-        this._eachEntry(result.entry, result.position);
-      }
-    };
-    function $$rsvp$hash$$hash(object, label) {
-      return new $$promise$hash$$default($$rsvp$promise$$default, object, label).promise;
-    }
-    var $$rsvp$hash$$default = $$rsvp$hash$$hash;
-
-    function $$rsvp$hash$settled$$HashSettled(Constructor, object, label) {
-      this._superConstructor(Constructor, object, false, label);
-    }
-
-    $$rsvp$hash$settled$$HashSettled.prototype = $$utils$$o_create($$promise$hash$$default.prototype);
-    $$rsvp$hash$settled$$HashSettled.prototype._superConstructor = $$enumerator$$default;
-    $$rsvp$hash$settled$$HashSettled.prototype._makeResult = $$enumerator$$makeSettledResult;
-
-    $$rsvp$hash$settled$$HashSettled.prototype._validationError = function() {
-      return new Error('hashSettled must be called with an object');
-    };
-
-    function $$rsvp$hash$settled$$hashSettled(object, label) {
-      return new $$rsvp$hash$settled$$HashSettled($$rsvp$promise$$default, object, label).promise;
-    }
-    var $$rsvp$hash$settled$$default = $$rsvp$hash$settled$$hashSettled;
-    function $$rsvp$rethrow$$rethrow(reason) {
+    var lib$rsvp$resolve$$default = lib$rsvp$resolve$$resolve;
+    function lib$rsvp$rethrow$$rethrow(reason) {
       setTimeout(function() {
         throw reason;
       });
       throw reason;
     }
-    var $$rsvp$rethrow$$default = $$rsvp$rethrow$$rethrow;
-    function $$rsvp$defer$$defer(label) {
-      var deferred = { };
-
-      deferred['promise'] = new $$rsvp$promise$$default(function(resolve, reject) {
-        deferred['resolve'] = resolve;
-        deferred['reject'] = reject;
-      }, label);
-
-      return deferred;
-    }
-    var $$rsvp$defer$$default = $$rsvp$defer$$defer;
-    function $$rsvp$map$$map(promises, mapFn, label) {
-      return $$rsvp$promise$$default.all(promises, label).then(function(values) {
-        if (!$$utils$$isFunction(mapFn)) {
-          throw new TypeError("You must pass a function as map's second argument.");
-        }
-
-        var length = values.length;
-        var results = new Array(length);
-
-        for (var i = 0; i < length; i++) {
-          results[i] = mapFn(values[i]);
-        }
-
-        return $$rsvp$promise$$default.all(results, label);
-      });
-    }
-    var $$rsvp$map$$default = $$rsvp$map$$map;
-    function $$rsvp$resolve$$resolve(value, label) {
-      return $$rsvp$promise$$default.resolve(value, label);
-    }
-    var $$rsvp$resolve$$default = $$rsvp$resolve$$resolve;
-    function $$rsvp$reject$$reject(reason, label) {
-      return $$rsvp$promise$$default.reject(reason, label);
-    }
-    var $$rsvp$reject$$default = $$rsvp$reject$$reject;
-    function $$rsvp$filter$$filter(promises, filterFn, label) {
-      return $$rsvp$promise$$default.all(promises, label).then(function(values) {
-        if (!$$utils$$isFunction(filterFn)) {
-          throw new TypeError("You must pass a function as filter's second argument.");
-        }
-
-        var length = values.length;
-        var filtered = new Array(length);
-
-        for (var i = 0; i < length; i++) {
-          filtered[i] = filterFn(values[i]);
-        }
-
-        return $$rsvp$promise$$default.all(filtered, label).then(function(filtered) {
-          var results = new Array(length);
-          var newLength = 0;
-
-          for (var i = 0; i < length; i++) {
-            if (filtered[i]) {
-              results[newLength] = values[i];
-              newLength++;
-            }
-          }
-
-          results.length = newLength;
-
-          return results;
-        });
-      });
-    }
-    var $$rsvp$filter$$default = $$rsvp$filter$$filter;
-    var $$rsvp$asap$$len = 0;
-
-    function $$rsvp$asap$$asap(callback, arg) {
-      $$rsvp$asap$$queue[$$rsvp$asap$$len] = callback;
-      $$rsvp$asap$$queue[$$rsvp$asap$$len + 1] = arg;
-      $$rsvp$asap$$len += 2;
-      if ($$rsvp$asap$$len === 2) {
-        // If len is 1, that means that we need to schedule an async flush.
-        // If additional callbacks are queued before the queue is flushed, they
-        // will be processed by this flush that we are scheduling.
-        $$rsvp$asap$$scheduleFlush();
-      }
-    }
-
-    var $$rsvp$asap$$default = $$rsvp$asap$$asap;
-
-    var $$rsvp$asap$$browserWindow = (typeof window !== 'undefined') ? window : undefined;
-    var $$rsvp$asap$$browserGlobal = $$rsvp$asap$$browserWindow || {};
-    var $$rsvp$asap$$BrowserMutationObserver = $$rsvp$asap$$browserGlobal.MutationObserver || $$rsvp$asap$$browserGlobal.WebKitMutationObserver;
-    var $$rsvp$asap$$isNode = typeof process !== 'undefined' && {}.toString.call(process) === '[object process]';
-
-    // test for web worker but not in IE10
-    var $$rsvp$asap$$isWorker = typeof Uint8ClampedArray !== 'undefined' &&
-      typeof importScripts !== 'undefined' &&
-      typeof MessageChannel !== 'undefined';
-
-    // node
-    function $$rsvp$asap$$useNextTick() {
-      var nextTick = process.nextTick;
-      // node version 0.10.x displays a deprecation warning when nextTick is used recursively
-      // setImmediate should be used instead instead
-      var version = process.versions.node.match(/^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)$/);
-      if (Array.isArray(version) && version[1] === '0' && version[2] === '10') {
-        nextTick = setImmediate;
-      }
-      return function() {
-        nextTick($$rsvp$asap$$flush);
-      };
-    }
-
-    // vertx
-    function $$rsvp$asap$$useVertxTimer() {
-      return function() {
-        vertxNext($$rsvp$asap$$flush);
-      };
-    }
-
-    function $$rsvp$asap$$useMutationObserver() {
-      var iterations = 0;
-      var observer = new $$rsvp$asap$$BrowserMutationObserver($$rsvp$asap$$flush);
-      var node = document.createTextNode('');
-      observer.observe(node, { characterData: true });
-
-      return function() {
-        node.data = (iterations = ++iterations % 2);
-      };
-    }
-
-    // web worker
-    function $$rsvp$asap$$useMessageChannel() {
-      var channel = new MessageChannel();
-      channel.port1.onmessage = $$rsvp$asap$$flush;
-      return function () {
-        channel.port2.postMessage(0);
-      };
-    }
-
-    function $$rsvp$asap$$useSetTimeout() {
-      return function() {
-        setTimeout($$rsvp$asap$$flush, 1);
-      };
-    }
-
-    var $$rsvp$asap$$queue = new Array(1000);
-    function $$rsvp$asap$$flush() {
-      for (var i = 0; i < $$rsvp$asap$$len; i+=2) {
-        var callback = $$rsvp$asap$$queue[i];
-        var arg = $$rsvp$asap$$queue[i+1];
-
-        callback(arg);
-
-        $$rsvp$asap$$queue[i] = undefined;
-        $$rsvp$asap$$queue[i+1] = undefined;
-      }
-
-      $$rsvp$asap$$len = 0;
-    }
-
-    function $$rsvp$asap$$attemptVertex() {
-      try {
-        var vertx = require('vertx');
-        var vertxNext = vertx.runOnLoop || vertx.runOnContext;
-        return $$rsvp$asap$$useVertxTimer();
-      } catch(e) {
-        return $$rsvp$asap$$useSetTimeout();
-      }
-    }
-
-    var $$rsvp$asap$$scheduleFlush;
-    // Decide what async method to use to triggering processing of queued callbacks:
-    if ($$rsvp$asap$$isNode) {
-      $$rsvp$asap$$scheduleFlush = $$rsvp$asap$$useNextTick();
-    } else if ($$rsvp$asap$$BrowserMutationObserver) {
-      $$rsvp$asap$$scheduleFlush = $$rsvp$asap$$useMutationObserver();
-    } else if ($$rsvp$asap$$isWorker) {
-      $$rsvp$asap$$scheduleFlush = $$rsvp$asap$$useMessageChannel();
-    } else if ($$rsvp$asap$$browserWindow === undefined && typeof require === 'function') {
-      $$rsvp$asap$$scheduleFlush = $$rsvp$asap$$attemptVertex();
-    } else {
-      $$rsvp$asap$$scheduleFlush = $$rsvp$asap$$useSetTimeout();
-    }
+    var lib$rsvp$rethrow$$default = lib$rsvp$rethrow$$rethrow;
 
     // default async is asap;
-    $$rsvp$config$$config.async = $$rsvp$asap$$default;
-    var $$rsvp$$cast = $$rsvp$resolve$$default;
-    function $$rsvp$$async(callback, arg) {
-      $$rsvp$config$$config.async(callback, arg);
+    lib$rsvp$config$$config.async = lib$rsvp$asap$$default;
+    var lib$rsvp$$cast = lib$rsvp$resolve$$default;
+    function lib$rsvp$$async(callback, arg) {
+      lib$rsvp$config$$config.async(callback, arg);
     }
 
-    function $$rsvp$$on() {
-      $$rsvp$config$$config['on'].apply($$rsvp$config$$config, arguments);
+    function lib$rsvp$$on() {
+      lib$rsvp$config$$config['on'].apply(lib$rsvp$config$$config, arguments);
     }
 
-    function $$rsvp$$off() {
-      $$rsvp$config$$config['off'].apply($$rsvp$config$$config, arguments);
+    function lib$rsvp$$off() {
+      lib$rsvp$config$$config['off'].apply(lib$rsvp$config$$config, arguments);
     }
 
     // Set up instrumentation through `window.__PROMISE_INTRUMENTATION__`
     if (typeof window !== 'undefined' && typeof window['__PROMISE_INSTRUMENTATION__'] === 'object') {
-      var $$rsvp$$callbacks = window['__PROMISE_INSTRUMENTATION__'];
-      $$rsvp$config$$configure('instrument', true);
-      for (var $$rsvp$$eventName in $$rsvp$$callbacks) {
-        if ($$rsvp$$callbacks.hasOwnProperty($$rsvp$$eventName)) {
-          $$rsvp$$on($$rsvp$$eventName, $$rsvp$$callbacks[$$rsvp$$eventName]);
+      var lib$rsvp$$callbacks = window['__PROMISE_INSTRUMENTATION__'];
+      lib$rsvp$config$$configure('instrument', true);
+      for (var lib$rsvp$$eventName in lib$rsvp$$callbacks) {
+        if (lib$rsvp$$callbacks.hasOwnProperty(lib$rsvp$$eventName)) {
+          lib$rsvp$$on(lib$rsvp$$eventName, lib$rsvp$$callbacks[lib$rsvp$$eventName]);
         }
       }
     }
 
-    var rsvp$umd$$RSVP = {
-      'race': $$rsvp$race$$default,
-      'Promise': $$rsvp$promise$$default,
-      'allSettled': $$rsvp$all$settled$$default,
-      'hash': $$rsvp$hash$$default,
-      'hashSettled': $$rsvp$hash$settled$$default,
-      'denodeify': $$rsvp$node$$default,
-      'on': $$rsvp$$on,
-      'off': $$rsvp$$off,
-      'map': $$rsvp$map$$default,
-      'filter': $$rsvp$filter$$default,
-      'resolve': $$rsvp$resolve$$default,
-      'reject': $$rsvp$reject$$default,
-      'all': $$rsvp$all$$default,
-      'rethrow': $$rsvp$rethrow$$default,
-      'defer': $$rsvp$defer$$default,
-      'EventTarget': $$rsvp$events$$default,
-      'configure': $$rsvp$config$$configure,
-      'async': $$rsvp$$async
+    var lib$rsvp$umd$$RSVP = {
+      'race': lib$rsvp$race$$default,
+      'Promise': lib$rsvp$promise$$default,
+      'allSettled': lib$rsvp$all$settled$$default,
+      'hash': lib$rsvp$hash$$default,
+      'hashSettled': lib$rsvp$hash$settled$$default,
+      'denodeify': lib$rsvp$node$$default,
+      'on': lib$rsvp$$on,
+      'off': lib$rsvp$$off,
+      'map': lib$rsvp$map$$default,
+      'filter': lib$rsvp$filter$$default,
+      'resolve': lib$rsvp$resolve$$default,
+      'reject': lib$rsvp$reject$$default,
+      'all': lib$rsvp$all$$default,
+      'rethrow': lib$rsvp$rethrow$$default,
+      'defer': lib$rsvp$defer$$default,
+      'EventTarget': lib$rsvp$events$$default,
+      'configure': lib$rsvp$config$$configure,
+      'async': lib$rsvp$$async
     };
 
     /* global define:true module:true window: true */
     if (typeof define === 'function' && define['amd']) {
-      define(function() { return rsvp$umd$$RSVP; });
+      define(function() { return lib$rsvp$umd$$RSVP; });
     } else if (typeof module !== 'undefined' && module['exports']) {
-      module['exports'] = rsvp$umd$$RSVP;
+      module['exports'] = lib$rsvp$umd$$RSVP;
     } else if (typeof this !== 'undefined') {
-      this['RSVP'] = rsvp$umd$$RSVP;
+      this['RSVP'] = lib$rsvp$umd$$RSVP;
     }
 }).call(this);
 
-//# sourceMappingURL=rsvp.js.map
