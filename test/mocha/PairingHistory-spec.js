@@ -27,7 +27,6 @@ describe('Pairing History', function () {
         expect(report.partnerCandidates).eql([]);
     });
 
-
     describe('should determine possible partners for a player by choosing a partner', function () {
         var bruce = {name: 'Batman', _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c')};
 
@@ -44,7 +43,7 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 expect(availableOtherPlayers).eql(report.partnerCandidates);
-                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist();
+                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist;
 
                 expect(bruce).to.equal(report.player);
             });
@@ -56,7 +55,7 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 expect(availableOtherPlayers).to.eql(report.partnerCandidates);
-                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist();
+                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist;
 
                 expect(bruce).to.equal(report.player);
             });
@@ -77,8 +76,8 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 expect(availableOtherPlayers).to.eql(report.partnerCandidates);
-                expect(report.timeSinceLastPaired).to.not.exist();
-                expect(bruce).to.equal(report.player);
+                expect(report.timeSinceLastPaired).to.not.exist;
+                expect(bruce).to.eql(report.player);
             });
 
             it('with only the person you were with last time', function () {
@@ -168,7 +167,7 @@ describe('Pairing History', function () {
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
                 expect(report.partnerCandidates).to.eql([talia, jezebel]);
-                expect(report.timeSinceLastPaired).to.not.exist();
+                expect(report.timeSinceLastPaired).to.not.exist;
                 expect(bruce).to.equal(report.player);
             });
 

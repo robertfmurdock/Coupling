@@ -18,7 +18,7 @@ describe('UserDataService', function () {
         it('will create a user if it does not already exist', function (done) {
             var email = 'awesome.o@super.coo';
             userDataService.findOrCreate(email, function (user) {
-                expect(user).to.exist();
+                expect(user).to.exist;
                 expect(user.email).to.equal(email);
 
                 usersCollection.find({}, function (error, docs) {
