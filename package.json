@@ -64,7 +64,6 @@
   "scripts": {
     "start": "node server/app.js",
     "test": "grunt travis",
-    "preprotractor": "npm run update-webdriver",
     "protractor" : "grunt end2end"
   },
   "repository": {
