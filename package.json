@@ -55,7 +55,7 @@
     "karma-safari-launcher": "^0.1.1",
     "mocha": "^2.2.1",
     "mocha-jenkins-reporter": "^0.1.6",
-    "protractor": "^1.8.0",
+    "protractor": "^1.6.1",
     "supertest": "^0.15.0"
   },
   "engines": {
@@ -64,6 +64,8 @@
   "scripts": {
     "start": "node server/app.js",
     "test": "grunt travis",
+    "update-webdriver": "node node_modules/protractor/bin/webdriver-manager update --standalone",
+    "preprotractor": "npm run update-webdriver",
     "protractor" : "grunt end2end"
   },
   "repository": {
