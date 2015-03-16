@@ -31,7 +31,7 @@ function authorizeAllTribes(callback) {
     });
 }
 
-xdescribe('The default tribes page', function () {
+describe('The default tribes page', function () {
 
     beforeEach(function (done) {
         browser.ignoreSynchronization = true;
