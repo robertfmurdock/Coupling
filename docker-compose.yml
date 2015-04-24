@@ -4,6 +4,7 @@ web:
     - "3000:3000"
   links:
     - "mongo:mongo"
+    - "seleniumhub:hub"
   volumes:
     - public:/usr/src/app/public
     - server:/usr/src/app/server
@@ -16,3 +17,25 @@ mongo:
   image: tutum/mongodb
   environment:
     - AUTH=no
+seleniumhub:
+  image: selenium/hub
+seleniumnode1:
+  image: selenium/node-chrome
+  links:
+    - "seleniumhub:hub"
+
+
+#seleniumhub:
+#  image: benschw/selenium-hub
+#seleniumnode1:
+#  image: benschw/selenium-node-firefox
+#  links:
+#    - "seleniumhub:hub"
+#seleniumnode2:
+#  image: benschw/selenium-node-firefox
+#  links:
+#    - "seleniumhub:hub"
+#seleniumnode3:
+#  image: benschw/selenium-node-firefox
+#  links:
+#    - "seleniumhub:hub"

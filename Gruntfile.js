@@ -123,6 +123,22 @@ module.exports = function (grunt) {
                     }
                 }
             },
+            dockerfirefox: {
+                options: {
+                    args: {
+                        browser: 'firefox',
+                        seleniumAddress: 'http://hub:4444/wd/hub'
+                    }
+                }
+            },
+            dockerchrome: {
+                options: {
+                    args: {
+                        browser: 'chrome',
+                        seleniumAddress: 'http://hub:4444/wd/hub'
+                    }
+                }
+            },
             safari: {
                 options: {
                     args: {
@@ -219,6 +235,7 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('serve', ['jenkins', 'express:dev', 'watch']);
+    grunt.registerTask('dockerserve', ['jenkins', 'protractor:dockerchrome', 'watch']);
     grunt.registerTask('wait', function () {
         grunt.log.ok('Waiting for server reload...');
         var done = this.async();
