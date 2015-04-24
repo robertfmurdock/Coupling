@@ -6,7 +6,7 @@ var _ = require('underscore');
 var Comparators = require('../../server/lib/Comparators');
 var database = monk(mongoUrl);
 var UserDataService = require("../../server/lib/UserDataService");
-var userDataService = new UserDataService(mongoUrl);
+var userDataService = new UserDataService(database);
 var expect = require('chai').expect;
 describe('UserDataService', function () {
     var usersCollection = database.get('users');

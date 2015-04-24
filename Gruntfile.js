@@ -235,7 +235,10 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('serve', ['jenkins', 'express:dev', 'watch']);
-    grunt.registerTask('dockerserve', ['jenkins', 'protractor:dockerchrome', 'watch']);
+    grunt.registerTask('dockerserve', ['jenkins',
+        //'protractor:dockerchrome',
+        'express:dev2',
+        'watch']);
     grunt.registerTask('wait', function () {
         grunt.log.ok('Waiting for server reload...');
         var done = this.async();

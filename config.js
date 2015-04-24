@@ -2,6 +2,9 @@ var config = {
     get publicUrl() {
         return process.env.PUBLIC_URL || 'http://localhost:' + config.port;
     },
+    get publicHost() {
+        return process.env.PUBLIC_HOST || 'localhost';
+    },
     get port() {
         return process.env.PORT || 3000;
     },

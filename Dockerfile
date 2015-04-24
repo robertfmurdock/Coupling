@@ -8,9 +8,12 @@ COPY npm-shrinkwrap.json /usr/src/app/
 RUN npm install
 
 COPY . /usr/src/app
-ENV MONGOHQ_URL=mongodb://mongo/Coupling MONGO_CONNECTION=mongodb://mongo PHANTOMJS_BIN=/usr/local/lib/node_modules/phantomjs/lib/phantom/bin/phantomjs
+ENV \
+  PUBLIC_HOST=web \
+  MONGOHQ_URL=mongodb://mongo/Coupling \
+  MONGO_CONNECTION=mongodb://mongo \
+  PHANTOMJS_BIN=/usr/local/lib/node_modules/phantomjs/lib/phantom/bin/phantomjs
 
-RUN ls -ltr
 CMD [ "grunt", "dockerserve" ]
 
 EXPOSE 3000

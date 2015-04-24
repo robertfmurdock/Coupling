@@ -1,4 +1,6 @@
 "use strict";
+var ScreenShotReporter = require('protractor-screenshot-reporter');
+
 exports.config = {
 
     capabilities: {
@@ -15,6 +17,10 @@ exports.config = {
         defaultTimeoutInterval: 30000
     },
     onPrepare: function () {
+
+        jasmine.getEnv().addReporter(new ScreenShotReporter({
+            baseDirectory: '/tmp/screenshots'
+        }));
 
         var disableNgAnimate = function () {
             angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {

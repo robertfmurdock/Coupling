@@ -10,7 +10,7 @@ var _ = require('underscore');
 var Comparators = require('../../server/lib/Comparators');
 var database = monk(mongoUrl);
 
-describe('DataService', function () {
+describe('CouplingDataService', function () {
     var frodo = {name: 'Frodo'};
     var expectedPlayers = [
         {name: 'Gandalf'},

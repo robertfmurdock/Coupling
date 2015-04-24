@@ -1,6 +1,5 @@
 "use strict";
 var express = require('express');
-var DataService = require('../lib/CouplingDataService');
 
 var PinRoutes = function () {
     this.list = function (request, response) {

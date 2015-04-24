@@ -3,7 +3,7 @@ var monk = require("monk");
 var _ = require('underscore');
 var config = require("../../config");
 
-var hostName = 'http://localhost:' + config.port;
+var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
@@ -41,6 +41,18 @@ describe('The edit player page', function () {
     });
 
     afterEach(function () {
+        browser.manage().logs().get('browser').then(function(browserLogs) {
+            if (browserLogs.length != 0){
+                console.log('LOGS CAPTURED:');
+            }
+            browserLogs.forEach(function(log){
+                    console.log(log.message);
+            });
+            if (browserLogs.length != 0){
+                console.log('END LOGS');
+            }
+        });
+
         tribeCollection.remove({_id: tribe._id}, false);
         playersCollection.remove({_id: player._id}, false);
     });

@@ -14,7 +14,7 @@ web:
     - config.js:/usr/src/app/config.js
     - Gruntfile.js:/usr/src/app/Gruntfile.js
 mongo:
-  image: tutum/mongodb
+  image: mongo
   environment:
     - AUTH=no
 seleniumhub:
@@ -23,7 +23,9 @@ seleniumnode1:
   image: selenium/node-chrome
   links:
     - "seleniumhub:hub"
-
+    - "web:web"
+  volumes:
+    - screenshots:/tmp/screenshots
 
 #seleniumhub:
 #  image: benschw/selenium-hub

@@ -3,7 +3,7 @@ var monk = require("monk");
 var config = require("../../config");
 var _ = require('underscore');
 
-var hostName = 'http://localhost:' + config.port;
+var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var usersCollection = monk(config.mongoUrl).get('users');

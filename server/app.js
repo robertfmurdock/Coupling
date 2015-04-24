@@ -3,15 +3,19 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var UserDataService = require('./lib/UserDataService');
+var CouplingDataService = require('./lib/CouplingDataService');
 var config = require('./../config');
-
-var userDataService = new UserDataService(config.mongoUrl);
 
 console.log("Finished requires, starting express!");
 var app = express();
+
+var couplingDataService = new CouplingDataService(config.mongoUrl);
+console.log('Connecting to mongo URL: ' + config.mongoUrl);
+var userDataService = new UserDataService(couplingDataService.database);
+
 require('./config/express')(app, userDataService);
 console.log("Adding routing!");
-require('./routes')(app, userDataService);
+require('./routes')(app, userDataService, couplingDataService);
 
 console.log("creating server!");
 http.createServer(app).listen(app.get('port'), function () {

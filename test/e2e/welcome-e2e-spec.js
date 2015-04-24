@@ -2,8 +2,7 @@
 var monk = require("monk");
 var _ = require('underscore');
 var config = require("../../config");
-
-var hostName = 'http://localhost:' + config.port;
+var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 
 describe('The welcome page', function () {

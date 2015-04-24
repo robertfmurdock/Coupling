@@ -1,16 +1,9 @@
 "use strict";
 var express = require('express');
-var DataService = require('../lib/CouplingDataService');
 var monk = require('monk');
 var Promise = require('rsvp').Promise;
 var _ = require('underscore');
 var config = require('../../config');
-
-function requestAll(promiseArray, callback) {
-    return Promise.all(promiseArray).then(function (results) {
-        return callback.apply(null, results);
-    });
-}
 
 var TribeRoutes = function () {
 
@@ -30,20 +23,38 @@ var TribeRoutes = function () {
     }
 
     function requestAuthorizedTribes(user, dataService) {
-        return requestAll([dataService.requestTribes(), loadAuthorizedTribeIds(user, dataService.mongoUrl)], function (tribes, authorizedTribes) {
-            return _.filter(tribes, function (value) {
-                return _.contains(authorizedTribes, value._id);
+        return Promise.all([dataService.requestTribes(), loadAuthorizedTribeIds(user, dataService.mongoUrl)])
+            .then(function (results) {
+                console.log('authorized tribes were:');
+                console.info(results);
+                return function (tribes, authorizedTribes) {
+                    return _.filter(tribes, function (value) {
+                        return _.contains(authorizedTribes, value._id);
+                    });
+                }.apply(null, results);
             });
-        });
     }
 
     this.list = function (request, response) {
-        requestAuthorizedTribes(request.user, request.dataService).then(function (authorizedTribes) {
-            response.send(authorizedTribes);
-        }).catch(function (error) {
-            response.statusCode = 500;
-            response.send(error.message);
-        });
+        console.log("list started for user ");
+        console.info(request.user);
+        console.info(Date.now());
+        requestAuthorizedTribes(request.user, request.dataService)
+            .then(function (authorizedTribes) {
+                console.log(response.headersSent);
+                console.log('list sending now');
+                console.info(authorizedTribes);
+                console.info(Date.now());
+                response.send(authorizedTribes);
+            })
+            .catch(function (error) {
+                console.log('list errored');
+                response.statusCode = 500;
+                response.send(error.message);
+            })
+            .finally(function () {
+                console.log('finally');
+            });
     };
 
     this.save = function (request, response) {

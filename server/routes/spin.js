@@ -1,5 +1,4 @@
 "use strict";
-var DataService = require('../lib/CouplingDataService');
 var GameRunner = require('../lib/GameRunner');
 var CouplingGameFactory = require('../lib/CouplingGameFactory');
 
