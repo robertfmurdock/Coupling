@@ -4,6 +4,7 @@ var http = require('http');
 var path = require('path');
 var UserDataService = require('./lib/UserDataService');
 var config = require('./../config');
+
 var userDataService = new UserDataService(config.mongoUrl);
 
 console.log("Finished requires, starting express!");

@@ -8,8 +8,11 @@ var config = {
     get mongoUrl() {
         return process.env.MONGOHQ_URL_MONGOURL || process.env.MONGOHQ_URL || 'mongodb://' + "localhost/Coupling";
     },
+    get testMongoUrl() {
+        return process.env.MONGO_CONNECTION || "localhost"
+    },
     get tempMongoUrl() {
-        return "localhost/CouplingTemp";
+        return (process.env.MONGO_CONNECTION || "localhost") + "/CouplingTemp";
     },
     get secret() {
         return "maythefourthbewithyou";

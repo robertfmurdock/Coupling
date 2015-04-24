@@ -1,0 +1,9 @@
+test-output/*
+version.json
+.idea/workspace.xml
+Coupling.iws
+.DS_Store
+public/stylesheets/*.css
+node_modules/*
+Dockerfile
+docker-compose.yml

@@ -22,7 +22,8 @@ describe('The game', function () {
         john
     ];
 
-    var mongoUrl = 'localhost/CouplingTest';
+    var config = require('../../../config');
+    var mongoUrl = config.testMongoUrl + '/CouplingTest';
     var database = monk(mongoUrl);
     var historyCollection = database.get('history');
 

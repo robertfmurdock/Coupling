@@ -9,6 +9,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-protractor-webdriver');
     grunt.loadNpmTasks('grunt-git-describe');
     grunt.loadNpmTasks('grunt-wiredep');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.initConfig({
         env: {
@@ -83,6 +84,13 @@ module.exports = function (grunt) {
                     port: 3001,
                     output: 'Express server listening on port'
                 }
+            },
+            dev2: {
+                options: {
+                    script: 'server/app.js',
+                    port: 3000,
+                    output: 'Express server listening on port'
+                }
             }
         },
         protractor_webdriver: {
@@ -127,6 +135,32 @@ module.exports = function (grunt) {
         "git-describe": {
             "options": {},
             "jenkins": {}
+        },
+        watch: {
+            //gruntfile: {
+            //    files: ['Gruntfile.js']
+            //},
+            test: {
+                files: [
+                    "public/**/*",
+                    "server/**/*",
+                    "views/**/*",
+                    "test/**/*"
+                ],
+                tasks: ['jenkins']
+            },
+            express: {
+                files: [
+                    "public/**/*",
+                    "server/**/*",
+                    "views/**/*"
+                ],
+                tasks: ['express:dev2', 'wait'],
+                options: {
+                    livereload: true,
+                    nospawn: true
+                }
+            }
         },
         wiredep: {
             productionTask: {
@@ -184,4 +218,13 @@ module.exports = function (grunt) {
         'protractor_webdriver:start', 'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild']);
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
+    grunt.registerTask('serve', ['jenkins', 'express:dev', 'watch']);
+    grunt.registerTask('wait', function () {
+        grunt.log.ok('Waiting for server reload...');
+        var done = this.async();
+        setTimeout(function () {
+            grunt.log.writeln('Done waiting!');
+            done();
+        }, 1500);
+    });
 };

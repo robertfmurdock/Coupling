@@ -2,7 +2,9 @@
 var CouplingDataService = require('../../server/lib/CouplingDataService');
 var expect = require('chai').expect;
 
-var mongoUrl = 'localhost/CouplingTest';
+var config = require('../../config');
+var mongoUrl = config.testMongoUrl + '/UsersTest';
+
 var monk = require('monk');
 var _ = require('underscore');
 var Comparators = require('../../server/lib/Comparators');

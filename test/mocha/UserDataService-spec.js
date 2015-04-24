@@ -1,5 +1,6 @@
 "use strict";
-var mongoUrl = 'localhost/UsersTest';
+var config = require('../../config');
+var mongoUrl = config.testMongoUrl + '/UsersTest';
 var monk = require('monk');
 var _ = require('underscore');
 var Comparators = require('../../server/lib/Comparators');

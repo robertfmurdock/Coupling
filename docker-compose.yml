@@ -1,0 +1,18 @@
+web:
+  build: .
+  ports:
+    - "3000:3000"
+  links:
+    - "mongo:mongo"
+  volumes:
+    - public:/usr/src/app/public
+    - server:/usr/src/app/server
+    - views:/usr/src/app/views
+    - test:/usr/src/app/test
+    - package.json:/usr/src/app/package.json
+    - config.js:/usr/src/app/config.js
+    - Gruntfile.js:/usr/src/app/Gruntfile.js
+mongo:
+  image: tutum/mongodb
+  environment:
+    - AUTH=no
