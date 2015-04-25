@@ -1,6 +1,6 @@
 {
   "name": "angular-gravatar",
-  "version": "0.2.4",
+  "version": "0.3.1",
   "author": {
     "name": "Sebastian Wallin"
   },
@@ -12,7 +12,6 @@
   ],
   "license": "MIT",
   "main": [
-    "./build/md5.js",
     "./build/angular-gravatar.js"
   ],
   "homepage": "http://github.com/wallin/angular-gravatar",
@@ -33,13 +32,13 @@
     "type": "git",
     "url": "git://github.com/wallin/angular-gravatar.git"
   },
-  "_release": "0.2.4",
+  "_release": "0.3.1",
   "_resolution": {
     "type": "version",
-    "tag": "0.2.4",
-    "commit": "ce18f5f5278aec8abdeed5129ccf1f53bf74c54c"
+    "tag": "0.3.1",
+    "commit": "ced80e9993553b18ef97774e0d36e87f85bdf0bf"
   },
   "_source": "git://github.com/wallin/angular-gravatar.git",
-  "_target": "~0.2.3",
+  "_target": "~0.3",
   "_originalSource": "angular-gravatar"
 }

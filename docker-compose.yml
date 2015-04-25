@@ -13,6 +13,7 @@ web:
     - package.json:/usr/src/app/package.json
     - config.js:/usr/src/app/config.js
     - Gruntfile.js:/usr/src/app/Gruntfile.js
+    - screenshots:/tmp/screenshots
 mongo:
   image: mongo
   environment:
@@ -24,20 +25,3 @@ seleniumnode1:
   links:
     - "seleniumhub:hub"
     - "web:web"
-  volumes:
-    - screenshots:/tmp/screenshots
-
-#seleniumhub:
-#  image: benschw/selenium-hub
-#seleniumnode1:
-#  image: benschw/selenium-node-firefox
-#  links:
-#    - "seleniumhub:hub"
-#seleniumnode2:
-#  image: benschw/selenium-node-firefox
-#  links:
-#    - "seleniumhub:hub"
-#seleniumnode3:
-#  image: benschw/selenium-node-firefox
-#  links:
-#    - "seleniumhub:hub"

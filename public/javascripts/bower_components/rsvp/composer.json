@@ -11,7 +11,7 @@
             ],
             "files": [
                 "rsvp.min.js",
-                "rsvp.amd.js"
+                "rsvp.js"
             ]
         }
     }

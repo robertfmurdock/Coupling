@@ -8,7 +8,7 @@ angular-gravatar
 
 Angular.JS directive for [Gravatar](http://www.gravatar.com).
 
-Copyright (C) 2014, Sebastian Wallin <sebastian.wallin@gmail.com>
+Copyright (C) 2015, Sebastian Wallin <sebastian.wallin@gmail.com>
 
 Requirements
 -----
@@ -31,10 +31,9 @@ npm install angular-gravatar
 
 Usage
 -----
-Include both md5.js and angular-gravatar.js in your application.
+Include angular-gravatar.js in your application.
 
 ```html
-<script src="components/angular-gravatar/build/md5.js"></script>
 <script src="components/angular-gravatar/build/angular-gravatar.js"></script>
 ```
 
@@ -106,3 +105,4 @@ MIT
 * Eduardo Garcia (https://github.com/thewarpaint)
 * Thomas Vervest (https://github.com/tvervest)
 * Gonzalo Aguirre (https://github.com/gaguirre)
+* Gabe Hayes (https://github.com/gabehayes)

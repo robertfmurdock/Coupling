@@ -1,6 +1,6 @@
 {
   "name": "angular-gravatar",
-  "version": "0.2.4",
+  "version": "0.3.1",
   "author": {
     "name": "Sebastian Wallin"
   },
@@ -11,7 +11,7 @@
     "gravatar"
   ],
   "license": "MIT",
-  "main": ["./build/md5.js", "./build/angular-gravatar.js"],
+  "main": ["./build/angular-gravatar.js"],
   "homepage": "http://github.com/wallin/angular-gravatar",
   "ignore": [
     "package.json",

@@ -5,9 +5,11 @@ services.service("Coupling", ['$http', function ($http) {
     var Coupling = this;
     var makeErrorHandler = function (url) {
         return function (data, statusCode) {
-            alert("There was a problem loading " + url + "\n" +
-            "Data was: <" + data + ">\n" +
-            "Status code: " + statusCode);
+            var message = "There was a problem loading " + url + "\n" +
+                "Data was: <" + data + ">\n" +
+                "Status code: " + statusCode;
+            console.log('ALERT!\n' + message);
+            // alert(message);
         }
     };
 
@@ -115,13 +117,14 @@ services.service("Coupling", ['$http', function ($http) {
     this.promisePins = function (tribeId) {
         var url = '/api/' + tribeId + '/pins';
         var httpPromise = $http.get(url);
-        httpPromise.error(function(data, status){
+        httpPromise.error(function (data, status) {
             var message = 'Communication error with server. URL: ' + url + '\n' +
                 'Data: <' + data + '>\n' +
                 'Status: ' + status;
-            alert(message);
+            console.log('ALERT!\n' + message);
+            // alert(message);
         });
-        return httpPromise.then(function(response){
+        return httpPromise.then(function (response) {
             return response.data;
         });
     };

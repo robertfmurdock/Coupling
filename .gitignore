@@ -16,4 +16,5 @@ node_modules/protractor/selenium
 **/*.dylib
 **/*.gypi
 **/*.log
+screenshots
 node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/location.js

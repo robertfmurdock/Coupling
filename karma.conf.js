@@ -19,7 +19,6 @@ module.exports = function (config) {
             // bower:
             'public/javascripts/bower_components/angular/angular.js',
             'public/javascripts/bower_components/angular-animate/angular-animate.js',
-            'public/javascripts/bower_components/angular-gravatar/build/md5.js',
             'public/javascripts/bower_components/angular-gravatar/build/angular-gravatar.js',
             'public/javascripts/bower_components/angular-route/angular-route.js',
             'public/javascripts/bower_components/underscore/underscore.js',

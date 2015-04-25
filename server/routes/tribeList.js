@@ -25,8 +25,6 @@ var TribeRoutes = function () {
     function requestAuthorizedTribes(user, dataService) {
         return Promise.all([dataService.requestTribes(), loadAuthorizedTribeIds(user, dataService.mongoUrl)])
             .then(function (results) {
-                console.log('authorized tribes were:');
-                console.info(results);
                 return function (tribes, authorizedTribes) {
                     return _.filter(tribes, function (value) {
                         return _.contains(authorizedTribes, value._id);
@@ -36,24 +34,13 @@ var TribeRoutes = function () {
     }
 
     this.list = function (request, response) {
-        console.log("list started for user ");
-        console.info(request.user);
-        console.info(Date.now());
         requestAuthorizedTribes(request.user, request.dataService)
             .then(function (authorizedTribes) {
-                console.log(response.headersSent);
-                console.log('list sending now');
-                console.info(authorizedTribes);
-                console.info(Date.now());
                 response.send(authorizedTribes);
             })
             .catch(function (error) {
-                console.log('list errored');
                 response.statusCode = 500;
                 response.send(error.message);
-            })
-            .finally(function () {
-                console.log('finally');
             });
     };
 

@@ -54,6 +54,7 @@ xdescribe('The default tribes page', function () {
                 expect(tribeElements.length).toEqual(tribeDocuments.length);
                 tribeDocuments.forEach(function (tribe, index) {
                     var tribeElement = tribeElements[index];
+                    expect(tribeElement).toExist();
                     expect(tribeElement.getText()).toEqual(tribe.name);
                 });
             });

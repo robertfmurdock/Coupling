@@ -161,15 +161,29 @@ module.exports = function (grunt) {
                     "public/**/*",
                     "server/**/*",
                     "views/**/*",
-                    "test/**/*"
+                    "!**/*.css",
+                    "test/endpoint/**/*",
+                    "test/jasmine/**/*",
+                    "test/mocha/**/*"
                 ],
                 tasks: ['jenkins']
+            },
+            protractor: {
+                files: [
+                    "public/**/*",
+                    "server/**/*",
+                    "views/**/*",
+                    "!**/*.css",
+                    "test/e2e/**/*"
+                ],
+                tasks: ['protractor:dockerchrome']
             },
             express: {
                 files: [
                     "public/**/*",
                     "server/**/*",
-                    "views/**/*"
+                    "views/**/*",
+                    "!**/*.css"
                 ],
                 tasks: ['express:dev2', 'wait'],
                 options: {

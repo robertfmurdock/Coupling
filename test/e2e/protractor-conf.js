@@ -3,6 +3,8 @@ var ScreenShotReporter = require('protractor-screenshot-reporter');
 
 exports.config = {
 
+    allScriptsTimeout: 11000,
+
     capabilities: {
         'browserName': 'chrome'
     },
@@ -19,7 +21,8 @@ exports.config = {
     onPrepare: function () {
 
         jasmine.getEnv().addReporter(new ScreenShotReporter({
-            baseDirectory: '/tmp/screenshots'
+            baseDirectory: '/tmp/screenshots',
+            takeScreenShotsOnlyForFailedSpecs: true
         }));
 
         var disableNgAnimate = function () {
