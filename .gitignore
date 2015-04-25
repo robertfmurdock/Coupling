@@ -4,12 +4,7 @@ version.json
 Coupling.iws
 .DS_Store
 public/stylesheets/*.css
-node_modules/**/bson/build/*
-node_modules/**/Release/*
-node_modules/**/kerberos/build/*
-node_modules/**/fsevents/build/*
-node_modules/**/ws/build/*
-node_modules/protractor/selenium
+node_modules
 **/*.node
 **/*.a
 **/*.o
@@ -17,4 +12,3 @@ node_modules/protractor/selenium
 **/*.gypi
 **/*.log
 screenshots
-node_modules/karma-phantomjs-launcher/node_modules/phantomjs/lib/location.js
