@@ -40,7 +40,7 @@ describe('The edit player page', function () {
         });
     });
 
-    afterEach(function () {
+    afterEach(function (done) {
         browser.manage().logs().get('browser').then(function (browserLogs) {
             if (browserLogs.length != 0) {
                 console.log('LOGS CAPTURED:');
@@ -54,7 +54,10 @@ describe('The edit player page', function () {
         });
 
         tribeCollection.remove({_id: tribe._id}, false);
-        playersCollection.remove({_id: player._id}, false);
+        playersCollection.remove({_id: player._id}, false)
+            .then(function () {
+                done();
+            });
     });
 
     it('should not alert on leaving when nothing has changed.', function () {
@@ -66,6 +69,7 @@ describe('The edit player page', function () {
     it('should get error on leaving when name is changed.', function (done) {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
             .then(function () {
+                expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player._id + '/');
                 return element(By.id('player-name')).sendKeys('completely different name');
             })
             .then(function () {

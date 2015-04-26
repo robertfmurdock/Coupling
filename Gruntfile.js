@@ -162,27 +162,24 @@ module.exports = function (grunt) {
             //gruntfile: {
             //    files: ['Gruntfile.js']
             //},
-            test: {
+            servertest: {
                 files: [
-                    "public/**/*",
                     "server/**/*",
-                    "views/**/*",
-                    "!**/*.css",
                     "test/endpoint/**/*",
-                    "test/jasmine/**/*",
                     "test/mocha/**/*"
                 ],
-                tasks: ['mochaTest:unit', 'karma:docker', 'express:dev', 'mochaTest:endpoint']
+                tasks: ['docker-server-test']
             },
-            protractor: {
+            frontendtest: {
                 files: [
                     "public/**/*",
                     "server/**/*",
                     "views/**/*",
                     "!**/*.css",
+                    "test/jasmine/**/*",
                     "test/e2e/**/*"
                 ],
-                tasks: ['protractor:dockerchrome']
+                tasks: ['docker-frontend-test']
             },
             express: {
                 files: [
@@ -255,9 +252,11 @@ module.exports = function (grunt) {
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
-    grunt.registerTask('dockerserve', ['mochaTest:unit', 'karma:docker', 'express:dev', 'mochaTest:endpoint',
-        'express:dev2',
-        'watch']);
+
+    grunt.registerTask('docker-server-test', ['mochaTest:unit', 'express:dev', 'mochaTest:endpoint']);
+    grunt.registerTask('docker-frontend-test', ['karma:docker', 'express:dev', 'protractor:dockerchrome']);
+    grunt.registerTask('dockerserve', ['docker-server-test', 'docker-frontend-test', 'express:dev2', 'watch']);
+
     grunt.registerTask('wait', function () {
         grunt.log.ok('Waiting for server reload...');
         var done = this.async();

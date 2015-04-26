@@ -182,7 +182,7 @@ controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routePar
     $scope.removePlayer = function () {
         if (confirm("Are you sure you want to delete this player?")) {
             Coupling.removePlayer($scope.player, function () {
-                $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
+                      $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
             });
         }
     };
