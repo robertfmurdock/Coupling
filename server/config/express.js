@@ -70,6 +70,7 @@ module.exports = function (app, userDataService) {
             });
         }
     ));
+    console.log("App environment is: " + app.get('env'));
     if ('development' == app.get('env')) {
         console.log('Dev Environment: enabling test login');
         passport.use(new LocalStrategy(function (username, password, done) {
