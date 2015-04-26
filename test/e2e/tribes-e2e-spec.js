@@ -2,7 +2,7 @@
 var monk = require("monk");
 var config = require("../../config");
 var _ = require('underscore');
-
+var RSVP = require('rsvp');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
@@ -10,59 +10,65 @@ var usersCollection = monk(config.mongoUrl).get('users');
 
 var userEmail = 'protractor@test.goo';
 
-function authorizeUserForTribes(authorizedTribes, callback) {
-    usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}}, function (error, updateCount) {
+function authorizeUserForTribes(authorizedTribes) {
+    var tempUserEmail = userEmail + "._temp";
+    return usersCollection.update({email: tempUserEmail}, {$set: {tribes: authorizedTribes}}).then(function (updateCount) {
         if (updateCount == 0) {
-            usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes}, callback);
+            console.log('INSERTING USER');
+            return usersCollection.insert({email: tempUserEmail, tribes: authorizedTribes});
         } else {
-            callback(error);
+            console.log('updating  USER ' + updateCount);
         }
     });
 }
 
-function authorizeAllTribes(callback) {
-    tribeCollection.find({}, {}, function (error, tribeDocuments) {
-        var authorizedTribes = _.pluck(tribeDocuments, '_id');
-        if (error) {
-            callback(error);
-        } else {
-            authorizeUserForTribes(authorizedTribes, callback);
-        }
-    });
+function authorizeAllTribes() {
+    return tribeCollection.find({}, {})
+        .then(function (tribeDocuments) {
+            var authorizedTribes = _.pluck(tribeDocuments, '_id');
+            return authorizeUserForTribes(authorizedTribes);
+        });
 }
 
-xdescribe('The default tribes page', function () {
+describe('The default tribes page', function () {
 
     beforeEach(function (done) {
         browser.ignoreSynchronization = true;
-        tribeCollection.drop();
-        tribeCollection.insert([{_id: 'e2e1', name: 'E2E Example Tribe 1'},
-            {_id: 'e2e2', name: 'E2E Example Tribe 2'}], function () {
-            authorizeAllTribes(function (error) {
-                browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-                done(error);
-            });
-        });
+        tribeCollection.drop()
+            .then(function () {
+                return tribeCollection.insert(
+                    [
+                        {_id: 'e2e1', name: 'E2E Example Tribe 1'},
+                        {_id: 'e2e2', name: 'E2E Example Tribe 2'}
+                    ]);
+            }).then(function () {
+                return authorizeAllTribes();
+            }).then(function () {
+                return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+            }).then(function () {
+                done()
+            }, done);
     });
 
     it('should have a section for each tribe.', function (done) {
-        browser.get(hostName).then(function () {
-            return element.all(by.repeater('tribe in tribes'));
-        }).then(function (tribeElements) {
-            tribeCollection.find({}, {}, function (error, tribeDocuments) {
-                expect(tribeElements.length).toEqual(tribeDocuments.length);
-
-                console.log('tribeDocuments');
-                console.info(tribeDocuments);
-                console.log('tribeElements');
-                console.info(tribeElements);
-                _.each(tribeDocuments, function (tribe, index) {
-                    var tribeElement = tribeElements[index];
-                    expect(tribeElement.getText()).toEqual(tribe.name);
-                });
-                done();
+        RSVP.hash({
+            tribeElements: browser.get(hostName)
+                .then(function () {
+                    expect(browser.getCurrentUrl()).toBe(hostName + '/tribes/');
+                    return element.all(by.repeater('tribe in tribes'));
+                }),
+            tribeDocuments: tribeCollection.find({}, {})
+        }).then(function (hash) {
+            var tribeElements = hash.tribeElements;
+            var tribeDocuments = hash.tribeDocuments;
+            expect(tribeElements.length).toEqual(tribeDocuments.length);
+            _.each(tribeDocuments, function (tribe, index) {
+                var tribeElement = tribeElements[index];
+                expect(tribeElement.getText()).toEqual(tribe.name);
             });
-        })
+        }).then(function () {
+            done();
+        }, done);
     });
 
     xdescribe('when a tribe exists, on the tribe page', function () {
@@ -118,7 +124,8 @@ xdescribe('The default tribes page', function () {
             });
         });
     });
-});
+})
+;
 
 xdescribe('The edit tribe page', function () {
     var tribe = {_id: 'delete_me', name: 'Change Me'};
