@@ -13,12 +13,13 @@ describe('The edit player page', function () {
 
     var userEmail = 'protractor@test.goo';
 
-    function authorizeUserForTribes(authorizedTribes, callback) {
-        usersCollection.update({email: userEmail}, {$set: {tribes: authorizedTribes}}, function (error, updateCount) {
+    function authorizeUserForTribes(authorizedTribes) {
+        return usersCollection.update({email: userEmail}, {$set: {tribes: authorizedTribes}}).then(function (updateCount) {
             if (updateCount == 0) {
-                usersCollection.insert({email: userEmail, tribes: authorizedTribes}, callback);
+                console.log('INSERTING USER');
+                return usersCollection.insert({email: userEmail, tribes: authorizedTribes});
             } else {
-                callback();
+                console.log('updating  USER' + updateCount);
             }
         });
     }
@@ -28,16 +29,18 @@ describe('The edit player page', function () {
 
     beforeEach(function (done) {
         browser.ignoreSynchronization = true;
-        tribeCollection.insert(tribe);
-        tribeCollection.find({}, {}, function (error, tribeDocuments) {
+        tribeCollection.insert(tribe).then(function () {
+            return tribeCollection.find({}, {});
+        }).then(function (error, tribeDocuments) {
             var authorizedTribes = _.pluck(tribeDocuments, '_id');
-            authorizeUserForTribes(authorizedTribes, function () {
-                browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-                playersCollection.insert(player, function () {
-                    done();
-                });
-            });
-        });
+            return authorizeUserForTribes(authorizedTribes);
+        }).then(function () {
+            return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+        }).then(function () {
+            return playersCollection.insert(player);
+        }).then(function () {
+            done();
+        }, done);
     });
 
     afterEach(function (done) {
@@ -53,17 +56,22 @@ describe('The edit player page', function () {
             }
         });
 
-        tribeCollection.remove({_id: tribe._id}, false);
-        playersCollection.remove({_id: player._id}, false)
+        tribeCollection.remove({_id: tribe._id}, false)
             .then(function () {
+                return playersCollection.remove({_id: player._id}, false);
+            }).then(function () {
                 done();
             });
     });
 
-    it('should not alert on leaving when nothing has changed.', function () {
-        browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
-        element(By.id('spin-button')).click();
-        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+    it('should not alert on leaving when nothing has changed.', function (done) {
+        browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
+            .then(function () {
+                expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player._id + '/');
+                element(By.id('spin-button')).click();
+                expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+                done();
+            });
     });
 
     it('should get error on leaving when name is changed.', function (done) {
@@ -86,12 +94,14 @@ describe('The edit player page', function () {
     });
 
     it('should not get alert on leaving when name is changed after save.', function (done) {
-        browser.get(hostName + '/' + tribe._id + '/player/' + player._id).then(function () {
-            element(By.id('player-name')).sendKeys('completely different name');
-            element(By.id('save-player-button')).click();
-            element(By.id('spin-button')).click();
-            expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
-            done();
-        });
+        browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
+            .then(function () {
+                return element(By.id('player-name')).sendKeys('completely different name');
+            }).then(function () {
+                element(By.id('save-player-button')).click();
+                element(By.id('spin-button')).click();
+                expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+                done();
+            });
     });
 });
