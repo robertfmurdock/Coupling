@@ -1,6 +1,3 @@
-dependencies:
-  override:
-    - npm rebuild
 test:
   override:
     - npm test
