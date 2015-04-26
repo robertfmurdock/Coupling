@@ -11,7 +11,7 @@ module.exports = function (app, userDataService, couplingDataService) {
         successRedirect: '/',
         failureRedirect: '/auth/google'
     }));
-    if ('development' == app.get('env')) {
+    if ('development' == app.get('env') || 'test' == app.get('env')) {
         app.get('/test-login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
     }
 
