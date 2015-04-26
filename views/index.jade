@@ -1,6 +1,7 @@
 extends layout
 block content
     body(ng-controller="CouplingController")
+        div(ng-show="error" id="error") {{error}}
         div(id="top-section")
             span(id="CouplingTitleBlock")
                 div(class="title" title="Built on #{buildDate}. #{gitRev}")= title

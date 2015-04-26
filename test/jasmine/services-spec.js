@@ -18,7 +18,7 @@ describe('Service: ', function () {
         });
 
         describe('get tribes', function () {
-            it('calls back with tribes on success', function () {
+            it('calls back with tribes on success', function (done) {
                 var expectedTribes = [
                     {_id: 'one'},
                     {_id: 'two'}
@@ -26,14 +26,14 @@ describe('Service: ', function () {
 
                 httpBackend.whenGET('/api/tribes').respond(200, expectedTribes);
 
-                var returnedTribes = null;
-                Coupling.getTribes(function (resultTribes) {
-                    returnedTribes = resultTribes;
-                });
+                Coupling.getTribes()
+                    .then(function (resultTribes) {
+                        expect(resultTribes).toEqual(expectedTribes);
+                        done();
+                    })
+                    .catch(done);
 
                 httpBackend.flush();
-
-                expect(returnedTribes).toEqual(expectedTribes);
             });
 
             it('shows error on failure', function () {
@@ -42,16 +42,15 @@ describe('Service: ', function () {
                 var expectedData = 'nonsense';
                 httpBackend.whenGET(url).respond(statusCode, expectedData);
                 var callCount = 0;
-                Coupling.getTribes(function () {
+                Coupling.getTribes().then(function () {
                     callCount++;
+                }).catch(function (error) {
+                    expect(callCount).toBe(0);
+                    expect(error).toEqual('There was a problem loading ' + url + '\n' +
+                    'Data: <' + expectedData + '>\n' +
+                    'Status: ' + statusCode);
                 });
-
-                var alertSpy = spyOn(window, 'alert');
                 httpBackend.flush();
-                expect(callCount).toBe(0);
-                expect(alertSpy).toHaveBeenCalledWith('There was a problem loading ' + url + '\n' +
-                'Data was: <' + expectedData + '>\n' +
-                'Status code: ' + statusCode);
             });
         });
 
@@ -122,11 +121,10 @@ describe('Service: ', function () {
                 var statusCode = 404;
                 var expectedData = 'nonsense';
                 httpBackend.whenGET(url).respond(statusCode, expectedData);
-                var alertSpy = spyOn(window, 'alert');
                 Coupling.promisePins(tribeId).then(function () {
                     done("This should not succeed.");
-                }).catch(function () {
-                    expect(alertSpy).toHaveBeenCalledWith('Communication error with server. URL: ' + url + '\n' +
+                }).catch(function (error) {
+                    expect(error).toEqual('There was a problem loading ' + url + '\n' +
                     'Data: <' + expectedData + '>\n' +
                     'Status: ' + statusCode);
                     done();

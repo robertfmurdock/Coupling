@@ -3,23 +3,30 @@ var services = angular.module("coupling.services", []);
 
 services.service("Coupling", ['$http', function ($http) {
     var Coupling = this;
+
+    function errorMessage(url, data, statusCode) {
+        return "There was a problem loading " + url + "\n" +
+            "Data: <" + data + ">\n" +
+            "Status: " + statusCode;
+    }
+
     var makeErrorHandler = function (url) {
         return function (data, statusCode) {
-            var message = "There was a problem loading " + url + "\n" +
-                "Data was: <" + data + ">\n" +
-                "Status code: " + statusCode;
+            var message = errorMessage(url, data, statusCode);
             console.log('ALERT!\n' + message);
-            // alert(message);
+            alert(message);
         }
     };
 
-    var requestTribes = function (callback) {
-        var url = '/api/tribes';
-        $http.get(url).success(function (tribes) {
-            if (callback) {
-                callback(tribes);
-            }
-        }).error(makeErrorHandler(url));
+    var requestTribes = function () {
+        return new RSVP.Promise(function (resolve, reject) {
+            var url = '/api/tribes';
+            $http.get(url).success(function (tribes) {
+                resolve(tribes);
+            }).error(function (data, statusCode) {
+                reject(errorMessage(url, data, statusCode));
+            });
+        });
     };
 
     var requestPlayers = function (tribeId, callback) {
@@ -106,8 +113,8 @@ services.service("Coupling", ['$http', function ($http) {
         }
     };
 
-    this.getTribes = function (callback) {
-        requestTribes(callback);
+    this.getTribes = function () {
+        return requestTribes();
     };
 
     this.saveTribe = function (tribe, callback) {
@@ -115,17 +122,15 @@ services.service("Coupling", ['$http', function ($http) {
     };
 
     this.promisePins = function (tribeId) {
-        var url = '/api/' + tribeId + '/pins';
-        var httpPromise = $http.get(url);
-        httpPromise.error(function (data, status) {
-            var message = 'Communication error with server. URL: ' + url + '\n' +
-                'Data: <' + data + '>\n' +
-                'Status: ' + status;
-            console.log('ALERT!\n' + message);
-            // alert(message);
-        });
-        return httpPromise.then(function (response) {
-            return response.data;
+        return new RSVP.Promise(function (resolve, reject) {
+            var url = '/api/' + tribeId + '/pins';
+            $http.get(url)
+                .error(function (data, status) {
+                    reject(errorMessage(url, data, status));
+                })
+                .then(function (response) {
+                    return resolve(response.data);
+                });
         });
     };
     this.findPlayerById = function (id, callback) {

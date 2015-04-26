@@ -9,7 +9,7 @@ var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var usersCollection = monk(config.mongoUrl).get('users');
 
-xdescribe('The edit player page', function () {
+describe('The edit player page', function () {
 
     var userEmail = 'protractor@test.goo';
 
@@ -63,23 +63,26 @@ xdescribe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
     });
 
-    it('should get alert on leaving when name is changed.', function (done) {
+    it('should get error on leaving when name is changed.', function (done) {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
-          .then(function(){
-            element(By.id('player-name')).sendKeys('completely different name');
-            element(By.id('spin-button')).click();
-            browser.switchTo().alert().then(function (alertDialog) {
-                console.info(alertDialog);
+            .then(function () {
+                return element(By.id('player-name')).sendKeys('completely different name');
+            })
+            .then(function () {
+                element(By.id('spin-button')).click();
+                return browser.switchTo().alert()
+            })
+            .then(function (alertDialog) {
+                expect(alertDialog.getText()).toEqual('You have unsaved data. Would you like to save before you leave?');
                 alertDialog.dismiss();
                 done();
             }, function (error) {
                 done(error);
             });
-          });
     });
 
     it('should not get alert on leaving when name is changed after save.', function (done) {
-        browser.get(hostName + '/' + tribe._id + '/player/' + player._id).then(function() {
+        browser.get(hostName + '/' + tribe._id + '/player/' + player._id).then(function () {
             element(By.id('player-name')).sendKeys('completely different name');
             element(By.id('save-player-button')).click();
             element(By.id('spin-button')).click();

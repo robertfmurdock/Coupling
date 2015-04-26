@@ -137,26 +137,41 @@ describe('The controller named ', function () {
             describe('TribeListController', function () {
 
                 var Coupling, location;
+                var tribesDefer = new RSVP.defer();
                 beforeEach(function () {
                     location = {path: jasmine.createSpy('path')};
                     Coupling = {
                         data: {},
                         selectTribe: jasmine.createSpy('selectTribe'),
-                        getTribes: jasmine.createSpy('getTribes')
+                        getTribes: function () {
+                            return tribesDefer.promise;
+                        }
                     };
                 });
 
-                it('will get tribes and put them on scope', function () {
+                it('will get tribes and put them on scope', function (done) {
                     injectController('TribeListController', scope, location, Coupling);
-                    expect(Coupling.getTribes).toHaveBeenCalled();
-                    var callback = Coupling.getTribes.calls.argsFor(0)[0];
                     expect(scope.tribes).not.toBeDefined();
                     var expectedTribes = [
                         {_id: '1'},
                         {_id: '2'}
                     ];
-                    callback(expectedTribes);
-                    expect(scope.tribes).toBe(expectedTribes);
+                    tribesDefer.resolve(expectedTribes);
+                    tribesDefer.promise.then(function () {
+                        expect(scope.tribes).toBe(expectedTribes);
+                        done();
+                    });
+                });
+
+                it('will put error on scope when tribes are not available', function (done) {
+                    injectController('TribeListController', scope, location, Coupling);
+                    expect(scope.tribes).not.toBeDefined();
+                    var error = 'Serious errah brah.';
+                    tribesDefer.reject(error);
+                    tribesDefer.promise.catch(function () {
+                        expect(scope.error).toBe(error);
+                        done();
+                    }).then(done);
                 });
 
                 it('will deselect tribe', function () {
@@ -682,7 +697,7 @@ describe('The controller named ', function () {
                     Coupling.promisePins.and.returnValue(promise);
                     runPinListController();
 
-                    promise.then(function(){
+                    promise.then(function () {
                         expect(Coupling.promisePins).toHaveBeenCalledWith(routeParams.tribeId);
                         expect(scope.pins).toEqual(pins);
                         done();

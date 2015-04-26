@@ -64,8 +64,10 @@ controllers.controller('SelectedPlayerCardController', ['$scope', '$location', '
 }]);
 
 controllers.controller('TribeListController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
-    Coupling.getTribes(function (tribes) {
+    Coupling.getTribes().then(function (tribes) {
         $scope.tribes = tribes;
+    }).catch(function (errorMessage) {
+        $scope.error = errorMessage;
     });
 
     $scope.playerRoster.minimized = true;

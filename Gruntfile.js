@@ -34,6 +34,12 @@ module.exports = function (grunt) {
                 browsers: ['PhantomJS', 'Chrome', 'Firefox'],
                 reporters: ['dots']
             },
+            docker: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS'],
+                reporters: ['dots']
+            },
             jenkins: {
                 configFile: 'karma.conf.js',
                 singleRun: true,
@@ -166,7 +172,7 @@ module.exports = function (grunt) {
                     "test/jasmine/**/*",
                     "test/mocha/**/*"
                 ],
-                tasks: ['jenkins']
+                tasks: ['mochaTest:unit', 'karma:docker', 'express:dev', 'mochaTest:endpoint']
             },
             protractor: {
                 files: [
@@ -248,9 +254,8 @@ module.exports = function (grunt) {
         'protractor_webdriver:start', 'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild']);
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
-    grunt.registerTask('serve', ['jenkins', 'express:dev', 'watch']);
-    grunt.registerTask('dockerserve', ['jenkins',
-        //'protractor:dockerchrome',
+    grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
+    grunt.registerTask('dockerserve', ['mochaTest:unit', 'karma:docker', 'express:dev', 'mochaTest:endpoint',
         'express:dev2',
         'watch']);
     grunt.registerTask('wait', function () {
