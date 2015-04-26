@@ -53,7 +53,10 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true,
                 browsers: ['PhantomJS', 'Firefox'],
-                reporters: ['dots']
+                reporters: ['dots', 'junit'],
+                junitReporter: {
+                    outputFile: 'test-output/test-results.xml'
+                }
             }
         },
         mochaTest: {

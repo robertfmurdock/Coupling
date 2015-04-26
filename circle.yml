@@ -1,6 +1,7 @@
 test:
   override:
     - npm test
+    - npm protractor
 deployment:
   staging:
     branch: master
