@@ -50,7 +50,8 @@ module.exports = function (app, userDataService) {
     app.use(passport.session());
 
 // development only
-    if ('development' == app.get('env')) {
+    var isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
+    if (isInDevelopmentMode) {
         app.use(errorHandler());
     }
     console.log("Adding passport!");
@@ -71,7 +72,7 @@ module.exports = function (app, userDataService) {
         }
     ));
     console.log("App environment is: " + app.get('env'));
-    if ('development' == app.get('env')) {
+    if (isInDevelopmentMode) {
         console.log('Dev Environment: enabling test login');
         passport.use(new LocalStrategy(function (username, password, done) {
             userDataService.findOrCreate(username + "._temp", function (user) {
