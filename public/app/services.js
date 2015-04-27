@@ -14,7 +14,7 @@ services.service("Coupling", ['$http', function ($http) {
         return function (data, statusCode) {
             var message = errorMessage(url, data, statusCode);
             console.log('ALERT!\n' + message);
-            alert(message);
+            // alert(message);
         }
     };
 
@@ -92,7 +92,7 @@ services.service("Coupling", ['$http', function ($http) {
         if (shouldReload) {
             Coupling.data.selectedTribeId = tribeId;
 
-            Coupling.getTribes(function (tribes) {
+            Coupling.getTribes().then(function (tribes) {
                 Coupling.data.selectedTribe = _.findWhere(tribes, {_id: tribeId});
             });
 

@@ -34,7 +34,8 @@ describe('The default tribes page', function () {
 
     var tribeDocuments;
 
-    beforeEach(function(done){
+    beforeEach(function (done) {
+        browser.driver.manage().deleteAllCookies();
         tribeCollection.drop()
             .then(function () {
                 return tribeCollection.insert(
@@ -42,65 +43,95 @@ describe('The default tribes page', function () {
                         {_id: 'e2e1', name: 'E2E Example Tribe 1'},
                         {_id: 'e2e2', name: 'E2E Example Tribe 2'}
                     ]);
-            }).then(function() {
+            }).then(function () {
                 return authorizeAllTribes();
-            }).then(function() {
+            }).then(function () {
                 return tribeCollection.find({}, {})
-            }).then(function(result) {
+            }).then(function (result) {
                 tribeDocuments = result;
                 done();
             }, done);
     });
 
-    it('should have a section for each tribe', function() {
+    it('should have a section for each tribe', function () {
         browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
         browser.get(hostName);
         browser.refresh();
 
-        browser.wait(function() {
-          return browser.driver.isElementPresent(By.css('.tribe-listing'));
-        }, 30000);
+        browser.wait(function () {
+            return browser.driver.isElementPresent(By.css('.tribe-listing'));
+        }, 5000);
         expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
         var tribeElements = element.all(By.repeater('tribe in tribes'));
         expect(tribeElements.getText()).toEqual(_.pluck(tribeDocuments, 'name'));
     });
 
-    xdescribe('when a tribe exists, on the tribe page', function () {
+    it('can navigate to the a specific tribe page', function () {
+        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+        browser.get(hostName);
+        browser.refresh();
+
+        expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
+        browser.wait(function () {
+            var viewFrameIsPresent = browser.driver.isElementPresent(By.css('.view-frame'));
+            var tribeNameIsPresent = browser.driver.isElementPresent(By.css('.tribe-name'));
+            var animateNameIsPresent = browser.driver.isElementPresent(By.css('.ng-animate'));
+            return protractor.promise.all(viewFrameIsPresent, tribeNameIsPresent,
+                animateNameIsPresent.then(function (isPresent) {
+                    return !isPresent;
+                }));
+        }, 5000);
+        var tribeElements = element.all(By.repeater('tribe in tribes'));
+        tribeElements.first().element(By.css('.tribe-name')).click();
+        expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/');
+    });
+
+
+    describe('when a tribe exists, on the tribe page', function () {
+
         var expectedTribe;
-        beforeEach(function (done) {
-            browser.get(hostName);
-            var all = element.all(by.repeater('tribe in tribes'));
-            all.first().then(function (tribeElement) {
-                tribeElement.element(By.css('.tribe-name')).click();
+        beforeEach(function () {
+            expectedTribe = tribeDocuments[0];
+            browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+            browser.get(hostName + '/' + expectedTribe._id + '/');
+            browser.refresh();
+        });
 
-                tribeCollection.find({}, {}, function (error, tribeDocuments) {
-                    expectedTribe = tribeDocuments[0];
-                    done(error);
+        afterEach(function (done) {
+            browser.manage().logs().get('browser').then(function (browserLogs) {
+                if (browserLogs.length != 0) {
+                    console.log('LOGS CAPTURED:');
+                }
+                browserLogs.forEach(function (log) {
+                    console.log(log.message);
                 });
-            });
-        });
-
-        it('the tribe name is shown', function (done) {
-            element.all(By.id('tribe-name')).first().then(function (tribeNameElement) {
-                expect(tribeNameElement.getAttribute('value')).toEqual(expectedTribe.name);
+                if (browserLogs.length != 0) {
+                    console.log('END LOGS');
+                }
                 done();
             });
         });
 
-        it('the tribe image url is shown', function (done) {
-            element.all(By.id('tribe-img-url')).first().then(function (tribeNameElement) {
-                var expectedValue = expectedTribe.imgURL || '';
-                expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
-                done();
-            });
+        it('the tribe name is shown', function () {
+            expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
+            browser.wait(function () {
+                return browser.driver.isElementPresent(By.css('.tribe-view'));
+            }, 5000);
+
+            var tribeNameElement = element.all(By.id('tribe-name')).first();
+            expect(tribeNameElement.getAttribute('value')).toEqual(expectedTribe.name);
         });
 
-        it('the tribe email is shown', function (done) {
-            element.all(By.id('tribe-email')).first().then(function (tribeNameElement) {
-                var expectedValue = expectedTribe.email || '';
-                expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
-                done();
-            });
+        xit('the tribe image url is shown', function (done) {
+            var tribeNameElement = element.all(By.id('tribe-img-url')).first()
+            var expectedValue = expectedTribe.imgURL || '';
+            expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
+        });
+
+        xit('the tribe email is shown', function (done) {
+            var tribeNameElement = element.all(By.id('tribe-email')).first()
+            var expectedValue = expectedTribe.email || '';
+            expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
         });
     });
 
