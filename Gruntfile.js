@@ -171,22 +171,32 @@ module.exports = function (grunt) {
                     "test/endpoint/**/*",
                     "test/mocha/**/*"
                 ],
-                tasks: ['docker-server-test']
+                tasks: ['docker-server-test'],
+                options: {
+                    interval: 5007
+                }
             },
             frontendtest: {
                 files: [
-                    "public/**/*",
+                    "public/app/**/*",
+                    "public/images/**/*",
+                    "public/stylesheets/**/*",
                     "server/**/*",
                     "views/**/*",
                     "!**/*.css",
                     "test/jasmine/**/*",
                     "test/e2e/**/*"
                 ],
-                tasks: ['docker-frontend-test']
+                tasks: ['docker-frontend-test'],
+                options: {
+                    interval: 5007
+                }
             },
             express: {
                 files: [
-                    "public/**/*",
+                    "public/app/**/*",
+                    "public/images/**/*",
+                    "public/stylesheets/**/*",
                     "server/**/*",
                     "views/**/*",
                     "!**/*.css"
@@ -194,7 +204,8 @@ module.exports = function (grunt) {
                 tasks: ['express:dev2', 'wait'],
                 options: {
                     livereload: true,
-                    nospawn: true
+                    nospawn: true,
+                    interval: 5007
                 }
             }
         },
