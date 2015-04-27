@@ -59,7 +59,7 @@ describe('The default tribes page', function () {
         browser.refresh();
 
         browser.wait(function () {
-            return browser.driver.isElementPresent(By.css('.tribe-listing'));
+            return browser.driver.isElementPresent(By.css('.tribe-name'));
         }, 5000);
         expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
         var tribeElements = element.all(By.repeater('tribe in tribes'));
@@ -70,22 +70,14 @@ describe('The default tribes page', function () {
         browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
         browser.get(hostName);
         browser.refresh();
+        element(By.tagName('body')).allowAnimations(false);
+        element(By.css('.view-frame')).allowAnimations(false);
 
         expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
-        browser.wait(function () {
-            var viewFrameIsPresent = browser.driver.isElementPresent(By.css('.view-frame'));
-            var tribeNameIsPresent = browser.driver.isElementPresent(By.css('.tribe-name'));
-            var animateNameIsPresent = browser.driver.isElementPresent(By.css('.ng-animate'));
-            return protractor.promise.all(viewFrameIsPresent, tribeNameIsPresent,
-                animateNameIsPresent.then(function (isPresent) {
-                    return !isPresent;
-                }));
-        }, 5000);
         var tribeElements = element.all(By.repeater('tribe in tribes'));
         tribeElements.first().element(By.css('.tribe-name')).click();
         expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/');
     });
-
 
     describe('when a tribe exists, on the tribe page', function () {
 
@@ -95,6 +87,7 @@ describe('The default tribes page', function () {
             browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
             browser.get(hostName + '/' + expectedTribe._id + '/');
             browser.refresh();
+            element(By.tagName('body')).allowAnimations(false);
         });
 
         afterEach(function (done) {
@@ -113,22 +106,23 @@ describe('The default tribes page', function () {
         });
 
         it('the tribe name is shown', function () {
+            element(By.css('.view-frame')).allowAnimations(false);
             expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
-            browser.wait(function () {
-                return browser.driver.isElementPresent(By.css('.tribe-view'));
-            }, 5000);
-
             var tribeNameElement = element.all(By.id('tribe-name')).first();
             expect(tribeNameElement.getAttribute('value')).toEqual(expectedTribe.name);
         });
 
-        xit('the tribe image url is shown', function (done) {
+        it('the tribe image url is shown', function () {
+            element(By.css('.view-frame')).allowAnimations(false);
+            expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
             var tribeNameElement = element.all(By.id('tribe-img-url')).first()
             var expectedValue = expectedTribe.imgURL || '';
             expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
         });
 
-        xit('the tribe email is shown', function (done) {
+        it('the tribe email is shown', function () {
+            element(By.css('.view-frame')).allowAnimations(false);
+            expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
             var tribeNameElement = element.all(By.id('tribe-email')).first()
             var expectedValue = expectedTribe.email || '';
             expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
@@ -149,8 +143,7 @@ describe('The default tribes page', function () {
             });
         });
     });
-})
-;
+});
 
 xdescribe('The edit tribe page', function () {
     var tribe = {_id: 'delete_me', name: 'Change Me'};
