@@ -32,8 +32,9 @@ function authorizeAllTribes() {
 
 describe('The default tribes page', function () {
 
-    beforeEach(function (done) {
-        browser.ignoreSynchronization = true;
+    var tribeDocuments;
+
+    beforeEach(function(done){
         tribeCollection.drop()
             .then(function () {
                 return tribeCollection.insert(
@@ -41,34 +42,27 @@ describe('The default tribes page', function () {
                         {_id: 'e2e1', name: 'E2E Example Tribe 1'},
                         {_id: 'e2e2', name: 'E2E Example Tribe 2'}
                     ]);
-            }).then(function () {
+            }).then(function() {
                 return authorizeAllTribes();
-            }).then(function () {
-                return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-            }).then(function () {
-                done()
+            }).then(function() {
+                return tribeCollection.find({}, {})
+            }).then(function(result) {
+                tribeDocuments = result;
+                done();
             }, done);
     });
 
-    it('should have a section for each tribe.', function (done) {
-        RSVP.hash({
-            tribeElements: browser.get(hostName)
-                .then(function () {
-                    expect(browser.getCurrentUrl()).toBe(hostName + '/tribes/');
-                    return element.all(by.repeater('tribe in tribes'));
-                }),
-            tribeDocuments: tribeCollection.find({}, {})
-        }).then(function (hash) {
-            var tribeElements = hash.tribeElements;
-            var tribeDocuments = hash.tribeDocuments;
-            expect(tribeElements.length).toEqual(tribeDocuments.length);
-            _.each(tribeDocuments, function (tribe, index) {
-                var tribeElement = tribeElements[index];
-                expect(tribeElement.getText()).toEqual(tribe.name);
-            });
-        }).then(function () {
-            done();
-        }, done);
+    it('should have a section for each tribe', function() {
+        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+        browser.get(hostName);
+        browser.refresh();
+
+        browser.wait(function() {
+          return browser.driver.isElementPresent(By.css('.tribe-listing'));
+        }, 30000);
+        expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
+        var tribeElements = element.all(By.repeater('tribe in tribes'));
+        expect(tribeElements.getText()).toEqual(_.pluck(tribeDocuments, 'name'));
     });
 
     xdescribe('when a tribe exists, on the tribe page', function () {

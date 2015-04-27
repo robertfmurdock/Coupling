@@ -96,6 +96,9 @@ describe('The edit player page', function () {
     it('should not get alert on leaving when name is changed after save.', function (done) {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
             .then(function () {
+                browser.wait(function() {
+                  return browser.driver.isElementPresent(By.id('player-name'));
+                }, 30000);
                 return element(By.id('player-name')).sendKeys('completely different name');
             }).then(function () {
                 element(By.id('save-player-button')).click();
