@@ -10,7 +10,6 @@ before_install:
   - webdriver-manager update --standalone
   - node node_modules/protractor/bin/webdriver-manager update --standalone
   - npm install -g grunt-cli
-install: npm rebuild
 cache:
   directories:
   - node_modules
