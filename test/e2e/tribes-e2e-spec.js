@@ -59,7 +59,7 @@ describe('The default tribes page', function () {
         browser.refresh();
 
         browser.wait(function () {
-            return browser.driver.isElementPresent(By.css('.tribe-name'));
+            return browser.driver.isElementPresent(By.css('.tribe-listing'));
         }, 5000);
         expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
         var tribeElements = element.all(By.repeater('tribe in tribes'));
