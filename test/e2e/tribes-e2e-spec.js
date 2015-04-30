@@ -39,6 +39,15 @@ function authorizeAllTribes() {
         });
 }
 
+function waitUntilAnimateIsGone() {
+    browser.wait(function() {
+        return browser.driver.isElementPresent(By.css('.ng-animate'))
+            .then(function(result) {
+                return !result;
+            });
+    }, 5000);
+}
+
 describe('The default tribes page', function() {
 
     var tribeDocuments;
@@ -82,12 +91,7 @@ describe('The default tribes page', function() {
 
     it('can navigate to the a specific tribe page', function() {
         expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
-        browser.wait(function() {
-            return browser.driver.isElementPresent(By.css('.ng-animate'))
-                .then(function(result) {
-                    return !result;
-                });
-        }, 5000);
+        waitUntilAnimateIsGone();
 
         var tribeElements = element.all(By.repeater('tribe in tribes'));
         tribeElements.first().element(By.css('.tribe-name')).click();
@@ -95,6 +99,7 @@ describe('The default tribes page', function() {
     });
 
     it('can navigate to the new tribe page', function() {
+        waitUntilAnimateIsGone();
         element(By.id('new-tribe-button')).click();
         expect(browser.getCurrentUrl()).toBe(hostName + '/new-tribe/');
     });
@@ -122,6 +127,10 @@ describe('The default tribes page', function() {
                 }
                 done();
             });
+        });
+
+        it('the tribe view is shown', function() {
+            expect(element(By.css('.tribe-view')).isDisplayed()).toBe(true);
         });
 
         it('the tribe name is shown', function() {
@@ -152,6 +161,7 @@ describe('The default tribes page', function() {
 
         it('the id field shows and does not disappear when text is added', function() {
             browser.get(hostName + '/new-tribe/');
+            waitUntilAnimateIsGone();
             var tribeIdElement = element(By.id('tribe-id'))
             tribeIdElement.sendKeys('oopsie');
             expect(tribeIdElement.isDisplayed()).toBe(true);
@@ -159,25 +169,42 @@ describe('The default tribes page', function() {
     });
 });
 
-xdescribe('The edit tribe page', function() {
+describe('The edit tribe page', function() {
+
     var tribe = {
         _id: 'delete_me',
         name: 'Change Me'
     };
     beforeEach(function(done) {
-        browser.ignoreSynchronization = true;
-        tribeCollection.insert(tribe);
-        authorizeAllTribes(done);
+        tribeCollection.insert(tribe).then(function() {
+            return authorizeAllTribes();
+        }).then(function() {
+            done();
+        }, done);
     });
 
-    afterEach(function() {
+    afterEach(function(done) {
         tribeCollection.remove({
             _id: tribe._id
-        }, false);
+        }, false).then(function() {
+            done();
+        }, done);
+    });
+
+    afterEach(function(done) {
+        browser.manage().logs().get('browser').then(function(browserLog) {
+            // expect(browserLog).toEqual([]);
+            console.log('log: ' + require('util').inspect(browserLog));
+            done();
+        }, done);
     });
 
     it('can save edits to a tribe correctly', function() {
+        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
         browser.get(hostName + '/' + tribe._id);
+        element(By.tagName('body')).allowAnimations(false);
+        expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/');
+        expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);
 
         var expectedNewName = 'Different name';
         element(By.id('tribe-name')).clear();
@@ -185,6 +212,10 @@ xdescribe('The edit tribe page', function() {
         element(By.id('save-tribe-button')).click();
 
         browser.get(hostName + '/' + tribe._id);
+
+        browser.wait(function() {
+            return element(By.css('.tribe-view')).isDisplayed();
+        }, 5000);
 
         expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
     });

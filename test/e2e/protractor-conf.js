@@ -1,5 +1,5 @@
 "use strict";
-var ScreenShotReporter = require('protractor-screenshot-reporter');
+var ScreenShotReporter = require('protractor-jasmine2-screenshot-reporter');
 
 exports.config = {
 
@@ -23,8 +23,8 @@ exports.config = {
     onPrepare: function() {
 
         jasmine.getEnv().addReporter(new ScreenShotReporter({
-            baseDirectory: '/tmp/screenshots',
-            takeScreenShotsOnlyForFailedSpecs: true
+            dest: '/tmp/screenshots',
+            captureOnlyFailedSpecs: true
         }));
 
         var disableNgAnimate = function() {
