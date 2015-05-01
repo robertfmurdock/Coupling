@@ -22,13 +22,10 @@ describe('The edit player page', function() {
             }
         }).then(function(updateCount) {
             if (updateCount == 0) {
-                console.log('INSERTING USER');
                 return usersCollection.insert({
                     email: userEmail,
                     tribes: authorizedTribes
                 });
-            } else {
-                console.log('updating  USER' + updateCount);
             }
         });
     }
@@ -43,23 +40,24 @@ describe('The edit player page', function() {
         name: 'Voidman'
     };
 
-    beforeEach(function(done) {
+    beforeAll(function(done) {
         browser.ignoreSynchronization = true;
-        tribeCollection.insert(tribe).then(function() {
-            return tribeCollection.find({}, {});
-        }).then(function(error, tribeDocuments) {
-            var authorizedTribes = _.pluck(tribeDocuments, '_id');
-            return authorizeUserForTribes(authorizedTribes);
-        }).then(function() {
-            return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-        }).then(function() {
-            return playersCollection.insert(player);
-        }).then(function() {
-            done();
-        }, done);
+        tribeCollection.insert(tribe)
+            .then(function() {
+                return tribeCollection.find({}, {});
+            }).then(function(error, tribeDocuments) {
+                var authorizedTribes = _.pluck(tribeDocuments, '_id');
+                return authorizeUserForTribes(authorizedTribes);
+            }).then(function() {
+                return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+            }).then(function() {
+                return playersCollection.insert(player);
+            }).then(function() {
+                done();
+            }, done);
     });
 
-    afterEach(function(done) {
+    afterAll(function(done) {
         browser.manage().logs().get('browser').then(function(browserLogs) {
             if (browserLogs.length != 0) {
                 console.log('LOGS CAPTURED:');
@@ -112,17 +110,15 @@ describe('The edit player page', function() {
 
     it('should not get alert on leaving when name is changed after save.', function(done) {
         browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
-            .then(function() {
-                element(By.css('.view-frame')).allowAnimations(false);
-                browser.wait(function() {
-                    return browser.driver.isElementPresent(By.id('player-name'));
-                }, 30000);
-                return element(By.id('player-name')).sendKeys('completely different name');
-            }).then(function() {
-                element(By.id('save-player-button')).click();
-                element(By.id('spin-button')).click();
-                expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
-                done();
-            });
+
+        browser.wait(function() {
+            return browser.driver.isElementPresent(By.id('player-name'));
+        }, 30000);
+        element(By.id('player-name')).sendKeys('completely different name');
+
+        element(By.id('save-player-button')).click();
+        element(By.id('spin-button')).click();
+        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+        done();
     });
 });

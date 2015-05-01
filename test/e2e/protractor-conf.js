@@ -6,7 +6,7 @@ exports.config = {
     allScriptsTimeout: 11000,
 
     capabilities: {
-        'browserName': 'chrome'
+        'browserName': 'chrome',
     },
 
     // Spec patterns are relative to the current working directly when

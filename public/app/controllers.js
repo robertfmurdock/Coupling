@@ -127,9 +127,14 @@ controllers.controller('HistoryController', ['$scope', 'Coupling', '$routeParams
 controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', '$routeParams',
     function($scope, $location, Coupling, $routeParams) {
         Coupling.selectTribe($routeParams.tribeId).then(function(data) {
+            console.log('spinning with');
+            console.log(data);
+            console.log(data.players);
             var selectedPlayers = _.filter(data.players, function(player) {
                 return player.isAvailable;
             });
+            console.log('sending');
+            console.log(selectedPlayers);
             Coupling.spin(selectedPlayers);
         });
 

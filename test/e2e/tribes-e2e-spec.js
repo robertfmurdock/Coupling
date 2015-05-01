@@ -20,13 +20,10 @@ function authorizeUserForTribes(authorizedTribes) {
         }
     }).then(function(updateCount) {
         if (updateCount == 0) {
-            console.log('INSERTING USER');
             return usersCollection.insert({
                 email: tempUserEmail,
                 tribes: authorizedTribes
             });
-        } else {
-            console.log('updating  USER ' + updateCount);
         }
     });
 }
@@ -52,7 +49,7 @@ describe('The default tribes page', function() {
 
     var tribeDocuments;
 
-    beforeEach(function(done) {
+    beforeAll(function(done) {
         browser.driver.manage().deleteAllCookies();
         tribeCollection.drop()
             .then(function() {
@@ -73,11 +70,15 @@ describe('The default tribes page', function() {
 
                 browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
                 browser.get(hostName);
-                browser.refresh();
+
                 element(By.tagName('body')).allowAnimations(false);
                 element(By.css('.view-frame')).allowAnimations(false);
                 done();
             }, done);
+    });
+
+    beforeEach(function() {
+        browser.get(hostName);
     });
 
     it('should have a section for each tribe', function() {
@@ -107,12 +108,15 @@ describe('The default tribes page', function() {
     describe('when a tribe exists, on the tribe page', function() {
 
         var expectedTribe;
-        beforeEach(function() {
+        beforeAll(function() {
             expectedTribe = tribeDocuments[0];
             browser.get(hostName + '/' + expectedTribe._id + '/');
-            browser.refresh();
             element(By.tagName('body')).allowAnimations(false);
         });
+
+        beforeEach(function() {
+            browser.get(hostName + '/' + expectedTribe._id + '/');
+        })
 
         afterEach(function(done) {
             browser.manage().logs().get('browser').then(function(browserLogs) {
@@ -175,7 +179,7 @@ describe('The edit tribe page', function() {
         _id: 'delete_me',
         name: 'Change Me'
     };
-    beforeEach(function(done) {
+    beforeAll(function(done) {
         tribeCollection.insert(tribe).then(function() {
             return authorizeAllTribes();
         }).then(function() {
@@ -183,7 +187,7 @@ describe('The edit tribe page', function() {
         }, done);
     });
 
-    afterEach(function(done) {
+    afterAll(function(done) {
         tribeCollection.remove({
             _id: tribe._id
         }, false).then(function() {

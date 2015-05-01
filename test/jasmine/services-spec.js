@@ -57,6 +57,7 @@ describe('Service: ', function() {
 
         describe('select tribe', function() {
             it('will request players and history for given tribe', function(done) {
+                console.log('BUTTS BUTTS BUTTS');
                 var tribeId = 'awesomeTribe';
 
                 var expectedPlayers = [{
@@ -76,9 +77,10 @@ describe('Service: ', function() {
                 httpBackend.whenGET('/api/' + tribeId + '/history').respond(200, expectedHistory);
 
                 Coupling.selectTribe(tribeId).then(function(data) {
+                    console.log(data);
                     expect(expectedPlayers).toEqual(data.players);
                     expect(expectedHistory).toEqual(data.history);
-                    done();
+                    done.error('fail');
                 }).catch(done);
                 httpBackend.flush();
             });
@@ -86,7 +88,6 @@ describe('Service: ', function() {
 
         describe('save tribe', function() {
             it('will post to persistence and callback', function() {
-
                 httpBackend.whenPOST('/api/tribes').respond(200);
                 var tribe = {
                     name: 'Navi'
@@ -99,7 +100,6 @@ describe('Service: ', function() {
                 httpBackend.flush();
                 expect(callbackCallCount).toBe(1);
             });
-
         });
 
         describe('list all pins', function() {
