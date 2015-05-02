@@ -41,7 +41,6 @@ describe('The edit player page', function() {
     };
 
     beforeAll(function(done) {
-        browser.ignoreSynchronization = true;
         tribeCollection.insert(tribe)
             .then(function() {
                 return tribeCollection.find({}, {});

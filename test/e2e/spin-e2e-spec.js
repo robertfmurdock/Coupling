@@ -101,5 +101,4 @@ describe('On the pair assignments page', function () {
     var pairs = element.all(By.repeater('pair in data.currentPairAssignments.pairs'));
     expect(pairs.count()).toEqual(1);
   });
-
 });
