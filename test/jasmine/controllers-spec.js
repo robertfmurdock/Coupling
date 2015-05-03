@@ -589,27 +589,30 @@ describe('The controller named ', function () {
           };
         });
 
-        it('will select tribe and then select the latest pairs', function (done) {
-          injectController(ControllerName, scope, location, Coupling, routeParams);
-
-          expect(selectedTribeId).toBe(Coupling.data.selectedTribe._id);
+        it('will select tribe and then select the latest pairs', function () {
           var currentPairs = [
             ['tom', 'jerry']
           ];
           var history = [currentPairs];
-          expect(Coupling.data.currentPairAssignments).not.toBe(currentPairs);
-          selectTribeDefer.resolve({
-            history: history
+          inject(function ($controller) {
+            $controller(ControllerName, {
+              $scope: scope,
+              Coupling: Coupling,
+              history: history
+            });
           });
-          selectTribeDefer.promise.then(function () {
-            expect(Coupling.data.currentPairAssignments).toBe(currentPairs);
-            done();
-          }).catch(done);
+          expect(Coupling.data.currentPairAssignments).toBe(currentPairs);
         });
 
         it('will maximize player roster', function () {
           scope.playerRoster.minimized = true;
-          injectController(ControllerName, scope, location, Coupling, routeParams);
+          inject(function ($controller) {
+            $controller(ControllerName, {
+              $scope: scope,
+              Coupling: Coupling,
+              history: []
+            });
+          });
           expect(scope.playerRoster.minimized).toBe(false);
         });
       });

@@ -164,10 +164,8 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
 ])
 ;
 
-controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
-  Coupling.selectTribe($routeParams.tribeId).then(function (data) {
-    Coupling.data.currentPairAssignments = data.history[0];
-  });
+controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', 'history', function ($scope, Coupling, history) {
+  Coupling.data.currentPairAssignments = history[0];
   $scope.playerRoster.minimized = false;
 }]);
 

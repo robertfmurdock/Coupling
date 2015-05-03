@@ -42,7 +42,14 @@ app.config(['$routeProvider', function (routeProvider) {
   });
   routeProvider.when('/:tribeId/pairAssignments/current/', {
     templateUrl: '/partials/pairAssignments/',
-    controller: "CurrentPairAssignmentsController"
+    controller: "CurrentPairAssignmentsController",
+    resolve: {
+      history: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.selectTribe($route.current.params.tribeId).then(function (data) {
+          return data.history;
+        });
+      }]
+    }
   });
   routeProvider.when('/:tribeId/pairAssignments/new/', {
     templateUrl: '/partials/pairAssignments/',

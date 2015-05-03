@@ -102,7 +102,7 @@ describe('On the pair assignments page', function () {
     expect(pairs.count()).toEqual(2);
   });
 
-  it('spinning with two players disabled will only yield one pair', function(){
+  it('spinning with two players disabled will only yield one pair and the players stay disabled', function(){
     browser.get(hostName + '/' + tribe._id + '/pairAssignments/current/');
     var playerRosterElements = element.all(By.repeater('player in data.players'));
     playerRosterElements.get(0).click();
@@ -112,5 +112,7 @@ describe('On the pair assignments page', function () {
     browser.waitForAngular();
     var pairs = element.all(By.repeater('pair in data.currentPairAssignments.pairs'));
     expect(pairs.count()).toEqual(1);
+    expect(playerRosterElements.get(0).getAttribute('class')).toContain('disabled');
+    expect(playerRosterElements.get(2).getAttribute('class')).toContain('disabled');
   });
 });
