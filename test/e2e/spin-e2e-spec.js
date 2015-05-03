@@ -3,6 +3,7 @@ var monk = require("monk");
 var config = require("../../config");
 var _ = require('underscore');
 var RSVP = require('rsvp');
+var e2eHelp = require('./e2e-help');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
@@ -92,6 +93,7 @@ describe('On the pair assignments page', function () {
       }, done);
   });
 
+  e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('spinning with all players on will get all players back', function () {
     browser.get(hostName + '/' + tribe._id + '/pairAssignments/current/');

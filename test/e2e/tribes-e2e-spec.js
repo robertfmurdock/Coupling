@@ -1,6 +1,7 @@
 "use strict";
 var monk = require("monk");
 var config = require("../../config");
+var e2eHelp = require('./e2e-help');
 var _ = require('underscore');
 var RSVP = require('rsvp');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -80,6 +81,8 @@ describe('The default tribes page', function () {
   beforeEach(function () {
     browser.get(hostName);
   });
+
+  e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('should have a section for each tribe', function () {
     browser.wait(function () {
@@ -167,7 +170,7 @@ describe('The default tribes page', function () {
     it('the id field shows and does not disappear when text is added', function () {
       browser.get(hostName + '/new-tribe/');
       waitUntilAnimateIsGone();
-      var tribeIdElement = element(By.id('tribe-id'))
+      var tribeIdElement = element(By.id('tribe-id'));
       tribeIdElement.sendKeys('oopsie');
       expect(tribeIdElement.isDisplayed()).toBe(true);
     });
@@ -181,6 +184,7 @@ describe('The edit tribe page', function () {
     name: 'Change Me'
   };
   beforeAll(function (done) {
+    tribeCollection.drop();
     tribeCollection.insert(tribe).then(function () {
       return authorizeAllTribes();
     }).then(function () {
@@ -196,18 +200,13 @@ describe('The edit tribe page', function () {
     }, done);
   });
 
-  afterEach(function (done) {
-    browser.manage().logs().get('browser').then(function (browserLog) {
-      // expect(browserLog).toEqual([]);
-      console.log('log: ' + require('util').inspect(browserLog));
-      done();
-    }, done);
-  });
+  e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('can save edits to a tribe correctly', function () {
     browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-    browser.get(hostName + '/' + tribe._id);
-    element(By.tagName('body')).allowAnimations(false);
+    var tribeElements = element.all(By.repeater('tribe in tribes'));
+    tribeElements.first().element(By.css('.tribe-name')).click();
+
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/');
     expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);
 

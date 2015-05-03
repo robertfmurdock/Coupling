@@ -4,6 +4,7 @@ var _ = require('underscore');
 var config = require("../../config");
 
 var hostName = 'http://' + config.publicHost + ':' + config.port;
+var e2eHelp = require('./e2e-help');
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
@@ -81,8 +82,10 @@ describe('The edit player page', function() {
             });
     });
 
+    e2eHelp.afterEachAssertLogsAreEmpty();
+
     it('should not alert on leaving via the spin button when nothing has changed.', function() {
-        browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
+        browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
         expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player._id + '/');
         element(By.id('spin-button')).click();
         expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
@@ -108,7 +111,7 @@ describe('The edit player page', function() {
     });
 
     it('should not get alert on leaving when name is changed after save.', function(done) {
-        browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
+        browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
 
         browser.wait(function() {
             return browser.driver.isElementPresent(By.id('player-name'));
