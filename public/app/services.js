@@ -29,16 +29,6 @@ services.service("Coupling", ['$http', function ($http) {
     });
   };
 
-  var requestPlayers = function (tribeId, callback) {
-    var url = '/api/' + tribeId + '/players';
-    $http.get(url).success(function (players) {
-      Coupling.data.players = players;
-      if (callback) {
-        callback(players);
-      }
-    }).error(makeErrorHandler('GET ' + url));
-  };
-
   var requestHistory = function (tribeId, callback) {
     var url = '/api/' + tribeId + '/history';
     $http.get(url).success(function (history) {
@@ -49,7 +39,37 @@ services.service("Coupling", ['$http', function ($http) {
     }).error(makeErrorHandler('GET ' + url));
   };
 
-  var requestHistoryPromise = function (tribeId) {
+  this.requestSpecificTribe = function (tribeId) {
+    return Coupling.getTribes().then(function (tribes) {
+      var found = _.findWhere(tribes, {
+        _id: tribeId
+      });
+      Coupling.data.selectedTribe = found;
+      return new RSVP.Promise(function (resolve, reject) {
+        if (found) {
+          resolve(found);
+        } else {
+          reject("Tribe not found")
+        }
+      });
+    })
+  };
+
+  this.requestPlayersPromise = function (tribeId) {
+    return new RSVP.Promise(function (resolve, reject) {
+      var url = '/api/' + tribeId + '/players';
+      $http.get(url).success(function (players) {
+        Coupling.data.players = players;
+        resolve(players);
+      }).error(function (data, statusCode) {
+        var message = errorMessage(url, data, statusCode);
+        console.error('ALERT!\n' + message);
+        reject(message);
+      });
+    })
+  };
+
+  this.requestHistoryPromise = function (tribeId) {
     return new RSVP.Promise(function (resolve, reject) {
       requestHistory(tribeId, function (history) {
         Coupling.data.history = history;
@@ -88,12 +108,28 @@ services.service("Coupling", ['$http', function ($http) {
 
   this.savePlayer = function (player, callback) {
     post('/api/' + Coupling.data.selectedTribeId + '/players', player, callback);
-    requestPlayers(Coupling.data.selectedTribeId);
+    (function (tribeId, callback) {
+      var url = '/api/' + tribeId + '/players';
+      $http.get(url).success(function (players) {
+        Coupling.data.players = players;
+        if (callback) {
+          callback(players);
+        }
+      }).error(makeErrorHandler('GET ' + url));
+    })(Coupling.data.selectedTribeId);
   };
 
   this.removePlayer = function (player, callback) {
     httpDelete('/api/' + Coupling.data.selectedTribeId + '/players/' + player._id, callback);
-    requestPlayers(Coupling.data.selectedTribeId);
+    (function (tribeId, callback) {
+      var url = '/api/' + tribeId + '/players';
+      $http.get(url).success(function (players) {
+        Coupling.data.players = players;
+        if (callback) {
+          callback(players);
+        }
+      }).error(makeErrorHandler('GET ' + url));
+    })(Coupling.data.selectedTribeId);
   };
 
   this.selectTribe = function (tribeId) {
@@ -105,7 +141,7 @@ services.service("Coupling", ['$http', function ($http) {
       return new RSVP.hash({
         selectedTribe: null,
         players: Coupling.data.players,
-        history: requestHistoryPromise(tribeId)
+        history: Coupling.requestHistoryPromise(tribeId)
       });
     } else {
       Coupling.data.selectedTribeId = tribeId;
@@ -113,26 +149,9 @@ services.service("Coupling", ['$http', function ($http) {
       Coupling.data.currentPairAssignments = null;
       Coupling.data.history = null;
       return RSVP.hash({
-        selectedTribe: Coupling.getTribes().then(function (tribes) {
-          var found = _.findWhere(tribes, {
-            _id: tribeId
-          });
-          Coupling.data.selectedTribe = found;
-          return new RSVP.Promise(function (resolve, reject) {
-            if (found) {
-              resolve(found);
-            } else {
-              reject("Tribe not found")
-            }
-          });
-        }),
-        players: new RSVP.Promise(function (resolve, reject) {
-          requestPlayers(tribeId, function (players) {
-            Coupling.data.players = players;
-            resolve(players);
-          });
-        }),
-        history: requestHistoryPromise(tribeId)
+        selectedTribe: Coupling.requestSpecificTribe(tribeId),
+        players: Coupling.requestPlayersPromise(tribeId),
+        history: Coupling.requestHistoryPromise(tribeId)
       });
     }
   };
@@ -158,7 +177,15 @@ services.service("Coupling", ['$http', function ($http) {
     });
   };
   this.findPlayerById = function (id, callback) {
-    requestPlayers(Coupling.data.selectedTribeId, function (players) {
+    (function (tribeId, callback) {
+      var url = '/api/' + tribeId + '/players';
+      $http.get(url).success(function (players) {
+        Coupling.data.players = players;
+        if (callback) {
+          callback(players);
+        }
+      }).error(makeErrorHandler('GET ' + url));
+    })(Coupling.data.selectedTribeId, function (players) {
       callback(_.findWhere(players, {
         _id: id
       }));

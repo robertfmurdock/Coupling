@@ -7,7 +7,9 @@ var helper = {
       browser.waitForAngular();
       browser.manage().logs().get('browser').then(function (browserLog) {
         expect(browserLog).toEqual([]);
-        console.log('log: ' + util.inspect(browserLog));
+        if (browserLog.length > 0) {
+          console.log('log: ' + util.inspect(browserLog));
+        }
         done();
       }, done);
     });

@@ -26,9 +26,7 @@ app.config(['$routeProvider', function (routeProvider) {
     controller: "EditTribeController",
     resolve: {
       tribe: ['$route', 'Coupling', function ($route, Coupling) {
-        return Coupling.selectTribe($route.current.params.tribeId).then(function (data) {
-          return data.selectedTribe;
-        });
+        return Coupling.requestSpecificTribe($route.current.params.tribeId);
       }]
     }
   });
