@@ -68,12 +68,7 @@ describe('The default tribes page', function () {
         return tribeCollection.find({}, {})
       }).then(function (result) {
         tribeDocuments = result;
-
         browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-        browser.get(hostName);
-
-        element(By.tagName('body')).allowAnimations(false);
-        element(By.css('.view-frame')).allowAnimations(false);
         done();
       }, done);
   });
@@ -85,9 +80,6 @@ describe('The default tribes page', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('should have a section for each tribe', function () {
-    browser.wait(function () {
-      return browser.driver.isElementPresent(By.css('.tribe-listing'));
-    }, 5000);
     expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
     var tribeElements = element.all(By.repeater('tribe in tribes'));
     expect(tribeElements.getText()).toEqual(_.pluck(tribeDocuments, 'name'));
@@ -95,15 +87,12 @@ describe('The default tribes page', function () {
 
   it('can navigate to the a specific tribe page', function () {
     expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
-    waitUntilAnimateIsGone();
-
     var tribeElements = element.all(By.repeater('tribe in tribes'));
     tribeElements.first().element(By.css('.tribe-name')).click();
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/');
   });
 
   it('can navigate to the new tribe page', function () {
-    waitUntilAnimateIsGone();
     element(By.id('new-tribe-button')).click();
     expect(browser.getCurrentUrl()).toBe(hostName + '/new-tribe/');
   });
@@ -214,6 +203,7 @@ describe('The edit tribe page', function () {
     element(By.id('tribe-name')).clear();
     element(By.id('tribe-name')).sendKeys(expectedNewName);
     element(By.id('save-tribe-button')).click();
+    browser.waitForAngular();
 
     browser.get(hostName + '/' + tribe._id);
 

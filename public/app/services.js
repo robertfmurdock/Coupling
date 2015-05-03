@@ -5,15 +5,15 @@ services.service("Coupling", ['$http', function ($http) {
   var Coupling = this;
 
   function errorMessage(url, data, statusCode) {
-    return "There was a problem loading " + url + "\n" +
+    return "There was a problem with request " + url + "\n" +
       "Data: <" + data + ">\n" +
       "Status: " + statusCode;
   }
 
   var makeErrorHandler = function (url) {
-    return function (data, statusCode) {
+    return function (data, statusCode, headers, config) {
       var message = errorMessage(url, data, statusCode);
-      console.log('ALERT!\n' + message);
+      console.error('ALERT!\n' + message);
       // alert(message);
     }
   };
@@ -24,7 +24,7 @@ services.service("Coupling", ['$http', function ($http) {
       $http.get(url).success(function (tribes) {
         resolve(tribes);
       }).error(function (data, statusCode) {
-        reject(errorMessage(url, data, statusCode));
+        reject(errorMessage('GET ' + url, data, statusCode));
       });
     });
   };
@@ -36,7 +36,7 @@ services.service("Coupling", ['$http', function ($http) {
       if (callback) {
         callback(players);
       }
-    }).error(makeErrorHandler(url));
+    }).error(makeErrorHandler('GET ' + url));
   };
 
   var requestHistory = function (tribeId, callback) {
@@ -46,7 +46,7 @@ services.service("Coupling", ['$http', function ($http) {
       if (callback) {
         callback(history);
       }
-    }).error(makeErrorHandler(url));
+    }).error(makeErrorHandler('GET ' + url));
   };
 
   var post = function (url, player, callback) {
@@ -54,7 +54,7 @@ services.service("Coupling", ['$http', function ($http) {
     if (callback) {
       postPromise.success(callback);
     }
-    postPromise.error(makeErrorHandler(url));
+    postPromise.error(makeErrorHandler('POST ' + url));
   };
 
   var httpDelete = function (url, callback) {
@@ -93,33 +93,39 @@ services.service("Coupling", ['$http', function ($http) {
     Coupling.data.currentPairAssignments = null;
     Coupling.data.history = null;
 
-    return RSVP.hash({
-      selectedTribe: Coupling.getTribes().then(function (tribes) {
-        var found = _.findWhere(tribes, {
-          _id: tribeId
-        });
-        Coupling.data.selectedTribe = found;
-        return new RSVP.Promise(function (resolve, reject) {
-          if (found) {
-            resolve(found);
-          } else {
-            reject("Tribe not found")
-          }
-        });
-      }),
-      players: new RSVP.Promise(function(resolve, reject) {
-          requestPlayers(tribeId, function(players){
-              Coupling.data.players = players;
-              resolve(players);
+    if (tribeId == null) {
+      return new RSVP.Promise(function (resolve) {
+        resolve({selectedTribe: null, players: null, history: null});
+      });
+    } else {
+      return RSVP.hash({
+        selectedTribe: Coupling.getTribes().then(function (tribes) {
+          var found = _.findWhere(tribes, {
+            _id: tribeId
           });
-      }),
-      history: new RSVP.Promise(function (resolve, reject) {
-        requestHistory(tribeId, function (history) {
-          Coupling.data.history = history;
-          resolve(history);
-        });
-      })
-    });
+          Coupling.data.selectedTribe = found;
+          return new RSVP.Promise(function (resolve, reject) {
+            if (found) {
+              resolve(found);
+            } else {
+              reject("Tribe not found")
+            }
+          });
+        }),
+        players: new RSVP.Promise(function (resolve, reject) {
+          requestPlayers(tribeId, function (players) {
+            Coupling.data.players = players;
+            resolve(players);
+          });
+        }),
+        history: new RSVP.Promise(function (resolve, reject) {
+          requestHistory(tribeId, function (history) {
+            Coupling.data.history = history;
+            resolve(history);
+          });
+        })
+      });
+    }
   };
 
   this.getTribes = function () {
@@ -135,7 +141,7 @@ services.service("Coupling", ['$http', function ($http) {
       var url = '/api/' + tribeId + '/pins';
       $http.get(url)
         .error(function (data, status) {
-          reject(errorMessage(url, data, status));
+          reject(errorMessage('GET ' +url, data, status));
         })
         .then(function (response) {
           return resolve(response.data);

@@ -48,7 +48,7 @@ describe('Service: ', function () {
           callCount++;
         }).catch(function (error) {
           expect(callCount).toBe(0);
-          expect(error).toEqual('There was a problem loading ' + url + '\n' +
+          expect(error).toEqual('There was a problem with request GET ' + url + '\n' +
           'Data: <' + expectedData + '>\n' +
           'Status: ' + statusCode);
           done();
@@ -133,7 +133,7 @@ describe('Service: ', function () {
         Coupling.promisePins(tribeId).then(function () {
           done("This should not succeed.");
         }).catch(function (error) {
-          expect(error).toEqual('There was a problem loading ' + url + '\n' +
+          expect(error).toEqual('There was a problem with request GET ' + url + '\n' +
           'Data: <' + expectedData + '>\n' +
           'Status: ' + statusCode);
           done();
