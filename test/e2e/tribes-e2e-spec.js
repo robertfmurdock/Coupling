@@ -46,6 +46,18 @@ function waitUntilAnimateIsGone() {
   }, 5000);
 }
 
+var tribeListPage = {
+  getTribeElements: function(){
+    return element.all(By.repeater('tribe in tribes'));
+  },
+  getTribeNameLabel: function(tribeElement){
+    return tribeElement.element(By.css('.tribe-name'));
+  },
+  getNewTribeButton: function(){
+    return element(By.id('new-tribe-button'));
+  }
+};
+
 describe('The default tribes page', function () {
 
   var tribeDocuments;
@@ -75,25 +87,24 @@ describe('The default tribes page', function () {
 
   beforeEach(function () {
     browser.get(hostName);
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
   });
 
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('should have a section for each tribe', function () {
-    expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
-    var tribeElements = element.all(By.repeater('tribe in tribes'));
+    var tribeElements = tribeListPage.getTribeElements();
     expect(tribeElements.getText()).toEqual(_.pluck(tribeDocuments, 'name'));
   });
 
   it('can navigate to the a specific tribe page', function () {
-    expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
-    var tribeElements = element.all(By.repeater('tribe in tribes'));
-    tribeElements.first().element(By.css('.tribe-name')).click();
+    var tribeElements = tribeListPage.getTribeElements();
+    tribeListPage.getTribeNameLabel(tribeElements.first()).click();
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/');
   });
 
   it('can navigate to the new tribe page', function () {
-    element(By.id('new-tribe-button')).click();
+    tribeListPage.getNewTribeButton().click();
     expect(browser.getCurrentUrl()).toBe(hostName + '/new-tribe/');
   });
 
@@ -111,21 +122,6 @@ describe('The default tribes page', function () {
       browser.get(hostName + '/' + expectedTribe._id + '/');
     });
 
-    afterEach(function (done) {
-      browser.manage().logs().get('browser').then(function (browserLogs) {
-        if (browserLogs.length != 0) {
-          console.log('LOGS CAPTURED:');
-        }
-        browserLogs.forEach(function (log) {
-          console.log(log.message);
-        });
-        if (browserLogs.length != 0) {
-          console.log('END LOGS');
-        }
-        done();
-      });
-    });
-
     it('the tribe view is shown', function () {
       expect(element(By.css('.tribe-view')).isDisplayed()).toBe(true);
     });
@@ -140,7 +136,7 @@ describe('The default tribes page', function () {
     it('the tribe image url is shown', function () {
       element(By.css('.view-frame')).allowAnimations(false);
       expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
-      var tribeNameElement = element.all(By.id('tribe-img-url')).first()
+      var tribeNameElement = element.all(By.id('tribe-img-url')).first();
       var expectedValue = expectedTribe.imgURL || '';
       expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
     });
@@ -148,7 +144,7 @@ describe('The default tribes page', function () {
     it('the tribe email is shown', function () {
       element(By.css('.view-frame')).allowAnimations(false);
       expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
-      var tribeNameElement = element.all(By.id('tribe-email')).first()
+      var tribeNameElement = element.all(By.id('tribe-email')).first();
       var expectedValue = expectedTribe.email || '';
       expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
     });

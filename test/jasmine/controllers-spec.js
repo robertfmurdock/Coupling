@@ -238,7 +238,6 @@ describe('The controller named ', function () {
         });
       });
 
-
       var NewTribeController = 'NewTribeController';
       describe(NewTribeController, function () {
 
@@ -484,7 +483,7 @@ describe('The controller named ', function () {
           }];
           selectTribeDefer.resolve({
             players: players
-          })
+          });
           selectTribeDefer.promise.then(function () {
             expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]]);
             done();

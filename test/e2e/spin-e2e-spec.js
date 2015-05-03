@@ -39,15 +39,6 @@ function authorizeAllTribes() {
     });
 }
 
-function waitUntilAnimateIsGone() {
-  browser.wait(function () {
-    return browser.driver.isElementPresent(By.css('.ng-animate'))
-      .then(function (result) {
-        return !result;
-      });
-  }, 5000);
-}
-
 describe('On the pair assignments page', function () {
 
   var tribe = {
@@ -55,17 +46,28 @@ describe('On the pair assignments page', function () {
     name: 'Change Me'
   };
   var player1 = {
-    _id: 'delete_me',
+    _id: 'delete_me1',
     tribe: 'delete_me',
-    name: 'Voidman'
+    name: 'Voidman1'
   };
   var player2 = {
-    _id: 'delete_me',
+    _id: 'delete_me2',
     tribe: 'delete_me',
-    name: 'Voidman'
+    name: 'Voidman2'
+  };
+  var player3 = {
+    _id: 'delete_me3',
+    tribe: 'delete_me',
+    name: 'Voidman3'
   };
 
-  var players = [player1, player2];
+  var player4 = {
+    _id: 'delete_me4',
+    tribe: 'delete_me',
+    name: 'Voidman4'
+  };
+
+  var players = [player1, player2, player3, player4];
 
   beforeAll(function (done) {
     browser.driver.manage().deleteAllCookies();
@@ -78,10 +80,6 @@ describe('On the pair assignments page', function () {
         return tribeCollection.find({}, {})
       }).then(function () {
         browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-        browser.get(hostName);
-
-        element(By.tagName('body')).allowAnimations(false);
-        element(By.css('.view-frame')).allowAnimations(false);
       }).then(function () {
         return playersCollection.drop();
       }).then(function () {
@@ -98,8 +96,20 @@ describe('On the pair assignments page', function () {
   it('spinning with all players on will get all players back', function () {
     browser.get(hostName + '/' + tribe._id + '/pairAssignments/current/');
     element(By.id('spin-button')).click();
+    browser.waitForAngular();
 
-    waitUntilAnimateIsGone();
+    var pairs = element.all(By.repeater('pair in data.currentPairAssignments.pairs'));
+    expect(pairs.count()).toEqual(2);
+  });
+
+  it('spinning with two players disabled will only yield one pair', function(){
+    browser.get(hostName + '/' + tribe._id + '/pairAssignments/current/');
+    var playerRosterElements = element.all(By.repeater('player in data.players'));
+    playerRosterElements.get(0).click();
+    playerRosterElements.get(2).click();
+    browser.waitForAngular();
+    element(By.id('spin-button')).click();
+    browser.waitForAngular();
     var pairs = element.all(By.repeater('pair in data.currentPairAssignments.pairs'));
     expect(pairs.count()).toEqual(1);
   });

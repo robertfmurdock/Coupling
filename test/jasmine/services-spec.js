@@ -86,6 +86,36 @@ describe('Service: ', function () {
           }).finally(done);
         httpBackend.flush();
       });
+
+      it('will use already loaded players if they are available', function(done){
+        var tribeId = 'awesomeTribe';
+
+        var expectedPlayers = [{
+          name: 'player1'
+        }, {
+          name: 'player2'
+        }];
+
+        var expectedHistory = [{
+          time: 'before'
+        }, {
+          time: 'after'
+        }];
+
+        Coupling.data.selectedTribeId = tribeId;
+        Coupling.data.players = expectedPlayers;
+
+        httpBackend.whenGET('/api/' + tribeId + '/history').respond(200, expectedHistory);
+
+        Coupling.selectTribe(tribeId)
+          .then(function (data) {
+            expect(expectedPlayers).toEqual(data.players);
+            expect(expectedHistory).toEqual(data.history);
+          }).catch(function (error) {
+            expect(error).toBeUndefined();
+          }).finally(done);
+        httpBackend.flush();
+      });
     });
 
     describe('save tribe', function () {

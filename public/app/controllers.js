@@ -128,6 +128,8 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
       Coupling.spin(selectedPlayers);
     });
 
+    Coupling.selectTribe($routeParams.tribeId);
+
     $scope.save = function () {
       Coupling.saveCurrentPairAssignments();
       $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
@@ -159,7 +161,8 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
       }
     }
   }
-]);
+])
+;
 
 controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   Coupling.selectTribe($routeParams.tribeId).then(function (data) {
