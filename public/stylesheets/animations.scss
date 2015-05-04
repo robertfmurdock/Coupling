@@ -122,6 +122,13 @@
   }
 }
 
+.pair-assignments .player.hoverzoom:hover {
+  transition: all ease-in 0.4s;
+  z-index: 1;
+  animation: 0.5s twitch;
+  animation-iteration-count: infinite;
+}
+
 .current.pair-assignments {
   &.ng-hide, &.ng-hide-add {
     animation: none;
@@ -139,6 +146,19 @@
     animation: none;
   }
 }
+
+@keyframes twitch {
+  0% {
+    transform: rotate(.5deg);
+  }
+  50% {
+    transform: rotate(-.5deg);
+  }
+  100% {
+    transform: rotate(.5deg);
+  }
+}
+
 
 @keyframes wiggle {
   0% {
