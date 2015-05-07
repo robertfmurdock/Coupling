@@ -32,7 +32,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
+    "chai": "^2.3.0",
     "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-contrib-watch": "^0.6.1",
@@ -46,8 +46,8 @@
     "grunt-protractor-webdriver": "^0.2.0",
     "grunt-start-webdriver": "^0.0.2",
     "grunt-wiredep": "^2.0.0",
-    "jasmine": "^2.2.1",
-    "jasmine-core": "https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.1.2.tgz",
+    "jasmine": "^2.3.1",
+    "jasmine-core": "https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.3.0",
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.8",
     "karma-firefox-launcher": "^0.1.4",
