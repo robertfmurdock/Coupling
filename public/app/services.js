@@ -56,8 +56,6 @@ services.service("Coupling", ['$http', function($http) {
     };
 
     var isInLastSetOfPairs = function(player, history) {
-        console.log('last set of pairs');
-        console.info(history[0]);
         var result = _.find(history[0].pairs, function(pairset) {
             if (_.findWhere(pairset, {
                     _id: player._id
