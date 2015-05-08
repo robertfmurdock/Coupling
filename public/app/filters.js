@@ -17,7 +17,7 @@ filters.filter('tribeImageUrl', ['gravatarService', function(gravatarService) {
             if (tribe.imageURL) {
                 return tribe.imageURL;
             } else if (tribe.email) {
-                options.default = "monsterid";
+                options.default = "identicon";
                 return gravatarService.url(tribe.email, options);
             }
         }
