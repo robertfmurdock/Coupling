@@ -55,31 +55,57 @@ services.service("Coupling", ['$http', function($http) {
         })
     };
 
-    this.requestPlayersPromise = function(tribeId) {
-        return new RSVP.Promise(function(resolve, reject) {
-            var url = '/api/' + tribeId + '/players';
-            $http.get(url).success(function(players) {
+    var isInLastSetOfPairs = function(player, history) {
+        console.log('last set of pairs');
+        console.info(history[0]);
+        var result = _.find(history[0].pairs, function(pairset) {
+            if (_.findWhere(pairset, {
+                    _id: player._id
+                })) {
+                return true;
+            }
+        })
+        if (result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-                _.each(players, function(player) {
-                    player.isAvailable = true;
-                });
-
-                _.each(Coupling.data.players, function(originalPlayer) {
-                    var newPlayer = _.findWhere(players, {
-                        _id: originalPlayer._id
+    this.requestPlayersPromise = function(tribeId, historyPromise) {
+        return RSVP.hash({
+            players: new RSVP.Promise(function(resolve, reject) {
+                var url = '/api/' + tribeId + '/players';
+                $http.get(url).success(function(players) {
+                        resolve(players);
+                    })
+                    .error(function(data, statusCode) {
+                        var message = errorMessage(url, data, statusCode);
+                        console.error('ALERT!\n' + message);
+                        reject(message);
                     });
-                    if (newPlayer) {
-                        newPlayer.isAvailable = originalPlayer.isAvailable;
-                    }
-                });
-
-                Coupling.data.players = players;
-                resolve(players);
-            }).error(function(data, statusCode) {
-                var message = errorMessage(url, data, statusCode);
-                console.error('ALERT!\n' + message);
-                reject(message);
+            }),
+            history: historyPromise
+        }).then(function(data) {
+            var players = data.players;
+            var history = data.history;
+            _.each(players, function(player) {
+                if (history.length == 0) {
+                    player.isAvailable = true;
+                } else {
+                    player.isAvailable = isInLastSetOfPairs(player, history);
+                }
             });
+            _.each(Coupling.data.players, function(originalPlayer) {
+                var newPlayer = _.findWhere(players, {
+                    _id: originalPlayer._id
+                });
+                if (newPlayer) {
+                    newPlayer.isAvailable = originalPlayer.isAvailable;
+                }
+            });
+            Coupling.data.players = players;
+            return players;
         })
     };
 
@@ -160,10 +186,11 @@ services.service("Coupling", ['$http', function($http) {
             });
         } else {
             Coupling.data.selectedTribeId = tribeId;
+            var historyPromise = Coupling.requestHistoryPromise(tribeId);
             return RSVP.hash({
                 selectedTribe: Coupling.requestSpecificTribe(tribeId),
-                players: Coupling.requestPlayersPromise(tribeId),
-                history: Coupling.requestHistoryPromise(tribeId)
+                players: Coupling.requestPlayersPromise(tribeId, historyPromise),
+                history: historyPromise
             });
         }
     };
@@ -194,6 +221,7 @@ services.service("Coupling", ['$http', function($http) {
             var url = '/api/' + tribeId + '/players';
             $http.get(url).success(function(players) {
                 Coupling.data.players = players;
+
                 if (callback) {
                     callback(players);
                 }

@@ -58,41 +58,162 @@ describe('Service: ', function() {
     });
 
     describe('select tribe', function() {
-      it('will request players and history for given tribe and make all players available', function(done) {
-        var tribeId = 'awesomeTribe';
+      describe('will request players and history for given tribe', function() {
+        it('and make all players available when history has no elements', function(done) {
+          var tribeId = 'awesomeTribe';
 
-        var expectedPlayers = [{
-          name: 'player1',
-          isAvailable: true
-        }, {
-          name: 'player2',
-          isAvailable: true
-        }];
+          httpBackend.whenGET('/api/tribes')
+            .respond(200, [{
+              _id: tribeId
+            }]);
+          httpBackend.whenGET('/api/' + tribeId + '/players')
+            .respond(200, [{
+              name: 'player1'
+            }, {
+              name: 'player2'
+            }]);
+          httpBackend.whenGET('/api/' + tribeId + '/history')
+            .respond(200, []);
 
-        var expectedHistory = [{
-          time: 'before'
-        }, {
-          time: 'after'
-        }];
+          Coupling.selectTribe(tribeId)
+            .then(function(data) {
+              expect(data.players).toEqual([{
+                name: 'player1',
+                isAvailable: true
+              }, {
+                name: 'player2',
+                isAvailable: true
+              }]);
+              expect(data.history).toEqual([]);
+            }).catch(function(error) {
+              expect(error).toBeUndefined();
+            }).finally(done);
+          httpBackend.flush();
+        });
 
-        httpBackend.whenGET('/api/tribes').respond(200, [{
-          _id: tribeId
-        }]);
-        httpBackend.whenGET('/api/' + tribeId + '/players').respond(200, [{
-          name: 'player1'
-        }, {
-          name: 'player2'
-        }]);
-        httpBackend.whenGET('/api/' + tribeId + '/history').respond(200, expectedHistory);
+        it('and only make players available that are in most recent pairings', function(done) {
+          var tribeId = 'awesomeTribe';
 
-        Coupling.selectTribe(tribeId)
-          .then(function(data) {
-            expect(expectedPlayers).toEqual(data.players);
-            expect(expectedHistory).toEqual(data.history);
-          }).catch(function(error) {
-            expect(error).toBeUndefined();
-          }).finally(done);
-        httpBackend.flush();
+          httpBackend.whenGET('/api/tribes')
+            .respond(200, [{
+              _id: tribeId
+            }]);
+          var players = [{
+            _id: 'player1'
+          }, {
+            _id: 'player2'
+          }, {
+            _id: 'player3'
+          }, {
+            _id: 'player4'
+          }, {
+            _id: 'player5'
+          }];
+          httpBackend.whenGET('/api/' + tribeId + '/players')
+            .respond(200, players);
+          var history = [{
+            pairs: [
+              [players[0], players[2]],
+              [players[4]],
+              [
+                [players[1]]
+              ],
+              [
+                [players[3]]
+              ]
+            ]
+          }];
+          httpBackend.whenGET('/api/' + tribeId + '/history')
+            .respond(200, history);
+
+          Coupling.selectTribe(tribeId)
+            .then(function(data) {
+              expect(data.players).toEqual([{
+                _id: 'player1',
+                isAvailable: true
+              }, {
+                _id: 'player2',
+                isAvailable: false
+              }, {
+                _id: 'player3',
+                isAvailable: true
+              }, {
+                _id: 'player4',
+                isAvailable: false
+              }, {
+                _id: 'player5',
+                isAvailable: true
+              }]);
+              expect(data.history).toEqual(history);
+            }).catch(function(error) {
+              expect(error).toBeUndefined();
+            }).finally(done);
+          httpBackend.flush();
+        });
+
+        it('and only make players available that are in most recent pairings: one player in one pair', function(done) {
+          var tribeId = 'awesomeTribe';
+
+          httpBackend.whenGET('/api/tribes')
+            .respond(200, [{
+              _id: tribeId
+            }]);
+          var players = [{
+            _id: 'player1'
+          }, {
+            _id: 'player2'
+          }, {
+            _id: 'player3'
+          }, {
+            _id: 'player4'
+          }, {
+            _id: 'player5'
+          }];
+          httpBackend.whenGET('/api/' + tribeId + '/players')
+            .respond(200, players);
+          var history = [{
+            pairs: [
+              [players[1]]
+            ]
+          }, {
+            pairs: [
+              [players[0], players[2]],
+              [players[4]],
+              [
+                [players[1]]
+              ],
+              [
+                [players[3]]
+              ]
+            ]
+          }];
+          httpBackend.whenGET('/api/' + tribeId + '/history')
+            .respond(200, history);
+
+          Coupling.selectTribe(tribeId)
+            .then(function(data) {
+              expect(data.players).toEqual([{
+                _id: 'player1',
+                isAvailable: false
+              }, {
+                _id: 'player2',
+                isAvailable: true
+              }, {
+                _id: 'player3',
+                isAvailable: false
+              }, {
+                _id: 'player4',
+                isAvailable: false
+              }, {
+                _id: 'player5',
+                isAvailable: false
+              }]);
+              expect(data.history).toEqual(history);
+            }).catch(function(error) {
+              expect(error).toBeUndefined();
+            }).finally(done);
+          httpBackend.flush();
+        });
       });
 
       it('will when reloading players, maintain selection setting based on id.', function(done) {
@@ -106,12 +227,6 @@ describe('Service: ', function() {
           name: 'player2',
           _id: 2,
           isAvailable: true
-        }];
-
-        var expectedHistory = [{
-          time: 'before'
-        }, {
-          time: 'after'
         }];
 
         Coupling.data.selectedTribeId = tribeId;
@@ -133,7 +248,7 @@ describe('Service: ', function() {
             name: 'player3'
           }]);
         httpBackend.whenGET('/api/' + tribeId + '/history')
-          .respond(200, expectedHistory);
+          .respond(200, []);
 
         var expectedPlayers = [{
           name: 'player1',
@@ -152,7 +267,7 @@ describe('Service: ', function() {
         Coupling.selectTribe(tribeId)
           .then(function(data) {
             expect(expectedPlayers).toEqual(data.players);
-            expect(expectedHistory).toEqual(data.history);
+            expect(data.history).toEqual([]);
           }).catch(function(error) {
             expect(error).toBeUndefined();
           }).finally(done);
