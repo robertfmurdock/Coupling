@@ -5,7 +5,10 @@ filters.filter('gravatarUrl', ['gravatarService', function(gravatarService) {
             return player.imageURL;
         } else {
             options.default = "retro";
-            var email = player && player.email ? player.email : "";
+            var email = "";
+            if (player) {
+                email = player.email ? player.email : player.name;
+            }
             return gravatarService.url(email, options);
         }
     }
