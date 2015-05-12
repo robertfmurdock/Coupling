@@ -199,13 +199,8 @@ describe('The edit tribe page', function () {
     element(By.id('tribe-name')).clear();
     element(By.id('tribe-name')).sendKeys(expectedNewName);
     element(By.id('save-tribe-button')).click();
-    browser.waitForAngular();
 
     browser.setLocation('/' + tribe._id);
-
-    browser.wait(function () {
-      return browser.driver.isElementPresent(By.css('.tribe-view'));
-    }, 5000);
 
     expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
   });

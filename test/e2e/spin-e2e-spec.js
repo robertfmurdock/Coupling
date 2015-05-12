@@ -94,7 +94,7 @@ describe('On the pair assignments page', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('spinning with all players on will get all players back', function () {
-    browser.get(hostName + '/' + tribe._id + '/pairAssignments/current/');
+    browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     element(By.id('spin-button')).click();
     browser.waitForAngular();
 
@@ -103,7 +103,7 @@ describe('On the pair assignments page', function () {
   });
 
   it('spinning with two players disabled will only yield one pair and the players stay disabled', function(){
-    browser.get(hostName + '/' + tribe._id + '/pairAssignments/current/');
+    browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     var playerRosterElements = element.all(By.repeater('player in data.players'));
     playerRosterElements.get(0).click();
     playerRosterElements.get(2).click();
