@@ -10,7 +10,7 @@ var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var usersCollection = monk(config.mongoUrl).get('users');
 
-fdescribe('The edit player page', function () {
+describe('The edit player page', function () {
 
   var userEmail = 'protractor@test.goo';
 
