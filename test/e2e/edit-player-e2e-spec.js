@@ -54,16 +54,14 @@ describe('The edit player page', function () {
       });
   });
 
-  afterAll(function (done) {
+  afterAll(function () {
     RSVP.all([
       tribeCollection.remove({
         _id: tribe._id
       }, false), playersCollection.remove({
         _id: player._id
       }, false)
-    ]).then(function () {
-      done();
-    });
+    ])
   });
 
   e2eHelp.afterEachAssertLogsAreEmpty();
