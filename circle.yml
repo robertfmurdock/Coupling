@@ -1,7 +1,11 @@
 test:
   override:
     - npm test
+    - npm run protractor
 deployment:
+  pre:
+    - sudo apt-get update
+    - sudo apt-get --only-upgrade install google-chrome-stable
   staging:
     branch: master
     heroku:
