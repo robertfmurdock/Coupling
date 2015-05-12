@@ -8,7 +8,7 @@ test:
     - npm run protractor
   post:
     - ls test-output
-    - cp test-output $CIRCLE_TEST_REPORTS/junit
+    - mv test-output $CIRCLE_TEST_REPORTS/junit
     - ls $CIRCLE_TEST_REPORTS/junit
 deployment:
   staging:
