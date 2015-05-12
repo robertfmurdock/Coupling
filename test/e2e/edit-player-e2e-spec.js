@@ -56,17 +56,6 @@ describe('The edit player page', function () {
 
   afterAll(function (done) {
     RSVP.all([
-      browser.manage().logs().get('browser').then(function (browserLogs) {
-        if (browserLogs.length != 0) {
-          console.log('LOGS CAPTURED:');
-        }
-        browserLogs.forEach(function (log) {
-          console.log(log.message);
-        });
-        if (browserLogs.length != 0) {
-          console.log('END LOGS');
-        }
-      }),
       tribeCollection.remove({
         _id: tribe._id
       }, false), playersCollection.remove({
