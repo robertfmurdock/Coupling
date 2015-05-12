@@ -6,6 +6,9 @@ test:
   override:
     - npm test
     - npm run protractor
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex "test-output/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
 deployment:
   staging:
     branch: master
