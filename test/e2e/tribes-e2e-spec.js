@@ -47,13 +47,13 @@ function waitUntilAnimateIsGone() {
 }
 
 var tribeListPage = {
-  getTribeElements: function(){
+  getTribeElements: function () {
     return element.all(By.repeater('tribe in tribes'));
   },
-  getTribeNameLabel: function(tribeElement){
+  getTribeNameLabel: function (tribeElement) {
     return tribeElement.element(By.css('.tribe-name'));
   },
-  getNewTribeButton: function(){
+  getNewTribeButton: function () {
     return element(By.id('new-tribe-button'));
   }
 };
@@ -86,7 +86,7 @@ describe('The default tribes page', function () {
   });
 
   beforeEach(function () {
-    browser.get(hostName);
+    browser.setLocation('/tribes');
     expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
   });
 
@@ -113,13 +113,13 @@ describe('The default tribes page', function () {
     var expectedTribe;
     beforeAll(function () {
       expectedTribe = tribeDocuments[0];
-      browser.get(hostName + '/' + expectedTribe._id + '/');
+      browser.setLocation('/' + expectedTribe._id + '/');
       element(By.tagName('body')).allowAnimations(false);
       waitUntilAnimateIsGone();
     });
 
     beforeEach(function () {
-      browser.get(hostName + '/' + expectedTribe._id + '/');
+      browser.setLocation('/' + expectedTribe._id + '/');
     });
 
     it('the tribe view is shown', function () {
@@ -153,7 +153,7 @@ describe('The default tribes page', function () {
   describe('on the new tribe page', function () {
 
     it('the id field shows and does not disappear when text is added', function () {
-      browser.get(hostName + '/new-tribe/');
+      browser.setLocation('/new-tribe/');
       waitUntilAnimateIsGone();
       var tribeIdElement = element(By.id('tribe-id'));
       tribeIdElement.sendKeys('oopsie');
@@ -201,7 +201,7 @@ describe('The edit tribe page', function () {
     element(By.id('save-tribe-button')).click();
     browser.waitForAngular();
 
-    browser.get(hostName + '/' + tribe._id);
+    browser.setLocation('/' + tribe._id);
 
     browser.wait(function () {
       return browser.driver.isElementPresent(By.css('.tribe-view'));

@@ -10,7 +10,7 @@ var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var usersCollection = monk(config.mongoUrl).get('users');
 
-describe('The edit player page', function () {
+fdescribe('The edit player page', function () {
 
   var userEmail = 'protractor@test.goo';
 
@@ -85,14 +85,13 @@ describe('The edit player page', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('should not alert on leaving via the spin button when nothing has changed.', function () {
-    browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
-    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player._id + '/');
+    browser.setLocation('/' + tribe._id + '/player/' + player._id);
     element(By.id('spin-button')).click();
     expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
   });
 
   it('should get error on leaving when name is changed.', function (done) {
-    browser.get(hostName + '/' + tribe._id + '/player/' + player._id)
+    browser.setLocation('/' + tribe._id + '/player/' + player._id)
       .then(function () {
         expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player._id + '/');
         return element(By.id('player-name')).sendKeys('completely different name');
@@ -111,7 +110,7 @@ describe('The edit player page', function () {
   });
 
   it('should not get alert on leaving when name is changed after save.', function (done) {
-    browser.get(hostName + '/' + tribe._id + '/player/' + player._id);
+    browser.setLocation('/' + tribe._id + '/player/' + player._id);
 
     browser.wait(function () {
       return browser.driver.isElementPresent(By.id('player-name'));
