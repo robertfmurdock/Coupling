@@ -71,24 +71,21 @@ describe('On the pair assignments page', function () {
 
   beforeAll(function (done) {
     browser.driver.manage().deleteAllCookies();
-    tribeCollection.drop()
-      .then(function () {
-        return tribeCollection.insert([tribe]);
-      }).then(function () {
-        return authorizeAllTribes();
-      }).then(function () {
-        return tribeCollection.find({}, {})
-      }).then(function () {
-        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-      }).then(function () {
-        return playersCollection.drop();
-      }).then(function () {
-        return playersCollection.insert(players);
-      }).then(function () {
-        return historyCollection.drop();
-      }).then(function () {
-        done();
-      }, done);
+    RSVP.all([
+      tribeCollection.drop(),
+      playersCollection.drop(),
+      browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"')
+    ]).then(function () {
+      return tribeCollection.insert([tribe]);
+    }).then(function () {
+      return authorizeUserForTribes([tribe._id]);
+    }).then(function () {
+      return playersCollection.insert(players);
+    }).then(function () {
+      return historyCollection.drop();
+    }).then(function () {
+      done();
+    }, done);
   });
 
   e2eHelp.afterEachAssertLogsAreEmpty();
@@ -96,20 +93,19 @@ describe('On the pair assignments page', function () {
   it('spinning with all players on will get all players back', function () {
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     element(By.id('spin-button')).click();
-    browser.waitForAngular();
 
     var pairs = element.all(By.repeater('pair in data.currentPairAssignments.pairs'));
     expect(pairs.count()).toEqual(2);
   });
 
-  it('spinning with two players disabled will only yield one pair and the players stay disabled', function(){
+  it('spinning with two players disabled will only yield one pair and the players stay disabled', function () {
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     var playerRosterElements = element.all(By.repeater('player in data.players'));
     playerRosterElements.get(0).click();
     playerRosterElements.get(2).click();
-    browser.waitForAngular();
+
     element(By.id('spin-button')).click();
-    browser.waitForAngular();
+
     var pairs = element.all(By.repeater('pair in data.currentPairAssignments.pairs'));
     expect(pairs.count()).toEqual(1);
     expect(playerRosterElements.get(0).getAttribute('class')).toContain('disabled');
