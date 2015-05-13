@@ -42,14 +42,12 @@ describe('The edit player page', function () {
   };
 
   beforeAll(function (done) {
+    browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"')
     RSVP.all([
         tribeCollection.insert(tribe),
         authorizeUserForTribes([tribe._id]),
         playersCollection.insert(player)]
     ).then(function () {
-        return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-      })
-      .then(function () {
         done();
       });
   });
