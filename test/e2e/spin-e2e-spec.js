@@ -71,21 +71,24 @@ describe('On the pair assignments page', function () {
 
   beforeAll(function (done) {
     browser.driver.manage().deleteAllCookies();
-    RSVP.all([
-      tribeCollection.drop(),
-      playersCollection.drop(),
-      browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"')
-    ]).then(function () {
-      return tribeCollection.insert([tribe]);
-    }).then(function () {
-      return authorizeUserForTribes([tribe._id]);
-    }).then(function () {
-      return playersCollection.insert(players);
-    }).then(function () {
-      return historyCollection.drop();
-    }).then(function () {
-      done();
-    }, done);
+    tribeCollection.drop()
+      .then(function () {
+        return tribeCollection.insert([tribe]);
+      }).then(function () {
+        return authorizeAllTribes();
+      }).then(function () {
+        return tribeCollection.find({}, {})
+      }).then(function () {
+        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+      }).then(function () {
+        return playersCollection.drop();
+      }).then(function () {
+        return playersCollection.insert(players);
+      }).then(function () {
+        return historyCollection.drop();
+      }).then(function () {
+        done();
+      }, done);
   });
 
   e2eHelp.afterEachAssertLogsAreEmpty();
