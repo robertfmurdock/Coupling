@@ -381,6 +381,9 @@ a {
   .tribe-editor {
     display: inline-block;
     vertical-align: top;
+    text-fill-color: black;
+    font-size: large;
+    text-stroke-width: 1px;
     label {
       clear: both;
       float: left;

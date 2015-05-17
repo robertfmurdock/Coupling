@@ -1,23 +1,23 @@
 "use strict";
 
-describe('The controller named ', function () {
+describe('The controller named ', function() {
 
   var scope, location, Coupling;
 
-  beforeEach(function () {
+  beforeEach(function() {
     module("coupling.controllers");
     scope = {};
   });
 
-  xdescribe('SelectedPlayerCardController', function () {
+  xdescribe('SelectedPlayerCardController', function() {
 
-    beforeEach(function () {
+    beforeEach(function() {
       scope.player = {
         name: 'Chad',
         _id: 'PrettyGreatPlayerId',
         isAvailable: true
       };
-      inject(function ($controller) {
+      inject(function($controller) {
         $controller('SelectedPlayerCardController', {
           $scope: scope,
           $location: location,
@@ -26,8 +26,8 @@ describe('The controller named ', function () {
       })
     });
 
-    describe('clickPlayerName', function () {
-      it('will redirect to the players page', function () {
+    describe('clickPlayerName', function() {
+      it('will redirect to the players page', function() {
         var expectedPath = '/' + Coupling.data.selectedTribeId + '/player/' + scope.player._id;
         expect(location.path).not.toHaveBeenCalledWith(expectedPath);
         var event = {};
@@ -35,7 +35,7 @@ describe('The controller named ', function () {
         expect(location.path).toHaveBeenCalledWith(expectedPath);
       });
 
-      it('will stop propagation to other click events', function () {
+      it('will stop propagation to other click events', function() {
         var event = {
           stopPropagation: jasmine.createSpy('stopPropagation')
         };
@@ -44,8 +44,8 @@ describe('The controller named ', function () {
       });
     });
 
-    describe('clickPlayerCard', function () {
-      it('will change a players selection in the map', function () {
+    describe('clickPlayerCard', function() {
+      it('will change a players selection in the map', function() {
         expect(scope.player.isAvailable).toBe(true);
         scope.clickPlayerCard();
         expect(scope.player.isAvailable).toBe(false);
@@ -56,7 +56,7 @@ describe('The controller named ', function () {
   });
 
   function injectController(controllerName, scope, location, Coupling, routeParams) {
-    inject(function ($controller) {
+    inject(function($controller) {
       $controller(controllerName, {
         $scope: scope,
         $location: location,
@@ -72,10 +72,10 @@ describe('The controller named ', function () {
     expect(Coupling.selectTribe).toHaveBeenCalledWith(null);
   }
 
-  describe('TribeListController', function () {
+  describe('TribeListController', function() {
 
     var Coupling, location;
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -86,7 +86,7 @@ describe('The controller named ', function () {
     });
 
     function injectTribeListController(expectedTribes) {
-      inject(function ($controller) {
+      inject(function($controller) {
         $controller('TribeListController', {
           $scope: scope,
           $location: location,
@@ -95,13 +95,13 @@ describe('The controller named ', function () {
       });
     }
 
-    it('will get tribes and put them on scope', function () {
+    it('will get tribes and put them on scope', function() {
       var expectedTribes = [{
         _id: '1'
       }, {
         _id: '2'
       }];
-      inject(function ($controller) {
+      inject(function($controller) {
         $controller('TribeListController', {
           $scope: scope,
           $location: location,
@@ -111,13 +111,13 @@ describe('The controller named ', function () {
       expect(scope.tribes).toBe(expectedTribes);
     });
 
-    describe('scopes a function named', function () {
-      beforeEach(function () {
+    describe('scopes a function named', function() {
+      beforeEach(function() {
         injectTribeListController([]);
       });
 
-      describe('clickOnTribeCard', function () {
-        it('that changes location to that tribe\'s current pair assignments', function () {
+      describe('clickOnTribeCard', function() {
+        it('that changes location to that tribe\'s current pair assignments', function() {
           var tribe = {
             _id: 'amazingMagicId'
           };
@@ -127,8 +127,8 @@ describe('The controller named ', function () {
         });
       });
 
-      describe('clickOnTribeName', function () {
-        it('that changes location to that tribe', function () {
+      describe('clickOnTribeName', function() {
+        it('that changes location to that tribe', function() {
           var tribe = {
             _id: 'amazingMagicId'
           };
@@ -141,10 +141,10 @@ describe('The controller named ', function () {
   });
 
   var NewTribeController = 'NewTribeController';
-  describe(NewTribeController, function () {
+  describe(NewTribeController, function() {
 
     var Coupling, location;
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -154,7 +154,7 @@ describe('The controller named ', function () {
       };
     });
 
-    it('creates and selects a new tribe', function () {
+    it('creates and selects a new tribe', function() {
       var previouslySelectedTribe = {
         name: 'This should not be the tribe after injection.'
       };
@@ -164,17 +164,17 @@ describe('The controller named ', function () {
       expect(scope.tribe.name).toBe('New Tribe');
     });
 
-    it('will deselect tribe', function () {
+    it('will deselect tribe', function() {
       checkControllerWillDeselectTribe(NewTribeController, Coupling, location);
     });
 
-    describe('when pressing the save button ', function () {
-      beforeEach(function () {
+    describe('when pressing the save button ', function() {
+      beforeEach(function() {
         Coupling.saveTribe = jasmine.createSpy('save tribe spy');
         injectController(NewTribeController, scope, location, Coupling);
       });
 
-      it('will use the Coupling service to save the tribe', function () {
+      it('will use the Coupling service to save the tribe', function() {
         var expectedId = 'importantId';
         scope.tribe.requestedId = expectedId;
         scope.clickSaveButton();
@@ -186,16 +186,16 @@ describe('The controller named ', function () {
         expect(saveTribeArgs[0].requestedId).toBeUndefined();
       });
 
-      describe('when the save is complete', function () {
+      describe('when the save is complete', function() {
         var callback;
-        beforeEach(function () {
+        beforeEach(function() {
           scope.clickSaveButton();
           callback = Coupling.saveTribe.calls.argsFor(0)[1];
         });
 
-        it('will change the location to the current pair assignments', function () {
+        it('will return to the tribe list', function() {
           var newTribeId = 'expectedId';
-          var expectedPath = '/' + newTribeId + '/pairAssignments/current';
+          var expectedPath = '/tribes';
           expect(location.path).not.toHaveBeenCalledWith(expectedPath);
 
           var updatedTribe = {
@@ -210,12 +210,12 @@ describe('The controller named ', function () {
 
 
   var EditTribeController = 'EditTribeController';
-  describe(EditTribeController, function () {
+  describe(EditTribeController, function() {
 
     var Coupling, location, routeParams;
     var selectTribeDefer = new RSVP.defer();
     var selectedTribeId;
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -227,7 +227,7 @@ describe('The controller named ', function () {
         data: {
           selectedTribe: selectedTribe
         },
-        selectTribe: function (tribeId) {
+        selectTribe: function(tribeId) {
           selectedTribeId = tribeId;
           return selectTribeDefer.promise;
         }
@@ -237,13 +237,13 @@ describe('The controller named ', function () {
       };
     });
 
-    it('puts the selected tribe on the scope', function () {
+    it('puts the selected tribe on the scope', function() {
       var previouslyScopedTribe = {
         name: 'This should not be the tribe after injection.'
       };
       scope.tribe = previouslyScopedTribe;
 
-      inject(function ($controller) {
+      inject(function($controller) {
         $controller(EditTribeController, {
           $scope: scope,
           $location: location,
@@ -256,10 +256,10 @@ describe('The controller named ', function () {
       expect(scope.tribe).toBe(Coupling.data.selectedTribe);
     });
 
-    describe('when pressing the save button ', function () {
-      beforeEach(function () {
+    describe('when pressing the save button ', function() {
+      beforeEach(function() {
         Coupling.saveTribe = jasmine.createSpy('save tribe spy');
-        inject(function ($controller) {
+        inject(function($controller) {
           $controller(EditTribeController, {
             $scope: scope,
             $location: location,
@@ -269,7 +269,7 @@ describe('The controller named ', function () {
         });
       });
 
-      it('will use the Coupling service to save the tribe', function () {
+      it('will use the Coupling service to save the tribe', function() {
         scope.clickSaveButton();
 
         expect(Coupling.saveTribe).toHaveBeenCalled();
@@ -277,16 +277,16 @@ describe('The controller named ', function () {
         expect(saveTribeArgs[0]).toBe(scope.tribe);
       });
 
-      describe('when the save is complete', function () {
+      describe('when the save is complete', function() {
         var callback;
-        beforeEach(function () {
+        beforeEach(function() {
           scope.clickSaveButton();
           callback = Coupling.saveTribe.calls.argsFor(0)[1];
         });
 
-        it('will change the location to the current pair assignments', function () {
+        it('will change the location to the current pair assignments', function() {
           var newTribeId = 'expectedId';
-          var expectedPath = '/' + newTribeId + '/pairAssignments/current';
+          var expectedPath = '/tribes';
           expect(location.path).not.toHaveBeenCalledWith(expectedPath);
 
           var updatedTribe = {
@@ -301,10 +301,10 @@ describe('The controller named ', function () {
 
 
   var HistoryController = 'HistoryController';
-  xdescribe(HistoryController, function () {
+  xdescribe(HistoryController, function() {
 
     var Coupling, location, routeParams;
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -323,13 +323,13 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe', function () {
+    it('will select tribe', function() {
       expect(Coupling.selectTribe).not.toHaveBeenCalled();
       injectController(HistoryController, scope, location, Coupling, routeParams);
       expect(Coupling.selectTribe).toHaveBeenCalledWith(Coupling.data.selectedTribe._id);
     });
 
-    it('will minimize the player roster', function () {
+    it('will minimize the player roster', function() {
       scope.playerRoster.minimized = false;
       injectController(HistoryController, scope, location, Coupling, routeParams);
       expect(scope.playerRoster.minimized).toBe(true);
@@ -338,14 +338,14 @@ describe('The controller named ', function () {
   });
 
 
-  xdescribe('NewPairAssignmentsController', function () {
+  xdescribe('NewPairAssignmentsController', function() {
     var ControllerName = 'NewPairAssignmentsController';
     var Coupling, location, routeParams;
 
     var selectTribeDefer = new RSVP.defer();
     var selectedTribeId;
 
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -357,7 +357,7 @@ describe('The controller named ', function () {
         data: {
           selectedTribe: selectedTribe
         },
-        selectTribe: function (tribeId) {
+        selectTribe: function(tribeId) {
           selectedTribeId = tribeId;
           return selectTribeDefer.promise;
         },
@@ -370,7 +370,7 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe and spin all selected players', function (done) {
+    it('will select tribe and spin all selected players', function(done) {
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(selectedTribeId).toBe(Coupling.data.selectedTribe._id);
       var players = [{
@@ -386,14 +386,14 @@ describe('The controller named ', function () {
       selectTribeDefer.resolve({
         players: players
       });
-      selectTribeDefer.promise.then(function () {
+      selectTribeDefer.promise.then(function() {
         expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]]);
         done();
       }).catch(done);
     });
 
 
-    it('save will use Coupling service to save and then will redirect to the current pair assignments page', function () {
+    it('save will use Coupling service to save and then will redirect to the current pair assignments page', function() {
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(Coupling.saveCurrentPairAssignments).not.toHaveBeenCalled();
       scope.save();
@@ -401,7 +401,7 @@ describe('The controller named ', function () {
       expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/pairAssignments/current");
     });
 
-    it('onDrop will take two players and swap their places', function () {
+    it('onDrop will take two players and swap their places', function() {
       injectController(ControllerName, scope, location, Coupling, routeParams);
       var player1 = {
         _id: '1'
@@ -429,7 +429,7 @@ describe('The controller named ', function () {
         [player2, player4]
       ]);
     });
-    it('onDrop will not swap players that are already paired', function () {
+    it('onDrop will not swap players that are already paired', function() {
       injectController(ControllerName, scope, location, Coupling, routeParams);
       var player1 = {
         _id: '1'
@@ -459,14 +459,14 @@ describe('The controller named ', function () {
     });
   });
 
-  describe('CurrentPairAssignmentsController', function () {
+  describe('CurrentPairAssignmentsController', function() {
     var ControllerName = 'CurrentPairAssignmentsController';
     var Coupling, location, routeParams;
 
     var selectTribeDefer = new RSVP.defer();
     var selectedTribeId;
 
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -478,7 +478,7 @@ describe('The controller named ', function () {
         data: {
           selectedTribe: selectedTribe
         },
-        selectTribe: function (tribeId) {
+        selectTribe: function(tribeId) {
           selectedTribeId = tribeId;
           return selectTribeDefer.promise;
         },
@@ -491,12 +491,12 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe and then select the latest pairs', function () {
+    it('will select tribe and then select the latest pairs', function() {
       var currentPairs = [
         ['tom', 'jerry']
       ];
       var history = [currentPairs];
-      inject(function ($controller) {
+      inject(function($controller) {
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
@@ -507,11 +507,11 @@ describe('The controller named ', function () {
     });
   });
 
-  xdescribe('NewPlayerController', function () {
+  xdescribe('NewPlayerController', function() {
     var ControllerName = 'NewPlayerController';
     var Coupling, location, routeParams;
 
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -533,19 +533,19 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe', function () {
+    it('will select tribe', function() {
       expect(Coupling.selectTribe).not.toHaveBeenCalled();
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(Coupling.selectTribe).toHaveBeenCalled();
     });
 
-    it('will maximize player roster', function () {
+    it('will maximize player roster', function() {
       scope.playerRoster.minimized = true;
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(scope.playerRoster.minimized).toBe(false);
     });
 
-    it('will create a new player with the given tribe', function () {
+    it('will create a new player with the given tribe', function() {
       scope.player = null;
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(scope.player).toEqual({
@@ -553,7 +553,7 @@ describe('The controller named ', function () {
       });
     });
 
-    it('can save player using Coupling service and redirects to player page on callback', function () {
+    it('can save player using Coupling service and redirects to player page on callback', function() {
       injectController(ControllerName, scope, location, Coupling, routeParams);
 
       scope.savePlayer();
@@ -573,11 +573,11 @@ describe('The controller named ', function () {
 
   });
 
-  xdescribe('EditPlayerController', function () {
+  xdescribe('EditPlayerController', function() {
     var ControllerName = 'EditPlayerController';
     var Coupling, location, routeParams;
 
-    beforeEach(function () {
+    beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
@@ -603,19 +603,19 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe', function () {
+    it('will select tribe', function() {
       expect(Coupling.selectTribe).not.toHaveBeenCalled();
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(Coupling.selectTribe).toHaveBeenCalled();
     });
 
-    it('will maximize player roster', function () {
+    it('will maximize player roster', function() {
       scope.playerRoster.minimized = true;
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(scope.playerRoster.minimized).toBe(false);
     });
 
-    it('will find the player with given id and provide a duplicate for editing', function () {
+    it('will find the player with given id and provide a duplicate for editing', function() {
       scope.player = null;
       injectController(ControllerName, scope, location, Coupling, routeParams);
       expect(Coupling.findPlayerById).toHaveBeenCalled();
@@ -632,7 +632,7 @@ describe('The controller named ', function () {
       expect(scope.player).toEqual(player);
     });
 
-    it('can save player using Coupling service and redirects to player page on callback', function () {
+    it('can save player using Coupling service and redirects to player page on callback', function() {
       injectController(ControllerName, scope, location, Coupling, routeParams);
       scope.playerForm = {
         $setPristine: jasmine.createSpy('pristine')
@@ -642,7 +642,7 @@ describe('The controller named ', function () {
       expect(scope.playerForm.$setPristine).toHaveBeenCalled();
     });
 
-    it('remove player will remove and reroute to current pair assignments when confirmed', function () {
+    it('remove player will remove and reroute to current pair assignments when confirmed', function() {
       spyOn(window, 'confirm');
 
       injectController(ControllerName, scope, location, Coupling, routeParams);
@@ -659,7 +659,7 @@ describe('The controller named ', function () {
       expect(location.path).toHaveBeenCalledWith('/' + routeParams.tribeId + '/pairAssignments/current');
     });
 
-    it('remove player will do nothing when not confirmed', function () {
+    it('remove player will do nothing when not confirmed', function() {
       window.confirm = jasmine.createSpy('confirm');
 
       injectController(ControllerName, scope, location, Coupling, routeParams);
@@ -670,9 +670,9 @@ describe('The controller named ', function () {
       expect(location.path).not.toHaveBeenCalledWith('/' + routeParams.tribeId + '/pairAssignments/current');
     });
 
-    describe('on location change', function () {
+    describe('on location change', function() {
       var onLocationChange;
-      beforeEach(function () {
+      beforeEach(function() {
         injectController(ControllerName, scope, location, Coupling, routeParams);
 
         expect(scope.$on).toHaveBeenCalled();
@@ -681,9 +681,9 @@ describe('The controller named ', function () {
         onLocationChange = args[1];
       });
 
-      describe('it will prompt the user to save if the player has changed', function () {
+      describe('it will prompt the user to save if the player has changed', function() {
 
-        beforeEach(function () {
+        beforeEach(function() {
           window.confirm = jasmine.createSpy('confirm');
           scope.playerForm = {
             $dirty: true
@@ -696,20 +696,20 @@ describe('The controller named ', function () {
           };
         });
 
-        it('and if they confirm it will save', function () {
+        it('and if they confirm it will save', function() {
           window.confirm.and.returnValue(true);
           onLocationChange();
           expect(Coupling.savePlayer).toHaveBeenCalledWith(scope.player);
         });
 
-        it('and if they do not confirm it will not save', function () {
+        it('and if they do not confirm it will not save', function() {
           window.confirm.and.returnValue(false);
           onLocationChange();
           expect(Coupling.savePlayer).not.toHaveBeenCalledWith(scope.player);
         });
 
       });
-      it('it will not prompt the user to save if the player is unchanged', function () {
+      it('it will not prompt the user to save if the player is unchanged', function() {
         window.confirm = jasmine.createSpy('confirm');
         scope.playerForm = {
           $dirty: false
@@ -727,12 +727,12 @@ describe('The controller named ', function () {
     });
   });
 
-  xdescribe('PinListController', function () {
+  xdescribe('PinListController', function() {
 
     var routeParams;
 
     function runPinListController() {
-      inject(function ($controller) {
+      inject(function($controller) {
         $controller('PinListController', {
           $scope: scope,
           Coupling: Coupling,
@@ -741,7 +741,7 @@ describe('The controller named ', function () {
       });
     }
 
-    it('puts the tribe\'s pins on the scope', function (done) {
+    it('puts the tribe\'s pins on the scope', function(done) {
       scope = {};
       Coupling = {
         promisePins: jasmine.createSpy()
@@ -756,14 +756,14 @@ describe('The controller named ', function () {
       }, {
         name: 'pin2'
       }];
-      var promise = new RSVP.Promise(function (resolve) {
+      var promise = new RSVP.Promise(function(resolve) {
         resolve(pins);
       });
 
       Coupling.promisePins.and.returnValue(promise);
       runPinListController();
 
-      promise.then(function () {
+      promise.then(function() {
         expect(Coupling.promisePins).toHaveBeenCalledWith(routeParams.tribeId);
         expect(scope.pins).toEqual(pins);
         done();

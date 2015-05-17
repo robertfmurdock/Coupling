@@ -14,7 +14,6 @@ services.service("Coupling", ['$http', function($http) {
         return function(data, statusCode, headers, config) {
             var message = errorMessage(url, data, statusCode);
             console.error('ALERT!\n' + message);
-            // alert(message);
         }
     };
 

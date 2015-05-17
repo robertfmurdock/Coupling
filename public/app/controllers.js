@@ -77,8 +77,8 @@ controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling',
   $scope.clickSaveButton = function () {
     $scope.tribe._id = $scope.tribe.requestedId;
     delete $scope.tribe.requestedId;
-    Coupling.saveTribe($scope.tribe, function (updatedTribe) {
-      $location.path("/" + updatedTribe._id + "/pairAssignments/current");
+    Coupling.saveTribe($scope.tribe, function () {
+      $location.path("/tribes");
     });
   }
 }]);
@@ -86,8 +86,9 @@ controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling',
 controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
   $scope.tribe = tribe;
   $scope.clickSaveButton = function () {
-    Coupling.saveTribe($scope.tribe, function (updatedTribe) {
-      $location.path("/" + updatedTribe._id + "/pairAssignments/current");
+    Coupling.saveTribe($scope.tribe, function () {
+      $location.path("/tribes");
+
     });
   }
 }]);

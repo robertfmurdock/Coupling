@@ -1,8 +1,6 @@
 div(class="tribe-frame" ng-show="tribe")
     div(class="tribe-view")
-        span(class="tribe")
-            div(class="tribe-name") {{tribe.name}}
-            img(ng-src="{{tribe | tribeImageUrl: {size: 150} }}" class="tribe-icon" width="150" height="150")
+        tribecard
         span(class="tribe")
             div(class="tribe-editor")
                 div
@@ -14,7 +12,7 @@ div(class="tribe-frame" ng-show="tribe")
                 div
                     label(for="tribe-email") Email:
                     input(id="tribe-email" type="text" ng-model="tribe.email")
-            div(ng-hide="tribe._id")
+                div(ng-hide="tribe._id")
                     label(for="tribe-id") Unique Id:
                     input(id="tribe-id" type="text" ng-model="tribe.requestedId")
     div
