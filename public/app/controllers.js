@@ -142,8 +142,9 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
   }
 ]);
 
-controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', 'history', function ($scope, Coupling, history) {
-  Coupling.data.currentPairAssignments = history[0];
+controllers.controller('CurrentPairAssignmentsController', ['$scope', 'currentPairs', 'tribe', function ($scope, currentPairs, tribe) {
+  $scope.tribe = tribe;
+  $scope.currentPairAssignments = currentPairs;
 }]);
 
 controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', '$routeParams', function ($scope, Coupling, $location, $routeParams) {

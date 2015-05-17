@@ -61,7 +61,7 @@ describe('The controller named ', function() {
         $scope: scope,
         $location: location,
         Coupling: Coupling,
-        $routeParams: routeParams,
+        $routeParams: routeParams
       });
     });
   }
@@ -466,13 +466,14 @@ describe('The controller named ', function() {
     var selectTribeDefer = new RSVP.defer();
     var selectedTribeId;
 
+    var selectedTribe = {
+      name: 'Party tribe.',
+      _id: 'party'
+    };
+
     beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
-      };
-      var selectedTribe = {
-        name: 'Party tribe.',
-        _id: 'party'
       };
       Coupling = {
         data: {
@@ -495,15 +496,15 @@ describe('The controller named ', function() {
       var currentPairs = [
         ['tom', 'jerry']
       ];
-      var history = [currentPairs];
       inject(function($controller) {
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
-          history: history
+          currentPairs: currentPairs,
+          tribe: selectedTribe
         });
       });
-      expect(Coupling.data.currentPairAssignments).toBe(currentPairs);
+      expect(scope.currentPairAssignments).toBe(currentPairs);
     });
   });
 

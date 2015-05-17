@@ -23,13 +23,14 @@ app.config(['$routeProvider', function (routeProvider) {
     templateUrl: '/partials/tribe/',
     controller: "NewTribeController"
   });
+  var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
+    return Coupling.requestSpecificTribe($route.current.params.tribeId);
+  }];
   routeProvider.when('/:tribeId/', {
     templateUrl: '/partials/tribe/',
     controller: "EditTribeController",
     resolve: {
-      tribe: ['$route', 'Coupling', function ($route, Coupling) {
-        return Coupling.requestSpecificTribe($route.current.params.tribeId);
-      }]
+      tribe: tribeResolution
     }
   });
   routeProvider.when('/:tribeId/history', {
@@ -44,11 +45,12 @@ app.config(['$routeProvider', function (routeProvider) {
     templateUrl: '/partials/pairAssignments/',
     controller: "CurrentPairAssignmentsController",
     resolve: {
-      history: ['$route', 'Coupling', function ($route, Coupling) {
+      currentPairs: ['$route', 'Coupling', function ($route, Coupling) {
         return Coupling.selectTribe($route.current.params.tribeId).then(function (data) {
-          return data.history;
+          return data.history[0];
         });
-      }]
+      }],
+      tribe: tribeResolution
     }
   });
   routeProvider.when('/:tribeId/pairAssignments/new/', {

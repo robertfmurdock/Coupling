@@ -1,6 +1,29 @@
 var util = require('util');
+var userEmail = 'protractor@test.goo';
+var monk = require("monk");
+var config = require("../../config");
+var usersCollection = monk(config.mongoUrl).get('users');
+
+function authorizeUserForTribes(authorizedTribes) {
+  return usersCollection.update({
+    email: userEmail
+  }, {
+    $set: {
+      tribes: authorizedTribes
+    }
+  }).then(function (updateCount) {
+    if (updateCount == 0) {
+      return usersCollection.insert({
+        email: userEmail,
+        tribes: authorizedTribes
+      });
+    }
+  });
+}
 
 var helper = {
+  userEmail: userEmail,
+  authorizeUserForTribes: authorizeUserForTribes,
   afterEachAssertLogsAreEmpty: function () {
 
     afterEach(function (done) {

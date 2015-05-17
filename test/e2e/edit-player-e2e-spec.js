@@ -8,28 +8,8 @@ var e2eHelp = require('./e2e-help');
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
-var usersCollection = monk(config.mongoUrl).get('users');
 
 xdescribe('The edit player page', function () {
-
-  var userEmail = 'protractor@test.goo';
-
-  function authorizeUserForTribes(authorizedTribes) {
-    return usersCollection.update({
-      email: userEmail
-    }, {
-      $set: {
-        tribes: authorizedTribes
-      }
-    }).then(function (updateCount) {
-      if (updateCount == 0) {
-        return usersCollection.insert({
-          email: userEmail,
-          tribes: authorizedTribes
-        });
-      }
-    });
-  }
 
   var tribe = {
     _id: 'delete_me',
@@ -45,7 +25,7 @@ xdescribe('The edit player page', function () {
     browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
     RSVP.all([
         tribeCollection.insert(tribe),
-        authorizeUserForTribes([tribe._id]),
+        e2eHelp.authorizeUserForTribes([tribe._id]),
         playersCollection.insert(player)]
     ).then(function () {
         done();
