@@ -24,10 +24,6 @@ describe('The current pair assignments', function() {
     });
   });
 
-  beforeAll(function() {
-    browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-  });
-
   afterAll(function() {
     tribeCollection.remove({
       _id: tribe._id
@@ -37,6 +33,7 @@ describe('The current pair assignments', function() {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('shows the tribe', function() {
+    browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/pairAssignments/current/');
     expect(element(By.css('.tribe-name')).getText()).toEqual(tribe.name);
