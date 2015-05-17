@@ -15,17 +15,11 @@ describe('The current pair assignments', function () {
     name: 'Funkytown'
   };
 
-  beforeAll(function (done) {
-    tribeCollection.insert(tribe).then(function () {
-      console.log('inserts done');
-      return e2eHelp.authorizeUserForTribes([tribe._id])
-    }).then(function () {
-      console.log('authorize done');
-      return browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-    }).then(function () {
-      console.log('login done');
-      done();
-    });
+  beforeAll(function () {
+    browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
+    tribeCollection.insert(tribe);
+    e2eHelp.authorizeUserForTribes([tribe._id]);
+    browser.waitForAngular();
   });
 
   afterAll(function () {
@@ -37,7 +31,6 @@ describe('The current pair assignments', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('shows the tribe', function () {
-    console.log('starting test');
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/pairAssignments/current/');
     expect(element(By.css('.tribe-name')).getText()).toEqual(tribe.name);
