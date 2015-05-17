@@ -19,7 +19,8 @@ describe('The current pair assignments', function () {
     tribeCollection.insert(tribe).then(function () {
       return e2eHelp.authorizeUserForTribes([tribe._id])
     }).then(function () {
-      browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
+      return browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
+    }).then(function () {
       done();
     });
   });
