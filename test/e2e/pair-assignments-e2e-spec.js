@@ -34,6 +34,8 @@ describe('The current pair assignments', function() {
 
   it('shows the tribe', function() {
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
+    browser.waitForAngular();
+
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/pairAssignments/current/');
     expect(element(By.css('.tribe-name')).getText()).toEqual(tribe.name);
