@@ -38,6 +38,7 @@ describe('The current pair assignments', function() {
 
   it('shows the tribe', function() {
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/pairAssignments/current/');
     expect(element(By.css('.tribe-name')).getText()).toEqual(tribe.name);
   });
 
