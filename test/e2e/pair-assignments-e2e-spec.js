@@ -15,15 +15,10 @@ describe('The current pair assignments', function () {
     name: 'Funkytown'
   };
 
-  beforeAll(function (done) {
+  beforeAll(function () {
+    tribeCollection.insert(tribe);
+    e2eHelp.authorizeUserForTribes([tribe._id]);
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-
-    RSVP.all([
-      tribeCollection.insert(tribe),
-      e2eHelp.authorizeUserForTribes([tribe._id])
-    ]).then(function () {
-      done();
-    });
   });
 
   afterAll(function () {
