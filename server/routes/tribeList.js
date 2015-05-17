@@ -37,6 +37,8 @@ var TribeRoutes = function () {
   this.list = function (request, response) {
     requestAuthorizedTribes(request.user, request.dataService)
       .then(function (authorizedTribes) {
+        console.log('listing tribes for ' + request.user.email);
+        console.log(authorizedTribes);
         response.send(authorizedTribes);
       })
       .catch(function (error) {
