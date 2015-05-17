@@ -64,6 +64,15 @@ app.config(['$routeProvider', function (routeProvider) {
   routeProvider.when('/auth/google', {
     redirectTo: '/auth/google'
   });
+  routeProvider.when('/v2/tribes', {
+    templateUrl: '/view-revamp/partials/tribe-list',
+    controller: 'TribeListControllerRevamp',
+    resolve: {
+      tribes: ['Coupling', function (Coupling) {
+        return Coupling.getTribes();
+      }]
+    }
+  });
 }]);
 
 angular.module('ui.gravatar').config([

@@ -15,10 +15,17 @@ module.exports = function (app, userDataService, couplingDataService) {
         app.get('/test-login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
     }
 
+    app.get('/v2/', routes.v2Index);
     app.get('/', routes.index);
     app.all('/api/*', require('./routes/api-guard')(couplingDataService));
     app.use('/api/tribes', require('./routes/tribeList'));
     app.use('/api/:tribeId', require('./routes/tribe'));
     app.get('/partials/:name', routes.partials);
+
+    app.get('/view-revamp/partials/:name', function (req, res) {
+        res.render('view-revamp/partials/' + req.params.name);
+    });
+    app.get('/v2/*', routes.v2Index);
+
     app.get('*', routes.index);
 };

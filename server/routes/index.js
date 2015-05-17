@@ -8,6 +8,15 @@ exports.index = function (request, response) {
     }
 };
 
+exports.v2Index = function (request, response) {
+    if (!request.isAuthenticated()) {
+        response.redirect('/welcome');
+    } else {
+        console.log('revamp index');
+        response.render('view-revamp/index', { title: 'Coupling', buildDate: config.buildDate, gitRev: config.gitRev });
+    }
+};
+
 exports.welcome = function(request, response){
     response.render('welcome', { buildDate: config.buildDate, gitRev: config.gitRev });
 };

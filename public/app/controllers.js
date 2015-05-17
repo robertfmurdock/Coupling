@@ -1,7 +1,7 @@
 "use strict";
 var controllers = angular.module('coupling.controllers', ['coupling.services']);
 
-controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer', function($scope, $timeout, randomizer) {
+controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer', function ($scope, $timeout, randomizer) {
   $scope.show = false;
   var candidates = [{
     leftCard: {
@@ -42,84 +42,88 @@ controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer',
   $scope.rightCard = choice.rightCard;
   $scope.proverb = choice.proverb;
 
-  $timeout(function() {
+  $timeout(function () {
     $scope.show = true;
   }, 0);
 }]);
 
-controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function(scope, location, Coupling) {
+controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
   scope.data = Coupling.data;
 
   if (location.path() === "/") {
     location.path("/tribes");
   }
 
-  scope.clickSpinButton = function() {
+  scope.clickSpinButton = function () {
     location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
   };
 
   scope.playerRoster = {
     minimized: false
   };
-  scope.clickPlayerRosterHeader = function() {
+  scope.clickPlayerRosterHeader = function () {
     scope.playerRoster.minimized = !scope.playerRoster.minimized;
   };
 }]);
 
-controllers.controller('SelectedPlayerCardController', ['$scope', '$location', 'Coupling', function($scope, $location, Coupling) {
-  $scope.clickPlayerCard = function() {
+controllers.controller('SelectedPlayerCardController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
+  $scope.clickPlayerCard = function () {
     $scope.player.isAvailable = !$scope.player.isAvailable;
   };
-  $scope.clickPlayerName = function($event) {
+  $scope.clickPlayerName = function ($event) {
     if ($event.stopPropagation) $event.stopPropagation();
     $location.path("/" + Coupling.data.selectedTribeId + "/player/" + $scope.player._id);
   };
 }]);
 
-controllers.controller('TribeListController', ['$scope', '$location', 'Coupling', 'tribes', function($scope, $location, Coupling, tribes) {
+controllers.controller('TribeListController', ['$scope', '$location', 'Coupling', 'tribes', function ($scope, $location, Coupling, tribes) {
   $scope.tribes = tribes;
   $scope.playerRoster.minimized = true;
   Coupling.selectTribe(null);
-  $scope.clickOnTribeCard = function(tribe) {
+  $scope.clickOnTribeCard = function (tribe) {
     $location.path("/" + tribe._id + "/pairAssignments/current");
   };
-  $scope.clickOnTribeName = function(tribe) {
+  $scope.clickOnTribeName = function (tribe) {
     $location.path("/" + tribe._id);
   };
 }]);
 
-controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function($scope, $location, Coupling) {
+controllers.controller('TribeListControllerRevamp', ['$scope', '$location', 'tribes', function ($scope, $location, tribes) {
+  $scope.tribes = tribes;
+}]);
+
+controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
   $scope.tribe = {
     name: 'New Tribe'
   };
   Coupling.selectTribe(null);
-  $scope.clickSaveButton = function() {
+  $scope.clickSaveButton = function () {
     $scope.tribe._id = $scope.tribe.requestedId;
     delete $scope.tribe.requestedId;
-    Coupling.saveTribe($scope.tribe, function(updatedTribe) {
+    Coupling.saveTribe($scope.tribe, function (updatedTribe) {
       $location.path("/" + updatedTribe._id + "/pairAssignments/current");
     });
   }
 }]);
 
-controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location', 'tribe', function($scope, Coupling, $location, tribe) {
+controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
   $scope.tribe = tribe;
-  $scope.clickSaveButton = function() {
-    Coupling.saveTribe($scope.tribe, function(updatedTribe) {
+  $scope.clickSaveButton = function () {
+    Coupling.saveTribe($scope.tribe, function (updatedTribe) {
       $location.path("/" + updatedTribe._id + "/pairAssignments/current");
     });
   }
 }]);
 
-controllers.controller('HistoryController', ['$scope', 'Coupling', '$routeParams', function($scope, Coupling, $routeParams) {
+controllers.controller('HistoryController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   Coupling.selectTribe($routeParams.tribeId);
   $scope.playerRoster.minimized = true;
 }]);
 
 controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', '$routeParams',
-  function($scope, $location, Coupling, $routeParams) {
-    Coupling.selectTribe($routeParams.tribeId).then(function(data) {
-      var selectedPlayers = _.filter(data.players, function(player) {
+  function ($scope, $location, Coupling, $routeParams) {
+    Coupling.selectTribe($routeParams.tribeId).then(function (data) {
+      var selectedPlayers = _.filter(data.players, function (player) {
         return player.isAvailable;
       });
       Coupling.spin(selectedPlayers);
@@ -127,13 +131,13 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
 
     Coupling.selectTribe($routeParams.tribeId);
 
-    $scope.save = function() {
+    $scope.save = function () {
       Coupling.saveCurrentPairAssignments();
       $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
     };
 
     function findPairContainingPlayer(player) {
-      return _.find($scope.data.currentPairAssignments.pairs, function(pair) {
+      return _.find($scope.data.currentPairAssignments.pairs, function (pair) {
         return _.findWhere(pair, {
           _id: player._id
         });
@@ -141,14 +145,14 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
     }
 
     function swapPlayers(pair, swapOutPlayer, swapInPlayer) {
-      _.each(pair, function(player, index) {
+      _.each(pair, function (player, index) {
         if (swapOutPlayer._id === player._id) {
           pair[index] = swapInPlayer;
         }
       });
     }
 
-    $scope.onDrop = function($event, draggedPlayer, droppedPlayer) {
+    $scope.onDrop = function ($event, draggedPlayer, droppedPlayer) {
       var pairWithDraggedPlayer = findPairContainingPlayer(draggedPlayer);
       var pairWithDroppedPlayer = findPairContainingPlayer(droppedPlayer);
 
@@ -160,46 +164,46 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
   }
 ]);
 
-controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', 'history', function($scope, Coupling, history) {
+controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', 'history', function ($scope, Coupling, history) {
   Coupling.data.currentPairAssignments = history[0];
   $scope.playerRoster.minimized = false;
 }]);
 
-controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', '$routeParams', function($scope, Coupling, $location, $routeParams) {
+controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', '$routeParams', function ($scope, Coupling, $location, $routeParams) {
   Coupling.selectTribe($routeParams.tribeId);
   $scope.playerRoster.minimized = false;
   $scope.player = {
     tribe: $routeParams.tribeId
   };
-  $scope.savePlayer = function() {
-    Coupling.savePlayer($scope.player, function(updatedPlayer) {
+  $scope.savePlayer = function () {
+    Coupling.savePlayer($scope.player, function (updatedPlayer) {
       $location.path("/" + $routeParams.tribeId + "/player/" + updatedPlayer._id);
     });
   }
 }]);
 
-controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', '$location', function($scope, Coupling, $routeParams, $location) {
+controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', '$location', function ($scope, Coupling, $routeParams, $location) {
   Coupling.selectTribe($routeParams.tribeId);
   $scope.playerRoster.minimized = false;
-  Coupling.findPlayerById($routeParams.id, function(player) {
+  Coupling.findPlayerById($routeParams.id, function (player) {
     $scope.original = player;
     $scope.player = angular.copy(player);
   });
 
-  $scope.savePlayer = function() {
+  $scope.savePlayer = function () {
     $scope.playerForm.$setPristine();
     Coupling.savePlayer($scope.player);
   };
 
-  $scope.removePlayer = function() {
+  $scope.removePlayer = function () {
     if (confirm("Are you sure you want to delete this player?")) {
-      Coupling.removePlayer($scope.player, function() {
+      Coupling.removePlayer($scope.player, function () {
         $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
       });
     }
   };
 
-  $scope.$on('$locationChangeStart', function() {
+  $scope.$on('$locationChangeStart', function () {
     if ($scope.playerForm.$dirty) {
       var answer = confirm("You have unsaved data. Would you like to save before you leave?");
       if (answer) {
@@ -209,9 +213,9 @@ controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routePar
   });
 }]);
 
-controllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function($scope, Coupling, $routeParams) {
+controllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   var promisePins = Coupling.promisePins($routeParams.tribeId);
-  promisePins.then(function(pins) {
+  promisePins.then(function (pins) {
     $scope.pins = pins;
   });
 }]);

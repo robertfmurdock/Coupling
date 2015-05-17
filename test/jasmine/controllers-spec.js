@@ -160,6 +160,25 @@ describe('The controller named ', function() {
         expect(Coupling.selectTribe).toHaveBeenCalledWith(null);
       }
 
+      describe('TribeListControllerRevamp', function() {
+        it('will get tribes and put them on scope', function() {
+          var expectedTribes = [{
+            _id: '1'
+          }, {
+            _id: '2'
+          }];
+          inject(function($controller) {
+            $controller('TribeListControllerRevamp', {
+              $scope: scope,
+              $location: location,
+              tribes: expectedTribes
+            });
+          });
+          expect(scope.tribes).toBe(expectedTribes);
+        });
+
+      });
+
       describe('TribeListController', function() {
 
         var Coupling, location;
