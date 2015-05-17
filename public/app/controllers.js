@@ -47,26 +47,8 @@ controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer',
   }, 0);
 }]);
 
-controllers.controller('CouplingController', ['$scope', '$location', 'Coupling', function (scope, location, Coupling) {
-  scope.data = Coupling.data;
-
-  if (location.path() === "/") {
-    location.path("/tribes");
-  }
-
-  scope.clickSpinButton = function () {
-    location.path(Coupling.data.selectedTribeId + "/pairAssignments/new");
-  };
-
-  scope.playerRoster = {
-    minimized: false
-  };
-  scope.clickPlayerRosterHeader = function () {
-    scope.playerRoster.minimized = !scope.playerRoster.minimized;
-  };
-}]);
-
 controllers.controller('SelectedPlayerCardController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
+  Coupling.data = {};
   $scope.clickPlayerCard = function () {
     $scope.player.isAvailable = !$scope.player.isAvailable;
   };
@@ -76,21 +58,16 @@ controllers.controller('SelectedPlayerCardController', ['$scope', '$location', '
   };
 }]);
 
-controllers.controller('TribeListController', ['$scope', '$location', 'Coupling', 'tribes', function ($scope, $location, Coupling, tribes) {
-  $scope.tribes = tribes;
-  $scope.playerRoster.minimized = true;
-  Coupling.selectTribe(null);
-  $scope.clickOnTribeCard = function (tribe) {
-    $location.path("/" + tribe._id + "/pairAssignments/current");
-  };
-  $scope.clickOnTribeName = function (tribe) {
-    $location.path("/" + tribe._id);
-  };
-}]);
-
-controllers.controller('TribeListControllerRevamp', ['$scope', '$location', 'tribes', function ($scope, $location, tribes) {
-  $scope.tribes = tribes;
-}]);
+controllers.controller('TribeListController', ['$scope', '$location', 'tribes',
+  function ($scope, $location, tribes) {
+    $scope.tribes = tribes;
+    $scope.clickOnTribeCard = function (tribe) {
+      $location.path("/" + tribe._id + "/pairAssignments/current");
+    };
+    $scope.clickOnTribeName = function (tribe) {
+      $location.path("/" + tribe._id);
+    };
+  }]);
 
 controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
   $scope.tribe = {
@@ -166,7 +143,6 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
 
 controllers.controller('CurrentPairAssignmentsController', ['$scope', 'Coupling', 'history', function ($scope, Coupling, history) {
   Coupling.data.currentPairAssignments = history[0];
-  $scope.playerRoster.minimized = false;
 }]);
 
 controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', '$routeParams', function ($scope, Coupling, $location, $routeParams) {

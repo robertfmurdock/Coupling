@@ -96,12 +96,10 @@
 }
 
 .view-container {
-  position: relative;
 }
 
 .view-frame {
   &.ng-enter, &.ng-leave {
-    position: absolute;
   }
   &.ng-enter {
     animation: 1s spin-in;

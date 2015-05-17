@@ -8,6 +8,7 @@ app.config(['$locationProvider', function ($locationProvider) {
   });
 }]);
 app.config(['$routeProvider', function (routeProvider) {
+  routeProvider.when('/', {redirectTo: '/tribes/'});
   routeProvider.when('/tribes/', {
     templateUrl: '/partials/tribe-list/',
     controller: "TribeListController",
@@ -63,15 +64,6 @@ app.config(['$routeProvider', function (routeProvider) {
   });
   routeProvider.when('/auth/google', {
     redirectTo: '/auth/google'
-  });
-  routeProvider.when('/v2/tribes', {
-    templateUrl: '/view-revamp/partials/tribe-list',
-    controller: 'TribeListControllerRevamp',
-    resolve: {
-      tribes: ['Coupling', function (Coupling) {
-        return Coupling.getTribes();
-      }]
-    }
   });
 }]);
 

@@ -39,7 +39,7 @@ function authorizeAllTribes() {
     });
 }
 
-describe('On the pair assignments page', function () {
+xdescribe('On the pair assignments page', function () {
 
   var tribe = {
     _id: 'delete_me',

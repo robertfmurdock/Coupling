@@ -1,19 +1,21 @@
-div(class="tribe-view" ng-show="tribe")
-    span(class="tribe")
-        div(class="tribe-name") {{tribe.name}}
-        img(ng-src="{{tribe | tribeImageUrl: {size: 150} }}" class="tribe-icon" width="150" height="150")
-        div(class="tribe-editor")
-            div
-                label(for="tribe-name") Name:
-                input(id="tribe-name" type="text" ng-model="tribe.name")
-            div
-                label(for="tribe-img-url") Image URL:
-                input(id="tribe-img-url" type="text" ng-model="tribe.imageURL")
-            div
-                label(for="tribe-email") Email:
-                input(id="tribe-email" type="text" ng-model="tribe.email")
-        div(ng-hide="tribe._id")
-                label(for="tribe-id") Unique Id:
-                input(id="tribe-id" type="text" ng-model="tribe.requestedId")
-        div
-            input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="clickSaveButton()" tabIndex="0" value="Save")
+div(class="tribe-frame" ng-show="tribe")
+    div(class="tribe-view")
+        span(class="tribe")
+            div(class="tribe-name") {{tribe.name}}
+            img(ng-src="{{tribe | tribeImageUrl: {size: 150} }}" class="tribe-icon" width="150" height="150")
+        span(class="tribe")
+            div(class="tribe-editor")
+                div
+                    label(for="tribe-name") Name:
+                    input(id="tribe-name" type="text" ng-model="tribe.name")
+                div
+                    label(for="tribe-img-url") Image URL:
+                    input(id="tribe-img-url" type="text" ng-model="tribe.imageURL")
+                div
+                    label(for="tribe-email") Email:
+                    input(id="tribe-email" type="text" ng-model="tribe.email")
+            div(ng-hide="tribe._id")
+                    label(for="tribe-id") Unique Id:
+                    input(id="tribe-id" type="text" ng-model="tribe.requestedId")
+    div
+        input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="clickSaveButton()" tabIndex="0" value="Save")

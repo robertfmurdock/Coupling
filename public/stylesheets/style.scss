@@ -1,6 +1,8 @@
 body {
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: cadetblue;
+  padding-top: 72px;
 }
 
 a {
@@ -170,11 +172,7 @@ a {
 }
 
 .view-container {
-  display: inline-block;
-  white-space: normal;
-  width: 800px;
-  vertical-align: top;
-  margin: 0 10px;
+  text-align: center;
 }
 
 .player-roster {
@@ -233,7 +231,6 @@ a {
 }
 
 .view-frame {
-  overflow: auto;
 }
 
 .current.pair-assignments {
@@ -265,11 +262,12 @@ a {
   background: steelblue url(../images/overlay.png) repeat-x;
 }
 
-.tribe-listing-frame {
+.tribe-frame {
   display: inline-block;
-  border-radius: 20px;
-  border: 20px outset indigo;
-  background-color: indianred;
+  border-radius: 82px;
+  border: 24px outset rgb(94, 84, 102);
+  background-color: rgb(115, 115, 115);
+  padding: 0 42px 42px;
   .button {
     left: -7px;
     bottom: -14px;
@@ -295,6 +293,8 @@ a {
   text-stroke-color: black;
   font-size: x-large;
   margin: 0 2px 4px 2px;
+  width: 170px;
+  height: 210px;
   img {
     /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
     -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
@@ -344,7 +344,7 @@ a {
   content: "\f128";
 }
 
-.tribe-listing .tribe-name {
+.tribe-name {
   background: darkslategrey url("../images/overlay.png") repeat-x;
 }
 
@@ -373,6 +373,8 @@ a {
 }
 
 .tribe-view {
+  display: flex;
+  padding-top: 25px;
   .tribe-icon {
     display: inline-block;
   }
