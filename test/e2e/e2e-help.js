@@ -12,7 +12,10 @@ function authorizeUserForTribes(authorizedTribes) {
       tribes: authorizedTribes
     }
   }).then(function (updateCount) {
+    console.log("update count: " + updateCount);
     if (updateCount == 0) {
+      console.log('inserting, yo');
+      console.log(authorizedTribes);
       return usersCollection.insert({
         email: userEmail,
         tribes: authorizedTribes
