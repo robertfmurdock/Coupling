@@ -56,4 +56,10 @@ describe('The current pair assignments', function () {
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/player/new/');
   });
 
+  it('will let you view history', function () {
+    browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
+    element(By.id('view-history-button')).click();
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/history/');
+  });
+
 });

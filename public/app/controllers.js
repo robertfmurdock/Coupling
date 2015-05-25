@@ -95,7 +95,6 @@ controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location'
 
 controllers.controller('HistoryController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   Coupling.selectTribe($routeParams.tribeId);
-  $scope.playerRoster.minimized = true;
 }]);
 
 controllers.controller('NewPairAssignmentsController', ['$scope', '$location', 'Coupling', '$routeParams',

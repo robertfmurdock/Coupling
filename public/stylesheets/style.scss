@@ -81,6 +81,19 @@ a {
   background: darkred url(../images/overlay.png) repeat-x;
 }
 
+.no-pairs-notice {
+  border: 8px outset dimgray;
+  background-color: aliceblue;
+  display: inline-block;
+  border-radius: 40px;
+  font-size: xx-large;
+  font-weight: bold;
+  width: 500px;
+  height: 150px;
+  padding: 100px 5px 5px;
+  margin: 0 2px 5px;
+}
+
 #pair-assignments-content {
   white-space: pre-line;
   .player-header {
@@ -89,7 +102,6 @@ a {
 }
 
 .roster-header {
-  display: inline-block;
   font-size: 1.5em;
   margin-before: 0.2em;
   margin-after: 0.58em;
@@ -181,6 +193,9 @@ a {
   padding: 10px;
   border: 11px outset tan;
   background-color: wheat;
+  .player {
+    zoom: 0.8;
+  }
 }
 
 .player {

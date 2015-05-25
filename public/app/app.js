@@ -33,7 +33,7 @@ app.config(['$routeProvider', function (routeProvider) {
       tribe: tribeResolution
     }
   });
-  routeProvider.when('/:tribeId/history', {
+  routeProvider.when('/:tribeId/history/', {
     templateUrl: '/partials/history/',
     controller: "HistoryController"
   });
