@@ -20,6 +20,11 @@ describe('The current pair assignments', function () {
     tribeCollection.insert(tribe);
     e2eHelp.authorizeUserForTribes([tribe._id]);
     browser.waitForAngular();
+
+    tribeCollection.find().then(function(data){
+      console.log('tribes NOW');
+      console.log(data);
+    });
   });
 
   afterAll(function () {
