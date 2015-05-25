@@ -61,13 +61,13 @@ services.service("Coupling", ['$http', function($http) {
                 })) {
                 return true;
             }
-        })
+        });
         if (result) {
             return true;
         } else {
             return false;
         }
-    }
+    };
 
     this.requestPlayersPromise = function(tribeId, historyPromise) {
         return RSVP.hash({

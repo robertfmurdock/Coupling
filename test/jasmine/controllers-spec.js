@@ -492,19 +492,22 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe and then select the latest pairs', function () {
+    it('will put the latest pairs and players on scope', function () {
       var currentPairs = [
         ['tom', 'jerry']
       ];
+      var players = ['guy', 'fellow', 'nerd'];
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           currentPairs: currentPairs,
-          tribe: selectedTribe
+          tribe: selectedTribe,
+          players: players
         });
       });
       expect(scope.currentPairAssignments).toBe(currentPairs);
+      expect(scope.players).toBe(players);
     });
   });
 

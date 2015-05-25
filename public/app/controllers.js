@@ -142,8 +142,9 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
   }
 ]);
 
-controllers.controller('CurrentPairAssignmentsController', ['$scope', 'currentPairs', 'tribe', function ($scope, currentPairs, tribe) {
+controllers.controller('CurrentPairAssignmentsController', ['$scope', 'currentPairs', 'tribe', 'players', function ($scope, currentPairs, tribe, players) {
   $scope.tribe = tribe;
+  $scope.players = players;
   $scope.currentPairAssignments = currentPairs;
 }]);
 

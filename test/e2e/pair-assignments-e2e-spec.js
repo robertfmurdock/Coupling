@@ -7,6 +7,7 @@ var hostName = 'http://' + config.publicHost + ':' + config.port;
 var e2eHelp = require('./e2e-help');
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
+var playersCollection = database.get('players');
 
 describe('The current pair assignments', function () {
 
@@ -15,10 +16,18 @@ describe('The current pair assignments', function () {
     name: 'Funkytown'
   };
 
+  var players = [
+    {_id: "p1", tribe: tribe._id, name: "player1"},
+    {_id: "p2", tribe: tribe._id, name: "player2"},
+    {_id: "p3", tribe: tribe._id, name: "player3"}
+  ];
+
   beforeAll(function () {
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
     tribeCollection.insert(tribe);
     e2eHelp.authorizeUserForTribes([tribe._id]);
+    playersCollection.drop();
+    playersCollection.insert(players);
     browser.waitForAngular();
   });
 
@@ -33,6 +42,12 @@ describe('The current pair assignments', function () {
   it('shows the tribe', function () {
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     expect(element(By.css('.tribe-name')).getText()).toEqual(tribe.name);
+  });
+
+  it('will display all the existing players in the player roster', function () {
+    browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
+    var playerElements = element.all(By.repeater('player in players'));
+    expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
   });
 
   it('will let you add players', function () {

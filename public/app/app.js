@@ -46,11 +46,15 @@ app.config(['$routeProvider', function (routeProvider) {
     controller: "CurrentPairAssignmentsController",
     resolve: {
       currentPairs: ['$route', 'Coupling', function ($route, Coupling) {
-        return Coupling.selectTribe($route.current.params.tribeId).then(function (data) {
-          return data.history[0];
+        return Coupling.requestHistoryPromise($route.current.params.tribeId).then(function (history) {
+          return history[0];
         });
       }],
-      tribe: tribeResolution
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
+      }]
     }
   });
   routeProvider.when('/:tribeId/pairAssignments/new/', {
