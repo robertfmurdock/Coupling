@@ -28,6 +28,8 @@ var TribeRoutes = function () {
       authorizedTribeIds: loadAuthorizedTribeIds(user, dataService.mongoUrl)
     })
       .then(function (hash) {
+        console.log('all tribes:');
+        console.log(hash.tribes);
         return _.filter(hash.tribes, function (value) {
           return _.contains(hash.authorizedTribeIds, value._id);
         });
