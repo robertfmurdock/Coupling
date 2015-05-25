@@ -30,6 +30,8 @@ var TribeRoutes = function () {
       .then(function (hash) {
         console.log('all tribes:');
         console.log(hash.tribes);
+        console.log('all authorizations:');
+        console.log(hash.authorizedTribeIds);
         return _.filter(hash.tribes, function (value) {
           return _.contains(hash.authorizedTribeIds, value._id);
         });
