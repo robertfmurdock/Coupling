@@ -62,4 +62,10 @@ describe('The current pair assignments', function () {
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/history/');
   });
 
+  it('will let you prepare new pairs', function () {
+    browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
+    element(By.id('new-pairs-button')).click();
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/prepare/');
+  });
+
 });

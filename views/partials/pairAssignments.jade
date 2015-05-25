@@ -13,6 +13,7 @@ div
                 span(ng-repeat='player in pair' class="player" ng-class="{hoverzoom: !currentPairAssignments._id}" ui-draggable="!currentPairAssignments._id" drag="player" ui-on-Drop="onDrop($event,$data,player)")
                     img(ng-src="{{player | gravatarUrl:{size:75} }}" width="75" height="75")
                     div(class="player-header") {{player.name}}
+        a(id="new-pairs-button" class="large pink button" href="/{{tribe._id}}/prepare/") Prepare to spin!
         a(id="view-history-button" class="large blue button" href="/{{tribe._id}}/history/") View history!
 
 div(class="player-roster")
