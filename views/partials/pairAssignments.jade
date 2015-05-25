@@ -10,5 +10,6 @@ div(ng-cloak class="current pair-assignments" ng-show="currentPairAssignments")
             span(ng-repeat='player in pair' class="player" ng-class="{hoverzoom: !currentPairAssignments._id}" ui-draggable="!currentPairAssignments._id" drag="player" ui-on-Drop="onDrop($event,$data,player)")
                 img(ng-src="{{player | gravatarUrl:{size:75} }}" width="75" height="75")
                 div(class="player-header") {{player.name}}
-
 div(ng-cloak class="current pair-assignments" ng-hide="currentPairAssignments") No pair assignments yet!
+
+a(id="add-player-button" class="large orange button" href="/{{tribe._id}}/player/new/") Add a new player!

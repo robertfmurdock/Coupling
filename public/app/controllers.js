@@ -147,15 +147,14 @@ controllers.controller('CurrentPairAssignmentsController', ['$scope', 'currentPa
   $scope.currentPairAssignments = currentPairs;
 }]);
 
-controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', '$routeParams', function ($scope, Coupling, $location, $routeParams) {
-  Coupling.selectTribe($routeParams.tribeId);
-  $scope.playerRoster.minimized = false;
+controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
+  $scope.tribe = tribe;
   $scope.player = {
-    tribe: $routeParams.tribeId
+    tribe: tribe._id
   };
   $scope.savePlayer = function () {
     Coupling.savePlayer($scope.player, function (updatedPlayer) {
-      $location.path("/" + $routeParams.tribeId + "/player/" + updatedPlayer._id);
+      $location.path("/" + tribe._id + "/player/" + updatedPlayer._id);
     });
   }
 }]);

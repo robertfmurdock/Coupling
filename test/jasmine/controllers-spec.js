@@ -508,18 +508,20 @@ describe('The controller named ', function() {
     });
   });
 
-  xdescribe('NewPlayerController', function() {
+  describe('NewPlayerController', function() {
     var ControllerName = 'NewPlayerController';
     var Coupling, location, routeParams;
+
+    var selectedTribe = {
+      name: 'Party tribe.',
+      _id: 'party'
+    };
 
     beforeEach(function() {
       location = {
         path: jasmine.createSpy('path')
       };
-      var selectedTribe = {
-        name: 'Party tribe.',
-        _id: 'party'
-      };
+
       Coupling = {
         data: {
           selectedTribe: selectedTribe
@@ -535,27 +537,41 @@ describe('The controller named ', function() {
     });
 
     it('will select tribe', function() {
-      expect(Coupling.selectTribe).not.toHaveBeenCalled();
-      injectController(ControllerName, scope, location, Coupling, routeParams);
-      expect(Coupling.selectTribe).toHaveBeenCalled();
-    });
-
-    it('will maximize player roster', function() {
-      scope.playerRoster.minimized = true;
-      injectController(ControllerName, scope, location, Coupling, routeParams);
-      expect(scope.playerRoster.minimized).toBe(false);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          $location: location,
+          Coupling: Coupling,
+          tribe: selectedTribe
+        });
+      });
+      expect(scope.tribe).toBe(selectedTribe);
     });
 
     it('will create a new player with the given tribe', function() {
       scope.player = null;
-      injectController(ControllerName, scope, location, Coupling, routeParams);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          $location: location,
+          Coupling: Coupling,
+          tribe: selectedTribe
+        });
+      });
       expect(scope.player).toEqual({
         tribe: routeParams.tribeId
       });
     });
 
     it('can save player using Coupling service and redirects to player page on callback', function() {
-      injectController(ControllerName, scope, location, Coupling, routeParams);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          $location: location,
+          Coupling: Coupling,
+          tribe: selectedTribe
+        });
+      });
 
       scope.savePlayer();
       expect(Coupling.savePlayer).toHaveBeenCalled();

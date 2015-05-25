@@ -59,7 +59,10 @@ app.config(['$routeProvider', function (routeProvider) {
   });
   routeProvider.when('/:tribeId/player/new/', {
     templateUrl: '/partials/player/',
-    controller: "NewPlayerController"
+    controller: "NewPlayerController",
+    resolve: {
+      tribe: tribeResolution
+    }
   });
   routeProvider.when('/:tribeId/player/:id/', {
     templateUrl: '/partials/player/',
