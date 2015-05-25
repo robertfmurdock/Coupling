@@ -11,29 +11,11 @@ var usersCollection = monk(config.mongoUrl).get('users');
 
 var userEmail = 'protractor@test.goo';
 
-function authorizeUserForTribes(authorizedTribes) {
-  var tempUserEmail = userEmail + "._temp";
-  return usersCollection.update({
-    email: tempUserEmail
-  }, {
-    $set: {
-      tribes: authorizedTribes
-    }
-  }).then(function (updateCount) {
-    if (updateCount == 0) {
-      return usersCollection.insert({
-        email: tempUserEmail,
-        tribes: authorizedTribes
-      });
-    }
-  });
-}
-
 function authorizeAllTribes() {
   return tribeCollection.find({}, {})
     .then(function (tribeDocuments) {
       var authorizedTribes = _.pluck(tribeDocuments, '_id');
-      return authorizeUserForTribes(authorizedTribes);
+      return e2eHelp.authorizeUserForTribes(authorizedTribes);
     });
 }
 

@@ -28,10 +28,6 @@ var TribeRoutes = function () {
       authorizedTribeIds: loadAuthorizedTribeIds(user, dataService.mongoUrl)
     })
       .then(function (hash) {
-        console.log('all tribes:');
-        console.log(hash.tribes);
-        console.log('all authorizations:');
-        console.log(hash.authorizedTribeIds);
         return _.filter(hash.tribes, function (value) {
           return _.contains(hash.authorizedTribeIds, value._id);
         });
@@ -41,8 +37,6 @@ var TribeRoutes = function () {
   this.list = function (request, response) {
     requestAuthorizedTribes(request.user, request.dataService)
       .then(function (authorizedTribes) {
-        console.log('listing tribes for ' + request.user.email);
-        console.log(authorizedTribes);
         response.send(authorizedTribes);
       })
       .catch(function (error) {

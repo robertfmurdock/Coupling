@@ -5,19 +5,17 @@ var config = require("../../config");
 var usersCollection = monk(config.mongoUrl).get('users');
 
 function authorizeUserForTribes(authorizedTribes) {
+  var tempUserEmail = userEmail + "._temp";
   return usersCollection.update({
-    email: userEmail
+    email: tempUserEmail
   }, {
     $set: {
       tribes: authorizedTribes
     }
   }).then(function (updateCount) {
-    console.log("update count: " + updateCount);
     if (updateCount == 0) {
-      console.log('inserting, yo');
-      console.log(authorizedTribes);
       return usersCollection.insert({
-        email: userEmail,
+        email: tempUserEmail,
         tribes: authorizedTribes
       });
     }
