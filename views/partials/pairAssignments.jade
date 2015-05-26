@@ -2,8 +2,7 @@ div
     div(id="tribe-browser")
         tribecard
     div(ng-cloak class="current pair-assignments")
-        div(class="no-pairs-notice" ng-hide="currentPairAssignments")
-            div No pair assignments yet!
+        div(class="no-pairs-notice" ng-hide="currentPairAssignments") No pair assignments yet!
         div(ng-show="currentPairAssignments")
             a(id="save-button" class="super green button" ng-click="save()" ng-hide="currentPairAssignments._id") Save!
             div(class="pair-assignments-header")
@@ -15,11 +14,11 @@ div
                     div(class="player-header") {{player.name}}
         a(id="new-pairs-button" class="large pink button" href="/{{tribe._id}}/prepare/") Prepare to spin!
         a(id="view-history-button" class="large blue button" href="/{{tribe._id}}/history/") View history!
-
 div(class="player-roster")
     div
         div(class="roster-header") Players:
         span(ng-repeat="player in players" class="player" ng-class="{disabled:!player.isAvailable}")
             img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
-            div(class="player-header" ng-click="clickPlayerName($event)") {{player.name}}
+            div(class="player-header" ng-click="clickPlayerName($event)")
+                text {{player.name}}
     a(id="add-player-button" class="large orange button" href="/{{tribe._id}}/player/new/") Add a new player!

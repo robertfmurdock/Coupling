@@ -45,6 +45,10 @@ a {
   transform: rotate(8deg);
 }
 
+.welcome-pair {
+  display: inline-flex;
+}
+
 .welcome-proverb {
   display: inline-block;
   border-radius: 15px;
@@ -215,12 +219,17 @@ a {
   text-stroke-color: black;
   font-size: x-large;
   margin: 0 2px 0 2px;
+  height: 140px;
+  width: 100px;
   .player-header {
     background: darkcyan url(../images/overlay.png) repeat-x;
-    margin-before: 0px;
+    margin-before: 6px;
     margin-after: 6px;
     border-radius: 15px;
     font-weight: bold;
+  }
+  img {
+    display: block;
   }
 }
 
