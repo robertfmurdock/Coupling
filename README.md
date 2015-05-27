@@ -26,6 +26,11 @@ For developers:
 8. You'll need to install the appropriate webdriver tools in order to run the functional tests. You can do this by running: node node_modules/protractor/bin/webdriver-manager update --standalone
 9. Run: grunt. All tests should run, including selenium tests. Hooray!
 
+Notice: this app now has a Dockerized development environment! Install docker and docker-compose, clone this repo, then 
+    docker-compose build
+    docker-compose up
+The app will be running on port 3000 and will rerun all tests whenever a file is changed. Whoa!
+
 What is Pairing?
 ----------------
   Pairing is the act of two specialists in one profession working together on the same task concurrently. This allows for constant collaboration when brainstorming for solutions, reinforcement of standards and cultural norms, and immediate peer-review of all work being produced. This helps build trust that all the content created by the pair is valuable and safe.
