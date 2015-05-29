@@ -520,6 +520,23 @@ describe('The controller named ', function () {
       expect(scope.currentPairAssignments).toBe(currentPairs);
       expect(scope.players).toBe(players);
     });
+
+    it('will put all of the players that are not in the current pairs on the scope', function(){
+      var currentPairs = [
+        ['tom', 'jerry'], ['fellow', 'guy']
+      ];
+      var players = ['rigby', 'guy', 'fellow', 'nerd', 'pantsmaster'];
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          Coupling: Coupling,
+          currentPairs: currentPairs,
+          tribe: selectedTribe,
+          players: players
+        });
+      });
+      expect(scope.unpairedPlayers).toEqual(['rigby', 'nerd', 'pantsmaster']);
+    });
   });
 
   describe('NewPlayerController', function () {

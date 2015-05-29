@@ -47,16 +47,17 @@ controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer',
   }, 0);
 }]);
 
-controllers.controller('SelectedPlayerCardController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
-  Coupling.data = {};
-  $scope.clickPlayerCard = function () {
-    $scope.player.isAvailable = !$scope.player.isAvailable;
-  };
-  $scope.clickPlayerName = function ($event) {
-    if ($event.stopPropagation) $event.stopPropagation();
-    $location.path("/" + Coupling.data.selectedTribeId + "/player/" + $scope.player._id);
-  };
-}]);
+controllers.controller('SelectedPlayerCardController',
+  ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
+    Coupling.data = {};
+    $scope.clickPlayerCard = function () {
+      $scope.player.isAvailable = !$scope.player.isAvailable;
+    };
+    $scope.clickPlayerName = function ($event) {
+      if ($event.stopPropagation) $event.stopPropagation();
+      $location.path("/" + Coupling.data.selectedTribeId + "/player/" + $scope.player._id);
+    };
+  }]);
 
 controllers.controller('TribeListController', ['$scope', '$location', 'tribes',
   function ($scope, $location, tribes) {
@@ -142,23 +143,26 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
   }
 ]);
 
-controllers.controller('CurrentPairAssignmentsController', ['$scope', 'currentPairs', 'tribe', 'players', function ($scope, currentPairs, tribe, players) {
-  $scope.tribe = tribe;
-  $scope.players = players;
-  $scope.currentPairAssignments = currentPairs;
-}]);
+controllers.controller('CurrentPairAssignmentsController',
+  ['$scope', 'currentPairs', 'tribe', 'players', function ($scope, currentPairs, tribe, players) {
+    $scope.tribe = tribe;
+    $scope.players = players;
+    $scope.currentPairAssignments = currentPairs;
+    $scope.unpairedPlayers = _.difference(players, _.flatten(currentPairs))
+  }]);
 
-controllers.controller('NewPlayerController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
-  $scope.tribe = tribe;
-  $scope.player = {
-    tribe: tribe._id
-  };
-  $scope.savePlayer = function () {
-    Coupling.savePlayer($scope.player, function (updatedPlayer) {
-      $location.path("/" + tribe._id + "/player/" + updatedPlayer._id);
-    });
-  }
-}]);
+controllers.controller('NewPlayerController',
+  ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
+    $scope.tribe = tribe;
+    $scope.player = {
+      tribe: tribe._id
+    };
+    $scope.savePlayer = function () {
+      Coupling.savePlayer($scope.player, function (updatedPlayer) {
+        $location.path("/" + tribe._id + "/player/" + updatedPlayer._id);
+      });
+    }
+  }]);
 
 controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', '$location', function ($scope, Coupling, $routeParams, $location) {
   Coupling.selectTribe($routeParams.tribeId);
