@@ -33,6 +33,9 @@ app.config(['$routeProvider', function (routeProvider) {
     return Coupling.requestSpecificTribe($route.current.params.tribeId);
   }];
   routeProvider.when('/:tribeId/', {
+    redirectTo: '/:tribeId/pairAssignments/current/'
+  });
+  routeProvider.when('/:tribeId/edit/', {
     templateUrl: '/partials/tribe/',
     controller: "EditTribeController",
     resolve: {

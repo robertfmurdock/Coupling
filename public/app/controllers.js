@@ -64,8 +64,9 @@ controllers.controller('TribeListController', ['$scope', '$location', 'tribes',
     $scope.clickOnTribeCard = function (tribe) {
       $location.path("/" + tribe._id + "/pairAssignments/current");
     };
-    $scope.clickOnTribeName = function (tribe) {
-      $location.path("/" + tribe._id);
+    $scope.clickOnTribeName = function (tribe, $event) {
+      if ($event.stopPropagation) $event.stopPropagation();
+      $location.path("/" + tribe._id + '/edit/');
     };
   }]);
 

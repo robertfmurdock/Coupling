@@ -133,8 +133,19 @@ describe('The controller named ', function () {
             _id: 'amazingMagicId'
           };
           expect(location.path).not.toHaveBeenCalled();
-          scope.clickOnTribeName(tribe);
-          expect(location.path).toHaveBeenCalledWith("/" + tribe._id);
+          scope.clickOnTribeName(tribe, {});
+          expect(location.path).toHaveBeenCalledWith("/" + tribe._id + '/edit/');
+        });
+
+        it('will stop propagation to other click events', function () {
+          var event = {
+            stopPropagation: jasmine.createSpy('stopPropagation')
+          };
+          var tribe = {
+            _id: 'amazingMagicId'
+          };
+          scope.clickOnTribeName(tribe, event);
+          expect(event.stopPropagation).toHaveBeenCalled();
         });
       });
     });

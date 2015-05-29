@@ -7,7 +7,6 @@ var RSVP = require('rsvp');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
-var usersCollection = monk(config.mongoUrl).get('users');
 
 var userEmail = 'protractor@test.goo';
 
@@ -71,7 +70,6 @@ describe('The default tribes page', function () {
     browser.setLocation('/tribes');
     expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
   });
-
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('should have a section for each tribe', function () {
@@ -82,7 +80,7 @@ describe('The default tribes page', function () {
   it('can navigate to the a specific tribe page', function () {
     var tribeElements = tribeListPage.getTribeElements();
     tribeListPage.getTribeNameLabel(tribeElements.first()).click();
-    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/');
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/edit/');
   });
 
   it('can navigate to the new tribe page', function () {
@@ -101,7 +99,8 @@ describe('The default tribes page', function () {
     });
 
     beforeEach(function () {
-      browser.setLocation('/' + expectedTribe._id + '/');
+      browser.setLocation('/' + expectedTribe._id + '/edit/');
+      expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/edit/');
     });
 
     it('the tribe view is shown', function () {
@@ -109,23 +108,17 @@ describe('The default tribes page', function () {
     });
 
     it('the tribe name is shown', function () {
-      element(By.css('.view-frame')).allowAnimations(false);
-      expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
       var tribeNameElement = element.all(By.id('tribe-name')).first();
       expect(tribeNameElement.getAttribute('value')).toEqual(expectedTribe.name);
     });
 
     it('the tribe image url is shown', function () {
-      element(By.css('.view-frame')).allowAnimations(false);
-      expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
       var tribeNameElement = element.all(By.id('tribe-img-url')).first();
       var expectedValue = expectedTribe.imgURL || '';
       expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
     });
 
     it('the tribe email is shown', function () {
-      element(By.css('.view-frame')).allowAnimations(false);
-      expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/');
       var tribeNameElement = element.all(By.id('tribe-email')).first();
       var expectedValue = expectedTribe.email || '';
       expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
@@ -136,7 +129,6 @@ describe('The default tribes page', function () {
 
     it('the id field shows and does not disappear when text is added', function () {
       browser.setLocation('/new-tribe/');
-      waitUntilAnimateIsGone();
       var tribeIdElement = element(By.id('tribe-id'));
       tribeIdElement.sendKeys('oopsie');
       expect(tribeIdElement.isDisplayed()).toBe(true);
@@ -174,15 +166,14 @@ describe('The edit tribe page', function () {
     var tribeElements = element.all(By.repeater('tribe in tribes'));
     tribeElements.first().element(By.css('.tribe-name')).click();
 
-    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/');
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/edit/');
     expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);
-
     var expectedNewName = 'Different name';
     element(By.id('tribe-name')).clear();
     element(By.id('tribe-name')).sendKeys(expectedNewName);
     element(By.id('save-tribe-button')).click();
 
-    browser.setLocation('/' + tribe._id);
+    browser.setLocation('/' + tribe._id + '/edit/');
 
     expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
   });
