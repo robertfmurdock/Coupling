@@ -547,6 +547,7 @@ describe('The controller named ', function () {
         {name: 'pantsmaster', _id: '5'}
       ]);
     });
+
     it('will put no pair assignments on scope when there is no history', function () {
       var players = [
         {name: 'rigby', _id: '1'},
@@ -565,6 +566,23 @@ describe('The controller named ', function () {
       });
       expect(scope.unpairedPlayers).toEqual(players);
     })
+  });
+
+  describe('PrepareController', function(){
+    it('will put information on the scope', function(){
+      var tribe = {_id: 'tribe1'};
+      var players = [{name: 'barry'}, {name: 'larry'}, {name: 'scary'}];
+      inject(function ($controller) {
+        $controller('PrepareController', {
+          $scope: scope,
+          Coupling: Coupling,
+          tribe: tribe,
+          players: players
+        });
+      });
+      expect(scope.players).toBe(players);
+      expect(scope.tribe).toEqual(tribe);
+    });
   });
 
   describe('NewPlayerController', function () {

@@ -1,0 +1,12 @@
+div
+    div(id="tribe-browser")
+        tribecard
+        div
+            a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
+    div(class="player-roster")
+        div
+            div(class="roster-header") Players:
+            span(ng-repeat="player in players" class="player" ng-class="{disabled:!player.isAvailable}")
+                img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
+                div(class="player-header" ng-click="clickPlayerName($event)")
+                    text {{player.name}}
