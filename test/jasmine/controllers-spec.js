@@ -505,38 +505,66 @@ describe('The controller named ', function () {
 
     it('will put the latest pairs and players on scope', function () {
       var currentPairs = [
-        ['tom', 'jerry']
+        [{name: 'tom'}, {name: 'jerry'}]
       ];
-      var players = ['guy', 'fellow', 'nerd'];
+      var players = [{name: 'guy'}, {name: 'fellow'}, {name: 'nerd'}];
+      var currentPairsDocument = {pairs: currentPairs};
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
-          currentPairs: currentPairs,
+          pairAssignmentDocument: currentPairsDocument,
           tribe: selectedTribe,
           players: players
         });
       });
-      expect(scope.currentPairAssignments).toBe(currentPairs);
+      expect(scope.currentPairAssignments).toBe(currentPairsDocument);
       expect(scope.players).toBe(players);
     });
 
-    it('will put all of the players that are not in the current pairs on the scope', function(){
+    it('will put all of the players that are not in the current pairs on the scope', function () {
       var currentPairs = [
-        ['tom', 'jerry'], ['fellow', 'guy']
+        [{name: 'tom', _id: '0'}, {name: 'jerry', _id: 'z'}], [{name: 'fellow', _id: '3'}, {name: 'guy', _id: '2'}]
       ];
-      var players = ['rigby', 'guy', 'fellow', 'nerd', 'pantsmaster'];
+      var players = [
+        {name: 'rigby', _id: '1'},
+        {name: 'guy', _id: '2'},
+        {name: 'fellow', _id: '3'},
+        {name: 'nerd', _id: '4'},
+        {name: 'pantsmaster', _id: '5'}];
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
-          currentPairs: currentPairs,
+          pairAssignmentDocument: {pairs: currentPairs},
           tribe: selectedTribe,
           players: players
         });
       });
-      expect(scope.unpairedPlayers).toEqual(['rigby', 'nerd', 'pantsmaster']);
+      expect(scope.unpairedPlayers).toEqual([
+        {name: 'rigby', _id: '1'},
+        {name: 'nerd', _id: '4'},
+        {name: 'pantsmaster', _id: '5'}
+      ]);
     });
+    it('will put no pair assignments on scope when there is no history', function () {
+      var players = [
+        {name: 'rigby', _id: '1'},
+        {name: 'guy', _id: '2'},
+        {name: 'fellow', _id: '3'},
+        {name: 'nerd', _id: '4'},
+        {name: 'pantsmaster', _id: '5'}];
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          Coupling: Coupling,
+          pairAssignmentDocument: undefined,
+          tribe: selectedTribe,
+          players: players
+        });
+      });
+      expect(scope.unpairedPlayers).toEqual(players);
+    })
   });
 
   describe('NewPlayerController', function () {

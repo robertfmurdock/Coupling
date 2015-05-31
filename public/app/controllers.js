@@ -143,12 +143,22 @@ controllers.controller('NewPairAssignmentsController', ['$scope', '$location', '
   }
 ]);
 
+function findUnpairedPlayers(players, pairAssignmentDocument) {
+  if (!pairAssignmentDocument) {
+    return players;
+  }
+  var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
+  return _.filter(players, function (value) {
+    var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
+    return found == undefined;
+  });
+}
 controllers.controller('CurrentPairAssignmentsController',
-  ['$scope', 'currentPairs', 'tribe', 'players', function ($scope, currentPairs, tribe, players) {
+  ['$scope', 'pairAssignmentDocument', 'tribe', 'players', function ($scope, pairAssignmentDocument, tribe, players) {
     $scope.tribe = tribe;
     $scope.players = players;
-    $scope.currentPairAssignments = currentPairs;
-    $scope.unpairedPlayers = _.difference(players, _.flatten(currentPairs))
+    $scope.currentPairAssignments = pairAssignmentDocument;
+    $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
   }]);
 
 controllers.controller('NewPlayerController',

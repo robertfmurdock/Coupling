@@ -54,7 +54,7 @@ app.config(['$routeProvider', function (routeProvider) {
     templateUrl: '/partials/pairAssignments/',
     controller: "CurrentPairAssignmentsController",
     resolve: {
-      currentPairs: ['$route', 'Coupling', function ($route, Coupling) {
+      pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
         return Coupling.requestHistoryPromise($route.current.params.tribeId).then(function (history) {
           return history[0];
         });
