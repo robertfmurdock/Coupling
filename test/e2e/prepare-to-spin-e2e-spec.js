@@ -9,7 +9,6 @@ var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var historyCollection = database.get('history');
-var PairAssignmentDocument = require("../../server/lib/PairAssignmentDocument");
 
 describe('The prepare to spin page', function () {
 
@@ -63,6 +62,22 @@ describe('The prepare to spin page', function () {
       var pairs = element.all(By.repeater('pair in currentPairAssignments.pairs'));
       expect(pairs.count()).toEqual(3);
     });
-  });
 
+    it('spinning with two players disabled will only yield one pair', function () {
+      browser.setLocation('/' + tribe._id + '/prepare/');
+      var playerElements = element.all(By.repeater('player in players'));
+      expect(playerElements.count()).toEqual(5);
+
+      playerElements.get(0).click();
+      playerElements.get(2).click();
+      playerElements.get(3).click();
+
+      element(By.id('spin-button')).click();
+
+      var pairs = element.all(By.repeater('pair in currentPairAssignments.pairs'));
+      expect(pairs.count()).toEqual(1);
+      var unpairedPlayers = element.all(By.repeater('player in unpairedPlayers'));
+      expect(unpairedPlayers.count()).toEqual(3);
+    });
+  });
 });

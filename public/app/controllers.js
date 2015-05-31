@@ -48,14 +48,13 @@ controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer',
 }]);
 
 controllers.controller('SelectedPlayerCardController',
-  ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
-    Coupling.data = {};
+  ['$scope', '$location', 'Coupling', function ($scope, $location) {
     $scope.clickPlayerCard = function () {
       $scope.player.isAvailable = !$scope.player.isAvailable;
     };
     $scope.clickPlayerName = function ($event) {
       if ($event.stopPropagation) $event.stopPropagation();
-      $location.path("/" + Coupling.data.selectedTribeId + "/player/" + $scope.player._id);
+      $location.path("/" + $scope.player.tribe + "/player/" + $scope.player._id);
     };
   }]);
 
@@ -99,15 +98,16 @@ controllers.controller('HistoryController', ['$scope', 'Coupling', '$routeParams
 }]);
 
 controllers.controller('NewPairAssignmentsController',
-  ['$scope', '$location', 'Coupling', '$routeParams', 'tribe',
-    function ($scope, $location, Coupling, $routeParams, tribe) {
+  ['$scope', '$location', 'Coupling', '$routeParams', 'tribe', 'players',
+    function ($scope, $location, Coupling, $routeParams, tribe, players) {
       $scope.tribe = tribe;
 
-      var selectedPlayers = _.filter(Coupling.data.players, function (player) {
+      var selectedPlayers = _.filter(players, function(player) {
         return player.isAvailable;
       });
-      Coupling.spin(selectedPlayers).then(function (pairAssignments) {
+      Coupling.spin(selectedPlayers, tribe._id).then(function (pairAssignments) {
         $scope.currentPairAssignments = pairAssignments;
+        $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignments);
       });
 
       $scope.save = function () {
@@ -116,7 +116,7 @@ controllers.controller('NewPairAssignmentsController',
       };
 
       function findPairContainingPlayer(player) {
-        return _.find($scope.data.currentPairAssignments.pairs, function (pair) {
+        return _.find($scope.currentPairAssignments.pairs, function (pair) {
           return _.findWhere(pair, {
             _id: player._id
           });
