@@ -906,7 +906,7 @@ describe('The controller named ', function () {
     });
   });
 
-  xdescribe('PinListController', function () {
+  describe('PinListController', function () {
 
     var routeParams;
 
