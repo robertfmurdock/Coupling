@@ -9,7 +9,7 @@ var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 
-xdescribe('The edit player page', function () {
+describe('The edit player page', function () {
 
   var tribe = {
     _id: 'delete_me',
@@ -22,7 +22,7 @@ xdescribe('The edit player page', function () {
   };
 
   beforeAll(function (done) {
-    browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+    browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
     RSVP.all([
         tribeCollection.insert(tribe),
         e2eHelp.authorizeUserForTribes([tribe._id]),
@@ -44,17 +44,17 @@ xdescribe('The edit player page', function () {
 
   e2eHelp.afterEachAssertLogsAreEmpty();
 
-  it('should not alert on leaving via the spin button when nothing has changed.', function () {
+  it('should not alert on leaving when nothing has changed.', function () {
     browser.setLocation('/' + tribe._id + '/player/' + player._id);
-    element(By.id('spin-button')).click();
-    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+    element(By.id('tribe-card')).click();
+    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/current/');
   });
 
   it('should get error on leaving when name is changed.', function () {
     browser.setLocation('/' + tribe._id + '/player/' + player._id);
     expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player._id + '/');
     element(By.id('player-name')).sendKeys('completely different name');
-    element(By.id('spin-button')).click();
+    element(By.id('tribe-card')).click();
     var alertDialog = browser.switchTo().alert();
     expect(alertDialog.getText()).toEqual('You have unsaved data. Would you like to save before you leave?');
     alertDialog.dismiss();
@@ -62,11 +62,10 @@ xdescribe('The edit player page', function () {
 
   it('should not get alert on leaving when name is changed after save.', function () {
     browser.setLocation('/' + tribe._id + '/player/' + player._id);
-
     element(By.id('player-name')).sendKeys('completely different name');
 
     element(By.id('save-player-button')).click();
-    element(By.id('spin-button')).click();
-    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/new/');
+    element(By.id('tribe-card')).click();
+    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/current/');
   });
 });

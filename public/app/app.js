@@ -100,7 +100,18 @@ app.config(['$routeProvider', function (routeProvider) {
   });
   routeProvider.when('/:tribeId/player/:id/', {
     templateUrl: '/partials/player/',
-    controller: "EditPlayerController"
+    controller: "EditPlayerController",
+    resolve: {
+      tribe: tribeResolution,
+      player: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId))
+          .then(function (players) {
+            var playerId = $route.current.params.id;
+            return _.findWhere(players, {_id: playerId})
+          });
+      }]
+    }
   });
   routeProvider.when('/auth/google', {
     redirectTo: '/auth/google'

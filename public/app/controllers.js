@@ -58,16 +58,20 @@ controllers.controller('SelectedPlayerCardController',
     };
   }]);
 
+
+controllers.controller('TribeCardController', ['$scope', '$location', function ($scope, $location) {
+  $scope.clickOnTribeCard = function (tribe) {
+    $location.path("/" + tribe._id + "/pairAssignments/current");
+  };
+  $scope.clickOnTribeName = function (tribe, $event) {
+    if ($event.stopPropagation) $event.stopPropagation();
+    $location.path("/" + tribe._id + '/edit/');
+  };
+}]);
+
 controllers.controller('TribeListController', ['$scope', '$location', 'tribes',
   function ($scope, $location, tribes) {
     $scope.tribes = tribes;
-    $scope.clickOnTribeCard = function (tribe) {
-      $location.path("/" + tribe._id + "/pairAssignments/current");
-    };
-    $scope.clickOnTribeName = function (tribe, $event) {
-      if ($event.stopPropagation) $event.stopPropagation();
-      $location.path("/" + tribe._id + '/edit/');
-    };
   }]);
 
 controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
@@ -102,7 +106,7 @@ controllers.controller('NewPairAssignmentsController',
     function ($scope, $location, Coupling, $routeParams, tribe, players) {
       $scope.tribe = tribe;
 
-      var selectedPlayers = _.filter(players, function(player) {
+      var selectedPlayers = _.filter(players, function (player) {
         return player.isAvailable;
       });
       Coupling.spin(selectedPlayers, tribe._id).then(function (pairAssignments) {
@@ -161,7 +165,7 @@ controllers.controller('CurrentPairAssignmentsController',
     $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
   }]);
 
-controllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$location','Coupling',
+controllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$location', 'Coupling',
   function ($scope, tribe, players, $location, Coupling) {
     $scope.tribe = tribe;
     $scope.players = players;
@@ -184,36 +188,34 @@ controllers.controller('NewPlayerController',
     }
   }]);
 
-controllers.controller('EditPlayerController', ['$scope', 'Coupling', '$routeParams', '$location', function ($scope, Coupling, $routeParams, $location) {
-  Coupling.selectTribe($routeParams.tribeId);
-  $scope.playerRoster.minimized = false;
-  Coupling.findPlayerById($routeParams.id, function (player) {
+controllers.controller('EditPlayerController',
+  ['$scope', 'Coupling', '$location', 'tribe', 'player', function ($scope, Coupling, $location, tribe, player) {
+    $scope.tribe = tribe;
     $scope.original = player;
     $scope.player = angular.copy(player);
-  });
 
-  $scope.savePlayer = function () {
-    $scope.playerForm.$setPristine();
-    Coupling.savePlayer($scope.player);
-  };
+    $scope.savePlayer = function () {
+      $scope.playerForm.$setPristine();
+      Coupling.savePlayer($scope.player);
+    };
 
-  $scope.removePlayer = function () {
-    if (confirm("Are you sure you want to delete this player?")) {
-      Coupling.removePlayer($scope.player, function () {
-        $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
-      });
-    }
-  };
-
-  $scope.$on('$locationChangeStart', function () {
-    if ($scope.playerForm.$dirty) {
-      var answer = confirm("You have unsaved data. Would you like to save before you leave?");
-      if (answer) {
-        Coupling.savePlayer($scope.player);
+    $scope.removePlayer = function () {
+      if (confirm("Are you sure you want to delete this player?")) {
+        Coupling.removePlayer($scope.player, function () {
+          $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
+        });
       }
-    }
-  });
-}]);
+    };
+
+    $scope.$on('$locationChangeStart', function () {
+      if ($scope.playerForm.$dirty) {
+        var answer = confirm("You have unsaved data. Would you like to save before you leave?");
+        if (answer) {
+          Coupling.savePlayer($scope.player);
+        }
+      }
+    });
+  }]);
 
 controllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   var promisePins = Coupling.promisePins($routeParams.tribeId);

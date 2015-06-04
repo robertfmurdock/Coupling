@@ -1,3 +1,3 @@
-span(class="tribe" ng-click="clickOnTribeCard(tribe)")
+span(ng-controller="TribeCardController" class="tribe" ng-click="clickOnTribeCard(tribe)" ng-show="tribe")
    div(class="tribe-name" ng-click="clickOnTribeName(tribe, $event)") {{tribe.name}}
    img(ng-src="{{tribe | tribeImageUrl: {size: 150} }}" width="150" height="150")
