@@ -721,67 +721,70 @@ describe('The controller named ', function () {
 
   });
 
-  xdescribe('EditPlayerController', function () {
+  describe('EditPlayerController', function () {
     var ControllerName = 'EditPlayerController';
-    var Coupling, location, routeParams;
+
+    var tribe = {
+      name: 'Party tribe.',
+      _id: 'party'
+    };
+
+    var player = {_id: 'blarg'};
+
+    var Coupling, location;
 
     beforeEach(function () {
       location = {
         path: jasmine.createSpy('path')
       };
-      var selectedTribe = {
-        name: 'Party tribe.',
-        _id: 'party'
-      };
+
       Coupling = {
-        data: {
-          selectedTribe: selectedTribe
-        },
-        selectTribe: jasmine.createSpy('selectTribe'),
         spin: jasmine.createSpy('spin'),
         savePlayer: jasmine.createSpy('save'),
-        findPlayerById: jasmine.createSpy('findPlayer'),
         removePlayer: jasmine.createSpy('remove')
       };
       scope.data = Coupling.data;
       scope.$on = jasmine.createSpy('on');
-      routeParams = {
-        tribeId: selectedTribe._id,
-        id: 'thePlayerId'
-      };
     });
 
-    it('will select tribe', function () {
-      expect(Coupling.selectTribe).not.toHaveBeenCalled();
-      injectController(ControllerName, scope, location, Coupling, routeParams);
-      expect(Coupling.selectTribe).toHaveBeenCalled();
+    it('will add tribe to scope', function () {
+        inject(function ($controller) {
+          $controller(ControllerName, {
+            $scope: scope,
+            $location: location,
+            tribe: tribe,
+            player: player
+          });
+        });
+
+        expect(scope.tribe).toBe(tribe);
     });
 
-    it('will maximize player roster', function () {
-      scope.playerRoster.minimized = true;
-      injectController(ControllerName, scope, location, Coupling, routeParams);
-      expect(scope.playerRoster.minimized).toBe(false);
-    });
-
-    it('will find the player with given id and provide a duplicate for editing', function () {
+    it('will duplicated player for editing', function () {
       scope.player = null;
-      injectController(ControllerName, scope, location, Coupling, routeParams);
-      expect(Coupling.findPlayerById).toHaveBeenCalled();
-      var argsForCall = Coupling.findPlayerById.calls.argsFor(0);
-      expect(argsForCall[0]).toBe(routeParams.id);
-
-      var callback = argsForCall[1];
-      var player = {
-        name: 'Bobby'
-      };
-      callback(player);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          $location: location,
+          tribe: tribe,
+          player: player
+        });
+      });
       expect(scope.original).toBe(player);
       expect(scope.player).not.toBe(player);
       expect(scope.player).toEqual(player);
     });
 
     it('can save player using Coupling service and redirects to player page on callback', function () {
-      injectController(ControllerName, scope, location, Coupling, routeParams);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          Coupling: Coupling,
+          $location: location,
+          tribe: tribe,
+          player: player
+        });
+      });
       scope.playerForm = {
         $setPristine: jasmine.createSpy('pristine')
       };
@@ -793,7 +796,15 @@ describe('The controller named ', function () {
     it('remove player will remove and reroute to current pair assignments when confirmed', function () {
       spyOn(window, 'confirm');
 
-      injectController(ControllerName, scope, location, Coupling, routeParams);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          Coupling: Coupling,
+          $location: location,
+          tribe: tribe,
+          player: player
+        });
+      });
 
       window.confirm.and.returnValue(true);
       scope.removePlayer();
@@ -802,27 +813,46 @@ describe('The controller named ', function () {
       expect(argsFor[0]).toBe(scope.player);
 
       var callback = argsFor[1];
-      expect(location.path).not.toHaveBeenCalledWith('/' + routeParams.tribeId + '/pairAssignments/current');
+      expect(location.path).not.toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
       callback();
-      expect(location.path).toHaveBeenCalledWith('/' + routeParams.tribeId + '/pairAssignments/current');
+      expect(location.path).toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
     });
 
     it('remove player will do nothing when not confirmed', function () {
       window.confirm = jasmine.createSpy('confirm');
 
-      injectController(ControllerName, scope, location, Coupling, routeParams);
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          Coupling: Coupling,
+          $location: location,
+          tribe: tribe,
+          player: player
+        });
+      });
 
       window.confirm.and.returnValue(false);
       scope.removePlayer();
       expect(Coupling.removePlayer).not.toHaveBeenCalled();
-      expect(location.path).not.toHaveBeenCalledWith('/' + routeParams.tribeId + '/pairAssignments/current');
+      expect(location.path).not.toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
     });
 
     describe('on location change', function () {
       var onLocationChange;
-      beforeEach(function () {
-        injectController(ControllerName, scope, location, Coupling, routeParams);
 
+      var tribe = {_id: 'lol'};
+      var player = {_id: 'blarg'};
+
+      beforeEach(function () {
+        inject(function ($controller) {
+          $controller(ControllerName, {
+            $scope: scope,
+            Coupling: Coupling,
+            $location: location,
+            tribe: tribe,
+            player: player
+          });
+        });
         expect(scope.$on).toHaveBeenCalled();
         var args = scope.$on.calls.argsFor(0);
         expect(args[0]).toBe('$locationChangeStart');
@@ -833,6 +863,7 @@ describe('The controller named ', function () {
 
         beforeEach(function () {
           window.confirm = jasmine.createSpy('confirm');
+
           scope.playerForm = {
             $dirty: true
           };
