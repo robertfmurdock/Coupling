@@ -11,7 +11,7 @@ services.service("Coupling", ['$http', function ($http) {
   }
 
   var makeErrorHandler = function (url) {
-    return function (data, statusCode, headers, config) {
+    return function (data, statusCode) {
       var message = errorMessage(url, data, statusCode);
       console.error('ALERT!\n' + message);
     }
@@ -62,11 +62,7 @@ services.service("Coupling", ['$http', function ($http) {
         return true;
       }
     });
-    if (result) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!result;
   };
 
   this.requestPlayersPromise = function (tribeId, historyPromise) {
@@ -107,7 +103,7 @@ services.service("Coupling", ['$http', function ($http) {
   };
 
   this.requestHistoryPromise = function (tribeId) {
-    return new RSVP.Promise(function (resolve, reject) {
+    return new RSVP.Promise(function (resolve) {
       requestHistory(tribeId, function (history) {
         Coupling.data.history = history;
         resolve(history);

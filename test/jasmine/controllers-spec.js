@@ -332,7 +332,7 @@ describe('The controller named ', function () {
 
 
   var HistoryController = 'HistoryController';
-  xdescribe(HistoryController, function () {
+  describe(HistoryController, function () {
 
     var Coupling, location, routeParams;
     beforeEach(function () {
@@ -359,15 +359,7 @@ describe('The controller named ', function () {
       injectController(HistoryController, scope, location, Coupling, routeParams);
       expect(Coupling.selectTribe).toHaveBeenCalledWith(Coupling.data.selectedTribe._id);
     });
-
-    it('will minimize the player roster', function () {
-      scope.playerRoster.minimized = false;
-      injectController(HistoryController, scope, location, Coupling, routeParams);
-      expect(scope.playerRoster.minimized).toBe(true);
-    });
-
   });
-
 
   describe('NewPairAssignmentsController', function () {
     var ControllerName = 'NewPairAssignmentsController';
@@ -748,16 +740,16 @@ describe('The controller named ', function () {
     });
 
     it('will add tribe to scope', function () {
-        inject(function ($controller) {
-          $controller(ControllerName, {
-            $scope: scope,
-            $location: location,
-            tribe: tribe,
-            player: player
-          });
+      inject(function ($controller) {
+        $controller(ControllerName, {
+          $scope: scope,
+          $location: location,
+          tribe: tribe,
+          player: player
         });
+      });
 
-        expect(scope.tribe).toBe(tribe);
+      expect(scope.tribe).toBe(tribe);
     });
 
     it('will duplicated player for editing', function () {
