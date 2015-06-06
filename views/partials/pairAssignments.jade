@@ -4,7 +4,6 @@ div
     div(ng-cloak class="current pair-assignments")
         div(class="no-pairs-notice" ng-hide="currentPairAssignments") No pair assignments yet!
         div(ng-show="currentPairAssignments")
-            a(id="save-button" class="super green button" ng-click="save()" ng-hide="currentPairAssignments._id") Save!
             div(class="pair-assignments-header")
                 text Couples for {{currentPairAssignments.date | date:'MM/dd/yyyy'}} - {{currentPairAssignments.date | date: 'HH:mm:ss'}}
         div(id="pair-assignments-content")
@@ -12,6 +11,8 @@ div
                 span(ng-repeat='player in pair' class="player" ng-class="{hoverzoom: !currentPairAssignments._id}" ui-draggable="!currentPairAssignments._id" drag="player" ui-on-Drop="onDrop($event,$data,player)")
                     img(ng-src="{{player | gravatarUrl:{size:100} }}" width="100" height="100")
                     div(class="player-header") {{player.name}}
+        div
+            a(id="save-button" class="super green button" ng-click="save()" ng-hide="currentPairAssignments._id") Save!
         a(id="new-pairs-button" class="large pink button" href="/{{tribe._id}}/prepare/") Prepare to spin!
         a(id="view-history-button" class="large blue button" href="/{{tribe._id}}/history/") View history!
 div(class="player-roster")
