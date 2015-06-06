@@ -16,8 +16,8 @@ div
         a(id="view-history-button" class="large blue button" href="/{{tribe._id}}/history/") View history!
 div(class="player-roster")
     div
-        div(class="roster-header") Players:
-        span(ng-repeat="player in unpairedPlayers" class="player")
+        div(class="roster-header") Unpaired players:
+        span(ng-controller="SelectedPlayerCardController" ng-repeat="player in unpairedPlayers" class="player")
             img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
             div(class="player-header" ng-click="clickPlayerName($event)")
                 text {{player.name}}

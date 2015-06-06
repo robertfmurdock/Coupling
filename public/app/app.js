@@ -95,7 +95,11 @@ app.config(['$routeProvider', function (routeProvider) {
     templateUrl: '/partials/player/',
     controller: "NewPlayerController",
     resolve: {
-      tribe: tribeResolution
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
+      }]
     }
   });
   routeProvider.when('/:tribeId/player/:id/', {
@@ -103,13 +107,9 @@ app.config(['$routeProvider', function (routeProvider) {
     controller: "EditPlayerController",
     resolve: {
       tribe: tribeResolution,
-      player: ['$route', 'Coupling', function ($route, Coupling) {
+      players: ['$route', 'Coupling', function ($route, Coupling) {
         return Coupling.requestPlayersPromise($route.current.params.tribeId,
-          Coupling.requestHistoryPromise($route.current.params.tribeId))
-          .then(function (players) {
-            var playerId = $route.current.params.id;
-            return _.findWhere(players, {_id: playerId})
-          });
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
       }]
     }
   });

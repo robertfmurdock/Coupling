@@ -176,8 +176,9 @@ controllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$loc
   }]);
 
 controllers.controller('NewPlayerController',
-  ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
+  ['$scope', 'Coupling', '$location', 'tribe', 'players', function ($scope, Coupling, $location, tribe, players) {
     $scope.tribe = tribe;
+    $scope.players = players;
     $scope.player = {
       tribe: tribe._id
     };
@@ -189,33 +190,39 @@ controllers.controller('NewPlayerController',
   }]);
 
 controllers.controller('EditPlayerController',
-  ['$scope', 'Coupling', '$location', 'tribe', 'player', function ($scope, Coupling, $location, tribe, player) {
-    $scope.tribe = tribe;
-    $scope.original = player;
-    $scope.player = angular.copy(player);
+  ['$scope', 'Coupling', '$location', '$route', 'tribe', 'players',
+    function ($scope, Coupling, $location, $route, tribe, players) {
+      $scope.tribe = tribe;
+      $scope.players = players;
 
-    $scope.savePlayer = function () {
-      $scope.playerForm.$setPristine();
-      Coupling.savePlayer($scope.player);
-    };
+      var playerId = $route.current.params.id;
+      var player = _.findWhere(players, {_id: playerId});
 
-    $scope.removePlayer = function () {
-      if (confirm("Are you sure you want to delete this player?")) {
-        Coupling.removePlayer($scope.player, function () {
-          $location.path("/" + tribe._id + "/pairAssignments/current");
-        });
-      }
-    };
+      $scope.original = player;
+      $scope.player = angular.copy(player);
 
-    $scope.$on('$locationChangeStart', function () {
-      if ($scope.playerForm.$dirty) {
-        var answer = confirm("You have unsaved data. Would you like to save before you leave?");
-        if (answer) {
-          Coupling.savePlayer($scope.player);
+      $scope.savePlayer = function () {
+        Coupling.savePlayer($scope.player);
+        $route.reload();
+      };
+
+      $scope.removePlayer = function () {
+        if (confirm("Are you sure you want to delete this player?")) {
+          Coupling.removePlayer($scope.player, function () {
+            $location.path("/" + tribe._id + "/pairAssignments/current");
+          });
         }
-      }
-    });
-  }]);
+      };
+
+      $scope.$on('$locationChangeStart', function () {
+        if ($scope.playerForm.$dirty) {
+          var answer = confirm("You have unsaved data. Would you like to save before you leave?");
+          if (answer) {
+            Coupling.savePlayer($scope.player);
+          }
+        }
+      });
+    }]);
 
 controllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   var promisePins = Coupling.promisePins($routeParams.tribeId);

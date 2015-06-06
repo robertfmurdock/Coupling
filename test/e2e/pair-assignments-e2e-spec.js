@@ -59,6 +59,13 @@ describe('The current pair assignments', function () {
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/player/new/');
   });
 
+  it('will let you edit an existing player', function () {
+    browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
+    element.all(By.repeater('player in unpairedPlayers'))
+      .first().element(By.css('.player-header')).click();
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/player/p1/');
+  });
+
   it('will let you view history', function () {
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     element(By.id('view-history-button')).click();
@@ -71,10 +78,11 @@ describe('The current pair assignments', function () {
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/prepare/');
   });
 
-  describe('when there is no current set of pairs', function() {
+  describe('when there is no current set of pairs', function () {
     beforeAll(function () {
       historyCollection.drop();
     });
+
     it('will display all the existing players in the player roster', function () {
       browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
       var playerElements = element.all(By.repeater('player in unpairedPlayers'));
@@ -83,7 +91,6 @@ describe('The current pair assignments', function () {
   });
 
   describe('when there is a current set of pairs', function () {
-
     var pairAssignmentDocument = new PairAssignmentDocument(new Date(2015, 5, 30), [[player1, player3], [player5]]);
     pairAssignmentDocument.tribe = tribe._id;
 
@@ -92,8 +99,7 @@ describe('The current pair assignments', function () {
       browser.refresh();
     });
 
-
-    beforeEach(function(){
+    beforeEach(function () {
       browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
     });
 

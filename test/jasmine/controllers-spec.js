@@ -144,16 +144,6 @@ describe('The controller named ', function () {
       };
     });
 
-    function injectTribeListController(expectedTribes) {
-      inject(function ($controller) {
-        $controller('TribeListController', {
-          $scope: scope,
-          $location: location,
-          tribes: expectedTribes
-        });
-      });
-    }
-
     it('will get tribes and put them on scope', function () {
       var expectedTribes = [{
         _id: '1'
@@ -659,16 +649,19 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe', function () {
+    it('will select tribe and players', function () {
+      var players = ['lol', 'lol'];
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
-          tribe: selectedTribe
+          tribe: selectedTribe,
+          players: players
         });
       });
       expect(scope.tribe).toBe(selectedTribe);
+      expect(scope.players).toBe(players);
     });
 
     it('will create a new player with the given tribe', function () {
@@ -678,7 +671,8 @@ describe('The controller named ', function () {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
-          tribe: selectedTribe
+          tribe: selectedTribe,
+          players: []
         });
       });
       expect(scope.player).toEqual({
@@ -692,7 +686,8 @@ describe('The controller named ', function () {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
-          tribe: selectedTribe
+          tribe: selectedTribe,
+          players: []
         });
       });
 
@@ -739,27 +734,31 @@ describe('The controller named ', function () {
       scope.$on = jasmine.createSpy('on');
     });
 
-    it('will add tribe to scope', function () {
+    it('will add tribe and players to scope', function () {
+      var players = [player];
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           $location: location,
+          $route: {current: {params: {id: player._id}}},
           tribe: tribe,
-          player: player
+          players: players
         });
       });
 
       expect(scope.tribe).toBe(tribe);
+      expect(scope.players).toBe(players);
     });
 
-    it('will duplicated player for editing', function () {
+    it('will use id on route to find player, and duplicate player for editing', function () {
       scope.player = null;
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           $location: location,
+          $route: {current: {params: {id: player._id}}},
           tribe: tribe,
-          player: player
+          players: [{_id: '312'}, player, {_id: 'd87f'}]
         });
       });
       expect(scope.original).toBe(player);
@@ -767,22 +766,25 @@ describe('The controller named ', function () {
       expect(scope.player).toEqual(player);
     });
 
-    it('can save player using Coupling service and redirects to player page on callback', function () {
+    it('can save player using Coupling service and then reloads', function () {
+      var $route = {
+        current: {params: {id: player._id}},
+        reload: jasmine.createSpy('path')
+      };
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
+          $route: $route,
           tribe: tribe,
-          player: player
+          players: [player]
         });
       });
-      scope.playerForm = {
-        $setPristine: jasmine.createSpy('pristine')
-      };
+      scope.player.name = 'nonsense';
       scope.savePlayer();
       expect(Coupling.savePlayer).toHaveBeenCalledWith(scope.player);
-      expect(scope.playerForm.$setPristine).toHaveBeenCalled();
+      expect($route.reload).toHaveBeenCalled();
     });
 
     it('remove player will remove and reroute to current pair assignments when confirmed', function () {
@@ -793,8 +795,9 @@ describe('The controller named ', function () {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
+          $route: {current: {params: {id: player._id}}},
           tribe: tribe,
-          player: player
+          players: [player]
         });
       });
 
@@ -818,8 +821,9 @@ describe('The controller named ', function () {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
+          $route: {current: {params: {id: player._id}}},
           tribe: tribe,
-          player: player
+          players: [player]
         });
       });
 
@@ -840,9 +844,10 @@ describe('The controller named ', function () {
           $controller(ControllerName, {
             $scope: scope,
             Coupling: Coupling,
+            $route: {current: {params: {id: player._id}}},
             $location: location,
             tribe: tribe,
-            player: player
+            players: [player]
           });
         });
         expect(scope.$on).toHaveBeenCalled();
