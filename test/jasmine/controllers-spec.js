@@ -344,10 +344,21 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe', function () {
-      expect(Coupling.selectTribe).not.toHaveBeenCalled();
-      injectController(HistoryController, scope, location, Coupling, routeParams);
-      expect(Coupling.selectTribe).toHaveBeenCalledWith(Coupling.data.selectedTribe._id);
+    it('will put tribe and history on scope', function () {
+      var tribe = {_id: 'loltribe'};
+      var history = [{_id: 'lol entry'}];
+
+      inject(function ($controller) {
+        $controller(HistoryController, {
+          $scope: scope,
+          $location: location,
+          tribe: tribe,
+          history: history
+        });
+      });
+
+      expect(scope.tribe).toBe(tribe);
+      expect(scope.history).toBe(history);
     });
   });
 

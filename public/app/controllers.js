@@ -97,8 +97,9 @@ controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location'
   }
 }]);
 
-controllers.controller('HistoryController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
-  Coupling.selectTribe($routeParams.tribeId);
+controllers.controller('HistoryController', ['$scope', 'tribe', 'history', function ($scope, tribe, history) {
+  $scope.tribe = tribe;
+  $scope.history = history;
 }]);
 
 controllers.controller('NewPairAssignmentsController',

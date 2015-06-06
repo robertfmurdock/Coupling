@@ -57,7 +57,13 @@ app.config(['$routeProvider', function (routeProvider) {
   });
   routeProvider.when('/:tribeId/history/', {
     templateUrl: '/partials/history/',
-    controller: "HistoryController"
+    controller: "HistoryController",
+    resolve: {
+      tribe: tribeResolution,
+      history: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestHistoryPromise($route.current.params.tribeId);
+      }]
+    }
   });
 
   routeProvider.when('/:tribeId/pins', {
