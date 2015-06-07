@@ -116,7 +116,7 @@ services.service("Coupling", ['$http', function ($http) {
     if (callback) {
       postPromise.success(callback);
     }
-    postPromise.error(makeErrorHandler('POST ' + url));
+    return postPromise.error(makeErrorHandler('POST ' + url));
   };
 
   var httpDelete = function (url, callback) {
@@ -198,8 +198,8 @@ services.service("Coupling", ['$http', function ($http) {
     return requestTribes();
   };
 
-  this.saveTribe = function (tribe, callback) {
-    post('/api/tribes', tribe, callback);
+  this.saveTribe = function (tribe) {
+    return post('/api/tribes', tribe);
   };
 
   this.promisePins = function (tribeId) {
@@ -212,23 +212,6 @@ services.service("Coupling", ['$http', function ($http) {
         .then(function (response) {
           return resolve(response.data);
         });
-    });
-  };
-
-  this.findPlayerById = function (id, callback) {
-    (function (tribeId, callback) {
-      var url = '/api/' + tribeId + '/players';
-      $http.get(url).success(function (players) {
-        Coupling.data.players = players;
-
-        if (callback) {
-          callback(players);
-        }
-      }).error(makeErrorHandler('GET ' + url));
-    })(Coupling.data.selectedTribeId, function (players) {
-      callback(_.findWhere(players, {
-        _id: id
-      }));
     });
   };
 

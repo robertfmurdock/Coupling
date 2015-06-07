@@ -190,8 +190,12 @@ describe('The controller named ', function () {
     });
 
     describe('when pressing the save button ', function () {
+
+      var saveTribeDefer = new RSVP.defer();
+
       beforeEach(function () {
         Coupling.saveTribe = jasmine.createSpy('save tribe spy');
+        Coupling.saveTribe.and.returnValue(saveTribeDefer.promise);
         injectController(NewTribeController, scope, location, Coupling);
       });
 
@@ -208,13 +212,12 @@ describe('The controller named ', function () {
       });
 
       describe('when the save is complete', function () {
-        var callback;
+
         beforeEach(function () {
           scope.clickSaveButton();
-          callback = Coupling.saveTribe.calls.argsFor(0)[1];
         });
 
-        it('will return to the tribe list', function () {
+        it('will return to the tribe list', function (done) {
           var newTribeId = 'expectedId';
           var expectedPath = '/tribes';
           expect(location.path).not.toHaveBeenCalledWith(expectedPath);
@@ -222,8 +225,12 @@ describe('The controller named ', function () {
           var updatedTribe = {
             _id: newTribeId
           };
-          callback(updatedTribe);
-          expect(location.path).toHaveBeenCalledWith(expectedPath);
+
+          saveTribeDefer.resolve(updatedTribe);
+          saveTribeDefer.promise.then(function () {
+            expect(location.path).toHaveBeenCalledWith(expectedPath);
+            done();
+          });
         });
       });
     });
@@ -278,8 +285,13 @@ describe('The controller named ', function () {
     });
 
     describe('when pressing the save button ', function () {
+
+      var saveTribeDefer = new RSVP.defer();
+
       beforeEach(function () {
-        Coupling.saveTribe = jasmine.createSpy('save tribe spy');
+        Coupling.saveTribe = jasmine.createSpy('save tribe spy')
+          .and.returnValue(saveTribeDefer.promise);
+
         inject(function ($controller) {
           $controller(EditTribeController, {
             $scope: scope,
@@ -305,7 +317,7 @@ describe('The controller named ', function () {
           callback = Coupling.saveTribe.calls.argsFor(0)[1];
         });
 
-        it('will change the location to the current pair assignments', function () {
+        it('will change the location to the current pair assignments', function (done) {
           var newTribeId = 'expectedId';
           var expectedPath = '/tribes';
           expect(location.path).not.toHaveBeenCalledWith(expectedPath);
@@ -313,8 +325,11 @@ describe('The controller named ', function () {
           var updatedTribe = {
             _id: newTribeId
           };
-          callback(updatedTribe);
-          expect(location.path).toHaveBeenCalledWith(expectedPath);
+          saveTribeDefer.resolve(updatedTribe);
+          saveTribeDefer.promise.then(function () {
+            expect(location.path).toHaveBeenCalledWith(expectedPath);
+            done();
+          })
         });
       });
     });

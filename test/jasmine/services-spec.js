@@ -282,7 +282,7 @@ describe('Service: ', function() {
           name: 'Navi'
         };
         var callbackCallCount = 0;
-        Coupling.saveTribe(tribe, function() {
+        Coupling.saveTribe(tribe).then(function() {
           callbackCallCount++;
         });
 
