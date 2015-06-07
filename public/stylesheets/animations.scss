@@ -60,9 +60,9 @@
 }
 
 .player-roster .player-header:hover {
-    transition: all ease-out 0.4s;
-    z-index: 1;
-    background: lightyellow url(../images/overlay.png) repeat-x;
+  transition: all ease-out 0.4s;
+  z-index: 1;
+  background: lightyellow url(../images/overlay.png) repeat-x;
 }
 
 #enter-button-container {
@@ -162,7 +162,6 @@
     transform: rotate(.5deg);
   }
 }
-
 
 @keyframes wiggle {
   0% {
