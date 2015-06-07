@@ -2,7 +2,7 @@ body {
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: cadetblue;
-  padding-top: 72px;
+  padding-top: 15px;
 }
 
 a {
@@ -128,9 +128,11 @@ a {
   padding: 10px;
   border: 11px outset darkorange;
   background-color: lightgoldenrodyellow;
+  margin: 15px;
 }
 
 #player-view {
+  display: inline-block;
   .player {
     display: inline-block;
     vertical-align: top;
@@ -256,6 +258,7 @@ a {
 
 .current.pair-assignments {
   display: inline-block;
+  margin: 15px;
 }
 
 .pair-assignments {
@@ -322,10 +325,9 @@ a {
   text-stroke-color: black;
   font-size: x-large;
   margin: 0 2px 4px 2px;
-  width: 170px;
+  width: 150px;
   height: 210px;
   img {
-    /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
     -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
   }
 }
@@ -379,7 +381,7 @@ a {
 
 .tribe-name {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   border-radius: 15px;
   text-fill-color: white;
   text-stroke-width: 1.5px;
