@@ -78,7 +78,7 @@ controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling',
   $scope.tribe = {
     name: 'New Tribe'
   };
-  Coupling.selectTribe(null);
+
   $scope.clickSaveButton = function () {
     $scope.tribe._id = $scope.tribe.requestedId;
     delete $scope.tribe.requestedId;
@@ -184,7 +184,7 @@ controllers.controller('NewPlayerController',
       tribe: tribe._id
     };
     $scope.savePlayer = function () {
-      Coupling.savePlayer($scope.player, function (updatedPlayer) {
+      Coupling.savePlayer($scope.player).then(function (updatedPlayer) {
         $location.path("/" + tribe._id + "/player/" + updatedPlayer._id);
       });
     }
@@ -209,7 +209,7 @@ controllers.controller('EditPlayerController',
 
       $scope.removePlayer = function () {
         if (confirm("Are you sure you want to delete this player?")) {
-          Coupling.removePlayer($scope.player, function () {
+          Coupling.removePlayer($scope.player).then(function () {
             $location.path("/" + tribe._id + "/pairAssignments/current");
           });
         }
