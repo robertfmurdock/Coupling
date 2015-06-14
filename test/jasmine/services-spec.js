@@ -20,7 +20,7 @@ describe('Service: ', function () {
     });
     describe('get history', function () {
       it('calls back with history on success', function (done) {
-        var expectedHistory= [{
+        var expectedHistory = [{
           _id: 'one'
         }, {
           _id: 'two'
@@ -34,7 +34,6 @@ describe('Service: ', function () {
           }).catch(function (error) {
             expect(error).toBeUndefined();
           }).finally(done);
-
         httpBackend.flush();
       });
     });

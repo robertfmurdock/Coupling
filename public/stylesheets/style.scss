@@ -216,6 +216,7 @@ a {
   position: relative;
   clear: both;
   display: inline-block;
+  overflow: hidden;
   border: 3px outset gold;
   background: darkseagreen url(../images/overlay.png) repeat-x;
   padding: 6px;

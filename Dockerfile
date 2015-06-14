@@ -3,10 +3,8 @@ FROM node:0.12
 WORKDIR /usr/src/app
 
 RUN npm install -g grunt-cli karma-cli phantomjs
-COPY package.json /usr/src/app/
-COPY npm-shrinkwrap.json /usr/src/app/
+COPY ["package.json", "npm-shrinkwrap.json", "/usr/src/app/"]
 RUN npm install
-
 COPY . /usr/src/app
 ENV \
   PUBLIC_HOST=web \
