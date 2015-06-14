@@ -1,6 +1,8 @@
 body {
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: cadetblue;
+  padding-top: 15px;
 }
 
 a {
@@ -43,6 +45,10 @@ a {
   transform: rotate(8deg);
 }
 
+.welcome-pair {
+  display: inline-flex;
+}
+
 .welcome-proverb {
   display: inline-block;
   border-radius: 15px;
@@ -66,6 +72,17 @@ a {
   margin: 4px;
 }
 
+.background-element {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  #welcome {
+    width: 366px;
+    height: 334px;
+  }
+}
+
 .pair-assignments-header {
   display: inline-block;
   font-size: 28px;
@@ -79,6 +96,19 @@ a {
   background: darkred url(../images/overlay.png) repeat-x;
 }
 
+.no-pairs-notice {
+  border: 8px outset dimgray;
+  background-color: aliceblue;
+  display: inline-block;
+  border-radius: 40px;
+  font-size: xx-large;
+  font-weight: bold;
+  width: 500px;
+  height: 150px;
+  padding: 100px 5px 5px;
+  margin: 0 2px 5px;
+}
+
 #pair-assignments-content {
   white-space: pre-line;
   .player-header {
@@ -87,7 +117,6 @@ a {
 }
 
 .roster-header {
-  display: inline-block;
   font-size: 1.5em;
   margin-before: 0.2em;
   margin-after: 0.58em;
@@ -102,7 +131,7 @@ a {
   height: 400px;
 }
 
-#CouplingTitleBlock {
+#tribe-browser {
   white-space: normal;
   display: inline-block;
   vertical-align: top;
@@ -110,9 +139,11 @@ a {
   padding: 10px;
   border: 11px outset darkorange;
   background-color: lightgoldenrodyellow;
+  margin: 15px;
 }
 
 #player-view {
+  display: inline-block;
   .player {
     display: inline-block;
     vertical-align: top;
@@ -170,11 +201,7 @@ a {
 }
 
 .view-container {
-  display: inline-block;
-  white-space: normal;
-  width: 800px;
-  vertical-align: top;
-  margin: 0 10px;
+  text-align: center;
 }
 
 .player-roster {
@@ -189,6 +216,7 @@ a {
   position: relative;
   clear: both;
   display: inline-block;
+  overflow: hidden;
   border: 3px outset gold;
   background: darkseagreen url(../images/overlay.png) repeat-x;
   padding: 6px;
@@ -202,12 +230,17 @@ a {
   text-stroke-color: black;
   font-size: x-large;
   margin: 0 2px 0 2px;
+  height: 140px;
+  width: 100px;
   .player-header {
     background: darkcyan url(../images/overlay.png) repeat-x;
-    margin-before: 0px;
+    margin-before: 6px;
     margin-after: 6px;
     border-radius: 15px;
     font-weight: bold;
+  }
+  img {
+    display: block;
   }
 }
 
@@ -233,11 +266,11 @@ a {
 }
 
 .view-frame {
-  overflow: auto;
 }
 
 .current.pair-assignments {
   display: inline-block;
+  margin: 15px;
 }
 
 .pair-assignments {
@@ -253,6 +286,14 @@ a {
   }
 }
 
+#history-view {
+  display: inline-block;
+  .player {
+    width: auto;
+    height: auto;
+  }
+}
+
 #history-view .header {
   display: inline-block;
   border-radius: 25px;
@@ -265,11 +306,12 @@ a {
   background: steelblue url(../images/overlay.png) repeat-x;
 }
 
-.tribe-listing-frame {
+.tribe-frame {
   display: inline-block;
-  border-radius: 20px;
-  border: 20px outset indigo;
-  background-color: indianred;
+  border-radius: 82px;
+  border: 24px outset rgb(94, 84, 102);
+  background-color: rgb(115, 115, 115);
+  padding: 0 42px 42px;
   .button {
     left: -7px;
     bottom: -14px;
@@ -295,8 +337,9 @@ a {
   text-stroke-color: black;
   font-size: x-large;
   margin: 0 2px 4px 2px;
+  width: 150px;
+  height: 210px;
   img {
-    /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
     -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
   }
 }
@@ -344,18 +387,13 @@ a {
   content: "\f128";
 }
 
-.tribe-listing .tribe-name {
+.tribe-name {
   background: darkslategrey url("../images/overlay.png") repeat-x;
-}
-
-#CouplingTitleBlock .tribe-name {
-  background: sandybrown url("../images/overlay.png") repeat-x;
-  font-size: 24px;
 }
 
 .tribe-name {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   border-radius: 15px;
   text-fill-color: white;
   text-stroke-width: 1.5px;
@@ -373,12 +411,17 @@ a {
 }
 
 .tribe-view {
+  display: flex;
+  padding-top: 25px;
   .tribe-icon {
     display: inline-block;
   }
   .tribe-editor {
     display: inline-block;
     vertical-align: top;
+    text-fill-color: black;
+    font-size: large;
+    text-stroke-width: 1px;
     label {
       clear: both;
       float: left;

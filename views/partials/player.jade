@@ -1,19 +1,31 @@
-span(id="player-view")
-    span(class="player")
-        form(name="playerForm")
-            div
-                label(for="player-name") Name
-                input(id="player-name" type="text" ng-model="player.name")
-            div
-                label(for="player-email") Email
-                input(id="player-email" type="text" ng-model="player.email")
-            div
-                label(for="player-img-url") Image URL
-                input(id="player-img-url" type="text" ng-model="player.imageURL")
-            input(id="save-player-button" type="button" class="large blue button save-button" ng-click="savePlayer()" tabIndex="0" value="Save")
-            div(ng-show="player._id" class="small red button delete-button" ng-click="removePlayer()") DELETE
-    span(class="player")
-        img(ng-src="{{player | gravatarUrl:{size:250} }}" class="player-icon" width="250" height="250")
-        div(class="player-header")
-            text(ng-hide="player._id") NEW:
-            text {{player.name}}
+div
+    div(id="tribe-browser")
+        tribecard(id="tribe-card")
+    span(id="player-view")
+        span(class="player")
+            form(name="playerForm")
+                div
+                    label(for="player-name") Name
+                    input(id="player-name" type="text" ng-model="player.name")
+                div
+                    label(for="player-email") Email
+                    input(id="player-email" type="text" ng-model="player.email")
+                div
+                    label(for="player-img-url") Image URL
+                    input(id="player-img-url" type="text" ng-model="player.imageURL")
+                input(id="save-player-button" type="button" class="large blue button save-button" ng-click="savePlayer()" tabIndex="0" value="Save")
+                div(ng-show="player._id" class="small red button delete-button" ng-click="removePlayer()") DELETE
+        span(class="player")
+            img(ng-src="{{player | gravatarUrl:{size:250} }}" class="player-icon" width="250" height="250")
+            div(class="player-header")
+                text(ng-hide="player._id") NEW:
+                text {{player.name}}
+
+div(class="player-roster")
+    div
+        div(class="roster-header") Players:
+        span(ng-controller="SelectedPlayerCardController" ng-repeat="player in players" class="player")
+            img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
+            div(class="player-header" ng-click="clickPlayerName($event)")
+                text {{player.name}}
+    a(id="add-player-button" class="large orange button" href="/{{tribe._id}}/player/new/") Add a new player!

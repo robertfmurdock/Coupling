@@ -24,6 +24,7 @@ module.exports = function (config) {
             'public/javascripts/bower_components/underscore/underscore.js',
             'public/javascripts/bower_components/prefixfree/prefixfree.min.js',
             'public/javascripts/bower_components/angular-native-dragdrop/draganddrop.js',
+            'public/javascripts/bower_components/ngFitText/src/ng-FitText.js',
             'public/javascripts/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'public/javascripts/bower_components/rsvp/rsvp.js',

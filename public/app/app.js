@@ -1,5 +1,12 @@
 "use strict";
-var app = angular.module('coupling', ["ngRoute", 'ui.gravatar', 'ang-drag-drop', 'coupling.controllers', 'coupling.filters', 'coupling.animations']);
+var app = angular.module('coupling', ["ngRoute",
+  'ngFitText',
+  'ui.gravatar',
+  'ang-drag-drop',
+  'coupling.controllers',
+  'coupling.filters',
+  'coupling.directives',
+  'coupling.animations']);
 
 app.config(['$locationProvider', function ($locationProvider) {
   $locationProvider.html5Mode({
@@ -8,6 +15,7 @@ app.config(['$locationProvider', function ($locationProvider) {
   });
 }]);
 app.config(['$routeProvider', function (routeProvider) {
+  routeProvider.when('/', {redirectTo: '/tribes/'});
   routeProvider.when('/tribes/', {
     templateUrl: '/partials/tribe-list/',
     controller: "TribeListController",
@@ -21,19 +29,43 @@ app.config(['$routeProvider', function (routeProvider) {
     templateUrl: '/partials/tribe/',
     controller: "NewTribeController"
   });
+  var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
+    return Coupling.requestSpecificTribe($route.current.params.tribeId);
+  }];
   routeProvider.when('/:tribeId/', {
-    templateUrl: '/partials/tribe/',
-    controller: "EditTribeController",
+    redirectTo: '/:tribeId/pairAssignments/current/'
+  });
+
+  routeProvider.when('/:tribeId/prepare/', {
+    templateUrl: '/partials/prepare/',
+    controller: 'PrepareController',
     resolve: {
-      tribe: ['$route', 'Coupling', function ($route, Coupling) {
-        return Coupling.requestSpecificTribe($route.current.params.tribeId);
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
       }]
     }
   });
-  routeProvider.when('/:tribeId/history', {
-    templateUrl: '/partials/history/',
-    controller: "HistoryController"
+
+  routeProvider.when('/:tribeId/edit/', {
+    templateUrl: '/partials/tribe/',
+    controller: "EditTribeController",
+    resolve: {
+      tribe: tribeResolution
+    }
   });
+  routeProvider.when('/:tribeId/history/', {
+    templateUrl: '/partials/history/',
+    controller: "HistoryController",
+    resolve: {
+      tribe: tribeResolution,
+      history: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestHistoryPromise($route.current.params.tribeId);
+      }]
+    }
+  });
+
   routeProvider.when('/:tribeId/pins', {
     templateUrl: '/partials/pin-list/',
     controller: 'PinListController'
@@ -42,24 +74,50 @@ app.config(['$routeProvider', function (routeProvider) {
     templateUrl: '/partials/pairAssignments/',
     controller: "CurrentPairAssignmentsController",
     resolve: {
-      history: ['$route', 'Coupling', function ($route, Coupling) {
-        return Coupling.selectTribe($route.current.params.tribeId).then(function (data) {
-          return data.history;
+      pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestHistoryPromise($route.current.params.tribeId).then(function (history) {
+          return history[0];
         });
+      }],
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
       }]
     }
   });
   routeProvider.when('/:tribeId/pairAssignments/new/', {
     templateUrl: '/partials/pairAssignments/',
-    controller: "NewPairAssignmentsController"
+    controller: "NewPairAssignmentsController",
+    resolve: {
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
+      }]
+    }
   });
   routeProvider.when('/:tribeId/player/new/', {
     templateUrl: '/partials/player/',
-    controller: "NewPlayerController"
+    controller: "NewPlayerController",
+    resolve: {
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
+      }]
+    }
   });
   routeProvider.when('/:tribeId/player/:id/', {
     templateUrl: '/partials/player/',
-    controller: "EditPlayerController"
+    controller: "EditPlayerController",
+    resolve: {
+      tribe: tribeResolution,
+      players: ['$route', 'Coupling', function ($route, Coupling) {
+        return Coupling.requestPlayersPromise($route.current.params.tribeId,
+          Coupling.requestHistoryPromise($route.current.params.tribeId));
+      }]
+    }
   });
   routeProvider.when('/auth/google', {
     redirectTo: '/auth/google'
