@@ -8,6 +8,13 @@ directives.directive('tribecard', function(){
   }
 });
 
+directives.directive('playercard', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/partials/playercard/'
+  }
+});
+
 directives.directive('enterPress', function(){
   return function(scope, element, attrs) {
 

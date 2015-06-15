@@ -68,9 +68,9 @@ describe('The prepare to spin page', function () {
       var playerElements = element.all(By.repeater('player in players'));
       expect(playerElements.count()).toEqual(5);
 
-      playerElements.get(0).click();
-      playerElements.get(2).click();
-      playerElements.get(3).click();
+      playerElements.get(0).element(By.css('.player-icon')).click();
+      playerElements.get(2).element(By.css('.player-icon')).click();
+      playerElements.get(3).element(By.css('.player-icon')).click();
 
       element(By.id('spin-button')).click();
 

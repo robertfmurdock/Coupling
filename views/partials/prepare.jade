@@ -5,7 +5,4 @@ div
         div
             div
                 a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
-            span(ng-repeat="player in players" ng-controller="SelectedPlayerCardController" class="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")
-                img(ng-src="{{player | gravatarUrl:{size:100} }}" class="player-icon" width="100" height="100")
-                div(class="player-header")
-                    text {{player.name}}
+            playercard(ng-controller="SelectedPlayerCardController" ng-repeat="player in players" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")

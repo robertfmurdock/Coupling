@@ -59,6 +59,20 @@
   }
 }
 
+.tribe-name {
+  transition: all ease-out 0.4s;
+}
+
+.tribe-name:hover {
+  transition: all ease-out 0.4s;
+  z-index: 1;
+  background: cadetblue url(../images/overlay.png) repeat-x;
+}
+
+.player-roster .player-header {
+  transition: all ease-out 0.4s;
+}
+
 .player-roster .player-header:hover {
   transition: all ease-out 0.4s;
   z-index: 1;
