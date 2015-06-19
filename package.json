@@ -62,7 +62,8 @@
     "protractor": "^2.1",
     "protractor-jasmine2-screenshot-reporter": "^0.1.5",
     "protractor-screenshot-reporter": "0.0.5",
-    "supertest": "^1.0.1"
+    "supertest": "^1.0.1",
+    "supertest-session": "^1.0.0"
   },
   "engines": {
     "node": "0.10.x"

@@ -1,29 +1,34 @@
 "use strict";
-var Supertest = require('supertest');
-var expect = require('chai').expect;
 var config = require('../../config');
+var server = 'http://localhost:' + config.port;
+var SupertestSession = require('supertest-session')({app: server});
+var expect = require('chai').expect;
 var monk = require('monk');
 var CouplingDataService = require('../../server/lib/CouplingDataService');
 var dataService = new CouplingDataService(config.tempMongoUrl);
 var tribeId = 'test';
 var path = '/api/' + tribeId + '/pins';
 var badTribePath = '/api/does-not-exist/pins';
-var host = 'http://localhost:' + config.port;
 
 var database = monk(config.tempMongoUrl);
 var pinCollection = database.get('pins');
 
 describe(path, function () {
-  var supertest = Supertest(host);
+  var supertest;
   var Cookies;
 
   beforeEach(function (done) {
+    supertest = new SupertestSession();
     supertest.get('/test-login?username="name"&password="pw"')
       .expect(302).end(function (err, res) {
         expect(err).to.not.exist;
         Cookies = res.headers['set-cookie'].pop().split(';')[0];
         done();
       });
+  });
+
+  afterEach(function(){
+    supertest.destroy();
   });
 
   describe("GET", function () {

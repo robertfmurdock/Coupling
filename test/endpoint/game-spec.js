@@ -1,31 +1,28 @@
 "use strict";
-var Supertest = require('supertest');
-var expect = require('chai').expect;
 var config = require('../../config');
+var server = 'http://localhost:' + config.port;
+var SupertestSession = require('supertest-session')({app: server});
+var expect = require('chai').expect;
 var monk = require('monk');
 
 var tribeId = 'test';
 var pinId = 'testPin';
 var path = '/api/' + tribeId + '/spin';
-var host = 'http://localhost:' + config.port;
 
 var database = monk(config.testMongoUrl + '/CouplingTemp');
 var pinCollection = database.get('pins');
 
 describe(path, function () {
-  var supertest = Supertest(host);
-  var Cookies;
+  var supertest;
 
   before(function () {
     removeTestPin();
   });
 
   beforeEach(function (done) {
+    supertest = new SupertestSession();
     supertest.get('/test-login?username="name"&password="pw"')
-      .expect(302).end(function (err, res) {
-        Cookies = res.headers['set-cookie'].pop().split(';')[0];
-        done(err);
-      });
+      .expect(302).end(done);
   });
 
   function removeTestPin() {
@@ -34,6 +31,7 @@ describe(path, function () {
 
   afterEach(function () {
     removeTestPin();
+    supertest.destroy();
   });
 
   var decorateWithPins = function (pair) {
@@ -47,9 +45,7 @@ describe(path, function () {
       {name: "dude1"},
       {name: "dude2"}
     ];
-    var post = supertest.post(path);
-    post.cookies = Cookies;
-    post.send(onlyEnoughPlayersForOnePair)
+    supertest.post(path).send(onlyEnoughPlayersForOnePair)
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function (error, response) {
@@ -72,9 +68,8 @@ describe(path, function () {
       var players = [
         {name: "dude1"}
       ];
-      var post = supertest.post(path);
-      post.cookies = Cookies;
-      post.send(players).expect(200)
+      supertest.post(path).send(players)
+        .expect(200)
         .expect('Content-Type', /json/)
         .end(function (error, response) {
           expect(response.body.tribe).to.equal(tribeId);
