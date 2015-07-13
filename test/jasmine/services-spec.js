@@ -80,22 +80,6 @@ describe('Service: ', function () {
       });
     });
 
-    describe('save tribe', function () {
-      xit('will post to persistence and callback', function () {
-        httpBackend.whenPOST('/api/tribes').respond(200);
-        var tribe = {
-          name: 'Navi'
-        };
-        var callbackCallCount = 0;
-        Coupling.saveTribe(tribe).then(function () {
-          callbackCallCount++;
-        });
-
-        httpBackend.flush();
-        expect(callbackCallCount).toBe(1);
-      });
-    });
-
     describe('save player', function () {
       it('will use http service', function (done) {
 
