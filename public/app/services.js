@@ -1,7 +1,7 @@
 "use strict";
-var services = angular.module("coupling.services", []);
+var services = angular.module("coupling.services", ['ngResource']);
 
-services.service("Coupling", ['$http', '$q', function ($http, $q) {
+services.service("Coupling", ['$http', '$resource', '$q', function ($http, $resource, $q) {
   var Coupling = this;
 
   function errorMessage(url, data, statusCode) {
@@ -29,14 +29,19 @@ services.service("Coupling", ['$http', '$q', function ($http, $q) {
     return $http.delete(url).error(makeErrorHandler(url));
   };
 
+  var Tribe = $resource('/api/tribes/:tribeId');
+  this.Tribe = Tribe;
+
   this.getTribes = function () {
     var url = '/api/tribes';
     return $q(function (resolve, reject) {
-      $http.get(url)
-        .error(function (data, statusCode) {
-          reject(errorMessage('GET ' + url, data, statusCode));
+      Tribe.query()
+        .$promise
+        .catch(function (response) {
+          console.info(response);
+          reject(errorMessage('GET ' + url, response.data, response.status));
         }).then(function (response) {
-          resolve(response.data);
+          resolve(response);
         })
     });
   };
@@ -142,8 +147,13 @@ services.service("Coupling", ['$http', '$q', function ($http, $q) {
     return httpDelete('/api/' + Coupling.data.selectedTribeId + '/players/' + player._id);
   };
 
+  this.newTribe = function(){
+    return new Tribe();
+  };
+
   this.saveTribe = function (tribe) {
-    return post('/api/tribes', tribe);
+    return tribe.$save();
+    //return post('/api/tribes', tribe);
   };
 
   this.promisePins = function (tribeId) {

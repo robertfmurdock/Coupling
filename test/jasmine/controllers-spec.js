@@ -164,6 +164,7 @@ describe('The controller named ', function () {
         path: jasmine.createSpy('path')
       };
       Coupling = {
+        Tribe: jasmine.createSpy('Tribe'),
         data: {}
       };
     });

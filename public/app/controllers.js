@@ -75,9 +75,8 @@ controllers.controller('TribeListController', ['$scope', '$location', 'tribes',
   }]);
 
 controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
-  $scope.tribe = {
-    name: 'New Tribe'
-  };
+  $scope.tribe = new Coupling.Tribe();
+  $scope.tribe.name = 'New Tribe';
 
   $scope.clickSaveButton = function () {
     $scope.tribe._id = $scope.tribe.requestedId;
