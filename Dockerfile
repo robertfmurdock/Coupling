@@ -2,9 +2,9 @@ FROM node:0.12
 
 WORKDIR /usr/src/app
 
-RUN npm install -g grunt-cli karma-cli phantomjs
-COPY ["package.json", "npm-shrinkwrap.json", "/usr/src/app/"]
-RUN npm install
+RUN npm install -g grunt-cli karma-cli phantomjs --unsafe-perm
+COPY ["package.json", "/usr/src/app/"]
+RUN npm install --unsafe-perm
 COPY . /usr/src/app
 ENV \
   PUBLIC_HOST=web \
