@@ -1,3 +1,4 @@
+"use strict";
 var util = require('util');
 var userEmail = 'protractor@test.goo';
 var monk = require("monk");
@@ -28,14 +29,20 @@ var helper = {
   afterEachAssertLogsAreEmpty: function () {
 
     afterEach(function (done) {
-      browser.manage().logs().get('browser').then(function (browserLog) {
-        expect(browserLog).toEqual([]);
-        if (browserLog.length > 0) {
-          console.log('log: ' + util.inspect(browserLog));
+      browser.getCapabilities().then(function (capabilities) {
+        if (capabilities.caps_browserName == 'firefox') {
+          browser.manage().logs().get('browser').then(function (browserLog) {
+            expect(browserLog).toEqual([]);
+            if (browserLog.length > 0) {
+              console.log('log: ' + util.inspect(browserLog));
+            }
+            done();
+          }, done);
+          browser.waitForAngular();
+        } else {
+          done();
         }
-        done();
-      }, done);
-      browser.waitForAngular();
+      });
     });
   }
 };

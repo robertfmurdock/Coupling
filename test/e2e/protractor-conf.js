@@ -7,6 +7,9 @@ exports.config = {
 
   capabilities: {
     'browserName': 'chrome',
+    'loggingPrefs': {
+      'browser': 'WARNING'
+    }
   },
 
   // Spec patterns are relative to the current working directly when
@@ -18,7 +21,7 @@ exports.config = {
 
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000
+    defaultTimeoutInterval: 5000
   },
   onPrepare: function () {
 

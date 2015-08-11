@@ -21,18 +21,13 @@ mongo:
     - AUTH=no
 seleniumhub:
   image: selenium/hub
-seleniumnode1:
+chromenode:
   image: selenium/node-chrome
   links:
     - "seleniumhub:hub"
     - "web:web"
-seleniumnode2:
-  image: selenium/node-chrome
-  links:
-    - "seleniumhub:hub"
-    - "web:web"
-seleniumnode3:
-  image: selenium/node-chrome
+firefoxnode:
+  image: selenium/node-firefox
   links:
     - "seleniumhub:hub"
     - "web:web"

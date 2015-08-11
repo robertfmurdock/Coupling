@@ -8,12 +8,12 @@ var database = monk(config.tempMongoUrl);
 
 describe('The welcome page', function () {
 
-    it('will have a clickable enter button', function () {
-        browser.get(hostName + '/welcome');
-        element(By.tagName('body')).allowAnimations(false);
-        element(By.id('enter-button')).click();
-        expect(browser.getCurrentUrl()).toBe(hostName + '/auth/google');
-    });
+  it('has an enter button redirects to google login', function () {
+    browser.get(hostName + '/welcome');
+    element(By.tagName('body')).allowAnimations(false);
+    element(By.id('enter-button')).click();
+    expect(browser.getCurrentUrl()).toBe(hostName + '/auth/google');
+  });
 
-    e2eHelp.afterEachAssertLogsAreEmpty();
+  e2eHelp.afterEachAssertLogsAreEmpty();
 });

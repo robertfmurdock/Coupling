@@ -6,7 +6,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-protractor-runner');
-    grunt.loadNpmTasks('grunt-protractor-webdriver');
     grunt.loadNpmTasks('grunt-git-describe');
     grunt.loadNpmTasks('grunt-wiredep');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -102,35 +101,26 @@ module.exports = function(grunt) {
                 }
             }
         },
-        protractor_webdriver: {
-            options: {
-                keepAlive: true
-            },
-            start: {}
-        },
         protractor: {
             options: {
                 configFile: "test/e2e/protractor-conf.js",
                 keepAlive: false,
                 noColor: false,
                 args: {
-                    browser: 'chrome',
-                    seleniumAddress: 'http://localhost:4444/wd/hub'
+                    browser: 'chrome'
                 }
             },
             chrome: {
                 options: {
                     args: {
-                        browser: 'chrome',
-                        seleniumAddress: 'http://localhost:4444/wd/hub'
+                        browser: 'chrome'
                     }
                 }
             },
             firefox: {
                 options: {
                     args: {
-                        browser: 'firefox',
-                        seleniumAddress: 'http://localhost:4444/wd/hub'
+                        browser: 'firefox'
                     }
                 }
             },
@@ -153,8 +143,7 @@ module.exports = function(grunt) {
             safari: {
                 options: {
                     args: {
-                        browser: 'safari',
-                        seleniumAddress: 'http://localhost:4444/wd/hub'
+                        browser: 'safari'
                     }
                 }
             }
@@ -263,17 +252,17 @@ module.exports = function(grunt) {
     grunt.registerTask('jenkinsMochaUnit', ['env:jenkinsUnit', 'mochaTest:jenkinsUnit']);
     grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
-    grunt.registerTask('end2end', ['express:dev', 'protractor_webdriver:start', 'protractor:chrome']);
+    grunt.registerTask('end2end', ['express:dev', 'protractor:chrome']);
 
     grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
-        'protractor_webdriver:start', 'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild'
+        'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild'
     ]);
     grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
     grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
 
     grunt.registerTask('docker-server-test', ['mochaTest:unit', 'express:dev', 'mochaTest:endpoint']);
-    grunt.registerTask('docker-frontend-test', ['karma:docker', 'express:dev', 'protractor:dockerchrome']);
+    grunt.registerTask('docker-frontend-test', ['karma:docker', 'express:dev', 'protractor:dockerfirefox']);
     grunt.registerTask('dockerserve', ['docker-server-test', 'docker-frontend-test', 'express:dev2', 'watch']);
 
     grunt.registerTask('wait', function() {

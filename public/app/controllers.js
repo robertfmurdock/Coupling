@@ -1,7 +1,7 @@
 "use strict";
-var controllers = angular.module('coupling.controllers', ['coupling.services']);
+var couplingControllers = angular.module('coupling.controllers', ['coupling.services']);
 
-controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer', function ($scope, $timeout, randomizer) {
+couplingControllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer', function ($scope, $timeout, randomizer) {
   $scope.show = false;
   var candidates = [{
     leftCard: {
@@ -47,7 +47,7 @@ controllers.controller('WelcomeController', ['$scope', '$timeout', 'randomizer',
   }, 0);
 }]);
 
-controllers.controller('SelectedPlayerCardController',
+couplingControllers.controller('SelectedPlayerCardController',
   ['$scope', '$location', 'Coupling', function ($scope, $location) {
     $scope.clickPlayerCard = function () {
       $scope.player.isAvailable = !$scope.player.isAvailable;
@@ -59,7 +59,7 @@ controllers.controller('SelectedPlayerCardController',
   }]);
 
 
-controllers.controller('TribeCardController', ['$scope', '$location', function ($scope, $location) {
+couplingControllers.controller('TribeCardController', ['$scope', '$location', function ($scope, $location) {
   $scope.clickOnTribeCard = function (tribe) {
     $location.path("/" + tribe._id + "/pairAssignments/current");
   };
@@ -69,12 +69,12 @@ controllers.controller('TribeCardController', ['$scope', '$location', function (
   };
 }]);
 
-controllers.controller('TribeListController', ['$scope', '$location', 'tribes',
+couplingControllers.controller('TribeListController', ['$scope', '$location', 'tribes',
   function ($scope, $location, tribes) {
     $scope.tribes = tribes;
   }]);
 
-controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
+couplingControllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
   $scope.tribe = new Coupling.Tribe();
   $scope.tribe.name = 'New Tribe';
 
@@ -87,7 +87,7 @@ controllers.controller('NewTribeController', ['$scope', '$location', 'Coupling',
   }
 }]);
 
-controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
+couplingControllers.controller('EditTribeController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
   $scope.tribe = tribe;
   $scope.clickSaveButton = function () {
     Coupling.saveTribe($scope.tribe).then(function () {
@@ -96,12 +96,12 @@ controllers.controller('EditTribeController', ['$scope', 'Coupling', '$location'
   }
 }]);
 
-controllers.controller('HistoryController', ['$scope', 'tribe', 'history', function ($scope, tribe, history) {
+couplingControllers.controller('HistoryController', ['$scope', 'tribe', 'history', function ($scope, tribe, history) {
   $scope.tribe = tribe;
   $scope.history = history;
 }]);
 
-controllers.controller('NewPairAssignmentsController',
+couplingControllers.controller('NewPairAssignmentsController',
   ['$scope', '$location', 'Coupling', '$routeParams', 'tribe', 'players',
     function ($scope, $location, Coupling, $routeParams, tribe, players) {
       $scope.tribe = tribe;
@@ -157,7 +157,7 @@ function findUnpairedPlayers(players, pairAssignmentDocument) {
     return found == undefined;
   });
 }
-controllers.controller('CurrentPairAssignmentsController',
+couplingControllers.controller('CurrentPairAssignmentsController',
   ['$scope', 'pairAssignmentDocument', 'tribe', 'players', function ($scope, pairAssignmentDocument, tribe, players) {
     $scope.tribe = tribe;
     $scope.players = players;
@@ -165,7 +165,7 @@ controllers.controller('CurrentPairAssignmentsController',
     $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
   }]);
 
-controllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$location', 'Coupling',
+couplingControllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$location', 'Coupling',
   function ($scope, tribe, players, $location, Coupling) {
     $scope.tribe = tribe;
     $scope.players = players;
@@ -175,7 +175,7 @@ controllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$loc
     };
   }]);
 
-controllers.controller('NewPlayerController',
+couplingControllers.controller('NewPlayerController',
   ['$scope', 'Coupling', '$location', 'tribe', 'players', function ($scope, Coupling, $location, tribe, players) {
     $scope.tribe = tribe;
     $scope.players = players;
@@ -189,7 +189,7 @@ controllers.controller('NewPlayerController',
     }
   }]);
 
-controllers.controller('EditPlayerController',
+couplingControllers.controller('EditPlayerController',
   ['$scope', 'Coupling', '$location', '$route', 'tribe', 'players',
     function ($scope, Coupling, $location, $route, tribe, players) {
       $scope.tribe = tribe;
@@ -224,7 +224,7 @@ controllers.controller('EditPlayerController',
       });
     }]);
 
-controllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
+couplingControllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   var promisePins = Coupling.promisePins($routeParams.tribeId);
   promisePins.then(function (pins) {
     $scope.pins = pins;
