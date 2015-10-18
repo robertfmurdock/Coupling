@@ -6,15 +6,15 @@ web:
     - "mongo:mongo"
     - "seleniumhub:hub"
   volumes:
-    - public:/usr/src/app/public
-    - server:/usr/src/app/server
-    - views:/usr/src/app/views
-    - test:/usr/src/app/test
-    - package.json:/usr/src/app/package.json
-    - config.js:/usr/src/app/config.js
-    - Gruntfile.js:/usr/src/app/Gruntfile.js
-    - screenshots:/tmp/screenshots
-    - test-output:/usr/src/app/test-output
+    - ./public:/usr/src/app/public
+    - ./server:/usr/src/app/server
+    - ./views:/usr/src/app/views
+    - ./test:/usr/src/app/test
+    - ./package.json:/usr/src/app/package.json
+    - ./config.js:/usr/src/app/config.js
+    - ./Gruntfile.js:/usr/src/app/Gruntfile.js
+    - ./screenshots:/tmp/screenshots
+    - ./test-output:/usr/src/app/test-output
 mongo:
   image: mongo
   environment:
@@ -23,11 +23,8 @@ seleniumhub:
   image: selenium/hub
 chromenode:
   image: selenium/node-chrome
-  links:
-    - "seleniumhub:hub"
-    - "web:web"
-firefoxnode:
-  image: selenium/node-firefox
+  volumes:
+    - /dev/shm:/dev/shm
   links:
     - "seleniumhub:hub"
     - "web:web"

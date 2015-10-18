@@ -36,7 +36,7 @@ describe('The edit player page', function () {
     e2eHelp.authorizeUserForTribes([tribe._id]);
   });
 
-  beforeEach(function(){
+  beforeEach(function () {
     playersCollection.drop();
     playersCollection.insert(players);
   });
@@ -56,15 +56,26 @@ describe('The edit player page', function () {
     expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/current/');
   });
 
-  xit('should get error on leaving when name is changed.', function () {
+  it('should get error on leaving when name is changed.', function () {
     browser.setLocation('/' + tribe._id + '/player/' + player1._id);
     expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player1._id + '/');
     element(By.id('player-name')).clear();
     element(By.id('player-name')).sendKeys('completely different name');
-    element(By.css('.tribe-card')).click();
-    var alertDialog = browser.switchTo().alert();
-    expect(alertDialog.getText()).toEqual('You have unsaved data. Would you like to save before you leave?');
-    alertDialog.dismiss();
+    element(By.css('.tribe img')).click();
+    browser.wait(function () {
+      return browser.switchTo().alert()
+        .then(function () {
+          return true;
+        }, function () {
+          return false;
+        });
+    }, 5000);
+
+    browser.switchTo().alert()
+      .then(function (alertDialog) {
+        expect(alertDialog.getText()).toEqual('You have unsaved data. Would you like to save before you leave?');
+        alertDialog.dismiss();
+      });
   });
 
   it('should not get alert on leaving when name is changed after save.', function () {

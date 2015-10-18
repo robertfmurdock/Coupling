@@ -262,7 +262,7 @@ module.exports = function(grunt) {
     grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
 
     grunt.registerTask('docker-server-test', ['mochaTest:unit', 'express:dev', 'mochaTest:endpoint']);
-    grunt.registerTask('docker-frontend-test', ['karma:docker', 'express:dev', 'protractor:dockerfirefox']);
+    grunt.registerTask('docker-frontend-test', ['karma:docker', 'express:dev', 'protractor:dockerchrome']);
     grunt.registerTask('dockerserve', ['docker-server-test', 'docker-frontend-test', 'express:dev2', 'watch']);
 
     grunt.registerTask('wait', function() {
