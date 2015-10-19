@@ -47,17 +47,16 @@ couplingControllers.controller('WelcomeController', ['$scope', '$timeout', 'rand
   }, 0);
 }]);
 
-couplingControllers.controller('SelectedPlayerCardController',
-  ['$scope', '$location', 'Coupling', function ($scope, $location) {
-    $scope.clickPlayerCard = function () {
-      $scope.player.isAvailable = !$scope.player.isAvailable;
-    };
-    $scope.clickPlayerName = function ($event) {
-      if ($event.stopPropagation) $event.stopPropagation();
-      $location.path("/" + $scope.player.tribe + "/player/" + $scope.player._id);
-    };
-  }]);
-
+//couplingControllers.controller('SelectedPlayerCardController',
+//  ['$scope', '$location', 'Coupling', function ($scope, $location) {
+//    $scope.clickPlayerCard = function () {
+//      $scope.player.isAvailable = !$scope.player.isAvailable;
+//    };
+//    $scope.clickPlayerName = function ($event) {
+//      if ($event.stopPropagation) $event.stopPropagation();
+//      $location.path("/" + $scope.player.tribe + "/player/" + $scope.player._id);
+//    };
+//  }]);
 
 couplingControllers.controller('TribeCardController', ['$scope', '$location', function ($scope, $location) {
   $scope.clickOnTribeCard = function (tribe) {

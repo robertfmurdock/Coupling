@@ -1,29 +1,29 @@
 "use strict";
 var directives = angular.module("coupling.directives", []);
 
-directives.directive('tribecard', function(){
+directives.directive('tribecard', function () {
   return {
     restrict: 'E',
     templateUrl: '/partials/tribecard/'
   }
 });
 
-directives.directive('playercard', function(){
+directives.directive('playercard', function () {
   return {
     restrict: 'E',
     templateUrl: '/partials/playercard/'
   }
 });
 
-directives.directive('enterPress', function(){
-  return function(scope, element, attrs) {
+directives.directive('enterPress', function () {
+  return function (scope, element, attrs) {
 
-    element.bind("keydown keypress", function(event) {
+    element.bind("keydown keypress", function (event) {
       var keyCode = event.which || event.keyCode;
 
       var enterKeyCode = 13;
       if (keyCode === enterKeyCode) {
-        scope.$apply(function() {
+        scope.$apply(function () {
           scope.$eval(attrs.enterPress);
         });
 
@@ -32,3 +32,4 @@ directives.directive('enterPress', function(){
     });
   };
 });
+

@@ -13,6 +13,7 @@ web:
     - ./package.json:/usr/src/app/package.json
     - ./config.js:/usr/src/app/config.js
     - ./Gruntfile.js:/usr/src/app/Gruntfile.js
+    - ./karma.conf.js:/usr/src/app/karma.conf.js
     - ./screenshots:/tmp/screenshots
     - ./test-output:/usr/src/app/test-output
 mongo:

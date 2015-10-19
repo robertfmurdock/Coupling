@@ -21,5 +21,5 @@ div(class="player-roster")
     div
         div(class="roster-header")
             text(ng-show="unpairedPlayers[0]") Unpaired players:
-        playercard(ng-controller="SelectedPlayerCardController" ng-repeat="player in unpairedPlayers")
+        selectedplayercard(ng-repeat="player in unpairedPlayers")
     a(id="add-player-button" class="large orange button" href="/{{tribe._id}}/player/new/") Add a new player!
