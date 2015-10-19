@@ -30,6 +30,6 @@
     "commit": "3413d0ff22f3df7f061cdd4f4b8697f14f4c246d"
   },
   "_source": "git://github.com/patrickmarabeas/ng-FitText.js.git",
-  "_target": "~3",
+  "_target": "^3",
   "_originalSource": "ngFitText"
 }
