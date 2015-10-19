@@ -43,8 +43,4 @@ angular.module('app', [
         }
     };
 
-    $scope.getCustomDragElementId = function (index) {
-        return 'customDrag' + (index % 2);
-    }
-
 });

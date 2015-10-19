@@ -5,18 +5,6 @@
         return 'ondrag' in document.createElement('a');
     }
 
-    function determineEffectAllowed(e) {
-        // Chrome doesn't set dropEffect, so we have to work it out ourselves
-        if (typeof e.dataTransfer !== 'undefined' && e.dataTransfer.dropEffect === 'none') {
-            if (e.dataTransfer.effectAllowed === 'copy' ||
-                e.dataTransfer.effectAllowed === 'move') {
-                e.dataTransfer.dropEffect = e.dataTransfer.effectAllowed;
-            } else if (e.dataTransfer.effectAllowed === 'copyMove' || e.dataTransfer.effectAllowed === 'copymove') {
-                e.dataTransfer.dropEffect = e.ctrlKey ? 'copy' : 'move';
-            }
-        }
-    }
-
     if (!isDnDsSupported()) {
         angular.module('ang-drag-drop', []);
         return;
@@ -66,9 +54,6 @@
                 }, 0);
                 var sendChannel = attrs.dragChannel || 'defaultchannel';
                 $rootScope.$broadcast('ANGULAR_DRAG_END', e, sendChannel);
-
-                determineEffectAllowed(e);
-
                 if (e.dataTransfer && e.dataTransfer.dropEffect !== 'none') {
                     if (attrs.onDropSuccess) {
                         var onDropSuccessFn = $parse(attrs.onDropSuccess);
@@ -87,33 +72,6 @@
                 element.removeClass(draggingClass);
             }
 
-            function setDragElement(e, dragImageElementId) {
-                var dragImageElementFn;
-
-                if (!(e && e.dataTransfer && e.dataTransfer.setDragImage)) {
-                    return;
-                }
-
-                dragImageElementFn = $parse(dragImageElementId);
-
-                scope.$apply(function() {
-                    var elementId = dragImageElementFn(scope, {$event: e}),
-                        dragElement;
-
-                    if (!(elementId && angular.isString(elementId))) {
-                        return;
-                    }
-
-                    dragElement = document.getElementById(elementId);
-
-                    if (!dragElement) {
-                        return;
-                    }
-
-                    e.dataTransfer.setDragImage(dragElement, 0, 0);
-                });
-            }
-
             function dragstartHandler(e) {
                 var isDragAllowed = !isDragHandleUsed || dragTarget.classList.contains(dragHandleClass);
 
@@ -129,11 +87,7 @@
                     element.addClass(draggingClass);
                     element.bind('$destroy', dragendHandler);
 
-                    //Code to make sure that the setDragImage is available. IE 10, 11, and Opera do not support setDragImage.
-                    var hasNativeDraggable = !(document.uniqueID || window.opera);
-
-                    //If there is a draggable image passed in, then set the image to be dragged.
-                    if (dragImage && hasNativeDraggable) {
+                    if (dragImage) {
                         var dragImageFn = $parse(attrs.dragImage);
                         scope.$apply(function() {
                             var dragImageParameters = dragImageFn(scope, {$event: e});
@@ -148,11 +102,9 @@
                                 }
                             }
                         });
-                    } else if (attrs.dragImageElementId) {
-                        setDragElement(e, attrs.dragImageElementId);
                     }
 
-                    var transferDataObject = {data: dragData, channel: sendChannel};
+                    var transferDataObject = {data: dragData, channel: sendChannel}
                     var transferDataText = angular.toJson(transferDataObject);
 
                     e.dataTransfer.setData('text', transferDataText);
@@ -256,7 +208,15 @@
                 var sendData = e.dataTransfer.getData('text');
                 sendData = angular.fromJson(sendData);
 
-                determineEffectAllowed(e);
+                // Chrome doesn't set dropEffect, so we have to work it out ourselves
+                if (e.dataTransfer.dropEffect === 'none') {
+                    if (e.dataTransfer.effectAllowed === 'copy' ||
+                        e.dataTransfer.effectAllowed === 'move') {
+                        e.dataTransfer.dropEffect = e.dataTransfer.effectAllowed;
+                    } else if (e.dataTransfer.effectAllowed === 'copyMove') {
+                        e.dataTransfer.dropEffect = e.ctrlKey ? 'copy' : 'move';
+                    }
+                }
 
                 var uiOnDropFn = $parse(attr.uiOnDrop);
                 scope.$evalAsync(function() {
@@ -298,12 +258,7 @@
 
                 if (valid && attr.dropValidate) {
                     var validateFn = $parse(attr.dropValidate);
-                    valid = validateFn(scope, {
-                        $drop: {scope: scope, element: element},
-                        $event: e,
-                        $data: transferDataObject.data,
-                        $channel: transferDataObject.channel
-                    });
+                    valid = validateFn(scope, {$drop: {scope: scope, element:element}, $event:e, $data: transferDataObject.data, $channel: transferDataObject.channel});
                 }
 
                 if (valid) {
@@ -325,7 +280,7 @@
             });
 
 
-            var deregisterDragEnd = $rootScope.$on('ANGULAR_DRAG_END', function() {
+            var deregisterDragEnd = $rootScope.$on('ANGULAR_DRAG_END', function(_, e, channel) {
                 element.unbind('dragover', onDragOver);
                 element.unbind('dragenter', onDragEnter);
                 element.unbind('dragleave', onDragLeave);

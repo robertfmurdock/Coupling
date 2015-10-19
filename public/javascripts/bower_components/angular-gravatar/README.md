@@ -82,11 +82,6 @@ angular.module('ui.gravatar').config([
 
     // Force protocol
     gravatarServiceProvider.protocol = 'my-protocol';
-
-    // Override URL generating function
-    gravatarServiceProvider.urlFunc = function(options) {
-      // Code to generate custom URL
-    };
   }
 ]);
 ```
