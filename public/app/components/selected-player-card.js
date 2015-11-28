@@ -15,7 +15,7 @@ angular.module("coupling.directives")
     return {
       restrict: 'E',
       controller: 'SelectedPlayerCardController',
-      templateUrl: '/partials/playercard/',
+      templateUrl: '/app/components/playercard.html',
       bindToController: true
     }
   });

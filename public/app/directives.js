@@ -11,7 +11,7 @@ directives.directive('tribecard', function () {
 directives.directive('playercard', function () {
   return {
     restrict: 'E',
-    templateUrl: '/partials/playercard/'
+    templateUrl: '/app/components/playercard.html'
   }
 });
 

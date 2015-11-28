@@ -428,7 +428,7 @@ describe('The controller named ', function () {
       })
     });
 
-    it('save will use Coupling service to save and then will redirect to the current pair assignments page', function () {
+    it('save will use Coupling service to save and then will redirect to the current pair assignments page', function (done) {
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
@@ -440,9 +440,16 @@ describe('The controller named ', function () {
         });
       });
       expect(Coupling.saveCurrentPairAssignments).not.toHaveBeenCalled();
+
+      var successPromise = RSVP.resolve('Complete');
+      Coupling.saveCurrentPairAssignments.and.returnValue(successPromise);
+
       scope.save();
       expect(Coupling.saveCurrentPairAssignments).toHaveBeenCalled();
-      expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/pairAssignments/current");
+      successPromise.then(function () {
+        expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/pairAssignments/current");
+        done();
+      });
     });
 
     it('onDrop will take two players and swap their places', function () {

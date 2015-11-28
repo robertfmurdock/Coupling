@@ -134,9 +134,10 @@ services.service("Coupling", ['$http', '$resource', '$q', function ($http, $reso
     var url = '/api/' + tribeId + '/history';
     var postPromise = $http.post(url, pairAssignments);
     postPromise.error(makeErrorHandler('POST ' + url));
-    return postPromise.then(function (result) {
-      return result.data;
-    });
+    return postPromise
+      .then(function (result) {
+        return result.data;
+      });
   };
 
   this.savePlayer = function (player) {
@@ -147,7 +148,7 @@ services.service("Coupling", ['$http', '$resource', '$q', function ($http, $reso
     return httpDelete('/api/' + Coupling.data.selectedTribeId + '/players/' + player._id);
   };
 
-  this.newTribe = function(){
+  this.newTribe = function () {
     return new Tribe();
   };
 
