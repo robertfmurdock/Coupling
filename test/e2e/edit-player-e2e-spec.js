@@ -56,7 +56,7 @@ describe('The edit player page', function () {
     expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/current/');
   });
 
-  it('should get error on leaving when name is changed.', function () {
+  it('should get error on leaving when name is changed.', function (done) {
     browser.setLocation('/' + tribe._id + '/player/' + player1._id);
     expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player1._id + '/');
     element(By.id('player-name')).clear();
@@ -75,6 +75,7 @@ describe('The edit player page', function () {
       .then(function (alertDialog) {
         expect(alertDialog.getText()).toEqual('You have unsaved data. Would you like to save before you leave?');
         alertDialog.dismiss();
+        done();
       });
   });
 

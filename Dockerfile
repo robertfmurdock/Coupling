@@ -1,7 +1,12 @@
-FROM node:0.12
+FROM node:5-slim
 
 WORKDIR /usr/src/app
 
+RUN apt-get update \
+  && apt-get install -y \
+  bzip2 \
+  libfreetype6 \
+  libfontconfig
 RUN npm install -g grunt-cli karma-cli phantomjs --unsafe-perm
 COPY ["package.json", "/usr/src/app/"]
 RUN npm install --unsafe-perm

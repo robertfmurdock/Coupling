@@ -13,14 +13,15 @@ function authorizeUserForTribes(authorizedTribes) {
     $set: {
       tribes: authorizedTribes
     }
-  }).then(function (updateCount) {
-    if (updateCount == 0) {
-      return usersCollection.insert({
-        email: tempUserEmail,
-        tribes: authorizedTribes
-      });
-    }
-  });
+  })
+    .then(function (updateCount) {
+      if (updateCount == 0) {
+        return usersCollection.insert({
+          email: tempUserEmail,
+          tribes: authorizedTribes
+        });
+      }
+    });
 }
 
 var helper = {

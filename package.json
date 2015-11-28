@@ -17,11 +17,12 @@
     "express-minify": "^0.1.6",
     "express-session": "^1.11.3",
     "jade": "^1.10.0",
+    "kerberos": "0.0.17",
     "method-override": "^2.3.5",
     "mongodb": "^2.0",
     "monk": "~0.8.1",
     "morgan": "^1.6.1",
-    "node-sass-middleware": "0.8.0",
+    "node-sass-middleware": "^0.8.0",
     "passport": "^0.3.0",
     "passport-google-oauth": "^0.2.0",
     "passport-local": "^1.0.0",
@@ -52,18 +53,15 @@
     "karma-jasmine": "^0.3.6",
     "karma-junit-reporter": "^0.3.7",
     "karma-phantomjs-launcher": "^0.2.1",
-    "karma-requirejs": "^0.2.2",
     "karma-safari-launcher": "^0.1.1",
     "mocha": "^2.3.3",
     "mocha-jenkins-reporter": "^0.1.9",
+    "phantomjs": "^1.9.19",
     "protractor": "^2.5",
     "protractor-jasmine2-screenshot-reporter": "^0.1.7",
     "protractor-screenshot-reporter": "0.0.5",
     "supertest": "^1.1.0",
     "supertest-session": "^1.2.0"
-  },
-  "engines": {
-    "node": "0.10.x"
   },
   "scripts": {
     "start": "node server/app.js",

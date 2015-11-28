@@ -20,9 +20,12 @@ function authorizeAllTribes() {
 
 function waitUntilAnimateIsGone() {
   browser.wait(function () {
-    return browser.driver.isElementPresent(By.css('.ng-animate'))
-      .then(function (result) {
-        return !result;
+    return element(By.css('.ng-animate'))
+      .isPresent()
+      .then(function (isPresent) {
+        return !isPresent;
+      }, function () {
+        return false;
       });
   }, 5000);
 }
