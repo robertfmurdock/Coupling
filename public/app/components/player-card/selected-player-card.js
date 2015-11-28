@@ -15,7 +15,13 @@ angular.module("coupling.directives")
     return {
       restrict: 'E',
       controller: 'SelectedPlayerCardController',
-      templateUrl: '/app/components/playercard.html',
+      templateUrl: '/app/components/player-card/playercard.html',
       bindToController: true
+    }
+  })
+  .directive('playercard', function () {
+    return {
+      restrict: 'E',
+      templateUrl: '/app/components/player-card/playercard.html'
     }
   });

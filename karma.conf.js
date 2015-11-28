@@ -33,7 +33,7 @@ module.exports = function (config) {
             "public/app/services.js",
             "public/app/controllers.js",
             "public/app/directives.js",
-            "public/app/components/selected-player-card.js",
+            "public/app/components/player-card/selected-player-card.js",
             "public/app/animations.js",
             "public/app/filters.js",
             'test/jasmine/**/*-spec.js'
