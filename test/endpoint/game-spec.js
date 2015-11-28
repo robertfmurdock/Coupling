@@ -50,7 +50,7 @@ describe(path, function () {
       .expect('Content-Type', /json/)
       .end(function (error, response) {
         expect(response.body.tribe).to.equal(tribeId);
-        decorateWithPins(onlyEnoughPlayersForOnePair)
+        decorateWithPins(onlyEnoughPlayersForOnePair);
         var expectedPairAssignments = [onlyEnoughPlayersForOnePair];
         expect(response.body.pairs).to.eql(expectedPairAssignments);
         done(error);
