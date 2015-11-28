@@ -20,7 +20,7 @@ app.config(['$routeProvider', function (routeProvider) {
   var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
     return Coupling.requestSpecificTribe($route.current.params.tribeId);
   }];
-  
+
   routeProvider
     .when('/', {redirectTo: '/tribes/'})
     .when('/tribes/', {

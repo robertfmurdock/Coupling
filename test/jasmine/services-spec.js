@@ -66,16 +66,16 @@ describe('Service: ', function () {
         httpBackend.whenGET(url).respond(statusCode, expectedData);
         var callCount = 0;
 
-        Coupling.getTribes().then(function () {
-          console.log('hrm');
-          callCount++;
-        }).catch(function (error) {
-          expect(callCount).toBe(0);
-          expect(error).toEqual('There was a problem with request GET ' + url + '\n' +
-            'Data: <' + expectedData + '>\n' +
-            'Status: ' + statusCode);
-          done();
-        });
+        Coupling.getTribes()
+          .then(function () {
+            callCount++;
+          }).catch(function (error) {
+            expect(callCount).toBe(0);
+            expect(error).toEqual('There was a problem with request GET ' + url + '\n' +
+              'Data: <' + expectedData + '>\n' +
+              'Status: ' + statusCode);
+            done();
+          });
         httpBackend.flush();
       });
     });
