@@ -11,11 +11,6 @@ couplingControllers.controller('TribeCardController', ['$scope', '$location', fu
   };
 }]);
 
-couplingControllers.controller('TribeListController', ['$scope', '$location', 'tribes',
-  function ($scope, $location, tribes) {
-    $scope.tribes = tribes;
-  }]);
-
 couplingControllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
   $scope.tribe = new Coupling.Tribe();
   $scope.tribe.name = 'New Tribe';

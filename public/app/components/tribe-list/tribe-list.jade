@@ -1,0 +1,5 @@
+div(class="tribe-frame")
+    div(ng-show="tribes" class="tribe-listing")
+        tribecard(ng-repeat='tribe in tribes')
+    div
+        a(type="button" id="new-tribe-button" class="super green button" href="/new-tribe") Add a new tribe!

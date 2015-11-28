@@ -125,36 +125,6 @@ describe('The controller named ', function () {
     });
   });
 
-  describe('TribeListController', function () {
-
-    var Coupling, location;
-    beforeEach(function () {
-      location = {
-        path: jasmine.createSpy('path')
-      };
-      Coupling = {
-        data: {},
-        selectTribe: jasmine.createSpy('selectTribe')
-      };
-    });
-
-    it('will get tribes and put them on scope', function () {
-      var expectedTribes = [{
-        _id: '1'
-      }, {
-        _id: '2'
-      }];
-      inject(function ($controller) {
-        $controller('TribeListController', {
-          $scope: scope,
-          $location: location,
-          tribes: expectedTribes
-        });
-      });
-      expect(scope.tribes).toBe(expectedTribes);
-    });
-  });
-
   var NewTribeController = 'NewTribeController';
   describe(NewTribeController, function () {
 

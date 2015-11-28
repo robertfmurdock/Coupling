@@ -20,12 +20,14 @@ app.config(['$routeProvider', function (routeProvider) {
   var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
     return Coupling.requestSpecificTribe($route.current.params.tribeId);
   }];
-
+  
   routeProvider
     .when('/', {redirectTo: '/tribes/'})
     .when('/tribes/', {
-      templateUrl: '/partials/tribe-list/',
-      controller: "TribeListController",
+      template: '<tribelist tribes=tribes>',
+      controller: ['$scope', 'tribes', function ($scope, tribes) {
+        $scope.tribes = tribes;
+      }],
       resolve: {
         tribes: ['Coupling', function (Coupling) {
           return Coupling.getTribes();
