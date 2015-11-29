@@ -1,16 +1,6 @@
 "use strict";
 var couplingControllers = angular.module('coupling.controllers', ['coupling.services']);
 
-couplingControllers.controller('TribeCardController', ['$scope', '$location', function ($scope, $location) {
-  $scope.clickOnTribeCard = function (tribe) {
-    $location.path("/" + tribe._id + "/pairAssignments/current");
-  };
-  $scope.clickOnTribeName = function (tribe, $event) {
-    if ($event.stopPropagation) $event.stopPropagation();
-    $location.path("/" + tribe._id + '/edit/');
-  };
-}]);
-
 couplingControllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
   $scope.tribe = new Coupling.Tribe();
   $scope.tribe.name = 'New Tribe';
