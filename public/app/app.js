@@ -36,11 +36,11 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/new-tribe/', {
-      template: '<tribe-config>',
-      controller: ['$scope', 'Coupling', function ($scope, Coupling) {
-        $scope.tribe = new Coupling.Tribe();
-        $scope.tribe.name = 'New Tribe';
-        $scope.isNew = true;
+      template: '<tribe-config tribe="main.tribe" is-new=true>',
+      controllerAs: 'main',
+      controller: ['Coupling', function (Coupling) {
+        this.tribe = new Coupling.Tribe();
+        this.tribe.name = 'New Tribe';
       }]
     })
     .when('/:tribeId/', {
@@ -58,10 +58,10 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/edit/', {
-      template: '<tribe-config>',
-      controller: ['$scope', 'tribe', function ($scope, tribe) {
-        $scope.tribe = tribe;
-        $scope.isNew = false;
+      template: '<tribe-config tribe="main.tribe" is-new=false>',
+      controllerAs: 'main',
+      controller: ['tribe', function (tribe) {
+        this.tribe = tribe;
       }],
       resolve: {
         tribe: tribeResolution
