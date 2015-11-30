@@ -1,8 +1,0 @@
-div
-    div(id="tribe-browser")
-        tribecard
-    div(class="player-roster")
-        div
-            div
-                a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
-            selectedplayercard(ng-repeat="player in players" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard()")

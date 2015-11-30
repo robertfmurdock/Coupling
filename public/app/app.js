@@ -72,8 +72,12 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/history/', {
-      templateUrl: '/partials/history/',
-      controller: "HistoryController",
+      template: '<history tribe="main.tribe" history="main.history">',
+      controllerAs: 'main',
+      controller: ['tribe', 'history', function (tribe, history) {
+        this.tribe = tribe;
+        this.history = history;
+      }],
       resolve: {
         tribe: tribeResolution,
         history: ['$route', 'Coupling', function ($route, Coupling) {
