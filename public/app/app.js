@@ -86,8 +86,16 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/pins', {
-      templateUrl: '/partials/pin-list/',
-      controller: 'PinListController'
+      template: '<pin-list pins="main.pins">',
+      controllerAs: 'main',
+      controller: ['pins', function (pins) {
+        this.pins = pins;
+      }],
+      resolve: {
+        pins: ['$route', 'Coupling', function ($route, Coupling) {
+          return Coupling.promisePins($route.current.params.tribeId);
+        }]
+      }
     })
     .when('/:tribeId/pairAssignments/current/', {
       templateUrl: '/partials/pairAssignments/',

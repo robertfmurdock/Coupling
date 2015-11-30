@@ -39,6 +39,7 @@ module.exports = function (config) {
             "public/app/components/player-config/player-config.js",
             "public/app/components/prepare/prepare.js",
             "public/app/components/history/history.js",
+            "public/app/components/pin-list/pin-list.js",
             "public/app/components/player-card/selected-player-card.js",
             "public/app/animations.js",
             "public/app/filters.js",

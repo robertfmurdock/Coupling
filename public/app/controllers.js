@@ -67,10 +67,3 @@ couplingControllers.controller('CurrentPairAssignmentsController',
     $scope.currentPairAssignments = pairAssignmentDocument;
     $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
   }]);
-
-couplingControllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
-  Coupling.promisePins($routeParams.tribeId)
-    .then(function (pins) {
-      $scope.pins = pins;
-    });
-}]);

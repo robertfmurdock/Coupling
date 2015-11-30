@@ -463,11 +463,6 @@ describe('The controller named ', function () {
     })
   });
 
-  describe('PrepareController', function () {
-    xit('the spin button passes selected players to the next route', function () {
-    });
-  });
-
   describe('PlayerConfigController', function () {
     var ControllerName = 'PlayerConfigController';
 
@@ -647,51 +642,6 @@ describe('The controller named ', function () {
         expect(window.confirm).not.toHaveBeenCalled();
         expect(Coupling.savePlayer).not.toHaveBeenCalled();
       });
-    });
-  });
-
-  describe('PinListController', function () {
-
-    var routeParams;
-
-    function runPinListController() {
-      inject(function ($controller) {
-        $controller('PinListController', {
-          $scope: scope,
-          Coupling: Coupling,
-          $routeParams: routeParams
-        });
-      });
-    }
-
-    it('puts the tribe\'s pins on the scope', function (done) {
-      scope = {};
-      Coupling = {
-        promisePins: jasmine.createSpy()
-      };
-      routeParams = {
-        tribeId: 'Somsosomsa'
-      };
-      var pins = [{
-        name: 'pin1'
-      }, {
-        name: 'pin2'
-      }, {
-        name: 'pin2'
-      }];
-      var promise = new RSVP.Promise(function (resolve) {
-        resolve(pins);
-      });
-
-      Coupling.promisePins.and.returnValue(promise);
-      runPinListController();
-
-      promise.then(function () {
-        expect(Coupling.promisePins).toHaveBeenCalledWith(routeParams.tribeId);
-        expect(scope.pins).toEqual(pins);
-        done();
-
-      }).catch(done);
     });
   });
 });
