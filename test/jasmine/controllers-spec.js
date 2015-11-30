@@ -125,80 +125,8 @@ describe('The controller named ', function () {
     });
   });
 
-  var NewTribeController = 'NewTribeController';
-  describe(NewTribeController, function () {
-
-    var Coupling, location;
-    beforeEach(function () {
-      location = {
-        path: jasmine.createSpy('path')
-      };
-      Coupling = {
-        Tribe: jasmine.createSpy('Tribe'),
-        data: {}
-      };
-    });
-
-    it('creates and selects a new tribe', function () {
-      var previouslySelectedTribe = {
-        name: 'This should not be the tribe after injection.'
-      };
-      scope.tribe = previouslySelectedTribe;
-      injectController(NewTribeController, scope, location, Coupling);
-      expect(scope.tribe).not.toBe(previouslySelectedTribe);
-      expect(scope.tribe.name).toBe('New Tribe');
-    });
-
-    describe('when pressing the save button ', function () {
-
-      var saveTribeDefer = new RSVP.defer();
-
-      beforeEach(function () {
-        Coupling.saveTribe = jasmine.createSpy('save tribe spy');
-        Coupling.saveTribe.and.returnValue(saveTribeDefer.promise);
-        injectController(NewTribeController, scope, location, Coupling);
-      });
-
-      it('will use the Coupling service to save the tribe', function () {
-        var expectedId = 'importantId';
-        scope.tribe.requestedId = expectedId;
-        scope.clickSaveButton();
-
-        expect(Coupling.saveTribe).toHaveBeenCalled();
-        var saveTribeArgs = Coupling.saveTribe.calls.argsFor(0);
-        expect(saveTribeArgs[0]).toBe(scope.tribe);
-        expect(saveTribeArgs[0]._id).toBe(expectedId);
-        expect(saveTribeArgs[0].requestedId).toBeUndefined();
-      });
-
-      describe('when the save is complete', function () {
-
-        beforeEach(function () {
-          scope.clickSaveButton();
-        });
-
-        it('will return to the tribe list', function (done) {
-          var newTribeId = 'expectedId';
-          var expectedPath = '/tribes';
-          expect(location.path).not.toHaveBeenCalledWith(expectedPath);
-
-          var updatedTribe = {
-            _id: newTribeId
-          };
-
-          saveTribeDefer.resolve(updatedTribe);
-          saveTribeDefer.promise.then(function () {
-            expect(location.path).toHaveBeenCalledWith(expectedPath);
-            done();
-          });
-        });
-      });
-    });
-  });
-
-
-  var EditTribeController = 'EditTribeController';
-  describe(EditTribeController, function () {
+  var TribeConfigController = 'TribeConfigController';
+  describe(TribeConfigController, function () {
 
     var Coupling, location, routeParams;
     var selectTribeDefer = new RSVP.defer();
@@ -225,35 +153,15 @@ describe('The controller named ', function () {
       };
     });
 
-    it('puts the selected tribe on the scope', function () {
-      var previouslyScopedTribe = {
-        name: 'This should not be the tribe after injection.'
-      };
-      scope.tribe = previouslyScopedTribe;
-
-      inject(function ($controller) {
-        $controller(EditTribeController, {
-          $scope: scope,
-          $location: location,
-          Coupling: Coupling,
-          tribe: Coupling.data.selectedTribe
-        });
-      });
-
-      expect(scope.tribe).not.toBe(previouslyScopedTribe);
-      expect(scope.tribe).toBe(Coupling.data.selectedTribe);
-    });
-
     describe('when pressing the save button ', function () {
 
       var saveTribeDefer = new RSVP.defer();
-
       beforeEach(function () {
         Coupling.saveTribe = jasmine.createSpy('save tribe spy')
           .and.returnValue(saveTribeDefer.promise);
 
         inject(function ($controller) {
-          $controller(EditTribeController, {
+          $controller(TribeConfigController, {
             $scope: scope,
             $location: location,
             Coupling: Coupling,

@@ -24,7 +24,7 @@ app.config(['$routeProvider', function (routeProvider) {
   routeProvider
     .when('/', {redirectTo: '/tribes/'})
     .when('/tribes/', {
-      template: '<tribelist tribes=tribes>',
+      template: '<tribelist>',
       controller: ['$scope', 'tribes', function ($scope, tribes) {
         $scope.tribes = tribes;
       }],
@@ -35,8 +35,12 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/new-tribe/', {
-      templateUrl: '/partials/tribe/',
-      controller: "NewTribeController"
+      template: '<tribe-config>',
+      controller: ['$scope', 'Coupling', function ($scope, Coupling) {
+        $scope.tribe = new Coupling.Tribe();
+        $scope.tribe.name = 'New Tribe';
+        $scope.isNew = true;
+      }]
     })
     .when('/:tribeId/', {
       redirectTo: '/:tribeId/pairAssignments/current/'
@@ -53,8 +57,11 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/edit/', {
-      templateUrl: '/partials/tribe/',
-      controller: "EditTribeController",
+      template: '<tribe-config>',
+      controller: ['$scope', 'tribe', function ($scope, tribe) {
+        $scope.tribe = tribe;
+        $scope.isNew = false;
+      }],
       resolve: {
         tribe: tribeResolution
       }

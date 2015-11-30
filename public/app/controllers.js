@@ -1,30 +1,6 @@
 "use strict";
 var couplingControllers = angular.module('coupling.controllers', ['coupling.services']);
 
-couplingControllers.controller('NewTribeController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
-  $scope.tribe = new Coupling.Tribe();
-  $scope.tribe.name = 'New Tribe';
-
-  $scope.clickSaveButton = function () {
-    $scope.tribe._id = $scope.tribe.requestedId;
-    delete $scope.tribe.requestedId;
-    Coupling.saveTribe($scope.tribe)
-      .then(function () {
-        $location.path("/tribes");
-      });
-  }
-}]);
-
-couplingControllers.controller('EditTribeController', ['$scope', 'Coupling', '$location', 'tribe', function ($scope, Coupling, $location, tribe) {
-  $scope.tribe = tribe;
-  $scope.clickSaveButton = function () {
-    Coupling.saveTribe($scope.tribe)
-      .then(function () {
-        $location.path("/tribes");
-      });
-  }
-}]);
-
 couplingControllers.controller('HistoryController', ['$scope', 'tribe', 'history', function ($scope, tribe, history) {
   $scope.tribe = tribe;
   $scope.history = history;

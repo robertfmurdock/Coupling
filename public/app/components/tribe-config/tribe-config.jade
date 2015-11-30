@@ -12,8 +12,8 @@ div(class="tribe-frame" ng-show="tribe")
                 div
                     label(for="tribe-email") Email:
                     input(id="tribe-email" type="text" ng-model="tribe.email")
-                div(ng-hide="tribe._id")
+                div(ng-show="isNew")
                     label(for="tribe-id") Unique Id:
-                    input(id="tribe-id" type="text" ng-model="tribe.requestedId")
+                    input(id="tribe-id" type="text" ng-model="tribe._id")
     div
         input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="clickSaveButton()" tabIndex="0" value="Save")
