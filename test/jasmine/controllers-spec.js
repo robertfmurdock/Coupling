@@ -506,19 +506,7 @@ describe('The controller named ', function () {
   });
 
   describe('PrepareController', function () {
-    it('will put information on the scope', function () {
-      var tribe = {_id: 'tribe1'};
-      var players = [{name: 'barry'}, {name: 'larry'}, {name: 'scary'}];
-      inject(function ($controller) {
-        $controller('PrepareController', {
-          $scope: scope,
-          Coupling: Coupling,
-          tribe: tribe,
-          players: players
-        });
-      });
-      expect(scope.players).toBe(players);
-      expect(scope.tribe).toEqual(tribe);
+    xit('the spin button passes selected players to the next route', function () {
     });
   });
 

@@ -47,8 +47,12 @@ app.config(['$routeProvider', function (routeProvider) {
       redirectTo: '/:tribeId/pairAssignments/current/'
     })
     .when('/:tribeId/prepare/', {
-      templateUrl: '/partials/prepare/',
-      controller: 'PrepareController',
+      template: '<prepare tribe="main.tribe" players="main.players">',
+      controllerAs: 'main',
+      controller: ['tribe', 'players', function (tribe, players) {
+        this.tribe = tribe;
+        this.players = players;
+      }],
       resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {

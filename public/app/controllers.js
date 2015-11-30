@@ -73,16 +73,6 @@ couplingControllers.controller('CurrentPairAssignmentsController',
     $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
   }]);
 
-couplingControllers.controller('PrepareController', ['$scope', 'tribe', 'players', '$location', 'Coupling',
-  function ($scope, tribe, players, $location, Coupling) {
-    $scope.tribe = tribe;
-    $scope.players = players;
-    $scope.clickSpinButton = function () {
-      Coupling.data.players = $scope.players;
-      $location.path(tribe._id + "/pairAssignments/new");
-    };
-  }]);
-
 couplingControllers.controller('PinListController', ['$scope', 'Coupling', '$routeParams', function ($scope, Coupling, $routeParams) {
   Coupling.promisePins($routeParams.tribeId)
     .then(function (pins) {
