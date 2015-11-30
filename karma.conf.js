@@ -36,6 +36,7 @@ module.exports = function (config) {
             "public/app/components/tribe-card/tribe-card.js",
             "public/app/components/tribe-list/tribe-list.js",
             "public/app/components/tribe-config/tribe-config.js",
+            "public/app/components/player-config/player-config.js",
             "public/app/components/player-card/selected-player-card.js",
             "public/app/animations.js",
             "public/app/filters.js",

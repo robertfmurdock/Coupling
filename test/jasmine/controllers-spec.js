@@ -522,94 +522,8 @@ describe('The controller named ', function () {
     });
   });
 
-  describe('NewPlayerController', function () {
-    var ControllerName = 'NewPlayerController';
-    var Coupling, location, routeParams;
-
-    var selectedTribe = {
-      name: 'Party tribe.',
-      _id: 'party'
-    };
-
-    beforeEach(function () {
-      location = {
-        path: jasmine.createSpy('path')
-      };
-
-      Coupling = {
-        data: {
-          selectedTribe: selectedTribe
-        },
-        selectTribe: jasmine.createSpy('selectTribe'),
-        spin: jasmine.createSpy('spin'),
-        savePlayer: jasmine.createSpy('save')
-      };
-      scope.data = Coupling.data;
-      routeParams = {
-        tribeId: selectedTribe._id
-      };
-    });
-
-    it('will select tribe and players', function () {
-      var players = ['lol', 'lol'];
-      inject(function ($controller) {
-        $controller(ControllerName, {
-          $scope: scope,
-          $location: location,
-          Coupling: Coupling,
-          tribe: selectedTribe,
-          players: players
-        });
-      });
-      expect(scope.tribe).toBe(selectedTribe);
-      expect(scope.players).toBe(players);
-    });
-
-    it('will create a new player with the given tribe', function () {
-      scope.player = null;
-      inject(function ($controller) {
-        $controller(ControllerName, {
-          $scope: scope,
-          $location: location,
-          Coupling: Coupling,
-          tribe: selectedTribe,
-          players: []
-        });
-      });
-      expect(scope.player).toEqual({
-        tribe: routeParams.tribeId
-      });
-    });
-
-    it('can save player using Coupling service and redirects to player page on callback',
-      inject(function ($controller, $q, $rootScope) {
-        var defer = $q.defer();
-        Coupling.savePlayer.and.returnValue(defer.promise);
-        $controller(ControllerName, {
-          $scope: scope,
-          $location: location,
-          Coupling: Coupling,
-          tribe: selectedTribe,
-          players: []
-        });
-
-        scope.savePlayer();
-        expect(Coupling.savePlayer).toHaveBeenCalled();
-        var callArgs = Coupling.savePlayer.calls.argsFor(0);
-        expect(callArgs[0]).toBe(scope.player);
-
-        expect(location.path).not.toHaveBeenCalled();
-        var updatedPlayer = {
-          _id: 'newPlayerId'
-        };
-        defer.resolve(updatedPlayer);
-        $rootScope.$apply();
-        expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/player/" + updatedPlayer._id);
-      }));
-  });
-
-  describe('EditPlayerController', function () {
-    var ControllerName = 'EditPlayerController';
+  describe('PlayerConfigController', function () {
+    var ControllerName = 'PlayerConfigController';
 
     var tribe = {
       name: 'Party tribe.',
@@ -634,29 +548,14 @@ describe('The controller named ', function () {
       scope.$on = jasmine.createSpy('on');
     });
 
-    it('will add tribe and players to scope', inject(function ($controller) {
-      var players = [player];
-      $controller(ControllerName, {
-        $scope: scope,
-        $location: location,
-        $route: {current: {params: {id: player._id}}},
-        tribe: tribe,
-        players: players
-      });
-
-      expect(scope.tribe).toBe(tribe);
-      expect(scope.players).toBe(players);
-    }));
-
-    it('will use id on route to find player, and duplicate player for editing', function () {
-      scope.player = null;
+    it('will duplicate player for editing', function () {
+      scope.player = player;
+      scope.tribe = tribe;
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
           $location: location,
-          $route: {current: {params: {id: player._id}}},
-          tribe: tribe,
-          players: [{_id: '312'}, player, {_id: 'd87f'}]
+          $route: {current: {params: {id: player._id}}}
         });
       });
       expect(scope.original).toBe(player);
@@ -669,6 +568,8 @@ describe('The controller named ', function () {
         current: {params: {id: player._id}},
         reload: jasmine.createSpy('path')
       };
+      scope.player = player;
+      scope.tribe = tribe;
       inject(function ($controller) {
         $controller(ControllerName, {
           $scope: scope,
@@ -692,13 +593,13 @@ describe('The controller named ', function () {
         var deleteDefer = $q.defer();
         Coupling.removePlayer.and.returnValue(deleteDefer.promise);
 
+        scope.player = player;
+        scope.tribe = tribe;
         $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
-          $route: {current: {params: {id: player._id}}},
-          tribe: tribe,
-          players: [player]
+          $route: {current: {params: {id: player._id}}}
         });
 
         window.confirm.and.returnValue(true);

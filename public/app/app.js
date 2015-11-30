@@ -108,8 +108,14 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/player/new/', {
-      templateUrl: '/partials/player/',
-      controller: "NewPlayerController",
+      template: '<player-config>',
+      controller: ['$scope', 'tribe', 'players', function ($scope, tribe, players) {
+        $scope.tribe = tribe;
+        $scope.players = players;
+        $scope.player = {
+          tribe: tribe._id
+        };
+      }],
       resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
@@ -119,8 +125,13 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/player/:id/', {
-      templateUrl: '/partials/player/',
-      controller: "EditPlayerController",
+      template: '<player-config>',
+      controller: ['$scope', '$route', 'tribe', 'players', function ($scope, $route, tribe, players) {
+        $scope.tribe = tribe;
+        $scope.players = players;
+        var playerId = $route.current.params.id;
+        $scope.player = _.findWhere(players, {_id: playerId});
+      }],
       resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
