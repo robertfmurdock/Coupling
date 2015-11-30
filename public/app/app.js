@@ -98,8 +98,9 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/pairAssignments/current/', {
-      templateUrl: '/partials/pairAssignments/',
+      template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers">',
       controller: "CurrentPairAssignmentsController",
+      controllerAs: 'main',
       resolve: {
         pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
           return Coupling.requestHistoryPromise($route.current.params.tribeId).then(function (history) {
@@ -114,7 +115,8 @@ app.config(['$routeProvider', function (routeProvider) {
       }
     })
     .when('/:tribeId/pairAssignments/new/', {
-      templateUrl: '/partials/pairAssignments/',
+      template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers" save="main.save" on-drop="main.onDrop">',
+      controllerAs: 'main',
       controller: "NewPairAssignmentsController",
       resolve: {
         tribe: tribeResolution,
@@ -174,4 +176,5 @@ angular.module('ui.gravatar')
     }
   ]);
 
+angular.module('coupling.controllers', ['coupling.services']);
 angular.module("coupling.directives", []);

@@ -12,8 +12,8 @@ angular.module("coupling.directives")
     return {
       controller: 'PrepareController',
       scope: {
-        tribe: '=tribe',
-        players: '=players'
+        tribe: '=',
+        players: '='
       },
       bindToController: true,
       restrict: 'E',

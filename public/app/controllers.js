@@ -1,29 +1,43 @@
 "use strict";
-var couplingControllers = angular.module('coupling.controllers', ['coupling.services']);
 
-couplingControllers.controller('NewPairAssignmentsController',
+function findUnpairedPlayers(players, pairAssignmentDocument) {
+  if (!pairAssignmentDocument) {
+    return players;
+  }
+  var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
+  return _.filter(players, function (value) {
+    var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
+    return found == undefined;
+  });
+}
+
+angular.module('coupling.controllers')
+  .controller('NewPairAssignmentsController',
   ['$scope', '$location', 'Coupling', '$routeParams', 'tribe', 'players',
     function ($scope, $location, Coupling, $routeParams, tribe, players) {
-      $scope.tribe = tribe;
+      this.tribe = tribe;
 
       var selectedPlayers = _.filter(players, function (player) {
         return player.isAvailable;
       });
+
+      var controller = this;
+
       Coupling.spin(selectedPlayers, tribe._id)
         .then(function (pairAssignments) {
-          $scope.currentPairAssignments = pairAssignments;
-          $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignments);
+          controller.currentPairAssignments = pairAssignments;
+          controller.unpairedPlayers = findUnpairedPlayers(players, pairAssignments);
         });
 
-      $scope.save = function () {
-        Coupling.saveCurrentPairAssignments(tribe._id, $scope.currentPairAssignments)
+      this.save = function () {
+        Coupling.saveCurrentPairAssignments(tribe._id, controller.currentPairAssignments)
           .then(function () {
             $location.path("/" + $routeParams.tribeId + "/pairAssignments/current");
           });
       };
 
-      function findPairContainingPlayer(player) {
-        return _.find($scope.currentPairAssignments.pairs, function (pair) {
+      function findPairContainingPlayer(player, pairs) {
+        return _.find(pairs, function (pair) {
           return _.findWhere(pair, {
             _id: player._id
           });
@@ -38,9 +52,10 @@ couplingControllers.controller('NewPairAssignmentsController',
         });
       }
 
-      $scope.onDrop = function ($event, draggedPlayer, droppedPlayer) {
-        var pairWithDraggedPlayer = findPairContainingPlayer(draggedPlayer);
-        var pairWithDroppedPlayer = findPairContainingPlayer(droppedPlayer);
+
+      this.onDrop = function ($event, draggedPlayer, droppedPlayer) {
+        var pairWithDraggedPlayer = findPairContainingPlayer(draggedPlayer, controller.currentPairAssignments.pairs);
+        var pairWithDroppedPlayer = findPairContainingPlayer(droppedPlayer, controller.currentPairAssignments.pairs);
 
         if (pairWithDraggedPlayer != pairWithDroppedPlayer) {
           swapPlayers(pairWithDraggedPlayer, draggedPlayer, droppedPlayer);
@@ -48,22 +63,11 @@ couplingControllers.controller('NewPairAssignmentsController',
         }
       }
     }
-  ]);
-
-function findUnpairedPlayers(players, pairAssignmentDocument) {
-  if (!pairAssignmentDocument) {
-    return players;
-  }
-  var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
-  return _.filter(players, function (value) {
-    var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
-    return found == undefined;
-  });
-}
-couplingControllers.controller('CurrentPairAssignmentsController',
-  ['$scope', 'pairAssignmentDocument', 'tribe', 'players', function ($scope, pairAssignmentDocument, tribe, players) {
-    $scope.tribe = tribe;
-    $scope.players = players;
-    $scope.currentPairAssignments = pairAssignmentDocument;
-    $scope.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
+  ])
+  .controller('CurrentPairAssignmentsController',
+  ['pairAssignmentDocument', 'tribe', 'players', function (pairAssignmentDocument, tribe, players) {
+    this.tribe = tribe;
+    this.players = players;
+    this.currentPairAssignments = pairAssignmentDocument;
+    this.unpairedPlayers = findUnpairedPlayers(players, pairAssignmentDocument)
   }]);

@@ -245,7 +245,7 @@ describe('The controller named ', function () {
 
     it('will select tribe and spin all selected players', function (done) {
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
@@ -253,20 +253,22 @@ describe('The controller named ', function () {
           tribe: tribe,
           players: players
         });
+
+        expect(controller.tribe).toBe(tribe);
+        expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]], controller.tribe._id);
+        var pairs = [['lol', 'olol']];
+        spinDefer.resolve(pairs);
+        spinDefer.promise.then(function () {
+          expect(controller.currentPairAssignments).toBe(pairs);
+          done();
+        })
       });
-      expect(scope.tribe).toBe(tribe);
-      expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]], scope.tribe._id);
-      var pairs = [['lol', 'olol']];
-      spinDefer.resolve(pairs);
-      spinDefer.promise.then(function () {
-        expect(scope.currentPairAssignments).toBe(pairs);
-        done();
-      })
+
     });
 
     it('save will use Coupling service to save and then will redirect to the current pair assignments page', function (done) {
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
@@ -274,23 +276,25 @@ describe('The controller named ', function () {
           tribe: tribe,
           players: players
         });
-      });
-      expect(Coupling.saveCurrentPairAssignments).not.toHaveBeenCalled();
 
-      var successPromise = RSVP.resolve('Complete');
-      Coupling.saveCurrentPairAssignments.and.returnValue(successPromise);
+        expect(Coupling.saveCurrentPairAssignments).not.toHaveBeenCalled();
 
-      scope.save();
-      expect(Coupling.saveCurrentPairAssignments).toHaveBeenCalled();
-      successPromise.then(function () {
-        expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/pairAssignments/current");
-        done();
+        var successPromise = RSVP.resolve('Complete');
+        Coupling.saveCurrentPairAssignments.and.returnValue(successPromise);
+
+        controller.save();
+        expect(Coupling.saveCurrentPairAssignments).toHaveBeenCalled();
+        successPromise.then(function () {
+          expect(location.path).toHaveBeenCalledWith("/" + routeParams.tribeId + "/pairAssignments/current");
+          done();
+        });
       });
+
     });
 
     it('onDrop will take two players and swap their places', function () {
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
@@ -298,37 +302,38 @@ describe('The controller named ', function () {
           tribe: tribe,
           players: players
         });
+
+        var player1 = {
+          _id: '1'
+        };
+        var player2 = {
+          _id: '2'
+        };
+        var player3 = {
+          _id: '3'
+        };
+        var player4 = {
+          _id: '4'
+        };
+
+        controller.currentPairAssignments = {
+          pairs: [
+            [player1, player2],
+            [player3, player4]
+          ]
+        };
+
+        controller.onDrop(null, player2, player3);
+        expect(controller.currentPairAssignments.pairs).toEqual([
+          [player1, player3],
+          [player2, player4]
+        ]);
       });
-      var player1 = {
-        _id: '1'
-      };
-      var player2 = {
-        _id: '2'
-      };
-      var player3 = {
-        _id: '3'
-      };
-      var player4 = {
-        _id: '4'
-      };
-
-      scope.currentPairAssignments = {
-        pairs: [
-          [player1, player2],
-          [player3, player4]
-        ]
-      };
-
-      scope.onDrop(null, player2, player3);
-      expect(scope.currentPairAssignments.pairs).toEqual([
-        [player1, player3],
-        [player2, player4]
-      ]);
     });
 
     it('onDrop will not swap players that are already paired', function () {
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           $location: location,
           Coupling: Coupling,
@@ -336,32 +341,32 @@ describe('The controller named ', function () {
           tribe: tribe,
           players: players
         });
-      });
-      var player1 = {
-        _id: '1'
-      };
-      var player2 = {
-        _id: '2'
-      };
-      var player3 = {
-        _id: '3'
-      };
-      var player4 = {
-        _id: '4'
-      };
+        var player1 = {
+          _id: '1'
+        };
+        var player2 = {
+          _id: '2'
+        };
+        var player3 = {
+          _id: '3'
+        };
+        var player4 = {
+          _id: '4'
+        };
 
-      scope.currentPairAssignments = {
-        pairs: [
+        controller.currentPairAssignments = {
+          pairs: [
+            [player1, player2],
+            [player3, player4]
+          ]
+        };
+
+        controller.onDrop(null, player4, player3);
+        expect(controller.currentPairAssignments.pairs).toEqual([
           [player1, player2],
           [player3, player4]
-        ]
-      };
-
-      scope.onDrop(null, player4, player3);
-      expect(scope.currentPairAssignments.pairs).toEqual([
-        [player1, player2],
-        [player3, player4]
-      ]);
+        ]);
+      });
     });
   });
 
@@ -405,16 +410,16 @@ describe('The controller named ', function () {
       var players = [{name: 'guy'}, {name: 'fellow'}, {name: 'nerd'}];
       var currentPairsDocument = {pairs: currentPairs};
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           pairAssignmentDocument: currentPairsDocument,
           tribe: selectedTribe,
           players: players
         });
+        expect(controller.currentPairAssignments).toBe(currentPairsDocument);
+        expect(controller.players).toBe(players);
       });
-      expect(scope.currentPairAssignments).toBe(currentPairsDocument);
-      expect(scope.players).toBe(players);
     });
 
     it('will put all of the players that are not in the current pairs on the scope', function () {
@@ -428,19 +433,20 @@ describe('The controller named ', function () {
         {name: 'nerd', _id: '4'},
         {name: 'pantsmaster', _id: '5'}];
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           pairAssignmentDocument: {pairs: currentPairs},
           tribe: selectedTribe,
           players: players
         });
+
+        expect(controller.unpairedPlayers).toEqual([
+          {name: 'rigby', _id: '1'},
+          {name: 'nerd', _id: '4'},
+          {name: 'pantsmaster', _id: '5'}
+        ]);
       });
-      expect(scope.unpairedPlayers).toEqual([
-        {name: 'rigby', _id: '1'},
-        {name: 'nerd', _id: '4'},
-        {name: 'pantsmaster', _id: '5'}
-      ]);
     });
 
     it('will put no pair assignments on scope when there is no history', function () {
@@ -451,15 +457,15 @@ describe('The controller named ', function () {
         {name: 'nerd', _id: '4'},
         {name: 'pantsmaster', _id: '5'}];
       inject(function ($controller) {
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           pairAssignmentDocument: undefined,
           tribe: selectedTribe,
           players: players
         });
+        expect(controller.unpairedPlayers).toEqual(players);
       });
-      expect(scope.unpairedPlayers).toEqual(players);
     })
   });
 
