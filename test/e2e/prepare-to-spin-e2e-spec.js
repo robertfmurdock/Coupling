@@ -76,8 +76,8 @@ describe('The prepare to spin page', function () {
 
       var pairs = element.all(By.repeater('pair in currentPairAssignments.pairs'));
       expect(pairs.count()).toEqual(1);
-      var unpairedPlayers = element.all(By.repeater('player in unpairedPlayers'));
-      expect(unpairedPlayers.count()).toEqual(3);
+      var players = element.all(By.repeater('player in players'));
+      expect(players.count()).toEqual(3);
     });
   });
 });

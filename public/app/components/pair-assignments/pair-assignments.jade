@@ -17,9 +17,4 @@ div
             a(id="save-button" class="super green button" ng-click="save()" ng-hide="currentPairAssignments._id") Save!
         a(id="new-pairs-button" class="large pink button" href="/{{tribe._id}}/prepare/") Prepare to spin!
         a(id="view-history-button" class="large blue button" href="/{{tribe._id}}/history/") View history!
-div(class="player-roster")
-    div
-        div(class="roster-header")
-            text(ng-show="unpairedPlayers[0]") Unpaired players:
-        selectedplayercard(ng-repeat="player in unpairedPlayers")
-    a(id="add-player-button" class="large orange button" href="/{{tribe._id}}/player/new/") Add a new player!
+player-roster(players="unpairedPlayers" tribe="tribe" label="'Unpaired players'")

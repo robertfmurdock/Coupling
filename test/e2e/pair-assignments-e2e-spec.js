@@ -61,7 +61,7 @@ describe('The current pair assignments', function () {
 
   it('will let you edit an existing player', function () {
     browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
-    element.all(By.repeater('player in unpairedPlayers'))
+    element.all(By.repeater('player in players'))
       .first().element(By.css('.player-header')).click();
     expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/player/p1/');
   });
@@ -82,10 +82,9 @@ describe('The current pair assignments', function () {
     beforeAll(function () {
       historyCollection.drop();
     });
-
     it('will display all the existing players in the player roster', function () {
       browser.setLocation('/' + tribe._id + '/pairAssignments/current/');
-      var playerElements = element.all(By.repeater('player in unpairedPlayers'));
+      var playerElements = element.all(By.repeater('player in players'));
       expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
     });
   });
@@ -112,7 +111,7 @@ describe('The current pair assignments', function () {
     });
 
     it('only players that are not in the most recent pairs are displayed', function () {
-      var remainingPlayerElements = element.all(By.repeater('player in unpairedPlayers'));
+      var remainingPlayerElements = element.all(By.repeater('player in players'));
       expect(remainingPlayerElements.getText()).toEqual(_.pluck([player2, player4], 'name'));
     });
   });
