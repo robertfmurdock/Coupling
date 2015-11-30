@@ -203,48 +203,6 @@ describe('The controller named ', function () {
     });
   });
 
-
-  var HistoryController = 'HistoryController';
-  describe(HistoryController, function () {
-
-    var Coupling, location, routeParams;
-    beforeEach(function () {
-      location = {
-        path: jasmine.createSpy('path')
-      };
-      var selectedTribe = {
-        name: 'Party tribe.',
-        _id: 'party'
-      };
-      Coupling = {
-        data: {
-          selectedTribe: selectedTribe
-        },
-        selectTribe: jasmine.createSpy('selectTribe')
-      };
-      routeParams = {
-        tribeId: selectedTribe._id
-      };
-    });
-
-    it('will put tribe and history on scope', function () {
-      var tribe = {_id: 'loltribe'};
-      var history = [{_id: 'lol entry'}];
-
-      inject(function ($controller) {
-        $controller(HistoryController, {
-          $scope: scope,
-          $location: location,
-          tribe: tribe,
-          history: history
-        });
-      });
-
-      expect(scope.tribe).toBe(tribe);
-      expect(scope.history).toBe(history);
-    });
-  });
-
   describe('NewPairAssignmentsController', function () {
     var ControllerName = 'NewPairAssignmentsController';
     var Coupling, location, routeParams;

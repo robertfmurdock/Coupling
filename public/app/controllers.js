@@ -1,11 +1,6 @@
 "use strict";
 var couplingControllers = angular.module('coupling.controllers', ['coupling.services']);
 
-couplingControllers.controller('HistoryController', ['$scope', 'tribe', 'history', function ($scope, tribe, history) {
-  $scope.tribe = tribe;
-  $scope.history = history;
-}]);
-
 couplingControllers.controller('NewPairAssignmentsController',
   ['$scope', '$location', 'Coupling', '$routeParams', 'tribe', 'players',
     function ($scope, $location, Coupling, $routeParams, tribe, players) {
