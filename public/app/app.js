@@ -24,9 +24,10 @@ app.config(['$routeProvider', function (routeProvider) {
   routeProvider
     .when('/', {redirectTo: '/tribes/'})
     .when('/tribes/', {
-      template: '<tribelist>',
-      controller: ['$scope', 'tribes', function ($scope, tribes) {
-        $scope.tribes = tribes;
+      template: '<tribelist tribes="main.tribes">',
+      controllerAs: 'main',
+      controller: ['tribes', function (tribes) {
+        this.tribes = tribes;
       }],
       resolve: {
         tribes: ['Coupling', function (Coupling) {
