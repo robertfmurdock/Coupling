@@ -6,7 +6,7 @@ angular.module("coupling.directives")
       scope: {
         tribe: '=',
         players: '=',
-        label: '='
+        label: '=?'
       },
       restrict: 'E',
       templateUrl: '/app/components/player-roster/player-roster.html'
