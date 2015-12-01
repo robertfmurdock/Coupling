@@ -50,15 +50,6 @@ describe('The controller named ', function () {
       });
     });
 
-    describe('clickPlayerCard', function () {
-      it('will change a players selection in the map', function () {
-        expect(scope.player.isAvailable).toBe(true);
-        scope.clickPlayerCard();
-        expect(scope.player.isAvailable).toBe(false);
-        scope.clickPlayerCard();
-        expect(scope.player.isAvailable).toBe(true);
-      });
-    });
   });
 
   function injectController(controllerName, scope, location, Coupling, routeParams) {
