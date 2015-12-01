@@ -10,7 +10,7 @@ describe('The controller named ', function () {
     Coupling = {};
   });
 
-  describe('SelectedPlayerCardController', function () {
+  describe('PlayerCardController', function () {
 
     var location = {
       path: jasmine.createSpy('path')
@@ -24,7 +24,7 @@ describe('The controller named ', function () {
         isAvailable: true
       };
       inject(function ($controller) {
-        $controller('SelectedPlayerCardController', {
+        $controller('PlayerCardController', {
           $scope: scope,
           $location: location,
           Coupling: Coupling

@@ -1,6 +1,6 @@
 "use strict";
 angular.module('coupling.controllers')
-  .controller('SelectedPlayerCardController',
+  .controller('PlayerCardController',
   ['$scope', '$location', 'Coupling', function ($scope, $location) {
     if (!$scope.size) {
       $scope.size = 100;
@@ -12,30 +12,14 @@ angular.module('coupling.controllers')
   }]);
 
 angular.module("coupling.directives")
-  .directive('selectedplayercard', function () {
+  .directive('playercard', function () {
     return {
       restrict: 'E',
-      controller: 'SelectedPlayerCardController',
+      controller: 'PlayerCardController',
       templateUrl: '/app/components/player-card/playercard.html',
       scope: {
         player: '=',
         size: '=?'
       }
-    }
-  })
-  .directive('playercard', function () {
-    return {
-      restrict: 'E',
-      controller: ['$scope', function ($scope) {
-        console.log($scope);
-        if (!$scope.size) {
-          $scope.size = 100;
-        }
-      }],
-      scope: {
-        player: '=',
-        size: '=?'
-      },
-      templateUrl: '/app/components/player-card/playercard.html'
     }
   });

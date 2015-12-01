@@ -5,4 +5,4 @@ div
         div
             div
                 a(id="spin-button" class="super pink button" ng-click="clickSpinButton()") Spin!
-            selectedplayercard(ng-repeat="player in players" player="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard(player)")
+            playercard(ng-repeat="player in players" player="player" ng-class="{disabled:!player.isAvailable}" ng-click="clickPlayerCard(player)")
