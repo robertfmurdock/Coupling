@@ -15,7 +15,6 @@ angular.module("coupling.directives")
         tribe: '=',
         players: '='
       },
-      bindToController: true,
       restrict: 'E',
       templateUrl: '/app/components/prepare/prepare.html'
     }

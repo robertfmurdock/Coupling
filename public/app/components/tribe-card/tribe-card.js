@@ -13,7 +13,9 @@ angular.module("coupling.directives")
   .directive('tribecard', function () {
     return {
       controller: 'TribeCardController',
-      bindToController: true,
+      scope: {
+        tribe: '='
+      },
       restrict: 'E',
       templateUrl: '/app/components/tribe-card/tribe-card.html'
     }

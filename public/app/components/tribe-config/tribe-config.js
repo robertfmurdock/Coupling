@@ -13,7 +13,7 @@ angular.module("coupling.controllers")
         .then(function () {
 
           $location.path("/tribes");
-          
+
         });
 
     }
@@ -28,7 +28,6 @@ angular.module("coupling.directives")
         tribe: '=tribe',
         isNew: '=isNew'
       },
-      bindToController: true,
       restrict: 'E',
       templateUrl: '/app/components/tribe-config/tribe-config.html'
     }
