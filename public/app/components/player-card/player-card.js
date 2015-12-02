@@ -1,25 +1,23 @@
 "use strict";
-angular.module('coupling.controllers')
-  .controller('PlayerCardController',
-  ['$scope', '$location', 'Coupling', function ($scope, $location) {
+angular.module('coupling.controllers').controller('PlayerCardController', ['$scope', '$location', 'Coupling', function ($scope, $location) {
     if (!$scope.size) {
-      $scope.size = 100;
+        $scope.size = 100;
     }
     $scope.clickPlayerName = function ($event) {
-      if ($event.stopPropagation) $event.stopPropagation();
-      $location.path("/" + $scope.player.tribe + "/player/" + $scope.player._id);
+        if ($event.stopPropagation)
+            $event.stopPropagation();
+        $location.path("/" + $scope.player.tribe + "/player/" + $scope.player._id);
     };
-  }]);
-
-angular.module("coupling.directives")
-  .directive('playercard', function () {
+}]);
+angular.module("coupling.directives").directive('playercard', function () {
     return {
-      restrict: 'E',
-      controller: 'PlayerCardController',
-      templateUrl: '/app/components/player-card/playercard.html',
-      scope: {
-        player: '=',
-        size: '=?'
-      }
-    }
-  });
+        restrict: 'E',
+        controller: 'PlayerCardController',
+        templateUrl: '/app/components/player-card/playercard.html',
+        scope: {
+            player: '=',
+            size: '=?'
+        }
+    };
+});
+//# sourceMappingURL=player-card.js.map
