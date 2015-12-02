@@ -2,20 +2,21 @@
 
 angular.module("coupling.controllers")
     .controller('PrepareController', ['$scope', '$location', 'Coupling',
-        function ($scope, $location, Coupling) {
+        ($scope, $location, Coupling) => {
 
-            $scope.clickPlayerCard = function (player) {
+            $scope.clickPlayerCard = player => {
                 player.isAvailable = !player.isAvailable;
             };
 
-            $scope.clickSpinButton = function () {
+            $scope.clickSpinButton = () => {
                 Coupling.data.players = $scope.players;
                 $location.path($scope.tribe._id + "/pairAssignments/new");
             };
         }]);
 
+
 angular.module("coupling.directives")
-    .directive('prepare', function () {
+    .directive('prepare', () => {
         return {
             controller: 'PrepareController',
             scope: {

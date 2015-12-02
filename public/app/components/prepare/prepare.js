@@ -1,3 +1,4 @@
+/// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
 angular.module("coupling.controllers").controller('PrepareController', ['$scope', '$location', 'Coupling', function ($scope, $location, Coupling) {
     $scope.clickPlayerCard = function (player) {
         player.isAvailable = !player.isAvailable;
