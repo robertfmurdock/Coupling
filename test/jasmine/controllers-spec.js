@@ -148,31 +148,29 @@ describe('The controller named ', function () {
 
       var saveTribeDefer = new RSVP.defer();
       var tribe = {};
+      var controller;
 
       beforeEach(function () {
         tribe.$save = jasmine.createSpy('save tribe spy').and.returnValue(saveTribeDefer.promise);
-        scope.tribe = tribe;
 
         inject(function ($controller) {
-          $controller(TribeConfigController, {
-            $scope: scope,
+          controller = $controller(TribeConfigController, {
             $location: location,
-            Coupling: Coupling,
-            tribe: tribe
+            Coupling: Coupling
           });
+          controller.tribe = tribe;
         });
       });
 
       it('will use the Coupling service to save the tribe', function () {
-        scope.clickSaveButton();
-
+        controller.clickSaveButton();
         expect(tribe.$save).toHaveBeenCalled();
       });
 
       describe('when the save is complete', function () {
         var callback;
         beforeEach(function () {
-          scope.clickSaveButton();
+          controller.clickSaveButton();
           callback = tribe.$save.calls.argsFor(0)[1];
         });
 

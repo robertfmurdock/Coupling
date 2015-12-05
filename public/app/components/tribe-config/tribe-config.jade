@@ -1,19 +1,19 @@
-div(class="tribe-frame" ng-show="tribe")
+div(class="tribe-frame" ng-show="self.tribe")
     div(class="tribe-view")
-        tribecard(tribe="tribe")
+        tribecard(tribe="self.tribe")
         span(class="tribe")
             div(class="tribe-editor")
                 div
                     label(for="tribe-name") Name:
-                    input(id="tribe-name" type="text" ng-model="tribe.name")
+                    input(id="tribe-name" type="text" ng-model="self.tribe.name")
                 div
                     label(for="tribe-img-url") Image URL:
-                    input(id="tribe-img-url" type="text" ng-model="tribe.imageURL")
+                    input(id="tribe-img-url" type="text" ng-model="self.tribe.imageURL")
                 div
                     label(for="tribe-email") Email:
-                    input(id="tribe-email" type="text" ng-model="tribe.email")
-                div(ng-show="isNew")
+                    input(id="tribe-email" type="text" ng-model="self.tribe.email")
+                div(ng-show="self.isNew")
                     label(for="tribe-id") Unique Id:
-                    input(id="tribe-id" type="text" ng-model="tribe._id")
+                    input(id="tribe-id" type="text" ng-model="self.tribe._id")
     div
-        input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="clickSaveButton()" tabIndex="0" value="Save")
+        input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="self.clickSaveButton()" tabIndex="0" value="Save")

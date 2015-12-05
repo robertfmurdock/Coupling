@@ -1,19 +1,24 @@
 /// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
-angular.module("coupling.controllers").controller('TribeConfigController', [
-    '$scope',
-    'Coupling',
-    '$location',
-    function ($scope, Coupling, $location) {
-        $scope.clickSaveButton = function () {
-            $scope.tribe.$save().then(function () {
-                $location.path("/tribes");
-            });
-        };
+/// <reference path="../../services.ts" />
+var TribeConfigController = (function () {
+    function TribeConfigController($location) {
+        this.$location = $location;
     }
-]);
+    TribeConfigController.prototype.clickSaveButton = function () {
+        var self = this;
+        this.tribe.$save().then(function () {
+            self.$location.path("/tribes");
+        });
+    };
+    TribeConfigController.$inject = ['$location'];
+    return TribeConfigController;
+})();
+angular.module("coupling.controllers").controller('TribeConfigController', TribeConfigController);
 angular.module("coupling.directives").directive('tribeConfig', function () {
     return {
         controller: 'TribeConfigController',
+        controllerAs: 'self',
+        bindToController: true,
         scope: {
             tribe: '=tribe',
             isNew: '=isNew'
