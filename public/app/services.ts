@@ -5,6 +5,7 @@ import IPromise = angular.IPromise;
 class Player {
     _id:string;
     isAvailable:boolean
+    tribe: string
 }
 
 class CouplingData {
@@ -205,7 +206,7 @@ class Coupling {
     }
 
     removePlayer(player) {
-        return this.httpDelete('/api/' + this.data.selectedTribeId + '/players/' + player._id);
+        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
     }
 
     promisePins(tribeId):IPromise<[Pin]> {

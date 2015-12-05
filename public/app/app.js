@@ -111,19 +111,19 @@ var pinRoute = {
     }
 };
 var NewPlayerRouteController = (function () {
-    function NewPlayerRouteController($scope, tribe, players) {
-        $scope.tribe = tribe;
-        $scope.players = players;
-        $scope.player = {
-            tribe: tribe._id
-        };
+    function NewPlayerRouteController(tribe, players) {
+        this.tribe = tribe;
+        this.players = players;
+        this.player = new Player();
+        this.player.tribe = tribe._id;
     }
-    NewPlayerRouteController.$inject = ['$scope', 'tribe', 'players'];
+    NewPlayerRouteController.$inject = ['tribe', 'players'];
     return NewPlayerRouteController;
 })();
 var newPlayerRoute = {
-    template: '<player-config>',
+    template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
     controller: NewPlayerRouteController,
+    controllerAs: 'main',
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
@@ -132,18 +132,19 @@ var newPlayerRoute = {
     }
 };
 var EditPlayerRouteController = (function () {
-    function EditPlayerRouteController($scope, $route, tribe, players) {
-        $scope.tribe = tribe;
-        $scope.players = players;
+    function EditPlayerRouteController($route, tribe, players) {
+        this.tribe = tribe;
+        this.players = players;
         var playerId = $route.current.params.id;
-        $scope.player = _.findWhere(players, { _id: playerId });
+        this.player = _.findWhere(this.players, { _id: playerId });
     }
-    EditPlayerRouteController.$inject = ['$scope', '$route', 'tribe', 'players'];
+    EditPlayerRouteController.$inject = ['$route', 'tribe', 'players'];
     return EditPlayerRouteController;
 })();
 var editPlayerRoute = {
-    template: '<player-config>',
+    template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
     controller: EditPlayerRouteController,
+    controllerAs: 'main',
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {

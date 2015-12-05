@@ -158,7 +158,7 @@ var Coupling = (function () {
         return this.post('/api/' + player.tribe + '/players', player);
     };
     Coupling.prototype.removePlayer = function (player) {
-        return this.httpDelete('/api/' + this.data.selectedTribeId + '/players/' + player._id);
+        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
     };
     Coupling.prototype.promisePins = function (tribeId) {
         var url = '/api/' + tribeId + '/pins';

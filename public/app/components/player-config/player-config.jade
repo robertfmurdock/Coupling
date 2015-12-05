@@ -1,19 +1,19 @@
 div
     div(id="tribe-browser")
-        tribecard(id="tribe-card" tribe="tribe")
+        tribecard(id="tribe-card" tribe="playerConfig.tribe")
     span(id="player-view")
         span(class="player")
             form(name="playerForm")
                 div
                     label(for="player-name") Name
-                    input(id="player-name" type="text" ng-model="player.name")
+                    input(id="player-name" type="text" ng-model="playerConfig.player.name")
                 div
                     label(for="player-email") Email
-                    input(id="player-email" type="text" ng-model="player.email")
+                    input(id="player-email" type="text" ng-model="playerConfig.player.email")
                 div
                     label(for="player-img-url") Image URL
-                    input(id="player-img-url" type="text" ng-model="player.imageURL")
-                input(id="save-player-button" type="button" class="large blue button save-button" ng-click="savePlayer()" tabIndex="0" value="Save")
-                div(ng-show="player._id" class="small red button delete-button" ng-click="removePlayer()") DELETE
-        playercard(player="player" size="250")
-player-roster(players="players" tribe="tribe")
+                    input(id="player-img-url" type="text" ng-model="playerConfig.player.imageURL")
+                input(id="save-player-button" type="button" class="large blue button save-button" ng-click="playerConfig.savePlayer()" tabIndex="0" value="Save")
+                div(ng-show="playerConfig.player._id" class="small red button delete-button" ng-click="playerConfig.removePlayer()") DELETE
+        playercard(player="playerConfig.player" size="250")
+player-roster(players="playerConfig.players" tribe="playerConfig.tribe")

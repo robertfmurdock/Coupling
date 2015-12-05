@@ -464,7 +464,7 @@ describe('The controller named ', function () {
       _id: 'party'
     };
 
-    var player = {_id: 'blarg'};
+    var player = {_id: 'blarg', tribe: tribe._id};
 
     var Coupling, location;
 
@@ -482,30 +482,15 @@ describe('The controller named ', function () {
       scope.$on = jasmine.createSpy('on');
     });
 
-    it('will duplicate player for editing', function () {
-      scope.player = player;
-      scope.tribe = tribe;
-      inject(function ($controller) {
-        $controller(ControllerName, {
-          $scope: scope,
-          $location: location,
-          $route: {current: {params: {id: player._id}}}
-        });
-      });
-      expect(scope.original).toBe(player);
-      expect(scope.player).not.toBe(player);
-      expect(scope.player).toEqual(player);
-    });
-
+    var controller;
     it('can save player using Coupling service and then reloads', function () {
       var $route = {
         current: {params: {id: player._id}},
         reload: jasmine.createSpy('path')
       };
-      scope.player = player;
-      scope.tribe = tribe;
+
       inject(function ($controller) {
-        $controller(ControllerName, {
+        controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
@@ -514,9 +499,12 @@ describe('The controller named ', function () {
           players: [player]
         });
       });
-      scope.player.name = 'nonsense';
-      scope.savePlayer();
-      expect(Coupling.savePlayer).toHaveBeenCalledWith(scope.player);
+      controller.player = player;
+      controller.tribe = tribe;
+
+      controller.player.name = 'nonsense';
+      controller.savePlayer();
+      expect(Coupling.savePlayer).toHaveBeenCalledWith(controller.player);
       expect($route.reload).toHaveBeenCalled();
     });
 
@@ -527,20 +515,21 @@ describe('The controller named ', function () {
         var deleteDefer = $q.defer();
         Coupling.removePlayer.and.returnValue(deleteDefer.promise);
 
-        scope.player = player;
-        scope.tribe = tribe;
-        $controller(ControllerName, {
+        var controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
           $route: {current: {params: {id: player._id}}}
         });
 
+        controller.player = player;
+        controller.tribe = tribe;
+
         window.confirm.and.returnValue(true);
-        scope.removePlayer();
+        controller.removePlayer();
         expect(Coupling.removePlayer).toHaveBeenCalled();
         var argsFor = Coupling.removePlayer.calls.argsFor(0);
-        expect(argsFor[0]).toBe(scope.player);
+        expect(argsFor[0]).toBe(controller.player);
 
         expect(location.path).not.toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
         deleteDefer.resolve();
@@ -552,7 +541,7 @@ describe('The controller named ', function () {
       window.confirm = jasmine.createSpy('confirm');
 
       inject(function ($controller) {
-        $controller(ControllerName, {
+        controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
           $location: location,
@@ -563,7 +552,7 @@ describe('The controller named ', function () {
       });
 
       window.confirm.and.returnValue(false);
-      scope.removePlayer();
+      controller.removePlayer();
       expect(Coupling.removePlayer).not.toHaveBeenCalled();
       expect(location.path).not.toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
     });
@@ -573,10 +562,11 @@ describe('The controller named ', function () {
 
       var tribe = {_id: 'lol'};
       var player = {_id: 'blarg'};
+      var controller;
 
       beforeEach(function () {
         inject(function ($controller) {
-          $controller(ControllerName, {
+          controller = $controller(ControllerName, {
             $scope: scope,
             Coupling: Coupling,
             $route: {current: {params: {id: player._id}}},
@@ -610,13 +600,13 @@ describe('The controller named ', function () {
         it('and if they confirm it will save', function () {
           window.confirm.and.returnValue(true);
           onLocationChange();
-          expect(Coupling.savePlayer).toHaveBeenCalledWith(scope.player);
+          expect(Coupling.savePlayer).toHaveBeenCalledWith(controller.player);
         });
 
         it('and if they do not confirm it will not save', function () {
           window.confirm.and.returnValue(false);
           onLocationChange();
-          expect(Coupling.savePlayer).not.toHaveBeenCalledWith(scope.player);
+          expect(Coupling.savePlayer).not.toHaveBeenCalledWith(controller.player);
         });
 
       });
