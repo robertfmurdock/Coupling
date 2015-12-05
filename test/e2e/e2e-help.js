@@ -31,7 +31,7 @@ var helper = {
 
     afterEach(function (done) {
       browser.getCapabilities().then(function (capabilities) {
-        if (capabilities.caps_browserName == 'firefox') {
+        if (capabilities.caps_.browserName != 'firefox') {
           browser.manage().logs().get('browser').then(function (browserLog) {
             expect(browserLog).toEqual([]);
             if (browserLog.length > 0) {
@@ -40,7 +40,8 @@ var helper = {
             done();
           }, done);
           browser.waitForAngular();
-        } else {
+        }
+        else {
           done();
         }
       });

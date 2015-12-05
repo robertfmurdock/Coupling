@@ -10,6 +10,9 @@
     },
     "jquery/jquery.d.ts": {
       "commit": "4910a7c52a1cf335877ea3b0917eb65117a66637"
+    },
+    "underscore/underscore.d.ts": {
+      "commit": "e5a27ea95e47b95333784f1f0d590127b4e39a89"
     }
   }
 }

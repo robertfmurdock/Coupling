@@ -1,4 +1,4 @@
-///reference path
+/// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
 angular.module("coupling.directives").directive('history', function () {
     return {
         scope: {
@@ -9,4 +9,4 @@ angular.module("coupling.directives").directive('history', function () {
         templateUrl: '/app/components/history/history.html'
     };
 });
-//# sourceMappingURL=history.jsmap
+//# sourceMappingURL=history.js.map

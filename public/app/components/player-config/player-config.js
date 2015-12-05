@@ -1,4 +1,3 @@
-"use strict";
 /// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
 angular.module("coupling.controllers").controller('PlayerConfigController', ['$scope', 'Coupling', '$location', '$route', function ($scope, Coupling, $location, $route) {
     $scope.original = $scope.player;

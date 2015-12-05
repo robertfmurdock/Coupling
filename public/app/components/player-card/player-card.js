@@ -1,4 +1,4 @@
-"use strict";
+/// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
 angular.module('coupling.controllers').controller('PlayerCardController', ['$scope', '$location', 'Coupling', function ($scope, $location) {
     if (!$scope.size) {
         $scope.size = 100;

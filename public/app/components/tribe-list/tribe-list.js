@@ -1,12 +1,11 @@
-"use strict";
-
-angular.module("coupling.directives")
-  .directive('tribelist', function () {
+/// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
+angular.module("coupling.directives").directive('tribelist', function () {
     return {
-      scope: {
-        tribes: '='
-      },
-      restrict: 'E',
-      templateUrl: '/app/components/tribe-list/tribe-list.html'
-    }
-  });
+        scope: {
+            tribes: '='
+        },
+        restrict: 'E',
+        templateUrl: '/app/components/tribe-list/tribe-list.html'
+    };
+});
+//# sourceMappingURL=tribe-list.js.map
