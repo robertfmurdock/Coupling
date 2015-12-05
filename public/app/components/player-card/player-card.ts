@@ -1,26 +1,39 @@
 /// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
+/// <reference path="../../services.ts" />
+
+class PlayerCardController {
+    static $inject = ['$location'];
+
+    player:Player;
+    size:number;
+
+    constructor(public $location) {
+        if (!this.size) {
+            this.size = 100;
+        }
+    }
+
+    clickPlayerName($event) {
+        if ($event.stopPropagation) $event.stopPropagation();
+        this.$location.path("/" + this.player.tribe + "/player/" + this.player._id);
+    }
+
+}
 
 angular.module('coupling.controllers')
-    .controller('PlayerCardController',
-    ['$scope', '$location', ($scope, $location) => {
-        if (!$scope.size) {
-            $scope.size = 100;
-        }
-        $scope.clickPlayerName = function ($event) {
-            if ($event.stopPropagation) $event.stopPropagation();
-            $location.path("/" + $scope.player.tribe + "/player/" + $scope.player._id);
-        };
-    }]);
+    .controller('PlayerCardController', PlayerCardController);
 
 angular.module("coupling.directives")
     .directive('playercard', () => {
         return {
+            templateUrl: '/app/components/player-card/playercard.html',
             restrict: 'E',
             controller: 'PlayerCardController',
-            templateUrl: '/app/components/player-card/playercard.html',
+            controllerAs: 'playerCard',
             scope: {
                 player: '=',
                 size: '=?'
-            }
+            },
+            bindToController: true
         }
     });

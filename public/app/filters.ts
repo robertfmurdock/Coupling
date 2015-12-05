@@ -1,11 +1,11 @@
 /// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
+
 var filters = angular.module("coupling.filters", []);
 filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {
     return function (player, options) {
         if (player && player.imageURL) {
             return player.imageURL;
-        }
-        else {
+        } else {
             options.default = "retro";
             var email = "";
             if (player) {
@@ -13,20 +13,19 @@ filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {
             }
             return gravatarService.url(email, options);
         }
-    };
+    }
 }]);
+
 filters.filter('tribeImageUrl', ['gravatarService', function (gravatarService) {
     return function (tribe, options) {
         if (tribe) {
             if (tribe.imageURL) {
                 return tribe.imageURL;
-            }
-            else if (tribe.email) {
+            } else if (tribe.email) {
                 options.default = "identicon";
                 return gravatarService.url(tribe.email, options);
             }
         }
         return "/images/icons/tribes/no-tribe.png";
-    };
+    }
 }]);
-//# sourceMappingURL=filters.js.map

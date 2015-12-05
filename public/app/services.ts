@@ -4,8 +4,8 @@ import IPromise = angular.IPromise;
 
 class Player {
     _id:string;
-    isAvailable:boolean
-    tribe: string
+    isAvailable:boolean;
+    tribe:string
 }
 
 class CouplingData {
@@ -25,6 +25,7 @@ interface TribeResource extends ng.resource.IResourceClass<Tribe> {
 }
 
 class PairSet {
+    pairs: [[Player]]
 }
 
 class Pin {
@@ -183,7 +184,7 @@ class Coupling {
             });
     }
 
-    spin(players, tribeId) {
+    spin(players, tribeId):IPromise<PairSet> {
         var url = '/api/' + tribeId + '/spin';
         return this.$http.post(url, players)
             .then(function (result) {

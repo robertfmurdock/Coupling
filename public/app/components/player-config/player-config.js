@@ -13,7 +13,8 @@ var PlayerConfigController = (function () {
     };
     PlayerConfigController.prototype.removePlayer = function () {
         if (confirm("Are you sure you want to delete this player?")) {
-            this.Coupling.removePlayer(this.player).then(this.navigateToCurrentPairAssignments());
+            var self = this;
+            this.Coupling.removePlayer(this.player).then(function () { return self.navigateToCurrentPairAssignments(); });
         }
     };
     PlayerConfigController.prototype.askUserToSave = function ($scope, Coupling) {
@@ -28,10 +29,7 @@ var PlayerConfigController = (function () {
         };
     };
     PlayerConfigController.prototype.navigateToCurrentPairAssignments = function () {
-        var self = this;
-        return function () {
-            self.$location.path("/" + self.tribe._id + "/pairAssignments/current");
-        };
+        this.$location.path("/" + this.tribe._id + "/pairAssignments/current");
     };
     PlayerConfigController.$inject = ['$scope', 'Coupling', '$location', '$route'];
     return PlayerConfigController;

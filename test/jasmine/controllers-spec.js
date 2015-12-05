@@ -11,33 +11,33 @@ describe('The controller named ', function () {
   });
 
   describe('PlayerCardController', function () {
-
+    var controller;
     var location = {
       path: jasmine.createSpy('path')
     };
 
     beforeEach(function () {
-      scope.player = {
+      inject(function ($controller) {
+        controller = $controller('PlayerCardController', {
+          $scope: scope,
+          $location: location,
+          Coupling: Coupling
+        })
+      });
+      controller.player = {
         name: 'Chad',
         _id: 'PrettyGreatPlayerId',
         tribe: 'awful',
         isAvailable: true
       };
-      inject(function ($controller) {
-        $controller('PlayerCardController', {
-          $scope: scope,
-          $location: location,
-          Coupling: Coupling
-        })
-      })
     });
 
     describe('clickPlayerName', function () {
       it('will redirect to the players page', function () {
-        var expectedPath = '/' + scope.player.tribe + '/player/' + scope.player._id;
+        var expectedPath = '/' + controller.player.tribe + '/player/' + controller.player._id;
         expect(location.path).not.toHaveBeenCalledWith(expectedPath);
         var event = {};
-        scope.clickPlayerName(scope.player._id, event);
+        controller.clickPlayerName(controller.player._id, event);
         expect(location.path).toHaveBeenCalledWith(expectedPath);
       });
 
@@ -45,7 +45,7 @@ describe('The controller named ', function () {
         var event = {
           stopPropagation: jasmine.createSpy('stopPropagation')
         };
-        scope.clickPlayerName(event);
+        controller.clickPlayerName(event);
         expect(event.stopPropagation).toHaveBeenCalled();
       });
     });

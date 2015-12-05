@@ -18,9 +18,10 @@ class PlayerConfigController {
 
     removePlayer() {
         if (confirm("Are you sure you want to delete this player?")) {
+            var self = this;
             this.Coupling
                 .removePlayer(this.player)
-                .then(this.navigateToCurrentPairAssignments());
+                .then(()=>self.navigateToCurrentPairAssignments());
         }
     }
 
@@ -37,10 +38,7 @@ class PlayerConfigController {
     }
 
     private navigateToCurrentPairAssignments() {
-        var self = this;
-        return () => {
-            self.$location.path("/" + self.tribe._id + "/pairAssignments/current");
-        }
+        this.$location.path("/" + this.tribe._id + "/pairAssignments/current");
     }
 }
 
