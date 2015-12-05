@@ -24,7 +24,7 @@ var Coupling = (function () {
         this.$http = $http;
         this.$resource = $resource;
         this.$q = $q;
-        this.Tribe = $resource('/api/tribes/:tribeId');
+        this.Tribe = Coupling.buildTribeResource($resource);
         this.data = {
             players: null,
             history: null,
@@ -32,6 +32,9 @@ var Coupling = (function () {
             selectedTribeId: ''
         };
     }
+    Coupling.buildTribeResource = function ($resource) {
+        return $resource('/api/tribes/:tribeId');
+    };
     Coupling.errorMessage = function (url, data, statusCode) {
         return "There was a problem with request " + url + "\n" + "Data: <" + data + ">\n" + "Status: " + statusCode;
     };
@@ -168,12 +171,14 @@ var Coupling = (function () {
     Coupling.$inject = ['$http', '$resource', '$q'];
     return Coupling;
 })();
-var services = angular.module("coupling.services", ['ngResource']);
-services.service("Coupling", Coupling);
-services.service('randomizer', function () {
-    this.next = function (maxValue) {
+var Randomizer = (function () {
+    function Randomizer() {
+    }
+    Randomizer.prototype.next = function (maxValue) {
         var floatValue = Math.random() * maxValue;
         return Math.round(floatValue);
     };
-});
+    return Randomizer;
+})();
+angular.module("coupling.services", ['ngResource']).service("Coupling", Coupling).service('randomizer', Randomizer);
 //# sourceMappingURL=services.js.map

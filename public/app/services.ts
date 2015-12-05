@@ -13,6 +13,7 @@ class CouplingData {
 }
 
 class Tribe {
+    name:String
 }
 
 class PairSet {
@@ -25,13 +26,17 @@ class Coupling {
     Tribe:ng.resource.IResourceClass<Tribe>;
 
     constructor(public $http:angular.IHttpService, public $resource:ng.resource.IResourceService, public $q:angular.IQService) {
-        this.Tribe = $resource('/api/tribes/:tribeId');
-        this.data =  {
+        this.Tribe = Coupling.buildTribeResource($resource);
+        this.data = {
             players: null,
             history: null,
             selectedTribe: null,
             selectedTribeId: ''
         };
+    }
+
+    private static buildTribeResource($resource) {
+        return < ng.resource.IResourceClass<Tribe> > $resource('/api/tribes/:tribeId');
     }
 
     private static errorMessage(url, data, statusCode) {
@@ -66,7 +71,7 @@ class Coupling {
             this.logAndRejectError(url));
     }
 
-    getTribes() {
+    getTribes():angular.IPromise<ng.resource.IResourceArray<Tribe>> {
         var url = '/api/tribes';
         var self = this;
         return this.Tribe.query().$promise
@@ -202,13 +207,14 @@ class Coupling {
     }
 }
 
-var services = angular.module("coupling.services", ['ngResource']);
+class Randomizer {
 
-services.service("Coupling", Coupling);
-
-services.service('randomizer', function () {
-    this.next = function (maxValue) {
+    next(maxValue:number) {
         var floatValue = Math.random() * maxValue;
         return Math.round(floatValue);
     }
-});
+}
+
+angular.module("coupling.services", ['ngResource'])
+    .service("Coupling", Coupling)
+    .service('randomizer', Randomizer);
