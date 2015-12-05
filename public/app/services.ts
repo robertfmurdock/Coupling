@@ -19,84 +19,90 @@ class PairSet {
 }
 
 class Coupling {
+    static $inject = ['$http', '$resource', '$q'];
+
     data:CouplingData;
-    getTribes:()=> angular.IPromise<[Tribe]>;
-    requestPlayersPromise: ()=> angular.IPromise<[Player]>
-}
+    Tribe:ng.resource.IResourceClass<Tribe>;
 
-var services = angular.module("coupling.services", ['ngResource']);
+    constructor(public $http:angular.IHttpService, public $resource:ng.resource.IResourceService, public $q:angular.IQService) {
+        this.Tribe = $resource('/api/tribes/:tribeId');
+        this.data =  {
+            players: null,
+            history: null,
+            selectedTribe: null,
+            selectedTribeId: ''
+        };
+    }
 
-services.service("Coupling", ['$http', '$resource', '$q', function ($http:angular.IHttpService, $resource, $q:angular.IQService) {
-    var Coupling:Coupling = this;
-
-    function errorMessage(url, data, statusCode) {
+    private static errorMessage(url, data, statusCode) {
         return "There was a problem with request " + url + "\n" +
             "Data: <" + data + ">\n" +
             "Status: " + statusCode;
     }
 
-    var logAndRejectError = function (url) {
+    private logAndRejectError(url) {
+        var self = this;
         return function (response) {
             var data = response.data;
             var statusCode = response.status;
-            var message = errorMessage(url, data, statusCode);
+            var message = Coupling.errorMessage(url, data, statusCode);
             console.error('ALERT!\n' + message);
-            return $q.reject(message);
+            return self.$q.reject(message);
         }
-    };
+    }
 
-    var post = function (url, player) {
-        return $http.post(url, player)
+    private post(url, player) {
+        return this.$http.post(url, player)
             .then(function (result) {
                 return result.data;
             },
-            logAndRejectError('POST ' + url));
-    };
+            this.logAndRejectError('POST ' + url));
+    }
 
-    var httpDelete = function (url) {
-        return $http.delete(url)
+    private httpDelete(url) {
+        return this.$http.delete(url)
             .then(function () {
             },
-            logAndRejectError(url));
-    };
+            this.logAndRejectError(url));
+    }
 
-    var Tribe = $resource('/api/tribes/:tribeId');
-    this.Tribe = Tribe;
-
-    this.getTribes = function () {
+    getTribes() {
         var url = '/api/tribes';
-        return Tribe.query().$promise
+        var self = this;
+        return this.Tribe.query().$promise
             .catch(function (response) {
                 console.info(response);
-                return $q.reject(errorMessage('GET ' + url, response.data, response.status));
+                return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
             });
-    };
+    }
 
-    this.requestHistoryPromise = function (tribeId) {
+    requestHistoryPromise(tribeId) {
         var url = '/api/' + tribeId + '/history';
-        return $http.get(url)
+        var self = this;
+        return this.$http.get(url)
             .then((response:angular.IHttpPromiseCallbackArg<[PairSet]>) => {
-                Coupling.data.history = response.data;
+                self.data.history = response.data;
                 return response.data;
             },
-            logAndRejectError('POST ' + url));
-    };
+            this.logAndRejectError('POST ' + url));
+    }
 
-    this.requestSpecificTribe = function (tribeId) {
-        return Coupling.getTribes()
+    requestSpecificTribe(tribeId) {
+        var self = this;
+        return this.getTribes()
             .then(function (tribes) {
                 var found = _.findWhere(tribes, {
                     _id: tribeId
                 });
-                Coupling.data.selectedTribe = found;
+                self.data.selectedTribe = found;
                 if (!found) {
-                    return $q.reject("Tribe not found");
+                    return self.$q.reject("Tribe not found");
                 }
                 return found;
             })
-    };
+    }
 
-    var isInLastSetOfPairs = function (player, history) {
+    private isInLastSetOfPairs(player, history) {
         var result = _.find(history[0].pairs, function (pairset:[{}]) {
             if (_.findWhere(pairset, {
                     _id: player._id
@@ -105,21 +111,22 @@ services.service("Coupling", ['$http', '$resource', '$q', function ($http:angula
             }
         });
         return !!result;
-    };
+    }
 
-    this.requestPlayersPromise = function (tribeId, historyPromise:angular.IPromise<[PairSet]>) {
+    requestPlayersPromise(tribeId, historyPromise:angular.IPromise<[PairSet]>) {
         var url = '/api/' + tribeId + '/players';
-        return $q.all({
-                players: $http.get(url)
+        var self = this;
+        return this.$q.all({
+                players: this.$http.get(url)
                     .then(function (response:angular.IHttpPromiseCallbackArg<[Player]>) {
                         return response.data;
                     },
                     function (response) {
                         var data = response.data;
                         var statusCode = response.status;
-                        var message = errorMessage(url, data, statusCode);
+                        var message = Coupling.errorMessage(url, data, statusCode);
                         console.error('ALERT!\n' + message);
-                        return $q.reject(message);
+                        return self.$q.reject(message);
                     }),
                 history: historyPromise
             }
@@ -130,10 +137,10 @@ services.service("Coupling", ['$http', '$resource', '$q', function ($http:angula
                     if (history.length == 0) {
                         player.isAvailable = true;
                     } else {
-                        player.isAvailable = isInLastSetOfPairs(player, history);
+                        player.isAvailable = self.isInLastSetOfPairs(player, history);
                     }
                 });
-                _.each(Coupling.data.players, function (originalPlayer:Player) {
+                _.each(self.data.players, function (originalPlayer:Player) {
                     var newPlayer = _.findWhere(players, {
                         _id: originalPlayer._id
                     });
@@ -141,65 +148,63 @@ services.service("Coupling", ['$http', '$resource', '$q', function ($http:angula
                         newPlayer.isAvailable = originalPlayer.isAvailable;
                     }
                 });
-                Coupling.data.players = players;
+                self.data.players = players;
                 return players;
             })
-    };
+    }
 
-    this.spin = function (players, tribeId) {
+    spin(players, tribeId) {
         var url = '/api/' + tribeId + '/spin';
-        return $http.post(url, players)
+        return this.$http.post(url, players)
             .then(function (result) {
                 return result.data;
             },
-            logAndRejectError('POST ' + url));
-    };
+            this.logAndRejectError('POST ' + url));
+    }
 
-    this.saveCurrentPairAssignments = function (tribeId, pairAssignments) {
+    saveCurrentPairAssignments(tribeId, pairAssignments) {
         var url = '/api/' + tribeId + '/history';
-        return $http.post(url, pairAssignments)
+        return this.$http.post(url, pairAssignments)
             .then(function (result) {
                 return result.data;
             },
-            logAndRejectError('POST ' + url));
-    };
+            this.logAndRejectError('POST ' + url));
+    }
 
-    this.savePlayer = function (player) {
-        return post('/api/' + player.tribe + '/players', player);
-    };
+    savePlayer(player) {
+        return this.post('/api/' + player.tribe + '/players', player);
+    }
 
-    this.removePlayer = function (player) {
-        return httpDelete('/api/' + Coupling.data.selectedTribeId + '/players/' + player._id);
-    };
+    removePlayer(player) {
+        return this.httpDelete('/api/' + this.data.selectedTribeId + '/players/' + player._id);
+    }
 
-    this.newTribe = function () {
+    newTribe() {
         return new Tribe();
-    };
+    }
 
-    this.saveTribe = function (tribe) {
+    saveTribe(tribe) {
         return tribe.$save();
-    };
+    }
 
-    this.promisePins = function (tribeId) {
+    promisePins(tribeId) {
         var url = '/api/' + tribeId + '/pins';
-        return $http.get(url)
+        var self = this;
+        return this.$http.get(url)
             .then(function (response) {
                 return response.data;
             },
             function (response) {
                 var data = response.data;
                 var status = response.status;
-                return $q.reject(errorMessage('GET ' + url, data, status));
+                return self.$q.reject(Coupling.errorMessage('GET ' + url, data, status));
             });
-    };
-    Coupling.data = {
-        players: null,
-        history: null,
-        selectedTribe: null,
-        selectedTribeId: ''
-    };
-}])
-;
+    }
+}
+
+var services = angular.module("coupling.services", ['ngResource']);
+
+services.service("Coupling", Coupling);
 
 services.service('randomizer', function () {
     this.next = function (maxValue) {
