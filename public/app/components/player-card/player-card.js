@@ -1,5 +1,5 @@
 /// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
-angular.module('coupling.controllers').controller('PlayerCardController', ['$scope', '$location', 'Coupling', function ($scope, $location) {
+angular.module('coupling.controllers').controller('PlayerCardController', ['$scope', '$location', function ($scope, $location) {
     if (!$scope.size) {
         $scope.size = 100;
     }

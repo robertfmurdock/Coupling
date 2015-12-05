@@ -2,7 +2,7 @@
 
 angular.module('coupling.controllers')
     .controller('PlayerCardController',
-    ['$scope', '$location', 'Coupling', ($scope, $location) => {
+    ['$scope', '$location', ($scope, $location) => {
         if (!$scope.size) {
             $scope.size = 100;
         }

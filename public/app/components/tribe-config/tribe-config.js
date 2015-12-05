@@ -5,7 +5,7 @@ angular.module("coupling.controllers").controller('TribeConfigController', [
     '$location',
     function ($scope, Coupling, $location) {
         $scope.clickSaveButton = function () {
-            Coupling.saveTribe($scope.tribe).then(function () {
+            $scope.tribe.$save().then(function () {
                 $location.path("/tribes");
             });
         };

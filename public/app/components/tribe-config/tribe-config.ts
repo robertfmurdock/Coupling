@@ -8,12 +8,9 @@ angular.module("coupling.controllers")
         '$location', function ($scope, Coupling, $location) {
 
         $scope.clickSaveButton = function () {
-
-            Coupling.saveTribe($scope.tribe)
+            $scope.tribe.$save()
                 .then(function () {
-
                     $location.path("/tribes");
-
                 });
         }
     }]);

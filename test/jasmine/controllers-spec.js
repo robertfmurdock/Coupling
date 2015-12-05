@@ -147,16 +147,18 @@ describe('The controller named ', function () {
     describe('when pressing the save button ', function () {
 
       var saveTribeDefer = new RSVP.defer();
+      var tribe = {};
+
       beforeEach(function () {
-        Coupling.saveTribe = jasmine.createSpy('save tribe spy')
-          .and.returnValue(saveTribeDefer.promise);
+        tribe.$save = jasmine.createSpy('save tribe spy').and.returnValue(saveTribeDefer.promise);
+        scope.tribe = tribe;
 
         inject(function ($controller) {
           $controller(TribeConfigController, {
             $scope: scope,
             $location: location,
             Coupling: Coupling,
-            tribe: Coupling.data.selectedTribe
+            tribe: tribe
           });
         });
       });
@@ -164,16 +166,14 @@ describe('The controller named ', function () {
       it('will use the Coupling service to save the tribe', function () {
         scope.clickSaveButton();
 
-        expect(Coupling.saveTribe).toHaveBeenCalled();
-        var saveTribeArgs = Coupling.saveTribe.calls.argsFor(0);
-        expect(saveTribeArgs[0]).toBe(scope.tribe);
+        expect(tribe.$save).toHaveBeenCalled();
       });
 
       describe('when the save is complete', function () {
         var callback;
         beforeEach(function () {
           scope.clickSaveButton();
-          callback = Coupling.saveTribe.calls.argsFor(0)[1];
+          callback = tribe.$save.calls.argsFor(0)[1];
         });
 
         it('will change the location to the current pair assignments', function (done) {

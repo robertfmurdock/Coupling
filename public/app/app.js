@@ -55,7 +55,7 @@ var prepareTribeRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
         }]
     }
 };
@@ -89,7 +89,7 @@ var historyRoute = {
     resolve: {
         tribe: tribeResolution,
         history: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestHistoryPromise($route.current.params.tribeId);
+            return Coupling.getHistory($route.current.params.tribeId);
         }]
     }
 };
@@ -127,7 +127,7 @@ var newPlayerRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
         }]
     }
 };
@@ -147,7 +147,7 @@ var editPlayerRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
         }]
     }
 };
@@ -160,13 +160,13 @@ app.config(['$routeProvider', function (routeProvider) {
         controllerAs: 'main',
         resolve: {
             pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestHistoryPromise($route.current.params.tribeId).then(function (history) {
+                return Coupling.getHistory($route.current.params.tribeId).then(function (history) {
                     return history[0];
                 });
             }],
             tribe: tribeResolution,
             players: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
             }]
         }
     }).when('/:tribeId/pairAssignments/new/', {
@@ -176,7 +176,7 @@ app.config(['$routeProvider', function (routeProvider) {
         resolve: {
             tribe: tribeResolution,
             players: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
             }]
         }
     }).when('/:tribeId/player/new/', newPlayerRoute).when('/:tribeId/player/:id/', editPlayerRoute).when('/auth/google', {

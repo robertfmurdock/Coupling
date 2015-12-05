@@ -1,5 +1,7 @@
 /// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
 
+import IPromise = angular.IPromise;
+
 class Player {
     _id:string;
     isAvailable:boolean
@@ -33,7 +35,7 @@ class Coupling {
     Tribe:TribeResource;
 
     constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
-        this.Tribe = Coupling.buildTribeResource($resource);
+        this.Tribe = <TribeResource>Coupling.buildTribeResource($resource);
         this.data = {
             players: null,
             history: null,
@@ -63,22 +65,22 @@ class Coupling {
         }
     }
 
-    private post(url, player) {
-        return this.$http.post(url, player)
+    private  post<T>(url, object:T):IPromise<T> {
+        return this.$http.post(url, object)
             .then(function (result) {
                 return result.data;
             },
             this.logAndRejectError('POST ' + url));
     }
 
-    private httpDelete(url) {
+    private httpDelete(url):IPromise<void> {
         return this.$http.delete(url)
             .then(function () {
             },
             this.logAndRejectError(url));
     }
 
-    getTribes():angular.IPromise<ng.resource.IResourceArray<Tribe>> {
+    getTribes():IPromise<ng.resource.IResourceArray<Tribe>> {
         var url = '/api/tribes';
         var self = this;
         return this.Tribe.query().$promise
@@ -88,7 +90,7 @@ class Coupling {
             });
     }
 
-    requestHistoryPromise(tribeId) {
+    getHistory(tribeId):IPromise<[PairSet]> {
         var url = '/api/' + tribeId + '/history';
         var self = this;
         return this.$http.get(url)
@@ -99,7 +101,7 @@ class Coupling {
             this.logAndRejectError('POST ' + url));
     }
 
-    requestSpecificTribe(tribeId) {
+    requestSpecificTribe(tribeId):IPromise<Tribe> {
         var self = this;
         return this.getTribes()
             .then(function (tribes) {
@@ -125,44 +127,58 @@ class Coupling {
         return !!result;
     }
 
-    requestPlayersPromise(tribeId, historyPromise:angular.IPromise<[PairSet]>) {
-        var url = '/api/' + tribeId + '/players';
+    requestPlayersPromise(tribeId, historyPromise:IPromise<[PairSet]>) {
+
         var self = this;
         return this.$q.all({
-                players: this.$http.get(url)
-                    .then(function (response:angular.IHttpPromiseCallbackArg<[Player]>) {
-                        return response.data;
-                    },
-                    function (response) {
-                        var data = response.data;
-                        var statusCode = response.status;
-                        var message = Coupling.errorMessage(url, data, statusCode);
-                        console.error('ALERT!\n' + message);
-                        return self.$q.reject(message);
-                    }),
-                history: historyPromise
-            }
-        ).then(function (data:any) {
-                var players:[Player] = data.players;
-                var history:[PairSet] = data.history;
-                _.each(players, function (player) {
-                    if (history.length == 0) {
-                        player.isAvailable = true;
-                    } else {
-                        player.isAvailable = self.isInLastSetOfPairs(player, history);
-                    }
-                });
-                _.each(self.data.players, function (originalPlayer:Player) {
-                    var newPlayer = _.findWhere(players, {
-                        _id: originalPlayer._id
-                    });
-                    if (newPlayer) {
-                        newPlayer.isAvailable = originalPlayer.isAvailable;
-                    }
-                });
+            players: this.getPlayers(tribeId),
+            history: historyPromise
+        })
+            .then(this.decoratePlayersWithAvailabilityBasedOnCurrentPairings())
+            .then(players=> {
                 self.data.players = players;
                 return players;
             })
+    }
+
+    private decoratePlayersWithAvailabilityBasedOnCurrentPairings() {
+        var self = this;
+        return function (data:any) {
+            var players:[Player] = data.players;
+            var history:[PairSet] = data.history;
+            _.each(players, function (player) {
+                if (history.length == 0) {
+                    player.isAvailable = true;
+                } else {
+                    player.isAvailable = self.isInLastSetOfPairs(player, history);
+                }
+            });
+            _.each(self.data.players, function (originalPlayer:Player) {
+                var newPlayer = _.findWhere(players, {
+                    _id: originalPlayer._id
+                });
+                if (newPlayer) {
+                    newPlayer.isAvailable = originalPlayer.isAvailable;
+                }
+            });
+            return players;
+        };
+    }
+
+    getPlayers(tribeId) {
+        var url = '/api/' + tribeId + '/players';
+        var self = this;
+        return this.$http.get(url)
+            .then(function (response:angular.IHttpPromiseCallbackArg<[Player]>) {
+                return response.data;
+            },
+            function (response) {
+                var data = response.data;
+                var statusCode = response.status;
+                var message = Coupling.errorMessage(url, data, statusCode);
+                console.error('ALERT!\n' + message);
+                return self.$q.reject(message);
+            });
     }
 
     spin(players, tribeId) {
@@ -191,15 +207,7 @@ class Coupling {
         return this.httpDelete('/api/' + this.data.selectedTribeId + '/players/' + player._id);
     }
 
-    newTribe() {
-        return new Tribe();
-    }
-
-    saveTribe(tribe) {
-        return tribe.$save();
-    }
-
-    promisePins(tribeId):angular.IPromise<[Pin]> {
+    promisePins(tribeId):IPromise<[Pin]> {
         var url = '/api/' + tribeId + '/pins';
         var self = this;
         return this.$http.get(url)

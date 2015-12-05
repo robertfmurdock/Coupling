@@ -76,7 +76,7 @@ var prepareTribeRoute:IRoute = {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
             return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.requestHistoryPromise($route.current.params.tribeId));
+                Coupling.getHistory($route.current.params.tribeId));
         }]
     }
 };
@@ -111,7 +111,7 @@ var historyRoute:IRoute = {
     resolve: {
         tribe: tribeResolution,
         history: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestHistoryPromise($route.current.params.tribeId);
+            return Coupling.getHistory($route.current.params.tribeId);
         }]
     }
 };
@@ -153,7 +153,7 @@ var newPlayerRoute:IRoute = {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
             return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.requestHistoryPromise($route.current.params.tribeId));
+                Coupling.getHistory($route.current.params.tribeId));
         }]
     }
 };
@@ -176,7 +176,7 @@ var editPlayerRoute:IRoute = {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
             return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.requestHistoryPromise($route.current.params.tribeId));
+                Coupling.getHistory($route.current.params.tribeId));
         }]
     }
 };
@@ -200,14 +200,14 @@ app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
             controllerAs: 'main',
             resolve: {
                 pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.requestHistoryPromise($route.current.params.tribeId).then(function (history) {
+                    return Coupling.getHistory($route.current.params.tribeId).then(function (history) {
                         return history[0];
                     });
                 }],
                 tribe: tribeResolution,
                 players: ['$route', 'Coupling', function ($route, Coupling) {
                     return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                        Coupling.requestHistoryPromise($route.current.params.tribeId));
+                        Coupling.getHistory($route.current.params.tribeId));
                 }]
             }
         })
@@ -219,7 +219,7 @@ app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
                 tribe: tribeResolution,
                 players: ['$route', 'Coupling', function ($route, Coupling) {
                     return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                        Coupling.requestHistoryPromise($route.current.params.tribeId));
+                        Coupling.getHistory($route.current.params.tribeId));
                 }]
             }
         })

@@ -47,8 +47,8 @@ var Coupling = (function () {
             return self.$q.reject(message);
         };
     };
-    Coupling.prototype.post = function (url, player) {
-        return this.$http.post(url, player).then(function (result) {
+    Coupling.prototype.post = function (url, object) {
+        return this.$http.post(url, object).then(function (result) {
             return result.data;
         }, this.logAndRejectError('POST ' + url));
     };
@@ -64,7 +64,7 @@ var Coupling = (function () {
             return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
         });
     };
-    Coupling.prototype.requestHistoryPromise = function (tribeId) {
+    Coupling.prototype.getHistory = function (tribeId) {
         var url = '/api/' + tribeId + '/history';
         var self = this;
         return this.$http.get(url).then(function (response) {
@@ -96,20 +96,18 @@ var Coupling = (function () {
         return !!result;
     };
     Coupling.prototype.requestPlayersPromise = function (tribeId, historyPromise) {
-        var url = '/api/' + tribeId + '/players';
         var self = this;
         return this.$q.all({
-            players: this.$http.get(url).then(function (response) {
-                return response.data;
-            }, function (response) {
-                var data = response.data;
-                var statusCode = response.status;
-                var message = Coupling.errorMessage(url, data, statusCode);
-                console.error('ALERT!\n' + message);
-                return self.$q.reject(message);
-            }),
+            players: this.getPlayers(tribeId),
             history: historyPromise
-        }).then(function (data) {
+        }).then(this.decoratePlayersWithAvailabilityBasedOnCurrentPairings()).then(function (players) {
+            self.data.players = players;
+            return players;
+        });
+    };
+    Coupling.prototype.decoratePlayersWithAvailabilityBasedOnCurrentPairings = function () {
+        var self = this;
+        return function (data) {
             var players = data.players;
             var history = data.history;
             _.each(players, function (player) {
@@ -128,8 +126,20 @@ var Coupling = (function () {
                     newPlayer.isAvailable = originalPlayer.isAvailable;
                 }
             });
-            self.data.players = players;
             return players;
+        };
+    };
+    Coupling.prototype.getPlayers = function (tribeId) {
+        var url = '/api/' + tribeId + '/players';
+        var self = this;
+        return this.$http.get(url).then(function (response) {
+            return response.data;
+        }, function (response) {
+            var data = response.data;
+            var statusCode = response.status;
+            var message = Coupling.errorMessage(url, data, statusCode);
+            console.error('ALERT!\n' + message);
+            return self.$q.reject(message);
         });
     };
     Coupling.prototype.spin = function (players, tribeId) {
@@ -149,12 +159,6 @@ var Coupling = (function () {
     };
     Coupling.prototype.removePlayer = function (player) {
         return this.httpDelete('/api/' + this.data.selectedTribeId + '/players/' + player._id);
-    };
-    Coupling.prototype.newTribe = function () {
-        return new Tribe();
-    };
-    Coupling.prototype.saveTribe = function (tribe) {
-        return tribe.$save();
     };
     Coupling.prototype.promisePins = function (tribeId) {
         var url = '/api/' + tribeId + '/pins';

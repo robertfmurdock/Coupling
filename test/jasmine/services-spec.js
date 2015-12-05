@@ -27,7 +27,7 @@ describe('Service: ', function () {
         }];
         httpBackend.whenGET('/api/tribo/history').respond(200, expectedHistory);
 
-        Coupling.requestHistoryPromise('tribo')
+        Coupling.getHistory('tribo')
           .then(function (resultHistory) {
             expect(resultHistory).toEqual(expectedHistory);
             done();
