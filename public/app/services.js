@@ -9,20 +9,19 @@ var CouplingData = (function () {
     }
     return CouplingData;
 })();
-var Tribe = (function () {
-    function Tribe() {
-    }
-    return Tribe;
-})();
 var PairSet = (function () {
     function PairSet() {
     }
     return PairSet;
 })();
+var Pin = (function () {
+    function Pin() {
+    }
+    return Pin;
+})();
 var Coupling = (function () {
-    function Coupling($http, $resource, $q) {
+    function Coupling($http, $q, $resource) {
         this.$http = $http;
-        this.$resource = $resource;
         this.$q = $q;
         this.Tribe = Coupling.buildTribeResource($resource);
         this.data = {
@@ -168,7 +167,7 @@ var Coupling = (function () {
             return self.$q.reject(Coupling.errorMessage('GET ' + url, data, status));
         });
     };
-    Coupling.$inject = ['$http', '$resource', '$q'];
+    Coupling.$inject = ['$http', '$q', '$resource'];
     return Coupling;
 })();
 var Randomizer = (function () {

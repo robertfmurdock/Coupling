@@ -1,4 +1,9 @@
 /// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
+/// <reference path="services.ts" />
+
+import IRoute = ng.route.IRoute
+import IRouteProvider = ng.route.IRouteProvider
+import IResource = ng.resource.IResource
 
 var app = angular.module('coupling', ["ngRoute",
     'ngFitText',
@@ -23,7 +28,7 @@ class TribeListRouteController {
     }
 }
 
-var tribeListRoute:ng.route.IRoute = {
+var tribeListRoute:IRoute = {
     template: '<tribelist tribes="main.tribes">',
     controllerAs: 'main',
     controller: TribeListRouteController,
@@ -38,7 +43,7 @@ class NewTribeRouteController {
 
     static $inject = ['Coupling'];
 
-    tribe:any;
+    tribe:Tribe;
 
     constructor(Coupling) {
         this.tribe = new Coupling.Tribe();
@@ -46,7 +51,7 @@ class NewTribeRouteController {
     }
 
 }
-var newTribeRoute:ng.route.IRoute = {
+var newTribeRoute:IRoute = {
     template: '<tribe-config tribe="main.tribe" is-new=true>',
     controllerAs: 'main',
     controller: NewTribeRouteController
@@ -58,10 +63,12 @@ var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
 
 class PrepareTribeRouteController {
     static $inject = ['tribe', 'players'];
-    constructor(public tribe, public players) {}
+
+    constructor(public tribe, public players) {
+    }
 }
 
-var prepareTribeRoute:ng.route.IRoute = {
+var prepareTribeRoute:IRoute = {
     template: '<prepare tribe="main.tribe" players="main.players">',
     controllerAs: 'main',
     controller: PrepareTribeRouteController,
@@ -76,10 +83,12 @@ var prepareTribeRoute:ng.route.IRoute = {
 
 class EditTribeRouteController {
     static $inject = ['tribe'];
-    constructor(public tribe) {}
+
+    constructor(public tribe) {
+    }
 }
 
-var editTribeRoute:ng.route.IRoute = {
+var editTribeRoute:IRoute = {
     template: '<tribe-config tribe="main.tribe" is-new=false>',
     controllerAs: 'main',
     controller: EditTribeRouteController,
@@ -88,7 +97,91 @@ var editTribeRoute:ng.route.IRoute = {
     }
 };
 
-app.config(['$routeProvider', function (routeProvider /*:ng.route.IRouteProvider*/) {
+class HistoryRouteController {
+    static $inject = ['tribe', 'history'];
+
+    constructor(public tribe:Tribe, public history:[PairSet]) {
+    }
+}
+
+var historyRoute:IRoute = {
+    template: '<history tribe="main.tribe" history="main.history">',
+    controllerAs: 'main',
+    controller: HistoryRouteController,
+    resolve: {
+        tribe: tribeResolution,
+        history: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestHistoryPromise($route.current.params.tribeId);
+        }]
+    }
+};
+
+class PinRouteController {
+    static $inject = ['pins'];
+
+    constructor(public pins) {
+    }
+}
+
+var pinRoute:IRoute = {
+    template: '<pin-list pins="main.pins">',
+    controllerAs: 'main',
+    controller: PinRouteController,
+    resolve: {
+        pins: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.promisePins($route.current.params.tribeId);
+        }]
+    }
+};
+
+class NewPlayerRouteController {
+    static $inject = ['$scope', 'tribe', 'players'];
+
+    constructor($scope, tribe, players) {
+        $scope.tribe = tribe;
+        $scope.players = players;
+        $scope.player = {
+            tribe: tribe._id
+        };
+    }
+}
+
+var newPlayerRoute:IRoute = {
+    template: '<player-config>',
+    controller: NewPlayerRouteController,
+    resolve: {
+        tribe: tribeResolution,
+        players: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestPlayersPromise($route.current.params.tribeId,
+                Coupling.requestHistoryPromise($route.current.params.tribeId));
+        }]
+    }
+};
+
+class EditPlayerRouteController {
+    static $inject = ['$scope', '$route', 'tribe', 'players'];
+
+    constructor($scope, $route, tribe, players) {
+        $scope.tribe = tribe;
+        $scope.players = players;
+        var playerId = $route.current.params.id;
+        $scope.player = _.findWhere(players, {_id: playerId});
+    }
+}
+
+var editPlayerRoute:IRoute = {
+    template: '<player-config>',
+    controller: EditPlayerRouteController,
+    resolve: {
+        tribe: tribeResolution,
+        players: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestPlayersPromise($route.current.params.tribeId,
+                Coupling.requestHistoryPromise($route.current.params.tribeId));
+        }]
+    }
+};
+
+app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
 
     routeProvider
         .when('/', {redirectTo: '/tribes/'})
@@ -99,32 +192,8 @@ app.config(['$routeProvider', function (routeProvider /*:ng.route.IRouteProvider
         })
         .when('/:tribeId/prepare/', prepareTribeRoute)
         .when('/:tribeId/edit/', editTribeRoute)
-        .when('/:tribeId/history/', {
-            template: '<history tribe="main.tribe" history="main.history">',
-            controllerAs: 'main',
-            controller: ['tribe', 'history', function (tribe, history) {
-                this.tribe = tribe;
-                this.history = history;
-            }],
-            resolve: {
-                tribe: tribeResolution,
-                history: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.requestHistoryPromise($route.current.params.tribeId);
-                }]
-            }
-        })
-        .when('/:tribeId/pins', {
-            template: '<pin-list pins="main.pins">',
-            controllerAs: 'main',
-            controller: ['pins', function (pins) {
-                this.pins = pins;
-            }],
-            resolve: {
-                pins: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.promisePins($route.current.params.tribeId);
-                }]
-            }
-        })
+        .when('/:tribeId/history/', historyRoute)
+        .when('/:tribeId/pins', pinRoute)
         .when('/:tribeId/pairAssignments/current/', {
             template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers">',
             controller: "CurrentPairAssignmentsController",
@@ -154,39 +223,8 @@ app.config(['$routeProvider', function (routeProvider /*:ng.route.IRouteProvider
                 }]
             }
         })
-        .when('/:tribeId/player/new/', {
-            template: '<player-config>',
-            controller: ['$scope', 'tribe', 'players', function ($scope, tribe, players) {
-                $scope.tribe = tribe;
-                $scope.players = players;
-                $scope.player = {
-                    tribe: tribe._id
-                };
-            }],
-            resolve: {
-                tribe: tribeResolution,
-                players: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                        Coupling.requestHistoryPromise($route.current.params.tribeId));
-                }]
-            }
-        })
-        .when('/:tribeId/player/:id/', {
-            template: '<player-config>',
-            controller: ['$scope', '$route', 'tribe', 'players', function ($scope, $route, tribe, players) {
-                $scope.tribe = tribe;
-                $scope.players = players;
-                var playerId = $route.current.params.id;
-                $scope.player = _.findWhere(players, {_id: playerId});
-            }],
-            resolve: {
-                tribe: tribeResolution,
-                players: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                        Coupling.requestHistoryPromise($route.current.params.tribeId));
-                }]
-            }
-        })
+        .when('/:tribeId/player/new/', newPlayerRoute)
+        .when('/:tribeId/player/:id/', editPlayerRoute)
         .when('/auth/google', {
             redirectTo: '/auth/google'
         });

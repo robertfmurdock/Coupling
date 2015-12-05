@@ -12,20 +12,27 @@ class CouplingData {
     selectedTribeId:String
 }
 
-class Tribe {
+interface Tribe extends ng.resource.IResource<Tribe> {
+    name:String
+}
+
+interface TribeResource extends ng.resource.IResourceClass<Tribe> {
     name:String
 }
 
 class PairSet {
 }
 
+class Pin {
+}
+
 class Coupling {
-    static $inject = ['$http', '$resource', '$q'];
+    static $inject = ['$http', '$q', '$resource'];
 
     data:CouplingData;
-    Tribe:ng.resource.IResourceClass<Tribe>;
+    Tribe:TribeResource;
 
-    constructor(public $http:angular.IHttpService, public $resource:ng.resource.IResourceService, public $q:angular.IQService) {
+    constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
         this.Tribe = Coupling.buildTribeResource($resource);
         this.data = {
             players: null,
@@ -192,7 +199,7 @@ class Coupling {
         return tribe.$save();
     }
 
-    promisePins(tribeId) {
+    promisePins(tribeId):angular.IPromise<[Pin]> {
         var url = '/api/' + tribeId + '/pins';
         var self = this;
         return this.$http.get(url)

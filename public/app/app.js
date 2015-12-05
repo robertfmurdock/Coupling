@@ -1,4 +1,5 @@
 /// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
+/// <reference path="services.ts" />
 var app = angular.module('coupling', ["ngRoute", 'ngFitText', 'ui.gravatar', 'ang-drag-drop', 'coupling.controllers', 'coupling.filters', 'coupling.directives', 'coupling.animations']);
 app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode({
@@ -73,34 +74,87 @@ var editTribeRoute = {
         tribe: tribeResolution
     }
 };
-app.config(['$routeProvider', function (routeProvider /*:ng.route.IRouteProvider*/) {
+var HistoryRouteController = (function () {
+    function HistoryRouteController(tribe, history) {
+        this.tribe = tribe;
+        this.history = history;
+    }
+    HistoryRouteController.$inject = ['tribe', 'history'];
+    return HistoryRouteController;
+})();
+var historyRoute = {
+    template: '<history tribe="main.tribe" history="main.history">',
+    controllerAs: 'main',
+    controller: HistoryRouteController,
+    resolve: {
+        tribe: tribeResolution,
+        history: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestHistoryPromise($route.current.params.tribeId);
+        }]
+    }
+};
+var PinRouteController = (function () {
+    function PinRouteController(pins) {
+        this.pins = pins;
+    }
+    PinRouteController.$inject = ['pins'];
+    return PinRouteController;
+})();
+var pinRoute = {
+    template: '<pin-list pins="main.pins">',
+    controllerAs: 'main',
+    controller: PinRouteController,
+    resolve: {
+        pins: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.promisePins($route.current.params.tribeId);
+        }]
+    }
+};
+var NewPlayerRouteController = (function () {
+    function NewPlayerRouteController($scope, tribe, players) {
+        $scope.tribe = tribe;
+        $scope.players = players;
+        $scope.player = {
+            tribe: tribe._id
+        };
+    }
+    NewPlayerRouteController.$inject = ['$scope', 'tribe', 'players'];
+    return NewPlayerRouteController;
+})();
+var newPlayerRoute = {
+    template: '<player-config>',
+    controller: NewPlayerRouteController,
+    resolve: {
+        tribe: tribeResolution,
+        players: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+        }]
+    }
+};
+var EditPlayerRouteController = (function () {
+    function EditPlayerRouteController($scope, $route, tribe, players) {
+        $scope.tribe = tribe;
+        $scope.players = players;
+        var playerId = $route.current.params.id;
+        $scope.player = _.findWhere(players, { _id: playerId });
+    }
+    EditPlayerRouteController.$inject = ['$scope', '$route', 'tribe', 'players'];
+    return EditPlayerRouteController;
+})();
+var editPlayerRoute = {
+    template: '<player-config>',
+    controller: EditPlayerRouteController,
+    resolve: {
+        tribe: tribeResolution,
+        players: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
+        }]
+    }
+};
+app.config(['$routeProvider', function (routeProvider) {
     routeProvider.when('/', { redirectTo: '/tribes/' }).when('/tribes/', tribeListRoute).when('/new-tribe/', newTribeRoute).when('/:tribeId/', {
         redirectTo: '/:tribeId/pairAssignments/current/'
-    }).when('/:tribeId/prepare/', prepareTribeRoute).when('/:tribeId/edit/', editTribeRoute).when('/:tribeId/history/', {
-        template: '<history tribe="main.tribe" history="main.history">',
-        controllerAs: 'main',
-        controller: ['tribe', 'history', function (tribe, history) {
-            this.tribe = tribe;
-            this.history = history;
-        }],
-        resolve: {
-            tribe: tribeResolution,
-            history: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestHistoryPromise($route.current.params.tribeId);
-            }]
-        }
-    }).when('/:tribeId/pins', {
-        template: '<pin-list pins="main.pins">',
-        controllerAs: 'main',
-        controller: ['pins', function (pins) {
-            this.pins = pins;
-        }],
-        resolve: {
-            pins: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.promisePins($route.current.params.tribeId);
-            }]
-        }
-    }).when('/:tribeId/pairAssignments/current/', {
+    }).when('/:tribeId/prepare/', prepareTribeRoute).when('/:tribeId/edit/', editTribeRoute).when('/:tribeId/history/', historyRoute).when('/:tribeId/pins', pinRoute).when('/:tribeId/pairAssignments/current/', {
         template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers">',
         controller: "CurrentPairAssignmentsController",
         controllerAs: 'main',
@@ -125,36 +179,7 @@ app.config(['$routeProvider', function (routeProvider /*:ng.route.IRouteProvider
                 return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
             }]
         }
-    }).when('/:tribeId/player/new/', {
-        template: '<player-config>',
-        controller: ['$scope', 'tribe', 'players', function ($scope, tribe, players) {
-            $scope.tribe = tribe;
-            $scope.players = players;
-            $scope.player = {
-                tribe: tribe._id
-            };
-        }],
-        resolve: {
-            tribe: tribeResolution,
-            players: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
-            }]
-        }
-    }).when('/:tribeId/player/:id/', {
-        template: '<player-config>',
-        controller: ['$scope', '$route', 'tribe', 'players', function ($scope, $route, tribe, players) {
-            $scope.tribe = tribe;
-            $scope.players = players;
-            var playerId = $route.current.params.id;
-            $scope.player = _.findWhere(players, { _id: playerId });
-        }],
-        resolve: {
-            tribe: tribeResolution,
-            players: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.requestHistoryPromise($route.current.params.tribeId));
-            }]
-        }
-    }).when('/auth/google', {
+    }).when('/:tribeId/player/new/', newPlayerRoute).when('/:tribeId/player/:id/', editPlayerRoute).when('/auth/google', {
         redirectTo: '/auth/google'
     });
 }]);
