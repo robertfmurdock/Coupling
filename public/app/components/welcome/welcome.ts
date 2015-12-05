@@ -6,13 +6,13 @@ interface Card {
     imagePath : String
 }
 
-interface CardPair {
+interface WelcomeCardSet {
     leftCard: Card
     rightCard: Card
     proverb: String
 }
 
-var candidates:[CardPair] = [{
+var candidates:[WelcomeCardSet] = [{
     leftCard: {
         name: 'Frodo',
         imagePath: 'frodo-icon.png'
@@ -45,6 +45,12 @@ var candidates:[CardPair] = [{
 }];
 
 class WelcomeController {
+
+    private static chooseWelcomeCards(randomizer):WelcomeCardSet {
+        var indexToUse = randomizer.next(candidates.length - 1);
+        return candidates[indexToUse];
+    }
+
     static $inject = ['$timeout', 'randomizer'];
 
     public show:boolean;
@@ -54,9 +60,7 @@ class WelcomeController {
 
     constructor($timeout:angular.ITimeoutService, randomizer:Randomizer) {
         this.show = false;
-        var indexToUse = randomizer.next(candidates.length - 1);
-        var choice = candidates[indexToUse];
-
+        var choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftCard = choice.leftCard;
         this.rightCard = choice.rightCard;
         this.proverb = choice.proverb;
@@ -65,6 +69,7 @@ class WelcomeController {
             self.show = true;
         }, 0);
     }
+
 }
 
 angular.module('coupling.controllers')

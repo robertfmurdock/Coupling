@@ -1,3 +1,8 @@
-span(ng-show="tribe" class="tribe" enter-press="clickOnTribeCard(tribe)" ng-click="clickOnTribeCard(tribe)" ng-enter="clickOnTribeCard(tribe)" tabindex="0")
-    div(class="tribe-name" ng-click="clickOnTribeName(tribe, $event)") {{tribe.name}}
-    img(ng-src="{{tribe | tribeImageUrl: {size: 150} }}" width="150" height="150")
+span(class="tribe"
+ng-show="tribecard.tribe"
+enter-press="tribecard.clickOnTribeCard()"
+ng-click="tribecard.clickOnTribeCard()"
+ng-enter="tribecard.clickOnTribeCard()"
+tabindex="0")
+    div(class="tribe-name" ng-click="tribecard.clickOnTribeName($event)") {{tribecard.tribe.name}}
+    img(ng-src="{{tribecard.tribe | tribeImageUrl: {size: 150} }}" width="150" height="150")

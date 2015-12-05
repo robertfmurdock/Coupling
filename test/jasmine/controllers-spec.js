@@ -65,18 +65,15 @@ describe('The controller named ', function () {
 
   describe('TribeCardController', function () {
 
-    var Coupling, location;
+    var location;
+    var controller;
+
     beforeEach(function () {
       location = {
         path: jasmine.createSpy('path')
       };
-      Coupling = {
-        data: {},
-        selectTribe: jasmine.createSpy('selectTribe')
-      };
       inject(function ($controller) {
-        $controller('TribeCardController', {
-          $scope: scope,
+        controller = $controller('TribeCardController', {
           $location: location
         });
       });
@@ -84,33 +81,34 @@ describe('The controller named ', function () {
 
     describe('clickOnTribeCard', function () {
       it('that changes location to that tribe\'s current pair assignments', function () {
-        var tribe = {
+        controller.tribe = {
           _id: 'amazingMagicId'
         };
+
         expect(location.path).not.toHaveBeenCalled();
-        scope.clickOnTribeCard(tribe);
-        expect(location.path).toHaveBeenCalledWith("/" + tribe._id + "/pairAssignments/current");
+        controller.clickOnTribeCard();
+        expect(location.path).toHaveBeenCalledWith("/" + controller.tribe._id + "/pairAssignments/current");
       });
     });
 
     describe('clickOnTribeName', function () {
       it('that changes location to that tribe', function () {
-        var tribe = {
+        controller.tribe = {
           _id: 'amazingMagicId'
         };
         expect(location.path).not.toHaveBeenCalled();
-        scope.clickOnTribeName(tribe, {});
-        expect(location.path).toHaveBeenCalledWith("/" + tribe._id + '/edit/');
+        controller.clickOnTribeName({});
+        expect(location.path).toHaveBeenCalledWith("/" + controller.tribe._id + '/edit/');
       });
 
       it('will stop propagation to other click events', function () {
         var event = {
           stopPropagation: jasmine.createSpy('stopPropagation')
         };
-        var tribe = {
+        controller.tribe = {
           _id: 'amazingMagicId'
         };
-        scope.clickOnTribeName(tribe, event);
+        controller.clickOnTribeName(event);
         expect(event.stopPropagation).toHaveBeenCalled();
       });
     });

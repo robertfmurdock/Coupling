@@ -52,7 +52,6 @@ angular.module('coupling.controllers')
         });
       }
 
-
       this.onDrop = function ($event, draggedPlayer, droppedPlayer) {
         var pairWithDraggedPlayer = findPairContainingPlayer(draggedPlayer, controller.currentPairAssignments.pairs);
         var pairWithDroppedPlayer = findPairContainingPlayer(droppedPlayer, controller.currentPairAssignments.pairs);

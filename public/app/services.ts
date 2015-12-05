@@ -15,6 +15,7 @@ class CouplingData {
 }
 
 interface Tribe extends ng.resource.IResource<Tribe> {
+    _id: String;
     name:String
 }
 

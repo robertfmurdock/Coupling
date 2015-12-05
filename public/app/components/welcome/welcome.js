@@ -34,8 +34,7 @@ var candidates = [{
 var WelcomeController = (function () {
     function WelcomeController($timeout, randomizer) {
         this.show = false;
-        var indexToUse = randomizer.next(candidates.length - 1);
-        var choice = candidates[indexToUse];
+        var choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftCard = choice.leftCard;
         this.rightCard = choice.rightCard;
         this.proverb = choice.proverb;
@@ -44,6 +43,10 @@ var WelcomeController = (function () {
             self.show = true;
         }, 0);
     }
+    WelcomeController.chooseWelcomeCards = function (randomizer) {
+        var indexToUse = randomizer.next(candidates.length - 1);
+        return candidates[indexToUse];
+    };
     WelcomeController.$inject = ['$timeout', 'randomizer'];
     return WelcomeController;
 })();
