@@ -24,7 +24,10 @@ interface TribeResource extends ng.resource.IResourceClass<Tribe> {
     name:String
 }
 
-class PairSet {
+interface PairAssignmentSetResource extends ng.resource.IResourceClass<PairAssignmentSet> {
+}
+
+interface PairAssignmentSet extends ng.resource.IResource<PairAssignmentSet> {
     pairs:[[Player]]
 }
 
@@ -41,11 +44,113 @@ class Coupling {
 
     data:CouplingData;
     Tribe:TribeResource;
+    PairAssignmentSet:PairAssignmentSetResource;
 
     constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
-        this.Tribe = <TribeResource>$resource('/api/tribes/:tribeId');
+        this.Tribe = <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@_id'});
+        this.PairAssignmentSet = <PairAssignmentSetResource>$resource('/api/:tribeId/history/:id', {id: '@_id'});
         this.data = new CouplingData();
         this.data.selectablePlayers = {};
+    }
+
+    getTribes():IPromise<ng.resource.IResourceArray<Tribe>> {
+        var url = '/api/tribes';
+        var self = this;
+        return this.Tribe
+            .query()
+            .$promise
+            .catch(function (response) {
+                console.info(response);
+                return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
+            });
+    }
+
+    requestSpecificTribe(tribeId):IPromise<Tribe> {
+        var self = this;
+        console.log(tribeId);
+        return this.Tribe.get({tribeId: tribeId})
+            .$promise;
+        //.then(function (tribes) {
+        //    var tribe = _.findWhere(tribes, {
+        //        _id: tribeId
+        //    });
+        //    if (!tribe) {
+        //        return self.$q.reject("Tribe not found");
+        //    }
+        //    return tribe;
+        //})
+    }
+
+    getHistory(tribeId):IPromise<[PairAssignmentSet]> {
+        return this.PairAssignmentSet
+            .query({tribeId: tribeId})
+            .$promise;
+    }
+
+    spin(players, tribeId):IPromise<PairAssignmentSet> {
+        var url = '/api/' + tribeId + '/spin';
+        return this.$http.post(url, players)
+            .then(function (result) {
+                return result.data;
+            },
+            this.logAndRejectError('POST ' + url));
+    }
+
+    saveCurrentPairAssignments(tribeId:String, pairAssignments:PairAssignmentSet) {
+        var url = '/api/' + tribeId + '/history';
+        return this.$http.post(url, pairAssignments)
+            .then(function (result) {
+                return result.data;
+            },
+            this.logAndRejectError('POST ' + url));
+    }
+
+    getPlayers(tribeId) {
+        var url = '/api/' + tribeId + '/players';
+        var self = this;
+        return this.$http.get(url)
+            .then(function (response:angular.IHttpPromiseCallbackArg<[Player]>) {
+                return response.data;
+            },
+            function (response) {
+                var data = response.data;
+                var statusCode = response.status;
+                var message = Coupling.errorMessage(url, data, statusCode);
+                console.error('ALERT!\n' + message);
+                return self.$q.reject(message);
+            });
+    }
+
+    savePlayer(player) {
+        return this.post('/api/' + player.tribe + '/players', player);
+    }
+
+    removePlayer(player) {
+        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
+    }
+
+    getSelectedPlayers(players:Player[], history) {
+        var selectablePlayers = _.map(players, (player)=> {
+            var selected = this.playerShouldBeSelected(player, history);
+            return [player._id, new SelectablePlayer(selected, player)];
+        });
+
+        this.data.selectablePlayers = <SelectablePlayerMap>_.object(selectablePlayers);
+        return this.data.selectablePlayers;
+    }
+
+    getPins(tribeId):IPromise<[Pin]> {
+        var url = '/api/' + tribeId + '/pins';
+        var self = this;
+        return this.$http.get(url)
+            .then(function (response) {
+                return response.data;
+            },
+            function (response) {
+                var data = response.data;
+                var status = response.status;
+                return self.$q.reject(Coupling.errorMessage('GET ' + url, data, status));
+            });
     }
 
     private static errorMessage(url, data, statusCode) {
@@ -80,39 +185,6 @@ class Coupling {
             this.logAndRejectError(url));
     }
 
-    getTribes():IPromise<ng.resource.IResourceArray<Tribe>> {
-        var url = '/api/tribes';
-        var self = this;
-        return this.Tribe.query().$promise
-            .catch(function (response) {
-                console.info(response);
-                return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
-            });
-    }
-
-    getHistory(tribeId):IPromise<[PairSet]> {
-        var url = '/api/' + tribeId + '/history';
-        return this.$http.get(url)
-            .then((response:angular.IHttpPromiseCallbackArg<[PairSet]>) => {
-                return response.data;
-            },
-            this.logAndRejectError('POST ' + url));
-    }
-
-    requestSpecificTribe(tribeId):IPromise<Tribe> {
-        var self = this;
-        return this.getTribes()
-            .then(function (tribes) {
-                var tribe = _.findWhere(tribes, {
-                    _id: tribeId
-                });
-                if (!tribe) {
-                    return self.$q.reject("Tribe not found");
-                }
-                return tribe;
-            })
-    }
-
     private isInLastSetOfPairs(player, history) {
         var result = _.find(history[0].pairs, function (pairset:[{}]) {
             if (_.findWhere(pairset, {
@@ -122,16 +194,6 @@ class Coupling {
             }
         });
         return !!result;
-    }
-
-    getSelectedPlayers(players:Player[], history) {
-        var selectablePlayers = _.map(players, (player)=> {
-            var selected = this.playerShouldBeSelected(player, history);
-            return [player._id, new SelectablePlayer(selected, player)];
-        });
-
-        this.data.selectablePlayers = <SelectablePlayerMap>_.object(selectablePlayers);
-        return this.data.selectablePlayers;
     }
 
     private playerShouldBeSelected(player, history) {
@@ -144,61 +206,6 @@ class Coupling {
         }
     }
 
-    getPlayers(tribeId) {
-        var url = '/api/' + tribeId + '/players';
-        var self = this;
-        return this.$http.get(url)
-            .then(function (response:angular.IHttpPromiseCallbackArg<[Player]>) {
-                return response.data;
-            },
-            function (response) {
-                var data = response.data;
-                var statusCode = response.status;
-                var message = Coupling.errorMessage(url, data, statusCode);
-                console.error('ALERT!\n' + message);
-                return self.$q.reject(message);
-            });
-    }
-
-    spin(players, tribeId):IPromise<PairSet> {
-        var url = '/api/' + tribeId + '/spin';
-        return this.$http.post(url, players)
-            .then(function (result) {
-                return result.data;
-            },
-            this.logAndRejectError('POST ' + url));
-    }
-
-    saveCurrentPairAssignments(tribeId:String, pairAssignments:PairSet) {
-        var url = '/api/' + tribeId + '/history';
-        return this.$http.post(url, pairAssignments)
-            .then(function (result) {
-                return result.data;
-            },
-            this.logAndRejectError('POST ' + url));
-    }
-
-    savePlayer(player) {
-        return this.post('/api/' + player.tribe + '/players', player);
-    }
-
-    removePlayer(player) {
-        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
-    }
-
-    getPins(tribeId):IPromise<[Pin]> {
-        var url = '/api/' + tribeId + '/pins';
-        var self = this;
-        return this.$http.get(url)
-            .then(function (response) {
-                return response.data;
-            },
-            function (response) {
-                var data = response.data;
-                var status = response.status;
-                return self.$q.reject(Coupling.errorMessage('GET ' + url, data, status));
-            });
-    }
 }
 
 class Randomizer {

@@ -25,6 +25,12 @@ var CouplingDataService = function (mongoUrl) {
         return makeDocumentPromise(tribesCollection);
     };
 
+    this.requestTribe = function (tribeId) {
+        return new Promise(function (resolve, reject) {
+            tribesCollection.findById(tribeId).then(resolve, reject)
+        }).catch(handleMongoError, "Wrapping error");
+    };
+
     this.requestHistory = function (tribeId) {
         return makeDocumentPromise(historyCollection, {sort: {date: -1}}, {'tribe': tribeId, isDeleted: null});
     };

@@ -29,11 +29,15 @@ describe('Service: ', function () {
 
         Coupling.getHistory('tribo')
           .then(function (resultHistory) {
-            expect(resultHistory).toEqual(expectedHistory);
+            expect(resultHistory.length).toBe(expectedHistory.length);
+            expect(resultHistory[0]._id).toEqual(expectedHistory[0]._id);
+            expect(resultHistory[1]._id).toEqual(expectedHistory[1]._id);
             done();
-          }).catch(function (error) {
+          })
+          .catch(function (error) {
             expect(error).toBeUndefined();
-          }).finally(done);
+          })
+          .finally(done);
         httpBackend.flush();
       });
     });

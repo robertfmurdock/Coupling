@@ -5,7 +5,7 @@ class PairAssignmentsController {
     static $inject = ['Coupling', '$location'];
     tribe:Tribe;
     players:[Player];
-    pairAssignments:PairSet;
+    pairAssignments:PairAssignmentSet;
     isNew:boolean;
     private _unpairedPlayers:Player[];
 
@@ -56,7 +56,7 @@ class PairAssignmentsController {
         });
     }
 
-    private findUnpairedPlayers(players:[Player], pairAssignmentDocument:PairSet):Player[] {
+    private findUnpairedPlayers(players:[Player], pairAssignmentDocument:PairAssignmentSet):Player[] {
         if (!pairAssignmentDocument) {
             return players;
         }

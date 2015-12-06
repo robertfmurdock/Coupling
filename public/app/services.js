@@ -9,11 +9,6 @@ var CouplingData = (function () {
     }
     return CouplingData;
 })();
-var PairSet = (function () {
-    function PairSet() {
-    }
-    return PairSet;
-})();
 var Pin = (function () {
     function Pin() {
     }
@@ -30,10 +25,97 @@ var Coupling = (function () {
     function Coupling($http, $q, $resource) {
         this.$http = $http;
         this.$q = $q;
-        this.Tribe = $resource('/api/tribes/:tribeId');
+        this.Tribe = $resource('/api/tribes/:tribeId', { tribeId: '@_id' });
+        this.PairAssignmentSet = $resource('/api/:tribeId/history/:id', { id: '@_id' });
         this.data = new CouplingData();
         this.data.selectablePlayers = {};
     }
+    Coupling.prototype.getTribes = function () {
+        var url = '/api/tribes';
+        var self = this;
+        return this.Tribe
+            .query()
+            .$promise
+            .catch(function (response) {
+            console.info(response);
+            return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
+        });
+    };
+    Coupling.prototype.requestSpecificTribe = function (tribeId) {
+        var self = this;
+        console.log(tribeId);
+        return this.Tribe.get({ tribeId: tribeId })
+            .$promise;
+        //.then(function (tribes) {
+        //    var tribe = _.findWhere(tribes, {
+        //        _id: tribeId
+        //    });
+        //    if (!tribe) {
+        //        return self.$q.reject("Tribe not found");
+        //    }
+        //    return tribe;
+        //})
+    };
+    Coupling.prototype.getHistory = function (tribeId) {
+        return this.PairAssignmentSet
+            .query({ tribeId: tribeId })
+            .$promise;
+    };
+    Coupling.prototype.spin = function (players, tribeId) {
+        var url = '/api/' + tribeId + '/spin';
+        return this.$http.post(url, players)
+            .then(function (result) {
+            return result.data;
+        }, this.logAndRejectError('POST ' + url));
+    };
+    Coupling.prototype.saveCurrentPairAssignments = function (tribeId, pairAssignments) {
+        var url = '/api/' + tribeId + '/history';
+        return this.$http.post(url, pairAssignments)
+            .then(function (result) {
+            return result.data;
+        }, this.logAndRejectError('POST ' + url));
+    };
+    Coupling.prototype.getPlayers = function (tribeId) {
+        var url = '/api/' + tribeId + '/players';
+        var self = this;
+        return this.$http.get(url)
+            .then(function (response) {
+            return response.data;
+        }, function (response) {
+            var data = response.data;
+            var statusCode = response.status;
+            var message = Coupling.errorMessage(url, data, statusCode);
+            console.error('ALERT!\n' + message);
+            return self.$q.reject(message);
+        });
+    };
+    Coupling.prototype.savePlayer = function (player) {
+        return this.post('/api/' + player.tribe + '/players', player);
+    };
+    Coupling.prototype.removePlayer = function (player) {
+        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
+    };
+    Coupling.prototype.getSelectedPlayers = function (players, history) {
+        var _this = this;
+        var selectablePlayers = _.map(players, function (player) {
+            var selected = _this.playerShouldBeSelected(player, history);
+            return [player._id, new SelectablePlayer(selected, player)];
+        });
+        this.data.selectablePlayers = _.object(selectablePlayers);
+        return this.data.selectablePlayers;
+    };
+    Coupling.prototype.getPins = function (tribeId) {
+        var url = '/api/' + tribeId + '/pins';
+        var self = this;
+        return this.$http.get(url)
+            .then(function (response) {
+            return response.data;
+        }, function (response) {
+            var data = response.data;
+            var status = response.status;
+            return self.$q.reject(Coupling.errorMessage('GET ' + url, data, status));
+        });
+    };
     Coupling.errorMessage = function (url, data, statusCode) {
         return "There was a problem with request " + url + "\n" +
             "Data: <" + data + ">\n" +
@@ -60,35 +142,6 @@ var Coupling = (function () {
             .then(function () {
         }, this.logAndRejectError(url));
     };
-    Coupling.prototype.getTribes = function () {
-        var url = '/api/tribes';
-        var self = this;
-        return this.Tribe.query().$promise
-            .catch(function (response) {
-            console.info(response);
-            return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
-        });
-    };
-    Coupling.prototype.getHistory = function (tribeId) {
-        var url = '/api/' + tribeId + '/history';
-        return this.$http.get(url)
-            .then(function (response) {
-            return response.data;
-        }, this.logAndRejectError('POST ' + url));
-    };
-    Coupling.prototype.requestSpecificTribe = function (tribeId) {
-        var self = this;
-        return this.getTribes()
-            .then(function (tribes) {
-            var tribe = _.findWhere(tribes, {
-                _id: tribeId
-            });
-            if (!tribe) {
-                return self.$q.reject("Tribe not found");
-            }
-            return tribe;
-        });
-    };
     Coupling.prototype.isInLastSetOfPairs = function (player, history) {
         var result = _.find(history[0].pairs, function (pairset) {
             if (_.findWhere(pairset, {
@@ -98,15 +151,6 @@ var Coupling = (function () {
             }
         });
         return !!result;
-    };
-    Coupling.prototype.getSelectedPlayers = function (players, history) {
-        var _this = this;
-        var selectablePlayers = _.map(players, function (player) {
-            var selected = _this.playerShouldBeSelected(player, history);
-            return [player._id, new SelectablePlayer(selected, player)];
-        });
-        this.data.selectablePlayers = _.object(selectablePlayers);
-        return this.data.selectablePlayers;
     };
     Coupling.prototype.playerShouldBeSelected = function (player, history) {
         if (this.data.selectablePlayers[player._id]) {
@@ -118,52 +162,6 @@ var Coupling = (function () {
         else {
             return true;
         }
-    };
-    Coupling.prototype.getPlayers = function (tribeId) {
-        var url = '/api/' + tribeId + '/players';
-        var self = this;
-        return this.$http.get(url)
-            .then(function (response) {
-            return response.data;
-        }, function (response) {
-            var data = response.data;
-            var statusCode = response.status;
-            var message = Coupling.errorMessage(url, data, statusCode);
-            console.error('ALERT!\n' + message);
-            return self.$q.reject(message);
-        });
-    };
-    Coupling.prototype.spin = function (players, tribeId) {
-        var url = '/api/' + tribeId + '/spin';
-        return this.$http.post(url, players)
-            .then(function (result) {
-            return result.data;
-        }, this.logAndRejectError('POST ' + url));
-    };
-    Coupling.prototype.saveCurrentPairAssignments = function (tribeId, pairAssignments) {
-        var url = '/api/' + tribeId + '/history';
-        return this.$http.post(url, pairAssignments)
-            .then(function (result) {
-            return result.data;
-        }, this.logAndRejectError('POST ' + url));
-    };
-    Coupling.prototype.savePlayer = function (player) {
-        return this.post('/api/' + player.tribe + '/players', player);
-    };
-    Coupling.prototype.removePlayer = function (player) {
-        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
-    };
-    Coupling.prototype.getPins = function (tribeId) {
-        var url = '/api/' + tribeId + '/pins';
-        var self = this;
-        return this.$http.get(url)
-            .then(function (response) {
-            return response.data;
-        }, function (response) {
-            var data = response.data;
-            var status = response.status;
-            return self.$q.reject(Coupling.errorMessage('GET ' + url, data, status));
-        });
     };
     Coupling.$inject = ['$http', '$q', '$resource'];
     return Coupling;

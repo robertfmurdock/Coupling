@@ -107,7 +107,7 @@ var editTribeRoute:IRoute = {
 class HistoryRouteController {
     static $inject = ['tribe', 'history'];
 
-    constructor(public tribe:Tribe, public history:[PairSet]) {
+    constructor(public tribe:Tribe, public history:[PairAssignmentSet]) {
     }
 }
 
@@ -196,7 +196,7 @@ var editPlayerRoute:IRoute = {
 class CurrentPairAssignmentsRouteController {
     static $inject = ['pairAssignmentDocument', 'tribe', 'players'];
 
-    constructor(public pairAssignments:PairSet, public tribe:Tribe, public players:[Player]) {
+    constructor(public pairAssignments:PairAssignmentSet, public tribe:Tribe, public players:[Player]) {
     }
 }
 
@@ -221,7 +221,7 @@ class NewPairAssignmentsRouteController {
     static $inject = ['requirements'];
     tribe:Tribe;
     players:[Player];
-    pairAssignments:PairSet;
+    pairAssignments:PairAssignmentSet;
 
     constructor(requirements) {
         this.tribe = requirements.tribe;

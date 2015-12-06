@@ -45,6 +45,27 @@ var TribeRoutes = function () {
       });
   };
 
+  this.get = function (request, response) {
+    RSVP.hash({
+      tribe: request.dataService.requestTribe(request.params.tribeId),
+      authorizedTribeIds: loadAuthorizedTribeIds(request.user, request.dataService.mongoUrl)
+    })
+      .then(function (hash) {
+        var isAuthorized = _.contains(hash.authorizedTribeIds, hash.tribe._id);
+        if (isAuthorized) {
+          response.send(hash.tribe);
+        } else {
+          response.statusCode = 404;
+          response.send({message: 'Tribe not found.'});
+        }
+        return isAuthorized;
+      })
+      .catch(function (error) {
+        response.statusCode = 500;
+        response.send(error.message);
+      });
+  };
+
   this.save = function (request, response) {
     var database = monk(request.dataService.mongoUrl);
     var tribesCollection = database.get('tribes');
@@ -54,12 +75,17 @@ var TribeRoutes = function () {
       usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON._id}});
       response.send(request.body);
     });
-  }
+  };
 };
 
 var tribes = new TribeRoutes();
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 router.route('/')
   .get(tribes.list)
+  .post(tribes.save);
+
+
+router.route('/:tribeId')
+  .get(tribes.get)
   .post(tribes.save);
 module.exports = router;
