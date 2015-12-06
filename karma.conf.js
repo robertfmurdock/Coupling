@@ -31,7 +31,6 @@ module.exports = function (config) {
             'public/javascripts/bower_components/rsvp/rsvp.js',
             "public/app/app.js",
             "public/app/services.js",
-            "public/app/controllers.js",
             "public/app/components/welcome/welcome.js",
             "public/app/components/tribe-card/tribe-card.js",
             "public/app/components/tribe-list/tribe-list.js",

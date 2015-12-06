@@ -68,7 +68,7 @@ class Coupling {
         }
     }
 
-    private  post<T>(url, object:T):IPromise<T> {
+    private post<T>(url, object:T):IPromise<T> {
         return this.$http.post(url, object)
             .then(function (result) {
                 return result.data;

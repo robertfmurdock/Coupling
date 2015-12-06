@@ -2,12 +2,14 @@
 /// <reference path="../../services.ts" />
 
 class PairAssignmentsController {
-    tribe: Tribe;
+    static $inject = ['Coupling', '$location'];
+    tribe:Tribe;
     players:[Player];
     pairAssignments:PairSet;
+    isNew:boolean;
     private _unpairedPlayers:Player[];
 
-    constructor() {
+    constructor(public Coupling, private $location) {
     }
 
     get unpairedPlayers():Player[] {
@@ -17,45 +19,6 @@ class PairAssignmentsController {
             this._unpairedPlayers = this.findUnpairedPlayers(this.players, this.pairAssignments);
             return this._unpairedPlayers;
         }
-    }
-
-    private findUnpairedPlayers(players:[Player], pairAssignmentDocument:PairSet):Player[] {
-        if (!pairAssignmentDocument) {
-            return players;
-        }
-        var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
-        return _.filter(players, function (value:Player) {
-            var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
-            return found == undefined;
-        });
-    }
-}
-
-angular.module('coupling.controllers')
-    .controller('PairAssignmentsController', PairAssignmentsController);
-
-
-angular.module("coupling.directives")
-    .directive('pairAssignments', () => {
-        return {
-            controller: 'PairAssignmentsController',
-            controllerAs: 'pairAssignments',
-            bindToController: {
-                tribe: '=',
-                players: '=',
-                pairAssignments: '=pairs'
-            },
-            restrict: 'E',
-            templateUrl: '/app/components/pair-assignments/pair-assignments.html'
-        }
-    });
-
-
-class NewPairAssignmentsController extends PairAssignmentsController {
-    static $inject = ['Coupling', '$location'];
-
-    constructor(public Coupling, private $location) {
-        super();
     }
 
     save() {
@@ -92,21 +55,33 @@ class NewPairAssignmentsController extends PairAssignmentsController {
             }
         });
     }
+
+    private findUnpairedPlayers(players:[Player], pairAssignmentDocument:PairSet):Player[] {
+        if (!pairAssignmentDocument) {
+            return players;
+        }
+        var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
+        return _.filter(players, function (value:Player) {
+            var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
+            return found == undefined;
+        });
+    }
 }
 
 angular.module('coupling.controllers')
-    .controller('NewPairAssignmentsController', NewPairAssignmentsController);
+    .controller('PairAssignmentsController', PairAssignmentsController);
 
 
 angular.module("coupling.directives")
-    .directive('newPairAssignments', () => {
+    .directive('pairAssignments', () => {
         return {
-            controller: 'NewPairAssignmentsController',
+            controller: 'PairAssignmentsController',
             controllerAs: 'pairAssignments',
             bindToController: {
                 tribe: '=',
                 players: '=',
-                pairAssignments: '=pairs'
+                pairAssignments: '=pairs',
+                isNew: '='
             },
             restrict: 'E',
             templateUrl: '/app/components/pair-assignments/pair-assignments.html'

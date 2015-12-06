@@ -194,7 +194,7 @@ var NewPairAssignmentsRouteController = (function () {
     return NewPairAssignmentsRouteController;
 })();
 var newPairAssignmentsRoute = {
-    template: '<new-pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
+    template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments" is-new="true">',
     controllerAs: 'main',
     controller: NewPairAssignmentsRouteController,
     resolve: {

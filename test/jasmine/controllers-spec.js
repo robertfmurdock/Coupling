@@ -190,8 +190,8 @@ describe('The controller named ', function () {
     });
   });
 
-  describe('NewPairAssignmentsController', function () {
-    var ControllerName = 'NewPairAssignmentsController';
+  describe('PairAssignmentsController', function () {
+    var ControllerName = 'PairAssignmentsController';
     var Coupling, location, routeParams;
     var spinDefer = new RSVP.defer();
     var selectedTribe = {
