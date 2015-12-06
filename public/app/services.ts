@@ -136,34 +136,14 @@ class Coupling {
         return !!result;
     }
 
-    requestPlayersPromise(tribeId, historyPromise:IPromise<[PairSet]>) {
-        var self = this;
-        return this.$q.all({
-            players: this.getPlayers(tribeId),
-            history: historyPromise
-        })
-            .then(this.decoratePlayersWithAvailabilityBasedOnCurrentPairings())
-            .then(players=> {
-                self.data.players = players;
-                return players;
-            })
-    }
+    getSelectedPlayers(players:Player[], history) {
+        var selectablePlayers = _.map(players, (player)=> {
+            var selected = this.playerShouldBeSelected(player, history);
+            return [player._id, new SelectablePlayer(selected, player)];
+        });
 
-    private decoratePlayersWithAvailabilityBasedOnCurrentPairings() {
-        var self = this;
-        return function (data:any) {
-            var players:[Player] = data.players;
-            var history:[PairSet] = data.history;
-
-            var selectablePlayers = _.map(players, (player)=> {
-                var selected = self.playerShouldBeSelected(player, history);
-                return [player._id, new SelectablePlayer(selected, player)];
-            });
-
-            self.data.selectablePlayers = <SelectablePlayerMap>_.object(selectablePlayers);
-
-            return players;
-        };
+        this.data.selectablePlayers = <SelectablePlayerMap>_.object(selectablePlayers);
+        return this.data.selectablePlayers;
     }
 
     private playerShouldBeSelected(player, history) {
@@ -218,7 +198,7 @@ class Coupling {
         return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
     }
 
-    promisePins(tribeId):IPromise<[Pin]> {
+    getPins(tribeId):IPromise<[Pin]> {
         var url = '/api/' + tribeId + '/pins';
         var self = this;
         return this.$http.get(url)

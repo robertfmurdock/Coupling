@@ -73,9 +73,17 @@ var prepareTribeRoute:IRoute = {
     controller: PrepareTribeRouteController,
     resolve: {
         tribe: tribeResolution,
-        players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.getHistory($route.current.params.tribeId));
+        players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling:Coupling) {
+            var tribeId = $route.current.params.tribeId;
+            return $q.all({
+                players: Coupling.getPlayers(tribeId),
+                history: Coupling.getHistory(tribeId)
+            }).then(options=> {
+                options.selectedPlayers = Coupling.getSelectedPlayers(options.players, options.history);
+                return options;
+            }).then(options=> {
+                return options.players;
+            });
         }]
     }
 };
@@ -127,8 +135,8 @@ var pinRoute:IRoute = {
     controllerAs: 'main',
     controller: PinRouteController,
     resolve: {
-        pins: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.promisePins($route.current.params.tribeId);
+        pins: ['$route', 'Coupling', function ($route, Coupling:Coupling) {
+            return Coupling.getPins($route.current.params.tribeId);
         }]
     }
 };
@@ -154,8 +162,7 @@ var newPlayerRoute:IRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.getHistory($route.current.params.tribeId));
+            return Coupling.getPlayers($route.current.params.tribeId);
         }]
     }
 };
@@ -181,8 +188,7 @@ var editPlayerRoute:IRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.getHistory($route.current.params.tribeId));
+            return Coupling.getPlayers($route.current.params.tribeId);
         }]
     }
 };
@@ -206,8 +212,7 @@ var currentPairAssignmentsRoute:IRoute = {
         }],
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                Coupling.getHistory($route.current.params.tribeId));
+            return Coupling.getPlayers($route.current.params.tribeId);
         }]
     }
 };
@@ -234,13 +239,14 @@ var newPairAssignmentsRoute:IRoute = {
             var tribeId = $route.current.params.tribeId;
             return $q.all({
                 tribe: Coupling.requestSpecificTribe(tribeId),
-                players: Coupling.requestPlayersPromise(tribeId,
-                    Coupling.getHistory(tribeId))
+                players: Coupling.getPlayers(tribeId),
+                history: Coupling.getHistory(tribeId)
             })
-                .then(function (options) {
+                .then(options=> {
                     var players:[Player] = options['players'];
-                    var tribe:Tribe = options['tribe'];
-                    var selectedPlayers = _.chain(_.values(Coupling.data.selectablePlayers))
+                    var history = options['history'];
+                    var selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
+                    options['selectedPlayers'] = _.chain(_.values(selectablePlayerMap))
                         .filter(selectable=> {
                             return selectable.isSelected;
                         })
@@ -248,7 +254,11 @@ var newPairAssignmentsRoute:IRoute = {
                             return selectable.player;
                         })
                         .value();
-                    options['pairAssignments'] = Coupling.spin(selectedPlayers, tribe._id);
+                    return options;
+                })
+                .then(options=> {
+                    var selectedPlayers = options['selectedPlayers'];
+                    options['pairAssignments'] = Coupling.spin(selectedPlayers, tribeId);
                     return $q.all(options);
                 });
         }]

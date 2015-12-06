@@ -116,7 +116,7 @@ describe('Service: ', function () {
         }];
         httpBackend.whenGET(url).respond(200, expectedPins);
 
-        var pinsPromise = Coupling.promisePins(tribeId);
+        var pinsPromise = Coupling.getPins(tribeId);
         pinsPromise.then(function (pins) {
           expect(pins).toEqual(expectedPins);
           done();
@@ -130,7 +130,7 @@ describe('Service: ', function () {
         var statusCode = 404;
         var expectedData = 'nonsense';
         httpBackend.whenGET(url).respond(statusCode, expectedData);
-        Coupling.promisePins(tribeId).then(function () {
+        Coupling.getPins(tribeId).then(function () {
           done("This should not succeed.");
         }).catch(function (error) {
           expect(error).toEqual('There was a problem with request GET ' + url + '\n' +

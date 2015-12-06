@@ -106,30 +106,14 @@ var Coupling = (function () {
         });
         return !!result;
     };
-    Coupling.prototype.requestPlayersPromise = function (tribeId, historyPromise) {
-        var self = this;
-        return this.$q.all({
-            players: this.getPlayers(tribeId),
-            history: historyPromise
-        })
-            .then(this.decoratePlayersWithAvailabilityBasedOnCurrentPairings())
-            .then(function (players) {
-            self.data.players = players;
-            return players;
+    Coupling.prototype.getSelectedPlayers = function (players, history) {
+        var _this = this;
+        var selectablePlayers = _.map(players, function (player) {
+            var selected = _this.playerShouldBeSelected(player, history);
+            return [player._id, new SelectablePlayer(selected, player)];
         });
-    };
-    Coupling.prototype.decoratePlayersWithAvailabilityBasedOnCurrentPairings = function () {
-        var self = this;
-        return function (data) {
-            var players = data.players;
-            var history = data.history;
-            var selectablePlayers = _.map(players, function (player) {
-                var selected = self.playerShouldBeSelected(player, history);
-                return [player._id, new SelectablePlayer(selected, player)];
-            });
-            self.data.selectablePlayers = _.object(selectablePlayers);
-            return players;
-        };
+        this.data.selectablePlayers = _.object(selectablePlayers);
+        return this.data.selectablePlayers;
     };
     Coupling.prototype.playerShouldBeSelected = function (player, history) {
         if (this.data.selectablePlayers[player._id]) {
@@ -176,7 +160,7 @@ var Coupling = (function () {
     Coupling.prototype.removePlayer = function (player) {
         return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
     };
-    Coupling.prototype.promisePins = function (tribeId) {
+    Coupling.prototype.getPins = function (tribeId) {
         var url = '/api/' + tribeId + '/pins';
         var self = this;
         return this.$http.get(url)
