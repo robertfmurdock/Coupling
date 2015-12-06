@@ -270,8 +270,8 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['typescript', 'unit', 'express:dev', 'mochaTest:endpoint',
     'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild'
   ]);
-  grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
-  grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
+  grunt.registerTask('jenkins', ['typescript', 'mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
+  grunt.registerTask('travis', ['typescript', 'mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
   grunt.registerTask('serve', ['typescript', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
 
   grunt.registerTask('docker-server-test', ['mochaTest:unit', 'express:dev', 'mochaTest:endpoint']);
