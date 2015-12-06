@@ -12,10 +12,6 @@ interface SelectablePlayerMap {
 }
 
 class CouplingData {
-    players:[Player];
-    history:[PairSet];
-    selectedTribe:Tribe;
-    selectedTribeId:String;
     selectablePlayers:SelectablePlayerMap
 }
 
@@ -47,14 +43,9 @@ class Coupling {
     Tribe:TribeResource;
 
     constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
-        this.Tribe = <TribeResource>Coupling.buildTribeResource($resource);
+        this.Tribe = <TribeResource>$resource('/api/tribes/:tribeId');
         this.data = new CouplingData();
-        this.data.selectedTribeId = '';
         this.data.selectablePlayers = {};
-    }
-
-    private static buildTribeResource($resource) {
-        return < ng.resource.IResourceClass<Tribe> > $resource('/api/tribes/:tribeId');
     }
 
     private static errorMessage(url, data, statusCode) {
@@ -101,10 +92,8 @@ class Coupling {
 
     getHistory(tribeId):IPromise<[PairSet]> {
         var url = '/api/' + tribeId + '/history';
-        var self = this;
         return this.$http.get(url)
             .then((response:angular.IHttpPromiseCallbackArg<[PairSet]>) => {
-                self.data.history = response.data;
                 return response.data;
             },
             this.logAndRejectError('POST ' + url));
@@ -114,14 +103,13 @@ class Coupling {
         var self = this;
         return this.getTribes()
             .then(function (tribes) {
-                var found = _.findWhere(tribes, {
+                var tribe = _.findWhere(tribes, {
                     _id: tribeId
                 });
-                self.data.selectedTribe = found;
-                if (!found) {
+                if (!tribe) {
                     return self.$q.reject("Tribe not found");
                 }
-                return found;
+                return tribe;
             })
     }
 

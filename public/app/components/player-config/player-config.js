@@ -14,7 +14,9 @@ var PlayerConfigController = (function () {
     PlayerConfigController.prototype.removePlayer = function () {
         if (confirm("Are you sure you want to delete this player?")) {
             var self = this;
-            this.Coupling.removePlayer(this.player).then(function () { return self.navigateToCurrentPairAssignments(); });
+            this.Coupling
+                .removePlayer(this.player)
+                .then(function () { return self.navigateToCurrentPairAssignments(); });
         }
     };
     PlayerConfigController.prototype.askUserToSave = function ($scope, Coupling) {
@@ -34,8 +36,10 @@ var PlayerConfigController = (function () {
     PlayerConfigController.$inject = ['$scope', 'Coupling', '$location', '$route'];
     return PlayerConfigController;
 })();
-angular.module("coupling.controllers").controller('PlayerConfigController', PlayerConfigController);
-angular.module("coupling.directives").directive('playerConfig', function () {
+angular.module("coupling.controllers")
+    .controller('PlayerConfigController', PlayerConfigController);
+angular.module("coupling.directives")
+    .directive('playerConfig', function () {
     return {
         controller: 'PlayerConfigController',
         controllerAs: 'playerConfig',

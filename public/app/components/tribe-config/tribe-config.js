@@ -6,15 +6,19 @@ var TribeConfigController = (function () {
     }
     TribeConfigController.prototype.clickSaveButton = function () {
         var self = this;
-        this.tribe.$save().then(function () {
+        this.tribe
+            .$save()
+            .then(function () {
             self.$location.path("/tribes");
         });
     };
     TribeConfigController.$inject = ['$location'];
     return TribeConfigController;
 })();
-angular.module("coupling.controllers").controller('TribeConfigController', TribeConfigController);
-angular.module("coupling.directives").directive('tribeConfig', function () {
+angular.module("coupling.controllers")
+    .controller('TribeConfigController', TribeConfigController);
+angular.module("coupling.directives")
+    .directive('tribeConfig', function () {
     return {
         controller: 'TribeConfigController',
         controllerAs: 'self',

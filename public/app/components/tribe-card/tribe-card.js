@@ -15,8 +15,10 @@ var TribeCardController = (function () {
     TribeCardController.$inject = ['$location'];
     return TribeCardController;
 })();
-angular.module('coupling.controllers').controller('TribeCardController', TribeCardController);
-angular.module("coupling.directives").directive('tribecard', function () {
+angular.module('coupling.controllers')
+    .controller('TribeCardController', TribeCardController);
+angular.module("coupling.directives")
+    .directive('tribecard', function () {
     return {
         controller: 'TribeCardController',
         controllerAs: 'tribecard',

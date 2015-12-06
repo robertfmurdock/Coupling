@@ -10,7 +10,6 @@ var PrepareController = (function () {
         selectable.isSelected = !selectable.isSelected;
     };
     PrepareController.prototype.clickSpinButton = function () {
-        this.Coupling.data.players = this.players;
         this.$location.path(this.tribe._id + "/pairAssignments/new");
     };
     PrepareController.$inject = ['$location', 'Coupling'];

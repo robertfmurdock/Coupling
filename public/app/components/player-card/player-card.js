@@ -15,8 +15,10 @@ var PlayerCardController = (function () {
     PlayerCardController.$inject = ['$location'];
     return PlayerCardController;
 })();
-angular.module('coupling.controllers').controller('PlayerCardController', PlayerCardController);
-angular.module("coupling.directives").directive('playercard', function () {
+angular.module('coupling.controllers')
+    .controller('PlayerCardController', PlayerCardController);
+angular.module("coupling.directives")
+    .directive('playercard', function () {
     return {
         templateUrl: '/app/components/player-card/playercard.html',
         restrict: 'E',

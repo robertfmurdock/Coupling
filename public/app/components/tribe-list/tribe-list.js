@@ -1,5 +1,6 @@
 /// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
-angular.module("coupling.directives").directive('tribelist', function () {
+angular.module("coupling.directives")
+    .directive('tribelist', function () {
     return {
         scope: {
             tribes: '='

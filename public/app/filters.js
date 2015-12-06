@@ -6,7 +6,7 @@ filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {
                 return player.imageURL;
             }
             else {
-                options.default = "retro";
+                options['default'] = "retro";
                 var email = "";
                 if (player) {
                     email = player.email ? player.email : player.name;
@@ -22,7 +22,7 @@ filters.filter('tribeImageUrl', ['gravatarService', function (gravatarService) {
                     return tribe.imageURL;
                 }
                 else if (tribe.email) {
-                    options.default = "identicon";
+                    options['default'] = "identicon";
                     return gravatarService.url(tribe.email, options);
                 }
             }

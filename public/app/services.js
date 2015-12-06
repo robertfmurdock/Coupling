@@ -30,14 +30,10 @@ var Coupling = (function () {
     function Coupling($http, $q, $resource) {
         this.$http = $http;
         this.$q = $q;
-        this.Tribe = Coupling.buildTribeResource($resource);
+        this.Tribe = $resource('/api/tribes/:tribeId');
         this.data = new CouplingData();
-        this.data.selectedTribeId = '';
         this.data.selectablePlayers = {};
     }
-    Coupling.buildTribeResource = function ($resource) {
-        return $resource('/api/tribes/:tribeId');
-    };
     Coupling.errorMessage = function (url, data, statusCode) {
         return "There was a problem with request " + url + "\n" +
             "Data: <" + data + ">\n" +
@@ -75,10 +71,8 @@ var Coupling = (function () {
     };
     Coupling.prototype.getHistory = function (tribeId) {
         var url = '/api/' + tribeId + '/history';
-        var self = this;
         return this.$http.get(url)
             .then(function (response) {
-            self.data.history = response.data;
             return response.data;
         }, this.logAndRejectError('POST ' + url));
     };
@@ -86,14 +80,13 @@ var Coupling = (function () {
         var self = this;
         return this.getTribes()
             .then(function (tribes) {
-            var found = _.findWhere(tribes, {
+            var tribe = _.findWhere(tribes, {
                 _id: tribeId
             });
-            self.data.selectedTribe = found;
-            if (!found) {
+            if (!tribe) {
                 return self.$q.reject("Tribe not found");
             }
-            return found;
+            return tribe;
         });
     };
     Coupling.prototype.isInLastSetOfPairs = function (player, history) {

@@ -17,7 +17,6 @@ class PrepareController {
     }
 
     clickSpinButton() {
-        this.Coupling.data.players = this.players;
         this.$location.path(this.tribe._id + "/pairAssignments/new");
     }
 
