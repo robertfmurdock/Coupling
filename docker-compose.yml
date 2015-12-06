@@ -20,6 +20,8 @@ mongo:
   image: mongo
   environment:
     - AUTH=no
+  volumes:
+    - /data/db:/data/db
 seleniumhub:
   image: selenium/hub
 chromenode:

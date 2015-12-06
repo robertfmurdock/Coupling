@@ -25,7 +25,7 @@ interface TribeResource extends ng.resource.IResourceClass<Tribe> {
 }
 
 class PairSet {
-    pairs: [[Player]]
+    pairs:[[Player]]
 }
 
 class Pin {
@@ -193,7 +193,7 @@ class Coupling {
             this.logAndRejectError('POST ' + url));
     }
 
-    saveCurrentPairAssignments(tribeId, pairAssignments) {
+    saveCurrentPairAssignments(tribeId:String, pairAssignments:PairSet) {
         var url = '/api/' + tribeId + '/history';
         return this.$http.post(url, pairAssignments)
             .then(function (result) {

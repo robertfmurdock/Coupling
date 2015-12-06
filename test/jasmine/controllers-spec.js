@@ -310,7 +310,7 @@ describe('The controller named ', function () {
           ]
         };
 
-        controller.onDrop(null, player2, player3);
+        controller.onDrop(player2, player3);
         expect(controller.currentPairAssignments.pairs).toEqual([
           [player1, player3],
           [player2, player4]
@@ -348,7 +348,7 @@ describe('The controller named ', function () {
           ]
         };
 
-        controller.onDrop(null, player4, player3);
+        controller.onDrop(player4, player3);
         expect(controller.currentPairAssignments.pairs).toEqual([
           [player1, player2],
           [player3, player4]
@@ -390,7 +390,7 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will put the latest pairs and players on scope', function () {
+    it('will put the latest pairs and players on controller', function () {
       var currentPairs = [
         [{name: 'tom'}, {name: 'jerry'}]
       ];
@@ -398,8 +398,6 @@ describe('The controller named ', function () {
       var currentPairsDocument = {pairs: currentPairs};
       inject(function ($controller) {
         var controller = $controller(ControllerName, {
-          $scope: scope,
-          Coupling: Coupling,
           pairAssignmentDocument: currentPairsDocument,
           tribe: selectedTribe,
           players: players
