@@ -41,20 +41,9 @@ var Coupling = (function () {
             return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
         });
     };
-    Coupling.prototype.requestSpecificTribe = function (tribeId) {
-        var self = this;
-        console.log(tribeId);
+    Coupling.prototype.getTribe = function (tribeId) {
         return this.Tribe.get({ tribeId: tribeId })
             .$promise;
-        //.then(function (tribes) {
-        //    var tribe = _.findWhere(tribes, {
-        //        _id: tribeId
-        //    });
-        //    if (!tribe) {
-        //        return self.$q.reject("Tribe not found");
-        //    }
-        //    return tribe;
-        //})
     };
     Coupling.prototype.getHistory = function (tribeId) {
         return this.PairAssignmentSet

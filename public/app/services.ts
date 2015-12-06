@@ -65,20 +65,9 @@ class Coupling {
             });
     }
 
-    requestSpecificTribe(tribeId):IPromise<Tribe> {
-        var self = this;
-        console.log(tribeId);
+    getTribe(tribeId):IPromise<Tribe> {
         return this.Tribe.get({tribeId: tribeId})
             .$promise;
-        //.then(function (tribes) {
-        //    var tribe = _.findWhere(tribes, {
-        //        _id: tribeId
-        //    });
-        //    if (!tribe) {
-        //        return self.$q.reject("Tribe not found");
-        //    }
-        //    return tribe;
-        //})
     }
 
     getHistory(tribeId):IPromise<[PairAssignmentSet]> {

@@ -45,7 +45,7 @@ var newTribeRoute = {
     controller: NewTribeRouteController
 };
 var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
-        return Coupling.requestSpecificTribe($route.current.params.tribeId);
+        return Coupling.getTribe($route.current.params.tribeId);
     }];
 var PrepareTribeRouteController = (function () {
     function PrepareTribeRouteController(tribe, players) {
@@ -210,7 +210,7 @@ var newPairAssignmentsRoute = {
         requirements: ['$route', '$q', 'Coupling', function ($route, $q, Coupling) {
                 var tribeId = $route.current.params.tribeId;
                 return $q.all({
-                    tribe: Coupling.requestSpecificTribe(tribeId),
+                    tribe: Coupling.getTribe(tribeId),
                     players: Coupling.getPlayers(tribeId),
                     history: Coupling.getHistory(tribeId)
                 })

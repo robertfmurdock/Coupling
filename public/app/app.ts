@@ -57,7 +57,7 @@ var newTribeRoute:IRoute = {
 };
 
 var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
-    return Coupling.requestSpecificTribe($route.current.params.tribeId);
+    return Coupling.getTribe($route.current.params.tribeId);
 }];
 
 class PrepareTribeRouteController {
@@ -238,7 +238,7 @@ var newPairAssignmentsRoute:IRoute = {
         requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:Coupling) {
             var tribeId = $route.current.params.tribeId;
             return $q.all({
-                tribe: Coupling.requestSpecificTribe(tribeId),
+                tribe: Coupling.getTribe(tribeId),
                 players: Coupling.getPlayers(tribeId),
                 history: Coupling.getHistory(tribeId)
             })

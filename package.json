@@ -43,6 +43,7 @@
     "grunt-mkdir": "^0.1.2",
     "grunt-mocha-test": "^0.12.7",
     "grunt-protractor-runner": "^2.1.0",
+    "grunt-typescript": "^0.8.0",
     "grunt-wiredep": "^2.0.0",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
@@ -61,7 +62,8 @@
     "protractor-jasmine2-screenshot-reporter": "^0.1.7",
     "protractor-screenshot-reporter": "0.0.5",
     "supertest": "^1.1.0",
-    "supertest-session": "^1.2.0"
+    "supertest-session": "^1.2.0",
+    "typescript": "^1.7.3"
   },
   "scripts": {
     "start": "node server/app.js",
