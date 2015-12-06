@@ -8,5 +8,9 @@ test:
 deployment:
   staging:
     branch: master
-    heroku:
-      appname: armored-coupling
+    commands:
+      - git checkout -b sourcecommit
+      - git add .
+      - git commit -m "Automatic source commit via CircleCI"
+      - git branch
+      - git push git@heroku.com:armored-coupling.git $CIRCLE_SHA1:refs/heads/master
