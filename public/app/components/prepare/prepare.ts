@@ -5,13 +5,15 @@ class PrepareController {
     static $inject = ['$location', 'Coupling'];
 
     players:[Player];
+    selectablePlayers:SelectablePlayer[];
     tribe:Tribe;
 
-    constructor(private $location, private Coupling) {
+    constructor(private $location:angular.ILocationService, private Coupling:Coupling) {
+        this.selectablePlayers = _.values(Coupling.data.selectablePlayers);
     }
 
-    clickPlayerCard(player) {
-        player.isAvailable = !player.isAvailable;
+    clickPlayerCard(selectable:SelectablePlayer) {
+        selectable.isSelected = !selectable.isSelected;
     }
 
     clickSpinButton() {

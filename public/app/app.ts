@@ -231,17 +231,23 @@ var newPairAssignmentsRoute:IRoute = {
     controller: NewPairAssignmentsRouteController,
     resolve: {
         requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:Coupling) {
+            var tribeId = $route.current.params.tribeId;
             return $q.all({
-                tribe: Coupling.requestSpecificTribe($route.current.params.tribeId),
-                players: Coupling.requestPlayersPromise($route.current.params.tribeId,
-                    Coupling.getHistory($route.current.params.tribeId))
+                tribe: Coupling.requestSpecificTribe(tribeId),
+                players: Coupling.requestPlayersPromise(tribeId,
+                    Coupling.getHistory(tribeId))
             })
                 .then(function (options) {
                     var players:[Player] = options['players'];
                     var tribe:Tribe = options['tribe'];
-                    var selectedPlayers = _.filter(players, function (player) {
-                        return player.isAvailable;
-                    });
+                    var selectedPlayers = _.chain(_.values(Coupling.data.selectablePlayers))
+                        .filter(selectable=> {
+                            return selectable.isSelected;
+                        })
+                        .map(selectable=> {
+                            return selectable.player;
+                        })
+                        .value();
                     options['pairAssignments'] = Coupling.spin(selectedPlayers, tribe._id);
                     return $q.all(options);
                 });

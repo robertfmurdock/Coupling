@@ -19,17 +19,21 @@ var Pin = (function () {
     }
     return Pin;
 })();
+var SelectablePlayer = (function () {
+    function SelectablePlayer(isSelected, player) {
+        this.isSelected = isSelected;
+        this.player = player;
+    }
+    return SelectablePlayer;
+})();
 var Coupling = (function () {
     function Coupling($http, $q, $resource) {
         this.$http = $http;
         this.$q = $q;
         this.Tribe = Coupling.buildTribeResource($resource);
-        this.data = {
-            players: null,
-            history: null,
-            selectedTribe: null,
-            selectedTribeId: ''
-        };
+        this.data = new CouplingData();
+        this.data.selectedTribeId = '';
+        this.data.selectablePlayers = {};
     }
     Coupling.buildTribeResource = function ($resource) {
         return $resource('/api/tribes/:tribeId');
@@ -119,24 +123,24 @@ var Coupling = (function () {
         return function (data) {
             var players = data.players;
             var history = data.history;
-            _.each(players, function (player) {
-                if (history.length == 0) {
-                    player.isAvailable = true;
-                }
-                else {
-                    player.isAvailable = self.isInLastSetOfPairs(player, history);
-                }
+            var selectablePlayers = _.map(players, function (player) {
+                var selected = self.playerShouldBeSelected(player, history);
+                return [player._id, new SelectablePlayer(selected, player)];
             });
-            _.each(self.data.players, function (originalPlayer) {
-                var newPlayer = _.findWhere(players, {
-                    _id: originalPlayer._id
-                });
-                if (newPlayer) {
-                    newPlayer.isAvailable = originalPlayer.isAvailable;
-                }
-            });
+            self.data.selectablePlayers = _.object(selectablePlayers);
             return players;
         };
+    };
+    Coupling.prototype.playerShouldBeSelected = function (player, history) {
+        if (this.data.selectablePlayers[player._id]) {
+            return this.data.selectablePlayers[player._id].isSelected;
+        }
+        else if (history.length > 0) {
+            return this.isInLastSetOfPairs(player, history);
+        }
+        else {
+            return true;
+        }
     };
     Coupling.prototype.getPlayers = function (tribeId) {
         var url = '/api/' + tribeId + '/players';

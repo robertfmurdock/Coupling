@@ -27,8 +27,7 @@ describe('The controller named ', function () {
       controller.player = {
         name: 'Chad',
         _id: 'PrettyGreatPlayerId',
-        tribe: 'awful',
-        isAvailable: true
+        tribe: 'awful'
       };
     });
 
@@ -202,14 +201,11 @@ describe('The controller named ', function () {
     var tribe = selectedTribe;
 
     var players = [{
-      _id: 'h8',
-      isAvailable: false
+      _id: 'h8'
     }, {
-      _id: '3r',
-      isAvailable: true
+      _id: '3r'
     }, {
-      _id: '8d3',
-      isAvailable: true
+      _id: '8d3'
     }];
 
 

@@ -4,15 +4,19 @@ import IPromise = angular.IPromise;
 
 class Player {
     _id:string;
-    isAvailable:boolean;
     tribe:string
+}
+
+interface SelectablePlayerMap {
+    [id: string]: SelectablePlayer;
 }
 
 class CouplingData {
     players:[Player];
     history:[PairSet];
     selectedTribe:Tribe;
-    selectedTribeId:String
+    selectedTribeId:String;
+    selectablePlayers:SelectablePlayerMap
 }
 
 interface Tribe extends ng.resource.IResource<Tribe> {
@@ -31,6 +35,11 @@ class PairSet {
 class Pin {
 }
 
+class SelectablePlayer {
+    constructor(public isSelected:boolean, public player:Player) {
+    }
+}
+
 class Coupling {
     static $inject = ['$http', '$q', '$resource'];
 
@@ -39,12 +48,9 @@ class Coupling {
 
     constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
         this.Tribe = <TribeResource>Coupling.buildTribeResource($resource);
-        this.data = {
-            players: null,
-            history: null,
-            selectedTribe: null,
-            selectedTribeId: ''
-        };
+        this.data = new CouplingData();
+        this.data.selectedTribeId = '';
+        this.data.selectablePlayers = {};
     }
 
     private static buildTribeResource($resource) {
@@ -131,7 +137,6 @@ class Coupling {
     }
 
     requestPlayersPromise(tribeId, historyPromise:IPromise<[PairSet]>) {
-
         var self = this;
         return this.$q.all({
             players: this.getPlayers(tribeId),
@@ -149,23 +154,26 @@ class Coupling {
         return function (data:any) {
             var players:[Player] = data.players;
             var history:[PairSet] = data.history;
-            _.each(players, function (player) {
-                if (history.length == 0) {
-                    player.isAvailable = true;
-                } else {
-                    player.isAvailable = self.isInLastSetOfPairs(player, history);
-                }
+
+            var selectablePlayers = _.map(players, (player)=> {
+                var selected = self.playerShouldBeSelected(player, history);
+                return [player._id, new SelectablePlayer(selected, player)];
             });
-            _.each(self.data.players, function (originalPlayer:Player) {
-                var newPlayer = _.findWhere(players, {
-                    _id: originalPlayer._id
-                });
-                if (newPlayer) {
-                    newPlayer.isAvailable = originalPlayer.isAvailable;
-                }
-            });
+
+            self.data.selectablePlayers = <SelectablePlayerMap>_.object(selectablePlayers);
+
             return players;
         };
+    }
+
+    private playerShouldBeSelected(player, history) {
+        if (this.data.selectablePlayers[player._id]) {
+            return this.data.selectablePlayers[player._id].isSelected
+        } else if (history.length > 0) {
+            return this.isInLastSetOfPairs(player, history);
+        } else {
+            return true;
+        }
     }
 
     getPlayers(tribeId) {

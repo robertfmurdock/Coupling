@@ -51,7 +51,7 @@ describe('The prepare to spin page', function () {
   describe('with no history', function () {
     it('will show all the players ', function () {
       browser.setLocation('/' + tribe._id + '/prepare/');
-      var playerElements = element.all(By.repeater('player in prepare.players'));
+      var playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
       expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
     });
 
@@ -65,7 +65,7 @@ describe('The prepare to spin page', function () {
 
     it('spinning with two players disabled will only yield one pair', function () {
       browser.setLocation('/' + tribe._id + '/prepare/');
-      var playerElements = element.all(By.repeater('player in prepare.players'));
+      var playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
       expect(playerElements.count()).toEqual(5);
 
       playerElements.get(0).element(By.css('.player-icon')).click();

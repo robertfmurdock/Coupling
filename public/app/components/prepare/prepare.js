@@ -4,9 +4,10 @@ var PrepareController = (function () {
     function PrepareController($location, Coupling) {
         this.$location = $location;
         this.Coupling = Coupling;
+        this.selectablePlayers = _.values(Coupling.data.selectablePlayers);
     }
-    PrepareController.prototype.clickPlayerCard = function (player) {
-        player.isAvailable = !player.isAvailable;
+    PrepareController.prototype.clickPlayerCard = function (selectable) {
+        selectable.isSelected = !selectable.isSelected;
     };
     PrepareController.prototype.clickSpinButton = function () {
         this.Coupling.data.players = this.players;
@@ -15,8 +16,10 @@ var PrepareController = (function () {
     PrepareController.$inject = ['$location', 'Coupling'];
     return PrepareController;
 })();
-angular.module("coupling.controllers").controller('PrepareController', PrepareController);
-angular.module("coupling.directives").directive('prepare', function () {
+angular.module("coupling.controllers")
+    .controller('PrepareController', PrepareController);
+angular.module("coupling.directives")
+    .directive('prepare', function () {
     return {
         controller: 'PrepareController',
         controllerAs: 'prepare',
