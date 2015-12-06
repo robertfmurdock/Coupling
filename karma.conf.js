@@ -29,20 +29,7 @@ module.exports = function (config) {
             'public/javascripts/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'public/javascripts/bower_components/rsvp/rsvp.js',
-            "public/app/app.js",
-            "public/app/services.js",
-            "public/app/components/welcome/welcome.js",
-            "public/app/components/tribe-card/tribe-card.js",
-            "public/app/components/tribe-list/tribe-list.js",
-            "public/app/components/tribe-config/tribe-config.js",
-            "public/app/components/pair-assignments/pair-assignments.js",
-            "public/app/components/player-config/player-config.js",
-            "public/app/components/prepare/prepare.js",
-            "public/app/components/history/history.js",
-            "public/app/components/pin-list/pin-list.js",
-            "public/app/components/player-card/player-card.js",
-            "public/app/animations.js",
-            "public/app/filters.js",
+            "public/app/main.js",
             'test/jasmine/**/*-spec.js'
         ],
 
