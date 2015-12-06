@@ -9,6 +9,8 @@ deployment:
   staging:
     branch: master
     commands:
+      - git config user.email "robertfmurdock@gmail.com"
+      - git config user.name "CircleCI in a Rob suit."
       - git checkout -b sourcecommit
       - git add .
       - git commit -m "Automatic source commit via CircleCI"
