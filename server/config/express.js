@@ -1,6 +1,5 @@
 "use strict";
 var compression = require('compression');
-var minify = require('express-minify');
 var config = require('./../../config');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -19,7 +18,6 @@ var LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function (app, userDataService) {
   app.use(compression());
-  app.use(minify({cache: __dirname + '/../../cache'}));
   app.set('port', config.port);
   app.set('views', [
     path.join(__dirname, '../../public'),

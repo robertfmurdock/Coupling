@@ -14,7 +14,6 @@
     "cookie-parser": "^1.4.0",
     "errorhandler": "^1.4.2",
     "express": "^4.13.3",
-    "express-minify": "^0.1.6",
     "express-session": "^1.12.1",
     "jade": "^1.11.0",
     "kerberos": "0.0.17",
