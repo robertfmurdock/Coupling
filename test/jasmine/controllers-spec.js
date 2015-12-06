@@ -230,39 +230,14 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will select tribe and spin all selected players', function (done) {
-      inject(function ($controller) {
-        var controller = $controller(ControllerName, {
-          $scope: scope,
-          $location: location,
-          Coupling: Coupling,
-          $routeParams: routeParams,
-          tribe: tribe,
-          players: players
-        });
-
-        expect(controller.tribe).toBe(tribe);
-        expect(Coupling.spin).toHaveBeenCalledWith([players[1], players[2]], controller.tribe._id);
-        var pairs = [['lol', 'olol']];
-        spinDefer.resolve(pairs);
-        spinDefer.promise.then(function () {
-          expect(controller.currentPairAssignments).toBe(pairs);
-          done();
-        })
-      });
-
-    });
-
     it('save will use Coupling service to save and then will redirect to the current pair assignments page', function (done) {
       inject(function ($controller) {
         var controller = $controller(ControllerName, {
-          $scope: scope,
           $location: location,
-          Coupling: Coupling,
-          $routeParams: routeParams,
-          tribe: tribe,
-          players: players
+          Coupling: Coupling
         });
+        controller.tribe = tribe;
+        controller.players = players;
 
         expect(Coupling.saveCurrentPairAssignments).not.toHaveBeenCalled();
 
@@ -276,7 +251,6 @@ describe('The controller named ', function () {
           done();
         });
       });
-
     });
 
     it('onDrop will take two players and swap their places', function () {
@@ -286,8 +260,10 @@ describe('The controller named ', function () {
           $location: location,
           Coupling: Coupling,
           $routeParams: routeParams,
-          tribe: tribe,
-          players: players
+          requirements: {
+            tribe: tribe,
+            players: players
+          }
         });
 
         var player1 = {
@@ -303,7 +279,7 @@ describe('The controller named ', function () {
           _id: '4'
         };
 
-        controller.currentPairAssignments = {
+        controller.pairAssignments = {
           pairs: [
             [player1, player2],
             [player3, player4]
@@ -311,7 +287,7 @@ describe('The controller named ', function () {
         };
 
         controller.onDrop(player2, player3);
-        expect(controller.currentPairAssignments.pairs).toEqual([
+        expect(controller.pairAssignments.pairs).toEqual([
           [player1, player3],
           [player2, player4]
         ]);
@@ -325,8 +301,10 @@ describe('The controller named ', function () {
           $location: location,
           Coupling: Coupling,
           $routeParams: routeParams,
-          tribe: tribe,
-          players: players
+          requirements: {
+            tribe: tribe,
+            players: players
+          }
         });
         var player1 = {
           _id: '1'
@@ -341,7 +319,7 @@ describe('The controller named ', function () {
           _id: '4'
         };
 
-        controller.currentPairAssignments = {
+        controller.pairAssignments = {
           pairs: [
             [player1, player2],
             [player3, player4]
@@ -349,7 +327,7 @@ describe('The controller named ', function () {
         };
 
         controller.onDrop(player4, player3);
-        expect(controller.currentPairAssignments.pairs).toEqual([
+        expect(controller.pairAssignments.pairs).toEqual([
           [player1, player2],
           [player3, player4]
         ]);
@@ -357,8 +335,8 @@ describe('The controller named ', function () {
     });
   });
 
-  describe('CurrentPairAssignmentsController', function () {
-    var ControllerName = 'CurrentPairAssignmentsController';
+  describe('PairAssignmentsController', function () {
+    var ControllerName = 'PairAssignmentsController';
     var Coupling, location, routeParams;
 
     var selectTribeDefer = new RSVP.defer();
@@ -390,24 +368,7 @@ describe('The controller named ', function () {
       };
     });
 
-    it('will put the latest pairs and players on controller', function () {
-      var currentPairs = [
-        [{name: 'tom'}, {name: 'jerry'}]
-      ];
-      var players = [{name: 'guy'}, {name: 'fellow'}, {name: 'nerd'}];
-      var currentPairsDocument = {pairs: currentPairs};
-      inject(function ($controller) {
-        var controller = $controller(ControllerName, {
-          pairAssignmentDocument: currentPairsDocument,
-          tribe: selectedTribe,
-          players: players
-        });
-        expect(controller.currentPairAssignments).toBe(currentPairsDocument);
-        expect(controller.players).toBe(players);
-      });
-    });
-
-    it('will put all of the players that are not in the current pairs on the scope', function () {
+    it('will provide all of the players that are not in the current pairs', function () {
       var currentPairs = [
         [{name: 'tom', _id: '0'}, {name: 'jerry', _id: 'z'}], [{name: 'fellow', _id: '3'}, {name: 'guy', _id: '2'}]
       ];
@@ -418,13 +379,9 @@ describe('The controller named ', function () {
         {name: 'nerd', _id: '4'},
         {name: 'pantsmaster', _id: '5'}];
       inject(function ($controller) {
-        var controller = $controller(ControllerName, {
-          $scope: scope,
-          Coupling: Coupling,
-          pairAssignmentDocument: {pairs: currentPairs},
-          tribe: selectedTribe,
-          players: players
-        });
+        var controller = $controller(ControllerName, {});
+        controller.pairAssignments = {pairs: currentPairs};
+        controller.players = players;
 
         expect(controller.unpairedPlayers).toEqual([
           {name: 'rigby', _id: '1'},
@@ -442,13 +399,9 @@ describe('The controller named ', function () {
         {name: 'nerd', _id: '4'},
         {name: 'pantsmaster', _id: '5'}];
       inject(function ($controller) {
-        var controller = $controller(ControllerName, {
-          $scope: scope,
-          Coupling: Coupling,
-          pairAssignmentDocument: undefined,
-          tribe: selectedTribe,
-          players: players
-        });
+        var controller = $controller(ControllerName, {});
+        controller.pairAssignments = undefined;
+        controller.players = players;
         expect(controller.unpairedPlayers).toEqual(players);
       });
     })

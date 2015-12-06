@@ -1,12 +1,19 @@
 /// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
 /// <reference path="services.ts" />
-var app = angular.module('coupling', ["ngRoute", 'ngFitText', 'ui.gravatar', 'ang-drag-drop', 'coupling.controllers', 'coupling.filters', 'coupling.directives', 'coupling.animations']);
+var app = angular.module('coupling', ["ngRoute",
+    'ngFitText',
+    'ui.gravatar',
+    'ang-drag-drop',
+    'coupling.controllers',
+    'coupling.filters',
+    'coupling.directives',
+    'coupling.animations']);
 app.config(['$locationProvider', function ($locationProvider) {
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
-}]);
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
+    }]);
 var TribeListRouteController = (function () {
     function TribeListRouteController(tribes) {
         this.tribes = tribes;
@@ -20,8 +27,8 @@ var tribeListRoute = {
     controller: TribeListRouteController,
     resolve: {
         tribes: ['Coupling', function (Coupling) {
-            return Coupling.getTribes();
-        }]
+                return Coupling.getTribes();
+            }]
     }
 };
 var NewTribeRouteController = (function () {
@@ -38,8 +45,8 @@ var newTribeRoute = {
     controller: NewTribeRouteController
 };
 var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
-    return Coupling.requestSpecificTribe($route.current.params.tribeId);
-}];
+        return Coupling.requestSpecificTribe($route.current.params.tribeId);
+    }];
 var PrepareTribeRouteController = (function () {
     function PrepareTribeRouteController(tribe, players) {
         this.tribe = tribe;
@@ -55,8 +62,8 @@ var prepareTribeRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
-        }]
+                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
+            }]
     }
 };
 var EditTribeRouteController = (function () {
@@ -89,8 +96,8 @@ var historyRoute = {
     resolve: {
         tribe: tribeResolution,
         history: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getHistory($route.current.params.tribeId);
-        }]
+                return Coupling.getHistory($route.current.params.tribeId);
+            }]
     }
 };
 var PinRouteController = (function () {
@@ -106,8 +113,8 @@ var pinRoute = {
     controller: PinRouteController,
     resolve: {
         pins: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.promisePins($route.current.params.tribeId);
-        }]
+                return Coupling.promisePins($route.current.params.tribeId);
+            }]
     }
 };
 var NewPlayerRouteController = (function () {
@@ -127,8 +134,8 @@ var newPlayerRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
-        }]
+                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
+            }]
     }
 };
 var EditPlayerRouteController = (function () {
@@ -148,43 +155,88 @@ var editPlayerRoute = {
     resolve: {
         tribe: tribeResolution,
         players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
-        }]
+                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
+            }]
     }
 };
-app.config(['$routeProvider', function (routeProvider) {
-    routeProvider.when('/', { redirectTo: '/tribes/' }).when('/tribes/', tribeListRoute).when('/new-tribe/', newTribeRoute).when('/:tribeId/', {
-        redirectTo: '/:tribeId/pairAssignments/current/'
-    }).when('/:tribeId/prepare/', prepareTribeRoute).when('/:tribeId/edit/', editTribeRoute).when('/:tribeId/history/', historyRoute).when('/:tribeId/pins', pinRoute).when('/:tribeId/pairAssignments/current/', {
-        template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers">',
-        controller: "CurrentPairAssignmentsController",
-        controllerAs: 'main',
-        resolve: {
-            pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
+var CurrentPairAssignmentsRouteController = (function () {
+    function CurrentPairAssignmentsRouteController(pairAssignments, tribe, players) {
+        this.pairAssignments = pairAssignments;
+        this.tribe = tribe;
+        this.players = players;
+    }
+    CurrentPairAssignmentsRouteController.$inject = ['pairAssignmentDocument', 'tribe', 'players'];
+    return CurrentPairAssignmentsRouteController;
+})();
+var currentPairAssignmentsRoute = {
+    template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
+    controller: CurrentPairAssignmentsRouteController,
+    controllerAs: 'main',
+    resolve: {
+        pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
                 return Coupling.getHistory($route.current.params.tribeId).then(function (history) {
                     return history[0];
                 });
             }],
-            tribe: tribeResolution,
-            players: ['$route', 'Coupling', function ($route, Coupling) {
+        tribe: tribeResolution,
+        players: ['$route', 'Coupling', function ($route, Coupling) {
                 return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
             }]
-        }
-    }).when('/:tribeId/pairAssignments/new/', {
-        template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers" save="main.save" on-drop="main.onDrop">',
-        controllerAs: 'main',
-        controller: "NewPairAssignmentsController",
-        resolve: {
-            tribe: tribeResolution,
-            players: ['$route', 'Coupling', function ($route, Coupling) {
-                return Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId));
+    }
+};
+var NewPairAssignmentsRouteController = (function () {
+    function NewPairAssignmentsRouteController(requirements) {
+        this.tribe = requirements.tribe;
+        this.players = requirements.players;
+        this.pairAssignments = requirements.pairAssignments;
+    }
+    NewPairAssignmentsRouteController.$inject = ['requirements'];
+    return NewPairAssignmentsRouteController;
+})();
+var newPairAssignmentsRoute = {
+    template: '<new-pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
+    controllerAs: 'main',
+    controller: NewPairAssignmentsRouteController,
+    resolve: {
+        requirements: ['$route', '$q', 'Coupling', function ($route, $q, Coupling) {
+                return $q.all({
+                    tribe: Coupling.requestSpecificTribe($route.current.params.tribeId),
+                    players: Coupling.requestPlayersPromise($route.current.params.tribeId, Coupling.getHistory($route.current.params.tribeId))
+                })
+                    .then(function (options) {
+                    var players = options['players'];
+                    var tribe = options['tribe'];
+                    var selectedPlayers = _.filter(players, function (player) {
+                        return player.isAvailable;
+                    });
+                    options['pairAssignments'] = Coupling.spin(selectedPlayers, tribe._id);
+                    return $q.all(options);
+                });
             }]
-        }
-    }).when('/:tribeId/player/new/', newPlayerRoute).when('/:tribeId/player/:id/', editPlayerRoute).when('/auth/google', {
-        redirectTo: '/auth/google'
-    });
-}]);
-angular.module('ui.gravatar').config([
+    }
+};
+app.config(['$routeProvider', function (routeProvider) {
+        routeProvider
+            .when('/', { redirectTo: '/tribes/' })
+            .when('/tribes/', tribeListRoute)
+            .when('/new-tribe/', newTribeRoute)
+            .when('/:tribeId/', {
+            redirectTo: '/:tribeId/pairAssignments/current/'
+        })
+            .when('/:tribeId/prepare/', prepareTribeRoute)
+            .when('/:tribeId/edit/', editTribeRoute)
+            .when('/:tribeId/history/', historyRoute)
+            .when('/:tribeId/pins', pinRoute)
+            .when('/:tribeId/pairAssignments/current/', currentPairAssignmentsRoute)
+            .when('/:tribeId/pairAssignments/new/', newPairAssignmentsRoute)
+            .when('/:tribeId/player/new/', newPlayerRoute)
+            .when('/:tribeId/player/:id/', editPlayerRoute)
+            .when('/auth/google', {
+            redirectTo: '/auth/google'
+        });
+    }]);
+angular.module('ui.gravatar')
+    .config([
     'gravatarServiceProvider',
     function (gravatarServiceProvider) {
         gravatarServiceProvider.defaults = {

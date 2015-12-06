@@ -35,7 +35,9 @@ var Coupling = (function () {
         return $resource('/api/tribes/:tribeId');
     };
     Coupling.errorMessage = function (url, data, statusCode) {
-        return "There was a problem with request " + url + "\n" + "Data: <" + data + ">\n" + "Status: " + statusCode;
+        return "There was a problem with request " + url + "\n" +
+            "Data: <" + data + ">\n" +
+            "Status: " + statusCode;
     };
     Coupling.prototype.logAndRejectError = function (url) {
         var self = this;
@@ -48,18 +50,21 @@ var Coupling = (function () {
         };
     };
     Coupling.prototype.post = function (url, object) {
-        return this.$http.post(url, object).then(function (result) {
+        return this.$http.post(url, object)
+            .then(function (result) {
             return result.data;
         }, this.logAndRejectError('POST ' + url));
     };
     Coupling.prototype.httpDelete = function (url) {
-        return this.$http.delete(url).then(function () {
+        return this.$http.delete(url)
+            .then(function () {
         }, this.logAndRejectError(url));
     };
     Coupling.prototype.getTribes = function () {
         var url = '/api/tribes';
         var self = this;
-        return this.Tribe.query().$promise.catch(function (response) {
+        return this.Tribe.query().$promise
+            .catch(function (response) {
             console.info(response);
             return self.$q.reject(Coupling.errorMessage('GET ' + url, response.data, response.status));
         });
@@ -67,14 +72,16 @@ var Coupling = (function () {
     Coupling.prototype.getHistory = function (tribeId) {
         var url = '/api/' + tribeId + '/history';
         var self = this;
-        return this.$http.get(url).then(function (response) {
+        return this.$http.get(url)
+            .then(function (response) {
             self.data.history = response.data;
             return response.data;
         }, this.logAndRejectError('POST ' + url));
     };
     Coupling.prototype.requestSpecificTribe = function (tribeId) {
         var self = this;
-        return this.getTribes().then(function (tribes) {
+        return this.getTribes()
+            .then(function (tribes) {
             var found = _.findWhere(tribes, {
                 _id: tribeId
             });
@@ -100,7 +107,9 @@ var Coupling = (function () {
         return this.$q.all({
             players: this.getPlayers(tribeId),
             history: historyPromise
-        }).then(this.decoratePlayersWithAvailabilityBasedOnCurrentPairings()).then(function (players) {
+        })
+            .then(this.decoratePlayersWithAvailabilityBasedOnCurrentPairings())
+            .then(function (players) {
             self.data.players = players;
             return players;
         });
@@ -132,7 +141,8 @@ var Coupling = (function () {
     Coupling.prototype.getPlayers = function (tribeId) {
         var url = '/api/' + tribeId + '/players';
         var self = this;
-        return this.$http.get(url).then(function (response) {
+        return this.$http.get(url)
+            .then(function (response) {
             return response.data;
         }, function (response) {
             var data = response.data;
@@ -144,13 +154,15 @@ var Coupling = (function () {
     };
     Coupling.prototype.spin = function (players, tribeId) {
         var url = '/api/' + tribeId + '/spin';
-        return this.$http.post(url, players).then(function (result) {
+        return this.$http.post(url, players)
+            .then(function (result) {
             return result.data;
         }, this.logAndRejectError('POST ' + url));
     };
     Coupling.prototype.saveCurrentPairAssignments = function (tribeId, pairAssignments) {
         var url = '/api/' + tribeId + '/history';
-        return this.$http.post(url, pairAssignments).then(function (result) {
+        return this.$http.post(url, pairAssignments)
+            .then(function (result) {
             return result.data;
         }, this.logAndRejectError('POST ' + url));
     };
@@ -163,7 +175,8 @@ var Coupling = (function () {
     Coupling.prototype.promisePins = function (tribeId) {
         var url = '/api/' + tribeId + '/pins';
         var self = this;
-        return this.$http.get(url).then(function (response) {
+        return this.$http.get(url)
+            .then(function (response) {
             return response.data;
         }, function (response) {
             var data = response.data;
@@ -183,5 +196,7 @@ var Randomizer = (function () {
     };
     return Randomizer;
 })();
-angular.module("coupling.services", ['ngResource']).service("Coupling", Coupling).service('randomizer', Randomizer);
+angular.module("coupling.services", ['ngResource'])
+    .service("Coupling", Coupling)
+    .service('randomizer', Randomizer);
 //# sourceMappingURL=services.js.map

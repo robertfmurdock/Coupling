@@ -187,6 +187,68 @@ var editPlayerRoute:IRoute = {
     }
 };
 
+class CurrentPairAssignmentsRouteController {
+    static $inject = ['pairAssignmentDocument', 'tribe', 'players'];
+
+    constructor(public pairAssignments:PairSet, public tribe:Tribe, public players:[Player]) {
+    }
+}
+
+var currentPairAssignmentsRoute:IRoute = {
+    template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
+    controller: CurrentPairAssignmentsRouteController,
+    controllerAs: 'main',
+    resolve: {
+        pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.getHistory($route.current.params.tribeId).then(function (history) {
+                return history[0];
+            });
+        }],
+        tribe: tribeResolution,
+        players: ['$route', 'Coupling', function ($route, Coupling) {
+            return Coupling.requestPlayersPromise($route.current.params.tribeId,
+                Coupling.getHistory($route.current.params.tribeId));
+        }]
+    }
+};
+
+class NewPairAssignmentsRouteController {
+    static $inject = ['requirements'];
+    tribe:Tribe;
+    players:[Player];
+    pairAssignments:PairSet;
+
+    constructor(requirements) {
+        this.tribe = requirements.tribe;
+        this.players = requirements.players;
+        this.pairAssignments = requirements.pairAssignments;
+    }
+}
+
+var newPairAssignmentsRoute:IRoute = {
+    template: '<new-pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
+    controllerAs: 'main',
+    controller: NewPairAssignmentsRouteController,
+    resolve: {
+        requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:Coupling) {
+            return $q.all({
+                tribe: Coupling.requestSpecificTribe($route.current.params.tribeId),
+                players: Coupling.requestPlayersPromise($route.current.params.tribeId,
+                    Coupling.getHistory($route.current.params.tribeId))
+            })
+                .then(function (options) {
+                    var players:[Player] = options['players'];
+                    var tribe:Tribe = options['tribe'];
+                    var selectedPlayers = _.filter(players, function (player) {
+                        return player.isAvailable;
+                    });
+                    options['pairAssignments'] = Coupling.spin(selectedPlayers, tribe._id);
+                    return $q.all(options);
+                });
+        }]
+    }
+};
+
 app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
 
     routeProvider
@@ -200,35 +262,8 @@ app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
         .when('/:tribeId/edit/', editTribeRoute)
         .when('/:tribeId/history/', historyRoute)
         .when('/:tribeId/pins', pinRoute)
-        .when('/:tribeId/pairAssignments/current/', {
-            template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers">',
-            controller: "CurrentPairAssignmentsController",
-            controllerAs: 'main',
-            resolve: {
-                pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.getHistory($route.current.params.tribeId).then(function (history) {
-                        return history[0];
-                    });
-                }],
-                tribe: tribeResolution,
-                players: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                        Coupling.getHistory($route.current.params.tribeId));
-                }]
-            }
-        })
-        .when('/:tribeId/pairAssignments/new/', {
-            template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.currentPairAssignments" unpaired-players="main.unpairedPlayers" save="main.save" on-drop="main.onDrop">',
-            controllerAs: 'main',
-            controller: "NewPairAssignmentsController",
-            resolve: {
-                tribe: tribeResolution,
-                players: ['$route', 'Coupling', function ($route, Coupling) {
-                    return Coupling.requestPlayersPromise($route.current.params.tribeId,
-                        Coupling.getHistory($route.current.params.tribeId));
-                }]
-            }
-        })
+        .when('/:tribeId/pairAssignments/current/', currentPairAssignmentsRoute)
+        .when('/:tribeId/pairAssignments/new/', newPairAssignmentsRoute)
         .when('/:tribeId/player/new/', newPlayerRoute)
         .when('/:tribeId/player/:id/', editPlayerRoute)
         .when('/auth/google', {

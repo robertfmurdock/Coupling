@@ -9,6 +9,7 @@ var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 
+
 describe('The edit player page', function () {
 
   var tribe = {
@@ -99,6 +100,7 @@ describe('The edit player page', function () {
     expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
   });
 });
+
 
 describe('The new player page', function () {
 

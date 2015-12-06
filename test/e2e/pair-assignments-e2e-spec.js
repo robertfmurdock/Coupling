@@ -103,7 +103,7 @@ describe('The current pair assignments', function () {
     });
 
     it('the most recent pairs are shown', function () {
-      var pairElements = element.all(By.repeater('pair in currentPairAssignments.pairs'));
+      var pairElements = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
       var firstPair = pairElements.get(0).all(By.repeater('player in pair'));
       expect(firstPair.getText()).toEqual(_.pluck([player1, player3], 'name'));
       var secondPair = pairElements.get(1).all(By.repeater('player in pair'));

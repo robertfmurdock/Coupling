@@ -59,7 +59,7 @@ describe('The prepare to spin page', function () {
       browser.setLocation('/' + tribe._id + '/prepare/');
       element(By.id('spin-button')).click();
 
-      var pairs = element.all(By.repeater('pair in currentPairAssignments.pairs'));
+      var pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
       expect(pairs.count()).toEqual(3);
     });
 
@@ -74,7 +74,7 @@ describe('The prepare to spin page', function () {
 
       element(By.id('spin-button')).click();
 
-      var pairs = element.all(By.repeater('pair in currentPairAssignments.pairs'));
+      var pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
       expect(pairs.count()).toEqual(1);
       var players = element.all(By.repeater('player in players'));
       expect(players.count()).toEqual(3);
