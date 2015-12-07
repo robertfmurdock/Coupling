@@ -4,5 +4,9 @@ enter-press="tribecard.clickOnTribeCard()"
 ng-click="tribecard.clickOnTribeCard()"
 ng-enter="tribecard.clickOnTribeCard()"
 tabindex="0")
-    div(class="tribe-name" ng-click="tribecard.clickOnTribeName($event)" data-fittext=1 data-fittext-max="35" data-fittext-min="1.5em" data-fittext-load-delay="100") {{tribecard.tribe.name}}
+    div(class="tribe-name" ng-click="tribecard.clickOnTribeName($event)")
+        text(
+        data-fittext=1 data-fittext-max="56px" data-fittext-min="17" data-fittext-load-delay="100"
+        ng-model="tribecard.tribe.name"
+        ) {{tribecard.tribe.name}}
     img(ng-src="{{tribecard.tribe | tribeImageUrl: {size: 150} }}" width="150" height="150")

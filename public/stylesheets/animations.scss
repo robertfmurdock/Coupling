@@ -60,11 +60,11 @@
 }
 
 .tribe-name {
-  transition: all ease-out 0.4s;
+  transition: background ease-out 0.4s;
 }
 
 .tribe-name:hover {
-  transition: all ease-out 0.4s;
+  transition: background ease-out 0.4s;
   z-index: 1;
   background: cadetblue url(../images/overlay.png) repeat-x;
 }
