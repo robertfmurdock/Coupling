@@ -1,17 +1,17 @@
 div(id="welcome-container" ng-show="welcome.show")
         div
             span(id="welcome")
-                div(class="welcome-title") Coupling!
+                div(class="welcome-title" data-fittext=1 data-fittext-min="72px") Coupling!
                 div
                     div(class="welcome-pair")
                         span(class="player left" ng-show="welcome.show")
                             img(ng-src="/images/icons/players/{{welcome.leftCard.imagePath}}" class="player-icon" width="100" height="100")
                             div(class="player-header")
-                                text {{welcome.leftCard.name}}
+                                text(data-fittext=1 data-fittext-max="35" data-fittext-min="1.5em" data-fittext-load-delay="100") {{welcome.leftCard.name}}
                         span(class="player right" ng-show="welcome.show")
                             img(ng-src="/images/icons/players/{{welcome.rightCard.imagePath}}" class="player-icon" width="100" height="100")
                             div(class="player-header")
-                                text {{welcome.rightCard.name}}
+                                text(data-fittext=1 data-fittext-max="35" data-fittext-min="1.5em" data-fittext-load-delay="100") {{welcome.rightCard.name}}
                 div(class="welcome-proverb" ng-show="welcome.show") {{welcome.proverb}}
         div
             div(id="enter-button-container")

@@ -78,7 +78,7 @@ var prepareTribeRoute:IRoute = {
             return $q.all({
                 players: Coupling.getPlayers(tribeId),
                 history: Coupling.getHistory(tribeId)
-            }).then(options=> {
+            }).then((options:any)=> {
                 options.selectedPlayers = Coupling.getSelectedPlayers(options.players, options.history);
                 return options;
             }).then(options=> {
@@ -299,5 +299,11 @@ angular.module('ui.gravatar')
         }
     ]);
 
-angular.module('coupling.controllers', ['coupling.services']);
+angular.module('coupling.controllers', ['coupling.services', 'ngFitText'])
+    .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
+        fitTextConfigProvider.config = {
+            debounce: _.debounce,
+            delay: 1000
+        };
+    }]);
 angular.module("coupling.directives", []);

@@ -66,7 +66,8 @@ class Coupling {
     }
 
     getTribe(tribeId):IPromise<Tribe> {
-        return this.Tribe.get({tribeId: tribeId})
+        return this.Tribe
+            .get({tribeId: tribeId})
             .$promise;
     }
 
