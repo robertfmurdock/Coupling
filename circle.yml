@@ -11,8 +11,7 @@ deployment:
     commands:
       - git config user.email "robertfmurdock@gmail.com"
       - git config user.name "CircleCI in a Rob suit."
-      - git checkout -b sourcecommit
       - git add -f public/app/main.js
       - git commit -m "Automatic source commit via CircleCI"
       - git branch
-      - git push git@heroku.com:armored-coupling.git refs/heads/sourcecommit:+refs/heads/master
+      - git push -f git@heroku.com:armored-coupling.git refs/heads/sourcecommit:refs/heads/master
