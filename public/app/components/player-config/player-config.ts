@@ -12,8 +12,10 @@ class PlayerConfigController {
     }
 
     savePlayer() {
-        this.Coupling.savePlayer(this.player);
-        this.$route.reload();
+        this.Coupling.savePlayer(this.player)
+            .then(()=> {
+                this.$route.reload();
+            });
     }
 
     removePlayer() {

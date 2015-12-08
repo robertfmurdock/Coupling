@@ -18,7 +18,7 @@
     "jade": "^1.11.0",
     "kerberos": "0.0.17",
     "method-override": "^2.3.5",
-    "mongodb": "^2.0.49",
+    "mongodb": "^2.1.0",
     "monk": "~0.8.1",
     "morgan": "^1.6.1",
     "node-sass-middleware": "^0.9.7",

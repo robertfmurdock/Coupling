@@ -430,13 +430,14 @@ describe('The controller named ', function () {
     });
 
     var controller;
-    it('can save player using Coupling service and then reloads', function () {
+    it('can save player using Coupling service and then reloads', function (done) {
       var $route = {
         current: {params: {id: player._id}},
         reload: jasmine.createSpy('path')
       };
-
-      inject(function ($controller) {
+      inject(function ($controller, $q, $rootScope) {
+        var saveDefer = $q.defer();
+        Coupling.savePlayer.and.returnValue(saveDefer.promise);
         controller = $controller(ControllerName, {
           $scope: scope,
           Coupling: Coupling,
@@ -445,14 +446,27 @@ describe('The controller named ', function () {
           tribe: tribe,
           players: [player]
         });
-      });
-      controller.player = player;
-      controller.tribe = tribe;
 
-      controller.player.name = 'nonsense';
-      controller.savePlayer();
-      expect(Coupling.savePlayer).toHaveBeenCalledWith(controller.player);
-      expect($route.reload).toHaveBeenCalled();
+        controller.player = player;
+        controller.tribe = tribe;
+
+        controller.player.name = 'nonsense';
+        controller.savePlayer();
+        expect(Coupling.savePlayer).toHaveBeenCalledWith(controller.player);
+        saveDefer.resolve();
+
+
+        saveDefer.promise
+          .then(function () {
+            console.log('lol');
+            expect($route.reload).toHaveBeenCalled();
+            done();
+          })
+          .catch(function (err) {
+            done.fail(err);
+          });
+        $rootScope.$apply();
+      });
     });
 
     it('remove player will remove and reroute to current pair assignments when confirmed',
