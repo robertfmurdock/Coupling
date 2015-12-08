@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var config = require('../../config');
 var server = 'http://localhost:' + config.port;
-var SupertestSession = require('supertest-session')({app: server});
+var supertest = require("supertest-as-promised").agent(server);
 var DataService = require('../../server/lib/CouplingDataService');
 var Comparators = require('../../server/lib/Comparators');
 var monk = require('monk');
@@ -29,10 +29,7 @@ describe(path, function () {
 
   historyCollection.remove({_id: validPairs._id}, false);
 
-  var supertest;
-
   beforeEach(function (done) {
-    supertest = new SupertestSession();
     supertest.get('/test-login?username="name"&password="pw"')
       .expect(302)
       .end(done);
@@ -40,7 +37,6 @@ describe(path, function () {
 
   afterEach(function () {
     historyCollection.remove({_id: validPairs._id}, false);
-    supertest.destroy();
   });
 
   describe('GET', function () {
@@ -75,8 +71,8 @@ describe(path, function () {
   describe("POST will save pairs", function () {
 
     it('should add when given a valid pair assignment document.', function (done) {
-      supertest.post(path).
-        send(validPairs)
+      supertest.post(path)
+        .send(validPairs)
         .expect(200)
         .expect('Content-Type', /json/).
         end(function (error, response) {

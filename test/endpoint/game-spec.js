@@ -1,7 +1,7 @@
 "use strict";
 var config = require('../../config');
 var server = 'http://localhost:' + config.port;
-var SupertestSession = require('supertest-session')({app: server});
+var supertest = require("supertest-as-promised").agent(server);
 var expect = require('chai').expect;
 var monk = require('monk');
 
@@ -13,14 +13,12 @@ var database = monk(config.testMongoUrl + '/CouplingTemp');
 var pinCollection = database.get('pins');
 
 describe(path, function () {
-  var supertest;
 
   before(function () {
     removeTestPin();
   });
 
   beforeEach(function (done) {
-    supertest = new SupertestSession();
     supertest.get('/test-login?username="name"&password="pw"')
       .expect(302).end(done);
   });
@@ -31,7 +29,6 @@ describe(path, function () {
 
   afterEach(function () {
     removeTestPin();
-    supertest.destroy();
   });
 
   var decorateWithPins = function (pair) {

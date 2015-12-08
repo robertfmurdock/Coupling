@@ -1,27 +1,22 @@
 'use strict';
 var config = require('../../config');
 var server = 'http://localhost:' + config.port;
-var SupertestSession = require('supertest-session')({app: server});
 
 var expect = require('chai').expect;
 var monk = require('monk');
 var _ = require('underscore');
 
 var path = '/api/tribes';
+var host = require("supertest-as-promised").agent(server);
 
 describe(path, function () {
-  var host;
   var userEmail = 'test@test.tes';
 
   beforeEach(function (done) {
-    host = new SupertestSession();
+
     host.get('/test-login?username=' + userEmail + '&password=pw')
       .expect(302)
       .end(done);
-  });
-
-  afterEach(function () {
-    host.destroy();
   });
 
   var database = monk(config.tempMongoUrl);
@@ -41,9 +36,12 @@ describe(path, function () {
       host.get(path)
         .expect(200)
         .expect('Content-Type', /json/)
-        .end(function (error, response) {
+        .then(function (response) {
           expect(response.body).to.eql(tribeDocuments);
-          done(error);
+          done();
+        })
+        .catch(function (err) {
+          done(err);
         });
     });
   });
@@ -58,16 +56,16 @@ describe(path, function () {
     host.get(path)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (error, response) {
+      .then(function (response) {
         expect(JSON.stringify(response.body)).to.equal(JSON.stringify([tribe]));
 
         tribesCollection.remove({_id: 'delete-me'});
-        playersCollection.remove({_id: 'delete-me'}, function (anotherError) {
-          if (anotherError) {
-            error = anotherError;
-          }
-          done(error);
-        });
+        playersCollection.remove({_id: 'delete-me'}, function (err) {
+          done(err);
+        })
+      })
+      .catch(function (err) {
+        done(err);
       });
   });
 

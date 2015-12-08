@@ -1,7 +1,7 @@
 "use strict";
 var config = require('../../config');
 var server = 'http://localhost:' + config.port;
-var SupertestSession = require('supertest-session')({app: server});
+var supertest = require("supertest-as-promised").agent(server);
 var expect = require('chai').expect;
 var monk = require('monk');
 var CouplingDataService = require('../../server/lib/CouplingDataService');
@@ -14,21 +14,13 @@ var database = monk(config.tempMongoUrl);
 var pinCollection = database.get('pins');
 
 describe(path, function () {
-  var supertest;
-  var Cookies;
 
   beforeEach(function (done) {
-    supertest = new SupertestSession();
     supertest.get('/test-login?username="name"&password="pw"')
       .expect(302).end(function (err, res) {
         expect(err).to.not.exist;
-        Cookies = res.headers['set-cookie'].pop().split(';')[0];
         done();
       });
-  });
-
-  afterEach(function(){
-    supertest.destroy();
   });
 
   describe("GET", function () {
@@ -49,7 +41,6 @@ describe(path, function () {
 
     it('will return all available pins on tribe.', function (done) {
       var httpGet = supertest.get(path);
-      httpGet.cookies = Cookies;
       httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
         expect(response.body).to.eql(expectedPins);
         done(error);
@@ -58,7 +49,6 @@ describe(path, function () {
 
     it('will return error when tribe is not available.', function (done) {
       var httpGet = supertest.get(badTribePath);
-      httpGet.cookies = Cookies;
       httpGet.expect('Content-Type', /json/).end(function (error, response) {
         if (error) {
           done(error);
@@ -89,7 +79,6 @@ describe(path, function () {
     it("will add pin to tribe", function (done) {
       var newPin = {_id: 'pin4', tribe: tribeId};
       var httpPost = supertest.post(path);
-      httpPost.cookies = Cookies;
       httpPost.send(newPin)
         .expect('Content-Type', /json/)
         .expect(200)
@@ -127,7 +116,6 @@ describe(path, function () {
 
     it('will no longer display the deleted pin', function (done) {
       var httpDelete = supertest.delete(path + "/" + resultPins[1]._id);
-      httpDelete.cookies = Cookies;
       httpDelete
         .expect('Content-Type', /json/)
         .expect(200)
@@ -139,7 +127,6 @@ describe(path, function () {
           expect(response.body).to.eql({});
 
           var httpGet = supertest.get(path);
-          httpGet.cookies = Cookies;
           httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
             if (error) {
               done(error);
@@ -153,7 +140,6 @@ describe(path, function () {
 
     it('will fail when pin does not exist', function (done) {
       var httpDelete = supertest.delete(path + "/imaginary");
-      httpDelete.cookies = Cookies;
       httpDelete
         .expect('Content-Type', /json/)
         .expect(404)
@@ -161,7 +147,6 @@ describe(path, function () {
           if (error) {
             done(error);
           }
-
           expect(response.body).to.eql({message: 'Failed to remove the pin because it did not exist.'});
           done();
         });

@@ -6,7 +6,7 @@ var Comparators = require('../../server/lib/Comparators');
 var config = require('./../../config');
 var tribeId = 'test';
 var server = 'http://localhost:' + config.port;
-var SupertestSession = require('supertest-session')({app: server});
+var supertest = require("supertest-as-promised").agent(server);
 
 var path = '/api/' + tribeId + '/players';
 
@@ -17,7 +17,7 @@ var playersCollection = database.get('players');
 
 describe(path, function () {
 
-  var couplingServer = new SupertestSession();
+  var couplingServer = supertest;
 
   beforeEach(function (done) {
     couplingServer.get('/test-login?username="name"&password="pw"')
@@ -26,7 +26,6 @@ describe(path, function () {
   });
 
   afterEach(function () {
-    couplingServer.destroy();
     playersCollection.remove({tribe: tribeId}, false);
   });
 
