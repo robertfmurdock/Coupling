@@ -458,7 +458,6 @@ describe('The controller named ', function () {
 
         saveDefer.promise
           .then(function () {
-            console.log('lol');
             expect($route.reload).toHaveBeenCalled();
             done();
           })

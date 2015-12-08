@@ -101,7 +101,6 @@ describe('The edit player page', function () {
   });
 });
 
-
 describe('The new player page', function () {
 
   var tribe = {

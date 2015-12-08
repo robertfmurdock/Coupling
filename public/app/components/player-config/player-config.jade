@@ -13,7 +13,7 @@ div
                 div
                     label(for="player-img-url") Image URL
                     input(id="player-img-url" type="text" ng-model="playerConfig.player.imageURL")
-                input(id="save-player-button" type="button" class="large blue button save-button" ng-click="playerConfig.savePlayer()" tabIndex="0" value="Save")
+                input(id="save-player-button" type="submit" class="large blue button save-button" ng-click="playerConfig.savePlayer()" tabIndex="0" value="Save")
                 div(ng-show="playerConfig.player._id" class="small red button delete-button" ng-click="playerConfig.removePlayer()") DELETE
         playercard(player="playerConfig.player" size="250")
 player-roster(players="playerConfig.players" tribe="playerConfig.tribe")
