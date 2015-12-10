@@ -7,16 +7,15 @@ RUN apt-get update \
   bzip2 \
   libfreetype6 \
   libfontconfig
-RUN npm install -g grunt-cli karma-cli phantomjs --unsafe-perm
+RUN npm install grunt-cli karma-cli --unsafe-perm
 COPY ["package.json", "/usr/src/app/"]
-RUN npm install --unsafe-perm
+RUN npm install
 COPY . /usr/src/app
 ENV \
   PUBLIC_HOST=web \
   MONGOHQ_URL=mongodb://mongo/Coupling \
-  MONGO_CONNECTION=mongodb://mongo \
-  PHANTOMJS_BIN=/usr/local/lib/node_modules/phantomjs/lib/phantom/bin/phantomjs
+  MONGO_CONNECTION=mongodb://mongo
 
-CMD [ "grunt", "dockerserve" ]
+CMD [ "npm", "run", "dockertest" ]
 
 EXPOSE 3000

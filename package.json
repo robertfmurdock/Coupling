@@ -41,7 +41,7 @@
     "grunt-karma": "^0.12.1",
     "grunt-mkdir": "^0.1.2",
     "grunt-mocha-test": "^0.12.7",
-    "grunt-protractor-runner": "^2.1.0",
+    "grunt-protractor-runner": "^3.0.0",
     "grunt-typescript": "^0.8.0",
     "grunt-wiredep": "^2.0.0",
     "jasmine": "^2.4.1",
@@ -57,7 +57,7 @@
     "mocha": "^2.3.4",
     "mocha-jenkins-reporter": "^0.1.9",
     "phantomjs": "^1.9.19",
-    "protractor": "^2.5",
+    "protractor": "^3.0",
     "protractor-jasmine2-screenshot-reporter": "^0.1.7",
     "protractor-screenshot-reporter": "0.0.5",
     "supertest": "^1.1.0",
@@ -69,7 +69,8 @@
     "test": "grunt travis",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",
-    "protractor": "grunt end2end"
+    "protractor": "grunt end2end",
+    "dockertest": "grunt dockerserve"
   },
   "repository": {
     "type": "git",

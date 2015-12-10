@@ -46,9 +46,9 @@ describe('The default tribes page', function () {
 
   var tribeDocuments;
 
-  beforeAll(function (done) {
+  beforeAll(function () {
     browser.driver.manage().deleteAllCookies();
-    tribeCollection.drop()
+    browser.wait(tribeCollection.drop()
       .then(function () {
         return tribeCollection.insert(
           [{
@@ -58,15 +58,20 @@ describe('The default tribes page', function () {
             _id: 'e2e2',
             name: 'E2E Example Tribe 2'
           }]);
-      }).then(function () {
+      })
+      .then(function () {
         return authorizeAllTribes();
-      }).then(function () {
+      })
+      .then(function () {
         return tribeCollection.find({}, {})
-      }).then(function (result) {
+      })
+      .then(function (result) {
         tribeDocuments = result;
-        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-        done();
-      }, done);
+        return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+      })
+      .then(function () {
+        return true;
+      }));
   });
 
   beforeEach(function () {
