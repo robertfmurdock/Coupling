@@ -12,7 +12,7 @@ div
                 text Couples for {{pairAssignments.pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.pairAssignments.date | date: 'HH:mm:ss'}}
         div(id="pair-assignments-content")
             span(ng-repeat='pair in pairAssignments.pairAssignments.pairs' class="pair")
-                playercard(ng-repeat='player in pair' player="player" ng-class="{hoverzoom: !pairAssignments._id}" ui-draggable="pairAssignments.isNew" drag="player" ui-on-Drop="onDrop($data,player)")
+                playercard(ng-repeat='player in pair' player="player" ng-class="{hoverzoom: !pairAssignments._id}" ui-draggable="pairAssignments.isNew" drag="player" ui-on-Drop="pairAssignments.onDrop($data,player)")
         div(ng-show="pairAssignments.pairAssignments")
             a(id="save-button" class="super green button" ng-click="pairAssignments.save()" ng-show="pairAssignments.isNew") Save!
         a(id="new-pairs-button" class="large pink button" href="/{{pairAssignments.tribe._id}}/prepare/") Prepare to spin!
