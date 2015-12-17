@@ -23,7 +23,7 @@ class PairAssignmentsController {
 
     save() {
         var self = this;
-        this.Coupling.saveCurrentPairAssignments(this.tribe._id, this.pairAssignments)
+        this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
             .then(function () {
                 self.$location.path("/" + self.tribe._id + "/pairAssignments/current");
             });

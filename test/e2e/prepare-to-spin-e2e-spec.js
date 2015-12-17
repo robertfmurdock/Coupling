@@ -48,23 +48,24 @@ describe('The prepare to spin page', function () {
 
   e2eHelp.afterEachAssertLogsAreEmpty();
 
+  beforeEach(function () {
+    browser.setLocation('/' + tribe._id + '/prepare/');
+  });
+
   describe('with no history', function () {
     it('will show all the players ', function () {
-      browser.setLocation('/' + tribe._id + '/prepare/');
       var playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
       expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
     });
 
     it('spinning with all players on will get all players back', function () {
-      browser.setLocation('/' + tribe._id + '/prepare/');
       element(By.id('spin-button')).click();
 
       var pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
       expect(pairs.count()).toEqual(3);
     });
 
-    it('spinning with two players disabled will only yield one pair', function () {
-      browser.setLocation('/' + tribe._id + '/prepare/');
+    it('spinning with two players disabled will only yield one pair and then saving persists the pair', function () {
       var playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
       expect(playerElements.count()).toEqual(5);
 
@@ -77,6 +78,11 @@ describe('The prepare to spin page', function () {
       var pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
       expect(pairs.count()).toEqual(1);
       var players = element.all(By.repeater('player in players'));
+      expect(players.count()).toEqual(3);
+
+      element(By.id('save-button')).click();
+
+      expect(pairs.count()).toEqual(1);
       expect(players.count()).toEqual(3);
     });
   });
