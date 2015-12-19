@@ -13,4 +13,5 @@ node_modules
 **/*.log
 public/app/main.js
 public/app/main.js.map
+typings
 screenshots

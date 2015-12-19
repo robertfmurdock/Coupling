@@ -1,4 +1,4 @@
-/// <reference path="../../../../typescript-libraries/typings/tsd.d.ts" />
+
 
 angular.module("coupling.directives")
     .directive('pinList', () => {

@@ -9,7 +9,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-git-describe');
   grunt.loadNpmTasks('grunt-wiredep');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-typescript');
 
   grunt.initConfig({
     env: {
@@ -180,7 +179,7 @@ module.exports = function (grunt) {
           "test/jasmine/**/*",
           "test/e2e/**/*"
         ],
-        tasks: ['typescript', 'docker-frontend-test'],
+        tasks: ['docker-frontend-test'],
         options: {
           interval: 5007
         }
@@ -234,13 +233,6 @@ module.exports = function (grunt) {
     },
     typescript: {
       base: {
-        src: ['public/app/**/*.ts'],
-        dest: 'public/app/main.js',
-        options: {
-          //module: 'amd', //or commonjs
-          target: 'es5',
-          sourceMap: true
-        }
       }
     }
   });
@@ -267,16 +259,16 @@ module.exports = function (grunt) {
 
   grunt.registerTask('end2end', ['express:dev', 'protractor:chrome']);
 
-  grunt.registerTask('default', ['typescript', 'unit', 'express:dev', 'mochaTest:endpoint',
+  grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
     'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild'
   ]);
-  grunt.registerTask('jenkins', ['typescript', 'mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
-  grunt.registerTask('travis', ['typescript', 'mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
-  grunt.registerTask('serve', ['typescript', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
+  grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
+  grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
+  grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
 
   grunt.registerTask('docker-server-test', ['mochaTest:unit', 'express:dev', 'mochaTest:endpoint']);
   grunt.registerTask('docker-frontend-test', ['karma:docker', 'express:dev', 'protractor:dockerchrome']);
-  grunt.registerTask('dockerserve', ['typescript', 'docker-server-test', 'docker-frontend-test', 'express:dev2', 'watch']);
+  grunt.registerTask('dockerserve', ['docker-server-test', 'docker-frontend-test', 'express:dev2', 'watch']);
 
   grunt.registerTask('wait', function () {
     grunt.log.ok('Waiting for server reload...');

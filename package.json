@@ -28,6 +28,7 @@
     "rsvp": "^3.1.0",
     "serve-favicon": "^2.3.0",
     "sinon": "^1.17.2",
+    "tsd": "^0.6.5",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -42,7 +43,6 @@
     "grunt-mkdir": "^0.1.2",
     "grunt-mocha-test": "^0.12.7",
     "grunt-protractor-runner": "^3.0.0",
-    "grunt-typescript": "^0.8.0",
     "grunt-wiredep": "^2.0.0",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
@@ -66,6 +66,10 @@
   },
   "scripts": {
     "start": "node server/app.js",
+    "pretsc": "npm run tsd",
+    "tsc": "tsc",
+    "tsd": "tsd install",
+    "pretest": "npm run tsc",
     "test": "grunt travis",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",

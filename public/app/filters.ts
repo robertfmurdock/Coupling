@@ -1,4 +1,4 @@
-/// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
+
 
 var filters = angular.module("coupling.filters", []);
 filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {

@@ -1,4 +1,4 @@
-/// <reference path="../../typescript-libraries/typings/tsd.d.ts" />
+
 
 import IPromise = angular.IPromise;
 
