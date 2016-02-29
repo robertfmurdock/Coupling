@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
         "out": "public/app/main.js",
         "target": "es5",
         "noImplicitAny": false,
