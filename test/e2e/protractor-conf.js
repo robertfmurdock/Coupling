@@ -23,10 +23,10 @@ exports.config = {
     showColors: true,
     defaultTimeoutInterval: 10000
   },
-  onPrepare: function () {
+  onPrepare: function() {
 
     jasmine.getEnv().addReporter(new ScreenShotReporter({
-      dest: '/tmp/screenshots',
+      dest: 'test-output',
       captureOnlyFailedSpecs: true
     }));
 
@@ -39,8 +39,8 @@ exports.config = {
       })
     );
 
-    var disableNgAnimate = function () {
-      angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {
+    var disableNgAnimate = function() {
+      angular.module('disableNgAnimate', []).run(['$animate', function($animate) {
         $animate.enabled(false);
       }]);
     };
