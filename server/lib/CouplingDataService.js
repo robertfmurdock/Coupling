@@ -102,7 +102,7 @@ var CouplingDataService = function (mongoUrl) {
     this.removePairAssignments = function (pairAssignmentsId, done) {
         historyCollection.updateById(pairAssignmentsId, {isDeleted: true},
             makeUpdateByIdCallback('Pair Assignments could not be deleted because they do not exist.', done));
-    }
+    };
     this.database = database;
 };
 

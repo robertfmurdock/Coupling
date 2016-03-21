@@ -587,4 +587,31 @@ describe('The controller named ', function () {
       });
     });
   });
+
+  describe('HistoryController', function () {
+    it('will delete pair set when remove is called and confirmed', inject(function ($controller) {
+      var entry = {
+        $remove: jasmine.createSpy('removeSpy')
+      };
+      var historyController = $controller('HistoryController', {history: [{}, entry]});
+
+      window.confirm = jasmine.createSpy('confirm').and.returnValue(true);
+
+      historyController.removeEntry(entry);
+      expect(entry.$remove).toHaveBeenCalled();
+    }));
+
+    it('will not delete pair set when remove is called and not confirmed', inject(function ($controller) {
+      var entry = {
+        $remove: jasmine.createSpy('removeSpy')
+      };
+      var historyController = $controller('HistoryController', {history: [{}, entry]});
+
+      window.confirm = jasmine.createSpy('confirm').and.returnValue(false);
+
+      historyController.removeEntry(entry);
+      expect(entry.$remove).not.toHaveBeenCalled();
+    }));
+  });
+
 });

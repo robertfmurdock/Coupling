@@ -1,11 +1,12 @@
 div
     div(id="tribe-browser")
-        tribecard(id="tribe-card" tribe="tribe")
+        tribecard(id="tribe-card" tribe="history.tribe")
     span(id="history-view")
         div(class="header") History!
-        div(ng-repeat='pairAssignments in history' class="pair-assignments")
-            div(class="pair-assignments-header") {{pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.date | date: 'HH:mm:ss'}}
+        div(ng-repeat='pairAssignments in history.history' class="pair-assignments")
+            span(class="pair-assignments-header") {{pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.date | date: 'HH:mm:ss'}}
+            span(class="small red button delete-button" ng-click="history.removeEntry(pairAssignments)") DELETE
             div
                 span(ng-repeat='pair in pairAssignments.pairs' class="pair")
-                    span(ng-repeat='player in pair' class="player" ui-draggable="true" drag="player" ui-on-Drop="onDrop($event,$data,player)")
+                    span(ng-repeat='player in pair' class="player")
                         div(class="player-header") {{player.name}}
