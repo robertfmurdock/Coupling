@@ -9,7 +9,7 @@
   }
 }
 
-#welcome .player.left {
+#welcome playercard.left, .player.left {
   &.ng-hide-remove {
     transition: all ease-out 4s;
     animation-duration: 4s;
@@ -18,17 +18,17 @@
   }
 }
 
-#welcome .player.left {
+#welcome playercard.left, .player.left {
   transition: all ease-out 0.25s;
 }
 
-#welcome .player.left:hover {
+#welcome playercard.left:hover, .player.left:hover {
   transition: all ease-in 0.4s;
   z-index: 1;
   transform: rotate(0deg) scale(1.5);
 }
 
-#welcome .player.right {
+#welcome playercard.right, .player.right {
   &.ng-hide-remove {
     transition: all ease-out 5s;
     animation-duration: 5s;
@@ -37,11 +37,11 @@
   }
 }
 
-#welcome .player.right {
+#welcome playercard.right, .player.right {
   transition: all ease-out 0.25s;
 }
 
-#welcome .player.right:hover {
+#welcome playercard.right:hover, .player.right:hover {
   transition: all ease-in 0.4s;
   z-index: 1;
   transform: rotate(0deg) scale(1.5);
@@ -99,7 +99,7 @@
 }
 
 .player-roster {
-  .player {
+  playercard, .player {
     transition: all 0.25s ease-out;
     &.disabled, &.ng-enter {
       transition: all 0.25s ease-out;
@@ -140,7 +140,7 @@
   }
 }
 
-.pair-assignments .player.hoverzoom:hover {
+.pair-assignments playercard.hoverzoom:hover, .player.hoverzoom:hover {
   transition: all ease-in 0.4s;
   z-index: 1;
   animation: 0.5s twitch;

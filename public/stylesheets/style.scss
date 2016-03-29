@@ -39,12 +39,12 @@ a {
   font-weight: bold;
 }
 
-#welcome .player.left {
+#welcome playercard, .player.left {
   position: relative;
   transform: rotate(-8deg);
 }
 
-#welcome .player.right {
+#welcome playercard, .player.right {
   position: relative;
   transform: rotate(8deg);
 }
@@ -148,7 +148,7 @@ a {
 
 #player-view {
   display: inline-block;
-  .player {
+  playercard, .player {
     display: inline-block;
     vertical-align: top;
     border-radius: 20px;
@@ -216,7 +216,7 @@ a {
   background-color: wheat;
 }
 
-.player {
+playercard, .player {
   position: relative;
   clear: both;
   display: inline-block;
@@ -249,11 +249,11 @@ a {
 }
 
 .player-roster {
-  .player {
+  playercard, .player {
     top: 0;
     margin-bottom: 25px;
   }
-  .disabled .player {
+  playercard.disabled, .player.disabled {
     top: 30px;
     background-color: darkred;
     margin-bottom: 0;
@@ -292,7 +292,7 @@ a {
 
 #history-view {
   display: inline-block;
-  .player {
+  playercard, .player {
     width: auto;
     height: auto;
   }
