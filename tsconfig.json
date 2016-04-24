@@ -5,10 +5,12 @@
         "noImplicitAny": false,
         "sourceMap": true
     },
-  "filesGlob": [
-    "./public/app/**/*.ts",
-    "./typings/tsd.d.ts"
-  ],
+    "files": [
+        "./typings/browser.d.ts"
+    ],
+    "filesGlob": [
+        "./public/app/**/*.ts"
+    ],
     "exclude": [
         "node_modules"
     ]

@@ -62,7 +62,8 @@
     "protractor-screenshot-reporter": "0.0.5",
     "supertest": "^1.2.0",
     "supertest-as-promised": "^3.0.0",
-    "typescript": "^1.8.2"
+    "typescript": "^1.8.2",
+    "typings": "^0.8.1"
   },
   "scripts": {
     "start": "node server/app.js",
