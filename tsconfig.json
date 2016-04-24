@@ -5,13 +5,13 @@
         "noImplicitAny": false,
         "sourceMap": true
     },
-    "files": [
-        "./typings/browser.d.ts"
-    ],
     "filesGlob": [
+        "./typings/main.d.ts",
         "./public/app/**/*.ts"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "typings/browser",
+        "typings/browser.d.ts"
     ]
 }

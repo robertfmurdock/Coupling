@@ -28,7 +28,6 @@
     "rsvp": "^3.2.1",
     "serve-favicon": "^2.3.0",
     "sinon": "^1.17.3",
-    "tsd": "^0.6.5",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
