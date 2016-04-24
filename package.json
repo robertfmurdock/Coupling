@@ -67,9 +67,9 @@
   },
   "scripts": {
     "start": "node server/app.js",
-    "pretsc": "npm run tsd",
+    "pretsc": "npm run typings",
     "tsc": "tsc",
-    "tsd": "tsd install",
+    "typings": "typings install",
     "pretest": "npm run tsc",
     "test": "grunt travis",
     "update-webdriver": "webdriver-manager update",
