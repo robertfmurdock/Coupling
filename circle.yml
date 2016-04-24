@@ -24,3 +24,5 @@ deployment:
       - git add -f public/app/main.js
       - git commit -m "Automatic source commit via CircleCI"
       - git push -f git@heroku.com:armored-coupling.git refs/heads/master:refs/heads/master
+      - docker-compose -f docker-compose-prod.yml build
+      - docker tag coupling-prod zegreatrob/coupling
