@@ -6,6 +6,7 @@ import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
 import IResource = ng.resource.IResource
 import "ngFitText"
+import 'prefixfree'
 import "angular-native-dragdrop"
 import './filters'
 import './animations'
