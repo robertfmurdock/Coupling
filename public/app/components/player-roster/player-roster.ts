@@ -1,4 +1,4 @@
-
+import '../controllers'
 
 angular.module("coupling.directives")
     .directive('playerRoster', () => {
