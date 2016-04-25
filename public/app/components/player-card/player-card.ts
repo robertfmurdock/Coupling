@@ -1,10 +1,10 @@
-import * as services from '../../services'
-import '../controllers'
+
+/// <reference path="../../services.ts" />
 
 class PlayerCardController {
     static $inject = ['$location'];
 
-    player:services.Player;
+    player:Player;
     size:number;
 
     constructor(public $location) {

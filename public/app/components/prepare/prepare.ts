@@ -1,19 +1,18 @@
-import * as services from '../../services'
-import * as _ from 'underscore'
-import '../controllers'
+
+/// <reference path="../../services.ts" />
 
 class PrepareController {
     static $inject = ['$location', 'Coupling'];
 
-    players:[services.Player];
-    selectablePlayers:services.SelectablePlayer[];
-    tribe:services.Tribe;
+    players:[Player];
+    selectablePlayers:SelectablePlayer[];
+    tribe:Tribe;
 
-    constructor(private $location:angular.ILocationService, private Coupling:services.Coupling) {
+    constructor(private $location:angular.ILocationService, private Coupling:Coupling) {
         this.selectablePlayers = _.values(Coupling.data.selectablePlayers);
     }
 
-    clickPlayerCard(selectable: services.SelectablePlayer) {
+    clickPlayerCard(selectable:SelectablePlayer) {
         selectable.isSelected = !selectable.isSelected;
     }
 

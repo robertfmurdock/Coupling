@@ -14,6 +14,7 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
+      <option name="passParentEnvs" value="true" />
       <option name="program" value="/usr/local/bin/jade" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="true" />
@@ -33,6 +34,7 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
+      <option name="passParentEnvs" value="true" />
       <option name="program" value="/usr/bin/sass" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="true" />

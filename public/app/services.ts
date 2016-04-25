@@ -1,9 +1,8 @@
-import "angular"
-import 'angular-resource'
-import * as _ from 'underscore'
+
+
 import IPromise = angular.IPromise;
 
-export class Player {
+class Player {
     _id:string;
     tribe:string
 }
@@ -16,7 +15,7 @@ class CouplingData {
     selectablePlayers:SelectablePlayerMap
 }
 
-export interface Tribe extends ng.resource.IResource<Tribe> {
+interface Tribe extends ng.resource.IResource<Tribe> {
     _id: String;
     name:String
 }
@@ -28,19 +27,19 @@ interface TribeResource extends ng.resource.IResourceClass<Tribe> {
 interface PairAssignmentSetResource extends ng.resource.IResourceClass<PairAssignmentSet> {
 }
 
-export interface PairAssignmentSet extends ng.resource.IResource<PairAssignmentSet> {
+interface PairAssignmentSet extends ng.resource.IResource<PairAssignmentSet> {
     pairs:[[Player]]
 }
 
 class Pin {
 }
 
-export class SelectablePlayer {
+class SelectablePlayer {
     constructor(public isSelected:boolean, public player:Player) {
     }
 }
 
-export class Coupling {
+class Coupling {
     static $inject = ['$http', '$q', '$resource'];
 
     data:CouplingData;
@@ -57,7 +56,7 @@ export class Coupling {
         this.data.selectablePlayers = {};
     }
 
-    public getTribes():IPromise<ng.resource.IResourceArray<Tribe>> {
+    getTribes():IPromise<ng.resource.IResourceArray<Tribe>> {
         return this.Tribe
             .query()
             .$promise;
@@ -157,7 +156,7 @@ export class Coupling {
 
 }
 
-export class Randomizer {
+class Randomizer {
 
     next(maxValue:number) {
         var floatValue = Math.random() * maxValue;

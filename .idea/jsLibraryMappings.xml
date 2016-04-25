@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{angular-protractor-DefinitelyTyped, jasmine-DefinitelyTyped, lodash-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{Node.js v5.11.0 Core Modules, angular-protractor-DefinitelyTyped, angularjs-DefinitelyTyped, jasmine-DefinitelyTyped, lodash-DefinitelyTyped}" />
+    <includedPredefinedLibrary name="Node.js Globals" />
   </component>
 </project>

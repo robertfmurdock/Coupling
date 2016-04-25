@@ -7,11 +7,6 @@
     "test": "test"
   },
   "dependencies": {
-    "angular": "~1.4.8",
-    "angular-animate": "~1.5",
-    "angular-gravatar": "~0.4",
-    "angular-resource": "~1.5",
-    "angular-route": "~1.5",
     "async": "^1.5.2",
     "body-parser": "^1.15.0",
     "compression": "^1.6.1",
@@ -20,7 +15,6 @@
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "font-awesome": "~4.5.0",
     "kerberos": "0.0.18",
     "method-override": "^2.3.5",
     "mongodb": "^2.1.7",
@@ -30,15 +24,13 @@
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
-    "prefixfree": "*",
     "pug": "^2.0.0-alpha6",
-    "rsvp": "~3.0.18",
+    "rsvp": "^3.2.1",
     "serve-favicon": "^2.3.0",
     "sinon": "^1.17.3",
-    "underscore": "~1.8.3"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "bower-webpack-plugin": "^0.1.9",
     "chai": "^3.5.0",
     "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
@@ -69,18 +61,15 @@
     "protractor-screenshot-reporter": "0.0.5",
     "supertest": "^1.2.0",
     "supertest-as-promised": "^3.0.0",
-    "ts-loader": "^0.8.2",
     "typescript": "^1.8.2",
-    "typings": "^0.8.1",
-    "webpack": "^1.13.0"
+    "typings": "^0.8.1"
   },
   "scripts": {
     "start": "node server/app.js",
     "pretsc": "npm run typings",
     "tsc": "tsc",
     "typings": "typings install",
-    "webpack": "webpack"
-    "pretest": "npm run webpack",
+    "pretest": "npm run tsc",
     "test": "grunt travis",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",

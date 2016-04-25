@@ -1,28 +1,9 @@
 
-import "angular"
-import "angular-gravatar"
-import "angular-route"
+/// <reference path="services.ts" />
+
 import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
 import IResource = ng.resource.IResource
-import "ngFitText"
-import "angular-native-dragdrop"
-import './filters'
-import './animations'
-import './components/history/history'
-import './components/pair-assignments/pair-assignments'
-import './components/pin-list/pin-list'
-import './components/player-card/player-card'
-import './components/player-config/player-config'
-import './components/player-roster/player-roster'
-import './components/prepare/prepare'
-import './components/tribe-card/tribe-card'
-import './components/tribe-config/tribe-config'
-import './components/tribe-list/tribe-list'
-import './components/welcome/welcome'
-
-import * as _ from 'underscore'
-import * as services from './services'
 
 var app = angular.module('coupling', ["ngRoute",
     'ngFitText',
@@ -61,7 +42,7 @@ var tribeListRoute:IRoute = {
 class NewTribeRouteController {
     static $inject = ['Coupling'];
 
-    tribe:services.Tribe;
+    tribe:Tribe;
 
     constructor(Coupling) {
         this.tribe = new Coupling.Tribe();
@@ -92,7 +73,7 @@ var prepareTribeRoute:IRoute = {
     controller: PrepareTribeRouteController,
     resolve: {
         tribe: tribeResolution,
-        players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling:services.Coupling) {
+        players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling:Coupling) {
             var tribeId = $route.current.params.tribeId;
             return $q.all({
                 players: Coupling.getPlayers(tribeId),
@@ -126,7 +107,7 @@ var editTribeRoute:IRoute = {
 class HistoryRouteController {
     static $inject = ['tribe', 'history'];
 
-    constructor(public tribe:services.Tribe, public history:[services.PairAssignmentSet]) {
+    constructor(public tribe:Tribe, public history:[PairAssignmentSet]) {
     }
 }
 
@@ -154,7 +135,7 @@ var pinRoute:IRoute = {
     controllerAs: 'main',
     controller: PinRouteController,
     resolve: {
-        pins: ['$route', 'Coupling', function ($route, Coupling:services.Coupling) {
+        pins: ['$route', 'Coupling', function ($route, Coupling:Coupling) {
             return Coupling.getPins($route.current.params.tribeId);
         }]
     }
@@ -162,14 +143,14 @@ var pinRoute:IRoute = {
 
 class NewPlayerRouteController {
     static $inject = ['tribe', 'players'];
-    tribe:services.Tribe;
-    player:services.Player;
-    players:[services.Player];
+    tribe:Tribe;
+    player:Player;
+    players:[Player];
 
     constructor(tribe, players) {
         this.tribe = tribe;
         this.players = players;
-        this.player = new services.Player();
+        this.player = new Player();
         this.player.tribe = tribe._id;
     }
 }
@@ -188,9 +169,9 @@ var newPlayerRoute:IRoute = {
 
 class EditPlayerRouteController {
     static $inject = ['$route', 'tribe', 'players'];
-    tribe:services.Tribe;
-    player:services.Player;
-    players:[services.Player];
+    tribe:Tribe;
+    player:Player;
+    players:[Player];
 
     constructor($route, tribe, players) {
         this.tribe = tribe;
@@ -215,7 +196,7 @@ var editPlayerRoute:IRoute = {
 class CurrentPairAssignmentsRouteController {
     static $inject = ['pairAssignmentDocument', 'tribe', 'players'];
 
-    constructor(public pairAssignments:services.PairAssignmentSet, public tribe:services.Tribe, public players:[services.Player]) {
+    constructor(public pairAssignments:PairAssignmentSet, public tribe:Tribe, public players:[Player]) {
     }
 }
 
@@ -238,9 +219,9 @@ var currentPairAssignmentsRoute:IRoute = {
 
 class NewPairAssignmentsRouteController {
     static $inject = ['requirements'];
-    tribe:services.Tribe;
-    players:[services.Player];
-    pairAssignments:services.PairAssignmentSet;
+    tribe:Tribe;
+    players:[Player];
+    pairAssignments:PairAssignmentSet;
 
     constructor(requirements) {
         this.tribe = requirements.tribe;
@@ -254,7 +235,7 @@ var newPairAssignmentsRoute:IRoute = {
     controllerAs: 'main',
     controller: NewPairAssignmentsRouteController,
     resolve: {
-        requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:services.Coupling) {
+        requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:Coupling) {
             var tribeId = $route.current.params.tribeId;
             return $q.all({
                 tribe: Coupling.getTribe(tribeId),
@@ -262,7 +243,7 @@ var newPairAssignmentsRoute:IRoute = {
                 history: Coupling.getHistory(tribeId)
             })
                 .then(options=> {
-                    var players:[services.Player] = options['players'];
+                    var players:[Player] = options['players'];
                     var history = options['history'];
                     var selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
                     options['selectedPlayers'] = _.chain(_.values(selectablePlayerMap))
@@ -318,3 +299,11 @@ angular.module('ui.gravatar')
         }
     ]);
 
+angular.module('coupling.controllers', ['coupling.services', 'ngFitText'])
+    .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
+        fitTextConfigProvider.config = {
+            debounce: _.debounce,
+            delay: 1000
+        };
+    }]);
+angular.module("coupling.directives", []);

@@ -1,9 +1,8 @@
-import * as services from '../../services'
-import '../controllers'
+/// <reference path="../../services.ts" />
 
 class HistoryController {
 
-    tribe:services.Tribe;
+    tribe:Tribe;
 
     removeEntry(entry) {
         if (confirm("Are you sure you want to delete these pair assignments?")) {
