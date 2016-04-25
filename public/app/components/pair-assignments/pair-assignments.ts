@@ -1,5 +1,4 @@
 import * as services from '../../services'
-import '../controllers'
 import * as _ from 'underscore'
 
 class PairAssignmentsController {
@@ -69,11 +68,8 @@ class PairAssignmentsController {
     }
 }
 
-angular.module('coupling.controllers')
-    .controller('PairAssignmentsController', PairAssignmentsController);
-
-
-angular.module("coupling.directives")
+export default angular.module('coupling.pairAssignments', [])
+    .controller('PairAssignmentsController', PairAssignmentsController)
     .directive('pairAssignments', () => {
         return {
             controller: 'PairAssignmentsController',

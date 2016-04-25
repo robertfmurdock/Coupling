@@ -1,6 +1,5 @@
 import * as services from '../../services'
 import * as _ from 'underscore'
-import '../controllers'
 
 class PrepareController {
     static $inject = ['$location', 'Coupling'];
@@ -13,7 +12,7 @@ class PrepareController {
         this.selectablePlayers = _.values(Coupling.data.selectablePlayers);
     }
 
-    clickPlayerCard(selectable: services.SelectablePlayer) {
+    clickPlayerCard(selectable:services.SelectablePlayer) {
         selectable.isSelected = !selectable.isSelected;
     }
 
@@ -23,10 +22,8 @@ class PrepareController {
 
 }
 
-angular.module("coupling.controllers")
-    .controller('PrepareController', PrepareController);
-
-angular.module("coupling.directives")
+export default angular.module("coupling.prepare", [])
+    .controller('PrepareController', PrepareController)
     .directive('prepare', () => {
         return {
             controller: 'PrepareController',

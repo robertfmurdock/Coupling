@@ -3,7 +3,7 @@
 describe('The controller named ', function () {
 
   beforeEach(function () {
-    module("coupling.controllers");
+    module("coupling.component");
   });
 
   describe('Welcome controller', function () {

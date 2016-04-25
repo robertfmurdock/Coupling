@@ -1,5 +1,4 @@
 import * as services from '../../services'
-import '../controllers'
 
 class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
@@ -44,10 +43,8 @@ class PlayerConfigController {
     }
 }
 
-angular.module("coupling.controllers")
-    .controller('PlayerConfigController', PlayerConfigController);
-
-angular.module("coupling.directives")
+export default angular.module("coupling.playerConfig", [])
+    .controller('PlayerConfigController', PlayerConfigController)
     .directive('playerConfig', () => {
         return {
             controller: 'PlayerConfigController',

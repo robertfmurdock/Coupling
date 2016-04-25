@@ -1,5 +1,4 @@
 import * as services from '../../services'
-import '../controllers'
 
 class HistoryController {
 
@@ -13,10 +12,8 @@ class HistoryController {
 
 }
 
-angular.module("coupling.controllers")
-    .controller('HistoryController', HistoryController);
-
-angular.module("coupling.directives")
+export default angular.module("coupling.history", [])
+    .controller('HistoryController', HistoryController)
     .directive('history', () => {
         return {
             controller: HistoryController,

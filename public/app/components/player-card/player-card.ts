@@ -1,5 +1,4 @@
 import * as services from '../../services'
-import '../controllers'
 
 class PlayerCardController {
     static $inject = ['$location'];
@@ -20,10 +19,8 @@ class PlayerCardController {
 
 }
 
-angular.module('coupling.controllers')
-    .controller('PlayerCardController', PlayerCardController);
-
-angular.module("coupling.directives")
+export default angular.module('coupling.playerCard', [])
+    .controller('PlayerCardController', PlayerCardController)
     .directive('playercard', () => {
         return {
             templateUrl: '/app/components/player-card/playercard.html',

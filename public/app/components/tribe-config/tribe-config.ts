@@ -1,5 +1,4 @@
 import * as services from '../../services'
-import '../controllers'
 
 class TribeConfigController {
     static $inject = ['$location'];
@@ -19,10 +18,8 @@ class TribeConfigController {
     }
 }
 
-angular.module("coupling.controllers")
-    .controller('TribeConfigController', TribeConfigController);
-
-angular.module("coupling.directives")
+export default angular.module("coupling.tribeConfig", [])
+    .controller('TribeConfigController', TribeConfigController)
     .directive('tribeConfig', function () {
         return {
             controller: 'TribeConfigController',

@@ -1,9 +1,8 @@
 import * as services from '../../services'
-import '../controllers'
 
 class TribeCardController {
     static $inject = ['$location'];
-    public tribe: services.Tribe;
+    public tribe:services.Tribe;
 
     constructor(public $location:angular.ILocationService) {
     }
@@ -18,10 +17,8 @@ class TribeCardController {
     }
 }
 
-angular.module('coupling.controllers')
-    .controller('TribeCardController', TribeCardController);
-
-angular.module("coupling.directives")
+export default angular.module('coupling.tribeCard', [])
+    .controller('TribeCardController', TribeCardController)
     .directive('tribecard', function () {
         return {
             controller: 'TribeCardController',

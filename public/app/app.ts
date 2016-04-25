@@ -1,4 +1,3 @@
-
 import "angular"
 import "angular-gravatar"
 import "angular-route"
@@ -10,17 +9,7 @@ import 'prefixfree'
 import "angular-native-dragdrop"
 import './filters'
 import './animations'
-import './components/history/history'
-import './components/pair-assignments/pair-assignments'
-import './components/pin-list/pin-list'
-import './components/player-card/player-card'
-import './components/player-config/player-config'
-import './components/player-roster/player-roster'
-import './components/prepare/prepare'
-import './components/tribe-card/tribe-card'
-import './components/tribe-config/tribe-config'
-import './components/tribe-list/tribe-list'
-import './components/welcome/welcome'
+import './components/components'
 
 import * as _ from 'underscore'
 import * as services from './services'
@@ -29,9 +18,8 @@ var app = angular.module('coupling', ["ngRoute",
     'ngFitText',
     'ui.gravatar',
     'ang-drag-drop',
-    'coupling.controllers',
+    'coupling.component',
     'coupling.filters',
-    'coupling.directives',
     'coupling.animations']);
 
 app.config(['$locationProvider', function ($locationProvider) {

@@ -1,5 +1,4 @@
 import * as services from '../../services'
-import '../controllers'
 
 interface Card {
     name: String
@@ -72,10 +71,8 @@ class WelcomeController {
 
 }
 
-angular.module('coupling.controllers')
-    .controller('WelcomeController', WelcomeController);
-
-angular.module("coupling.directives")
+export default angular.module('coupling.welcome', [])
+    .controller('WelcomeController', WelcomeController)
     .directive('welcomepage', function () {
         return {
             restrict: 'E',

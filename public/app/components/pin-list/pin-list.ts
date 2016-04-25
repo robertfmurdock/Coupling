@@ -1,6 +1,4 @@
-import '../controllers'
-
-angular.module("coupling.directives")
+export default angular.module("coupling.pinList", [])
     .directive('pinList', () => {
         return {
             scope: {

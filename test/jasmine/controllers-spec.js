@@ -5,7 +5,7 @@ describe('The controller named ', function () {
   var scope, Coupling;
 
   beforeEach(function () {
-    module("coupling.controllers");
+    module("coupling.component");
     scope = {};
     Coupling = {};
   });
