@@ -23,7 +23,7 @@ module.exports = function (app, userDataService) {
     path.join(__dirname, '../../public'),
     path.join(__dirname, '../../views')
   ]);
-  app.set('view engine', 'jade');
+  app.set('view engine', 'pug');
   app.use(favicon('public/images/favicon.ico'));
   app.use(sassMiddleware({
     src: __dirname + '/../../public/stylesheets',

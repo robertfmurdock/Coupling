@@ -205,7 +205,7 @@ module.exports = function (grunt) {
     wiredep: {
       productionTask: {
         src: [
-          'views/layout.jade'
+          'views/layout.pug'
         ],
         options: {
           ignorePath: '../public'
