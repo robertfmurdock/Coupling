@@ -1,13 +1,13 @@
-
-/// <reference path="../../services.ts" />
+import * as services from '../../services'
+import '../controllers'
 
 class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
 
-    player:Player;
-    tribe:Tribe;
+    player:services.Player;
+    tribe:services.Tribe;
 
-    constructor($scope, public Coupling:Coupling, public $location:angular.ILocationService, public $route:ng.route.IRouteService) {
+    constructor($scope, public Coupling:services.Coupling, public $location:angular.ILocationService, public $route:ng.route.IRouteService) {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
     }
 

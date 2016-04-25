@@ -1,5 +1,5 @@
-
-/// <reference path="../../services.ts" />
+import * as services from '../../services'
+import '../controllers'
 
 interface Card {
     name: String
@@ -58,7 +58,7 @@ class WelcomeController {
     public leftCard:Card;
     public rightCard:Card;
 
-    constructor($timeout:angular.ITimeoutService, randomizer:Randomizer) {
+    constructor($timeout:angular.ITimeoutService, randomizer:services.Randomizer) {
         this.show = false;
         var choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftCard = choice.leftCard;

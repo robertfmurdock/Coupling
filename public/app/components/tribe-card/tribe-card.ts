@@ -1,9 +1,9 @@
-
-/// <reference path="../../services.ts" />
+import * as services from '../../services'
+import '../controllers'
 
 class TribeCardController {
     static $inject = ['$location'];
-    public tribe: Tribe;
+    public tribe: services.Tribe;
 
     constructor(public $location:angular.ILocationService) {
     }
