@@ -79,7 +79,7 @@
     "pretsc": "npm run typings",
     "tsc": "tsc",
     "typings": "typings install",
-    "webpack": "webpack"
+    "webpack": "webpack",
     "pretest": "npm run webpack",
     "test": "grunt travis",
     "update-webdriver": "webdriver-manager update",
