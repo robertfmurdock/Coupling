@@ -4,12 +4,13 @@ import "angular-route"
 import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
 import IResource = ng.resource.IResource
-import "ngFitText"
+import "ng-fittext"
 import 'prefixfree'
 import "angular-native-dragdrop"
 import './filters'
 import './animations'
 import './components/components'
+import 'font-awesome/css/font-awesome.css'
 
 import * as _ from 'underscore'
 import * as services from './services'
