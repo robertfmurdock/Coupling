@@ -1,4 +1,4 @@
-FROM node:5-slim
+FROM node:6-slim
 
 WORKDIR /usr/src/app
 
@@ -6,7 +6,11 @@ RUN apt-get update \
   && apt-get install -y \
   bzip2 \
   libfreetype6 \
-  libfontconfig
+  libfontconfig \
+  git
+RUN cd $(npm root -g)/npm \
+  && npm install fs-extra \
+  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
 RUN npm install grunt-cli karma-cli --unsafe-perm
 COPY ["package.json", "/usr/src/app/"]
 RUN npm install

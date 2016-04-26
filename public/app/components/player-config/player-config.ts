@@ -1,6 +1,6 @@
 import * as services from '../../services'
 
-class PlayerConfigController {
+export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
 
     player:services.Player;

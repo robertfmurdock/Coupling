@@ -1,7 +1,7 @@
 import * as services from '../../services'
 import * as _ from 'underscore'
 
-class PairAssignmentsController {
+export class PairAssignmentsController {
     static $inject = ['Coupling', '$location'];
     tribe:services.Tribe;
     players:[services.Player];

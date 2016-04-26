@@ -1,9 +1,14 @@
 "use strict";
 
+require('angular');
+require('angular-mocks');
+
+require('../../public/app/components/components');
+
 describe('The controller named ', function () {
 
   beforeEach(function () {
-    module("coupling.component");
+    angular.module("coupling.component");
   });
 
   describe('Welcome controller', function () {

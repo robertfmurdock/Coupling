@@ -42,6 +42,7 @@
     "underscore": "~1.8.3"
   },
   "devDependencies": {
+    "angular-mocks": "^1.4.10",
     "bower-webpack-plugin": "^0.1.9",
     "chai": "^3.5.0",
     "css-loader": "^0.23.1",
@@ -68,6 +69,8 @@
     "karma-junit-reporter": "^0.3.8",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-safari-launcher": "^0.1.1",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
     "mocha-jenkins-reporter": "^0.2.0",
     "phantomjs-prebuilt": "^2.1.7",

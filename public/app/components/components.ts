@@ -12,6 +12,7 @@ import TribeList from './tribe-list/tribe-list'
 import Welcome from './welcome/welcome'
 import {Tribe} from "../services";
 
+console.log('defining coupling.component');
 angular.module('coupling.component', [
         'coupling.services',
         'ngFitText',

@@ -1,6 +1,6 @@
 import * as services from '../../services'
 
-class HistoryController {
+export class HistoryController {
 
     tribe:services.Tribe;
 

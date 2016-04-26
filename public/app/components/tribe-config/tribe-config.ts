@@ -1,6 +1,6 @@
 import * as services from '../../services'
 
-class TribeConfigController {
+export class TribeConfigController {
     static $inject = ['$location'];
     public tribe:services.Tribe;
     public isNew:boolean;
