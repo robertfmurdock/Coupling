@@ -21,7 +21,7 @@ deployment:
     commands:
       - git config user.email "robertfmurdock@gmail.com"
       - git config user.name "CircleCI in a Rob suit."
-      - git add -f public/app/main.js
+      - git add -f public/app/build/main.js
       - git commit -m "Automatic source commit via CircleCI"
       - git push -f git@heroku.com:armored-coupling.git refs/heads/master:refs/heads/master
       - docker build -f Dockerfile-prod -t zegreatrob/coupling .
