@@ -12,7 +12,6 @@ node_modules
 **/*.dylib
 **/*.gypi
 **/*.log
-public/app/main.js
-public/app/main.js.map
+public/app/build
 typings
 screenshots

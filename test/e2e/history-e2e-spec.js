@@ -12,19 +12,16 @@ var historyCollection = database.get('history');
 var tribeCollection = database.get('tribe');
 
 var loginSupertest = function () {
-  console.log('logging in supertest');
   return supertest.get('/test-login?username="name"&password="pw"')
     .expect(302);
 };
 
 var postTribe = function (tribe) {
-  console.log('posting ' + '/api/tribes');
   return supertest.post('/api/tribes')
     .send(tribe)
     .expect(200);
 };
 var postPairAssignmentSet = function (tribeId, pairAssignmentSet) {
-  console.log('posting ' + '/api/history');
   return supertest.post('/api/' + tribeId + '/history')
     .send(pairAssignmentSet)
     .expect(200);

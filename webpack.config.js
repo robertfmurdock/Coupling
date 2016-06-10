@@ -1,13 +1,13 @@
 var path = require('path');
 var BowerWebpackPlugin = require('bower-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var jsPath = path.resolve(__dirname, './public/app');
+var jsPath = path.resolve(__dirname, './client/app');
 
 module.exports = {
   entry: path.resolve(jsPath, './app.ts'),
   output: {
-    path: path.resolve('./'),
-    filename: path.resolve(jsPath, './main.js')
+    path: './public/app/build',
+    filename: 'main.js'
   },
   devtool: 'source-map',
   resolve: {
@@ -32,6 +32,6 @@ module.exports = {
   },
   plugins: [
     new BowerWebpackPlugin(),
-    new ExtractTextPlugin(path.resolve(jsPath, './styles.css'))
+    new ExtractTextPlugin('./styles.css')
   ]
 };

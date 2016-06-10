@@ -43,7 +43,7 @@ var candidates:[WelcomeCardSet] = [{
     proverb: 'Team up. Get things done.'
 }];
 
-class WelcomeController {
+export class WelcomeController {
 
     private static chooseWelcomeCards(randomizer):WelcomeCardSet {
         var indexToUse = randomizer.next(candidates.length - 1);

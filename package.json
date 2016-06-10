@@ -7,7 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "angular": "~1.4.8",
+    "angular": "^1.5.5",
     "angular-animate": "^1.5.5",
     "angular-gravatar": "^0.4.1",
     "angular-native-dragdrop": "^1.1.2",
@@ -50,6 +50,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "grunt": "^0.4.5",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-env": "^0.4.4",
     "grunt-express-server": "^0.5.2",

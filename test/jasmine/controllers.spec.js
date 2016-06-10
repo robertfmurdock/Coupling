@@ -46,7 +46,6 @@ describe('The controller named ', function () {
     describe('clickPlayerName', function () {
 
       it('will redirect to the players page', function () {
-        console.log('controller', controller);
         var expectedPath = '/' + controller.player.tribe + '/player/' + controller.player._id;
         expect(location.path).not.toHaveBeenCalledWith(expectedPath);
         var event = {};

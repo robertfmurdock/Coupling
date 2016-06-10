@@ -5,6 +5,9 @@ require('angular-mocks');
 
 require('../../public/app/components/components');
 
+var WelcomeController = require('../../public/app/components/welcome/welcome.ts').WelcomeController;
+var Randomizer = require('../../public/app/services.ts').Randomizer;
+
 describe('The controller named ', function () {
 
   beforeEach(function () {
@@ -15,17 +18,17 @@ describe('The controller named ', function () {
     var controller;
 
     function initWelcomeController(randomValue) {
-      inject(function ($controller, randomizer) {
+      inject(function ($controller, $timeout) {
+        var randomizer = new Randomizer();
         spyOn(randomizer, 'next').and.returnValue(randomValue);
-        controller = $controller('WelcomeController', {
-          randomizer: randomizer
-        });
+        controller = new WelcomeController($timeout, randomizer);
       });
     }
 
     it('does not show initially', function () {
-      inject(function ($controller) {
-        controller = $controller('WelcomeController', {});
+      inject(function ($timeout) {
+        var randomizer = new Randomizer();
+        controller = new WelcomeController($timeout, randomizer);
       });
       expect(controller.show).toBe(false);
     });
@@ -33,11 +36,8 @@ describe('The controller named ', function () {
     it('will show after a zero timeout so that the animation works', function () {
       var timeout = jasmine.createSpy('timeout');
 
-      inject(function ($controller) {
-        controller = $controller('WelcomeController', {
-          $timeout: timeout
-        });
-      });
+      var randomizer = new Randomizer();
+      controller = new WelcomeController(timeout, randomizer);
 
       expect(timeout.calls.count()).toBe(1);
       var timeoutArgs = timeout.calls.argsFor(0);

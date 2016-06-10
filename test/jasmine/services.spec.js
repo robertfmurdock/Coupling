@@ -1,23 +1,28 @@
 "use strict";
 
+require('angular-resource');
+
+var services = require('./../../public/app/services.ts');
+var CouplingService = services.Coupling;
+
 describe('Service: ', function () {
-  beforeEach(function () {
-    module('coupling.services');
-  });
 
   describe('Coupling', function () {
+
+    beforeEach(angular.mock.module('ngResource'));
 
     var httpBackend;
     var Coupling, q, rootScope;
 
     beforeEach(function () {
-      inject(function (_Coupling_, $httpBackend, $q, $rootScope) {
+      inject(function ($httpBackend, $q, $rootScope, $http, $resource) {
         httpBackend = $httpBackend;
-        Coupling = _Coupling_;
         q = $q;
-        rootScope = $rootScope
+        rootScope = $rootScope;
+        Coupling = new CouplingService($http, $q, $resource);
       });
     });
+
     describe('get history', function () {
       it('calls back with history on success', function (done) {
         var expectedHistory = [{
@@ -57,8 +62,8 @@ describe('Service: ', function () {
             expect(angular.toJson(resultTribes)).toEqual(angular.toJson(expectedTribes));
             done();
           }).catch(function (error) {
-            expect(error).toBeUndefined();
-          }).finally(done);
+          expect(error).toBeUndefined();
+        }).finally(done);
 
         httpBackend.flush();
       });
@@ -74,11 +79,11 @@ describe('Service: ', function () {
           .then(function () {
             callCount++;
           }).catch(function (error) {
-            expect(error).toBeDefined();
-            expect(error.status).toBe(statusCode);
-            expect(error.data).toBe(expectedData);
-            done();
-          });
+          expect(error).toBeDefined();
+          expect(error.status).toBe(statusCode);
+          expect(error.data).toBe(expectedData);
+          done();
+        });
         httpBackend.flush();
       });
     });
