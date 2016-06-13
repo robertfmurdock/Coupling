@@ -1,7 +1,7 @@
 var path = require('path');
 var BowerWebpackPlugin = require('bower-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var jsPath = path.resolve(__dirname, './client/app');
+var jsPath = path.resolve(__dirname, './public/app');
 
 module.exports = {
   entry: path.resolve(jsPath, './app.ts'),
