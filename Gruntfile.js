@@ -227,8 +227,7 @@ module.exports = function (grunt) {
       }
     },
     typescript: {
-      base: {
-      }
+      base: {}
     }
   });
 
@@ -239,8 +238,7 @@ module.exports = function (grunt) {
   grunt.registerTask('end2end', ['express:dev', 'protractor:chrome']);
 
   grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
-    'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild'
-  ]);
+    'protractor:chrome', 'protractor:firefox']);
   grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint']);
   grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint']);
   grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);

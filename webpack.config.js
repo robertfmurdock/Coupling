@@ -1,9 +1,13 @@
+var webpack = require('webpack');
 var path = require('path');
 var BowerWebpackPlugin = require('bower-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var jsPath = path.resolve(__dirname, './public/app');
 
-module.exports = {
+
+console.log('Packing for ', process.env.NODE_ENV);
+
+var exports = {
   entry: path.resolve(jsPath, './app.ts'),
   output: {
     path: './public/app/build',
@@ -35,3 +39,20 @@ module.exports = {
     new ExtractTextPlugin('./styles.css')
   ]
 };
+
+if (process.env.NODE_ENV === 'production') {
+  exports.devtool = 'cheap-module-source-map';
+
+  exports.plugins = exports.plugins.concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin()
+  ]);
+}
+
+module.exports = exports;
