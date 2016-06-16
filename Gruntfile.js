@@ -6,7 +6,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-protractor-runner');
-  grunt.loadNpmTasks('grunt-git-describe');
   grunt.loadNpmTasks('grunt-wiredep');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
@@ -148,10 +147,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    "git-describe": {
-      "options": {},
-      "jenkins": {}
-    },
     watch: {
       //gruntfile: {
       //    files: ['Gruntfile.js']
@@ -237,22 +232,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('saveRevision', function () {
-    grunt.event.once('git-describe', function (rev) {
-      var info = {
-        gitRev: rev.toString(),
-        date: new Date()
-      };
-      grunt.file.write('version.json', JSON.stringify(info));
-      grunt.option('gitRevision', rev);
-    });
-    grunt.task.run('git-describe');
-  });
-  grunt.registerTask('markAsDevelopmentBuild', function () {
-    grunt.file.write('version.json', JSON.stringify({
-      gitRev: 'DEVELOPMENT'
-    }));
-  });
   grunt.registerTask('unit', ['mochaTest:unit', 'karma:unit']);
   grunt.registerTask('jenkinsMochaUnit', ['env:jenkinsUnit', 'mochaTest:jenkinsUnit']);
   grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
@@ -262,8 +241,8 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
     'protractor:chrome', 'protractor:firefox', 'markAsDevelopmentBuild'
   ]);
-  grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
-  grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint', 'saveRevision']);
+  grunt.registerTask('jenkins', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint']);
+  grunt.registerTask('travis', ['mkdir:testOutput', 'jenkinsMochaUnit', 'karma:travis', 'express:dev', 'jenkinsMochaEndpoint']);
   grunt.registerTask('serve', ['jenkinsMochaUnit', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
 
   grunt.registerTask('docker-server-test', ['mochaTest:unit', 'express:dev', 'mochaTest:endpoint']);
