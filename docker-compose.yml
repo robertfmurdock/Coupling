@@ -6,6 +6,7 @@ web:
   links:
     - "mongo:mongo"
     - "seleniumhub:hub"
+    - "statsd:statsd"
   volumes:
     - ./public:/usr/src/app/public
     - ./server:/usr/src/app/server
@@ -21,7 +22,19 @@ mongo:
   environment:
     - AUTH=no
   volumes:
-    - /data/db:/data/db
+    - ./data/db:/data/db
+statsd:
+  image: hopsoft/graphite-statsd
+  ports:
+    - "3002:80"
+    - "2003:2003"
+    - "8125:8125/udp"
+grafana:
+  image: grafana/grafana
+  links:
+    - statsd
+  ports:
+    - "3001:3000"
 seleniumhub:
   image: selenium/hub
 chromenode:

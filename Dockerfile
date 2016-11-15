@@ -22,4 +22,4 @@ ENV \
 
 CMD [ "npm", "run", "dockertest" ]
 
-EXPOSE 3000
+EXPOSE 3000 8125

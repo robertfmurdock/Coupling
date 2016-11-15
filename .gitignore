@@ -14,5 +14,6 @@ node_modules
 public/app/build
 typings
 screenshots
+data
 Firefox_*/
 PhantomJS_*/

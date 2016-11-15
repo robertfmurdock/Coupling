@@ -21,4 +21,4 @@ ENV \
   MONGO_CONNECTION=mongodb://mongo
 
 CMD ["npm", "start"]
-EXPOSE 3000
+EXPOSE 3000 8125

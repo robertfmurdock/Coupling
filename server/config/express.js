@@ -1,6 +1,5 @@
 "use strict";
 var compression = require('compression');
-var config = require('./../../config');
 var path = require('path');
 var favicon = require('serve-favicon');
 var sassMiddleware = require('node-sass-middleware');
@@ -15,9 +14,13 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var statsd = require('express-statsd');
+var config = require('./../../config');
 
 module.exports = function (app, userDataService) {
   app.use(compression());
+  app.use(statsd({host: 'statsd', port: 8125}));
+
   app.set('port', config.port);
   app.set('views', [
     path.join(__dirname, '../../public'),
