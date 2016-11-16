@@ -13,11 +13,16 @@ var badTribePath = '/api/does-not-exist/pins';
 var database = monk(config.tempMongoUrl);
 var pinCollection = database.get('pins');
 
-describe(path, function () {
+var clean = function(object){
+  return JSON.parse(JSON.stringify(object));
+};
+
+
+describe.only(path, function () {
 
   beforeEach(function (done) {
     supertest.get('/test-login?username="name"&password="pw"')
-      .expect(302).end(function (err, res) {
+      .expect(302).end(function (err) {
         expect(err).to.not.exist;
         done();
       });
@@ -25,9 +30,9 @@ describe(path, function () {
 
   describe("GET", function () {
     var expectedPins = [
-      {_id: 'pin1', tribe: tribeId},
-      {_id: 'pin2', tribe: tribeId},
-      {_id: 'pin3', tribe: tribeId}
+      {_id: monk.id(), tribe: tribeId},
+      {_id: monk.id(), tribe: tribeId},
+      {_id: monk.id(), tribe: tribeId}
     ];
 
     beforeEach(function (done) {
@@ -42,7 +47,7 @@ describe(path, function () {
     it('will return all available pins on tribe.', function (done) {
       var httpGet = supertest.get(path);
       httpGet.expect(200).expect('Content-Type', /json/).end(function (error, response) {
-        expect(response.body).to.eql(expectedPins);
+        expect(clean(response.body)).to.eql(clean(expectedPins));
         done(error);
       });
     });
@@ -62,9 +67,9 @@ describe(path, function () {
 
   describe("POST", function () {
     var resultPins = [
-      {_id: 'pin1', tribe: tribeId},
-      {_id: 'pin2', tribe: tribeId},
-      {_id: 'pin3', tribe: tribeId}
+      {_id: monk.id(), tribe: tribeId},
+      {_id: monk.id(), tribe: tribeId},
+      {_id: monk.id(), tribe: tribeId}
     ];
 
     beforeEach(function (done) {
@@ -77,7 +82,7 @@ describe(path, function () {
     });
 
     it("will add pin to tribe", function (done) {
-      var newPin = {_id: 'pin4', tribe: tribeId};
+      var newPin = {_id: monk.id(), tribe: tribeId};
       var httpPost = supertest.post(path);
       httpPost.send(newPin)
         .expect('Content-Type', /json/)
@@ -88,7 +93,7 @@ describe(path, function () {
           }
 
           var expectedPins = resultPins.concat(newPin);
-          expect(response.body).to.eql(newPin);
+          expect(clean(response.body)).to.eql(clean(newPin));
 
           dataService.requestPins(tribeId)
             .then(function (results) {
@@ -101,9 +106,9 @@ describe(path, function () {
   });
   describe("DELETE", function () {
     var resultPins = [
-      {_id: 'pin1', tribe: tribeId},
-      {_id: 'pin2', tribe: tribeId},
-      {_id: 'pin3', tribe: tribeId}
+      {_id: monk.id(), tribe: tribeId},
+      {_id: monk.id(), tribe: tribeId},
+      {_id: monk.id(), tribe: tribeId}
     ];
 
     beforeEach(function (done) {
@@ -131,7 +136,7 @@ describe(path, function () {
             if (error) {
               done(error);
             } else {
-              expect(response.body).to.eql([resultPins[0], resultPins[2]]);
+              expect(clean(response.body)).to.eql(clean([resultPins[0], resultPins[2]]));
               done();
             }
           });
@@ -139,7 +144,7 @@ describe(path, function () {
     });
 
     it('will fail when pin does not exist', function (done) {
-      var httpDelete = supertest.delete(path + "/imaginary");
+      var httpDelete = supertest.delete(path + "/" + monk.id());
       httpDelete
         .expect('Content-Type', /json/)
         .expect(404)

@@ -39,7 +39,7 @@ export class PlayerConfigController {
     }
 
     private navigateToCurrentPairAssignments() {
-        this.$location.path("/" + this.tribe._id + "/pairAssignments/current");
+        this.$location.path("/" + this.tribe.id + "/pairAssignments/current");
     }
 }
 

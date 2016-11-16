@@ -24,10 +24,10 @@ describe(path, function () {
       ]
     ]
   };
-  validPairs._id = "mysterymachine";
+  validPairs._id = monk.id().toString();
   validPairs.tribe = tribeId;
 
-  historyCollection.remove({_id: validPairs._id}, false);
+  historyCollection.remove({tribe: tribeId}, false);
 
   beforeEach(function (done) {
     supertest.get('/test-login?username="name"&password="pw"')
@@ -42,9 +42,10 @@ describe(path, function () {
   describe('GET', function () {
 
     beforeEach(function (done) {
-      supertest.post(path).send(validPairs)
-        .expect('Content-Type', /json/).
-        end(function (error) {
+      supertest.post(path)
+        .send(validPairs)
+        .expect('Content-Type', /json/)
+        .end(function (error) {
           done(error);
         });
     });
@@ -53,7 +54,7 @@ describe(path, function () {
       supertest.get(path)
         .expect('Content-Type', /json/)
         .end(function (error, response) {
-          expect([validPairs]).to.eql(response.body);
+          expect(response.body).to.eql([validPairs]);
           done();
         });
     });
@@ -74,31 +75,18 @@ describe(path, function () {
       supertest.post(path)
         .send(validPairs)
         .expect(200)
-        .expect('Content-Type', /json/).
-        end(function (error, response) {
-          var pairsAsSaved = response.body;
+        .expect('Content-Type', /json/).end(function (error, response) {
+        var pairsAsSaved = response.body;
 
-          new DataService(config.tempMongoUrl).requestHistory(tribeId).then(function (history) {
-            var latestEntryInHistory = history[0];
-            for (var parameterName in pairsAsSaved) {
-              if (pairsAsSaved.hasOwnProperty(parameterName)) {
-                var actualParameterValue = latestEntryInHistory[parameterName];
-                var expectedParameterValue = pairsAsSaved[parameterName];
-                if (actualParameterValue instanceof Date) {
-                  expect(actualParameterValue.toISOString()).to.eql(expectedParameterValue);
-                } else {
-                  expect(actualParameterValue).to.eql(expectedParameterValue);
-                }
+        new DataService(config.tempMongoUrl).requestHistory(tribeId).then(function (history) {
+          var latestEntryInHistory = history[0];
 
-              } else {
-                done("This should not be hit");
-              }
-            }
-            done();
-          }).catch(function (error) {
-            done(error);
-          });
+          expect(JSON.parse(JSON.stringify(pairsAsSaved))).to.eql(JSON.parse(JSON.stringify(latestEntryInHistory)));
+          done();
+        }).catch(function (error) {
+          done(error);
         });
+      });
     });
     it('should not add when given a document without a date', function (done) {
       var pairs = {
@@ -111,68 +99,64 @@ describe(path, function () {
       };
       supertest.post(path).send(pairs)
         .expect(400)
-        .expect('Content-Type', /json/).
-        end(function (error, response) {
-          expect(response.body).to.eql({error: 'Pairs were not valid.'});
-          done(error);
-        });
+        .expect('Content-Type', /json/).end(function (error, response) {
+        expect(response.body).to.eql({error: 'Pairs were not valid.'});
+        done(error);
+      });
     });
     it('should not add when given a document without pairs', function (done) {
       var pairs = {date: new Date()};
       supertest.post(path).send(pairs).expect(400)
-        .expect('Content-Type', /json/).
-        end(function (error, response) {
-          expect(response.body).to.eql({error: 'Pairs were not valid.'});
-          done(error);
-        });
+        .expect('Content-Type', /json/).end(function (error, response) {
+        expect(response.body).to.eql({error: 'Pairs were not valid.'});
+        done(error);
+      });
     });
     it('should not add when not given a submission', function (done) {
-      supertest.post(path).expect(400).expect('Content-Type', /json/).
-        end(function (error, response) {
-          expect(response.body).to.eql({error: 'Pairs were not valid.'});
-          done(error);
-        });
+      supertest.post(path).expect(400).expect('Content-Type', /json/).end(function (error, response) {
+        expect(response.body).to.eql({error: 'Pairs were not valid.'});
+        done(error);
+      });
     });
   });
 
   describe("DELETE", function () {
     beforeEach(function (done) {
       supertest.post(path).send(validPairs)
-        .end(function (error) {
-          done(error);
-        });
+        .then(function () {
+          done();
+        }, done);
     });
 
     it('will remove a set of pair assignments.', function (done) {
-      setTimeout(function () {
-        supertest.delete(path + '/' + validPairs._id)
-          .expect(200)
-          .end(function (error, response) {
-            expect(response.body).to.eql({message: 'SUCCESS'});
-
-            supertest.get(path)
-              .end(function (error2, response) {
-                error = error || error2;
-                var result = response.body.some(function (pairAssignments) {
-                  return validPairs._id == pairAssignments._id;
-                });
-
-                expect(result).to.be.false;
-                done(error);
-              });
+      supertest.delete(path + '/' + validPairs._id)
+        .expect(200)
+        .then(function (response) {
+          expect(response.body).to.eql({message: 'SUCCESS'});
+          return supertest.get(path);
+        })
+        .then(function (response) {
+          var result = response.body.some(function (pairAssignments) {
+            return validPairs._id == pairAssignments._id;
           });
-      });
+          expect(result).to.be.false;
+        })
+        .then(function () {
+          done();
+        }, done);
     });
 
     it('will return an error when specific pair assignments do not exist.', function (done) {
       setTimeout(function () {
-        var badId = "veryBadId";
+        var badId = monk.id();
         supertest.delete(path + '/' + badId)
           .expect(404)
-          .end(function (error, response) {
+          .then(function (response) {
             expect(response.body).to.eql({message: 'Pair Assignments could not be deleted because they do not exist.'});
-            done(error);
-          });
+          })
+          .then(function () {
+            done();
+          }, done);
       });
     });
   });

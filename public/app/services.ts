@@ -17,7 +17,7 @@ class CouplingData {
 }
 
 export interface Tribe extends ng.resource.IResource<Tribe> {
-    _id: String;
+    id: String;
     name:String
 }
 
@@ -48,7 +48,7 @@ export class Coupling {
     PairAssignmentSet:PairAssignmentSetResource;
 
     constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
-        this.Tribe = <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@_id'});
+        this.Tribe = <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@id'});
         this.PairAssignmentSet = <PairAssignmentSetResource>$resource('/api/:tribeId/history/:id', {
             id: '@_id',
             tribeId: '@tribe'

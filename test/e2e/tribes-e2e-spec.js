@@ -3,7 +3,6 @@ var monk = require("monk");
 var config = require("../../config");
 var e2eHelp = require('./e2e-help');
 var _ = require('underscore');
-var RSVP = require('rsvp');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
 var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
@@ -13,7 +12,7 @@ var userEmail = 'protractor@test.goo';
 function authorizeAllTribes() {
   return tribeCollection.find({}, {})
     .then(function (tribeDocuments) {
-      var authorizedTribes = _.pluck(tribeDocuments, '_id');
+      var authorizedTribes = _.pluck(tribeDocuments, 'id');
       return e2eHelp.authorizeUserForTribes(authorizedTribes);
     });
 }
@@ -52,10 +51,10 @@ describe('The default tribes page', function () {
       .then(function () {
         return tribeCollection.insert(
           [{
-            _id: 'e2e1',
+            id: 'e2e1',
             name: 'E2E Example Tribe 1'
           }, {
-            _id: 'e2e2',
+            id: 'e2e2',
             name: 'E2E Example Tribe 2'
           }]);
       })
@@ -88,7 +87,7 @@ describe('The default tribes page', function () {
   it('can navigate to the a specific tribe page', function () {
     var tribeElements = tribeListPage.getTribeElements();
     tribeListPage.getTribeNameLabel(tribeElements.first()).click();
-    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0]._id + '/edit/');
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0].id + '/edit/');
   });
 
   it('can navigate to the new tribe page', function () {
@@ -101,14 +100,14 @@ describe('The default tribes page', function () {
     var expectedTribe;
     beforeAll(function () {
       expectedTribe = tribeDocuments[0];
-      browser.setLocation('/' + expectedTribe._id + '/');
+      browser.setLocation('/' + expectedTribe.id + '/');
       element(By.tagName('body')).allowAnimations(false);
       waitUntilAnimateIsGone();
     });
 
     beforeEach(function () {
-      browser.setLocation('/' + expectedTribe._id + '/edit/');
-      expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe._id + '/edit/');
+      browser.setLocation('/' + expectedTribe.id + '/edit/');
+      expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe.id + '/edit/');
     });
 
     it('the tribe view is shown', function () {
@@ -147,7 +146,7 @@ describe('The default tribes page', function () {
 describe('The edit tribe page', function () {
 
   var tribe = {
-    _id: 'delete_me',
+    id: 'delete_me',
     name: 'Change Me'
   };
   beforeAll(function (done) {
@@ -161,7 +160,7 @@ describe('The edit tribe page', function () {
 
   afterAll(function (done) {
     tribeCollection.remove({
-      _id: tribe._id
+      id: tribe.id
     }, false).then(function () {
       done();
     }, done);
@@ -174,14 +173,14 @@ describe('The edit tribe page', function () {
     var tribeElements = element.all(By.repeater('tribe in tribes'));
     tribeElements.first().element(By.css('.tribe-name')).click();
 
-    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe._id + '/edit/');
+    expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
     expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);
     var expectedNewName = 'Different name';
     element(By.id('tribe-name')).clear();
     element(By.id('tribe-name')).sendKeys(expectedNewName);
     element(By.id('save-tribe-button')).click();
 
-    browser.setLocation('/' + tribe._id + '/edit/');
+    browser.setLocation('/' + tribe.id + '/edit/');
 
     expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
   });

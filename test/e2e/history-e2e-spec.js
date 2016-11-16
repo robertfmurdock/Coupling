@@ -29,7 +29,7 @@ var postPairAssignmentSet = function (tribeId, pairAssignmentSet) {
 
 describe('The history page', function () {
 
-  var tribe = {_id: 'excellent', name: 'make-by-test'};
+  var tribe = {id: 'excellent', name: 'make-by-test'};
 
   beforeAll(function () {
     tribeCollection.drop();
@@ -45,10 +45,10 @@ describe('The history page', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('shows recent pairings', function () {
-    var pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [[{_id: 'Ollie'}, {_id: 'Speedy'}]]);
-    pairAssignmentSet1.tribe = tribe._id;
-    var pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[{_id: 'Arthur'}, {_id: 'Garth'}]]);
-    pairAssignmentSet2.tribe = tribe._id;
+    var pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [[{name: 'Ollie'}, {name: 'Speedy'}]]);
+    pairAssignmentSet1.tribe = tribe.id;
+    var pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[{name: 'Arthur'}, {name: 'Garth'}]]);
+    pairAssignmentSet2.tribe = tribe.id;
 
     browser.wait(
       function () {
@@ -57,11 +57,11 @@ describe('The history page', function () {
             return postTribe(tribe);
           })
           .then(function () {
-            e2eHelp.authorizeUserForTribes([tribe._id]);
-            return postPairAssignmentSet(tribe._id, pairAssignmentSet1);
+            e2eHelp.authorizeUserForTribes([tribe.id]);
+            return postPairAssignmentSet(tribe.id, pairAssignmentSet1);
           })
           .then(function () {
-            return postPairAssignmentSet(tribe._id, pairAssignmentSet2);
+            return postPairAssignmentSet(tribe.id, pairAssignmentSet2);
           }).then(function () {
             return true;
           })
@@ -70,7 +70,7 @@ describe('The history page', function () {
 
     browser.waitForAngular();
 
-    browser.setLocation('/' + tribe._id + '/history');
+    browser.setLocation('/' + tribe.id + '/history');
 
     var pairAssignmentSetElements = element.all(by.className('pair-assignments'));
     expect(pairAssignmentSetElements.count()).toBe(2);

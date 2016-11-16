@@ -29,7 +29,7 @@ var TribeRoutes = function () {
     })
       .then(function (hash) {
         return _.filter(hash.tribes, function (value) {
-          return _.contains(hash.authorizedTribeIds, value._id);
+          return _.contains(hash.authorizedTribeIds, value.id);
         });
       });
   }
@@ -51,7 +51,7 @@ var TribeRoutes = function () {
       authorizedTribeIds: loadAuthorizedTribeIds(request.user, request.dataService.mongoUrl)
     })
       .then(function (hash) {
-        var isAuthorized = _.contains(hash.authorizedTribeIds, hash.tribe._id);
+        var isAuthorized = _.contains(hash.authorizedTribeIds, hash.tribe.id);
         if (isAuthorized) {
           response.send(hash.tribe);
         } else {
@@ -71,8 +71,9 @@ var TribeRoutes = function () {
     var tribesCollection = database.get('tribes');
     var usersCollection = monk(config.mongoUrl).get('users');
     var tribeJSON = request.body;
-    tribesCollection.updateById(tribeJSON._id, tribeJSON, {upsert: true}, function () {
-      usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON._id}});
+    tribeJSON._id = tribeJSON._id || monk.id();
+    tribesCollection.update({id: tribeJSON.id}, tribeJSON, {upsert: true}, function () {
+      usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON.id}});
       response.send(request.body);
     });
   };

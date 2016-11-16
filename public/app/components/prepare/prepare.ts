@@ -17,7 +17,7 @@ class PrepareController {
     }
 
     clickSpinButton() {
-        this.$location.path(this.tribe._id + "/pairAssignments/new");
+        this.$location.path(this.tribe.id + "/pairAssignments/new");
     }
 
 }

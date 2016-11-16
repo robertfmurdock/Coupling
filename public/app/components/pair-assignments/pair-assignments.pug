@@ -15,6 +15,6 @@ div
                 playercard(ng-repeat='player in pair' player="player" ng-class="{hoverzoom: !pairAssignments._id}" ui-draggable="pairAssignments.isNew" drag="player" ui-on-Drop="pairAssignments.onDrop($data,player)")
         div(ng-show="pairAssignments.pairAssignments")
             a(id="save-button" class="super green button" ng-click="pairAssignments.save()" ng-show="pairAssignments.isNew") Save!
-        a(id="new-pairs-button" class="large pink button" href="/{{pairAssignments.tribe._id}}/prepare/") Prepare to spin!
-        a(id="view-history-button" class="large blue button" href="/{{pairAssignments.tribe._id}}/history/") View history!
+        a(id="new-pairs-button" class="large pink button" href="/{{pairAssignments.tribe.id}}/prepare/") Prepare to spin!
+        a(id="view-history-button" class="large blue button" href="/{{pairAssignments.tribe.id}}/history/") View history!
 player-roster(players="pairAssignments.unpairedPlayers" tribe="pairAssignments.tribe" label="'Unpaired players'")

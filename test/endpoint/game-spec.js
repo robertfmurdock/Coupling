@@ -6,7 +6,7 @@ var expect = require('chai').expect;
 var monk = require('monk');
 
 var tribeId = 'test';
-var pinId = 'testPin';
+var pinId = monk.id();
 var path = '/api/' + tribeId + '/spin';
 
 var database = monk(config.testMongoUrl + '/CouplingTemp');
@@ -20,7 +20,8 @@ describe(path, function () {
 
   beforeEach(function (done) {
     supertest.get('/test-login?username="name"&password="pw"')
-      .expect(302).end(done);
+      .expect(302)
+      .end(done);
   });
 
   function removeTestPin() {
@@ -58,7 +59,10 @@ describe(path, function () {
 
     var pin = {_id: pinId, tribe: tribeId, name: 'super test pin'};
     beforeEach(function (done) {
-      pinCollection.insert(pin, done);
+      pinCollection.insert(pin)
+        .then(function () {
+          done();
+        });
     });
 
     it('will assign one pin to a player', function (done) {
@@ -74,7 +78,7 @@ describe(path, function () {
           var expectedPairAssignments = [
             [expectedPinnedPlayer]
           ];
-          expect(response.body.pairs).to.eql(expectedPairAssignments);
+          expect(JSON.stringify(response.body.pairs)).to.eql(JSON.stringify(expectedPairAssignments));
           done(error);
         });
     });

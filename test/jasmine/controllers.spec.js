@@ -79,23 +79,23 @@ describe('The controller named ', function () {
     describe('clickOnTribeCard', function () {
       it('that changes location to that tribe\'s current pair assignments', function () {
         controller.tribe = {
-          _id: 'amazingMagicId'
+          id: 'amazingMagicId'
         };
 
         expect(location.path).not.toHaveBeenCalled();
         controller.clickOnTribeCard();
-        expect(location.path).toHaveBeenCalledWith("/" + controller.tribe._id + "/pairAssignments/current");
+        expect(location.path).toHaveBeenCalledWith("/" + controller.tribe.id + "/pairAssignments/current");
       });
     });
 
     describe('clickOnTribeName', function () {
       it('that changes location to that tribe', function () {
         controller.tribe = {
-          _id: 'amazingMagicId'
+          id: 'amazingMagicId'
         };
         expect(location.path).not.toHaveBeenCalled();
         controller.clickOnTribeName({});
-        expect(location.path).toHaveBeenCalledWith("/" + controller.tribe._id + '/edit/');
+        expect(location.path).toHaveBeenCalledWith("/" + controller.tribe.id + '/edit/');
       });
 
       it('will stop propagation to other click events', function () {
@@ -134,7 +134,7 @@ describe('The controller named ', function () {
         }
       };
       routeParams = {
-        tribeId: selectedTribe._id
+        tribeId: selectedTribe.id
       };
     });
 
@@ -212,7 +212,7 @@ describe('The controller named ', function () {
       Coupling.spin.and.returnValue(spinDefer.promise);
       scope.data = Coupling.data;
       routeParams = {
-        tribeId: selectedTribe._id
+        tribeId: selectedTribe.id
       };
     });
 
@@ -322,7 +322,7 @@ describe('The controller named ', function () {
       };
       scope.data = Coupling.data;
       routeParams = {
-        tribeId: selectedTribe._id
+        tribeId: selectedTribe.id
       };
     });
 
@@ -368,7 +368,7 @@ describe('The controller named ', function () {
       _id: 'party'
     };
 
-    var player = {_id: 'blarg', tribe: tribe._id};
+    var player = {_id: 'blarg', tribe: tribe.id};
 
     var Coupling, location;
 
@@ -437,10 +437,10 @@ describe('The controller named ', function () {
         var argsFor = Coupling.removePlayer.calls.argsFor(0);
         expect(argsFor[0]).toBe(controller.player);
 
-        expect(location.path).not.toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
+        expect(location.path).not.toHaveBeenCalledWith('/' + tribe.id + '/pairAssignments/current');
         deleteDefer.resolve();
         $rootScope.$apply();
-        expect(location.path).toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
+        expect(location.path).toHaveBeenCalledWith('/' + tribe.id + '/pairAssignments/current');
       }));
 
     it('remove player will do nothing when not confirmed', function () {
@@ -451,7 +451,7 @@ describe('The controller named ', function () {
       window.confirm.and.returnValue(false);
       controller.removePlayer();
       expect(Coupling.removePlayer).not.toHaveBeenCalled();
-      expect(location.path).not.toHaveBeenCalledWith('/' + tribe._id + '/pairAssignments/current');
+      expect(location.path).not.toHaveBeenCalledWith('/' + tribe.id + '/pairAssignments/current');
     });
 
     describe('on location change', function () {

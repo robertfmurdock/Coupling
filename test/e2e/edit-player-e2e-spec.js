@@ -2,7 +2,6 @@
 var monk = require("monk");
 var _ = require('underscore');
 var config = require("../../config");
-var RSVP = require('rsvp');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
 var e2eHelp = require('./e2e-help');
 var database = monk(config.tempMongoUrl);
@@ -13,15 +12,16 @@ var playersCollection = database.get('players');
 describe('The edit player page', function () {
 
   var tribe = {
-    _id: 'delete_me',
+    _id: monk.id(),
+    id: 'delete_me',
     name: 'Change Me'
   };
 
-  var player1 = {_id: "p1", tribe: tribe._id, name: "player1"};
-  var player2 = {_id: "p2", tribe: tribe._id, name: "player2"};
-  var player3 = {_id: "p3", tribe: tribe._id, name: "player3"};
-  var player4 = {_id: "p4", tribe: tribe._id, name: "player4"};
-  var player5 = {_id: "p5", tribe: tribe._id, name: "player5"};
+  var player1 = {_id: monk.id(), tribe: tribe.id, name: "player1"};
+  var player2 = {_id: monk.id(), tribe: tribe.id, name: "player2"};
+  var player3 = {_id: monk.id(), tribe: tribe.id, name: "player3"};
+  var player4 = {_id: monk.id(), tribe: tribe.id, name: "player4"};
+  var player5 = {_id: monk.id(), tribe: tribe.id, name: "player5"};
   var players = [
     player1,
     player2,
@@ -34,7 +34,7 @@ describe('The edit player page', function () {
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
 
     tribeCollection.insert(tribe);
-    e2eHelp.authorizeUserForTribes([tribe._id]);
+    e2eHelp.authorizeUserForTribes([tribe.id]);
   });
 
   beforeEach(function () {
@@ -44,7 +44,7 @@ describe('The edit player page', function () {
 
   afterAll(function () {
     tribeCollection.remove({
-      _id: tribe._id
+      id: tribe.id
     }, false);
     playersCollection.drop();
   });
@@ -52,14 +52,14 @@ describe('The edit player page', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('should not alert on leaving when nothing has changed.', function () {
-    browser.setLocation('/' + tribe._id + '/player/' + player1._id);
+    browser.setLocation('/' + tribe.id + '/player/' + player1._id);
     element(By.css('.tribe')).click();
-    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/current/');
+    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/pairAssignments/current/');
   });
 
   it('should get error on leaving when name is changed.', function (done) {
-    browser.setLocation('/' + tribe._id + '/player/' + player1._id);
-    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/player/' + player1._id + '/');
+    browser.setLocation('/' + tribe.id + '/player/' + player1._id);
+    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/player/' + player1._id + '/');
     element(By.id('player-name')).clear();
     element(By.id('player-name')).sendKeys('completely different name');
     element(By.css('.tribe img')).click();
@@ -81,21 +81,21 @@ describe('The edit player page', function () {
   });
 
   it('should not get alert on leaving when name is changed after save.', function () {
-    browser.setLocation('/' + tribe._id + '/player/' + player1._id);
+    browser.setLocation('/' + tribe.id + '/player/' + player1._id);
     var playerNameTextField = element(By.id('player-name'));
     playerNameTextField.clear();
     playerNameTextField.sendKeys('completely different name');
 
     element(By.id('save-player-button')).click();
     element(By.css('.tribe')).click();
-    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe._id + '/pairAssignments/current/');
+    expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/pairAssignments/current/');
 
-    browser.setLocation('/' + tribe._id + '/player/' + player1._id);
+    browser.setLocation('/' + tribe.id + '/player/' + player1._id);
     expect(element(By.id('player-name')).getAttribute('value')).toBe('completely different name')
   });
 
   it('will show all players', function () {
-    browser.setLocation('/' + tribe._id + '/player/' + player1._id);
+    browser.setLocation('/' + tribe.id + '/player/' + player1._id);
     var playerElements = element.all(By.repeater('player in players'));
     expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
   });
@@ -104,15 +104,15 @@ describe('The edit player page', function () {
 describe('The new player page', function () {
 
   var tribe = {
-    _id: 'delete_me',
+    id: 'delete_me',
     name: 'Change Me'
   };
 
-  var player1 = {_id: "p1", tribe: tribe._id, name: "player1"};
-  var player2 = {_id: "p2", tribe: tribe._id, name: "player2"};
-  var player3 = {_id: "p3", tribe: tribe._id, name: "player3"};
-  var player4 = {_id: "p4", tribe: tribe._id, name: "player4"};
-  var player5 = {_id: "p5", tribe: tribe._id, name: "player5"};
+  var player1 = {_id: monk.id(), tribe: tribe.id, name: "player1"};
+  var player2 = {_id: monk.id(), tribe: tribe.id, name: "player2"};
+  var player3 = {_id: monk.id(), tribe: tribe.id, name: "player3"};
+  var player4 = {_id: monk.id(), tribe: tribe.id, name: "player4"};
+  var player5 = {_id: monk.id(), tribe: tribe.id, name: "player5"};
   var players = [
     player1,
     player2,
@@ -126,12 +126,12 @@ describe('The new player page', function () {
 
     tribeCollection.insert(tribe);
     playersCollection.insert(players);
-    e2eHelp.authorizeUserForTribes([tribe._id]);
+    e2eHelp.authorizeUserForTribes([tribe.id]);
   });
 
   afterAll(function () {
     tribeCollection.remove({
-      _id: tribe._id
+      id: tribe.id
     }, false);
     playersCollection.drop();
   });
@@ -139,7 +139,7 @@ describe('The new player page', function () {
   e2eHelp.afterEachAssertLogsAreEmpty();
 
   it('will show all players', function () {
-    browser.setLocation('/' + tribe._id + '/player/new');
+    browser.setLocation('/' + tribe.id + '/player/new');
     var playerElements = element.all(By.repeater('player in players'));
     expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
   });

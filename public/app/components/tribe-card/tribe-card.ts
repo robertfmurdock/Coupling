@@ -8,12 +8,12 @@ export class TribeCardController {
     }
 
     clickOnTribeCard() {
-        this.$location.path("/" + this.tribe._id + "/pairAssignments/current");
+        this.$location.path("/" + this.tribe.id + "/pairAssignments/current");
     }
 
     clickOnTribeName($event) {
         if ($event.stopPropagation) $event.stopPropagation();
-        this.$location.path("/" + this.tribe._id + '/edit/');
+        this.$location.path("/" + this.tribe.id + '/edit/');
     }
 }
 

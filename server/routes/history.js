@@ -26,14 +26,13 @@ var HistoryRoutes = function () {
   };
 
   this.deleteMember = function (request, response) {
-    request.dataService.removePairAssignments(request.params.id, function (error) {
-      if (error) {
-        response.statusCode = 404;
-        response.send(error);
-      } else {
+    request.dataService.removePairAssignments(request.params.id)
+      .then(function () {
         response.send({message: 'SUCCESS'});
-      }
-    });
+      }, function (err) {
+        response.statusCode = 404;
+        response.send({message: err.message});
+      });
   }
 };
 
