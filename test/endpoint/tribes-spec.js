@@ -9,20 +9,31 @@ var _ = require('underscore');
 var path = '/api/tribes';
 var host = require("supertest-as-promised").agent(server);
 
+function clean(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
+var database = monk(config.tempMongoUrl);
+var tribesCollection = database.get('tribes');
+var playersCollection = database.get('players');
+var usersCollection = monk(config.mongoUrl).get('users');
+
 describe(path, function () {
   var userEmail = 'test@test.tes';
 
   beforeEach(function (done) {
-
     host.get('/test-login?username=' + userEmail + '&password=pw')
       .expect(302)
-      .end(done);
+      .then(function () {
+        return playersCollection.drop();
+      })
+      .then(function () {
+        return tribesCollection.drop();
+      })
+      .then(function () {
+        done()
+      }, done)
   });
-
-  var database = monk(config.tempMongoUrl);
-  var tribesCollection = database.get('tribes');
-  var playersCollection = database.get('players');
-  var usersCollection = monk(config.mongoUrl).get('users');
 
   function authorizeUserForTribes(authorizedTribes) {
     usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
@@ -37,7 +48,7 @@ describe(path, function () {
         .expect(200)
         .expect('Content-Type', /json/)
         .then(function (response) {
-          expect(response.body).to.eql(tribeDocuments);
+          expect(response.body).to.eql(clean(tribeDocuments));
           done();
         })
         .catch(function (err) {
@@ -46,10 +57,11 @@ describe(path, function () {
     });
   });
 
-  it('GET will return all any tribe that has a player with the given email.', function (done) {
-    var tribe = {_id: 'delete-me', name: 'tribe-from-endpoint-tests'};
+  it('GET will return any tribe that has a player with the given email.', function (done) {
+    var tribe = {id: 'delete-me', name: 'tribe-from-endpoint-tests'};
     tribesCollection.insert(tribe);
-    playersCollection.insert({_id: 'delete-me', name: 'delete-me', tribe: 'delete-me', email: userEmail});
+    var playerId = monk.id();
+    playersCollection.insert({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail});
 
     authorizeUserForTribes([]);
 
@@ -57,10 +69,11 @@ describe(path, function () {
       .expect(200)
       .expect('Content-Type', /json/)
       .then(function (response) {
-        expect(JSON.stringify(response.body)).to.equal(JSON.stringify([tribe]));
+        console.log(response.body)
+        expect(clean(response.body)).to.eql(clean([tribe]));
 
-        tribesCollection.remove({_id: 'delete-me'});
-        playersCollection.remove({_id: 'delete-me'}, function (err) {
+        tribesCollection.remove({id: 'delete-me'}, false);
+        playersCollection.remove({_id: playerId}, function (err) {
           done(err);
         })
       })
@@ -81,7 +94,7 @@ describe(path, function () {
   });
 
   describe('POST', function () {
-    var newTribe = {name: 'TeamMadeByTest', _id: 'deleteme'};
+    var newTribe = {name: 'TeamMadeByTest', id: 'deleteme', _id: monk.id()};
 
     it('will create a tribe and authorize it.', function (done) {
       host.post(path)
@@ -97,14 +110,14 @@ describe(path, function () {
             .expect('Content-Type', /json/)
             .end(function (error, response) {
               expect(error).to.not.exist;
-              expect(_.findWhere(response.body, newTribe)).to.exist;
+              expect(_.findWhere(response.body, clean(newTribe))).to.exist;
               done();
             });
         });
     });
 
     after(function () {
-      tribesCollection.remove({_id: newTribe._id}, false);
+      tribesCollection.remove({id: newTribe.id}, false);
     });
   });
 });

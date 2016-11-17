@@ -14,6 +14,9 @@ var monk = require('monk');
 var database = monk(config.tempMongoUrl);
 var playersCollection = database.get('players');
 
+function clean(object) {
+  return JSON.parse(JSON.stringify(object));
+}
 
 describe(path, function () {
 
@@ -48,7 +51,7 @@ describe(path, function () {
   describe("POST", function () {
 
     it('will add player to tribe', function (done) {
-      var newPlayer = {_id: 'playerOne', name: "Awesome-O", tribe: tribeId};
+      var newPlayer = clean({_id: monk.id(), name: "Awesome-O", tribe: tribeId});
       var httpPost = couplingServer.post(path);
       httpPost.send(newPlayer)
         .expect(200, newPlayer)
@@ -93,7 +96,7 @@ describe(path, function () {
     });
 
     it('will return an error when the player does not exist.', function (done) {
-      var badId = "terribleTerribleIdentifier";
+      var badId = monk.id();
       var httpDelete = couplingServer.delete(path + "/" + badId);
       httpDelete
         .expect(404, {message: 'Failed to remove the player because it did not exist.'})

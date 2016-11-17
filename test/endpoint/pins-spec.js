@@ -13,16 +13,17 @@ var badTribePath = '/api/does-not-exist/pins';
 var database = monk(config.tempMongoUrl);
 var pinCollection = database.get('pins');
 
-var clean = function(object){
+var clean = function (object) {
   return JSON.parse(JSON.stringify(object));
 };
 
 
-describe.only(path, function () {
+describe(path, function () {
 
   beforeEach(function (done) {
     supertest.get('/test-login?username="name"&password="pw"')
-      .expect(302).end(function (err) {
+      .expect(302)
+      .end(function (err) {
         expect(err).to.not.exist;
         done();
       });
@@ -73,12 +74,20 @@ describe.only(path, function () {
     ];
 
     beforeEach(function (done) {
-      pinCollection.remove({tribe: tribeId});
-      pinCollection.insert(resultPins, done);
+      pinCollection.drop()
+        .then(function () {
+          return pinCollection.insert(resultPins);
+        })
+        .then(function () {
+          done()
+        }, done)
     });
 
-    afterEach(function () {
-      pinCollection.remove({tribe: tribeId});
+    afterEach(function (done) {
+      pinCollection.drop()
+        .then(function () {
+          done();
+        }, done);
     });
 
     it("will add pin to tribe", function (done) {

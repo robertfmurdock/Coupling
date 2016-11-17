@@ -31,13 +31,18 @@ describe('The edit player page', function () {
   ];
 
   beforeAll(function (done) {
-    browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-
-    tribeCollection.insert(tribe)
+    tribeCollection.drop()
+      .then(function () {
+        return tribeCollection.insert(tribe);
+      })
       .then(function () {
         return e2eHelp.authorizeUserForTribes([tribe.id]);
       })
       .then(done, done.fail);
+  });
+
+  beforeAll(function () {
+    browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
   });
 
   beforeEach(function (done) {
@@ -128,19 +133,25 @@ describe('The new player page', function () {
     player5
   ];
 
-  beforeAll(function () {
+  beforeAll(function (done) {
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
 
-    tribeCollection.insert(tribe);
-    playersCollection.insert(players);
-    e2eHelp.authorizeUserForTribes([tribe.id]);
+    tribeCollection.insert(tribe)
+      .then(function () {
+        return playersCollection.insert(players);
+      })
+      .then(function () {
+        return e2eHelp.authorizeUserForTribes([tribe.id]);
+      })
+      .then(done, done.fail);
   });
 
-  afterAll(function () {
-    tribeCollection.remove({
-      id: tribe.id
-    }, false);
-    playersCollection.drop();
+  afterAll(function (done) {
+    tribeCollection.remove({id: tribe.id}, false)
+      .then(function () {
+        return playersCollection.drop();
+      })
+      .then(done, done.fail);
   });
 
   e2eHelp.afterEachAssertLogsAreEmpty();

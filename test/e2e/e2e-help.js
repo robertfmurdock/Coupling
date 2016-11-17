@@ -7,15 +7,13 @@ var usersCollection = monk(config.mongoUrl).get('users');
 
 function authorizeUserForTribes(authorizedTribes) {
   var tempUserEmail = userEmail + "._temp";
-  return usersCollection.update({
-    email: tempUserEmail
-  }, {
+  return usersCollection.update({email: tempUserEmail}, {
     $set: {
       tribes: authorizedTribes
     }
   })
-    .then(function (updateCount) {
-      if (updateCount == 0) {
+    .then(function (response) {
+      if (response.nModified === 0) {
         return usersCollection.insert({
           email: tempUserEmail,
           tribes: authorizedTribes
