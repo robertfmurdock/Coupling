@@ -160,7 +160,7 @@ class NewPlayerRouteController {
         this.tribe = tribe;
         this.players = players;
         this.player = new services.Player();
-        this.player.tribe = tribe._id;
+        this.player.tribe = tribe.id;
     }
 }
 
