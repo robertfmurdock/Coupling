@@ -30,23 +30,26 @@ describe('The edit player page', function () {
     player5
   ];
 
-  beforeAll(function () {
+  beforeAll(function (done) {
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
 
     tribeCollection.insert(tribe);
-    e2eHelp.authorizeUserForTribes([tribe.id]);
+    e2eHelp.authorizeUserForTribes([tribe.id])
+      .then(done, done.fail);
   });
 
-  beforeEach(function () {
+  beforeEach(function (done) {
     playersCollection.drop();
-    playersCollection.insert(players);
+    playersCollection.insert(players)
+      .then(done, done.fail);
   });
 
-  afterAll(function () {
+  afterAll(function (done) {
     tribeCollection.remove({
       id: tribe.id
     }, false);
-    playersCollection.drop();
+    playersCollection.drop()
+      .then(done, done.fail);
   });
 
   e2eHelp.afterEachAssertLogsAreEmpty();
