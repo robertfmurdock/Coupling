@@ -256,9 +256,16 @@ describe('CouplingDataService', function () {
     };
 
     beforeEach(function (beforeIsDone) {
-      playersCollection.insert(blackrockPlayers);
-      pinCollection.insert(blackrockPins);
-      historyCollection.insert(blackrockPairAssignments, beforeIsDone);
+      playersCollection.insert(blackrockPlayers)
+        .then(function () {
+          return pinCollection.insert(blackrockPins);
+        })
+        .then(function () {
+          return historyCollection.insert(blackrockPairAssignments);
+        })
+        .then(function () {
+          beforeIsDone();
+        }, beforeIsDone);
     });
 
     it('and get the correct players.', function (done) {
@@ -269,10 +276,12 @@ describe('CouplingDataService', function () {
     });
 
     it('get the correct pins', function (done) {
-      couplingDataService.requestPins(tribeId).then(function (pins) {
-        expect(blackrockPins).eql(pins);
-        done();
-      }).catch(done);
+      couplingDataService.requestPins(tribeId)
+        .then(function (pins) {
+          expect(pins).eql(blackrockPins);
+          done();
+        })
+        .catch(done);
     });
 
     it('and get the correct history.', function (done) {
