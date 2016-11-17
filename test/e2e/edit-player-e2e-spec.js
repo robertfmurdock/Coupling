@@ -33,22 +33,26 @@ describe('The edit player page', function () {
   beforeAll(function (done) {
     browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
 
-    tribeCollection.insert(tribe);
-    e2eHelp.authorizeUserForTribes([tribe.id])
+    tribeCollection.insert(tribe)
+      .then(function () {
+        return e2eHelp.authorizeUserForTribes([tribe.id]);
+      })
       .then(done, done.fail);
   });
 
   beforeEach(function (done) {
-    playersCollection.drop();
-    playersCollection.insert(players)
+    playersCollection.drop()
+      .then(function () {
+        return playersCollection.insert(players);
+      })
       .then(done, done.fail);
   });
 
   afterAll(function (done) {
-    tribeCollection.remove({
-      id: tribe.id
-    }, false);
-    playersCollection.drop()
+    tribeCollection.remove({id: tribe.id}, false)
+      .then(function () {
+        return playersCollection.drop();
+      })
       .then(done, done.fail);
   });
 
