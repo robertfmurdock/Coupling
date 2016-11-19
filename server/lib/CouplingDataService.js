@@ -100,12 +100,9 @@ var CouplingDataService = function (mongoUrl) {
   }
 
   this.removePairAssignments = function (pairAssignmentsId) {
-    console.log('remove pair ass');
     return historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true})
       .then(function (results) {
-        console.log('theennn');
         if (results.nModified === 0) {
-          console.log('error no modified');
           throw new Error('Pair Assignments could not be deleted because they do not exist.');
         }
       });
