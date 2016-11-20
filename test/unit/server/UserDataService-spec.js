@@ -1,6 +1,7 @@
 "use strict";
 var monk = require('monk');
 var _ = require('underscore');
+var Promise = require('bluebird');
 var config = require('../../../config');
 var Comparators = require('../../../server/lib/Comparators');
 var UserDataService = require("../../../server/lib/UserDataService");
@@ -12,8 +13,9 @@ var userDataService = new UserDataService(database);
 describe('UserDataService', function () {
   var usersCollection = database.get('users');
 
-  beforeEach(function () {
-    usersCollection.drop();
+  beforeEach(function (done) {
+    usersCollection.drop()
+      .then(done, done.fail);
   });
 
   describe('findOrCreate', function () {
@@ -66,27 +68,33 @@ describe('UserDataService', function () {
 
   describe('deserialize user', function () {
     it('will return object in the users collection from mongo', function (done) {
-      var expectedUser = {_id: monk.id(), uniqueValue: 'bloopers'};
-      usersCollection.insert(expectedUser);
+      var id = monk.id();
+      var expectedUser = {_id: id, uniqueValue: 'bloopers'};
+      usersCollection.insert(expectedUser)
+        .then(function () {
+          return usersCollection.find({_id: id});
+        })
 
-      userDataService.deserializeUser(expectedUser._id, function (error, loadedUser) {
-        if (error) {
-          done.fail(error);
-        }
-        expect(loadedUser).toEqual(expectedUser);
-        done();
-      });
+        .then(function () {
+          return Promise.promisify(userDataService.deserializeUser)(id);
+        })
+        .then(function (loadedUser) {
+          expect(loadedUser).toEqual(expectedUser);
+        })
+        .then(done, done.fail);
     });
 
     it('will return error when user is not in mongo', function (done) {
       var id = monk.id();
       var expectedUser = {_id: id, uniqueValue: 'bloopers'};
-      userDataService.deserializeUser(expectedUser._id, function (error) {
-        expect(error).toEqual('The user with id: ' +
-          id + ' could not be found in the database.');
-        done();
-      });
+      Promise.promisify(userDataService.deserializeUser)(expectedUser._id)
+        .then(function () {
+          fail('This should have thrown an error.');
+        }, function (error) {
+          expect(error.message).toEqual('The user with id: ' +
+            id + ' could not be found in the database.');
+        })
+        .then(done, done.fail);
     });
   });
-
 });

@@ -15,9 +15,16 @@ jasmine.loadConfig({
   "random": false
 });
 
-var junitReporter = new reporters.JUnitXmlReporter({
-  savePath: '../../results/unit.server.xml'
+jasmine.configureDefaultReporter({
+
 });
+
+var junitReporter = new reporters.JUnitXmlReporter({
+  savePath: __dirname + '/../../../test-output',
+  filePrefix: 'server.unit',
+  consolidateAll: true
+});
+
 jasmine.addReporter(junitReporter);
 
 jasmine.execute();

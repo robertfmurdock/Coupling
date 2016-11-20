@@ -1,3 +1,4 @@
+.gradle/*
 stats.json
 test-output/*
 .idea/workspace.xml

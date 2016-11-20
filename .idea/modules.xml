@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Coupling.iml" filepath="$PROJECT_DIR$/.idea/Coupling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Coupling.iml" filepath="$PROJECT_DIR$/.idea/modules/Coupling.iml" />
     </modules>
   </component>
 </project>
-

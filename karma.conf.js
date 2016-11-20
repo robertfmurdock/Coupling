@@ -17,11 +17,11 @@ module.exports = function (config) {
         },
 
         files: [
-            'test/jasmine/tests.bundle.js'
+            'test/unit/client/tests.bundle.js'
         ],
 
         preprocessors: {
-            'test/jasmine/tests.bundle.js': ['webpack', 'sourcemap']
+            'test/unit/client/tests.bundle.js': ['webpack', 'sourcemap']
         },
 
         exclude: [],

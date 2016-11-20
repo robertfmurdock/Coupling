@@ -4,12 +4,12 @@ require('angular');
 require('angular-mocks');
 
 var RSVP = require('rsvp');
-var PlayerCardController = require('../../public/app/components/player-card/PlayerCard').default;
-var TribeCardController = require('../../public/app/components/tribe-card/tribe-card').TribeCardController;
-var TribeConfigController = require('../../public/app/components/tribe-config/tribe-config').TribeConfigController;
-var PairAssignmentsController = require('../../public/app/components/pair-assignments/pair-assignments').PairAssignmentsController;
-var PlayerConfigController = require('../../public/app/components/player-config/player-config').PlayerConfigController;
-var HistoryController = require('../../public/app/components/history/history.ts').HistoryController;
+var PlayerCardController = require('../../../public/app/components/player-card/PlayerCard').default;
+var TribeCardController = require('../../../public/app/components/tribe-card/tribe-card').TribeCardController;
+var TribeConfigController = require('../../../public/app/components/tribe-config/tribe-config').TribeConfigController;
+var PairAssignmentsController = require('../../../public/app/components/pair-assignments/pair-assignments').PairAssignmentsController;
+var PlayerConfigController = require('../../../public/app/components/player-config/player-config').PlayerConfigController;
+var HistoryController = require('../../../public/app/components/history/history.ts').HistoryController;
 
 describe('The controller named ', function () {
 
