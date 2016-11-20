@@ -72,7 +72,7 @@ describe(path, function () {
   });
 
   describe("DELETE", function () {
-    var newPlayer = {_id: 'playerOne', name: "Awesome-O", tribe: tribeId};
+    var newPlayer = {_id: monk.id(), name: "Awesome-O", tribe: tribeId};
     beforeEach(function (done) {
       var httpPost = couplingServer.post(path);
       httpPost.send(newPlayer).end(function (error, responseContainingTheNewId) {

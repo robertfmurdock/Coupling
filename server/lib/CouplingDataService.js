@@ -71,7 +71,6 @@ var CouplingDataService = function (mongoUrl) {
     if (player._id) {
       return playersCollection.update(player._id, player, {upsert: true})
         .then(function (result) {
-          console.log('result ', result)
           var failureToUpdateMessage = 'Player could not be updated because it could not be found.';
           if (result.nModified === 0 && result.n === 0) {
             throw new Error({message: failureToUpdateMessage});
