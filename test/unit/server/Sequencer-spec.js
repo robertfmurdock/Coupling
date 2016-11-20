@@ -1,7 +1,6 @@
-var Sequencer = require('../../server/lib/Sequencer');
-var PairHistoryReport = require('../../server/lib/PairHistoryReport');
+var Sequencer = require('../../../server/lib/Sequencer');
+var PairHistoryReport = require('../../../server/lib/PairHistoryReport');
 var sinon = require('sinon');
-var expect = require('chai').expect;
 
 describe('Sequencer', function () {
 
@@ -31,7 +30,7 @@ describe('Sequencer', function () {
 
         var next = sequencer.getNextInSequence(players);
 
-        expect(next).to.eql(tedsPairCandidates);
+        expect(next).toEqual(tedsPairCandidates);
     });
 
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
@@ -51,7 +50,7 @@ describe('Sequencer', function () {
 
         var sequencer = new Sequencer(pairingHistory);
         var next = sequencer.getNextInSequence(players);
-        expect(next).to.eql(shortyPairCandidates);
+        expect(next).toEqual(shortyPairCandidates);
     });
 
     it('will use the Pairing History to get the next in sequence for when a player has never paired.', function () {
@@ -71,7 +70,7 @@ describe('Sequencer', function () {
 
         var sequencer = new Sequencer(pairingHistory);
         var next = sequencer.getNextInSequence(players);
-        expect(next).to.eql(shortyPairCandidates);
+        expect(next).toEqual(shortyPairCandidates);
     });
 
     it('will prioritize the report with fewest players when equal amounts of time.', function () {
@@ -100,6 +99,6 @@ describe('Sequencer', function () {
 
         var sequencer = new Sequencer(pairingHistory);
         var next = sequencer.getNextInSequence(players);
-        expect(next).to.eql(amadeusPairCandidates);
+        expect(next).toEqual(amadeusPairCandidates);
     });
 });

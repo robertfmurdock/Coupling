@@ -67,12 +67,18 @@ var CouplingDataService = function (mongoUrl) {
     historyCollection.insert(pairs, callback);
   };
 
-  this.savePlayer = function (player, callback) {
+  this.savePlayer = function (player) {
     if (player._id) {
-      playersCollection.update(player._id, player, {upsert: true},
-        makeUpdateByIdCallback('Player could not be updated because it could not be found.', callback));
+      return playersCollection.update(player._id, player, {upsert: true})
+        .then(function (result) {
+          console.log('result ', result)
+          var failureToUpdateMessage = 'Player could not be updated because it could not be found.';
+          if (result.nModified === 0 && result.n === 0) {
+            throw new Error({message: failureToUpdateMessage});
+          }
+        });
     } else {
-      playersCollection.insert(player, callback);
+      return playersCollection.insert(player);
     }
   };
 

@@ -1,8 +1,7 @@
 "use strict";
-var PairingHistory = require('../../server/lib/PairingHistory');
-var PairAssignmentDocument = require('../../server/lib/PairAssignmentDocument');
+var PairingHistory = require('../../../server/lib/PairingHistory');
+var PairAssignmentDocument = require('../../../server/lib/PairAssignmentDocument');
 var ObjectID = require('mongodb').ObjectID;
-var expect = require('chai').expect;
 
 describe('Pairing History', function () {
     it('should be retrievable', function () {
@@ -17,14 +16,14 @@ describe('Pairing History', function () {
 
         var pairingHistory = new PairingHistory(historyDocuments);
 
-        expect(historyDocuments).eql(pairingHistory.historyDocuments);
+        expect(historyDocuments).toEqual(pairingHistory.historyDocuments);
     });
 
     it('should return empty array when no partners are available', function () {
         var historyDocuments = [];
         var pairingHistory = new PairingHistory(historyDocuments);
         var report = pairingHistory.getPairCandidateReport({name: 'player'}, []);
-        expect(report.partnerCandidates).eql([]);
+        expect(report.partnerCandidates).toEqual([]);
     });
 
     describe('should determine possible partners for a player by choosing a partner', function () {
@@ -42,10 +41,10 @@ describe('Pairing History', function () {
                 var historyDocuments = [];
                 var pairingHistory = new PairingHistory(historyDocuments);
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                expect(availableOtherPlayers).eql(report.partnerCandidates);
-                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist;
+                expect(availableOtherPlayers).toEqual(report.partnerCandidates);
+                expect(availableOtherPlayers.timeSinceLastPaired).toBe(undefined);
 
-                expect(bruce).to.equal(report.player);
+                expect(bruce).toEqual(report.player);
             });
 
             it('with history document that has no pairs', function () {
@@ -54,10 +53,10 @@ describe('Pairing History', function () {
                 ];
                 var pairingHistory = new PairingHistory(historyDocuments);
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                expect(availableOtherPlayers).to.eql(report.partnerCandidates);
-                expect(availableOtherPlayers.timeSinceLastPaired).to.not.exist;
+                expect(availableOtherPlayers).toEqual(report.partnerCandidates);
+                expect(availableOtherPlayers.timeSinceLastPaired).toBe(undefined);
 
-                expect(bruce).to.equal(report.player);
+                expect(bruce).toEqual(report.player);
             });
 
             it('with plenty of history', function () {
@@ -75,9 +74,9 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
-                expect(availableOtherPlayers).to.eql(report.partnerCandidates);
-                expect(report.timeSinceLastPaired).to.not.exist;
-                expect(bruce).to.eql(report.player);
+                expect(availableOtherPlayers).toEqual(report.partnerCandidates);
+                expect(report.timeSinceLastPaired).toBe(undefined);
+                expect(bruce).toEqual(report.player);
             });
 
             it('with only the person you were with last time', function () {
@@ -89,9 +88,9 @@ describe('Pairing History', function () {
                 var pairingHistory = new PairingHistory(historyDocuments);
 
                 var report = pairingHistory.getPairCandidateReport(bruce, [selena]);
-                expect([selena]).to.eql(report.partnerCandidates);
-                expect(report.timeSinceLastPaired).to.equal(0);
-                expect(bruce).to.equal(report.player);
+                expect([selena]).toEqual(report.partnerCandidates);
+                expect(report.timeSinceLastPaired).toEqual(0);
+                expect(bruce).toEqual(report.player);
             });
         });
 
@@ -119,9 +118,9 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                expect(report.partnerCandidates).to.eql([expectedPartner]);
-                expect(report.timeSinceLastPaired).to.eql(2);
-                expect(bruce).to.equal(report.player);
+                expect(report.partnerCandidates).toEqual([expectedPartner]);
+                expect(report.timeSinceLastPaired).toEqual(2);
+                expect(bruce).toEqual(report.player);
             });
 
             it('when there is clearly someone who has been the longest and they are not the same object instances so you have to match with id', function () {
@@ -149,9 +148,9 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                expect(report.partnerCandidates).to.eql([expectedPartner]);
-                expect(report.timeSinceLastPaired).to.eql(2);
-                expect(bruce).to.equal(report.player);
+                expect(report.partnerCandidates).toEqual([expectedPartner]);
+                expect(report.timeSinceLastPaired).toEqual(2);
+                expect(bruce).toEqual(report.player);
             });
 
             it('when there is one person who has paired but no one else', function () {
@@ -166,9 +165,9 @@ describe('Pairing History', function () {
 
                 var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
-                expect(report.partnerCandidates).to.eql([talia, jezebel]);
-                expect(report.timeSinceLastPaired).to.not.exist;
-                expect(bruce).to.equal(report.player);
+                expect(report.partnerCandidates).toEqual([talia, jezebel]);
+                expect(report.timeSinceLastPaired).toBe(undefined);
+                expect(bruce).toEqual(report.player);
             });
 
         });

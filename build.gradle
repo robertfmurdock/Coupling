@@ -1,0 +1,26 @@
+
+
+task installNodeModules(type: Exec) {
+    inputs.file file('package.json')
+    outputs.dir file('node_modules')
+    commandLine "npm", "install"
+}
+
+task clientCompile(type: Exec) {
+    inputs.file file('package.json')
+    outputs.dir file('node_modules')
+    commandLine "npm", "run", "webpack"
+}
+
+task serverTest(type: Exec) {
+    dependsOn installNodeModules
+    inputs.file file('server')
+    inputs.file file('test/unit/server')
+    outputs.dir file('build/jsCheckReport')
+
+    commandLine 'npm', 'run', 'serverTest', '--silent'
+}
+
+task test {
+    dependsOn serverTest
+}
