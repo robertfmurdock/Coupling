@@ -2,7 +2,6 @@
 var config = require('../../config');
 var server = 'http://localhost:' + config.port;
 var supertest = require("supertest-as-promised").agent(server);
-var expect = require('chai').expect;
 var monk = require('monk');
 
 var tribeId = 'test';
@@ -12,9 +11,9 @@ var path = '/api/' + tribeId + '/spin';
 var database = monk(config.testMongoUrl + '/CouplingTemp');
 var pinCollection = database.get('pins');
 
-describe(path, function () {
+fdescribe(path, function () {
 
-  before(function () {
+  beforeAll(function () {
     removeTestPin();
   });
 
@@ -43,16 +42,17 @@ describe(path, function () {
       {name: "dude1"},
       {name: "dude2"}
     ];
-    supertest.post(path).send(onlyEnoughPlayersForOnePair)
+    supertest.post(path)
+      .send(onlyEnoughPlayersForOnePair)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (error, response) {
-        expect(response.body.tribe).to.equal(tribeId);
+      .then(function (response) {
+        expect(response.body.tribe).toEqual(tribeId);
         decorateWithPins(onlyEnoughPlayersForOnePair);
         var expectedPairAssignments = [onlyEnoughPlayersForOnePair];
-        expect(response.body.pairs).to.eql(expectedPairAssignments);
-        done(error);
-      });
+        expect(response.body.pairs).toEqual(expectedPairAssignments);
+      })
+      .then(done, done.fail);
   });
 
   describe("when a pin exists", function () {
@@ -60,9 +60,7 @@ describe(path, function () {
     var pin = {_id: pinId, tribe: tribeId, name: 'super test pin'};
     beforeEach(function (done) {
       pinCollection.insert(pin)
-        .then(function () {
-          done();
-        });
+        .then(done, done.fail);
     });
 
     it('will assign one pin to a player', function (done) {
@@ -72,15 +70,16 @@ describe(path, function () {
       supertest.post(path).send(players)
         .expect(200)
         .expect('Content-Type', /json/)
-        .end(function (error, response) {
-          expect(response.body.tribe).to.equal(tribeId);
+        .then(function (response) {
+          expect(response.body.tribe).toEqual(tribeId);
           var expectedPinnedPlayer = {name: "dude1", pins: [pin]};
           var expectedPairAssignments = [
             [expectedPinnedPlayer]
           ];
-          expect(JSON.stringify(response.body.pairs)).to.eql(JSON.stringify(expectedPairAssignments));
-          done(error);
-        });
+          expect(JSON.stringify(response.body.pairs))
+            .toEqual(JSON.stringify(expectedPairAssignments));
+        })
+        .then(done, done.fail);
     });
   });
 });

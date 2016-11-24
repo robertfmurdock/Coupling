@@ -96,6 +96,7 @@
     "typings": "typings install",
     "webpack": "webpack",
     "pretest": "npm run webpack",
+    "endpointTest": "node test/endpoint/run.js",
     "serverTest": "node test/unit/server/run.js",
     "clientTest": "karma start --single-run",
     "test": "grunt travis",

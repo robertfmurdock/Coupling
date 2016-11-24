@@ -5,6 +5,7 @@ var path = require('path');
 var UserDataService = require('./lib/UserDataService');
 var CouplingDataService = require('./lib/CouplingDataService');
 var config = require('./../config');
+var Promise = require('bluebird');
 
 console.log("Finished requires, starting express!");
 var app = express();
@@ -18,9 +19,15 @@ console.log("Adding routing!");
 require('./routes')(app, userDataService, couplingDataService);
 
 console.log("creating server!");
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
-  console.log('Deployed at: ' + config.buildDate);
-  console.log('Git revision: ' + config.gitRev);
+
+module.exports = new Promise(function (resolve) {
+  http
+    .createServer(app)
+    .listen(app.get('port'), function () {
+      console.log('Express server listening on port ' + app.get('port'));
+      console.log('Deployed at: ' + config.buildDate);
+      console.log('Git revision: ' + config.gitRev);
+      resolve();
+    });
+  console.log('Finished Express init!');
 });
-console.log('Finished Express init!');

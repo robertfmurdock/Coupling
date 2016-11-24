@@ -4,6 +4,8 @@ var server = 'http://localhost:' + config.port;
 
 var expect = require('chai').expect;
 var monk = require('monk');
+var Promise = require('bluebird');
+
 var _ = require('underscore');
 
 var path = '/api/tribes';
@@ -18,7 +20,7 @@ var tribesCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var usersCollection = monk(config.mongoUrl).get('users');
 
-describe(path, function () {
+fdescribe(path, function () {
   var userEmail = 'test@test.tes';
 
   beforeEach(function (done) {
@@ -30,9 +32,7 @@ describe(path, function () {
       .then(function () {
         return tribesCollection.drop();
       })
-      .then(function () {
-        done()
-      }, done)
+      .then(done, done.fail);
   });
 
   function authorizeUserForTribes(authorizedTribes) {
@@ -49,11 +49,8 @@ describe(path, function () {
         .expect('Content-Type', /json/)
         .then(function (response) {
           expect(response.body).to.eql(clean(tribeDocuments));
-          done();
         })
-        .catch(function (err) {
-          done(err);
-        });
+        .then(done, done.fail);
     });
   });
 
@@ -70,15 +67,12 @@ describe(path, function () {
       .expect('Content-Type', /json/)
       .then(function (response) {
         expect(clean(response.body)).to.eql(clean([tribe]));
-
-        tribesCollection.remove({id: 'delete-me'}, false);
-        playersCollection.remove({_id: playerId}, function (err) {
-          done(err);
-        })
+        return Promise.all([
+          tribesCollection.remove({id: 'delete-me'}, false),
+          playersCollection.remove({_id: playerId})
+        ])
       })
-      .catch(function (err) {
-        done(err);
-      });
+      .then(done, done.fail);
   });
 
   it('GET will not return all available tribes when the user does not have explicit permission.', function (done) {
@@ -86,10 +80,10 @@ describe(path, function () {
     host.get(path)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (error, response) {
+      .then(function (response) {
         expect(response.body).to.eql([]);
-        done(error);
-      });
+      })
+      .then(done, done.fail);
   });
 
   describe('POST', function () {
@@ -100,23 +94,22 @@ describe(path, function () {
         .send(newTribe)
         .expect(200)
         .expect('Content-Type', /json/)
-        .end(function (error, response) {
-          expect(error).to.not.exist;
+        .then(function (response) {
           expect(JSON.stringify(response.body)).to.equal(JSON.stringify(newTribe));
 
-          host.get(path)
+          return host.get(path)
             .expect(200)
             .expect('Content-Type', /json/)
-            .end(function (error, response) {
-              expect(error).to.not.exist;
-              expect(_.findWhere(response.body, clean(newTribe))).to.exist;
-              done();
-            });
-        });
+        })
+        .then(function (response) {
+          expect(_.findWhere(response.body, clean(newTribe))).to.exist;
+        })
+        .then(done, done.fail);
     });
 
-    after(function () {
-      tribesCollection.remove({id: newTribe.id}, false);
+    afterAll(function (done) {
+      tribesCollection.remove({id: newTribe.id}, false)
+        .then(done, done.fail);
     });
   });
 });

@@ -7,7 +7,7 @@ var config = require('./../../config');
 var tribeId = 'test';
 var server = 'http://localhost:' + config.port;
 var supertest = require("supertest-as-promised").agent(server);
-
+var Promise = require('bluebird');
 var path = '/api/' + tribeId + '/players';
 
 var monk = require('monk');
@@ -18,33 +18,35 @@ function clean(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
-describe(path, function () {
+fdescribe(path, function () {
 
   var couplingServer = supertest;
 
   beforeEach(function (done) {
     couplingServer.get('/test-login?username="name"&password="pw"')
       .expect(302)
-      .end(done);
+      .then(done, done.fail);
   });
 
-  afterEach(function () {
-    playersCollection.remove({tribe: tribeId}, false);
+  afterEach(function (done) {
+    playersCollection.remove({tribe: tribeId}, false)
+      .then(done, done.fail);
   });
 
   describe("GET", function () {
     it('will return all available players on team.', function (done) {
       var service = new DataService(config.tempMongoUrl);
 
-      service.requestPlayers(tribeId).then(function (players) {
-        var httpGet = couplingServer.get(path);
-        httpGet.expect(200)
+      Promise.props({
+        expected: service.requestPlayers(tribeId),
+        response: couplingServer.get(path)
+          .expect(200)
           .expect('Content-Type', /json/)
-          .end(function (error, response) {
-            expect(response.body).to.eql(players);
-            done(error);
-          });
-      }, done);
+      })
+        .then(function (props) {
+          expect(props.response.body).to.eql(props.expected);
+        })
+        .then(done, done.fail);
     });
   });
 
@@ -55,43 +57,42 @@ describe(path, function () {
       var httpPost = couplingServer.post(path);
       httpPost.send(newPlayer)
         .expect(200, newPlayer)
-        .end(function (error) {
-          if (error) {
-            done(error);
-          } else {
-            var httpGet = couplingServer.get(path);
-            httpGet
-              .expect('Content-Type', /json/)
-              .expect(200, function (error, response) {
-                expect(response.body).to.eql([newPlayer]);
-                done(error);
-              });
-          }
-        });
+        .then(function () {
+          return couplingServer.get(path)
+            .expect('Content-Type', /json/)
+            .expect(200)
+        })
+        .then(function (response) {
+          expect(response.body).to.eql([newPlayer]);
+        })
+        .then(done, done.fail);
     });
   });
 
   describe("DELETE", function () {
+
     var newPlayer = {_id: monk.id(), name: "Awesome-O", tribe: tribeId};
+
     beforeEach(function (done) {
-      var httpPost = couplingServer.post(path);
-      httpPost.send(newPlayer).end(function (error, responseContainingTheNewId) {
-        newPlayer = responseContainingTheNewId.body;
-        done(error);
-      });
+      couplingServer.post(path)
+        .send(newPlayer)
+        .then(function (responseContainingTheNewId) {
+          newPlayer = responseContainingTheNewId.body;
+        })
+        .then(done, done.fail);
     });
 
     it('will remove a given player.', function (done) {
       var httpDelete = couplingServer.delete(path + "/" + newPlayer._id);
       httpDelete.expect(200, function () {
-        var httpGet = couplingServer.get(path);
-        httpGet.end(function (error, response) {
-          var result = response.body.some(function (player) {
-            return Comparators.areEqualPlayers(newPlayer, player);
-          });
-          expect(result).to.be.false;
-          done(error);
-        });
+        couplingServer.get(path)
+          .then(function (response) {
+            var result = response.body.some(function (player) {
+              return Comparators.areEqualPlayers(newPlayer, player);
+            });
+            expect(result).to.be.false;
+          })
+          .then(done, done.fail);
       });
     });
 
@@ -100,7 +101,7 @@ describe(path, function () {
       var httpDelete = couplingServer.delete(path + "/" + badId);
       httpDelete
         .expect(404, {message: 'Failed to remove the player because it did not exist.'})
-        .end(done);
+        .then(done, done.fail);
     });
   });
 });

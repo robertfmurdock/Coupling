@@ -22,6 +22,16 @@ task serverTest(type: Exec) {
     commandLine 'npm', 'run', 'serverTest', '--silent'
 }
 
+task endpointTest(type: Exec) {
+    dependsOn installNodeModules
+    inputs.file file('package.json')
+    inputs.file file('server')
+    inputs.file file('test/endpoint')
+    outputs.file file('test-output/endpoint.xml')
+
+    commandLine 'npm', 'run', 'endpointTest', '--silent'
+}
+
 task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
@@ -33,5 +43,5 @@ task clientTest(type: Exec) {
 }
 
 task test {
-    dependsOn serverTest, clientTest
+    dependsOn serverTest, clientTest, endpointTest
 }
