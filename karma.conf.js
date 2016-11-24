@@ -1,44 +1,45 @@
-// Karma configuration
-// Generated on Tue Jul 01 2014 20:59:56 GMT-0400 (EDT)
 var webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
-    config.set({
+  config.set({
 
-        basePath: '',
+    basePath: '',
 
-        frameworks: ['jasmine'],
+    frameworks: ['jasmine'],
 
-        webpack: {
-            module: webpackConfig.module,
-            resolve: webpackConfig.resolve,
-            devtool: 'inline-source-map',
-            plugins: webpackConfig.plugins
-        },
+    webpack: {
+      module: webpackConfig.module,
+      resolve: webpackConfig.resolve,
+      devtool: 'inline-source-map',
+      plugins: webpackConfig.plugins
+    },
 
-        files: [
-            'test/unit/client/tests.bundle.js'
-        ],
+    files: [
+      'test/unit/client/tests.bundle.js'
+    ],
 
-        preprocessors: {
-            'test/unit/client/tests.bundle.js': ['webpack', 'sourcemap']
-        },
+    preprocessors: {
+      'test/unit/client/tests.bundle.js': ['webpack', 'sourcemap']
+    },
 
-        exclude: [],
+    exclude: [],
 
-        reporters: ['progress'],
+    reporters: ['progress', 'junit'],
 
-        port: 9876,
+    port: 9876,
 
-        colors: true,
+    colors: true,
 
-        logLevel: config.LOG_INFO,
+    logLevel: config.LOG_INFO,
 
-        autoWatch: true,
+    autoWatch: true,
 
-        browsers: ['PhantomJS'
-        ],
+    browsers: ['PhantomJS'],
 
-        singleRun: false
-    });
+    junitReporter: {
+      outputDir: 'test-output/client'
+    },
+
+    singleRun: false
+  });
 };

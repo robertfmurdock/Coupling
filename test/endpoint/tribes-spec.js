@@ -69,7 +69,6 @@ describe(path, function () {
       .expect(200)
       .expect('Content-Type', /json/)
       .then(function (response) {
-        console.log(response.body)
         expect(clean(response.body)).to.eql(clean([tribe]));
 
         tribesCollection.remove({id: 'delete-me'}, false);

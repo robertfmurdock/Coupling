@@ -14,13 +14,24 @@ task clientCompile(type: Exec) {
 
 task serverTest(type: Exec) {
     dependsOn installNodeModules
+    inputs.file file('package.json')
     inputs.file file('server')
     inputs.file file('test/unit/server')
-    outputs.dir file('build/jsCheckReport')
+    outputs.file file('test-output/server.unit.xml')
 
     commandLine 'npm', 'run', 'serverTest', '--silent'
 }
 
+task clientTest(type: Exec) {
+    dependsOn installNodeModules
+    inputs.file file('package.json')
+    inputs.file file('public')
+    inputs.file file('test/unit/client')
+    outputs.dir file('test-output/client')
+
+    commandLine 'npm', 'run', 'clientTest', '--silent'
+}
+
 task test {
-    dependsOn serverTest
+    dependsOn serverTest, clientTest
 }
