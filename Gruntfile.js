@@ -3,74 +3,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-protractor-runner');
   grunt.loadNpmTasks('grunt-wiredep');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.initConfig({
-    env: {
-      jenkinsUnit: {
-        JUNIT_REPORT_PATH: 'test-output/unit.xml'
-      },
-      jenkinsEndpoint: {
-        JUNIT_REPORT_PATH: 'test-output/endpoint.xml'
-      }
-    },
-    mkdir: {
-      testOutput: {
-        options: {
-          create: ['test-output']
-        }
-      }
-    },
-    karma: {
-      unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true,
-        browsers: ['PhantomJS', 'Chrome', 'Firefox'],
-        reporters: ['dots']
-      },
-      docker: {
-        configFile: 'karma.conf.js',
-        singleRun: true,
-        browsers: ['PhantomJS'],
-        reporters: ['dots']
-      },
-      jenkins: {
-        configFile: 'karma.conf.js',
-        singleRun: true,
-        browsers: ['PhantomJS'],
-        reporters: ['junit'],
-        junitReporter: {
-          outputFile: 'test-output/test-results.xml'
-        }
-      },
-      travis: {
-        configFile: 'karma.conf.js',
-        singleRun: true,
-        browsers: ['PhantomJS', 'Firefox'],
-        reporters: ['dots', 'junit'],
-        junitReporter: {
-          outputFile: 'test-output/test-results.xml'
-        }
-      }
-    },
-    mochaTest: {
-      endpoint: {
-        options: {
-          reporter: 'spec'
-        },
-        src: ['test/endpoint/**/*.js']
-      },
-      jenkinsEndpoint: {
-        options: {
-          reporter: 'mocha-jenkins-reporter'
-        },
-        src: ['test/endpoint/**/*.js']
-      }
-    },
     express: {
       options: {},
       dev: {
@@ -176,25 +114,6 @@ module.exports = function (grunt) {
         options: {
           ignorePath: '../public'
         }
-      },
-      karmaTask: {
-        src: [
-          'karma.conf.js'
-        ],
-        fileTypes: {
-          js: {
-            block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
-            detect: {
-              js: /'(.*\.js)'/gi
-            },
-            replace: {
-              js: '\'{{filePath}}\','
-            }
-          }
-        },
-        options: {
-          devDependencies: true
-        }
       }
     },
     typescript: {
@@ -202,14 +121,11 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('unit', ['karma:unit']);
   grunt.registerTask('jenkinsMochaEndpoint', ['env:jenkinsEndpoint', 'mochaTest:jenkinsEndpoint']);
 
   grunt.registerTask('end2end', ['express:dev', 'protractor:chrome']);
 
-  grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint',
-    'protractor:chrome', 'protractor:firefox']);
-  grunt.registerTask('jenkins', ['mkdir:testOutput', 'karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint']);
+  grunt.registerTask('default', ['unit', 'express:dev', 'mochaTest:endpoint','protractor:chrome', 'protractor:firefox']);
   grunt.registerTask('serve', ['karma:jenkins', 'express:dev', 'jenkinsMochaEndpoint', 'express:dev', 'watch']);
 
   grunt.registerTask('docker-server-test', ['express:dev', 'mochaTest:endpoint']);

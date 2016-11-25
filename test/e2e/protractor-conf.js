@@ -46,5 +46,8 @@ exports.config = {
     };
 
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
+
+    process.env.PORT = 3001;
+    return require('../../server/app');
   }
 };
