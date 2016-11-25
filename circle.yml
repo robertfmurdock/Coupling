@@ -11,7 +11,7 @@ dependencies:
     - sudo apt-get --only-upgrade install google-chrome-stable
 test:
   override:
-    - ./gradlew build
+    - npm test
   post:
     - mv test-output $CIRCLE_TEST_REPORTS/junit
 deployment:
