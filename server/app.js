@@ -11,7 +11,6 @@ console.log("Finished requires, starting express!");
 var app = express();
 
 var couplingDataService = new CouplingDataService(config.mongoUrl);
-console.log('Connecting to mongo URL: ' + config.mongoUrl);
 var userDataService = new UserDataService(couplingDataService.database);
 
 require('./config/express')(app, userDataService);

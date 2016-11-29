@@ -17,7 +17,8 @@ COPY ["package.json", "/usr/src/app/"]
 ENV \
   PUBLIC_HOST=web \
   MONGOHQ_URL=mongodb://mongo/Coupling \
-  MONGO_CONNECTION=mongodb://mongo
+  MONGO_CONNECTION=mongodb://mongo \
+  NODE_ENV=production
 
 RUN npm install --production
 COPY . /usr/src/app
