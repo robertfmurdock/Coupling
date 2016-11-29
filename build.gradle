@@ -14,6 +14,7 @@ task installNodeModules(type: Exec) {
 task clientCompile(type: Exec) {
     dependsOn installNodeModules
     mustRunAfter clean
+    inputs.file file('node_modules')
     inputs.file file('package.json')
     inputs.file file('webpack.config.js')
     inputs.file file('typings')

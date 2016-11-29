@@ -1,6 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-var BowerWebpackPlugin = require('bower-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var jsPath = path.resolve(__dirname, './public/app');
@@ -45,7 +44,6 @@ var exports = {
   },
   plugins: [
     new WebpackCleanupPlugin(),
-    new BowerWebpackPlugin(),
     new ExtractTextPlugin('./styles.css', {allChunks: true})
   ]
 };

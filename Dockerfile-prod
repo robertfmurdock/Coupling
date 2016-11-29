@@ -13,12 +13,14 @@ RUN cd $(npm root -g)/npm \
   && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
 
 COPY ["package.json", "/usr/src/app/"]
-RUN npm install --production
-COPY . /usr/src/app
+
 ENV \
   PUBLIC_HOST=web \
   MONGOHQ_URL=mongodb://mongo/Coupling \
   MONGO_CONNECTION=mongodb://mongo
+
+RUN npm install --production
+COPY . /usr/src/app
 
 CMD ["npm", "start"]
 EXPOSE 3000 8125

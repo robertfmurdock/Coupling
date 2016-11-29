@@ -30,7 +30,6 @@ var helper = {
     afterEach(function (done) {
       browser.getCapabilities().then(function (capabilities) {
         if (capabilities.get('browserName') !== 'firefox') {
-          console.log(capabilities.get('browserName'));
           browser.manage().logs().get('browser').then(function (browserLog) {
             expect(browserLog).toEqual([]);
             if (browserLog.length > 0) {
