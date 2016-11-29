@@ -2,8 +2,8 @@ var webpack = require('webpack');
 var path = require('path');
 var BowerWebpackPlugin = require('bower-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var jsPath = path.resolve(__dirname, './public/app');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+var jsPath = path.resolve(__dirname, './public/app');
 
 console.log('Packing for ', process.env.NODE_ENV);
 
@@ -26,11 +26,11 @@ var exports = {
       },
       {
         test: /\.(css)$/,
-        loaders: ['style-loader', 'css-loader']
+        loader: ExtractTextPlugin.extract('style', 'css')
       },
       {
         test: /\.(scss)$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loader: ExtractTextPlugin.extract('style', 'css!sass')
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
