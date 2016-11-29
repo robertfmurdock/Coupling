@@ -3,14 +3,14 @@ var path = require('path');
 var BowerWebpackPlugin = require('bower-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var jsPath = path.resolve(__dirname, './public/app');
-
+var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 console.log('Packing for ', process.env.NODE_ENV);
 
 var exports = {
   entry: path.resolve(jsPath, './app.ts'),
   output: {
-    path: './public/app/build',
+    path: path.resolve(__dirname, './public/app/build'),
     filename: 'main.js'
   },
   devtool: 'source-map',
@@ -25,8 +25,12 @@ var exports = {
         loader: 'ts-loader'
       },
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        test: /\.(css)$/,
+        loaders: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(scss)$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -35,8 +39,9 @@ var exports = {
     ]
   },
   plugins: [
+    new WebpackCleanupPlugin(),
     new BowerWebpackPlugin(),
-    new ExtractTextPlugin('./styles.css')
+    new ExtractTextPlugin('./styles.css', {allChunks: true})
   ]
 };
 

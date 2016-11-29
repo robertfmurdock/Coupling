@@ -2,7 +2,6 @@
 var compression = require('compression');
 var path = require('path');
 var favicon = require('serve-favicon');
-var sassMiddleware = require('node-sass-middleware');
 var logger = require('morgan');
 var methodOverride = require('method-override');
 var express = require('express');
@@ -28,13 +27,6 @@ module.exports = function (app, userDataService) {
   ]);
   app.set('view engine', 'pug');
   app.use(favicon('public/images/favicon.ico'));
-  app.use(sassMiddleware({
-    src: __dirname + '/../../public/stylesheets',
-    dest: __dirname + '/../../public/stylesheets',
-    debug: false,
-    outputStyle: 'expanded',
-    prefix: '/stylesheets'
-  }));
   app.use(logger('dev'));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
