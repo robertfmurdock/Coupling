@@ -20,6 +20,7 @@ task clientCompile(type: Exec) {
     inputs.file file('typings')
     inputs.file file('public')
     outputs.dir file('public/app/build')
+    environment 'NODE_ENV': 'production'
     commandLine "npm", "run", "webpack", '--silent'
 }
 
