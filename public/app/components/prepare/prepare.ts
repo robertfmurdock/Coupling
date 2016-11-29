@@ -1,5 +1,6 @@
-import * as services from '../../services'
 import * as _ from 'underscore'
+import * as services from '../../services'
+import * as template from './prepare.pug'
 
 class PrepareController {
     static $inject = ['$location', 'Coupling'];
@@ -34,6 +35,6 @@ export default angular.module("coupling.prepare", [])
                 players: '='
             },
             restrict: 'E',
-            templateUrl: '/app/components/prepare/prepare.html'
+            template: template
         }
     });

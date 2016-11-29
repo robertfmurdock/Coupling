@@ -1,4 +1,6 @@
+
 import * as services from '../../services'
+import * as template from './player-config.pug'
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
@@ -56,6 +58,6 @@ export default angular.module("coupling.playerConfig", [])
                 tribe: '='
             },
             restrict: 'E',
-            templateUrl: '/app/components/player-config/player-config.html'
+            template: template
         }
     });

@@ -1,3 +1,4 @@
+import * as template from './tribe-card.pug'
 import * as services from '../../services'
 
 export class TribeCardController {
@@ -28,6 +29,6 @@ export default angular.module('coupling.tribeCard', [])
             },
             bindToController: true,
             restrict: 'E',
-            templateUrl: '/app/components/tribe-card/tribe-card.html'
+            template: template
         }
     });

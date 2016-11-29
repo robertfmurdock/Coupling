@@ -16,6 +16,7 @@ task clientCompile(type: Exec) {
     mustRunAfter clean
     inputs.file file('package.json')
     inputs.file file('webpack.config.js')
+    inputs.file file('typings')
     inputs.file file('public')
     outputs.dir file('public/app/build')
     commandLine "npm", "run", "webpack", '--silent'

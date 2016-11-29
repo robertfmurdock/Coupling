@@ -1,4 +1,5 @@
 import * as services from '../../services'
+import * as template from './welcome.pug'
 
 interface Card {
     name: String
@@ -78,6 +79,6 @@ export default angular.module('coupling.welcome', [])
             restrict: 'E',
             controller: 'WelcomeController',
             controllerAs: 'welcome',
-            templateUrl: '/app/components/welcome/welcome.html',
+            template: template,
         }
     });

@@ -1,3 +1,5 @@
+import * as template from './tribe-list.pug'
+
 export default angular.module("coupling.tribeList", [])
     .directive('tribelist', function () {
         return {
@@ -5,6 +7,6 @@ export default angular.module("coupling.tribeList", [])
                 tribes: '='
             },
             restrict: 'E',
-            templateUrl: '/app/components/tribe-list/tribe-list.html'
+            template: template
         }
     });

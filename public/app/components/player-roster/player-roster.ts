@@ -1,3 +1,4 @@
+import * as template from './player-roster.pug'
 export default angular.module("coupling.playerRoster", [])
     .directive('playerRoster', () => {
         return {
@@ -7,6 +8,6 @@ export default angular.module("coupling.playerRoster", [])
                 label: '=?'
             },
             restrict: 'E',
-            templateUrl: '/app/components/player-roster/player-roster.html'
+            template: template
         }
     });

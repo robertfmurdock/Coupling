@@ -1,5 +1,6 @@
 import * as services from '../../services'
 import * as _ from 'underscore'
+import * as template from './pair-assignments.pug'
 
 export class PairAssignmentsController {
     static $inject = ['Coupling', '$location'];
@@ -81,6 +82,6 @@ export default angular.module('coupling.pairAssignments', [])
                 isNew: '='
             },
             restrict: 'E',
-            templateUrl: '/app/components/pair-assignments/pair-assignments.html'
+            template: template
         }
     });

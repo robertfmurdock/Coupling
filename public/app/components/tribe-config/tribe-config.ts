@@ -1,3 +1,4 @@
+import * as template from './tribe-config.pug'
 import * as services from '../../services'
 
 export class TribeConfigController {
@@ -30,6 +31,6 @@ export default angular.module("coupling.tribeConfig", [])
                 isNew: '=isNew'
             },
             restrict: 'E',
-            templateUrl: '/app/components/tribe-config/tribe-config.html'
+            template: template
         }
     });

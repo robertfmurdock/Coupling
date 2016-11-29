@@ -25,6 +25,11 @@ var exports = {
         loader: 'ts-loader'
       },
       {
+        test: /\.(pug)$/,
+        loader: 'pug',
+        include: jsPath
+      },
+      {
         test: /\.(css)$/,
         loader: ExtractTextPlugin.extract('style', 'css')
       },

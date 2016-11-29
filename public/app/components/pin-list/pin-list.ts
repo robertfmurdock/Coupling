@@ -1,3 +1,5 @@
+import * as template from './pin-list.pug'
+
 export default angular.module("coupling.pinList", [])
     .directive('pinList', () => {
         return {
@@ -5,6 +7,6 @@ export default angular.module("coupling.pinList", [])
                 pins: '='
             },
             restrict: 'E',
-            templateUrl: '/app/components/pin-list/pin-list.html'
+            template: template
         }
     });
