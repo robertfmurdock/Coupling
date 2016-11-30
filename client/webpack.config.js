@@ -2,14 +2,12 @@ var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-var jsPath = path.resolve(__dirname, './client/app');
-
-console.log('Packing for ', process.env.NODE_ENV);
+var jsPath = path.resolve(__dirname, './app');
 
 var exports = {
   entry: path.resolve(jsPath, './app.ts'),
   output: {
-    path: path.resolve(__dirname, './public/app/build'),
+    path: path.resolve(__dirname, '../public/app/build'),
     filename: 'main.js'
   },
   devtool: 'source-map',

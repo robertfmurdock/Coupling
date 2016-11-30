@@ -1,10 +1,7 @@
-.git
 .idea
-test-output/*
-.idea/workspace.xml
-Coupling.iws
-.DS_Store
-public/stylesheets/*.css
-node_modules/*
+test-output
+client
+node_modules
 Dockerfile
 docker-compose.yml
+.DS_Store
