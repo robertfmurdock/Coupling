@@ -24,6 +24,19 @@ task clientCompile(type: Exec) {
     commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
 }
 
+task serverCompile(type: Exec) {
+    dependsOn installNodeModules
+    mustRunAfter clean
+    inputs.file file('node_modules')
+    inputs.file file('package.json')
+    inputs.file file('server/webpack.config.js')
+    inputs.file file('typings')
+    inputs.file file('server')
+    outputs.dir file('server/build')
+    environment 'NODE_ENV': 'production'
+    commandLine "node_modules/.bin/webpack", '--config', 'server/webpack.config.js'
+}
+
 task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
@@ -45,9 +58,10 @@ task serverTest(type: Exec) {
 }
 
 task endpointTest(type: Exec) {
-    dependsOn installNodeModules
+    dependsOn installNodeModules, serverCompile
     mustRunAfter serverTest
     inputs.file serverTest.inputs.files
+    inputs.file serverCompile.outputs.files
     inputs.file file('package.json')
     inputs.file file('test/endpoint')
     outputs.file file('test-output/endpoint.xml')
@@ -56,11 +70,12 @@ task endpointTest(type: Exec) {
 }
 
 task endToEndTest(type: Exec) {
-    dependsOn installNodeModules, clientCompile
+    dependsOn installNodeModules, clientCompile, serverCompile
     mustRunAfter clientCompile, serverTest, clientTest, endpointTest
     inputs.file clientTest.inputs.files
     inputs.file serverTest.inputs.files
     inputs.file clientCompile.outputs.files
+    inputs.file serverCompile.outputs.files
     inputs.file file('package.json')
     inputs.file file('test/endpoint')
     outputs.file file('test-output/e2e.xml')

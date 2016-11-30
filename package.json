@@ -34,10 +34,10 @@
     "angular": "^1.5.5",
     "angular-animate": "^1.5.5",
     "angular-gravatar": "^0.4.1",
+    "angular-mocks": "^1.4.10",
     "angular-native-dragdrop": "^1.1.2",
     "angular-resource": "^1.5.5",
     "angular-route": "^1.5.5",
-    "angular-mocks": "^1.4.10",
     "chai": "^3.5.0",
     "css-loader": "^0.26.0",
     "expect.js": "^0.3.1",
@@ -73,10 +73,11 @@
     "typings": "^2.0.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
-    "webpack-cleanup-plugin": "^0.4.1"
+    "webpack-cleanup-plugin": "^0.4.1",
+    "webpack-node-externals": "^1.5.4"
   },
   "scripts": {
-    "start": "node server/app.js",
+    "start": "node server/startup.js",
     "pretsc": "npm run typings",
     "tsc": "tsc",
     "typings": "typings install",
