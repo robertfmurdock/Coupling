@@ -2,7 +2,7 @@
 
 require('angular-resource');
 
-var services = require('./../../../public/app/services.ts');
+var services = require('./../../../client/app/services.ts');
 var CouplingService = services.Coupling;
 
 describe('Service: ', function () {

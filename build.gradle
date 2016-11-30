@@ -18,7 +18,7 @@ task clientCompile(type: Exec) {
     inputs.file file('package.json')
     inputs.file file('webpack.config.js')
     inputs.file file('typings')
-    inputs.file file('public')
+    inputs.file file('client')
     outputs.dir file('public/app/build')
     environment 'NODE_ENV': 'production'
     commandLine "npm", "run", "webpack", '--silent'
@@ -27,7 +27,7 @@ task clientCompile(type: Exec) {
 task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
-    inputs.file file('public')
+    inputs.file file('client')
     inputs.file file('karma.conf.js')
     inputs.file file('test/unit/client')
     outputs.dir file('test-output/client')

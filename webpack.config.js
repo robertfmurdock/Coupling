@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-var jsPath = path.resolve(__dirname, './public/app');
+var jsPath = path.resolve(__dirname, './client/app');
 
 console.log('Packing for ', process.env.NODE_ENV);
 

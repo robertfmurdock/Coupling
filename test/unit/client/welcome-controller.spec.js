@@ -3,9 +3,9 @@
 require('angular');
 require('angular-mocks');
 
-require('../../../public/app/components/components');
-var WelcomeController = require('../../../public/app/components/welcome/welcome.ts').WelcomeController;
-var Randomizer = require('../../../public/app/services.ts').Randomizer;
+require('../../../client/app/components/components');
+var WelcomeController = require('../../../client/app/components/welcome/welcome.ts').WelcomeController;
+var Randomizer = require('../../../client/app/services.ts').Randomizer;
 
 describe('The controller named ', function () {
 
