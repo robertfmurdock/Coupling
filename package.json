@@ -83,7 +83,7 @@
     "webpack": "webpack",
     "endpointTest": "node test/endpoint/run.js",
     "serverTest": "node test/unit/server/run.js",
-    "clientTest": "karma start --single-run",
+    "clientTest": "karma start test/unit/client/karma.conf.js --single-run",
     "test": "./gradlew test endToEndTest",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",

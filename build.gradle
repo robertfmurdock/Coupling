@@ -28,7 +28,6 @@ task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
     inputs.file file('client')
-    inputs.file file('karma.conf.js')
     inputs.file file('test/unit/client')
     outputs.dir file('test-output/client')
 
