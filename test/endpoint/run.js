@@ -27,7 +27,7 @@ var junitReporter = new reporters.JUnitXmlReporter({
 jasmine.addReporter(junitReporter);
 
 process.env.PORT = 3001;
-require('../../server/app')
+require('../../build/app')
   .start()
   .then(function () {
     jasmine.execute();

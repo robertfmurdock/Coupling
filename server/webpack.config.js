@@ -6,9 +6,13 @@ var nodeExternals = require('webpack-node-externals');
 var exports = {
   entry: path.resolve(jsPath, './app.js'),
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, '../build'),
     filename: 'app.js',
     libraryTarget: 'commonjs'
+  },
+  node: {
+    __filename: false,
+    __dirname: false
   },
   devtool: 'source-map',
   target: 'node',
@@ -29,8 +33,6 @@ var exports = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  exports.devtool = 'cheap-module-source-map';
-
   exports.plugins = exports.plugins.concat([
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.DedupePlugin(),

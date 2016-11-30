@@ -19,7 +19,7 @@ task clientCompile(type: Exec) {
     inputs.file file('client/webpack.config.js')
     inputs.file file('typings')
     inputs.file file('client')
-    outputs.dir file('public/app/build')
+    outputs.dir file('build')
     environment 'NODE_ENV': 'production'
     commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
 }
