@@ -1,6 +1,6 @@
 var PairAssignmentDocument = require('./PairAssignmentDocument');
 var PinAssigner = require('./PinAssigner');
-var clock = require('./Clock');
+var clock = require('./Clock.ts');
 
 var GameRunner = function (gameFactory) {
   this.run = function (players, pins, history) {

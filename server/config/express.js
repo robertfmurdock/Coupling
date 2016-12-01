@@ -47,7 +47,6 @@ module.exports = function (app, userDataService) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-// development only
   var isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
   if (isInDevelopmentMode) {
     app.use(errorHandler());

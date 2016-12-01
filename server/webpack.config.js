@@ -14,7 +14,7 @@ var exports = {
     __filename: false,
     __dirname: false
   },
-  devtool: 'source-map',
+  devtool: 'eval',
   target: 'node',
   externals: [nodeExternals()],
   resolve: {
