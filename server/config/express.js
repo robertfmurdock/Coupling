@@ -25,8 +25,6 @@ module.exports = function (app, userDataService) {
     path.join(__dirname, '../public'),
     path.join(__dirname, '../views')
   ]);
-  console.log('dirname: ', __dirname);
-  console.log(app.get('views'));
   app.set('view engine', 'pug');
   app.use(favicon('public/images/favicon.ico'));
   app.use(logger('dev'));
