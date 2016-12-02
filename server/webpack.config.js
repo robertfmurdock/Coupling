@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var jsPath = path.resolve(__dirname, './');
+var projectRoot = path.resolve(__dirname, '../');
 var nodeExternals = require('webpack-node-externals');
 
 var exports = {
@@ -18,8 +19,8 @@ var exports = {
   target: 'node',
   externals: [nodeExternals()],
   resolve: {
-    root: jsPath,
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js']
+    root: projectRoot,
+    extensions: ['', '.js', '.ts']
   },
   module: {
     loaders: [
