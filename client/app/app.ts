@@ -53,7 +53,7 @@ var tribeListRoute:IRoute = {
 class NewTribeRouteController {
     static $inject = ['Coupling'];
 
-    tribe:services.Tribe;
+    tribe: services.Tribe;
 
     constructor(Coupling) {
         this.tribe = new Coupling.Tribe();

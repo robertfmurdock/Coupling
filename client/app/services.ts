@@ -1,81 +1,90 @@
-import "angular"
-import 'angular-resource'
-import * as _ from 'underscore'
+import "angular";
+import "angular-resource";
+import * as _ from "underscore";
+import * as common from "../../common";
 import IPromise = angular.IPromise;
-
-export class Player {
-    _id:string;
-    tribe:string
-}
+import IResource = angular.resource.IResource;
+import IResourceClass = angular.resource.IResourceClass;
+import IResourceService = angular.resource.IResourceService;
+import IResourceArray = angular.resource.IResourceArray;
+import IQService = angular.IQService;
+import IHttpService = angular.IHttpService;
+import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
+import Player = common.Player;
 
 interface SelectablePlayerMap {
     [id: string]: SelectablePlayer;
 }
 
 class CouplingData {
-    selectablePlayers:SelectablePlayerMap
+    selectablePlayers: SelectablePlayerMap
 }
 
-export interface Tribe extends ng.resource.IResource<Tribe> {
-    id: String;
-    name:String
+interface Tribe extends IResource<Tribe>, common.Tribe {
 }
 
-interface TribeResource extends ng.resource.IResourceClass<Tribe> {
-    name:String
+interface TribeResource extends IResourceClass<Tribe> {
 }
 
-interface PairAssignmentSetResource extends ng.resource.IResourceClass<PairAssignmentSet> {
+interface PairAssignmentSetResource extends IResourceClass<PairAssignmentSet> {
 }
 
-export interface PairAssignmentSet extends ng.resource.IResource<PairAssignmentSet> {
-    pairs:[[Player]]
+interface PairAssignmentSet extends IResource<PairAssignmentSet>, common.PairAssignmentSet {
 }
 
 class Pin {
 }
 
-export class SelectablePlayer {
-    constructor(public isSelected:boolean, public player:Player) {
+class SelectablePlayer {
+    constructor(public isSelected: boolean, public player: Player) {
     }
 }
 
-export class Coupling {
+var makeTribeResource = function ($resource: angular.resource.IResourceService) {
+    return <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@id'});
+};
+
+
+var makePairAssignmentResource = function ($resource: angular.resource.IResourceService) {
+    return <PairAssignmentSetResource>$resource('/api/:tribeId/history/:id', {
+        id: '@_id',
+        tribeId: '@tribe'
+    });
+};
+
+class Coupling {
     static $inject = ['$http', '$q', '$resource'];
 
-    data:CouplingData;
-    Tribe:TribeResource;
-    PairAssignmentSet:PairAssignmentSetResource;
+    data: CouplingData;
+    Tribe: TribeResource;
+    PairAssignmentSet: PairAssignmentSetResource;
 
-    constructor(public $http:angular.IHttpService, public $q:angular.IQService, $resource:ng.resource.IResourceService) {
-        this.Tribe = <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@id'});
-        this.PairAssignmentSet = <PairAssignmentSetResource>$resource('/api/:tribeId/history/:id', {
-            id: '@_id',
-            tribeId: '@tribe'
-        });
+    constructor(public $http: IHttpService, public $q: IQService, $resource: IResourceService) {
+        this.Tribe = makeTribeResource($resource);
+        this.PairAssignmentSet = makePairAssignmentResource($resource);
         this.data = new CouplingData();
         this.data.selectablePlayers = {};
     }
 
-    public getTribes():IPromise<ng.resource.IResourceArray<Tribe>> {
+    public getTribes(): IPromise<IResourceArray<Tribe>> {
         return this.Tribe
             .query()
             .$promise;
     }
 
-    getTribe(tribeId):IPromise<Tribe> {
+    getTribe(tribeId): IPromise<Tribe> {
         return this.Tribe
             .get({tribeId: tribeId})
             .$promise;
     }
 
-    getHistory(tribeId):IPromise<[PairAssignmentSet]> {
+    getHistory(tribeId): IPromise<[PairAssignmentSet]> {
         return this.PairAssignmentSet
             .query({tribeId: tribeId})
             .$promise;
     }
 
-    spin(players, tribeId):IPromise<PairAssignmentSet> {
+    spin(players, tribeId): IPromise<PairAssignmentSet> {
         var url = '/api/' + tribeId + '/spin';
         return this.$http.post(url, players)
             .then((result) => {
@@ -83,27 +92,26 @@ export class Coupling {
             });
     }
 
-    saveCurrentPairAssignments(pairAssignments:PairAssignmentSet) {
+    saveCurrentPairAssignments(pairAssignments: PairAssignmentSet) {
         return pairAssignments.$save();
     }
 
     getPlayers(tribeId) {
-        var url = '/api/' + tribeId + '/players';
-        return this.$http.get(url)
-            .then(function (response:angular.IHttpPromiseCallbackArg<[Player]>) {
+        return this.$http.get(`/api/${tribeId}/players`)
+            .then(function (response: IHttpPromiseCallbackArg<[Player]>) {
                 return response.data;
             });
     }
 
     savePlayer(player) {
-        return this.post('/api/' + player.tribe + '/players', player);
+        return this.post(`/api/${player.tribe}/players`, player);
     }
 
     removePlayer(player) {
-        return this.httpDelete('/api/' + player.tribe + '/players/' + player._id);
+        return this.httpDelete(`/api/${player.tribe}/players/${player._id}`);
     }
 
-    getSelectedPlayers(players:Player[], history) {
+    getSelectedPlayers(players: Player[], history) {
         var selectablePlayers = _.map(players, (player)=> {
             var selected = this.playerShouldBeSelected(player, history);
             return [player._id, new SelectablePlayer(selected, player)];
@@ -113,29 +121,28 @@ export class Coupling {
         return this.data.selectablePlayers;
     }
 
-    getPins(tribeId):IPromise<[Pin]> {
-        var url = '/api/' + tribeId + '/pins';
-        return this.$http.get(url)
+    getPins(tribeId): IPromise<[Pin]> {
+        return this.$http.get(`/api/${tribeId}/pins`)
             .then(function (response) {
                 return response.data;
             });
     }
 
-    private post<T>(url, object:T):IPromise<T> {
+    private post<T>(url, object: T): IPromise<T> {
         return this.$http.post(url, object)
             .then(function (result) {
                 return result.data;
             });
     }
 
-    private httpDelete(url):IPromise<void> {
+    private httpDelete(url): IPromise<void> {
         return this.$http.delete(url)
             .then(function () {
             });
     }
 
     private isInLastSetOfPairs(player, history) {
-        var result = _.find(history[0].pairs, function (pairset:[{}]) {
+        var result = _.find(history[0].pairs, function (pairset: [{}]) {
             if (_.findWhere(pairset, {
                     _id: player._id
                 })) {
@@ -157,9 +164,9 @@ export class Coupling {
 
 }
 
-export class Randomizer {
+class Randomizer {
 
-    next(maxValue:number) {
+    next(maxValue: number) {
         var floatValue = Math.random() * maxValue;
         return Math.round(floatValue);
     }
@@ -168,3 +175,5 @@ export class Randomizer {
 angular.module("coupling.services", ['ngResource'])
     .service("Coupling", Coupling)
     .service('randomizer', Randomizer);
+
+export {Player, Tribe, PairAssignmentSet, SelectablePlayer, Coupling, Randomizer}
