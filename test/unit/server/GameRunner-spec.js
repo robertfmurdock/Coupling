@@ -1,4 +1,4 @@
-var CouplingGameFactory = require('../../../server/lib/CouplingGameFactory');
+var CouplingGameFactory = require('../../../server/lib/CouplingGameFactory').default;
 var GameRunner = require('../../../server/lib/GameRunner');
 
 var clock = require('../../../server/lib/Clock');
