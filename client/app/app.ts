@@ -15,6 +15,7 @@ import './../stylesheets/style.scss'
 import './../stylesheets/animations.scss'
 
 import * as _ from 'underscore'
+import './services'
 import * as services from './services'
 
 var app = angular.module('coupling', ["ngRoute",
@@ -161,8 +162,7 @@ class NewPlayerRouteController {
     constructor(tribe, players) {
         this.tribe = tribe;
         this.players = players;
-        this.player = new services.Player();
-        this.player.tribe = tribe.id;
+        this.player = {_id: undefined, tribe: tribe.id};
     }
 }
 

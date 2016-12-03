@@ -18,8 +18,9 @@ task clientCompile(type: Exec) {
     inputs.file file('package.json')
     inputs.file file('client/webpack.config.js')
     inputs.file file('typings')
+    inputs.file file('common')
     inputs.file file('client')
-    outputs.dir file('build')
+    outputs.dir file('public/app/build')
     environment 'NODE_ENV': 'production'
     commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
 }
@@ -32,7 +33,8 @@ task serverCompile(type: Exec) {
     inputs.file file('server/webpack.config.js')
     inputs.file file('typings')
     inputs.file file('server')
-    outputs.dir file('server/build')
+    inputs.file file('common')
+    outputs.dir file('build')
     environment 'NODE_ENV': 'production'
     commandLine "node_modules/.bin/webpack", '--config', 'server/webpack.config.js'
 }
@@ -40,7 +42,7 @@ task serverCompile(type: Exec) {
 task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
-    inputs.file file('client')
+    inputs.file clientCompile.outputs.files
     inputs.file file('test/unit/client')
     outputs.dir file('test-output/client')
 
@@ -50,7 +52,7 @@ task clientTest(type: Exec) {
 task serverTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
-    inputs.file file('server')
+    inputs.file serverCompile.outputs.files
     inputs.file file('test/unit/server')
     outputs.file file('test-output/server.unit.xml')
 
