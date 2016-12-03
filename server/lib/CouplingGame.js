@@ -1,4 +1,4 @@
-var comparators = require("./Comparators");
+var comparators = require("./Comparators").default;
 var CouplingGame = function (sequencer, wheel) {
 
     function filterOutPlayer(playersOnWheel, playerToFilter) {

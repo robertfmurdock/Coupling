@@ -1,6 +1,6 @@
 "use strict";
 var PairHistoryReport = require('./PairHistoryReport').default;
-var Comparators = require('./Comparators');
+var Comparators = require('./Comparators').default;
 
 var PairingHistory = function (historyDocumentsNewestToOldest) {
   function calculateTimeSinceLastPartnership(expectedPair) {

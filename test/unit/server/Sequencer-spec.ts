@@ -1,13 +1,14 @@
-var Sequencer = require('../../../server/lib/Sequencer');
-var PairHistoryReport = require('../../../server/lib/PairHistoryReport').default;
+import Sequencer from "../../../server/lib/Sequencer";
+import PairHistoryReport from "../../../server/lib/PairHistoryReport";
+import Player from "../../../common/Player";
 var sinon = require('sinon');
 
 describe('Sequencer', function () {
 
-    var bill = "Bill";
-    var ted = "Ted";
-    var amadeus = "Mozart";
-    var shorty = "Napoleon";
+    var bill = {_id: "Bill", tribe: ''};
+    var ted = {_id: "Ted", tribe: ''};
+    var amadeus = {_id: "Mozart", tribe: ''};
+    var shorty = {_id: "Napoleon", tribe: ''};
 
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
         var players = [bill, ted, amadeus, shorty];
@@ -82,18 +83,17 @@ describe('Sequencer', function () {
         };
 
         var billsPairCandidates = new PairHistoryReport(bill, [
-            {},
-            {},
-            {}
+            {_id: '', tribe: ''},
+            {_id: '', tribe: ''},
+            {_id: '', tribe: ''}
         ], null);
         getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
         var amadeusPairCandidates = new PairHistoryReport(amadeus, [
-            {}
+            {_id: '', tribe: ''}
         ], null);
         getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
         var shortyPairCandidates = new PairHistoryReport(shorty, [
-            {},
-            {}
+            {_id: '', tribe: ''}, {_id: '', tribe: ''}
         ], null);
         getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
 

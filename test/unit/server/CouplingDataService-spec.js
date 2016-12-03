@@ -1,11 +1,10 @@
 "use strict";
-var CouplingDataService = require('../../../server/lib/CouplingDataService');
-
-var config = require('../../../config');
-var mongoUrl = config.testMongoUrl + '/UsersTest';
-
 var monk = require('monk');
-var Comparators = require('../../../server/lib/Comparators');
+var CouplingDataService = require('../../../server/lib/CouplingDataService');
+var config = require('../../../config');
+var Comparators = require('../../../server/lib/Comparators').default;
+
+var mongoUrl = config.testMongoUrl + '/UsersTest';
 var database = monk(mongoUrl);
 
 describe('CouplingDataService', function () {

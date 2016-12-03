@@ -1,32 +1,34 @@
-"use strict";
+import Player from '../../common/Player'
 
-var findPerson = function (target) {
-    return function (person) {
+var findPerson = function (target: Player) {
+    return function (person: Player) {
         return Comparators.areEqualPlayers(target, person);
     };
 };
 
-var getIdString = function (id) {
+var getIdString = function (id: any) {
     return (typeof id == 'string' || id instanceof String) ? id : id.toHexString();
 };
 
-var Comparators = {
-    areEqualPairs: function (pairOne, pairTwo) {
+class Comparators {
+    static areEqualPairs(pairOne, pairTwo) {
         return pairOne.some(findPerson(pairTwo[0])) && pairOne.some(findPerson(pairTwo[1]));
-    },
-    areEqualPlayers: function (playerOne, playerTwo) {
+    }
+
+    static areEqualPlayers(playerOne, playerTwo) {
         if (playerOne === playerTwo) {
             return true;
         } else if (playerOne && playerTwo && playerOne._id && playerTwo._id) {
             return this.areEqualObjectIds(playerOne._id, playerTwo._id);
         } else
             return false;
-    },
-    areEqualObjectIds: function (id1, id2) {
+    }
+
+    static areEqualObjectIds(id1, id2) {
         var id1String = getIdString(id1);
         var id2String = getIdString(id2);
         return id1String == id2String;
     }
-};
+}
 
-module.exports = Comparators;
+export default Comparators;

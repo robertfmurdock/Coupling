@@ -4,7 +4,7 @@ var GameRunner = require('../../../../server/lib/GameRunner');
 var CouplingGameFactory = require('../../../../server/lib/CouplingGameFactory');
 var CouplingDataService = require('../../../../server/lib/CouplingDataService');
 var PairAssignmentDocument = require('../../../../server/lib/PairAssignmentDocument');
-var Comparators = require('../../../../server/lib/Comparators');
+var Comparators = require('../../../../server/lib/Comparators').default;
 var config = require('../../../../config');
 
 describe('The game', function () {
@@ -23,8 +23,10 @@ describe('The game', function () {
     barry,
     john
   ];
+
   var mongoUrl = config.testMongoUrl + '/CouplingTest';
   var database = monk(mongoUrl);
+
   var historyCollection = database.get('history');
 
   beforeEach(function (done) {

@@ -1,5 +1,4 @@
-"use strict";
-var Comparators = require("../../../server/lib/Comparators");
+import Comparators from "../../../server/lib/Comparators";
 
 describe('Comparators', function () {
     describe("pairs", function () {
