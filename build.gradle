@@ -14,13 +14,13 @@ task installNodeModules(type: Exec) {
 task clientCompile(type: Exec) {
     dependsOn installNodeModules
     mustRunAfter clean
-    inputs.file file('node_modules')
+    inputs.file fileTree('node_modules')
     inputs.file file('package.json')
     inputs.file file('client/webpack.config.js')
-    inputs.file file('typings')
-    inputs.file file('common')
-    inputs.file file('client')
-    outputs.dir file('public/app/build')
+    inputs.file fileTree('typings')
+    inputs.file fileTree('common')
+    inputs.file fileTree('client')
+    outputs.dir fileTree('public/app/build')
     environment 'NODE_ENV': 'production'
     commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
 }
@@ -31,9 +31,9 @@ task serverCompile(type: Exec) {
     inputs.file file('node_modules')
     inputs.file file('package.json')
     inputs.file file('server/webpack.config.js')
-    inputs.file file('typings')
-    inputs.file file('server')
-    inputs.file file('common')
+    inputs.file fileTree('typings')
+    inputs.file fileTree('server')
+    inputs.file fileTree('common')
     outputs.dir file('build')
     environment 'NODE_ENV': 'production'
     commandLine "node_modules/.bin/webpack", '--config', 'server/webpack.config.js'
@@ -42,8 +42,8 @@ task serverCompile(type: Exec) {
 task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
-    inputs.file clientCompile.outputs.files
-    inputs.file file('test/unit/client')
+    inputs.file clientCompile.inputs.files
+    inputs.file fileTree('test/unit/client')
     outputs.dir file('test-output/client')
 
     commandLine 'npm', 'run', 'clientTest', '--silent'
@@ -53,7 +53,7 @@ task serverTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
     inputs.file serverCompile.inputs.files
-    inputs.file file('test/unit/server')
+    inputs.file fileTree('test/unit/server')
     outputs.file file('test-output/server.unit.xml')
 
     commandLine 'npm', 'run', 'serverTest', '--silent'

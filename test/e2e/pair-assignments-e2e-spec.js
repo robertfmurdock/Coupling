@@ -8,7 +8,7 @@ var database = monk(config.tempMongoUrl);
 var tribeCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var historyCollection = database.get('history');
-var PairAssignmentDocument = require("../../server/lib/PairAssignmentDocument");
+var PairAssignmentDocument = require("../../common/PairAssignmentDocument").default;
 
 describe('The current pair assignments', function () {
 

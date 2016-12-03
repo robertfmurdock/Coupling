@@ -1,4 +1,4 @@
-var PairAssignmentDocument = require('./PairAssignmentDocument');
+var PairAssignmentDocument = require('./../../common/PairAssignmentDocument').default;
 var PinAssigner = require('./PinAssigner');
 var clock = require('./Clock.ts');
 

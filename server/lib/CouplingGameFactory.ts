@@ -1,8 +1,7 @@
 import PairingHistory from "./PairingHistory";
 import Sequencer from "./Sequencer";
-
-var CouplingGame = require('./CouplingGame');
-var CouplingWheel = require('./CouplingWheel');
+import CouplingGame from "./CouplingGame";
+import CouplingWheel from "./CouplingWheel";
 
 export default class CouplingGameFactory {
 

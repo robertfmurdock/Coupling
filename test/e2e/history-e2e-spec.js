@@ -3,7 +3,7 @@
 var config = require('../../config');
 var hostName = 'http://' + config.publicHost + ':' + config.port;
 var e2eHelp = require('./e2e-help');
-var PairAssignmentDocument = require('../../server/lib/PairAssignmentDocument');
+var PairAssignmentDocument = require('../../common/PairAssignmentDocument').default;
 var supertest = require("supertest-as-promised").agent(hostName);
 var monk = require('monk');
 

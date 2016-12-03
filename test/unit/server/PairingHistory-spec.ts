@@ -2,7 +2,7 @@
 import PairingHistory from "../../../server/lib/PairingHistory";
 import Player from "../../../common/Player";
 
-var PairAssignmentDocument = require('../../../server/lib/PairAssignmentDocument');
+var PairAssignmentDocument = require('../../../common/PairAssignmentDocument').default;
 var ObjectID = require('mongodb').ObjectID;
 
 describe('Pairing History', function () {

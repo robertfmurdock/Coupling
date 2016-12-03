@@ -1,5 +1,9 @@
-"use strict";
+'use strict';
 var ScreenShotReporter = require('protractor-jasmine2-screenshot-reporter');
+var webpack = require('webpack');
+var config = require('./webpack.config');
+var fs = require('fs-extra');
+var Promise = require('bluebird');
 
 exports.config = {
 
@@ -14,7 +18,7 @@ exports.config = {
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
-  specs: ['*-spec.js'],
+  specs: ['./.tmp/test.js'],
 
   // Options to be passed to Jasmine-node.
   framework: 'jasmine2',
@@ -23,7 +27,7 @@ exports.config = {
     showColors: true,
     defaultTimeoutInterval: 10000
   },
-  onPrepare: function() {
+  onPrepare: function () {
 
     jasmine.getEnv().addReporter(new ScreenShotReporter({
       dest: 'test-output',
@@ -39,8 +43,14 @@ exports.config = {
       })
     );
 
-    var disableNgAnimate = function() {
-      angular.module('disableNgAnimate', []).run(['$animate', function($animate) {
+    jasmine.getEnv().addReporter({
+      jasmineDone: function () {
+        fs.removeSync(__dirname + '/.tmp');
+      }
+    });
+
+    var disableNgAnimate = function () {
+      angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {
         $animate.enabled(false);
       }]);
     };
@@ -48,6 +58,19 @@ exports.config = {
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
 
     process.env.PORT = 3001;
-    return require('../../build/app').start();
+    return require('../../build/app').start()
+      .then(function () {
+        return new Promise(function (resolve, reject) {
+          webpack(config)
+            .run(function (err, stats) {
+              console.log(stats.toString('minimal'));
+              if (err) {
+                reject(err);
+              }
+              console.log('Starting tests:');
+              resolve();
+            });
+        });
+      })
   }
-};
+}

@@ -1,4 +1,4 @@
-var CouplingWheel = require('../../../server/lib/CouplingWheel');
+var CouplingWheel = require('../../../server/lib/CouplingWheel').default;
 
 describe('Coupling Wheel', function () {
   it('randomly chooses a person on the wheel', function () {
