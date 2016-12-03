@@ -1,6 +1,5 @@
 import Sequencer from "../../../server/lib/Sequencer";
 import PairHistoryReport from "../../../server/lib/PairHistoryReport";
-import Player from "../../../common/Player";
 var sinon = require('sinon');
 
 describe('Sequencer', function () {

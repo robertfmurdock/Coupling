@@ -1,7 +1,7 @@
 var CouplingGame = require('./CouplingGame');
 var CouplingWheel = require('./CouplingWheel');
 var Sequencer = require('./Sequencer').default;
-var PairingHistory = require('./PairingHistory');
+var PairingHistory = require('./PairingHistory').default;
 
 function CouplingGameFactory() {
 }
