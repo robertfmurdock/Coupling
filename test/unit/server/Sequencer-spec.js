@@ -1,5 +1,5 @@
 var Sequencer = require('../../../server/lib/Sequencer');
-var PairHistoryReport = require('../../../server/lib/PairHistoryReport');
+var PairHistoryReport = require('../../../server/lib/PairHistoryReport').default;
 var sinon = require('sinon');
 
 describe('Sequencer', function () {

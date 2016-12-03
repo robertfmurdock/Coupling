@@ -1,5 +1,5 @@
 var CouplingGame = require('../../../server/lib/CouplingGame');
-var PairHistoryReport = require('../../../server/lib/PairHistoryReport');
+var PairHistoryReport = require('../../../server/lib/PairHistoryReport').default;
 
 describe("Coupling Game", function () {
   function badSpin(players) {
@@ -11,14 +11,13 @@ describe("Coupling Game", function () {
     var players = [];
 
     var results = game.play(players);
-
     expect(results).toEqual([]);
   });
 
   describe("with two players", function () {
-
     var player1 = {name: 'bill'};
     var player2 = {name: 'ted'};
+
     var allPlayers = [player1, player2];
     var spinFunction;
     var nextInSequenceFunction;

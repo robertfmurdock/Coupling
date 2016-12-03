@@ -52,8 +52,7 @@ task clientTest(type: Exec) {
 task serverTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
-    inputs.file serverCompile.outputs.files
-    inputs.file file('test/unit/server')
+    inputs.dir file('test/unit/server')
     outputs.file file('test-output/server.unit.xml')
 
     commandLine 'npm', 'run', 'serverTest', '--silent'

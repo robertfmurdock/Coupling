@@ -1,52 +1,52 @@
 "use strict";
-var PairHistoryReport = require('./PairHistoryReport');
+var PairHistoryReport = require('./PairHistoryReport').default;
 var Comparators = require('./Comparators');
 
 var PairingHistory = function (historyDocumentsNewestToOldest) {
-    function calculateTimeSinceLastPartnership(expectedPair) {
-        var documentsSinceLastPartnership = null;
-        historyDocumentsNewestToOldest.some(function (pairingDocument, indexInHistory) {
-            if (pairingDocument.pairs) {
-                var foundPairInThisDocument = pairingDocument.pairs.some(function (pair) {
-                    return Comparators.areEqualPairs(pair, expectedPair);
-                });
-            }
-            if (foundPairInThisDocument)
-                documentsSinceLastPartnership = indexInHistory;
-            return foundPairInThisDocument;
+  function calculateTimeSinceLastPartnership(expectedPair) {
+    var documentsSinceLastPartnership = null;
+    historyDocumentsNewestToOldest.some(function (pairingDocument, indexInHistory) {
+      if (pairingDocument.pairs) {
+        var foundPairInThisDocument = pairingDocument.pairs.some(function (pair) {
+          return Comparators.areEqualPairs(pair, expectedPair);
         });
-        return documentsSinceLastPartnership;
-    }
+      }
+      if (foundPairInThisDocument)
+        documentsSinceLastPartnership = indexInHistory;
+      return foundPairInThisDocument;
+    });
+    return documentsSinceLastPartnership;
+  }
 
-    function getListOfPartnersWithThisTime(partnersWithTime, timeSinceLastPartnership) {
-        var partnersWithParticularTime = partnersWithTime[timeSinceLastPartnership];
-        return partnersWithParticularTime ? partnersWithParticularTime : partnersWithTime[timeSinceLastPartnership] = [];
-    }
+  function getListOfPartnersWithThisTime(partnersWithTime, timeSinceLastPartnership) {
+    var partnersWithParticularTime = partnersWithTime[timeSinceLastPartnership];
+    return partnersWithParticularTime ? partnersWithParticularTime : partnersWithTime[timeSinceLastPartnership] = [];
+  }
 
-    function createReport(timeToPartnersMap, player) {
-        var longestTime = -1;
-        Object.keys(timeToPartnersMap).forEach(function (key) {
-            longestTime = Math.max(longestTime, parseInt(key));
-        });
+  function createReport(timeToPartnersMap, player) {
+    var longestTime = -1;
+    Object.keys(timeToPartnersMap).forEach(function (key) {
+      longestTime = Math.max(longestTime, parseInt(key));
+    });
 
-        var partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[null];
-        var timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
-        return new PairHistoryReport(player, partnerCandidates, timeSinceLastPaired);
-    }
+    var partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[null];
+    var timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
+    return new PairHistoryReport(player, partnerCandidates, timeSinceLastPaired);
+  }
 
-    this.historyDocuments = historyDocumentsNewestToOldest;
+  this.historyDocuments = historyDocumentsNewestToOldest;
 
-    this.getPairCandidateReport = function (player, availablePartners) {
-        var timeToPartnersMap = {};
+  this.getPairCandidateReport = function (player, availablePartners) {
+    var timeToPartnersMap = {};
 
-        availablePartners.forEach(function (availablePartner) {
-            var timeSinceLastPartnership = calculateTimeSinceLastPartnership([player, availablePartner]);
-            var allPartnersWithThisTime = getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership);
-            allPartnersWithThisTime.push(availablePartner);
-        });
+    availablePartners.forEach(function (availablePartner) {
+      var timeSinceLastPartnership = calculateTimeSinceLastPartnership([player, availablePartner]);
+      var allPartnersWithThisTime = getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership);
+      allPartnersWithThisTime.push(availablePartner);
+    });
 
-        return  createReport(timeToPartnersMap, player);
-    };
+    return createReport(timeToPartnersMap, player);
+  };
 
 };
 module.exports = PairingHistory;
