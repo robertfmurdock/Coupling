@@ -1,6 +1,6 @@
 var http = require('http');
 var path = require('path');
-var UserDataService = require('./lib/UserDataService');
+var UserDataService = require('./lib/UserDataService').default;
 var CouplingDataService = require('./lib/CouplingDataService');
 var config = require('./../config');
 var Promise = require('bluebird');

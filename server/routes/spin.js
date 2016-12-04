@@ -1,5 +1,5 @@
 "use strict";
-var GameRunner = require('../lib/GameRunner');
+var GameRunner = require('../lib/GameRunner').default;
 var CouplingGameFactory = require('../lib/CouplingGameFactory').default;
 
 var couplingGameFactory = new CouplingGameFactory();

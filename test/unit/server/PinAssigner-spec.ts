@@ -1,6 +1,4 @@
-"use strict";
-
-var PinAssigner = require('../../../server/lib/PinAssigner');
+import PinAssigner from "../../../server/lib/PinAssigner";
 
 describe('PinAssigner', function () {
 
@@ -9,7 +7,7 @@ describe('PinAssigner', function () {
     var pins = [
       {name: "Lucky"}
     ];
-    var player = {name: "Pete"};
+    var player = {name: "Pete", pins: []};
     var players = [player];
 
     pinAssigner.assignPins(pins, players);

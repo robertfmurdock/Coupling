@@ -1,6 +1,6 @@
-var CouplingGameFactory = require('../../../server/lib/CouplingGameFactory').default;
-var GameRunner = require('../../../server/lib/GameRunner');
 
+import CouplingGameFactory from "../../../server/lib/CouplingGameFactory";
+import GameRunner from "../../../server/lib/GameRunner";
 var clock = require('../../../server/lib/Clock');
 
 describe('Game Runner', function () {
@@ -23,7 +23,7 @@ describe('Game Runner', function () {
     var expectedDate = new Date();
     spyOn(clock, 'getDate').and.returnValue(expectedDate);
 
-    var result = gameRunner.run(players, history);
+    var result = gameRunner.run(players, [], history);
 
     expect(result.date).toEqual(expectedDate);
     expect(result.pairs).toEqual(pairingAssignments);
