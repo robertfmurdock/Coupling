@@ -2,7 +2,7 @@ var monk = require('monk');
 
 var GameRunner = require('../../../../server/lib/GameRunner').default;
 var CouplingGameFactory = require('../../../../server/lib/CouplingGameFactory').default;
-var CouplingDataService = require('../../../../server/lib/CouplingDataService');
+var CouplingDataService = require('../../../../server/lib/CouplingDataService').default;
 var PairAssignmentDocument = require('../../../../common/PairAssignmentDocument').default;
 var Comparators = require('../../../../server/lib/Comparators').default;
 var config = require('../../../../config');

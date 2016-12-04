@@ -1,6 +1,6 @@
 "use strict";
 var expect = require('chai').expect;
-var DataService = require('../../server/lib/CouplingDataService');
+var DataService = require('../../server/lib/CouplingDataService').default;
 var Comparators = require('../../server/lib/Comparators');
 
 var config = require('./../../config');

@@ -9,7 +9,6 @@ var removeTempDirectory = function () {
   fs.removeSync(__dirname + '/.tmp');
 };
 
-
 new Promise(function (resolve, reject) {
   webpack(config)
     .run(function (err, stats) {

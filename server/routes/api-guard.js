@@ -1,4 +1,4 @@
-var CouplingDataService = require('../lib/CouplingDataService');
+var CouplingDataService = require('../lib/CouplingDataService').default;
 var config = require('../../config');
 
 module.exports = function (couplingDataService) {

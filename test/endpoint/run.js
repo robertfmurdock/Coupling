@@ -1,15 +1,30 @@
 var webpack = require('webpack');
 var Jasmine = require('jasmine');
+var Promise = require('bluebird');
 var reporters = require('jasmine-reporters');
 var config = require('./webpack.config');
 var fs = require('fs-extra');
 
-webpack(config)
-  .run(function (err, stats) {
-    console.log(stats.toString('minimal'));
-    if (err) {
-      throw err;
-    }
+var removeTempDirectory = function () {
+  fs.removeSync(__dirname + '/.tmp');
+};
+
+new Promise(function (resolve, reject) {
+  webpack(config)
+    .run(function (err, stats) {
+      console.log(stats.toString('minimal'));
+      if (err) {
+        reject(err);
+      } else {
+        resolve()
+      }
+    });
+})
+  .then(function () {
+    process.env.PORT = 3001;
+    return require('../../build/app').start()
+  })
+  .then(function () {
     console.log('Starting tests:');
 
     var jasmine = new Jasmine();
@@ -33,15 +48,23 @@ webpack(config)
 
     jasmine.addReporter(junitReporter);
 
-    jasmine.addReporter({
-      jasmineDone: function(){
-        fs.removeSync(__dirname + '/.tmp');
-      }
-    });
-    process.env.PORT = 3001;
-    require('../../build/app')
-      .start()
-      .then(function () {
-        jasmine.execute();
+    return new Promise(function (resolve, reject) {
+      jasmine.completionReporter.onComplete(function (passed) {
+        if (passed) {
+          resolve();
+        } else {
+          reject();
+        }
       });
+      jasmine.execute();
+    });
+  })
+  .finally(function () {
+    removeTempDirectory();
+  })
+  .then(function () {
+    process.exit(0);
+  }, function (err) {
+    console.error(err);
+    process.exit(1);
   });

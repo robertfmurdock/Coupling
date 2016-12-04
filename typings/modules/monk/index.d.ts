@@ -146,8 +146,13 @@ namespace Monk {
 
         remove(query?: Object, options?: Object, callback?: Function): Promise<Object>;
 
-        update(query: Object, update: Object, options?: Object, callback?: Function): Promise<Object[]>;
+        update(query: Object, update: Object, options?: Object, callback?: Function): Promise<Result>;
     } // end of class "Collector"
+}
+
+interface Result {
+    nModified: number
+    n: number
 }
 
 var Monk: Monk;
