@@ -1,7 +1,8 @@
-var CouplingDataService = require('../lib/CouplingDataService').default;
+import CouplingDataService from "../lib/CouplingDataService";
+
 var config = require('../../config');
 
-module.exports = function (couplingDataService) {
+export default function (couplingDataService) {
     var tempDataService = new CouplingDataService(config.tempMongoUrl);
     return function (request, response, next) {
 

@@ -5,7 +5,7 @@ import * as express from "express";
 
 var config = require('./../config');
 
-module.exports = {
+export default {
     start: function () {
 
         console.log("Starting express init!");
