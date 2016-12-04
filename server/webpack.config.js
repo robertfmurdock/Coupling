@@ -5,7 +5,7 @@ var projectRoot = path.resolve(__dirname, '../');
 var nodeExternals = require('webpack-node-externals');
 
 var exports = {
-  entry: path.resolve(jsPath, './app.js'),
+  entry: path.resolve(jsPath, './app.ts'),
   output: {
     path: path.resolve(__dirname, '../build'),
     filename: 'app.js',
