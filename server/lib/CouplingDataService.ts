@@ -22,7 +22,7 @@ interface PinsAndHistory {
 
 export default class CouplingDataService {
 
-    private database;
+    public database;
     private playersCollection;
     private historyCollection;
     private tribesCollection;
