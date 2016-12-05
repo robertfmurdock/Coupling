@@ -1,6 +1,7 @@
 import * as Promise from "bluebird";
 import * as monk from "monk";
 import Player from "../../common/Player";
+import Tribe from "../../common/Tribe";
 
 var handleMongoError = function (error) {
     return {message: 'Could not read from MongoDB.', error: Error(error)};
@@ -36,7 +37,7 @@ export default class CouplingDataService {
         this.pinCollection = this.database.get('pins');
     }
 
-    requestTribes() {
+    requestTribes() : Promise<Tribe[]> {
         return makeDocumentPromise(this.tribesCollection, undefined, undefined);
     };
 
