@@ -1,7 +1,9 @@
 import Player from "./Player";
 
 interface PairAssignmentSet {
-    pairs: [[Player]]
+    pairs: [[Player]],
+    date: string,
+    tribe: string
 }
 
 export default PairAssignmentSet

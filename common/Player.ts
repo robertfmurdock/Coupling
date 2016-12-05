@@ -1,5 +1,5 @@
 interface Player {
-    _id: string;
+    _id: any;
     tribe: string
 }
 
