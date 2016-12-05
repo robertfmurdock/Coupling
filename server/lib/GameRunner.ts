@@ -6,12 +6,12 @@ export default class GameRunner {
     constructor(public gameFactory) {
     }
 
-    public run(players, pins, history) {
+    public run(players, pins, history, tribeId) {
         var game = this.gameFactory.buildGame(history);
 
         new PinAssigner().assignPins(pins, players);
         var pairs = game.play(players);
 
-        return new PairAssignmentDocument(clock.getDate(), pairs);
+        return new PairAssignmentDocument(clock.getDate(), pairs, tribeId);
     };
 };
