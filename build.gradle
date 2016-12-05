@@ -71,8 +71,13 @@ task endpointTest(type: Exec) {
     commandLine 'npm', 'run', 'endpointTest', '--silent'
 }
 
+task updateWebdriver(type: Exec) {
+    outputs.file 'node_modules/protractor/node_modules/webdriver-manager/selenium/'
+    commandLine 'npm', 'run', 'update-webdriver', '--silent'
+}
+
 task endToEndTest(type: Exec) {
-    dependsOn installNodeModules, clientCompile, serverCompile
+    dependsOn installNodeModules, clientCompile, serverCompile, updateWebdriver
     mustRunAfter clientCompile, serverTest, clientTest, endpointTest
     inputs.file clientTest.inputs.files
     inputs.file serverTest.inputs.files

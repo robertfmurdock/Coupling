@@ -1,21 +1,21 @@
 "use strict";
-var express = require('express');
+import * as express from 'express'
 
-var PinRoutes = function () {
-    this.list = function (request, response) {
+class PinRoutes {
+    list(request, response) {
         request.dataService.requestPins(request.params.tribeId).then(function (pins) {
             response.send(pins);
         });
     };
 
-    this.savePin = function (request, response) {
+    savePin(request, response) {
         var pin = request.body;
         request.dataService.savePin(pin, function () {
             response.send(pin);
         });
     };
 
-    this.removePin = function (request, response) {
+    removePin(request, response) {
         request.dataService.removePin(request.params.pinId, function (error) {
             if (error) {
                 response.statusCode = 404;
@@ -25,7 +25,7 @@ var PinRoutes = function () {
             }
         });
     };
-};
+}
 
 var pins = new PinRoutes();
 var router = express.Router({mergeParams: true});
@@ -34,4 +34,4 @@ router.route('/')
     .post(pins.savePin);
 router.delete('/:pinId', pins.removePin);
 
-module.exports = router;
+export default router

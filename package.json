@@ -89,7 +89,6 @@
     "clientTest": "karma start test/unit/client/karma.conf.js --single-run",
     "test": "./gradlew test endToEndTest",
     "update-webdriver": "webdriver-manager update",
-    "preprotractor": "npm run update-webdriver",
     "protractor": "protractor test/e2e/protractor-conf.js"
   },
   "repository": {
