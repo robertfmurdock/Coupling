@@ -1,7 +1,6 @@
 import "angular";
 import "angular-resource";
 import * as _ from "underscore";
-import * as common from "../../common";
 import IPromise = angular.IPromise;
 import IResource = angular.resource.IResource;
 import IResourceClass = angular.resource.IResourceClass;
@@ -10,7 +9,8 @@ import IResourceArray = angular.resource.IResourceArray;
 import IQService = angular.IQService;
 import IHttpService = angular.IHttpService;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-import Player = common.Player;
+import Player from "../../common/Player";
+import * as common from "../../common/index";
 
 interface SelectablePlayerMap {
     [id: string]: SelectablePlayer;
@@ -40,12 +40,12 @@ class SelectablePlayer {
     }
 }
 
-var makeTribeResource = function ($resource: angular.resource.IResourceService) {
+const makeTribeResource = function ($resource: angular.resource.IResourceService) {
     return <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@id'});
 };
 
 
-var makePairAssignmentResource = function ($resource: angular.resource.IResourceService) {
+const makePairAssignmentResource = function ($resource: angular.resource.IResourceService) {
     return <PairAssignmentSetResource>$resource('/api/:tribeId/history/:id', {
         id: '@_id',
         tribeId: '@tribe'
@@ -85,7 +85,7 @@ class Coupling {
     }
 
     spin(players, tribeId): IPromise<PairAssignmentSet> {
-        var url = '/api/' + tribeId + '/spin';
+        const url = '/api/' + tribeId + '/spin';
         return this.$http.post(url, players)
             .then((result) => {
                 return new this.PairAssignmentSet(result.data);
@@ -112,8 +112,8 @@ class Coupling {
     }
 
     getSelectedPlayers(players: Player[], history) {
-        var selectablePlayers = _.map(players, (player)=> {
-            var selected = this.playerShouldBeSelected(player, history);
+        const selectablePlayers = _.map(players, (player) => {
+            const selected = this.playerShouldBeSelected(player, history);
             return [player._id, new SelectablePlayer(selected, player)];
         });
 
@@ -142,7 +142,7 @@ class Coupling {
     }
 
     private isInLastSetOfPairs(player, history) {
-        var result = _.find(history[0].pairs, function (pairset: [{}]) {
+        const result = _.find(history[0].pairs, function (pairset: [{}]) {
             if (_.findWhere(pairset, {
                     _id: player._id
                 })) {
@@ -167,7 +167,7 @@ class Coupling {
 class Randomizer {
 
     next(maxValue: number) {
-        var floatValue = Math.random() * maxValue;
+        const floatValue = Math.random() * maxValue;
         return Math.round(floatValue);
     }
 }

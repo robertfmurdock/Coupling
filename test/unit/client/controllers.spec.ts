@@ -596,7 +596,7 @@ describe('The controller named ', function () {
             expect(entry.$remove).toHaveBeenCalled();
         });
 
-        it('will not delete pair set when remove is called and not confirmed', inject(function ($controller) {
+        it('will not delete pair set when remove is called and not confirmed', function () {
             const entry = {
                 $remove: jasmine.createSpy('removeSpy')
             };
@@ -606,7 +606,7 @@ describe('The controller named ', function () {
 
             historyController.removeEntry(entry);
             expect(entry.$remove).not.toHaveBeenCalled();
-        }));
+        });
     });
 
 });
