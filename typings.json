@@ -7,5 +7,8 @@
     "underscore": "github:DefinitelyTyped/DefinitelyTyped/underscore/underscore.d.ts#e5a27ea95e47b95333784f1f0d590127b4e39a89",
     "angular-resource": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-resource.d.ts#e5a27ea95e47b95333784f1f0d590127b4e39a89",
     "angular-route": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-route.d.ts#e5a27ea95e47b95333784f1f0d590127b4e39a89"
+  },
+  "dependencies": {
+    "angular-mocks": "registry:dt/angular-mocks#1.5.0+20161206185711"
   }
 }

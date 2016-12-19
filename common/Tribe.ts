@@ -1,6 +1,6 @@
 interface Tribe {
-    id: String;
-    name: String
+    id: string;
+    name: string
 }
 
 export default Tribe

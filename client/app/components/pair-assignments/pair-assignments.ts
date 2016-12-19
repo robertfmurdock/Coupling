@@ -1,19 +1,21 @@
-import * as services from '../../services'
-import * as _ from 'underscore'
-import * as template from './pair-assignments.pug'
+import * as _ from "underscore";
+import * as template from "./pair-assignments.pug";
+import Tribe from "../../../../common/Tribe";
+import PairAssignmentSet from "../../../../common/PairAssignmentSet";
+import Player from "../../../../common/Player";
 
 export class PairAssignmentsController {
     static $inject = ['Coupling', '$location'];
-    tribe:services.Tribe;
-    players:[services.Player];
-    pairAssignments:services.PairAssignmentSet;
-    isNew:boolean;
-    private _unpairedPlayers:services.Player[];
+    tribe: Tribe;
+    players: Player[];
+    pairAssignments: PairAssignmentSet;
+    isNew: boolean;
+    private _unpairedPlayers: Player[];
 
     constructor(public Coupling, private $location) {
     }
 
-    get unpairedPlayers():services.Player[] {
+    get unpairedPlayers(): Player[] {
         if (this._unpairedPlayers) {
             return this._unpairedPlayers;
         } else {
@@ -40,7 +42,7 @@ export class PairAssignmentsController {
         }
     }
 
-    private findPairContainingPlayer(player, pairs:[[services.Player]]) {
+    private findPairContainingPlayer(player, pairs: Player[][]) {
         return _.find(pairs, function (pair) {
             return _.findWhere(pair, {
                 _id: player._id
@@ -50,19 +52,19 @@ export class PairAssignmentsController {
 
 
     private swapPlayers(pair, swapOutPlayer, swapInPlayer) {
-        _.each(pair, function (player:services.Player, index) {
+        _.each(pair, function (player: Player, index) {
             if (swapOutPlayer._id === player._id) {
                 pair[index] = swapInPlayer;
             }
         });
     }
 
-    private findUnpairedPlayers(players:[services.Player], pairAssignmentDocument:services.PairAssignmentSet):services.Player[] {
+    private findUnpairedPlayers(players: Player[], pairAssignmentDocument: PairAssignmentSet): Player[] {
         if (!pairAssignmentDocument) {
             return players;
         }
         var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
-        return _.filter(players, function (value:services.Player) {
+        return _.filter(players, function (value: Player) {
             var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
             return found == undefined;
         });

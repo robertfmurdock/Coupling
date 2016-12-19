@@ -1,14 +1,14 @@
-
-import * as services from '../../services'
-import * as template from './player-config.pug'
+import * as services from "../../services";
+import * as template from "./player-config.pug";
+import Tribe from "../../../../common/Tribe";
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
 
-    player:services.Player;
-    tribe:services.Tribe;
+    player: services.Player;
+    tribe: Tribe;
 
-    constructor($scope, public Coupling:services.Coupling, public $location:angular.ILocationService, public $route:ng.route.IRouteService) {
+    constructor($scope, public Coupling: services.Coupling, public $location: angular.ILocationService, public $route: ng.route.IRouteService) {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
     }
 
