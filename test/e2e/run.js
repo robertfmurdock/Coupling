@@ -22,6 +22,7 @@ Promise.all([
   })
   .then(function (exitCode) {
     process.exit(exitCode);
-  }, function (exitCode) {
-    process.exit(exitCode);
+  }, function (err) {
+    console.log('Error', err);
+    process.exit(-1);
   });

@@ -8,3 +8,9 @@ declare module '*.pug' {
     var _: string;
     export default  _;
 }
+
+declare module 'protractor-jasmine2-screenshot-reporter' {
+    export = class {
+        constructor(options: any)
+    }
+}
