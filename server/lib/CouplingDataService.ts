@@ -3,11 +3,11 @@ import * as monk from "monk";
 import Player from "../../common/Player";
 import Tribe from "../../common/Tribe";
 
-var handleMongoError = function (error) {
+const handleMongoError = function (error) {
     return {message: 'Could not read from MongoDB.', error: Error(error)};
 };
 
-var makeDocumentPromise = function (collection, options, filter) {
+const makeDocumentPromise = function (collection, options, filter) {
     return collection.find(filter, options).catch(handleMongoError, "Wrapping error");
 };
 
@@ -80,7 +80,7 @@ export default class CouplingDataService {
         if (player._id) {
             return this.playersCollection.update(player._id, player, {upsert: true})
                 .then(function (result) {
-                    var failureToUpdateMessage = 'Player could not be updated because it could not be found.';
+                    const failureToUpdateMessage = 'Player could not be updated because it could not be found.';
                     if (result.nModified === 0 && result.n === 0) {
                         throw new Error(failureToUpdateMessage);
                     }

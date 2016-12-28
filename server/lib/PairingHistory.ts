@@ -8,42 +8,50 @@ export default class PairingHistory {
     }
 
     private calculateTimeSinceLastPartnership(expectedPair: Player[]) {
-        var documentsSinceLastPartnership = null;
-        this.historyDocuments.some(function (pairingDocument, indexInHistory) {
-            if (pairingDocument.pairs) {
-                var foundPairInThisDocument = pairingDocument.pairs.some(function (pair) {
-                    return Comparators.areEqualPairs(pair, expectedPair);
-                });
-            }
-            if (foundPairInThisDocument)
+        let documentsSinceLastPartnership = null;
+        this.historyDocuments.some((pairingDocument, indexInHistory) => {
+
+            const pairingExistsInDocument = this.pairingExistsInDocument(pairingDocument, expectedPair);
+
+            if (pairingExistsInDocument) {
                 documentsSinceLastPartnership = indexInHistory;
-            return foundPairInThisDocument;
+            }
+            return pairingExistsInDocument;
         });
         return documentsSinceLastPartnership;
     }
 
+    private pairingExistsInDocument(pairingDocument, expectedPair: Player[]) {
+        if (pairingDocument.pairs) {
+            return pairingDocument.pairs.some(function (pair) {
+                return Comparators.areEqualPairs(pair, expectedPair);
+            });
+        }
+        return false;
+    }
+
     private getListOfPartnersWithThisTime(partnersWithTime, timeSinceLastPartnership) {
-        var partnersWithParticularTime = partnersWithTime[timeSinceLastPartnership];
+        const partnersWithParticularTime = partnersWithTime[timeSinceLastPartnership];
         return partnersWithParticularTime ? partnersWithParticularTime : partnersWithTime[timeSinceLastPartnership] = [];
     }
 
     private createReport(timeToPartnersMap, player: Player) {
-        var longestTime = -1;
+        let longestTime = -1;
         Object.keys(timeToPartnersMap).forEach(function (key) {
             longestTime = Math.max(longestTime, parseInt(key));
         });
 
-        var partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[null];
-        var timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
+        const partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[null];
+        const timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
         return new PairHistoryReport(player, partnerCandidates, timeSinceLastPaired);
     }
 
     getPairCandidateReport(player: Player, availablePartners: Player[]) {
-        var timeToPartnersMap = {};
+        const timeToPartnersMap = {};
 
         availablePartners.forEach(availablePartner => {
-            var timeSinceLastPartnership = this.calculateTimeSinceLastPartnership([player, availablePartner]);
-            var allPartnersWithThisTime = this.getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership);
+            const timeSinceLastPartnership = this.calculateTimeSinceLastPartnership([player, availablePartner]);
+            const allPartnersWithThisTime = this.getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership);
             allPartnersWithThisTime.push(availablePartner);
         });
 

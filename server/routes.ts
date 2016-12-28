@@ -1,10 +1,10 @@
 import apiGuard from "./routes/api-guard";
 import * as passport from "passport";
-import * as routes from "./routes/";
+import * as routes from "./routes/index";
 import tribeRoute from './routes/tribeRoute'
 import tribeListRoute from './routes/tribeListRoute'
 
-var config = require('./../config');
+const config = require('./../config');
 
 module.exports = function (app, userDataService, couplingDataService) {
     app.get('/welcome', routes.welcome);

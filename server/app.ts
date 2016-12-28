@@ -3,15 +3,15 @@ import UserDataService from "./lib/UserDataService";
 import * as Promise from "bluebird";
 import * as express from "express";
 
-var config = require('./../config');
+const config = require('./../config');
 
 export function start() {
 
     console.log("Starting express init!");
-    var app = express();
+    const app = express();
 
-    var couplingDataService = new CouplingDataService(config.mongoUrl);
-    var userDataService = new UserDataService(couplingDataService.database);
+    const couplingDataService = new CouplingDataService(config.mongoUrl);
+    const userDataService = new UserDataService(couplingDataService.database);
 
     require('./config/express')(app, userDataService);
     console.log("Adding routing!");

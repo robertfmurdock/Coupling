@@ -12,10 +12,10 @@ export default class CouplingGame {
     }
 
     private spinForAPartner(playersOnWheel, pairHistoryReport, pair, pairs) {
-        var furtherRemainingPlayers = this.filterOutPlayer(playersOnWheel, pairHistoryReport.player);
-        var partnerCandidates = pairHistoryReport.partnerCandidates;
+        const furtherRemainingPlayers = this.filterOutPlayer(playersOnWheel, pairHistoryReport.player);
+        const partnerCandidates = pairHistoryReport.partnerCandidates;
         if (furtherRemainingPlayers.length > 0) {
-            var partner = this.wheel.spin(partnerCandidates);
+            const partner = this.wheel.spin(partnerCandidates);
             pair.push(partner);
             this.spinAndAddPlayerUntilNoPlayersRemain(this.filterOutPlayer(furtherRemainingPlayers, partner), pairs);
         }
@@ -25,15 +25,15 @@ export default class CouplingGame {
         if (playersOnWheel.length == 0) {
             return;
         }
-        var pairHistoryReport = this.sequencer.getNextInSequence(playersOnWheel);
-        var pair = [pairHistoryReport.player];
+        const pairHistoryReport = this.sequencer.getNextInSequence(playersOnWheel);
+        const pair = [pairHistoryReport.player];
         pairs.push(pair);
 
         this.spinForAPartner(playersOnWheel, pairHistoryReport, pair, pairs);
     }
 
     public play(playersRoster) {
-        var pairs = [];
+        const pairs = [];
         this.spinAndAddPlayerUntilNoPlayersRemain(playersRoster, pairs);
         return pairs;
     };

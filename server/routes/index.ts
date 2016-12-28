@@ -1,4 +1,4 @@
-var config = require('../../config');
+const config = require('../../config');
 
 export function index(request, response) {
   if (!request.isAuthenticated()) {
@@ -17,6 +17,6 @@ export function partials(request, response) {
 }
 
 export function components(request, response) {
-  var formatPathForViewEngine = request.path.slice(1, -5);
+  const formatPathForViewEngine = request.path.slice(1, -5);
   response.render(formatPathForViewEngine);
 }
