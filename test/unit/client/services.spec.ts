@@ -1,6 +1,8 @@
 "use strict";
 
+import * as angular from 'angular'
 import "angular-resource";
+import 'angular-mocks';
 import {Coupling} from "../../../client/app/services";
 
 const CouplingService = Coupling;
