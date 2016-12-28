@@ -2,13 +2,15 @@ import Comparators from "./Comparators";
 import PairHistoryReport from "./PairHistoryReport";
 import Player from "../../common/Player";
 
+const NEVER_PAIRED = 'NeverPaired';
+
 export default class PairingHistory {
 
     constructor(public historyDocuments: any[]) {
     }
 
     private calculateTimeSinceLastPartnership(expectedPair: Player[]) {
-        let documentsSinceLastPartnership = null;
+        let documentsSinceLastPartnership: number | string = NEVER_PAIRED;
         this.historyDocuments.some((pairingDocument, indexInHistory) => {
 
             const pairingExistsInDocument = this.pairingExistsInDocument(pairingDocument, expectedPair);
@@ -32,7 +34,13 @@ export default class PairingHistory {
 
     private getListOfPartnersWithThisTime(partnersWithTime, timeSinceLastPartnership) {
         const partnersWithParticularTime = partnersWithTime[timeSinceLastPartnership];
-        return partnersWithParticularTime ? partnersWithParticularTime : partnersWithTime[timeSinceLastPartnership] = [];
+        if (partnersWithParticularTime) {
+            return partnersWithParticularTime;
+        } else {
+            const newEmptyList = [];
+            partnersWithTime[timeSinceLastPartnership] = newEmptyList;
+            return newEmptyList;
+        }
     }
 
     private createReport(timeToPartnersMap, player: Player) {
@@ -41,7 +49,7 @@ export default class PairingHistory {
             longestTime = Math.max(longestTime, parseInt(key));
         });
 
-        const partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[null];
+        const partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[NEVER_PAIRED];
         const timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
         return new PairHistoryReport(player, partnerCandidates, timeSinceLastPaired);
     }
