@@ -1,6 +1,8 @@
 'use strict';
 var ScreenShotReporter = require('protractor-jasmine2-screenshot-reporter');
 
+console.log(__dirname + '/test.js');
+
 exports.config = {
 
   allScriptsTimeout: 11000,
@@ -12,7 +14,7 @@ exports.config = {
     }
   },
 
-  specs: [__dirname + '/.tmp/test.js'],
+  specs: [__dirname + '/test.js'],
 
   framework: 'jasmine2',
 
@@ -43,8 +45,5 @@ exports.config = {
     };
 
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
-
-    process.env.PORT = 3001;
-    return require('../../build/app').start();
   }
 };
