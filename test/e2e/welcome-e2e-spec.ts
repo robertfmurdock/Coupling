@@ -1,9 +1,9 @@
 "use strict";
 import {element, browser, By} from "protractor";
+import e2eHelp from "./e2e-help";
 
 const config = require("../../config");
-const e2eHelp = require('./e2e-help');
-const hostName = 'http://' + config.publicHost + ':' + config.port;
+const hostName = `http://${config.publicHost}:${config.port}`;
 
 describe('The welcome page', function () {
 

@@ -2,9 +2,9 @@
 import {browser, element, By} from "protractor";
 import * as _ from "underscore";
 import * as monk from "monk";
+import e2eHelp from "./e2e-help";
 
 const config = require("../../config");
-const e2eHelp = require('./e2e-help');
 const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
