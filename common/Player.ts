@@ -1,6 +1,7 @@
 interface Player {
     _id: any;
-    tribe: string
+    tribe: string;
+    name?: string
 }
 
 export default Player
