@@ -84,7 +84,7 @@ task endToEndTest(type: Exec) {
     inputs.file clientCompile.outputs.files
     inputs.file serverCompile.outputs.files
     inputs.file file('package.json')
-    inputs.file file('test/endpoint')
+    inputs.file file('test/e2e')
     outputs.file file('test-output/e2e.xml')
 
     commandLine 'npm', 'run', 'protractor', '--silent'
