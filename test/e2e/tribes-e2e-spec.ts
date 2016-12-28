@@ -23,11 +23,7 @@ function waitUntilAnimateIsGone() {
     browser.wait(function () {
         return element(By.css('.ng-animate'))
             .isPresent()
-            .then(function (isPresent) {
-                return !isPresent;
-            }, function () {
-                return false;
-            });
+            .then(isPresent => !isPresent, () => false);
     }, 5000);
 }
 
@@ -50,29 +46,22 @@ describe('The default tribes page', function () {
     beforeAll(function () {
         browser.driver.manage().deleteAllCookies();
         browser.wait(() => tribeCollection.drop()
-            .then(function () {
-                return tribeCollection.insert(
-                    [{
-                        id: 'e2e1',
-                        name: 'E2E Example Tribe 1'
-                    }, {
-                        id: 'e2e2',
-                        name: 'E2E Example Tribe 2'
-                    }]);
-            })
-            .then(function () {
-                return authorizeAllTribes();
-            })
-            .then(function () {
-                return tribeCollection.find({}, {})
-            })
-            .then(function (result) {
-                tribeDocuments = result;
-                return browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-            })
-            .then(function () {
+            .then(() => tribeCollection.insert([
+                {
+                    id: 'e2e1',
+                    name: 'E2E Example Tribe 1'
+                }, {
+                    id: 'e2e2',
+                    name: 'E2E Example Tribe 2'
+                }
+            ]))
+            .then(() => authorizeAllTribes())
+            .then(() => tribeCollection.find({}, {}))
+            .then(tribesInCollection => {
+                tribeDocuments = tribesInCollection;
                 return true;
             }));
+        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
     });
 
     beforeEach(function () {
@@ -151,21 +140,17 @@ describe('The edit tribe page', function () {
         id: 'delete_me',
         name: 'Change Me'
     };
+
     beforeAll(function (done) {
-        tribeCollection.drop();
-        tribeCollection.insert(tribe).then(function () {
-            return authorizeAllTribes();
-        }).then(function () {
-            done();
-        }, done);
+        tribeCollection.drop()
+            .then(() => tribeCollection.insert(tribe))
+            .then(() => authorizeAllTribes())
+            .then(done, done.fail);
     });
 
     afterAll(function (done) {
-        tribeCollection.remove({
-            id: tribe.id
-        }, false).then(function () {
-            done();
-        }, done);
+        tribeCollection.remove({id: tribe.id}, false)
+            .then(done, done.fail);
     });
 
     e2eHelp.afterEachAssertLogsAreEmpty();
