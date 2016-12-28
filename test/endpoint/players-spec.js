@@ -18,7 +18,7 @@ function clean(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
-fdescribe(path, function () {
+describe(path, function () {
 
   var couplingServer = supertest;
 

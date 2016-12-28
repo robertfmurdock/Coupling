@@ -20,7 +20,7 @@ var tribesCollection = database.get('tribes');
 var playersCollection = database.get('players');
 var usersCollection = monk(config.mongoUrl).get('users');
 
-fdescribe(path, function () {
+describe(path, function () {
   var userEmail = 'test@test.tes';
 
   beforeEach(function (done) {
@@ -36,7 +36,7 @@ fdescribe(path, function () {
   });
 
   function authorizeUserForTribes(authorizedTribes) {
-    usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
+    return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
   }
 
   it('GET will return all available tribes.', function (done) {
@@ -56,15 +56,17 @@ fdescribe(path, function () {
 
   it('GET will return any tribe that has a player with the given email.', function (done) {
     var tribe = {id: 'delete-me', name: 'tribe-from-endpoint-tests'};
-    tribesCollection.insert(tribe);
     var playerId = monk.id();
-    playersCollection.insert({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail});
-
-    authorizeUserForTribes([]);
-
-    host.get(path)
-      .expect(200)
-      .expect('Content-Type', /json/)
+    Promise.all([
+      tribesCollection.insert(tribe),
+      playersCollection.insert({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail}),
+      authorizeUserForTribes([])
+    ])
+      .then(function () {
+        return host.get(path)
+          .expect(200)
+          .expect('Content-Type', /json/)
+      })
       .then(function (response) {
         expect(clean(response.body)).to.eql(clean([tribe]));
         return Promise.all([

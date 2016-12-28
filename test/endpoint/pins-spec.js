@@ -18,7 +18,7 @@ var clean = function (object) {
   return JSON.parse(JSON.stringify(object));
 };
 
-fdescribe(path, function () {
+describe(path, function () {
 
   beforeEach(function (done) {
     supertest.get('/test-login?username="name"&password="pw"')

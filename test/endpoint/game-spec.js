@@ -11,7 +11,7 @@ var path = '/api/' + tribeId + '/spin';
 var database = monk(config.testMongoUrl + '/CouplingTemp');
 var pinCollection = database.get('pins');
 
-fdescribe(path, function () {
+describe(path, function () {
 
   beforeAll(function () {
     removeTestPin();

@@ -15,7 +15,7 @@ var path = '/api/' + tribeId + '/history';
 var database = monk(config.tempMongoUrl);
 var historyCollection = database.get('history');
 
-fdescribe(path, function () {
+describe(path, function () {
   var validPairs = {
     date: new Date().toISOString(),
     pairs: [
