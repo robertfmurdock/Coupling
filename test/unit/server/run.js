@@ -1,7 +1,6 @@
-var webpack = require('webpack');
 var Jasmine = require('jasmine');
-var Promise = require('bluebird');
 var reporters = require('jasmine-reporters');
+const webpackRunner = require('../../webpackRunner');
 var config = require('./webpack.config');
 var fs = require('fs-extra');
 
@@ -9,17 +8,7 @@ var removeTempDirectory = function () {
   fs.removeSync(__dirname + '/.tmp');
 };
 
-new Promise(function (resolve, reject) {
-  webpack(config)
-    .run(function (err, stats) {
-      console.log(stats.toString('minimal'));
-      if (err) {
-        reject(err);
-      } else {
-        resolve()
-      }
-    });
-})
+webpackRunner.run(config)
   .then(function () {
     console.log('Starting tests:');
 

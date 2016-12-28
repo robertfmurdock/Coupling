@@ -1,22 +1,11 @@
-var webpack = require('webpack');
-var webpackConfig = require('./webpack.config');
 var fs = require('fs-extra');
-
-const Promise = require('bluebird');
 const ConfigParser = require('protractor/built/configParser').ConfigParser;
 const Runner = require('protractor/built/runner').Runner;
+const webpackRunner = require('../webpackRunner');
 
-new Promise(function (resolve, reject) {
-  webpack(webpackConfig)
-    .run(function (err, stats) {
-      console.log(stats.toString('minimal'));
-      if (err) {
-        reject(err);
-      }
-      console.log('Starting tests:');
-      resolve();
-    });
-})
+var webpackConfig = require('./webpack.config');
+
+webpackRunner.run(webpackConfig)
   .then(function () {
     const configParser = new ConfigParser();
     configParser.addFileConfig(__dirname + '/protractor-conf');

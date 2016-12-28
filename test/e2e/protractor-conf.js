@@ -1,8 +1,5 @@
 'use strict';
 var ScreenShotReporter = require('protractor-jasmine2-screenshot-reporter');
-var webpack = require('webpack');
-var config = require('./webpack.config');
-
 
 exports.config = {
 

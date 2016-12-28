@@ -1,25 +1,14 @@
-var webpack = require('webpack');
 var Jasmine = require('jasmine');
-var Promise = require('bluebird');
 var reporters = require('jasmine-reporters');
-var config = require('./webpack.config');
 var fs = require('fs-extra');
+const webpackRunner = require('../webpackRunner');
+var config = require('./webpack.config');
 
 var removeTempDirectory = function () {
   fs.removeSync(__dirname + '/.tmp');
 };
 
-new Promise(function (resolve, reject) {
-  webpack(config)
-    .run(function (err, stats) {
-      console.log(stats.toString('minimal'));
-      if (err) {
-        reject(err);
-      } else {
-        resolve()
-      }
-    });
-})
+webpackRunner.run(config)
   .then(function () {
     process.env.PORT = 3001;
     return require('../../build/app').start()
