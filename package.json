@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "@types/ramda": "0.0.2",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.0",
     "compression": "^1.6.1",
@@ -26,6 +27,7 @@
     "passport-local": "^1.0.0",
     "prefixfree": "^1.0.0",
     "pug": "^2.0.0-beta3",
+    "ramda": "^0.23.0",
     "rsvp": "^3.0.21",
     "serve-favicon": "^2.3.0",
     "underscore": "~1.8.3"
@@ -33,13 +35,13 @@
   "devDependencies": {
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.38",
-    "angular": "^1.5.5",
-    "angular-animate": "^1.5.5",
+    "angular": "~1.5.8",
+    "angular-animate": "~1.5.8",
     "angular-gravatar": "^0.4.1",
-    "angular-mocks": "^1.4.10",
+    "angular-mocks": "~1.5.8",
     "angular-native-dragdrop": "^1.1.2",
-    "angular-resource": "^1.5.5",
-    "angular-route": "^1.5.5",
+    "angular-resource": "~1.5.8",
+    "angular-route": "~1.5.8",
     "chai": "^3.5.0",
     "css-loader": "^0.26.0",
     "expect.js": "^0.3.1",
@@ -88,6 +90,7 @@
     "endpointTest": "node test/endpoint/run.js",
     "serverTest": "node test/unit/server/run.js",
     "clientTest": "karma start test/unit/client/karma.conf.js --single-run",
+    "clientTestContinuous": "karma start test/unit/client/karma.conf.js --no-single-run",
     "test": "./gradlew test endToEndTest",
     "update-webdriver": "webdriver-manager update",
     "protractor": "node test/e2e/run.js"

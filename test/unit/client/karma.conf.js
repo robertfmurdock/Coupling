@@ -1,4 +1,4 @@
-var webpackConfig = require('./../../../client/webpack.config.js');
+var webpackConfig = require('./webpack.config');
 
 module.exports = function (config) {
   config.set({
@@ -7,12 +7,7 @@ module.exports = function (config) {
 
     frameworks: ['jasmine'],
 
-    webpack: {
-      module: webpackConfig.module,
-      resolve: webpackConfig.resolve,
-      devtool: 'inline-source-map',
-      plugins: webpackConfig.plugins
-    },
+    webpack: webpackConfig,
 
     files: [
       'test/unit/client/tests.bundle.js'

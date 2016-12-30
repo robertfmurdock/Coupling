@@ -1,6 +1,7 @@
 import * as services from "../../services";
 import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
+import IRouteService = angular.route.IRouteService;
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
@@ -8,7 +9,10 @@ export class PlayerConfigController {
     player: services.Player;
     tribe: Tribe;
 
-    constructor($scope, public Coupling: services.Coupling, public $location: angular.ILocationService, public $route: ng.route.IRouteService) {
+    constructor($scope,
+                public Coupling: services.Coupling,
+                public $location: angular.ILocationService,
+                public $route: IRouteService) {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
     }
 
@@ -21,7 +25,7 @@ export class PlayerConfigController {
 
     removePlayer() {
         if (confirm("Are you sure you want to delete this player?")) {
-            var self = this;
+            const self = this;
             this.Coupling
                 .removePlayer(this.player)
                 .then(()=>self.navigateToCurrentPairAssignments());
@@ -29,12 +33,14 @@ export class PlayerConfigController {
     }
 
     private askUserToSave($scope, Coupling) {
-        var self = this;
+        let promptIsAlreadyUp = false;
+
         return () => {
-            if ($scope.playerForm.$dirty) {
-                var answer = confirm("You have unsaved data. Would you like to save before you leave?");
+            if ($scope.playerForm.$dirty && !promptIsAlreadyUp) {
+                promptIsAlreadyUp = true;
+                const answer = confirm("You have unsaved data. Would you like to save before you leave?");
                 if (answer) {
-                    Coupling.savePlayer(self.player);
+                    Coupling.savePlayer(this.player);
                 }
             }
         };
