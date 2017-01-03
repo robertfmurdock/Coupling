@@ -26,11 +26,10 @@ const defer = function () {
 
 describe('The controller named ', function () {
 
-    let scope, Coupling;
+    let scope;
 
     beforeEach(function () {
         scope = {};
-        Coupling = {};
     });
 
     describe('PlayerCardController', function () {

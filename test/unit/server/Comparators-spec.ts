@@ -4,18 +4,18 @@ describe('Comparators', function () {
     describe("pairs", function () {
         it('are equal when using string ids', function () {
 
-            var pair1 = [
+            const pair1 = [
                 {_id: '7'},
                 {_id: '8'}
             ];
-            var pair2 = [
+            const pair2 = [
                 {_id: String('8')},
                 {_id: '7'}
             ];
-
             expect(Comparators.areEqualPairs(pair1, pair2)).toBe(true);
         });
     });
+
 
     describe("players", function () {
         it('player will not be equal to null', function () {
@@ -24,8 +24,8 @@ describe('Comparators', function () {
         });
 
         it("equal players with string ids are equal", function () {
-            var batman = { name: 'Batman', _id: '5351790026c06ff51400000a' };
-            var anotherBatman = { name: 'Batman', _id: '5351790026c06ff51400000a'};
+            const batman = { name: 'Batman', _id: '5351790026c06ff51400000a' };
+            const anotherBatman = { name: 'Batman', _id: '5351790026c06ff51400000a'};
 
             expect(Comparators.areEqualPlayers(batman, anotherBatman)).toBe(true);
             expect(Comparators.areEqualPlayers(anotherBatman, batman)).toBe(true);

@@ -15,7 +15,11 @@ module.exports = {
         });
     })
   },
-  watch: function(webpackConfig, handler){
-    return webpack(webpackConfig).watch({}, handler);
+  watch: function(webpackConfig, handler, fs){
+    const compiler = webpack(webpackConfig);
+    if(fs) {
+      compiler.outputFileSystem = fs;
+    }
+    return compiler.watch({}, handler);
   }
 };
