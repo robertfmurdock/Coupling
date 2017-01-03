@@ -14,5 +14,8 @@ module.exports = {
           resolve();
         });
     })
+  },
+  watch: function(webpackConfig, handler){
+    return webpack(webpackConfig).watch({}, handler);
   }
 };
