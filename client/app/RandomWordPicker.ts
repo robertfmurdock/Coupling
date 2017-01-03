@@ -1,6 +1,7 @@
+import WordPicker from './WordPicker'
 import * as R from "ramda";
 
-export default class CallSignAssigner {
+export default class RandomWordPicker implements WordPicker {
 
     constructor(public callSigns: string[]) {
     }
