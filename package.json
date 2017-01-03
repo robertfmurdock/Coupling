@@ -62,7 +62,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "ng-fittext": "github:patrickmarabeas/ng-FitText.js",
-    "node-sass": "^3.12.5",
+    "node-sass": "^4.1.1",
     "protractor": "^4.0.14",
     "protractor-jasmine2-screenshot-reporter": "^0.3.0",
     "protractor-screenshot-reporter": "0.0.5",

@@ -1,6 +1,9 @@
 import "angular";
 import "angular-resource";
 import * as _ from "underscore";
+import Player from "../../common/Player";
+import * as common from "../../common/index";
+import Randomizer from "./Randomizer";
 import IPromise = angular.IPromise;
 import IResource = angular.resource.IResource;
 import IResourceClass = angular.resource.IResourceClass;
@@ -9,8 +12,6 @@ import IResourceArray = angular.resource.IResourceArray;
 import IQService = angular.IQService;
 import IHttpService = angular.IHttpService;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-import Player from "../../common/Player";
-import * as common from "../../common/index";
 
 interface SelectablePlayerMap {
     [id: string]: SelectablePlayer;
@@ -85,11 +86,8 @@ class Coupling {
     }
 
     spin(players, tribeId): IPromise<PairAssignmentSet> {
-        const url = '/api/' + tribeId + '/spin';
-        return this.$http.post(url, players)
-            .then((result) => {
-                return new this.PairAssignmentSet(result.data);
-            });
+        return this.$http.post(`/api/${tribeId}/spin`, players)
+            .then(result => new this.PairAssignmentSet(result.data));
     }
 
     saveCurrentPairAssignments(pairAssignments: PairAssignmentSet) {
@@ -98,9 +96,7 @@ class Coupling {
 
     getPlayers(tribeId) {
         return this.$http.get(`/api/${tribeId}/players`)
-            .then(function (response: IHttpPromiseCallbackArg<[Player]>) {
-                return response.data;
-            });
+            .then(response => response.data);
     }
 
     savePlayer(player) {
@@ -123,29 +119,22 @@ class Coupling {
 
     getPins(tribeId): IPromise<[Pin]> {
         return this.$http.get(`/api/${tribeId}/pins`)
-            .then(function (response) {
-                return response.data;
-            });
+            .then(response => response.data);
     }
 
     private post<T>(url, object: T): IPromise<T> {
         return this.$http.post(url, object)
-            .then(function (result) {
-                return result.data;
-            });
+            .then(response => response.data);
     }
 
     private httpDelete(url): IPromise<void> {
         return this.$http.delete(url)
-            .then(function () {
-            });
+            .then(() => undefined);
     }
 
     private isInLastSetOfPairs(player, history) {
-        const result = _.find(history[0].pairs, function (pairset: [{}]) {
-            if (_.findWhere(pairset, {
-                    _id: player._id
-                })) {
+        const result = _.find(history[0].pairs, function (pairSet: [{}]) {
+            if (_.findWhere(pairSet, {_id: player._id})) {
                 return true;
             }
         });
@@ -162,14 +151,6 @@ class Coupling {
         }
     }
 
-}
-
-class Randomizer {
-
-    next(maxValue: number) {
-        const floatValue = Math.random() * maxValue;
-        return Math.round(floatValue);
-    }
 }
 
 angular.module("coupling.services", ['ngResource'])
