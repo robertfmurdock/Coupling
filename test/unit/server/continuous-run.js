@@ -10,9 +10,13 @@ var testRun = undefined;
 
 function forkJasmine() {
   return forkPromise.fn(function (done) {
+
     const runHelpers = require(__dirname + '/../../../test/run-helpers');
-    const jasmineSavePath = __dirname + '/../../../test-output';
-    runHelpers.startJasmine('.tmp', 'test.js', jasmineSavePath)
+    const startJasmine = function () {
+      return runHelpers.startJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
+    };
+
+    startJasmine()
       .then(done, function (err) {
         console.log('Exiting fork:', err);
         done(-1);

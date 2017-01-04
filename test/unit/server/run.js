@@ -3,7 +3,7 @@ const webpackRunner = require('../../webpackRunner');
 var config = require('./webpack.config');
 
 const startJasmine = function () {
-  runHelpers.startJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
+  return runHelpers.startJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
 };
 const removeTempDirectory = function(){
   return runHelpers.removeTempDirectory(__dirname + '/.tmp');

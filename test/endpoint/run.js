@@ -1,16 +1,14 @@
-var fs = require('fs-extra');
 const webpackRunner = require('../webpackRunner');
 var config = require('./webpack.config');
 
 const runHelpers = require('../run-helpers');
 
-var removeTempDirectory = function () {
-  runHelpers.removeTempDirectory(__dirname + '/.tmp')
+const startJasmine = function () {
+  return runHelpers.startJasmine('.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml')
 };
 
-const startJasmine = function () {
-  const jasmineSavePath = __dirname + '/../../../test-output';
-  return runHelpers.startJasmine('.tmp', 'test.js', jasmineSavePath, 'endpoint.xml')
+const removeTempDirectory = function () {
+  runHelpers.removeTempDirectory(__dirname + '/.tmp')
 };
 
 webpackRunner.run(config)
@@ -19,9 +17,7 @@ webpackRunner.run(config)
     return require('../../build/app').start()
   })
   .then(startJasmine)
-  .finally(function () {
-    removeTempDirectory();
-  })
+  .finally(removeTempDirectory)
   .then(function () {
     process.exit(0);
   }, function (err) {
