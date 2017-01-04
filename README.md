@@ -1,4 +1,4 @@
-Coupling [![Circle CI](https://circleci.com/gh/robertfmurdock/Coupling.png?style=badge)](https://circleci.com/gh/robertfmurdock/Coupling)
+Coupling [![CircleCI](https://circleci.com/gh/robertfmurdock/Coupling.svg?style=svg)](https://circleci.com/gh/robertfmurdock/Coupling)
 ========
 
 This is a web site that will automatically assign pairs for any given iteration.
