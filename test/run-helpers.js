@@ -2,17 +2,16 @@ var Jasmine = require('jasmine');
 var reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
 
-function startJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
+function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
   console.log('Starting tests:');
 
   var jasmine = new Jasmine();
 
   jasmine.loadConfig({
-    "spec_dir": "test/unit/server",
+    "spec_dir": specDir,
     "spec_files": [
       './' + tempDirectory + '/' + testFilePath
     ],
-    filePrefix: filePrefix,
     "stopSpecOnExpectationFailure": false,
     "random": false
   });
@@ -21,7 +20,7 @@ function startJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix) 
 
   var junitReporter = new reporters.JUnitXmlReporter({
     savePath: jasmineSavePath,
-    filePrefix: 'server.unit',
+    filePrefix: filePrefix,
     consolidateAll: true
   });
 

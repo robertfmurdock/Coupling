@@ -6,7 +6,7 @@ var config = require('./webpack.config');
 const removeTempDirectory = runHelpers.removeTempDirectory;
 
 function forkJasmine() {
-  return forkHelpers.forkJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
+  return forkHelpers.forkJasmine('test/unit/server', '.tmp', 'test.js', __dirname + '/../../../test-output');
 }
 
 var testRun = undefined;
@@ -32,5 +32,4 @@ webpackRunner.watch(config, function (err, stats) {
 process.on('SIGINT', function () {
   console.log("Caught interrupt signal");
   removeTempDirectory(__dirname + '/.tmp');
-  process.exit();
 });

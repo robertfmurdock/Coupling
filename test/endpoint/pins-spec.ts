@@ -9,7 +9,7 @@ let config = require('../../config');
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
 let dataService = new CouplingDataService(config.tempMongoUrl);
-let tribeId = 'test';
+let tribeId = 'endpointTest';
 let path = '/api/' + tribeId + '/pins';
 let badTribePath = '/api/does-not-exist/pins';
 

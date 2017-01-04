@@ -6,7 +6,7 @@ let config = require('../../config');
 let server = 'http://localhost:' + config.port;
 let superAgent = supertest.agent(server);
 
-let tribeId = 'test';
+let tribeId = 'endpointTest';
 let pinId = monk.id();
 let path = '/api/' + tribeId + '/spin';
 

@@ -5,7 +5,7 @@ const runHelpers = require('../run-helpers');
 const forkHelpers = require('./../fork-helpers');
 
 function forkJasmine() {
-  return forkHelpers.forkJasmine('.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml');
+  return forkHelpers.forkJasmine('test/endpoint','.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml');
 }
 
 const removeTempDirectory = function () {
@@ -15,7 +15,6 @@ const removeTempDirectory = function () {
 process.env.PORT = 3001;
 require('../../build/app').start()
   .then(function () {
-
     var testRun = undefined;
     webpackRunner.watch(config, function (err, stats) {
       console.log('stats', stats.toString('minimal'));
@@ -40,5 +39,4 @@ require('../../build/app').start()
 process.on('SIGINT', function () {
   console.log("Caught interrupt signal");
   removeTempDirectory(__dirname + '/.tmp');
-  process.exit();
 });

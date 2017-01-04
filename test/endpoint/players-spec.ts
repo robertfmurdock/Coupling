@@ -6,7 +6,7 @@ import * as supertest from "supertest-as-promised";
 import * as monk from "monk";
 
 let config = require('./../../config');
-let tribeId = 'test';
+let tribeId = 'endpointTest';
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
 let path = '/api/' + tribeId + '/players';

@@ -8,7 +8,7 @@ import * as monk from "monk";
 let config = require('../../config');
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
-let tribeId = 'test';
+let tribeId = 'endpointTest';
 let path = '/api/' + tribeId + '/history';
 
 let database = monk(config.tempMongoUrl);

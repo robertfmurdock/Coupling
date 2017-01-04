@@ -1,10 +1,10 @@
 var forkPromise = require('fork-promise');
 
-function secretForkedFunction(tempDirectory, testFilePath, jasmineSavePath, filePrefix, done) {
+function secretForkedFunction(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix, done) {
 
   const runHelpers = require(__dirname + '/../../../test/run-helpers');
   const startJasmine = function () {
-    return runHelpers.startJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix);
+    return runHelpers.startJasmine(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix);
   };
 
   startJasmine()
@@ -14,8 +14,8 @@ function secretForkedFunction(tempDirectory, testFilePath, jasmineSavePath, file
     })
 }
 
-function forkJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
-  return forkPromise.fn(secretForkedFunction, [tempDirectory, testFilePath, jasmineSavePath, filePrefix]);
+function forkJasmine(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
+  return forkPromise.fn(secretForkedFunction, [specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix]);
 }
 
 module.exports = {
