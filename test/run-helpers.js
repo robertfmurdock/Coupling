@@ -1,7 +1,6 @@
 var Jasmine = require('jasmine');
 var reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
-var forkPromise = require('fork-promise');
 
 function startJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
   console.log('Starting tests:');
@@ -43,22 +42,6 @@ function startJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix) 
 var removeTempDirectory = function (tempDirectory) {
   fs.removeSync(tempDirectory);
 };
-
-function forkJasmine() {
-  return forkPromise.fn(function (done) {
-
-    const runHelpers = require(__dirname + '/../../../test/run-helpers');
-    const startJasmine = function () {
-      return runHelpers.startJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
-    };
-
-    startJasmine()
-      .then(done, function (err) {
-        console.log('Exiting fork:', err);
-        done(-1);
-      })
-  });
-}
 
 module.exports = {
   startJasmine: startJasmine,

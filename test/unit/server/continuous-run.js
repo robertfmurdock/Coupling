@@ -1,29 +1,15 @@
 const runHelpers = require('./../../run-helpers');
+const forkHelpers = require('./../../fork-helpers');
 const webpackRunner = require('../../webpackRunner');
 var config = require('./webpack.config');
 
 const removeTempDirectory = runHelpers.removeTempDirectory;
 
-var forkPromise = require('fork-promise');
-
-var testRun = undefined;
-
 function forkJasmine() {
-  return forkPromise.fn(function (done) {
-
-    const runHelpers = require(__dirname + '/../../../test/run-helpers');
-    const startJasmine = function () {
-      return runHelpers.startJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
-    };
-
-    startJasmine()
-      .then(done, function (err) {
-        console.log('Exiting fork:', err);
-        done(-1);
-      })
-  });
+  return forkHelpers.forkJasmine('.tmp', 'test.js', __dirname + '/../../../test-output');
 }
 
+var testRun = undefined;
 webpackRunner.watch(config, function (err, stats) {
   console.log('stats', stats.toString('minimal'));
   if (!err) {

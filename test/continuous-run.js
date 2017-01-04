@@ -1,0 +1,2 @@
+require('./unit/continuous-run');
+
