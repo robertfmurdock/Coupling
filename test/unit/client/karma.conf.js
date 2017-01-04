@@ -9,6 +9,10 @@ module.exports = function (config) {
 
     webpack: webpackConfig,
 
+    webpackMiddleware: {
+      stats: 'minimal'
+    },
+
     files: [
       'test/unit/client/tests.bundle.js'
     ],
@@ -29,7 +33,7 @@ module.exports = function (config) {
 
     autoWatch: true,
 
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox'],
 
     junitReporter: {
       outputDir: 'test-output/client'

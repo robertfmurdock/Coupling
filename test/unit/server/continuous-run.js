@@ -8,13 +8,11 @@ var forkPromise = require('fork-promise');
 
 var testRun = undefined;
 
-
-
 function forkJasmine() {
   return forkPromise.fn(function (done) {
     require(__dirname + '/../../../test/unit/server/run-helpers').startJasmine()
       .then(done, function (err) {
-        console.log('OH NO', err);
+        console.log('Exiting fork:', err);
         done(-1);
       })
   });
@@ -25,10 +23,9 @@ webpackRunner.watch(config, function (err, stats) {
   if (!err) {
 
     if (testRun) {
-      console.log('heh');
       testRun = testRun
         .then(forkJasmine, function (err) {
-          console.log('OH NO', err);
+          console.log('Exiting:', err);
           process.exit(-1);
         })
     } else {
@@ -38,7 +35,6 @@ webpackRunner.watch(config, function (err, stats) {
   } else {
     console.log(err);
   }
-
 });
 
 process.on('SIGINT', function () {
