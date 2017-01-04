@@ -2,7 +2,7 @@ var Jasmine = require('jasmine');
 var reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
 
-function startJasmine() {
+function startJasmine(tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
   console.log('Starting tests:');
 
   var jasmine = new Jasmine();
@@ -10,8 +10,9 @@ function startJasmine() {
   jasmine.loadConfig({
     "spec_dir": "test/unit/server",
     "spec_files": [
-      "./.tmp/test.js"
+      './' + tempDirectory + '/' + testFilePath
     ],
+    filePrefix: filePrefix,
     "stopSpecOnExpectationFailure": false,
     "random": false
   });
@@ -19,7 +20,7 @@ function startJasmine() {
   jasmine.configureDefaultReporter({});
 
   var junitReporter = new reporters.JUnitXmlReporter({
-    savePath: __dirname + '/../../../test-output',
+    savePath: jasmineSavePath,
     filePrefix: 'server.unit',
     consolidateAll: true
   });
@@ -38,8 +39,8 @@ function startJasmine() {
   });
 }
 
-var removeTempDirectory = function () {
-  fs.removeSync(__dirname + '/.tmp');
+var removeTempDirectory = function (tempDirectory) {
+  fs.removeSync(tempDirectory);
 };
 
 module.exports = {

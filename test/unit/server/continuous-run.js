@@ -1,4 +1,4 @@
-const runHelpers = require('./run-helpers');
+const runHelpers = require('./../../run-helpers');
 const webpackRunner = require('../../webpackRunner');
 var config = require('./webpack.config');
 
@@ -10,7 +10,9 @@ var testRun = undefined;
 
 function forkJasmine() {
   return forkPromise.fn(function (done) {
-    require(__dirname + '/../../../test/unit/server/run-helpers').startJasmine()
+    const runHelpers = require(__dirname + '/../../../test/run-helpers');
+    const jasmineSavePath = __dirname + '/../../../test-output';
+    runHelpers.startJasmine('.tmp', 'test.js', jasmineSavePath)
       .then(done, function (err) {
         console.log('Exiting fork:', err);
         done(-1);
@@ -39,6 +41,6 @@ webpackRunner.watch(config, function (err, stats) {
 
 process.on('SIGINT', function () {
   console.log("Caught interrupt signal");
-  removeTempDirectory();
+  removeTempDirectory(__dirname + '/.tmp');
   process.exit();
 });

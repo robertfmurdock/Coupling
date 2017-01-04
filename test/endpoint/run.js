@@ -1,11 +1,16 @@
-var Jasmine = require('jasmine');
-var reporters = require('jasmine-reporters');
 var fs = require('fs-extra');
 const webpackRunner = require('../webpackRunner');
 var config = require('./webpack.config');
 
+const runHelpers = require('../run-helpers');
+
 var removeTempDirectory = function () {
-  fs.removeSync(__dirname + '/.tmp');
+  runHelpers.removeTempDirectory(__dirname + '/.tmp')
+};
+
+const startJasmine = function () {
+  const jasmineSavePath = __dirname + '/../../../test-output';
+  return runHelpers.startJasmine('.tmp', 'test.js', jasmineSavePath, 'endpoint.xml')
 };
 
 webpackRunner.run(config)
@@ -13,41 +18,7 @@ webpackRunner.run(config)
     process.env.PORT = 3001;
     return require('../../build/app').start()
   })
-  .then(function () {
-    console.log('Starting tests:');
-
-    var jasmine = new Jasmine();
-
-    jasmine.loadConfig({
-      "spec_dir": "test/endpoint",
-      "spec_files": [
-        "./.tmp/test.js"
-      ],
-      "stopSpecOnExpectationFailure": false,
-      "random": false
-    });
-
-    jasmine.configureDefaultReporter({});
-
-    var junitReporter = new reporters.JUnitXmlReporter({
-      savePath: __dirname + '/../../../test-output',
-      filePrefix: 'endpoint.xml',
-      consolidateAll: true
-    });
-
-    jasmine.addReporter(junitReporter);
-
-    return new Promise(function (resolve, reject) {
-      jasmine.completionReporter.onComplete(function (passed) {
-        if (passed) {
-          resolve();
-        } else {
-          reject();
-        }
-      });
-      jasmine.execute();
-    });
-  })
+  .then(startJasmine)
   .finally(function () {
     removeTempDirectory();
   })
