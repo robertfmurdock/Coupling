@@ -1,6 +1,7 @@
 .gradle
 test-output
 .idea/workspace.xml
+.idea/sonarlint
 node_modules
 build
 .DS_Store
