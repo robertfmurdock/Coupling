@@ -1,4 +1,6 @@
-var config = require('../../server/webpack.config');
+const _ = require('underscore');
+
+var config = _.clone(require('../../server/webpack.config'));
 var path = require('path');
 const nodeExternals = require('webpack-node-externals');
 

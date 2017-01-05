@@ -1,5 +1,6 @@
 const webpackRunner = require('../webpackRunner');
-var config = require('./webpack.config');
+var serverWebpackConfig = require('../../server/webpack.config');
+var testWebpackConfig = require('./webpack.config');
 var childProcess = require('child_process');
 const Promise = require('bluebird');
 
@@ -13,6 +14,10 @@ function forkJasmine() {
 const removeTempDirectory = function () {
   runHelpers.removeTempDirectory(__dirname + '/.tmp')
 };
+
+var appWatcher = webpackRunner.watch(serverWebpackConfig, function(err, stats){
+  console.log('stats', stats.toString('minimal'));
+});
 
 process.env.PORT = 3001;
 
@@ -28,7 +33,7 @@ new Promise(function (resolve, reject) {
 })
   .then(function () {
     var testRun = undefined;
-    const watcher = webpackRunner.watch(config, function (err, stats) {
+    const testWatcher = webpackRunner.watch(testWebpackConfig, function (err, stats) {
       console.log('stats', stats.toString('minimal'));
       if (!err) {
         if (testRun) {
@@ -46,7 +51,7 @@ new Promise(function (resolve, reject) {
       }
     });
     appProcess.on('exit', function () {
-      watcher.close();
+      testWatcher.close();
     })
   });
 
@@ -54,4 +59,5 @@ new Promise(function (resolve, reject) {
 process.on('SIGINT', function () {
   console.log("Caught interrupt signal");
   removeTempDirectory();
+  appWatcher.close();
 });
