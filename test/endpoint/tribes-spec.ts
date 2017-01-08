@@ -1,5 +1,5 @@
 'use strict';
-import * as supertest from "supertest-as-promised";
+import * as supertest from "supertest";
 import * as Promise from "bluebird";
 import * as monk from "monk";
 import * as _ from "underscore";

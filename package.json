@@ -73,7 +73,6 @@
     "sinon": "^1.17.3",
     "style-loader": "^0.13.1",
     "supertest": "^2.0.1",
-    "supertest-as-promised": "^4.0.2",
     "text-loader": "0.0.1",
     "ts-loader": "^1.2.2",
     "typescript": "^2.0.10",

@@ -2,7 +2,7 @@
 import {browser, element, by} from "protractor";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as monk from "monk";
-import * as supertest from "supertest-as-promised";
+import * as supertest from "supertest";
 import * as Promise from "bluebird";
 import e2eHelp from "./e2e-help";
 

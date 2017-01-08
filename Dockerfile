@@ -1,4 +1,4 @@
-FROM node:6-slim
+FROM node:7-slim
 
 WORKDIR /usr/src/app
 
@@ -20,6 +20,6 @@ ENV \
   MONGOHQ_URL=mongodb://mongo/Coupling \
   MONGO_CONNECTION=mongodb://mongo
 
-CMD [ "npm", "run", "dockertest" ]
+CMD [ "node", "test/continuous-run.js" ]
 
 EXPOSE 3000 8125

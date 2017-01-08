@@ -2,7 +2,7 @@
 import * as Promise from "bluebird";
 import CouplingDataService from "../../server/lib/CouplingDataService";
 import Comparators from "../../server/lib/Comparators";
-import * as supertest from "supertest-as-promised";
+import * as supertest from "supertest";
 import * as monk from "monk";
 
 let config = require('./../../config');

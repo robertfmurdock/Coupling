@@ -1,6 +1,6 @@
 "use strict";
 import * as monk from "monk";
-import * as supertest from "supertest-as-promised";
+import * as supertest from "supertest";
 let config = require('../../config');
 
 let server = 'http://localhost:' + config.port;
