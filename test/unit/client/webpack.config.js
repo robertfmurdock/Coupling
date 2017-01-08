@@ -1,5 +1,6 @@
 var path = require('path');
-var webpackConfig = require('../../../client/webpack.config');
+var _ = require('underscore');
+var webpackConfig = _.clone(require('../../../client/webpack.config'));
 
 const config = {
   module: webpackConfig.module,

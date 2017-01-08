@@ -20,6 +20,18 @@ module.exports = {
     if(fs) {
       compiler.outputFileSystem = fs;
     }
-    return compiler.watch({}, handler);
+    let hash = undefined;
+    return compiler.watch({}, function(err, stats){
+      const newHash = stats.toJson().hash;
+      if (!err && hash !== newHash) {
+        hash = newHash;
+        console.log('stats', stats.toString('minimal'));
+        return handler.apply(this, arguments);
+      }
+
+      if(err) {
+        console.log(err);
+      }
+    });
   }
 };

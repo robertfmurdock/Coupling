@@ -3,6 +3,7 @@ var reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
 
 function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
+
   console.log('Starting tests:');
 
   var jasmine = new Jasmine();

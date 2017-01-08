@@ -1,21 +1,24 @@
-var forkPromise = require('fork-promise');
-
-function secretForkedFunction(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix, done) {
-
-  const runHelpers = require(__dirname + '/../../../test/run-helpers');
-  const startJasmine = function () {
-    return runHelpers.startJasmine(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix);
-  };
-
-  startJasmine()
-    .then(done, function (err) {
-      console.log('Exiting fork:', err);
-      done(-1);
-    })
-}
+const Promise = require('bluebird');
+const childProcess = require('child_process');
 
 function forkJasmine(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
-  return forkPromise.fn(secretForkedFunction, [specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix]);
+
+  let process = undefined;
+  const promise = new Promise(function (resolve, reject) {
+    process = childProcess.fork(__dirname + '/forkJasmine', [specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix]);
+
+    process.on('exit', function (code) {
+      if (code === 0)
+        resolve(code);
+      else {
+        reject(code);
+      }
+    });
+  });
+  return {
+    promise: promise,
+    process: process
+  };
 }
 
 module.exports = {

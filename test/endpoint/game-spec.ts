@@ -19,6 +19,7 @@ describe(path, function () {
         removeTestPin();
     });
 
+
     beforeEach(function (done) {
         superAgent.get('/test-login?username="name"&password="pw"')
             .expect(302)

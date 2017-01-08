@@ -6,26 +6,19 @@ var config = require('./webpack.config');
 const removeTempDirectory = runHelpers.removeTempDirectory;
 
 function forkJasmine() {
-  return forkHelpers.forkJasmine('test/unit/server', '.tmp', 'test.js', __dirname + '/../../../test-output');
+  return forkHelpers.forkJasmine('test/unit/server', '.tmp', 'test.js', __dirname + '/../../../test-output').promise;
 }
 
-var testRun = undefined;
-webpackRunner.watch(config, function (err, stats) {
-  console.log('stats', stats.toString('minimal'));
-  if (!err) {
-
-    if (testRun) {
-      testRun = testRun
-        .then(forkJasmine, function (err) {
-          console.log('Exiting:', err);
-          process.exit(-1);
-        })
-    } else {
-      testRun = forkJasmine();
-    }
-
+let testRun = undefined;
+webpackRunner.watch(config, function () {
+  if (testRun) {
+    testRun = testRun
+      .then(forkJasmine, function (err) {
+        console.log('Exiting:', err);
+        process.exit(-1);
+      })
   } else {
-    console.log(err);
+    testRun = forkJasmine();
   }
 });
 
