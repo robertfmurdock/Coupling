@@ -3,5 +3,6 @@ test-output
 .idea/workspace.xml
 .idea/sonarlint
 node_modules
+.tmp
 build
 .DS_Store
