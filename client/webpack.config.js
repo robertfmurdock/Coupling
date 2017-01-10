@@ -13,7 +13,7 @@ var exports = {
   devtool: 'source-map',
   resolve: {
     root: jsPath,
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js']
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js', '.json']
   },
   module: {
     loaders: [
@@ -25,6 +25,10 @@ var exports = {
         test: /\.(pug)$/,
         loader: 'pug',
         include: jsPath
+      },
+      {
+        test: /\.(json)$/,
+        loader: 'json'
       },
       {
         test: /\.(css)$/,
