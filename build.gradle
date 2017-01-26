@@ -20,7 +20,7 @@ task clientCompile(type: Exec) {
     inputs.file fileTree('typings')
     inputs.file fileTree('common')
     inputs.file fileTree('client')
-    outputs.dir fileTree('public/app/build')
+    outputs.dir 'public/app/build'
     environment 'NODE_ENV': 'production'
     commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
 }
