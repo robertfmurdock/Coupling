@@ -10,6 +10,7 @@ web:
   volumes:
     - ./public:/usr/src/app/public
     - ./server:/usr/src/app/server
+    - ./client:/usr/src/app/client
     - ./views:/usr/src/app/views
     - ./test:/usr/src/app/test
     - ./package.json:/usr/src/app/package.json
@@ -34,7 +35,7 @@ grafana:
   links:
     - statsd
   ports:
-    - "3001:3000"
+    - "4001:3000"
 seleniumhub:
   image: selenium/hub
 chromenode:
