@@ -81,7 +81,7 @@ export default class CouplingDataService {
             return this.playersCollection.update(player._id, player, {upsert: true})
                 .then(function (result) {
                     const failureToUpdateMessage = 'Player could not be updated because it could not be found.';
-                    if (result.nModified === 0 && result.n === 0) {
+                    if (!result.nModified && result.n === 0) {
                         throw new Error(failureToUpdateMessage);
                     }
                 });
@@ -106,7 +106,7 @@ export default class CouplingDataService {
 
     private makeUpdateByIdCallback(failureToUpdateMessage, done) {
         return function (error, result) {
-            if (result.nModified == 0 && error == null) {
+            if (!result.nModified && error == null) {
                 error = {message: failureToUpdateMessage};
             }
             done(error);
@@ -116,7 +116,7 @@ export default class CouplingDataService {
     removePairAssignments(pairAssignmentsId) {
         return this.historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true})
             .then(function (results) {
-                if (results.nModified === 0 || results.n === 0) {
+                if (!results.nModified) {
                     throw new Error('Pair Assignments could not be deleted because they do not exist.');
                 }
             });
