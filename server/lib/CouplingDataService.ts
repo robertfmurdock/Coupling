@@ -116,8 +116,10 @@ export default class CouplingDataService {
     removePairAssignments(pairAssignmentsId) {
         return this.historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true})
             .then(function (results) {
-                if (results.nModified === 0) {
+                if (results.nModified === 0 || results.n === 0) {
                     throw new Error('Pair Assignments could not be deleted because they do not exist.');
+                } else {
+                    console.log('results were:', results);
                 }
             });
     };
