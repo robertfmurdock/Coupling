@@ -21,6 +21,10 @@ interface PinsAndHistory {
     history: any[]
 }
 
+let resultsWereNotModified = function (results) {
+    return results.nModified === 0 || results.n === 0;
+};
+
 export default class CouplingDataService {
 
     public database;
@@ -106,7 +110,7 @@ export default class CouplingDataService {
 
     private makeUpdateByIdCallback(failureToUpdateMessage, done) {
         return function (error, result) {
-            if (!result.nModified && error == null) {
+            if (resultsWereNotModified(result) && error == null) {
                 error = {message: failureToUpdateMessage};
             }
             done(error);
@@ -116,7 +120,7 @@ export default class CouplingDataService {
     removePairAssignments(pairAssignmentsId) {
         return this.historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true})
             .then(function (results) {
-                if (!results.nModified) {
+                if (resultsWereNotModified(results)) {
                     throw new Error('Pair Assignments could not be deleted because they do not exist.');
                 }
             });
