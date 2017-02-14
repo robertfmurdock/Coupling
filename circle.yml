@@ -13,7 +13,7 @@ dependencies:
     - "~/docker"
   override:
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -f Dockerfile-prod -t zegreatrob/coupling .
+    - docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
     - mkdir -p ~/docker; docker save zegreatrob/coupling > ~/docker/image.tar
 test:
   override:
