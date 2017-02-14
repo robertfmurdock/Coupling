@@ -9,6 +9,8 @@ dependencies:
     - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
     - sudo apt-get update
     - sudo apt-get --only-upgrade install google-chrome-stable
+  cache_directories:
+    - "~/docker"
 test:
   override:
     - npm test
@@ -24,7 +26,9 @@ deployment:
       - git add -f build
       - git commit -m "Automatic source commit via CircleCI"
       - git push -f git@heroku.com:armored-coupling.git refs/heads/master:refs/heads/master
+      - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
       - docker build -f Dockerfile-prod -t zegreatrob/coupling .
+      - mkdir -p ~/docker; docker save zegreatrob/coupling > ~/docker/image.tar
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push zegreatrob/coupling
 
