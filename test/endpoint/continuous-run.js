@@ -24,23 +24,24 @@ const removeTempDirectory = function () {
   runHelpers.removeTempDirectory(__dirname + '/.tmp')
 };
 
-let appProcess;
+let appProcesses;
 
 const appWatcher = webpackRunner.watch(serverWebpackConfig, function () {
-  if (!appProcess) {
-    appProcess = startForkedAppAndWatchTests();
+  if (!appProcesses) {
+    appProcesses = startForkedAppAndWatchTests();
   } else {
-    appProcess.kill('SIGINT');
+    appProcesses.forEach(app => app.kill('SIGINT'));
 
-    appProcess = startForkedAppAndWatchTests();
+    appProcesses = startForkedAppAndWatchTests();
   }
 });
 
 let startForkedApp = function () {
-  const appProcess = childProcess.fork('./test/endpoint/startForkedApp', forkOptions);
-  childProcess.fork('./test/endpoint/startForkedApp');
+  const appProcess1 = childProcess.fork('./test/endpoint/startForkedApp', forkOptions);
+  const appProcess2 = childProcess.fork('./test/endpoint/startForkedApp');
+  const appProcesses = [appProcess1, appProcess2];
   const appIsReadyPromise = new Promise(function (resolve, reject) {
-    appProcess.on('message', function (json) {
+    appProcess1.on('message', function (json) {
       if (json.message === 'Application Ready') {
         resolve(json);
       } else {
@@ -48,11 +49,11 @@ let startForkedApp = function () {
       }
     })
   });
-  return {appProcess, appIsReadyPromise};
+  return {appProcesses, appIsReadyPromise};
 };
 
 const startForkedAppAndWatchTests = function () {
-  const {appProcess, appIsReadyPromise} = startForkedApp();
+  const {appProcesses, appIsReadyPromise} = startForkedApp();
   appIsReadyPromise
     .then(function () {
       let testRunPromise = undefined;
@@ -74,16 +75,19 @@ const startForkedAppAndWatchTests = function () {
           process = forkInfo.process;
         }
       });
-      appProcess.on('exit', function () {
-        testRunPromise.catch(function () {
-          return 'All good';
-        });
-        process.kill('SIGINT');
-        console.log('cancelling test watcher');
-        testWatcher.close();
+
+      appProcesses.forEach(app => {
+        app.on('exit', function () {
+          testRunPromise.catch(function () {
+            return 'All good';
+          });
+          process.kill('SIGINT');
+          testWatcher.close();
+        })
       })
+
     });
-  return appProcess;
+  return appProcesses;
 };
 
 

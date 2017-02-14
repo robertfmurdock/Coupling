@@ -6,5 +6,4 @@ interface Player {
     callSignAdjective?: string;
     callSignNoun?: string;
 }
-
 export default Player
