@@ -1,5 +1,5 @@
-var webpack = require('webpack');
-var Promise = require('bluebird');
+const webpack = require('webpack');
+const Promise = require('bluebird');
 
 module.exports = {
   run: function (webpackConfig) {

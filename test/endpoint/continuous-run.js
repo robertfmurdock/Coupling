@@ -10,7 +10,8 @@ const forkHelpers = require('./../fork-helpers');
 const forkOptions = {
   env: _.extend({
     PORT: 3001,
-    NODE_ENV: 'test'
+    NODE_ENV: 'test',
+    DISABLE_LOGGING: true
   }, process.env)
 };
 

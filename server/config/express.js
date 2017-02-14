@@ -1,20 +1,20 @@
 "use strict";
-var compression = require('compression');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var methodOverride = require('method-override');
-var express = require('express');
-var bodyParser = require('body-parser');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var errorHandler = require('errorhandler');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var statsd = require('express-statsd');
-var config = require('./../../config');
+const compression = require('compression');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const methodOverride = require('method-override');
+const express = require('express');
+const bodyParser = require('body-parser');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const errorHandler = require('errorhandler');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const statsd = require('express-statsd');
+const config = require('./../../config');
 
 module.exports = function (app, userDataService) {
   app.use(compression());
@@ -27,7 +27,10 @@ module.exports = function (app, userDataService) {
   ]);
   app.set('view engine', 'pug');
   app.use(favicon('public/images/favicon.ico'));
-  app.use(logger('dev'));
+  if(!process.env['DISABLE_LOGGING']) {
+    app.use(logger('dev'));
+  }
+
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(methodOverride());
@@ -49,7 +52,6 @@ module.exports = function (app, userDataService) {
   if (isInDevelopmentMode) {
     app.use(errorHandler());
   }
-  console.log("Adding passport!");
 
   passport.serializeUser(userDataService.serializeUser);
   passport.deserializeUser(userDataService.deserializeUser);
@@ -66,9 +68,8 @@ module.exports = function (app, userDataService) {
       });
     }
   ));
-  console.log("App environment is: " + app.get('env'));
+
   if (isInDevelopmentMode) {
-    console.log('Dev Environment: enabling test login');
     passport.use(new LocalStrategy(function (username, password, done) {
       userDataService.findOrCreate(username + "._temp", function (user) {
         done(null, user);
