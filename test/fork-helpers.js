@@ -1,11 +1,13 @@
 const Promise = require('bluebird');
 const childProcess = require('child_process');
 
-function forkJasmine(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
+function forkJasmine(specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix, options) {
 
   let process = undefined;
   const promise = new Promise(function (resolve, reject) {
-    process = childProcess.fork(__dirname + '/forkJasmine', [specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix]);
+    process = childProcess.fork(__dirname + '/forkJasmine',
+      [specDirectory, tempDirectory, testFilePath, jasmineSavePath, filePrefix],
+      options);
 
     process.on('exit', function (code) {
       if (code === 0)

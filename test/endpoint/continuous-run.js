@@ -1,24 +1,31 @@
 const webpackRunner = require('../webpackRunner');
-var serverWebpackConfig = require('../../server/webpack.config');
-var testWebpackConfig = require('./webpack.config');
+const serverWebpackConfig = require('../../server/webpack.config');
+const testWebpackConfig = require('./webpack.config');
 const childProcess = require('child_process');
 const Promise = require('bluebird');
 
 const runHelpers = require('../run-helpers');
 const forkHelpers = require('./../fork-helpers');
 
+const forkOptions = {
+  env: {
+    PORT: 3001,
+    NODE_ENV: 'test'
+  }
+};
+
 function forkJasmine() {
-  console.log('fork jasmine');
-  return forkHelpers.forkJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml');
+  return forkHelpers.forkJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml',
+    forkOptions);
 }
 
 const removeTempDirectory = function () {
   runHelpers.removeTempDirectory(__dirname + '/.tmp')
 };
 
-var appProcess;
+let appProcess;
 
-var appWatcher = webpackRunner.watch(serverWebpackConfig, function () {
+const appWatcher = webpackRunner.watch(serverWebpackConfig, function () {
   if (!appProcess) {
     appProcess = startForkedAppAndWatchTests();
   } else {
@@ -28,11 +35,10 @@ var appWatcher = webpackRunner.watch(serverWebpackConfig, function () {
   }
 });
 
-process.env.PORT = 3001;
-
-var startForkedAppAndWatchTests = function () {
-  const appProcess = childProcess.fork('./test/endpoint/startForkedApp');
-  new Promise(function (resolve, reject) {
+let startForkedApp = function () {
+  const appProcess = childProcess.fork('./test/endpoint/startForkedApp', forkOptions);
+  childProcess.fork('./test/endpoint/startForkedApp');
+  const appIsReadyPromise = new Promise(function (resolve, reject) {
     appProcess.on('message', function (json) {
       if (json.message === 'Application Ready') {
         resolve(json);
@@ -40,7 +46,13 @@ var startForkedAppAndWatchTests = function () {
         reject(json);
       }
     })
-  })
+  });
+  return {appProcess, appIsReadyPromise};
+};
+
+const startForkedAppAndWatchTests = function () {
+  const {appProcess, appIsReadyPromise} = startForkedApp();
+  appIsReadyPromise
     .then(function () {
       let testRunPromise = undefined;
       let process = undefined;
