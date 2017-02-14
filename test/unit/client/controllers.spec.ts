@@ -5,7 +5,7 @@ import "angular";
 import "angular-mocks";
 import * as Promise from "bluebird";
 import PlayerCardController from "../../../client/app/components/player-card/PlayerCard";
-import {TribeCardController} from "../../../client/app/components/tribe-card/tribe-card";
+import {TribeCardController} from "../../../client/app/components/tribe-card/TribeCardController";
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
 import {PairAssignmentsController} from "../../../client/app/components/pair-assignments/pair-assignments";
 import {PlayerConfigController} from "../../../client/app/components/player-config/player-config";

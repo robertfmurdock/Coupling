@@ -4,8 +4,12 @@ import * as services from '../../services'
 export class TribeCardController {
     static $inject = ['$location'];
     public tribe:services.Tribe;
+    size:number;
 
     constructor(public $location:angular.ILocationService) {
+        if (!this.size) {
+            this.size = 150;
+        }
     }
 
     clickOnTribeCard() {
@@ -25,7 +29,8 @@ export default angular.module('coupling.tribeCard', [])
             controller: 'TribeCardController',
             controllerAs: 'tribecard',
             scope: {
-                tribe: '='
+                tribe: '=',
+                size: '=?'
             },
             bindToController: true,
             restrict: 'E',

@@ -1,21 +1,18 @@
-import * as template from './tribe-config.pug'
-import * as services from '../../services'
+import * as template from "./tribe-config.pug";
+import * as services from "../../services";
 
 export class TribeConfigController {
     static $inject = ['$location'];
-    public tribe:services.Tribe;
-    public isNew:boolean;
+    public tribe: services.Tribe;
+    public isNew: boolean;
 
     constructor(public $location: angular.ILocationService) {
     }
 
     clickSaveButton() {
-        var self = this;
         this.tribe
             .$save()
-            .then(() => {
-                self.$location.path("/tribes");
-            });
+            .then(() => this.$location.path("/tribes"));
     }
 }
 

@@ -9,4 +9,4 @@ tabindex="0")
         data-fittext=1 data-fittext-max="56px" data-fittext-min="17" data-fittext-load-delay="100"
         ng-model="tribecard.tribe.name"
         ) {{tribecard.tribe.name}}
-    img(ng-src="{{tribecard.tribe | tribeImageUrl: {size: 150} }}" width="150" height="150")
+    img(ng-src="{{tribecard.tribe | tribeImageUrl: {size: tribecard.size} }}" width="{{tribecard.size}}" height="{{tribecard.size}}")

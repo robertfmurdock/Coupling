@@ -134,6 +134,10 @@ describe('The default tribes page', function () {
     });
 });
 
+let updateTextBox = function (selector: any, text: string) {
+    element(selector).clear();
+    element(selector).sendKeys(text);
+};
 describe('The edit tribe page', function () {
 
     const tribe = {
@@ -165,10 +169,20 @@ describe('The edit tribe page', function () {
         const expectedNewName = 'Different name';
         element(By.id('tribe-name')).clear();
         element(By.id('tribe-name')).sendKeys(expectedNewName);
+
+        element(By.id('badge-checkbox')).click();
+        const expectedDefaultBadgeName = 'New Default Badge Name';
+        updateTextBox(By.id('default-badge-name'), expectedDefaultBadgeName);
+        const expectedAltBadgeName = 'New Alt Badge Name';
+        updateTextBox(By.id('alt-badge-name'), expectedAltBadgeName);
+
         element(By.id('save-tribe-button')).click();
 
         browser.setLocation('/' + tribe.id + '/edit/');
 
         expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
+        expect(element(By.id('badge-checkbox')).getAttribute('checked')).toEqual('true');
+        expect(element(By.id('default-badge-name')).getAttribute('value')).toEqual(expectedDefaultBadgeName);
+        expect(element(By.id('alt-badge-name')).getAttribute('value')).toEqual(expectedAltBadgeName);
     });
 });
