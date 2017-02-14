@@ -1,4 +1,12 @@
-var webpackConfig = require('./webpack.config');
+const webpackConfig = require('./webpack.config');
+
+const chooseBrowsers = function () {
+  if (process.env['HEADLESS'] === 'true') {
+    return ['PhantomJS'];
+  } else {
+    return ['Chrome', 'Firefox'];
+  }
+};
 
 module.exports = function (config) {
   config.set({
@@ -33,7 +41,7 @@ module.exports = function (config) {
 
     autoWatch: true,
 
-    browsers: ['Chrome', 'Firefox'],
+    browsers: chooseBrowsers(),
 
     junitReporter: {
       outputDir: 'test-output/client'

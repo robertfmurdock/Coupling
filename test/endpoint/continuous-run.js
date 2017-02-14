@@ -8,10 +8,10 @@ const runHelpers = require('../run-helpers');
 const forkHelpers = require('./../fork-helpers');
 
 const forkOptions = {
-  env: _.extend(process.env, {
+  env: _.extend({
     PORT: 3001,
     NODE_ENV: 'test'
-  })
+  }, process.env)
 };
 
 function forkJasmine() {
