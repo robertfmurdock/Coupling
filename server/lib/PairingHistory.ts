@@ -32,13 +32,13 @@ export default class PairingHistory {
         return false;
     }
 
-    private getListOfPartnersWithThisTime(partnersWithTime, timeSinceLastPartnership) {
-        const partnersWithParticularTime = partnersWithTime[timeSinceLastPartnership];
+    private getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership) {
+        const partnersWithParticularTime = timeToPartnersMap[timeSinceLastPartnership];
         if (partnersWithParticularTime) {
             return partnersWithParticularTime;
         } else {
             const newEmptyList = [];
-            partnersWithTime[timeSinceLastPartnership] = newEmptyList;
+            timeToPartnersMap[timeSinceLastPartnership] = newEmptyList;
             return newEmptyList;
         }
     }

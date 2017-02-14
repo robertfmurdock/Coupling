@@ -5,17 +5,17 @@ export default class Sequencer {
     }
 
     getNextInSequence(players) {
-        var allReports = [];
+        const allReports = [];
         players.forEach(player => {
-            var candidates = players.filter(function (otherPlayer) {
+            const candidates = players.filter(function (otherPlayer) {
                 return otherPlayer !== player;
             });
 
-            var pairCandidateReport = this.pairingHistory.getPairCandidateReport(player, candidates);
+            const pairCandidateReport = this.pairingHistory.getPairCandidateReport(player, candidates);
             allReports.push(pairCandidateReport);
         });
 
-        var reportWithLongestTime = new PairHistoryReport(null, null, -1);
+        let reportWithLongestTime = new PairHistoryReport(null, null, -1);
         allReports.forEach(function (report) {
             if (reportWithLongestTime.timeSinceLastPaired === report.timeSinceLastPaired) {
                 if (report.partnerCandidates.length < reportWithLongestTime.partnerCandidates.length) {
