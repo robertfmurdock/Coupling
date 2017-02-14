@@ -14,13 +14,13 @@ div(class="tribe-frame" ng-show="self.tribe")
                     input(id="tribe-email" type="text" ng-model="self.tribe.email")
                 div
                     label Enable Badges:
-                    input(type="checkbox" ng-model="self.tribe.badgesEnabled")
+                    input(id="badge-checkbox" type="checkbox" ng-model="self.tribe.badgesEnabled")
                 div
                     label Default Badge Name:
-                    input(type="text" ng-model="self.tribe.defaultBadgeName")
+                    input(id="default-badge-name" type="text" ng-model="self.tribe.defaultBadgeName")
                 div
                     label Alt Badge Name:
-                    input(type="text" ng-model="self.tribe.alternativeBadgeName")
+                    input(id="alt-badge-name" type="text" ng-model="self.tribe.alternativeBadgeName")
                 div(ng-show="self.isNew")
                     label(for="tribe-id") Unique Id:
                     input(id="tribe-id" type="text" ng-model="self.tribe.id")
