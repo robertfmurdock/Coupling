@@ -5,4 +5,5 @@ test-output
 node_modules
 .tmp
 build
+data
 .DS_Store
