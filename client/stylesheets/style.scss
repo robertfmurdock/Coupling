@@ -195,11 +195,15 @@ a {
       text-fill-color: initial;
       text-stroke-width: 1.5px;
       text-stroke-color: initial;
-
     }
     input {
       text-fill-color: black;
       text-stroke-width: 0;
+    }
+  }
+  .badge-config {
+    label {
+      display: inline-block;
     }
   }
 }

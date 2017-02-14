@@ -3,6 +3,7 @@ import {browser, element, By} from "protractor";
 import * as _ from "underscore";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
+import Tribe from "../../common/Tribe";
 
 const config = require("../../config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -10,6 +11,7 @@ const database = monk(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 
+const savePlayerButton = element(By.id('save-player-button'));
 
 describe('The edit player page', function () {
 
@@ -63,6 +65,61 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
     });
 
+    describe('when the tribe does not have badging enabled', function () {
+
+        beforeEach(function (done) {
+            const tribeClone: Tribe = _.clone(tribe);
+            tribeClone.badgesEnabled = false;
+            tribeCollection.update({_id: tribe._id}, tribeClone)
+                .then(done, done.fail);
+        });
+
+        it('should not show the badge selector', function () {
+            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            const defaultBadgeRadio = element(By.css('#default-badge-radio'));
+            expect(defaultBadgeRadio.isDisplayed()).toEqual(false);
+            const altBadgeRadio = element(By.css('#alt-badge-radio'));
+            expect(altBadgeRadio.isDisplayed()).toEqual(false);
+        });
+    });
+
+    describe('when the tribe does have badging enabled', function () {
+
+        const defaultBadgeRadio = element(By.css('#default-badge-radio'));
+        const altBadgeRadio = element(By.css('#alt-badge-radio'));
+
+        beforeEach(function (done) {
+            const tribeClone: Tribe = _.clone(tribe);
+            tribeClone.badgesEnabled = true;
+            tribeClone.defaultBadgeName = "Badge 1";
+            tribeClone.alternateBadgeName = "Badge 2";
+            tribeCollection.update({_id: tribe._id}, tribeClone)
+                .then(done, done.fail);
+        });
+
+        it('should show the badge selector', function () {
+            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            expect(defaultBadgeRadio.isDisplayed()).toEqual(true);
+            expect(element(By.css('label[for=default-badge-radio]')).getText()).toBe('Badge 1');
+
+            expect(altBadgeRadio.isDisplayed()).toEqual(true);
+            expect(element(By.css('label[for=alt-badge-radio]')).getText()).toBe('Badge 2');
+        });
+
+        it('the player default badge should be selected', function(){
+            expect(defaultBadgeRadio.getAttribute('checked')).toBe('true');
+        });
+
+        it('should remember badge selection', function () {
+            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            altBadgeRadio.click();
+            savePlayerButton.click();
+            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            expect(altBadgeRadio.getAttribute('checked')).toBe('true');
+        });
+    });
+
+
     it('should get error on leaving when name is changed.', function (done) {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
@@ -83,12 +140,12 @@ describe('The edit player page', function () {
     });
 
     it('should not get alert on leaving when name is changed after save.', function () {
-        browser.setLocation('/' + tribe.id + '/player/' + player1._id);
+        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         playerNameTextField.sendKeys('completely different name');
 
-        element(By.id('save-player-button')).click();
+        savePlayerButton.click();
         element(By.css('.tribe')).click();
         expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/pairAssignments/current/');
 

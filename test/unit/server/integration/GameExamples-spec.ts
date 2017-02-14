@@ -11,12 +11,12 @@ const config = require('../../../../config');
 describe('The game', function () {
     const tribeId = 'JLA';
 
-    const bruce = {_id: monk.id(), name: "Batman", tribe: tribeId, badge: Badge.One};
-    const hal = {_id: monk.id(), name: "Green Lantern", tribe: tribeId, badge: Badge.One};
-    const barry = {_id: monk.id(), name: "Flash", tribe: tribeId, badge: Badge.One};
-    const john = {_id: monk.id(), name: "Martian Manhunter", tribe: tribeId, badge: Badge.One};
-    const clark = {_id: monk.id(), name: "Superman", tribe: tribeId, badge: Badge.Two};
-    const diana = {_id: monk.id(), name: "Wonder Woman", tribe: tribeId, badge: Badge.Two};
+    const bruce = {_id: monk.id(), name: "Batman", tribe: tribeId, badge: Badge.Default};
+    const hal = {_id: monk.id(), name: "Green Lantern", tribe: tribeId, badge: Badge.Default};
+    const barry = {_id: monk.id(), name: "Flash", tribe: tribeId, badge: Badge.Default};
+    const john = {_id: monk.id(), name: "Martian Manhunter", tribe: tribeId, badge: Badge.Default};
+    const clark = {_id: monk.id(), name: "Superman", tribe: tribeId, badge: Badge.Alternate};
+    const diana = {_id: monk.id(), name: "Wonder Woman", tribe: tribeId, badge: Badge.Alternate};
 
     const playerRoster = [
         clark,

@@ -1,6 +1,7 @@
 import * as services from "../../services";
 import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
+import Badge from "../../../../common/Badge";
 import IRouteService = angular.route.IRouteService;
 
 export class PlayerConfigController {
@@ -14,11 +15,16 @@ export class PlayerConfigController {
                 public $location: angular.ILocationService,
                 public $route: IRouteService) {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
+        $scope.Badge = Badge;
+
+        if (this.player && !this.player.badge) {
+            this.player.badge = Badge.Default;
+        }
     }
 
     savePlayer() {
         this.Coupling.savePlayer(this.player)
-            .then(()=> {
+            .then(() => {
                 this.$route.reload();
             });
     }
@@ -28,7 +34,7 @@ export class PlayerConfigController {
             const self = this;
             this.Coupling
                 .removePlayer(this.player)
-                .then(()=>self.navigateToCurrentPairAssignments());
+                .then(() => self.navigateToCurrentPairAssignments());
         }
     }
 

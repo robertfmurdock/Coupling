@@ -10,9 +10,13 @@ div
                 div
                     label(for="player-email") Email
                     input(id="player-email" type="text" ng-model="playerConfig.player.email")
-                div
-                    label(for="player-img-url") Image URL
-                    input(id="player-img-url" type="text" ng-model="playerConfig.player.imageURL")
+                div(ng-show="playerConfig.tribe.badgesEnabled" class="badge-config")
+                    div
+                        label(for="default-badge-radio") {{playerConfig.tribe.defaultBadgeName}}
+                        input(id="default-badge-radio" type="radio" ng-model="playerConfig.player.badge" ng-value="Badge.Default")
+                    div
+                        label(for="alt-badge-radio") {{playerConfig.tribe.alternateBadgeName}}
+                        input(id="alt-badge-radio" type="radio" ng-model="playerConfig.player.badge" ng-value="Badge.Alternate")
                 input(id="save-player-button" type="submit" class="large blue button save-button" ng-click="playerConfig.savePlayer()" tabIndex="0" value="Save")
                 div(ng-show="playerConfig.player._id" class="small red button delete-button" ng-click="playerConfig.removePlayer()") DELETE
         playercard(player="playerConfig.player" size="250")
