@@ -11,7 +11,7 @@ class HistoryRoutes {
     };
 
     savePairs(request, response) {
-        var pairs = request.body;
+        const pairs = request.body;
         if (pairs.date && pairs.pairs) {
             pairs.date = new Date(pairs.date as string);
 
@@ -35,8 +35,8 @@ class HistoryRoutes {
     }
 }
 
-var history = new HistoryRoutes();
-var router = express.Router({mergeParams: true});
+const history = new HistoryRoutes();
+const router = express.Router({mergeParams: true});
 router.route('/')
     .get(history.list)
     .post(history.savePairs);
