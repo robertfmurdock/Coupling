@@ -16,7 +16,6 @@ test:
     - mv test-output $CIRCLE_TEST_REPORTS/junit
 deployment:
   staging:
-    branch: master
     commands:
       - docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
