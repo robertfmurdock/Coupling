@@ -85,7 +85,9 @@
     "webpack-node-externals": "^1.5.4"
   },
   "scripts": {
-    "start": "node server/startup.js",
+    "start": "./gradlew start",
+    "test": "./gradlew test endToEndTest",
+    "start-built-app": "node server/startup.js",
     "pretsc": "npm run typings",
     "tsc": "tsc",
     "typings": "typings install",
@@ -94,7 +96,6 @@
     "serverTest": "node test/unit/server/run.js",
     "clientTest": "karma start test/unit/client/karma.conf.js --single-run",
     "clientTestContinuous": "karma start test/unit/client/karma.conf.js --no-single-run",
-    "test": "./gradlew test endToEndTest",
     "update-webdriver": "webdriver-manager update",
     "protractor": "node test/e2e/run.js"
   },

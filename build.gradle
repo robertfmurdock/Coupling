@@ -39,6 +39,10 @@ task serverCompile(type: Exec) {
     commandLine "node_modules/.bin/webpack", '--config', 'server/webpack.config.js'
 }
 
+task compile {
+    dependsOn serverCompile, clientCompile
+}
+
 task clientTest(type: Exec) {
     dependsOn installNodeModules
     inputs.file file('package.json')
@@ -77,8 +81,8 @@ task updateWebdriver(type: Exec) {
 }
 
 task endToEndTest(type: Exec) {
-    dependsOn installNodeModules, clientCompile, serverCompile, updateWebdriver
-    mustRunAfter clientCompile, serverTest, clientTest, endpointTest
+    dependsOn compile, updateWebdriver
+    mustRunAfter serverTest, clientTest, endpointTest
     inputs.file clientTest.inputs.files
     inputs.file serverTest.inputs.files
     inputs.file clientCompile.outputs.files
@@ -92,6 +96,11 @@ task endToEndTest(type: Exec) {
 
 task test {
     dependsOn serverTest, clientTest, endpointTest
+}
+
+task start(type: Exec) {
+    dependsOn compile
+    commandLine 'npm', 'run', 'start-built-app'
 }
 
 task build {
