@@ -1,6 +1,7 @@
 import CouplingGameFactory from "../../../server/lib/CouplingGameFactory";
 import GameRunner from "../../../server/lib/GameRunner";
 import * as Clock from '../../../server/lib/Clock';
+import PairingRule from "../../../common/PairingRule";
 
 describe('Game Runner', function () {
     it('will build a game, run with all available players, and then return the results', function () {
@@ -22,11 +23,11 @@ describe('Game Runner', function () {
         const expectedDate = new Date();
         spyOn(Clock, 'getDate').and.returnValue(expectedDate);
 
-        const tribeId = 'Team Rocket';
-        const result = gameRunner.run(players, [], history, tribeId);
+        const tribe = {id: 'Team Rocket', pairingRule: PairingRule.LongestTime};
+        const result = gameRunner.run(players, [], history, tribe);
 
         expect(result.date).toEqual(expectedDate);
         expect(result.pairs).toEqual(pairingAssignments);
-        expect(result.tribe).toEqual(tribeId);
+        expect(result.tribe).toEqual(tribe.id);
     });
 });

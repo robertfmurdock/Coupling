@@ -1,5 +1,6 @@
 import Sequencer from "../../../server/lib/Sequencer";
 import PairHistoryReport from "../../../server/lib/PairHistoryReport";
+import PairingRule from "../../../common/PairingRule";
 
 describe('Sequencer', function () {
 
@@ -22,7 +23,7 @@ describe('Sequencer', function () {
 
         const sequencer = new Sequencer(reportProvider);
 
-        const next = sequencer.getNextInSequence(players);
+        const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
 
         expect(next).toEqual(tedsPairCandidates);
     });
@@ -41,7 +42,7 @@ describe('Sequencer', function () {
 
         const sequencer = new Sequencer(reportProvider);
 
-        const next = sequencer.getNextInSequence(players);
+        const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
 
         expect(next).toEqual(amadeusPairCandidates);
     });
@@ -58,7 +59,7 @@ describe('Sequencer', function () {
         };
 
         const sequencer = new Sequencer(reportProvider);
-        const next = sequencer.getNextInSequence(players);
+        const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
         expect(next).toEqual(shortyPairCandidates);
     });
 
@@ -74,7 +75,7 @@ describe('Sequencer', function () {
         };
 
         const sequencer = new Sequencer(reportProvider);
-        const next = sequencer.getNextInSequence(players);
+        const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
         expect(next).toEqual(shortyPairCandidates);
     });
 
@@ -98,7 +99,7 @@ describe('Sequencer', function () {
         };
 
         const sequencer = new Sequencer(reportProvider);
-        const next = sequencer.getNextInSequence(players);
+        const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
         expect(next).toEqual(amadeusPairCandidates);
     });
 });

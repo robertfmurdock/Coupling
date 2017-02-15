@@ -51,10 +51,11 @@ describe('The game', function () {
             const couplingGameFactory = new CouplingGameFactory();
             const gameRunner = new GameRunner(couplingGameFactory);
 
+            const tribe = {id: tribeId, pairingRule: PairingRule.LongestTime};
 
             new CouplingDataService(mongoUrl).requestPlayersAndHistory(tribeId)
                 .then(function (both) {
-                    const result = gameRunner.run(both.players, [], both.history, tribeId, PairingRule.LongestTime);
+                    const result = gameRunner.run(both.players, [], both.history, tribe);
                     let foundPlayers = [];
                     result.pairs.forEach(function (pair) {
                         expect(pair.length).toEqual(2);
@@ -67,12 +68,13 @@ describe('The game', function () {
         });
 
         it('works with an odd number of players history', function (done) {
+            const tribe = {id: tribeId, pairingRule: PairingRule.LongestTime};
             const couplingGameFactory = new CouplingGameFactory();
             const gameRunner = new GameRunner(couplingGameFactory);
 
             new CouplingDataService(mongoUrl).requestHistory(tribeId)
                 .then(function (history) {
-                    const result = gameRunner.run([clark, bruce, diana], [], history, tribeId);
+                    const result = gameRunner.run([clark, bruce, diana], [], history, tribe);
                     expect(result.pairs.length).toEqual(2);
                 })
                 .then(done, done.fail);
@@ -166,12 +168,14 @@ describe('The game', function () {
                 ], 'JLA')
             ];
 
+            const tribe = {id: tribeId, pairingRule: PairingRule.LongestTime};
+
             historyCollection.insert(history)
                 .then(function () {
                     return new CouplingDataService(mongoUrl).requestPlayersAndHistory(tribeId)
                 })
                 .then(function (both) {
-                    const pairAssignments = gameRunner.run(both.players, [], both.history, tribeId, PairingRule.LongestTime);
+                    const pairAssignments = gameRunner.run(both.players, [], both.history, tribe);
                     const foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
                         return Comparators.areEqualPairs([bruce, john], pair);
                     });
@@ -211,9 +215,11 @@ describe('The game', function () {
         const couplingGameFactory = new CouplingGameFactory();
         const gameRunner = new GameRunner(couplingGameFactory);
 
+        const tribe = {id: tribeId, pairingRule: PairingRule.PreferDifferentBadge};
+
         saveAndLoadData(playerRoster, history, tribeId)
             .then(function (both) {
-                const pairAssignments = gameRunner.run(both.players, [], both.history, tribeId);
+                const pairAssignments = gameRunner.run(both.players, [], both.history, tribe);
                 const foundKamalaLoganPair = pairAssignments.pairs.some(function (pair) {
                     return Comparators.areEqualPairs([kamala, logan], pair);
                 });

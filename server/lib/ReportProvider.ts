@@ -1,13 +1,18 @@
+import PairingRule from "../../common/PairingRule";
 export default class ReportProvider {
     constructor(public pairingHistory: any) {
     }
 
-    getPairHistoryReports(players) {
+    getPairHistoryReports(players, pairingRule) {
         const allReports = [];
 
         players.forEach(player => {
             const candidates = players.filter(function (otherPlayer) {
-                return otherPlayer !== player && otherPlayer.badge !== player.badge;
+                if(pairingRule === PairingRule.PreferDifferentBadge) {
+                    return otherPlayer !== player && otherPlayer.badge !== player.badge;
+                } else {
+                    return otherPlayer !== player;
+                }
             });
 
             if(candidates.length > 0){
@@ -26,7 +31,6 @@ export default class ReportProvider {
               allReports.push(pairCandidateReport);
           });
         }
-
         return allReports;
     }
 }

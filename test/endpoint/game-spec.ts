@@ -22,6 +22,11 @@ let historyCollection = database.get('history');
 
 describe(path, function () {
 
+    beforeEach(function (done) {
+        tribeCollection.drop()
+            .then(done, done.fail);
+    });
+
     beforeAll(function () {
         removeTestPin();
     });
@@ -50,10 +55,14 @@ describe(path, function () {
             {name: "dude1"},
             {name: "dude2"}
         ];
-        superAgent.post(path)
-            .send(onlyEnoughPlayersForOnePair)
-            .expect(200)
-            .expect('Content-Type', /json/)
+        const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
+        tribeCollection.insert(tribe)
+            .then(function () {
+                return superAgent.post(path)
+                    .send(onlyEnoughPlayersForOnePair)
+                    .expect(200)
+                    .expect('Content-Type', /json/);
+            })
             .then(function (response) {
                 expect(response.body.tribe).toEqual(tribeId);
                 decorateWithPins(onlyEnoughPlayersForOnePair);
@@ -62,7 +71,6 @@ describe(path, function () {
             })
             .then(done, done.fail);
     });
-
 
     it('the tribe rule is set to PreferDifferentBadge then it will', function (done) {
         const player1 = {_id: monk.id(), name: "One", tribe: tribeId, badge: Badge.Default};
@@ -76,11 +84,16 @@ describe(path, function () {
             new PairAssignmentDocument(new Date(2014, 1, 10), [
                 [player1, player3],
                 [player2, player4]
-            ], 'JLA'),
+            ], tribeId),
+            new PairAssignmentDocument(new Date(2014, 1, 9), [
+                [player1, player4],
+                [player2, player3]
+            ], tribeId),
         ];
 
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.PreferDifferentBadge};
         historyCollection.remove({tribe: tribeId})
+            .then(() => tribeCollection.remove({id: tribeId}))
             .then(() => historyCollection.insert(history))
             .then(() => tribeCollection.insert(tribe))
             .then(function () {
@@ -96,8 +109,8 @@ describe(path, function () {
                     decorateWithPins([player2, player3]),
                 ];
 
-                Comparators.areEqualPairs(response.body.pairs[0], expectedPairAssignments[0]);
-                Comparators.areEqualPairs(response.body.pairs[1], expectedPairAssignments[1]);
+                expect(Comparators.areEqualPairs(response.body.pairs[0], expectedPairAssignments[0])).toBe(true);
+                expect(Comparators.areEqualPairs(response.body.pairs[1], expectedPairAssignments[1])).toBe(true);
             })
             .then(done, done.fail);
     });
@@ -111,17 +124,17 @@ describe(path, function () {
         const players = [player1, player2, player3, player4];
 
         const history = [
-            new PairAssignmentDocument(new Date(2014, 1, 10), [
-                [player1, player3],
-                [player2, player4]
-            ], 'JLA'),
             new PairAssignmentDocument(new Date(2014, 2, 10), [
                 [player1, player4],
                 [player2, player3]
-            ], 'JLA'),
+            ], tribeId),
+            new PairAssignmentDocument(new Date(2014, 2, 9), [
+                [player1, player3],
+                [player2, player4]
+            ], tribeId)
         ];
 
-        const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.PreferDifferentBadge};
+        const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
         historyCollection.remove({tribe: tribeId})
             .then(() => historyCollection.insert(history))
             .then(() => tribeCollection.insert(tribe))
@@ -137,8 +150,8 @@ describe(path, function () {
                     decorateWithPins([player1, player2]),
                     decorateWithPins([player3, player4]),
                 ];
-                Comparators.areEqualPairs(response.body.pairs[0], expectedPairAssignments[0]);
-                Comparators.areEqualPairs(response.body.pairs[1], expectedPairAssignments[1]);
+                expect(Comparators.areEqualPairs(response.body.pairs[0], expectedPairAssignments[0])).toBe(true);
+                expect(Comparators.areEqualPairs(response.body.pairs[1], expectedPairAssignments[1])).toBe(true);
             })
             .then(done, done.fail);
     });
@@ -156,9 +169,16 @@ describe(path, function () {
             let players = [
                 {name: "dude1"}
             ];
-            superAgent.post(path).send(players)
-                .expect(200)
-                .expect('Content-Type', /json/)
+
+            tribeCollection.drop()
+                .then(function () {
+                    return tribeCollection.insert({id: tribeId});
+                })
+                .then(function () {
+                    return superAgent.post(path).send(players)
+                        .expect(200)
+                        .expect('Content-Type', /json/);
+                })
                 .then(function (response) {
                     expect(response.body.tribe).toEqual(tribeId);
                     let expectedPinnedPlayer = {name: "dude1", pins: [pin]};

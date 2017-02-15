@@ -1,5 +1,6 @@
 import PairHistoryReport from "../../../server/lib/PairHistoryReport";
 import CouplingGame from "../../../server/lib/CouplingGame";
+import PairingRule from "../../../common/PairingRule";
 
 describe("Coupling Game", function () {
     function badSpin(players) {
@@ -10,7 +11,7 @@ describe("Coupling Game", function () {
         var game = new CouplingGame(badSpin, null);
         var players = [];
 
-        var results = game.play(players);
+        var results = game.play(players, PairingRule.LongestTime);
         expect(results).toEqual([]);
     });
 
@@ -36,7 +37,7 @@ describe("Coupling Game", function () {
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            expect(nextInSequenceFunction).toHaveBeenCalledWith(allPlayers);
+            expect(nextInSequenceFunction).toHaveBeenCalledWith(allPlayers, undefined);
             expect(spinFunction).toHaveBeenCalledWith([player1]);
         });
 
@@ -74,13 +75,9 @@ describe("Coupling Game", function () {
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            expect(nextInSequenceFunction.calls.argsFor(0)).toEqual([allPlayers]);
-            expect(spinFunction.calls.argsFor(0)).toEqual([
-                [player1, player2]
-            ]);
-            expect(nextInSequenceFunction.calls.argsFor(1)).toEqual([
-                [player2]
-            ]);
+            expect(nextInSequenceFunction.calls.argsFor(0)).toEqual([allPlayers, undefined]);
+            expect(spinFunction.calls.argsFor(0)).toEqual([[player1, player2]]);
+            expect(nextInSequenceFunction.calls.argsFor(1)).toEqual([[player2], undefined]);
         });
 
         it("should make two pairs in order determined by the wheel", function () {
@@ -102,7 +99,7 @@ describe("Coupling Game", function () {
 
         nextInSequenceFunction.and.returnValue(new PairHistoryReport(player1, [player2], 0));
 
-        var results = game.play(allPlayers);
+        var results = game.play(allPlayers, PairingRule.LongestTime);
 
         expect(results).toEqual([
             [player1, player2]

@@ -8,8 +8,8 @@ export default class Sequencer {
         return report.timeSinceLastPaired === undefined || report.timeSinceLastPaired === null;
     }
 
-    getNextInSequence(players) {
-        const allReports = this.reportProvider.getPairHistoryReports(players);
+    getNextInSequence(players, pairingRule) {
+        const allReports = this.reportProvider.getPairHistoryReports(players, pairingRule);
         let reportWithLongestTime = new PairHistoryReport(null, null, -1);
 
         allReports.forEach((report) => {
