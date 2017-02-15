@@ -11,6 +11,10 @@ export default class StatisticComposer {
     }
 
     private calculateFullRotation(players: Player[]) {
-        return 1;
+        if(players.length % 2 === 0) {
+            return players.length - 1;
+        } else {
+            return players.length;
+        }
     }
 }
