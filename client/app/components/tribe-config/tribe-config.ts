@@ -1,12 +1,21 @@
 import * as template from "./tribe-config.pug";
 import * as services from "../../services";
+import PairingRule from "../../../../common/PairingRule";
 
 export class TribeConfigController {
     static $inject = ['$location'];
     public tribe: services.Tribe;
     public isNew: boolean;
+    public pairingRules;
 
     constructor(public $location: angular.ILocationService) {
+        this.pairingRules = [
+            {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
+            {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
+        ];
+        if(this.tribe && !this.tribe.pairingRule) {
+            this.tribe.pairingRule = PairingRule.LongestTime;
+        }
     }
 
     clickSaveButton() {
