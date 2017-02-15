@@ -11,20 +11,14 @@ Intended to make it quick and easy to pair off, and encourage people to pair wit
 Have fun!
 
 
-To install and run, you'll need to have mongo and node installed. Once you've got that...
+To install and run, you'll need to have mongo and node installed... newest versions are preferable. Once you've got that...
 
 1. Clone the Coupling repository.
-2. Run npm rebuild so that the compiled dependencies work on your computer.
+2. Run npm test. This should download all the dependencies and run the app.
+2.5. If you get an error message telling you that mongo isn't working... start mongo. Then run tests again.
 3. In the Coupling directory, run the command "npm start"
 4. Now you can browse to the Coupling website in a browser. http://localhost:3000
-5. If you get an error message telling you that mongo isn't working... start mongo. Then check the website again.
-6. Try it out and let me know what you think!
-
-For developers:
-
-7. If you don't already have it, install the grunt command line interface by running: npm install grunt-cli -g
-8. You'll need to install the appropriate webdriver tools in order to run the functional tests. You can do this by running: node node_modules/protractor/bin/webdriver-manager update --standalone
-9. Run: grunt. All tests should run, including selenium tests. Hooray!
+5. Try it out and let me know what you think!
 
 Notice: this app now has a Dockerized development environment! Install docker and docker-compose, clone this repo, then:
 
