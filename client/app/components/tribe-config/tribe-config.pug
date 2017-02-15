@@ -21,6 +21,13 @@ div(class="tribe-frame" ng-show="self.tribe")
                 div
                     label Alt Badge Name:
                     input(id="alt-badge-name" type="text" ng-model="self.tribe.alternateBadgeName")
+                div
+                    label Pairing Rule:
+                    select(
+                    id="pairing-rule"
+                    ng-model="self.tribe.pairingRule"
+                    ng-options="rule.id as rule.description for rule in self.pairingRules"
+                    )
                 div(ng-show="self.isNew")
                     label(for="tribe-id") Unique Id:
                     input(id="tribe-id" type="text" ng-model="self.tribe.id")
