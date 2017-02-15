@@ -61,6 +61,23 @@ describe('ReportProvider', function () {
 
             expect(reports).toEqual([billsPairCandidates,tedsPairCandidates,amadeusPairCandidates,shortyPairCandidates]);
         });
+        it('will return a report for one player', function () {
+            const players = [bill];
+
+            const getReportStub = sinon.stub();
+            const pairingHistory = {
+                getPairCandidateReport: getReportStub
+            };
+
+            const billsPairCandidates = new PairHistoryReport(bill, [], 1);
+            getReportStub.withArgs(bill, []).returns(billsPairCandidates);
+
+            const reportProvider = new ReportProvider(pairingHistory);
+
+            const reports = reportProvider.getPairHistoryReports(players, PairingRule.PreferDifferentBadge);
+
+            expect(reports).toEqual([billsPairCandidates]);
+        });
     });
 
     describe('when the tribe prefers only longest time for determining pairs', function() {
