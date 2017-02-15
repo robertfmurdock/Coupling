@@ -1,6 +1,5 @@
 import Sequencer from "../../../server/lib/Sequencer";
 import PairHistoryReport from "../../../server/lib/PairHistoryReport";
-import * as sinon from "sinon";
 
 describe('Sequencer', function () {
 
@@ -26,6 +25,25 @@ describe('Sequencer', function () {
         const next = sequencer.getNextInSequence(players);
 
         expect(next).toEqual(tedsPairCandidates);
+    });
+
+    it('a person who just paired has lower priority than someone who has not paired in a long time', function() {
+        const players = [bill, ted, amadeus, shorty];
+
+        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 5);
+        const shortyPairCandidates = new PairHistoryReport(shorty, [], 0);
+
+        const reportProvider = {
+            getPairHistoryReports: function(players){
+                return [amadeusPairCandidates,shortyPairCandidates];
+            }
+        };
+
+        const sequencer = new Sequencer(reportProvider);
+
+        const next = sequencer.getNextInSequence(players);
+
+        expect(next).toEqual(amadeusPairCandidates);
     });
 
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
