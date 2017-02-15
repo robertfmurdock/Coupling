@@ -1,21 +1,13 @@
 import PairHistoryReport from "./PairHistoryReport";
 
 export default class Sequencer {
-    constructor(public pairingHistory: any) {
+    constructor(public reportProvider: any) {
     }
 
     getNextInSequence(players) {
-        const allReports = [];
-        players.forEach(player => {
-            const candidates = players.filter(function (otherPlayer) {
-                return otherPlayer !== player;
-            });
-
-            const pairCandidateReport = this.pairingHistory.getPairCandidateReport(player, candidates);
-            allReports.push(pairCandidateReport);
-        });
-
+        const allReports = this.reportProvider.getPairHistoryReports(players);
         let reportWithLongestTime = new PairHistoryReport(null, null, -1);
+
         allReports.forEach(function (report) {
             if (reportWithLongestTime.timeSinceLastPaired === report.timeSinceLastPaired) {
                 if (report.partnerCandidates.length < reportWithLongestTime.partnerCandidates.length) {

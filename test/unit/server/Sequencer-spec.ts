@@ -12,21 +12,16 @@ describe('Sequencer', function () {
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
         const players = [bill, ted, amadeus, shorty];
 
-        const getReportStub = sinon.stub();
-        const pairingHistory = {
-            getPairCandidateReport: getReportStub
+        const billsPairCandidates = new PairHistoryReport(bill, [], 3);
+        const tedsPairCandidates = new PairHistoryReport(ted, [], 7);
+        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
+        const shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
+
+        const reportProvider = {
+            getPairHistoryReports: function(players){return [billsPairCandidates,tedsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
         };
 
-        const billsPairCandidates = new PairHistoryReport(bill, [], 3);
-        getReportStub.withArgs(bill, [ted, amadeus, shorty]).returns(billsPairCandidates);
-        const tedsPairCandidates = new PairHistoryReport(ted, [], 7);
-        getReportStub.withArgs(ted, [bill, amadeus, shorty]).returns(tedsPairCandidates);
-        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
-        getReportStub.withArgs(amadeus, [bill, ted, shorty]).returns(amadeusPairCandidates);
-        const shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
-        getReportStub.withArgs(shorty, [bill, ted, amadeus]).returns(shortyPairCandidates);
-
-        const sequencer = new Sequencer(pairingHistory);
+        const sequencer = new Sequencer(reportProvider);
 
         const next = sequencer.getNextInSequence(players);
 
@@ -36,19 +31,15 @@ describe('Sequencer', function () {
     it('will use the Pairing History to produce a wheel spin sequence in order of longest time since paired to shortest', function () {
         const players = [bill, amadeus, shorty];
 
-        const getReportStub = sinon.stub();
-        const pairingHistory = {
-            getPairCandidateReport: getReportStub
+        const billsPairCandidates = new PairHistoryReport(bill, [], 3);
+        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
+        const shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
+
+        const reportProvider = {
+            getPairHistoryReports: function(players){return [billsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
         };
 
-        const billsPairCandidates = new PairHistoryReport(bill, [], 3);
-        getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
-        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
-        getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
-        const shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
-        getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
-
-        const sequencer = new Sequencer(pairingHistory);
+        const sequencer = new Sequencer(reportProvider);
         const next = sequencer.getNextInSequence(players);
         expect(next).toEqual(shortyPairCandidates);
     });
@@ -56,19 +47,15 @@ describe('Sequencer', function () {
     it('will use the Pairing History to get the next in sequence for when a player has never paired.', function () {
         const players = [bill, amadeus, shorty];
 
-        const getReportStub = sinon.stub();
-        const pairingHistory = {
-            getPairCandidateReport: getReportStub
+        const billsPairCandidates = new PairHistoryReport(bill, [], 3);
+        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
+        const shortyPairCandidates = new PairHistoryReport(shorty, [], null);
+
+        const reportProvider = {
+            getPairHistoryReports: function(players){return [billsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
         };
 
-        const billsPairCandidates = new PairHistoryReport(bill, [], 3);
-        getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
-        const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
-        getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
-        const shortyPairCandidates = new PairHistoryReport(shorty, [], null);
-        getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
-
-        const sequencer = new Sequencer(pairingHistory);
+        const sequencer = new Sequencer(reportProvider);
         const next = sequencer.getNextInSequence(players);
         expect(next).toEqual(shortyPairCandidates);
     });
@@ -76,27 +63,23 @@ describe('Sequencer', function () {
     it('will prioritize the report with fewest players when equal amounts of time.', function () {
         const players = [bill, amadeus, shorty];
 
-        const getReportStub = sinon.stub();
-        const pairingHistory = {
-            getPairCandidateReport: getReportStub
-        };
-
         const billsPairCandidates = new PairHistoryReport(bill, [
             {_id: '', tribe: ''},
             {_id: '', tribe: ''},
             {_id: '', tribe: ''}
         ], null);
-        getReportStub.withArgs(bill, [amadeus, shorty]).returns(billsPairCandidates);
         const amadeusPairCandidates = new PairHistoryReport(amadeus, [
             {_id: '', tribe: ''}
         ], null);
-        getReportStub.withArgs(amadeus, [bill, shorty]).returns(amadeusPairCandidates);
         const shortyPairCandidates = new PairHistoryReport(shorty, [
             {_id: '', tribe: ''}, {_id: '', tribe: ''}
         ], null);
-        getReportStub.withArgs(shorty, [bill, amadeus]).returns(shortyPairCandidates);
 
-        const sequencer = new Sequencer(pairingHistory);
+        const reportProvider = {
+            getPairHistoryReports: function(players){return [billsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
+        };
+
+        const sequencer = new Sequencer(reportProvider);
         const next = sequencer.getNextInSequence(players);
         expect(next).toEqual(amadeusPairCandidates);
     });

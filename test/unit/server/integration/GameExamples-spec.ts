@@ -15,8 +15,8 @@ describe('The game', function () {
     const hal = {_id: monk.id(), name: "Green Lantern", tribe: tribeId, badge: Badge.Default};
     const barry = {_id: monk.id(), name: "Flash", tribe: tribeId, badge: Badge.Default};
     const john = {_id: monk.id(), name: "Martian Manhunter", tribe: tribeId, badge: Badge.Default};
-    const clark = {_id: monk.id(), name: "Superman", tribe: tribeId, badge: Badge.Alternate};
-    const diana = {_id: monk.id(), name: "Wonder Woman", tribe: tribeId, badge: Badge.Alternate};
+    const clark = {_id: monk.id(), name: "Superman", tribe: tribeId, badge: Badge.Default};
+    const diana = {_id: monk.id(), name: "Wonder Woman", tribe: tribeId, badge: Badge.Default};
 
     const playerRoster = [
         clark,
