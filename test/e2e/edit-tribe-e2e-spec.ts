@@ -64,7 +64,7 @@ describe('The edit tribe page', function () {
             updateTextBox(By.id('default-badge-name'), expectedDefaultBadgeName);
             const expectedAltBadgeName = 'New Alt Badge Name';
             updateTextBox(By.id('alt-badge-name'), expectedAltBadgeName);
-            const differentBadgesOption = element(By.css('#pairing-rule option[label="Prefer Different Badges"]'));
+            const differentBadgesOption = element(By.css('#pairing-rule option[label="Prefer Different Badges (Beta)"]'));
             differentBadgesOption.click();
 
             element(By.id('save-tribe-button')).click();
@@ -75,7 +75,7 @@ describe('The edit tribe page', function () {
             expect(element(By.id('badge-checkbox')).getAttribute('checked')).toEqual('true');
             expect(element(By.id('default-badge-name')).getAttribute('value')).toEqual(expectedDefaultBadgeName);
             expect(element(By.id('alt-badge-name')).getAttribute('value')).toEqual(expectedAltBadgeName);
-            expect(checkedOption.getAttribute('label')).toBe('Prefer Different Badges');
+            expect(checkedOption.getAttribute('label')).toBe('Prefer Different Badges (Beta)');
         });
     });
 

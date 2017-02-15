@@ -11,7 +11,7 @@ export class TribeConfigController {
     constructor(public $location: angular.ILocationService) {
         this.pairingRules = [
             {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
-            {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges"},
+            {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
         ];
         if(this.tribe && !this.tribe.pairingRule) {
             this.tribe.pairingRule = PairingRule.LongestTime;
