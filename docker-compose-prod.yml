@@ -15,4 +15,4 @@ services:
     environment:
       - AUTH=no
     volumes:
-      - /data/db:/data/db
+      - ./data/db:/data/db

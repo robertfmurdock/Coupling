@@ -1,18 +1,6 @@
-FROM node:5-slim
+FROM node:7-alpine
 
 WORKDIR /usr/src/app
-
-RUN apt-get update \
-  && apt-get install -y \
-  bzip2 \
-  libfreetype6 \
-  libfontconfig \
-  git
-RUN cd $(npm root -g)/npm \
-  && npm install fs-extra \
-  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs.rename/fs.move/ ./lib/utils/rename.js
-
-COPY ["package.json", "/usr/src/app/"]
 
 ENV \
   PUBLIC_HOST=web \
@@ -20,8 +8,9 @@ ENV \
   MONGO_CONNECTION=mongodb://mongo \
   NODE_ENV=production
 
-RUN npm install --production
 COPY . /usr/src/app
+
+RUN npm install --production
 
 CMD ["npm", "start"]
 EXPOSE 3000 8125
