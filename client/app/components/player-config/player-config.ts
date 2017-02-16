@@ -2,6 +2,7 @@ import * as services from "../../services";
 import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
 import Badge from "../../../../common/Badge";
+import * as _ from "underscore";
 import IRouteService = angular.route.IRouteService;
 
 export class PlayerConfigController {
@@ -17,9 +18,9 @@ export class PlayerConfigController {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
         $scope.Badge = Badge;
 
-        if (!this.player.badge) {
-            this.player.badge = Badge.Default;
-        }
+        _.defaults(this.player, {
+            badge: Badge.Default
+        });
     }
 
     savePlayer() {

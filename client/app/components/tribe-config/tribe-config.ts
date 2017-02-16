@@ -1,6 +1,7 @@
 import * as template from "./tribe-config.pug";
 import * as services from "../../services";
 import PairingRule from "../../../../common/PairingRule";
+import * as _ from "underscore";
 
 export class TribeConfigController {
     static $inject = ['$location'];
@@ -13,9 +14,12 @@ export class TribeConfigController {
             {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
             {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
         ];
-        if(!this.tribe.pairingRule) {
-            this.tribe.pairingRule = PairingRule.LongestTime;
-        }
+
+        _.defaults(this.tribe, {
+            pairingRule: PairingRule.LongestTime,
+            defaultBadgeName: 'Default',
+            alternateBadgeName: 'Alternate',
+        });
     }
 
     clickSaveButton() {

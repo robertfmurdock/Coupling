@@ -1,7 +1,6 @@
 import "angular";
 import "angular-mocks";
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
-import Tribe from "../../../common/Tribe";
 import PairingRule from "../../../common/PairingRule";
 
 const defer = function () {
@@ -48,11 +47,25 @@ describe('TribeConfigController', function () {
         };
     });
 
-    it('will default an empty tribe to having standard pairing rule', inject(function (_$controller_) {
-        const tribe: Tribe = {id: '1', name: '1'};
-        _$controller_('TribeConfigController', {$location: location}, {tribe: tribe});
-        expect(tribe.pairingRule).toBe(PairingRule.LongestTime);
-    }));
+    describe('will default an empty tribe', function () {
+
+        beforeEach(inject(function (_$controller_) {
+            this.tribe = {id: '1', name: '1'};
+            _$controller_('TribeConfigController', {$location: location}, {tribe: this.tribe});
+        }));
+
+        it('to having standard pairing rule', function () {
+            expect(this.tribe.pairingRule).toBe(PairingRule.LongestTime);
+        });
+
+        it('to having default badge name', function () {
+            expect(this.tribe.defaultBadgeName).toBe('Default');
+        });
+
+        it('to having alternate badge name', function () {
+            expect(this.tribe.alternateBadgeName).toBe('Alternate');
+        });
+    });
 
     describe('when pressing the save button ', function () {
 
