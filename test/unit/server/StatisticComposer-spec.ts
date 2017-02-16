@@ -11,6 +11,7 @@ describe('StatisticComposer', function () {
     let makePlayer = function (tribe: Tribe, id: string) {
         return {_id: id, tribe: tribe.id};
     };
+
     let makePlayers = function (tribe: Tribe, numberOfPlayers: number) {
         return _.map(Array.apply(null, {length: numberOfPlayers}),
             (value, index) => makePlayer(tribe, index.toString())

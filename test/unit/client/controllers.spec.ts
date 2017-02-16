@@ -8,6 +8,7 @@ import PlayerCardController from "../../../client/app/components/player-card/Pla
 import {TribeCardController} from "../../../client/app/components/tribe-card/TribeCardController";
 import {PairAssignmentsController} from "../../../client/app/components/pair-assignments/pair-assignments";
 import {HistoryController} from "../../../client/app/components/history/history";
+import Pair from "../../../common/Pair";
 
 const defer = function () {
     const defer = {
@@ -294,7 +295,7 @@ describe('The controller named ', function () {
 
         it('will provide all of the players that are not in the current pairs', function () {
             const tribeId = 'numbers';
-            const currentPairs = [
+            const currentPairs: Pair[] = [
                 [
                     {name: 'tom', _id: '0', tribe: tribeId},
                     {name: 'jerry', _id: 'z', tribe: tribeId}
