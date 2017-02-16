@@ -10,11 +10,11 @@ describe('The statistics page', function () {
         name: 'Funkytown'
     };
 
-    beforeAll(function () {
+    beforeAll(function (done) {
         browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
 
-        browser.wait(() => e2eHelp.authorizeUserForTribes([tribe.id]), 1000);
-        browser.waitForAngular();
+        e2eHelp.authorizeUserForTribes([tribe.id])
+            .then(done, done.fail);
     });
 
     beforeEach(function () {
