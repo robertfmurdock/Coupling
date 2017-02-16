@@ -92,6 +92,18 @@ describe('PairHeatCalculator', function () {
             const heat = heatCalculator.calculate(pair, history, rotationPeriod);
             expect(heat).toBe(0);
         });
+
+        it('will not go higher than 10 when pairing more than once per rotation', function() {
+            const rotationHeatWindow = 5;
+            const intervalsUntilCooling = rotationPeriod * rotationHeatWindow;
+            const expectedPairings = makePairDocumentList([pair, [player3]], rotationHeatWindow + 1);
+            const intervalCount = intervalsUntilCooling - expectedPairings.length;
+            const history = makePairDocumentList([[player2, player3], [player1]], intervalCount)
+                .concat(expectedPairings);
+
+            const heat = heatCalculator.calculate(pair, history, rotationPeriod);
+            expect(heat).toBe(10);
+        });
     });
 
     describe('with five players', function () {

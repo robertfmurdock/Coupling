@@ -2,8 +2,10 @@
 test-output
 .idea/workspace.xml
 .idea/sonarlint
+**/sandbox/*.json
 node_modules
 .tmp
 build
 data
 .DS_Store
+ª
