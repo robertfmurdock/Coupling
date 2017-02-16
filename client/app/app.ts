@@ -1,21 +1,29 @@
-import "angular"
-import "angular-gravatar"
-import "angular-route"
+import "angular";
+import "angular-gravatar";
+import "angular-route";
+import "ng-fittext";
+import "prefixfree";
+import "angular-native-dragdrop";
+import "./filters";
+import "./animations";
+import "./components/components";
+import "./../stylesheets/style.scss";
+import "./../stylesheets/animations.scss";
+import "./services";
+import statisticsRoute from "./routes/StatisticsRoute";
+import newPairAssignmentsRoute from "./routes/NewPairAssignmentsRoute";
+import currentPairAssignmentsRoute from "./routes/CurrentPairAssignmentsRoute";
+import editPlayerRoute from "./routes/EditPlayerRoute";
+import newPlayerRoute from "./routes/NewPlayerRoute";
+import pinRoute from "./routes/PinRoute";
+import historyRoute from "./routes/HistoryRoute";
+import editTribeRoute from "./routes/EditTribeRoute";
+import prepareTribeRoute from "./routes/PrepareTribeRoute";
+import newTribeRoute from "./routes/NewTribeRoute";
+import tribeListRoute from "./routes/TribeListRoute";
 import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
 import IResource = ng.resource.IResource
-import "ng-fittext"
-import 'prefixfree'
-import "angular-native-dragdrop"
-import './filters'
-import './animations'
-import './components/components'
-import './../stylesheets/style.scss'
-import './../stylesheets/animations.scss'
-
-import * as _ from 'underscore'
-import './services'
-import * as services from './services'
 
 const app = angular.module('coupling', ["ngRoute",
     'ngFitText',
@@ -32,262 +40,13 @@ app.config(['$locationProvider', function ($locationProvider) {
     });
 }]);
 
-class TribeListRouteController {
-    static $inject = ['tribes'];
-
-    constructor(public tribes) {
-    }
-}
-
-const tribeListRoute:IRoute = {
-    template: '<tribelist tribes="main.tribes">',
-    controllerAs: 'main',
-    controller: TribeListRouteController,
-    resolve: {
-        tribes: ['Coupling', function (Coupling) {
-            return Coupling.getTribes();
-        }]
-    }
-};
-
-class NewTribeRouteController {
-    static $inject = ['Coupling'];
-
-    tribe: services.Tribe;
-
-    constructor(Coupling) {
-        this.tribe = new Coupling.Tribe();
-        this.tribe.name = 'New Tribe'
-    }
-
-}
-const newTribeRoute:IRoute = {
-    template: '<tribe-config tribe="main.tribe" is-new=true>',
-    controllerAs: 'main',
-    controller: NewTribeRouteController
-};
-
-const tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
-    return Coupling.getTribe($route.current.params.tribeId);
-}];
-
-class PrepareTribeRouteController {
-    static $inject = ['tribe', 'players'];
-
-    constructor(public tribe, public players) {
-    }
-}
-
-const prepareTribeRoute:IRoute = {
-    template: '<prepare tribe="main.tribe" players="main.players">',
-    controllerAs: 'main',
-    controller: PrepareTribeRouteController,
-    resolve: {
-        tribe: tribeResolution,
-        players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling:services.Coupling) {
-            const tribeId = $route.current.params.tribeId;
-            return $q.all({
-                players: Coupling.getPlayers(tribeId),
-                history: Coupling.getHistory(tribeId)
-            }).then((options:any)=> {
-                options.selectedPlayers = Coupling.getSelectedPlayers(options.players, options.history);
-                return options;
-            }).then(options=> {
-                return options.players;
-            });
-        }]
-    }
-};
-
-class EditTribeRouteController {
-    static $inject = ['tribe'];
-
-    constructor(public tribe) {
-    }
-}
-
-const editTribeRoute:IRoute = {
-    template: '<tribe-config tribe="main.tribe" is-new=false>',
-    controllerAs: 'main',
-    controller: EditTribeRouteController,
-    resolve: {
-        tribe: tribeResolution
-    }
-};
-
-class HistoryRouteController {
-    static $inject = ['tribe', 'history'];
-
-    constructor(public tribe:services.Tribe, public history:[services.PairAssignmentSet]) {
-    }
-}
-
-const historyRoute:IRoute = {
-    template: '<history tribe="main.tribe" history="main.history">',
-    controllerAs: 'main',
-    controller: HistoryRouteController,
-    resolve: {
-        tribe: tribeResolution,
-        history: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getHistory($route.current.params.tribeId);
-        }]
-    }
-};
-
-class PinRouteController {
-    static $inject = ['pins'];
-
-    constructor(public pins) {
-    }
-}
-
-const pinRoute:IRoute = {
-    template: '<pin-list pins="main.pins">',
-    controllerAs: 'main',
-    controller: PinRouteController,
-    resolve: {
-        pins: ['$route', 'Coupling', function ($route, Coupling:services.Coupling) {
-            return Coupling.getPins($route.current.params.tribeId);
-        }]
-    }
-};
-
-class NewPlayerRouteController {
-    static $inject = ['tribe', 'players'];
-    tribe:services.Tribe;
-    player:services.Player;
-    players:[services.Player];
-
-    constructor(tribe, players) {
-        this.tribe = tribe;
-        this.players = players;
-        this.player = {_id: undefined, tribe: tribe.id};
-    }
-}
-
-const newPlayerRoute:IRoute = {
-    template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
-    controller: NewPlayerRouteController,
-    controllerAs: 'main',
-    resolve: {
-        tribe: tribeResolution,
-        players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getPlayers($route.current.params.tribeId);
-        }]
-    }
-};
-
-class EditPlayerRouteController {
-    static $inject = ['$route', 'tribe', 'players'];
-    tribe:services.Tribe;
-    player:services.Player;
-    players:[services.Player];
-
-    constructor($route, tribe, players) {
-        this.tribe = tribe;
-        this.players = players;
-        const playerId = $route.current.params.id;
-        this.player = _.findWhere(this.players, {_id: playerId});
-    }
-}
-
-const editPlayerRoute:IRoute = {
-    template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
-    controller: EditPlayerRouteController,
-    controllerAs: 'main',
-    resolve: {
-        tribe: tribeResolution,
-        players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getPlayers($route.current.params.tribeId);
-        }]
-    }
-};
-
-class CurrentPairAssignmentsRouteController {
-    static $inject = ['pairAssignmentDocument', 'tribe', 'players'];
-
-    constructor(public pairAssignments:services.PairAssignmentSet, public tribe:services.Tribe, public players:[services.Player]) {
-    }
-}
-
-const currentPairAssignmentsRoute:IRoute = {
-    template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
-    controller: CurrentPairAssignmentsRouteController,
-    controllerAs: 'main',
-    resolve: {
-        pairAssignmentDocument: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getHistory($route.current.params.tribeId).then(function (history) {
-                return history[0];
-            });
-        }],
-        tribe: tribeResolution,
-        players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getPlayers($route.current.params.tribeId);
-        }]
-    }
-};
-
-class NewPairAssignmentsRouteController {
-    static $inject = ['requirements'];
-    tribe:services.Tribe;
-    players:[services.Player];
-    pairAssignments:services.PairAssignmentSet;
-
-    constructor(requirements) {
-        this.tribe = requirements.tribe;
-        this.players = requirements.players;
-        this.pairAssignments = requirements.pairAssignments;
-    }
-}
-
-const newPairAssignmentsRoute:IRoute = {
-    template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments" is-new="true">',
-    controllerAs: 'main',
-    controller: NewPairAssignmentsRouteController,
-    resolve: {
-        requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:services.Coupling) {
-            const tribeId = $route.current.params.tribeId;
-            return $q.all({
-                tribe: Coupling.getTribe(tribeId),
-                players: Coupling.getPlayers(tribeId),
-                history: Coupling.getHistory(tribeId)
-            })
-                .then(options=> {
-                    const players:[services.Player] = options['players'];
-                    const history = options['history'];
-                    const selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
-                    options['selectedPlayers'] = _.chain(_.values(selectablePlayerMap))
-                        .filter(selectable=> {
-                            return selectable.isSelected;
-                        })
-                        .map(selectable=> {
-                            return selectable.player;
-                        })
-                        .value();
-                    return options;
-                })
-                .then(options=> {
-                    const selectedPlayers = options['selectedPlayers'];
-                    options['pairAssignments'] = Coupling.spin(selectedPlayers, tribeId);
-                    return $q.all(options);
-                });
-        }]
-    }
-};
-
-const statisticsRoute:IRoute = {
-    template: '<statistics>'
-};
-
-app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
+app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
 
     routeProvider
         .when('/', {redirectTo: '/tribes/'})
         .when('/tribes/', tribeListRoute)
         .when('/new-tribe/', newTribeRoute)
-        .when('/:tribeId/', {
-            redirectTo: '/:tribeId/pairAssignments/current/'
-        })
+        .when('/:tribeId/', {redirectTo: '/:tribeId/pairAssignments/current/'})
         .when('/:tribeId/prepare/', prepareTribeRoute)
         .when('/:tribeId/edit/', editTribeRoute)
         .when('/:tribeId/history/', historyRoute)
@@ -297,9 +56,7 @@ app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
         .when('/:tribeId/player/new/', newPlayerRoute)
         .when('/:tribeId/player/:id/', editPlayerRoute)
         .when('/:tribeId/statistics', statisticsRoute)
-        .when('/auth/google', {
-            redirectTo: '/auth/google'
-        });
+        .when('/auth/google', {redirectTo: '/auth/google'});
 }]);
 
 angular.module('ui.gravatar')
@@ -313,4 +70,3 @@ angular.module('ui.gravatar')
             gravatarServiceProvider.secure = true;
         }
     ]);
-
