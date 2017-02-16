@@ -2,8 +2,10 @@ doctype html
 html(ng-app="coupling")
     head
         title= title
+        link(rel='stylesheet', href='/app/build/vendor/vendor-styles.css')
         link(rel='stylesheet', href='/app/build/styles.css')
 
+        script(src="/app/build/vendor/vendor.js",type="application/javascript")
         script(src="/app/build/main.js",type="application/javascript")
         meta(name="viewport" content="width=device-width")
 

@@ -1,5 +1,6 @@
 task clean {
     doLast {
+        delete file('build')
         delete file('public/app/build')
         delete file('test-output')
     }
@@ -11,8 +12,19 @@ task installNodeModules(type: Exec) {
     commandLine "npm", "install"
 }
 
-task clientCompile(type: Exec) {
+task clientVendorCompile(type: Exec) {
     dependsOn installNodeModules
+    mustRunAfter clean
+    inputs.file fileTree('node_modules')
+    inputs.file file('package.json')
+    inputs.file file('client/vendor.webpack.config.js')
+    outputs.dir 'public/app/build/vendor'
+    environment 'NODE_ENV': 'production'
+    commandLine "node_modules/.bin/webpack", '--config', 'client/vendor.webpack.config.js'
+}
+
+task clientCompile(type: Exec) {
+    dependsOn installNodeModules, clientVendorCompile
     mustRunAfter clean
     inputs.file fileTree('node_modules')
     inputs.file file('package.json')
@@ -44,7 +56,7 @@ task compile {
 }
 
 task clientTest(type: Exec) {
-    dependsOn installNodeModules
+    dependsOn installNodeModules, clientVendorCompile
     inputs.file file('package.json')
     inputs.file clientCompile.inputs.files
     inputs.file fileTree('test/unit/client')

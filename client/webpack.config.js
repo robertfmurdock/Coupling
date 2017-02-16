@@ -44,9 +44,18 @@ const config = {
     ]
   },
   plugins: [
-    new WebpackCleanupPlugin(),
-    new ExtractTextPlugin({filename: './styles.css', allChunks: true})
-  ]
+    new WebpackCleanupPlugin({
+      exclude: ["vendor/*"],
+    }),
+    new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
+    new webpack.DllReferencePlugin({
+      context: '.',
+      manifest: require('../public/app/build/vendor/vendor-manifest.json')
+    }),
+  ],
+  performance: {
+    hints: 'error'
+  }
 };
 
 if (process.env.NODE_ENV === 'production') {

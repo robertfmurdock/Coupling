@@ -10,7 +10,6 @@ import "angular-native-dragdrop"
 import './filters'
 import './animations'
 import './components/components'
-import 'font-awesome/css/font-awesome.css'
 import './../stylesheets/style.scss'
 import './../stylesheets/animations.scss'
 
