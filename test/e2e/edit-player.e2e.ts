@@ -153,6 +153,18 @@ describe('The edit player page', function () {
         expect(element(By.id('player-name')).getAttribute('value')).toBe('completely different name')
     });
 
+    it('saving with no name will show as a default name.', function () {
+        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        const playerNameTextField = element(By.id('player-name'));
+        playerNameTextField.clear();
+        savePlayerButton.click();
+        element(By.css('.tribe')).click();
+        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/pairAssignments/current/');
+
+        browser.setLocation('/' + tribe.id + '/player/' + player1._id);
+        expect(element(By.css('[ng-model="playerCard.player.name"]')).getText()).toBe('Unknown')
+    });
+
     it('will show all players', function () {
         browser.setLocation('/' + tribe.id + '/player/' + player1._id);
         const playerElements = element.all(By.repeater('player in players'));

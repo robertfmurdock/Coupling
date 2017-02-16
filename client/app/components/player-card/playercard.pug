@@ -1,4 +1,4 @@
 img(ng-src="{{playerCard.player | gravatarUrl:{size:playerCard.size} }}" class="player-icon" width="{{playerCard.size}}" height="{{playerCard.size}}")
 div(class="player-header" ng-click="playerCard.clickPlayerName($event)")
     text(ng-hide="playerCard.player._id") NEW:
-    text(data-fittext=1 data-fittext-min="17" data-fittext-max="35" ng-model="playerCard.player.name") {{playerCard.player.name}}
+    text(data-fittext=1 data-fittext-min="17" data-fittext-max="35" ng-model="playerCard.player.name") {{playerCard.player.name || 'Unknown'}}
