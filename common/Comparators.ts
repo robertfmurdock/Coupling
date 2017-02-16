@@ -1,5 +1,5 @@
-import Player from "../../common/Player";
-import Pair from "../../common/Pair";
+import Player from "./Player";
+import Pair from "./Pair";
 
 const findPerson = function (target: Player) {
     return function (person: Player) {

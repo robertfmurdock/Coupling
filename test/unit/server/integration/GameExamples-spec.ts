@@ -3,7 +3,7 @@ import CouplingGameFactory from "../../../../server/lib/CouplingGameFactory";
 import GameRunner from "../../../../server/lib/GameRunner";
 import CouplingDataService from "../../../../server/lib/CouplingDataService";
 import PairAssignmentDocument from "../../../../common/PairAssignmentDocument";
-import Comparators from "../../../../server/lib/Comparators";
+import Comparators from "../../../../common/Comparators";
 import Badge from "../../../../common/Badge";
 import PairingRule from "../../../../common/PairingRule";
 import Pair from "../../../../common/Pair";

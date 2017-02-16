@@ -1,7 +1,7 @@
 "use strict";
 import * as Promise from "bluebird";
 import CouplingDataService from "../../server/lib/CouplingDataService";
-import Comparators from "../../server/lib/Comparators";
+import Comparators from "../../common/Comparators";
 import * as supertest from "supertest";
 import * as monk from "monk";
 

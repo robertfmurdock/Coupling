@@ -1,4 +1,4 @@
-import Comparators from "../../../server/lib/Comparators";
+import Comparators from "../../../common/Comparators";
 import Pair from "../../../common/Pair";
 
 describe('Comparators', function () {

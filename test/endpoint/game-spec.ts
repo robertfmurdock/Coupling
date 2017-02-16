@@ -5,7 +5,7 @@ import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import Badge from "../../common/Badge";
 import Tribe from "../../common/Tribe";
 import PairingRule from "../../common/PairingRule";
-import Comparators from "../../server/lib/Comparators";
+import Comparators from "../../common/Comparators";
 let config = require('../../config');
 
 let server = 'http://localhost:' + config.port;

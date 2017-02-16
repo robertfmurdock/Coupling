@@ -2,7 +2,7 @@ import Tribe from "../../common/Tribe";
 import Player from "../../common/Player";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as _ from "underscore";
-import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "./PairingHistory";
+import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 
 export default class StatisticComposer {
 

@@ -1,4 +1,4 @@
-import Comparators from "./Comparators";
+import Comparators from "../../common/Comparators";
 
 export default class CouplingGame {
 

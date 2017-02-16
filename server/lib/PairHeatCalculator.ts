@@ -1,6 +1,6 @@
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as _ from "underscore";
-import Comparators from "./Comparators";
+import Comparators from "../../common/Comparators";
 import Pair from "../../common/Pair";
 
 const heatIncrements = [0, 1, 2.5, 4.5, 7, 10];

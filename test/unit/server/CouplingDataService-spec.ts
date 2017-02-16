@@ -1,7 +1,7 @@
 "use strict";
 import * as monk from "monk";
 import CouplingDataService from "../../../server/lib/CouplingDataService";
-import Comparators from "../../../server/lib/Comparators";
+import Comparators from "../../../common/Comparators";
 import Player from "../../../common/Player";
 const config = require('../../../config');
 
