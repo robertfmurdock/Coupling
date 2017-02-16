@@ -18,7 +18,9 @@ const config = {
     loaders: [
       {
         test: /\.ts$/,
-        loader: 'ts-loader'
+        loader: 'ts-loader?' + JSON.stringify({
+          silent: true
+        })
       },
       {
         test: /\.(pug)$/,
@@ -45,6 +47,7 @@ const config = {
   },
   plugins: [
     new WebpackCleanupPlugin({
+      quiet: true,
       exclude: ["vendor/*"],
     }),
     new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
