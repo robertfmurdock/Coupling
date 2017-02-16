@@ -275,6 +275,10 @@ const newPairAssignmentsRoute:IRoute = {
     }
 };
 
+const statisticsRoute:IRoute = {
+    template: '<statistics>'
+};
+
 app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
 
     routeProvider
@@ -292,6 +296,7 @@ app.config(['$routeProvider', function (routeProvider:IRouteProvider) {
         .when('/:tribeId/pairAssignments/new/', newPairAssignmentsRoute)
         .when('/:tribeId/player/new/', newPlayerRoute)
         .when('/:tribeId/player/:id/', editPlayerRoute)
+        .when('/:tribeId/statistics', statisticsRoute)
         .when('/auth/google', {
             redirectTo: '/auth/google'
         });

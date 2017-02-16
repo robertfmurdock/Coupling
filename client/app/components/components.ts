@@ -10,6 +10,7 @@ import TribeCard from "./tribe-card/TribeCardController";
 import TribeConfig from "./tribe-config/tribe-config";
 import TribeList from "./tribe-list/tribe-list";
 import Welcome from "./welcome/welcome";
+import Statistics from "./statistics/statistics";
 
 angular.module('coupling.component', [
     'coupling.services',
@@ -21,6 +22,7 @@ angular.module('coupling.component', [
     PlayerCard.name,
     PlayerRoster.name,
     Prepare.name,
+    Statistics.name,
     TribeCard.name,
     TribeConfig.name,
     TribeList.name,
