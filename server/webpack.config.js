@@ -1,10 +1,9 @@
-var webpack = require('webpack');
-var path = require('path');
-var jsPath = path.resolve(__dirname, './');
-var projectRoot = path.resolve(__dirname, '../');
-var nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
+const path = require('path');
+const jsPath = path.resolve(__dirname, './');
+const nodeExternals = require('webpack-node-externals');
 
-var exports = {
+const config = {
   entry: path.resolve(jsPath, './app.ts'),
   output: {
     path: path.resolve(__dirname, '../build'),
@@ -19,8 +18,7 @@ var exports = {
   target: 'node',
   externals: [nodeExternals()],
   resolve: {
-    root: projectRoot,
-    extensions: ['', '.js', '.ts']
+    extensions: ['.js', '.ts']
   },
   module: {
     loaders: [
@@ -34,11 +32,10 @@ var exports = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  exports.plugins = exports.plugins.concat([
+  config.plugins = config.plugins.concat([
     new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]);
 }
 
-module.exports = exports;
+module.exports = config;

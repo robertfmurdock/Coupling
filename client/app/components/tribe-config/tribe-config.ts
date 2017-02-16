@@ -14,7 +14,9 @@ export class TribeConfigController {
             {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
             {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
         ];
+    }
 
+    $onInit() {
         _.defaults(this.tribe, {
             pairingRule: PairingRule.LongestTime,
             defaultBadgeName: 'Default',
@@ -27,6 +29,7 @@ export class TribeConfigController {
             .$save()
             .then(() => this.$location.path("/tribes"));
     }
+
 }
 
 export default angular.module("coupling.tribeConfig", [])

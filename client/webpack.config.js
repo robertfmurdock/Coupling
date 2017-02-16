@@ -1,10 +1,10 @@
-var webpack = require('webpack');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-var jsPath = path.resolve(__dirname, './app');
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const jsPath = path.resolve(__dirname, './app');
 
-var exports = {
+const config = {
   entry: path.resolve(jsPath, './app.ts'),
   output: {
     path: path.resolve(__dirname, '../public/app/build'),
@@ -12,8 +12,7 @@ var exports = {
   },
   devtool: 'source-map',
   resolve: {
-    root: jsPath,
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js', '.json']
+    extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json']
   },
   module: {
     loaders: [
@@ -23,20 +22,20 @@ var exports = {
       },
       {
         test: /\.(pug)$/,
-        loader: 'pug',
+        loader: 'pug-loader',
         include: jsPath
       },
       {
         test: /\.(json)$/,
-        loader: 'json'
+        loader: 'json-loader'
       },
       {
         test: /\.(css)$/,
-        loader: ExtractTextPlugin.extract('style', 'css')
+        loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
       },
       {
         test: /\.(scss)$/,
-        loader: ExtractTextPlugin.extract('style', 'css!sass')
+        loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!sass-loader'})
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -46,23 +45,22 @@ var exports = {
   },
   plugins: [
     new WebpackCleanupPlugin(),
-    new ExtractTextPlugin('./styles.css', {allChunks: true})
+    new ExtractTextPlugin({filename: './styles.css', allChunks: true})
   ]
 };
 
 if (process.env.NODE_ENV === 'production') {
-  exports.devtool = 'cheap-module-source-map';
+  config.devtool = 'cheap-module-source-map';
 
-  exports.plugins = exports.plugins.concat([
+  config.plugins = config.plugins.concat([
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
     new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]);
 }
 
-module.exports = exports;
+module.exports = config;

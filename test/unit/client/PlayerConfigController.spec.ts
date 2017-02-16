@@ -3,6 +3,7 @@ import "angular";
 import "angular-mocks";
 import Player from "../../../common/Player";
 import Badge from "../../../common/Badge";
+import * as _ from 'underscore'
 
 const defer = function () {
     const defer = {
@@ -15,6 +16,13 @@ const defer = function () {
         defer.reject = reject;
     });
     return defer;
+};
+
+let initPlayerController = function (controller, $scope, Coupling, $location, $route: {reload(), routes: {}}, tribe: {name: string; id: string; _id: string}, alternatePlayer: Player) {
+    controller = new PlayerConfigController($scope, Coupling, $location, $route);
+    _.extend(controller, {tribe, player: alternatePlayer});
+    controller.$onInit();
+    return controller;
 };
 
 describe('PlayerConfigController', function () {
@@ -47,28 +55,24 @@ describe('PlayerConfigController', function () {
         player = {_id: 'blarg', tribe: tribe.id};
     });
 
-    it('when the given player has no badge, will use default badge', inject(function (_$controller_) {
-        const $route = {};
-        controller = _$controller_('PlayerConfigController', {
-            $scope: $scope,
-            Coupling,
-            $location: $location,
-            $route
-        }, {tribe, player});
+    it('when the given player has no badge, will use default badge', function () {
+        const $route = {
+            reload(){
+            }, routes: {}
+        };
+        controller = initPlayerController(controller, $scope, Coupling, $location, $route, tribe, player);
         expect(player.badge).toBe(Badge.Default);
-    }));
+    });
 
-    it('when the given player has alt badge, will not modify player', inject(function (_$controller_) {
-        const $route = {};
+    it('when the given player has alt badge, will not modify player', function () {
+        const $route = {
+            reload(){
+            }, routes: {}
+        };
         const alternatePlayer: Player = {_id: '', badge: Badge.Alternate, tribe: tribe.id};
-        controller = _$controller_('PlayerConfigController', {
-            $scope: $scope,
-            Coupling,
-            $location: $location,
-            $route
-        }, {tribe, player: alternatePlayer});
+        controller = initPlayerController(controller, $scope, Coupling, $location, $route, tribe, alternatePlayer);
         expect(alternatePlayer.badge).toBe(Badge.Alternate);
-    }));
+    });
 
     let controller;
     it('can save player using Coupling service and then reloads', function (done) {

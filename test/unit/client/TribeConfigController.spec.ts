@@ -2,6 +2,7 @@ import "angular";
 import "angular-mocks";
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
 import PairingRule from "../../../common/PairingRule";
+import * as _ from "underscore";
 
 const defer = function () {
     const defer = {
@@ -49,10 +50,12 @@ describe('TribeConfigController', function () {
 
     describe('will default an empty tribe', function () {
 
-        beforeEach(inject(function (_$controller_) {
+        beforeEach(function () {
             this.tribe = {id: '1', name: '1'};
-            _$controller_('TribeConfigController', {$location: location}, {tribe: this.tribe});
-        }));
+            const tribeConfigController = new TribeConfigController(location);
+            _.extend(tribeConfigController, {tribe: this.tribe});
+            tribeConfigController.$onInit();
+        });
 
         it('to having standard pairing rule', function () {
             expect(this.tribe.pairingRule).toBe(PairingRule.LongestTime);
@@ -73,13 +76,15 @@ describe('TribeConfigController', function () {
         let tribe;
         let controller;
 
-        beforeEach(inject(function (_$controller_) {
+        beforeEach(function () {
             tribe = {
                 $save: jasmine.createSpy('save tribe spy').and.returnValue(saveTribeDefer.promise)
             };
 
-            controller = _$controller_('TribeConfigController', {$location: location}, {tribe: tribe});
-        }));
+            controller = new TribeConfigController(location);
+            _.extend(controller, {tribe: tribe});
+            controller.$onInit();
+        });
 
         it('will use the Coupling service to save the tribe', function () {
             controller.clickSaveButton();
