@@ -13,7 +13,7 @@ export class TribeConfigController {
             {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
             {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
         ];
-        if(this.tribe && !this.tribe.pairingRule) {
+        if(!this.tribe.pairingRule) {
             this.tribe.pairingRule = PairingRule.LongestTime;
         }
     }

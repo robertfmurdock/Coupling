@@ -17,7 +17,7 @@ export class PlayerConfigController {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
         $scope.Badge = Badge;
 
-        if (this.player && !this.player.badge) {
+        if (!this.player.badge) {
             this.player.badge = Badge.Default;
         }
     }
