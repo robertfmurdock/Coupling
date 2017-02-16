@@ -1,2 +1,2 @@
-var context = require.context('.', true, /.+spec\*?$/);
+var context = require.context('.', true, /.+\.e2e\*?$/);
 context.keys().forEach(context);
