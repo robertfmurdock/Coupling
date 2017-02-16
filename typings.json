@@ -4,7 +4,6 @@
   "ambientDependencies": {
     "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#4910a7c52a1cf335877ea3b0917eb65117a66637",
     "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#4910a7c52a1cf335877ea3b0917eb65117a66637",
-    "underscore": "github:DefinitelyTyped/DefinitelyTyped/underscore/underscore.d.ts#e5a27ea95e47b95333784f1f0d590127b4e39a89",
     "angular-resource": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-resource.d.ts#e5a27ea95e47b95333784f1f0d590127b4e39a89",
     "angular-route": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-route.d.ts#e5a27ea95e47b95333784f1f0d590127b4e39a89"
   },

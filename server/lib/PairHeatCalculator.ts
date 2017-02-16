@@ -3,26 +3,32 @@ import Pair from "../../common/Pair";
 import * as _ from "underscore";
 import Comparators from "./Comparators";
 
-const heatIncrements = [1, 2.5, 4.5, 7, 10];
+const heatIncrements = [0, 1, 2.5, 4.5, 7, 10];
 const rotationHeatWindow = 5;
 
 export default class PairHeatCalculator {
 
     calculate(pair: Pair, history: PairAssignmentDocument[], rotationPeriod: number) {
-
-        const pairingHistory = _.filter(this.getRecentHistory(history, rotationPeriod), document => {
-            const matchingPair = _.find(document.pairs, docPair => Comparators.areEqualPairs(docPair, pair));
-            return matchingPair !== undefined;
-        });
-
-        if (pairingHistory.length === 0) {
-            return 0;
-        }
-
-        return heatIncrements[pairingHistory.length - 1];
+        const recentHistory = this.getHistoryInHeatWindow(history, rotationPeriod);
+        const timesPairedInHeatWindow = this.calculateTimesPaired(pair, recentHistory);
+        return heatIncrements[timesPairedInHeatWindow];
     }
 
-    private getRecentHistory(history: PairAssignmentDocument[], rotationPeriod: number) {
+    private calculateTimesPaired(pair: Pair, recentHistory: PairAssignmentDocument[]) {
+        return _.chain(recentHistory)
+            .filter(this.filterForIntervalsThatContain(pair))
+            .size()
+            .value();
+    }
+
+    private filterForIntervalsThatContain(pair: Pair) {
+        return document => {
+            const result = _.find(document.pairs, docPair => Comparators.areEqualPairs(docPair, pair));
+            return result !== undefined;
+        };
+    }
+
+    private getHistoryInHeatWindow(history: PairAssignmentDocument[], rotationPeriod: number) {
         return history.slice(0, rotationPeriod * rotationHeatWindow);
     }
 

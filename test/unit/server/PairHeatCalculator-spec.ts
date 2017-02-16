@@ -115,6 +115,32 @@ describe('PairHeatCalculator', function () {
             const heat = heatCalculator.calculate(pair, history, rotationPeriod);
             expect(heat).toBe(1);
         });
+
+        it('will return 7 when skipping one rotation out of five', function() {
+            const intervalWithIntendedPair = makePairDocument([pair, [player3, player4], [player5]]);
+            const assignmentsWithoutIntendedPair :Pair[] = [[player1, player3], [player2, player5], [player4]];
+            const otherIntervals = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod - 1);
+            const goodRotation = otherIntervals.concat(intervalWithIntendedPair);
+            const absenteeRotation = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod);
+            const history = _.flatten([goodRotation, absenteeRotation, goodRotation, goodRotation, goodRotation], true);
+
+            const heat = heatCalculator.calculate(pair, history, rotationPeriod);
+
+           expect(heat).toBe(7);
+        });
+
+        it('will return 2.5 when skipping three rotations out of five', function() {
+            const intervalWithIntendedPair = makePairDocument([pair, [player3, player4], [player5]]);
+            const assignmentsWithoutIntendedPair :Pair[] = [[player1, player3], [player2, player5], [player4]];
+            const otherIntervals = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod - 1);
+            const goodRotation = otherIntervals.concat(intervalWithIntendedPair);
+            const absenteeRotation = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod);
+            const history = _.flatten([goodRotation, absenteeRotation, absenteeRotation, goodRotation, absenteeRotation], true);
+
+            const heat = heatCalculator.calculate(pair, history, rotationPeriod);
+
+           expect(heat).toBe(2.5);
+        });
     });
 
     function makePairDocumentList(pairs: Pair[], intervalCount: number) {

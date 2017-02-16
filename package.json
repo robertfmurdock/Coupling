@@ -35,6 +35,7 @@
   "devDependencies": {
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.43",
+    "@types/underscore": "^1.7.36",
     "angular": "~1.5.8",
     "angular-animate": "~1.5.8",
     "angular-gravatar": "^0.4.1",
