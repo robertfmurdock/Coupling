@@ -1,6 +1,8 @@
 machine:
   node:
     version: 7.1.0
+  java:
+    version: openjdk8
   services:
     - docker
 dependencies:
