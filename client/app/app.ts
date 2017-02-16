@@ -17,7 +17,7 @@ import * as _ from 'underscore'
 import './services'
 import * as services from './services'
 
-var app = angular.module('coupling', ["ngRoute",
+const app = angular.module('coupling', ["ngRoute",
     'ngFitText',
     'ui.gravatar',
     'ang-drag-drop',
@@ -39,7 +39,7 @@ class TribeListRouteController {
     }
 }
 
-var tribeListRoute:IRoute = {
+const tribeListRoute:IRoute = {
     template: '<tribelist tribes="main.tribes">',
     controllerAs: 'main',
     controller: TribeListRouteController,
@@ -61,13 +61,13 @@ class NewTribeRouteController {
     }
 
 }
-var newTribeRoute:IRoute = {
+const newTribeRoute:IRoute = {
     template: '<tribe-config tribe="main.tribe" is-new=true>',
     controllerAs: 'main',
     controller: NewTribeRouteController
 };
 
-var tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
+const tribeResolution = ['$route', 'Coupling', function ($route, Coupling) {
     return Coupling.getTribe($route.current.params.tribeId);
 }];
 
@@ -78,14 +78,14 @@ class PrepareTribeRouteController {
     }
 }
 
-var prepareTribeRoute:IRoute = {
+const prepareTribeRoute:IRoute = {
     template: '<prepare tribe="main.tribe" players="main.players">',
     controllerAs: 'main',
     controller: PrepareTribeRouteController,
     resolve: {
         tribe: tribeResolution,
         players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling:services.Coupling) {
-            var tribeId = $route.current.params.tribeId;
+            const tribeId = $route.current.params.tribeId;
             return $q.all({
                 players: Coupling.getPlayers(tribeId),
                 history: Coupling.getHistory(tribeId)
@@ -106,7 +106,7 @@ class EditTribeRouteController {
     }
 }
 
-var editTribeRoute:IRoute = {
+const editTribeRoute:IRoute = {
     template: '<tribe-config tribe="main.tribe" is-new=false>',
     controllerAs: 'main',
     controller: EditTribeRouteController,
@@ -122,7 +122,7 @@ class HistoryRouteController {
     }
 }
 
-var historyRoute:IRoute = {
+const historyRoute:IRoute = {
     template: '<history tribe="main.tribe" history="main.history">',
     controllerAs: 'main',
     controller: HistoryRouteController,
@@ -141,7 +141,7 @@ class PinRouteController {
     }
 }
 
-var pinRoute:IRoute = {
+const pinRoute:IRoute = {
     template: '<pin-list pins="main.pins">',
     controllerAs: 'main',
     controller: PinRouteController,
@@ -165,7 +165,7 @@ class NewPlayerRouteController {
     }
 }
 
-var newPlayerRoute:IRoute = {
+const newPlayerRoute:IRoute = {
     template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
     controller: NewPlayerRouteController,
     controllerAs: 'main',
@@ -186,12 +186,12 @@ class EditPlayerRouteController {
     constructor($route, tribe, players) {
         this.tribe = tribe;
         this.players = players;
-        var playerId = $route.current.params.id;
+        const playerId = $route.current.params.id;
         this.player = _.findWhere(this.players, {_id: playerId});
     }
 }
 
-var editPlayerRoute:IRoute = {
+const editPlayerRoute:IRoute = {
     template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
     controller: EditPlayerRouteController,
     controllerAs: 'main',
@@ -210,7 +210,7 @@ class CurrentPairAssignmentsRouteController {
     }
 }
 
-var currentPairAssignmentsRoute:IRoute = {
+const currentPairAssignmentsRoute:IRoute = {
     template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments">',
     controller: CurrentPairAssignmentsRouteController,
     controllerAs: 'main',
@@ -240,22 +240,22 @@ class NewPairAssignmentsRouteController {
     }
 }
 
-var newPairAssignmentsRoute:IRoute = {
+const newPairAssignmentsRoute:IRoute = {
     template: '<pair-assignments tribe="main.tribe" players="main.players" pairs="main.pairAssignments" is-new="true">',
     controllerAs: 'main',
     controller: NewPairAssignmentsRouteController,
     resolve: {
         requirements: ['$route', '$q', 'Coupling', function ($route:ng.route.IRouteService, $q:angular.IQService, Coupling:services.Coupling) {
-            var tribeId = $route.current.params.tribeId;
+            const tribeId = $route.current.params.tribeId;
             return $q.all({
                 tribe: Coupling.getTribe(tribeId),
                 players: Coupling.getPlayers(tribeId),
                 history: Coupling.getHistory(tribeId)
             })
                 .then(options=> {
-                    var players:[services.Player] = options['players'];
-                    var history = options['history'];
-                    var selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
+                    const players:[services.Player] = options['players'];
+                    const history = options['history'];
+                    const selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
                     options['selectedPlayers'] = _.chain(_.values(selectablePlayerMap))
                         .filter(selectable=> {
                             return selectable.isSelected;
@@ -267,7 +267,7 @@ var newPairAssignmentsRoute:IRoute = {
                     return options;
                 })
                 .then(options=> {
-                    var selectedPlayers = options['selectedPlayers'];
+                    const selectedPlayers = options['selectedPlayers'];
                     options['pairAssignments'] = Coupling.spin(selectedPlayers, tribeId);
                     return $q.all(options);
                 });

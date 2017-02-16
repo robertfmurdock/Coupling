@@ -25,7 +25,7 @@ export class PairAssignmentsController {
     }
 
     save() {
-        var self = this;
+        const self = this;
         this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
             .then(function () {
                 self.$location.path("/" + self.tribe.id + "/pairAssignments/current");
@@ -33,8 +33,8 @@ export class PairAssignmentsController {
     }
 
     onDrop(draggedPlayer, droppedPlayer) {
-        var pairWithDraggedPlayer = this.findPairContainingPlayer(draggedPlayer, this.pairAssignments.pairs);
-        var pairWithDroppedPlayer = this.findPairContainingPlayer(droppedPlayer, this.pairAssignments.pairs);
+        const pairWithDraggedPlayer = this.findPairContainingPlayer(draggedPlayer, this.pairAssignments.pairs);
+        const pairWithDroppedPlayer = this.findPairContainingPlayer(droppedPlayer, this.pairAssignments.pairs);
 
         if (pairWithDraggedPlayer != pairWithDroppedPlayer) {
             this.swapPlayers(pairWithDraggedPlayer, draggedPlayer, droppedPlayer);
@@ -63,9 +63,9 @@ export class PairAssignmentsController {
         if (!pairAssignmentDocument) {
             return players;
         }
-        var currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
+        const currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
         return _.filter(players, function (value: Player) {
-            var found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
+            const found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
             return found == undefined;
         });
     }

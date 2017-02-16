@@ -12,7 +12,7 @@ interface WelcomeCardSet {
     proverb: String
 }
 
-var candidates:[WelcomeCardSet] = [{
+const candidates:[WelcomeCardSet] = [{
     leftCard: {
         name: 'Frodo',
         imagePath: 'frodo-icon.png'
@@ -47,7 +47,7 @@ var candidates:[WelcomeCardSet] = [{
 export class WelcomeController {
 
     private static chooseWelcomeCards(randomizer):WelcomeCardSet {
-        var indexToUse = randomizer.next(candidates.length - 1);
+        const indexToUse = randomizer.next(candidates.length - 1);
         return candidates[indexToUse];
     }
 
@@ -60,11 +60,11 @@ export class WelcomeController {
 
     constructor($timeout:angular.ITimeoutService, randomizer:services.Randomizer) {
         this.show = false;
-        var choice = WelcomeController.chooseWelcomeCards(randomizer);
+        const choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftCard = choice.leftCard;
         this.rightCard = choice.rightCard;
         this.proverb = choice.proverb;
-        var self = this;
+        const self = this;
         $timeout(function () {
             self.show = true;
         }, 0);

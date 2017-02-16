@@ -1,13 +1,11 @@
-
-
-var filters = angular.module("coupling.filters", []);
+const filters = angular.module("coupling.filters", []);
 filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {
     return function (player, options) {
         if (player && player.imageURL) {
             return player.imageURL;
         } else {
             options['default'] = "retro";
-            var email = "";
+            let email = "";
             if (player) {
                 email = player.email ? player.email : player.name;
             }
