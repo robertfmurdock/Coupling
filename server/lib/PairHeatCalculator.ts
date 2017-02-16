@@ -1,7 +1,7 @@
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
-import Pair from "../../common/Pair";
 import * as _ from "underscore";
 import Comparators from "./Comparators";
+import Pair from "../../common/Pair";
 
 const heatIncrements = [0, 1, 2.5, 4.5, 7, 10];
 const rotationHeatWindow = 5;
@@ -27,7 +27,7 @@ export default class PairHeatCalculator {
     }
 
     private filterForIntervalsThatContain(pair: Pair) {
-        return document => {
+        return (document: PairAssignmentDocument) => {
             const result = _.find(document.pairs, docPair => Comparators.areEqualPairs(docPair, pair));
             return result !== undefined;
         };

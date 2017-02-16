@@ -1,6 +1,6 @@
 import Player from "../../common/Player";
 
-export default class PairHistoryReport {
+export default class PairCandidateReport {
 
     public partnerCandidates: any;
 

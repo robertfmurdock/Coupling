@@ -1,4 +1,4 @@
-import PairHistoryReport from "../../../server/lib/PairHistoryReport";
+import PairHistoryReport from "../../../server/lib/PairCandidateReport";
 import CouplingGame from "../../../server/lib/CouplingGame";
 import PairingRule from "../../../common/PairingRule";
 

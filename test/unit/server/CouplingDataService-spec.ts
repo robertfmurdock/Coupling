@@ -2,18 +2,19 @@
 import * as monk from "monk";
 import CouplingDataService from "../../../server/lib/CouplingDataService";
 import Comparators from "../../../server/lib/Comparators";
-var config = require('../../../config');
+import Player from "../../../common/Player";
+const config = require('../../../config');
 
-var mongoUrl = config.testMongoUrl + '/UsersTest';
-var database = monk(mongoUrl);
+const mongoUrl = config.testMongoUrl + '/UsersTest';
+const database = monk(mongoUrl);
 
 interface Entity {
     _id: string
 }
 
 describe('CouplingDataService', function () {
-    var frodo = {name: 'Frodo', _id: undefined};
-    var expectedPlayers = [
+    const frodo = {name: 'Frodo', _id: undefined, tribe: null};
+    const expectedPlayers = [
         {name: 'Gandalf'},
         {name: 'Sam'},
         {name: 'Merry'},
@@ -21,7 +22,7 @@ describe('CouplingDataService', function () {
         frodo
     ];
 
-    var pairSetOne = {
+    const pairSetOne = {
         pairs: [
             [
                 {name: 'Gandalf'},
@@ -35,7 +36,7 @@ describe('CouplingDataService', function () {
         _id: undefined
     };
 
-    var pairSetTwo = {
+    const pairSetTwo = {
         pairs: [
             [
                 frodo,
@@ -49,7 +50,7 @@ describe('CouplingDataService', function () {
         _id: undefined
     };
 
-    var pairSetThree = {
+    const pairSetThree = {
         pairs: [
             [
                 {name: 'Merry'},
@@ -63,31 +64,31 @@ describe('CouplingDataService', function () {
         _id: undefined
     };
 
-    var expectedHistory = [
+    const expectedHistory = [
         pairSetThree, pairSetTwo, pairSetOne
     ];
 
-    var unorderedHistory = [
+    const unorderedHistory = [
         pairSetTwo, pairSetThree, pairSetOne
     ];
 
-    var expectedTribes = [
+    const expectedTribes = [
         {name: "JLA", id: 'JLA'},
         {name: "Avengers", id: 'Avengers'},
         {name: "Superfriends", id: 'sf'}
     ];
 
-    var pinsWithoutTribes = [
+    const pinsWithoutTribes = [
         {name: 'pin1'},
         {name: 'pin2'}
     ];
 
-    var couplingDataService = new CouplingDataService(mongoUrl);
+    const couplingDataService = new CouplingDataService(mongoUrl);
 
-    var historyCollection = database.get('history');
-    var playersCollection = database.get('players');
-    var pinCollection = database.get('pins');
-    var tribesCollection = database.get('tribes');
+    const historyCollection = database.get('history');
+    const playersCollection = database.get('players');
+    const pinCollection = database.get('pins');
+    const tribesCollection = database.get('tribes');
 
     beforeEach(function (done) {
         playersCollection.drop()
@@ -120,8 +121,8 @@ describe('CouplingDataService', function () {
         it('can retrieve the players in the database and all the history in new to old order', function (done) {
             couplingDataService.requestPlayersAndHistory(null)
                 .then(function (both) {
-                    expect(expectedPlayers).toEqual(both.players);
-                    expect(expectedHistory).toEqual(both.history);
+                    expect(both.players).toEqual(expectedPlayers);
+                    expect(both.history).toEqual(expectedHistory);
                 })
                 .then(done, done.fail);
         });
@@ -129,7 +130,7 @@ describe('CouplingDataService', function () {
         it('can retrieve the players', function (done) {
             couplingDataService.requestPlayers(null)
                 .then(function (players) {
-                    expect(expectedPlayers).toEqual(players);
+                    expect(players).toEqual(expectedPlayers);
                 })
                 .then(done, done.fail);
         });
@@ -137,7 +138,7 @@ describe('CouplingDataService', function () {
         it('can retrieve the history in new to old order', function (done) {
             couplingDataService.requestHistory(null)
                 .then(function (history) {
-                    expect(expectedHistory).toEqual(history);
+                    expect(history).toEqual(expectedHistory);
                 })
                 .then(done, done.fail);
         });
@@ -152,13 +153,13 @@ describe('CouplingDataService', function () {
     });
 
     it('can save a new player', function (done) {
-        var player = {name: 'Tom', email: 'Bombadil@shire.gov'};
+        const player: Player = {_id: null, name: 'Tom', email: 'Bombadil@shire.gov', tribe: null};
         couplingDataService.savePlayer(player)
             .then(function () {
                 return couplingDataService.requestPlayers(null);
             })
             .then(function (players) {
-                var found = players.some(function (listedPlayer) {
+                const found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(player, listedPlayer);
                 });
                 expect(found).toBe(true);
@@ -174,7 +175,7 @@ describe('CouplingDataService', function () {
         it('such that it no longer appears in the players list', function (done) {
             couplingDataService.requestPlayers(null)
                 .then(function (players) {
-                    var result = players.some(function (player) {
+                    const result = players.some(function (player) {
                         return Comparators.areEqualPlayers(frodo, player);
                     });
                     expect(result).toBe(false);
@@ -184,7 +185,7 @@ describe('CouplingDataService', function () {
 
         it('such that it still exists in the database', function (done) {
             playersCollection.find({_id: frodo._id}, {})
-                .then(function (documents) {
+                .then(function (documents: Player[]) {
                     expect(Comparators.areEqualPlayers(documents[0], frodo)).toBe(true);
                 })
                 .then(done, done.fail);
@@ -199,7 +200,7 @@ describe('CouplingDataService', function () {
 
         it('such that it no longer appears in history', function (done) {
             couplingDataService.requestHistory(null).then(function (historyDocuments) {
-                var result = historyDocuments.some(function (assignments) {
+                const result = historyDocuments.some(function (assignments) {
                     return Comparators.areEqualObjectIds(pairSetOne._id, assignments._id);
                 });
                 expect(result).toBe(false);
@@ -233,7 +234,7 @@ describe('CouplingDataService', function () {
                 return couplingDataService.requestPlayers(null)
             })
             .then(function (players) {
-                var found = players.some(function (listedPlayer) {
+                const found = players.some(function (listedPlayer) {
                     return Comparators.areEqualPlayers(frodo, listedPlayer);
                 });
                 expect(found).toBe(true);
@@ -242,20 +243,20 @@ describe('CouplingDataService', function () {
     });
 
     describe('will filter based on the tribe name', function () {
-        var tribeId = 'Blackrock';
-        var ogrim = {tribe: tribeId, name: 'Orgrim'};
-        var garrosh = {tribe: tribeId, name: 'Garrosh'};
-        var blackrockPlayers = [
+        const tribeId = 'Blackrock';
+        const ogrim = {tribe: tribeId, name: 'Orgrim'};
+        const garrosh = {tribe: tribeId, name: 'Garrosh'};
+        const blackrockPlayers = [
             ogrim,
             garrosh
         ];
 
-        var blackrockPins = [
+        const blackrockPins = [
             {name: "Chief", tribe: tribeId},
             {name: "Warrior", tribe: tribeId}
         ];
 
-        var blackrockPairAssignments = {
+        const blackrockPairAssignments = {
             tribe: tribeId,
             pairs: [
                 [garrosh, ogrim]

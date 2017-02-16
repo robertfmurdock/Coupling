@@ -1,35 +1,35 @@
 import Comparators from "./Comparators";
-import PairHistoryReport from "./PairHistoryReport";
+import PairCandidateReport from "./PairCandidateReport";
 import Player from "../../common/Player";
+import Pair from "../../common/Pair";
 
-const NEVER_PAIRED = 'NeverPaired';
+export const NEVER_PAIRED = 'NeverPaired';
+
+export function calculateTimeSinceLastPartnership(expectedPair: Pair, historyDocuments) {
+    let documentsSinceLastPartnership: number | string = NEVER_PAIRED;
+    historyDocuments.some((pairingDocument, indexInHistory) => {
+        const existsInDocument = pairingExistsInDocument(pairingDocument, expectedPair);
+
+        if (existsInDocument) {
+            documentsSinceLastPartnership = indexInHistory;
+        }
+        return existsInDocument;
+    });
+    return documentsSinceLastPartnership;
+}
+
+function pairingExistsInDocument(pairingDocument, expectedPair: Pair) {
+    if (pairingDocument.pairs) {
+        return pairingDocument.pairs.some(function (pair) {
+            return Comparators.areEqualPairs(pair, expectedPair);
+        });
+    }
+    return false;
+}
 
 export default class PairingHistory {
 
     constructor(public historyDocuments: any[]) {
-    }
-
-    private calculateTimeSinceLastPartnership(expectedPair: Player[]) {
-        let documentsSinceLastPartnership: number | string = NEVER_PAIRED;
-        this.historyDocuments.some((pairingDocument, indexInHistory) => {
-
-            const pairingExistsInDocument = this.pairingExistsInDocument(pairingDocument, expectedPair);
-
-            if (pairingExistsInDocument) {
-                documentsSinceLastPartnership = indexInHistory;
-            }
-            return pairingExistsInDocument;
-        });
-        return documentsSinceLastPartnership;
-    }
-
-    private pairingExistsInDocument(pairingDocument, expectedPair: Player[]) {
-        if (pairingDocument.pairs) {
-            return pairingDocument.pairs.some(function (pair) {
-                return Comparators.areEqualPairs(pair, expectedPair);
-            });
-        }
-        return false;
     }
 
     private getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership) {
@@ -51,14 +51,14 @@ export default class PairingHistory {
 
         const partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[NEVER_PAIRED];
         const timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
-        return new PairHistoryReport(player, partnerCandidates, timeSinceLastPaired);
+        return new PairCandidateReport(player, partnerCandidates, timeSinceLastPaired);
     }
 
     getPairCandidateReport(player: Player, availablePartners: Player[]) {
         const timeToPartnersMap = {};
 
         availablePartners.forEach(availablePartner => {
-            const timeSinceLastPartnership = this.calculateTimeSinceLastPartnership([player, availablePartner]);
+            const timeSinceLastPartnership = calculateTimeSinceLastPartnership([player, availablePartner], this.historyDocuments);
             const allPartnersWithThisTime = this.getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership);
             allPartnersWithThisTime.push(availablePartner);
         });

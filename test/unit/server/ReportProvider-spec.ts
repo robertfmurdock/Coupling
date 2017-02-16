@@ -1,5 +1,5 @@
 import ReportProvider from "../../../server/lib/ReportProvider";
-import PairHistoryReport from "../../../server/lib/PairHistoryReport";
+import PairHistoryReport from "../../../server/lib/PairCandidateReport";
 import Badge from "../../../common/Badge";
 import * as sinon from "sinon";
 import PairingRule from "../../../common/PairingRule";

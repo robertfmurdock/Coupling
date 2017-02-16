@@ -1,4 +1,4 @@
-import PairHistoryReport from "./PairHistoryReport";
+import PairHistoryReport from "./PairCandidateReport";
 
 export default class Sequencer {
     constructor(public reportProvider: any) {

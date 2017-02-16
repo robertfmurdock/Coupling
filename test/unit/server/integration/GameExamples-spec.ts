@@ -6,6 +6,7 @@ import PairAssignmentDocument from "../../../../common/PairAssignmentDocument";
 import Comparators from "../../../../server/lib/Comparators";
 import Badge from "../../../../common/Badge";
 import PairingRule from "../../../../common/PairingRule";
+import Pair from "../../../../common/Pair";
 
 const config = require('../../../../config');
 
@@ -103,7 +104,7 @@ describe('The game', function () {
                 new CouplingDataService(mongoUrl).requestPlayersAndHistory(tribeId)
                     .then(function (both) {
                         const pairAssignments = gameRunner.run(both.players, [], both.history, tribeId);
-                        const foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
+                        const foundBruceAndJohn = pairAssignments.pairs.some(function (pair: Pair) {
                             return Comparators.areEqualPairs([bruce, john], pair);
                         });
                         expect(foundBruceAndJohn).toBe(true);
@@ -176,7 +177,7 @@ describe('The game', function () {
                 })
                 .then(function (both) {
                     const pairAssignments = gameRunner.run(both.players, [], both.history, tribe);
-                    const foundBruceAndJohn = pairAssignments.pairs.some(function (pair) {
+                    const foundBruceAndJohn = pairAssignments.pairs.some(function (pair: Pair) {
                         return Comparators.areEqualPairs([bruce, john], pair);
                     });
                     expect(foundBruceAndJohn).toBe(true);
@@ -220,7 +221,7 @@ describe('The game', function () {
         saveAndLoadData(playerRoster, history, tribeId)
             .then(function (both) {
                 const pairAssignments = gameRunner.run(both.players, [], both.history, tribe);
-                const foundKamalaLoganPair = pairAssignments.pairs.some(function (pair) {
+                const foundKamalaLoganPair = pairAssignments.pairs.some(function (pair: Pair) {
                     return Comparators.areEqualPairs([kamala, logan], pair);
                 });
                 expect(foundKamalaLoganPair).toBe(true);

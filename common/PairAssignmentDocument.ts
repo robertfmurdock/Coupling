@@ -1,7 +1,7 @@
 "use strict";
-import Player from "./Player";
+import Pair from "./Pair";
 
 export default class PairAssignmentDocument {
-    constructor(public date: Date| string, public pairs: Player[][], public tribe: string) {
+    constructor(public date: Date| string, public pairs: Pair[], public tribe: string) {
     }
 }

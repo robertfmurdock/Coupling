@@ -1,4 +1,5 @@
-import Player from '../../common/Player'
+import Player from "../../common/Player";
+import Pair from "../../common/Pair";
 
 const findPerson = function (target: Player) {
     return function (person: Player) {
@@ -11,11 +12,11 @@ const getIdString = function (id: any) {
 };
 
 class Comparators {
-    static areEqualPairs(pairOne, pairTwo) {
+    static areEqualPairs(pairOne: Pair, pairTwo: Pair) {
         return pairOne.some(findPerson(pairTwo[0])) && pairOne.some(findPerson(pairTwo[1]));
     }
 
-    static areEqualPlayers(playerOne, playerTwo) {
+    static areEqualPlayers(playerOne: Player, playerTwo: Player) {
         if (playerOne === playerTwo) {
             return true;
         } else if (playerOne && playerTwo && playerOne._id && playerTwo._id) {
