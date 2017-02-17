@@ -33,11 +33,17 @@ const config = {
       },
       {
         test: /\.(css)$/,
-        loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?' + JSON.stringify({minimize: true})
+        })
       },
       {
         test: /\.(scss)$/,
-        loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!sass-loader'})
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?' + JSON.stringify({minimize: true}) + '!sass-loader'
+        })
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,

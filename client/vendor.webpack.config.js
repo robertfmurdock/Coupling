@@ -26,7 +26,10 @@ const config = {
     loaders: [
       {
         test: /\.(css)$/,
-        loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader'})
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?' + JSON.stringify({minimize: true})
+        })
       },
       {
         test: /\.(scss)$/,
@@ -34,7 +37,7 @@ const config = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=100000'
+        loader: 'url-loader?limit=50000'
       }
     ]
   },
