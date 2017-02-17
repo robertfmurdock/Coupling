@@ -1,10 +1,15 @@
-var path = require('path');
-var _ = require('underscore');
-var webpackConfig = _.clone(require('../../../client/webpack.config'));
+const _ = require('underscore');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpackConfig = _.clone(require('../../../client/webpack.config'));
 
 const config = {
   module: webpackConfig.module,
   resolve: webpackConfig.resolve,
+  plugins: [
+    new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
+    new webpack.ProvidePlugin({'window.jQuery': 'jquery', $: 'jquery', 'jQuery': 'jquery'})
+  ],
   devtool: 'inline-source-map'
 };
 
