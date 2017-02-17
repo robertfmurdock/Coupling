@@ -1,9 +1,10 @@
-import * as services from '../../services'
-import * as template from './welcome.pug'
+import {module} from "angular";
+import * as services from "../../services";
+import * as template from "./welcome.pug";
 
 interface Card {
     name: String
-    imagePath : String
+    imagePath: String
 }
 
 interface WelcomeCardSet {
@@ -12,7 +13,7 @@ interface WelcomeCardSet {
     proverb: String
 }
 
-const candidates:[WelcomeCardSet] = [{
+const candidates: [WelcomeCardSet] = [{
     leftCard: {
         name: 'Frodo',
         imagePath: 'frodo-icon.png'
@@ -46,19 +47,19 @@ const candidates:[WelcomeCardSet] = [{
 
 export class WelcomeController {
 
-    private static chooseWelcomeCards(randomizer):WelcomeCardSet {
+    private static chooseWelcomeCards(randomizer): WelcomeCardSet {
         const indexToUse = randomizer.next(candidates.length - 1);
         return candidates[indexToUse];
     }
 
     static $inject = ['$timeout', 'randomizer'];
 
-    public show:boolean;
-    public proverb:String;
-    public leftCard:Card;
-    public rightCard:Card;
+    public show: boolean;
+    public proverb: String;
+    public leftCard: Card;
+    public rightCard: Card;
 
-    constructor($timeout:angular.ITimeoutService, randomizer:services.Randomizer) {
+    constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer) {
         this.show = false;
         const choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftCard = choice.leftCard;
@@ -72,7 +73,7 @@ export class WelcomeController {
 
 }
 
-export default angular.module('coupling.welcome', [])
+export default module('coupling.welcome', [])
     .controller('WelcomeController', WelcomeController)
     .directive('welcomepage', function () {
         return {

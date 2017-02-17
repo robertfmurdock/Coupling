@@ -1,6 +1,7 @@
-import * as template from './tribe-list.pug'
+import {module} from "angular";
+import * as template from "./tribe-list.pug";
 
-export default angular.module("coupling.tribeList", [])
+export default module("coupling.tribeList", [])
     .directive('tribelist', function () {
         return {
             scope: {

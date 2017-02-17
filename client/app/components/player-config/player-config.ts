@@ -1,9 +1,11 @@
+import * as angular from "angular";
 import * as services from "../../services";
 import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
 import Badge from "../../../../common/Badge";
 import * as _ from "underscore";
 import IRouteService = angular.route.IRouteService;
+import IDirectiveFactory = angular.IDirectiveFactory;
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
@@ -61,6 +63,7 @@ export class PlayerConfigController {
         this.$location.path("/" + this.tribe.id + "/pairAssignments/current");
     }
 }
+
 
 export default angular.module("coupling.playerConfig", [])
     .controller('PlayerConfigController', PlayerConfigController)

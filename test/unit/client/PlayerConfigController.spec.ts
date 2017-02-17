@@ -1,9 +1,9 @@
 import {PlayerConfigController} from "../../../client/app/components/player-config/player-config";
-import "angular";
-import "angular-mocks";
+import "angular-route";
+import * as angular from 'angular'
 import Player from "../../../common/Player";
 import Badge from "../../../common/Badge";
-import * as _ from 'underscore'
+import * as _ from "underscore";
 
 const defer = function () {
     const defer = {
@@ -18,7 +18,10 @@ const defer = function () {
     return defer;
 };
 
-let initPlayerController = function (controller, $scope, Coupling, $location, $route: {reload(), routes: {}}, tribe: {name: string; id: string; _id: string}, alternatePlayer: Player) {
+let initPlayerController = function (controller, $scope, Coupling, $location,
+                                     $route: angular.route.IRouteService,
+                                     tribe: {name: string; id: string; _id: string},
+                                     alternatePlayer: Player) {
     controller = new PlayerConfigController($scope, Coupling, $location, $route);
     _.extend(controller, {tribe, player: alternatePlayer});
     controller.$onInit();
@@ -32,6 +35,7 @@ describe('PlayerConfigController', function () {
         id: 'party',
         _id: 'hmm'
     };
+
 
     let player: Player;
 
@@ -57,6 +61,8 @@ describe('PlayerConfigController', function () {
 
     it('when the given player has no badge, will use default badge', function () {
         const $route = {
+            updateParams(){
+            },
             reload(){
             }, routes: {}
         };
@@ -66,6 +72,8 @@ describe('PlayerConfigController', function () {
 
     it('when the given player has alt badge, will not modify player', function () {
         const $route = {
+            updateParams(){
+            },
             reload(){
             }, routes: {}
         };

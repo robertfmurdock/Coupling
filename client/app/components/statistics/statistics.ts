@@ -1,6 +1,7 @@
 import * as template from './statistics.pug';
 import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
+import {module} from "angular";
 import StatisticComposer from "../../../../server/lib/StatisticComposer";
 
 export class StatisticsController {
@@ -15,7 +16,7 @@ export class StatisticsController {
     }
 }
 
-export default angular.module('coupling.statistics', [])
+export default module('coupling.statistics', [])
     .directive('statistics', function () {
         return {
             controllerAs: 'self',

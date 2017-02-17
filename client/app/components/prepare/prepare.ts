@@ -1,19 +1,20 @@
-import * as _ from 'underscore'
-import * as services from '../../services'
-import * as template from './prepare.pug'
+import {module} from "angular";
+import * as _ from "underscore";
+import * as services from "../../services";
+import * as template from "./prepare.pug";
 
 class PrepareController {
     static $inject = ['$location', 'Coupling'];
 
-    players:[services.Player];
-    selectablePlayers:services.SelectablePlayer[];
-    tribe:services.Tribe;
+    players: [services.Player];
+    selectablePlayers: services.SelectablePlayer[];
+    tribe: services.Tribe;
 
-    constructor(private $location:angular.ILocationService, private Coupling:services.Coupling) {
+    constructor(private $location: angular.ILocationService, private Coupling: services.Coupling) {
         this.selectablePlayers = _.values(Coupling.data.selectablePlayers);
     }
 
-    clickPlayerCard(selectable:services.SelectablePlayer) {
+    clickPlayerCard(selectable: services.SelectablePlayer) {
         selectable.isSelected = !selectable.isSelected;
     }
 
@@ -23,7 +24,7 @@ class PrepareController {
 
 }
 
-export default angular.module("coupling.prepare", [])
+export default module("coupling.prepare", [])
     .controller('PrepareController', PrepareController)
     .directive('prepare', () => {
         return {

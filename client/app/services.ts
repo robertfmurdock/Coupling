@@ -1,4 +1,4 @@
-import "angular";
+import * as angular from "angular";
 import "angular-resource";
 import * as _ from "underscore";
 import Player from "../../common/Player";
@@ -79,7 +79,7 @@ class Coupling {
             .$promise;
     }
 
-    getHistory(tribeId): IPromise<[PairAssignmentSet]> {
+    getHistory(tribeId): IPromise<PairAssignmentSet[]> {
         return this.PairAssignmentSet
             .query({tribeId: tribeId})
             .$promise;

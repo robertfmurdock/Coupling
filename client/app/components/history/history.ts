@@ -1,3 +1,4 @@
+import {module} from "angular";
 import * as services from '../../services'
 import * as template from './history.pug'
 
@@ -13,7 +14,7 @@ export class HistoryController {
 
 }
 
-export default angular.module("coupling.history", [])
+export default module("coupling.history", [])
     .controller('HistoryController', HistoryController)
     .directive('history', () => {
         return {
