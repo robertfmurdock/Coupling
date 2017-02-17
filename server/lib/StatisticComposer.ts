@@ -3,6 +3,7 @@ import Player from "../../common/Player";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as _ from "underscore";
 import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "../../common/PairingTimeCalculator";
+import Pair from "../../common/Pair";
 
 export default class StatisticComposer {
 
@@ -18,29 +19,26 @@ export default class StatisticComposer {
         return _.chain(players)
             .map(this.allPairsForPlayer)
             .flatten(true)
-            .map(pair => {
-                return this.makeReport(pair)
+            .map((pair: Pair) => {
+                return this.makeReport(pair, calculateTimeSinceLastPartnership(pair, history))
             })
             .sort((pairReport1, pairReport2) => {
-                const timeSincePair1LastPaired = calculateTimeSinceLastPartnership(pairReport1.pair, history);
-                const timeSincePair2LastPaired = calculateTimeSinceLastPartnership(pairReport2.pair, history);
-
-                if(timeSincePair1LastPaired === NEVER_PAIRED) {
+                if(pairReport1.timeSinceLastPaired === NEVER_PAIRED) {
                     return false;
                 }
-                if(timeSincePair2LastPaired === NEVER_PAIRED) {
+                if(pairReport2.timeSinceLastPaired === NEVER_PAIRED) {
                     return true;
                 }
 
-                return timeSincePair1LastPaired < timeSincePair2LastPaired;
-
+                return pairReport1.timeSinceLastPaired < pairReport2.timeSinceLastPaired;
             })
             .value();
     }
 
-    private makeReport(pair) {
+    private makeReport(pair, timeSinceLastPaired) {
         return ({
-            pair: pair
+            pair: pair,
+            timeSinceLastPaired: timeSinceLastPaired
         });
     }
 

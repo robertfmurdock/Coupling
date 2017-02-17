@@ -4,6 +4,7 @@ import Tribe from "../../../common/Tribe";
 import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import * as _ from "underscore";
 import Pair from "../../../common/Pair";
+import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
 
 const statComposer = new StatisticComposer();
 
@@ -153,8 +154,16 @@ describe('StatisticComposer', function () {
                 [player1, player3],
                 [player2, player4],
             ]);
-        });
 
+            expect(_.pluck(pairReports, 'timeSinceLastPaired')).toEqual([
+                NEVER_PAIRED,
+                NEVER_PAIRED,
+                1,
+                1,
+                0,
+                0,
+            ]);
+        });
 
     });
 

@@ -4,6 +4,7 @@ import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import PairAssignmentSet from "../../../common/PairAssignmentSet";
 import *  as _ from "underscore";
+import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
 
 describe('Statistics directive', function () {
 
@@ -44,38 +45,62 @@ describe('Statistics directive', function () {
         expect(rotationNumberElement.text()).toBe('3');
     }));
 
-    it('will show pairings ordered by longest time since last paired', inject(function ($compile, $rootScope) {
-        const tribe: Tribe = {id: '2', name: 'Mathematica'};
-        const players: Player[] = [
-            {_id: 'harry', name: 'Harry', tribe: '2'},
-            {_id: 'larry', name: 'Larry', tribe: '2'},
-            {_id: 'curly', name: 'Curly', tribe: '2'},
-            {_id: 'moe', name: 'Moe', tribe: '2'}
-        ];
+    describe('will show pairings', function () {
 
-        const history: PairAssignmentSet[] = [
-            {pairs: [[players[0], players[1]], [players[2], players[3]]], date: '', tribe: tribe.id}
-        ];
+        beforeAll(function () {
+            this.tribe = {id: '2', name: 'Mathematica'};
+            this.players = [
+                {_id: 'harry', name: 'Harry', tribe: '2'},
+                {_id: 'larry', name: 'Larry', tribe: '2'},
+                {_id: 'curly', name: 'Curly', tribe: '2'},
+                {_id: 'moe', name: 'Moe', tribe: '2'}
+            ];
 
-        const statisticsDirective = buildDirective($rootScope, $compile, tribe, players, history);
-        const pairElements = statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"]');
+            this.history = [{
+                pairs: [[this.players[0], this.players[1]], [this.players[2], this.players[3]]],
+                date: '',
+                tribe: this.tribe.id
+            }];
+        });
 
-        const actualPairedPlayerNames = _.chain(pairElements)
-            .map((element, index) => {
-                let children = pairElements.eq(index)
-                    .find('[ng-repeat="player in report.pair"] text[ng-model="playerCard.player.name"]');
-                return [children.eq(0).text(), children.eq(1).text()];
-            })
-            .value();
+        it('ordered by longest time since last paired', inject(function ($compile, $rootScope) {
+            this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
+            const pairElements = this.statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"]');
 
-        expect(actualPairedPlayerNames).toEqual([
-            ['Harry', 'Curly'],
-            ['Harry', 'Moe'],
-            ['Larry', 'Curly'],
-            ['Larry', 'Moe'],
-            ['Harry', 'Larry'],
-            ['Curly', 'Moe'],
-        ]);
-    }));
+            const actualPairedPlayerNames = _.chain(pairElements)
+                .map((element, index) => {
+                    let children = pairElements.eq(index)
+                        .find('[ng-repeat="player in report.pair"] text[ng-model="playerCard.player.name"]');
+                    return [children.eq(0).text(), children.eq(1).text()];
+                })
+                .value();
+
+            expect(actualPairedPlayerNames).toEqual([
+                ['Harry', 'Curly'],
+                ['Harry', 'Moe'],
+                ['Larry', 'Curly'],
+                ['Larry', 'Moe'],
+                ['Harry', 'Larry'],
+                ['Curly', 'Moe'],
+            ]);
+        }));
+
+        it('with the time since that pair last occurred', inject(function ($compile, $rootScope) {
+            this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
+            const timeElements = this.statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"] .time-since-last-pairing');
+
+            const timeValues = _.map(timeElements, (element, index) => timeElements.eq(index).text());
+
+            expect(timeValues).toEqual([
+                NEVER_PAIRED,
+                NEVER_PAIRED,
+                NEVER_PAIRED,
+                NEVER_PAIRED,
+                '0',
+                '0'
+            ]);
+        }));
+
+    });
 
 });
