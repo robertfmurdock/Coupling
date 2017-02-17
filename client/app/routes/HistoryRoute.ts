@@ -1,4 +1,4 @@
-import {tribeResolution} from "./Resolutions";
+import {tribeResolution, historyResolution} from "./Resolutions";
 import IRoute = angular.route.IRoute;
 import * as services from '../services';
 
@@ -15,9 +15,7 @@ const historyRoute:IRoute = {
     controller: HistoryRouteController,
     resolve: {
         tribe: tribeResolution,
-        history: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getHistory($route.current.params.tribeId);
-        }]
+        history: historyResolution
     }
 };
 

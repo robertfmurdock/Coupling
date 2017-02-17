@@ -55,4 +55,9 @@ describe('The statistics page', function () {
         expect(rotationNumberElement.getText()).toBe('5');
     });
 
+    it('has the pair reports', function () {
+        const pairReports = element.all(by.css('[ng-repeat="report in self.statistics.pairReports"]'));
+        expect(pairReports.count()).toBe(15);
+    });
+
 });

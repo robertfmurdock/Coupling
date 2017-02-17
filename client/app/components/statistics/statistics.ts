@@ -7,10 +7,11 @@ export class StatisticsController {
     public tribe: Tribe;
     public players: Player[];
     public statistics;
+    public history;
 
     $onInit() {
         const composer = new StatisticComposer();
-        this.statistics = composer.compose(this.tribe, this.players, []);
+        this.statistics = composer.compose(this.tribe, this.players, this.history);
     }
 }
 
@@ -22,7 +23,8 @@ export default angular.module('coupling.statistics', [])
             bindToController: true,
             scope: {
                 tribe: '=',
-                players: '='
+                players: '=',
+                history: '='
             },
             template: template
         }

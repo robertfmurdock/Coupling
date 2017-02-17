@@ -3,3 +3,5 @@ tribecard(tribe="self.tribe")
 div
     span Spins Until Full Rotation:
     span.rotation-number {{self.statistics.spinsUntilFullRotation}}
+div(ng-repeat="report in self.statistics.pairReports")
+    playercard(ng-repeat="player in report.pair" player="player")
