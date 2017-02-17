@@ -1,8 +1,4 @@
-"use strict";
-
-
-import "angular";
-import "angular-mocks";
+import * as angular from "angular";
 import "../../../client/app/components/components";
 import {WelcomeController} from "../../../client/app/components/welcome/welcome";
 import {Randomizer} from "../../../client/app/services";

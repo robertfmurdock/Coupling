@@ -1,7 +1,8 @@
-import PlayerCardController from './PlayerCard'
-import * as template from './playercard.pug'
+import {module} from "angular";
+import PlayerCardController from "./PlayerCard";
+import * as template from "./playercard.pug";
 
-export default angular.module('coupling.playerCard', [])
+export default module('coupling.playerCard', [])
     .controller('PlayerCardController', PlayerCardController)
     .directive('playercard', () => {
         return {

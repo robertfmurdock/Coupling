@@ -11,8 +11,9 @@ import TribeConfig from "./tribe-config/tribe-config";
 import TribeList from "./tribe-list/tribe-list";
 import Welcome from "./welcome/welcome";
 import Statistics from "./statistics/statistics";
+import {module} from "angular";
 
-angular.module('coupling.component', [
+module('coupling.component', [
     'coupling.services',
     'ngFitText',
     PairAssignments.name,

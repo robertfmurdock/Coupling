@@ -1,6 +1,9 @@
-'use strict';
 import {browser, Config} from "protractor";
 let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
+
+declare global {
+    const angular: any
+}
 
 export let config: Config = {
 
@@ -21,6 +24,7 @@ export let config: Config = {
         showColors: true,
         defaultTimeoutInterval: 10000
     },
+
     onPrepare: function () {
 
         jasmine.getEnv().addReporter(new ScreenShotReporter({

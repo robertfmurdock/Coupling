@@ -1,3 +1,4 @@
+import {module} from "angular";
 import * as template from "./tribe-config.pug";
 import * as services from "../../services";
 import PairingRule from "../../../../common/PairingRule";
@@ -32,7 +33,7 @@ export class TribeConfigController {
 
 }
 
-export default angular.module("coupling.tribeConfig", [])
+export default module("coupling.tribeConfig", [])
     .controller('TribeConfigController', TribeConfigController)
     .directive('tribeConfig', function () {
         return {

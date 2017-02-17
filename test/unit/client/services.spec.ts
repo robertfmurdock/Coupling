@@ -1,8 +1,5 @@
-"use strict";
-
-import * as angular from 'angular'
+import * as angular from "angular";
 import "angular-resource";
-import 'angular-mocks';
 import {Coupling} from "../../../client/app/services";
 
 const CouplingService = Coupling;
@@ -11,7 +8,7 @@ describe('Service: ', function () {
 
     describe('Coupling', function () {
 
-        beforeEach(angular.mock.module('ngResource'));
+        beforeEach(angular.mock.module('coupling'));
 
         let httpBackend;
         let Coupling, q, rootScope;

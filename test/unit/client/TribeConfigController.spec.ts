@@ -1,7 +1,6 @@
-import "angular";
-import "angular-mocks";
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
 import PairingRule from "../../../common/PairingRule";
+import * as angular from "angular";
 import * as _ from "underscore";
 
 const defer = function () {
@@ -23,7 +22,7 @@ describe('TribeConfigController', function () {
     const selectTribeDefer = defer();
     let selectedTribeId;
 
-    beforeEach(angular.mock.module('coupling.tribeConfig'));
+    beforeEach(angular.mock.module('coupling'));
 
     beforeEach(function () {
         location = {

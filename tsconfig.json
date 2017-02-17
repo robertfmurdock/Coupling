@@ -5,12 +5,10 @@
         "sourceMap": true
     },
     "filesGlob": [
-        "./typings/main.d.ts",
+        "./typescript-settings/main.d.ts",
         "./public/app/**/*.ts"
     ],
     "exclude": [
-        "node_modules",
-        "typings/browser",
-        "typings/browser.d.ts"
+        "node_modules"
     ]
 }

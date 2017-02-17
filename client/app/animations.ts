@@ -1,4 +1,4 @@
-import "angular"
-import 'angular-animate'
+import {module} from "angular";
+import "angular-animate";
 
-angular.module('coupling.animations', ['ngAnimate']);
+module('coupling.animations', ['ngAnimate']);

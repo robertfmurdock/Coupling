@@ -1,12 +1,13 @@
-import * as template from './tribe-card.pug'
-import * as services from '../../services'
+import * as template from "./tribe-card.pug";
+import * as services from "../../services";
+import {module} from "angular";
 
 export class TribeCardController {
     static $inject = ['$location'];
-    public tribe:services.Tribe;
-    size:number;
+    public tribe: services.Tribe;
+    size: number;
 
-    constructor(public $location:angular.ILocationService) {
+    constructor(public $location: angular.ILocationService) {
         if (!this.size) {
             this.size = 150;
         }
@@ -22,7 +23,7 @@ export class TribeCardController {
     }
 }
 
-export default angular.module('coupling.tribeCard', [])
+export default module('coupling.tribeCard', [])
     .controller('TribeCardController', TribeCardController)
     .directive('tribecard', function () {
         return {

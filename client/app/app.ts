@@ -24,8 +24,9 @@ import tribeListRoute from "./routes/TribeListRoute";
 import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
 import IResource = ng.resource.IResource
+import {module} from "angular";
 
-const app = angular.module('coupling', ["ngRoute",
+const app = module('coupling', ["ngRoute",
     'ngFitText',
     'ui.gravatar',
     'ang-drag-drop',
@@ -59,7 +60,7 @@ app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
         .when('/auth/google', {redirectTo: '/auth/google'});
 }]);
 
-angular.module('ui.gravatar')
+module('ui.gravatar')
     .config([
         'gravatarServiceProvider',
         function (gravatarServiceProvider) {

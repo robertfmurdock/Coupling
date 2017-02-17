@@ -1,3 +1,4 @@
+import {module} from "angular";
 import * as _ from "underscore";
 import * as template from "./pair-assignments.pug";
 import Tribe from "../../../../common/Tribe";
@@ -71,7 +72,7 @@ export class PairAssignmentsController {
     }
 }
 
-export default angular.module('coupling.pairAssignments', [])
+export default module('coupling.pairAssignments', [])
     .controller('PairAssignmentsController', PairAssignmentsController)
     .directive('pairAssignments', () => {
         return {
