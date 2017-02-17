@@ -6,9 +6,10 @@ describe('Tribe card directive', function () {
 
     beforeEach(angular.mock.module('coupling'));
 
-    function buildDirective($rootScope, $compile: angular.ICompileService) {
-        const element = angular.element('<tribecard tribe="{tribe}"/>');
+    function buildDirective($rootScope, $compile: angular.ICompileService, tribe: Tribe) {
+        const element = angular.element('<tribecard tribe="tribe"/>');
         const scope = $rootScope.$new();
+        scope.tribe = tribe;
         const tribeCardDirective = $compile(element)(scope);
         scope.$digest();
         return tribeCardDirective;
@@ -16,11 +17,10 @@ describe('Tribe card directive', function () {
 
     it('will show Unknown when the tribe has no name', inject(function ($compile, $rootScope) {
         const tribe: Tribe = {id: '1', name: ''};
-        const tribeCardDirective = buildDirective($rootScope, $compile);
+        const tribeCardDirective = buildDirective($rootScope, $compile, tribe);
 
         const nameElement = tribeCardDirective.find('[ng-model="tribecard.tribe.name"]');
         expect(nameElement.text()).toBe('Unknown');
     }));
-
 
 });

@@ -1,7 +1,11 @@
 import {browser, element, by} from "protractor";
 import e2eHelp from "./e2e-help";
+import * as monk from "monk";
+
 const config = require("../../config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
+const database = monk(config.tempMongoUrl);
+const tribeCollection = database.get('tribes');
 
 describe('The statistics page', function () {
 
@@ -13,7 +17,9 @@ describe('The statistics page', function () {
     beforeAll(function (done) {
         browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
 
-        e2eHelp.authorizeUserForTribes([tribe.id])
+        tribeCollection.remove({id: tribe.id})
+            .then(() => tribeCollection.insert(tribe))
+            .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
             .then(done, done.fail);
     });
 
@@ -24,6 +30,11 @@ describe('The statistics page', function () {
     it('has a route which works', function () {
         const statisticsElement = element(by.css('statistics'));
         expect(statisticsElement.isPresent()).toBe(true);
+    });
+
+    it('has a tribe card with matching tribe', function () {
+        const tribeCard = element(by.css('.tribe-name'));
+        expect(tribeCard.getText()).toBe('Funkytown');
     });
 
 });
