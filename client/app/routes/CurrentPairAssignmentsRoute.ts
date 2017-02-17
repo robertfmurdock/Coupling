@@ -1,6 +1,6 @@
 import IRoute = angular.route.IRoute;
 import * as services from '../services';
-import {tribeResolution} from "./Resolutions";
+import {tribeResolution, playersResolution} from "./Resolutions";
 
 class CurrentPairAssignmentsRouteController {
     static $inject = ['pairAssignmentDocument', 'tribe', 'players'];
@@ -20,9 +20,7 @@ const currentPairAssignmentsRoute:IRoute = {
             });
         }],
         tribe: tribeResolution,
-        players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getPlayers($route.current.params.tribeId);
-        }]
+        players: playersResolution
     }
 };
 

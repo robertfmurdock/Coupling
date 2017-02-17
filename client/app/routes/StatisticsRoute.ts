@@ -1,19 +1,20 @@
 import IRoute = angular.route.IRoute;
-import {tribeResolution} from "./Resolutions";
+import {tribeResolution, playersResolution} from "./Resolutions";
 
 class StatisticsRouteController {
-    static $inject = ['tribe'];
+    static $inject = ['tribe', 'players'];
 
-    constructor(public tribe) {
+    constructor(public tribe, public players) {
     }
 }
 
 const statisticsRoute:IRoute = {
-    template: '<statistics tribe="main.tribe">',
+    template: '<statistics tribe="main.tribe" players="main.players">',
     controllerAs: 'main',
     controller: StatisticsRouteController,
     resolve: {
-        tribe: tribeResolution
+        tribe: tribeResolution,
+        players: playersResolution
     }
 };
 

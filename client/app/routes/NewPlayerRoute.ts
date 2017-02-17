@@ -1,4 +1,4 @@
-import {tribeResolution} from "./Resolutions";
+import {tribeResolution, playersResolution} from "./Resolutions";
 import IRoute = angular.route.IRoute;
 import * as services from "../services";
 
@@ -21,9 +21,7 @@ const newPlayerRoute: IRoute = {
     controllerAs: 'main',
     resolve: {
         tribe: tribeResolution,
-        players: ['$route', 'Coupling', function ($route, Coupling) {
-            return Coupling.getPlayers($route.current.params.tribeId);
-        }]
+        players: playersResolution
     }
 };
 
