@@ -1,13 +1,19 @@
-tribecard(tribe="self.tribe")
+div(ng-class="self.styles.statsPage")
+    div
+        tribecard(tribe="self.tribe")
+        div(ng-class="self.styles.teamStatistics")
+            div(ng-class="self.styles.statsHeader") Team Stats
+            div
+                span(ng-class="self.styles.statLabel") Spins Until Full Rotation:
+                span.rotation-number {{self.statistics.spinsUntilFullRotation}}
+    div
+        div(ng-class='self.styles.inlineSection')
+            div(ng-class="self.styles.pairReportTable")
+                div(ng-repeat="report in self.statistics.pairReports")
+                    div(ng-class="self.styles.pairReport")
+                        playercard(ng-repeat="player in report.pair" player="player" size="50")
+                        div(ng-class="self.styles.pairStatistics")
+                            div(ng-class="self.styles.statsHeader") Stats
+                            span(ng-class="self.styles.statLabel") Spins since last paired:
+                            span.time-since-last-pairing {{report.timeSinceLastPaired}}
 
-div
-    span Spins Until Full Rotation:
-    span.rotation-number {{self.statistics.spinsUntilFullRotation}}
-div(ng-class="self.styles.pairReportTable")
-    div(ng-repeat="report in self.statistics.pairReports")
-        div(ng-class="self.styles.pairReport")
-            playercard(ng-repeat="player in report.pair" player="player" size="50")
-            div(ng-class="self.styles.pairStatistics")
-                div(ng-class="self.styles.statsHeader") Stats
-                span(ng-class="self.styles.statLabel") Spins since last paired:
-                span.time-since-last-pairing {{report.timeSinceLastPaired}}
