@@ -1,0 +1,28 @@
+:local(.pairReportTable) {
+    display: inline-block;
+    text-align: left;
+}
+
+:local(.pairReport) {
+    border-color: #ffffe6;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+    background: #ffffe6;
+    margin: 2px;
+}
+
+:local(.statsHeader) {
+    font-weight: bold;
+    font-size: large;
+}
+
+:local(.pairStatistics) {
+    display: inline-block;
+    vertical-align: top;
+    margin: 8px;
+}
+
+:local(.statLabel) {
+    margin-right: 5px;
+}

@@ -3,6 +3,11 @@ tribecard(tribe="self.tribe")
 div
     span Spins Until Full Rotation:
     span.rotation-number {{self.statistics.spinsUntilFullRotation}}
-div(ng-repeat="report in self.statistics.pairReports")
-    playercard(ng-repeat="player in report.pair" player="player" size="50")
-    span.time-since-last-pairing {{report.timeSinceLastPaired}}
+div(ng-class="self.styles.pairReportTable")
+    div(ng-repeat="report in self.statistics.pairReports")
+        div(ng-class="self.styles.pairReport")
+            playercard(ng-repeat="player in report.pair" player="player" size="50")
+            div(ng-class="self.styles.pairStatistics")
+                div(ng-class="self.styles.statsHeader") Stats
+                span(ng-class="self.styles.statLabel") Spins since last paired:
+                span.time-since-last-pairing {{report.timeSinceLastPaired}}

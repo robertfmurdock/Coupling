@@ -9,6 +9,12 @@ declare module '*.json' {
     export = _;
 }
 
+declare module '*.css' {
+    var _: any;
+
+    export = _;
+}
+
 declare module 'protractor-jasmine2-screenshot-reporter' {
     export = class {
         constructor(options: any)
