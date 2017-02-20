@@ -1,15 +1,23 @@
-import * as services from '../../services'
+import * as services from "../../services";
+import IController = angular.IController;
 
-export default class PlayerCardController {
+export default class PlayerCardController implements IController {
     static $inject = ['$location'];
 
-    player:services.Player;
-    size:number;
+    player: services.Player;
+    size: number;
+    cardStyle;
 
     constructor(public $location) {
+    }
+
+    $onInit?() {
         if (!this.size) {
             this.size = 100;
         }
+        const pixelWidth = this.size;
+        const pixelHeight = (this.size * 1.4);
+        this.cardStyle = {width: pixelWidth + "px", height: pixelHeight + "px"}
     }
 
     clickPlayerName($event) {

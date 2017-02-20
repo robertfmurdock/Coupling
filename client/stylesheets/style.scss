@@ -154,8 +154,6 @@ a {
     border-radius: 20px;
     padding: 10px;
     border-width: 11px;
-    width: 250px;
-    height: 315px;
     .player-header {
       background: darkcyan url(../images/overlay.png) repeat-x;
       margin-top: 0;
@@ -236,10 +234,7 @@ playercard, .player {
   text-fill-color: white;
   text-stroke-width: 1.5px;
   text-stroke-color: black;
-  font-size: x-large;
   margin: 0 2px 0 2px;
-  height: 140px;
-  width: 100px;
   .player-header {
     background: darkcyan url(../images/overlay.png) repeat-x;
     margin-before: 6px;
