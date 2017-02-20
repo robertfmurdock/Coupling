@@ -100,7 +100,34 @@ describe('Statistics directive', function () {
                 '0'
             ]);
         }));
-
     });
+
+    it('sends player heat data to subdirective', inject(function ($compile, $rootScope) {
+
+        this.tribe = {id: '2', name: 'Mathematica'};
+        this.players = [
+            {_id: 'harry', name: 'Harry', tribe: '2'},
+            {_id: 'larry', name: 'Larry', tribe: '2'},
+            {_id: 'curly', name: 'Curly', tribe: '2'},
+            {_id: 'moe', name: 'Moe', tribe: '2'}
+        ];
+
+        this.history = [{
+            pairs: [[this.players[0], this.players[1]], [this.players[2], this.players[3]]],
+            date: '',
+            tribe: this.tribe.id
+        }];
+
+        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
+        const heatmapElement = this.statisticsDirective.find('heatmap');
+        const isolateScope = heatmapElement.isolateScope();
+
+        expect(isolateScope.me.data).toEqual([
+            [null, 1, 0, 0],
+            [1, null, 0, 0],
+            [0, 0, null, 1],
+            [0, 0, 1, null]
+        ]);
+    }));
 
 });

@@ -17,4 +17,4 @@ div(ng-class="self.styles.statsPage")
                             span(ng-class="self.styles.statLabel") Spins since last paired:
                             span.time-since-last-pairing {{report.timeSinceLastPaired}}
         div(ng-class='self.styles.inlineSection')
-            heatmap
+            heatmap(data="self.data")
