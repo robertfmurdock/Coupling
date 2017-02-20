@@ -2,17 +2,8 @@ import {tribeResolution} from "./Resolutions";
 import * as services from "../services";
 import IRoute = angular.route.IRoute;
 
-class PrepareTribeRouteController {
-    static $inject = ['tribe', 'players'];
-
-    constructor(public tribe, public players) {
-    }
-}
-
 const prepareTribeRoute: IRoute = {
-    template: '<prepare tribe="main.tribe" players="main.players">',
-    controllerAs: 'main',
-    controller: PrepareTribeRouteController,
+    template: '<prepare tribe="$resolve.tribe" players="$resolve.players">',
     resolve: {
         tribe: tribeResolution,
         players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling: services.Coupling) {

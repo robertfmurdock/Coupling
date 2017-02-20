@@ -1,18 +1,8 @@
 import {tribeResolution, historyResolution} from "./Resolutions";
 import IRoute = angular.route.IRoute;
-import * as services from '../services';
 
-class HistoryRouteController {
-    static $inject = ['tribe', 'history'];
-
-    constructor(public tribe:services.Tribe, public history:[services.PairAssignmentSet]) {
-    }
-}
-
-const historyRoute:IRoute = {
-    template: '<history tribe="main.tribe" history="main.history">',
-    controllerAs: 'main',
-    controller: HistoryRouteController,
+const historyRoute: IRoute = {
+    template: '<history tribe="$resolve.tribe" history="$resolve.history">',
     resolve: {
         tribe: tribeResolution,
         history: historyResolution

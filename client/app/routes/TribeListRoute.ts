@@ -1,20 +1,10 @@
 import IRoute = angular.route.IRoute;
+import {tribesResolution} from "./Resolutions";
 
-class TribeListRouteController {
-    static $inject = ['tribes'];
-
-    constructor(public tribes) {
-    }
-}
-
-const tribeListRoute:IRoute = {
-    template: '<tribelist tribes="main.tribes">',
-    controllerAs: 'main',
-    controller: TribeListRouteController,
+const tribeListRoute: IRoute = {
+    template: '<tribelist tribes="$resolve.tribes">',
     resolve: {
-        tribes: ['Coupling', function (Coupling) {
-            return Coupling.getTribes();
-        }]
+        tribes: tribesResolution
     }
 };
 

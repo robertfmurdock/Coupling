@@ -1,21 +1,13 @@
 import IRoute = angular.route.IRoute;
-import * as services from "../services";
+import {Coupling} from "../services";
 
-class NewTribeRouteController {
-    static $inject = ['Coupling'];
-
-    tribe: services.Tribe;
-
-    constructor(Coupling) {
+const newTribeRoute: IRoute = {
+    template: '<tribe-config tribe="self.tribe" is-new=true>',
+    controllerAs: 'self',
+    controller: ['Coupling', function (Coupling: Coupling) {
         this.tribe = new Coupling.Tribe();
         this.tribe.name = 'New Tribe'
-    }
-
-}
-const newTribeRoute: IRoute = {
-    template: '<tribe-config tribe="main.tribe" is-new=true>',
-    controllerAs: 'main',
-    controller: NewTribeRouteController
+    }]
 };
 
 export default newTribeRoute;
