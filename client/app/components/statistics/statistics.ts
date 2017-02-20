@@ -1,9 +1,9 @@
-import * as template from './statistics.pug';
+import * as template from "./statistics.pug";
 import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
 import {module} from "angular";
 import StatisticComposer from "../../../../server/lib/StatisticComposer";
-import * as Styles from './styles.css';
+import * as Styles from "./styles.css";
 
 export class StatisticsController {
     public tribe: Tribe;

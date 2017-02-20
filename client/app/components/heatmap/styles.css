@@ -1,0 +1,9 @@
+:local(.heatmap) {
+    line-height: 0;
+}
+
+:local(.cell) {
+    height: 70px;
+    width: 70px;
+    display: inline-block;
+}

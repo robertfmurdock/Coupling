@@ -15,6 +15,7 @@ const config = {
       "angular-route",
       "font-awesome/css/font-awesome.css",
       "underscore",
+      "d3",
     ]
   },
   output: {

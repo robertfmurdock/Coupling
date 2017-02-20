@@ -1,6 +1,7 @@
 import * as _ from "underscore";
 import History from "./history/history";
 import PairAssignments from "./pair-assignments/pair-assignments";
+import HeatMap from './heatmap/heatmap'
 import PinList from "./pin-list/pin-list";
 import PlayerCard from "./player-card/player-card";
 import PlayerConfig from "./player-config/player-config";
@@ -27,7 +28,8 @@ module('coupling.component', [
     TribeCard.name,
     TribeConfig.name,
     TribeList.name,
-    Welcome.name
+    Welcome.name,
+    HeatMap.name
 ])
     .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
         fitTextConfigProvider.config = {
