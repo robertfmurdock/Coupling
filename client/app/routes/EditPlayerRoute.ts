@@ -1,29 +1,17 @@
 import {tribeResolution, playersResolution} from "./Resolutions";
+import * as _ from "underscore";
 import IRoute = angular.route.IRoute;
-import * as services from '../services';
-import * as _ from 'underscore';
-
-class EditPlayerRouteController {
-    static $inject = ['$route', 'tribe', 'players'];
-    tribe: services.Tribe;
-    player: services.Player;
-    players: [services.Player];
-
-    constructor($route, tribe, players) {
-        this.tribe = tribe;
-        this.players = players;
-        const playerId = $route.current.params.id;
-        this.player = _.findWhere(this.players, {_id: playerId});
-    }
-}
 
 const editPlayerRoute: IRoute = {
-    template: '<player-config player="main.player" players="main.players" tribe="main.tribe">',
-    controller: EditPlayerRouteController,
-    controllerAs: 'main',
+    template: '<player-config player="self.player" players="$resolve.players" tribe="$resolve.tribe">',
+    controller: ['players', '$route', function (players, $route) {
+        const playerId = $route.current.params.id;
+        this.player = _.findWhere(players, {_id: playerId});
+    }],
+    controllerAs: 'self',
     resolve: {
         tribe: tribeResolution,
-        players: playersResolution
+        players: playersResolution,
     }
 };
 

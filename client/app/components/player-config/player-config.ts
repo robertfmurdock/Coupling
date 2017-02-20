@@ -19,8 +19,6 @@ export class PlayerConfigController {
                 public $route: IRouteService) {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
         $scope.Badge = Badge;
-
-
     }
 
     $onInit() {
