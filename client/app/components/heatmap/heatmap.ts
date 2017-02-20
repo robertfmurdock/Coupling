@@ -50,8 +50,6 @@ export default module('coupling.heatmap', [])
                         const percentage = dataNumber / elements.length;
                         return colorInterpolator(percentage);
                     });
-
-
             }
         }
     });

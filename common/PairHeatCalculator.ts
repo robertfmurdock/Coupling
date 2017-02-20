@@ -1,7 +1,7 @@
-import PairAssignmentDocument from "../../common/PairAssignmentDocument";
+import PairAssignmentDocument from "./PairAssignmentDocument";
 import * as _ from "underscore";
-import Comparators from "../../common/Comparators";
-import Pair from "../../common/Pair";
+import Comparators from "./Comparators";
+import Pair from "./Pair";
 
 const heatIncrements = [0, 1, 2.5, 4.5, 7, 10];
 const rotationHeatWindow = 5;
@@ -11,8 +11,10 @@ export default class PairHeatCalculator {
     calculate(pair: Pair, history: PairAssignmentDocument[], rotationPeriod: number) {
         const recentHistory = this.getHistoryInHeatWindow(history, rotationPeriod);
         const timesPairedInHeatWindow = this.calculateTimesPaired(pair, recentHistory);
+        console.log('timesPairedInHeatWindow', timesPairedInHeatWindow);
         return this.getHeatValue(timesPairedInHeatWindow);
     }
+
 
     private getHeatValue(timesPairedInHeatWindow: number) {
         const index = Math.min(timesPairedInHeatWindow, heatIncrements.length - 1);

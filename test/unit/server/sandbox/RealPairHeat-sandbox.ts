@@ -1,4 +1,4 @@
-import PairHeatCalculator from "../../../../server/lib/PairHeatCalculator";
+import PairHeatCalculator from "../../../../common/PairHeatCalculator";
 import * as menuHistory from "./menu-history-bla.json";
 import * as menuPlayers from "./menu-players.json";
 import * as _ from "underscore";

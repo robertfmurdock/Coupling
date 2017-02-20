@@ -1,4 +1,4 @@
-import PairHeatCalculator from "../../../server/lib/PairHeatCalculator";
+import PairHeatCalculator from "../../../common/PairHeatCalculator";
 import Pair from "../../../common/Pair";
 import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import * as _ from "underscore";
