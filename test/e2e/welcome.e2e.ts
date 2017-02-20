@@ -11,7 +11,16 @@ describe('The welcome page', function () {
         browser.get(hostName + '/welcome');
         element(By.tagName('body')).allowAnimations(false);
         element(By.id('enter-button')).click();
-        expect(browser.getCurrentUrl()).toBe(hostName + '/auth/google');
+        browser.waitForAngularEnabled(false);
+
+        browser.getCurrentUrl().then(function (url) {
+            expect(url.startsWith('https://accounts.google.com/ServiceLogin')).toBe(true);
+        });
+
+    });
+
+    afterEach(function () {
+        browser.waitForAngularEnabled(true);
     });
 
     e2eHelp.afterEachAssertLogsAreEmpty();

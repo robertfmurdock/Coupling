@@ -21,10 +21,10 @@ import editTribeRoute from "./routes/EditTribeRoute";
 import prepareTribeRoute from "./routes/PrepareTribeRoute";
 import newTribeRoute from "./routes/NewTribeRoute";
 import tribeListRoute from "./routes/TribeListRoute";
+import {module} from "angular";
 import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
 import IResource = ng.resource.IResource
-import {module} from "angular";
 
 const app = module('coupling', ["ngRoute",
     'ngFitText',
@@ -45,6 +45,8 @@ app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
 
     routeProvider
         .when('/', {redirectTo: '/tribes/'})
+        .when('/welcome', () => {
+        })
         .when('/tribes/', tribeListRoute)
         .when('/new-tribe/', newTribeRoute)
         .when('/:tribeId/', {redirectTo: '/:tribeId/pairAssignments/current/'})
@@ -57,7 +59,6 @@ app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
         .when('/:tribeId/player/new/', newPlayerRoute)
         .when('/:tribeId/player/:id/', editPlayerRoute)
         .when('/:tribeId/statistics', statisticsRoute)
-        .when('/auth/google', {redirectTo: '/auth/google'});
 }]);
 
 module('ui.gravatar')
