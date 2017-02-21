@@ -9,6 +9,7 @@ import * as template from "./pair-assignments.pug";
 import Tribe from "../../../../common/Tribe";
 import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import Player from "../../../../common/Player";
+import * as Styles from './styles.css';
 
 export class PairAssignmentsController {
     static $inject = ['Coupling', '$location'];
@@ -16,10 +17,12 @@ export class PairAssignmentsController {
     players: Player[];
     pairAssignments: PairAssignmentSet;
     isNew: boolean;
+    styles: any;
     private _unpairedPlayers: Player[];
     private differenceOfPlayers = differenceWith(eqBy(prop('_id')));
 
     constructor(public Coupling, private $location) {
+        this.styles = Styles;
     }
 
     get unpairedPlayers(): Player[] {

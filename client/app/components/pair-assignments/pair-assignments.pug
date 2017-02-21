@@ -2,9 +2,13 @@ div
     div(id="tribe-browser")
         tribecard(tribe="pairAssignments.tribe")
         div
-            a(id="tribe-select-button" class="large gray button" href="/tribes")
-                i(class="fa fa-arrow-circle-up")
-                text(class="icon-button-text") Tribe select
+            div
+                a(id="tribe-select-button" class="large gray button" href="/tribes")
+                    i(class="fa fa-arrow-circle-up")
+                    text(class="icon-button-text") Tribe select
+            div
+                a(ng-class="pairAssignments.styles.statisticsButton" class="large gray button" href="/{{pairAssignments.tribe.id}}/statistics")
+                    text(class="icon-button-text") Statistics
     div(ng-cloak class="current pair-assignments")
         div(class="no-pairs-notice" ng-hide="pairAssignments.pairAssignments") No pair assignments yet!
         div(ng-show="pairAssignments.pairAssignments")
