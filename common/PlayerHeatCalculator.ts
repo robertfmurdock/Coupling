@@ -1,5 +1,5 @@
 import Player from "./Player";
-import * as R from "ramda";
+import * as map from "ramda/src/map";
 import PairAssignmentSet from "./PairAssignmentSet";
 import PairHeatCalculator from "./PairHeatCalculator";
 
@@ -8,8 +8,8 @@ const pairHeatCalculator = new PairHeatCalculator();
 export default class PlayerHeatCalculator {
 
     calculateHeatValues(players: Array<Player>, history: PairAssignmentSet[], rotationPeriod) {
-        const createRow = R.map((player: Player) => {
-            return R.map(this.toHeatValuesForPlayer(player, history, rotationPeriod), players);
+        const createRow = map((player: Player) => {
+            return map(this.toHeatValuesForPlayer(player, history, rotationPeriod), players);
         });
         return createRow(players);
     }

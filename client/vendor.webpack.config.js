@@ -13,9 +13,12 @@ const config = {
       "angular-native-dragdrop",
       "angular-resource",
       "angular-route",
+      "d3-color",
+      "d3-interpolate",
+      "d3-selection",
+      "ramda/src/map",
       "font-awesome/css/font-awesome.css",
       "underscore",
-      "d3",
     ]
   },
   output: {

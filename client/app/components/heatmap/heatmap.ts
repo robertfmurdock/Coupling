@@ -1,24 +1,24 @@
-import {module} from "angular";
-import * as d3 from "d3";
+import {module, IController} from "angular";
+import {rgb} from "d3-color";
+import {interpolateRgbBasis} from "d3-interpolate";
+import {select} from "d3-selection";
+import * as _ from "underscore";
 import * as Styles from "./styles.css";
 import * as template from "./heatmap.pug";
-import * as _ from 'underscore'
-
-import IController = angular.IController;
 
 const colorSuggestions = [
-    d3.rgb("#2c7bb6"),
-    d3.rgb("#00a6ca"),
-    d3.rgb("#00ccbc"),
-    d3.rgb("#90eb9d"),
-    d3.rgb("#ffff8c"),
-    d3.rgb("#f9d057"),
-    d3.rgb("#f29e2e"),
-    d3.rgb("#e76818"),
-    d3.rgb("#d7191c")
+    rgb("#2c7bb6"),
+    rgb("#00a6ca"),
+    rgb("#00ccbc"),
+    rgb("#90eb9d"),
+    rgb("#ffff8c"),
+    rgb("#f9d057"),
+    rgb("#f29e2e"),
+    rgb("#e76818"),
+    rgb("#d7191c")
 ];
 
-const colorInterpolator = d3.interpolateRgbBasis(colorSuggestions);
+const colorInterpolator = interpolateRgbBasis(colorSuggestions);
 
 class HeatmapController implements IController {
 
@@ -48,10 +48,9 @@ export default module('coupling.heatmap', [])
                 data: '=',
             },
             link: function (scope, element, attributes, controller: any) {
-                const select = element[0].querySelector('div[ng-class="me.Styles.heatmap"]');
                 const data = _.flatten(controller.data);
 
-                d3.select(select)
+                select(element[0].querySelector('div[ng-class="me.Styles.heatmap"]'))
                     .selectAll("div")
                     .data(data)
                     .enter().append(function () {
@@ -60,7 +59,7 @@ export default module('coupling.heatmap', [])
                     return cellElement;
                 })
                     .style("background-color", function (dataNumber) {
-                        if(dataNumber === null){
+                        if (dataNumber === null) {
                             return '#EEE'
                         }
                         const percentage = dataNumber / 10;
