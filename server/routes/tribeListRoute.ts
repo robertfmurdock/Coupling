@@ -1,25 +1,37 @@
 import * as express from "express";
 import * as monk from "monk";
 import * as Promise from "bluebird";
-import * as _ from "underscore";
+import * as union from "ramda/src/union";
+import * as pipe from "ramda/src/pipe";
+import * as pluck from "ramda/src/pluck";
+import * as filter from "ramda/src/filter";
+import * as where from "ramda/src/where";
+import * as contains from "ramda/src/contains";
+import * as __ from "ramda/src/__";
 import Tribe from "../../common/Tribe";
 
-var config = require('../../config');
+const config = require('../../config');
+
+function filterToAuthorizedTribes(authorizedTribeIds: string[], tribes2: Tribe[]) {
+    return filter(where({id: contains(__, authorizedTribeIds)}), tribes2)
+}
 
 class TribeRoutes {
 
     private loadAuthorizedTribeIds(user, mongoUrl) {
-        var database = monk(mongoUrl);
-        var playersCollection = database.get('players');
-        var email = user.email;
-        var tempSuffixIndex = email.indexOf('._temp');
+        const database = monk(mongoUrl);
+        const playersCollection = database.get('players');
+        let email = user.email;
+        const tempSuffixIndex = email.indexOf('._temp');
         if (tempSuffixIndex != -1) {
             email = email.substring(0, tempSuffixIndex);
         }
 
         return playersCollection.find({email: email}).then(function (documents) {
-            var allTribesThatHaveMembership = _.pluck(documents, 'tribe');
-            return _.union(user.tribes, allTribesThatHaveMembership);
+            return pipe(
+                pluck('tribe'),
+                union(user.tribes)
+            )(documents);
         });
     }
 
@@ -29,9 +41,8 @@ class TribeRoutes {
             authorizedTribeIds: this.loadAuthorizedTribeIds(user, dataService.mongoUrl)
         })
             .then(function (hash: any) {
-                return _.filter(hash.tribes, function (value: Tribe) {
-                    return _.contains(hash.authorizedTribeIds, value.id);
-                });
+                const {authorizedTribeIds, tribes} = hash;
+                return filterToAuthorizedTribes(authorizedTribeIds, tribes);
             });
     }
 
@@ -51,8 +62,8 @@ class TribeRoutes {
             tribe: request.dataService.requestTribe(request.params.tribeId),
             authorizedTribeIds: this.loadAuthorizedTribeIds(request.user, request.dataService.mongoUrl)
         })
-            .then(function (hash : any) {
-                var isAuthorized = _.contains(hash.authorizedTribeIds, hash.tribe.id);
+            .then(function (hash: any) {
+                const isAuthorized = contains(hash.tribe.id, hash.authorizedTribeIds);
                 if (isAuthorized) {
                     response.send(hash.tribe);
                 } else {
@@ -68,10 +79,10 @@ class TribeRoutes {
     };
 
     public save = (request, response) => {
-        var database = monk(request.dataService.mongoUrl);
-        var tribesCollection = database.get('tribes');
-        var usersCollection = monk(config.mongoUrl).get('users');
-        var tribeJSON = request.body;
+        const database = monk(request.dataService.mongoUrl);
+        const tribesCollection = database.get('tribes');
+        const usersCollection = monk(config.mongoUrl).get('users');
+        const tribeJSON = request.body;
         tribeJSON._id = tribeJSON._id || monk.id();
         tribesCollection.update({id: tribeJSON.id}, tribeJSON, {upsert: true}, function () {
             usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON.id}});
@@ -80,8 +91,8 @@ class TribeRoutes {
     };
 }
 
-var tribes = new TribeRoutes();
-var router = express.Router({mergeParams: true});
+const tribes = new TribeRoutes();
+const router = express.Router({mergeParams: true});
 router.route('/')
     .get(tribes.list)
     .post(tribes.save);
