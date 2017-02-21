@@ -6,6 +6,7 @@ import * as prop from "ramda/src/prop";
 import * as differenceWith from "ramda/src/differenceWith";
 import * as flatten from "ramda/src/flatten";
 import * as template from "./pair-assignments.pug";
+
 import Tribe from "../../../../common/Tribe";
 import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import Player from "../../../../common/Player";

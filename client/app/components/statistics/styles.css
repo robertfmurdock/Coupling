@@ -10,21 +10,27 @@
 
 :local(.spacer) {
     display: inline-block;
-    width: 72px;
+    width: 62px;
 }
 
 :local(.heatmapPlayersTopRow) playercard {
-    margin: 1px 11px;
+    width: 90px;
+    display: inline-block;
+    text-align: center;
 }
 
 :local(.heatmapPlayersSideRow) {
     display: inline-block;
-    width: 72px;
     line-height: 0;
 }
 
 :local(.heatmapPlayersSideRow) playercard {
-    margin: 1px 0;
+    height: 90px;
+    display: block;
+}
+
+:local(.heatmapPlayersSideRow) playercard > div {
+    vertical-align: middle;
 }
 
 :local(.pairReport) {

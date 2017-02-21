@@ -216,6 +216,19 @@ a {
 }
 
 playercard, .player {
+  .player-header {
+    background: darkcyan url(../images/overlay.png) repeat-x;
+    margin-before: 6px;
+    margin-after: 6px;
+    border-radius: 15px;
+    font-weight: bold;
+  }
+  img {
+    display: block;
+  }
+}
+
+.player {
   position: relative;
   clear: both;
   display: inline-block;
@@ -232,16 +245,6 @@ playercard, .player {
   text-stroke-width: 1.5px;
   text-stroke-color: black;
   margin: 0 2px 0 2px;
-  .player-header {
-    background: darkcyan url(../images/overlay.png) repeat-x;
-    margin-before: 6px;
-    margin-after: 6px;
-    border-radius: 15px;
-    font-weight: bold;
-  }
-  img {
-    display: block;
-  }
 }
 
 .player-roster {
@@ -249,7 +252,7 @@ playercard, .player {
     top: 0;
     margin-bottom: 25px;
   }
-  playercard.disabled, .player.disabled {
+  .player.disabled {
     top: 30px;
     background-color: darkred;
     margin-bottom: 0;
@@ -281,7 +284,7 @@ playercard, .player {
   background-color: seagreen;
   .on-drag-enter {
   }
-  .on-drag-hover {
+  .on-drag-hover > div {
     background-color: orange;
   }
 }

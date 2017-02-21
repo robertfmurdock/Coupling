@@ -1,0 +1,24 @@
+:local(.player) {
+    position: relative;
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    border: 3px outset gold;
+    background: darkseagreen url(../../../images/overlay.png) repeat-x;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    color: black;
+    text-fill-color: white;
+    text-stroke-width: 1.5px;
+    text-stroke-color: black;
+    margin: 0 2px 0 2px;
+    top: 0
+}
+
+.disabled :local(.player) {
+    top: 30px;
+    background-color: darkred;
+    margin-bottom: 0;
+}

@@ -99,8 +99,9 @@
 }
 
 .player-roster {
-  playercard, .player {
+  playercard > div, .player {
     transition: all 0.25s ease-out;
+    transition-property: top, background-color, margin-bottom;
     &.disabled, &.ng-enter {
       transition: all 0.25s ease-out;
     }
@@ -140,7 +141,7 @@
   }
 }
 
-.pair-assignments playercard.hoverzoom:hover, .player.hoverzoom:hover {
+.pair-assignments playercard.hoverzoom:hover > div, .player.hoverzoom:hover {
   transition: all ease-in 0.4s;
   z-index: 1;
   animation: 0.5s twitch;
