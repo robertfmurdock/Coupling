@@ -4,6 +4,8 @@ import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import PairAssignmentSet from "../../../common/PairAssignmentSet";
 import *  as _ from "underscore";
+import * as Styles from '../../../client/app/components/statistics/styles.css'
+import * as R from 'ramda'
 import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
 
 describe('Statistics directive', function () {
@@ -128,6 +130,46 @@ describe('Statistics directive', function () {
             [0, 0, null, 1],
             [0, 0, 1, null]
         ]);
+    }));
+
+    let getPlayersFromCards = R.map(function (card) {
+        return angular.element(card).isolateScope().playerCard.player;
+    });
+
+    it('has row of players above heatmap', inject(function ($compile, $rootScope) {
+        this.tribe = {id: '2', name: 'Mathematica'};
+        this.players = [
+            {_id: 'harry', name: 'Harry', tribe: '2'},
+            {_id: 'larry', name: 'Larry', tribe: '2'},
+            {_id: 'curly', name: 'Curly', tribe: '2'},
+            {_id: 'moe', name: 'Moe', tribe: '2'}
+        ];
+
+        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, []);
+        const playersRowElement = this.statisticsDirective.find(`.${Styles.heatmapPlayersTopRow}`);
+        const playerCards = playersRowElement.find('playercard');
+
+        const playersOnCards = getPlayersFromCards(playerCards.toArray());
+
+        expect(playersOnCards).toEqual(this.players);
+    }));
+
+    it('has a row of players to the side of the heatmap', inject(function($compile, $rootScope) {
+        this.tribe = {id: '2', name: 'Mathematica'};
+        this.players = [
+            {_id: 'harry', name: 'Harry', tribe: '2'},
+            {_id: 'larry', name: 'Larry', tribe: '2'},
+            {_id: 'curly', name: 'Curly', tribe: '2'},
+            {_id: 'moe', name: 'Moe', tribe: '2'}
+        ];
+
+        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, []);
+        const playersRowElement = this.statisticsDirective.find(`.${Styles.heatmapPlayersSideRow}`);
+        const playerCards = playersRowElement.find('playercard');
+
+        const playersOnCards = getPlayersFromCards(playerCards.toArray());
+
+        expect(playersOnCards).toEqual(this.players);
     }));
 
 });

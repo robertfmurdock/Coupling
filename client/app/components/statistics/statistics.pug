@@ -7,7 +7,7 @@ div(ng-class="self.styles.statsPage")
                 span(ng-class="self.styles.statLabel") Spins Until Full Rotation:
                 span.rotation-number {{self.statistics.spinsUntilFullRotation}}
     div
-        div(ng-class='self.styles.inlineSection')
+        div(ng-class='self.styles.leftSection')
             div(ng-class="self.styles.pairReportTable")
                 div(ng-repeat="report in self.statistics.pairReports")
                     div(ng-class="self.styles.pairReport")
@@ -16,5 +16,10 @@ div(ng-class="self.styles.statsPage")
                             div(ng-class="self.styles.statsHeader") Stats
                             span(ng-class="self.styles.statLabel") Spins since last paired:
                             span.time-since-last-pairing {{report.timeSinceLastPaired}}
-        div(ng-class='self.styles.inlineSection')
+        div(ng-class='self.styles.rightSection')
+            div(ng-class="self.styles.heatmapPlayersTopRow")
+                div(ng-class="self.styles.spacer")
+                playercard(ng-repeat="player in self.players" player="player" size="50")
+            div(ng-class="self.styles.heatmapPlayersSideRow")
+                playercard(ng-repeat="player in self.players" player="player" size="50")
             heatmap(data="self.data")

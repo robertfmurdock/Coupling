@@ -3,6 +3,30 @@
     text-align: left;
 }
 
+:local(.statsPage) heatmap {
+    display: inline-block;
+    vertical-align: top;
+}
+
+:local(.spacer) {
+    display: inline-block;
+    width: 72px;
+}
+
+:local(.heatmapPlayersTopRow) playercard {
+    margin: 1px 11px;
+}
+
+:local(.heatmapPlayersSideRow) {
+    display: inline-block;
+    width: 72px;
+    line-height: 0;
+}
+
+:local(.heatmapPlayersSideRow) playercard {
+    margin: 1px 0;
+}
+
 :local(.pairReport) {
     border: 2px solid #ffffe6;
     border-radius: 5px;
@@ -40,7 +64,14 @@
     text-align: left;
     display: inline-block;
 }
-:local(.inlineSection) {
+
+:local(.leftSection) {
     display: inline-block;
     vertical-align: top;
+}
+
+:local(.rightSection) {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
 }

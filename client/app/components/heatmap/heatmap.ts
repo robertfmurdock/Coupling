@@ -27,7 +27,7 @@ class HeatmapController implements IController {
     public Styles: any;
 
     $onInit() {
-        const rowSize = this.data.length * 70;
+        const rowSize = this.data.length * 90;
         this.Styles = Styles;
         this.heatmapStyle = {
             width: `${rowSize}px`,
