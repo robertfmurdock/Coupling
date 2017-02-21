@@ -2,7 +2,7 @@ import {module, IController} from "angular";
 import {rgb} from "d3-color";
 import {interpolateRgbBasis} from "d3-interpolate";
 import {select} from "d3-selection";
-import * as _ from "underscore";
+import * as flatten from "ramda/src/flatten";
 import * as Styles from "./styles.css";
 import * as template from "./heatmap.pug";
 
@@ -48,7 +48,7 @@ export default module('coupling.heatmap', [])
                 data: '=',
             },
             link: function (scope, element, attributes, controller: any) {
-                const data = _.flatten(controller.data);
+                const data = flatten(controller.data);
 
                 select(element[0].querySelector('div[ng-class="me.Styles.heatmap"]'))
                     .selectAll("div")
@@ -58,7 +58,7 @@ export default module('coupling.heatmap', [])
                     cellElement.setAttribute('class', Styles.cell);
                     return cellElement;
                 })
-                    .style("background-color", function (dataNumber) {
+                    .style("background-color", function (dataNumber: number) {
                         if (dataNumber === null) {
                             return '#EEE'
                         }

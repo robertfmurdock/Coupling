@@ -1,5 +1,10 @@
 import {module} from "angular";
-import * as _ from "underscore";
+import * as find from "ramda/src/find";
+import * as propEq from "ramda/src/propEq";
+import * as eqBy from "ramda/src/eqBy";
+import * as prop from "ramda/src/prop";
+import * as differenceWith from "ramda/src/differenceWith";
+import * as flatten from "ramda/src/flatten";
 import * as template from "./pair-assignments.pug";
 import Tribe from "../../../../common/Tribe";
 import PairAssignmentSet from "../../../../common/PairAssignmentSet";
@@ -12,6 +17,7 @@ export class PairAssignmentsController {
     pairAssignments: PairAssignmentSet;
     isNew: boolean;
     private _unpairedPlayers: Player[];
+    private differenceOfPlayers = differenceWith(eqBy(prop('_id')));
 
     constructor(public Coupling, private $location) {
     }
@@ -28,15 +34,12 @@ export class PairAssignmentsController {
     save() {
         const self = this;
         this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
-            .then(function () {
-                self.$location.path("/" + self.tribe.id + "/pairAssignments/current");
-            });
+            .then(() => self.$location.path(`/${self.tribe.id}/pairAssignments/current`));
     }
 
     onDrop(draggedPlayer, droppedPlayer) {
         const pairWithDraggedPlayer = this.findPairContainingPlayer(draggedPlayer, this.pairAssignments.pairs);
         const pairWithDroppedPlayer = this.findPairContainingPlayer(droppedPlayer, this.pairAssignments.pairs);
-
         if (pairWithDraggedPlayer != pairWithDroppedPlayer) {
             this.swapPlayers(pairWithDraggedPlayer, draggedPlayer, droppedPlayer);
             this.swapPlayers(pairWithDroppedPlayer, droppedPlayer, draggedPlayer);
@@ -44,16 +47,11 @@ export class PairAssignmentsController {
     }
 
     private findPairContainingPlayer(player, pairs: Player[][]) {
-        return _.find(pairs, function (pair) {
-            return _.findWhere(pair, {
-                _id: player._id
-            });
-        });
+        return find(find(propEq('_id', player._id)), pairs);
     }
 
-
     private swapPlayers(pair, swapOutPlayer, swapInPlayer) {
-        _.each(pair, function (player: Player, index) {
+        pair.forEach(function (player: Player, index) {
             if (swapOutPlayer._id === player._id) {
                 pair[index] = swapInPlayer;
             }
@@ -64,12 +62,11 @@ export class PairAssignmentsController {
         if (!pairAssignmentDocument) {
             return players;
         }
-        const currentlyPairedPlayers = _.flatten(pairAssignmentDocument.pairs);
-        return _.filter(players, function (value: Player) {
-            const found = _.findWhere(currentlyPairedPlayers, {_id: value._id});
-            return found == undefined;
-        });
+        const currentlyPairedPlayers = flatten(pairAssignmentDocument.pairs);
+
+        return this.differenceOfPlayers(players, currentlyPairedPlayers);
     }
+
 }
 
 export default module('coupling.pairAssignments', [])

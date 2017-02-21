@@ -11,7 +11,6 @@ export default class PairHeatCalculator {
     calculate(pair: Pair, history: PairAssignmentDocument[], rotationPeriod: number) {
         const recentHistory = this.getHistoryInHeatWindow(history, rotationPeriod);
         const timesPairedInHeatWindow = this.calculateTimesPaired(pair, recentHistory);
-        console.log('timesPairedInHeatWindow', timesPairedInHeatWindow);
         return this.getHeatValue(timesPairedInHeatWindow);
     }
 
