@@ -17,7 +17,19 @@ const config = {
       "d3-interpolate",
       "d3-selection",
       "ramda/src/map",
+      "ramda/src/find",
+      "ramda/src/mergeAll",
+      "ramda/src/pipe",
+      "ramda/src/flatten",
+      "ramda/src/propEq",
+      "ramda/src/differenceWith",
+      "ramda/src/values",
+      "ramda/src/filter",
+      "ramda/src/unnest",
+      "ramda/src/curry",
+      "ramda/src/length",
       "font-awesome/css/font-awesome.css",
+      "moment",
       "underscore",
     ]
   },
@@ -51,6 +63,7 @@ const config = {
       path: path.resolve(buildPath, '[name]-manifest.json'),
       name: '[name]_lib'
     }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]

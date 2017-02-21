@@ -287,6 +287,10 @@ playercard, .player {
   .on-drag-hover > div {
     background-color: orange;
   }
+  playercard {
+    display: inline-block;
+    overflow: hidden;
+  }
 }
 
 #history-view {
