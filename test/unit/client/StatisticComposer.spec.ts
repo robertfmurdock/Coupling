@@ -1,10 +1,10 @@
-import StatisticComposer from "../../../server/lib/StatisticComposer";
 import Player from "../../../common/Player";
 import Tribe from "../../../common/Tribe";
 import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import * as _ from "underscore";
 import Pair from "../../../common/Pair";
 import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
+import StatisticComposer from "../../../common/StatisticComposer";
 
 const statComposer = new StatisticComposer();
 
@@ -172,6 +172,127 @@ describe('StatisticComposer', function () {
             expect(_.pluck(pairReports, 'timeSinceLastPaired')).toEqual(expectedResults);
         });
 
+    });
+
+    describe('will calculate the median spin time', function() {
+
+        it('as N/A if no history', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const history: PairAssignmentDocument[] = [];
+            const players: Player[] = [];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('N/A');
+        });
+
+        it('as 1 with daily spins', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [
+                {date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 16), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 15), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 14), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 13), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 12), pairs: [], tribe: tribe.id},
+                ];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('a day');
+        });
+
+        it('as 2 with mostly 2 day spins and outliers', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [
+                {date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 12), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 10), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 8), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 6), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 4), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 3), pairs: [], tribe: tribe.id},
+                ];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('2 days');
+        });
+
+        it('with dates as string', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [
+                {date: '2017-02-21T16:34:35.173Z', pairs: [], tribe: tribe.id},
+                {date: '2017-02-17T16:34:35.173Z', pairs: [], tribe: tribe.id}
+                ];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('4 days');
+        });
+
+        it('with one instance of median and variable pattern', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [
+                {date: new Date(2017, 2, 20), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 15), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 14), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 13), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 10), pairs: [], tribe: tribe.id},
+            ];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('2 days');
+        });
+
+        it('as N/A with only one history entry', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [{date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id}];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('N/A');
+        });
+
+        it('down to the hour!', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [
+                {date: new Date(2017, 2, 20, 21), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 19), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 18), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 13), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 12), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 9), pairs: [], tribe: tribe.id},
+            ];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('2 hours');
+        });
+
+        it('rounding hours to nearest day when the median is greater than a day', function() {
+            const tribe: Tribe = {id: 'LOL', name: 'LOL'};
+            const players: Player[] = [];
+
+            const history: PairAssignmentDocument[] = [
+                {date: new Date(2017, 2, 20, 21), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 17, 19), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 15, 7), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 14, 13), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 13, 12), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 10, 9), pairs: [], tribe: tribe.id},
+            ];
+
+            const {medianSpinDuration} = statComposer.compose(tribe, players, history);
+            expect(medianSpinDuration).toBe('3 days');
+        });
     });
 
 });

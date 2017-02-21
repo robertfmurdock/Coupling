@@ -5,7 +5,7 @@ import * as _ from "underscore";
 import Pair from "../../../../common/Pair";
 import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import Player from "../../../../common/Player";
-import StatisticComposer from "../../../../server/lib/StatisticComposer";
+import StatisticComposer from "../../../../common/StatisticComposer";
 
 fdescribe('srsly delete me', function () {
 

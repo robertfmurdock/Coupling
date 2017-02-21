@@ -2,9 +2,9 @@ import * as template from "./statistics.pug";
 import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
 import {module} from "angular";
-import StatisticComposer from "../../../../server/lib/StatisticComposer";
 import * as Styles from "./styles.css";
 import PlayerHeatCalculator from "../../../../common/PlayerHeatCalculator";
+import StatisticComposer from "../../../../common/StatisticComposer";
 
 export class StatisticsController {
     public tribe: Tribe;
@@ -13,6 +13,7 @@ export class StatisticsController {
     public history;
     public styles;
     public data;
+    public activePlayerCount;
 
     $onInit() {
         const composer = new StatisticComposer();
@@ -22,7 +23,8 @@ export class StatisticsController {
         this.styles = Styles;
         this.data = playerHeatCalculator.calculateHeatValues(this.players,
             this.history,
-            this.statistics.spinsUntilFullRotation)
+            this.statistics.spinsUntilFullRotation);
+        this.activePlayerCount = this.players.length;
     }
 }
 

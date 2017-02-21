@@ -75,3 +75,11 @@
     vertical-align: top;
     margin-left: 20px;
 }
+
+:local(.activePlayerCount) {
+    
+}
+
+:local(.medianSpinDuration) {
+
+}

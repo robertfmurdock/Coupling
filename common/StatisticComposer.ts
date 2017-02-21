@@ -1,9 +1,10 @@
-import Tribe from "../../common/Tribe";
-import Player from "../../common/Player";
-import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as _ from "underscore";
-import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "../../common/PairingTimeCalculator";
-import Pair from "../../common/Pair";
+import PairAssignmentDocument from "./PairAssignmentDocument";
+import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "./PairingTimeCalculator";
+import Pair from "./Pair";
+import Tribe from "./Tribe";
+import Player from "./Player";
+import * as moment from 'moment';
 
 interface PairReport {
     pair: Pair,
@@ -15,8 +16,24 @@ export default class StatisticComposer {
     compose(tribe: Tribe, players: Player[], history: PairAssignmentDocument[]) {
         return {
             spinsUntilFullRotation: this.calculateFullRotation(players),
-            pairReports: this.buildPairReports(players, history)
+            pairReports: this.buildPairReports(players, history),
+            medianSpinDuration: this.calculateMedianSpinDuration(history)
         };
+    }
+
+    private calculateMedianSpinDuration(history: PairAssignmentDocument[]) {
+        if(history.length <= 1) {
+            return 'N/A';
+        }
+
+        const times = history.map(document => moment(document.date).valueOf());
+        const durations = times.slice(1).map((value, index) => times[index] - value);
+
+        const sortedDurations = _.sortBy(durations, (duration) => duration);
+        const indexOfMedian = Math.floor(sortedDurations.length / 2);
+        const median = sortedDurations[indexOfMedian];
+
+        return moment.duration(median).humanize();
     }
 
     private buildPairReports(players: Player[], history) {

@@ -6,6 +6,12 @@ div(ng-class="self.styles.statsPage")
             div
                 span(ng-class="self.styles.statLabel") Spins Until Full Rotation:
                 span.rotation-number {{self.statistics.spinsUntilFullRotation}}
+            div
+                span(ng-class="self.styles.statLabel") Number of Active Players:
+                span(ng-class="self.styles.activePlayerCount") {{self.activePlayerCount}}
+            div
+                span(ng-class="self.styles.statLabel") Median Spin Duration:
+                span(ng-class="self.styles.medianSpinDuration") {{self.statistics.medianSpinDuration}}
     div
         div(ng-class='self.styles.leftSection')
             div(ng-class="self.styles.pairReportTable")

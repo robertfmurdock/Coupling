@@ -4,8 +4,8 @@ import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import PairAssignmentSet from "../../../common/PairAssignmentSet";
 import *  as _ from "underscore";
-import * as Styles from '../../../client/app/components/statistics/styles.css'
-import * as R from 'ramda'
+import * as Styles from "../../../client/app/components/statistics/styles.css";
+import * as R from "ramda";
 import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
 
 describe('Statistics directive', function () {
@@ -154,7 +154,7 @@ describe('Statistics directive', function () {
         expect(playersOnCards).toEqual(this.players);
     }));
 
-    it('has a row of players to the side of the heatmap', inject(function($compile, $rootScope) {
+    it('has a row of players to the side of the heatmap', inject(function ($compile, $rootScope) {
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
             {_id: 'harry', name: 'Harry', tribe: '2'},
@@ -170,6 +170,49 @@ describe('Statistics directive', function () {
         const playersOnCards = getPlayersFromCards(playerCards.toArray());
 
         expect(playersOnCards).toEqual(this.players);
+    }));
+
+    it('will show the current number of active players', inject(function ($compile, $rootScope) {
+        this.tribe = {id: '2', name: 'Mathematica'};
+        this.players = [
+            {_id: 'harry', name: 'Harry', tribe: '2'},
+            {_id: 'larry', name: 'Larry', tribe: '2'},
+            {_id: 'curly', name: 'Curly', tribe: '2'},
+            {_id: 'moe', name: 'Moe', tribe: '2'}
+        ];
+
+        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, []);
+        const activePlayerCountElement = this.statisticsDirective.find(`.${Styles.activePlayerCount}`);
+
+        expect(activePlayerCountElement.text()).toEqual('4');
+    }));
+
+    it('will show the median spin time', inject(function ($compile, $rootScope) {
+        this.tribe = {id: '2', name: 'Mathematica'};
+        this.players = [
+            {_id: 'harry', name: 'Harry', tribe: '2'},
+            {_id: 'larry', name: 'Larry', tribe: '2'},
+            {_id: 'curly', name: 'Curly', tribe: '2'},
+            {_id: 'moe', name: 'Moe', tribe: '2'}
+        ];
+
+        this.history = [
+            {
+                pairs: [[this.players[0], this.players[1]], [this.players[2], this.players[3]]],
+                date: new Date(2017, 3, 14),
+                tribe: this.tribe.id
+            },
+            {
+                pairs: [[this.players[0], this.players[1]], [this.players[2], this.players[3]]],
+                date: new Date(2017, 3, 12),
+                tribe: this.tribe.id
+            },
+        ];
+
+        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
+        const medianSpinDurationElement = this.statisticsDirective.find(`.${Styles.medianSpinDuration}`);
+
+        expect(medianSpinDurationElement.text()).toEqual('2 days');
     }));
 
 });
