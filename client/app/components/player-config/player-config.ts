@@ -3,7 +3,7 @@ import * as services from "../../services";
 import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
 import Badge from "../../../../common/Badge";
-import * as _ from "underscore";
+import * as merge from "ramda/src/merge";
 import IRouteService = angular.route.IRouteService;
 import IDirectiveFactory = angular.IDirectiveFactory;
 
@@ -22,16 +22,12 @@ export class PlayerConfigController {
     }
 
     $onInit() {
-        _.defaults(this.player, {
-            badge: Badge.Default
-        });
+        this.player = merge({badge: Badge.Default}, this.player);
     }
 
     savePlayer() {
         this.Coupling.savePlayer(this.player)
-            .then(() => {
-                this.$route.reload();
-            });
+            .then(() => this.$route.reload());
     }
 
     removePlayer() {
@@ -58,7 +54,7 @@ export class PlayerConfigController {
     }
 
     private navigateToCurrentPairAssignments() {
-        this.$location.path("/" + this.tribe.id + "/pairAssignments/current");
+        this.$location.path(`/${this.tribe.id}/pairAssignments/current`);
     }
 }
 

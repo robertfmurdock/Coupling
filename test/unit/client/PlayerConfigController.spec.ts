@@ -67,7 +67,7 @@ describe('PlayerConfigController', function () {
             }, routes: {}
         };
         controller = initPlayerController(controller, $scope, Coupling, $location, $route, tribe, player);
-        expect(player.badge).toBe(Badge.Default);
+        expect(controller.player.badge).toBe(Badge.Default);
     });
 
     it('when the given player has alt badge, will not modify player', function () {
