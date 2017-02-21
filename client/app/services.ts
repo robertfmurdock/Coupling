@@ -1,6 +1,11 @@
 import * as angular from "angular";
 import "angular-resource";
-import * as _ from "underscore";
+import * as map from "ramda/src/map";
+import * as find from "ramda/src/find";
+import * as mergeAll from "ramda/src/mergeAll";
+import * as pipe from "ramda/src/pipe";
+import * as flatten from "ramda/src/flatten";
+import * as propEq from "ramda/src/propEq";
 import Player from "../../common/Player";
 import * as common from "../../common/index";
 import Randomizer from "./Randomizer";
@@ -108,12 +113,7 @@ class Coupling {
     }
 
     getSelectedPlayers(players: Player[], history) {
-        const selectablePlayers = _.map(players, (player) => {
-            const selected = this.playerShouldBeSelected(player, history);
-            return [player._id, new SelectablePlayer(selected, player)];
-        });
-
-        this.data.selectablePlayers = <SelectablePlayerMap>_.object(selectablePlayers);
+        this.data.selectablePlayers = this.makeSelectablePlayerFinder(history)(players);
         return this.data.selectablePlayers;
     }
 
@@ -133,11 +133,8 @@ class Coupling {
     }
 
     private isInLastSetOfPairs(player, history) {
-        const result = _.find(history[0].pairs, function (pairSet: [{}]) {
-            if (_.findWhere(pairSet, {_id: player._id})) {
-                return true;
-            }
-        });
+        const flattenResult = flatten(history[0].pairs);
+        const result = find(propEq('_id', player._id), flattenResult);
         return !!result;
     }
 
@@ -149,6 +146,20 @@ class Coupling {
         } else {
             return true;
         }
+    }
+
+    private makeSelectablePlayerFinder(history: any): (players) => SelectablePlayerMap {
+        return pipe(
+            this.mapPlayerToSelection(history),
+            mergeAll
+        )
+    }
+
+    private mapPlayerToSelection(history) {
+        return map(player => {
+            const selected = this.playerShouldBeSelected(player, history);
+            return {[player._id]: new SelectablePlayer(selected, player)};
+        })
     }
 
 }
