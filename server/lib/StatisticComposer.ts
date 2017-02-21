@@ -5,6 +5,11 @@ import * as _ from "underscore";
 import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 import Pair from "../../common/Pair";
 
+interface PairReport {
+    pair: Pair,
+    timeSinceLastPaired: number | string
+}
+
 export default class StatisticComposer {
 
     compose(tribe: Tribe, players: Player[], history: PairAssignmentDocument[]) {
@@ -22,15 +27,12 @@ export default class StatisticComposer {
             .map((pair: Pair) => {
                 return this.makeReport(pair, calculateTimeSinceLastPartnership(pair, history))
             })
-            .sort((pairReport1, pairReport2) => {
-                if(pairReport1.timeSinceLastPaired === NEVER_PAIRED) {
-                    return false;
-                }
-                if(pairReport2.timeSinceLastPaired === NEVER_PAIRED) {
-                    return true;
+            .sortBy((pairReport1: PairReport) => {
+                if (pairReport1.timeSinceLastPaired === NEVER_PAIRED) {
+                    return -1;
                 }
 
-                return pairReport1.timeSinceLastPaired < pairReport2.timeSinceLastPaired;
+                return Number.MAX_SAFE_INTEGER - (pairReport1.timeSinceLastPaired as number);
             })
             .value();
     }

@@ -165,6 +165,13 @@ describe('StatisticComposer', function () {
             ]);
         });
 
+        it('still sorts correctly with large realistic history', function() {
+            const {tribe, players, history} = require('./realistics-sort-test-data/inputs.json');
+            const {pairReports} = statComposer.compose(tribe, players, history);
+            const expectedResults = require('./realistics-sort-test-data/expectResults.json');
+            expect(_.pluck(pairReports, 'timeSinceLastPaired')).toEqual(expectedResults);
+        });
+
     });
 
 });

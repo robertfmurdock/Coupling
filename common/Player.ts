@@ -6,6 +6,8 @@ interface Player {
     email?: string;
     callSignAdjective?: string;
     callSignNoun?: string;
-    badge?: Badge
+    badge?: Badge,
+    pins?: string[],
+    imageURL?: string
 }
 export default Player
