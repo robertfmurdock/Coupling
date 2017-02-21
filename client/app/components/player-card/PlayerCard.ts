@@ -6,6 +6,8 @@ export default class PlayerCardController implements IController {
 
     player: services.Player;
     size: number;
+    maxFontHeight: number;
+    minFontHeight: number;
     cardStyle;
 
     constructor(public $location) {
@@ -17,6 +19,8 @@ export default class PlayerCardController implements IController {
         }
         const pixelWidth = this.size;
         const pixelHeight = (this.size * 1.4);
+        this.maxFontHeight = (this.size * 0.3);
+        this.minFontHeight = (this.size * 0.175);
         this.cardStyle = {width: pixelWidth + "px", height: pixelHeight + "px"}
     }
 

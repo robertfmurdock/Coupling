@@ -1,9 +1,8 @@
-import Player from "./Player";
 import Pair from "./Pair";
 
 interface PairAssignmentSet {
     pairs: Pair[],
-    date: string,
+    date: Date|string,
     tribe: string
 }
 
