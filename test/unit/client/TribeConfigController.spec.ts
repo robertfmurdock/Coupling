@@ -50,22 +50,22 @@ describe('TribeConfigController', function () {
     describe('will default an empty tribe', function () {
 
         beforeEach(function () {
-            this.tribe = {id: '1', name: '1'};
-            const tribeConfigController = new TribeConfigController(location);
-            _.extend(tribeConfigController, {tribe: this.tribe});
-            tribeConfigController.$onInit();
+            const tribe = {id: '1', name: '1'};
+            this.controller = new TribeConfigController(location);
+            this.controller.tribe = tribe;
+            this.controller.$onInit();
         });
 
         it('to having standard pairing rule', function () {
-            expect(this.tribe.pairingRule).toBe(PairingRule.LongestTime);
+            expect(this.controller.tribe.pairingRule).toBe(PairingRule.LongestTime);
         });
 
         it('to having default badge name', function () {
-            expect(this.tribe.defaultBadgeName).toBe('Default');
+            expect(this.controller.tribe.defaultBadgeName).toBe('Default');
         });
 
         it('to having alternate badge name', function () {
-            expect(this.tribe.alternateBadgeName).toBe('Alternate');
+            expect(this.controller.tribe.alternateBadgeName).toBe('Alternate');
         });
     });
 

@@ -1,6 +1,6 @@
 import {module} from "angular";
-import * as _ from "underscore";
 import * as services from "../../services";
+import * as values from "ramda/src/values";
 import * as template from "./prepare.pug";
 
 class PrepareController {
@@ -11,7 +11,7 @@ class PrepareController {
     tribe: services.Tribe;
 
     constructor(private $location: angular.ILocationService, private Coupling: services.Coupling) {
-        this.selectablePlayers = _.values(Coupling.data.selectablePlayers);
+        this.selectablePlayers = values(Coupling.data.selectablePlayers);
     }
 
     clickPlayerCard(selectable: services.SelectablePlayer) {
