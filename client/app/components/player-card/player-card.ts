@@ -12,7 +12,8 @@ export class PlayerCardController implements IController {
     size: number;
     maxFontHeight: number;
     minFontHeight: number;
-    cardStyle;
+    cardStyle: any;
+    headerStyle: any;
     styles: any;
 
     constructor(public $location) {
@@ -27,14 +28,19 @@ export class PlayerCardController implements IController {
         const pixelWidth = this.size;
         const pixelHeight = (this.size * 1.4);
         const paddingAmount = (this.size * 0.06);
+
         const borderAmount = (this.size * 0.03);
-        this.maxFontHeight = (this.size * 0.3);
+        this.maxFontHeight = (this.size * 0.31);
         this.minFontHeight = (this.size * 0.175);
         this.cardStyle = {
             width: `${pixelWidth}px`,
             height: `${pixelHeight}px`,
             padding: `${paddingAmount}px`,
             'border-width': `${borderAmount}px`,
+        };
+        const headerMargin = (this.size * 0.04);
+        this.headerStyle = {
+            margin: `${headerMargin}px 0 0 0`
         }
     }
 

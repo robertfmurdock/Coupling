@@ -63,8 +63,11 @@ describe('The current pair assignments', function () {
 
     it('will let you edit an existing player', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+
+        const playerCardStyles = require('../../client/app/components/player-card/styles.css');
+
         element.all(By.repeater('player in players'))
-            .first().element(By.css('.player-header'))
+            .first().element(By.className(playerCardStyles.header))
             .click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/${player1._id}/`);
     });

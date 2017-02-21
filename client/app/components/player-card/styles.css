@@ -17,6 +17,16 @@
     top: 0
 }
 
+:local(.player) img {
+    display: block;
+}
+
+:local(.header) {
+    background: darkcyan url(../../../images/overlay.png) repeat-x;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
 .disabled :local(.player) {
     top: 30px;
     background-color: darkred;

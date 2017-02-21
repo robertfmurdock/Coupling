@@ -23,6 +23,11 @@ config.module.loaders.push({
   })
 });
 
+config.module.loaders.push({
+  test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
+  loader: 'url-loader?limit=100000'
+});
+
 config.plugins.push(new ExtractTextPlugin({filename: './styles.css', allChunks: true}));
 
 config.target = 'node';
