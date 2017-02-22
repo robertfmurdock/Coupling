@@ -9,7 +9,7 @@
     border-radius: 82px;
     padding: 0 42px 18px;
     border: 24px solid darkorange;
-    background-color: lightgoldenrodyellow;
+    background-color: #faf0d2;
 }
 
 :local(.welcomeTitle) {

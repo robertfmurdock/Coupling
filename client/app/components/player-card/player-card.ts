@@ -8,6 +8,7 @@ import IController = angular.IController;
 export class PlayerCardController implements IController {
     static $inject = ['$location'];
 
+    styles: any;
     player: services.Player;
     size: number;
     disabled: boolean;
@@ -15,7 +16,6 @@ export class PlayerCardController implements IController {
     minFontHeight: number;
     cardStyle: any;
     headerStyle: any;
-    styles: any;
 
     constructor(public $location) {
         this.styles = styles;

@@ -1,31 +1,35 @@
-div
-    div(id="tribe-browser")
-        tribecard(tribe="pairAssignments.tribe")
-        div
-            div
-                a(id="tribe-select-button" class="large gray button" href="/tribes")
-                    i(class="fa fa-arrow-circle-up")
-                    text(class="icon-button-text") Tribe select
-            div
-                a(ng-class="pairAssignments.styles.statisticsButton" class="large gray button" href="/{{pairAssignments.tribe.id}}/statistics")
-                    text(class="icon-button-text") Statistics
-    div(ng-cloak class="current pair-assignments")
-        div(class="no-pairs-notice" ng-hide="pairAssignments.pairAssignments") No pair assignments yet!
-        div(ng-show="pairAssignments.pairAssignments")
-            div(class="pair-assignments-header")
-                text Couples for {{pairAssignments.pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.pairAssignments.date | date: 'HH:mm:ss'}}
-        div(id="pair-assignments-content")
-            span(ng-repeat='pair in pairAssignments.pairAssignments.pairs' class="pair")
-                playercard(
-                ng-repeat='player in pair'
-                player="player"
-                ng-class="{hoverzoom: !pairAssignments._id}"
-                ui-draggable="pairAssignments.isNew"
-                drag="player"
-                ui-on-Drop="pairAssignments.onDrop($data,player)"
-                )
-        div(ng-show="pairAssignments.pairAssignments")
-            a(id="save-button" class="super green button" ng-click="pairAssignments.save()" ng-show="pairAssignments.isNew") Save!
-        a(id="new-pairs-button" class="large pink button" href="/{{pairAssignments.tribe.id}}/prepare/") Prepare to spin!
-        a(id="view-history-button" class="large blue button" href="/{{pairAssignments.tribe.id}}/history/") View history!
-player-roster(players="pairAssignments.unpairedPlayers" tribe="pairAssignments.tribe" label="'Unpaired players'")
+div(ng-class="pairAssignments.styles.className")
+    div
+        div(ng-class="pairAssignments.styles.tribeBrowser")
+            tribecard(tribe="pairAssignments.tribe" size="50")
+            h1 {{pairAssignments.tribe.name}}
+            a(id="tribe-select-button" class="large gray button" href="/tribes")
+                i(class="fa fa-arrow-circle-up")
+                text(class="icon-button-text") Tribe select
+            a(ng-class="pairAssignments.styles.statisticsButton" class="large gray button" href="/{{pairAssignments.tribe.id}}/statistics")
+                text(class="icon-button-text") Statistics
+        div(ng-cloak class="current pair-assignments")
+            div(class="no-pairs-notice" ng-hide="pairAssignments.pairAssignments") No pair assignments yet!
+            div(ng-show="pairAssignments.pairAssignments")
+                div(class="pair-assignments-header")
+                    text Couples for {{pairAssignments.pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.pairAssignments.date | date: 'HH:mm:ss'}}
+            div(id="pair-assignments-content")
+                span(ng-repeat='pair in pairAssignments.pairAssignments.pairs' class="pair")
+                    playercard(
+                    ng-repeat='player in pair'
+                    player="player"
+                    ng-class="{hoverzoom: !pairAssignments._id}"
+                    ui-draggable="pairAssignments.isNew"
+                    drag="player"
+                    ui-on-Drop="pairAssignments.onDrop($data,player)"
+                    )
+            div(ng-show="pairAssignments.pairAssignments")
+                a(id="save-button" class="super green button" ng-click="pairAssignments.save()" ng-show="pairAssignments.isNew") Save!
+            a(id="new-pairs-button" class="large pink button" href="/{{pairAssignments.tribe.id}}/prepare/") Prepare to spin!
+            a(id="view-history-button" class="large blue button" href="/{{pairAssignments.tribe.id}}/history/") View history!
+    player-roster(
+    ng-class="pairAssignments.styles.unpairedPlayerRoster"
+    players="pairAssignments.unpairedPlayers"
+    tribe="pairAssignments.tribe"
+    label="'Unpaired players'"
+    )

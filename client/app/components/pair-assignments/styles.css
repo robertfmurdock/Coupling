@@ -1,3 +1,14 @@
+:local(.className) {
+    display: inline-block;
+    background: #faf0d2;
+    padding: 0 25px 25px 25px;
+    height: 100vh;
+    border: 12px solid #ff8c00;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+}
+
 :local(.statisticsButton) {
 
 }
@@ -18,7 +29,6 @@
 
 .current.pair-assignments {
     display: inline-block;
-    margin: 15px;
 }
 
 .pair-assignments {
@@ -39,4 +49,32 @@
 .pair-assignments playercard {
     display: inline-block;
     overflow: hidden;
+}
+
+:local(.tribeBrowser) {
+    white-space: normal;
+    display: block;
+    margin: 5px;
+}
+
+:local(.tribeBrowser) tribecard {
+    display: inline-block;
+}
+
+:local(.tribeBrowser) > * {
+    vertical-align: middle;
+}
+
+:local(.tribeBrowser) > h1 {
+    display: inline-block;
+    margin: 0 20px;
+    text-decoration: underline;
+}
+
+:local(.unpairedPlayerRoster) {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #f5c3b3;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
