@@ -8,24 +8,6 @@
   background: cadetblue url(../images/overlay.png) repeat-x;
 }
 
-.player-roster {
-  playercard > div, .player {
-    transition: all 0.25s ease-out;
-    transition-property: top, background-color, margin-bottom;
-    &.disabled, &.ng-enter {
-      transition: all 0.25s ease-out;
-    }
-    &.ng-leave {
-      transition: none;
-      animation: none;
-    }
-  }
-  &.ng-hide-add, &.ng-hide-remove {
-    display: inline-block !important;
-    transition: all ease-in .2s;
-  }
-}
-
 .view-container {
 }
 

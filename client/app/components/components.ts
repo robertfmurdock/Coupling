@@ -6,7 +6,7 @@ import PinList from "./pin-list/pin-list";
 import PlayerCard from "./player-card/player-card";
 import PlayerConfig from "./player-config/player-config";
 import PlayerRoster from "./player-roster/player-roster";
-import Prepare from "./prepare/prepare";
+import Prepare from "./prepare/PrepareDirective";
 import TribeCard from "./tribe-card/TribeCardController";
 import TribeConfig from "./tribe-config/tribe-config";
 import TribeList from "./tribe-list/tribe-list";

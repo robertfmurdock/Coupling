@@ -1,11 +1,16 @@
-div
-    div(id="tribe-browser")
-        tribecard(tribe="prepare.tribe")
-    div(class="player-roster")
+div(ng-class="prepare.styles.className")
+    div
+        tribebrowser(tribe="prepare.tribe")
+    div
         div
-            div
-                a(id="spin-button" class="super pink button" ng-click="prepare.clickSpinButton()") Spin!
-            playercard(ng-repeat="selectable in prepare.selectablePlayers"
-            player="selectable.player"
-            ng-class="{disabled:!selectable.isSelected}"
-            ng-click="prepare.clickPlayerCard(selectable)")
+            a(
+            ng-class="prepare.styles.spinButton"
+            class="super pink button"
+            ng-click="prepare.clickSpinButton()"
+            ) Spin!
+        playercard(ng-repeat="selectable in prepare.selectablePlayers"
+        player="selectable.player"
+        ng-class="{disabled:!selectable.isSelected}"
+        ng-click="prepare.clickPlayerCard(selectable)"
+        disabled="true"
+        )

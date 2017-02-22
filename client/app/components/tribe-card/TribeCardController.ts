@@ -33,7 +33,11 @@ export class TribeCardController implements IController {
             'border-width': `${borderAmount}px`,
         };
         const headerMargin = (this.size * 0.02);
-        this.headerStyle = { margin: `${headerMargin}px 0 0 0`, }
+        const maxHeaderHeight = this.size * 0.4;
+        this.headerStyle = {
+            margin: `${headerMargin}px 0 0 0`,
+            ['max-height']: maxHeaderHeight
+        }
     }
 
     clickOnTribeCard() {

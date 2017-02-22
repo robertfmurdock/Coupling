@@ -13,6 +13,9 @@ const historyCollection = database.get('history');
 
 describe('The prepare to spin page', function () {
 
+    const prepareStyles = require('../../client/app/components/prepare/styles.css');
+    const spinButton = element(By.className(prepareStyles.spinButton));
+
     const tribe = {
         id: 'delete_me',
         name: 'Funkytown'
@@ -52,7 +55,7 @@ describe('The prepare to spin page', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
     beforeEach(function () {
-        browser.setLocation('/' + tribe.id + '/prepare/');
+        browser.setLocation(`/${tribe.id}/prepare/`);
     });
 
     describe('with no history', function () {
@@ -62,7 +65,7 @@ describe('The prepare to spin page', function () {
         });
 
         it('spinning with all players on will get all players back', function () {
-            element(By.id('spin-button')).click();
+            spinButton.click();
 
             const pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
             expect(pairs.count()).toEqual(3);
@@ -76,7 +79,7 @@ describe('The prepare to spin page', function () {
             playerElements.get(2).element(By.css('.player-icon')).click();
             playerElements.get(3).element(By.css('.player-icon')).click();
 
-            element(By.id('spin-button')).click();
+            spinButton.click();
 
             const pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
             expect(pairs.count()).toEqual(1);

@@ -1,0 +1,35 @@
+:local(.className) {
+    display: inline-block;
+    background: #faf0d2;
+    padding: 0 25px 25px 25px;
+    height: 100vh;
+    border: 12px solid #ff8c00;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+}
+
+:local(.className) playercard > div {
+    transition: all 0.25s ease-out;
+    transition-property: top, background-color, margin-bottom;
+}
+
+:local(.className) playercard > div.disabled,
+:local(.className) playercard > div.ng-enter {
+    transition: all 0.25s ease-out;
+}
+
+:local(.className) playercard > div.ng-leave {
+    transition: none;
+    animation: none;
+}
+
+:local(.className) playercard > div.ng-hide-add,
+:local(.className) playercard > div.ng-hide-remove {
+    display: inline-block !important;
+    transition: all ease-in .2s;
+}
+
+:local(.spinButton).button {
+    margin-bottom: 10px;
+}
