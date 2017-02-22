@@ -2,7 +2,7 @@
     display: inline-block;
     background: #faf0d2;
     padding: 0 25px 25px 25px;
-    height: 100vh;
+    min-height: 100vh;
     border: 12px solid #ff8c00;
     border-top: 2px;
     border-bottom: 2px;

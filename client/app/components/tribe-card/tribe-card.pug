@@ -6,12 +6,13 @@ ng-enter="tribecard.clickOnTribeCard()"
 tabindex="0"
 ng-style="tribecard.cardStyle"
 )
-    div(class="tribe-name" ng-click="tribecard.clickOnTribeName($event)" ng-style="tribecard.headerStyle")
-        text(
-        data-fittext=1
-        data-fittext-min="{{playerCard.minFontHeight}}"
-        data-fittext-max="{{playerCard.maxFontHeight}}"
-        data-fittext-load-delay="100"
-        ng-model="tribecard.tribe.name"
-        ) {{tribecard.tribe.name || 'Unknown'}}
+    div(ng-style="tribecard.headerStyle")
+        div(class="tribe-name" ng-click="tribecard.clickOnTribeName($event)")
+            text(
+            data-fittext=1
+            data-fittext-min="{{tribecard.minFontHeight}}"
+            data-fittext-max="{{tribecard.maxFontHeight}}"
+            data-fittext-load-delay="100"
+            ng-model="tribecard.tribe.name"
+            ) {{tribecard.tribe.name || 'Unknown'}}
     img(ng-src="{{tribecard.tribe | tribeImageUrl: {size: tribecard.size} }}" width="{{tribecard.size}}" height="{{tribecard.size}}")

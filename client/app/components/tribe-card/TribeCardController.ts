@@ -21,10 +21,10 @@ export class TribeCardController implements IController {
         }
         const pixelWidth = this.size;
         const pixelHeight = (this.size * 1.4);
-        const paddingAmount = (this.size * 0.06);
+        const paddingAmount = (this.size * 0.02);
 
         const borderAmount = (this.size * 0.01);
-        this.maxFontHeight = (this.size * 0.31);
+        this.maxFontHeight = (this.size * 0.15);
         this.minFontHeight = (this.size * 0.16);
         this.cardStyle = {
             width: `${pixelWidth}px`,
@@ -33,11 +33,11 @@ export class TribeCardController implements IController {
             'border-width': `${borderAmount}px`,
         };
         const headerMargin = (this.size * 0.02);
-        const maxHeaderHeight = this.size * 0.4;
+        const maxHeaderHeight = this.size * 0.35;
         this.headerStyle = {
             margin: `${headerMargin}px 0 0 0`,
-            ['max-height']: maxHeaderHeight
-        }
+            'height': `${maxHeaderHeight}px`
+        };
     }
 
     clickOnTribeCard() {
