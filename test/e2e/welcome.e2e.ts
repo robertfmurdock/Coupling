@@ -7,16 +7,15 @@ const hostName = `http://${config.publicHost}:${config.port}`;
 
 const welcomeStyles = require('../../client/app/components/welcome/styles.css');
 
-
-
 describe('The welcome page', function () {
 
+    const pageBody = element(By.tagName('body'));
     const enterButton = element(By.className(welcomeStyles.enterButton));
 
     it('has an enter button redirects to google login', function () {
         browser.get(hostName + '/welcome');
-        element(By.tagName('body')).allowAnimations(false);
-        
+        pageBody.allowAnimations(false);
+
         enterButton.click();
         browser.waitForAngularEnabled(false);
 

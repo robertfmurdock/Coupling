@@ -337,18 +337,14 @@ a {
 }
 
 .tribe-name {
-  background: darkslategrey url("../images/overlay.png") repeat-x;
-}
-
-.tribe-name {
+  background: rgba(255, 255, 255, 0.4) url(../images/overlay.png) repeat-x;
+  border-radius: 15px;
   font-weight: bold;
   margin-bottom: 15px;
-  border-radius: 15px;
 }
 
 .tribe-icon {
   margin: 10px;
-  /*box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);*/
   -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
 }
 

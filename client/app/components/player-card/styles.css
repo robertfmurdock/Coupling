@@ -29,3 +29,13 @@
     background-color: #ca6363;
     margin-bottom: 0;
 }
+
+:local(.header) {
+    transition: all ease-out 0.4s;
+}
+
+:not(playercard[disabled="true"]) :local(.header):hover {
+    transition: all ease-out 0.4s;
+    z-index: 1;
+    background: lightyellow url(../../../images/overlay.png) repeat-x;
+}

@@ -8,16 +8,6 @@
   background: cadetblue url(../images/overlay.png) repeat-x;
 }
 
-.player-roster .player-header {
-  transition: all ease-out 0.4s;
-}
-
-.player-roster .player-header:hover {
-  transition: all ease-out 0.4s;
-  z-index: 1;
-  background: lightyellow url(../images/overlay.png) repeat-x;
-}
-
 #enter-button-container {
   animation: 2s pulsate;
   animation-iteration-count: infinite;
