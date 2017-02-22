@@ -39,12 +39,12 @@ a {
   font-weight: bold;
 }
 
-#welcome playercard, .player.left {
+#welcome playercard.left, .player.left {
   position: relative;
   transform: rotate(-8deg);
 }
 
-#welcome playercard, .player.right {
+#welcome playercard.right, .player.right {
   position: relative;
   transform: rotate(8deg);
 }

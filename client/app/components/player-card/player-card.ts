@@ -10,6 +10,7 @@ export class PlayerCardController implements IController {
 
     player: services.Player;
     size: number;
+    disabled: boolean;
     maxFontHeight: number;
     minFontHeight: number;
     cardStyle: any;
@@ -43,6 +44,9 @@ export class PlayerCardController implements IController {
     }
 
     clickPlayerName($event) {
+        if(this.disabled) {
+            return;
+        }
         if ($event.stopPropagation) $event.stopPropagation();
         this.$location.path("/" + this.player.tribe + "/player/" + this.player._id);
     }
@@ -59,7 +63,8 @@ export default module('coupling.playerCard', [])
             controllerAs: 'playerCard',
             scope: {
                 player: '=',
-                size: '=?'
+                size: '=?',
+                disabled: '=?'
             },
             bindToController: true
         }

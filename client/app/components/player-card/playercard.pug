@@ -10,5 +10,6 @@ div(ng-class="playerCard.styles.player" ng-style="playerCard.cardStyle")
         data-fittext=1
         data-fittext-min="{{playerCard.minFontHeight}}"
         data-fittext-max="{{playerCard.maxFontHeight}}"
+        data-fittext-load-delay="100"
         ng-model="playerCard.player.name"
         ) {{playerCard.player.name || 'Unknown'}}

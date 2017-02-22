@@ -1,16 +1,17 @@
 import {module} from "angular";
 import * as services from "../../services";
 import * as template from "./welcome.pug";
+import Player from "../../../../common/Player";
 
 interface Card {
-    name: String
-    imagePath: String
+    name: string
+    imagePath: string
 }
 
 interface WelcomeCardSet {
     leftCard: Card
     rightCard: Card
-    proverb: String
+    proverb: string
 }
 
 const candidates: [WelcomeCardSet] = [{
@@ -45,6 +46,14 @@ const candidates: [WelcomeCardSet] = [{
     proverb: 'Team up. Get things done.'
 }];
 
+let makePlayerForCard = function (card: Card) {
+    return {
+        _id: card.name,
+        name: card.name,
+        tribe: 'welcome',
+        imageURL: `/images/icons/players/${card.imagePath}`
+    };
+};
 export class WelcomeController {
 
     private static chooseWelcomeCards(randomizer): WelcomeCardSet {
@@ -56,16 +65,17 @@ export class WelcomeController {
 
     public show: boolean;
     public proverb: String;
-    public leftCard: Card;
-    public rightCard: Card;
+    public leftPlayer: Player;
+    public rightPlayer: Player;
 
     constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer) {
         this.show = false;
         const choice = WelcomeController.chooseWelcomeCards(randomizer);
-        this.leftCard = choice.leftCard;
-        this.rightCard = choice.rightCard;
+        this.leftPlayer = makePlayerForCard(choice.leftCard);
+        this.rightPlayer = makePlayerForCard(choice.rightCard);
         this.proverb = choice.proverb;
         const self = this;
+        console.log('WELCOME!');
         $timeout(function () {
             self.show = true;
         }, 0);
