@@ -11,6 +11,7 @@ import TribeCard from "./tribe-card/TribeCardController";
 import TribeConfig from "./tribe-config/tribe-config";
 import TribeList from "./tribe-list/tribe-list";
 import Welcome from "./welcome/WelcomeDirective";
+import TribeBrowserDirective from "./tribebrowser/TribeBrowserDirective";
 import Statistics from "./statistics/statistics";
 import {module} from "angular";
 
@@ -29,7 +30,8 @@ module('coupling.component', [
     TribeConfig.name,
     TribeList.name,
     Welcome.name,
-    HeatMap.name
+    HeatMap.name,
+    TribeBrowserDirective.name
 ])
     .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
         fitTextConfigProvider.config = {

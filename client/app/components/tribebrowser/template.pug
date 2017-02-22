@@ -1,0 +1,11 @@
+div(ng-class="tribebrowser.styles.className")
+    span
+        tribecard(tribe="tribebrowser.tribe" size="50")
+        h1 {{tribebrowser.tribe.name}}
+    span
+        span
+            a(ng-class="tribebrowser.styles.statisticsButton" class="large gray button" href="/{{tribebrowser.tribe.id}}/statistics")
+                text(class="icon-button-text") Statistics
+            a(id="tribe-select-button" class="large gray button" href="/tribes")
+                i(class="fa fa-arrow-circle-up")
+                text(class="icon-button-text") Tribe select

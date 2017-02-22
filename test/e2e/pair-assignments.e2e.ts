@@ -86,7 +86,7 @@ describe('The current pair assignments', function () {
 
     it('will let you go to the stats page', function () {
         browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
-        const styles = require('../../client/app/components/pair-assignments/styles.css');
+        const styles = require('../../client/app/components/tribebrowser/styles.css');
         element(By.className(styles.statisticsButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
