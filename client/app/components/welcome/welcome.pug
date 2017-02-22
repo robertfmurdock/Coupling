@@ -1,12 +1,12 @@
-div(id="welcome-container" ng-show="welcome.show")
+div(ng-show="welcome.show" ng-class="welcome.styles.className")
     div
-        span(id="welcome")
-            div(class="welcome-title" data-fittext=1 data-fittext-min="72px") Coupling!
+        span(ng-class="welcome.styles.welcome")
+            div(ng-class="welcome.styles.welcomeTitle" data-fittext=1 data-fittext-min="72px") Coupling!
             div
-                div(class="welcome-pair")
+                div(ng-class="welcome.styles.welcomePair")
                     playercard(class="left" ng-show="welcome.show" player="welcome.leftPlayer" size="100" disabled="true")
                     playercard(class="right" ng-show="welcome.show" player="welcome.rightPlayer" size="100" disabled="true")
-            div(class="welcome-proverb" ng-show="welcome.show") {{welcome.proverb}}
+            div(ng-class="welcome.styles.welcomeProverb" ng-show="welcome.show") {{welcome.proverb}}
     div
-        div(id="enter-button-container")
-            a(id="enter-button" href="/auth/google" target='_self' class="super pink button") Come on in!
+        div(ng-class="welcome.styles.enterButtonContainer")
+            a(ng-class="welcome.styles.enterButton" href="/auth/google" target='_self' class="super pink button") Come on in!

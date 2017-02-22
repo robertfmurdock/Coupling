@@ -1,0 +1,106 @@
+:local(.className) {
+    display: inline-block;
+    overflow: hidden;
+}
+
+:local(.welcome) {
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 82px;
+    padding: 0 42px 42px;
+    border: 24px outset darkorange;
+    background-color: lightgoldenrodyellow;
+}
+
+:local(.welcomeTitle) {
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+    font-size: 72px;
+    font-weight: bold;
+}
+
+:local(.welcome) playercard.left, .player.left {
+    position: relative;
+    transform: rotate(-8deg);
+}
+
+:local(.welcome) playercard.right, .player.right {
+    position: relative;
+    transform: rotate(8deg);
+}
+
+:local(.welcomePair) {
+    display: inline-flex;
+}
+
+:local(.welcomeProverb) {
+    display: inline-block;
+    border-radius: 15px;
+    transform: rotate(0deg);
+    padding: 4px;
+    background: goldenrod url(../../../images/overlay.png) repeat-x;
+}
+
+:local(.enterButtonContainer) {
+    padding-top: 35px;
+    padding-bottom: 50px;
+    display: inline-block;
+}
+
+:local(.enterButton) {
+}
+
+:local(.className).ng-hide {
+    opacity: 0;
+}
+
+:local(.className).ng-hide-remove {
+    transition: all ease-out 4s;
+    animation: 4s curious-tilt;
+    animation-iteration-count: 1;
+}
+
+:local(.welcome) playercard.left.ng-hide-remove, .player.left.ng-hide-remove {
+    transition: all ease-out 4s;
+    animation-duration: 4s;
+    animation-name: slide-up-left;
+    animation-iteration-count: 1;
+}
+
+:local(.welcome) playercard.left, .player.left {
+    transition: all ease-out 0.25s;
+}
+
+:local(.welcome) playercard.left:hover, .player.left:hover {
+    transition: all ease-in 0.4s;
+    z-index: 1;
+    transform: rotate(0deg) scale(1.5);
+}
+
+:local(.welcome) playercard.right.ng-hide-remove, .player.right.ng-hide-remove {
+    transition: all ease-out 5s;
+    animation-duration: 5s;
+    animation-name: slide-up-right;
+    animation-iteration-count: 1;
+}
+
+:local(.welcome) playercard.right, .player.right {
+    transition: all ease-out 0.25s;
+}
+
+:local(.welcome) playercard.right:hover, .player.right:hover {
+    transition: all ease-in 0.4s;
+    z-index: 1;
+    transform: rotate(0deg) scale(1.5);
+}
+
+:local(.welcomeProverb).ng-hide {
+    opacity: 0;
+}
+
+:local(.welcomeProverb).ng-hide-remove {
+    transition-delay: 5s;
+    transition-property: all;
+    transition-timing-function: ease-in;
+    transition-duration: 1s;
+}

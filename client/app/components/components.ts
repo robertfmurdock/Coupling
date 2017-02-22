@@ -10,7 +10,7 @@ import Prepare from "./prepare/prepare";
 import TribeCard from "./tribe-card/TribeCardController";
 import TribeConfig from "./tribe-config/tribe-config";
 import TribeList from "./tribe-list/tribe-list";
-import Welcome from "./welcome/welcome";
+import Welcome from "./welcome/WelcomeDirective";
 import Statistics from "./statistics/statistics";
 import {module} from "angular";
 

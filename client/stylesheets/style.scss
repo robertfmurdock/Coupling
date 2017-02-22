@@ -13,63 +13,14 @@ a {
   margin-left: 5px;
 }
 
-#welcome-body {
-  text-align: center;
-  padding-top: 75px;
-}
-
-#welcome-container {
-  display: inline-block;
-  overflow: hidden;
-}
-
-#welcome {
-  display: inline-block;
-  vertical-align: top;
-  border-radius: 82px;
-  padding: 0px 42px 42px;
-  border: 24px outset darkorange;
-  background-color: lightgoldenrodyellow;
-}
-
-.welcome-title {
-  margin-top: 0.5em;
-  margin-bottom: 0.4em;
-  font-size: 72px;
-  font-weight: bold;
-}
-
-#welcome playercard.left, .player.left {
-  position: relative;
-  transform: rotate(-8deg);
-}
-
-#welcome playercard.right, .player.right {
-  position: relative;
-  transform: rotate(8deg);
-}
-
-.welcome-pair {
-  display: inline-flex;
-}
-
-.welcome-proverb {
-  display: inline-block;
-  border-radius: 15px;
-  transform: rotate(0deg);
-  padding: 4px;
-  background: goldenrod url(../images/overlay.png) repeat-x;
-}
-
-#enter-button-container {
-  padding-top: 35px;
-  padding-bottom: 50px;
-  display: inline-block;
-}
-
 .title {
   font-size: 2em;
   font-weight: bold;
+}
+
+#welcome-body {
+  text-align: center;
+  padding-top: 75px;
 }
 
 #save-button {

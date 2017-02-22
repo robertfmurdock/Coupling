@@ -1,6 +1,7 @@
 import {module} from "angular";
 import * as services from "../../services";
 import * as template from "./welcome.pug";
+import * as styles from "./styles.css";
 import Player from "../../../../common/Player";
 
 interface Card {
@@ -67,6 +68,7 @@ export class WelcomeController {
     public proverb: String;
     public leftPlayer: Player;
     public rightPlayer: Player;
+    public styles: any;
 
     constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer) {
         this.show = false;
@@ -74,11 +76,9 @@ export class WelcomeController {
         this.leftPlayer = makePlayerForCard(choice.leftCard);
         this.rightPlayer = makePlayerForCard(choice.rightCard);
         this.proverb = choice.proverb;
-        const self = this;
-        console.log('WELCOME!');
-        $timeout(function () {
-            self.show = true;
-        }, 0);
+        this.styles = styles;
+        console.log(styles);
+        $timeout(() => this.show = true, 0);
     }
 
 }
