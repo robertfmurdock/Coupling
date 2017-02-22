@@ -29,5 +29,5 @@ describe('The welcome page', function () {
         browser.waitForAngularEnabled(true);
     });
 
-    e2eHelp.afterEachAssertLogsAreEmpty();
+    e2eHelp.deleteAnyBrowserLogging();
 });

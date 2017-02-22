@@ -47,6 +47,21 @@ const helper = {
                     }
                 });
         });
+    },
+    deleteAnyBrowserLogging: function () {
+
+        afterEach(function (done) {
+            browser.getCapabilities()
+                .then(function (capabilities) {
+                    if (capabilities.get('browserName') !== 'firefox') {
+                        browser.manage().logs().get('browser').then(done, done.fail);
+                        browser.waitForAngular();
+                    }
+                    else {
+                        done();
+                    }
+                });
+        });
     }
 };
 
