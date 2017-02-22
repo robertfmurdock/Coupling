@@ -29,19 +29,17 @@ export class PlayerCardController implements IController {
         const pixelHeight = (this.size * 1.4);
         const paddingAmount = (this.size * 0.06);
 
-        const borderAmount = (this.size * 0.03);
+        const borderAmount = (this.size * 0.01);
         this.maxFontHeight = (this.size * 0.31);
-        this.minFontHeight = (this.size * 0.175);
+        this.minFontHeight = (this.size * 0.16);
         this.cardStyle = {
             width: `${pixelWidth}px`,
             height: `${pixelHeight}px`,
             padding: `${paddingAmount}px`,
             'border-width': `${borderAmount}px`,
         };
-        const headerMargin = (this.size * 0.04);
-        this.headerStyle = {
-            margin: `${headerMargin}px 0 0 0`
-        }
+        const headerMargin = (this.size * 0.02);
+        this.headerStyle = { margin: `${headerMargin}px 0 0 0`, }
     }
 
     clickPlayerName($event) {
