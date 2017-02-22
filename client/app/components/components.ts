@@ -1,6 +1,6 @@
 import * as _ from "underscore";
 import History from "./history/history";
-import PairAssignments from "./pair-assignments/pair-assignments";
+import PairAssignments from "./pair-assignments/PairAssignmentsDirective";
 import HeatMap from './heatmap/heatmap'
 import PinList from "./pin-list/pin-list";
 import PlayerCard from "./player-card/player-card";

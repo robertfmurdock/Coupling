@@ -1,3 +1,42 @@
 :local(.statisticsButton) {
 
 }
+
+.pair-assignments-header {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 15px;
+    padding-left: 40px;
+    padding-right: 5px;
+    padding-bottom: 6px;
+}
+
+#pair-assignments-content {
+    white-space: pre-line;
+}
+
+.current.pair-assignments {
+    display: inline-block;
+    margin: 15px;
+}
+
+.pair-assignments {
+    border-radius: 20px;
+    padding: 5px;
+    margin: 5px 0;
+    background-color: hsla(146, 17%, 80%, 1);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.pair-assignments .on-drag-enter {
+}
+
+.pair-assignments .on-drag-hover > div {
+    background-color: orange;
+}
+
+.pair-assignments playercard {
+    display: inline-block;
+    overflow: hidden;
+}

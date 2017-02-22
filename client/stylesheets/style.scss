@@ -38,16 +38,6 @@ a {
   }
 }
 
-.pair-assignments-header {
-  display: inline-block;
-  font-size: 28px;
-  font-weight: bold;
-  border-radius: 15px;
-  padding-left: 40px;
-  padding-right: 5px;
-  background: darkred url(../images/overlay.png) repeat-x;
-}
-
 .no-pairs-notice {
   border: 8px outset dimgray;
   background-color: aliceblue;
@@ -59,10 +49,6 @@ a {
   height: 150px;
   padding: 100px 5px 5px;
   margin: 0 2px 5px;
-}
-
-#pair-assignments-content {
-  white-space: pre-line;
 }
 
 .roster-header {
@@ -205,7 +191,7 @@ a {
 }
 
 .pair {
-  border: 3px outset dimgray;
+  border: 3px double dimgray;
   background-color: aliceblue;
   padding: 5px;
   display: inline-block;
@@ -216,27 +202,7 @@ a {
 .view-frame {
 }
 
-.current.pair-assignments {
-  display: inline-block;
-  margin: 15px;
-}
 
-.pair-assignments {
-  border-radius: 20px;
-  padding: 5px;
-  margin: 5px 0;
-  border: 11px outset brown;
-  background-color: seagreen;
-  .on-drag-enter {
-  }
-  .on-drag-hover > div {
-    background-color: orange;
-  }
-  playercard {
-    display: inline-block;
-    overflow: hidden;
-  }
-}
 
 #history-view {
   display: inline-block;

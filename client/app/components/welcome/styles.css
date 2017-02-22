@@ -39,7 +39,6 @@
     transform: rotate(0deg);
     padding: 4px;
     margin-top: 20px;
-    background: goldenrod url(../../../images/overlay.png) repeat-x;
 }
 
 :local(.enterButtonContainer) {

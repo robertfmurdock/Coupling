@@ -5,7 +5,7 @@ import "angular";
 import "angular-mocks";
 import * as Promise from "bluebird";
 import {TribeCardController} from "../../../client/app/components/tribe-card/TribeCardController";
-import {PairAssignmentsController} from "../../../client/app/components/pair-assignments/pair-assignments";
+import {PairAssignmentsController} from "../../../client/app/components/pair-assignments/PairAssignmentsDirective";
 import {HistoryController} from "../../../client/app/components/history/history";
 import Pair from "../../../common/Pair";
 import {PlayerCardController} from "../../../client/app/components/player-card/player-card";

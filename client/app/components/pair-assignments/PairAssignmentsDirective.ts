@@ -36,9 +36,8 @@ export class PairAssignmentsController {
     }
 
     save() {
-        const self = this;
         this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
-            .then(() => self.$location.path(`/${self.tribe.id}/pairAssignments/current`));
+            .then(() => this.$location.path(`/${this.tribe.id}/pairAssignments/current`));
     }
 
     onDrop(draggedPlayer, droppedPlayer) {
