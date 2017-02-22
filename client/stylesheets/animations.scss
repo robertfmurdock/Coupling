@@ -8,25 +8,6 @@
   background: cadetblue url(../images/overlay.png) repeat-x;
 }
 
-#enter-button-container {
-  animation: 2s pulsate;
-  animation-iteration-count: infinite;
-}
-
-#enter-button {
-  animation: 0.5s pulsate;
-  animation-iteration-count: infinite;
-  animation-play-state: paused;
-}
-
-#enter-button-container:hover {
-  animation-play-state: paused;
-}
-
-#enter-button:hover {
-  animation-play-state: running;
-}
-
 .player-roster {
   playercard > div, .player {
     transition: all 0.25s ease-out;

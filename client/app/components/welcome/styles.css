@@ -7,7 +7,7 @@
     display: inline-block;
     vertical-align: top;
     border-radius: 82px;
-    padding: 0 42px 42px;
+    padding: 0 42px 18px;
     border: 24px solid darkorange;
     background-color: lightgoldenrodyellow;
 }
@@ -38,6 +38,7 @@
     border-radius: 15px;
     transform: rotate(0deg);
     padding: 4px;
+    margin-top: 20px;
     background: goldenrod url(../../../images/overlay.png) repeat-x;
 }
 
@@ -48,6 +49,25 @@
 }
 
 :local(.enterButton) {
+}
+
+:local(.enterButtonContainer) {
+    animation: 2s pulsate;
+    animation-iteration-count: infinite;
+}
+
+:local(.enterButton) {
+    animation: 0.5s pulsate;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+}
+
+:local(.enterButtonContainer):hover {
+    animation-play-state: paused;
+}
+
+:local(.enterButton):hover {
+    animation-play-state: running;
 }
 
 :local(.className).ng-hide {

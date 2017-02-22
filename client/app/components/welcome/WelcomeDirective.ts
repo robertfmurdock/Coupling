@@ -77,7 +77,6 @@ export class WelcomeController {
         this.rightPlayer = makePlayerForCard(choice.rightCard);
         this.proverb = choice.proverb;
         this.styles = styles;
-        console.log(styles);
         $timeout(() => this.show = true, 0);
     }
 
