@@ -39,13 +39,13 @@ describe('Server message directive', function () {
         const expectedMessage = "Hi it me";
         scope.socket.liveSocket._onMessageHandler({data: expectedMessage});
 
-        $websocketBackend.flush();
         rootScope.$digest();
 
         expect(scope.socket.message).toEqual(expectedMessage);
 
         const messageElement = directive.find('.message');
         expect(messageElement.text()).toEqual(expectedMessage);
+        $websocketBackend.flush();
     }));
 
     it('displays not connected message when socket is closed', inject(function ($compile, $rootScope) {
@@ -56,12 +56,45 @@ describe('Server message directive', function () {
         const expectedMessage = "Not connected";
         scope.socket.liveSocket._onCloseHandler({});
 
-        $websocketBackend.flush();
+
         rootScope.$digest();
 
         expect(scope.socket.message).toEqual(expectedMessage);
 
         const messageElement = directive.find('.message');
         expect(messageElement.text()).toEqual(expectedMessage);
+        $websocketBackend.flush();
+    }));
+
+    it('will reconnect after close after 10 second delay', inject(function ($compile, $rootScope, $timeout) {
+        $websocketBackend.expectConnect(`ws://${window.location.host}/api/LOL/pairAssignments/current`);
+        const {rootScope, directive} = buildDirective($compile, $rootScope);
+
+        let scope: any = directive.isolateScope();
+        const originalLiveSocket = scope.socket.liveSocket;
+        originalLiveSocket._onCloseHandler({});
+
+        const messageElement = directive.find('.message');
+        rootScope.$digest();
+        expect(messageElement.text()).toEqual("Not connected");
+
+        $timeout.flush(9000);
+
+        rootScope.$digest();
+        expect(messageElement.text()).toEqual("Not connected");
+
+        $websocketBackend.expectConnect(`ws://${window.location.host}/api/LOL/pairAssignments/current`);
+
+        expect(originalLiveSocket).toBe(scope.socket.liveSocket);
+
+        $timeout.flush(1001);
+
+        expect(originalLiveSocket).not.toBe(scope.socket.liveSocket);
+        const expectedMessage = "Hi it me";
+        scope.socket.liveSocket._onMessageHandler({data: expectedMessage});
+        rootScope.$digest();
+
+        expect(messageElement.text()).toEqual(expectedMessage);
+        $websocketBackend.flush();
     }));
 });
