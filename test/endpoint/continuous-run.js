@@ -65,9 +65,10 @@ const startForkedAppAndWatchTests = function () {
               const forkInfo = forkJasmine();
               process = forkInfo.process;
               return forkInfo.promise;
-            }, function (err) {
-              console.log('Exiting:', err);
-              process.exit(-1);
+            })
+            .catch(function(err) {
+              console.log('Tests crashed: ', err);
+              return true;
             })
         } else {
           const forkInfo = forkJasmine();

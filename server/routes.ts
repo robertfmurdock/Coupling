@@ -6,7 +6,10 @@ import tribeListRoute from './routes/tribeListRoute'
 
 const config = require('./../config');
 
-module.exports = function (app, userDataService, couplingDataService) {
+module.exports = function (wsInstance, userDataService, couplingDataService) {
+
+    const app = wsInstance.app;
+
     app.get('/welcome', routes.welcome);
     app.get('/auth/google', passport.authenticate('google'));
     app.get('/auth/google/callback', passport.authenticate('google', {
@@ -23,5 +26,15 @@ module.exports = function (app, userDataService, couplingDataService) {
     app.use('/api/:tribeId', tribeRoute);
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
+
+    app.ws('/api/LOL/pairAssignments/current', (ws) => {
+        ws.send('Oh HAI!');
+    });
+
+    app.ws('*', (ws) => {
+        ws.close();
+    });
+
     app.get('*', routes.index);
+
 };

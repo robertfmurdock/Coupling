@@ -8,7 +8,11 @@ export default function (couplingDataService) {
 
         request.statsdKey = ['http', request.method.toLowerCase(), request.path].join('.');
         if (!request.isAuthenticated()) {
-            response.sendStatus(401);
+            if(request.originalUrl.includes('.websocket')) {
+                request.close();
+            } else {
+                response.sendStatus(401);
+            }
         } else {
             if (request.user.email.indexOf('._temp') != -1) {
                 request.dataService = tempDataService;
