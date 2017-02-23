@@ -1,5 +1,6 @@
 import * as template from "./tribe-card.pug";
 import * as services from "../../services";
+import * as styles from './styles.css'
 import {module} from "angular";
 import IController = angular.IController;
 
@@ -11,8 +12,10 @@ export class TribeCardController implements IController {
     minFontHeight: number;
     cardStyle: any;
     headerStyle: any;
+    styles: any;
 
     constructor(public $location: angular.ILocationService) {
+        this.styles = styles;
     }
 
     $onInit() {

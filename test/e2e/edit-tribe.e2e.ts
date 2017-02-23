@@ -8,6 +8,8 @@ const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 
+const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
+
 const userEmail = 'protractor@test.goo';
 
 function authorizeAllTribes() {
@@ -51,7 +53,7 @@ describe('The edit tribe page', function () {
         it('can save edits to a tribe correctly', function () {
             browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
             const tribeElements = element.all(By.repeater('tribe in tribes'));
-            tribeElements.first().element(By.css('.tribe-name')).click();
+            tribeElements.first().element(By.className(tribeCardStyles.header)).click();
 
             expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
             expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);

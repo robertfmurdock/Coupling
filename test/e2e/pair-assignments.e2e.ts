@@ -50,9 +50,13 @@ describe('The current pair assignments', function () {
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
+    const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
+    const tribeCardHeaderElement = element(By.className(tribeCardStyles.header));
+
     it('shows the tribe', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
-        expect(element(By.css('.tribe-name')).getText()).toEqual(tribe.name);
+
+        expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
     });
 
     it('will let you add players', function () {

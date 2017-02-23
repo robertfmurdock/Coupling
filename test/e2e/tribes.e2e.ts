@@ -27,12 +27,15 @@ function waitUntilAnimateIsGone() {
     }, 5000);
 }
 
+const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
+const tribeCardHeaderLocator = By.className(tribeCardStyles.header);
+
 const tribeListPage = {
     getTribeElements: function () {
         return element.all(By.repeater('tribe in tribes'));
     },
     getTribeNameLabel: function (tribeElement) {
-        return tribeElement.element(By.css('.tribe-name'));
+        return tribeElement.element(tribeCardHeaderLocator);
     },
     getNewTribeButton: function () {
         return element(By.id('new-tribe-button'));

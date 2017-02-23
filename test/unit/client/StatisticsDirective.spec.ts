@@ -7,6 +7,7 @@ import *  as _ from "underscore";
 import * as Styles from "../../../client/app/components/statistics/styles.css";
 import * as R from "ramda";
 import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
+const tribeCardStyles = require('../../../client/app/components/tribe-card/styles.css');
 
 describe('Statistics directive', function () {
 
@@ -27,8 +28,7 @@ describe('Statistics directive', function () {
     it('will show a tribe card', inject(function ($compile, $rootScope) {
         const tribe: Tribe = {id: '1', name: 'Super'};
         const statisticsDirective = buildDirective($rootScope, $compile, tribe, [], []);
-
-        const tribeNameElement = statisticsDirective.find('tribecard .tribe-name');
+        const tribeNameElement = statisticsDirective.find(`.${tribeCardStyles.header}`);
 
         expect(tribeNameElement.text()).toBe(tribe.name);
     }));

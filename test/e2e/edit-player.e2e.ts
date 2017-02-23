@@ -11,7 +11,7 @@ const database = monk(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 
-const savePlayerButton = element(By.id('save-player-button'));
+const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
 
 describe('The edit player page', function () {
 
@@ -33,6 +33,9 @@ describe('The edit player page', function () {
         player4,
         player5
     ];
+
+    const tribeCardElement = element(By.className(tribeCardStyles.className));
+    const savePlayerButton = element(By.id('save-player-button'));
 
     beforeAll(function (done) {
         tribeCollection.drop()
@@ -61,7 +64,7 @@ describe('The edit player page', function () {
 
     it('should not alert on leaving when nothing has changed.', function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        element(By.css('.tribe')).click();
+        tribeCardElement.click();
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
     });
 
@@ -106,7 +109,7 @@ describe('The edit player page', function () {
             expect(element(By.css('label[for=alt-badge-radio]')).getText()).toBe('Badge 2');
         });
 
-        it('the player default badge should be selected', function(){
+        it('the player default badge should be selected', function () {
             expect(defaultBadgeRadio.getAttribute('checked')).toBe('true');
         });
 
@@ -125,7 +128,7 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
         element(By.id('player-name')).sendKeys('completely different name');
-        element(By.css('.tribe img')).click();
+        element(By.css(`.${tribeCardStyles.className} img`)).click();
         browser.wait(() =>
                 browser.switchTo().alert()
                     .then(() => true, () => false)
@@ -133,7 +136,8 @@ describe('The edit player page', function () {
 
         browser.switchTo().alert()
             .then(function (alertDialog) {
-                expect(alertDialog.getText()).toEqual('You have unsaved data. Would you like to save before you leave?');
+                expect(alertDialog.getText())
+                    .toEqual('You have unsaved data. Would you like to save before you leave?');
                 alertDialog.dismiss();
             })
             .then(done, done.fail);
@@ -146,10 +150,10 @@ describe('The edit player page', function () {
         playerNameTextField.sendKeys('completely different name');
 
         savePlayerButton.click();
-        element(By.css('.tribe')).click();
-        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/pairAssignments/current/');
+        tribeCardElement.click();
+        expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
-        browser.setLocation('/' + tribe.id + '/player/' + player1._id);
+        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(element(By.id('player-name')).getAttribute('value')).toBe('completely different name')
     });
 
@@ -158,15 +162,15 @@ describe('The edit player page', function () {
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         savePlayerButton.click();
-        element(By.css('.tribe')).click();
-        expect(browser.getCurrentUrl()).toBe(hostName + '/' + tribe.id + '/pairAssignments/current/');
+        tribeCardElement.click();
+        expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
-        browser.setLocation('/' + tribe.id + '/player/' + player1._id);
+        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(element(By.css('[ng-model="playerCard.player.name"]')).getText()).toBe('Unknown')
     });
 
     it('will show all players', function () {
-        browser.setLocation('/' + tribe.id + '/player/' + player1._id);
+        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerElements = element.all(By.repeater('player in players'));
         expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
     });
@@ -193,7 +197,7 @@ describe('The new player page', function () {
     ];
 
     beforeAll(function (done) {
-        browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
+        browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
 
         tribeCollection.insert(tribe)
             .then(() => playersCollection.insert(players))
@@ -210,7 +214,7 @@ describe('The new player page', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
     it('will show all players', function () {
-        browser.setLocation('/' + tribe.id + '/player/new');
+        browser.setLocation(`/${tribe.id}/player/new`);
         const playerElements = element.all(By.repeater('player in players'));
         expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
     });

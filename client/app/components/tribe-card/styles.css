@@ -1,0 +1,38 @@
+:local(.className) {
+    display: inline-block;
+    border-radius: 10px;
+    padding: 5px;
+    border: 11px outset #f5f5f5;
+    background-color: lightsteelblue;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    color: black;
+    margin: 0 2px 4px 2px;
+    width: 150px;
+    height: 210px;
+}
+
+:local(.className) img {
+    -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
+    z-index: 0;
+}
+
+:local(.header) {
+    background: hsla(212, 37%, 95%, 0.85) url(../../../images/overlay.png) repeat-x;
+    border-radius: 15px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    z-index: 100;
+    position: relative;
+}
+
+:local(.header) {
+    transition: background ease-out 0.4s;
+}
+
+:local(.header):hover {
+    transition: background ease-out 0.4s;
+    z-index: 1;
+    background: rgba(202, 206, 211, 0.85) url(../../../images/overlay.png) repeat-x;
+}

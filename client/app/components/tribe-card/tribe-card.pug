@@ -1,4 +1,4 @@
-span(class="tribe"
+span(ng-class="tribecard.styles.className"
 ng-show="tribecard.tribe"
 enter-press="tribecard.clickOnTribeCard()"
 ng-click="tribecard.clickOnTribeCard()"
@@ -7,7 +7,7 @@ tabindex="0"
 ng-style="tribecard.cardStyle"
 )
     div(ng-style="tribecard.headerStyle")
-        div(class="tribe-name" ng-click="tribecard.clickOnTribeName($event)")
+        div(ng-class="tribecard.styles.header" ng-click="tribecard.clickOnTribeName($event)")
             text(
             data-fittext=1
             data-fittext-min="{{tribecard.minFontHeight}}"
