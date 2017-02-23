@@ -120,6 +120,7 @@ describe('The edit player page', function () {
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
+
     });
 
 

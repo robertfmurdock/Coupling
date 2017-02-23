@@ -30,6 +30,10 @@ function waitUntilAnimateIsGone() {
 const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
 const tribeCardHeaderLocator = By.className(tribeCardStyles.header);
 
+const tribeConfigStyles = require('../../client/app/components/tribe-config/styles.css');
+const tribeConfigElement = element(By.className(tribeConfigStyles.className));
+
+
 const tribeListPage = {
     getTribeElements: function () {
         return element.all(By.repeater('tribe in tribes'));
@@ -105,7 +109,7 @@ describe('The default tribes page', function () {
         });
 
         it('the tribe view is shown', function () {
-            expect(element(By.css('.tribe-view')).isDisplayed()).toBe(true);
+            expect(tribeConfigElement.isDisplayed()).toBe(true);
         });
 
         it('the tribe name is shown', function () {

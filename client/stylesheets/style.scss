@@ -281,38 +281,6 @@ a {
   content: "\f128";
 }
 
-.tribe-view {
-  display: flex;
-  padding-top: 25px;
-  .tribe-icon {
-    display: inline-block;
-  }
-  .tribe {
-    width: 250px;
-    height: 315px;
-  }
-  .tribe-editor {
-    display: inline-block;
-    vertical-align: top;
-    font-size: large;
-    label {
-      clear: both;
-      float: left;
-    }
-    input[type="text"] {
-      text-align: right;
-      float: right;
-      width: 150px;
-      margin: 5px;
-    }
-    div {
-      clear: both;
-    }
-  }
-  input[type="button"] {
-  }
-}
-
 input.button {
   border: 0;
 }

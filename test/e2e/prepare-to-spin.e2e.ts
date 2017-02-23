@@ -59,6 +59,7 @@ describe('The prepare to spin page', function () {
     });
 
     describe('with no history', function () {
+
         it('will show all the players ', function () {
             const playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
             expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
