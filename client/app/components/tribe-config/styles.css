@@ -1,0 +1,40 @@
+:local(.className) {
+    display: inline-block;
+    background: #faf0d2;
+    padding: 0 25px 25px 25px;
+    min-height: 100vh;
+    border: 12px solid #ff8c00;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+    text-align: left;
+}
+
+:local(.className) .tribe-icon {
+    display: inline-block;
+}
+
+:local(.editor) {
+    display: inline-block;
+    vertical-align: top;
+    font-size: large;
+}
+
+:local(.editor) label {
+    clear: both;
+    float: left;
+}
+
+:local(.editor) input[type="text"] {
+    text-align: right;
+    float: right;
+    width: 150px;
+    margin: 5px;
+}
+:local(.editor) div {
+    clear: both;
+}
+
+:local(.editor) input[type="button"] {
+
+}

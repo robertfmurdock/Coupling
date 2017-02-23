@@ -1,35 +1,42 @@
-div(class="tribe-frame" ng-show="self.tribe")
-    div(class="tribe-view")
-        tribecard(tribe="self.tribe" size=200)
-        span(class="tribe")
-            div(class="tribe-editor")
+div(ng-class="self.styles.className" ng-show="self.tribe")
+    div
+        h1 Tribe Configuration
+    div
+        span
+            div(ng-class="self.styles.editor")
                 div
-                    label(for="tribe-name") Name:
+                    label(for="tribe-name") Name
                     input(id="tribe-name" type="text" ng-model="self.tribe.name")
                 div
-                    label(for="tribe-img-url") Image URL:
+                    label(for="tribe-img-url") Image URL
                     input(id="tribe-img-url" type="text" ng-model="self.tribe.imageURL")
                 div
-                    label(for="tribe-email") Email:
+                    label(for="tribe-email") Email
                     input(id="tribe-email" type="text" ng-model="self.tribe.email")
                 div
-                    label Enable Badges:
+                    label Enable Badges
                     input(id="badge-checkbox" type="checkbox" ng-model="self.tribe.badgesEnabled")
                 div
-                    label Default Badge Name:
+                    label Default Badge Name
                     input(id="default-badge-name" type="text" ng-model="self.tribe.defaultBadgeName")
                 div
-                    label Alt Badge Name:
+                    label Alt Badge Name
                     input(id="alt-badge-name" type="text" ng-model="self.tribe.alternateBadgeName")
                 div
-                    label Pairing Rule:
+                    label Pairing Rule
                     select(
                     id="pairing-rule"
                     ng-model="self.tribe.pairingRule"
                     ng-options="rule.id as rule.description for rule in self.pairingRules"
                     )
                 div(ng-show="self.isNew")
-                    label(for="tribe-id") Unique Id:
+                    label(for="tribe-id") Unique Id
                     input(id="tribe-id" type="text" ng-model="self.tribe.id")
+        tribecard(tribe="self.tribe" size=200)
     div
-        input(id="save-tribe-button" type="button" class="super blue button save-button" ng-click="self.clickSaveButton()" tabIndex="0" value="Save")
+        input(id="save-tribe-button"
+        type="button"
+        class="super blue button save-button"
+        ng-click="self.clickSaveButton()"
+        tabIndex="0"
+        value="Save")

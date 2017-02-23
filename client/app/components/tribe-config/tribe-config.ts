@@ -4,13 +4,17 @@ import * as services from "../../services";
 import PairingRule from "../../../../common/PairingRule";
 import * as _ from "underscore";
 
+import * as styles from './styles.css'
+
 export class TribeConfigController {
     static $inject = ['$location'];
     public tribe: services.Tribe;
     public isNew: boolean;
+    public styles: any;
     public pairingRules;
 
     constructor(public $location: angular.ILocationService) {
+        this.styles = styles;
         this.pairingRules = [
             {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
             {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
