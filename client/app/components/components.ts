@@ -7,6 +7,7 @@ import PlayerCard from "./player-card/player-card";
 import PlayerConfig from "./player-config/player-config";
 import PlayerRoster from "./player-roster/player-roster";
 import Prepare from "./prepare/PrepareDirective";
+import ServerMessageDirective from "./server-message/ServerMessageDirective";
 import TribeCard from "./tribe-card/TribeCardController";
 import TribeConfig from "./tribe-config/tribe-config";
 import TribeList from "./tribe-list/tribe-list";
@@ -25,6 +26,7 @@ module('coupling.component', [
     PlayerCard.name,
     PlayerRoster.name,
     Prepare.name,
+    ServerMessageDirective.name,
     Statistics.name,
     TribeCard.name,
     TribeConfig.name,

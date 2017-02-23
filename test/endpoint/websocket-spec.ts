@@ -41,7 +41,7 @@ describe('Current connections websocket', function () {
         })
             .timeout(100)
             .then((message) => {
-                expect(message).toEqual('Oh HAI!');
+                expect(message).toEqual('Connected');
             })
             .then(done, done.fail);
     });

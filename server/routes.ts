@@ -28,7 +28,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/partials/:name', routes.partials);
 
     app.ws('/api/LOL/pairAssignments/current', (ws) => {
-        ws.send('Oh HAI!');
+        ws.send('Connected');
     });
 
     app.ws('*', (ws) => {

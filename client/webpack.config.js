@@ -14,6 +14,9 @@ const config = {
   resolve: {
     extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json']
   },
+  externals: {
+    ws: {}
+  },
   module: {
     loaders: [
       {
