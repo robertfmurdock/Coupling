@@ -117,12 +117,6 @@ describe('The default tribes page', function () {
             expect(tribeNameElement.getAttribute('value')).toEqual(expectedTribe.name);
         });
 
-        it('the tribe image url is shown', function () {
-            const tribeNameElement = element.all(By.id('tribe-img-url')).first();
-            const expectedValue = expectedTribe.imgURL || '';
-            expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
-        });
-
         it('the tribe email is shown', function () {
             const tribeNameElement = element.all(By.id('tribe-email')).first();
             const expectedValue = expectedTribe.email || '';
