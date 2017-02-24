@@ -1,11 +1,18 @@
 import * as WebSocket from "ws";
 import * as Promise from "bluebird";
 import * as supertest from "supertest";
+import * as monk from "monk";
+import Tribe from "../../common/Tribe";
 
 let config = require('../../config');
 let server = 'localhost:' + config.port;
 let agent = supertest.agent(server);
 let userEmail = 'test@test.tes';
+
+let database = monk(config.tempMongoUrl);
+let tribesCollection = database.get('tribes');
+let playersCollection = database.get('players');
+let usersCollection = monk(config.mongoUrl).get('users');
 
 describe('Current connections websocket', function () {
 
@@ -16,17 +23,44 @@ describe('Current connections websocket', function () {
         });
     }
 
+    interface DatabaseEntity {
+        _id: string
+    }
+
+    const tribe: Tribe &  DatabaseEntity = {id: 'LOL', name: 'League of Losers', _id: undefined};
+    const unauthorizedTribe: Tribe &  DatabaseEntity = {
+        id: 'ROFL',
+        name: 'Royal Observatory of Fluid Lightning',
+        _id: undefined
+    };
+
+    function authorizeUserForTribes(authorizedTribes) {
+        return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
+    }
+
+    const tribeA = {id: 'Tribe A', name: 'AAAAA'};
+    const tribeB = {id: 'Tribe B', name: 'BBBBB'};
+    const tribeC = {id: 'Tribe C', name: 'CCCCC'};
+    const tribes = [tribeA, tribeB, tribeC];
+
     beforeAll(function (done) {
         agent.get('/test-login?username=' + userEmail + '&password=pw')
             .expect(302)
             .then(response => this.authenticatedHeaders = {cookie: response.headers['set-cookie']})
+            .then(() => Promise.all([
+                playersCollection.drop(),
+                tribesCollection.drop()
+            ]))
+            .then(() => tribesCollection.insert([tribe, unauthorizedTribe, ...tribes]))
+            .then(() => authorizeUserForTribes([tribe.id, tribeA.id, tribeB.id, tribeC.id]))
             .then(done, done.fail);
 
-        this.promiseWebsocket = function (tribeId = 'LOL') {
+        this.promiseWebsocket = function (tribeId = tribe.id) {
             return new Promise((resolve, reject) => {
                 const options = {headers: this.authenticatedHeaders};
                 const websocket = new WebSocket(`ws://${server}/api/${tribeId}/pairAssignments/current`, options);
                 const messages = [];
+
 
                 websocket.on('message', message => {
                     messages.push(message);
@@ -45,7 +79,7 @@ describe('Current connections websocket', function () {
     it('when you are the only connection, gives you a count of one', function (done) {
         new Promise((resolve, reject) => {
             const options = {headers: this.authenticatedHeaders};
-            const websocket = new WebSocket(`ws://${server}/api/LOL/pairAssignments/current`, options);
+            const websocket = new WebSocket(`ws://${server}/api/${tribe.id}/pairAssignments/current`, options);
 
             websocket.on('message', message => {
                 resolve(message);
@@ -78,17 +112,17 @@ describe('Current connections websocket', function () {
 
     it('when there are multiple connections, gives you the total connection count for the current tribe', function (done) {
         Promise.all([
-            this.promiseWebsocket('Tribe A'),
-            this.promiseWebsocket('Tribe B'),
+            this.promiseWebsocket(tribeA.id),
+            this.promiseWebsocket(tribeB.id),
         ])
             .then(bundles => Promise.all(bundles.concat([
-                this.promiseWebsocket('Tribe A'),
-                this.promiseWebsocket('Tribe B'),
-                this.promiseWebsocket('Tribe B'),
+                this.promiseWebsocket(tribeA.id),
+                this.promiseWebsocket(tribeB.id),
+                this.promiseWebsocket(tribeB.id),
             ])))
             .then(bundles => Promise.all(bundles.concat([
-                this.promiseWebsocket('Tribe C'),
-                this.promiseWebsocket('Tribe B'),
+                this.promiseWebsocket(tribeC.id),
+                this.promiseWebsocket(tribeB.id),
             ])))
             .then(bundles => {
                 const lastTribeAConnection = bundles[2];
@@ -177,7 +211,20 @@ describe('Current connections websocket', function () {
     it('does not talk to you if you are not authenticated', function (done) {
         const socketPromise = new Promise((resolve, reject) => {
             const unauthenticatedHeaders = {};
-            const websocket = new WebSocket(`ws://${server}/api/LOL/pairAssignments/current`, unauthenticatedHeaders);
+            const websocket = new WebSocket(`ws://${server}/api/${tribe.id}/pairAssignments/current`, unauthenticatedHeaders);
+            websocket.on('close', resolve);
+            setupErrorHandler(websocket, reject);
+        });
+
+        socketPromise
+            .timeout(100)
+            .then(done, done.fail);
+    });
+
+    it('does not talk to you if are not authorized for the tribe requested', function (done) {
+        const socketPromise = new Promise((resolve, reject) => {
+            const options = {headers: this.authenticatedHeaders};
+            const websocket = new WebSocket(`ws://${server}/api/${unauthorizedTribe.id}/pairAssignments/current`, options);
             websocket.on('close', resolve);
             setupErrorHandler(websocket, reject);
         });
@@ -205,7 +252,7 @@ describe('Current connections websocket', function () {
     it('server will not crash when socket is immediately closed', function (done) {
         new Promise(resolve => {
             const options = {headers: this.authenticatedHeaders};
-            const websocket = new WebSocket(`ws://${server}/api/LOL/pairAssignments/current`, options);
+            const websocket = new WebSocket(`ws://${server}/api/${tribe.id}/pairAssignments/current`, options);
             websocket.on('open', () => websocket.close());
             websocket.on('close', resolve);
         }).timeout(100)

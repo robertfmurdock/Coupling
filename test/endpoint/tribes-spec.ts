@@ -37,11 +37,12 @@ describe(path, function () {
     }
 
     it('GET will return all available tribes.', function (done) {
-        tribesCollection.find({}, {})
-            .then(tribeDocuments => {
-                let authorizedTribes = _.pluck(tribeDocuments, '_id');
+        const tribes = [{id: 'Uno', name: 'one'}, {id: 'Dos', name: 'two'}, {id: 'Tres', name: 'three'}];
+        tribesCollection.insert(tribes)
+            .then(() => {
+                let authorizedTribes = _.pluck(tribes, 'id');
                 return authorizeUserForTribes(authorizedTribes)
-                    .then(() => tribeDocuments);
+                    .then(() => tribes);
             })
             .then(tribeDocuments => {
                 return host.get(path)

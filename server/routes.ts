@@ -4,6 +4,7 @@ import * as routes from "./routes/index";
 import tribeRoute from "./routes/tribeRoute";
 import tribeListRoute from "./routes/tribeListRoute";
 import * as WebSocket from "ws";
+import * as AuthorizedTribeFetcher from "./lib/AuthorizedTribesFetcher";
 
 const config = require('./../config');
 
@@ -29,11 +30,18 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/partials/:name', routes.partials);
 
     app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
-        const tribeId = request.params.tribeId;
-        broadcastConnectionCountForTribe(tribeId);
+        AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
+            .then(({isAuthorized}) => {
+                if (isAuthorized) {
+                    const tribeId = request.params.tribeId;
+                    broadcastConnectionCountForTribe(tribeId);
 
-        connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
-        connection.on('error', console.log);
+                    connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
+                    connection.on('error', console.log);
+                } else {
+                    connection.close();
+                }
+            });
     });
 
     function broadcast(message: string, clients: WebSocket[]) {
@@ -49,7 +57,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
 
         const matchingConnections = [];
         clients.forEach(client => {
-            if(connectionIsOpenAndForSameTribe(client, tribeId)) {
+            if (connectionIsOpenAndForSameTribe(client, tribeId)) {
                 matchingConnections.push(client);
             }
         });
