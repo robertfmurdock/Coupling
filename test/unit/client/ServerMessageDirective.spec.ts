@@ -1,4 +1,5 @@
 import "angular-websocket/dist/angular-websocket-mock";
+import ILocationService = angular.ILocationService;
 
 describe('Server message directive', function () {
     let $websocketBackend;
@@ -24,8 +25,17 @@ describe('Server message directive', function () {
         return {rootScope: scope, directive};
     }
 
-    it('connects to current pair assignments websockets', inject(function ($compile, $rootScope) {
+    it('connects to current pair assignments websockets', inject(function ($compile, $rootScope, $location: ILocationService) {
+        spyOn($location, 'protocol').and.returnValue('http');
         $websocketBackend.expectConnect(`ws://${window.location.host}/api/LOL/pairAssignments/current`);
+        const directive = buildDirective($compile, $rootScope);
+        expect(directive).toBeDefined();
+        $websocketBackend.flush();
+    }));
+
+    it('connects to current pair assignments websockets security on https', inject(function ($compile, $rootScope, $location: ILocationService) {
+        spyOn($location, 'protocol').and.returnValue('https');
+        $websocketBackend.expectConnect(`wss://${window.location.host}/api/LOL/pairAssignments/current`);
         const directive = buildDirective($compile, $rootScope);
         expect(directive).toBeDefined();
         $websocketBackend.flush();
