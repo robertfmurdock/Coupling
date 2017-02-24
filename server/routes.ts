@@ -10,7 +10,6 @@ const config = require('./../config');
 module.exports = function (wsInstance, userDataService, couplingDataService) {
 
     const app = wsInstance.app;
-    const clients = wsInstance.getWss().clients;
 
     app.get('/welcome', routes.welcome);
     app.get('/auth/google', passport.authenticate('google'));
@@ -29,23 +28,33 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 
-    app.ws('/api/LOL/pairAssignments/current', connection => {
-        broadcastConnectionCount();
+    app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
+        const tribeId = request.params.tribeId;
+        broadcastConnectionCountForTribe(tribeId);
 
-        connection.on('close', broadcastConnectionCount);
+        connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
         connection.on('error', console.log);
     });
 
-    function broadcast(message: string) {
-        clients.forEach((client: WebSocket) => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(message);
-            }
-        });
+    function broadcast(message: string, clients: WebSocket[]) {
+        clients.forEach((client: WebSocket) => client.send(message));
     }
 
-    let broadcastConnectionCount = function () {
-        broadcast('Number of connections: ' + clients.size);
+    let connectionIsOpenAndForSameTribe = function (client, tribeId) {
+        return client.readyState === WebSocket.OPEN && client.upgradeReq.params.tribeId === tribeId;
+    };
+
+    let broadcastConnectionCountForTribe = function (tribeId) {
+        const clients = wsInstance.getWss().clients;
+
+        const matchingConnections = [];
+        clients.forEach(client => {
+            if(connectionIsOpenAndForSameTribe(client, tribeId)) {
+                matchingConnections.push(client);
+            }
+        });
+
+        broadcast('Number of connections: ' + matchingConnections.length, matchingConnections);
     };
 
     app.ws('*', (ws) => {

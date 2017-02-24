@@ -22,10 +22,10 @@ describe('Current connections websocket', function () {
             .then(response => this.authenticatedHeaders = {cookie: response.headers['set-cookie']})
             .then(done, done.fail);
 
-        this.promiseWebsocket = function () {
+        this.promiseWebsocket = function (tribeId = 'LOL') {
             return new Promise((resolve, reject) => {
                 const options = {headers: this.authenticatedHeaders};
-                const websocket = new WebSocket(`ws://${server}/api/LOL/pairAssignments/current`, options);
+                const websocket = new WebSocket(`ws://${server}/api/${tribeId}/pairAssignments/current`, options);
                 const messages = [];
 
                 websocket.on('message', message => {
@@ -70,6 +70,36 @@ describe('Current connections websocket', function () {
             .then(bundles => Promise.all(bundles.concat(this.promiseWebsocket())))
             .then(bundles => {
                 expect(bundles[2].messages).toEqual([makeConnectionMessage(3)]);
+                return bundles;
+            })
+            .then(closeAllSockets())
+            .then(done, done.fail);
+    });
+
+    it('when there are multiple connections, gives you the total connection count for the current tribe', function (done) {
+        Promise.all([
+            this.promiseWebsocket('Tribe A'),
+            this.promiseWebsocket('Tribe B'),
+        ])
+            .then(bundles => Promise.all(bundles.concat([
+                this.promiseWebsocket('Tribe A'),
+                this.promiseWebsocket('Tribe B'),
+                this.promiseWebsocket('Tribe B'),
+            ])))
+            .then(bundles => Promise.all(bundles.concat([
+                this.promiseWebsocket('Tribe C'),
+                this.promiseWebsocket('Tribe B'),
+            ])))
+            .then(bundles => {
+                const lastTribeAConnection = bundles[2];
+                expect(lastTribeAConnection.messages).toEqual([makeConnectionMessage(2)]);
+
+                const lastTribeBConnection = bundles[bundles.length - 1];
+                expect(lastTribeBConnection.messages).toEqual([makeConnectionMessage(4)]);
+
+                const lastTribeCConnection = bundles[5];
+                expect(lastTribeCConnection.messages).toEqual([makeConnectionMessage(1)]);
+
                 return bundles;
             })
             .then(closeAllSockets())
