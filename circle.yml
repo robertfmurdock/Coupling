@@ -20,6 +20,7 @@ deployment:
   staging:
     branch: master
     commands:
+      - docker pull zegreatrob/coupling
       - docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push zegreatrob/coupling
