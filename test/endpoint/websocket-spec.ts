@@ -107,7 +107,7 @@ describe('Current connections websocket', function () {
     });
 
     function makeConnectionMessage(count: number) {
-        return 'Number of connections: ' + count;
+        return 'Users viewing this page: ' + count;
     }
 
     let promiseWebsocketClose = function (bundle) {

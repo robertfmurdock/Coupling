@@ -54,7 +54,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
             }
         });
 
-        broadcast('Number of connections: ' + matchingConnections.length, matchingConnections);
+        broadcast('Users viewing this page: ' + matchingConnections.length, matchingConnections);
     };
 
     app.ws('*', (ws) => {
