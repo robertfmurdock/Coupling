@@ -1,9 +1,11 @@
 import {module} from "angular";
 import * as template from "./template.pug";
+import * as _ from 'underscore'
 import ITimeoutService = angular.ITimeoutService;
 import ILocationService = angular.ILocationService;
+import IController = angular.IController;
 
-export class ServerMessageController {
+export class ServerMessageController implements IController {
 
     static $inject = ['$websocket', '$timeout', '$location'];
 
@@ -23,10 +25,15 @@ export class ServerMessageController {
         this.connectToWebsocket();
     }
 
+    $onDestroy(): void {
+        this.liveSocket.onCloseCallbacks = _.without(this.liveSocket.onCloseCallbacks, this.handleSocketClose);
+        this.liveSocket.close();
+    }
+
     private connectToWebsocket() {
         this.liveSocket = this.$websocket(this.buildSocketUrl());
         this.liveSocket.onMessage(message => this.message = message.data);
-        this.liveSocket.onClose(() => this.handleSocketClose());
+        this.liveSocket.onClose(this.handleSocketClose);
     }
 
     private buildSocketUrl() {
@@ -34,7 +41,7 @@ export class ServerMessageController {
         return `${protocol}://${window.location.host}/api/LOL/pairAssignments/current`;
     }
 
-    private handleSocketClose() {
+    private handleSocketClose = () => {
         this.message = 'Not connected';
         this.$timeout(() => this.connectToWebsocket(), 10000);
     }

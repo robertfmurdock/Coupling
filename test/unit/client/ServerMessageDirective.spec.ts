@@ -107,4 +107,14 @@ describe('Server message directive', function () {
         expect(messageElement.text()).toEqual(expectedMessage);
         $websocketBackend.flush();
     }));
+
+    it('will disconnect on destroy', inject(function ($compile, $rootScope) {
+        $websocketBackend.expectConnect(`ws://${window.location.host}/api/LOL/pairAssignments/current`);
+        const {directive} = buildDirective($compile, $rootScope);
+
+        $websocketBackend.expectClose();
+
+        directive.scope().$destroy();
+        $websocketBackend.flush();
+    }));
 });
