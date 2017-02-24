@@ -14,6 +14,7 @@ export class ServerMessageController implements IController {
     private $location: ILocationService;
     liveSocket;
     message: string;
+    tribeId: string;
 
     constructor(private _$websocket_, _$timeout_: ITimeoutService, $location: ILocationService) {
         this.$websocket = _$websocket_;
@@ -38,7 +39,9 @@ export class ServerMessageController implements IController {
 
     private buildSocketUrl() {
         const protocol = 'https' === this.$location.protocol() ? 'wss' : 'ws';
-        return `${protocol}://${window.location.host}/api/LOL/pairAssignments/current`;
+        return `${protocol}://${window.location.host}/api/${this.tribeId}/pairAssignments/current`;
+
+
     }
 
     private handleSocketClose = () => {
@@ -54,6 +57,8 @@ export default module('coupling.serverMessage', ['ngWebSocket'])
             controller: ServerMessageController,
             controllerAs: 'socket',
             bindToController: true,
-            scope: {}
+            scope: {
+                tribeId: '='
+            }
         }
     });

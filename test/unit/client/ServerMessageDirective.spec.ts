@@ -16,9 +16,10 @@ describe('Server message directive', function () {
         $websocketBackend.verifyNoOutstandingRequest();
     });
 
-    function buildDirective($compile: angular.ICompileService, $rootScope) {
-        const element = angular.element('<server-message>');
+    function buildDirective($compile: angular.ICompileService, $rootScope, tribeId = 'LOL') {
+        const element = angular.element('<server-message tribe-id="tribeId">');
         const scope = $rootScope.$new();
+        scope.tribeId = tribeId;
         const directive = $compile(element)(scope);
 
         scope.$digest();
@@ -115,6 +116,13 @@ describe('Server message directive', function () {
         $websocketBackend.expectClose();
 
         directive.scope().$destroy();
+        $websocketBackend.flush();
+    }));
+
+    it('will create connection based on tribe id', inject(function ($compile, $rootScope) {
+        const tribeId = 'bwahahahaha';
+        $websocketBackend.expectConnect(`ws://${window.location.host}/api/${tribeId}/pairAssignments/current`);
+        buildDirective($compile, $rootScope, tribeId);
         $websocketBackend.flush();
     }));
 });
