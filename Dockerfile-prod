@@ -8,9 +8,14 @@ ENV \
   MONGO_CONNECTION=mongodb://mongo \
   NODE_ENV=production
 
-COPY . /usr/src/app
+COPY package.json /usr/src/app/
 
 RUN npm install --production
+
+COPY startup.js /usr/src/app/
+COPY build /usr/src/app/build/
+COPY public /usr/src/app/public/
+COPY views /usr/src/app/views/
 
 CMD ["npm", "run", "start-built-app"]
 EXPOSE 3000 8125
