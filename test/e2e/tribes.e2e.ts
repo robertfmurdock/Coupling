@@ -36,7 +36,7 @@ const tribeConfigElement = element(By.className(tribeConfigStyles.className));
 
 const tribeListPage = {
     getTribeElements: function () {
-        return element.all(By.repeater('tribe in tribes'));
+        return element.all(By.repeater('tribe in tribeList.tribes'));
     },
     getTribeNameLabel: function (tribeElement) {
         return tribeElement.element(tribeCardHeaderLocator);

@@ -52,7 +52,7 @@ describe('The edit tribe page', function () {
 
         it('can save edits to a tribe correctly', function () {
             browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
-            const tribeElements = element.all(By.repeater('tribe in tribes'));
+            const tribeElements = element.all(By.repeater('tribe in tribeList.tribes'));
             tribeElements.first().element(By.className(tribeCardStyles.header)).click();
 
             expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
