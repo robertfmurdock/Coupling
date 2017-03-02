@@ -5,7 +5,7 @@ containerInfo:
     env:
       - DISPLAY=:99
       - CHROME_BIN=/usr/bin/google-chrome
-  - mongo:latest
+  - image: mongo:latest
 stages:
   build:
     workDir: ~/Coupling 
