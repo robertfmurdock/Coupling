@@ -12,8 +12,8 @@ stages:
     steps:
       - type: shell
         command: |
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
       - type: shell
         name: Starting Xvfb (for Browser Tests)
         command: Xvfb :99 -screen 0 1280x1024x24
