@@ -1,27 +1,33 @@
-machine:
-  node:
-    version: 7.1.0
-  java:
-    version: openjdk8
-  services:
-    - docker
-dependencies:
-  pre:
-    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    - sudo apt-get update
-    - sudo apt-get --only-upgrade install google-chrome-stable
-test:
-  override:
-    - npm test
-  post:
-    - mv test-output $CIRCLE_TEST_REPORTS/junit
-deployment:
-  staging:
-    branch: master
-    commands:
-      - docker pull zegreatrob/coupling
-      - docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push zegreatrob/coupling
-
+version: 2
+executorType: docker
+containerInfo:
+  - image: node:7-slim
+    env:
+      - DISPLAY=:99
+      - CHROME_BIN=/usr/bin/google-chrome
+- type: shell
+  name: Starting Xvfb (for Browser Tests)
+  command: Xvfb :99 -screen 0 1280x1024x24
+   background: true
+  - mongo:latest
+stages:
+  build:
+    workDir: ~/Coupling 
+    steps:
+      - type: shell
+        command: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+      - type: checkout
+      - type: shell
+        command: npm test
+      - type: shell
+        command: mv test-output $CIRCLE_TEST_REPORTS/junit
+      - type: deploy
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "master" ];
+            docker pull zegreatrob/coupling
+            docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
+            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            docker push zegreatrob/coupling
+          fi    
