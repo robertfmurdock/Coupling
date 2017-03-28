@@ -23,6 +23,8 @@ stages:
         background: true
       - type: checkout
       - type: shell
+        command: npm install
+      - type: shell
         command: npm test
       - type: shell
         command: mv test-output $CIRCLE_TEST_REPORTS/junit
