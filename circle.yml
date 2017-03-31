@@ -13,7 +13,7 @@ stages:
       - type: shell
         command: |
           apt-get update
-          apt-get install -y google-chrome-stable git bzip2 default-jre
+          apt-get install -y git bzip2 default-jre
       - type: checkout
       - type: shell
         command: npm install
