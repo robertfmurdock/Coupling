@@ -27,7 +27,7 @@ stages:
       - restore_cache:
           key: projectname-{{ .Branch }}
       - type: shell
-          command: ./gradlew
+          command: "./gradlew"
       - save_cache:
           key: projectname-{{ .Branch }}
           paths:
