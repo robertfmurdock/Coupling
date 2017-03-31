@@ -4,12 +4,15 @@ import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "./PairingTimeCalc
 import Pair from "./Pair";
 import Tribe from "./Tribe";
 import Player from "./Player";
-import * as moment from 'moment';
+import * as moment from "moment";
 
 interface PairReport {
     pair: Pair,
     timeSinceLastPaired: number | string
 }
+
+
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991;
 
 export default class StatisticComposer {
 
@@ -22,7 +25,7 @@ export default class StatisticComposer {
     }
 
     private calculateMedianSpinDuration(history: PairAssignmentDocument[]) {
-        if(history.length <= 1) {
+        if (history.length <= 1) {
             return 'N/A';
         }
 
@@ -37,7 +40,6 @@ export default class StatisticComposer {
     }
 
     private buildPairReports(players: Player[], history) {
-
         return _.chain(players)
             .map(this.allPairsForPlayer)
             .flatten(true)
@@ -45,11 +47,12 @@ export default class StatisticComposer {
                 return this.makeReport(pair, calculateTimeSinceLastPartnership(pair, history))
             })
             .sortBy((pairReport1: PairReport) => {
+
                 if (pairReport1.timeSinceLastPaired === NEVER_PAIRED) {
                     return -1;
                 }
 
-                return Number.MAX_SAFE_INTEGER - (pairReport1.timeSinceLastPaired as number);
+                return MAX_SAFE_INTEGER - (pairReport1.timeSinceLastPaired as number);
             })
             .value();
     }

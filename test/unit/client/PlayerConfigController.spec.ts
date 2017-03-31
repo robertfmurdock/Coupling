@@ -1,6 +1,7 @@
 import {PlayerConfigController} from "../../../client/app/components/player-config/player-config";
 import "angular-route";
 import * as angular from 'angular'
+import * as Promise from 'bluebird'
 import Player from "../../../common/Player";
 import Badge from "../../../common/Badge";
 import * as _ from "underscore";
