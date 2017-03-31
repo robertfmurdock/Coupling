@@ -16,8 +16,14 @@ stages:
           apt-get update
           apt-get install -y git bzip2 default-jre
       - type: checkout
+      - restore_cache:
+          key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
       - type: shell
         command: npm install
+      - save_cache:
+          key: projectname-{{ .Branch }}-{{ checksum "package.json" {% raw %}}}
+          paths:
+            - "node_modules"
       - type: shell
         command: npm test
       - type: shell
@@ -33,9 +39,13 @@ stages:
             mv /tmp/docker/* /usr/bin
       - deploy:
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ];
-              docker pull zegreatrob/coupling
-              docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
-              docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-              docker push zegreatrob/coupling
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+
             fi
+
+#            if [ "${CIRCLE_BRANCH}" == "master" ];
+#              docker pull zegreatrob/coupling
+#              docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
+#              docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+#              docker push zegreatrob/coupling
+#            fi
