@@ -5,6 +5,7 @@ containerInfo:
     env:
       - DISPLAY=:99
       - CHROME_BIN=/usr/bin/google-chrome
+      - HEADLESS=true
   - image: mongo:latest
 stages:
   build:
