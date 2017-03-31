@@ -1,5 +1,6 @@
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
 import PairingRule from "../../../common/PairingRule";
+import * as Promise from 'bluebird';
 import * as angular from "angular";
 import * as _ from "underscore";
 
