@@ -109,7 +109,7 @@ task endToEndTest(type: Exec) {
     inputs.file file('test/e2e')
     outputs.file file('test-output/e2e.xml')
 
-    commandLine 'npm', 'run', 'protractor', '--silent'
+    commandLine 'npm', 'run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"
 }
 
 task test {

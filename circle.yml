@@ -4,6 +4,7 @@ containerInfo:
   - image: node:7-slim
     env:
       - HEADLESS=true
+      - SELENIUM_ADDRESS=http://localhost:4444/wd/hub
   - image: mongo:latest
   - image: selenium/standalone-chrome
 stages:
