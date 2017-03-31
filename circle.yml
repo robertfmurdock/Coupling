@@ -7,6 +7,7 @@ containerInfo:
       - CHROME_BIN=/usr/bin/google-chrome
       - HEADLESS=true
   - image: mongo:latest
+  - image: selenium/standalone-chrome
 stages:
   build:
     workDir: ~/Coupling 
