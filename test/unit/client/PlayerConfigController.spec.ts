@@ -37,7 +37,6 @@ describe('PlayerConfigController', function () {
         _id: 'hmm'
     };
 
-
     let player: Player;
 
     let Coupling, $location, $scope;
