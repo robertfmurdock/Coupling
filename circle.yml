@@ -14,11 +14,7 @@ stages:
       - type: shell
         command: |
           apt-get update
-          apt-get install -y git bzip2 default-jre apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          apt-get update
-          apt-get install -y docker-ce
+          apt-get install -y git bzip2 default-jre
       - type: checkout
       - type: shell
         command: npm install
@@ -26,11 +22,9 @@ stages:
         command: npm test
       - type: shell
         command: mv test-output $CIRCLE_TEST_REPORTS/junit
-      - setup_remote_docker
       - type: deploy
         command: |
           if [ "${CIRCLE_BRANCH}" == "master" ];
-            docker ps
             docker pull zegreatrob/coupling
             docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
             docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
