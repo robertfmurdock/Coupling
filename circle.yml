@@ -39,9 +39,10 @@ stages:
             mv /tmp/docker/* /usr/bin
       - deploy:
           command: |
-#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker pull zegreatrob/coupling
               docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
+
+#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
 #              docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 #              docker push zegreatrob/coupling
 #            fi
