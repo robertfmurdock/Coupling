@@ -14,16 +14,16 @@ stages:
     steps:
       - type: shell
         command: |
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-          sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
           apt-get update
-          apt-get install -y google-chrome-stable git bzip2 default-jre
+          apt-get install -y git bzip2 default-jre
 
       - type: shell
         name: Starting Xvfb (for Browser Tests)
         command: Xvfb :99 -screen 0 1280x1024x24
         background: true
       - type: checkout
+      - type: shell
+        command: env
       - type: shell
         command: npm install
       - type: shell
