@@ -1,27 +1,47 @@
-machine:
-  node:
-    version: 7.1.0
-  java:
-    version: openjdk8
-  services:
-    - docker
-dependencies:
-  pre:
-    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    - sudo apt-get update
-    - sudo apt-get --only-upgrade install google-chrome-stable
-test:
-  override:
-    - npm test
-  post:
-    - mv test-output $CIRCLE_TEST_REPORTS/junit
-deployment:
-  staging:
-    branch: master
-    commands:
-      - docker pull zegreatrob/coupling
-      - docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push zegreatrob/coupling
-
+version: 2
+executorType: docker
+containerInfo:
+  - image: node:7-slim
+    env:
+      - HEADLESS=true
+      - SELENIUM_ADDRESS=http://localhost:4444/wd/hub
+  - image: mongo:latest
+  - image: selenium/standalone-chrome
+stages:
+  build:
+    workDir: ~/Coupling 
+    steps:
+      - type: shell
+        command: |
+          apt-get update
+          apt-get install -y git bzip2 default-jre
+      - type: checkout
+      - restore_cache:
+          key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
+      - type: shell
+        command: npm install
+      - save_cache:
+          key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - "node_modules"
+      - type: shell
+        command: npm test
+      - type: shell
+        command: mv test-output $CIRCLE_TEST_REPORTS/junit
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker pull zegreatrob/coupling
+              docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
+              docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+              docker push zegreatrob/coupling
+            fi

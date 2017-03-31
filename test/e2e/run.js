@@ -1,9 +1,9 @@
-var fs = require('fs-extra');
+const fs = require('fs-extra');
 const Promise = require('bluebird');
 const ConfigParser = require('protractor/built/configParser').ConfigParser;
 const Runner = require('protractor/built/runner').Runner;
 const webpackRunner = require('../webpackRunner');
-var webpackConfig = require('./webpack.config');
+const webpackConfig = require('./webpack.config');
 const couplingApp = require('../../build/app');
 
 process.env.PORT = 3001;
