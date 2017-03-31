@@ -2,6 +2,7 @@ import CouplingGameFactory from "../../../server/lib/CouplingGameFactory";
 import GameRunner from "../../../server/lib/GameRunner";
 import * as Clock from '../../../server/lib/Clock';
 import PairingRule from "../../../common/PairingRule";
+import Pair from "../../../common/Pair";
 
 describe('Game Runner', function () {
     it('will build a game, run with all available players, and then return the results', function () {
@@ -13,9 +14,9 @@ describe('Game Runner', function () {
         const playStub = jasmine.createSpy('play');
         buildStub.and.returnValue({play: playStub});
 
-        const pairingAssignments = [
-            {},
-            {}
+        const pairingAssignments: Pair[] = [
+            [{tribe: '1'}],
+            [{tribe: '1'}]
         ];
         playStub.and.returnValue(pairingAssignments);
         const gameRunner = new GameRunner(couplingGameFactory);
