@@ -13,7 +13,8 @@ export let config: Config = {
         'browserName': 'chrome',
         'loggingPrefs': {
             'browser': 'WARNING'
-        }
+        },
+        'seleniumAddress': process.env.SELENIUM_ADDRESS
     },
 
     specs: [__dirname + '/test.js'],
