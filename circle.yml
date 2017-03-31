@@ -40,12 +40,8 @@ stages:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker ps
+              docker pull zegreatrob/coupling
+              docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
+              docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+              docker push zegreatrob/coupling
             fi
-
-#            if [ "${CIRCLE_BRANCH}" == "master" ];
-#              docker pull zegreatrob/coupling
-#              docker build --rm=false -f Dockerfile-prod -t zegreatrob/coupling .
-#              docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-#              docker push zegreatrob/coupling
-#            fi
