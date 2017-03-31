@@ -31,7 +31,7 @@ stages:
       - save_cache:
           key: projectname-{{ .Branch }}
           paths:
-            - "./gradlew"
+            - "~/.gradle"
       - type: shell
         command: npm test
       - type: shell
