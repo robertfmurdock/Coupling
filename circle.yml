@@ -21,7 +21,7 @@ stages:
       - type: shell
         command: npm install
       - save_cache:
-          key: projectname-{{ .Branch }}-{{ checksum "package.json" {% raw %}}}
+          key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - "node_modules"
       - type: shell
@@ -40,7 +40,7 @@ stages:
       - deploy:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-
+              docker ps
             fi
 
 #            if [ "${CIRCLE_BRANCH}" == "master" ];
