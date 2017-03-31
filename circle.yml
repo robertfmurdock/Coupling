@@ -3,8 +3,6 @@ executorType: docker
 containerInfo:
   - image: node:7-slim
     env:
-      - DISPLAY=:99
-      - CHROME_BIN=/usr/bin/google-chrome
       - HEADLESS=true
   - image: mongo:latest
   - image: selenium/standalone-chrome
@@ -16,14 +14,8 @@ stages:
         command: |
           apt-get update
           apt-get install -y git bzip2 default-jre
-
-      - type: shell
-        name: Starting Xvfb (for Browser Tests)
-        command: Xvfb :99 -screen 0 1280x1024x24
         background: true
       - type: checkout
-      - type: shell
-        command: env
       - type: shell
         command: npm install
       - type: shell
