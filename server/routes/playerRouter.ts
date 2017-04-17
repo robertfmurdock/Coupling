@@ -9,7 +9,7 @@ class PlayerRoutes {
         })
     };
     savePlayer(request, response) {
-        var player = request.body;
+        const player = request.body;
         request.dataService.savePlayer(player)
             .then(function () {
                 response.send(player);
@@ -27,14 +27,22 @@ class PlayerRoutes {
                 response.send({});
             }
         });
-    }
+    };
+    listRetiredMembers(request, response) {
+        request.dataService.requestRetiredPlayers(request.params.tribeId).then(function (players) {
+            response.send(players);
+        }, function (error) {
+            response.send(error);
+        })
+    };
 }
 
-var players = new PlayerRoutes();
-var router = express.Router({mergeParams: true});
+const players = new PlayerRoutes();
+const router = express.Router({mergeParams: true});
 router.route('/')
     .get(players.listTribeMembers)
     .post(players.savePlayer);
 router.delete('/:playerId', players.removePlayer);
+router.get('/retired', players.listRetiredMembers);
 
 export default router;

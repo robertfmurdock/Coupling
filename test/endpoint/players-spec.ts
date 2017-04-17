@@ -48,6 +48,33 @@ describe(path, function () {
                 })
                 .then(done, done.fail);
         });
+
+        it('for retired players returns all retired players', function (done) {
+            let service = new CouplingDataService(config.tempMongoUrl);
+            let newPlayer = {_id: monk.id(), name: "Retiree", tribe: tribeId};
+
+            couplingServer.post(path)
+                .send(newPlayer)
+                .then(function (responseContainingTheNewId) {
+                    newPlayer = responseContainingTheNewId.body;
+                })
+                .then(function() {
+                    couplingServer.delete(path + "/" + newPlayer._id)
+                        .expect(200)
+                })
+                .then(function() {
+                    return Promise.props({
+                        expected: service.requestRetiredPlayers(tribeId),
+                        response: couplingServer.get(path + '/retired')
+                            .expect(200)
+                            .expect('Content-Type', /json/)
+                    });
+                })
+                .then(function(props: any) {
+                    expect(props.response.body).toEqual(props.expected);
+                })
+                .then(done, done.fail);
+        });
     });
 
     describe("POST", function () {

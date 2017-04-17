@@ -72,6 +72,10 @@ export default class CouplingDataService {
         }) as Promise<PlayersAndHistory>;
     };
 
+    requestRetiredPlayers(tribeId): Promise<Player[]> {
+        return makeDocumentPromise(this.playersCollection, {}, {tribe: tribeId, isDeleted: true});
+    };
+
     savePairAssignmentsToHistory(pairs, callback) {
         this.historyCollection.insert(pairs, callback);
     };
