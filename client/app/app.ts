@@ -22,6 +22,7 @@ import editTribeRoute from "./routes/EditTribeRoute";
 import prepareTribeRoute from "./routes/PrepareTribeRoute";
 import newTribeRoute from "./routes/NewTribeRoute";
 import tribeListRoute from "./routes/TribeListRoute";
+import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import {module} from "angular";
 import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
@@ -60,6 +61,7 @@ app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
         .when('/:tribeId/player/new/', newPlayerRoute)
         .when('/:tribeId/player/:id/', editPlayerRoute)
         .when('/:tribeId/statistics', statisticsRoute)
+        .when('/:tribeId/players/retired', retiredPlayersRoute)
 }]);
 
 module('ui.gravatar')

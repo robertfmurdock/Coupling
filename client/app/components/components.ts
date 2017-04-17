@@ -14,6 +14,7 @@ import TribeList from "./tribe-list/tribe-list";
 import Welcome from "./welcome/WelcomeDirective";
 import TribeBrowserDirective from "./tribebrowser/TribeBrowserDirective";
 import Statistics from "./statistics/statistics";
+import RetiredPlayers from "./retired-players/retired-players";
 import {module} from "angular";
 
 module('coupling.component', [
@@ -26,6 +27,7 @@ module('coupling.component', [
     PlayerCard.name,
     PlayerRoster.name,
     Prepare.name,
+    RetiredPlayers.name,
     ServerMessageDirective.name,
     Statistics.name,
     TribeCard.name,

@@ -122,6 +122,11 @@ class Coupling {
             .then(response => response.data);
     }
 
+    getRetiredPlayers(tribeId) {
+        return this.$http.get(`/api/${tribeId}/players/retired`)
+            .then(response => response.data);
+    }
+
     private post<T>(url, object: T): IPromise<T> {
         return this.$http.post(url, object)
             .then(response => response.data);
