@@ -132,9 +132,6 @@ describe('StatisticComposer', function () {
         }
 
         it('with four players, pair reports are ordered by longest time since last pairing', function () {
-
-            console.log("YO WHAT IS HAPPENING BRAH");
-
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = makePlayers(tribe, 4);
             const [player1, player2, player3, player4] = players;

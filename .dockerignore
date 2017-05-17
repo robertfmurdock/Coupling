@@ -2,7 +2,6 @@
 test-output
 data
 .gradle
-client
 node_modules
 Dockerfile
 docker-compose.yml

@@ -20,7 +20,7 @@ describe('The welcome page', function () {
         browser.waitForAngularEnabled(false);
 
         browser.getCurrentUrl().then(function (url) {
-            expect(url.startsWith('https://accounts.google.com/ServiceLogin')).toBe(true);
+            expect(url.startsWith('https://accounts.google.com')).toBe(true);
         });
 
     });
