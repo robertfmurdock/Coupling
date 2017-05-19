@@ -28,7 +28,8 @@
     "pug": "^2.0.0-beta3",
     "ramda": "^0.23.0",
     "serve-favicon": "^2.4.0",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "ws": "^3.0.0"
   },
   "devDependencies": {
     "@types/angular": "^1.6.7",
@@ -96,8 +97,7 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-node-externals": "^1.5.4",
-    "ws": "^3.0.0"
+    "webpack-node-externals": "^1.5.4"
   },
   "scripts": {
     "start": "./gradlew start",
