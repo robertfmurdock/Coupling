@@ -4,5 +4,6 @@ data
 .gradle
 node_modules
 Dockerfile
+Dockerfile.*
 docker-compose.yml
 .DS_Store
