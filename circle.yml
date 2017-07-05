@@ -13,8 +13,10 @@ stages:
     steps:
       - type: shell
         command: |
+          echo "deb http://http.debian.net/debian jessie-backports main" | \
+            tee --append /etc/apt/sources.list.d/jessie-backports.list > /dev/null
           apt-get update
-          apt-get install -y git bzip2 default-jre
+          apt-get install -y -t jessie-backports git bzip2 openjdk-8-jdk
       - type: checkout
       - restore_cache:
           key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
