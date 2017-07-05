@@ -119,7 +119,7 @@ class Coupling {
 
     getPins(tribeId): IPromise<[Pin]> {
         return this.$http.get(`/api/${tribeId}/pins`)
-            .then(response => response.data);
+            .then(response => response.data as [Pin]);
     }
 
     getRetiredPlayers(tribeId) {
@@ -129,7 +129,7 @@ class Coupling {
 
     private post<T>(url, object: T): IPromise<T> {
         return this.$http.post(url, object)
-            .then(response => response.data);
+            .then(response => response.data as T);
     }
 
     private httpDelete(url): IPromise<void> {

@@ -1,11 +1,9 @@
 "use strict";
 import {browser} from "protractor";
 import * as util from "util";
-import * as monk from "monk";
+import {usersCollection} from "./database";
 
 const userEmail = 'protractor@test.goo';
-const config = require("../../config");
-const usersCollection = monk(config.mongoUrl).get('users');
 
 function authorizeUserForTribes(authorizedTribes) {
     const tempUserEmail = userEmail + "._temp";

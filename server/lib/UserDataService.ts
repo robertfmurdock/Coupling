@@ -17,7 +17,7 @@ export default class UserDataService {
             if (foundUsers.length > 0) {
                 callback(foundUsers[0]);
             } else {
-                var user = {email: email};
+                let user = {email: email};
                 this.usersCollection.insert(user, function () {
                     callback(user);
                 });

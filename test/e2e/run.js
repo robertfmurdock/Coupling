@@ -1,25 +1,36 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
-const ConfigParser = require('protractor/built/configParser').ConfigParser;
-const Runner = require('protractor/built/runner').Runner;
+const _ = require('underscore');
 const webpackRunner = require('../webpackRunner');
 const webpackConfig = require('./webpack.config');
 const couplingApp = require('../../build/app');
 
+const childProcess = require('child_process');
+
 process.env.PORT = 3001;
-Promise.all([
+let promise = Promise.all([
   couplingApp.start(),
   webpackRunner.run(webpackConfig)
-])
-  .then(function () {
-    const configParser = new ConfigParser();
-    configParser.addFileConfig(__dirname + '/.tmp/config.js');
-    const runner = new Runner(configParser.getConfig());
-    return runner.run();
-  })
-  .finally(function () {
-    fs.removeSync(__dirname + '/.tmp');
-  })
+]);
+
+  promise = promise
+    .then(function () {
+      return new Promise(function (resolve, reject) {
+        const process = childProcess.fork(__dirname + '/forkProtractor');
+
+        process.on('exit', function (code) {
+          if (code === 0)
+            resolve(code);
+          else {
+            reject(code);
+          }
+        });
+      });
+    });
+
+promise.finally(function () {
+  fs.removeSync(__dirname + '/.tmp');
+})
   .then(function (exitCode) {
     process.exit(exitCode);
   }, function (err) {

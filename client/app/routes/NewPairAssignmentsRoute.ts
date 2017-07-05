@@ -37,7 +37,7 @@ const newPairAssignmentsRoute: IRoute = {
                 history: Coupling.getHistory(tribeId)
             })
                 .then(options => {
-                    const players: [services.Player] = options['players'];
+                    const players = options['players'] as [services.Player];
                     const history = options['history'];
                     const selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
                     options['selectedPlayers'] = convertMapToSelectedPlayers(selectablePlayerMap);
