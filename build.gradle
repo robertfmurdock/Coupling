@@ -76,7 +76,7 @@ task serverTest(type: Exec) {
     inputs.file file('package.json')
     inputs.file serverCompile.inputs.files
     inputs.file fileTree('test/unit/server')
-    outputs.file file('test-output/server.unit.xml')
+    outputs.file file('test-output/server.unit')
 
     commandLine 'npm', 'run', 'serverTest', '--silent'
 }
@@ -88,7 +88,7 @@ task endpointTest(type: Exec) {
     inputs.file serverCompile.outputs.files
     inputs.file file('package.json')
     inputs.file file('test/endpoint')
-    outputs.file file('test-output/endpoint.xml')
+    outputs.file file('test-output/endpoint')
 
     commandLine 'npm', 'run', 'endpointTest', '--silent'
 }
@@ -107,7 +107,7 @@ task endToEndTest(type: Exec) {
     inputs.file serverCompile.outputs.files
     inputs.file file('package.json')
     inputs.file file('test/e2e')
-    outputs.file file('test-output/e2e.xml')
+    outputs.file file('test-output/e2e')
 
     commandLine 'npm', 'run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"
 }

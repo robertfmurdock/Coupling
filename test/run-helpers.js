@@ -1,12 +1,12 @@
-var Jasmine = require('jasmine');
-var reporters = require('jasmine-reporters');
+let Jasmine = require('jasmine');
+let reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
 
 function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
 
   console.log('Starting tests:');
 
-  var jasmine = new Jasmine();
+  let jasmine = new Jasmine();
 
   jasmine.loadConfig({
     "spec_dir": specDir,
@@ -19,7 +19,7 @@ function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, fil
 
   jasmine.configureDefaultReporter({});
 
-  var junitReporter = new reporters.JUnitXmlReporter({
+  let junitReporter = new reporters.JUnitXmlReporter({
     savePath: jasmineSavePath,
     filePrefix: filePrefix,
     consolidateAll: true
@@ -39,7 +39,7 @@ function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, fil
   });
 }
 
-var removeTempDirectory = function (tempDirectory) {
+let removeTempDirectory = function (tempDirectory) {
   fs.removeSync(tempDirectory);
 };
 

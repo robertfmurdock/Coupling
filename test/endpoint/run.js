@@ -1,10 +1,10 @@
 const webpackRunner = require('../webpackRunner');
-var config = require('./webpack.config');
+let config = require('./webpack.config');
 
 const runHelpers = require('../run-helpers');
 
 const startJasmine = function () {
-  return runHelpers.startJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml')
+  return runHelpers.startJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../test-output/endpoint', 'endpoint.xml')
 };
 
 const removeTempDirectory = function () {
