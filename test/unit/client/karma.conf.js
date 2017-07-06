@@ -22,7 +22,9 @@ module.exports = function (config) {
     },
 
     files: [
-      'test/unit/client/tests.bundle.js'
+      'node_modules/jquery/dist/jquery.min.js',
+      'public/app/build/vendor/vendor.js',
+      'test/unit/client/tests.bundle.js',
     ],
 
     preprocessors: {
