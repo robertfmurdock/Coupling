@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: zegreatrob/coupling.build
+  - image: zegreatrob/javajsbase
     env:
       - HEADLESS=true
       - SELENIUM_ADDRESS=http://localhost:4444/wd/hub
