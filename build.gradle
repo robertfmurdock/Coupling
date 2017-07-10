@@ -45,7 +45,7 @@ task clean {
 task installNodeModules(type: Exec) {
     inputs.file file('package.json')
     outputs.dir file('node_modules')
-    commandLine "npm", "install"
+    commandLine "yarn", "install"
 }
 
 task clientVendorCompile(type: Exec) {
@@ -100,7 +100,7 @@ task clientTest(type: Exec) {
     inputs.file fileTree('test/unit/client')
     outputs.dir file('test-output/client')
 
-    commandLine 'npm', 'run', 'clientTest', '--silent'
+    commandLine 'yarn', 'run', 'clientTest', '--silent'
 }
 
 task serverTest(type: Exec) {
@@ -110,7 +110,7 @@ task serverTest(type: Exec) {
     inputs.file fileTree('test/unit/server')
     outputs.file file('test-output/server.unit')
 
-    commandLine 'npm', 'run', 'serverTest', '--silent'
+    commandLine 'yarn', 'run', 'serverTest', '--silent'
 }
 
 task endpointTest(type: Exec) {
@@ -122,12 +122,12 @@ task endpointTest(type: Exec) {
     inputs.file file('test/endpoint')
     outputs.file file('test-output/endpoint')
 
-    commandLine 'npm', 'run', 'endpointTest', '--silent'
+    commandLine 'yarn', 'run', 'endpointTest', '--silent'
 }
 
 task updateWebdriver(type: Exec) {
     outputs.file 'node_modules/protractor/node_modules/webdriver-manager/selenium/'
-    commandLine 'npm', 'run', 'update-webdriver', '--silent'
+    commandLine 'yarn', 'run', 'update-webdriver', '--silent'
 }
 
 task endToEndTest(type: Exec) {
@@ -141,7 +141,7 @@ task endToEndTest(type: Exec) {
     inputs.file file('test/e2e')
     outputs.file file('test-output/e2e')
 
-    commandLine 'npm', 'run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"
+    commandLine 'yarn', 'run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"
 }
 
 task test {
@@ -150,7 +150,7 @@ task test {
 
 task start(type: Exec) {
     dependsOn compile
-    commandLine 'npm', 'run', 'start-built-app'
+    commandLine 'yarn', 'run', 'start-built-app'
 }
 
 task build {

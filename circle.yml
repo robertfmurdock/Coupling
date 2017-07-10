@@ -15,7 +15,7 @@ stages:
       - restore_cache:
           key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
       - type: shell
-        command: npm install
+        command: yarn install
       - save_cache:
           key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
@@ -29,7 +29,7 @@ stages:
           paths:
             - "~/.gradle"
       - type: shell
-        command: npm test
+        command: yarn test
       - store_test_results:
           path: test-output
       - setup_remote_docker

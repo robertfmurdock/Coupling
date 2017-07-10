@@ -1,13 +1,8 @@
-FROM node:7-slim
-
-RUN apt-get update \
-  && apt-get install -y \
-  bzip2 \
-  git
+FROM zegreatrob/javajsbase:latest
 
 WORKDIR /usr/src/app
 COPY ["package.json", "/usr/src/app/"]
-RUN npm install
+RUN yarn install
 
 COPY . /usr/src/app
 ENV \
