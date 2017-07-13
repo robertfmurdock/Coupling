@@ -13,19 +13,19 @@ stages:
     steps:
       - type: checkout
       - restore_cache:
-          key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
+          key: coupling-node8-{{ .Branch }}-{{ checksum "package.json" }}
       - type: shell
         command: yarn install
       - save_cache:
-          key: projectname-{{ .Branch }}-{{ checksum "package.json" }}
+          key: coupling-node8-projectname-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - "node_modules"
       - restore_cache:
-          key: projectname-{{ .Branch }}
+          key: coupling-node8-{{ .Branch }}
       - type: shell
         command: "./gradlew"
       - save_cache:
-          key: projectname-{{ .Branch }}
+          key: coupling-node8-{{ .Branch }}
           paths:
             - "~/.gradle"
       - type: shell
