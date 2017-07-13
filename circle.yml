@@ -21,11 +21,11 @@ stages:
           paths:
             - "node_modules"
       - restore_cache:
-          key: coupling-node8-{{ .Branch }}
+          key: coupling-gradle3.2-{{ .Branch }}
       - type: shell
         command: "./gradlew"
       - save_cache:
-          key: coupling-node8-{{ .Branch }}
+          key: coupling-gradle3.2-{{ .Branch }}
           paths:
             - "~/.gradle"
       - type: shell
