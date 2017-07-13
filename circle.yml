@@ -15,7 +15,11 @@ stages:
       - restore_cache:
           key: coupling-node8-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - type: shell
+        command: shasum yarn.lock
+      - type: shell
         command: yarn install
+      - type: shell
+        command: shasum yarn.lock
       - save_cache:
           key: coupling-node8-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:

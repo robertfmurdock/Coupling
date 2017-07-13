@@ -126,7 +126,7 @@ task endpointTest(type: Exec) {
 }
 
 task updateWebdriver(type: Exec) {
-    outputs.file 'node_modules/protractor/node_modules/webdriver-manager/selenium/'
+    outputs.file 'node_modules/webdriver-manager/selenium/'
     commandLine 'yarn', 'run', 'update-webdriver', '--silent'
 }
 
