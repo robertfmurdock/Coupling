@@ -16,8 +16,6 @@ stages:
           key: coupling-node8-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - type: shell
         command: yarn install
-      - type: shell
-        command: cat yarn.lock
       - save_cache:
           key: coupling-node8-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
