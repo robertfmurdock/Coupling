@@ -20,6 +20,7 @@ stages:
           key: coupling-node8-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - "node_modules"
+            - "~/.yarn-cache"
       - restore_cache:
           key: coupling-gradle3.2-{{ .Branch }}
       - type: shell
