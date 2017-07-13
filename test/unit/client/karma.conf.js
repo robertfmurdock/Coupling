@@ -3,6 +3,8 @@ const webpackConfig = require('./webpack.config');
 const chooseBrowsers = function () {
   if (process.env['HEADLESS'] === 'true') {
     return ['PhantomJS'];
+  } else if (process.env['KARMA_CHROME_ONLY'] === 'true') {
+    return ['Chrome'];
   } else {
     return ['Chrome', 'Firefox'];
   }

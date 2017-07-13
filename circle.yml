@@ -3,7 +3,7 @@ executorType: docker
 containerInfo:
   - image: zegreatrob/javajsbase
     env:
-      - HEADLESS=true
+      - KARMA_CHROME_ONLY=true
       - SELENIUM_ADDRESS=http://localhost:4444/wd/hub
   - image: mongo:latest
   - image: selenium/standalone-chrome

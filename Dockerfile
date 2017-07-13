@@ -5,11 +5,12 @@ COPY ["package.json", "/usr/src/app/"]
 RUN yarn install
 
 COPY . /usr/src/app
+
 ENV \
   PUBLIC_HOST=web \
   MONGOHQ_URL=mongodb://mongo/Coupling \
   MONGO_CONNECTION=mongodb://mongo \
-  HEADLESS=true
+  KARMA_CHROME_ONLY=true
 
 CMD [ "node", "test/continuous-run.js" ]
 
