@@ -24,9 +24,7 @@ import newTribeRoute from "./routes/NewTribeRoute";
 import tribeListRoute from "./routes/TribeListRoute";
 import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import {module} from "angular";
-import IRoute = ng.route.IRoute
 import IRouteProvider = ng.route.IRouteProvider
-import IResource = ng.resource.IResource
 
 const app = module('coupling', ["ngRoute",
     'ngFitText',
@@ -47,8 +45,7 @@ app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
 
     routeProvider
         .when('/', {redirectTo: '/tribes/'})
-        .when('/welcome', () => {
-        })
+        .when('/welcome', {})
         .when('/tribes/', tribeListRoute)
         .when('/new-tribe/', newTribeRoute)
         .when('/:tribeId/', {redirectTo: '/:tribeId/pairAssignments/current/'})

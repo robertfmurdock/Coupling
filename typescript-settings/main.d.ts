@@ -1,16 +1,16 @@
 declare module '*.pug' {
-    var _: (model: any) => string;
-    export =  _;
+    let _: (model: any) => string;
+    export = _;
 }
 
 declare module '*.json' {
-    var _: any;
+    let _: any;
 
     export = _;
 }
 
 declare module '*.css' {
-    var _: any;
+    let _: any;
 
     export = _;
 }
@@ -20,3 +20,6 @@ declare module 'protractor-jasmine2-screenshot-reporter' {
         constructor(options: any)
     }
 }
+
+// noinspection ES6UnusedImports
+import IPromise = angular.IPromise

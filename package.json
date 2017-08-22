@@ -92,7 +92,6 @@
     "text-loader": "0.0.1",
     "ts-loader": "^2.0.1",
     "typescript": "^2.2.1",
-    "typings": "^2.1.0",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-cleanup-plugin": "^0.5.1",
