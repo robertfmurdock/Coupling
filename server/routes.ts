@@ -31,8 +31,8 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
 
     app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
 
-        console.log('Websocket connection count: ' + wsInstance.getWss().clients.length);
-        
+        console.log('Websocket connection count: ' + wsInstance.getWss().clients.size());
+
         AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
             .then(({isAuthorized}) => {
                 if (isAuthorized) {
