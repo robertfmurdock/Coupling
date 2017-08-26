@@ -30,6 +30,9 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/partials/:name', routes.partials);
 
     app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
+
+        console.log('Websocket connection count: ' + wsInstance.getWss().clients.length);
+        
         AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
             .then(({isAuthorized}) => {
                 if (isAuthorized) {
@@ -54,7 +57,6 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
 
     let broadcastConnectionCountForTribe = function (tribeId) {
         const clients = wsInstance.getWss().clients;
-
         const matchingConnections = [];
         clients.forEach(client => {
             if (connectionIsOpenAndForSameTribe(client, tribeId)) {
