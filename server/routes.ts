@@ -36,13 +36,13 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
         // AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
         //     .then(({isAuthorized}) => {
         // if (isAuthorized) {
-        //                 const tribeId = request.params.tribeId;
-        //                 broadcastConnectionCountForTribe(tribeId);
-        //
-        //                 connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
-        //                 connection.on('error', console.log);
+        const tribeId = request.params.tribeId;
+        broadcastConnectionCountForTribe(tribeId);
+
+        connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
+        connection.on('error', console.log);
         //             } else {
-        connection.close();
+        // connection.close();
         // }
         // });
     });
