@@ -14,7 +14,7 @@ let tribesCollection = database.get('tribes');
 let playersCollection = database.get('players');
 let usersCollection = monk(config.mongoUrl).get('users');
 
-xdescribe('Current connections websocket', function () {
+describe('Current connections websocket', function () {
 
     function setupErrorHandler(websocket: WebSocket, reject) {
         websocket.on('error', error => {

@@ -6,8 +6,6 @@ import tribeListRoute from "./routes/tribeListRoute";
 import * as WebSocket from "ws";
 import * as AuthorizedTribeFetcher from "./lib/AuthorizedTribesFetcher";
 
-const config = require('./../config');
-
 module.exports = function (wsInstance, userDataService, couplingDataService) {
 
     const app = wsInstance.app;
@@ -33,18 +31,18 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
 
         console.log('Websocket connection count: ' + wsInstance.getWss().clients.size);
 
-        // AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
-        //     .then(({isAuthorized}) => {
-        // if (isAuthorized) {
-        const tribeId = request.params.tribeId;
-        broadcastConnectionCountForTribe(tribeId);
+        AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
+            .then(({isAuthorized}) => {
+                if (isAuthorized) {
+                    const tribeId = request.params.tribeId;
+                    broadcastConnectionCountForTribe(tribeId);
 
-        connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
-        connection.on('error', console.log);
-        //             } else {
-        // connection.close();
-        // }
-        // });
+                    connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
+                    connection.on('error', console.log);
+                } else {
+                    connection.close();
+                }
+            });
     });
 
     function broadcast(message: string, clients: WebSocket[]) {

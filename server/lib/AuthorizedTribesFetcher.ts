@@ -16,7 +16,7 @@ function filterToAuthorizedTribes(authorizedTribeIds: string[], tribes2: Tribe[]
 export function requestAuthorizedTribes(user, dataService) {
     return Promise.props({
         tribes: dataService.requestTribes(),
-        authorizedTribeIds: this.loadAuthorizedTribeIds(user, dataService.mongoUrl)
+        authorizedTribeIds: this.loadAuthorizedTribeIds(user, dataService)
     })
         .then(function (hash: any) {
             const {authorizedTribeIds, tribes} = hash;
@@ -24,27 +24,27 @@ export function requestAuthorizedTribes(user, dataService) {
         });
 }
 
-export function loadAuthorizedTribeIds(user, mongoUrl) {
-    const database = monk(mongoUrl);
-    const playersCollection = database.get('players');
+export function loadAuthorizedTribeIds(user, dataService) {
+    const playersCollection = dataService.database.get('players');
     let email = user.email;
     const tempSuffixIndex = email.indexOf('._temp');
     if (tempSuffixIndex != -1) {
         email = email.substring(0, tempSuffixIndex);
     }
 
-    return playersCollection.find({email: email}).then(function (documents) {
-        return pipe(
-            pluck('tribe'),
-            union(user.tribes)
-        )(documents);
-    });
+    return playersCollection.find({email: email})
+        .then(function (documents) {
+            return pipe(
+                pluck('tribe'),
+                union(user.tribes)
+            )(documents);
+        });
 }
 
 export function promiseTribeAndAuthorization(request) {
     return Promise.props({
         tribe: request.dataService.requestTribe(request.params.tribeId),
-        authorizedTribeIds: loadAuthorizedTribeIds(request.user, request.dataService.mongoUrl)
+        authorizedTribeIds: loadAuthorizedTribeIds(request.user, request.dataService)
     }).then(function (hash: any) {
         return {isAuthorized: contains(hash.tribe.id, hash.authorizedTribeIds), tribe: hash.tribe};
     })
