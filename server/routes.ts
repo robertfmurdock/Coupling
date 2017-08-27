@@ -48,6 +48,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     });
 
     function broadcast(message: string, clients: WebSocket[]) {
+        console.log('Broadcasting. Total connections: ' + wsInstance.getWss().clients.size);
         clients.forEach((client: WebSocket) => client.send(message));
     }
 
