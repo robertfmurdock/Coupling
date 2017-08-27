@@ -24,7 +24,7 @@ describe('Pair assignments directive', function () {
         return directive;
     }
 
-    xit('passes down tribe id to the server message', inject(function ($compile, $rootScope) {
+    it('passes down tribe id to the server message', inject(function ($compile, $rootScope) {
         const tribeId = 'whatever';
         const directive = buildDirective($compile, $rootScope, tribeId);
         const serverMessage = directive.find('server-message');
