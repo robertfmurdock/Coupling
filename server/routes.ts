@@ -33,18 +33,18 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
 
         console.log('Websocket connection count: ' + wsInstance.getWss().clients.size);
 
-        AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
-            .then(({isAuthorized}) => {
-                // if (isAuthorized) {
-                //                 const tribeId = request.params.tribeId;
-                //                 broadcastConnectionCountForTribe(tribeId);
-                //
-                //                 connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
-                //                 connection.on('error', console.log);
-                //             } else {
-                connection.close();
-                // }
-            });
+        // AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
+        //     .then(({isAuthorized}) => {
+        // if (isAuthorized) {
+        //                 const tribeId = request.params.tribeId;
+        //                 broadcastConnectionCountForTribe(tribeId);
+        //
+        //                 connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
+        //                 connection.on('error', console.log);
+        //             } else {
+        connection.close();
+        // }
+        // });
     });
 
     function broadcast(message: string, clients: WebSocket[]) {
