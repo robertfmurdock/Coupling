@@ -29,23 +29,23 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 
-    // app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
-    //
-    //     console.log('Websocket connection count: ' + wsInstance.getWss().clients.size);
-    //
-    //     AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
-    //         .then(({isAuthorized}) => {
-    //             if (isAuthorized) {
-    //                 const tribeId = request.params.tribeId;
-    //                 broadcastConnectionCountForTribe(tribeId);
-    //
-    //                 connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
-    //                 connection.on('error', console.log);
-    //             } else {
-    //                 connection.close();
-    //             }
-    //         });
-    // });
+    app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
+
+        console.log('Websocket connection count: ' + wsInstance.getWss().clients.size);
+
+        AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
+            .then(({isAuthorized}) => {
+                // if (isAuthorized) {
+                //                 const tribeId = request.params.tribeId;
+                //                 broadcastConnectionCountForTribe(tribeId);
+                //
+                //                 connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
+                //                 connection.on('error', console.log);
+                //             } else {
+                connection.close();
+                // }
+            });
+    });
 
     function broadcast(message: string, clients: WebSocket[]) {
         clients.forEach((client: WebSocket) => client.send(message));
