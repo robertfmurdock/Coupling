@@ -2,7 +2,7 @@ import CouplingDataService from "../lib/CouplingDataService";
 
 const config = require('../../config');
 
-export default function (couplingDataService) {
+export default function (userDataService, couplingDataService) {
     const tempDataService = new CouplingDataService(config.tempMongoUrl);
     return function (request, response, next) {
 
@@ -14,6 +14,7 @@ export default function (couplingDataService) {
                 response.sendStatus(401);
             }
         } else {
+            request.userDataService = userDataService;
             if (request.user.email.indexOf('._temp') != -1) {
                 request.dataService = tempDataService;
             } else {

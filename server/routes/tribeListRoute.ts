@@ -2,8 +2,6 @@ import * as express from "express";
 import * as monk from "monk";
 import * as AuthorizedTribesFetcher from "../lib/AuthorizedTribesFetcher";
 
-const config = require('../../config');
-
 class TribeRoutes {
     public list = (request, response) => {
         AuthorizedTribesFetcher.requestAuthorizedTribes(request.user, request.dataService)
@@ -34,9 +32,9 @@ class TribeRoutes {
     };
 
     public save = (request, response) => {
-        const database = monk(request.dataService.mongoUrl);
+        const database = request.dataService.database;
         const tribesCollection = database.get('tribes');
-        const usersCollection = monk(config.mongoUrl).get('users');
+        const usersCollection = request.userDataService.database.get('users');
         const tribeJSON = request.body;
         tribeJSON._id = tribeJSON._id || monk.id();
         tribesCollection.update({id: tribeJSON.id}, tribeJSON, {upsert: true}, function () {

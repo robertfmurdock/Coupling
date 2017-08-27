@@ -21,7 +21,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     }
 
     app.get('/', routes.index);
-    app.all('/api/*', apiGuard(couplingDataService));
+    app.all('/api/*', apiGuard(userDataService, couplingDataService));
     app.use('/api/tribes', tribeListRoute);
     app.use('/api/:tribeId', tribeRoute);
     app.get('/app/*.html', routes.components);
