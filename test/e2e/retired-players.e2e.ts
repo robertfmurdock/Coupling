@@ -61,4 +61,10 @@ describe('The retired players page', function () {
         expect(playerElements.getText()).toEqual(_.pluck(retiredPlayers, 'name'));
     });
 
+    it('has a tribe card', function() {
+        const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
+        const tribeCardHeaderElement = element(By.className(tribeCardStyles.header));
+        expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
+    });
+
 });
