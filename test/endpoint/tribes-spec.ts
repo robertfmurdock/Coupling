@@ -14,10 +14,10 @@ function clean(object) {
     return JSON.parse(JSON.stringify(object));
 }
 
-let database = monk(config.tempMongoUrl);
+let database = monk.default(config.tempMongoUrl);
 let tribesCollection = database.get('tribes');
 let playersCollection = database.get('players');
-let usersCollection = monk(config.mongoUrl).get('users');
+let usersCollection = monk.default(config.mongoUrl).get('users');
 
 describe(path, function () {
     let userEmail = 'test@test.tes';

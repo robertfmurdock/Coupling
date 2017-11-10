@@ -5,7 +5,7 @@ import UserDataService from "../../../server/lib/UserDataService";
 var config = require('../../../config');
 
 var mongoUrl = config.testMongoUrl + '/UsersTest';
-var database = monk(mongoUrl);
+var database = monk.default(mongoUrl);
 var userDataService = new UserDataService(database);
 
 var safeDone = function (error, done) {

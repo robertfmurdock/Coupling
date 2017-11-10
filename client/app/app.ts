@@ -24,7 +24,7 @@ import newTribeRoute from "./routes/NewTribeRoute";
 import tribeListRoute from "./routes/TribeListRoute";
 import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import {module} from "angular";
-import IRouteProvider = ng.route.IRouteProvider
+import IRouteProvider = angular.route.IRouteProvider;
 
 const app = module('coupling', ["ngRoute",
     'ngFitText',

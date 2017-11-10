@@ -11,7 +11,7 @@ let agent = supertest.agent(server);
 let tribeId = 'endpointTest';
 let path = '/api/' + tribeId + '/history';
 
-let database = monk(config.tempMongoUrl);
+let database = monk.default(config.tempMongoUrl);
 let historyCollection = database.get('history');
 
 describe(path, function () {

@@ -30,7 +30,7 @@ export default class CouplingDataService {
     private pinCollection;
 
     constructor(public mongoUrl) {
-        this.database = monk(mongoUrl);
+        this.database = monk.default(mongoUrl);
         this.playersCollection = this.database.get('players');
         this.historyCollection = this.database.get('history');
         this.tribesCollection = this.database.get('tribes');

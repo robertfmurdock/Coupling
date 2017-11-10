@@ -9,10 +9,10 @@ let server = 'localhost:' + config.port;
 let agent = supertest.agent(server);
 let userEmail = 'test@test.tes';
 
-let database = monk(config.tempMongoUrl);
+let database = monk.default(config.tempMongoUrl);
 let tribesCollection = database.get('tribes');
 let playersCollection = database.get('players');
-let usersCollection = monk(config.mongoUrl).get('users');
+let usersCollection = monk.default(config.mongoUrl).get('users');
 
 describe('Current connections websocket', function () {
 

@@ -9,7 +9,7 @@ import e2eHelp from "./e2e-help";
 const config = require('../../config');
 const hostName = `http://${config.publicHost}:${config.port}`;
 const agent = supertest.agent(hostName);
-const database = monk(config.tempMongoUrl);
+const database = monk.default(config.tempMongoUrl);
 const historyCollection = database.get('history');
 const tribeCollection = database.get('tribe');
 
