@@ -153,6 +153,10 @@ task start(type: Exec) {
     commandLine 'yarn', 'run', 'start-built-app'
 }
 
+task watch(type: Exec) {
+    commandLine 'node', 'test/continuous-run.js'
+}
+
 task build {
     dependsOn test, endToEndTest, clientCompile
 }
