@@ -13,7 +13,7 @@ const config = require('../../../../config');
 describe('The game', function () {
 
     const mongoUrl = config.testMongoUrl + '/CouplingTest';
-    const database = monk(mongoUrl);
+    const database = monk.default(mongoUrl);
     const playersCollection = database.get('players');
     const historyCollection = database.get('history');
 
@@ -133,7 +133,7 @@ describe('The game', function () {
         ];
 
         const mongoUrl = config.testMongoUrl + '/CouplingTest';
-        const database = monk(mongoUrl);
+        const database = monk.default(mongoUrl);
 
         const historyCollection = database.get('history');
 

@@ -13,7 +13,7 @@ let tribeId = 'endpointTest';
 let path = '/api/' + tribeId + '/pins';
 let badTribePath = '/api/does-not-exist/pins';
 
-let database = monk(config.tempMongoUrl);
+let database = monk.default(config.tempMongoUrl);
 let pinCollection = database.get('pins');
 
 let clean = function (object) {

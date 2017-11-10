@@ -6,7 +6,7 @@ import Player from "../../../common/Player";
 const config = require('../../../config');
 
 const mongoUrl = config.testMongoUrl + '/UsersTest';
-const database = monk(mongoUrl);
+const database = monk.default(mongoUrl);
 
 interface Entity {
     _id: string

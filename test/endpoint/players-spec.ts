@@ -11,7 +11,7 @@ let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
 let path = '/api/' + tribeId + '/players';
 
-let database = monk(config.tempMongoUrl);
+let database = monk.default(config.tempMongoUrl);
 let playersCollection = database.get('players');
 
 function clean(object) {

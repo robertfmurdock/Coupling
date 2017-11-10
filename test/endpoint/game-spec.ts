@@ -15,7 +15,7 @@ let tribeId = 'endpointTest';
 let pinId = monk.id();
 let path = '/api/' + tribeId + '/spin';
 
-let database = monk(config.testMongoUrl + '/CouplingTemp');
+let database = monk.default(config.testMongoUrl + '/CouplingTemp');
 let pinCollection = database.get('pins');
 let tribeCollection = database.get('tribes');
 let historyCollection = database.get('history');

@@ -5,7 +5,7 @@ import Player from "../../common/Player";
 
 const config = require("../../config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
-const database = monk(config.tempMongoUrl);
+const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playerCollection = database.get('players');
 
