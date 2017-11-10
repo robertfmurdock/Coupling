@@ -95,6 +95,12 @@ describe('The current pair assignments', function () {
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
 
+    it('will let you see retired players', function () {
+        browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+        element(By.id('retired-players-button')).click();
+        expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/players/retired`);
+    });
+
     describe('when there is no current set of pairs', function () {
         beforeAll(function (done) {
             historyCollection.drop()

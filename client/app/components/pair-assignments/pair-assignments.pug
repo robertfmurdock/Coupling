@@ -20,6 +20,7 @@ div(ng-class="pairAssignments.styles.className")
                 a(id="save-button" class="super green button" ng-click="pairAssignments.save()" ng-show="pairAssignments.isNew") Save!
             a(id="new-pairs-button" class="large pink button" href="/{{pairAssignments.tribe.id}}/prepare/") Prepare to spin!
             a(id="view-history-button" class="large blue button" href="/{{pairAssignments.tribe.id}}/history/") View history!
+            a(id="retired-players-button" class="large yellow button" href="/{{pairAssignments.tribe.id}}/players/retired") View retirees!
     player-roster(
     ng-class="pairAssignments.styles.unpairedPlayerRoster"
     players="pairAssignments.unpairedPlayers"
