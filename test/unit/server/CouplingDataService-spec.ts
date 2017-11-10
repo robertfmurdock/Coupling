@@ -116,7 +116,7 @@ describe('CouplingDataService', function () {
             .then(done, done.fail);
     });
 
-    describe('will null tribe id', function () {
+    describe('with null tribe id', function () {
 
         it('can retrieve the players in the database and all the history in new to old order', function (done) {
             couplingDataService.requestPlayersAndHistory(null)
@@ -191,6 +191,36 @@ describe('CouplingDataService', function () {
                 .then(done, done.fail);
         });
     });
+
+    describe('what', function() {
+
+        beforeEach(function (done) {
+            couplingDataService.removePlayer(frodo._id, done);
+        });
+
+        it('can resurrect a player from retirement', function(done) {
+            let fetchFrodo = function () {
+                return playersCollection.find({_id: frodo._id}, {})
+                    .then(function(players) {
+                        return Promise.resolve(players[0]);
+                    });
+            };
+
+            fetchFrodo()
+            .then(function(player) {
+                expect(player).not.toBeUndefined();
+                expect(player.isDeleted).toEqual(true);
+            })
+            .then(couplingDataService.resurrectPlayer(frodo._id))
+            .then(fetchFrodo)
+            .then(function(player) {
+               expect(player).not.toBeUndefined();
+               expect(player.isDeleted).toBe(false);
+            })
+            .then(done, done.fail);
+        });
+    });
+
 
     describe('can remove old pair assignments', function () {
         beforeEach(function (done) {

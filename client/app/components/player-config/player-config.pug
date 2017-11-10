@@ -18,6 +18,6 @@ div
                         label(for="alt-badge-radio") {{playerConfig.tribe.alternateBadgeName}}
                         input(id="alt-badge-radio" type="radio" ng-model="playerConfig.player.badge" ng-value="Badge.Alternate")
                 input(id="save-player-button" type="submit" class="large blue button save-button" ng-click="playerConfig.savePlayer()" tabIndex="0" value="Save")
-                div(ng-show="playerConfig.player._id" class="small red button delete-button" ng-click="playerConfig.removePlayer()") DELETE
+                div(ng-show="playerConfig.player._id" class="small red button delete-button" ng-click="playerConfig.removePlayer()") Retire
         playercard(player="playerConfig.player" size="250")
 player-roster(class="player-roster" players="playerConfig.players" tribe="playerConfig.tribe")

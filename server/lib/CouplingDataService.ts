@@ -103,6 +103,10 @@ export default class CouplingDataService {
             this.makeUpdateByIdCallback('Failed to remove the player because it did not exist.', callback));
     };
 
+    resurrectPlayer(playerId) {
+        return this.playersCollection.update(playerId, {$set: {isDeleted: false}});
+    };
+
     removePin(pinId, callback) {
         this.pinCollection.update(pinId, {$set: {isDeleted: true}},
             this.makeUpdateByIdCallback('Failed to remove the pin because it did not exist.', callback));
