@@ -40,7 +40,7 @@
     "@types/angular-websocket": "^2.0.6",
     "@types/d3": "^4.11.1",
     "@types/es6-shim": "^0.31.35",
-    "@types/jasmine": "^2.6.3",
+    "@types/jasmine": "^2.8.0",
     "@types/jasminewd2": "^2.0.3",
     "@types/passport": "^0.4.1",
     "@types/ramda": "0.25.5",
