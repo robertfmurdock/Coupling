@@ -8,5 +8,4 @@ div
             span(class="small red button delete-button" ng-click="history.removeEntry(pairAssignments)") DELETE
             div
                 span(ng-repeat='pair in pairAssignments.pairs' class="pair")
-                    span(ng-repeat='player in pair' class="player")
-                        div(class="player-header") {{player.name}}
+                    playercard(ng-repeat="player in pair" player="player" size="50")
