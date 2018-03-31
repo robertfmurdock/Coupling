@@ -13,20 +13,21 @@ let promise = Promise.all([
   webpackRunner.run(webpackConfig)
 ]);
 
-  promise = promise
-    .then(function () {
-      return new Promise(function (resolve, reject) {
-        const process = childProcess.fork(__dirname + '/forkProtractor');
+promise = promise
+  .then(function () {
+    return new Promise(function (resolve, reject) {
+      const process = childProcess.fork(__dirname + '/forkProtractor');
 
-        process.on('exit', function (code) {
-          if (code === 0)
-            resolve(code);
-          else {
-            reject(code);
-          }
-        });
+      process.on('exit', function (code) {
+        console.log('protractor fork code ' + code);
+        if (code === 0)
+          resolve(code);
+        else {
+          reject(code);
+        }
       });
     });
+  });
 
 promise.finally(function () {
   fs.removeSync(__dirname + '/.tmp');
