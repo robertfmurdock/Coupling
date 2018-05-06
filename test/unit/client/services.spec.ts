@@ -2,6 +2,7 @@ import * as angular from "angular";
 import "angular-resource";
 import {Coupling} from "../../../client/app/services";
 import axios from 'axios'
+import Bluebird from 'bluebird'
 
 const CouplingService = Coupling;
 
@@ -123,15 +124,17 @@ describe('Service: ', function () {
                 const getSpy = spyOn(axios, 'get')
                     .and.returnValue(Promise.resolve({data: expectedPins}));
 
-                const pinsPromise = Coupling.getPins(tribeId);
-                pinsPromise.then(function (pins) {
-                    expect(pins).toEqual(expectedPins);
+                Bluebird.resolve(Coupling.getPins(tribeId))
+                    .then(function (pins) {
+                        expect(pins).toEqual(expectedPins);
 
-                    expect(getSpy).toHaveBeenCalledWith(url);
-                    done();
-                }).catch(function (error) {
-                    expect(error).toBeUndefined();
-                }).finally(done);
+                        expect(getSpy).toHaveBeenCalledWith(url);
+                        done();
+                    })
+                    .catch(function (error) {
+                        expect(error).toBeUndefined();
+                    })
+                    .finally(done);
             });
 
             it('shows error on failure', function (done) {
