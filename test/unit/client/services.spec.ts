@@ -2,7 +2,7 @@ import * as angular from "angular";
 import "angular-resource";
 import {Coupling} from "../../../client/app/services";
 import axios from 'axios'
-import Bluebird from 'bluebird'
+import * as Bluebird from 'bluebird'
 
 const CouplingService = Coupling;
 
