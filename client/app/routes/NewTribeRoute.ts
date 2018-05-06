@@ -1,11 +1,10 @@
 import IRoute = angular.route.IRoute;
-import {Coupling} from "../services";
 
 const newTribeRoute: IRoute = {
     template: '<tribe-config tribe="self.tribe" is-new=true>',
     controllerAs: 'self',
-    controller: ['Coupling', function (Coupling: Coupling) {
-        this.tribe = new Coupling.Tribe();
+    controller: [function () {
+        this.tribe = {};
         this.tribe.name = 'New Tribe'
     }]
 };

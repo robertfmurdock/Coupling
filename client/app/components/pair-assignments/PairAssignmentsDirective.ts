@@ -11,9 +11,10 @@ import Tribe from "../../../../common/Tribe";
 import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import Player from "../../../../common/Player";
 import * as Styles from './styles.css';
+import {Coupling} from "../../services";
 
 export class PairAssignmentsController {
-    static $inject = ['Coupling', '$location'];
+    static $inject = ['Coupling', '$location', '$scope'];
     tribe: Tribe;
     players: Player[];
     pairAssignments: PairAssignmentSet;
@@ -22,7 +23,7 @@ export class PairAssignmentsController {
     private _unpairedPlayers: Player[];
     private differenceOfPlayers = differenceWith(eqBy(prop('_id')));
 
-    constructor(public Coupling, private $location) {
+    constructor(public Coupling: Coupling, private $location, public $scope) {
         this.styles = Styles;
     }
 
@@ -35,9 +36,10 @@ export class PairAssignmentsController {
         }
     }
 
-    save() {
-        this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
-            .then(() => this.$location.path(`/${this.tribe.id}/pairAssignments/current`));
+    async save() {
+        await this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
+            .then(() => this.$location.path(`/${this.tribe.id}/pairAssignments/current`))
+            .then(() => this.$scope.$apply());
     }
 
     onDrop(draggedPlayer, droppedPlayer) {

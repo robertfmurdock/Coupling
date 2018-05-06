@@ -1,7 +1,7 @@
 import * as express from "express";
 
 class HistoryRoutes {
-     list(request, response) {
+    list(request, response) {
         request.dataService.requestHistory(request.params.tribeId).then(function (history) {
             response.send(history);
         }, function (error) {
@@ -10,14 +10,12 @@ class HistoryRoutes {
         });
     };
 
-    savePairs(request, response) {
+    async savePairs(request, response) {
         const pairs = request.body;
         if (pairs.date && pairs.pairs) {
             pairs.date = new Date(pairs.date as string);
 
-            request.dataService.savePairAssignmentsToHistory(pairs, function () {
-                response.send(pairs);
-            });
+            response.send(await request.dataService.savePairAssignmentsToHistory(pairs));
         } else {
             response.statusCode = 400;
             response.send({error: 'Pairs were not valid.'});
@@ -37,7 +35,7 @@ class HistoryRoutes {
 
 const history = new HistoryRoutes();
 const router = express.Router({mergeParams: true});
-router.route('/')
+router.route('')
     .get(history.list)
     .post(history.savePairs);
 router.delete('/:id', history.deleteMember);

@@ -7,7 +7,7 @@ import Tribe from "../../common/Tribe";
 import * as monk from "monk";
 
 const config = require("../../config");
-const hostName = 'http://' + config.publicHost + ':' + config.port;
+const hostName = `http://${config.publicHost}:${config.port}`;
 
 
 const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
@@ -112,16 +112,16 @@ describe('The edit player page', function () {
             expect(defaultBadgeRadio.getAttribute('checked')).toBe('true');
         });
 
-        it('should remember badge selection', function () {
+        it(`should remember badge selection`, async function () {
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            altBadgeRadio.click();
-            savePlayerButton.click();
+            await altBadgeRadio.click();
+            await savePlayerButton.click();
+            await browser.wait(() => savePlayerButton.isEnabled(), 100);
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
 
     });
-
 
     it('should get error on leaving when name is changed.', function (done) {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
@@ -143,26 +143,33 @@ describe('The edit player page', function () {
             .then(done, done.fail);
     });
 
-    it('should not get alert on leaving when name is changed after save.', function () {
+    it('should not get alert on leaving when name is changed after save.', async function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         playerNameTextField.sendKeys('completely different name');
 
-        savePlayerButton.click();
-        tribeCardElement.click();
+        await savePlayerButton.click();
+        await browser.wait(() =>
+            tribeCardElement.click()
+                .then(() => true, () => false), 2000);
+
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(element(By.id('player-name')).getAttribute('value')).toBe('completely different name')
     });
 
-    it('saving with no name will show as a default name.', function () {
+    it('saving with no name will show as a default name.', async function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
-        savePlayerButton.click();
-        tribeCardElement.click();
+        await savePlayerButton.click();
+
+        await browser.wait(() =>
+            tribeCardElement.click()
+                .then(() => true, () => false), 2000);
+
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);

@@ -15,7 +15,7 @@ interface WelcomeCardSet {
     proverb: string
 }
 
-const candidates: [WelcomeCardSet] = [{
+const candidates: WelcomeCardSet[] = [{
     leftCard: {
         name: 'Frodo',
         imagePath: 'frodo-icon.png'

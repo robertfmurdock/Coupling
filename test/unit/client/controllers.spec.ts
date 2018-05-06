@@ -163,7 +163,7 @@ describe('The controller named ', function () {
         });
 
         it('save will use Coupling service to save and then will redirect to the current pair assignments page', function (done) {
-            const controller = new PairAssignmentsController(Coupling, location);
+            const controller = new PairAssignmentsController(Coupling, location, {});
             controller.tribe = tribe;
             controller.players = players;
 
@@ -181,7 +181,7 @@ describe('The controller named ', function () {
         });
 
         it('onDrop will take two players and swap their places', function () {
-            const controller = new PairAssignmentsController(Coupling, location);
+            const controller = new PairAssignmentsController(Coupling, location, {});
 
             const player1 = {
                 _id: '1',
@@ -222,7 +222,7 @@ describe('The controller named ', function () {
         });
 
         it('onDrop will not swap players that are already paired', function () {
-            const controller = new PairAssignmentsController(Coupling, location);
+            const controller = new PairAssignmentsController(Coupling, location, {});
             const player1 = {
                 _id: '1',
                 name: '1',
@@ -310,7 +310,7 @@ describe('The controller named ', function () {
                 {name: 'fellow', _id: '3', tribe: tribeId},
                 {name: 'nerd', _id: '4', tribe: tribeId},
                 {name: 'pantsmaster', _id: '5', tribe: tribeId}];
-            const controller = new PairAssignmentsController(Coupling, location);
+            const controller = new PairAssignmentsController(Coupling, location, {});
             controller.pairAssignments = {pairs: currentPairs, tribe: tribeId, date: ''};
             controller.players = players;
 
@@ -329,7 +329,7 @@ describe('The controller named ', function () {
                 {name: 'fellow', _id: '3', tribe: tribeId},
                 {name: 'nerd', _id: '4', tribe: tribeId},
                 {name: 'pantsmaster', _id: '5', tribe: tribeId}];
-            const controller = new PairAssignmentsController(Coupling, location);
+            const controller = new PairAssignmentsController(Coupling, location, {});
             controller.pairAssignments = undefined;
             controller.players = players;
             expect(controller.unpairedPlayers).toEqual(players);

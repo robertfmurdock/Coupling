@@ -1,10 +1,10 @@
 import {module} from "angular";
-import * as services from '../../services'
 import * as template from './history.pug'
+import Tribe from "../../../../common/Tribe";
 
 export class HistoryController {
 
-    tribe:services.Tribe;
+    tribe: Tribe;
 
     removeEntry(entry) {
         if (confirm("Are you sure you want to delete these pair assignments?")) {

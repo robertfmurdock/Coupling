@@ -4,12 +4,15 @@ import * as pipe from "ramda/src/pipe";
 import * as values from "ramda/src/values";
 import * as filter from "ramda/src/filter";
 import * as map from "ramda/src/map";
+import Tribe from "../../../common/Tribe";
+import Player from "../../../common/Player";
+import PairAssignmentSet from "../../../common/PairAssignmentSet";
 
 class NewPairAssignmentsRouteController {
     static $inject = ['requirements'];
-    tribe: services.Tribe;
-    players: [services.Player];
-    pairAssignments: services.PairAssignmentSet;
+    tribe: Tribe;
+    players: Player[];
+    pairAssignments: PairAssignmentSet;
 
     constructor(requirements) {
         this.tribe = requirements.tribe;
@@ -31,13 +34,15 @@ const newPairAssignmentsRoute: IRoute = {
     resolve: {
         requirements: ['$route', '$q', 'Coupling', function ($route: ng.route.IRouteService, $q: angular.IQService, Coupling: services.Coupling) {
             const tribeId = $route.current.params.tribeId;
-            return $q.all({
+
+            const promises: any = {
                 tribe: Coupling.getTribe(tribeId),
                 players: Coupling.getPlayers(tribeId),
                 history: Coupling.getHistory(tribeId)
-            })
+            };
+            return $q.all(promises)
                 .then(options => {
-                    const players = options['players'] as [services.Player];
+                    const players = options['players'] as Player[];
                     const history = options['history'];
                     const selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
                     options['selectedPlayers'] = convertMapToSelectedPlayers(selectablePlayerMap);

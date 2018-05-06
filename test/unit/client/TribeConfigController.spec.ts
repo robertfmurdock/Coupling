@@ -1,8 +1,8 @@
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
 import PairingRule from "../../../common/PairingRule";
-import * as Promise from 'bluebird';
 import * as angular from "angular";
 import * as _ from "underscore";
+import {Coupling} from "../../../client/app/services";
 
 const defer = function () {
     const defer = {
@@ -19,7 +19,7 @@ const defer = function () {
 
 describe('TribeConfigController', function () {
 
-    let Coupling, location, routeParams;
+    let coupling, location, routeParams;
     const selectTribeDefer = defer();
     let selectedTribeId;
 
@@ -34,7 +34,7 @@ describe('TribeConfigController', function () {
             id: 'TotallyAwesome',
             _id: 'party'
         };
-        Coupling = {
+        coupling = {
             data: {
                 selectedTribe: selectedTribe
             },
@@ -52,7 +52,7 @@ describe('TribeConfigController', function () {
 
         beforeEach(function () {
             const tribe = {id: '1', name: '1'};
-            this.controller = new TribeConfigController(location);
+            this.controller = new TribeConfigController(location, coupling, {});
             this.controller.tribe = tribe;
             this.controller.$onInit();
         });
@@ -77,28 +77,28 @@ describe('TribeConfigController', function () {
         let controller;
 
         beforeEach(function () {
-            tribe = {
-                $save: jasmine.createSpy('save tribe spy').and.returnValue(saveTribeDefer.promise)
-            };
+            this.saveTribeSpy = spyOn(Coupling, 'saveTribe').and.returnValue(saveTribeDefer.promise);
 
-            controller = new TribeConfigController(location);
+            tribe = {};
+
+            controller = new TribeConfigController(location, coupling, {
+                $apply() {
+                }
+            });
             _.extend(controller, {tribe: tribe});
             controller.$onInit();
         });
 
-        it('will use the Coupling service to save the tribe', function () {
-            controller.clickSaveButton();
-            expect(tribe.$save).toHaveBeenCalled();
+        it('will use the Coupling service to save the tribe', async function () {
+            saveTribeDefer.resolve();
+            await controller.clickSaveButton();
+            expect(this.saveTribeSpy).toHaveBeenCalled();
         });
 
         describe('when the save is complete', function () {
-            let callback;
-            beforeEach(function () {
-                controller.clickSaveButton();
-                callback = tribe.$save.calls.argsFor(0)[1];
-            });
 
-            it('will change the location to the current pair assignments', function (done) {
+            it('will change the location to the current pair assignments', async function () {
+                const saveClickPromise = controller.clickSaveButton();
                 const newTribeId = 'expectedId';
                 const expectedPath = '/tribes';
                 expect(location.path).not.toHaveBeenCalledWith(expectedPath);
@@ -107,10 +107,9 @@ describe('TribeConfigController', function () {
                     _id: newTribeId
                 };
                 saveTribeDefer.resolve(updatedTribe);
-                saveTribeDefer.promise.then(function () {
-                    expect(location.path).toHaveBeenCalledWith(expectedPath);
-                    done();
-                })
+
+                await saveClickPromise;
+                expect(location.path).toHaveBeenCalledWith(expectedPath);
             });
         });
     });

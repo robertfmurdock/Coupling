@@ -3,13 +3,15 @@ import * as services from "../../services";
 import * as values from "ramda/src/values";
 import * as template from "./prepare.pug";
 import * as styles from './styles.css'
+import Player from "../../../../common/Player";
+import Tribe from "../../../../common/Tribe";
 
 class PrepareController {
     static $inject = ['$location', 'Coupling'];
 
-    players: [services.Player];
+    players: Player[];
     selectablePlayers: services.SelectablePlayer[];
-    tribe: services.Tribe;
+    tribe: Tribe;
     styles: any;
 
     constructor(private $location: angular.ILocationService, private Coupling: services.Coupling) {

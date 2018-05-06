@@ -1,12 +1,12 @@
 import * as template from "./tribe-card.pug";
-import * as services from "../../services";
 import * as styles from './styles.css'
 import {module} from "angular";
 import IController = angular.IController;
+import Tribe from "../../../../common/Tribe";
 
 export class TribeCardController implements IController {
     static $inject = ['$location'];
-    public tribe: services.Tribe;
+    public tribe: Tribe;
     size: number;
     maxFontHeight: number;
     minFontHeight: number;

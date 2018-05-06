@@ -1,6 +1,7 @@
 import * as angular from "angular";
 import "angular-resource";
 import {Coupling} from "../../../client/app/services";
+import axios from 'axios'
 
 const CouplingService = Coupling;
 
@@ -8,87 +9,83 @@ describe('Service: ', function () {
 
     describe('Coupling', function () {
 
-        beforeEach(angular.mock.module('coupling'));
+        beforeEach(function () {
+            angular.mock.module('coupling')
+        });
 
-        let httpBackend;
-        let Coupling, q, rootScope;
+        let Coupling;
 
         beforeEach(function () {
-            inject(function ($httpBackend, $q, $rootScope, $http, $resource) {
-                httpBackend = $httpBackend;
-                q = $q;
-                rootScope = $rootScope;
-                Coupling = new CouplingService($http, $q, $resource);
-            });
+            Coupling = new CouplingService();
         });
 
         describe('get history', function () {
-            it('calls back with history on success', function (done) {
+            it('calls back with history on success', async function () {
                 const expectedHistory = [{
                     _id: 'one'
                 }, {
                     _id: 'two'
                 }];
-                httpBackend.whenGET('/api/tribo/history').respond(200, expectedHistory);
 
-                Coupling.getHistory('tribo')
-                    .then(function (resultHistory) {
-                        expect(resultHistory.length).toBe(expectedHistory.length);
-                        expect(resultHistory[0]._id).toEqual(expectedHistory[0]._id);
-                        expect(resultHistory[1]._id).toEqual(expectedHistory[1]._id);
-                        done();
-                    })
-                    .catch(function (error) {
-                        expect(error).toBeUndefined();
-                    })
-                    .finally(done);
-                httpBackend.flush();
+                const getSpy = spyOn(axios, 'get')
+                    .and.returnValue(Promise.resolve({data: expectedHistory}));
+
+                const resultHistory = await Coupling.getHistory('tribo');
+
+                expect(getSpy).toHaveBeenCalledWith('/api/tribo/history');
+
+                expect(resultHistory.length).toBe(expectedHistory.length);
+                expect(resultHistory[0]._id).toEqual(expectedHistory[0]._id);
+                expect(resultHistory[1]._id).toEqual(expectedHistory[1]._id);
             });
         });
 
         describe('get tribes', function () {
-            it('calls back with tribes on success', function (done) {
+            it('calls back with tribes on success', async function () {
                 const expectedTribes = [{
                     _id: 'one'
                 }, {
                     _id: 'two'
                 }];
 
-                httpBackend.whenGET('/api/tribes').respond(200, expectedTribes);
+                const getSpy = spyOn(axios, 'get')
+                    .and.returnValue(Promise.resolve({data: expectedTribes}));
 
-                Coupling.getTribes()
-                    .then(function (resultTribes) {
-                        expect(angular.toJson(resultTribes)).toEqual(angular.toJson(expectedTribes));
-                        done();
-                    }).catch(function (error) {
-                    expect(error).toBeUndefined();
-                }).finally(done);
-
-                httpBackend.flush();
+                const resultTribes = await Coupling.getTribes();
+                expect(getSpy).toHaveBeenCalledWith('/api/tribes');
+                expect(angular.toJson(resultTribes)).toEqual(angular.toJson(expectedTribes));
             });
 
             it('shows error on failure', function (done) {
                 const statusCode = 404;
                 const url = '/api/tribes';
                 const expectedData = 'nonsense';
-                httpBackend.whenGET(url).respond(statusCode, expectedData);
+
+                const getSpy = spyOn(axios, 'get')
+                    .and.returnValue(Promise.reject(
+                        {
+                            response: {status: statusCode, data: expectedData}
+                        }
+                    ));
+
                 let callCount = 0;
 
                 Coupling.getTribes()
                     .then(function () {
                         callCount++;
-                    }).catch(function (error) {
-                    expect(error).toBeDefined();
-                    expect(error.status).toBe(statusCode);
-                    expect(error.data).toBe(expectedData);
-                    done();
-                });
-                httpBackend.flush();
+                    })
+                    .catch(function (error) {
+                        expect(getSpy).toHaveBeenCalledWith(url);
+                        expect(error).toBeDefined();
+                        expect(error.response.status).toBe(statusCode);
+                        expect(error.response.data).toBe(expectedData);
+                        done();
+                    });
             });
         });
 
         describe('save player', function () {
-            it('will use http service', function (done) {
+            it('will use axios', function (done) {
 
                 const player = {
                     name: 'Navi',
@@ -100,14 +97,15 @@ describe('Service: ', function () {
                     tribe: 'tribo',
                     _id: '123'
                 };
-                httpBackend.whenPOST('/api/tribo/players').respond(200, expectedUpdatedPlayer);
+
+                const postSpy = spyOn(axios, 'post')
+                    .and.returnValue(Promise.resolve({data: expectedUpdatedPlayer}));
 
                 Coupling.savePlayer(player).then(function (updatedPlayer) {
                     expect(updatedPlayer).toEqual(expectedUpdatedPlayer);
+                    expect(postSpy).toHaveBeenCalledWith('/api/tribo/players', player);
                     done();
                 });
-
-                httpBackend.flush();
             })
         });
 
@@ -121,30 +119,37 @@ describe('Service: ', function () {
                 }, {
                     stuff: 'mcduff'
                 }];
-                httpBackend.whenGET(url).respond(200, expectedPins);
+
+                const getSpy = spyOn(axios, 'get')
+                    .and.returnValue(Promise.resolve({data: expectedPins}));
 
                 const pinsPromise = Coupling.getPins(tribeId);
                 pinsPromise.then(function (pins) {
                     expect(pins).toEqual(expectedPins);
+
+                    expect(getSpy).toHaveBeenCalledWith(url);
                     done();
                 }).catch(function (error) {
                     expect(error).toBeUndefined();
                 }).finally(done);
-                httpBackend.flush();
             });
 
             it('shows error on failure', function (done) {
                 const statusCode = 404;
                 const expectedData = 'nonsense';
-                httpBackend.whenGET(url).respond(statusCode, expectedData);
+                const getSpy = spyOn(axios, 'get')
+                    .and.returnValue(Promise.reject({
+                        response: {status: statusCode, data: expectedData}
+                    }));
+
                 Coupling.getPins(tribeId).then(function () {
                     done.fail("This should not succeed.");
                 }).catch(function (error) {
-                    expect(error.status).toBe(statusCode);
-                    expect(error.data).toBe(expectedData);
+                    expect(error.response.status).toBe(statusCode);
+                    expect(error.response.data).toBe(expectedData);
+                    expect(getSpy).toHaveBeenCalledWith(url);
                     done();
                 });
-                httpBackend.flush();
             });
         });
     });

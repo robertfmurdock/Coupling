@@ -1,15 +1,15 @@
 import {module} from "angular";
 import * as template from "./playercard.pug";
-import * as services from "../../services";
 import * as styles from './styles.css'
 
 import IController = angular.IController;
+import Player from "../../../../common/Player";
 
 export class PlayerCardController implements IController {
     static $inject = ['$location'];
 
     styles: any;
-    player: services.Player;
+    player: Player;
     size: number;
     disabled: boolean;
     maxFontHeight: number;

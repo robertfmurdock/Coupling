@@ -1,5 +1,5 @@
 "use strict";
-import {browser, element, By} from "protractor";
+import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import * as _ from "underscore";
 import e2eHelp from "./e2e-help";

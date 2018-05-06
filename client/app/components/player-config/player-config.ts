@@ -5,20 +5,22 @@ import Tribe from "../../../../common/Tribe";
 import Badge from "../../../../common/Badge";
 import * as merge from "ramda/src/merge";
 import IRouteService = angular.route.IRouteService;
-import IDirectiveFactory = angular.IDirectiveFactory;
+import Player from "../../../../common/Player";
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
 
-    player: services.Player;
+    player: Player;
     tribe: Tribe;
+    saving: boolean;
 
-    constructor($scope,
+    constructor(public $scope,
                 public Coupling: services.Coupling,
                 public $location: angular.ILocationService,
                 public $route: IRouteService) {
         $scope.$on('$locationChangeStart', this.askUserToSave($scope, Coupling));
         $scope.Badge = Badge;
+        this.saving = false;
     }
 
     $onInit() {
@@ -26,6 +28,7 @@ export class PlayerConfigController {
     }
 
     savePlayer() {
+        this.saving = true;
         this.Coupling.savePlayer(this.player)
             .then(() => this.$route.reload());
     }

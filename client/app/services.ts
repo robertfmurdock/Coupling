@@ -9,14 +9,9 @@ import * as propEq from "ramda/src/propEq";
 import Player from "../../common/Player";
 import * as common from "../../common/index";
 import Randomizer from "./Randomizer";
-import IPromise = angular.IPromise;
-import IResource = angular.resource.IResource;
-import IResourceClass = angular.resource.IResourceClass;
-import IResourceService = angular.resource.IResourceService;
-import IResourceArray = angular.resource.IResourceArray;
-import IQService = angular.IQService;
-import IHttpService = angular.IHttpService;
-import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
+import axios from 'axios'
+import Tribe from "../../common/Tribe";
+import PairAssignmentSet from "../../common/PairAssignmentSet";
 
 interface SelectablePlayerMap {
     [id: string]: SelectablePlayer;
@@ -24,18 +19,6 @@ interface SelectablePlayerMap {
 
 class CouplingData {
     selectablePlayers: SelectablePlayerMap
-}
-
-interface Tribe extends IResource<Tribe>, common.Tribe {
-}
-
-interface TribeResource extends IResourceClass<Tribe> {
-}
-
-interface PairAssignmentSetResource extends IResourceClass<PairAssignmentSet> {
-}
-
-interface PairAssignmentSet extends IResource<PairAssignmentSet>, common.PairAssignmentSet {
 }
 
 class Pin {
@@ -46,62 +29,47 @@ class SelectablePlayer {
     }
 }
 
-const makeTribeResource = function ($resource: angular.resource.IResourceService) {
-    return <TribeResource>$resource('/api/tribes/:tribeId', {tribeId: '@id'});
-};
-
-
-const makePairAssignmentResource = function ($resource: angular.resource.IResourceService) {
-    return <PairAssignmentSetResource>$resource('/api/:tribeId/history/:id', {
-        id: '@_id',
-        tribeId: '@tribe'
-    });
-};
-
 class Coupling {
-    static $inject = ['$http', '$q', '$resource'];
+
+    static async saveTribe(tribe: common.Tribe) {
+        await axios.post(`/api/tribes`, angular.copy(tribe))
+    }
 
     data: CouplingData;
-    Tribe: TribeResource;
-    PairAssignmentSet: PairAssignmentSetResource;
 
-    constructor(public $http: IHttpService, public $q: IQService, $resource: IResourceService) {
-        this.Tribe = makeTribeResource($resource);
-        this.PairAssignmentSet = makePairAssignmentResource($resource);
+    constructor() {
         this.data = new CouplingData();
         this.data.selectablePlayers = {};
     }
 
-    public getTribes(): IPromise<IResourceArray<Tribe>> {
-        return this.Tribe
-            .query()
-            .$promise;
+    public async getTribes(): Promise<Tribe[]> {
+        const tribesResponse = await axios.get('/api/tribes');
+        return tribesResponse.data;
     }
 
-    getTribe(tribeId): IPromise<Tribe> {
-        return this.Tribe
-            .get({tribeId: tribeId})
-            .$promise;
+    async getTribe(tribeId): Promise<Tribe> {
+        const tribesResponse = await axios.get(`/api/tribes/${tribeId}`);
+        return tribesResponse.data;
     }
 
-    getHistory(tribeId): IPromise<PairAssignmentSet[]> {
-        return this.PairAssignmentSet
-            .query({tribeId: tribeId})
-            .$promise;
+    async getHistory(tribeId): Promise<PairAssignmentSet[]> {
+        const response = await axios.get(`/api/${tribeId}/history`);
+        return response.data;
     }
 
-    spin(players, tribeId): IPromise<PairAssignmentSet> {
-        return this.$http.post(`/api/${tribeId}/spin`, players)
-            .then(result => new this.PairAssignmentSet(result.data));
+    async spin(players, tribeId): Promise<PairAssignmentSet> {
+        const response = await axios.post(`/api/${tribeId}/spin`, angular.copy(players));
+        return response.data;
     }
 
-    saveCurrentPairAssignments(pairAssignments: PairAssignmentSet) {
-        return pairAssignments.$save();
+    async saveCurrentPairAssignments(pairAssignments: common.PairAssignmentSet) {
+        const response = await axios.post(`/api/${pairAssignments.tribe}/history`, angular.copy(pairAssignments));
+        return response.data;
     }
 
-    getPlayers(tribeId) {
-        return this.$http.get(`/api/${tribeId}/players`)
-            .then(response => response.data);
+    async getPlayers(tribeId) {
+        const response = await axios.get(`/api/${tribeId}/players`);
+        return response.data;
     }
 
     savePlayer(player) {
@@ -117,24 +85,23 @@ class Coupling {
         return this.data.selectablePlayers;
     }
 
-    getPins(tribeId): IPromise<[Pin]> {
-        return this.$http.get(`/api/${tribeId}/pins`)
-            .then(response => response.data as [Pin]);
+    async getPins(tribeId): Promise<Pin[]> {
+        const response = await axios.get(`/api/${tribeId}/pins`);
+        return response.data;
     }
 
-    getRetiredPlayers(tribeId) {
-        return this.$http.get(`/api/${tribeId}/players/retired`)
-            .then(response => response.data);
+    async getRetiredPlayers(tribeId) {
+        const response = await axios.get(`/api/${tribeId}/players/retired`);
+        return response.data;
     }
 
-    private post<T>(url, object: T): IPromise<T> {
-        return this.$http.post(url, object)
-            .then(response => response.data as T);
+    private async post<T>(url, object: T): Promise<T> {
+        const response = await axios.post(url, angular.copy(object));
+        return response.data;
     }
 
-    private httpDelete(url): IPromise<void> {
-        return this.$http.delete(url)
-            .then(() => undefined);
+    private async httpDelete(url): Promise<void> {
+        await axios.get(url);
     }
 
     private isInLastSetOfPairs(player, history) {
@@ -173,4 +140,4 @@ angular.module("coupling.services", ['ngResource'])
     .service("Coupling", Coupling)
     .service('randomizer', Randomizer);
 
-export {Player, Tribe, PairAssignmentSet, SelectablePlayer, Coupling, Randomizer}
+export {SelectablePlayer, Coupling, Randomizer}

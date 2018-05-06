@@ -1,19 +1,20 @@
 import {module} from "angular";
 import * as template from "./tribe-config.pug";
-import * as services from "../../services";
 import PairingRule from "../../../../common/PairingRule";
 import * as _ from "underscore";
 
 import * as styles from './styles.css'
+import {Coupling} from "../../services";
+import Tribe from "../../../../common/Tribe";
 
 export class TribeConfigController {
-    static $inject = ['$location'];
-    public tribe: services.Tribe;
+    static $inject = ['$location', 'Coupling', '$scope'];
+    public tribe: Tribe;
     public isNew: boolean;
     public styles: any;
     public pairingRules;
 
-    constructor(public $location: angular.ILocationService) {
+    constructor(public $location: angular.ILocationService, public Coupling: Coupling, public $scope) {
         this.styles = styles;
         this.pairingRules = [
             {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
@@ -29,10 +30,10 @@ export class TribeConfigController {
         });
     }
 
-    clickSaveButton() {
-        this.tribe
-            .$save()
-            .then(() => this.$location.path("/tribes"));
+    async clickSaveButton() {
+        await Coupling.saveTribe(this.tribe);
+        this.$location.path("/tribes");
+        this.$scope.$apply()
     }
 
 }

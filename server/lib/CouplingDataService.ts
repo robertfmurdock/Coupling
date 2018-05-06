@@ -76,8 +76,8 @@ export default class CouplingDataService {
         return makeDocumentPromise(this.playersCollection, {}, {tribe: tribeId, isDeleted: true});
     };
 
-    savePairAssignmentsToHistory(pairs, callback) {
-        this.historyCollection.insert(pairs, callback);
+    savePairAssignmentsToHistory(pairs) {
+        return this.historyCollection.insert(pairs);
     };
 
     savePlayer(player) {

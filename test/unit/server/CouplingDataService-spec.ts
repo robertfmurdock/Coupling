@@ -3,6 +3,7 @@ import * as monk from "monk";
 import CouplingDataService from "../../../server/lib/CouplingDataService";
 import Comparators from "../../../common/Comparators";
 import Player from "../../../common/Player";
+
 const config = require('../../../config');
 
 const mongoUrl = config.testMongoUrl + '/UsersTest';
@@ -192,32 +193,27 @@ describe('CouplingDataService', function () {
         });
     });
 
-    describe('what', function() {
+    describe('what', function () {
 
         beforeEach(function (done) {
             couplingDataService.removePlayer(frodo._id, done);
         });
 
-        it('can resurrect a player from retirement', function(done) {
+        it('can resurrect a player from retirement', async function () {
             let fetchFrodo = function () {
                 return playersCollection.find({_id: frodo._id}, {})
-                    .then(function(players) {
+                    .then(function (players) {
                         return Promise.resolve(players[0]);
                     });
             };
 
-            fetchFrodo()
-            .then(function(player) {
-                expect(player).not.toBeUndefined();
-                expect(player.isDeleted).toEqual(true);
-            })
-            .then(couplingDataService.resurrectPlayer(frodo._id))
-            .then(fetchFrodo)
-            .then(function(player) {
-               expect(player).not.toBeUndefined();
-               expect(player.isDeleted).toBe(false);
-            })
-            .then(done, done.fail);
+            const player = await fetchFrodo();
+            expect(player).not.toBeUndefined();
+            expect(player.isDeleted).toEqual(true);
+            await couplingDataService.resurrectPlayer(frodo._id);
+            const playerReloaded = await fetchFrodo();
+            expect(playerReloaded).not.toBeUndefined();
+            expect(playerReloaded.isDeleted).toBe(false);
         });
     });
 
@@ -339,7 +335,7 @@ describe('CouplingDataService', function () {
         });
     });
 
-    it('can list former players', function(done) {
+    it('can list former players', function (done) {
         const tribeId = 'wizards';
         const gandalfTheGrey = {tribe: tribeId, name: 'Gandalf The Grey', isDeleted: true};
         const gandalfTheWhite = {tribe: tribeId, name: 'Gandalf The White', isDeleted: null};
@@ -350,7 +346,7 @@ describe('CouplingDataService', function () {
             saruman
         ];
         playersCollection.insert(allPlayers)
-            .then(function() {
+            .then(function () {
                 return couplingDataService.requestRetiredPlayers(tribeId);
             })
             .then(function (players) {
