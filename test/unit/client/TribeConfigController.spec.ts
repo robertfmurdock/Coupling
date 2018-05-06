@@ -1,5 +1,6 @@
 import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
 import PairingRule from "../../../common/PairingRule";
+import * as Bluebird from 'bluebird';
 import * as angular from "angular";
 import * as _ from "underscore";
 import {Coupling} from "../../../client/app/services";
@@ -10,7 +11,7 @@ const defer = function () {
         resolve: null,
         reject: null
     };
-    defer.promise = new Promise((resolve, reject) => {
+    defer.promise = new Bluebird((resolve, reject) => {
         defer.resolve = resolve;
         defer.reject = reject;
     });
