@@ -116,7 +116,7 @@ describe('The edit player page', function () {
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             await altBadgeRadio.click();
             await savePlayerButton.click();
-            await browser.wait(() => savePlayerButton.isEnabled(), 100);
+            await browser.wait(() => savePlayerButton.isEnabled().then(() => true, () => false), 100);
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
