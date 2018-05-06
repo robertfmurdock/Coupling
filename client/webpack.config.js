@@ -18,7 +18,7 @@ const config = {
     ws: {}
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         loader: 'ts-loader?' + JSON.stringify({
@@ -29,10 +29,6 @@ const config = {
         test: /\.(pug)$/,
         loader: 'pug-loader',
         include: jsPath
-      },
-      {
-        test: /\.(json)$/,
-        loader: 'json-loader'
       },
       {
         test: /\.(css)$/,
@@ -80,7 +76,6 @@ if (process.env.NODE_ENV === 'production') {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]);
 }

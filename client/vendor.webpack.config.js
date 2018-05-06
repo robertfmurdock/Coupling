@@ -39,7 +39,7 @@ const config = {
     library: "[name]_lib"
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(css)$/,
         loader: ExtractTextPlugin.extract({
@@ -64,7 +64,6 @@ const config = {
       name: '[name]_lib'
     }),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
-    new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]
 };

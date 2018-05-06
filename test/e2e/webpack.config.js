@@ -15,7 +15,7 @@ config.output = {
   libraryTarget: 'commonjs'
 };
 
-config.module.loaders.push({
+config.module.rules.push({
   test: /\.(css)$/,
   loader: ExtractTextPlugin.extract({
     fallback: 'style-loader',
@@ -23,7 +23,7 @@ config.module.loaders.push({
   })
 });
 
-config.module.loaders.push({
+config.module.rules.push({
   test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
   loader: 'url-loader?limit=100000'
 });

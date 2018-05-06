@@ -147,8 +147,7 @@ describe('PlayerConfigController', function () {
         }));
 
     it('remove player will do nothing when not confirmed', inject(function (_$controller_) {
-        const confirmSpy = jasmine.createSpy('confirm');
-        window.confirm = confirmSpy;
+        const confirmSpy = spyOn(window, 'confirm');
 
         const $route = {
             current: {params: {id: player._id}, locals: null},
@@ -188,8 +187,7 @@ describe('PlayerConfigController', function () {
         describe('it will prompt the user to save if the player has changed', function () {
 
             beforeEach(function () {
-                this.confirmSpy = jasmine.createSpy('confirm');
-                window.confirm = this.confirmSpy;
+                this.confirmSpy = spyOn(window, 'confirm');
 
                 $scope.playerForm = {
                     $dirty: true
@@ -216,7 +214,7 @@ describe('PlayerConfigController', function () {
 
         });
         it('it will not prompt the user to save if the player is unchanged', function () {
-            window.confirm = jasmine.createSpy('confirm');
+            spyOn(window, 'confirm');
             $scope.playerForm = {
                 $dirty: false
             };

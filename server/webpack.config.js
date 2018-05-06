@@ -21,7 +21,7 @@ const config = {
     extensions: ['.js', '.ts']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         loader: 'ts-loader'
@@ -33,7 +33,6 @@ const config = {
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins = config.plugins.concat([
-    new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
   ]);
 }

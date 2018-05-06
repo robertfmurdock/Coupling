@@ -34,13 +34,15 @@ describe('The controller named ', function () {
     describe('PlayerCardController', function () {
 
         let controller;
-        const location = {
-            path: jasmine.createSpy('path')
-        };
+
 
         beforeEach(function () {
+            this.location = {
+                path: jasmine.createSpy('path')
+            };
+
             try {
-                controller = new PlayerCardController(location);
+                controller = new PlayerCardController(this.location);
 
                 controller.player = {
                     name: 'Chad',
@@ -57,11 +59,11 @@ describe('The controller named ', function () {
         describe('clickPlayerName', function () {
 
             it('will redirect to the players page', function () {
-                const expectedPath = '/' + controller.player.tribe + '/player/' + controller.player._id;
-                expect(location.path).not.toHaveBeenCalledWith(expectedPath);
+                const expectedPath = `/${controller.player.tribe}/player/${controller.player._id}`;
+                expect(this.location.path).not.toHaveBeenCalledWith(expectedPath);
                 const event = {};
                 controller.clickPlayerName(event);
-                expect(location.path).toHaveBeenCalledWith(expectedPath);
+                expect(this.location.path).toHaveBeenCalledWith(expectedPath);
             });
 
             it('will stop propagation to other click events', function () {
@@ -342,7 +344,7 @@ describe('The controller named ', function () {
                 $remove: jasmine.createSpy('removeSpy')
             };
             const historyController = new HistoryController();
-            window.confirm = jasmine.createSpy('confirm').and.returnValue(true);
+            spyOn(window, 'confirm').and.returnValue(true);
 
             historyController.removeEntry(entry);
             expect(entry.$remove).toHaveBeenCalled();
@@ -354,7 +356,7 @@ describe('The controller named ', function () {
             };
             const historyController = new HistoryController();
 
-            window.confirm = jasmine.createSpy('confirm').and.returnValue(false);
+            spyOn(window, 'confirm').and.returnValue(false);
 
             historyController.removeEntry(entry);
             expect(entry.$remove).not.toHaveBeenCalled();
