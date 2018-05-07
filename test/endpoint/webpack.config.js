@@ -12,7 +12,7 @@ config.output = {
   filename: 'test.js',
   libraryTarget: 'commonjs'
 };
-
+config.mode = "development";
 config.target = 'node';
 config.externals = [nodeExternals()];
 

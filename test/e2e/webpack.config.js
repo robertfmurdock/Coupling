@@ -32,4 +32,5 @@ config.plugins.push(new ExtractTextPlugin({filename: './styles.css', allChunks: 
 
 config.target = 'node';
 config.externals = [nodeExternals()];
+config.mode = "development";
 module.exports = config;

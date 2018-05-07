@@ -4,6 +4,7 @@ const jsPath = path.resolve(__dirname, './');
 const nodeExternals = require('webpack-node-externals');
 
 const config = {
+  mode: "production",
   entry: path.resolve(jsPath, './app.ts'),
   output: {
     path: path.resolve(__dirname, '../build'),

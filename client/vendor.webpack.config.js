@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const buildPath = path.resolve(__dirname, '../public/app/build/vendor');
 const config = {
+  mode: "production",
   entry: {
     vendor: [
       "angular",

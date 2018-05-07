@@ -6,6 +6,7 @@ const jsPath = path.resolve(__dirname, './app');
 
 const config = {
   entry: path.resolve(jsPath, './app.ts'),
+  mode: "production",
   output: {
     path: path.resolve(__dirname, '../public/app/build'),
     filename: 'main.js'
