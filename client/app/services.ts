@@ -57,6 +57,11 @@ class Coupling {
         return response.data;
     }
 
+    async removeAssignments(entry: PairAssignmentSet) {
+        const response = await axios.delete(`/api/${entry.tribe}/history/${entry._id}`);
+        return response.data;
+    }
+
     async spin(players, tribeId): Promise<PairAssignmentSet> {
         const response = await axios.post(`/api/${tribeId}/spin`, angular.copy(players));
         return response.data;
@@ -133,6 +138,7 @@ class Coupling {
             return {[player._id]: new SelectablePlayer(selected, player)};
         })
     }
+
 
 }
 

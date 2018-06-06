@@ -1,14 +1,26 @@
 import {module} from "angular";
 import * as template from './history.pug'
 import Tribe from "../../../../common/Tribe";
+import PairAssignmentSet from "../../../../common/PairAssignmentSet";
+import {Coupling} from "../../services";
 
 export class HistoryController {
 
-    tribe: Tribe;
+    static $inject = ['Coupling', '$route'];
 
-    removeEntry(entry) {
+    tribe: Tribe;
+    coupling: Coupling;
+    private route: any;
+
+    constructor(coupling, route) {
+        this.coupling = coupling;
+        this.route = route;
+    }
+
+    async removeEntry(entry : PairAssignmentSet) {
         if (confirm("Are you sure you want to delete these pair assignments?")) {
-            entry.$remove();
+            await this.coupling.removeAssignments(entry)
+            this.route.reload()
         }
     }
 

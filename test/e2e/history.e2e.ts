@@ -1,5 +1,5 @@
 "use strict";
-import {browser, by, element} from "protractor";
+import {browser, By, by, element} from "protractor";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
@@ -32,40 +32,61 @@ describe('The history page', function () {
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
-    it('shows recent pairings', async function () {
-        const pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [[
-            {
-                name: 'Ollie',
-                tribe: tribe.id,
-                _id: monk.id()
-            },
-            {
-                name: 'Speedy',
-                tribe: tribe.id,
-                _id: monk.id()
-            }
-        ]], tribe.id);
-        const pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[
-            {name: 'Arthur', tribe: tribe.id, _id: monk.id()},
-            {name: 'Garth', tribe: tribe.id, _id: monk.id()}
-        ]], tribe.id);
+    describe('with two assignments', function () {
 
-        browser.wait(async () => {
+        beforeAll(async function () {
+            const pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [[
+                {
+                    name: 'Ollie',
+                    tribe: tribe.id,
+                    _id: monk.id()
+                },
+                {
+                    name: 'Speedy',
+                    tribe: tribe.id,
+                    _id: monk.id()
+                }
+            ]], tribe.id);
+            const pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[
+                {name: 'Arthur', tribe: tribe.id, _id: monk.id()},
+                {name: 'Garth', tribe: tribe.id, _id: monk.id()}
+            ]], tribe.id);
+
             const apiGuy = await ApiGuy.new();
             await apiGuy.postTribe(tribe);
-            return Promise.all([
+            await Promise.all([
                 e2eHelp.authorizeUserForTribes([tribe.id]),
                 apiGuy.postPairAssignmentSet(tribe.id, pairAssignmentSet1),
                 apiGuy.postPairAssignmentSet(tribe.id, pairAssignmentSet2)
-            ])
-        }, 1000);
+            ]);
 
-        browser.waitForAngular();
+            await browser.waitForAngular();
 
-        browser.setLocation(`/${tribe.id}/history`);
+            await browser.setLocation(`/${tribe.id}/history`);
+        });
 
-        const pairAssignmentSetElements = element.all(by.className('pair-assignments'));
-        expect(pairAssignmentSetElements.count()).toBe(2);
+        it('shows recent pairings', async function () {
+            const pairAssignmentSetElements = element.all(by.className('pair-assignments'));
+            expect(pairAssignmentSetElements.count()).toBe(2);
+        });
+
+
+        it('can be deleted', async function () {
+            const pairAssignmentSetElements = element.all(by.className('pair-assignments'));
+            const deleteButton = pairAssignmentSetElements.get(0).element(By.css('.delete-button'));
+
+            deleteButton.click();
+            const alert = await (browser.switchTo().alert() as Promise<any>);
+
+            alert.accept();
+
+            await browser.waitForAngular();
+
+
+            expect(pairAssignmentSetElements.count()).toBe(1);
+        });
+
+
     });
 
 });

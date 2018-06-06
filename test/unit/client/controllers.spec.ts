@@ -3,12 +3,12 @@
 
 import "angular";
 import "angular-mocks";
-import * as Promise from "bluebird";
 import {TribeCardController} from "../../../client/app/components/tribe-card/TribeCardController";
 import {PairAssignmentsController} from "../../../client/app/components/pair-assignments/PairAssignmentsDirective";
 import {HistoryController} from "../../../client/app/components/history/history";
 import Pair from "../../../common/Pair";
 import {PlayerCardController} from "../../../client/app/components/player-card/player-card";
+import PairAssignmentSet from "../../../common/PairAssignmentSet";
 
 const defer = function () {
     const defer = {
@@ -339,27 +339,41 @@ describe('The controller named ', function () {
     });
 
     describe('HistoryController', function () {
-        it('will delete pair set when remove is called and confirmed', function () {
-            const entry = {
-                $remove: jasmine.createSpy('removeSpy')
+        it('will delete pair set when remove is called and confirmed', async function () {
+            const $remove = jasmine.createSpy('removeSpy');
+            const reload = jasmine.createSpy('reload');
+            const coupling = {
+                removeAssignments: $remove
             };
-            const historyController = new HistoryController();
+            const historyController = new HistoryController(coupling, {reload: reload});
             spyOn(window, 'confirm').and.returnValue(true);
 
-            historyController.removeEntry(entry);
-            expect(entry.$remove).toHaveBeenCalled();
+            const entry: PairAssignmentSet = {
+                pairs: [],
+                date: '',
+                tribe: '',
+            };
+            await historyController.removeEntry(entry);
+            expect($remove).toHaveBeenCalled();
+            expect(reload).toHaveBeenCalled();
         });
 
-        it('will not delete pair set when remove is called and not confirmed', function () {
-            const entry = {
-                $remove: jasmine.createSpy('removeSpy')
+        it('will not delete pair set when remove is called and not confirmed', async function () {
+            const $remove = jasmine.createSpy('removeSpy');
+            const coupling = {
+                removeAssignments: $remove
             };
-            const historyController = new HistoryController();
+            const historyController = new HistoryController(coupling, {});
 
             spyOn(window, 'confirm').and.returnValue(false);
 
-            historyController.removeEntry(entry);
-            expect(entry.$remove).not.toHaveBeenCalled();
+            const entry: PairAssignmentSet = {
+                pairs: [],
+                date: '',
+                tribe: '',
+            };
+            await historyController.removeEntry(entry);
+            expect($remove).not.toHaveBeenCalled();
         });
     });
 
