@@ -4,8 +4,8 @@ import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
 import Badge from "../../../../common/Badge";
 import * as merge from "ramda/src/merge";
-import IRouteService = angular.route.IRouteService;
 import Player from "../../../../common/Player";
+import IRouteService = angular.route.IRouteService;
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route'];
@@ -33,12 +33,11 @@ export class PlayerConfigController {
             .then(() => this.$route.reload());
     }
 
-    removePlayer() {
+    async removePlayer() {
         if (confirm("Are you sure you want to delete this player?")) {
-            const self = this;
-            this.Coupling
-                .removePlayer(this.player)
-                .then(() => self.navigateToCurrentPairAssignments());
+            await this.Coupling.removePlayer(this.player);
+            this.navigateToCurrentPairAssignments();
+            this.$scope.$apply();
         }
     }
 

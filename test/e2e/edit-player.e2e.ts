@@ -34,6 +34,7 @@ describe('The edit player page', function () {
     ];
 
     const tribeCardElement = element(By.className(tribeCardStyles.className));
+    const deleteButton = element(By.className('delete-button'));
     const savePlayerButton = element(By.id('save-player-button'));
 
     beforeAll(function (done) {
@@ -64,6 +65,18 @@ describe('The edit player page', function () {
     it('should not alert on leaving when nothing has changed.', function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         tribeCardElement.click();
+        expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
+    });
+
+    it('retire player should have intended effect.', async function () {
+        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        deleteButton.click();
+        const alert = await (browser.switchTo().alert() as Promise<any>);
+
+        await alert.accept();
+
+        await browser.waitForAngular();
+
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
     });
 

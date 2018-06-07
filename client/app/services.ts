@@ -82,7 +82,7 @@ class Coupling {
     }
 
     removePlayer(player) {
-        return this.httpDelete(`/api/${player.tribe}/players/${player._id}`);
+        return axios.delete(`/api/${player.tribe}/players/${player._id}`);
     }
 
     getSelectedPlayers(players: Player[], history) {
@@ -103,10 +103,6 @@ class Coupling {
     private async post<T>(url, object: T): Promise<T> {
         const response = await axios.post(url, angular.copy(object));
         return response.data;
-    }
-
-    private async httpDelete(url): Promise<void> {
-        await axios.get(url);
     }
 
     private isInLastSetOfPairs(player, history) {

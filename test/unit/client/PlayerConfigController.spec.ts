@@ -1,7 +1,6 @@
 import {PlayerConfigController} from "../../../client/app/components/player-config/player-config";
 import "angular-route";
 import * as angular from 'angular'
-import * as Promise from 'bluebird'
 import Player from "../../../common/Player";
 import Badge from "../../../common/Badge";
 import * as _ from "underscore";
@@ -55,6 +54,7 @@ describe('PlayerConfigController', function () {
         };
         $scope = {};
         $scope.data = Coupling.data;
+        $scope.$apply = jasmine.createSpy("applySpy");
         $scope.$on = jasmine.createSpy('on');
         player = {_id: 'blarg', tribe: tribe.id};
     });
@@ -119,7 +119,7 @@ describe('PlayerConfigController', function () {
     });
 
     it('remove player will remove and reroute to current pair assignments when confirmed',
-        inject(function ($controller, $q, $rootScope, _$controller_) {
+        inject(async function ($controller, $q, $rootScope, _$controller_) {
             const confirmSpy = spyOn(window, 'confirm');
 
             const deleteDefer = $q.defer();
@@ -135,7 +135,7 @@ describe('PlayerConfigController', function () {
                 {tribe, player});
 
             confirmSpy.and.returnValue(true);
-            controller.removePlayer();
+            const removePlayerPromise = controller.removePlayer();
             expect(Coupling.removePlayer).toHaveBeenCalled();
             const argsFor = Coupling.removePlayer.calls.argsFor(0);
             expect(argsFor[0]).toBe(controller.player);
@@ -143,6 +143,7 @@ describe('PlayerConfigController', function () {
             expect($location.path).not.toHaveBeenCalledWith('/' + tribe.id + '/pairAssignments/current');
             deleteDefer.resolve();
             $rootScope.$apply();
+            await removePlayerPromise;
             expect($location.path).toHaveBeenCalledWith('/' + tribe.id + '/pairAssignments/current');
         }));
 
