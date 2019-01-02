@@ -60,7 +60,7 @@ module.exports = function (app, userDataService) {
       clientID: config.googleClientID,
       clientSecret: config.googleClientSecret,
       callbackURL: config.publicUrl + '/auth/google/callback',
-      scope: 'https://www.googleapis.com/auth/plus.login email'
+      scope: 'profile email'
     },
     function (accessToken, refreshToken, profile, done) {
       userDataService.findOrCreate(profile.emails[0].value, function (user) {
