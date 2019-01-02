@@ -1,7 +1,7 @@
 import {browser} from "protractor";
 import e2eHelp from "./e2e-help";
 
-const config = require("../../config");
+const config = require("../../server/config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
 
 describe('Pins', function () {

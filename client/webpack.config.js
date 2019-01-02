@@ -16,7 +16,8 @@ const config = {
     extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json']
   },
   externals: {
-    ws: {}
+    ws: {},
+    gapi: {}
   },
   module: {
     rules: [

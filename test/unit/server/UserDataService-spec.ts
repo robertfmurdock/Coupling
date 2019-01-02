@@ -2,7 +2,7 @@ import * as monk from "monk";
 import * as Promise from "bluebird";
 import UserDataService from "../../../server/lib/UserDataService";
 
-var config = require('../../../config');
+var config = require('../../../server/config/config');
 
 var mongoUrl = config.testMongoUrl + '/UsersTest';
 var database = monk.default(mongoUrl);

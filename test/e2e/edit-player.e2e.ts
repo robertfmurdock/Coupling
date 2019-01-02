@@ -6,7 +6,7 @@ import e2eHelp from "./e2e-help";
 import Tribe from "../../common/Tribe";
 import * as monk from "monk";
 
-const config = require("../../config");
+const config = require("../../server/config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
 

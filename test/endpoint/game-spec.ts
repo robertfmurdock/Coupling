@@ -6,7 +6,7 @@ import Badge from "../../common/Badge";
 import Tribe from "../../common/Tribe";
 import PairingRule from "../../common/PairingRule";
 import Comparators from "../../common/Comparators";
-let config = require('../../config');
+let config = require('../../server/config/config');
 
 let server = 'http://localhost:' + config.port;
 let superAgent = supertest.agent(server);

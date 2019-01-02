@@ -5,7 +5,7 @@ import Comparators from "../../common/Comparators";
 import * as supertest from "supertest";
 import * as monk from "monk";
 
-let config = require('./../../config');
+let config = require('../../server/config/config');
 let tribeId = 'endpointTest';
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);

@@ -1,6 +1,6 @@
 import CouplingDataService from "../lib/CouplingDataService";
 
-const config = require('../../config');
+const config = require('../config/config');
 
 export default function (userDataService, couplingDataService) {
     const tempDataService = new CouplingDataService(config.tempMongoUrl);

@@ -8,7 +8,7 @@ import Badge from "../../../../common/Badge";
 import PairingRule from "../../../../common/PairingRule";
 import Pair from "../../../../common/Pair";
 
-const config = require('../../../../config');
+const config = require('../../../../server/config/config');
 
 describe('The game', function () {
 

@@ -5,7 +5,7 @@ import CouplingDataService from "../../server/lib/CouplingDataService";
 import * as supertest from "supertest";
 import * as monk from "monk";
 
-let config = require('../../config');
+let config = require('../../server/config/config');
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
 let tribeId = 'endpointTest';

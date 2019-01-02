@@ -6,7 +6,8 @@ const logger = require('morgan');
 const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const Strategy = require('passport-custom').Strategy;
+const {OAuth2Client} = require('google-auth-library');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -14,7 +15,7 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const statsd = require('express-statsd');
-const config = require('./../../config');
+const config = require('./config');
 
 module.exports = function (app, userDataService) {
   app.use(compression());
@@ -27,7 +28,7 @@ module.exports = function (app, userDataService) {
   ]);
   app.set('view engine', 'pug');
   app.use(favicon('public/images/favicon.ico'));
-  if(!process.env['DISABLE_LOGGING']) {
+  if (!process.env['DISABLE_LOGGING']) {
     app.use(logger('dev'));
   }
 
@@ -48,7 +49,7 @@ module.exports = function (app, userDataService) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  var isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
+  const isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
   if (isInDevelopmentMode) {
     app.use(errorHandler());
   }
@@ -56,18 +57,29 @@ module.exports = function (app, userDataService) {
   passport.serializeUser(userDataService.serializeUser);
   passport.deserializeUser(userDataService.deserializeUser);
 
-  passport.use(new GoogleStrategy({
-      clientID: config.googleClientID,
-      clientSecret: config.googleClientSecret,
-      callbackURL: config.publicUrl + '/auth/google/callback',
-      scope: 'profile email'
-    },
-    function (accessToken, refreshToken, profile, done) {
-      userDataService.findOrCreate(profile.emails[0].value, function (user) {
-        done(null, user);
-      });
-    }
-  ));
+  const clientID = config.googleClientID;
+  const client = new OAuth2Client(clientID);
+
+  async function verify(token) {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: clientID
+    });
+    return ticket.getPayload();
+  }
+
+  passport.use(
+    new Strategy(function (request, done) {
+
+      verify(request.body.idToken)
+        .then(payload => {
+          userDataService.findOrCreate(payload.email, function (user) {
+            done(null, user);
+          });
+        }, err => done(err))
+
+    })
+  );
 
   if (isInDevelopmentMode) {
     passport.use(new LocalStrategy(function (username, password, done) {

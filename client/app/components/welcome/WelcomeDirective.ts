@@ -1,8 +1,10 @@
+import * as angular from "angular";
 import {module} from "angular";
 import * as services from "../../services";
 import * as template from "./welcome.pug";
 import * as styles from "./styles.css";
 import Player from "../../../../common/Player";
+import axios from "axios";
 
 interface Card {
     name: string
@@ -55,6 +57,7 @@ let makePlayerForCard = function (card: Card) {
         imageURL: `/images/icons/players/${card.imagePath}`
     };
 };
+
 export class WelcomeController {
 
     private static chooseWelcomeCards(randomizer): WelcomeCardSet {
@@ -62,7 +65,7 @@ export class WelcomeController {
         return candidates[indexToUse];
     }
 
-    static $inject = ['$timeout', 'randomizer'];
+    static $inject = ['$timeout', 'randomizer', '$scope'];
 
     public show: boolean;
     public proverb: String;
@@ -70,7 +73,7 @@ export class WelcomeController {
     public rightPlayer: Player;
     public styles: any;
 
-    constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer) {
+    constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer, public $scope) {
         this.show = false;
         const choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftPlayer = makePlayerForCard(choice.leftCard);
@@ -80,6 +83,43 @@ export class WelcomeController {
         $timeout(() => this.show = true, 0);
     }
 
+    async signIn() {
+        const googleAuth = await this.getGoogleAuth();
+        const user = await this.getGoogleUser(googleAuth);
+        const idToken = user.getAuthResponse().id_token;
+        await axios.post(`/auth/google-token`, {idToken: idToken});
+        window.location.pathname = "/"
+    }
+
+    private async getGoogleAuth() {
+        let auth2 = await this.loadGoogleAuth2();
+
+        return await auth2.init({
+            // @ts-ignore
+            client_id: window.googleClientId
+        });
+    }
+
+    private async loadGoogleAuth2() : Promise<any> {
+        return await new Promise((resolve) => {
+            // @ts-ignore
+            gapi.load('auth2', function () {
+                // @ts-ignore
+                resolve(gapi.auth2)
+            })
+        });
+    }
+
+    private async getGoogleUser(googleAuth) {
+        const isSignedIn = googleAuth.isSignedIn.get();
+        if (!isSignedIn) {
+            return await googleAuth.signIn({
+                scope: 'profile email'
+            });
+        } else {
+            return await googleAuth.currentUser.get();
+        }
+    }
 }
 
 export default module('coupling.welcome', [])

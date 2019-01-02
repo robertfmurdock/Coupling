@@ -4,7 +4,7 @@ import CouplingDataService from "../../../server/lib/CouplingDataService";
 import Comparators from "../../../common/Comparators";
 import Player from "../../../common/Player";
 
-const config = require('../../../config');
+const config = require('../../../server/config/config');
 
 const mongoUrl = config.testMongoUrl + '/UsersTest';
 const database = monk.default(mongoUrl);

@@ -4,7 +4,7 @@ import * as Promise from "bluebird";
 import * as monk from "monk";
 import * as _ from "underscore";
 
-let config = require('../../config');
+let config = require('../../server/config/config');
 let server = 'http://localhost:' + config.port;
 
 let path = '/api/tribes';

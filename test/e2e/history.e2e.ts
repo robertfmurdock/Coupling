@@ -5,7 +5,7 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 
-const config = require('../../config');
+const config = require('../../server/config/config');
 const hostName = `http://${config.publicHost}:${config.port}`;
 const database = monk.default(config.tempMongoUrl);
 const historyCollection = database.get('history');

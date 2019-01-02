@@ -4,7 +4,7 @@ import * as Promise from 'bluebird'
 import * as monk from 'monk'
 import * as supertest from "supertest";
 
-let config = require('../../config');
+let config = require('../../server/config/config');
 
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);

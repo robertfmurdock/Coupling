@@ -11,11 +11,8 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     const app = wsInstance.app;
 
     app.get('/welcome', routes.welcome);
-    app.get('/auth/google', passport.authenticate('google'));
-    app.get('/auth/google/callback', passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/auth/google'
-    }));
+    app.post('/auth/google-token', passport.authenticate('custom'), ((req, res) => res.sendStatus(200)));
+
     if ('development' == app.get('env') || 'test' == app.get('env')) {
         app.get('/test-login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
     }
