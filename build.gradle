@@ -38,6 +38,15 @@ task clientCompile(type: Exec) {
     commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
 }
 
+task clientStats(type: Exec) {
+    environment 'NODE_ENV': 'production'
+    commandLine "node_modules/.bin/webpack", '--json','--config', 'client/webpack.config.js'
+
+    doFirst {
+        standardOutput new FileOutputStream("clientStats.json")
+    }
+}
+
 task serverCompile(type: Exec) {
     dependsOn installNodeModules
     mustRunAfter clean

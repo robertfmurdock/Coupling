@@ -71,7 +71,7 @@ describe('The edit player page', function () {
     it('retire player should have intended effect.', async function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         deleteButton.click();
-        const alert = await (browser.switchTo().alert() as Promise<any>);
+        const alert = await browser.switchTo().alert();
 
         await alert.accept();
 

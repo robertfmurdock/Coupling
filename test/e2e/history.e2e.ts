@@ -76,7 +76,7 @@ describe('The history page', function () {
             const deleteButton = pairAssignmentSetElements.get(0).element(By.css('.delete-button'));
 
             deleteButton.click();
-            const alert = await (browser.switchTo().alert() as Promise<any>);
+            const alert = await browser.switchTo().alert();
 
             alert.accept();
 

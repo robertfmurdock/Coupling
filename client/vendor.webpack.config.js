@@ -14,6 +14,7 @@ const config = {
       "angular-native-dragdrop",
       "angular-resource",
       "angular-route",
+      "angular-websocket",
       "d3-color",
       "d3-interpolate",
       "d3-selection",
@@ -40,6 +41,7 @@ const config = {
     library: "[name]_lib"
   },
   module: {
+    noParse: /ws/,
     rules: [
       {
         test: /\.(css)$/,
@@ -57,6 +59,9 @@ const config = {
         loader: 'url-loader?limit=50000'
       }
     ]
+  },
+  externals: {
+    ws: {}
   },
   plugins: [
     new ExtractTextPlugin({filename: '[name]-styles.css', allChunks: true}),
