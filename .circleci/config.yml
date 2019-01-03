@@ -22,11 +22,19 @@ jobs:
           path: test-output
       - store_test_results:
           path: test-output
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - build/*
   deploy-prod:
     docker:
       - image: openjdk:8-jre-slim
     steps:
       - checkout
+      - attach_workspace:
+          at: ./
+      - restore_cache:
+          key: coupling-gradle4.10.3-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew pullProductionImage buildProductionImage pushProductionImage"
 workflows:
