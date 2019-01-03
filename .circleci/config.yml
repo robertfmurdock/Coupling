@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: openjdk:8-jre-slim
+      - image: mongo:latest
+      - image: selenium/standalone-chrome
+    environment:
+      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
+    steps:
+      - checkout
+      - restore_cache:
+          key: coupling-gradle4.10.3-{{ .Branch }}
+      - run: "./gradlew yarn_install"
+      - save_cache:
+          key: coupling-gradle4.10.3-{{ .Branch }}
+          paths:
+            - "~/.gradle"
+            - "node_modules"
+      - run: "./gradlew test endToEndTest"
+      - store_artifacts:
+          path: test-output
+      - setup_remote_docker
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./gradlew pullProductionImage buildProductionImage
+              ./gradlew pushProductionImage
+            fi

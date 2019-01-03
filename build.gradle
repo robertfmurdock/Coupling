@@ -1,3 +1,18 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+
+plugins {
+    id("com.moowork.node") version "1.2.0"
+    id 'com.bmuschko.docker-remote-api' version '4.2.0'
+}
+
+node {
+    version = "10.5.0"
+    npmVersion = "6.1.0"
+    yarnVersion = "1.7.0"
+    download = true
+}
+
 task clean {
     doLast {
         delete file('build')
@@ -6,25 +21,24 @@ task clean {
     }
 }
 
-task installNodeModules(type: Exec) {
+yarn {
     inputs.file file('package.json')
     outputs.dir file('node_modules')
-    commandLine "yarn", "install"
 }
 
-task clientVendorCompile(type: Exec) {
-    dependsOn installNodeModules
+task clientVendorCompile(type: YarnTask) {
+    dependsOn yarn
     mustRunAfter clean
     inputs.file fileTree('node_modules')
     inputs.file file('package.json')
     inputs.file file('client/vendor.webpack.config.js')
     outputs.dir 'public/app/build/vendor'
     environment 'NODE_ENV': 'production'
-    commandLine "node_modules/.bin/webpack", '--config', 'client/vendor.webpack.config.js'
+    args = ["webpack", '--config', 'client/vendor.webpack.config.js']
 }
 
-task clientCompile(type: Exec) {
-    dependsOn installNodeModules, clientVendorCompile
+task clientCompile(type: YarnTask) {
+    dependsOn yarn, clientVendorCompile
     mustRunAfter clean
     inputs.file fileTree('node_modules')
     inputs.file file('package.json')
@@ -35,20 +49,20 @@ task clientCompile(type: Exec) {
     inputs.file fileTree('client')
     outputs.dir 'public/app/build'
     environment 'NODE_ENV': 'production'
-    commandLine "node_modules/.bin/webpack", '--config', 'client/webpack.config.js'
+    args = ["webpack", '--config', 'client/webpack.config.js']
 }
 
 task clientStats(type: Exec) {
     environment 'NODE_ENV': 'production'
-    commandLine "node_modules/.bin/webpack", '--json','--config', 'client/webpack.config.js'
+    commandLine "node_modules/.bin/webpack", '--json', '--config', 'client/webpack.config.js'
 
     doFirst {
         standardOutput new FileOutputStream("clientStats.json")
     }
 }
 
-task serverCompile(type: Exec) {
-    dependsOn installNodeModules
+task serverCompile(type: YarnTask) {
+    dependsOn yarn
     mustRunAfter clean
     inputs.file file('node_modules')
     inputs.file file('package.json')
@@ -59,35 +73,35 @@ task serverCompile(type: Exec) {
     inputs.file fileTree('common')
     outputs.dir file('build')
     environment 'NODE_ENV': 'production'
-    commandLine "node_modules/.bin/webpack", '--config', 'server/webpack.config.js'
+    args = ["webpack", '--config', 'server/webpack.config.js']
 }
 
 task compile {
     dependsOn serverCompile, clientCompile
 }
 
-task clientTest(type: Exec) {
-    dependsOn installNodeModules, clientVendorCompile
+task clientTest(type: YarnTask) {
+    dependsOn yarn, clientVendorCompile
     inputs.file file('package.json')
     inputs.file clientCompile.inputs.files
     inputs.file fileTree('test/unit/client')
     outputs.dir file('test-output/client')
 
-    commandLine 'yarn', 'run', 'clientTest', '--silent'
+    args = ['run', 'clientTest', '--silent']
 }
 
-task serverTest(type: Exec) {
-    dependsOn installNodeModules
+task serverTest(type: YarnTask) {
+    dependsOn yarn
     inputs.file file('package.json')
     inputs.file serverCompile.inputs.files
     inputs.file fileTree('test/unit/server')
     outputs.file file('test-output/server.unit')
 
-    commandLine 'yarn', 'run', 'serverTest', '--silent'
+    args = ['run', 'serverTest', '--silent']
 }
 
-task endpointTest(type: Exec) {
-    dependsOn installNodeModules, serverCompile
+task endpointTest(type: YarnTask) {
+    dependsOn yarn, serverCompile
     mustRunAfter serverTest
     inputs.file serverTest.inputs.files
     inputs.file serverCompile.outputs.files
@@ -95,15 +109,15 @@ task endpointTest(type: Exec) {
     inputs.file file('test/endpoint')
     outputs.file file('test-output/endpoint')
 
-    commandLine 'yarn', 'run', 'endpointTest', '--silent'
+    args = ['run', 'endpointTest', '--silent']
 }
 
-task updateWebdriver(type: Exec) {
+task updateWebdriver(type: YarnTask) {
     outputs.file 'node_modules/webdriver-manager/selenium/'
-    commandLine 'yarn', 'run', 'update-webdriver', '--silent'
+    args = ['run', 'update-webdriver', '--silent']
 }
 
-task endToEndTest(type: Exec) {
+task endToEndTest(type: YarnTask) {
     dependsOn compile, updateWebdriver
     mustRunAfter serverTest, clientTest, endpointTest
     inputs.file clientTest.inputs.files
@@ -114,22 +128,48 @@ task endToEndTest(type: Exec) {
     inputs.file file('test/e2e')
     outputs.file file('test-output/e2e')
 
-    commandLine 'yarn', 'run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"
+    args = ['run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"]
 }
 
 task test {
     dependsOn serverTest, clientTest, endpointTest
 }
 
-task start(type: Exec) {
+task start(type: YarnTask) {
     dependsOn compile
-    commandLine 'yarn', 'run', 'start-built-app'
+    args = ['run', 'start-built-app']
 }
 
-task watch(type: Exec) {
-    commandLine 'node', 'test/continuous-run.js'
+task watch(type: NodeTask) {
+    args = ['test/continuous-run.js']
 }
 
 task build {
     dependsOn test, endToEndTest, clientCompile
+}
+
+task pullProductionImage(type: DockerPullImage) {
+    repository = 'zegreatrob/coupling'
+    tag = "latest"
+}
+
+task pushProductionImage(type: DockerPullImage) {
+    repository = 'zegreatrob/coupling'
+    tag = "latest"
+}
+
+task buildProductionImage(type: DockerBuildImage) {
+    mustRunAfter "pullProductionImage"
+    inputDir = file("./")
+    dockerFile = file("Dockerfile.prod")
+    remove = false
+    tags.add('zegreatrob/coupling')
+}
+
+docker {
+    registryCredentials {
+        username = System.getenv("DOCKER_USER")
+        password = System.getenv("DOCKER_PASS")
+        email = System.getenv("DOCKER_EMAIL")
+    }
 }

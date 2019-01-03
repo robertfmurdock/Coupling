@@ -1,13 +1,19 @@
 const webpackConfig = require('./webpack.config');
+const url = require('url');
 
 const chooseBrowsers = function () {
-  if (process.env['HEADLESS'] === 'true') {
-    return ['PhantomJS'];
-  } else if (process.env['KARMA_CHROME_ONLY'] === 'true') {
-    return ['Chrome'];
+  if (process.env.SELENIUM_ADDRESS) {
+    return ['remote-chrome'];
   } else {
     return ['Chrome', 'Firefox'];
   }
+};
+
+let seleniumAddress = url.parse(process.env.SELENIUM_ADDRESS || '');
+
+const webdriverConfig = {
+  hostname: seleniumAddress.hostname,
+  port: seleniumAddress.port
 };
 
 module.exports = function (config) {
@@ -44,6 +50,14 @@ module.exports = function (config) {
     // logLevel: config.LOG_INFO,
 
     autoWatch: true,
+
+    customLaunchers: {
+      'remote-chrome': {
+        base: 'WebDriver',
+        config: webdriverConfig,
+        browserName: 'chrome',
+      }
+    },
 
     browsers: chooseBrowsers(),
 

@@ -87,7 +87,6 @@ describe('The history page', function () {
             expect(pairAssignmentSetElements.count()).toBe(1);
         });
 
-
     });
 
 });
