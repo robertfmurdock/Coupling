@@ -25,6 +25,7 @@ jobs:
       - persist_to_workspace:
           root: ./
           paths:
+            - public/app/build/vendor/*
             - build/*
   deploy-prod:
     docker:
@@ -35,6 +36,9 @@ jobs:
           at: ./
       - restore_cache:
           key: coupling-gradle4.10.3-{{ .Branch }}
+      - run: |
+          ls -ltr ./build
+          ls -ltr ./public/app/build/vendor
       - setup_remote_docker
       - run: "./gradlew pullProductionImage buildProductionImage pushProductionImage"
 workflows:
