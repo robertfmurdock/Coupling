@@ -10,14 +10,16 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
 
     const app = wsInstance.app;
 
-    app.get('/welcome', routes.welcome);
     app.post('/auth/google-token', passport.authenticate('custom'), ((req, res) => res.sendStatus(200)));
 
-    if ('development' == app.get('env') || 'test' == app.get('env')) {
+    const expressEnv = app.get('env');
+    const isInDevMode = 'development' == expressEnv || 'test' == expressEnv;
+    if (isInDevMode) {
         app.get('/test-login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
     }
 
-    app.get('/', routes.index);
+    const indexRoute = routes.index(expressEnv);
+    app.get('/', indexRoute);
     app.all('/api/*', apiGuard(userDataService, couplingDataService));
     app.use('/api/tribes', tribeListRoute);
     app.use('/api/:tribeId', tribeRoute);
@@ -67,6 +69,6 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
         ws.close();
     });
 
-    app.get('*', routes.index);
+    app.get('*', indexRoute);
 
 };

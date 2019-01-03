@@ -16,19 +16,11 @@ describe('The welcome page', function () {
         browser.get(hostName + '/welcome');
         pageBody.allowAnimations(false);
 
-        await enterButton.click();
+        enterButton.click();
         browser.waitForAngularEnabled(false);
-
 
         await browser.wait(async () => {
             try {
-                const handles = await browser.getAllWindowHandles();
-                if(handles.length < 2) {
-                    return false;
-                }
-                // Give this a moment to let the google auth code load. It seems if protractor gets to it too soon, it does not load.
-                browser.sleep(100);
-                await browser.switchTo().window(handles[1]);
                 const url = await browser.getCurrentUrl();
                 return url.startsWith('https://accounts.google.com');
             } catch (e) {
@@ -37,11 +29,10 @@ describe('The welcome page', function () {
             }
         }, 5000);
 
-        await browser.getCurrentUrl().then(function (url) {
-            expect(url.startsWith('https://accounts.google.com')).toBe(true);
+        browser.getCurrentUrl().then(function (url) {
+            expect(url.startsWith('https://accounts.google.com')).toBe(true, `url was ${url}`);
         });
 
-        await browser.close();
     });
 
     afterEach(function () {

@@ -1,19 +1,16 @@
 const config = require('../config/config');
 
-export function index(request, response) {
-    if (!request.isAuthenticated()) {
-        response.redirect('/welcome');
-    } else {
-        response.render('index', {title: 'Coupling', buildDate: config.buildDate, gitRev: config.gitRev});
+export function index(expressEnv) {
+    return function (request, response) {
+        response.render('index', {
+            title: 'Coupling',
+            buildDate: config.buildDate,
+            gitRev: config.gitRev,
+            googleClientId: config.googleClientID,
+            expressEnv: expressEnv,
+            isAuthenticated: request.isAuthenticated()
+        });
     }
-}
-
-export function welcome(request, response) {
-    response.render('welcome', {
-        buildDate: config.buildDate,
-        gitRev: config.gitRev,
-        googleClientId: config.googleClientID
-    });
 }
 
 export function partials(request, response) {

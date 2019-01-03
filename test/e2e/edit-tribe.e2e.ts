@@ -50,8 +50,10 @@ describe('The edit tribe page', function () {
 
         e2eHelp.afterEachAssertLogsAreEmpty();
 
-        it('can save edits to a tribe correctly', function () {
-            browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+        it('can save edits to a tribe correctly', async function () {
+            await browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+
+            await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
             const tribeElements = element.all(By.repeater('tribe in tribeList.tribes'));
             tribeElements.first().element(By.className(tribeCardStyles.header)).click();
 
@@ -70,8 +72,10 @@ describe('The edit tribe page', function () {
             differentBadgesOption.click();
 
             element(By.id('save-tribe-button')).click();
+            await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
 
-            browser.setLocation('/' + tribe.id + '/edit/');
+            await browser.setLocation('/' + tribe.id + '/edit/');
+            await browser.wait(() => element(By.id('tribe-name')).isPresent(), 2000);
 
             expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
             expect(element(By.id('badge-checkbox')).getAttribute('checked')).toEqual('true');

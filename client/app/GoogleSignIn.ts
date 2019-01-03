@@ -15,12 +15,18 @@ export default class GoogleSignIn {
     }
 
     static async checkForSignedIn() {
+        // @ts-ignore
+        if (window.isAuthenticated) {
+            return true
+        }
+
         const googleAuth = await this.getGoogleAuth();
         const isSignedIn = googleAuth.isSignedIn.get();
         if (isSignedIn) {
             const user = await googleAuth.currentUser.get();
             await this.createSession(user)
         }
+        return isSignedIn;
     }
 
     private static async getGoogleAuth() {
@@ -48,8 +54,8 @@ export default class GoogleSignIn {
             return await googleAuth.signIn({
                 scope: 'profile email',
                 prompt: 'consent',
-                // ux_mode: 'redirect',
-                // redirect_uri: window.location.origin
+                ux_mode: 'redirect',
+                redirect_uri: window.location.origin
             });
         } else {
             return await googleAuth.currentUser.get();

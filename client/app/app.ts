@@ -25,50 +25,66 @@ import tribeListRoute from "./routes/TribeListRoute";
 import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import {module} from "angular";
 import IRouteProvider = angular.route.IRouteProvider;
+import GoogleSignIn from "./GoogleSignIn";
 
-const app = module('coupling', ["ngRoute",
-    'ngFitText',
-    'ui.gravatar',
-    'ang-drag-drop',
-    'coupling.component',
-    'coupling.filters',
-    'coupling.animations']);
+async function bootstrapApp() {
+    const isSignedIn = await GoogleSignIn.checkForSignedIn();
 
-app.config(['$locationProvider', function ($locationProvider) {
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
-}]);
+    const app = module('coupling', ["ngRoute",
+        'ngFitText',
+        'ui.gravatar',
+        'ang-drag-drop',
+        'coupling.component',
+        'coupling.filters',
+        'coupling.animations']);
 
-app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
+    app.config(['$locationProvider', function ($locationProvider) {
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
+    }]);
 
-    routeProvider
-        .when('/', {redirectTo: '/tribes/'})
-        .when('/welcome', {})
-        .when('/tribes/', tribeListRoute)
-        .when('/new-tribe/', newTribeRoute)
-        .when('/:tribeId/', {redirectTo: '/:tribeId/pairAssignments/current/'})
-        .when('/:tribeId/prepare/', prepareTribeRoute)
-        .when('/:tribeId/edit/', editTribeRoute)
-        .when('/:tribeId/history/', historyRoute)
-        .when('/:tribeId/pins', pinRoute)
-        .when('/:tribeId/pairAssignments/current/', currentPairAssignmentsRoute)
-        .when('/:tribeId/pairAssignments/new/', newPairAssignmentsRoute)
-        .when('/:tribeId/player/new/', newPlayerRoute)
-        .when('/:tribeId/player/:id/', editPlayerRoute)
-        .when('/:tribeId/statistics', statisticsRoute)
-        .when('/:tribeId/players/retired', retiredPlayersRoute)
-}]);
+    app.config(['$routeProvider', function (routeProvider: IRouteProvider) {
+        routeProvider
+            .when('/welcome', {template: '<welcomepage />'});
 
-module('ui.gravatar')
-    .config([
-        'gravatarServiceProvider',
-        function (gravatarServiceProvider) {
-            gravatarServiceProvider.defaults = {
-                size: 100,
-                "default": 'mm'
-            };
-            gravatarServiceProvider.secure = true;
+        if (!isSignedIn) {
+            routeProvider
+                .otherwise({redirectTo: '/welcome'});
+        } else {
+            routeProvider
+                .when('/', {redirectTo: '/tribes/'})
+                .when('/tribes/', tribeListRoute)
+                .when('/new-tribe/', newTribeRoute)
+                .when('/:tribeId/', {redirectTo: '/:tribeId/pairAssignments/current/'})
+                .when('/:tribeId/prepare/', prepareTribeRoute)
+                .when('/:tribeId/edit/', editTribeRoute)
+                .when('/:tribeId/history/', historyRoute)
+                .when('/:tribeId/pins', pinRoute)
+                .when('/:tribeId/pairAssignments/current/', currentPairAssignmentsRoute)
+                .when('/:tribeId/pairAssignments/new/', newPairAssignmentsRoute)
+                .when('/:tribeId/player/new/', newPlayerRoute)
+                .when('/:tribeId/player/:id/', editPlayerRoute)
+                .when('/:tribeId/statistics', statisticsRoute)
+                .when('/:tribeId/players/retired', retiredPlayersRoute)
         }
-    ]);
+    }]);
+
+    module('ui.gravatar')
+        .config([
+            'gravatarServiceProvider',
+            function (gravatarServiceProvider) {
+                gravatarServiceProvider.defaults = {
+                    size: 100,
+                    "default": 'mm'
+                };
+                gravatarServiceProvider.secure = true;
+            }
+        ]);
+
+    angular.element(() => angular.bootstrap(document, ['coupling']));
+}
+
+bootstrapApp()
+    .catch(err => console.log(err));

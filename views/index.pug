@@ -1,5 +1,9 @@
 extends layout.pug
 block content
     body
+        script.
+          window.googleClientId = "#{googleClientId}"
+          window.expressEnv = "#{expressEnv}"
+          window.isAuthenticated = "#{isAuthenticated}"
         span(class="view-container")
             div(ng-view class="view-frame")

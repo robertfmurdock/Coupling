@@ -1,15 +1,16 @@
 doctype html
-html(ng-app="coupling")
+html
     head
         title= title
         link(href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
         link(rel='stylesheet', href='/app/build/vendor/vendor-styles.css')
         link(rel='stylesheet', href='/app/build/styles.css')
 
-        script(src="https://apis.google.com/js/platform.js" async defer)
+
         script(src="/app/build/vendor/vendor.js", type="application/javascript")
 
-        script(src="/app/build/main.js",type="application/javascript")
+        script(src="https://apis.google.com/js/platform.js")
+        script(src="/app/build/main.js",type="application/javascript" async defer)
         meta(name="viewport" content="width=device-width")
 
         script var iosDragDropShim = {enableEnterLeave: true};

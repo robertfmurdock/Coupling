@@ -1,6 +1,7 @@
 :local(.className) {
     display: inline-block;
     overflow: hidden;
+    padding-top: 75px;
 }
 
 :local(.welcome) {
