@@ -1,5 +1,6 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 plugins {
     id("com.moowork.node") version "1.2.0"
@@ -153,7 +154,7 @@ task pullProductionImage(type: DockerPullImage) {
     tag = "latest"
 }
 
-task pushProductionImage(type: DockerPullImage) {
+task pushProductionImage(type: DockerPushImage) {
     repository = 'zegreatrob/coupling'
     tag = "latest"
 }
