@@ -154,17 +154,18 @@ task pullProductionImage(type: DockerPullImage) {
     tag = "latest"
 }
 
-task pushProductionImage(type: DockerPushImage) {
-    imageName = 'zegreatrob/coupling'
-    tag = "latest"
-}
-
 task buildProductionImage(type: DockerBuildImage) {
     mustRunAfter "pullProductionImage"
     inputDir = file("./")
     dockerFile = file("Dockerfile.prod")
     remove = false
     tags.add('zegreatrob/coupling')
+}
+
+task pushProductionImage(type: DockerPushImage) {
+    mustRunAfter "buildProductionImage"
+    imageName = 'zegreatrob/coupling'
+    tag = "latest"
 }
 
 docker {

@@ -20,10 +20,23 @@ jobs:
       - run: "./gradlew test endToEndTest"
       - store_artifacts:
           path: test-output
+      - store_test_results:
+          path: test-output
+  deploy-prod:
+    docker:
+      - image: openjdk:8-jre-slim
+    steps:
+      - checkout
       - setup_remote_docker
-      - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./gradlew pullProductionImage buildProductionImage
-              ./gradlew pushProductionImage
-            fi
+      - run: "./gradlew pullProductionImage buildProductionImage pushProductionImage"
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
