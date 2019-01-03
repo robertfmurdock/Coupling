@@ -63,6 +63,7 @@ describe('The history page', function () {
             await browser.waitForAngular();
 
             await browser.setLocation(`/${tribe.id}/history`);
+            await browser.wait(() => element(By.id('history-view')).isPresent(), 2000)
         });
 
         it('shows recent pairings', async function () {
