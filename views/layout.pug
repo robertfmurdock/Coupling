@@ -6,12 +6,14 @@ html(ng-app="coupling")
         link(rel='stylesheet', href='/app/build/vendor/vendor-styles.css')
         link(rel='stylesheet', href='/app/build/styles.css')
 
+        script(src="https://apis.google.com/js/platform.js" async defer)
         script(src="/app/build/vendor/vendor.js", type="application/javascript")
+
         script(src="/app/build/main.js",type="application/javascript")
         meta(name="viewport" content="width=device-width")
 
         script var iosDragDropShim = {enableEnterLeave: true};
         script(src="/javascripts/ios-drag-drop.js")
-        script(src="https://apis.google.com/js/platform.js" async defer)
+
 
     block content

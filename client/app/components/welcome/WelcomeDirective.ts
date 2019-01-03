@@ -4,7 +4,7 @@ import * as services from "../../services";
 import * as template from "./welcome.pug";
 import * as styles from "./styles.css";
 import Player from "../../../../common/Player";
-import axios from "axios";
+import GoogleSignIn from "../../GoogleSignIn";
 
 interface Card {
     name: string
@@ -84,42 +84,9 @@ export class WelcomeController {
     }
 
     async signIn() {
-        const googleAuth = await this.getGoogleAuth();
-        const user = await this.getGoogleUser(googleAuth);
-        const idToken = user.getAuthResponse().id_token;
-        await axios.post(`/auth/google-token`, {idToken: idToken});
-        window.location.pathname = "/"
+        await GoogleSignIn.signIn();
     }
 
-    private async getGoogleAuth() {
-        let auth2 = await this.loadGoogleAuth2();
-
-        return await auth2.init({
-            // @ts-ignore
-            client_id: window.googleClientId
-        });
-    }
-
-    private async loadGoogleAuth2() : Promise<any> {
-        return await new Promise((resolve) => {
-            // @ts-ignore
-            gapi.load('auth2', function () {
-                // @ts-ignore
-                resolve(gapi.auth2)
-            })
-        });
-    }
-
-    private async getGoogleUser(googleAuth) {
-        const isSignedIn = googleAuth.isSignedIn.get();
-        if (!isSignedIn) {
-            return await googleAuth.signIn({
-                scope: 'profile email'
-            });
-        } else {
-            return await googleAuth.currentUser.get();
-        }
-    }
 }
 
 export default module('coupling.welcome', [])
