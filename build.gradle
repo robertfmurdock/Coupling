@@ -155,7 +155,7 @@ task pullProductionImage(type: DockerPullImage) {
 }
 
 task pushProductionImage(type: DockerPushImage) {
-    repository = 'zegreatrob/coupling'
+    imageName = 'zegreatrob/coupling'
     tag = "latest"
 }
 
