@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-gradle4.10.3-{{ .Branch }}
+          key: coupling-cache-1-{{ .Branch }}
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-gradle4.10.3-{{ .Branch }}
+          key: coupling-cache-1-{{ .Branch }}
           paths:
             - "~/.gradle"
             - "node_modules"
@@ -33,7 +33,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-gradle4.10.3-{{ .Branch }}
+          key: coupling-cache-1-{{ .Branch }}
       - run: |
           ls -ltr ./build
           ls -ltr ./public/app/build/vendor
