@@ -22,6 +22,11 @@ task clean {
     }
 }
 
+yarn {
+    inputs.file file('package.json')
+    outputs.dir file('node_modules')
+}
+
 task clientVendorCompile(type: YarnTask) {
     dependsOn yarn
     mustRunAfter clean
@@ -56,8 +61,22 @@ task clientStats(type: Exec) {
     }
 }
 
+task serverCompile(type: YarnTask) {
+    dependsOn yarn
+    mustRunAfter clean
+    inputs.dir 'node_modules'
+    inputs.file file('package.json')
+    inputs.file file('tsconfig.json')
+    inputs.file file('server/webpack.config.js')
+    inputs.dir 'server'
+    inputs.dir 'common'
+    outputs.dir file('build')
+    environment 'NODE_ENV': 'production'
+    args = ["webpack", '--config', 'server/webpack.config.js']
+}
+
 task compile {
-    dependsOn ":server:serverCompile", clientCompile
+    dependsOn serverCompile, clientCompile
 }
 
 task clientTest(type: YarnTask) {
@@ -70,6 +89,28 @@ task clientTest(type: YarnTask) {
     args = ['run', 'clientTest', '--silent']
 }
 
+task serverTest(type: YarnTask) {
+    dependsOn yarn
+    inputs.file file('package.json')
+    inputs.files serverCompile.inputs.files
+    inputs.dir 'test/unit/server'
+    outputs.dir 'test-output/server.unit'
+
+    args = ['run', 'serverTest', '--silent']
+}
+
+task endpointTest(type: YarnTask) {
+    dependsOn yarn, serverCompile
+    mustRunAfter serverTest
+    inputs.files serverTest.inputs.files
+    inputs.files serverCompile.outputs.files
+    inputs.file file('package.json')
+    inputs.dir 'test/endpoint'
+    outputs.dir 'test-output/endpoint'
+
+    args = ['run', 'endpointTest', '--silent']
+}
+
 task updateWebdriver(type: YarnTask) {
     outputs.dir 'node_modules/webdriver-manager/selenium/'
     args = ['run', 'update-webdriver', '--silent']
@@ -77,13 +118,11 @@ task updateWebdriver(type: YarnTask) {
 
 task endToEndTest(type: YarnTask) {
     dependsOn compile, updateWebdriver
-    mustRunAfter ":server:serverTest", clientTest, ":server:endpointTest"
+    mustRunAfter serverTest, clientTest, endpointTest
     inputs.files clientTest.inputs.files
-    def serverTestTask = tasks.findByPath(":server:serverTest")
-    println("stt $serverTestTask")
-    inputs.files serverTestTask.inputs.files
+    inputs.files serverTest.inputs.files
     inputs.files clientCompile.outputs.files
-    inputs.files tasks.findByPath(":server:serverCompile").outputs.files
+    inputs.files serverCompile.outputs.files
     inputs.file file('package.json')
     inputs.dir 'test/e2e'
     outputs.dir 'test-output/e2e'
@@ -92,7 +131,7 @@ task endToEndTest(type: YarnTask) {
 }
 
 task test {
-    dependsOn ":server:serverTest", clientTest, ":server:serverTest"
+    dependsOn serverTest, clientTest, endpointTest
 }
 
 task start(type: YarnTask) {
