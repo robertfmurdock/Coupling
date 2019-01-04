@@ -4,7 +4,12 @@ plugins {
     id("com.moowork.node")
 }
 
+node {
+    nodeModulesDir = file("../")
+}
+
 tasks {
+
     task("clean") {
         doLast {
             delete(file("../build"))

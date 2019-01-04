@@ -22,11 +22,6 @@ task clean {
     }
 }
 
-yarn {
-    inputs.file file('package.json')
-    outputs.dir file('node_modules')
-}
-
 task clientVendorCompile(type: YarnTask) {
     dependsOn yarn
     mustRunAfter clean
