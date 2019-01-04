@@ -19,7 +19,6 @@ jobs:
             - "~/.gradle"
             - ".gradle"
             - "node_modules"
-            - "/usr/local/share/.cache/yarn/v2"
       - run: "./gradlew test endToEndTest"
       - store_artifacts:
           path: test-output
