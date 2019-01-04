@@ -8,9 +8,9 @@ plugins {
 }
 
 node {
-    version = "10.5.0"
-    npmVersion = "6.1.0"
-    yarnVersion = "1.7.0"
+    version = "11.6.0"
+    npmVersion = "6.5.0"
+    yarnVersion = "1.10.1"
     download = true
 }
 
@@ -30,7 +30,7 @@ yarn {
 task clientVendorCompile(type: YarnTask) {
     dependsOn yarn
     mustRunAfter clean
-    inputs.file fileTree('node_modules')
+    inputs.dir 'node_modules'
     inputs.file file('package.json')
     inputs.file file('client/vendor.webpack.config.js')
     outputs.dir 'public/app/build/vendor'
@@ -41,13 +41,12 @@ task clientVendorCompile(type: YarnTask) {
 task clientCompile(type: YarnTask) {
     dependsOn yarn, clientVendorCompile
     mustRunAfter clean
-    inputs.file fileTree('node_modules')
+    inputs.dir 'node_modules'
     inputs.file file('package.json')
     inputs.file file('tsconfig.json')
     inputs.file file('client/webpack.config.js')
-    inputs.file fileTree('typings')
-    inputs.file fileTree('common')
-    inputs.file fileTree('client')
+    inputs.dir 'common'
+    inputs.dir 'client'
     outputs.dir 'public/app/build'
     environment 'NODE_ENV': 'production'
     args = ["webpack", '--config', 'client/webpack.config.js']
@@ -65,13 +64,12 @@ task clientStats(type: Exec) {
 task serverCompile(type: YarnTask) {
     dependsOn yarn
     mustRunAfter clean
-    inputs.file file('node_modules')
+    inputs.dir 'node_modules'
     inputs.file file('package.json')
     inputs.file file('tsconfig.json')
     inputs.file file('server/webpack.config.js')
-    inputs.file fileTree('typings')
-    inputs.file fileTree('server')
-    inputs.file fileTree('common')
+    inputs.dir 'server'
+    inputs.dir 'common'
     outputs.dir file('build')
     environment 'NODE_ENV': 'production'
     args = ["webpack", '--config', 'server/webpack.config.js']
@@ -84,8 +82,8 @@ task compile {
 task clientTest(type: YarnTask) {
     dependsOn yarn, clientVendorCompile
     inputs.file file('package.json')
-    inputs.file clientCompile.inputs.files
-    inputs.file fileTree('test/unit/client')
+    inputs.files clientCompile.inputs.files
+    inputs.dir 'test/unit/client'
     outputs.dir file('test-output/client')
 
     args = ['run', 'clientTest', '--silent']
@@ -94,9 +92,9 @@ task clientTest(type: YarnTask) {
 task serverTest(type: YarnTask) {
     dependsOn yarn
     inputs.file file('package.json')
-    inputs.file serverCompile.inputs.files
-    inputs.file fileTree('test/unit/server')
-    outputs.file file('test-output/server.unit')
+    inputs.files serverCompile.inputs.files
+    inputs.dir 'test/unit/server'
+    outputs.dir 'test-output/server.unit'
 
     args = ['run', 'serverTest', '--silent']
 }
@@ -104,30 +102,30 @@ task serverTest(type: YarnTask) {
 task endpointTest(type: YarnTask) {
     dependsOn yarn, serverCompile
     mustRunAfter serverTest
-    inputs.file serverTest.inputs.files
-    inputs.file serverCompile.outputs.files
+    inputs.files serverTest.inputs.files
+    inputs.files serverCompile.outputs.files
     inputs.file file('package.json')
-    inputs.file file('test/endpoint')
-    outputs.file file('test-output/endpoint')
+    inputs.dir 'test/endpoint'
+    outputs.dir 'test-output/endpoint'
 
     args = ['run', 'endpointTest', '--silent']
 }
 
 task updateWebdriver(type: YarnTask) {
-    outputs.file 'node_modules/webdriver-manager/selenium/'
+    outputs.dir 'node_modules/webdriver-manager/selenium/'
     args = ['run', 'update-webdriver', '--silent']
 }
 
 task endToEndTest(type: YarnTask) {
     dependsOn compile, updateWebdriver
     mustRunAfter serverTest, clientTest, endpointTest
-    inputs.file clientTest.inputs.files
-    inputs.file serverTest.inputs.files
-    inputs.file clientCompile.outputs.files
-    inputs.file serverCompile.outputs.files
+    inputs.files clientTest.inputs.files
+    inputs.files serverTest.inputs.files
+    inputs.files clientCompile.outputs.files
+    inputs.files serverCompile.outputs.files
     inputs.file file('package.json')
-    inputs.file file('test/e2e')
-    outputs.file file('test-output/e2e')
+    inputs.dir 'test/e2e'
+    outputs.dir 'test-output/e2e'
 
     args = ['run', 'protractor', '--silent', '--seleniumAddress', "$System.env.SELENIUM_ADDRESS"]
 }
