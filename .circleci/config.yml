@@ -34,11 +34,8 @@ jobs:
           at: ./
       - restore_cache:
           key: coupling-cache-2-{{ .Branch }}
-      - run: |
-          ls -ltr ./build
-          ls -ltr ./public/app/build/vendor
       - setup_remote_docker
-      - run: "./gradlew pullProductionImage buildProductionImage pushProductionImage"
+      - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
     docker:
       - image: mikesir87/aws-cli
