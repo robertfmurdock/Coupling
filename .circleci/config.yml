@@ -11,7 +11,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-gradle4.10.3-{{ .Branch }}
-      - run: "./gradlew yarn_install"
+      - run: "./gradlew yarn"
       - save_cache:
           key: coupling-gradle4.10.3-{{ .Branch }}
           paths:
