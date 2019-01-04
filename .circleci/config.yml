@@ -12,7 +12,6 @@ jobs:
       - restore_cache:
           key: coupling-cache-5-{{ .Branch }}
       - run: "./gradlew yarn"
-      - run: "./gradlew yarn_cache_dir"
       - save_cache:
           key: coupling-cache-5-{{ .Branch }}
           paths:
