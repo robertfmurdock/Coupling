@@ -23,6 +23,7 @@ task clean {
 }
 
 yarn {
+    mustRunAfter(":client:yarn")
     inputs.file file('package.json')
     outputs.dir file('node_modules')
 }
