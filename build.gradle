@@ -70,6 +70,7 @@ task endpointTest(type: YarnTask) {
 }
 
 task updateWebdriver(type: YarnTask) {
+    dependsOn("yarn")
     outputs.dir 'node_modules/webdriver-manager/selenium/'
     args = ['run', 'update-webdriver', '--silent']
 }
