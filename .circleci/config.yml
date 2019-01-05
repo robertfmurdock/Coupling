@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-7-{{ .Branch }}
+          key: coupling-cache-8-{{ .Branch }}
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-cache-7-{{ .Branch }}
+          key: coupling-cache-8-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
