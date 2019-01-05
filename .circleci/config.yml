@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-5-{{ .Branch }}
+          key: coupling-cache-6-{{ .Branch }}
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-cache-5-{{ .Branch }}
+          key: coupling-cache-6-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
@@ -35,7 +35,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-5-{{ .Branch }}
+          key: coupling-cache-6-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
