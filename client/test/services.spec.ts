@@ -1,6 +1,6 @@
 import * as angular from "angular";
 import "angular-resource";
-import {Coupling} from "../../../client/app/services";
+import {Coupling} from "../app/services";
 import axios from 'axios'
 import * as Bluebird from 'bluebird'
 

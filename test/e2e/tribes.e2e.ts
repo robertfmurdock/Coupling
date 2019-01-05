@@ -27,12 +27,8 @@ function waitUntilAnimateIsGone() {
     }, 5000);
 }
 
-const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
-const tribeCardHeaderLocator = By.className(tribeCardStyles.header);
-
-const tribeConfigStyles = require('../../client/app/components/tribe-config/styles.css');
-const tribeConfigElement = element(By.className(tribeConfigStyles.className));
-
+const tribeCardHeaderLocator = By.className("tribe-card-header");
+const tribeConfigElement = element(By.className("tribe-config"));
 
 const tribeListPage = {
     getTribeElements: function () {

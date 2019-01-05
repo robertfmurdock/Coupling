@@ -1,4 +1,4 @@
-import RandomWordPicker from "../../../client/app/wordpicker/RandomWordPicker";
+import RandomWordPicker from "../app/wordpicker/RandomWordPicker";
 
 describe('RandomWordPicker', function () {
 

@@ -13,8 +13,7 @@ const historyCollection = database.get('history');
 
 describe('The prepare to spin page', function () {
 
-    const prepareStyles = require('../../client/app/components/prepare/styles.css');
-    const spinButton = element(By.className(prepareStyles.spinButton));
+    const spinButton = element(By.className("spin-button"));
 
     const tribe = {
         id: 'delete_me',

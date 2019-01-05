@@ -1,9 +1,9 @@
-import {TribeConfigController} from "../../../client/app/components/tribe-config/tribe-config";
-import PairingRule from "../../../common/PairingRule";
+import {TribeConfigController} from "../app/components/tribe-config/tribe-config";
+import PairingRule from "../../common/PairingRule";
 import * as Bluebird from 'bluebird';
 import * as angular from "angular";
 import * as _ from "underscore";
-import {Coupling} from "../../../client/app/services";
+import {Coupling} from "../app/services";
 
 const defer = function () {
     const defer = {

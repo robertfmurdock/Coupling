@@ -1,8 +1,8 @@
-import {PlayerConfigController} from "../../../client/app/components/player-config/player-config";
+import {PlayerConfigController} from "../app/components/player-config/player-config";
 import "angular-route";
 import * as angular from 'angular'
-import Player from "../../../common/Player";
-import Badge from "../../../common/Badge";
+import Player from "../../common/Player";
+import Badge from "../../common/Badge";
 import * as _ from "underscore";
 
 const defer = function () {

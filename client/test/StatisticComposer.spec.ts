@@ -1,10 +1,10 @@
-import Player from "../../../common/Player";
-import Tribe from "../../../common/Tribe";
-import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
+import Player from "../../common/Player";
+import Tribe from "../../common/Tribe";
+import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as _ from "underscore";
-import Pair from "../../../common/Pair";
-import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
-import StatisticComposer from "../../../common/StatisticComposer";
+import Pair from "../../common/Pair";
+import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
+import StatisticComposer from "../../common/StatisticComposer";
 
 const statComposer = new StatisticComposer();
 

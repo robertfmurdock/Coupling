@@ -25,8 +25,7 @@ describe('The statistics page', function () {
         {_id: monk.id(), tribe: tribe.id},
     ];
 
-    const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
-    const tribeCardHeaderElement = element(By.className(tribeCardStyles.header));
+    const tribeCardHeaderElement = element(By.className("tribe-card-header"));
 
     beforeAll(function (done) {
         browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');

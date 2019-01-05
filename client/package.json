@@ -1,5 +1,5 @@
 {
-  "name": "Coupling",
+  "name": "coupling-client",
   "version": "1.0.0",
   "description": "Coupling",
   "main": "app.js",
@@ -101,14 +101,9 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "start": "./gradlew start",
-    "test": "./gradlew test endToEndTest",
-    "start-built-app": "node ./startup.js",
     "webpack": "webpack",
-    "endpointTest": "node test/endpoint/run.js",
-    "serverTest": "node test/unit/server/run.js",
-    "update-webdriver": "webdriver-manager update",
-    "protractor": "node test/e2e/run.js"
+    "clientTest": "karma start test/karma.conf.js --single-run",
+    "clientTestContinuous": "karma start test/karma.conf.js --no-single-run"
   },
   "repository": {
     "type": "git",

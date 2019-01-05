@@ -1,4 +1,4 @@
-import Tribe from "../../../common/Tribe";
+import Tribe from "../../common/Tribe";
 
 describe('Pair assignments directive', function () {
 

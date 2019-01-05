@@ -17,6 +17,7 @@ jobs:
           paths:
             - "~/.gradle"
             - ".gradle"
+            - "client/.gradle"
             - "node_modules"
       - run: "./gradlew test endToEndTest"
       - store_artifacts:

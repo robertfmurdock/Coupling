@@ -1,6 +1,7 @@
 div(ng-class="playerCard.styles.player" ng-style="playerCard.cardStyle")
     img(ng-src="{{playerCard.player | gravatarUrl:{size:playerCard.size} }}" class="player-icon" width="{{playerCard.size}}" height="{{playerCard.size}}" draggable="false")
     div(
+    class="player-card-header"
     ng-class="playerCard.styles.header"
     ng-style="playerCard.headerStyle"
     ng-click="playerCard.clickPlayerName($event)"

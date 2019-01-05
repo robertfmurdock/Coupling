@@ -1,6 +1,6 @@
-import PairHeatCalculator from "../../../common/PairHeatCalculator";
-import Pair from "../../../common/Pair";
-import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
+import PairHeatCalculator from "../../common/PairHeatCalculator";
+import Pair from "../../common/Pair";
+import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as _ from "underscore";
 
 const heatCalculator = new PairHeatCalculator();

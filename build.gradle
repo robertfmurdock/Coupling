@@ -3,7 +3,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 plugins {
-    id("com.moowork.node") version "1.2.0"
+    id("com.github.node-gradle.node") version "1.3.0"
     id 'com.bmuschko.docker-remote-api' version '4.2.0'
 }
 
@@ -27,39 +27,6 @@ yarn {
     outputs.dir file('node_modules')
 }
 
-task clientVendorCompile(type: YarnTask) {
-    dependsOn yarn
-    mustRunAfter clean
-    inputs.dir 'node_modules'
-    inputs.file file('package.json')
-    inputs.file file('client/vendor.webpack.config.js')
-    outputs.dir 'public/app/build/vendor'
-    environment 'NODE_ENV': 'production'
-    args = ["webpack", '--config', 'client/vendor.webpack.config.js']
-}
-
-task clientCompile(type: YarnTask) {
-    dependsOn yarn, clientVendorCompile
-    mustRunAfter clean
-    inputs.dir 'node_modules'
-    inputs.file file('package.json')
-    inputs.file file('tsconfig.json')
-    inputs.file file('client/webpack.config.js')
-    inputs.dir 'common'
-    inputs.dir 'client'
-    outputs.dir 'public/app/build'
-    environment 'NODE_ENV': 'production'
-    args = ["webpack", '--config', 'client/webpack.config.js']
-}
-
-task clientStats(type: Exec) {
-    environment 'NODE_ENV': 'production'
-    commandLine "node_modules/.bin/webpack", '--json', '--config', 'client/webpack.config.js'
-
-    doFirst {
-        standardOutput new FileOutputStream("clientStats.json")
-    }
-}
 
 task serverCompile(type: YarnTask) {
     dependsOn yarn
@@ -76,17 +43,7 @@ task serverCompile(type: YarnTask) {
 }
 
 task compile {
-    dependsOn serverCompile, clientCompile
-}
-
-task clientTest(type: YarnTask) {
-    dependsOn yarn, clientVendorCompile
-    inputs.file file('package.json')
-    inputs.files clientCompile.inputs.files
-    inputs.dir 'test/unit/client'
-    outputs.dir file('test-output/client')
-
-    args = ['run', 'clientTest', '--silent']
+    dependsOn serverCompile, ":client:clientCompile"
 }
 
 task serverTest(type: YarnTask) {
@@ -118,10 +75,10 @@ task updateWebdriver(type: YarnTask) {
 
 task endToEndTest(type: YarnTask) {
     dependsOn compile, updateWebdriver
-    mustRunAfter serverTest, clientTest, endpointTest
-    inputs.files clientTest.inputs.files
+    mustRunAfter serverTest, ":client:clientTest", endpointTest
+    inputs.files tasks.findByPath(":client:clientTest").inputs.files
+    inputs.files tasks.findByPath(":client:clientCompile").outputs.files
     inputs.files serverTest.inputs.files
-    inputs.files clientCompile.outputs.files
     inputs.files serverCompile.outputs.files
     inputs.file file('package.json')
     inputs.dir 'test/e2e'
@@ -131,7 +88,7 @@ task endToEndTest(type: YarnTask) {
 }
 
 task test {
-    dependsOn serverTest, clientTest, endpointTest
+    dependsOn serverTest, ":client:clientTest", endpointTest
 }
 
 task start(type: YarnTask) {
@@ -144,7 +101,7 @@ task watch(type: NodeTask) {
 }
 
 task build {
-    dependsOn test, endToEndTest, clientCompile
+    dependsOn test, endToEndTest, ":client:clientCompile"
 }
 
 task pullProductionImage(type: DockerPullImage) {

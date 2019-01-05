@@ -1,11 +1,11 @@
-import PairHeatCalculator from "../../../../common/PairHeatCalculator";
+import PairHeatCalculator from "../../../common/PairHeatCalculator";
 import * as menuHistory from "./menu-history-bla.json";
 import * as menuPlayers from "./menu-players.json";
 import * as _ from "underscore";
-import Pair from "../../../../common/Pair";
-import PairAssignmentSet from "../../../../common/PairAssignmentSet";
-import Player from "../../../../common/Player";
-import StatisticComposer from "../../../../common/StatisticComposer";
+import Pair from "../../../common/Pair";
+import PairAssignmentSet from "../../../common/PairAssignmentSet";
+import Player from "../../../common/Player";
+import StatisticComposer from "../../../common/StatisticComposer";
 
 fdescribe('srsly delete me', function () {
 

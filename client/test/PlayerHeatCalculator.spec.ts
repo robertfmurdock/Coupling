@@ -1,6 +1,6 @@
-import PlayerHeatCalculator from "../../../common/PlayerHeatCalculator";
-import Player from "../../../common/Player";
-import PairAssignmentSet from "../../../common/PairAssignmentSet";
+import PlayerHeatCalculator from "../../common/PlayerHeatCalculator";
+import Player from "../../common/Player";
+import PairAssignmentSet from "../../common/PairAssignmentSet";
 
 describe('PlayerHeatCalculator', function () {
 

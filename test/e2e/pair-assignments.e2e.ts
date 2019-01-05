@@ -50,8 +50,7 @@ describe('The current pair assignments', function () {
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
-    const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
-    const tribeCardHeaderElement = element(By.className(tribeCardStyles.header));
+    const tribeCardHeaderElement = element(By.className("tribe-card-header"));
 
     it('shows the tribe', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
@@ -68,10 +67,8 @@ describe('The current pair assignments', function () {
     it('will let you edit an existing player', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
 
-        const playerCardStyles = require('../../client/app/components/player-card/styles.css');
-
         element.all(By.repeater('player in players'))
-            .first().element(By.className(playerCardStyles.header))
+            .first().element(By.className("player-card-header"))
             .click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/${player1._id}/`);
     });
@@ -90,8 +87,7 @@ describe('The current pair assignments', function () {
 
     it('will let you go to the stats page', function () {
         browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
-        const styles = require('../../client/app/components/tribebrowser/styles.css');
-        element(By.className(styles.statisticsButton)).click();
+        element(By.className("statistics-button")).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
 

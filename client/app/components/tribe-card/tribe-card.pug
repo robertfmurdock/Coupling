@@ -1,4 +1,4 @@
-span(ng-class="tribecard.styles.className"
+span(class="tribe-card" ng-class="tribecard.styles.className"
 ng-show="tribecard.tribe"
 enter-press="tribecard.clickOnTribeCard()"
 ng-click="tribecard.clickOnTribeCard()"
@@ -6,7 +6,7 @@ ng-enter="tribecard.clickOnTribeCard()"
 tabindex="0"
 ng-style="tribecard.cardStyle"
 )
-    div(ng-style="tribecard.headerStyle")
+    div(ng-style="tribecard.headerStyle" class="tribe-card-header")
         div(ng-class="tribecard.styles.header" ng-click="tribecard.clickOnTribeName($event)")
             text(
             data-fittext=1

@@ -1,4 +1,4 @@
-import CallSignPicker from "../../../client/app/wordpicker/CallSignPicker";
+import CallSignPicker from "../app/wordpicker/CallSignPicker";
 
 describe('The CallSign Picker', function () {
 

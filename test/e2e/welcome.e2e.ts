@@ -5,12 +5,10 @@ import e2eHelp from "./e2e-help";
 const config = require("../../server/config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
-const welcomeStyles = require('../../client/app/components/welcome/styles.css');
-
 describe('The welcome page', function () {
 
     const pageBody = element(By.tagName('body'));
-    const enterButton = element(By.className(welcomeStyles.enterButton));
+    const enterButton = element(By.className("enter-button"));
 
     it('has an enter button redirects to google login', async function () {
         browser.get(hostName + '/welcome');

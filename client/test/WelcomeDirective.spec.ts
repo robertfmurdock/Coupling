@@ -1,9 +1,9 @@
 import * as angular from "angular";
 import "ng-fittext";
-import "../../../client/app/components/components";
-import {Randomizer} from "../../../client/app/services";
+import "../app/components/components";
+import {Randomizer} from "../../client/app/services";
 import * as _ from "underscore";
-import Player from "../../../common/Player";
+import Player from "../../common/Player";
 
 describe('Welcome Directive:', function () {
 

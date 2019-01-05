@@ -1,14 +1,14 @@
-///<reference path="../../../node_modules/@types/jasmine/index.d.ts"/>
+///<reference path="../../node_modules/@types/jasmine/index.d.ts"/>
 "use strict";
 
 import "angular";
 import "angular-mocks";
-import {TribeCardController} from "../../../client/app/components/tribe-card/TribeCardController";
-import {PairAssignmentsController} from "../../../client/app/components/pair-assignments/PairAssignmentsDirective";
-import {HistoryController} from "../../../client/app/components/history/history";
-import Pair from "../../../common/Pair";
-import {PlayerCardController} from "../../../client/app/components/player-card/player-card";
-import PairAssignmentSet from "../../../common/PairAssignmentSet";
+import {TribeCardController} from "../app/components/tribe-card/TribeCardController";
+import {PairAssignmentsController} from "../app/components/pair-assignments/PairAssignmentsDirective";
+import {HistoryController} from "../app/components/history/history";
+import Pair from "../../common/Pair";
+import {PlayerCardController} from "../app/components/player-card/player-card";
+import PairAssignmentSet from "../../common/PairAssignmentSet";
 
 const defer = function () {
     const defer = {

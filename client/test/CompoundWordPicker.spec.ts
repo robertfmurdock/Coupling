@@ -1,5 +1,5 @@
-import CompoundWordPicker from "../../../client/app/wordpicker/CompoundWordPicker";
-import WordPicker from "../../../client/app/wordpicker/WordPicker";
+import CompoundWordPicker from "../app/wordpicker/CompoundWordPicker";
+import WordPicker from "../app/wordpicker/WordPicker";
 
 describe('CompoundWordPicker', function () {
 

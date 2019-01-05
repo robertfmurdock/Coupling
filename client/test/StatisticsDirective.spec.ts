@@ -1,13 +1,13 @@
 import "ng-fittext";
-import "../../../client/app/app";
-import Tribe from "../../../common/Tribe";
-import Player from "../../../common/Player";
-import PairAssignmentSet from "../../../common/PairAssignmentSet";
+import "../app/app";
+import Tribe from "../../common/Tribe";
+import Player from "../../common/Player";
+import PairAssignmentSet from "../../common/PairAssignmentSet";
 import *  as _ from "underscore";
-import * as Styles from "../../../client/app/components/statistics/styles.css";
+import * as Styles from "../../client/app/components/statistics/styles.css";
 import * as R from "ramda";
-import {NEVER_PAIRED} from "../../../common/PairingTimeCalculator";
-const tribeCardStyles = require('../../../client/app/components/tribe-card/styles.css');
+import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
+const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
 
 describe('Statistics directive', function () {
 

@@ -1,7 +1,7 @@
 import * as angular from 'angular'
 import "ng-fittext";
-import "../../../client/app/app";
-import Tribe from "../../../common/Tribe";
+import "../app/app";
+import Tribe from "../../common/Tribe";
 
 describe('Tribe card directive', function () {
 

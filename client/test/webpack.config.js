@@ -1,7 +1,7 @@
 const _ = require('underscore');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const webpackConfig = _.clone(require('../../../client/webpack.config'));
+const webpackConfig = _.clone(require('../webpack.config'));
 
 
 webpackConfig.externals.jquery = 'jQuery';
@@ -15,7 +15,7 @@ const config = {
     new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
     new webpack.DllReferencePlugin({
       context: '.',
-      manifest: require('../../../public/app/build/vendor/vendor-manifest.json')
+      manifest: require('../../public/app/build/vendor/vendor-manifest.json')
     }),
     new webpack.ProvidePlugin({'window.jQuery': 'jquery', $: 'jquery', 'jQuery': 'jquery'})
   ],

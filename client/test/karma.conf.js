@@ -19,7 +19,7 @@ const webdriverConfig = {
 module.exports = function (config) {
   config.set({
 
-    basePath: '../../../',
+    basePath: '../..',
 
     frameworks: ['jasmine'],
 
@@ -30,13 +30,13 @@ module.exports = function (config) {
     },
 
     files: [
-      'node_modules/jquery/dist/jquery.min.js',
+      'client/node_modules/jquery/dist/jquery.min.js',
       'public/app/build/vendor/vendor.js',
-      'test/unit/client/tests.bundle.js',
+      'client/test/tests.bundle.js',
     ],
 
     preprocessors: {
-      'test/unit/client/tests.bundle.js': ['webpack', 'sourcemap']
+      'client/test/tests.bundle.js': ['webpack', 'sourcemap']
     },
 
     exclude: [],

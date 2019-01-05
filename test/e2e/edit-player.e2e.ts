@@ -9,9 +9,6 @@ import * as monk from "monk";
 const config = require("../../server/config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
-
-const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
-
 describe('The edit player page', function () {
 
     const tribe = {
@@ -33,7 +30,7 @@ describe('The edit player page', function () {
         player5
     ];
 
-    const tribeCardElement = element(By.className(tribeCardStyles.className));
+    const tribeCardElement = element(By.className("tribe-card"));
     const deleteButton = element(By.className('delete-button'));
     const savePlayerButton = element(By.id('save-player-button'));
 
@@ -141,7 +138,7 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
         element(By.id('player-name')).sendKeys('completely different name');
-        element(By.css(`.${tribeCardStyles.className} img`)).click();
+        element(By.css(`.tribe-card img`)).click();
         browser.wait(() =>
                 browser.switchTo().alert()
                     .then(() => true, () => false)

@@ -1,4 +1,4 @@
-const GoogleSignIn = require("../../../client/app/GoogleSignIn").default;
+const GoogleSignIn = require("../app/GoogleSignIn").default;
 
 GoogleSignIn["checkForSignedIn"] = async () => Promise.resolve(true);
 

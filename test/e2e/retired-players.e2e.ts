@@ -62,8 +62,7 @@ describe('The retired players page', function () {
     });
 
     it('has a tribe card', function() {
-        const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
-        const tribeCardHeaderElement = element(By.className(tribeCardStyles.header));
+        const tribeCardHeaderElement = element(By.className("tribe-card-header"));
         expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
     });
 
