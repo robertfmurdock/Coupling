@@ -1,4 +1,8 @@
-import * as _ from "underscore";
+import * as sortBy from 'ramda/src/sortBy'
+import * as map from 'ramda/src/map'
+import * as pipe from 'ramda/src/pipe'
+import * as addIndex from 'ramda/src/addIndex'
+import * as unnest from 'ramda/src/unnest'
 import PairAssignmentDocument from "./PairAssignmentDocument";
 import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "./PairingTimeCalculator";
 import Pair from "./Pair";
@@ -11,7 +15,6 @@ interface PairReport {
     pair: Pair,
     timeSinceLastPaired: number | string
 }
-
 
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991;
 
@@ -33,7 +36,7 @@ export default class StatisticComposer {
         const times = history.map(document => parse(document.date).valueOf());
         const durations = times.slice(1).map((value, index) => times[index] - value);
 
-        const sortedDurations = _.sortBy(durations, (duration) => duration);
+        const sortedDurations = sortBy((duration) => duration, durations);
         const indexOfMedian = Math.floor(sortedDurations.length / 2);
         const median = sortedDurations[indexOfMedian];
 
@@ -41,21 +44,22 @@ export default class StatisticComposer {
     }
 
     private buildPairReports(players: Player[], history) {
-        return _.chain(players)
-            .map(this.allPairsForPlayer)
-            .flatten(true)
-            .map((pair: Pair) => {
-                return this.makeReport(pair, calculateTimeSinceLastPartnership(pair, history))
-            })
-            .sortBy((pairReport1: PairReport) => {
+
+        const buildReportsFunction = pipe(
+            addIndex(map)(this.allPairsForPlayer),
+            unnest,
+            map((pair: Pair) => this.makeReport(pair, calculateTimeSinceLastPartnership(pair, history))),
+            sortBy((pairReport1: PairReport) => {
 
                 if (pairReport1.timeSinceLastPaired === NEVER_PAIRED) {
                     return -1;
                 }
 
                 return MAX_SAFE_INTEGER - (pairReport1.timeSinceLastPaired as number);
-            })
-            .value();
+            }));
+
+        return buildReportsFunction(players);
+
     }
 
     private makeReport(pair, timeSinceLastPaired) {
@@ -67,7 +71,7 @@ export default class StatisticComposer {
 
     private allPairsForPlayer(player, index, players: Player[]) {
         const otherPlayers = players.slice(index + 1);
-        return _.map(otherPlayers, otherPlayer => [player, otherPlayer]);
+        return map(otherPlayer => [player, otherPlayer], otherPlayers);
     }
 
     private calculateFullRotation(players: Player[]) {

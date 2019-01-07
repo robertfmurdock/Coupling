@@ -79,11 +79,10 @@ describe('The edit player page', function () {
 
     describe('when the tribe does not have badging enabled', function () {
 
-        beforeEach(function (done) {
+        beforeEach(async function () {
             const tribeClone: Tribe = _.clone(tribe);
             tribeClone.badgesEnabled = false;
-            tribeCollection.update({_id: tribe._id}, tribeClone)
-                .then(done, done.fail);
+            await tribeCollection.update({_id: tribe._id}, tribeClone)
         });
 
         it('should not show the badge selector', function () {

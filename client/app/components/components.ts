@@ -1,4 +1,3 @@
-import * as _ from "underscore";
 import History from "./history/history";
 import PairAssignments from "./pair-assignments/PairAssignmentsDirective";
 import HeatMap from './heatmap/heatmap'
@@ -16,6 +15,7 @@ import TribeBrowserDirective from "./tribebrowser/TribeBrowserDirective";
 import Statistics from "./statistics/statistics";
 import RetiredPlayers from "./retired-players/retired-players";
 import {module} from "angular";
+import debounce from 'lodash.debounce'
 
 module('coupling.component', [
     'coupling.services',
@@ -39,7 +39,7 @@ module('coupling.component', [
 ])
     .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
         fitTextConfigProvider.config = {
-            debounce: _.debounce,
+            debounce: debounce,
             delay: 1000
         };
     }]);

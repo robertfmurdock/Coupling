@@ -1,10 +1,12 @@
 import Player from "../../common/Player";
 import Tribe from "../../common/Tribe";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
-import * as _ from "underscore";
 import Pair from "../../common/Pair";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 import StatisticComposer from "../../common/StatisticComposer";
+import * as map from 'ramda/src/map'
+import * as pluck from 'ramda/src/pluck'
+import * as addIndex from 'ramda/src/addIndex'
 
 const statComposer = new StatisticComposer();
 
@@ -15,9 +17,8 @@ describe('StatisticComposer', function () {
     };
 
     let makePlayers = function (tribe: Tribe, numberOfPlayers: number) {
-        return _.map(Array.apply(null, {length: numberOfPlayers}),
-            (value, index) => makePlayer(tribe, (index + 1).toString())
-        );
+        let mapToNewPlayer = addIndex(map)((value, index) => makePlayer(tribe, (index + 1).toString()));
+        return mapToNewPlayer(Array.apply(null, {length: numberOfPlayers}));
     };
 
     describe('will include the full rotation number', function () {
@@ -63,7 +64,6 @@ describe('StatisticComposer', function () {
     });
 
     describe('will generate pair reports', function () {
-
         it('with no players, no pair reports will be created', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const history: PairAssignmentDocument[] = [];
@@ -102,7 +102,7 @@ describe('StatisticComposer', function () {
             const [player1, player2, player3, player4, player5] = players;
             const {pairReports} = statComposer.compose(tribe, players, history);
 
-            checkPairs(_.pluck(pairReports, 'pair'), [
+            checkPairs(pluck('pair', pairReports), [
                 [player1, player2],
                 [player1, player3],
                 [player1, player4],
@@ -118,13 +118,9 @@ describe('StatisticComposer', function () {
 
         function checkPairs(actualPairs: any[], expected: Pair[]) {
             function reportResults() {
-                const actualFormattedValue = JSON.stringify(_.chain(actualPairs)
-                    .map(pair => _.pluck(pair, '_id'))
-                    .value());
+                const actualFormattedValue = JSON.stringify(map(pair => pluck('_id', pair), actualPairs));
 
-                const expectedFormattedValue = JSON.stringify(_.chain(expected)
-                    .map(pair => _.pluck(pair, '_id'))
-                    .value());
+                const expectedFormattedValue = JSON.stringify(map(pair => pluck('_id', pair))(expected));
                 return `\n----------WE EXPECT\n${expectedFormattedValue}\n----------RESULTS\n${actualFormattedValue}\n`
             }
 
@@ -146,7 +142,7 @@ describe('StatisticComposer', function () {
             ];
 
             const {pairReports} = statComposer.compose(tribe, players, history);
-            checkPairs(_.pluck(pairReports, 'pair'), [
+            checkPairs(pluck('pair', pairReports), [
                 [player1, player4],
                 [player2, player3],
                 [player1, player2],
@@ -155,7 +151,7 @@ describe('StatisticComposer', function () {
                 [player2, player4],
             ]);
 
-            expect(_.pluck(pairReports, 'timeSinceLastPaired')).toEqual([
+            expect(pluck('timeSinceLastPaired', pairReports)).toEqual([
                 NEVER_PAIRED,
                 NEVER_PAIRED,
                 1,
@@ -165,18 +161,18 @@ describe('StatisticComposer', function () {
             ]);
         });
 
-        it('still sorts correctly with large realistic history', function() {
+        it('still sorts correctly with large realistic history', function () {
             const {tribe, players, history} = require('./realistics-sort-test-data/inputs.json');
             const {pairReports} = statComposer.compose(tribe, players, history);
             const expectedResults = require('./realistics-sort-test-data/expectResults.json');
-            expect(_.pluck(pairReports, 'timeSinceLastPaired')).toEqual(expectedResults);
+            expect(pluck('timeSinceLastPaired', pairReports)).toEqual(expectedResults);
         });
 
     });
 
-    describe('will calculate the median spin time', function() {
+    describe('will calculate the median spin time', function () {
 
-        it('as N/A if no history', function() {
+        it('as N/A if no history', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const history: PairAssignmentDocument[] = [];
             const players: Player[] = [];
@@ -185,7 +181,7 @@ describe('StatisticComposer', function () {
             expect(medianSpinDuration).toBe('N/A');
         });
 
-        it('as 1 with daily spins', function() {
+        it('as 1 with daily spins', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
@@ -196,13 +192,13 @@ describe('StatisticComposer', function () {
                 {date: new Date(2017, 2, 14), pairs: [], tribe: tribe.id},
                 {date: new Date(2017, 2, 13), pairs: [], tribe: tribe.id},
                 {date: new Date(2017, 2, 12), pairs: [], tribe: tribe.id},
-                ];
+            ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
             expect(medianSpinDuration).toBe('1 day');
         });
 
-        it('as 2 with mostly 2 day spins and outliers', function() {
+        it('as 2 with mostly 2 day spins and outliers', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
@@ -214,26 +210,26 @@ describe('StatisticComposer', function () {
                 {date: new Date(2017, 2, 6), pairs: [], tribe: tribe.id},
                 {date: new Date(2017, 2, 4), pairs: [], tribe: tribe.id},
                 {date: new Date(2017, 2, 3), pairs: [], tribe: tribe.id},
-                ];
+            ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
             expect(medianSpinDuration).toBe('2 days');
         });
 
-        it('with dates as string', function() {
+        it('with dates as string', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
                 {date: '2017-02-21T16:34:35.173Z', pairs: [], tribe: tribe.id},
                 {date: '2017-02-17T16:34:35.173Z', pairs: [], tribe: tribe.id}
-                ];
+            ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
             expect(medianSpinDuration).toBe('4 days');
         });
 
-        it('with one instance of median and variable pattern', function() {
+        it('with one instance of median and variable pattern', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
@@ -250,7 +246,7 @@ describe('StatisticComposer', function () {
             expect(medianSpinDuration).toBe('2 days');
         });
 
-        it('as N/A with only one history entry', function() {
+        it('as N/A with only one history entry', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
@@ -260,7 +256,7 @@ describe('StatisticComposer', function () {
             expect(medianSpinDuration).toBe('N/A');
         });
 
-        it('down to the hour!', function() {
+        it('down to the hour!', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
@@ -277,7 +273,7 @@ describe('StatisticComposer', function () {
             expect(medianSpinDuration).toBe('about 2 hours');
         });
 
-        it('rounding hours to nearest day when the median is greater than a day', function() {
+        it('rounding hours to nearest day when the median is greater than a day', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 

@@ -1,13 +1,18 @@
 import "ng-fittext";
 import "../app/app";
 import Tribe from "../../common/Tribe";
+import * as addIndex from 'ramda/src/addIndex'
+import * as repeat from 'ramda/src/repeat'
+import * as times from 'ramda/src/times'
 import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
-import *  as _ from "underscore";
 import * as Styles from "../../client/app/components/statistics/styles.css";
 import * as map from "ramda/src/map";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
+
 const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
+
+let mapWithIndex = addIndex(map);
 
 describe('Statistics directive', function () {
 
@@ -68,14 +73,13 @@ describe('Statistics directive', function () {
         it('ordered by longest time since last paired', inject(function ($compile, $rootScope) {
             this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
             const pairElements = this.statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"]');
+            let numberOfElements = pairElements.length;
 
-            const actualPairedPlayerNames = _.chain(pairElements)
-                .map((element, index) => {
-                    let children = pairElements.eq(index)
-                        .find('[ng-repeat="player in report.pair"] text[ng-model="playerCard.player.name"]');
-                    return [children.eq(0).text(), children.eq(1).text()];
-                })
-                .value();
+            const actualPairedPlayerNames = times((index) => {
+                let children = pairElements.eq(index)
+                    .find('[ng-repeat="player in report.pair"] text[ng-model="playerCard.player.name"]');
+                return [children.eq(0).text(), children.eq(1).text()];
+            }, numberOfElements);
 
             expect(actualPairedPlayerNames).toEqual([
                 ['Harry', 'Curly'],
@@ -91,7 +95,7 @@ describe('Statistics directive', function () {
             this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
             const timeElements = this.statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"] .time-since-last-pairing');
 
-            const timeValues = _.map(timeElements, (element, index) => timeElements.eq(index).text());
+            const timeValues = times(index => timeElements.eq(index).text(), timeElements.length);
 
             expect(timeValues).toEqual([
                 NEVER_PAIRED,

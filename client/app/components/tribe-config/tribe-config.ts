@@ -1,11 +1,14 @@
 import {module} from "angular";
 import * as template from "./tribe-config.pug";
 import PairingRule from "../../../../common/PairingRule";
-import * as _ from "underscore";
+import * as flip from "ramda/src/flip";
+import * as merge from "ramda/src/merge";
 
 import * as styles from './styles.css'
 import {Coupling} from "../../services";
 import Tribe from "../../../../common/Tribe";
+
+const defaults = flip(merge);
 
 export class TribeConfigController {
     static $inject = ['$location', 'Coupling', '$scope'];
@@ -23,7 +26,7 @@ export class TribeConfigController {
     }
 
     $onInit() {
-        _.defaults(this.tribe, {
+        this.tribe = defaults(this.tribe, {
             pairingRule: PairingRule.LongestTime,
             defaultBadgeName: 'Default',
             alternateBadgeName: 'Alternate',

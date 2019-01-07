@@ -12,6 +12,7 @@ export function calculateTimeSinceLastPartnership(expectedPair: Pair, historyDoc
         }
         return existsInDocument;
     });
+
     return documentsSinceLastPartnership;
 }
 

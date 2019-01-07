@@ -26,6 +26,7 @@ class TribeRoutes {
                 return isAuthorized;
             })
             .catch(function (error) {
+                console.log(error)
                 response.statusCode = 500;
                 response.send(error.message);
             });

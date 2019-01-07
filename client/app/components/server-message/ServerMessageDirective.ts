@@ -1,6 +1,6 @@
 import {module} from "angular";
 import * as template from "./template.pug";
-import * as _ from 'underscore'
+import * as without from 'ramda/src/without'
 import ITimeoutService = angular.ITimeoutService;
 import ILocationService = angular.ILocationService;
 import IController = angular.IController;
@@ -27,7 +27,7 @@ export class ServerMessageController implements IController {
     }
 
     $onDestroy(): void {
-        this.liveSocket.onCloseCallbacks = _.without(this.liveSocket.onCloseCallbacks, this.handleSocketClose);
+        this.liveSocket.onCloseCallbacks = without(this.liveSocket.onCloseCallbacks, this.handleSocketClose);
         this.liveSocket.close();
     }
 
