@@ -1,5 +1,6 @@
 import WordPicker from './WordPicker'
-import * as R from "ramda";
+import * as map from "ramda/src/map";
+import * as sum from "ramda/src/sum";
 
 export default class RandomWordPicker implements WordPicker {
 
@@ -12,7 +13,7 @@ export default class RandomWordPicker implements WordPicker {
     }
 
     private getNameIndexForString(value: string) {
-        const number = R.sum(this.getIntegersFromChars(value));
+        const number = sum(this.getIntegersFromChars(value));
 
         return number % this.callSigns.length;
     }
@@ -22,6 +23,6 @@ export default class RandomWordPicker implements WordPicker {
             return character.charCodeAt(0);
         }
 
-        return R.map(characterToInteger, value.split(''));
+        return map(characterToInteger, value.split(''));
     }
 }

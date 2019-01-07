@@ -22,14 +22,15 @@ class HistoryRoutes {
         }
     };
 
-    deleteMember(request, response) {
-        request.dataService.removePairAssignments(request.params.id)
-            .then(function () {
-                response.send({message: 'SUCCESS'});
-            }, function (err) {
-                response.statusCode = 404;
-                response.send({message: err.message});
-            });
+    async deleteMember(request, response) {
+        try {
+            await request.dataService.removePairAssignments(request.params.id);
+            response.send({message: 'SUCCESS'});
+        } catch (err) {
+            console.log(err);
+            response.statusCode = 404;
+            response.send({message: err.message});
+        }
     }
 }
 

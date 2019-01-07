@@ -56,6 +56,8 @@ tasks {
     }
 
     task<YarnTask>("stats") {
+        dependsOn("yarn", "vendorCompile")
+
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("-s", "webpack", "--json", "--config", "webpack.config.js")
 

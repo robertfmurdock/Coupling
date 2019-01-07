@@ -61,8 +61,7 @@ const config = {
     new webpack.DllReferencePlugin({
       context: '.',
       manifest: require('../public/app/build/vendor/vendor-manifest.json')
-    }),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/)
+    })
   ],
   performance: {
     hints: 'error'

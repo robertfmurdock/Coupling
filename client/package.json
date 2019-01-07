@@ -52,7 +52,6 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webdriver-launcher": "^1.0.5",
     "karma-webpack": "^3.0.0",
-    "moment": "^2.22.1",
     "ng-fittext": "github:patrickmarabeas/ng-FitText.js",
     "node-sass": "^4.9.0",
     "prefixfree": "^1.0.0",
@@ -91,5 +90,8 @@
   "bugs": {
     "url": "https://github.com/robertfmurdock/Coupling/issues"
   },
-  "homepage": "https://github.com/robertfmurdock/Coupling"
+  "homepage": "https://github.com/robertfmurdock/Coupling",
+  "dependencies": {
+    "date-fns": "^1.30.1"
+  }
 }

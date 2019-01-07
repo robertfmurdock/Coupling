@@ -5,7 +5,7 @@ import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
 import *  as _ from "underscore";
 import * as Styles from "../../client/app/components/statistics/styles.css";
-import * as R from "ramda";
+import * as map from "ramda/src/map";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
 
@@ -132,7 +132,7 @@ describe('Statistics directive', function () {
         ]);
     }));
 
-    let getPlayersFromCards = R.map(function (card) {
+    let getPlayersFromCards = map(function (card) {
         return angular.element(card).isolateScope().playerCard.player;
     });
 

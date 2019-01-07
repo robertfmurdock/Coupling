@@ -81,8 +81,7 @@ describe('The history page', function () {
 
             alert.accept();
 
-            await browser.waitForAngular();
-
+            await browser.wait(async () => await pairAssignmentSetElements.count() === 1, 2000);
 
             expect(pairAssignmentSetElements.count()).toBe(1);
         });

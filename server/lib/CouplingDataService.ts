@@ -1,4 +1,4 @@
-import * as Promise from "bluebird";
+import * as BluebirdPromise from "bluebird";
 import * as monk from "monk";
 import Player from "../../common/Player";
 import Tribe from "../../common/Tribe";
@@ -37,7 +37,7 @@ export default class CouplingDataService {
         this.pinCollection = this.database.get('pins');
     }
 
-    requestTribes() : Promise<Tribe[]> {
+    requestTribes(): BluebirdPromise<Tribe[]> {
         return makeDocumentPromise(this.tribesCollection, undefined, undefined);
     };
 
@@ -46,33 +46,33 @@ export default class CouplingDataService {
             .catch(handleMongoError);
     };
 
-    requestHistory(tribeId): Promise<any[]> {
+    requestHistory(tribeId): BluebirdPromise<any[]> {
         return makeDocumentPromise(this.historyCollection, {sort: {date: -1}}, {'tribe': tribeId, isDeleted: null});
     };
 
-    requestPlayers(tribeId): Promise<Player[]> {
+    requestPlayers(tribeId): BluebirdPromise<Player[]> {
         return makeDocumentPromise(this.playersCollection, {}, {'tribe': tribeId, isDeleted: null});
     };
 
-    requestPins(tribeId): Promise<any[]> {
+    requestPins(tribeId): BluebirdPromise<any[]> {
         return makeDocumentPromise(this.pinCollection, {}, {tribe: tribeId, isDeleted: null});
     };
 
     requestPinsAndHistory(tribeId) {
-        return Promise.props({
+        return BluebirdPromise.props({
             pins: this.requestPins(tribeId),
             history: this.requestHistory(tribeId)
-        }) as Promise<PinsAndHistory>;
+        }) as BluebirdPromise<PinsAndHistory>;
     };
 
-    requestPlayersAndHistory(tribeId): Promise<PlayersAndHistory> {
-        return Promise.props({
+    requestPlayersAndHistory(tribeId): BluebirdPromise<PlayersAndHistory> {
+        return BluebirdPromise.props({
             players: this.requestPlayers(tribeId),
             history: this.requestHistory(tribeId)
-        }) as Promise<PlayersAndHistory>;
+        }) as BluebirdPromise<PlayersAndHistory>;
     };
 
-    requestRetiredPlayers(tribeId): Promise<Player[]> {
+    requestRetiredPlayers(tribeId): BluebirdPromise<Player[]> {
         return makeDocumentPromise(this.playersCollection, {}, {tribe: tribeId, isDeleted: true});
     };
 
@@ -121,13 +121,11 @@ export default class CouplingDataService {
         };
     }
 
-    removePairAssignments(pairAssignmentsId) {
-        return this.historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true})
-            .then(function (results) {
-                if (results.nModified === 0) {
-                    throw new Error('Pair Assignments could not be deleted because they do not exist.');
-                }
-            });
+    async removePairAssignments(pairAssignmentsId) {
+        const results = await this.historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true});
+        if (results.nModified === 0) {
+            throw new Error('Pair Assignments could not be deleted because they do not exist.');
+        }
     };
 
 }

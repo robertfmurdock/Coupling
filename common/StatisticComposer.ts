@@ -4,7 +4,8 @@ import {calculateTimeSinceLastPartnership, NEVER_PAIRED} from "./PairingTimeCalc
 import Pair from "./Pair";
 import Tribe from "./Tribe";
 import Player from "./Player";
-import * as moment from "moment";
+import * as parse from "date-fns/parse"
+import * as distanceInWords from "date-fns/distance_in_words"
 
 interface PairReport {
     pair: Pair,
@@ -29,14 +30,14 @@ export default class StatisticComposer {
             return 'N/A';
         }
 
-        const times = history.map(document => moment(document.date).valueOf());
+        const times = history.map(document => parse(document.date).valueOf());
         const durations = times.slice(1).map((value, index) => times[index] - value);
 
         const sortedDurations = _.sortBy(durations, (duration) => duration);
         const indexOfMedian = Math.floor(sortedDurations.length / 2);
         const median = sortedDurations[indexOfMedian];
 
-        return moment.duration(median).humanize();
+        return distanceInWords(0, median);
     }
 
     private buildPairReports(players: Player[], history) {

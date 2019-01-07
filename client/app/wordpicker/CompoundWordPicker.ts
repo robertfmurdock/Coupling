@@ -1,5 +1,5 @@
 import WordPicker from "./WordPicker";
-import * as R from "ramda";
+import * as map from "ramda/src/map";
 
 export default class CompoundWordPicker implements WordPicker {
 
@@ -7,7 +7,7 @@ export default class CompoundWordPicker implements WordPicker {
     }
 
     choose(value: string) {
-        return R.map(picker => picker.choose(value), this.pickers);
+        return map(picker => picker.choose(value), this.pickers);
     }
 
 }

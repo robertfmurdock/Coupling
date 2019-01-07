@@ -199,7 +199,7 @@ describe('StatisticComposer', function () {
                 ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
-            expect(medianSpinDuration).toBe('a day');
+            expect(medianSpinDuration).toBe('1 day');
         });
 
         it('as 2 with mostly 2 day spins and outliers', function() {
@@ -274,7 +274,7 @@ describe('StatisticComposer', function () {
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
-            expect(medianSpinDuration).toBe('2 hours');
+            expect(medianSpinDuration).toBe('about 2 hours');
         });
 
         it('rounding hours to nearest day when the median is greater than a day', function() {
@@ -294,5 +294,4 @@ describe('StatisticComposer', function () {
             expect(medianSpinDuration).toBe('3 days');
         });
     });
-
 });
