@@ -20,7 +20,7 @@ tasks {
         }
     }
 
-    task<YarnTask>("clientVendorCompile") {
+    task<YarnTask>("vendorCompile") {
         dependsOn("yarn")
         mustRunAfter("clean")
         inputs.dir("node_modules")
@@ -31,8 +31,8 @@ tasks {
         args = listOf("webpack", "--config", "vendor.webpack.config.js")
     }
 
-    task<YarnTask>("clientCompile") {
-        dependsOn("yarn", "clientVendorCompile")
+    task<YarnTask>("compile") {
+        dependsOn("yarn", "vendorCompile")
         mustRunAfter("clean")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
@@ -45,23 +45,33 @@ tasks {
         args = listOf("webpack", "--config", "webpack.config.js")
     }
 
-    task<YarnTask>("clientTest") {
-        dependsOn("yarn", "clientVendorCompile")
+    task<YarnTask>("test") {
+        dependsOn("yarn", "vendorCompile")
         inputs.file(file("package.json"))
-        inputs.files(findByName("clientVendorCompile")?.inputs?.files)
+        inputs.files(findByName("vendorCompile")?.inputs?.files)
         inputs.dir("test")
         outputs.dir(file("../test-output/client"))
 
         args = listOf("run", "clientTest", "--silent")
     }
 
-    task<YarnTask>("clientStats") {
+    task<YarnTask>("stats") {
         setEnvironment(mapOf("NODE_ENV" to "production"))
-        args = listOf("webpack", "--json", "--config", "webpack.config.js")
+        args = listOf("-s", "webpack", "--json", "--config", "webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
-            standardOutput = FileOutputStream("logs/my.log")
+            file("build").mkdir()
+            standardOutput = FileOutputStream(file("build/stats.json"))
         })
+    }
 
+    task<YarnTask>("vendorStats") {
+        setEnvironment(mapOf("NODE_ENV" to "production"))
+        args = listOf("-s", "webpack", "--json", "--config", "vendor.webpack.config.js")
+
+        setExecOverrides(closureOf<ExecSpec> {
+            file("build").mkdir()
+            standardOutput = FileOutputStream(file("build/vendor.stats.json"))
+        })
     }
 }

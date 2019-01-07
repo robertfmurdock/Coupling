@@ -44,7 +44,7 @@ task serverCompile(type: YarnTask) {
 }
 
 task compile {
-    dependsOn serverCompile, ":client:clientCompile"
+    dependsOn serverCompile, ":client:compile"
 }
 
 task serverTest(type: YarnTask) {
@@ -77,9 +77,9 @@ task updateWebdriver(type: YarnTask) {
 
 task endToEndTest(type: YarnTask) {
     dependsOn compile, updateWebdriver
-    mustRunAfter serverTest, ":client:clientTest", endpointTest
-    inputs.files tasks.findByPath(":client:clientTest").inputs.files
-    inputs.files tasks.findByPath(":client:clientCompile").outputs.files
+    mustRunAfter serverTest, ":client:test", endpointTest
+    inputs.files tasks.findByPath(":client:test").inputs.files
+    inputs.files tasks.findByPath(":client:compile").outputs.files
     inputs.files serverTest.inputs.files
     inputs.files serverCompile.outputs.files
     inputs.file file('package.json')
@@ -90,7 +90,7 @@ task endToEndTest(type: YarnTask) {
 }
 
 task test {
-    dependsOn serverTest, ":client:clientTest", endpointTest
+    dependsOn serverTest, ":client:test", endpointTest
 }
 
 task start(type: YarnTask) {
@@ -103,7 +103,7 @@ task watch(type: NodeTask) {
 }
 
 task build {
-    dependsOn test, endToEndTest, ":client:clientCompile"
+    dependsOn test, endToEndTest, ":client:compile"
 }
 
 task pullProductionImage(type: DockerPullImage) {
