@@ -37,8 +37,8 @@ const appWatcher = webpackRunner.watch(serverWebpackConfig, function () {
 });
 
 let startForkedApp = function () {
-  const appProcess1 = childProcess.fork(__dirname + './startForkedApp', forkOptions);
-  const appProcess2 = childProcess.fork(__dirname + './startForkedApp');
+  const appProcess1 = childProcess.fork(__dirname + '/startForkedApp', forkOptions);
+  const appProcess2 = childProcess.fork(__dirname + '/startForkedApp');
   const appProcesses = [appProcess1, appProcess2];
   const appIsReadyPromise = new Promise(function (resolve, reject) {
     appProcess1.on('message', function (json) {
@@ -78,7 +78,7 @@ const startForkedAppAndWatchTests = function () {
       });
 
       appProcesses.forEach(app => {
-        app.on('exit', function () {
+        app.on('SIGINT', function () {
           testRunPromise.catch(function () {
             return 'All good';
           });
@@ -92,8 +92,8 @@ const startForkedAppAndWatchTests = function () {
 };
 
 
-process.on('exit', function () {
-  console.log("Caught interrupt signal");
+process.on('SIGINT', function () {
+  console.log("Caught interrupt signal - endpoint");
   removeTempDirectory();
   appWatcher.close();
 });

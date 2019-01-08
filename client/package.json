@@ -76,8 +76,8 @@
   },
   "scripts": {
     "webpack": "webpack",
-    "clientTest": "karma start test/karma.conf.js --single-run",
-    "clientTestContinuous": "karma start test/karma.conf.js --no-single-run"
+    "test": "karma start test/karma.conf.js --single-run",
+    "testWatch": "karma start test/karma.conf.js --no-single-run"
   },
   "repository": {
     "type": "git",

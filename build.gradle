@@ -130,8 +130,8 @@ task start(type: YarnTask) {
     args = ['run', 'start-built-app']
 }
 
-task watch(type: NodeTask) {
-    args = ['test/continuous-run.js']
+task testWatch(type: NodeTask) {
+    args = ['server/test/continuous-run.js']
 }
 
 task build {

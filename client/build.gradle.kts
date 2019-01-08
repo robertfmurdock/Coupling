@@ -50,7 +50,11 @@ tasks {
         inputs.dir("test")
         outputs.dir(file("build/test-results"))
 
-        args = listOf("run", "clientTest", "--silent")
+        args = listOf("run", "test", "--silent")
+    }
+
+    task<YarnTask>("testWatch") {
+        args = listOf("run", "testWatch")
     }
 
     task<YarnTask>("stats") {
