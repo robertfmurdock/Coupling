@@ -52,8 +52,13 @@ task copyClientTestResults(type: Copy) {
     into 'test-output/client'
 }
 
+task copyServerTestResults(type: Copy) {
+    from 'build/test-results'
+    into 'test-output'
+}
+
 task copyTestResultsForCircle {
-    dependsOn "copyClientTestResults"
+    dependsOn "copyClientTestResults", "copyServerTestResults"
 }
 
 task serverCompile(type: YarnTask) {
