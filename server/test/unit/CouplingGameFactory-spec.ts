@@ -1,6 +1,6 @@
-import CouplingGameFactory from "../lib/CouplingGameFactory";
-import CouplingGame from "../lib/CouplingGame";
-import CouplingWheel from "../lib/CouplingWheel";
+import CouplingGameFactory from "../../lib/CouplingGameFactory";
+import CouplingGame from "../../lib/CouplingGame";
+import CouplingWheel from "../../lib/CouplingWheel";
 
 describe('Coupling Game Factory', function () {
     it('will construct a Coupling Game', function () {

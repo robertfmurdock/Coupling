@@ -1,10 +1,10 @@
-const webpackRunner = require('../webpackRunner');
-const serverWebpackConfig = require('../../server/webpack.config');
+const webpackRunner = require('../../../test/webpackRunner');
+const serverWebpackConfig = require('../../webpack.config');
 const testWebpackConfig = require('./webpack.config');
 const childProcess = require('child_process');
 const Promise = require('bluebird');
-const runHelpers = require('../run-helpers');
-const forkHelpers = require('./../fork-helpers');
+const runHelpers = require('../../../test/run-helpers');
+const forkHelpers = require('../../../test/fork-helpers');
 const merge = require('ramda/src/merge');
 
 const forkOptions = {
@@ -16,7 +16,7 @@ const forkOptions = {
 };
 
 function forkJasmine() {
-  return forkHelpers.forkJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml',
+  return forkHelpers.forkJasmine('server/test/endpoint', '.tmp', 'test.js', __dirname + '/../../../test-output', 'endpoint.xml',
     forkOptions);
 }
 
@@ -37,8 +37,8 @@ const appWatcher = webpackRunner.watch(serverWebpackConfig, function () {
 });
 
 let startForkedApp = function () {
-  const appProcess1 = childProcess.fork('./test/endpoint/startForkedApp', forkOptions);
-  const appProcess2 = childProcess.fork('./test/endpoint/startForkedApp');
+  const appProcess1 = childProcess.fork(__dirname + './startForkedApp', forkOptions);
+  const appProcess2 = childProcess.fork(__dirname + './startForkedApp');
   const appProcesses = [appProcess1, appProcess2];
   const appIsReadyPromise = new Promise(function (resolve, reject) {
     appProcess1.on('message', function (json) {

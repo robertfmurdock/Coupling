@@ -69,8 +69,8 @@
     "test": "./gradlew test endToEndTest",
     "start-built-app": "node ./startup.js",
     "webpack": "webpack",
-    "endpointTest": "node test/endpoint/run.js",
-    "serverTest": "node server/test/run.js",
+    "endpointTest": "node server/test/endpoint/run.js",
+    "serverTest": "node server/test/unit/run.js",
     "update-webdriver": "webdriver-manager update",
     "protractor": "node test/e2e/run.js"
   },

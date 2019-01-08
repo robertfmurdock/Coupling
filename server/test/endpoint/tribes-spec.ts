@@ -6,7 +6,7 @@ import * as pluck from 'ramda/src/pluck'
 import * as find from 'ramda/src/find'
 import * as whereEq from 'ramda/src/whereEq'
 
-let config = require('../../server/config/config');
+let config = require('../../config/config');
 let server = 'http://localhost:' + config.port;
 
 let path = '/api/tribes';

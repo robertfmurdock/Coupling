@@ -1,11 +1,11 @@
 "use strict";
 
 import * as Promise from "bluebird";
-import CouplingDataService from "../../server/lib/CouplingDataService";
+import CouplingDataService from "../../lib/CouplingDataService";
 import * as supertest from "supertest";
 import * as monk from "monk";
 
-let config = require('../../server/config/config');
+let config = require('../../config/config');
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
 let tribeId = 'endpointTest';

@@ -1,9 +1,9 @@
-const runHelpers = require('../../test/run-helpers');
-const webpackRunner = require('../../test/webpackRunner');
+const runHelpers = require('../../../test/run-helpers');
+const webpackRunner = require('../../../test/webpackRunner');
 let config = require('./webpack.config');
 
 const startJasmine = function () {
-  return runHelpers.startJasmine('server/test', '.tmp', 'test.js', __dirname + '/../../build/test-results/server.unit', 'server.unit');
+  return runHelpers.startJasmine('server/test/unit', '.tmp', 'test.js', __dirname + '/../../build/test-results/server.unit', 'server.unit');
 };
 const removeTempDirectory = function () {
   return runHelpers.removeTempDirectory(__dirname + '/.tmp');

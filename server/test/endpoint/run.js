@@ -1,10 +1,10 @@
-const webpackRunner = require('../webpackRunner');
+const webpackRunner = require('../../../test/webpackRunner');
 let config = require('./webpack.config');
 
-const runHelpers = require('../run-helpers');
+const runHelpers = require('../../../test/run-helpers');
 
 const startJasmine = function () {
-  return runHelpers.startJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../test-output/endpoint', 'endpoint.xml')
+  return runHelpers.startJasmine('server/test/endpoint', '.tmp', 'test.js', __dirname + '/../../build/test-results/endpoint', 'endpoint.xml')
 };
 
 const removeTempDirectory = function () {
@@ -14,7 +14,7 @@ const removeTempDirectory = function () {
 webpackRunner.run(config)
   .then(function () {
     process.env.PORT = "3001";
-    return require('../../build/app').start()
+    return require('../../../build/app').start()
   })
   .then(startJasmine)
   .finally(removeTempDirectory)

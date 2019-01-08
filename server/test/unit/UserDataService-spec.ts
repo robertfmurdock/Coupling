@@ -1,8 +1,8 @@
 import * as monk from "monk";
 import * as Promise from "bluebird";
-import UserDataService from "../lib/UserDataService";
+import UserDataService from "../../lib/UserDataService";
 
-var config = require('../config/config');
+var config = require('../../config/config');
 
 var mongoUrl = config.testMongoUrl + '/UsersTest';
 var database = monk.default(mongoUrl);

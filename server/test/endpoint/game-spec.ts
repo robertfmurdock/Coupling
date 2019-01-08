@@ -1,12 +1,12 @@
 "use strict";
 import * as monk from "monk";
 import * as supertest from "supertest";
-import PairAssignmentDocument from "../../common/PairAssignmentDocument";
-import Badge from "../../common/Badge";
-import Tribe from "../../common/Tribe";
-import PairingRule from "../../common/PairingRule";
-import Comparators from "../../common/Comparators";
-let config = require('../../server/config/config');
+import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
+import Badge from "../../../common/Badge";
+import Tribe from "../../../common/Tribe";
+import PairingRule from "../../../common/PairingRule";
+import Comparators from "../../../common/Comparators";
+let config = require('../../config/config');
 
 let server = 'http://localhost:' + config.port;
 let superAgent = supertest.agent(server);

@@ -1,2 +1,2 @@
 require('./unit/continuous-run');
-require('./endpoint/continuous-run');
+require('../server/test/endpoint/continuous-run');

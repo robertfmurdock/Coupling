@@ -1,12 +1,12 @@
-const runHelpers = require('../../test/run-helpers');
-const forkHelpers = require('../../test/fork-helpers');
-const webpackRunner = require('../../test/webpackRunner');
+const runHelpers = require('../../../test/run-helpers');
+const forkHelpers = require('../../../test/fork-helpers');
+const webpackRunner = require('../../../test/webpackRunner');
 const config = require('./webpack.config');
 
 const removeTempDirectory = runHelpers.removeTempDirectory;
 
 function forkJasmine() {
-  return forkHelpers.forkJasmine('server/test', '.tmp', 'test.js', __dirname + '/../../../test-output').promise;
+  return forkHelpers.forkJasmine('server/test/unit', '.tmp', 'test.js', __dirname + '/../../../test-output').promise;
 }
 
 let testRun = undefined;

@@ -1,8 +1,8 @@
 "use strict";
-import PairingHistory from "../lib/PairingHistory";
-import Player from "../../common/Player";
+import PairingHistory from "../../lib/PairingHistory";
+import Player from "../../../common/Player";
 
-var PairAssignmentDocument = require('../../common/PairAssignmentDocument').default;
+var PairAssignmentDocument = require('../../../common/PairAssignmentDocument').default;
 var ObjectID = require('mongodb').ObjectID;
 
 describe('Pairing History', function () {

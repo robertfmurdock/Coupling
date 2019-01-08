@@ -1,6 +1,6 @@
-import PairHistoryReport from "../lib/PairCandidateReport";
-import CouplingGame from "../lib/CouplingGame";
-import PairingRule from "../../common/PairingRule";
+import PairHistoryReport from "../../lib/PairCandidateReport";
+import CouplingGame from "../../lib/CouplingGame";
+import PairingRule from "../../../common/PairingRule";
 
 describe("Coupling Game", function () {
     function badSpin(players) {

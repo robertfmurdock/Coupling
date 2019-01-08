@@ -2,9 +2,9 @@ import * as WebSocket from "ws";
 import * as Promise from "bluebird";
 import * as supertest from "supertest";
 import * as monk from "monk";
-import Tribe from "../../common/Tribe";
+import Tribe from "../../../common/Tribe";
 
-let config = require('../../server/config/config');
+let config = require('../../config/config');
 let server = 'localhost:' + config.port;
 let agent = supertest.agent(server);
 let userEmail = 'test@test.tes';

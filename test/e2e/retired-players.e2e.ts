@@ -34,20 +34,19 @@ describe('The retired players page', function () {
         player4
     ];
 
-    beforeAll(function () {
+    beforeAll(async function () {
         browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
-        browser.wait(() =>
+        await browser.wait(() =>
                 tribeCollection.insert(tribe)
                     .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
                     .then(() => playersCollection.drop())
                     .then(() => playersCollection.insert(players))
             , 1000);
-        browser.waitForAngular();
+        await browser.waitForAngular();
     });
 
-    afterAll(function (done) {
-        tribeCollection.remove({id: tribe.id}, false)
-            .then(done, done.fail);
+    afterAll(async function () {
+        await tribeCollection.remove({id: tribe.id}, false)
     });
 
     e2eHelp.afterEachAssertLogsAreEmpty();

@@ -1,5 +1,5 @@
-import Comparators from "../../common/Comparators";
-import Pair from "../../common/Pair";
+import Comparators from "../../../common/Comparators";
+import Pair from "../../../common/Pair";
 
 describe('Comparators', function () {
     describe("pairs", function () {

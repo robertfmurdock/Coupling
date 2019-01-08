@@ -28,7 +28,7 @@ var config = {
     },
     get gitRev() {
         try {
-            var fileJSON = require('./version');
+            const fileJSON = require('./version');
             return fileJSON.gitRev;
         } catch (err) {
             return 'None';
@@ -36,7 +36,7 @@ var config = {
     },
     get buildDate() {
         try {
-            var fileJSON = require('./version');
+            const fileJSON = require('./version');
             return fileJSON.date;
         } catch (err) {
             return 'None';

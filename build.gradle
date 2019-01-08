@@ -83,7 +83,7 @@ task serverTest(type: YarnTask) {
     dependsOn yarn
     inputs.file file('package.json')
     inputs.files serverCompile.inputs.files
-    inputs.dir 'server/test'
+    inputs.dir 'server/test/unit'
     outputs.dir 'test-output/server.unit'
 
     args = ['run', 'serverTest', '--silent']
@@ -95,7 +95,7 @@ task endpointTest(type: YarnTask) {
     inputs.files serverTest.inputs.files
     inputs.files serverCompile.outputs.files
     inputs.file file('package.json')
-    inputs.dir 'test/endpoint'
+    inputs.dir 'server/test/endpoint'
     outputs.dir 'test-output/endpoint'
 
     args = ['run', 'endpointTest', '--silent']
