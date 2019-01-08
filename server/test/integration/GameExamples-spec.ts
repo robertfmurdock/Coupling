@@ -1,14 +1,14 @@
 import * as monk from "monk";
-import CouplingGameFactory from "../../../../server/lib/CouplingGameFactory";
-import GameRunner from "../../../../server/lib/GameRunner";
-import CouplingDataService from "../../../../server/lib/CouplingDataService";
-import PairAssignmentDocument from "../../../../common/PairAssignmentDocument";
-import Comparators from "../../../../common/Comparators";
-import Badge from "../../../../common/Badge";
-import PairingRule from "../../../../common/PairingRule";
-import Pair from "../../../../common/Pair";
+import CouplingGameFactory from "../../lib/CouplingGameFactory";
+import GameRunner from "../../lib/GameRunner";
+import CouplingDataService from "../../lib/CouplingDataService";
+import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
+import Comparators from "../../../common/Comparators";
+import Badge from "../../../common/Badge";
+import PairingRule from "../../../common/PairingRule";
+import Pair from "../../../common/Pair";
 
-const config = require('../../../../server/config/config');
+const config = require('../../config/config');
 
 describe('The game', function () {
 

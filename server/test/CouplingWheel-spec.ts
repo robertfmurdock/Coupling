@@ -1,4 +1,4 @@
-import CouplingWheel from "../../../server/lib/CouplingWheel";
+import CouplingWheel from "../lib/CouplingWheel";
 
 describe('Coupling Wheel', function () {
     it('randomly chooses a person on the wheel', function () {

@@ -1,4 +1,4 @@
-import PinAssigner from "../../../server/lib/PinAssigner";
+import PinAssigner from "../lib/PinAssigner";
 
 describe('PinAssigner', function () {
 

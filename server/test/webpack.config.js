@@ -2,7 +2,7 @@ var path = require('path');
 const clone = require('ramda/src/clone');
 
 const nodeExternals = require('webpack-node-externals');
-var config = clone(require('../../../server/webpack.config'));
+var config = clone(require('../webpack.config'));
 
 var jsPath = path.resolve(__dirname, './');
 

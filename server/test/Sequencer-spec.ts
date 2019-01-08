@@ -1,6 +1,6 @@
-import Sequencer from "../../../server/lib/Sequencer";
-import PairHistoryReport from "../../../server/lib/PairCandidateReport";
-import PairingRule from "../../../common/PairingRule";
+import Sequencer from "../lib/Sequencer";
+import PairHistoryReport from "../lib/PairCandidateReport";
+import PairingRule from "../../common/PairingRule";
 
 describe('Sequencer', function () {
 
