@@ -2,7 +2,9 @@
 import * as supertest from "supertest";
 import * as Promise from "bluebird";
 import * as monk from "monk";
-import * as _ from "underscore";
+import * as pluck from 'ramda/src/pluck'
+import * as find from 'ramda/src/find'
+import * as whereEq from 'ramda/src/whereEq'
 
 let config = require('../../server/config/config');
 let server = 'http://localhost:' + config.port;
@@ -40,7 +42,7 @@ describe(path, function () {
         const tribes = [{id: 'Uno', name: 'one'}, {id: 'Dos', name: 'two'}, {id: 'Tres', name: 'three'}];
         tribesCollection.insert(tribes)
             .then(() => {
-                let authorizedTribes = _.pluck(tribes, 'id');
+                let authorizedTribes = pluck('id', tribes);
                 return authorizeUserForTribes(authorizedTribes)
                     .then(() => tribes);
             })
@@ -106,7 +108,8 @@ describe(path, function () {
                         .expect('Content-Type', /json/)
                 })
                 .then(function (response) {
-                    expect(_.findWhere(response.body, clean(newTribe))).toBeDefined();
+                    let expected = clean(newTribe);
+                    expect(find(whereEq(expected), response.body)).toBeDefined();
                 })
                 .then(done, done.fail);
         });

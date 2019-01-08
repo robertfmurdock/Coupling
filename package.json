@@ -31,7 +31,6 @@
     "pug": "^2.0.3",
     "ramda": "^0.25.0",
     "serve-favicon": "^2.5.0",
-    "underscore": "~1.9.0",
     "ws": "^5.1.1"
   },
   "devDependencies": {
@@ -40,7 +39,6 @@
     "@types/jasminewd2": "^2.0.3",
     "@types/passport": "^0.4.5",
     "@types/ramda": "0.25.24",
-    "@types/underscore": "^1.8.8",
     "@types/ws": "5.1.0",
     "axios": "^0.18.0",
     "expect.js": "^0.3.1",

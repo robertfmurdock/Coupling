@@ -1,8 +1,8 @@
 var path = require('path');
-const _ = require('underscore');
+const clone = require('ramda/src/clone');
 
 const nodeExternals = require('webpack-node-externals');
-var config = _.clone(require('../../../server/webpack.config'));
+var config = clone(require('../../../server/webpack.config'));
 
 var jsPath = path.resolve(__dirname, './');
 

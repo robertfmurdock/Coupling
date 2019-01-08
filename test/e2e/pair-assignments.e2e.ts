@@ -1,7 +1,6 @@
 "use strict";
 import {browser, element, By} from "protractor";
 import * as monk from "monk";
-import * as _ from "underscore";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 
@@ -11,6 +10,8 @@ const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 const historyCollection = database.get('history');
+
+const pluck = require('ramda/src/pluck');
 
 describe('The current pair assignments', function () {
 
@@ -105,7 +106,7 @@ describe('The current pair assignments', function () {
         it('will display all the existing players in the player roster', function () {
             browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
             const playerElements = element.all(By.repeater('player in players'));
-            expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
+            expect(playerElements.getText()).toEqual(pluck('name', players));
         });
     });
 
@@ -117,7 +118,7 @@ describe('The current pair assignments', function () {
         );
 
         beforeAll(function () {
-            browser.wait(()=> historyCollection.insert(pairAssignmentDocument), 1000);
+            browser.wait(() => historyCollection.insert(pairAssignmentDocument), 1000);
             browser.refresh();
         });
 
@@ -128,14 +129,14 @@ describe('The current pair assignments', function () {
         it('the most recent pairs are shown', function () {
             const pairElements = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
             const firstPair = pairElements.get(0).all(By.repeater('player in pair'));
-            expect(firstPair.getText()).toEqual(_.pluck([player1, player3], 'name'));
+            expect(firstPair.getText()).toEqual(pluck('name', [player1, player3]));
             const secondPair = pairElements.get(1).all(By.repeater('player in pair'));
-            expect(secondPair.getText()).toEqual(_.pluck([player5], 'name'));
+            expect(secondPair.getText()).toEqual(pluck('name', [player5]));
         });
 
         it('only players that are not in the most recent pairs are displayed', function () {
             const remainingPlayerElements = element.all(By.repeater('player in players'));
-            expect(remainingPlayerElements.getText()).toEqual(_.pluck([player2, player4], 'name'));
+            expect(remainingPlayerElements.getText()).toEqual(pluck('name', [player2, player4]));
         });
     });
 

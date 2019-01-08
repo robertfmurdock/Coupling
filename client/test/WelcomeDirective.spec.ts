@@ -2,8 +2,8 @@ import * as angular from "angular";
 import "ng-fittext";
 import "../app/components/components";
 import {Randomizer} from "../../client/app/services";
-import * as _ from "underscore";
 import Player from "../../common/Player";
+import * as map from 'ramda/src/map'
 
 describe('Welcome Directive:', function () {
 
@@ -50,12 +50,12 @@ describe('Welcome Directive:', function () {
             const scope: any = welcomeElement.scope();
             const controller = scope.welcome;
 
-            _.each(timeout.calls.all(), function (call: any) {
+            map(function (call: any) {
                 const [callback, waitTime] = call.args;
                 if (waitTime === 0) {
                     callback()
                 }
-            });
+            }, timeout.calls.all());
 
             expect(controller.show).toBe(true);
         });

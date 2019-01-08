@@ -1,6 +1,6 @@
-const _ = require('underscore');
+const clone = require('ramda/src/clone');
 
-var config = _.clone(require('../../server/webpack.config'));
+var config = clone(require('../../server/webpack.config'));
 var path = require('path');
 const nodeExternals = require('webpack-node-externals');
 

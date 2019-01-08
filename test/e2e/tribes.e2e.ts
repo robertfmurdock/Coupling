@@ -1,8 +1,8 @@
 "use strict";
 import {browser, element, By} from "protractor";
-import * as _ from "underscore";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
+import * as pluck from 'ramda/src/pluck'
 
 const config = require("../../server/config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -14,7 +14,7 @@ const userEmail = 'protractor@test.goo';
 function authorizeAllTribes() {
     return tribeCollection.find({}, {})
         .then(function (tribeDocuments) {
-            const authorizedTribes = _.pluck(tribeDocuments, 'id');
+            const authorizedTribes = pluck('id', tribeDocuments);
             return e2eHelp.authorizeUserForTribes(authorizedTribes);
         });
 }
@@ -75,7 +75,7 @@ describe('The default tribes page', function () {
 
     it('should have a section for each tribe', function () {
         const tribeElements = tribeListPage.getTribeElements();
-        expect(tribeElements.getText()).toEqual(_.pluck(tribeDocuments, 'name'));
+        expect(tribeElements.getText()).toEqual(pluck('name', tribeDocuments));
     });
 
     it('can navigate to the a specific tribe page', function () {

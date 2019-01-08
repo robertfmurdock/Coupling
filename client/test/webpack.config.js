@@ -1,8 +1,7 @@
-const _ = require('underscore');
+const clone = require('ramda/src/clone');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const webpackConfig = _.clone(require('../webpack.config'));
-
+const webpackConfig = clone(require('../webpack.config'));
 
 webpackConfig.externals.jquery = 'jQuery';
 

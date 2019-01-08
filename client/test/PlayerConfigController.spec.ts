@@ -3,7 +3,6 @@ import "angular-route";
 import * as angular from 'angular'
 import Player from "../../common/Player";
 import Badge from "../../common/Badge";
-import * as _ from "underscore";
 
 const defer = function () {
     const defer = {
@@ -23,7 +22,8 @@ let initPlayerController = function (controller, $scope, Coupling, $location,
                                      tribe: {name: string; id: string; _id: string},
                                      alternatePlayer: Player) {
     controller = new PlayerConfigController($scope, Coupling, $location, $route);
-    _.extend(controller, {tribe, player: alternatePlayer});
+    controller.tribe = tribe;
+    controller.player = alternatePlayer;
     controller.$onInit();
     return controller;
 };

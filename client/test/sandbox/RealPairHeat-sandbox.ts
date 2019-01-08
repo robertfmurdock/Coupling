@@ -1,11 +1,16 @@
 import PairHeatCalculator from "../../../common/PairHeatCalculator";
 import * as menuHistory from "./menu-history-bla.json";
 import * as menuPlayers from "./menu-players.json";
-import * as _ from "underscore";
 import Pair from "../../../common/Pair";
 import PairAssignmentSet from "../../../common/PairAssignmentSet";
 import Player from "../../../common/Player";
 import StatisticComposer from "../../../common/StatisticComposer";
+import * as pluck from 'ramda/src/pluck'
+import * as pipe from 'ramda/src/pipe'
+import * as map from 'ramda/src/map'
+import * as unnest from 'ramda/src/unnest'
+import * as uniq from 'ramda/src/uniq'
+import * as forEach from 'ramda/src/forEach'
 
 fdescribe('srsly delete me', function () {
 
@@ -16,7 +21,7 @@ fdescribe('srsly delete me', function () {
 
         it('what jennifer said', function () {
             const pair: Pair = [menuPlayers[0], menuPlayers[1]];
-            console.log(_.pluck(pair, 'name'));
+            console.log(pluck('name', pair));
 
             const earlyHistory = fullHistory.slice(fullHistory.length - 90);
 
@@ -27,28 +32,30 @@ fdescribe('srsly delete me', function () {
         it('what rob said', function () {
             const firstRotations = fullHistory.slice(fullHistory.length - 35);
 
-            const uniquePlayers = _.chain(firstRotations)
-                .map(interval => interval.pairs)
-                .flatten(true)
-                .flatten(true)
-                .uniq(false, player => player._id)
-                .value();
+            const uniquePlayers = pipe(
+                map(interval => interval.pairs),
+                unnest(),
+                unnest(),
+                uniq(player => player._id)
+            )(firstRotations);
 
-            const pairs = _.chain(uniquePlayers)
-                .map((player, index, players :Player[]) => {
+            const pairs = pipe(
+                map((player, index, players: Player[]) => {
                     const otherPlayers = players.slice(index + 1);
-                    return _.map(otherPlayers, otherPlayer => [player, otherPlayer]);
-                })
-                .flatten(true)
-                .value();
+                    return map(otherPlayer => [player, otherPlayer], otherPlayers);
+                }),
+                unnest())(uniquePlayers);
 
-            const stats = new StatisticComposer().compose({id: 'Roadkill Buffet', name: 'Menu'}, uniquePlayers, firstRotations);
+            const stats = new StatisticComposer().compose({
+                id: 'Roadkill Buffet',
+                name: 'Menu'
+            }, uniquePlayers, firstRotations);
 
-            _.forEach(pairs, (pair :Pair) => {
-                const pairNames = _.pluck(pair, 'name');
+            forEach((pair: Pair) => {
+                const pairNames = pluck('name', pair);
                 const heat = pairHeatCalculator.calculate(pair, firstRotations, stats.spinsUntilFullRotation);
                 console.log(pairNames, heat);
-            })
+            }, pairs)
         });
 
     });

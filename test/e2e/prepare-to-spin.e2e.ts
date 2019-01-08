@@ -1,8 +1,8 @@
 "use strict";
 import {browser, By, element} from "protractor";
 import * as monk from "monk";
-import * as _ from "underscore";
 import e2eHelp from "./e2e-help";
+import * as pluck from 'ramda/src/pluck'
 
 const config = require("../../server/config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -61,7 +61,7 @@ describe('The prepare to spin page', function () {
 
         it('will show all the players ', function () {
             const playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
-            expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
+            expect(playerElements.getText()).toEqual(pluck('name', players));
         });
 
         it('spinning with all players on will get all players back', function () {

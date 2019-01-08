@@ -2,13 +2,13 @@
 import {browser, element, By} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
-import * as _ from "underscore";
 
 const config = require("../../server/config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
+const pluck = require('ramda/src/pluck');
 
 describe('The retired players page', function () {
 
@@ -58,10 +58,10 @@ describe('The retired players page', function () {
 
     it('shows the retired players', function () {
         const playerElements = element.all(By.repeater('player in retiredPlayers'));
-        expect(playerElements.getText()).toEqual(_.pluck(retiredPlayers, 'name'));
+        expect(playerElements.getText()).toEqual(pluck('name', retiredPlayers));
     });
 
-    it('has a tribe card', function() {
+    it('has a tribe card', function () {
         const tribeCardHeaderElement = element(By.className("tribe-card-header"));
         expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
     });

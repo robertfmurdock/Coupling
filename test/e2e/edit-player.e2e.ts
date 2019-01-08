@@ -1,10 +1,11 @@
 "use strict";
 import {browser, By, element} from "protractor";
-import * as _ from "underscore";
 import {playersCollection, tribeCollection} from "./database";
 import e2eHelp from "./e2e-help";
 import Tribe from "../../common/Tribe";
 import * as monk from "monk";
+import * as clone from "ramda/src/clone";
+import * as pluck from "ramda/src/pluck";
 
 const config = require("../../server/config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -80,7 +81,7 @@ describe('The edit player page', function () {
     describe('when the tribe does not have badging enabled', function () {
 
         beforeEach(async function () {
-            const tribeClone: Tribe = _.clone(tribe);
+            const tribeClone: Tribe = clone(tribe);
             tribeClone.badgesEnabled = false;
             await tribeCollection.update({_id: tribe._id}, tribeClone)
         });
@@ -100,7 +101,7 @@ describe('The edit player page', function () {
         const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
         beforeEach(function (done) {
-            const tribeClone: Tribe = _.clone(tribe);
+            const tribeClone: Tribe = clone(tribe);
             tribeClone.badgesEnabled = true;
             tribeClone.defaultBadgeName = "Badge 1";
             tribeClone.alternateBadgeName = "Badge 2";
@@ -188,7 +189,7 @@ describe('The edit player page', function () {
     it('will show all players', function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerElements = element.all(By.repeater('player in players'));
-        expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
+        expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 });
 
@@ -232,7 +233,7 @@ describe('The new player page', function () {
     it('will show all players', function () {
         browser.setLocation(`/${tribe.id}/player/new`);
         const playerElements = element.all(By.repeater('player in players'));
-        expect(playerElements.getText()).toEqual(_.pluck(players, 'name'));
+        expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 
 });

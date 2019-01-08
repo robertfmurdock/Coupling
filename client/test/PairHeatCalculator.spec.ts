@@ -1,7 +1,8 @@
 import PairHeatCalculator from "../../common/PairHeatCalculator";
 import Pair from "../../common/Pair";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
-import * as _ from "underscore";
+import * as unnest from 'ramda/src/unnest'
+import * as map from 'ramda/src/map'
 
 const heatCalculator = new PairHeatCalculator();
 
@@ -93,7 +94,7 @@ describe('PairHeatCalculator', function () {
             expect(heat).toBe(0);
         });
 
-        it('will not go higher than 10 when pairing more than once per rotation', function() {
+        it('will not go higher than 10 when pairing more than once per rotation', function () {
             const rotationHeatWindow = 5;
             const intervalsUntilCooling = rotationPeriod * rotationHeatWindow;
             const expectedPairings = makePairDocumentList([pair, [player3]], rotationHeatWindow + 1);
@@ -128,37 +129,35 @@ describe('PairHeatCalculator', function () {
             expect(heat).toBe(1);
         });
 
-        it('will return 7 when skipping one rotation out of five', function() {
+        it('will return 7 when skipping one rotation out of five', function () {
             const intervalWithIntendedPair = makePairDocument([pair, [player3, player4], [player5]]);
-            const assignmentsWithoutIntendedPair :Pair[] = [[player1, player3], [player2, player5], [player4]];
+            const assignmentsWithoutIntendedPair: Pair[] = [[player1, player3], [player2, player5], [player4]];
             const otherIntervals = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod - 1);
             const goodRotation = otherIntervals.concat(intervalWithIntendedPair);
             const absenteeRotation = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod);
-            const history = _.flatten([goodRotation, absenteeRotation, goodRotation, goodRotation, goodRotation], true);
+            const history = unnest([goodRotation, absenteeRotation, goodRotation, goodRotation, goodRotation]);
 
             const heat = heatCalculator.calculate(pair, history, rotationPeriod);
 
-           expect(heat).toBe(7);
+            expect(heat).toBe(7);
         });
 
-        it('will return 2.5 when skipping three rotations out of five', function() {
+        it('will return 2.5 when skipping three rotations out of five', function () {
             const intervalWithIntendedPair = makePairDocument([pair, [player3, player4], [player5]]);
-            const assignmentsWithoutIntendedPair :Pair[] = [[player1, player3], [player2, player5], [player4]];
+            const assignmentsWithoutIntendedPair: Pair[] = [[player1, player3], [player2, player5], [player4]];
             const otherIntervals = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod - 1);
             const goodRotation = otherIntervals.concat(intervalWithIntendedPair);
             const absenteeRotation = makePairDocumentList(assignmentsWithoutIntendedPair, rotationPeriod);
-            const history = _.flatten([goodRotation, absenteeRotation, absenteeRotation, goodRotation, absenteeRotation], true);
+            const history = unnest([goodRotation, absenteeRotation, absenteeRotation, goodRotation, absenteeRotation]);
 
             const heat = heatCalculator.calculate(pair, history, rotationPeriod);
 
-           expect(heat).toBe(2.5);
+            expect(heat).toBe(2.5);
         });
     });
 
     function makePairDocumentList(pairs: Pair[], intervalCount: number) {
-        return _.map(Array.apply(null, {length: intervalCount}),
-            (value, index) => makePairDocument(pairs)
-        );
+        return map((value, index) => makePairDocument(pairs), Array.apply(null, {length: intervalCount}));
     }
 
     function makeSinglePairDocument(pair: Pair) {

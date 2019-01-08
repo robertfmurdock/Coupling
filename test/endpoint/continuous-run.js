@@ -3,12 +3,12 @@ const serverWebpackConfig = require('../../server/webpack.config');
 const testWebpackConfig = require('./webpack.config');
 const childProcess = require('child_process');
 const Promise = require('bluebird');
-const _ = require('underscore');
 const runHelpers = require('../run-helpers');
 const forkHelpers = require('./../fork-helpers');
+const merge = require('ramda/src/merge');
 
 const forkOptions = {
-  env: _.extend({
+  env: merge({
     PORT: 3001,
     NODE_ENV: 'test',
     DISABLE_LOGGING: true
@@ -66,7 +66,7 @@ const startForkedAppAndWatchTests = function () {
               process = forkInfo.process;
               return forkInfo.promise;
             })
-            .catch(function(err) {
+            .catch(function (err) {
               console.log('Tests crashed: ', err);
               return true;
             })

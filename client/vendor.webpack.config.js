@@ -40,7 +40,6 @@ const config = {
       "ramda/src/union",
       "ramda/src/pluck",
       "font-awesome/css/font-awesome.css",
-      "underscore",
       "date-fns/parse",
       "date-fns/distance_in_words",
     ]
