@@ -28,6 +28,11 @@ yarn {
     outputs.dir file('node_modules')
 }
 
+task copyClient(type: Copy) {
+    dependsOn ":client:compile"
+    from 'client/build/lib'
+    into 'public/app/build'
+}
 
 task serverCompile(type: YarnTask) {
     dependsOn yarn
@@ -44,7 +49,7 @@ task serverCompile(type: YarnTask) {
 }
 
 task compile {
-    dependsOn serverCompile, ":client:compile"
+    dependsOn serverCompile, "copyClient"
 }
 
 task serverTest(type: YarnTask) {

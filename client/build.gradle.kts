@@ -16,30 +16,29 @@ tasks {
 
     task("clean") {
         doLast {
-            delete(file("../public/app/build"))
+            delete(file("build"))
+            delete(file("../test-output/client"))
         }
     }
 
     task<YarnTask>("vendorCompile") {
         dependsOn("yarn")
-        mustRunAfter("clean")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
-        outputs.dir("../public/app/build/vendor")
+        outputs.dir("build/lib/vendor")
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("webpack", "--config", "vendor.webpack.config.js")
     }
 
     task<YarnTask>("compile") {
         dependsOn("yarn", "vendorCompile")
-        mustRunAfter("clean")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.file(file("../tsconfig.json"))
         inputs.dir("../common")
-        outputs.dir("../public/app/build")
+        outputs.dir("build/lib")
         inputs.dir("./")
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("webpack", "--config", "webpack.config.js")
@@ -62,8 +61,8 @@ tasks {
         args = listOf("-s", "webpack", "--json", "--config", "webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
-            file("build").mkdir()
-            standardOutput = FileOutputStream(file("build/stats.json"))
+            file("build/report").mkdirs()
+            standardOutput = FileOutputStream(file("build/report/stats.json"))
         })
     }
 
@@ -72,8 +71,10 @@ tasks {
         args = listOf("-s", "webpack", "--json", "--config", "vendor.webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
-            file("build").mkdir()
-            standardOutput = FileOutputStream(file("build/vendor.stats.json"))
+            file("build/report").mkdirs()
+            standardOutput = FileOutputStream(file("build/reports/vendor.stats.json"))
         })
     }
+
+    forEach { if (it.name != "clean") it.mustRunAfter("clean") }
 }

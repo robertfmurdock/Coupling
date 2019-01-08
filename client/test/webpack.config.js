@@ -14,7 +14,7 @@ const config = {
     new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
     new webpack.DllReferencePlugin({
       context: '.',
-      manifest: require('../../public/app/build/vendor/vendor-manifest.json')
+      manifest: require('../build/lib/vendor/vendor-manifest.json')
     }),
     new webpack.ProvidePlugin({'window.jQuery': 'jquery', $: 'jquery', 'jQuery': 'jquery'})
   ],

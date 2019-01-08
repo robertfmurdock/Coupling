@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const buildPath = path.resolve(__dirname, '../public/app/build/vendor');
+const buildPath = path.resolve(__dirname, 'build/lib/vendor');
 const config = {
   mode: "production",
   entry: {

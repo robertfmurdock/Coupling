@@ -8,7 +8,7 @@ const config = {
   entry: path.resolve(jsPath, './app.ts'),
   mode: "production",
   output: {
-    path: path.resolve(__dirname, '../public/app/build'),
+    path: path.resolve(__dirname, 'build/lib'),
     filename: 'main.js'
   },
   devtool: 'source-map',
@@ -60,7 +60,7 @@ const config = {
     new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
     new webpack.DllReferencePlugin({
       context: '.',
-      manifest: require('../public/app/build/vendor/vendor-manifest.json')
+      manifest: require('./build/lib/vendor/vendor-manifest.json')
     })
   ],
   performance: {
