@@ -4,6 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Coupling.iml" filepath="$PROJECT_DIR$/.idea/modules/Coupling.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/engine.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/engine.iml" group="engine" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/engine_commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/engine_commonMain.iml" group="engine" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/engine_commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/engine_commonTest.iml" group="engine" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/engine_jsMain.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/engine_jsMain.iml" group="engine" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/engine/engine_jsTest.iml" filepath="$PROJECT_DIR$/.idea/modules/engine/engine_jsTest.iml" group="engine" />
     </modules>
   </component>
 </project>

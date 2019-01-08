@@ -3389,6 +3389,18 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
   integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
 
+kotlin-test@^1.3.11:
+  version "1.3.11"
+  resolved "https://registry.yarnpkg.com/kotlin-test/-/kotlin-test-1.3.11.tgz#293f3c9f432df14667735e2786d586be617f2c6d"
+  integrity sha512-z5toFhzaaUk2xtADVTu15plypQDQkbrteCFU9dEuyK2e5RKpx8ATVLL/hmA2OiM1T1JCWscEPistzfMb2NoyQw==
+  dependencies:
+    kotlin "1.3.11"
+
+kotlin@1.3.11, kotlin@^1.3.11:
+  version "1.3.11"
+  resolved "https://registry.yarnpkg.com/kotlin/-/kotlin-1.3.11.tgz#bd1fd242aed0c7d76b81d4271f48711d93bd1b3f"
+  integrity sha512-fN+FVoTPyspuFgX6Q2OSDheOzaVtsjz5vnCHuGiDk42NL7tYCLmOjfQPMWavjpJWc/7e+NNTbcX3yjFfqh41CQ==
+
 latest-version@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/latest-version/-/latest-version-3.1.0.tgz#a205383fea322b33b5ae3b18abee0dc2f356ee15"
