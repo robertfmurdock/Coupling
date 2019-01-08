@@ -17,7 +17,6 @@ tasks {
     task("clean") {
         doLast {
             delete(file("build"))
-            delete(file("../test-output/client"))
         }
     }
 
@@ -49,7 +48,7 @@ tasks {
         inputs.file(file("package.json"))
         inputs.files(findByName("vendorCompile")?.inputs?.files)
         inputs.dir("test")
-        outputs.dir(file("../test-output/client"))
+        outputs.dir(file("build/test-results"))
 
         args = listOf("run", "clientTest", "--silent")
     }

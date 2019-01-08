@@ -19,7 +19,7 @@ const webdriverConfig = {
 module.exports = function (config) {
   config.set({
 
-    basePath: '../..',
+    basePath: '..',
 
     frameworks: ['jasmine'],
 
@@ -30,13 +30,13 @@ module.exports = function (config) {
     },
 
     files: [
-      'client/node_modules/jquery/dist/jquery.min.js',
-      'client/build/lib/vendor/vendor.js',
-      'client/test/tests.bundle.js',
+      'node_modules/jquery/dist/jquery.min.js',
+      'build/lib/vendor/vendor.js',
+      'test/tests.bundle.js',
     ],
 
     preprocessors: {
-      'client/test/tests.bundle.js': ['webpack', 'sourcemap']
+      'test/tests.bundle.js': ['webpack', 'sourcemap']
     },
 
     exclude: [],
@@ -62,7 +62,7 @@ module.exports = function (config) {
     browsers: chooseBrowsers(),
 
     junitReporter: {
-      outputDir: 'test-output/client'
+      outputDir: 'build/test-results'
     },
 
     singleRun: false

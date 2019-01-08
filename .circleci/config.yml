@@ -20,6 +20,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
       - run: "./gradlew test endToEndTest"
+      - run: "./gradlew copyClientTestResults"
       - store_artifacts:
           path: test-output
       - store_test_results:
