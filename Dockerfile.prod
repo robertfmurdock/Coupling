@@ -14,8 +14,6 @@ RUN yarn install --production
 
 COPY startup.js /usr/src/app/
 COPY build /usr/src/app/build/
-COPY public /usr/src/app/public/
-COPY views /usr/src/app/views/
 
 CMD ["yarn", "run", "start-built-app"]
 EXPOSE 3000 8125

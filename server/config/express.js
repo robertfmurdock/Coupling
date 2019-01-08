@@ -23,11 +23,11 @@ module.exports = function (app, userDataService) {
 
   app.set('port', config.port);
   app.set('views', [
-    path.join(__dirname, '../public'),
-    path.join(__dirname, '../views')
+    path.join(__dirname, 'public'),
+    path.join(__dirname, 'views')
   ]);
   app.set('view engine', 'pug');
-  app.use(favicon('public/images/favicon.ico'));
+  app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
   if (!process.env['DISABLE_LOGGING']) {
     app.use(logger('dev'));
   }
@@ -36,7 +36,7 @@ module.exports = function (app, userDataService) {
   app.use(bodyParser.json());
   app.use(methodOverride());
 
-  app.use(express.static(path.join(__dirname, '../public')));
+  app.use(express.static(path.join(__dirname, 'public')));
   app.use(cookieParser());
   app.use(session({
     secret: config.secret,

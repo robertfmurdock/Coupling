@@ -17,7 +17,6 @@ node {
 task clean {
     doLast {
         delete file('build')
-        delete file('public/app/build')
         delete file('test-output')
     }
 }
@@ -28,10 +27,24 @@ yarn {
     outputs.dir file('node_modules')
 }
 
+task copyServerIcons(type: Copy) {
+    from 'server/public'
+    into 'build/public'
+}
+
+task copyServerViews(type: Copy) {
+    from 'server/views'
+    into 'build/views'
+}
+
+task copyServerResources {
+    dependsOn 'copyServerIcons', 'copyServerViews'
+}
+
 task copyClient(type: Copy) {
-    dependsOn ":client:compile"
+    dependsOn ":client:compile", "copyServerResources"
     from 'client/build/lib'
-    into 'public/app/build'
+    into 'build/public/app/build'
 }
 
 task copyClientTestResults(type: Copy) {
@@ -44,7 +57,7 @@ task copyTestResultsForCircle {
 }
 
 task serverCompile(type: YarnTask) {
-    dependsOn yarn
+    dependsOn yarn, 'copyServerResources'
     mustRunAfter clean
     inputs.dir 'node_modules'
     inputs.file file('package.json')
