@@ -2,10 +2,23 @@ import kotlin.js.JsName
 
 interface PairingTimeCalculationSyntax {
 
+    @JsName("couplingComparisionSyntax")
+    val couplingComparisionSyntax: CouplingComparisionSyntax
 
+    @JsName("calculateTimeSinceLastPartnership")
     fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<HistoryDocument>): TimeResult {
+        val documentsSinceLastPartnership = history.indexOfFirst { historyDocument -> pairingExistsInDocument(historyDocument, pair) }
 
-        return NeverPaired
+        return if (documentsSinceLastPartnership < 0)
+            NeverPaired
+        else
+            TimeResultValue(documentsSinceLastPartnership)
+    }
+
+    private fun pairingExistsInDocument(historyDocument: HistoryDocument, pair: CouplingPair): Boolean {
+        return historyDocument.pairs.any {
+            couplingComparisionSyntax.areEqualPairs(pair, it)
+        }
     }
 
     companion object {
@@ -13,6 +26,10 @@ interface PairingTimeCalculationSyntax {
         fun historyFromArray(history: Array<PairingDocument>) =
                 history.map { HistoryDocument(it.pairs?.map(CouplingPair.Companion::from) ?: listOf()) }
     }
+}
+
+external interface CouplingComparisionSyntax {
+    fun areEqualPairs(pair1: CouplingPair, pair2: CouplingPair): Boolean
 }
 
 sealed class TimeResult
@@ -28,6 +45,7 @@ external interface PairingDocument {
 data class HistoryDocument(val pairs: List<CouplingPair>)
 
 sealed class CouplingPair {
+    @JsName("asArray")
     abstract fun asArray(): Array<Player>
 
     companion object {
