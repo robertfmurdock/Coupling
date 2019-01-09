@@ -1,6 +1,10 @@
-import PairingRule from "../../common/PairingRule";
+import PairingRuleJs from "../../common/PairingRule";
+// @ts-ignore
+import {PlayerCandidatesFinder, PairingRule} from "engine";
 
-const fallbackRule = PairingRule.LongestTime;
+const fallbackRule = PairingRuleJs.LongestTime;
+
+let playerCandidatesFinder = new PlayerCandidatesFinder();
 
 export default class ReportProvider {
     constructor(public pairingHistory: any) {
@@ -10,7 +14,7 @@ export default class ReportProvider {
         const allReports = [];
 
         allReports.push(...this.getReportsByRule(players, pairingRule));
-        if(allReports.length === 0) {
+        if (allReports.length === 0) {
             allReports.push(...this.getReportsByRule(players, fallbackRule));
         }
 
@@ -21,13 +25,8 @@ export default class ReportProvider {
         const reportsByRule = [];
 
         players.forEach(player => {
-            const candidates = players.filter(function (otherPlayer) {
-                if (pairingRule === PairingRule.PreferDifferentBadge) {
-                    return otherPlayer !== player && otherPlayer.badge !== player.badge;
-                } else {
-                    return otherPlayer !== player;
-                }
-            });
+            // @ts-ignore
+            const candidates = playerCandidatesFinder.findCandidates(players, PairingRule.Companion.fromValue(pairingRule), player);
 
             if (candidates.length > 0 || pairingRule === fallbackRule) {
                 const pairCandidateReport = this.pairingHistory.getPairCandidateReport(player, candidates);
