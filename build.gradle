@@ -62,7 +62,7 @@ task copyTestResultsForCircle {
 }
 
 task serverCompile(type: YarnTask) {
-    dependsOn yarn, 'copyServerResources'
+    dependsOn yarn, 'copyServerResources', ":engine:build"
     mustRunAfter clean
     inputs.dir 'node_modules'
     inputs.file file('package.json')

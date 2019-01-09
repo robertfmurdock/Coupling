@@ -4,4 +4,11 @@
     <option name="languageLevel" value="ES6" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="SuppressABINotification">
+    <option name="modulesWithSuppressedNotConfigured">
+      <set>
+        <option value="engine" />
+      </set>
+    </option>
+  </component>
 </project>

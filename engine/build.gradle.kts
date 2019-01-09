@@ -14,18 +14,28 @@ kotlin {
     }
 
     sourceSets {
+        getByName("commonMain") {
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
+            }
+        }
         getByName("commonTest") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
             }
         }
     }
 }
 
 
+
 tasks {
+    getByName<Kotlin2JsCompile>("compileKotlinJs") {
+        kotlinOptions.moduleKind = "umd"
+    }
     getByName<Kotlin2JsCompile>("compileTestKotlinJs") {
         kotlinOptions.moduleKind = "commonjs"
     }

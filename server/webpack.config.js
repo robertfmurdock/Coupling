@@ -19,7 +19,10 @@ const config = {
   target: 'node',
   externals: [nodeExternals()],
   resolve: {
-    extensions: ['.js', '.ts']
+    extensions: ['.js', '.ts'],
+    alias: {
+      "engine$": path.resolve(__dirname, '../engine/build/classes/kotlin/js/main/engine.js')
+    }
   },
   module: {
     rules: [
