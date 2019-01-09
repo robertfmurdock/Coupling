@@ -1,8 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform") version "1.3.11"
 }
+
+apply {
+    plugin("kotlin-dce-js")
+}
+
 
 repositories {
     mavenCentral()
@@ -29,7 +35,6 @@ kotlin {
         }
     }
 }
-
 
 
 tasks {
