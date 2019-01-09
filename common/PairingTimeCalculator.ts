@@ -1,7 +1,7 @@
 import Pair from "./Pair";
 import Comparators from "./Comparators";
 // @ts-ignore
-import {PairingTimeCalculationSyntax, CouplingPair, TimeResultValue} from 'engine'
+import {CouplingPair, PairingTimeCalculationSyntax, TimeResultValue} from 'engine'
 
 export const NEVER_PAIRED = 'NeverPaired';
 
@@ -13,23 +13,14 @@ guy.couplingComparisionSyntax = {
 };
 
 export function calculateTimeSinceLastPartnership(expectedPair: Pair, historyDocuments) {
-    const history = PairingTimeCalculationSyntax.Companion.historyFromArray(historyDocuments);
-    const pair = CouplingPair.Companion.from(expectedPair);
-
-    let result = guy.calculateTimeSinceLastPartnership(pair, history);
+    let result = guy.calculateTimeSinceLastPartnership(
+        CouplingPair.Companion.from(expectedPair),
+        PairingTimeCalculationSyntax.Companion.historyFromArray(historyDocuments)
+    );
 
     if (result instanceof TimeResultValue) {
         return result.time;
     } else {
         return NEVER_PAIRED;
     }
-}
-
-function pairingExistsInDocument(pairingDocument, expectedPair: Pair) {
-    if (pairingDocument.pairs) {
-        return pairingDocument.pairs.some(function (pair) {
-            return Comparators.areEqualPairs(pair, expectedPair);
-        });
-    }
-    return false;
 }
