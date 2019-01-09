@@ -13,7 +13,11 @@ const config = {
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json']
+    extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json'],
+    alias: {
+      "engine$": path.resolve(__dirname, '../engine/build/classes/kotlin/js/main/engine.js'),
+      "kotlin": path.resolve(__dirname, 'node_modules/kotlin/kotlin.js')
+    }
   },
   externals: {
     ws: {},

@@ -31,7 +31,7 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn("yarn", "vendorCompile")
+        dependsOn("yarn", "vendorCompile", ":engine:assemble")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
@@ -44,7 +44,7 @@ tasks {
     }
 
     task<YarnTask>("test") {
-        dependsOn("yarn", "vendorCompile")
+        dependsOn("yarn", "vendorCompile", ":engine:assemble")
         inputs.file(file("package.json"))
         inputs.files(findByName("vendorCompile")?.inputs?.files)
         inputs.dir("test")
@@ -61,7 +61,7 @@ tasks {
         dependsOn("yarn", "vendorCompile")
 
         setEnvironment(mapOf("NODE_ENV" to "production"))
-        args = listOf("-s", "webpack", "--json", "--config", "webpack.config.js")
+        args = listOf("-s", "webpack", "--json", "--profile", "--config", "webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
             file("build/report").mkdirs()
@@ -71,11 +71,11 @@ tasks {
 
     task<YarnTask>("vendorStats") {
         setEnvironment(mapOf("NODE_ENV" to "production"))
-        args = listOf("-s", "webpack", "--json", "--config", "vendor.webpack.config.js")
+        args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
             file("build/report").mkdirs()
-            standardOutput = FileOutputStream(file("build/reports/vendor.stats.json"))
+            standardOutput = FileOutputStream(file("build/report/vendor.stats.json"))
         })
     }
 

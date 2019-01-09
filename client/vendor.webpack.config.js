@@ -16,6 +16,7 @@ const config = {
       "angular-route",
       "angular-websocket",
       "axios",
+      "kotlin",
       "d3-color",
       "d3-interpolate",
       "d3-selection",
