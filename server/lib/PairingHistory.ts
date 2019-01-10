@@ -1,44 +1,35 @@
 import PairCandidateReport from "./PairCandidateReport";
 import Player from "../../common/Player";
-import {NEVER_PAIRED, calculateTimeSinceLastPartnership} from "../../common/PairingTimeCalculator";
+
+// @ts-ignore
+import {PairingHistoryReporter, historyFromArray, TimeResultValue} from 'engine'
+import Comparators from "../../common/Comparators";
+
+const context = new PairingHistoryReporter();
+context.couplingComparisionSyntax = {areEqualPairs: Comparators.areEqualPairsSyntax};
 
 export default class PairingHistory {
 
     constructor(public historyDocuments: any[]) {
     }
 
-    private getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership) {
-        const partnersWithParticularTime = timeToPartnersMap[timeSinceLastPartnership];
-        if (partnersWithParticularTime) {
-            return partnersWithParticularTime;
-        } else {
-            const newEmptyList = [];
-            timeToPartnersMap[timeSinceLastPartnership] = newEmptyList;
-            return newEmptyList;
-        }
-    }
-
-    private createReport(timeToPartnersMap, player: Player) {
-        let longestTime = -1;
-        Object.keys(timeToPartnersMap).forEach(function (key) {
-            longestTime = Math.max(longestTime, parseInt(key));
-        });
-
-        const partnerCandidates = longestTime >= 0 ? timeToPartnersMap[longestTime] : timeToPartnersMap[NEVER_PAIRED];
-        const timeSinceLastPaired = longestTime >= 0 ? longestTime : undefined;
-        return new PairCandidateReport(player, partnerCandidates, timeSinceLastPaired);
-    }
-
     getPairCandidateReport(player: Player, availablePartners: Player[]) {
-        const timeToPartnersMap = {};
+        let report = context.createPairCandidateReport(
+            historyFromArray(this.historyDocuments),
+            player,
+            availablePartners
+        );
 
-        availablePartners.forEach(availablePartner => {
-            const timeSinceLastPartnership = calculateTimeSinceLastPartnership([player, availablePartner], this.historyDocuments);
-            const allPartnersWithThisTime = this.getListOfPartnersWithThisTime(timeToPartnersMap, timeSinceLastPartnership);
-            allPartnersWithThisTime.push(availablePartner);
-        });
+        let time = undefined;
+        if (report.timeResult instanceof TimeResultValue) {
+            time = report.timeResult.time;
+        }
 
-        return this.createReport(timeToPartnersMap, player);
+        return new PairCandidateReport(
+            report.player,
+            report.partnersAsArray(),
+            time
+        );
     };
 
 };

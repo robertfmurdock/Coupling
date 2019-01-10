@@ -30,6 +30,10 @@ class Comparators {
         const id2String = getIdString(id2);
         return id1String == id2String;
     }
+
+    static areEqualPairsSyntax (couplingPair1, couplingPair2) {
+        return Comparators.areEqualPairs(couplingPair1.asArray(), couplingPair2.asArray());
+    }
 }
 
 export default Comparators;

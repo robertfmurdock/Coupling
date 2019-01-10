@@ -47,6 +47,7 @@ tasks {
         dependsOn("yarn", "vendorCompile", ":engine:assemble")
         inputs.file(file("package.json"))
         inputs.files(findByName("vendorCompile")?.inputs?.files)
+        inputs.files(findByPath(":engine:assemble")?.outputs?.files)
         inputs.dir("test")
         outputs.dir(file("build/test-results"))
 
