@@ -6,12 +6,12 @@ const jsPath = path.resolve(__dirname, './app');
 
 const config = {
   entry: path.resolve(jsPath, './app.ts'),
-  mode: "production",
+  mode: process.env.NODE_ENV,
   output: {
     path: path.resolve(__dirname, 'build/lib'),
     filename: 'main.js'
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   resolve: {
     modules: [path.resolve(__dirname, '../engine/build/kotlin-js-min/js/main'), path.resolve(__dirname, 'node_modules')],
     extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json'],
@@ -27,6 +27,11 @@ const config = {
         loader: 'ts-loader?' + JSON.stringify({
           silent: true
         })
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       },
       {
         test: /\.(pug)$/,
@@ -65,11 +70,15 @@ const config = {
     })
   ],
   performance: {
-    hints: 'error'
+    hints: isProductionMode() ? 'error' : false
   }
 };
 
-if (process.env.NODE_ENV === 'production') {
+function isProductionMode() {
+  return process.env.NODE_ENV === 'production';
+}
+
+if (isProductionMode()) {
   config.devtool = 'cheap-module-source-map';
 
   config.plugins = config.plugins.concat([

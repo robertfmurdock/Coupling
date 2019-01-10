@@ -39,9 +39,13 @@ kotlin {
 tasks {
     getByName<Kotlin2JsCompile>("compileKotlinJs") {
         kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
     }
     getByName<Kotlin2JsCompile>("compileTestKotlinJs") {
         kotlinOptions.moduleKind = "commonjs"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
     }
     getByName<KotlinJsDce>("runDceJsKotlin") {
         keep("engine.spinContext", "engine.historyFromArray")

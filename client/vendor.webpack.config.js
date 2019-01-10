@@ -3,8 +3,9 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const buildPath = path.resolve(__dirname, 'build/lib/vendor');
+
 const config = {
-  mode: "production",
+  mode: process.env.NODE_ENV,
   entry: {
     vendor: [
       "angular",
@@ -88,5 +89,6 @@ const config = {
     new webpack.optimize.OccurrenceOrderPlugin()
   ]
 };
+
 
 module.exports = config;

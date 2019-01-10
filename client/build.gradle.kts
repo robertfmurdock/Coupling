@@ -12,6 +12,8 @@ node {
     download = true
 }
 
+val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
+
 tasks {
 
     task("clean") {
@@ -26,7 +28,7 @@ tasks {
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
         outputs.dir("build/lib/vendor")
-        setEnvironment(mapOf("NODE_ENV" to "production"))
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "vendor.webpack.config.js")
     }
 
@@ -39,7 +41,7 @@ tasks {
         inputs.dir("../common")
         outputs.dir("build/lib")
         inputs.dir("./")
-        setEnvironment(mapOf("NODE_ENV" to "production"))
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "webpack.config.js")
     }
 
@@ -61,7 +63,7 @@ tasks {
     task<YarnTask>("stats") {
         dependsOn("yarn", "vendorCompile")
 
-        setEnvironment(mapOf("NODE_ENV" to "production"))
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
@@ -72,7 +74,7 @@ tasks {
 
     task<YarnTask>("vendorStats") {
         dependsOn("yarn", ":engine:build")
-        setEnvironment(mapOf("NODE_ENV" to "production"))
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 
         setExecOverrides(closureOf<ExecSpec> {
