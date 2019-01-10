@@ -7,6 +7,19 @@ import Comparators from "../../common/Comparators";
 
 const context = spinContext({areEqualPairs: Comparators.areEqualPairsSyntax});
 
+export function convertToJavascriptPairCandidateReport(report) {
+    let time = undefined;
+    if (report.timeResult instanceof TimeResultValue) {
+        time = report.timeResult.time;
+    }
+
+    return new PairCandidateReport(
+        report.player,
+        report.partnersAsArray(),
+        time
+    );
+}
+
 export default class PairingHistory {
 
     constructor(public historyDocuments: any[]) {
@@ -18,17 +31,7 @@ export default class PairingHistory {
             player,
             availablePartners
         );
-
-        let time = undefined;
-        if (report.timeResult instanceof TimeResultValue) {
-            time = report.timeResult.time;
-        }
-
-        return new PairCandidateReport(
-            report.player,
-            report.partnersAsArray(),
-            time
-        );
+        return convertToJavascriptPairCandidateReport(report);
     };
 
 };

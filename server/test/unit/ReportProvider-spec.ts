@@ -1,8 +1,9 @@
 import ReportProvider from "../../lib/ReportProvider";
 import PairHistoryReport from "../../lib/PairCandidateReport";
 import Badge from "../../../common/Badge";
-import * as sinon from "sinon";
 import PairingRule from "../../../common/PairingRule";
+// @ts-ignore
+import {actionDispatcherMock} from "engine_test"
 
 describe('ReportProvider', function () {
 
@@ -13,66 +14,62 @@ describe('ReportProvider', function () {
     const amadeusAlternate = {_id: "Mozart", tribe: '', badge: Badge.Alternate};
     const shortyAlternate = {_id: "Napoleon", tribe: '', badge: Badge.Alternate};
 
-    describe('when the tribe prefers pairing with different badges', function() {
+    describe('when the tribe prefers pairing with different badges', function () {
         it('will return all reports for the players with same badge', function () {
+            const mock = actionDispatcherMock();
+
             const players = [bill, ted, amadeus, shorty];
 
-            const getReportStub = sinon.stub();
-            const pairingHistory = {
-                getPairCandidateReport: getReportStub
-            };
+            const pairingHistory = {historyDocuments: []};
+
+            const reportProvider = new ReportProvider(pairingHistory, mock);
 
             const billsPairCandidates = new PairHistoryReport(bill, [], 1);
-            getReportStub.withArgs(bill, [ted, amadeus, shorty]).returns(billsPairCandidates);
+            mock.whenGiven(bill, [ted, amadeus, shorty], billsPairCandidates);
             const tedsPairCandidates = new PairHistoryReport(ted, [], 1);
-            getReportStub.withArgs(ted, [bill, amadeus, shorty]).returns(tedsPairCandidates);
+            mock.whenGiven(ted, [bill, amadeus, shorty], tedsPairCandidates);
             const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 1);
-            getReportStub.withArgs(amadeus, [bill, ted, shorty]).returns(amadeusPairCandidates);
+            mock.whenGiven(amadeus, [bill, ted, shorty], amadeusPairCandidates);
             const shortyPairCandidates = new PairHistoryReport(shorty, [], 1);
-            getReportStub.withArgs(shorty, [bill, ted, amadeus]).returns(shortyPairCandidates);
-
-            const reportProvider = new ReportProvider(pairingHistory);
+            mock.whenGiven(shorty, [bill, ted, amadeus], shortyPairCandidates);
 
             const reports = reportProvider.getPairHistoryReports(players, PairingRule.PreferDifferentBadge);
 
-            expect(reports).toEqual([billsPairCandidates,tedsPairCandidates,amadeusPairCandidates,shortyPairCandidates]);
+            expect(reports).toEqual([billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates]);
         });
 
         it('will return filter candidates by unlike badge', function () {
+            const mock = actionDispatcherMock();
             const players = [bill, ted, amadeusAlternate, shortyAlternate];
 
-            const getReportStub = sinon.stub();
-            const pairingHistory = {
-                getPairCandidateReport: getReportStub
-            };
+            const pairingHistory = {historyDocuments: []};
 
             const billsPairCandidates = new PairHistoryReport(bill, [], 1);
-            getReportStub.withArgs(bill, [amadeusAlternate, shortyAlternate]).returns(billsPairCandidates);
+            mock.whenGiven(bill, [amadeusAlternate, shortyAlternate], billsPairCandidates);
             const tedsPairCandidates = new PairHistoryReport(ted, [], 1);
-            getReportStub.withArgs(ted, [amadeusAlternate, shortyAlternate]).returns(tedsPairCandidates);
+            mock.whenGiven(ted, [amadeusAlternate, shortyAlternate], tedsPairCandidates);
             const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 1);
-            getReportStub.withArgs(amadeusAlternate, [bill, ted]).returns(amadeusPairCandidates);
+            mock.whenGiven(amadeusAlternate, [bill, ted], amadeusPairCandidates);
             const shortyPairCandidates = new PairHistoryReport(shorty, [], 1);
-            getReportStub.withArgs(shortyAlternate, [bill, ted]).returns(shortyPairCandidates);
+            mock.whenGiven(shortyAlternate, [bill, ted], shortyPairCandidates);
 
-            const reportProvider = new ReportProvider(pairingHistory);
+            const reportProvider = new ReportProvider(pairingHistory, mock);
 
             const reports = reportProvider.getPairHistoryReports(players, PairingRule.PreferDifferentBadge);
 
-            expect(reports).toEqual([billsPairCandidates,tedsPairCandidates,amadeusPairCandidates,shortyPairCandidates]);
+            expect(reports).toEqual([billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates]);
         });
+
         it('will return a report for one player', function () {
             const players = [bill];
 
-            const getReportStub = sinon.stub();
-            const pairingHistory = {
-                getPairCandidateReport: getReportStub
-            };
+            const mock = actionDispatcherMock();
+            const pairingHistory = {historyDocuments: []};
 
             const billsPairCandidates = new PairHistoryReport(bill, [], 1);
-            getReportStub.withArgs(bill, []).returns(billsPairCandidates);
+            mock.whenGiven(bill, [], billsPairCandidates);
 
-            const reportProvider = new ReportProvider(pairingHistory);
+            const reportProvider = new ReportProvider(pairingHistory, mock);
 
             const reports = reportProvider.getPairHistoryReports(players, PairingRule.PreferDifferentBadge);
 
@@ -80,28 +77,26 @@ describe('ReportProvider', function () {
         });
     });
 
-    describe('when the tribe prefers only longest time for determining pairs', function() {
+    describe('when the tribe prefers only longest time for determining pairs', function () {
 
-        it('', function() {
+        it('', function () {
             const players = [bill, ted, amadeusAlternate, shortyAlternate];
-            const getReportStub = sinon.stub();
-            const pairingHistory = {
-                getPairCandidateReport: getReportStub
-            };
+            const mock = actionDispatcherMock();
+            const pairingHistory = {historyDocuments: []};
 
             const billsPairCandidates = new PairHistoryReport(bill, [], undefined);
-            getReportStub.withArgs(bill, [ted, amadeusAlternate, shortyAlternate]).returns(billsPairCandidates);
+            mock.whenGiven(bill, [ted, amadeusAlternate, shortyAlternate], billsPairCandidates);
 
             const tedsPairCandidates = new PairHistoryReport(ted, [], undefined);
-            getReportStub.withArgs(ted, [bill, amadeusAlternate, shortyAlternate]).returns(tedsPairCandidates);
+            mock.whenGiven(ted, [bill, amadeusAlternate, shortyAlternate], tedsPairCandidates);
 
             const amadeusPairCandidates = new PairHistoryReport(amadeusAlternate, [], undefined);
-            getReportStub.withArgs(amadeusAlternate, [bill, ted, shortyAlternate]).returns(amadeusPairCandidates);
+            mock.whenGiven(amadeusAlternate, [bill, ted, shortyAlternate], amadeusPairCandidates);
 
             const shortysPairCandidates = new PairHistoryReport(shortyAlternate, [], undefined);
-            getReportStub.withArgs(shortyAlternate, [bill, ted, amadeusAlternate]).returns(shortysPairCandidates);
+            mock.whenGiven(shortyAlternate, [bill, ted, amadeusAlternate], shortysPairCandidates);
 
-            const reportProvider = new ReportProvider(pairingHistory);
+            const reportProvider = new ReportProvider(pairingHistory, mock);
             const reports = reportProvider.getPairHistoryReports(players, PairingRule.LongestTime);
             expect(reports).toEqual([billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortysPairCandidates]);
         });

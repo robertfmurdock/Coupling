@@ -1,26 +1,26 @@
 import kotlin.js.JsName
 
-data class CreatePairCandidateReportCommand(val history: List<HistoryDocument>, val player: Player, val allPlayers: List<Player>)
+data class CreatePairCandidateReportAction(val history: List<HistoryDocument>, val player: Player, val allPlayers: List<Player>)
 
-interface CreatePairCandidateReportCommandDispatcher : PairingTimeCalculationSyntax {
+interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
 
     @JsName("createPairCandidateReport")
     fun createPairCandidateReport(history: List<HistoryDocument>, player: Player, allPlayers: Array<Player>) =
-            CreatePairCandidateReportCommand(history, player, allPlayers.asList())
+            CreatePairCandidateReportAction(history, player, allPlayers.asList())
                     .perform()
 
-    fun CreatePairCandidateReportCommand.perform() = pairTimeMap()
+    fun CreatePairCandidateReportAction.perform() = pairTimeMap()
             .candidateReport()
 
-    private fun CreatePairCandidateReportCommand.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
+    private fun CreatePairCandidateReportAction.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
 
     private data class PairTimeMap(val player: Player, val timeToPartners: Map<TimeResult, List<Player>>)
 
-    private fun CreatePairCandidateReportCommand.timeToPartnersMap() = allPlayers.groupBy { availablePartner ->
+    private fun CreatePairCandidateReportAction.timeToPartnersMap() = allPlayers.groupBy { availablePartner ->
         calculateTimeSinceLastPartnership(pair(availablePartner), history)
     }
 
-    private fun CreatePairCandidateReportCommand.pair(availablePartner: Player) =
+    private fun CreatePairCandidateReportAction.pair(availablePartner: Player) =
             CouplingPair.Double(player, availablePartner)
 
     private fun PairTimeMap.candidateReport() = neverPairedReport() ?: longestTimeReport()

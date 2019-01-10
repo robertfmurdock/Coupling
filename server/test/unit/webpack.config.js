@@ -16,4 +16,16 @@ config.mode = "development";
 config.target = 'node';
 config.externals = [nodeExternals()];
 
+
+function testResolve() {
+  let resolve = clone(config.resolve);
+  resolve.modules = [
+    path.resolve(__dirname, '../../../engine/build/classes/kotlin/js/main'),
+    path.resolve(__dirname, '../../../engine/build/classes/kotlin/js/test'),
+  ];
+
+  return resolve;
+}
+config.resolve = testResolve();
+
 module.exports = config;
