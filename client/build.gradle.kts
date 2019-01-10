@@ -21,7 +21,7 @@ tasks {
     }
 
     task<YarnTask>("vendorCompile") {
-        dependsOn("yarn")
+        dependsOn("yarn", ":engine:build")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
@@ -31,7 +31,7 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn("yarn", "vendorCompile", ":engine:assemble")
+        dependsOn("yarn", "vendorCompile", ":engine:build")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
@@ -44,7 +44,7 @@ tasks {
     }
 
     task<YarnTask>("test") {
-        dependsOn("yarn", "vendorCompile", ":engine:assemble")
+        dependsOn("yarn", "vendorCompile", ":engine:build")
         inputs.file(file("package.json"))
         inputs.files(findByName("vendorCompile")?.inputs?.files)
         inputs.files(findByPath(":engine:assemble")?.outputs?.files)
@@ -71,6 +71,7 @@ tasks {
     }
 
     task<YarnTask>("vendorStats") {
+        dependsOn("yarn", ":engine:build")
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 

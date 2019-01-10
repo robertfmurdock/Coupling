@@ -15,8 +15,8 @@ const config = {
   resolve: {
     extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json'],
     alias: {
-      "engine$": path.resolve(__dirname, '../engine/build/classes/kotlin/js/main/engine.js'),
-      "kotlin": path.resolve(__dirname, 'node_modules/kotlin/kotlin.js')
+      "engine$": path.resolve(__dirname, '../engine/build/kotlin-js-min/js/main/engine.js'),
+      "kotlin": path.resolve(__dirname, '../engine/build/kotlin-js-min/js/main/kotlin.js')
     }
   },
   externals: {

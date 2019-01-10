@@ -44,6 +44,6 @@ tasks {
         kotlinOptions.moduleKind = "commonjs"
     }
     getByName<KotlinJsDce>("runDceJsKotlin") {
-        keep("engine.spinContext")
+        keep("engine.spinContext", "engine.historyFromArray")
     }
 }

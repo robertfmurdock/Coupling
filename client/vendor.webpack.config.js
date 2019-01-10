@@ -70,6 +70,11 @@ const config = {
       }
     ]
   },
+  resolve: {
+    alias: {
+      "kotlin": path.resolve(__dirname, '../engine/build/kotlin-js-min/js/main/kotlin.js'),
+    }
+  },
   externals: {
     ws: {}
   },
