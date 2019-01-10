@@ -73,6 +73,7 @@ const config = {
   resolve: {
     alias: {
       "kotlin": path.resolve(__dirname, '../engine/build/kotlin-js-min/js/main/kotlin.js'),
+      "angular": path.resolve(__dirname, 'node_modules/angular'),
     }
   },
   externals: {
