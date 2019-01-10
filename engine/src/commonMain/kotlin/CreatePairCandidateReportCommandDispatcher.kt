@@ -1,13 +1,15 @@
 import kotlin.js.JsName
 
-interface PairingHistoryReporter : PairingTimeCalculationSyntax {
+data class CreatePairCandidateReportCommand(val history: List<HistoryDocument>, val player: Player, val allPlayers: List<Player>)
+
+interface CreatePairCandidateReportCommandDispatcher : PairingTimeCalculationSyntax {
 
     @JsName("createPairCandidateReport")
     fun createPairCandidateReport(history: List<HistoryDocument>, player: Player, allPlayers: Array<Player>) =
             CreatePairCandidateReportCommand(history, player, allPlayers.asList())
                     .perform()
 
-    private fun CreatePairCandidateReportCommand.perform() = pairTimeMap()
+    fun CreatePairCandidateReportCommand.perform() = pairTimeMap()
             .candidateReport()
 
     private fun CreatePairCandidateReportCommand.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
@@ -34,9 +36,6 @@ interface PairingHistoryReporter : PairingTimeCalculationSyntax {
     private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
             maxBy { (key, _) -> if (key is TimeResultValue) key.time else -1 }
 }
-
-
-data class CreatePairCandidateReportCommand(val history: List<HistoryDocument>, val player: Player, val allPlayers: List<Player>)
 
 data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult) {
 

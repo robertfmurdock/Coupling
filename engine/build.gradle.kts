@@ -36,12 +36,14 @@ kotlin {
     }
 }
 
-
 tasks {
     getByName<Kotlin2JsCompile>("compileKotlinJs") {
         kotlinOptions.moduleKind = "umd"
     }
     getByName<Kotlin2JsCompile>("compileTestKotlinJs") {
         kotlinOptions.moduleKind = "commonjs"
+    }
+    getByName<KotlinJsDce>("runDceJsKotlin") {
+        keep("engine.spinContext")
     }
 }

@@ -2,11 +2,10 @@ import PairCandidateReport from "./PairCandidateReport";
 import Player from "../../common/Player";
 
 // @ts-ignore
-import {PairingHistoryReporter, historyFromArray, TimeResultValue} from 'engine'
+import {spinContext, historyFromArray, TimeResultValue} from 'engine'
 import Comparators from "../../common/Comparators";
 
-const context = new PairingHistoryReporter();
-context.couplingComparisionSyntax = {areEqualPairs: Comparators.areEqualPairsSyntax};
+const context = spinContext({areEqualPairs: Comparators.areEqualPairsSyntax});
 
 export default class PairingHistory {
 
