@@ -1,3 +1,5 @@
+import * as angular from "angular";
+
 import Tribe from "../../common/Tribe";
 
 describe('Pair assignments directive', function () {

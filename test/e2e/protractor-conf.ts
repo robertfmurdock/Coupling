@@ -1,10 +1,6 @@
 import {browser, Config} from "protractor";
 let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
 
-declare global {
-    const angular: any
-}
-
 export let config: Config = {
 
     allScriptsTimeout: 11000,
@@ -43,6 +39,7 @@ export let config: Config = {
         );
 
         const disableNgAnimate = function () {
+            // @ts-ignore
             angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {
                 $animate.enabled(false);
             }]);

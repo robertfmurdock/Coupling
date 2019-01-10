@@ -1,4 +1,4 @@
-import "angular";
+import * as angular from "angular";
 import "angular-gravatar";
 import "angular-route";
 import "ng-fittext";

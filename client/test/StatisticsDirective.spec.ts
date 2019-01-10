@@ -1,8 +1,8 @@
+import * as angular from "angular";
 import "ng-fittext";
 import "../app/app";
 import Tribe from "../../common/Tribe";
 import * as addIndex from 'ramda/src/addIndex'
-import * as repeat from 'ramda/src/repeat'
 import * as times from 'ramda/src/times'
 import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
@@ -137,7 +137,7 @@ describe('Statistics directive', function () {
     }));
 
     let getPlayersFromCards = map(function (card) {
-        return angular.element(card).isolateScope().playerCard.player;
+        return angular.element(card).isolateScope()["playerCard"].player;
     });
 
     it('has row of players above heatmap', inject(function ($compile, $rootScope) {

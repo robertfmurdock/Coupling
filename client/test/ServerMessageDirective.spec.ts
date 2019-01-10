@@ -1,3 +1,4 @@
+import * as angular from "angular";
 import "angular-websocket/dist/angular-websocket-mock";
 import ILocationService = angular.ILocationService;
 
