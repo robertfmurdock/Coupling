@@ -1,29 +1,23 @@
-import PairHistoryReport from "./PairCandidateReport";
+// @ts-ignore
+import {GetNextPairActionDispatcher, historyFromArray, PairingRule, spinContext} from "engine";
+import {convertToJavascriptPairCandidateReport} from "./PairingHistory";
+import Comparators from "../../common/Comparators";
 
-export default class Sequencer {
-    constructor(public reportProvider: any) {
-    }
+const context = spinContext({areEqualPairs: Comparators.areEqualPairsSyntax});
 
-    private hasNeverPaired(report) {
-        return report.timeSinceLastPaired === undefined || report.timeSinceLastPaired === null;
+export default class Sequencer extends GetNextPairActionDispatcher {
+    constructor(public reportProvider: any, public actionDispatcher = context) {
+        super()
     }
 
     getNextInSequence(players, pairingRule) {
-        const allReports = this.reportProvider.getPairHistoryReports(players, pairingRule);
-        let reportWithLongestTime = new PairHistoryReport(null, null, -1);
-
-        allReports.forEach((report) => {
-
-            if (reportWithLongestTime.timeSinceLastPaired === report.timeSinceLastPaired) {
-                if (report.partnerCandidates.length < reportWithLongestTime.partnerCandidates.length) {
-                    reportWithLongestTime = report;
-                }
-            } else {
-                if (this.hasNeverPaired(report) || reportWithLongestTime.timeSinceLastPaired < report.timeSinceLastPaired) {
-                    reportWithLongestTime = report;
-                }
-            }
-        });
-        return reportWithLongestTime;
+        // @ts-ignore
+        const ktReport = this.getNextPair(
+            historyFromArray(this.reportProvider.pairingHistory.historyDocuments),
+            players,
+            PairingRule.Companion.fromValue(pairingRule)
+        );
+        return convertToJavascriptPairCandidateReport(ktReport);
     }
+
 }

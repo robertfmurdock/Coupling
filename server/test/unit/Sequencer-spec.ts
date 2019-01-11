@@ -2,6 +2,10 @@ import Sequencer from "../../lib/Sequencer";
 import PairHistoryReport from "../../lib/PairCandidateReport";
 import PairingRule from "../../../common/PairingRule";
 
+// @ts-ignore
+import {actionDispatcherMock} from "engine_test"
+
+
 describe('Sequencer', function () {
 
     const bill = {_id: "Bill", tribe: ''};
@@ -17,30 +21,33 @@ describe('Sequencer', function () {
         const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
         const shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
 
-        const reportProvider = {
-            getPairHistoryReports: function(players){return [billsPairCandidates,tedsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
-        };
+        const reportProvider = {pairingHistory: {historyDocuments: []}};
 
-        const sequencer = new Sequencer(reportProvider);
+        const mock = actionDispatcherMock();
+        mock.setPairCandidateReportsToReturn(
+            [billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates]
+        )
+
+        const sequencer = new Sequencer(reportProvider, mock);
 
         const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
 
         expect(next).toEqual(tedsPairCandidates);
     });
 
-    it('a person who just paired has lower priority than someone who has not paired in a long time', function() {
+    it('a person who just paired has lower priority than someone who has not paired in a long time', function () {
         const players = [bill, ted, amadeus, shorty];
 
         const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 5);
         const shortyPairCandidates = new PairHistoryReport(shorty, [], 0);
 
-        const reportProvider = {
-            getPairHistoryReports: function(players){
-                return [amadeusPairCandidates,shortyPairCandidates];
-            }
-        };
+        let reports = [amadeusPairCandidates, shortyPairCandidates];
 
-        const sequencer = new Sequencer(reportProvider);
+        const reportProvider = {pairingHistory: {historyDocuments: []}};
+        const mock = actionDispatcherMock();
+        mock.setPairCandidateReportsToReturn(reports);
+
+        const sequencer = new Sequencer(reportProvider, mock);
 
         const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
 
@@ -54,11 +61,12 @@ describe('Sequencer', function () {
         const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
         const shortyPairCandidates = new PairHistoryReport(shorty, [], 5);
 
-        const reportProvider = {
-            getPairHistoryReports: function(players){return [billsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
-        };
+        let reports = [billsPairCandidates, amadeusPairCandidates, shortyPairCandidates];
+        const reportProvider = {pairingHistory: {historyDocuments: []}};
+        const mock = actionDispatcherMock();
+        mock.setPairCandidateReportsToReturn(reports);
+        const sequencer = new Sequencer(reportProvider, mock);
 
-        const sequencer = new Sequencer(reportProvider);
         const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
         expect(next).toEqual(shortyPairCandidates);
     });
@@ -68,13 +76,14 @@ describe('Sequencer', function () {
 
         const billsPairCandidates = new PairHistoryReport(bill, [], 3);
         const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 4);
-        const shortyPairCandidates = new PairHistoryReport(shorty, [], null);
+        const shortyPairCandidates = new PairHistoryReport(shorty, [], undefined);
 
-        const reportProvider = {
-            getPairHistoryReports: function(players){return [billsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
-        };
+        let reports = [billsPairCandidates, amadeusPairCandidates, shortyPairCandidates];
+        const reportProvider = {pairingHistory: {historyDocuments: []}};
+        const mock = actionDispatcherMock();
+        mock.setPairCandidateReportsToReturn(reports);
+        const sequencer = new Sequencer(reportProvider, mock);
 
-        const sequencer = new Sequencer(reportProvider);
         const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
         expect(next).toEqual(shortyPairCandidates);
     });
@@ -86,19 +95,19 @@ describe('Sequencer', function () {
             {_id: '', tribe: ''},
             {_id: '', tribe: ''},
             {_id: '', tribe: ''}
-        ], null);
+        ], undefined);
         const amadeusPairCandidates = new PairHistoryReport(amadeus, [
             {_id: '', tribe: ''}
-        ], null);
+        ], undefined);
         const shortyPairCandidates = new PairHistoryReport(shorty, [
             {_id: '', tribe: ''}, {_id: '', tribe: ''}
-        ], null);
+        ], undefined);
 
-        const reportProvider = {
-            getPairHistoryReports: function(players){return [billsPairCandidates,amadeusPairCandidates,shortyPairCandidates];}
-        };
-
-        const sequencer = new Sequencer(reportProvider);
+        let reports = [billsPairCandidates, amadeusPairCandidates, shortyPairCandidates];
+        const reportProvider = {pairingHistory: {historyDocuments: []}};
+        const mock = actionDispatcherMock();
+        mock.setPairCandidateReportsToReturn(reports);
+        const sequencer = new Sequencer(reportProvider, mock);
         const next = sequencer.getNextInSequence(players, PairingRule.LongestTime);
         expect(next).toEqual(amadeusPairCandidates);
     });

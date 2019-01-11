@@ -18,5 +18,7 @@ interface PlayerCandidatesFinder {
 
 external interface Player {
     val badge: String?
+
+    val _id: String?
 }
 

@@ -26,5 +26,8 @@ export default function (request, response) {
     const availablePlayers = request.body;
     getGameData(request, tribeId)
         .then(values => gameRunner.run(availablePlayers, values.pins, values.history, values.tribe))
-        .then(result => response.send(result), err => response.send(err));
+        .then(result => response.send(result), err => {
+            console.log('Err!', err);
+            response.send(err)
+        });
 };

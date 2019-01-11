@@ -1,5 +1,5 @@
 // @ts-ignore
-import {PlayerCandidatesFinder, PairingRule, spinContext, historyFromArray, TimeResultValue, CreateAllPairCandidateReportsCommandDispatcher} from "engine";
+import {PairingRule, spinContext, historyFromArray, CreateAllPairCandidateReportsCommandDispatcher} from "engine";
 import Comparators from "../../common/Comparators";
 import {convertToJavascriptPairCandidateReport} from "./PairingHistory";
 

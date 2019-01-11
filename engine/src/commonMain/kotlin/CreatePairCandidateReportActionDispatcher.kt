@@ -43,3 +43,4 @@ data class PairCandidateReport(val player: Player, val partners: List<Player>, v
     fun partnersAsArray() = partners.toTypedArray()
 
 }
+

@@ -2,12 +2,12 @@
 import PairingHistory from "../../lib/PairingHistory";
 import Player from "../../../common/Player";
 
-var PairAssignmentDocument = require('../../../common/PairAssignmentDocument').default;
-var ObjectID = require('mongodb').ObjectID;
+const PairAssignmentDocument = require('../../../common/PairAssignmentDocument').default;
+const ObjectID = require('mongodb').ObjectID;
 
 describe('Pairing History', function () {
     it('should be retrievable', function () {
-        var historyDocuments = [
+        const historyDocuments = [
             new PairAssignmentDocument(new Date(2014, 3, 30), []), [
                 [
                     {name: 'bill'},
@@ -16,33 +16,33 @@ describe('Pairing History', function () {
             ]
         ];
 
-        var pairingHistory = new PairingHistory(historyDocuments);
+        const pairingHistory = new PairingHistory(historyDocuments);
 
         expect(historyDocuments).toEqual(pairingHistory.historyDocuments);
     });
 
     it('should return empty array when no partners are available', function () {
-        var historyDocuments = [];
-        var pairingHistory = new PairingHistory(historyDocuments);
-        var report = pairingHistory.getPairCandidateReport({_id: '', tribe: '', name: 'player'} as Player, []);
+        const historyDocuments = [];
+        const pairingHistory = new PairingHistory(historyDocuments);
+        const report = pairingHistory.getPairCandidateReport({_id: '', tribe: '', name: 'player'} as Player, []);
         expect(report.partnerCandidates).toEqual([]);
     });
 
     describe('should determine possible partners for a player by choosing a partner', function () {
-        var bruce = {name: 'Batman', _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c'), tribe: ''} as Player;
+        const bruce = {name: 'Batman', _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c'), tribe: ''} as Player;
 
-        var jezebel = {_id: 'Jezebel Jett', tribe: ''};
-        var talia = {_id: 'Talia', tribe: ''};
-        var selena = {_id: 'Catwoman', tribe: ''};
-        var availableOtherPlayers = [
+        const jezebel = {_id: 'Jezebel Jett', tribe: ''};
+        const talia = {_id: 'Talia', tribe: ''};
+        const selena = {_id: 'Catwoman', tribe: ''};
+        const availableOtherPlayers = [
             selena, talia, jezebel
         ];
 
         describe('who has never paired', function () {
             it('with no history', function () {
-                var historyDocuments = [];
-                var pairingHistory = new PairingHistory(historyDocuments);
-                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                const historyDocuments = [];
+                const pairingHistory = new PairingHistory(historyDocuments);
+                const report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 expect(availableOtherPlayers).toEqual(report.partnerCandidates);
                 expect(report.timeSinceLastPaired).toBe(undefined);
 
@@ -50,11 +50,11 @@ describe('Pairing History', function () {
             });
 
             it('with history document that has no pairs', function () {
-                var historyDocuments = [
+                const historyDocuments = [
                     {pairs: null}
                 ];
-                var pairingHistory = new PairingHistory(historyDocuments);
-                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                const pairingHistory = new PairingHistory(historyDocuments);
+                const report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 expect(availableOtherPlayers).toEqual(report.partnerCandidates);
                 expect(report.timeSinceLastPaired).toBe(undefined);
 
@@ -62,7 +62,7 @@ describe('Pairing History', function () {
             });
 
             it('with plenty of history', function () {
-                var historyDocuments = [
+                const historyDocuments = [
                     new PairAssignmentDocument(new Date(2014, 3, 30), [
                         [
                             bruce, {name: 'Batgirl'}
@@ -73,23 +73,23 @@ describe('Pairing History', function () {
                         ]
                     ])
                 ];
-                var pairingHistory = new PairingHistory(historyDocuments);
+                const pairingHistory = new PairingHistory(historyDocuments);
 
-                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                const report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
                 expect(availableOtherPlayers).toEqual(report.partnerCandidates);
                 expect(report.timeSinceLastPaired).toBe(undefined);
                 expect(bruce).toEqual(report.player);
             });
 
             it('with only the person you were with last time', function () {
-                var historyDocuments = [
+                const historyDocuments = [
                     new PairAssignmentDocument(new Date(2014, 3, 30), [
                         [bruce, selena]
                     ])
                 ];
-                var pairingHistory = new PairingHistory(historyDocuments);
+                const pairingHistory = new PairingHistory(historyDocuments);
 
-                var report = pairingHistory.getPairCandidateReport(bruce, [selena]);
+                const report = pairingHistory.getPairCandidateReport(bruce, [selena]);
                 expect([selena]).toEqual(report.partnerCandidates);
                 expect(report.timeSinceLastPaired).toEqual(0);
                 expect(bruce).toEqual(report.player);
@@ -98,8 +98,8 @@ describe('Pairing History', function () {
 
         describe('who has not paired recently', function () {
             it('when there is clearly someone who has been the longest', function () {
-                var expectedPartner = jezebel;
-                var historyDocuments = [
+                const expectedPartner = jezebel;
+                const historyDocuments = [
                     new PairAssignmentDocument(new Date(2014, 3, 30), [
                         [
                             bruce, selena
@@ -116,9 +116,9 @@ describe('Pairing History', function () {
                         ]
                     ])
                 ];
-                var pairingHistory = new PairingHistory(historyDocuments);
+                const pairingHistory = new PairingHistory(historyDocuments);
 
-                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                const report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
                 expect(report.partnerCandidates).toEqual([expectedPartner]);
                 expect(report.timeSinceLastPaired).toEqual(2);
@@ -126,8 +126,8 @@ describe('Pairing History', function () {
             });
 
             it('when there is clearly someone who has been the longest and they are not the same object instances so you have to match with id', function () {
-                var expectedPartner = jezebel;
-                var historyDocuments = [
+                const expectedPartner = jezebel;
+                const historyDocuments = [
                     new PairAssignmentDocument(new Date(2014, 3, 30), [
                         [
                             {name: 'Batman', _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c')},
@@ -149,9 +149,9 @@ describe('Pairing History', function () {
                         ]
                     ])
                 ];
-                var pairingHistory = new PairingHistory(historyDocuments);
+                const pairingHistory = new PairingHistory(historyDocuments);
 
-                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                const report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
                 expect(report.partnerCandidates).toEqual([expectedPartner]);
                 expect(report.timeSinceLastPaired).toEqual(2);
@@ -159,16 +159,16 @@ describe('Pairing History', function () {
             });
 
             it('when there is one person who has paired but no one else', function () {
-                var historyDocuments = [
+                const historyDocuments = [
                     new PairAssignmentDocument(new Date(2014, 3, 30), [
                         [
                             bruce, selena
                         ]
                     ])
                 ];
-                var pairingHistory = new PairingHistory(historyDocuments);
+                const pairingHistory = new PairingHistory(historyDocuments);
 
-                var report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
+                const report = pairingHistory.getPairCandidateReport(bruce, availableOtherPlayers);
 
                 expect(report.partnerCandidates).toEqual([talia, jezebel]);
                 expect(report.timeSinceLastPaired).toBe(undefined);

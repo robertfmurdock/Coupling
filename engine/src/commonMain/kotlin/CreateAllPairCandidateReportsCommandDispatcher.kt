@@ -7,7 +7,7 @@ interface CreateAllPairCandidateReportsCommandDispatcher : PlayerCandidatesFinde
     @JsName("actionDispatcher")
     val actionDispatcher: CreatePairCandidateReportActionDispatcher
 
-    private fun CreatePairCandidateReportAction.perform() = with(actionDispatcher) { perform() }
+    private fun CreatePairCandidateReportAction.performThis() = with(actionDispatcher) { perform() }
 
     @JsName("createAllPairCandidateReport")
     fun createAllPairCandidateReport(history: List<HistoryDocument>, players: Array<Player>, rule: PairingRule) =
@@ -30,7 +30,7 @@ interface CreateAllPairCandidateReportsCommandDispatcher : PlayerCandidatesFinde
             val candidates = findCandidates(players.toTypedArray(), this, player)
             if (candidates.isNotEmpty() || this == PairingRule.LongestTime) {
                 CreatePairCandidateReportAction(history, player, candidates.toList())
-                        .perform()
+                        .performThis()
             } else {
                 null
             }

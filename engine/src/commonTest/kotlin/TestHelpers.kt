@@ -2,7 +2,8 @@ import kotlin.js.JsName
 
 @JsName("actionDispatcherMock")
 fun actionDispatcherMock(): CreatePairCandidateReportActionDispatcher =
-        object : CreatePairCandidateReportActionDispatcher {
+        object : CreatePairCandidateReportActionDispatcher, CreateAllPairCandidateReportsCommandDispatcher {
+            override val actionDispatcher: CreatePairCandidateReportActionDispatcher get() = TODO("not implemented")
 
             val whenGivenReturnList: MutableList<WhenGivenReturn> = mutableListOf()
 
@@ -20,16 +21,29 @@ fun actionDispatcherMock(): CreatePairCandidateReportActionDispatcher =
                     this.allPlayers == it.allPlayers
                             && this.player == it.player
                 }?.returnValue
-                        ?.let {
-                            PairCandidateReport(
-                                    it.player,
-                                    it.partnerCandidates.toList(),
-                                    it.timeSinceLastPaired?.let { time -> TimeResultValue(time) }
-                                            ?: NeverPaired
-
-                            )
-                        }
+                        ?.let { fromJsReport(it) }
                         ?: throw NotImplementedError("Test condition not set up. $this")
+            }
+
+            private fun fromJsReport(it: PairCandidateReportJs): PairCandidateReport {
+                return PairCandidateReport(
+                        it.player,
+                        it.partnerCandidates.toList(),
+                        it.timeSinceLastPaired?.let { time -> TimeResultValue(time) }
+                                ?: NeverPaired
+
+                )
+            }
+
+            @JsName("setPairCandidateReportsToReturn")
+            fun setPairCandidateReportsToReturn(reports: Array<PairCandidateReportJs>) {
+                reportsToReturn = reports.map { fromJsReport(it) }
+            }
+
+            var reportsToReturn: List<PairCandidateReport> = emptyList()
+
+            override fun CreateAllPairCandidateReportsCommand.perform(): List<PairCandidateReport> {
+                return reportsToReturn
             }
         }
 
