@@ -1,11 +1,11 @@
 // @ts-ignore
-import {PairingRule, spinContext, historyFromArray, CreateAllPairCandidateReportsCommandDispatcher} from "engine";
+import {PairingRule, spinContext, historyFromArray, CreateAllPairCandidateReportsActionDispatcher} from "engine";
 import Comparators from "../../common/Comparators";
 import {convertToJavascriptPairCandidateReport} from "./PairingHistory";
 
 const context = spinContext({areEqualPairs: Comparators.areEqualPairsSyntax});
 
-export default class ReportProvider extends CreateAllPairCandidateReportsCommandDispatcher {
+export default class ReportProvider extends CreateAllPairCandidateReportsActionDispatcher {
 
     constructor(public pairingHistory: any, public actionDispatcher = context) {
         super()

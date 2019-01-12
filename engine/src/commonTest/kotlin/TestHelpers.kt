@@ -2,7 +2,7 @@ import kotlin.js.JsName
 
 @JsName("actionDispatcherMock")
 fun actionDispatcherMock(): CreatePairCandidateReportActionDispatcher =
-        object : CreatePairCandidateReportActionDispatcher, CreateAllPairCandidateReportsCommandDispatcher {
+        object : CreatePairCandidateReportActionDispatcher, CreateAllPairCandidateReportsActionDispatcher {
             override val actionDispatcher: CreatePairCandidateReportActionDispatcher get() = TODO("not implemented")
 
             val whenGivenReturnList: MutableList<WhenGivenReturn> = mutableListOf()
@@ -42,7 +42,7 @@ fun actionDispatcherMock(): CreatePairCandidateReportActionDispatcher =
 
             var reportsToReturn: List<PairCandidateReport> = emptyList()
 
-            override fun CreateAllPairCandidateReportsCommand.perform(): List<PairCandidateReport> {
+            override fun CreateAllPairCandidateReportsAction.perform(): List<PairCandidateReport> {
                 return reportsToReturn
             }
         }
