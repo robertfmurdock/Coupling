@@ -9,17 +9,14 @@ describe('Game Runner', function () {
         const players = [];
         const history = [];
 
-        const couplingGameFactory = new CouplingGameFactory();
-        const buildStub = spyOn(couplingGameFactory, 'buildGame');
         const playStub = jasmine.createSpy('play');
-        buildStub.and.returnValue({play: playStub});
 
         const pairingAssignments: Pair[] = [
             [{tribe: '1'}],
             [{tribe: '1'}]
         ];
         playStub.and.returnValue(pairingAssignments);
-        const gameRunner = new GameRunner(couplingGameFactory);
+        const gameRunner = new GameRunner({runSpinCommand: playStub});
 
         const expectedDate = new Date();
         spyOn(Clock, 'getDate').and.returnValue(expectedDate);

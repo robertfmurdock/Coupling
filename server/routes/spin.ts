@@ -1,10 +1,8 @@
-import CouplingGameFactory from "../lib/CouplingGameFactory";
-import GameRunner from "../lib/GameRunner";
 import * as Promise from "bluebird";
+import GameRunner from "../lib/GameRunner";
 import Tribe from "../../common/Tribe";
 
-const couplingGameFactory = new CouplingGameFactory();
-const gameRunner = new GameRunner(couplingGameFactory);
+const gameRunner = new GameRunner();
 
 
 interface GameData {

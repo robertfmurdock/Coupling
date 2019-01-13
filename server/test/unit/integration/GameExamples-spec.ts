@@ -49,8 +49,7 @@ describe('The game', function () {
         });
 
         it('works with no history', function (done) {
-            const couplingGameFactory = new CouplingGameFactory();
-            const gameRunner = new GameRunner(couplingGameFactory);
+            const gameRunner = new GameRunner();
 
             const tribe = {id: tribeId, pairingRule: PairingRule.LongestTime};
 
@@ -70,8 +69,7 @@ describe('The game', function () {
 
         it('works with an odd number of players history', function (done) {
             const tribe = {id: tribeId, pairingRule: PairingRule.LongestTime};
-            const couplingGameFactory = new CouplingGameFactory();
-            const gameRunner = new GameRunner(couplingGameFactory);
+            const gameRunner = new GameRunner();
 
             new CouplingDataService(mongoUrl).requestHistory(tribeId)
                 .then(function (history) {
@@ -82,8 +80,7 @@ describe('The game', function () {
         });
 
         it('will always pair someone who has paired with everyone but one person with that one person', function (done) {
-            const couplingGameFactory = new CouplingGameFactory();
-            const gameRunner = new GameRunner(couplingGameFactory);
+            const gameRunner = new GameRunner();
 
             const history = [
                 new PairAssignmentDocument(new Date(2014, 1, 10), [
@@ -151,8 +148,7 @@ describe('The game', function () {
         });
 
         it('will always pair someone who has paired with everyone but one person with that one person', function (done) {
-            const couplingGameFactory = new CouplingGameFactory();
-            const gameRunner = new GameRunner(couplingGameFactory);
+            const gameRunner = new GameRunner();
 
             const history = [
                 new PairAssignmentDocument(new Date(2014, 1, 10), [
@@ -213,8 +209,7 @@ describe('The game', function () {
             ], tribeId)
         ];
 
-        const couplingGameFactory = new CouplingGameFactory();
-        const gameRunner = new GameRunner(couplingGameFactory);
+        const gameRunner = new GameRunner();
 
         const tribe = {id: tribeId, pairingRule: PairingRule.PreferDifferentBadge};
 
