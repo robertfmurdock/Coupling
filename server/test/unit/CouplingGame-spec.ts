@@ -2,13 +2,18 @@ import PairHistoryReport from "../../lib/PairCandidateReport";
 import CouplingGame from "../../lib/CouplingGame";
 import PairingRule from "../../../common/PairingRule";
 
+// @ts-ignore
+import {actionDispatcherMock} from "engine_test"
+
+const stub = {reportProvider: {pairingHistory: {historyDocuments: []}}};
+
 describe("Coupling Game", function () {
     function badSpin(players) {
         return players[0];
     }
 
     it("with no players should return no pairs", function () {
-        var game = new CouplingGame(badSpin, null);
+        var game = new CouplingGame(stub, null);
         var players = [];
 
         var results = game.play(players, PairingRule.LongestTime);
@@ -21,23 +26,24 @@ describe("Coupling Game", function () {
 
         var allPlayers = [player1, player2];
         var spinFunction;
-        var nextInSequenceFunction;
         var game;
+        let mock;
 
         beforeEach(function () {
-                spinFunction = jasmine.createSpy('spin');
-                nextInSequenceFunction = jasmine.createSpy('next');
-                game = new CouplingGame({getNextInSequence: nextInSequenceFunction}, {spin: spinFunction});
-                nextInSequenceFunction.and.returnValue(new PairHistoryReport(player2, [player1], 0));
-                spinFunction.and.returnValue(player1);
-            }
-        );
+            spinFunction = jasmine.createSpy('spin');
+
+            mock = actionDispatcherMock();
+
+            game = new CouplingGame(stub, {spin: spinFunction}, mock);
+            mock.setNextPairCandidateReportsToReturn([new PairHistoryReport(player2, [player1], 0)]);
+            spinFunction.and.returnValue(player1);
+        });
 
 
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            expect(nextInSequenceFunction).toHaveBeenCalledWith(allPlayers, undefined);
+            expect(mock.getPlayersReturnedFromGetNextPairActionAtIndex(0)).toEqual(allPlayers);
             expect(spinFunction).toHaveBeenCalledWith([player1]);
         });
 
@@ -56,28 +62,32 @@ describe("Coupling Game", function () {
         var player3 = {_id: 'mozart', tribe: ''};
         var allPlayers = [player1, player2, player3];
         var spinFunction;
-        var nextInSequenceFunction;
         var game;
+        let mock;
 
         beforeEach(function () {
                 spinFunction = jasmine.createSpy('spin');
-                spinFunction.and.returnValue(player1);
-                nextInSequenceFunction = jasmine.createSpy('next');
-                nextInSequenceFunction.and.returnValues(
-                    new PairHistoryReport(player3, [player1, player2], 0),
-                    new PairHistoryReport(player2, [], 0)
+                spinFunction.and.returnValues(player1, null);
+
+                mock = actionDispatcherMock();
+                mock.setNextPairCandidateReportsToReturn([
+                        new PairHistoryReport(player3, [player1, player2], 0),
+                        new PairHistoryReport(player2, [], 0)
+                    ]
                 );
 
-                game = new CouplingGame({getNextInSequence: nextInSequenceFunction}, {spin: spinFunction});
+                game = new CouplingGame(stub, {spin: spinFunction}, mock);
             }
         );
 
         it("should remove a player from the wheel before each play", function () {
             game.play(allPlayers);
 
-            expect(nextInSequenceFunction.calls.argsFor(0)).toEqual([allPlayers, undefined]);
+            expect(mock.getPlayersReturnedFromGetNextPairActionAtIndex(0))
+                .toEqual(allPlayers);
             expect(spinFunction.calls.argsFor(0)).toEqual([[player1, player2]]);
-            expect(nextInSequenceFunction.calls.argsFor(1)).toEqual([[player2], undefined]);
+            expect(mock.getPlayersReturnedFromGetNextPairActionAtIndex(1))
+                .toEqual([player2]);
         });
 
         it("should make two pairs in order determined by the wheel", function () {
@@ -90,14 +100,15 @@ describe("Coupling Game", function () {
     });
 
     it("should one pair two players", function () {
-        var nextInSequenceFunction = jasmine.createSpy('next');
-        var game = new CouplingGame({getNextInSequence: nextInSequenceFunction}, {spin: badSpin});
+        const mock = actionDispatcherMock();
+
+        var game = new CouplingGame(stub, {spin: badSpin}, mock);
 
         var player1 = {_id: 'bill', tribe: ''};
         var player2 = {_id: 'ted', tribe: ''};
         var allPlayers = [player1, player2];
 
-        nextInSequenceFunction.and.returnValue(new PairHistoryReport(player1, [player2], 0));
+        mock.setNextPairCandidateReportsToReturn([new PairHistoryReport(player1, [player2], 0)]);
 
         var results = game.play(allPlayers, PairingRule.LongestTime);
 

@@ -1,11 +1,15 @@
 import kotlin.js.JsName
 
-interface CommandDispatcher : GetNextPairActionDispatcher, CreatePairCandidateReportActionDispatcher
+interface CommandDispatcher : SpinCommandDispatcher
 
 @JsName("spinContext")
-fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax): CommandDispatcher = object : CommandDispatcher, CreateAllPairCandidateReportsActionDispatcher {
-
+fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax): CommandDispatcher = object : CommandDispatcher,
+        GetNextPairActionDispatcher,
+        CreatePairCandidateReportActionDispatcher,
+        CreateAllPairCandidateReportsActionDispatcher,
+        Wheel {
     override val actionDispatcher = this
+    override val wheel = this
     override val couplingComparisionSyntax = couplingComparisionSyntax
 }
 

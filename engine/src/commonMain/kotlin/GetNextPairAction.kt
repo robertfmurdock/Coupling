@@ -1,20 +1,19 @@
 import kotlin.js.JsName
 
-data class GetNextPairAction(val game: Game)
+data class GetNextPairAction(val gameSpin: GameSpin)
 
 interface GetNextPairActionDispatcher {
 
     val actionDispatcher: CreateAllPairCandidateReportsActionDispatcher
 
-    private fun CreateAllPairCandidateReportsAction.perform() = with(actionDispatcher) { perform() }
+    private fun CreateAllPairCandidateReportsAction.performThis() = with(actionDispatcher) { perform() }
 
     @JsName("getNextPair")
-    fun getNextPair(history: List<HistoryDocument>, players: Array<Player>, rule: PairingRule) = GetNextPairAction(Game(history, players.toList(), rule))
+    fun getNextPair(history: List<HistoryDocument>, players: Array<Player>, rule: PairingRule) = GetNextPairAction(GameSpin(history, players.toList(), rule))
             .perform()
 
-
-    fun GetNextPairAction.perform() = CreateAllPairCandidateReportsAction(game)
-            .perform()
+    fun GetNextPairAction.perform() = CreateAllPairCandidateReportsAction(gameSpin)
+            .performThis()
             .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->
                 when {
                     reportWithLongestTime == null -> report

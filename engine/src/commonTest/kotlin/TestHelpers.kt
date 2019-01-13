@@ -1,9 +1,15 @@
 import kotlin.js.JsName
 
+interface Whatever : CreatePairCandidateReportActionDispatcher, CreateAllPairCandidateReportsActionDispatcher
+
+
 @JsName("actionDispatcherMock")
 fun actionDispatcherMock(): CreatePairCandidateReportActionDispatcher =
-        object : CreatePairCandidateReportActionDispatcher, CreateAllPairCandidateReportsActionDispatcher {
-            override val actionDispatcher: CreatePairCandidateReportActionDispatcher get() = TODO("not implemented")
+        object : CreatePairCandidateReportActionDispatcher,
+                CreateAllPairCandidateReportsActionDispatcher,
+                GetNextPairActionDispatcher {
+
+            override val actionDispatcher: Whatever get() = TODO("not implemented")
 
             val whenGivenReturnList: MutableList<WhenGivenReturn> = mutableListOf()
 
@@ -45,6 +51,31 @@ fun actionDispatcherMock(): CreatePairCandidateReportActionDispatcher =
             override fun CreateAllPairCandidateReportsAction.perform(): List<PairCandidateReport> {
                 return reportsToReturn
             }
+
+
+            var nextReportsToReturn: List<PairCandidateReport> = emptyList()
+
+            @JsName("setNextPairCandidateReportsToReturn")
+            fun setNextPairCandidateReportsToReturn(reports: Array<PairCandidateReportJs>) {
+                nextReportsToReturn = reports.map { fromJsReport(it) }
+            }
+
+            var lastGetNextPairAction: MutableList<GetNextPairAction> = mutableListOf()
+
+            @JsName("getPlayersReturnedFromGetNextPairActionAtIndex")
+            fun getPlayersReturnedFromGetNextPairActionAtIndex(index: Int) =
+                    lastGetNextPairAction.getOrNull(index)
+                            ?.gameSpin?.remainingPlayers?.toTypedArray()
+
+            override fun GetNextPairAction.perform(): PairCandidateReport? {
+                lastGetNextPairAction.add(this)
+                val take = nextReportsToReturn.getOrNull(0)
+                if (take != null) {
+                    nextReportsToReturn = nextReportsToReturn.subList(1, nextReportsToReturn.size)
+                }
+                return take
+            }
+
         }
 
 data class WhenGivenReturn(val player: Player, val allPlayers: List<Player>, val returnValue: PairCandidateReportJs)

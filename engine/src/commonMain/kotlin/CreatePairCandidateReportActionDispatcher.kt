@@ -1,12 +1,12 @@
 import kotlin.js.JsName
 
-data class CreatePairCandidateReportAction(val history: List<HistoryDocument>, val player: Player, val allPlayers: List<Player>)
+data class CreatePairCandidateReportAction(val player: Player, val history: List<HistoryDocument>, val allPlayers: List<Player>)
 
 interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
 
     @JsName("createPairCandidateReport")
     fun createPairCandidateReport(history: List<HistoryDocument>, player: Player, allPlayers: Array<Player>) =
-            CreatePairCandidateReportAction(history, player, allPlayers.asList())
+            CreatePairCandidateReportAction(player, history, allPlayers.asList())
                     .perform()
 
     fun CreatePairCandidateReportAction.perform() = pairTimeMap()
