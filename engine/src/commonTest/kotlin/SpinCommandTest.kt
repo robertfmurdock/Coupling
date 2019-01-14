@@ -4,13 +4,7 @@ import kotlin.test.assertEquals
 class SpinCommandTest {
 
     class WithNoPlayers : SpinCommandDispatcher {
-        override val actionDispatcher: GetNextPairActionDispatcher = object : GetNextPairActionDispatcher {
-            override val actionDispatcher get() = throw NotImplementedError()
-
-            override fun GetNextPairAction.perform(): PairCandidateReport? {
-                return null
-            }
-        }
+        override val actionDispatcher: GetNextPairActionDispatcher = StubGetNextPairActionDispatcher()
         override val wheel: Wheel = object : Wheel {}
 
         @Test
@@ -39,10 +33,10 @@ class SpinCommandTest {
                     .perform()
                     .assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
 
-            actionDispatcher.allActionsPerformed.getOrNull(0)
+            actionDispatcher.receivedValues.getOrNull(0)
                     .assertIsEqualTo(GetNextPairAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
 
-            wheel.allArraysSpun.assertContains(listOf(bill))
+            wheel.receivedValues.assertContains(listOf(bill))
         }
     }
 
@@ -58,12 +52,11 @@ class SpinCommandTest {
 
         @Test
         fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() {
-            actionDispatcher.returnValues
-                    .plusAssign(listOf(
-                            PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
-                            PairCandidateReport(ted, emptyList(), TimeResultValue(0))
-                    ))
-            wheel.returnValues.add(bill)
+            actionDispatcher.willReturn(listOf(
+                    PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
+                    PairCandidateReport(ted, emptyList(), TimeResultValue(0))
+            ))
+            wheel.willReturn(bill)
 
             SpinCommand(Game(listOf(), players, PairingRule.LongestTime))
                     .perform()
@@ -71,32 +64,45 @@ class SpinCommandTest {
                             listOf(CouplingPair.Double(mozart, bill), CouplingPair.Single(ted))
                     )
 
-            actionDispatcher.allActionsPerformed
+            actionDispatcher.receivedValues
                     .assertIsEqualTo(listOf(
                             GetNextPairAction(GameSpin(listOf(), players, PairingRule.LongestTime)),
                             GetNextPairAction(GameSpin(listOf(), listOf(ted), PairingRule.LongestTime))
                     ))
 
-            wheel.allArraysSpun
+            wheel.receivedValues
                     .assertContains(listOf(bill, ted))
         }
     }
 }
 
-
-class StubWheel : Wheel {
-    val allArraysSpun = mutableListOf<List<Player>>()
-    val returnValues = mutableListOf<Player>()
-    override fun Array<Player>.spin(): Player = returnValues.popValue()!!.also { allArraysSpun.add(this.asList()) }
+class SpyImpl<I, O> : Spy<I, O> {
+    override val receivedValues = mutableListOf<I>()
+    override val returnValues = mutableListOf<O>()
 }
 
-class StubGetNextPairActionDispatcher : GetNextPairActionDispatcher {
-    val allActionsPerformed = mutableListOf<GetNextPairAction>()
-    val returnValues = mutableListOf<PairCandidateReport>()
-    override val actionDispatcher get() = throw NotImplementedError()
+interface Spy<I, O> {
+    val receivedValues: MutableList<I>
+    val returnValues: MutableList<O>
+    fun spyFunction(input: I) = returnValues.popValue()!!.also { receivedValues.add(input) }
 
-    override fun GetNextPairAction.perform() = returnValues.popValue()
-            .also { allActionsPerformed.add(this) }
+    fun willReturn(values: Collection<O>) {
+        returnValues += values
+    }
+
+    fun willReturn(value: O) {
+        returnValues += value
+    }
+}
+
+class StubWheel : Wheel, Spy<List<Player>, Player> by SpyImpl() {
+    override fun Array<Player>.spin(): Player = spyFunction(this.toList())
+}
+
+class StubGetNextPairActionDispatcher : GetNextPairActionDispatcher,
+        Spy<GetNextPairAction, PairCandidateReport> by SpyImpl() {
+    override val actionDispatcher get() = throw NotImplementedError()
+    override fun GetNextPairAction.perform() = spyFunction(this)
 }
 
 fun <T> MutableList<T>.popValue() = getOrNull(0)?.also { removeAt(0) }
