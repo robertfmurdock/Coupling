@@ -4,7 +4,6 @@ import Tribe from "../../common/Tribe";
 
 const gameRunner = new GameRunner();
 
-
 interface GameData {
     pins: any[],
     history: any[],

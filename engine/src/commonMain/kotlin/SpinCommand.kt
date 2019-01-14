@@ -31,8 +31,12 @@ interface SpinCommandDispatcher {
             .let { newPair -> nextRound(newPair) }
             .spinForNextPair()
 
-    private fun Round.getNextPlayer() = GetNextPairAction(gameSpin)
-            .performThis()
+    private fun Round.getNextPlayer() = if (gameSpin.remainingPlayers.isEmpty()) {
+        null
+    } else {
+        GetNextPairAction(gameSpin)
+                .performThis()
+    }
 
     private fun Round.nextRound(newPair: CouplingPair) = Round(
             pairs.plus(newPair),

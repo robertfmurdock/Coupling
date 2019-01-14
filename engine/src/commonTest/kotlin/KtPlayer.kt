@@ -1,0 +1,1 @@
+data class KtPlayer(override val _id: String? = null, override val badge: String? = null) : Player

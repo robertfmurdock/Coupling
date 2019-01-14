@@ -1,4 +1,3 @@
-import CouplingGameFactory from "../../lib/CouplingGameFactory";
 import GameRunner from "../../lib/GameRunner";
 import * as Clock from '../../lib/Clock';
 import PairingRule from "../../../common/PairingRule";

@@ -7,6 +7,6 @@ interface Wheel {
     val random: Random get() = Random.Default
 
     @JsName("spin")
-    fun <T> Array<T>.spin(): T = random(random)
+    fun Array<Player>.spin(): Player = random(random)
 
 }

@@ -1,6 +1,5 @@
 import kotlin.random.Random
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class WheelTest : Wheel {
 
@@ -14,20 +13,18 @@ class WheelTest : Wheel {
     @Test
     fun randomlyChoosesAPersonOnTheWheel() {
         arrayOf("Scooby", "Shaggy", "Scrappy")
+                .map { KtPlayer(_id = it) as Player}
+                .toTypedArray()
                 .checkSpinWorksForIndex(1)
                 .checkSpinWorksForIndex(0)
                 .checkSpinWorksForIndex(2)
     }
 
-    private fun Array<String>.checkSpinWorksForIndex(expectedIndex: Int): Array<String> = also {
+    private fun Array<Player>.checkSpinWorksForIndex(expectedIndex: Int): Array<Player> = also {
         nextRandomIndex = expectedIndex
         val actual = spin()
         val expected = this[expectedIndex]
-        actual.isEqualTo(expected)
-    }
-
-    private fun String.isEqualTo(expected: String) {
-        assertEquals(expected, this)
+        actual.assertIsEqualTo(expected)
     }
 
 }
