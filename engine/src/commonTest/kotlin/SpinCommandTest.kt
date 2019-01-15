@@ -26,17 +26,17 @@ class SpinCommandTest {
 
         @Test
         fun playersShouldBeRemovedFromWheelBeforeEachPlay() {
-            wheel.returnValues.add(bill)
-            actionDispatcher.returnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
+            wheel.spyReturnValues.add(bill)
+            actionDispatcher.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
 
             SpinCommand(Game(listOf(), players, PairingRule.LongestTime))
                     .perform()
                     .assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
 
-            actionDispatcher.receivedValues.getOrNull(0)
+            actionDispatcher.spyReceivedValues.getOrNull(0)
                     .assertIsEqualTo(GetNextPairAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
 
-            wheel.receivedValues.assertContains(listOf(bill))
+            wheel.spyReceivedValues.assertContains(listOf(bill))
         }
     }
 
@@ -52,11 +52,11 @@ class SpinCommandTest {
 
         @Test
         fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() {
-            actionDispatcher.willReturn(listOf(
+            actionDispatcher spyWillReturn listOf(
                     PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
                     PairCandidateReport(ted, emptyList(), TimeResultValue(0))
-            ))
-            wheel.willReturn(bill)
+            )
+            wheel spyWillReturn bill
 
             SpinCommand(Game(listOf(), players, PairingRule.LongestTime))
                     .perform()
@@ -64,51 +64,26 @@ class SpinCommandTest {
                             listOf(CouplingPair.Double(mozart, bill), CouplingPair.Single(ted))
                     )
 
-            actionDispatcher.receivedValues
+            actionDispatcher.spyReceivedValues
                     .assertIsEqualTo(listOf(
                             GetNextPairAction(GameSpin(listOf(), players, PairingRule.LongestTime)),
                             GetNextPairAction(GameSpin(listOf(), listOf(ted), PairingRule.LongestTime))
                     ))
 
-            wheel.receivedValues
+            wheel.spyReceivedValues
                     .assertContains(listOf(bill, ted))
         }
     }
 }
 
-class SpyImpl<I, O> : Spy<I, O> {
-    override val receivedValues = mutableListOf<I>()
-    override val returnValues = mutableListOf<O>()
-}
-
-interface Spy<I, O> {
-    val receivedValues: MutableList<I>
-    val returnValues: MutableList<O>
-    fun spyFunction(input: I) = returnValues.popValue()!!.also { receivedValues.add(input) }
-
-    fun willReturn(values: Collection<O>) {
-        returnValues += values
-    }
-
-    fun willReturn(value: O) {
-        returnValues += value
-    }
-}
-
-class StubWheel : Wheel, Spy<List<Player>, Player> by SpyImpl() {
+class StubWheel : Wheel, Spy<List<Player>, Player> by SpyData() {
     override fun Array<Player>.spin(): Player = spyFunction(this.toList())
 }
 
 class StubGetNextPairActionDispatcher : GetNextPairActionDispatcher,
-        Spy<GetNextPairAction, PairCandidateReport> by SpyImpl() {
+        Spy<GetNextPairAction, PairCandidateReport> by SpyData() {
     override val actionDispatcher get() = throw NotImplementedError()
     override fun GetNextPairAction.perform() = spyFunction(this)
 }
 
 fun <T> MutableList<T>.popValue() = getOrNull(0)?.also { removeAt(0) }
-
-fun <T> T?.assertIsEqualTo(expected: T, message: String? = null) = assertEquals(expected, this, message)
-
-fun <T> MutableList<T>.assertContains(item: T) = contains(item)
-        .assertIsEqualTo(true, "${this.map { "$item" }} did not contain $item")
-        .let { this }

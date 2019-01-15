@@ -1,5 +1,4 @@
 import * as monk from "monk";
-import CouplingGameFactory from "../../../lib/CouplingGameFactory";
 import GameRunner from "../../../lib/GameRunner";
 import CouplingDataService from "../../../lib/CouplingDataService";
 import PairAssignmentDocument from "../../../../common/PairAssignmentDocument";
