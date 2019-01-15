@@ -1,5 +1,3 @@
-import kotlin.js.JsName
-
 data class GetNextPairAction(val gameSpin: GameSpin)
 
 interface GetNextPairActionDispatcher {
@@ -7,10 +5,6 @@ interface GetNextPairActionDispatcher {
     val actionDispatcher: CreateAllPairCandidateReportsActionDispatcher
 
     private fun CreateAllPairCandidateReportsAction.performThis() = with(actionDispatcher) { perform() }
-
-    @JsName("getNextPair")
-    fun getNextPair(history: List<HistoryDocument>, players: Array<Player>, rule: PairingRule) = GetNextPairAction(GameSpin(history, players.toList(), rule))
-            .perform()
 
     fun GetNextPairAction.perform() = CreateAllPairCandidateReportsAction(gameSpin)
             .performThis()
@@ -38,5 +32,4 @@ interface GetNextPairActionDispatcher {
             false
         }
     }
-
 }

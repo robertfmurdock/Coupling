@@ -10,6 +10,8 @@ interface Spy<I, O> {
     infix fun spyWillReturn(value: O) {
         spyReturnValues += value
     }
+
+    fun cancel(): Nothing = throw NotImplementedError("Will not implement unused collaborator")
 }
 
 class SpyData<I, O> : Spy<I, O> {
