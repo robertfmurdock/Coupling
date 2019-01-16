@@ -1,3 +1,5 @@
+import kotlin.test.fail
+
 interface Spy<I, O> {
     val spyReceivedValues: MutableList<I>
     val spyReturnValues: MutableList<O>
@@ -5,8 +7,17 @@ interface Spy<I, O> {
     val spyReturnWhenGivenValues: MutableMap<I, O>
 
     fun spyFunction(input: I): O = when (val value = spyReturnWhenGivenValues[input]) {
-        null -> spyReturnValues.popValue()!!.also { spyReceivedValues.add(input) }
+        null -> safePop(input).also { spyReceivedValues.add(input) }
         else -> value
+    }
+
+    private fun safePop(input: I): O {
+        val value = spyReturnValues.popValue()
+        if (value == null) {
+            fail("No values remaining given input $input")
+        } else {
+            return value
+        }
     }
 
     infix fun spyWillReturn(values: Collection<O>) {

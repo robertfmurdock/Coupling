@@ -24,9 +24,10 @@ class CreateAllPairCandidateReportsActionTest {
 
             init {
                 expectedReports.forEach { report ->
-                    actionDispatcher.givenPlayerReturnReport(report, history, players.filterNot { it == report.player })
+                    actionDispatcher.givenPlayerReturnReport(report, players.without(report.player), history)
                 }
             }
+
         }) exercise {
             CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
                     .perform()
@@ -51,10 +52,10 @@ class CreateAllPairCandidateReportsActionTest {
 
             init {
                 actionDispatcher.run {
-                    givenPlayerReturnReport(billReport, history, listOf(altAmadeus, altShorty))
-                    givenPlayerReturnReport(tedReport, history, listOf(altAmadeus, altShorty))
-                    givenPlayerReturnReport(amadeusReport, history, listOf(bill, ted))
-                    givenPlayerReturnReport(shortyReport, history, listOf(bill, ted))
+                    givenPlayerReturnReport(billReport, listOf(altAmadeus, altShorty), history)
+                    givenPlayerReturnReport(tedReport, listOf(altAmadeus, altShorty), history)
+                    givenPlayerReturnReport(amadeusReport, listOf(bill, ted), history)
+                    givenPlayerReturnReport(shortyReport, listOf(bill, ted), history)
                 }
             }
         }) exercise {
@@ -63,14 +64,64 @@ class CreateAllPairCandidateReportsActionTest {
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
+
+        @Test
+        fun willReturnReportForOnePlayer() = setup(object {
+            val history = emptyList<HistoryDocument>()
+            val bill = KtPlayer(_id = "Bill", badge = "1")
+            val players = listOf(bill)
+            val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
+
+            init {
+                actionDispatcher.givenPlayerReturnReport(billReport, emptyList(), history)
+            }
+
+        }) exercise {
+            CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
+                    .perform()
+        } verify {
+            it.assertIsEqualTo(listOf(billReport))
+        }
+
+    }
+
+    @Test
+    fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreateAllPairCandidateReportsActionDispatcher {
+        override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
+        val history = listOf<HistoryDocument>()
+        val bill = KtPlayer(_id = "Bill", badge = "1")
+        val ted = KtPlayer(_id = "Ted", badge = "1")
+        val altAmadeus = KtPlayer(_id = "Mozart", badge = "2")
+        val altShorty = KtPlayer(_id = "Napoleon", badge = "2")
+        val players = listOf(bill, ted, altAmadeus, altShorty)
+
+        val billReport = PairCandidateReport(bill, emptyList(), NeverPaired)
+        val tedReport = PairCandidateReport(ted, emptyList(), NeverPaired)
+        val amadeusReport = PairCandidateReport(altAmadeus, emptyList(), NeverPaired)
+        val shortyReport = PairCandidateReport(altShorty, emptyList(), NeverPaired)
+        val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
+
+        init {
+            actionDispatcher.run {
+                givenPlayerReturnReport(billReport, players.without(bill), history)
+                givenPlayerReturnReport(tedReport, players.without(ted), history)
+                givenPlayerReturnReport(amadeusReport, players.without(altAmadeus), history)
+                givenPlayerReturnReport(shortyReport, players.without(altShorty), history)
+            }
+        }
+    }) exercise {
+        CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime))
+                .perform()
+    } verify {
+        it.assertIsEqualTo(expectedReports)
     }
 
     companion object {
 
         private fun StubCreatePairCandidateReportActionDispatcher.givenPlayerReturnReport(
                 pairCandidateReport: PairCandidateReport,
-                history: List<HistoryDocument>,
-                players: List<KtPlayer>
+                players: List<KtPlayer>,
+                history: List<HistoryDocument>
         ) = whenever(
                 receive = expectedAction(pairCandidateReport.player, history, players),
                 returnValue = pairCandidateReport
@@ -82,6 +133,8 @@ class CreateAllPairCandidateReportsActionTest {
                         history,
                         players
                 )
+
+        private fun List<KtPlayer>.without(player: Player) = filterNot { it == player }
     }
 
 }
