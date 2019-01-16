@@ -3,13 +3,13 @@ import kotlin.test.Test
 class GetNextPairActionTest : GetNextPairActionDispatcher {
     override val actionDispatcher = StubCreateAllPairCandidateReportsActionDispatcher()
 
-    val bill = KtPlayer(_id = "Bill")
-    val ted = KtPlayer(_id = "Ted")
-    val amadeus = KtPlayer(_id = "Mozart")
-    val shorty = KtPlayer(_id = "Napoleon")
+    private val bill = KtPlayer(_id = "Bill")
+    private val ted = KtPlayer(_id = "Ted")
+    private val amadeus = KtPlayer(_id = "Mozart")
+    private val shorty = KtPlayer(_id = "Napoleon")
 
     @Test
-    fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() {
+    fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = setup(object {
         val players = listOf(bill, ted, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
@@ -17,67 +17,70 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
 
-        actionDispatcher.spyWillReturn(listOf(
-                billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates
-        ))
-
+        init {
+            actionDispatcher.spyWillReturn(listOf(
+                    billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates
+            ))
+        }
+    }) exercise {
         GetNextPairAction(longestTimeSpin(players))
                 .perform()
-                .assertIsEqualTo(tedsPairCandidates)
+    } verify { result ->
+        result.assertIsEqualTo(tedsPairCandidates)
     }
 
     @Test
-    fun aPersonWhoJustPairedHasLowerPriorityThanSomeoneWhoHasNotPairedInALongTime() {
+    fun aPersonWhoJustPairedHasLowerPriorityThanSomeoneWhoHasNotPairedInALongTime() = setup(object {
         val players = listOf(bill, ted, amadeus, shorty)
-
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(5))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(0))
 
-        actionDispatcher.spyWillReturn(
-                listOf(amadeusPairCandidates, shortyPairCandidates)
-        )
-
+        init {
+            actionDispatcher.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates))
+        }
+    }) exercise {
         GetNextPairAction(longestTimeSpin(players))
                 .perform()
-                .assertIsEqualTo(amadeusPairCandidates)
-    }
+    } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     @Test
-    fun sequenceWillBeFromLongestToShortest() {
+    fun sequenceWillBeFromLongestToShortest() = setup(object {
         val players = listOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
 
-        actionDispatcher.spyWillReturn(
-                listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-        )
+        val pairCandidates = listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
 
+        init {
+            actionDispatcher.spyWillReturn(pairCandidates)
+        }
+    }) exercise {
         GetNextPairAction(longestTimeSpin(players))
                 .perform()
-                .assertIsEqualTo(shortyPairCandidates)
-    }
+    } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
-    fun sequenceWillPreferPlayerWhoHasNeverPaired() {
+    fun sequenceWillPreferPlayerWhoHasNeverPaired() = setup(object {
         val players = listOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), NeverPaired)
 
-        actionDispatcher.spyWillReturn(
-                listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-        )
-
+        init {
+            actionDispatcher.spyWillReturn(
+                    listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+            )
+        }
+    }) exercise {
         GetNextPairAction(longestTimeSpin(players))
                 .perform()
-                .assertIsEqualTo(shortyPairCandidates)
-    }
+    } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
-    fun willPrioritizeTheReportWithFewestPlayersGivenEqualAmountsOfTime() {
+    fun willPrioritizeTheReportWithFewestPlayersGivenEqualAmountsOfTime() = setup(object {
         val players = listOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, listOf(
@@ -92,14 +95,15 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
                 KtPlayer(), KtPlayer()
         ), NeverPaired)
 
-        actionDispatcher.spyWillReturn(
-                listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-        )
-
+        init {
+            actionDispatcher.spyWillReturn(
+                    listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+            )
+        }
+    }) exercise {
         GetNextPairAction(longestTimeSpin(players))
                 .perform()
-                .assertIsEqualTo(amadeusPairCandidates)
-    }
+    } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     private fun longestTimeSpin(players: List<KtPlayer>) = GameSpin(emptyList(), players, PairingRule.LongestTime)
 
