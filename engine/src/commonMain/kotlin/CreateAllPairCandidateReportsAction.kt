@@ -9,12 +9,6 @@ interface CreateAllPairCandidateReportsActionDispatcher : PlayerCandidatesFinder
 
     private fun CreatePairCandidateReportAction.performThis() = with(actionDispatcher) { perform() }
 
-    @JsName("createAllPairCandidateReport")
-    fun createAllPairCandidateReport(history: List<HistoryDocument>, players: Array<Player>, rule: PairingRule) =
-            CreateAllPairCandidateReportsAction(GameSpin(history, players.toList(), rule))
-                    .perform()
-                    .toTypedArray()
-
     fun CreateAllPairCandidateReportsAction.perform() = getReports()
             .ifEmpty { getReportsUsingLongestRule() }
 

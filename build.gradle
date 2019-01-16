@@ -84,7 +84,7 @@ task serverTest(type: YarnTask) {
     inputs.file file('package.json')
     inputs.files serverCompile.inputs.files
     inputs.dir 'server/test/unit'
-    outputs.dir 'test-output/server.unit'
+    outputs.dir 'server/build/test-results/server.unit'
 
     args = ['run', 'serverTest', '--silent']
 }
