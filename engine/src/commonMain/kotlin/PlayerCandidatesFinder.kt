@@ -1,4 +1,4 @@
-import PairingRule.*
+import PairingRule.PreferDifferentBadge
 import kotlin.js.JsName
 
 interface PlayerCandidatesFinder {
@@ -18,7 +18,6 @@ interface PlayerCandidatesFinder {
 
 external interface Player {
     val badge: String?
-
     val _id: String?
 }
 

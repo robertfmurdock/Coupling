@@ -25,12 +25,12 @@ describe('ReportProvider', function () {
             const reportProvider = new ReportProvider(pairingHistory, mock);
 
             const billsPairCandidates = new PairHistoryReport(bill, [], 1);
-            mock.whenGiven(bill, [ted, amadeus, shorty], billsPairCandidates);
             const tedsPairCandidates = new PairHistoryReport(ted, [], 1);
-            mock.whenGiven(ted, [bill, amadeus, shorty], tedsPairCandidates);
             const amadeusPairCandidates = new PairHistoryReport(amadeus, [], 1);
-            mock.whenGiven(amadeus, [bill, ted, shorty], amadeusPairCandidates);
             const shortyPairCandidates = new PairHistoryReport(shorty, [], 1);
+            mock.whenGiven(bill, [ted, amadeus, shorty], billsPairCandidates);
+            mock.whenGiven(ted, [bill, amadeus, shorty], tedsPairCandidates);
+            mock.whenGiven(amadeus, [bill, ted, shorty], amadeusPairCandidates);
             mock.whenGiven(shorty, [bill, ted, amadeus], shortyPairCandidates);
 
             const reports = reportProvider.getPairHistoryReports(players, PairingRule.PreferDifferentBadge);

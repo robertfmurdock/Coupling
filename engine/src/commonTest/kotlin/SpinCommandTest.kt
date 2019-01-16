@@ -12,7 +12,6 @@ class SpinCommandTest {
                 .perform()
     } verify { assertEquals(it, listOf()) }
 
-
     @Test
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : SpinCommandDispatcher {
         override val actionDispatcher = StubGetNextPairActionDispatcher()
@@ -48,13 +47,14 @@ class SpinCommandTest {
                 PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
                 PairCandidateReport(ted, emptyList(), TimeResultValue(0))
         )
+        val history: List<HistoryDocument> = emptyList()
 
         init {
             actionDispatcher spyWillReturn pairCandidateReports
             wheel spyWillReturn bill
         }
     }) exercise {
-        SpinCommand(Game(listOf(), players, PairingRule.LongestTime))
+        SpinCommand(Game(history, players, PairingRule.LongestTime))
                 .perform()
     } verify { result ->
         result.assertIsEqualTo(
@@ -62,8 +62,8 @@ class SpinCommandTest {
         )
         actionDispatcher.spyReceivedValues
                 .assertIsEqualTo(listOf(
-                        GetNextPairAction(GameSpin(listOf(), players, PairingRule.LongestTime)),
-                        GetNextPairAction(GameSpin(listOf(), listOf(ted), PairingRule.LongestTime))
+                        GetNextPairAction(GameSpin(history, players, PairingRule.LongestTime)),
+                        GetNextPairAction(GameSpin(history, listOf(ted), PairingRule.LongestTime))
                 ))
         wheel.spyReceivedValues
                 .assertContains(listOf(bill, ted))

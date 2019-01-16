@@ -1,7 +1,13 @@
 interface Spy<I, O> {
     val spyReceivedValues: MutableList<I>
     val spyReturnValues: MutableList<O>
-    fun spyFunction(input: I) = spyReturnValues.popValue()!!.also { spyReceivedValues.add(input) }
+
+    val spyReturnWhenGivenValues: MutableMap<I, O>
+
+    fun spyFunction(input: I): O = when (val value = spyReturnWhenGivenValues[input]) {
+        null -> spyReturnValues.popValue()!!.also { spyReceivedValues.add(input) }
+        else -> value
+    }
 
     infix fun spyWillReturn(values: Collection<O>) {
         spyReturnValues += values
@@ -11,10 +17,15 @@ interface Spy<I, O> {
         spyReturnValues += value
     }
 
+    fun whenever(receive: I, returnValue: O) {
+        spyReturnWhenGivenValues[receive] = returnValue
+    }
+
     fun cancel(): Nothing = throw NotImplementedError("Will not implement unused collaborator")
 }
 
 class SpyData<I, O> : Spy<I, O> {
+    override val spyReturnWhenGivenValues = mutableMapOf<I, O>()
     override val spyReceivedValues = mutableListOf<I>()
     override val spyReturnValues = mutableListOf<O>()
 }
