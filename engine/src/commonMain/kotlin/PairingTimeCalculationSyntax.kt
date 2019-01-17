@@ -66,8 +66,10 @@ sealed class CouplingPair {
         override fun asArray() = arrayOf(player)
     }
 
-    data class Double(val player1: Player, val player2: Player) : CouplingPair() {
-        override fun asArray() = arrayOf(player1, player2)
+    data class Double internal constructor(val players: Set<Player>) : CouplingPair() {
+        constructor(player1: Player, player2: Player) : this(setOf(player1, player2))
+
+        override fun asArray() = players.toTypedArray()
     }
 }
 

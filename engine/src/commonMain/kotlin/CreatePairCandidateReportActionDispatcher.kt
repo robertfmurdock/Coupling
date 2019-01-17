@@ -1,13 +1,6 @@
-import kotlin.js.JsName
-
 data class CreatePairCandidateReportAction(val player: Player, val history: List<HistoryDocument>, val allPlayers: List<Player>)
 
 interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
-
-    @JsName("createPairCandidateReport")
-    fun createPairCandidateReport(history: List<HistoryDocument>, player: Player, allPlayers: Array<Player>) =
-            CreatePairCandidateReportAction(player, history, allPlayers.asList())
-                    .perform()
 
     fun CreatePairCandidateReportAction.perform() = pairTimeMap()
             .candidateReport()
@@ -37,10 +30,5 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
             maxBy { (key, _) -> if (key is TimeResultValue) key.time else -1 }
 }
 
-data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult) {
-
-    @JsName("partnersAsArray")
-    fun partnersAsArray() = partners.toTypedArray()
-
-}
+data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult)
 

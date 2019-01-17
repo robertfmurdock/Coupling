@@ -1,6 +1,8 @@
 import Comparators from "../../../common/Comparators";
 import Pair from "../../../common/Pair";
 
+const ObjectID = require('mongodb').ObjectID;
+
 describe('Comparators', function () {
     describe("pairs", function () {
         it('are equal when using string ids', function () {
@@ -31,5 +33,19 @@ describe('Comparators', function () {
             expect(Comparators.areEqualPlayers(batman, anotherBatman)).toBe(true);
             expect(Comparators.areEqualPlayers(anotherBatman, batman)).toBe(true);
         });
+
+        it('equal players with object ids are equal', function () {
+            const batman = {
+                name: 'Batman',
+                _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c'),
+                tribe: 'what'
+            };
+            const anotherBatman = {
+                name: 'Batman',
+                _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c'),
+                tribe: 'what'
+            };
+            expect(Comparators.areEqualPlayers(batman, anotherBatman)).toBe(true);
+        })
     });
 });

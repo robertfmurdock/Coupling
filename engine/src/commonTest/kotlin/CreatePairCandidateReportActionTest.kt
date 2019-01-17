@@ -3,9 +3,12 @@ import kotlin.test.assertTrue
 
 class CreatePairCandidateReportActionTest {
 
-    @Test
-    fun shouldReturnNothingWhenNoPartnersAreAvailable() = setup(object : CreatePairCandidateReportActionDispatcher {
+    companion object : CreatePairCandidateReportActionDispatcher {
         override val couplingComparisionSyntax get() = VeryStrictComparisonSyntax
+    }
+
+    @Test
+    fun shouldReturnNothingWhenNoPartnersAreAvailable() = setup(object  {
         val players: List<Player> = emptyList()
         val history: List<HistoryDocument> = emptyList()
     }) exercise {
@@ -16,8 +19,7 @@ class CreatePairCandidateReportActionTest {
     }
 
     class ShouldDeterminePossiblePartnersForPlayerByChoosingPartner {
-        companion object : CreatePairCandidateReportActionDispatcher {
-            override val couplingComparisionSyntax get() = VeryStrictComparisonSyntax
+        companion object {
             val bruce = KtPlayer(_id = "Batman")
             val jezebel = KtPlayer(_id = "Jezebel Jett")
             val talia = KtPlayer(_id = "Talia")
@@ -75,9 +77,35 @@ class CreatePairCandidateReportActionTest {
             }
         }
 
+        class WhoHasNotPairedRecently {
+            @Test
+            fun whenThereIsClearlySomeoneWhoHasBeenTheLongest() = setup(object {
+                val expectedPartner = jezebel
+                val history = listOf(
+                        HistoryDocument(listOf(CouplingPair.Double(bruce, selena))),
+                        HistoryDocument(listOf(CouplingPair.Double(bruce, talia))),
+                        HistoryDocument(listOf(CouplingPair.Double(expectedPartner, bruce)))
+                )
+            }) exercise {
+                CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
+                        .perform()
+            } verify {
+                it.assertIsEqualTo(PairCandidateReport(bruce, listOf(expectedPartner), TimeResultValue(2)))
+            }
 
+            @Test
+            fun whenThereIsOnePersonWhoHasPairedButNoOneElse() = setup(object {
+                val history = listOf(
+                        HistoryDocument(listOf(CouplingPair.Double(bruce, selena)))
+                )
+            }) exercise {
+                CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
+                        .perform()
+            } verify {
+                it.assertIsEqualTo(PairCandidateReport(bruce, listOf(talia, jezebel), NeverPaired))
+            }
+        }
     }
-
 }
 
 object VeryStrictComparisonSyntax : CouplingComparisionSyntax {
