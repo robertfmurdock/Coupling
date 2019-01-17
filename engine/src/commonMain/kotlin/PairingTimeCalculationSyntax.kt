@@ -20,6 +20,7 @@ interface PairingTimeCalculationSyntax {
             couplingComparisionSyntax.areEqualPairs(pair, it)
         }
     }
+
 }
 
 external interface CouplingComparisionSyntax {
@@ -47,6 +48,7 @@ sealed class CouplingPair {
     abstract fun asArray(): Array<Player>
 
     companion object {
+        @JsName("from")
         fun from(array: Array<Player>): CouplingPair {
             return when (array.size) {
                 1 -> Single(array[0])
