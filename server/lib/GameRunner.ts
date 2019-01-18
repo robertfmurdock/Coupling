@@ -14,13 +14,13 @@ export default class GameRunner {
     }
 
     public run(players: Player[], pins, history, tribe) {
+        new PinAssigner().assignPins(pins, players);
+
         const pairs = this.commandDispatcher.runSpinCommand(
             historyFromArray(history),
             players,
             PairingRule.Companion.fromValue(tribe.pairingRule)
         );
-
-        new PinAssigner().assignPins(pins, players);
 
         return new PairAssignmentDocument(clock.getDate(), pairs, tribe.id);
     };

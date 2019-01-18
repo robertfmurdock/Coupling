@@ -1,5 +1,3 @@
-import kotlin.js.JsName
-
 interface CommandDispatcher : SpinCommandDispatcher
 
 @JsName("spinContext")
