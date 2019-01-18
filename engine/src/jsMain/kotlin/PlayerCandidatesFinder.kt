@@ -2,7 +2,6 @@ import PairingRule.PreferDifferentBadge
 
 interface PlayerCandidatesFinder {
 
-    @JsName("findCandidates")
     fun findCandidates(players: Array<Player>, rule: PairingRule, player: Player) = players
             .filterNot { it == player }
             .filterByRule(rule, player.badge)

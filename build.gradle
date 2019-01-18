@@ -68,7 +68,13 @@ task serverCompile(type: YarnTask) {
     inputs.file file('package.json')
     inputs.file file('tsconfig.json')
     inputs.file file('server/webpack.config.js')
-    inputs.dir 'server'
+    inputs.dir 'server/config'
+    inputs.dir 'server/lib'
+    inputs.dir 'server/public'
+    inputs.dir 'server/routes'
+    inputs.dir 'server/views'
+    inputs.file 'server/app.ts'
+    inputs.file 'server/routes.ts'
     inputs.dir 'common'
     outputs.dir file('build')
     environment 'NODE_ENV': 'production'
