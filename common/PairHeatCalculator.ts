@@ -1,3 +1,4 @@
+
 import PairAssignmentDocument from "./PairAssignmentDocument";
 import * as filter from "ramda/src/filter";
 import * as pipe from "ramda/src/pipe";
@@ -27,7 +28,6 @@ function countMatches(pair: Player[], recentPairs: Pair[]) {
         length
     )(recentPairs)
 }
-
 
 export default class PairHeatCalculator {
 

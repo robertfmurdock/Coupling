@@ -20,7 +20,6 @@ interface PairingTimeCalculationSyntax {
             couplingComparisionSyntax.areEqualPairs(pair, it)
         }
     }
-
 }
 
 external interface CouplingComparisionSyntax {

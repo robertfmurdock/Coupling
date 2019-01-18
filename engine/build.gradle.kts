@@ -9,7 +9,6 @@ apply {
     plugin("kotlin-dce-js")
 }
 
-
 repositories {
     mavenCentral()
 }
@@ -22,7 +21,8 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.11")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
             }
         }
         getByName("commonTest") {
