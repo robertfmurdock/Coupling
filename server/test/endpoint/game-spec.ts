@@ -6,6 +6,7 @@ import Badge from "../../../common/Badge";
 import Tribe from "../../../common/Tribe";
 import PairingRule from "../../../common/PairingRule";
 import Comparators from "../../../common/Comparators";
+
 let config = require('../../config/config');
 
 let server = 'http://localhost:' + config.port;
@@ -52,8 +53,8 @@ describe(path, function () {
 
     it('will take the players given and use those for pairing.', function (done) {
         let onlyEnoughPlayersForOnePair = [
-            {name: "dude1"},
-            {name: "dude2"}
+            {name: "dude1", _id: null, tribe: null, badge: null},
+            {name: "dude2", _id: null, tribe: null, badge: null}
         ];
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
         tribeCollection.insert(tribe)
@@ -181,7 +182,9 @@ describe(path, function () {
                 })
                 .then(function (response) {
                     expect(response.body.tribe).toEqual(tribeId);
-                    let expectedPinnedPlayer = {name: "dude1", pins: [pin]};
+                    let expectedPinnedPlayer = {
+                        _id: null, name: "dude1", tribe: null, pins: [pin], badge: null
+                    };
                     let expectedPairAssignments = [
                         [expectedPinnedPlayer]
                     ];

@@ -12,7 +12,7 @@ class CreatePairCandidateReportActionTest {
         val players: List<Player> = emptyList()
         val history: List<HistoryDocument> = emptyList()
     }) exercise {
-        CreatePairCandidateReportAction(KtPlayer(_id = "player"), history, players)
+        CreatePairCandidateReportAction(Player(_id = "player"), history, players)
                 .perform()
     } verify {
         assertTrue(it.partners.isEmpty())
@@ -20,13 +20,13 @@ class CreatePairCandidateReportActionTest {
 
     class ShouldDeterminePossiblePartnersForPlayerByChoosingPartner {
         companion object {
-            val bruce = KtPlayer(_id = "Batman")
-            val jezebel = KtPlayer(_id = "Jezebel Jett")
-            val talia = KtPlayer(_id = "Talia")
-            val selena = KtPlayer(_id = "Catwoman")
+            val bruce = Player(_id = "Batman")
+            val jezebel = Player(_id = "Jezebel Jett")
+            val talia = Player(_id = "Talia")
+            val selena = Player(_id = "Catwoman")
             val availableOtherPlayers = listOf(selena, talia, jezebel)
 
-            private fun createPairCandidateReportAction(history: List<HistoryDocument>, availablePlayers: List<KtPlayer>) =
+            private fun createPairCandidateReportAction(history: List<HistoryDocument>, availablePlayers: List<Player>) =
                     CreatePairCandidateReportAction(bruce, history, availablePlayers)
         }
 
@@ -54,8 +54,8 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun withPlentyOfHistory() = setup(object {
                 val history = listOf(
-                        HistoryDocument(listOf(CouplingPair.Double(bruce, KtPlayer(_id = "Batgirl")))),
-                        HistoryDocument(listOf(CouplingPair.Double(bruce, KtPlayer(_id = "Robin"))))
+                        HistoryDocument(listOf(CouplingPair.Double(bruce, Player(_id = "Batgirl")))),
+                        HistoryDocument(listOf(CouplingPair.Double(bruce, Player(_id = "Robin"))))
                 )
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)

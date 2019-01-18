@@ -13,8 +13,8 @@ class RunGameCommandTest {
         val pins = emptyList<Any>()
         val history = emptyList<HistoryDocument>()
         val expectedPairingAssignments = listOf(
-                CouplingPair.Single(KtPlayer()),
-                CouplingPair.Single(KtPlayer())
+                CouplingPair.Single(Player()),
+                CouplingPair.Single(Player())
         )
 
         init {

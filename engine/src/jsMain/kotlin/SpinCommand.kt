@@ -1,4 +1,4 @@
-import kotlin.js.json
+import kotlin.js.Json
 
 data class Game(val history: List<HistoryDocument>, val players: List<Player>, val rule: PairingRule)
 
@@ -14,8 +14,8 @@ interface SpinCommandDispatcher {
     val wheel: Wheel
 
     @JsName("runSpinCommand")
-    fun runSpinCommand(history: List<HistoryDocument>, players: Array<Player>, rule: PairingRule) =
-            SpinCommand(Game(history, players.toList(), rule))
+    fun runSpinCommand(history: List<HistoryDocument>, players: Array<Json>, rule: PairingRule) =
+            SpinCommand(Game(history, players.map { it.toPlayer() }.toList(), rule))
                     .perform()
                     .map {
                         it.asArray()

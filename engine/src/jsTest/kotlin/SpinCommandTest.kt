@@ -16,8 +16,8 @@ class SpinCommandTest {
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : SpinCommandDispatcher {
         override val actionDispatcher = StubGetNextPairActionDispatcher()
         override val wheel = StubWheel()
-        val bill: Player = KtPlayer(_id = "Bill")
-        val ted: Player = KtPlayer(_id = "Ted")
+        val bill: Player = Player(_id = "Bill")
+        val ted: Player = Player(_id = "Ted")
         val players = listOf(bill, ted)
 
         init {
@@ -38,9 +38,9 @@ class SpinCommandTest {
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : SpinCommandDispatcher {
         override val actionDispatcher = StubGetNextPairActionDispatcher()
         override val wheel = StubWheel()
-        val bill: Player = KtPlayer(_id = "Bill")
-        val ted: Player = KtPlayer(_id = "Ted")
-        val mozart: Player = KtPlayer(_id = "Mozart")
+        val bill: Player = Player(_id = "Bill")
+        val ted: Player = Player(_id = "Ted")
+        val mozart: Player = Player(_id = "Mozart")
         val players = listOf(bill, ted, mozart)
 
         val pairCandidateReports = listOf(

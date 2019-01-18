@@ -14,17 +14,3 @@ interface PlayerCandidatesFinder {
     }
 
 }
-
-external interface Player {
-    val _id: String?
-    val name: String?
-    val badge: String?
-    val pins: Any?
-    val tribe: String?
-    val email: String?
-    val callSignAdjective: String?
-    val callSignNoun: String?
-    val imageURL: String?
-}
-
-

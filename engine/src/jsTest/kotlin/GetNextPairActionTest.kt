@@ -3,10 +3,10 @@ import kotlin.test.Test
 class GetNextPairActionTest : GetNextPairActionDispatcher {
     override val actionDispatcher = StubCreateAllPairCandidateReportsActionDispatcher()
 
-    private val bill = KtPlayer(_id = "Bill")
-    private val ted = KtPlayer(_id = "Ted")
-    private val amadeus = KtPlayer(_id = "Mozart")
-    private val shorty = KtPlayer(_id = "Napoleon")
+    private val bill = Player(_id = "Bill")
+    private val ted = Player(_id = "Ted")
+    private val amadeus = Player(_id = "Mozart")
+    private val shorty = Player(_id = "Napoleon")
 
     @Test
     fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = setup(object {
@@ -84,15 +84,15 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
         val players = listOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, listOf(
-                KtPlayer(),
-                KtPlayer(),
-                KtPlayer()
+                Player(),
+                Player(),
+                Player()
         ), NeverPaired)
         val amadeusPairCandidates = PairCandidateReport(amadeus, listOf(
-                KtPlayer()
+                Player()
         ), NeverPaired)
         val shortyPairCandidates = PairCandidateReport(shorty, listOf(
-                KtPlayer(), KtPlayer()
+                Player(), Player()
         ), NeverPaired)
 
         init {
@@ -105,7 +105,7 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
                 .perform()
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
-    private fun longestTimeSpin(players: List<KtPlayer>) = GameSpin(emptyList(), players, PairingRule.LongestTime)
+    private fun longestTimeSpin(players: List<Player>) = GameSpin(emptyList(), players, PairingRule.LongestTime)
 
 }
 

@@ -7,10 +7,10 @@ class CreateAllPairCandidateReportsActionTest {
 
         @Test
         fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
-            val bill = KtPlayer(_id = "Bill", badge = "1")
-            val ted = KtPlayer(_id = "Ted", badge = "1")
-            val amadeus = KtPlayer(_id = "Mozart", badge = "1")
-            val shorty = KtPlayer(_id = "Napoleon", badge = "1")
+            val bill = Player(_id = "Bill", badge = "1")
+            val ted = Player(_id = "Ted", badge = "1")
+            val amadeus = Player(_id = "Mozart", badge = "1")
+            val shorty = Player(_id = "Napoleon", badge = "1")
 
             val players = listOf(bill, ted, amadeus, shorty)
 
@@ -38,10 +38,10 @@ class CreateAllPairCandidateReportsActionTest {
         @Test
         fun willReturnFilterCandidatesByUnlikeBadge() = setup(object {
             val history = emptyList<HistoryDocument>()
-            val bill = KtPlayer(_id = "Bill", badge = "1")
-            val ted = KtPlayer(_id = "Ted", badge = "1")
-            val altAmadeus = KtPlayer(_id = "Mozart", badge = "2")
-            val altShorty = KtPlayer(_id = "Napoleon", badge = "2")
+            val bill = Player(_id = "Bill", badge = "1")
+            val ted = Player(_id = "Ted", badge = "1")
+            val altAmadeus = Player(_id = "Mozart", badge = "2")
+            val altShorty = Player(_id = "Napoleon", badge = "2")
             val players = listOf(bill, ted, altAmadeus, altShorty)
 
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
@@ -68,7 +68,7 @@ class CreateAllPairCandidateReportsActionTest {
         @Test
         fun willReturnReportForOnePlayer() = setup(object {
             val history = emptyList<HistoryDocument>()
-            val bill = KtPlayer(_id = "Bill", badge = "1")
+            val bill = Player(_id = "Bill", badge = "1")
             val players = listOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
 
@@ -89,10 +89,10 @@ class CreateAllPairCandidateReportsActionTest {
     fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreateAllPairCandidateReportsActionDispatcher {
         override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
         val history = listOf<HistoryDocument>()
-        val bill = KtPlayer(_id = "Bill", badge = "1")
-        val ted = KtPlayer(_id = "Ted", badge = "1")
-        val altAmadeus = KtPlayer(_id = "Mozart", badge = "2")
-        val altShorty = KtPlayer(_id = "Napoleon", badge = "2")
+        val bill = Player(_id = "Bill", badge = "1")
+        val ted = Player(_id = "Ted", badge = "1")
+        val altAmadeus = Player(_id = "Mozart", badge = "2")
+        val altShorty = Player(_id = "Napoleon", badge = "2")
         val players = listOf(bill, ted, altAmadeus, altShorty)
 
         val billReport = PairCandidateReport(bill, emptyList(), NeverPaired)
@@ -120,21 +120,21 @@ class CreateAllPairCandidateReportsActionTest {
 
         private fun StubCreatePairCandidateReportActionDispatcher.givenPlayerReturnReport(
                 pairCandidateReport: PairCandidateReport,
-                players: List<KtPlayer>,
+                players: List<Player>,
                 history: List<HistoryDocument>
         ) = whenever(
                 receive = expectedAction(pairCandidateReport.player, history, players),
                 returnValue = pairCandidateReport
         )
 
-        private fun expectedAction(player: Player, history: List<HistoryDocument>, players: List<KtPlayer>) =
+        private fun expectedAction(player: Player, history: List<HistoryDocument>, players: List<Player>) =
                 CreatePairCandidateReportAction(
                         player,
                         history,
                         players
                 )
 
-        private fun List<KtPlayer>.without(player: Player) = filterNot { it == player }
+        private fun List<Player>.without(player: Player) = filterNot { it == player }
     }
 
 }
