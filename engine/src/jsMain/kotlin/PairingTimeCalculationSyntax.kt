@@ -1,8 +1,5 @@
-import kotlin.js.JsName
-
 interface PairingTimeCalculationSyntax {
 
-    @JsName("couplingComparisionSyntax")
     val couplingComparisionSyntax: CouplingComparisionSyntax
 
     @JsName("calculateTimeSinceLastPartnership")
@@ -32,30 +29,12 @@ data class TimeResultValue(val time: Int) : TimeResult()
 
 object NeverPaired : TimeResult()
 
-external interface PairingDocument {
-    val pairs: Array<Array<Player>>?
-}
 
 data class HistoryDocument(val pairs: List<CouplingPair>)
-
-@JsName("historyFromArray")
-fun historyFromArray(history: Array<PairingDocument>) =
-        history.map { HistoryDocument(it.pairs?.map(CouplingPair.Companion::from) ?: listOf()) }
 
 sealed class CouplingPair {
     @JsName("asArray")
     abstract fun asArray(): Array<Player>
-
-    companion object {
-        @JsName("from")
-        fun from(array: Array<Player>): CouplingPair {
-            return when (array.size) {
-                1 -> Single(array[0])
-                2 -> Double(array[0], array[1])
-                else -> Empty
-            }
-        }
-    }
 
     object Empty : CouplingPair() {
         override fun asArray() = arrayOf<Player>()

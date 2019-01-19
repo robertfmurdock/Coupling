@@ -20,3 +20,20 @@ fun Json.toPlayer(): Player = Player(
         callSignNoun = this["callSignNoun"]?.toString(),
         imageURL = this["imageURL"]?.toString()
 )
+
+external interface PairingDocument {
+    val pairs: Array<Array<Json>>?
+}
+
+@JsName("historyFromArray")
+fun historyFromArray(history: Array<PairingDocument>) =
+        history.map { HistoryDocument(it.pairs?.map(::pairFromArray) ?: listOf()) }
+
+@JsName("pairFromArray")
+fun pairFromArray(array: Array<Json>) = array.map { it.toPlayer() }.toPairs()
+
+private fun List<Player>.toPairs() = when (size) {
+    1 -> CouplingPair.Single(this[0])
+    2 -> CouplingPair.Double(this[0], this[1])
+    else -> CouplingPair.Empty
+}
