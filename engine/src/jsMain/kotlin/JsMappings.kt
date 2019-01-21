@@ -14,6 +14,7 @@ private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
 
 private fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
 
+@Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
         _id = stringValue("_id"),
         badge = stringValue("badge"),
@@ -23,7 +24,12 @@ fun Json.toPlayer(): Player = Player(
         callSignAdjective = stringValue("callSignAdjective"),
         callSignNoun = stringValue("callSignNoun"),
         imageURL = stringValue("imageURL"),
-        pins = (this["pins"] as? Array<Json>)?.toPins()
+        pins = (this["pins"] as? Array<Json>)?.toPins() ?: emptyList()
+)
+
+fun Json.toTribe(): KtTribe = KtTribe(
+        id = stringValue("id")!!,
+        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int)
 )
 
 private fun Json.stringValue(key: String) = this[key]?.toString()
@@ -40,6 +46,7 @@ external interface PairingDocument {
     val pairs: Array<Array<Json>>?
 }
 
+@Suppress("unused")
 @JsName("historyFromArray")
 fun historyFromArray(history: Array<PairingDocument>) =
         history.map { HistoryDocument(it.pairs?.map(::pairFromArray) ?: listOf()) }

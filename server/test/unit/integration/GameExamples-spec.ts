@@ -99,7 +99,7 @@ describe('The game', function () {
             historyCollection.insert(history, function () {
                 new CouplingDataService(mongoUrl).requestPlayersAndHistory(tribeId)
                     .then(function (both) {
-                        const pairAssignments = gameRunner.run(both.players, [], both.history, tribeId);
+                        const pairAssignments = gameRunner.run(both.players, [], both.history, {id: tribeId});
                         const foundBruceAndJohn = pairAssignments.pairs.some(function (pair: Pair) {
                             return Comparators.areEqualPairs([bruce, john], pair);
                         });
@@ -225,7 +225,7 @@ describe('The game', function () {
 
     function saveAndLoadData(playerRoster, history, tribeId) {
         return playersCollection.drop()
-            .then(function() {
+            .then(function () {
                 return historyCollection.drop();
             })
             .then(function () {
