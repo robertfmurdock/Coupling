@@ -1,31 +1,68 @@
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.promise
+import kotlin.js.Json
+import kotlin.js.json
 
 data class ProposeNewPairsCommand(val tribeId: String, val players: List<Player>)
-interface ProposeNewPairsCommandDispatcher {
+interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
 
-    val repository: CouplingDataRepository
+    @Suppress("unused")
+    @JsName("performProposeNewPairsCommand")
+    fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) =
+            GlobalScope.promise {
+                ProposeNewPairsCommand(tribeId, players.map { it.toPlayer() })
+                        .perform()
+                        .let {
+                            json(
+                                    "date" to it.date,
+                                    "pairs" to toJs(it),
+                                    "tribe" to it.tribeId
+                            )
+                        }
+            }
+
+    private fun toJs(it: PairAssignmentDocument): Array<Array<Json>> {
+        return it.expectedPairingAssignments.map {
+            it.asArray()
+                    .map { player ->
+                        player.toJson()
+                    }
+                    .toTypedArray()
+        }
+                .toTypedArray()
+    }
+
     val actionDispatcher: RunGameActionDispatcher
 
-    suspend fun ProposeNewPairsCommand.perform(): PairAssignmentDocument {
-        val historyDeferred = repository.getHistory(tribeId)
-        val pinsDeferred = repository.getPins(tribeId)
-        val tribeDeferred = repository.getTribe(tribeId)
+    suspend fun ProposeNewPairsCommand.perform() = loadData()
+            .let { (history, pins, tribe) -> RunGameAction(players, pins, history, tribe) }
+            .performThis()
 
-        val history = historyDeferred.await()
-        val pins = pinsDeferred.await()
-        val tribe = tribeDeferred.await()
+    private fun RunGameAction.performThis() = with(actionDispatcher) { perform() }
 
-        val action = RunGameAction(players, pins, history, tribe)
+    private suspend fun ProposeNewPairsCommand.loadData() = dataDeferred()
+            .let { (historyDeferred, pinsDeferred, tribeDeferred) ->
+                Triple(
+                        historyDeferred.await(),
+                        pinsDeferred.await(),
+                        tribeDeferred.await()
+                )
+            }
 
-        return with(actionDispatcher) { action.perform() }
-    }
+    private fun ProposeNewPairsCommand.dataDeferred() = Triple(
+            tribeId.getHistory(),
+            tribeId.getPins(),
+            tribeId.getTribe()
+    )
 
 }
 
-interface CouplingDataRepository {
+interface TribeIdDataSyntax {
 
-    fun getPins(tribeId: String): Deferred<List<Pin>>
-    fun getHistory(tribeId: String): Deferred<List<HistoryDocument>>
-    fun getTribe(tribeId: String): Deferred<KtTribe>
+    val repository: CouplingDataRepository
+
+    fun String.getHistory() = repository.getHistory(this)
+    fun String.getPins() = repository.getPins(this)
+    fun String.getTribe() = repository.getTribe(this)
 
 }

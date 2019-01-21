@@ -1,3 +1,8 @@
+@JsName("pairingTimeCalculator")
+fun pairingTimeCalculator(couplingComparisionSyntax: CouplingComparisionSyntax) = object : PairingTimeCalculationSyntax {
+    override val couplingComparisionSyntax: CouplingComparisionSyntax get() = couplingComparisionSyntax
+}
+
 interface PairingTimeCalculationSyntax {
 
     val couplingComparisionSyntax: CouplingComparisionSyntax
@@ -12,11 +17,8 @@ interface PairingTimeCalculationSyntax {
             TimeResultValue(documentsSinceLastPartnership)
     }
 
-    private fun pairingExistsInDocument(historyDocument: HistoryDocument, pair: CouplingPair): Boolean {
-        return historyDocument.pairs.any {
-            couplingComparisionSyntax.areEqualPairs(pair, it)
-        }
-    }
+    private fun pairingExistsInDocument(historyDocument: HistoryDocument, pair: CouplingPair) =
+            historyDocument.pairs.any { couplingComparisionSyntax.areEqualPairs(pair, it) }
 }
 
 external interface CouplingComparisionSyntax {
@@ -28,7 +30,6 @@ sealed class TimeResult
 data class TimeResultValue(val time: Int) : TimeResult()
 
 object NeverPaired : TimeResult()
-
 
 data class HistoryDocument(val pairs: List<CouplingPair>)
 

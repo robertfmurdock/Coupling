@@ -1,11 +1,11 @@
 import Pair from "./Pair";
 import Comparators from "./Comparators";
 // @ts-ignore
-import {pairFromArray, spinContext, historyFromArray, TimeResultValue} from 'engine'
+import {pairFromArray, pairingTimeCalculator, historyFromArray, TimeResultValue} from 'engine'
 
 export const NEVER_PAIRED = 'NeverPaired';
 
-const context = spinContext({areEqualPairs: Comparators.areEqualPairsSyntax});
+const context = pairingTimeCalculator({areEqualPairs: Comparators.areEqualPairsSyntax});
 
 export function calculateTimeSinceLastPartnership(expectedPair: Pair, historyDocuments) {
     let result = context.calculateTimeSinceLastPartnership(

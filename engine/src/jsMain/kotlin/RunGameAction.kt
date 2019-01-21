@@ -28,16 +28,14 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
                         )
                     }
 
-    fun toJs(it: PairAssignmentDocument): Array<Array<Json>> {
-        return it.expectedPairingAssignments.map {
-            it.asArray()
-                    .map { player ->
-                        player.toJson()
-                    }
-                    .toTypedArray()
-        }
+    private fun toJs(it: PairAssignmentDocument) = it.expectedPairingAssignments.map {
+        it.asArray()
+                .map { player ->
+                    player.toJson()
+                }
                 .toTypedArray()
     }
+            .toTypedArray()
 
 
     val actionDispatcher: FindNewPairsActionDispatcher
