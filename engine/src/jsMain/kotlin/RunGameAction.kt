@@ -40,19 +40,31 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
     }
 
 
-    val actionDispatcher: SpinActionDispatcher
+    val actionDispatcher: FindNewPairsActionDispatcher
 
-    private fun SpinAction.performThis() = with(actionDispatcher) { perform() }
+    private fun FindNewPairsAction.performThis() = with(actionDispatcher) { perform() }
 
-    fun RunGameAction.perform() = SpinAction(Game(history, players.assign(pins), tribe.pairingRule))
+    fun RunGameAction.perform() = addPinsToPlayers()
+            .let { pinnedPlayers -> findNewPairs(pinnedPlayers) }
+            .let { pairAssignments -> pairAssignmentDocument(pairAssignments, tribe.id) }
+
+    private fun RunGameAction.findNewPairs(pinnedPlayers: List<Player>) = findNewPairsAction(pinnedPlayers)
             .performThis()
-            .let {
-                PairAssignmentDocument(
-                        currentDate(),
-                        it,
-                        tribe.id
-                )
-            }
+
+    private fun RunGameAction.findNewPairsAction(pinnedPlayers: List<Player>) = FindNewPairsAction(Game(
+            history,
+            pinnedPlayers,
+            tribe.pairingRule
+    ))
+
+    private fun RunGameAction.addPinsToPlayers() = players.assign(pins)
+
+    private fun pairAssignmentDocument(pairAssignments: List<CouplingPair>, tribeId: String) =
+            PairAssignmentDocument(
+                    currentDate(),
+                    pairAssignments,
+                    tribeId
+            )
 }
 
 interface Clock {

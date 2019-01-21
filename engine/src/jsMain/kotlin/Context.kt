@@ -2,10 +2,10 @@ interface CommandDispatcher : RunGameActionDispatcher
 
 @JsName("spinContext")
 fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax): CommandDispatcher = object : CommandDispatcher,
-        SpinActionDispatcher,
-        GetNextPairActionDispatcher,
+        FindNewPairsActionDispatcher,
+        NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
-        CreateAllPairCandidateReportsActionDispatcher,
+        CreatePairCandidateReportsActionDispatcher,
         Wheel {
     override val actionDispatcher = this
     override val wheel = this

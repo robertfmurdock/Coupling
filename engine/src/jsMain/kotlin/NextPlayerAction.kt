@@ -1,13 +1,12 @@
-data class GetNextPairAction(val gameSpin: GameSpin)
+data class NextPlayerAction(val gameSpin: GameSpin)
 
-interface GetNextPairActionDispatcher {
+interface NextPlayerActionDispatcher {
 
-    val actionDispatcher: CreateAllPairCandidateReportsActionDispatcher
+    val actionDispatcher: CreatePairCandidateReportsActionDispatcher
 
-    private fun CreateAllPairCandidateReportsAction.performThis() = with(actionDispatcher) { perform() }
+    private fun CreatePairCandidateReportsAction.performThis() = with(actionDispatcher) { perform() }
 
-    fun GetNextPairAction.perform() = CreateAllPairCandidateReportsAction(gameSpin)
-            .performThis()
+    fun NextPlayerAction.perform() = createPairCandidateReports()
             .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->
                 when {
                     reportWithLongestTime == null -> report
@@ -17,6 +16,9 @@ interface GetNextPairActionDispatcher {
                     else -> reportWithLongestTime
                 }
             }
+
+    fun NextPlayerAction.createPairCandidateReports() = CreatePairCandidateReportsAction(gameSpin)
+            .performThis()
 
     private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport): PairCandidateReport {
         return when {

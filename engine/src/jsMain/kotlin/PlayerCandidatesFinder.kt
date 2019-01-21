@@ -2,7 +2,7 @@ import PairingRule.PreferDifferentBadge
 
 interface PlayerCandidatesFinder {
 
-    fun findCandidates(players: Array<Player>, rule: PairingRule, player: Player) = players
+    fun findCandidates(players: List<Player>, rule: PairingRule, player: Player) = players
             .filterNot { it == player }
             .filterByRule(rule, player.badge)
             .toTypedArray()

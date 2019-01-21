@@ -2,7 +2,7 @@ import kotlin.test.Test
 
 class CreateAllPairCandidateReportsActionTest {
 
-    class WhenTheTribePrefersPairingWithDifferentBadges : CreateAllPairCandidateReportsActionDispatcher {
+    class WhenTheTribePrefersPairingWithDifferentBadges : CreatePairCandidateReportsActionDispatcher {
         override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
 
         @Test
@@ -29,7 +29,7 @@ class CreateAllPairCandidateReportsActionTest {
             }
 
         }) exercise {
-            CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
+            CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
                     .perform()
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
@@ -59,7 +59,7 @@ class CreateAllPairCandidateReportsActionTest {
                 }
             }
         }) exercise {
-            CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
+            CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
                     .perform()
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
@@ -77,7 +77,7 @@ class CreateAllPairCandidateReportsActionTest {
             }
 
         }) exercise {
-            CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
+            CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
                     .perform()
         } verify {
             it.assertIsEqualTo(listOf(billReport))
@@ -86,7 +86,7 @@ class CreateAllPairCandidateReportsActionTest {
     }
 
     @Test
-    fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreateAllPairCandidateReportsActionDispatcher {
+    fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
         override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
         val history = listOf<HistoryDocument>()
         val bill = Player(_id = "Bill", badge = "1")
@@ -110,7 +110,7 @@ class CreateAllPairCandidateReportsActionTest {
             }
         }
     }) exercise {
-        CreateAllPairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime))
+        CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime))
                 .perform()
     } verify {
         it.assertIsEqualTo(expectedReports)

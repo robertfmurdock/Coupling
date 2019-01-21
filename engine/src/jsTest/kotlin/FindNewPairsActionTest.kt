@@ -1,20 +1,20 @@
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SpinCommandTest {
+class FindNewPairsActionTest {
 
     @Test
-    fun withNoPlayersShouldReturnNoPairs() = setup(object : SpinActionDispatcher, Wheel {
-        override val actionDispatcher = StubGetNextPairActionDispatcher()
+    fun withNoPlayersShouldReturnNoPairs() = setup(object : FindNewPairsActionDispatcher, Wheel {
+        override val actionDispatcher = StubNextPlayerActionDispatcher()
         override val wheel = this
     }) exercise {
-        SpinAction(Game(listOf(), listOf(), PairingRule.LongestTime))
+        FindNewPairsAction(Game(listOf(), listOf(), PairingRule.LongestTime))
                 .perform()
     } verify { assertEquals(it, listOf()) }
 
     @Test
-    fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : SpinActionDispatcher {
-        override val actionDispatcher = StubGetNextPairActionDispatcher()
+    fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
+        override val actionDispatcher = StubNextPlayerActionDispatcher()
         override val wheel = StubWheel()
         val bill: Player = Player(_id = "Bill")
         val ted: Player = Player(_id = "Ted")
@@ -25,18 +25,18 @@ class SpinCommandTest {
             actionDispatcher.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
         }
     }) exercise {
-        SpinAction(Game(listOf(), players, PairingRule.LongestTime))
+        FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime))
                 .perform()
     } verify { result ->
         result.assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
         actionDispatcher.spyReceivedValues.getOrNull(0)
-                .assertIsEqualTo(GetNextPairAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
+                .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
         wheel.spyReceivedValues.assertContains(listOf(bill))
     }
 
     @Test
-    fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : SpinActionDispatcher {
-        override val actionDispatcher = StubGetNextPairActionDispatcher()
+    fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
+        override val actionDispatcher = StubNextPlayerActionDispatcher()
         override val wheel = StubWheel()
         val bill: Player = Player(_id = "Bill")
         val ted: Player = Player(_id = "Ted")
@@ -54,7 +54,7 @@ class SpinCommandTest {
             wheel spyWillReturn bill
         }
     }) exercise {
-        SpinAction(Game(history, players, PairingRule.LongestTime))
+        FindNewPairsAction(Game(history, players, PairingRule.LongestTime))
                 .perform()
     } verify { result ->
         result.assertIsEqualTo(
@@ -62,8 +62,8 @@ class SpinCommandTest {
         )
         actionDispatcher.spyReceivedValues
                 .assertIsEqualTo(listOf(
-                        GetNextPairAction(GameSpin(history, players, PairingRule.LongestTime)),
-                        GetNextPairAction(GameSpin(history, listOf(ted), PairingRule.LongestTime))
+                        NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
+                        NextPlayerAction(GameSpin(history, listOf(ted), PairingRule.LongestTime))
                 ))
         wheel.spyReceivedValues
                 .assertContains(listOf(bill, ted))
@@ -75,10 +75,10 @@ class StubWheel : Wheel, Spy<List<Player>, Player> by SpyData() {
     override fun Array<Player>.spin(): Player = spyFunction(this.toList())
 }
 
-class StubGetNextPairActionDispatcher : GetNextPairActionDispatcher,
-        Spy<GetNextPairAction, PairCandidateReport> by SpyData() {
+class StubNextPlayerActionDispatcher : NextPlayerActionDispatcher,
+        Spy<NextPlayerAction, PairCandidateReport> by SpyData() {
     override val actionDispatcher get() = throw NotImplementedError()
-    override fun GetNextPairAction.perform() = spyFunction(this)
+    override fun NextPlayerAction.perform() = spyFunction(this)
 }
 
 fun <T> MutableList<T>.popValue() = getOrNull(0)?.also { removeAt(0) }

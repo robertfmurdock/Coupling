@@ -2,30 +2,32 @@ data class Game(val history: List<HistoryDocument>, val players: List<Player>, v
 
 data class GameSpin(val history: List<HistoryDocument>, val remainingPlayers: List<Player>, val rule: PairingRule)
 
-data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
+private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
 
-data class SpinAction(val game: Game)
+data class FindNewPairsAction(val game: Game)
 
-interface SpinActionDispatcher {
+interface FindNewPairsActionDispatcher {
 
-    val actionDispatcher: GetNextPairActionDispatcher
+    val actionDispatcher: NextPlayerActionDispatcher
     val wheel: Wheel
 
-    fun SpinAction.perform() = Round(listOf(), game.nextSpin(game.players))
+    fun FindNewPairsAction.perform() = Round(listOf(), game.spinWith(game.players))
             .spinForNextPair()
+
+    private fun Game.spinWith(remainingPlayers: List<Player>) = GameSpin(history, remainingPlayers, rule)
 
     private fun Round.spinForNextPair(): List<CouplingPair> = getNextPlayer()
-            ?.let { playerReport -> continueSpinning(playerReport) }
+            ?.let { playerReport ->
+                playerReport.spinForPartner()
+                        .let { newPair -> nextRound(newPair) }
+                        .spinForNextPair()
+            }
             ?: pairs
-
-    private fun Round.continueSpinning(playerReport: PairCandidateReport) = playerReport.spinForPartner()
-            .let { newPair -> nextRound(newPair) }
-            .spinForNextPair()
 
     private fun Round.getNextPlayer() = if (gameSpin.remainingPlayers.isEmpty()) {
         null
     } else {
-        GetNextPairAction(gameSpin)
+        NextPlayerAction(gameSpin)
                 .performThis()
     }
 
@@ -49,9 +51,8 @@ interface SpinActionDispatcher {
 
     private fun List<Player>.spin() = with(wheel) { toTypedArray().spin() }
 
-    private fun GetNextPairAction.performThis() = with(actionDispatcher) { perform() }
+    private fun NextPlayerAction.performThis() = with(actionDispatcher) { perform() }
 
-    private fun Game.nextSpin(remainingPlayers: List<Player>) = GameSpin(history, remainingPlayers, rule)
 
 }
 

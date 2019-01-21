@@ -1,7 +1,7 @@
 import kotlin.test.Test
 
-class GetNextPairActionTest : GetNextPairActionDispatcher {
-    override val actionDispatcher = StubCreateAllPairCandidateReportsActionDispatcher()
+class NextPlayerActionTest : NextPlayerActionDispatcher {
+    override val actionDispatcher = StubCreatePairCandidateReportsActionDispatcher()
 
     private val bill = Player(_id = "Bill")
     private val ted = Player(_id = "Ted")
@@ -23,7 +23,7 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
             ))
         }
     }) exercise {
-        GetNextPairAction(longestTimeSpin(players))
+        NextPlayerAction(longestTimeSpin(players))
                 .perform()
     } verify { result ->
         result.assertIsEqualTo(tedsPairCandidates)
@@ -39,7 +39,7 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
             actionDispatcher.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates))
         }
     }) exercise {
-        GetNextPairAction(longestTimeSpin(players))
+        NextPlayerAction(longestTimeSpin(players))
                 .perform()
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
@@ -57,7 +57,7 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
             actionDispatcher.spyWillReturn(pairCandidates)
         }
     }) exercise {
-        GetNextPairAction(longestTimeSpin(players))
+        NextPlayerAction(longestTimeSpin(players))
                 .perform()
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
@@ -75,7 +75,7 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
             )
         }
     }) exercise {
-        GetNextPairAction(longestTimeSpin(players))
+        NextPlayerAction(longestTimeSpin(players))
                 .perform()
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
@@ -101,7 +101,7 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
             )
         }
     }) exercise {
-        GetNextPairAction(longestTimeSpin(players))
+        NextPlayerAction(longestTimeSpin(players))
                 .perform()
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
@@ -109,8 +109,8 @@ class GetNextPairActionTest : GetNextPairActionDispatcher {
 
 }
 
-class StubCreateAllPairCandidateReportsActionDispatcher : CreateAllPairCandidateReportsActionDispatcher,
-        Spy<CreateAllPairCandidateReportsAction, List<PairCandidateReport>> by SpyData() {
+class StubCreatePairCandidateReportsActionDispatcher : CreatePairCandidateReportsActionDispatcher,
+        Spy<CreatePairCandidateReportsAction, List<PairCandidateReport>> by SpyData() {
     override val actionDispatcher get() = cancel()
-    override fun CreateAllPairCandidateReportsAction.perform() = spyFunction(this)
+    override fun CreatePairCandidateReportsAction.perform() = spyFunction(this)
 }

@@ -1,11 +1,11 @@
 import kotlin.js.Date
 import kotlin.test.Test
 
-class RunGameCommandTest {
+class RunGameActionTest {
 
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
-        override val actionDispatcher = SpySpinActionDispatcher()
+        override val actionDispatcher = SpyFindNewPairsActionDispatcher()
         val expectedDate = Date()
         override fun currentDate() = expectedDate
         val tribe = KtTribe("1", PairingRule.LongestTime)
@@ -27,8 +27,8 @@ class RunGameCommandTest {
     }
 }
 
-class SpySpinActionDispatcher : SpinActionDispatcher, Spy<SpinAction, List<CouplingPair>> by SpyData() {
-    override val actionDispatcher: GetNextPairActionDispatcher get() = cancel()
+class SpyFindNewPairsActionDispatcher : FindNewPairsActionDispatcher, Spy<FindNewPairsAction, List<CouplingPair>> by SpyData() {
+    override val actionDispatcher: NextPlayerActionDispatcher get() = cancel()
     override val wheel: Wheel get() = cancel()
-    override fun SpinAction.perform(): List<CouplingPair> = spyFunction(this)
+    override fun FindNewPairsAction.perform(): List<CouplingPair> = spyFunction(this)
 }
