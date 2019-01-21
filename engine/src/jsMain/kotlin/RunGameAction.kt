@@ -2,19 +2,18 @@ import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.json
 
-class RunGameCommand(
+class RunGameAction(
         val players: List<Player>,
         val pins: List<Pin>,
         val history: List<HistoryDocument>,
         val tribe: KtTribe
 )
 
-interface RunGameCommandDispatcher : Clock, PinAssignmentSyntax {
-
+interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
 
     @JsName("performRunGameCommand")
     fun performRunGameCommand(history: Array<PairingDocument>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
-            RunGameCommand(
+            RunGameAction(
                     players = players.map { it.toPlayer() }.toList(),
                     pins = pins.toPins(),
                     history = historyFromArray(history),
@@ -41,11 +40,11 @@ interface RunGameCommandDispatcher : Clock, PinAssignmentSyntax {
     }
 
 
-    val actionDispatcher: SpinCommandDispatcher
+    val actionDispatcher: SpinActionDispatcher
 
-    private fun SpinCommand.performThis() = with(actionDispatcher) { perform() }
+    private fun SpinAction.performThis() = with(actionDispatcher) { perform() }
 
-    fun RunGameCommand.perform() = SpinCommand(Game(history, players.assign(pins), tribe.pairingRule))
+    fun RunGameAction.perform() = SpinAction(Game(history, players.assign(pins), tribe.pairingRule))
             .performThis()
             .let {
                 PairAssignmentDocument(

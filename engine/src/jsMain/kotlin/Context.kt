@@ -1,8 +1,8 @@
-interface CommandDispatcher : RunGameCommandDispatcher
+interface CommandDispatcher : RunGameActionDispatcher
 
 @JsName("spinContext")
 fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax): CommandDispatcher = object : CommandDispatcher,
-        SpinCommandDispatcher,
+        SpinActionDispatcher,
         GetNextPairActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         CreateAllPairCandidateReportsActionDispatcher,

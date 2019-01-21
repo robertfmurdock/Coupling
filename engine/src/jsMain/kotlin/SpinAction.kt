@@ -4,14 +4,14 @@ data class GameSpin(val history: List<HistoryDocument>, val remainingPlayers: Li
 
 data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
 
-data class SpinCommand(val game: Game)
+data class SpinAction(val game: Game)
 
-interface SpinCommandDispatcher {
+interface SpinActionDispatcher {
 
     val actionDispatcher: GetNextPairActionDispatcher
     val wheel: Wheel
 
-    fun SpinCommand.perform() = Round(listOf(), game.nextSpin(game.players))
+    fun SpinAction.perform() = Round(listOf(), game.nextSpin(game.players))
             .spinForNextPair()
 
     private fun Round.spinForNextPair(): List<CouplingPair> = getNextPlayer()

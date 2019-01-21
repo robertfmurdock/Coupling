@@ -4,16 +4,16 @@ import kotlin.test.assertEquals
 class SpinCommandTest {
 
     @Test
-    fun withNoPlayersShouldReturnNoPairs() = setup(object : SpinCommandDispatcher, Wheel {
+    fun withNoPlayersShouldReturnNoPairs() = setup(object : SpinActionDispatcher, Wheel {
         override val actionDispatcher = StubGetNextPairActionDispatcher()
         override val wheel = this
     }) exercise {
-        SpinCommand(Game(listOf(), listOf(), PairingRule.LongestTime))
+        SpinAction(Game(listOf(), listOf(), PairingRule.LongestTime))
                 .perform()
     } verify { assertEquals(it, listOf()) }
 
     @Test
-    fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : SpinCommandDispatcher {
+    fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : SpinActionDispatcher {
         override val actionDispatcher = StubGetNextPairActionDispatcher()
         override val wheel = StubWheel()
         val bill: Player = Player(_id = "Bill")
@@ -25,7 +25,7 @@ class SpinCommandTest {
             actionDispatcher.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
         }
     }) exercise {
-        SpinCommand(Game(listOf(), players, PairingRule.LongestTime))
+        SpinAction(Game(listOf(), players, PairingRule.LongestTime))
                 .perform()
     } verify { result ->
         result.assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
@@ -35,7 +35,7 @@ class SpinCommandTest {
     }
 
     @Test
-    fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : SpinCommandDispatcher {
+    fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : SpinActionDispatcher {
         override val actionDispatcher = StubGetNextPairActionDispatcher()
         override val wheel = StubWheel()
         val bill: Player = Player(_id = "Bill")
@@ -54,7 +54,7 @@ class SpinCommandTest {
             wheel spyWillReturn bill
         }
     }) exercise {
-        SpinCommand(Game(history, players, PairingRule.LongestTime))
+        SpinAction(Game(history, players, PairingRule.LongestTime))
                 .perform()
     } verify { result ->
         result.assertIsEqualTo(
