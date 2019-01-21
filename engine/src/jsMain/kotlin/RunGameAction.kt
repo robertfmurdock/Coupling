@@ -2,7 +2,7 @@ import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.json
 
-class RunGameAction(
+data class RunGameAction(
         val players: List<Player>,
         val pins: List<Pin>,
         val history: List<HistoryDocument>,

@@ -23,4 +23,3 @@ class PinAssignmentSyntaxTest {
         result.assertIsEqualTo(emptyList())
     }
 }
-

@@ -2,7 +2,6 @@ data class CreatePairCandidateReportsAction(val game: GameSpin)
 
 interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
 
-    @JsName("actionDispatcher")
     val actionDispatcher: CreatePairCandidateReportActionDispatcher
 
     private fun CreatePairCandidateReportAction.performThis() = with(actionDispatcher) { perform() }
