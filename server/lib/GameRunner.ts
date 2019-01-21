@@ -1,7 +1,7 @@
 import Player from "../../common/Player";
 
 // @ts-ignore
-import {SpinCommandDispatcher, historyFromArray, PairingRule, spinContext} from "engine";
+import {spinContext} from "engine";
 import Comparators from "../../common/Comparators";
 
 const context = spinContext({areEqualPairs: Comparators.areEqualPairsSyntax});
