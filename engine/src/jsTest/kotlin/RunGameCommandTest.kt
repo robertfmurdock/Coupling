@@ -10,7 +10,7 @@ class RunGameCommandTest {
         override fun currentDate() = expectedDate
         val tribe = KtTribe("1", PairingRule.LongestTime)
         val players = emptyList<Player>()
-        val pins = emptyList<Any>()
+        val pins = emptyList<Pin>()
         val history = emptyList<HistoryDocument>()
         val expectedPairingAssignments = listOf(
                 CouplingPair.Single(Player()),

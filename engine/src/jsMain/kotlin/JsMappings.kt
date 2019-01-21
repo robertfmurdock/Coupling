@@ -5,21 +5,36 @@ fun Player.toJson() = json(
         "_id" to _id,
         "name" to name,
         "tribe" to tribe,
-        "pins" to pins,
+        "pins" to pins?.toJson(),
         "badge" to badge
 )
 
+private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
+        .toTypedArray()
+
+private fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
+
 fun Json.toPlayer(): Player = Player(
-        _id = this["_id"]?.toString(),
-        badge = this["badge"]?.toString(),
-        name = this["name"]?.toString(),
-        tribe = this["tribe"]?.toString(),
-        pins = this["pins"],
-        email = this["email"]?.toString(),
-        callSignAdjective = this["callSignAdjective"]?.toString(),
-        callSignNoun = this["callSignNoun"]?.toString(),
-        imageURL = this["imageURL"]?.toString()
+        _id = stringValue("_id"),
+        badge = stringValue("badge"),
+        name = stringValue("name"),
+        tribe = stringValue("tribe"),
+        email = stringValue("email"),
+        callSignAdjective = stringValue("callSignAdjective"),
+        callSignNoun = stringValue("callSignNoun"),
+        imageURL = stringValue("imageURL"),
+        pins = (this["pins"] as? Array<Json>)?.toPins()
 )
+
+private fun Json.stringValue(key: String) = this[key]?.toString()
+
+fun Array<Json>.toPins() = map {
+    Pin(
+            _id = it["_id"]?.toString(),
+            name = it["name"]?.toString(),
+            tribe = it["tribe"]?.toString()
+    )
+}
 
 external interface PairingDocument {
     val pairs: Array<Array<Json>>?

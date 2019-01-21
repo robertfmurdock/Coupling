@@ -2,12 +2,12 @@ import kotlin.js.Date
 
 class RunGameCommand(
         val players: List<Player>,
-        val pins: List<Any>,
+        val pins: List<Pin>,
         val history: List<HistoryDocument>,
         val tribe: KtTribe
 )
 
-interface RunGameCommandDispatcher : Clock {
+interface RunGameCommandDispatcher : Clock, PinAssignmentSyntax {
 
     val actionDispatcher: SpinCommandDispatcher
 
