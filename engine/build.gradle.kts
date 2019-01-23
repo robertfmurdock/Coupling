@@ -55,6 +55,6 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
     getByName<KotlinJsDce>("runDceJsKotlin") {
-        keep("engine.spinContext", "engine.pairingTimeCalculator", "engine.historyFromArray")
+        keep("engine.spinContext")
     }
 }

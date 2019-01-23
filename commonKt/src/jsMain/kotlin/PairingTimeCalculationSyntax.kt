@@ -1,11 +1,8 @@
 @JsName("pairingTimeCalculator")
-fun pairingTimeCalculator(couplingComparisionSyntax: CouplingComparisionSyntax) = object : PairingTimeCalculationSyntax {
-    override val couplingComparisionSyntax: CouplingComparisionSyntax get() = couplingComparisionSyntax
+fun pairingTimeCalculator() = object : PairingTimeCalculationSyntax {
 }
 
-interface PairingTimeCalculationSyntax {
-
-    val couplingComparisionSyntax: CouplingComparisionSyntax
+interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
 
     @JsName("calculateTimeSinceLastPartnership")
     fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<HistoryDocument>): TimeResult {
@@ -18,11 +15,22 @@ interface PairingTimeCalculationSyntax {
     }
 
     private fun pairingExistsInDocument(historyDocument: HistoryDocument, pair: CouplingPair) =
-            historyDocument.pairs.any { couplingComparisionSyntax.areEqualPairs(pair, it) }
+            historyDocument.pairs.any { areEqualPairs(pair, it) }
 }
 
-external interface CouplingComparisionSyntax {
-    fun areEqualPairs(pair1: CouplingPair, pair2: CouplingPair): Boolean
+interface CouplingComparisionSyntax {
+    fun areEqualPairs(pair1: CouplingPair, pair2: CouplingPair) =
+            areEqualPairArrays(pair1.asArray(), pair2.asArray())
+
+    private fun areEqualPairArrays(pair1Array: Array<Player>, pair2Array: Array<Player>) =
+            fullyEqualPlayers(pair1Array, pair2Array)
+                    || equalPlayerIds(pair1Array, pair2Array)
+
+    private fun equalPlayerIds(pair1Array: Array<Player>, pair2Array: Array<Player>) =
+            pair1Array.map { it._id }.toSet() == pair2Array.map { it._id }.toSet()
+
+    private fun fullyEqualPlayers(pair1Array: Array<Player>, pair2Array: Array<Player>) =
+            pair1Array.toSet() == pair2Array.toSet()
 }
 
 sealed class TimeResult
@@ -45,10 +53,8 @@ sealed class CouplingPair {
         override fun asArray() = arrayOf(player)
     }
 
-    data class Double internal constructor(val players: Set<Player>) : CouplingPair() {
-        constructor(player1: Player, player2: Player) : this(setOf(player1, player2))
-
-        override fun asArray() = players.toTypedArray()
+    data class Double(val player1: Player, val player2: Player) : CouplingPair() {
+        override fun asArray() = arrayOf(player1, player2)
     }
 }
 

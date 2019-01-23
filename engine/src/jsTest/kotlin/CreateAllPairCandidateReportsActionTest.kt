@@ -142,8 +142,5 @@ class CreateAllPairCandidateReportsActionTest {
 class StubCreatePairCandidateReportActionDispatcher :
         CreatePairCandidateReportActionDispatcher, Spy<CreatePairCandidateReportAction, PairCandidateReport>
 by SpyData() {
-    override val couplingComparisionSyntax get() = cancel()
-
     override fun CreatePairCandidateReportAction.perform() = spyFunction(this)
-
 }

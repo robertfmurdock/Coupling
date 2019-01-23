@@ -1,7 +1,7 @@
 interface CommandDispatcher : RunGameActionDispatcher
 
 @JsName("spinContext")
-fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax): CommandDispatcher = object : CommandDispatcher,
+fun spinContext(): CommandDispatcher = object : CommandDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
@@ -9,11 +9,10 @@ fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax): CommandDi
         Wheel {
     override val actionDispatcher = this
     override val wheel = this
-    override val couplingComparisionSyntax = couplingComparisionSyntax
 }
 
 @JsName("spinContext2")
-fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax, jsRepository: dynamic): CommandDispatcher = object : CommandDispatcher,
+fun spinContext(jsRepository: dynamic): CommandDispatcher = object : CommandDispatcher,
         ProposeNewPairsCommandDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
@@ -23,6 +22,4 @@ fun spinContext(couplingComparisionSyntax: CouplingComparisionSyntax, jsReposito
     override val repository: CouplingDataRepository = dataRepository(jsRepository)
     override val actionDispatcher = this
     override val wheel = this
-    override val couplingComparisionSyntax = couplingComparisionSyntax
 }
-

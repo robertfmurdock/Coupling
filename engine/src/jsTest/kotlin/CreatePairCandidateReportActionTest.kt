@@ -3,9 +3,7 @@ import kotlin.test.assertTrue
 
 class CreatePairCandidateReportActionTest {
 
-    companion object : CreatePairCandidateReportActionDispatcher {
-        override val couplingComparisionSyntax get() = VeryStrictComparisonSyntax
-    }
+    companion object : CreatePairCandidateReportActionDispatcher;
 
     @Test
     fun shouldReturnNothingWhenNoPartnersAreAvailable() = setup(object  {
@@ -106,8 +104,4 @@ class CreatePairCandidateReportActionTest {
             }
         }
     }
-}
-
-object VeryStrictComparisonSyntax : CouplingComparisionSyntax {
-    override fun areEqualPairs(pair1: CouplingPair, pair2: CouplingPair) = pair1 == pair2
 }
