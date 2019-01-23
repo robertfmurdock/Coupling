@@ -9,5 +9,3 @@ data class Player(
         val callSignNoun: String? = null,
         val imageURL: String? = null
 )
-
-data class Pin(val _id: String? = null, val name: String? = null, val tribe: String? = null)

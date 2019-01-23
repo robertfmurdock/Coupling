@@ -145,7 +145,7 @@ task testWatch(type: NodeTask) {
 task build {
     dependsOn test, endToEndTest, ":client:compile"
 }
-
+ 
 task pullProductionImage(type: DockerPullImage) {
     repository = 'zegreatrob/coupling'
     tag = "latest"

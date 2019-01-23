@@ -1,0 +1,1 @@
+data class Pin(val _id: String? = null, val name: String? = null, val tribe: String? = null)

@@ -1,3 +1,5 @@
+import kotlin.js.JsName
+
 @JsName("pairingTimeCalculator")
 fun pairingTimeCalculator() = object : PairingTimeCalculationSyntax {
 }
