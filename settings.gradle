@@ -1,3 +1,4 @@
 rootProject.name = 'Coupling'
 include 'client'
 include 'engine'
+include 'commonKt'

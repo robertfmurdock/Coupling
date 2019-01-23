@@ -23,7 +23,7 @@ tasks {
     }
 
     task<YarnTask>("vendorCompile") {
-        dependsOn("yarn", ":engine:build")
+        dependsOn("yarn", ":commonKt:build")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
@@ -33,7 +33,7 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn("yarn", "vendorCompile", ":engine:build")
+        dependsOn("yarn", "vendorCompile", ":commonKt:build")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))

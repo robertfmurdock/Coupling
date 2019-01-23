@@ -20,6 +20,8 @@ config.externals = [nodeExternals()];
 function testResolve() {
   let resolve = clone(config.resolve);
   resolve.modules = [
+    path.resolve(__dirname, '../../../commonKt/build/classes/kotlin/js/main'),
+    path.resolve(__dirname, '../../../commonKt/build/classes/kotlin/js/main'),
     path.resolve(__dirname, '../../../engine/build/classes/kotlin/js/main'),
     path.resolve(__dirname, '../../../engine/build/classes/kotlin/js/test'),
   ];

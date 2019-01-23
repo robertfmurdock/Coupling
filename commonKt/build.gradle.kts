@@ -23,7 +23,6 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.11")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
-
             }
         }
         getByName("commonTest") {
@@ -32,12 +31,6 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
-            }
-        }
-
-        getByName("jsMain") {
-            dependencies {
-                implementation(project(":commonKt"))
             }
         }
     }
@@ -55,6 +48,6 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
     getByName<KotlinJsDce>("runDceJsKotlin") {
-        keep("engine.spinContext", "engine.pairingTimeCalculator", "engine.historyFromArray")
+        keep("commonKt.pairingTimeCalculator", "commonKt.historyFromArray")
     }
 }

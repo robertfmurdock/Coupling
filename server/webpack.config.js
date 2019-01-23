@@ -21,6 +21,7 @@ const config = {
   resolve: {
     extensions: ['.js', '.ts'],
     modules: [
+      path.resolve(__dirname, '../commonKt/build/classes/kotlin/js/main'),
       path.resolve(__dirname, '../engine/build/classes/kotlin/js/main'),
       path.resolve(__dirname, '../node_modules')
     ]

@@ -13,7 +13,10 @@ const config = {
   },
   devtool: 'inline-source-map',
   resolve: {
-    modules: [path.resolve(__dirname, '../engine/build/kotlin-js-min/js/main'), path.resolve(__dirname, 'node_modules')],
+    modules: [
+      path.resolve(__dirname, '../commonKt/build/kotlin-js-min/js/main'),
+      path.resolve(__dirname, 'node_modules')
+    ],
     extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json'],
   },
   externals: {
