@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform") version "1.3.11"
+    id("org.jetbrains.kotlin.multiplatform") version "1.3.20"
 }
 
 apply {
@@ -21,7 +21,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.11")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
             }
         }
