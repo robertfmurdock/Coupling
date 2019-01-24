@@ -30,6 +30,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
+                api(project(":test-style"))
                 implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
             }
         }

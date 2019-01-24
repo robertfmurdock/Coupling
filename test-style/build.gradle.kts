@@ -1,12 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform") version "1.3.20"
-}
-
-apply {
-    plugin("kotlin-dce-js")
 }
 
 repositories {
@@ -21,23 +16,19 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.20")
             }
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":test-style"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
             }
         }
 
         getByName("jsMain") {
             dependencies {
-                implementation(project(":commonKt"))
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
             }
         }
     }
@@ -48,13 +39,5 @@ tasks {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    getByName<Kotlin2JsCompile>("compileTestKotlinJs") {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    getByName<KotlinJsDce>("runDceJsKotlin") {
-        keep("engine.spinContext")
     }
 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="test-style-js">
+    <output-path>$PROJECT_DIR$/test-style/build/libs</output-path>
+    <root id="archive" name="test-style-js.jar">
+      <element id="module-output" name="test-style_jsMain" />
+    </root>
+  </artifact>
+</component>
