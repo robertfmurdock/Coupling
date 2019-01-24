@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "jasmine": "^3.3.1"
+    "jasmine": "^3.3.1",
+    "jasmine-reporters": "^2.3.2"
   }
 }

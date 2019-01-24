@@ -8,13 +8,17 @@ plugins {
 node {
     version = "11.6.0"
     npmVersion = "6.5.0"
-    yarnVersion = "1.12.3"
+    yarnVersion = "1.13.0"
     download = true
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
+
+    getByName("yarn") {
+        mustRunAfter(":commonKt:yarn")
+    }
 
     task("clean") {
         doLast {

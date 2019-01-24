@@ -1,4 +1,5 @@
-import com.moowork.gradle.node.yarn.YarnTask
+
+import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
@@ -10,7 +11,7 @@ plugins {
 node {
     version = "11.6.0"
     npmVersion = "6.5.0"
-    yarnVersion = "1.12.3"
+    yarnVersion = "1.13.0"
     download = true
 }
 
@@ -72,12 +73,12 @@ tasks {
     getByName("assemble") {
         dependsOn("runDceJsKotlin")
     }
-    
+
     getByName("jsTest") {
         dependsOn("jasmine")
     }
 
-    task<YarnTask>("jasmine") {
+    task<NodeTask>("jasmine") {
         dependsOn("yarn", "compileTestKotlinJs")
 
         val compileTask = getByName<Kotlin2JsCompile>("compileKotlinJs")
@@ -88,7 +89,8 @@ tasks {
                 compileTask.outputFile.parent,
                 (getByPath(":test-style:compileKotlinJs") as Kotlin2JsCompile).outputFile.parent
         ).joinToString(":")))
-        args = listOf("run", "jasmine", "${compileTestTask.outputFile}")
+        setScript(file("test-run.js"))
+        setArgs(listOf("${compileTestTask.outputFile}"))
     }
 
 }

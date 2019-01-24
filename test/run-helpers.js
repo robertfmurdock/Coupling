@@ -2,16 +2,14 @@ let Jasmine = require('jasmine');
 let reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
 
-function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
-
+function startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix) {
   console.log('Starting tests:');
 
   let jasmine = new Jasmine();
-
   jasmine.loadConfig({
     "spec_dir": specDir,
     "spec_files": [
-      './' + tempDirectory + '/' + testFilePath
+      specFile
     ],
     "stopSpecOnExpectationFailure": false,
     "random": false
@@ -39,11 +37,19 @@ function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, fil
   });
 }
 
+function startJasmine(specDir, tempDirectory, testFilePath, jasmineSavePath, filePrefix) {
+
+  let specFile = './' + tempDirectory + '/' + testFilePath;
+
+  return startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix);
+}
+
 let removeTempDirectory = function (tempDirectory) {
   fs.removeSync(tempDirectory);
 };
 
 module.exports = {
   startJasmine: startJasmine,
+  startJasmineSimple: startJasmineSimple,
   removeTempDirectory: removeTempDirectory
 };

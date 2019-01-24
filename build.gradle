@@ -10,7 +10,7 @@ plugins {
 node {
     version = "11.6.0"
     npmVersion = "6.5.0"
-    yarnVersion = "1.12.3"
+    yarnVersion = "1.13.0"
     download = true
 }
 
@@ -23,6 +23,7 @@ task clean {
 
 yarn {
     mustRunAfter(":client:yarn")
+    mustRunAfter(":commonKt:yarn")
     inputs.file file('package.json')
     outputs.dir file('node_modules')
 }
@@ -52,13 +53,18 @@ task copyClientTestResults(type: Copy) {
     into 'test-output/client'
 }
 
+task copyCommonKtTestResults(type: Copy) {
+    from 'commonKt/build/test-results/jsTest'
+    into 'test-output/commonKt'
+}
+
 task copyServerTestResults(type: Copy) {
     from 'build/test-results'
     into 'test-output'
 }
 
 task copyTestResultsForCircle {
-    dependsOn "copyClientTestResults", "copyServerTestResults"
+    dependsOn "copyClientTestResults", "copyServerTestResults", "copyCommonKtTestResults"
 }
 
 task serverCompile(type: YarnTask) {
@@ -88,7 +94,7 @@ task compile {
 }
 
 task serverTest(type: YarnTask) {
-    dependsOn yarn, ":engine:assemble", ":test-style:assemble"
+    dependsOn yarn, ":engine:assemble", ":engine:jsTest", ":test-style:assemble"
     inputs.file file('package.json')
     inputs.files serverCompile.inputs.files
     inputs.dir 'server/test/unit'
@@ -145,7 +151,7 @@ task testWatch(type: NodeTask) {
 task build {
     dependsOn test, endToEndTest, ":client:compile"
 }
- 
+
 task pullProductionImage(type: DockerPullImage) {
     repository = 'zegreatrob/coupling'
     tag = "latest"
