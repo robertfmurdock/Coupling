@@ -5,6 +5,7 @@ fun Player.toJson() = json(
         "_id" to _id,
         "name" to name,
         "tribe" to tribe,
+        "email" to email,
         "pins" to pins?.toJson(),
         "badge" to badge
 )
