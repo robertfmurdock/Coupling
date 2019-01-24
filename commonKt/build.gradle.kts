@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
@@ -82,15 +81,23 @@ tasks {
         dependsOn("yarn", "compileTestKotlinJs")
 
         val compileTask = getByName<Kotlin2JsCompile>("compileKotlinJs")
-        val compileTestTask = getByName<Kotlin2JsCompile>("compileTestKotlinJs")
 
-        setEnvironment(mapOf("NODE_PATH" to listOf(
+        val relevantPaths = listOf(
                 "node_modules",
                 compileTask.outputFile.parent,
                 (getByPath(":test-style:compileKotlinJs") as Kotlin2JsCompile).outputFile.parent
-        ).joinToString(":")))
+        )
+
+        val compileTestTask = getByName<Kotlin2JsCompile>("compileTestKotlinJs")
+        inputs.file(compileTestTask.outputFile)
+        inputs.file("test-run.js")
+        relevantPaths.forEach { inputs.dir(it) }
+
+        setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
         setScript(file("test-run.js"))
         setArgs(listOf("${compileTestTask.outputFile}"))
+
+        outputs.dir("build/test-results/jsTest")
     }
 
 }
