@@ -23,7 +23,7 @@ tasks {
     }
 
     task<YarnTask>("vendorCompile") {
-        dependsOn("yarn", ":commonKt:build")
+        dependsOn("yarn", ":commonKt:assemble")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
@@ -33,7 +33,7 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn("yarn", "vendorCompile", ":commonKt:build")
+        dependsOn("yarn", "vendorCompile", ":commonKt:assemble")
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
@@ -46,7 +46,7 @@ tasks {
     }
 
     task<YarnTask>("test") {
-        dependsOn("yarn", "vendorCompile", ":engine:build")
+        dependsOn("yarn", "vendorCompile", ":commonKt:jsTest")
         inputs.file(file("package.json"))
         inputs.files(findByName("vendorCompile")?.inputs?.files)
         inputs.files(findByPath(":engine:assemble")?.outputs?.files)

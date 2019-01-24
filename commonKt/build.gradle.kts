@@ -1,8 +1,17 @@
+import com.moowork.gradle.node.yarn.YarnTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform") version "1.3.20"
+    id("com.github.node-gradle.node")
+}
+
+node {
+    version = "11.6.0"
+    npmVersion = "6.5.0"
+    yarnVersion = "1.12.3"
+    download = true
 }
 
 apply {
@@ -14,6 +23,7 @@ repositories {
 }
 
 kotlin {
+
     targets {
         add(presets["js"].createTarget("js"))
     }
@@ -30,14 +40,21 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                api(project(":test-style"))
                 implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
+            }
+        }
+
+        val jsTest by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-test-js")
+                api(project(":test-style"))
             }
         }
     }
 }
 
 tasks {
+
     getByName<Kotlin2JsCompile>("compileKotlinJs") {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
@@ -51,4 +68,29 @@ tasks {
     getByName<KotlinJsDce>("runDceJsKotlin") {
         keep("commonKt.pairingTimeCalculator", "commonKt.historyFromArray")
     }
+
+    getByName("assemble") {
+        dependsOn("runDceJsKotlin")
+    }
+    
+    getByName("jsTest") {
+        dependsOn("jasmine")
+    }
+
+    task<YarnTask>("jasmine") {
+        dependsOn("yarn", "compileTestKotlinJs")
+
+        val compileTask = getByName<Kotlin2JsCompile>("compileKotlinJs")
+        val compileTestTask = getByName<Kotlin2JsCompile>("compileTestKotlinJs")
+
+        setEnvironment(mapOf("NODE_PATH" to listOf(
+                "node_modules",
+                compileTask.outputFile.parent,
+                (getByPath(":test-style:compileKotlinJs") as Kotlin2JsCompile).outputFile.parent
+        ).joinToString(":")))
+        args = listOf("run", "jasmine", "${compileTestTask.outputFile}")
+    }
+
 }
+
+
