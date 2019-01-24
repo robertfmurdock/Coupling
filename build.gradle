@@ -59,7 +59,7 @@ task copyCommonKtTestResults(type: Copy) {
 }
 
 task copyServerTestResults(type: Copy) {
-    from 'build/test-results'
+    from 'server/build/test-results'
     into 'test-output'
 }
 
