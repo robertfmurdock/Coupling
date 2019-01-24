@@ -7,7 +7,10 @@ fun Player.toJson() = json(
         "tribe" to tribe,
         "email" to email,
         "pins" to pins?.toJson(),
-        "badge" to badge
+        "badge" to badge,
+        "callSignAdjective" to callSignAdjective,
+        "callSignNoun" to callSignNoun,
+        "imageURL" to imageURL
 )
 
 private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
