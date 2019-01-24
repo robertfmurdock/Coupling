@@ -17,18 +17,15 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.20")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+                implementation("org.jetbrains.kotlin:kotlin-test-common:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common:1.3.20")
             }
         }
 
         getByName("jsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
     }

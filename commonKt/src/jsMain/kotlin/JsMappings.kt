@@ -18,7 +18,7 @@ private fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
         _id = stringValue("_id"),
-        badge = stringValue("badge"),
+        badge = this["badge"]?.unsafeCast<Int>(),
         name = stringValue("name"),
         tribe = stringValue("tribe"),
         email = stringValue("email"),

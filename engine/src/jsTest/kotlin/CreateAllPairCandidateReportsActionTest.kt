@@ -7,10 +7,10 @@ class CreateAllPairCandidateReportsActionTest {
 
         @Test
         fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
-            val bill = Player(_id = "Bill", badge = "1")
-            val ted = Player(_id = "Ted", badge = "1")
-            val amadeus = Player(_id = "Mozart", badge = "1")
-            val shorty = Player(_id = "Napoleon", badge = "1")
+            val bill = Player(_id = "Bill", badge = 1)
+            val ted = Player(_id = "Ted", badge = 1)
+            val amadeus = Player(_id = "Mozart", badge = 1)
+            val shorty = Player(_id = "Napoleon", badge = 1)
 
             val players = listOf(bill, ted, amadeus, shorty)
 
@@ -38,10 +38,10 @@ class CreateAllPairCandidateReportsActionTest {
         @Test
         fun willReturnFilterCandidatesByUnlikeBadge() = setup(object {
             val history = emptyList<HistoryDocument>()
-            val bill = Player(_id = "Bill", badge = "1")
-            val ted = Player(_id = "Ted", badge = "1")
-            val altAmadeus = Player(_id = "Mozart", badge = "2")
-            val altShorty = Player(_id = "Napoleon", badge = "2")
+            val bill = Player(_id = "Bill", badge = 1)
+            val ted = Player(_id = "Ted", badge = 1)
+            val altAmadeus = Player(_id = "Mozart", badge = 2)
+            val altShorty = Player(_id = "Napoleon", badge = 2)
             val players = listOf(bill, ted, altAmadeus, altShorty)
 
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
@@ -68,7 +68,7 @@ class CreateAllPairCandidateReportsActionTest {
         @Test
         fun willReturnReportForOnePlayer() = setup(object {
             val history = emptyList<HistoryDocument>()
-            val bill = Player(_id = "Bill", badge = "1")
+            val bill = Player(_id = "Bill", badge = 1)
             val players = listOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
 
@@ -89,10 +89,10 @@ class CreateAllPairCandidateReportsActionTest {
     fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
         override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
         val history = listOf<HistoryDocument>()
-        val bill = Player(_id = "Bill", badge = "1")
-        val ted = Player(_id = "Ted", badge = "1")
-        val altAmadeus = Player(_id = "Mozart", badge = "2")
-        val altShorty = Player(_id = "Napoleon", badge = "2")
+        val bill = Player(_id = "Bill", badge = 1)
+        val ted = Player(_id = "Ted", badge = 1)
+        val altAmadeus = Player(_id = "Mozart", badge = 2)
+        val altShorty = Player(_id = "Napoleon", badge = 2)
         val players = listOf(bill, ted, altAmadeus, altShorty)
 
         val billReport = PairCandidateReport(bill, emptyList(), NeverPaired)

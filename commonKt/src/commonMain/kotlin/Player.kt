@@ -1,6 +1,6 @@
 data class Player(
         val _id: String? = null,
-        val badge: String? = null,
+        val badge: Int? = null,
         val name: String? = null,
         val tribe: String? = null,
         val pins: List<Pin>? = null,

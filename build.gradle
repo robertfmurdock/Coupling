@@ -88,7 +88,7 @@ task compile {
 }
 
 task serverTest(type: YarnTask) {
-    dependsOn yarn, ":engine:build"
+    dependsOn yarn, ":engine:build", ":test-style:build"
     inputs.file file('package.json')
     inputs.files serverCompile.inputs.files
     inputs.dir 'server/test/unit'
