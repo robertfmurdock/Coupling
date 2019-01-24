@@ -1,17 +1,26 @@
 import kotlin.js.Json
 import kotlin.js.json
 
-fun Player.toJson() = json(
-        "_id" to _id,
-        "name" to name,
-        "tribe" to tribe,
-        "email" to email,
-        "pins" to pins?.toJson(),
-        "badge" to badge,
-        "callSignAdjective" to callSignAdjective,
-        "callSignNoun" to callSignNoun,
-        "imageURL" to imageURL
-)
+fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
+        .plusIfNotNull("_id", _id)
+        .plusIfNotNull("name", name)
+        .plusIfNotNull("tribe", tribe)
+        .plusIfNotNull("email", email)
+        .plusIfNotNull("pins", pins?.toJson())
+        .plusIfNotNull("badge", badge)
+        .plusIfNotNull("callSignAdjective", callSignAdjective)
+        .plusIfNotNull("callSignNoun", callSignNoun)
+        .plusIfNotNull("imageURL", imageURL)
+        .pairsToJson()
+
+private fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
+
+private fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pair<String, Any?>> {
+    return if (value != null)
+        plus(Pair(key, value))
+    else
+        this
+}
 
 private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
         .toTypedArray()

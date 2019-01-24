@@ -53,8 +53,8 @@ describe(path, function () {
 
     it('will take the players given and use those for pairing.', function (done) {
         let onlyEnoughPlayersForOnePair = [
-            {name: "dude1", _id: null, tribe: null, badge: null, email: null},
-            {name: "dude2", _id: null, tribe: null, badge: null, email: null}
+            {name: "dude1"},
+            {name: "dude2"}
         ];
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
         tribeCollection.insert(tribe)
@@ -183,7 +183,8 @@ describe(path, function () {
                 .then(function (response) {
                     expect(response.body.tribe).toEqual(tribeId);
                     let expectedPinnedPlayer = {
-                        _id: null, name: "dude1", tribe: null, email: null, pins: [pin], badge: null
+                        name: "dude1",
+                        pins: [pin]
                     };
                     let expectedPairAssignments = [
                         [expectedPinnedPlayer]
