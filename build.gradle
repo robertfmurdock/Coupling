@@ -139,6 +139,10 @@ task test {
     dependsOn serverTest, ":client:test", endpointTest
 }
 
+task("check") {
+    dependsOn("test")
+}
+
 task start(type: YarnTask) {
     dependsOn compile
     args = ['run', 'start-built-app']

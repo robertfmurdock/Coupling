@@ -60,6 +60,10 @@ tasks {
         args = listOf("run", "test", "--silent")
     }
 
+    task("check") {
+        dependsOn("test")
+    }
+
     task<YarnTask>("testWatch") {
         args = listOf("run", "testWatch")
     }
