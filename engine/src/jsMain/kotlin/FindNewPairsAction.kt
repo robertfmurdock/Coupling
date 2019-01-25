@@ -1,6 +1,6 @@
-data class Game(val history: List<HistoryDocument>, val players: List<Player>, val rule: PairingRule)
+data class Game(val history: List<PairAssignmentDocument>, val players: List<Player>, val rule: PairingRule)
 
-data class GameSpin(val history: List<HistoryDocument>, val remainingPlayers: List<Player>, val rule: PairingRule)
+data class GameSpin(val history: List<PairAssignmentDocument>, val remainingPlayers: List<Player>, val rule: PairingRule)
 
 private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
 

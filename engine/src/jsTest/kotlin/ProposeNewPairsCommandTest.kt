@@ -1,4 +1,3 @@
-
 import kotlinx.coroutines.*
 import kotlin.js.Date
 import kotlin.random.Random
@@ -11,7 +10,7 @@ class ProposeNewPairsCommandTest {
         setup(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
-            val history = listOf(HistoryDocument(emptyList()))
+            val history = listOf(PairAssignmentDocument(Date(), emptyList(), ""))
             val tribe = KtTribe("Tribe Id! ${Random.nextInt(300)}", PairingRule.PreferDifferentBadge)
 
             override fun getPins(tribeId: String) = CompletableDeferred(pins)

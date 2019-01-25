@@ -11,7 +11,7 @@ class RunGameActionTest {
         val tribe = KtTribe("1", PairingRule.LongestTime)
         val players = emptyList<Player>()
         val pins = emptyList<Pin>()
-        val history = emptyList<HistoryDocument>()
+        val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = listOf(
                 CouplingPair.Single(Player()),
                 CouplingPair.Single(Player())

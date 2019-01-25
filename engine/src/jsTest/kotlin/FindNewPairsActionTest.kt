@@ -47,7 +47,7 @@ class FindNewPairsActionTest {
                 PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
                 PairCandidateReport(ted, emptyList(), TimeResultValue(0))
         )
-        val history: List<HistoryDocument> = emptyList()
+        val history: List<PairAssignmentDocument> = emptyList()
 
         init {
             actionDispatcher spyWillReturn pairCandidateReports

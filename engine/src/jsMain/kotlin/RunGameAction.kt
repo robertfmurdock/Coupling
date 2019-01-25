@@ -5,7 +5,7 @@ import kotlin.js.json
 data class RunGameAction(
         val players: List<Player>,
         val pins: List<Pin>,
-        val history: List<HistoryDocument>,
+        val history: List<PairAssignmentDocument>,
         val tribe: KtTribe
 )
 
@@ -28,7 +28,7 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
                         )
                     }
 
-    private fun toJs(it: PairAssignmentDocument) = it.expectedPairingAssignments.map {
+    private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
         it.asArray()
                 .map { player ->
                     player.toJson()

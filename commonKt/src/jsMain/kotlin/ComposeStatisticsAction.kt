@@ -1,7 +1,10 @@
-data class ComposeStatisticsAction(val tribe: KtTribe, val players: List<Player>, val history: List<HistoryDocument>)
+data class ComposeStatisticsAction(
+        val tribe: KtTribe,
+        val players: List<Player>,
+        val history: List<PairAssignmentDocument>
+)
 
-interface ComposeStatisticsActionDispatcher {
-
+interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     fun ComposeStatisticsAction.perform() = StatisticsReport(
             spinsUntilFullRotation = calculateFullRotation(),
             pairReports = pairReports(),
@@ -9,7 +12,14 @@ interface ComposeStatisticsActionDispatcher {
     )
 
     private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
-            .map { PairReport(it, NeverPaired) }
+            .map {
+                PairReport(
+                        it,
+                        calculateTimeSinceLastPartnership(it, history)
+                )
+            }
+            .sortedWith(PairReportComparator)
+
 
     private fun ComposeStatisticsAction.allPairCombinations() =
             players.mapIndexed { index, player -> players.sliceFrom(index + 1).toPairsWith(player) }
@@ -27,7 +37,25 @@ interface ComposeStatisticsActionDispatcher {
     } else {
         this
     }
+}
 
+object PairReportComparator : Comparator<PairReport> {
+
+    override fun compare(a: PairReport, b: PairReport) =
+            a.timeSinceLastPair.compareTo(b.timeSinceLastPair)
+
+    private fun TimeResult.compareTo(other: TimeResult) = TimeResultComparator.compare(this, other)
+}
+
+object TimeResultComparator : Comparator<TimeResult> {
+    override fun compare(a: TimeResult, b: TimeResult) = when (a) {
+        b -> 0
+        is NeverPaired -> -1
+        is TimeResultValue -> when (b) {
+            is NeverPaired -> 1
+            is TimeResultValue -> b.time.compareTo(a.time)
+        }
+    }
 }
 
 data class StatisticsReport(

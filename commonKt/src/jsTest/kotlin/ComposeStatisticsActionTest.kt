@@ -1,5 +1,6 @@
 @file:Suppress("unused")
 
+import kotlin.js.Date
 import kotlin.test.Test
 
 class ComposeStatisticsActionTest {
@@ -12,7 +13,7 @@ class ComposeStatisticsActionTest {
 
         fun makePlayer(tribe: KtTribe, id: String) = Player(_id = id, tribe = tribe.id)
 
-        private fun List<CouplingPair>.checkPairs(expected: List<CouplingPair>) {
+        private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(
                     expected,
                     "------WE EXPECT\n${expected.describe()}\n------RESULTS\n${this.describe()}\n-----END\n"
@@ -26,7 +27,7 @@ class ComposeStatisticsActionTest {
     class WillIncludeTheFullRotationNumber {
 
         companion object {
-            val history = emptyList<HistoryDocument>()
+            val history = emptyList<PairAssignmentDocument>()
 
             fun composeStatisticsAction(players: List<Player>) =
                     ComposeStatisticsAction(tribe, players, history)
@@ -97,7 +98,7 @@ class ComposeStatisticsActionTest {
 
         class WithNoHistory {
             companion object {
-                val history = emptyList<HistoryDocument>()
+                val history = emptyList<PairAssignmentDocument>()
             }
 
             @Test
@@ -142,24 +143,67 @@ class ComposeStatisticsActionTest {
                         .perform()
             } verify { (_, pairReports) ->
                 val (player1, player2, player3, player4, player5) = players
-                val expected = listOf(
-                        CouplingPair.Double(player1, player2),
-                        CouplingPair.Double(player1, player3),
-                        CouplingPair.Double(player1, player4),
-                        CouplingPair.Double(player1, player5),
-
-                        CouplingPair.Double(player2, player3),
-                        CouplingPair.Double(player2, player4),
-                        CouplingPair.Double(player2, player5),
-                        CouplingPair.Double(player3, player4),
-                        CouplingPair.Double(player3, player5),
-                        CouplingPair.Double(player4, player5)
-                )
                 pairReports.map { it.pair }
-                        .checkPairs(expected)
+                        .assertMatch(listOf(
+                                CouplingPair.Double(player1, player2),
+                                CouplingPair.Double(player1, player3),
+                                CouplingPair.Double(player1, player4),
+                                CouplingPair.Double(player1, player5),
+
+                                CouplingPair.Double(player2, player3),
+                                CouplingPair.Double(player2, player4),
+                                CouplingPair.Double(player2, player5),
+                                CouplingPair.Double(player3, player4),
+                                CouplingPair.Double(player3, player5),
+                                CouplingPair.Double(player4, player5)
+                        ))
             }
         }
 
 
+        @Test
+        fun withFourPlayersThePairReportsAreOrderedByLongestTimeSinceLastPairing() = setup(object {
+            val players = makePlayers(tribe, 4)
+            val player1 = players[0]
+            val player2 = players[1]
+            val player3 = players[2]
+            val player4 = players[3]
+            val stubDate = Date()
+            val history = listOf(
+                    pairAssignmentDocument(listOf(
+                            CouplingPair.Double(player1, player3),
+                            CouplingPair.Double(player2, player4)
+                    )),
+                    pairAssignmentDocument(listOf(
+                            CouplingPair.Double(player1, player2),
+                            CouplingPair.Double(player3, player4)
+                    ))
+            )
+
+            private fun pairAssignmentDocument(pairs: List<CouplingPair.Double>) =
+                    PairAssignmentDocument(stubDate, pairs, tribe.id)
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { (_, pairReports) ->
+            pairReports.map { it.timeSinceLastPair }
+                    .assertIsEqualTo(listOf(
+                            NeverPaired,
+                            NeverPaired,
+                            TimeResultValue(1),
+                            TimeResultValue(1),
+                            TimeResultValue(0),
+                            TimeResultValue(0)
+                    ))
+            pairReports.map { it.pair }
+                    .assertMatch(listOf(
+                            CouplingPair.Double(player1, player4),
+                            CouplingPair.Double(player2, player3),
+                            CouplingPair.Double(player1, player2),
+                            CouplingPair.Double(player3, player4),
+                            CouplingPair.Double(player1, player3),
+                            CouplingPair.Double(player2, player4)
+                    ))
+        }
     }
 }

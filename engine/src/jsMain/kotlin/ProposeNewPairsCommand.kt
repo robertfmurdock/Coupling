@@ -22,7 +22,7 @@ interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
             }
 
     private fun toJs(it: PairAssignmentDocument): Array<Array<Json>> {
-        return it.expectedPairingAssignments.map {
+        return it.pairs.map {
             it.asArray()
                     .map { player ->
                         player.toJson()

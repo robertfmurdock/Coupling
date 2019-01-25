@@ -1,5 +1,4 @@
-import kotlin.js.JsName
-
+@Suppress("unused")
 @JsName("pairingTimeCalculator")
 fun pairingTimeCalculator() = object : PairingTimeCalculationSyntax {
 }
@@ -7,7 +6,7 @@ fun pairingTimeCalculator() = object : PairingTimeCalculationSyntax {
 interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
 
     @JsName("calculateTimeSinceLastPartnership")
-    fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<HistoryDocument>): TimeResult {
+    fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairAssignmentDocument>): TimeResult {
         val documentsSinceLastPartnership = history.indexOfFirst { historyDocument -> pairingExistsInDocument(historyDocument, pair) }
 
         return if (documentsSinceLastPartnership < 0)
@@ -16,7 +15,7 @@ interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
             TimeResultValue(documentsSinceLastPartnership)
     }
 
-    private fun pairingExistsInDocument(historyDocument: HistoryDocument, pair: CouplingPair) =
+    private fun pairingExistsInDocument(historyDocument: PairAssignmentDocument, pair: CouplingPair) =
             historyDocument.pairs.any { areEqualPairs(pair, it) }
 }
 
@@ -40,8 +39,6 @@ sealed class TimeResult
 data class TimeResultValue(val time: Int) : TimeResult()
 
 object NeverPaired : TimeResult()
-
-data class HistoryDocument(val pairs: List<CouplingPair>)
 
 sealed class CouplingPair {
     @JsName("asArray")

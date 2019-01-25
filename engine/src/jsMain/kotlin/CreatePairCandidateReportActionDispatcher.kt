@@ -1,4 +1,4 @@
-data class CreatePairCandidateReportAction(val player: Player, val history: List<HistoryDocument>, val allPlayers: List<Player>)
+data class CreatePairCandidateReportAction(val player: Player, val history: List<PairAssignmentDocument>, val allPlayers: List<Player>)
 
 interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
 

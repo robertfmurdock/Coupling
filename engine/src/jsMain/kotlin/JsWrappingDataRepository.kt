@@ -15,7 +15,7 @@ class JsWrappingDataRepository(val jsRepository: dynamic) : CouplingDataReposito
     @Suppress("UnsafeCastFromDynamic")
     private fun requestPins(tribeId: String): Promise<Array<Json>> = jsRepository.requestPins(tribeId)
 
-    override fun getHistory(tribeId: String): Deferred<List<HistoryDocument>> = requestHistory(tribeId)
+    override fun getHistory(tribeId: String): Deferred<List<PairAssignmentDocument>> = requestHistory(tribeId)
             .then { historyFromArray(it) }
             .asDeferred()
 

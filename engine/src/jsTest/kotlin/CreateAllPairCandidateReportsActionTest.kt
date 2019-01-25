@@ -20,7 +20,7 @@ class CreateAllPairCandidateReportsActionTest {
             val shortyReport = PairCandidateReport(shorty, emptyList(), TimeResultValue(1))
             val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
 
-            val history = emptyList<HistoryDocument>()
+            val history = emptyList<PairAssignmentDocument>()
 
             init {
                 expectedReports.forEach { report ->
@@ -37,7 +37,7 @@ class CreateAllPairCandidateReportsActionTest {
 
         @Test
         fun willReturnFilterCandidatesByUnlikeBadge() = setup(object {
-            val history = emptyList<HistoryDocument>()
+            val history = emptyList<PairAssignmentDocument>()
             val bill = Player(_id = "Bill", badge = 1)
             val ted = Player(_id = "Ted", badge = 1)
             val altAmadeus = Player(_id = "Mozart", badge = 2)
@@ -67,7 +67,7 @@ class CreateAllPairCandidateReportsActionTest {
 
         @Test
         fun willReturnReportForOnePlayer() = setup(object {
-            val history = emptyList<HistoryDocument>()
+            val history = emptyList<PairAssignmentDocument>()
             val bill = Player(_id = "Bill", badge = 1)
             val players = listOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
@@ -88,7 +88,7 @@ class CreateAllPairCandidateReportsActionTest {
     @Test
     fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
         override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
-        val history = listOf<HistoryDocument>()
+        val history = listOf<PairAssignmentDocument>()
         val bill = Player(_id = "Bill", badge = 1)
         val ted = Player(_id = "Ted", badge = 1)
         val altAmadeus = Player(_id = "Mozart", badge = 2)
@@ -121,13 +121,13 @@ class CreateAllPairCandidateReportsActionTest {
         private fun StubCreatePairCandidateReportActionDispatcher.givenPlayerReturnReport(
                 pairCandidateReport: PairCandidateReport,
                 players: List<Player>,
-                history: List<HistoryDocument>
+                history: List<PairAssignmentDocument>
         ) = whenever(
                 receive = expectedAction(pairCandidateReport.player, history, players),
                 returnValue = pairCandidateReport
         )
 
-        private fun expectedAction(player: Player, history: List<HistoryDocument>, players: List<Player>) =
+        private fun expectedAction(player: Player, history: List<PairAssignmentDocument>, players: List<Player>) =
                 CreatePairCandidateReportAction(
                         player,
                         history,

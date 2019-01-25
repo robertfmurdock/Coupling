@@ -1,5 +1,5 @@
-import kotlin.js.Json
-import kotlin.js.json
+
+import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
         .plusIfNotNull("_id", _id)
@@ -57,12 +57,20 @@ fun Array<Json>.toPins() = map {
 
 external interface PairingDocument {
     val pairs: Array<Array<Json>>?
+    val date: Date
+    val tribeId: String
 }
 
 @Suppress("unused")
 @JsName("historyFromArray")
 fun historyFromArray(history: Array<PairingDocument>) =
-        history.map { HistoryDocument(it.pairs?.map(::pairFromArray) ?: listOf()) }
+        history.map {
+            PairAssignmentDocument(
+                    date = it.date,
+                    pairs = it.pairs?.map(::pairFromArray) ?: listOf(),
+                    tribeId = it.tribeId
+            )
+        }
 
 @JsName("pairFromArray")
 fun pairFromArray(array: Array<Json>) = array.map { it.toPlayer() }.toPairs()
