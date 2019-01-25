@@ -11,7 +11,6 @@ function testResolve() {
   resolve.modules = [
     path.resolve(__dirname, '../../test-style/build/classes/kotlin/js/main'),
     path.resolve(__dirname, '../../commonKt/build/classes/kotlin/js/main'),
-    path.resolve(__dirname, '../../commonKt/build/classes/kotlin/js/test'),
     path.resolve(__dirname, '../../engine/build/classes/kotlin/js/main'),
     path.resolve(__dirname, '../../engine/build/classes/kotlin/js/test'),
     path.resolve(__dirname, '../node_modules')

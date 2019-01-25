@@ -20,6 +20,7 @@ apply {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 kotlin {
@@ -51,6 +52,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-io-js:0.1.4")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
@@ -83,13 +85,15 @@ tasks {
 
     task<NodeTask>("jasmine") {
         dependsOn("yarn", "compileTestKotlinJs")
-        mustRunAfter("compileTestKotlinJs")
+        mustRunAfter("compileTestKotlinJs", "jsTestProcessResources")
 
         val compileTask = getByName<Kotlin2JsCompile>("compileKotlinJs")
+        val processResourcesTask = getByName<ProcessResources>("jsTestProcessResources")
 
         val relevantPaths = listOf(
                 "node_modules",
                 compileTask.outputFile.parent,
+                processResourcesTask.destinationDir,
                 (getByPath(":test-style:compileKotlinJs") as Kotlin2JsCompile).outputFile.parent
         )
 

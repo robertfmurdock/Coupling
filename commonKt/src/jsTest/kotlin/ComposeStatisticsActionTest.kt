@@ -1,6 +1,7 @@
 @file:Suppress("unused")
 
 import kotlin.js.Date
+import kotlin.js.Json
 import kotlin.test.Test
 
 class ComposeStatisticsActionTest {
@@ -160,7 +161,6 @@ class ComposeStatisticsActionTest {
             }
         }
 
-
         @Test
         fun withFourPlayersThePairReportsAreOrderedByLongestTimeSinceLastPairing() = setup(object {
             val players = makePlayers(tribe, 4)
@@ -204,6 +204,23 @@ class ComposeStatisticsActionTest {
                             CouplingPair.Double(player1, player3),
                             CouplingPair.Double(player2, player4)
                     ))
+        }
+
+        @Test
+        fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadResource("realistic-sort-test-data/inputs.json").let {
+            object {
+                val tribe = it["tribe"].unsafeCast<Json>().toTribe()
+                val players = it["players"].unsafeCast<Array<Json>>().map { player -> player.toPlayer() }
+                val history = it["history"].unsafeCast<Array<Json>>().map { record -> record.toPairAssignmentDocument() }
+            }
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            val expectedTimesResults = loadResource("realistic-sort-test-data/expectResults.json").unsafeCast<Array<Int>>()
+                    .map { TimeResultValue(it) }
+            result.pairReports.map { it.timeSinceLastPair }
+                    .assertIsEqualTo(expectedTimesResults)
         }
     }
 }

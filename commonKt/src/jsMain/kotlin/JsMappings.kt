@@ -1,4 +1,3 @@
-
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
@@ -63,14 +62,16 @@ external interface PairingDocument {
 
 @Suppress("unused")
 @JsName("historyFromArray")
-fun historyFromArray(history: Array<PairingDocument>) =
+fun historyFromArray(history: Array<Json>) =
         history.map {
-            PairAssignmentDocument(
-                    date = it.date,
-                    pairs = it.pairs?.map(::pairFromArray) ?: listOf(),
-                    tribeId = it.tribeId
-            )
+            it.toPairAssignmentDocument()
         }
+
+fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
+        date = this["date"].unsafeCast<Date>(),
+        pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
+        tribeId = this["tribeId"].unsafeCast<String>()
+)
 
 @JsName("pairFromArray")
 fun pairFromArray(array: Array<Json>) = array.map { it.toPlayer() }.toPairs()

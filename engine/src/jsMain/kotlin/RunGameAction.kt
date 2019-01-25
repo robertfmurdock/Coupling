@@ -12,7 +12,7 @@ data class RunGameAction(
 interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
 
     @JsName("performRunGameCommand")
-    fun performRunGameCommand(history: Array<PairingDocument>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
+    fun performRunGameCommand(history: Array<Json>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
             RunGameAction(
                     players = players.map { it.toPlayer() }.toList(),
                     pins = pins.toPins(),
