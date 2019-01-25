@@ -31,23 +31,27 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.20")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
             }
         }
         getByName("commonTest") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
+                api(project(":test-style"))
             }
         }
 
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+            }
+        }
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                api(project(":test-style"))
             }
         }
     }
@@ -79,6 +83,7 @@ tasks {
 
     task<NodeTask>("jasmine") {
         dependsOn("yarn", "compileTestKotlinJs")
+        mustRunAfter("compileTestKotlinJs")
 
         val compileTask = getByName<Kotlin2JsCompile>("compileKotlinJs")
 

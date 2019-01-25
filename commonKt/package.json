@@ -5,6 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "jasmine": "^3.3.1",
-    "jasmine-reporters": "^2.3.2"
+    "jasmine-reporters": "^2.3.2",
+    "source-map-support": "^0.5.10"
   }
 }
