@@ -6,7 +6,7 @@ export default {
   "responseMode": "form_post",
   "redirectUrl": (process.env.PUBLIC_URL || "http://localhost:3000") + "/auth/signin-microsoft",
   "allowHttpForRedirectUrl": true,
-  "validateIssuer": false,
+  "validateIssuer": process.env.PUBLIC_URL !== undefined,
   "issuer": null,
   "passReqToCallback": false,
   "useCookieInsteadOfSession": true,
