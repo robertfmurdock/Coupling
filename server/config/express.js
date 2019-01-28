@@ -7,6 +7,7 @@ const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Strategy = require('passport-custom').Strategy;
+const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 const {OAuth2Client} = require('google-auth-library');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
@@ -16,6 +17,65 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const statsd = require('express-statsd');
 const config = require('./config');
+
+function azureODICStrategy(userDataService) {
+  return new OIDCStrategy({
+      identityMetadata: config.microsoft.identityMetadata,
+      clientID: config.microsoft.clientID,
+      responseType: config.microsoft.responseType,
+      responseMode: config.microsoft.responseMode,
+      redirectUrl: config.microsoft.redirectUrl,
+      allowHttpForRedirectUrl: config.microsoft.allowHttpForRedirectUrl,
+      clientSecret: config.microsoft.clientSecret,
+      validateIssuer: config.microsoft.validateIssuer,
+      isB2C: config.microsoft.isB2C,
+      issuer: config.microsoft.issuer,
+      passReqToCallback: config.microsoft.passReqToCallback,
+      scope: config.microsoft.scope,
+      loggingLevel: config.microsoft.loggingLevel,
+      nonceLifetime: config.microsoft.nonceLifetime,
+      nonceMaxAmount: config.microsoft.nonceMaxAmount,
+      useCookieInsteadOfSession: config.microsoft.useCookieInsteadOfSession,
+      cookieEncryptionKeys: config.microsoft.cookieEncryptionKeys,
+      clockSkew: config.microsoft.clockSkew,
+    },
+    function (iss, sub, profile, accessToken, refreshToken, done) {
+      let email = profile._json.email;
+
+      if (email) {
+        userDataService.findOrCreate(email, function (user) {
+          done(null, user);
+        });
+      } else {
+        return done(new Error("Auth succeeded but no email found."), null);
+      }
+    }
+  );
+}
+
+function googleAuthTransferStrategy(userDataService) {
+  const clientID = config.googleClientID;
+  const client = new OAuth2Client(clientID);
+
+  async function verify(token) {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: clientID
+    });
+    return ticket.getPayload();
+  }
+
+  return new Strategy(function (request, done) {
+
+    verify(request.body.idToken)
+      .then(payload => {
+        userDataService.findOrCreate(payload.email, function (user) {
+          done(null, user);
+        });
+      }, err => done(err))
+
+  });
+}
 
 module.exports = function (app, userDataService) {
   app.use(compression());
@@ -57,29 +117,8 @@ module.exports = function (app, userDataService) {
   passport.serializeUser(userDataService.serializeUser);
   passport.deserializeUser(userDataService.deserializeUser);
 
-  const clientID = config.googleClientID;
-  const client = new OAuth2Client(clientID);
-
-  async function verify(token) {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: clientID
-    });
-    return ticket.getPayload();
-  }
-
-  passport.use(
-    new Strategy(function (request, done) {
-
-      verify(request.body.idToken)
-        .then(payload => {
-          userDataService.findOrCreate(payload.email, function (user) {
-            done(null, user);
-          });
-        }, err => done(err))
-
-    })
-  );
+  passport.use(googleAuthTransferStrategy(userDataService));
+  passport.use(azureODICStrategy(userDataService));
 
   if (isInDevelopmentMode) {
     passport.use(new LocalStrategy(function (username, password, done) {
