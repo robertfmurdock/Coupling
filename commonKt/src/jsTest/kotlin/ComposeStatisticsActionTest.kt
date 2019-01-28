@@ -207,7 +207,7 @@ class ComposeStatisticsActionTest {
         }
 
         @Test
-        fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadResource("realistic-sort-test-data/inputs.json").let {
+        fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadResource<Json>("realistic-sort-test-data/inputs.json").let {
             object {
                 val tribe = it["tribe"].unsafeCast<Json>().toTribe()
                 val players = it["players"].unsafeCast<Array<Json>>().map { player -> player.toPlayer() }
@@ -217,7 +217,7 @@ class ComposeStatisticsActionTest {
             ComposeStatisticsAction(tribe, players, history)
                     .perform()
         } verify { result ->
-            val expectedTimesResults = loadResource("realistic-sort-test-data/expectResults.json").unsafeCast<Array<Int>>()
+            val expectedTimesResults = loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
                     .map { TimeResultValue(it) }
             result.pairReports.map { it.timeSinceLastPair }
                     .assertIsEqualTo(expectedTimesResults)

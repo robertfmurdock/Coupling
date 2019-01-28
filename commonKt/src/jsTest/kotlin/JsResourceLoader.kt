@@ -1,5 +1,3 @@
-import kotlin.js.Json
-
-fun loadResource(name: String) : Json {
-    return js("require(name)").unsafeCast<Json>()
+fun <T> loadResource(name: String) : T {
+    return js("require(name)").unsafeCast<T>()
 }
