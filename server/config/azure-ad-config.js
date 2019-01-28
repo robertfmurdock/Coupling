@@ -4,7 +4,7 @@ export default {
   "clientSecret": process.env.AZURE_AD_CLIENT_SECRET || "bhyrMCFDF9485=aoiJD1*%{",
   "responseType": "code id_token",
   "responseMode": "form_post",
-  "redirectUrl": "http://localhost:3000/auth/signin-microsoft",
+  "redirectUrl": (process.env.PUBLIC_URL || "http://localhost:3000") + "/auth/signin-microsoft",
   "allowHttpForRedirectUrl": true,
   "validateIssuer": false,
   "issuer": null,
