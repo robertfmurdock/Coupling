@@ -1,4 +1,7 @@
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
+import com.soywiz.klock.internal.toDateTime
+import kotlin.math.floor
 
 data class ComposeStatisticsAction(
         val tribe: KtTribe,
@@ -10,7 +13,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     fun ComposeStatisticsAction.perform() = StatisticsReport(
             spinsUntilFullRotation = calculateFullRotation(),
             pairReports = pairReports(),
-            medianSpinDuration = null
+            medianSpinDuration = history.medianSpinDuration()
     )
 
     private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
@@ -39,6 +42,24 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     } else {
         this
     }
+
+    private fun List<PairAssignmentDocument>.medianSpinDuration() = if (isEmpty()) {
+        null
+    } else {
+        asDateTimes()
+                .toDeltas()
+                .sorted()
+                .halfwayValue()
+    }
+
+    private fun List<TimeSpan>.halfwayValue() = this[indexOfMedian()]
+
+    private fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()
+
+    private fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
+
+    private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date.toDateTime() }
+
 }
 
 object PairReportComparator : Comparator<PairReport> {

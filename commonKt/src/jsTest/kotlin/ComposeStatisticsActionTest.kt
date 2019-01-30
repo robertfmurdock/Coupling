@@ -1,5 +1,8 @@
 @file:Suppress("unused")
 
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.days
+import com.soywiz.klock.internal.toDate
 import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.test.Test
@@ -237,6 +240,42 @@ class ComposeStatisticsActionTest {
             result.medianSpinDuration.assertIsEqualTo(null)
         }
 
+        @Test
+        fun whenThereAreDailySpinsWillReturn1Day() = setup(object {
+            val players = emptyList<Player>()
+            val history = listOf(
+                    PairAssignmentDocument(DateTime(2017, 2, 17).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 16).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 15).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 14).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 13).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 12).toDate(), emptyList(), tribe.id)
+            )
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(1.days)
+        }
+
+        @Test
+        fun whenTwoDaySpinsWithOutliersWillReturn2Days() = setup(object {
+            val players = emptyList<Player>()
+            val history = listOf(
+                    PairAssignmentDocument(DateTime(2017, 2, 17).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 12).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 10).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 8).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 6).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 4).toDate(), emptyList(), tribe.id),
+                    PairAssignmentDocument(DateTime(2017, 2, 3).toDate(), emptyList(), tribe.id)
+            )
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(2.days)
+        }
     }
 
 }

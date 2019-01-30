@@ -68,7 +68,7 @@ fun historyFromArray(history: Array<Json>) =
         }
 
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        date = this["date"].unsafeCast<Date>(),
+        date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() },
         pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
         tribeId = this["tribeId"].unsafeCast<String>()
 )

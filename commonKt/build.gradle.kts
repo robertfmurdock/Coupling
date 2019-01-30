@@ -36,14 +36,14 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.20")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
-                api("com.soywiz:klock:1.1.1")
+                implementation("com.soywiz:klock:1.1.1")
             }
         }
         getByName("commonTest") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                api(project(":test-style"))
+                implementation(project(":test-style"))
             }
         }
 
@@ -78,9 +78,6 @@ tasks {
         keep("commonKt.pairingTimeCalculator", "commonKt.historyFromArray")
     }
 
-    getByName("assemble") {
-        dependsOn(runDceJsKotlin)
-    }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:build")
@@ -105,6 +102,10 @@ tasks {
                 project.configurations.getByName("jsTestCompile"),
                 project.configurations.getByName("jsTestCompileOnly")
         )
+    }
+
+    getByName("assemble") {
+        dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
     }
 
     val jasmine by creating(NodeTask::class) {
