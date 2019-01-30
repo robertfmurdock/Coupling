@@ -223,4 +223,20 @@ class ComposeStatisticsActionTest {
                     .assertIsEqualTo(expectedTimesResults)
         }
     }
+
+    class WillCalculateTheMedianSpinTime {
+
+        @Test
+        fun whenThereIsNoHistoryWillReturnNotApplicable() = setup(object {
+            val history = emptyList<PairAssignmentDocument>()
+            val players = emptyList<Player>()
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(null)
+        }
+
+    }
+
 }

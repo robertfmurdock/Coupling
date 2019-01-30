@@ -1,3 +1,5 @@
+import com.soywiz.klock.TimeSpan
+
 data class ComposeStatisticsAction(
         val tribe: KtTribe,
         val players: List<Player>,
@@ -8,7 +10,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     fun ComposeStatisticsAction.perform() = StatisticsReport(
             spinsUntilFullRotation = calculateFullRotation(),
             pairReports = pairReports(),
-            medianSpinDuration = 0
+            medianSpinDuration = null
     )
 
     private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
@@ -61,7 +63,7 @@ object TimeResultComparator : Comparator<TimeResult> {
 data class StatisticsReport(
         val spinsUntilFullRotation: Int,
         val pairReports: List<PairReport>,
-        val medianSpinDuration: Int
+        val medianSpinDuration: TimeSpan?
 )
 
 data class PairReport(val pair: CouplingPair, val timeSinceLastPair: TimeResult)

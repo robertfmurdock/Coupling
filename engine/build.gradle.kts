@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform") version "1.3.20"
+    id("org.jetbrains.kotlin.multiplatform")
 }
 
 apply {
@@ -11,6 +11,7 @@ apply {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
 }
 
 kotlin {

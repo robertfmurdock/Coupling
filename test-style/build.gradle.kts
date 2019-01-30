@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform") version "1.3.20"
+    id("org.jetbrains.kotlin.multiplatform")
 }
 
 repositories {
