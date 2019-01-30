@@ -75,9 +75,13 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
     val runDceJsKotlin by getting(KotlinJsDce::class) {
-        keep("commonKt.pairingTimeCalculator", "commonKt.historyFromArray")
+        keep(
+                "commonKt.pairingTimeCalculator",
+                "commonKt.historyFromArray",
+                "commonKt.ComposeStatisticsActionDispatcher",
+                "commonKt.performComposeStatisticsAction"
+        )
     }
-
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:build")

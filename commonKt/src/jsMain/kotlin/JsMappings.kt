@@ -81,3 +81,17 @@ private fun List<Player>.toPairs() = when (size) {
     2 -> CouplingPair.Double(this[0], this[1])
     else -> CouplingPair.Empty
 }
+
+fun StatisticsReport.toJson() = json(
+        "spinsUntilFullRotation" to spinsUntilFullRotation,
+        "pairReports" to pairReports.map { it.toJson() }.toTypedArray(),
+        "medianSpinDuration" to medianSpinDuration?.millisecondsInt
+)
+
+fun PairReport.toJson() = json(
+        "pair" to pair.asArray().map { it.toJson() }.toTypedArray(),
+        "timeSinceLastPaired" to when (timeSinceLastPair) {
+            is TimeResultValue -> timeSinceLastPair.time
+            NeverPaired -> "NeverPaired"
+        }
+)

@@ -43,6 +43,7 @@ tasks {
         inputs.file(file("webpack.config.js"))
         inputs.file(file("../tsconfig.json"))
         inputs.dir("../common")
+        inputs.dir("../commonKt/build")
         outputs.dir("build/lib")
         inputs.dir("./")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
