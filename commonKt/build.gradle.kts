@@ -109,7 +109,7 @@ tasks {
     }
 
     val jasmine by creating(NodeTask::class) {
-        dependsOn("yarn", compileTestKotlinJs, unpackJsGradleDependencies)
+        dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
         mustRunAfter(compileTestKotlinJs, "jsTestProcessResources")
 
         val processResourcesTask = getByName<ProcessResources>("jsTestProcessResources")

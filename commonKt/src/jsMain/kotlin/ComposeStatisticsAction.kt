@@ -43,16 +43,20 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
         this
     }
 
-    private fun List<PairAssignmentDocument>.medianSpinDuration() = if (isEmpty()) {
-        null
-    } else {
-        asDateTimes()
-                .toDeltas()
-                .sorted()
-                .halfwayValue()
-    }
+    private fun List<PairAssignmentDocument>.medianSpinDuration() = asDateTimes()
+            .toDeltas()
+            .sorted()
+            .halfwayValue()
 
-    private fun List<TimeSpan>.halfwayValue() = this[indexOfMedian()]
+    private fun List<TimeSpan>.halfwayValue() = safeGet(indexOfMedian())
+
+    fun List<TimeSpan>.safeGet(indexOfMedian: Int) = indexOfMedian
+            .let {
+                when {
+                    it < size -> this[it]
+                    else -> null
+                }
+            }
 
     private fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()
 

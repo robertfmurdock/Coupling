@@ -2,6 +2,7 @@
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
+import com.soywiz.klock.hours
 import com.soywiz.klock.internal.toDate
 import kotlin.js.Date
 import kotlin.js.Json
@@ -229,6 +230,14 @@ class ComposeStatisticsActionTest {
 
     class WillCalculateTheMedianSpinTime {
 
+        companion object {
+            private fun pairAssignmentDocument(dateTime: DateTime) = PairAssignmentDocument(
+                    dateTime.toDate(),
+                    emptyList(),
+                    tribe.id
+            )
+        }
+
         @Test
         fun whenThereIsNoHistoryWillReturnNotApplicable() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
@@ -244,38 +253,107 @@ class ComposeStatisticsActionTest {
         fun whenThereAreDailySpinsWillReturn1Day() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    PairAssignmentDocument(DateTime(2017, 2, 17).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 16).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 15).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 14).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 13).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 12).toDate(), emptyList(), tribe.id)
+                    pairAssignmentDocument(DateTime(2017, 2, 17)),
+                    pairAssignmentDocument(DateTime(2017, 2, 16)),
+                    pairAssignmentDocument(DateTime(2017, 2, 15)),
+                    pairAssignmentDocument(DateTime(2017, 2, 14)),
+                    pairAssignmentDocument(DateTime(2017, 2, 13)),
+                    pairAssignmentDocument(DateTime(2017, 2, 12))
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
                     .perform()
         } verify { result ->
-            result.medianSpinDuration.assertIsEqualTo(1.days)
+            result.medianSpinDuration.assertIsEqualTo(1.days, "Got ${result.medianSpinDuration?.days} days")
         }
 
         @Test
         fun whenTwoDaySpinsWithOutliersWillReturn2Days() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    PairAssignmentDocument(DateTime(2017, 2, 17).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 12).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 10).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 8).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 6).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 4).toDate(), emptyList(), tribe.id),
-                    PairAssignmentDocument(DateTime(2017, 2, 3).toDate(), emptyList(), tribe.id)
+                    pairAssignmentDocument(DateTime(2017, 2, 17)),
+                    pairAssignmentDocument(DateTime(2017, 2, 12)),
+                    pairAssignmentDocument(DateTime(2017, 2, 10)),
+                    pairAssignmentDocument(DateTime(2017, 2, 8)),
+                    pairAssignmentDocument(DateTime(2017, 2, 6)),
+                    pairAssignmentDocument(DateTime(2017, 2, 4)),
+                    pairAssignmentDocument(DateTime(2017, 2, 3))
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
                     .perform()
         } verify { result ->
-            result.medianSpinDuration.assertIsEqualTo(2.days)
+            result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
+
+        @Test
+        fun whenOneInstanceOfMedianAndVariablePatternWillFindMedianCorrectly() = setup(object {
+            val players = emptyList<Player>()
+            val history = listOf(
+                    pairAssignmentDocument(DateTime(2017, 2, 20)),
+                    pairAssignmentDocument(DateTime(2017, 2, 17)),
+                    pairAssignmentDocument(DateTime(2017, 2, 15)),
+                    pairAssignmentDocument(DateTime(2017, 2, 14)),
+                    pairAssignmentDocument(DateTime(2017, 2, 13)),
+                    pairAssignmentDocument(DateTime(2017, 2, 10))
+            )
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
+        }
+
+        @Test
+        fun withOneHistoryEntryWillReturnNull() = setup(object {
+            val players = emptyList<Player>()
+            val history = listOf(
+                    PairAssignmentDocument(DateTime(2017, 2, 17).toDate(), emptyList(), tribe.id)
+            )
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(null)
+        }
+
+        @Test
+        fun worksWithHourDifferencesAsWell() = setup(object {
+            val players = emptyList<Player>()
+            val history = listOf(
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 21)),
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 19)),
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 18)),
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 13)),
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 12)),
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 9))
+            )
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(2.hours, "Got ${result.medianSpinDuration?.hours} hours")
+        }
+
+        @Test
+        fun whenMedianIsInBetweenUnitsWillStillBeAccurate() = setup(object {
+            val players = emptyList<Player>()
+            val history = listOf(
+                    pairAssignmentDocument(DateTime(2017, 2, 20, 21)),
+                    pairAssignmentDocument(DateTime(2017, 2, 17, 19)),
+                    pairAssignmentDocument(DateTime(2017, 2, 15, 7)),
+                    pairAssignmentDocument(DateTime(2017, 2, 14, 13)),
+                    pairAssignmentDocument(DateTime(2017, 2, 13, 12)),
+                    pairAssignmentDocument(DateTime(2017, 2, 10, 9))
+            )
+
+        }) exercise {
+            ComposeStatisticsAction(tribe, players, history)
+                    .perform()
+        } verify { result ->
+            result.medianSpinDuration.assertIsEqualTo(2.5.days, "Got ${result.medianSpinDuration?.days} days")
+        }
+
     }
 
 }
