@@ -1,5 +1,6 @@
 
 import com.moowork.gradle.node.task.NodeTask
+import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -11,9 +12,9 @@ plugins {
 }
 
 node {
-    version = "11.6.0"
-    npmVersion = "6.5.0"
-    yarnVersion = "1.13.0"
+    version = BuildConstants.nodeVersion
+    npmVersion = BuildConstants.npmVersion
+    yarnVersion = BuildConstants.yarnVersion
     download = true
 }
 
