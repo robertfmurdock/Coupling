@@ -1,4 +1,4 @@
-package org.jetbrains.kotlin.gradle.frontend.npm
+package com.zegreatrob.coupling.build
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.utils.LibraryUtils
 import java.io.File
 
 /**
- * @author Hat tip to Sergey Mashkov, needed to adopt and tweak this because the frontend plugin isn't ready
+ * Hat tip to Sergey Mashkov, needed to adopt and tweak this because the frontend plugin isn't ready
  */
 open class UnpackGradleDependenciesTask : DefaultTask() {
     @Internal
@@ -138,20 +138,17 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
     data class NameVersionsUri(val name: String, val version: String, val semver: String, val uri: String)
 
     private val moduleNamePattern = """\s*//\s*Kotlin\.kotlin_module_metadata\(\s*\d+\s*,\s*("[^"]+")""".toRegex()
-    private fun getJsModuleName(file: File): String? {
-        return project.zipTree(file)
-                .filter { it.name.endsWith(".meta.js") && it.canRead() }
-                .mapNotNull { moduleNamePattern.find(it.readText())?.groupValues?.get(1) }
-                .mapNotNull { JsonSlurper().parseText(it)?.toString() }
-                .singleOrNull()
-    }
 
-    private fun getJsModuleNames(file: File): List<String> {
-        return project.zipTree(file)
-                .filter { it.name.endsWith(".meta.js") && it.canRead() }
-                .mapNotNull { moduleNamePattern.find(it.readText())?.groupValues?.get(1) }
-                .mapNotNull { JsonSlurper().parseText(it)?.toString() }
-    }
+    private fun getJsModuleName(file: File) = project.zipTree(file)
+            .filter { it.name.endsWith(".meta.js") && it.canRead() }
+            .mapNotNull { moduleNamePattern.find(it.readText())?.groupValues?.get(1) }
+            .mapNotNull { JsonSlurper().parseText(it)?.toString() }
+            .singleOrNull()
+
+    private fun getJsModuleNames(file: File) = project.zipTree(file)
+            .filter { it.name.endsWith(".meta.js") && it.canRead() }
+            .mapNotNull { moduleNamePattern.find(it.readText())?.groupValues?.get(1) }
+            .mapNotNull { JsonSlurper().parseText(it)?.toString() }
 
     companion object {
         fun unpackFile(project: Project) = project.buildDir.resolve(".unpack.txt")

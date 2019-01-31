@@ -1,5 +1,5 @@
 import com.moowork.gradle.node.task.NodeTask
-import org.jetbrains.kotlin.gradle.frontend.npm.UnpackGradleDependenciesTask
+import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 

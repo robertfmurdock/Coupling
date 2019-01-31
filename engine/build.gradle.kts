@@ -1,7 +1,7 @@
 
 import com.moowork.gradle.node.task.NodeTask
-import org.jetbrains.kotlin.gradle.frontend.npm.UnpackGradleDependenciesTask
-import org.jetbrains.kotlin.gradle.frontend.npm.forEachJsTarget
+import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
+import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
