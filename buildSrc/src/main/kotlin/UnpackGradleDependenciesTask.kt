@@ -11,6 +11,11 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 import org.jetbrains.kotlin.utils.LibraryUtils
 import java.io.File
 
@@ -46,17 +51,38 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
 
         out.mkdirs()
 
+
+        var mainConfigurations = customCompileConfiguration
+        var testConfigurations = customTestCompileConfiguration
+
+        mainConfigurations
+                .map { it.allDependencies }
+                .flatten()
+                .filterIsInstance<ProjectDependency>()
+                .also { it.forEach { println("project ${it.name}") } }
+                .map { it.dependencyProject }
+                .toSet()
+                .map { dependencyProject ->
+                    println("investigating dependency ${dependencyProject.name}")
+                    forEachJsTarget(dependencyProject) { main, test ->
+                        mainConfigurations = mainConfigurations + main.findConfigurations(dependencyProject)
+                        testConfigurations = testConfigurations + test.findConfigurations(dependencyProject)
+                    }
+                }
+                .toList()
+
+
         val projectArtifacts = customCompileConfiguration.map { it.allDependencies }.flatten()
                 .filterIsInstance<ProjectDependency>()
+                .also { it.forEach { projectDependency -> println("${projectDependency.dependencyProject.name}") } }
                 .flatMap { it.dependencyProject.configurations }
                 .flatMap { it.allArtifacts }
                 .map { it.file.canonicalFile.absolutePath }
                 .toSet()
 
-        (customCompileConfiguration.map { it.resolvedConfiguration.resolvedArtifacts }.flatten() +
-                customTestCompileConfiguration.map { it.resolvedConfiguration.resolvedArtifacts }.flatten()
+        (mainConfigurations.map { it.resolvedConfiguration.resolvedArtifacts }.flatten() +
+                testConfigurations.map { it.resolvedConfiguration.resolvedArtifacts }.flatten()
                 )
-                .filter { it.file.canonicalFile.absolutePath !in projectArtifacts }
                 .filter { it.file.exists() && LibraryUtils.isKotlinJavascriptLibrary(it.file) }
                 .forEach { artifact ->
 
@@ -145,3 +171,42 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
 }
 
 fun File.toLocalURI() = toURI().toASCIIString().replaceFirst("file:[/]+".toRegex(), "file:///")
+
+fun forEachJsTarget(project: Project, action: (kotlin2js: List<KotlinJsCompilation>, testKotlin2js: List<KotlinJsCompilation>) -> Unit) {
+    val kotlinExtension = project.multiplatformExtension
+
+    var hasTarget = false
+
+    fun processTarget(target: KotlinTarget, name: String?) {
+        if (hasTarget) {
+            return
+        }
+
+        hasTarget = true
+
+        val mainCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
+        val testCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
+
+        target.compilations.forEach { compilation ->
+            when (compilation.name) {
+                KotlinCompilation.MAIN_COMPILATION_NAME -> mainCompilation += (compilation as? KotlinJsCompilation)
+                KotlinCompilation.TEST_COMPILATION_NAME -> testCompilation += (compilation as? KotlinJsCompilation)
+            }
+        }
+
+        action(mainCompilation.filterNotNull(), testCompilation.filterNotNull())
+    }
+
+
+
+    kotlinExtension?.targets
+            ?.matching { it.platformType == KotlinPlatformType.js }
+            ?.forEach { processTarget(it, it.targetName) }
+}
+
+val Project.multiplatformExtension
+    get(): KotlinMultiplatformExtension? =
+        project.extensions.findByName("kotlin") as? KotlinMultiplatformExtension
+
+fun List<KotlinJsCompilation>.findConfigurations(project: Project) =
+        map { project.configurations.getByName(it.compileDependencyConfigurationName) }

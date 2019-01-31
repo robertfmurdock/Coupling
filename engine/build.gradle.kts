@@ -1,8 +1,21 @@
+
+import com.moowork.gradle.node.task.NodeTask
+import org.jetbrains.kotlin.gradle.frontend.npm.UnpackGradleDependenciesTask
+import org.jetbrains.kotlin.gradle.frontend.npm.findConfigurations
+import org.jetbrains.kotlin.gradle.frontend.npm.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    id("com.github.node-gradle.node")
+}
+
+node {
+    version = "11.6.0"
+    npmVersion = "6.5.0"
+    yarnVersion = "1.13.0"
+    download = true
 }
 
 apply {
@@ -22,6 +35,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
+                api(project(":commonKt"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
             }
@@ -35,27 +49,69 @@ kotlin {
                 implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
             }
         }
-
-        getByName("jsMain") {
-            dependencies {
-                implementation(project(":commonKt"))
-            }
-        }
     }
 }
 
 tasks {
-    getByName<Kotlin2JsCompile>("compileKotlinJs") {
+    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
-    getByName<Kotlin2JsCompile>("compileTestKotlinJs") {
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
-    getByName<KotlinJsDce>("runDceJsKotlin") {
+    val runDceJsKotlin by getting(KotlinJsDce::class) {
         keep("engine.spinContext")
     }
+
+    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
+        dependsOn(":test-style:build", ":commonKt:build")
+
+        forEachJsTarget(project) { main, test ->
+
+            customCompileConfiguration = main.findConfigurations(project)
+            customTestCompileConfiguration = test.findConfigurations(project)
+
+
+            customCompileConfiguration.forEach { println("main ${it.name}") }
+            customTestCompileConfiguration.forEach { println("test ${it.name}") }
+        }
+    }
+    val jsTestProcessResources by getting(ProcessResources::class)
+
+    val assemble by getting
+    assemble.dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
+
+    val jasmine by creating(NodeTask::class) {
+        dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
+        mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
+
+        val relevantPaths = listOf(
+                "node_modules",
+                "build/node_modules_imported",
+                compileKotlinJs.outputFile.parent,
+                jsTestProcessResources.destinationDir
+        )
+
+        inputs.file(compileTestKotlinJs.outputFile)
+
+        val script = file("test-run.js")
+
+        inputs.file(script)
+        setScript(script)
+
+        relevantPaths.filter { file(it).exists() }.forEach { inputs.dir(it) }
+
+        setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
+
+        setArgs(listOf("${compileTestKotlinJs.outputFile}"))
+
+        outputs.dir("build/test-results/jsTest")
+    }
+
+    val jsTest by getting
+    jsTest.dependsOn(jasmine)
 }
