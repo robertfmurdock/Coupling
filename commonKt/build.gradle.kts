@@ -110,9 +110,8 @@ tasks {
 
     val jsTestProcessResources by getting(ProcessResources::class)
 
-    getByName("assemble") {
-        dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
-    }
+    val assemble by getting
+    assemble.dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
 
     val jasmine by creating(NodeTask::class) {
         dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
@@ -141,10 +140,8 @@ tasks {
         outputs.dir("build/test-results/jsTest")
     }
 
-    getByName("jsTest") {
-        dependsOn(jasmine)
-    }
-
+    val jsTest by getting
+    jsTest.dependsOn(jasmine)
 }
 
 
