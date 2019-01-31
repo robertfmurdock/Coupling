@@ -51,34 +51,14 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
 
         out.mkdirs()
 
-
         var mainConfigurations = customCompileConfiguration
         var testConfigurations = customTestCompileConfiguration
 
-        mainConfigurations
-                .map { it.allDependencies }
-                .flatten()
-                .filterIsInstance<ProjectDependency>()
-                .also { it.forEach { println("project ${it.name}") } }
-                .map { it.dependencyProject }
-                .toSet()
-                .map { dependencyProject ->
-                    println("investigating dependency ${dependencyProject.name}")
-                    forEachJsTarget(dependencyProject) { main, test ->
-                        mainConfigurations = mainConfigurations + main.findConfigurations(dependencyProject)
-                        testConfigurations = testConfigurations + test.findConfigurations(dependencyProject)
-                    }
-                }
-                .toList()
+        val additionalConfigs = mainConfigurations.getProjectDependencyConfigs() + testConfigurations.getProjectDependencyConfigs()
 
+        mainConfigurations = mainConfigurations.plus(additionalConfigs.map { it.main }.flatten())
+        testConfigurations = testConfigurations.plus(additionalConfigs.map { it.test }.flatten())
 
-        val projectArtifacts = customCompileConfiguration.map { it.allDependencies }.flatten()
-                .filterIsInstance<ProjectDependency>()
-                .also { it.forEach { projectDependency -> println("${projectDependency.dependencyProject.name}") } }
-                .flatMap { it.dependencyProject.configurations }
-                .flatMap { it.allArtifacts }
-                .map { it.file.canonicalFile.absolutePath }
-                .toSet()
 
         (mainConfigurations.map { it.resolvedConfiguration.resolvedArtifacts }.flatten() +
                 testConfigurations.map { it.resolvedConfiguration.resolvedArtifacts }.flatten()
@@ -147,6 +127,14 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
         resultFile.bufferedWriter().use { writer -> resultNames?.joinTo(writer, separator = "\n", postfix = "\n") { "${it.name}/${it.version}/${it.semver}/${it.uri}" } }
     }
 
+    private fun List<Configuration>.getProjectDependencyConfigs() = asSequence()
+            .map { it.allDependencies }
+            .flatten()
+            .filterIsInstance<ProjectDependency>()
+            .map { it.dependencyProject }
+            .toSet()
+            .map { dependencyProject -> forEachJsTarget(dependencyProject) }
+
     data class NameVersionsUri(val name: String, val version: String, val semver: String, val uri: String)
 
     private val moduleNamePattern = """\s*//\s*Kotlin\.kotlin_module_metadata\(\s*\d+\s*,\s*("[^"]+")""".toRegex()
@@ -172,39 +160,32 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
 
 fun File.toLocalURI() = toURI().toASCIIString().replaceFirst("file:[/]+".toRegex(), "file:///")
 
-fun forEachJsTarget(project: Project, action: (kotlin2js: List<KotlinJsCompilation>, testKotlin2js: List<KotlinJsCompilation>) -> Unit) {
-    val kotlinExtension = project.multiplatformExtension
+fun forEachJsTarget(project: Project) = project.multiPlatformExtension
+        ?.javascriptTarget()
+        ?.mainAndTest()
+        ?: MainAndTestKtConfiguration(emptyList(), emptyList())
 
-    var hasTarget = false
-
-    fun processTarget(target: KotlinTarget, name: String?) {
-        if (hasTarget) {
-            return
+private fun KotlinTarget.mainAndTest(): MainAndTestKtConfiguration {
+    val mainCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
+    val testCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
+    this.compilations.forEach { compilation ->
+        when (compilation.name) {
+            KotlinCompilation.MAIN_COMPILATION_NAME -> mainCompilation += (compilation as? KotlinJsCompilation)
+            KotlinCompilation.TEST_COMPILATION_NAME -> testCompilation += (compilation as? KotlinJsCompilation)
         }
-
-        hasTarget = true
-
-        val mainCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
-        val testCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
-
-        target.compilations.forEach { compilation ->
-            when (compilation.name) {
-                KotlinCompilation.MAIN_COMPILATION_NAME -> mainCompilation += (compilation as? KotlinJsCompilation)
-                KotlinCompilation.TEST_COMPILATION_NAME -> testCompilation += (compilation as? KotlinJsCompilation)
-            }
-        }
-
-        action(mainCompilation.filterNotNull(), testCompilation.filterNotNull())
     }
-
-
-
-    kotlinExtension?.targets
-            ?.matching { it.platformType == KotlinPlatformType.js }
-            ?.forEach { processTarget(it, it.targetName) }
+    return MainAndTestKtConfiguration(
+            mainCompilation.filterNotNull().findConfigurations(project),
+            testCompilation.filterNotNull().findConfigurations(project)
+    )
 }
 
-val Project.multiplatformExtension
+private fun KotlinMultiplatformExtension.javascriptTarget() = targets
+        .firstOrNull { it.platformType == KotlinPlatformType.js }
+
+data class MainAndTestKtConfiguration(val main: List<Configuration>, val test: List<Configuration>)
+
+val Project.multiPlatformExtension
     get(): KotlinMultiplatformExtension? =
         project.extensions.findByName("kotlin") as? KotlinMultiplatformExtension
 

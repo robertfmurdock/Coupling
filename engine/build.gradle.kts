@@ -1,7 +1,6 @@
 
 import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.frontend.npm.UnpackGradleDependenciesTask
-import org.jetbrains.kotlin.gradle.frontend.npm.findConfigurations
 import org.jetbrains.kotlin.gradle.frontend.npm.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
@@ -70,14 +69,9 @@ tasks {
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:build", ":commonKt:build")
 
-        forEachJsTarget(project) { main, test ->
-
-            customCompileConfiguration = main.findConfigurations(project)
-            customTestCompileConfiguration = test.findConfigurations(project)
-
-
-            customCompileConfiguration.forEach { println("main ${it.name}") }
-            customTestCompileConfiguration.forEach { println("test ${it.name}") }
+        forEachJsTarget(project).let { (main, test) ->
+            customCompileConfiguration = main
+            customTestCompileConfiguration = test
         }
     }
     val jsTestProcessResources by getting(ProcessResources::class)
