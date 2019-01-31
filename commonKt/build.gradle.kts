@@ -108,32 +108,35 @@ tasks {
         )
     }
 
+    val jsTestProcessResources by getting(ProcessResources::class)
+
     getByName("assemble") {
         dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
     }
 
     val jasmine by creating(NodeTask::class) {
         dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
-        mustRunAfter(compileTestKotlinJs, "jsTestProcessResources")
-
-        val processResourcesTask = getByName<ProcessResources>("jsTestProcessResources")
+        mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
 
         val relevantPaths = listOf(
                 "node_modules",
                 "build/node_modules_imported",
                 compileKotlinJs.outputFile.parent,
-                processResourcesTask.destinationDir,
-                (getByPath(":test-style:compileKotlinJs") as Kotlin2JsCompile).outputFile.parent
+                jsTestProcessResources.destinationDir
         )
 
-        val compileTestTask = getByName<Kotlin2JsCompile>("compileTestKotlinJs")
-        inputs.file(compileTestTask.outputFile)
-        inputs.file("test-run.js")
+        inputs.file(compileTestKotlinJs.outputFile)
+
+        val script = file("test-run.js")
+
+        inputs.file(script)
+        setScript(script)
+
         relevantPaths.forEach { inputs.dir(it) }
 
         setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
-        setScript(file("test-run.js"))
-        setArgs(listOf("${compileTestTask.outputFile}"))
+
+        setArgs(listOf("${compileTestKotlinJs.outputFile}"))
 
         outputs.dir("build/test-results/jsTest")
     }
