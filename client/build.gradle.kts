@@ -27,7 +27,9 @@ tasks {
     }
 
     task<YarnTask>("vendorCompile") {
-        dependsOn("yarn", ":commonKt:assemble")
+        dependsOn("yarn", ":commonKt:assemble", ":commonKt:runDceJsKotlin")
+        mustRunAfter("clean")
+        
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
@@ -82,7 +84,7 @@ tasks {
     }
 
     task<YarnTask>("vendorStats") {
-        dependsOn("yarn", ":engine:build")
+        dependsOn("yarn", ":engine:build", ":commonKt:runDceJsKotlin")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 

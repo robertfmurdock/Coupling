@@ -18,6 +18,7 @@ const config = {
       "angular-websocket",
       "axios",
       "kotlin",
+      "klock",
       "d3-color",
       "d3-interpolate",
       "d3-selection",
@@ -72,10 +73,10 @@ const config = {
     ]
   },
   resolve: {
-    modules: [path.resolve(__dirname, 'node_modules')],
-    alias: {
-      "kotlin": path.resolve(__dirname, '../commonKt/build/kotlin-js-min/js/main/kotlin.js')
-    }
+    modules: [
+      path.resolve(__dirname, '../commonKt/build/kotlin-js-min/js/main'),
+      path.resolve(__dirname, 'node_modules')
+    ]
   },
   externals: {
     ws: {}
