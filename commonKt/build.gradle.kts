@@ -1,5 +1,5 @@
+
 import com.moowork.gradle.node.task.NodeTask
-import com.moowork.gradle.node.yarn.YarnInstallTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -36,7 +36,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
                 implementation("com.soywiz:klock:1.1.1")
             }
@@ -51,7 +51,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
             }
         }
@@ -86,7 +86,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        dependsOn(":test-style:build")
+        dependsOn(":test-style:assemble")
 
         customCompileConfiguration = listOf(
                 project.configurations.getByName("jsCompile"),

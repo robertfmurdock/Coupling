@@ -72,11 +72,10 @@ tasks {
     }
 
     val serverCompile by creating(YarnTask::class) {
-        dependsOn(yarn, copyServerResources, ":engine:assemble", ":commonKt:assemble")
+        dependsOn(yarn, copyServerResources, ":engine:assemble")
         mustRunAfter(clean)
         inputs.dir("node_modules")
         inputs.files(findByPath(":engine:assemble")?.outputs?.files)
-        inputs.files(findByPath(":commonKt:assemble")?.outputs?.files)
         inputs.file(file("package.json"))
         inputs.file(file("tsconfig.json"))
         inputs.file(file("server/webpack.config.js"))
@@ -136,7 +135,7 @@ tasks {
         inputs.dir("test/e2e")
         outputs.dir("test-output/e2e")
 
-        args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS"))
+        args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
     val test by creating {

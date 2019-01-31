@@ -1,3 +1,4 @@
+import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -16,15 +17,15 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.3.20")
-                implementation("org.jetbrains.kotlin:kotlin-test-common:1.3.20")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-test-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common:${BuildConstants.kotlinVersion}")
             }
         }
 
         getByName("jsMain") {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }

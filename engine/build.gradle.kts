@@ -36,7 +36,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 api(project(":commonKt"))
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:1.3.20")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
             }
         }
@@ -68,7 +68,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        dependsOn(":test-style:build", ":commonKt:build")
+        dependsOn(":test-style:assemble", ":commonKt:assemble")
 
         forEachJsTarget(project).let { (main, test) ->
             customCompileConfiguration = main
