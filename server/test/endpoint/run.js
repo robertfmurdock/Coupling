@@ -14,7 +14,7 @@ const removeTempDirectory = function () {
 webpackRunner.run(config)
   .then(function () {
     process.env.PORT = "3001";
-    return require('../../../build/app').start()
+    return require('../../build/executable/app').start()
   })
   .then(startJasmine)
   .finally(removeTempDirectory)

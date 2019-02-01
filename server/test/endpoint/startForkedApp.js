@@ -1,4 +1,4 @@
-const builtApp = require('../../../build/app');
+const builtApp = require('../../build/executable/app');
 
 builtApp.start()
   .then(function (server) {

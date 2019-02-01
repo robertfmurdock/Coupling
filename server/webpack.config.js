@@ -7,7 +7,7 @@ const config = {
   mode: "production",
   entry: path.resolve(jsPath, './app.ts'),
   output: {
-    path: path.resolve(__dirname, '../build'),
+    path: path.resolve(__dirname, 'build/executable'),
     filename: 'app.js',
     libraryTarget: 'commonjs'
   },

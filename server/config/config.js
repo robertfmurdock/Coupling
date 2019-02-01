@@ -1,4 +1,4 @@
-const msConfig = require('./azure-ad-config').default
+const msConfig = require('./azure-ad-config').default;
 
 var config = {
   get publicUrl() {

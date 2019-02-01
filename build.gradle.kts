@@ -19,11 +19,11 @@ node {
     download = true
 }
 
-
 tasks {
     val clean by creating {
         doLast {
             delete(file("build"))
+            delete(file("server/build/executable"))
             delete(file("test-output"))
         }
     }
@@ -35,12 +35,12 @@ tasks {
 
     val copyServerIcons by creating(Copy::class) {
         from("server/public")
-        into("build/public")
+        into("server/build/executable/public")
     }
 
     val copyServerViews by creating(Copy::class) {
         from("server/views")
-        into("build/views")
+        into("server/build/executable/views")
     }
 
     val copyServerResources by creating {
@@ -50,7 +50,7 @@ tasks {
     val copyClient by creating(Copy::class) {
         dependsOn(":client:compile", copyServerResources)
         from("client/build/lib")
-        into("build/public/app/build")
+        into("server/build/executable/public/app/build")
     }
 
     val copyClientTestResults by creating(Copy::class) {
@@ -64,7 +64,7 @@ tasks {
     }
 
     val copyServerTestResults by creating(Copy::class) {
-        from("server/build/test-results")
+        from("server/build/executable/test-results")
         into("test-output")
     }
 
@@ -88,7 +88,7 @@ tasks {
         inputs.file("server/app.ts")
         inputs.file("server/routes.ts")
         inputs.dir("common")
-        outputs.dir(file("build"))
+        outputs.dir(file("server/build/executable"))
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("webpack", "--config", "server/webpack.config.js")
     }
@@ -102,7 +102,7 @@ tasks {
         inputs.file(file("package.json"))
         inputs.files(serverCompile.inputs.files)
         inputs.dir("server/test/unit")
-        outputs.dir("server/build/test-results/server.unit")
+        outputs.dir("server/build/executable/test-results/server.unit")
 
         args = listOf("run", "serverTest", "--silent")
     }

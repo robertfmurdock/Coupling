@@ -13,7 +13,8 @@ COPY package.json yarn.lock /usr/src/app/
 RUN yarn install --production
 
 COPY startup.js /usr/src/app/
-COPY build /usr/src/app/build/
+COPY engine/build/node_modules_imported /usr/src/app/engine/build/node_modules_imported
+COPY server/build/executable /usr/src/app/server/build/executable
 
 CMD ["yarn", "run", "start-built-app"]
 EXPOSE 3000 8125

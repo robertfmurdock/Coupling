@@ -1,1 +1,1 @@
-require('./build/app').start();
+require('./server/build/executable/app').start();
