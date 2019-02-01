@@ -1,6 +1,6 @@
 FROM node:11-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/server
 
 ENV \
   PUBLIC_HOST=web \
@@ -8,11 +8,11 @@ ENV \
   MONGO_CONNECTION=mongodb://mongo \
   NODE_ENV=production
 
-COPY package.json yarn.lock /usr/src/app/
+COPY server/package.json server/yarn.lock /usr/src/app/server/
 
 RUN yarn install --production
 
-COPY startup.js /usr/src/app/
+COPY server/startup.js /usr/src/app/server
 COPY engine/build/node_modules_imported /usr/src/app/engine/build/node_modules_imported
 COPY server/build/executable /usr/src/app/server/build/executable
 
