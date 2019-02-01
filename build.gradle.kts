@@ -3,6 +3,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.moowork.gradle.node.task.NodeTask
 import com.moowork.gradle.node.yarn.YarnInstallTask
+import com.moowork.gradle.node.yarn.YarnSetupTask
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 
@@ -196,4 +197,9 @@ afterEvaluate {
             .flatten()
             .filterIsInstance<YarnInstallTask>()
             .zipWithNext { a: YarnInstallTask, b: YarnInstallTask -> a.mustRunAfter(b) }
+    getAllTasks(true)
+            .map { (_, tasks) -> tasks }
+            .flatten()
+            .filterIsInstance<YarnSetupTask>()
+            .zipWithNext { a: YarnSetupTask, b: YarnSetupTask -> a.mustRunAfter(b) }
 }
