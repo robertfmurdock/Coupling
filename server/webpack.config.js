@@ -17,7 +17,10 @@ const config = {
   },
   devtool: 'eval',
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+    nodeExternals({modulesDir: path.resolve(__dirname, '../engine/build/node_modules_imported')}),
+  ],
   resolve: {
     extensions: ['.js', '.ts'],
     modules: [

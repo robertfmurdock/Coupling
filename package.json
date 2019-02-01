@@ -68,7 +68,7 @@
   "scripts": {
     "start": "./gradlew start",
     "test": "./gradlew test endToEndTest",
-    "start-built-app": "node ./startup.js",
+    "start-built-app": "NODE_PATH='engine/build/node_modules_imported' node ./startup.js",
     "webpack": "webpack",
     "endpointTest": "node server/test/endpoint/run.js",
     "serverTest": "node server/test/unit/run.js",

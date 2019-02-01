@@ -115,6 +115,7 @@ tasks {
         inputs.dir("server/test/endpoint")
         outputs.dir("test-output/endpoint")
 
+        setEnvironment(mapOf("NODE_PATH" to "engine/build/node_modules_imported"))
         args = listOf("run", "endpointTest", "--silent")
     }
 
@@ -135,6 +136,7 @@ tasks {
         inputs.dir("test/e2e")
         outputs.dir("test-output/e2e")
 
+        setEnvironment(mapOf("NODE_PATH" to "engine/build/node_modules_imported"))
         args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
