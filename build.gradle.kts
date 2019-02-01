@@ -192,14 +192,22 @@ docker {
 }
 
 afterEvaluate {
-    getAllTasks(true)
+    val installTasks = getAllTasks(true)
             .map { (_, tasks) -> tasks }
             .flatten()
             .filterIsInstance<YarnInstallTask>()
-            .zipWithNext { a: YarnInstallTask, b: YarnInstallTask -> a.mustRunAfter(b) }
-    getAllTasks(true)
+
+    installTasks.zipWithNext { a: YarnInstallTask, b: YarnInstallTask -> a.mustRunAfter(b) }
+
+    val setupTasks = getAllTasks(true)
             .map { (_, tasks) -> tasks }
             .flatten()
             .filterIsInstance<YarnSetupTask>()
-            .zipWithNext { a: YarnSetupTask, b: YarnSetupTask -> a.mustRunAfter(b) }
+    setupTasks.zipWithNext { a: YarnSetupTask, b: YarnSetupTask -> a.mustRunAfter(b) }
+
+    installTasks.forEach { installTask ->
+        setupTasks.forEach { setupTask ->
+            installTask.mustRunAfter(setupTask)
+        }
+    }
 }
