@@ -1,4 +1,4 @@
-const config = require('../../server/webpack.config');
+const config = require('../../webpack.config');
 const path = require('path');
 const jsPath = path.resolve(__dirname, './');
 const nodeExternals = require('webpack-node-externals');

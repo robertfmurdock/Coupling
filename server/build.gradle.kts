@@ -2,9 +2,16 @@
 import com.moowork.gradle.node.task.NodeTask
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
+import com.zegreatrob.coupling.build.forEachJsTarget
 
 plugins {
+    id("kotlin2js")
     id("com.github.node-gradle.node")
+}
+
+repositories {
+    mavenCentral()
 }
 
 node {
@@ -14,14 +21,18 @@ node {
     download = true
 }
 
-tasks {
+dependencies {
+    implementation(kotlin("stdlib"))
+    implementation(project(":engine"))
+}
 
+tasks {
     val yarn by getting {
         inputs.file(file("package.json"))
         outputs.dir(file("node_modules"))
     }
     
-    val clean by creating {
+    val clean by getting {
         doLast {
             delete(file("build"))
         }
@@ -47,13 +58,22 @@ tasks {
         into("build/executable/public/app/build")
     }
 
+    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
+        dependsOn(":engine:assemble")
+
+        forEachJsTarget(project).let { (main, test) ->
+            customCompileConfiguration = main
+            customTestCompileConfiguration = test
+        }
+    }
+
     val serverCompile by creating(YarnTask::class) {
-        dependsOn(yarn, copyServerResources, ":engine:assemble")
+        dependsOn(yarn, copyServerResources, unpackJsGradleDependencies)
         mustRunAfter(clean)
         inputs.dir("node_modules")
         inputs.files(findByPath(":engine:assemble")?.outputs?.files)
         inputs.file(file("package.json"))
-        inputs.file(file("../tsconfig.json"))
+        inputs.file(file("tsconfig.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("config")
         inputs.dir("lib")
@@ -73,11 +93,11 @@ tasks {
     }
 
     val serverTest by creating(YarnTask::class) {
-        dependsOn(yarn, ":engine:assemble", ":engine:jsTest", ":test-style:assemble")
+        dependsOn(yarn, unpackJsGradleDependencies)
         inputs.file(file("package.json"))
         inputs.files(serverCompile.inputs.files)
         inputs.dir("test/unit")
-        outputs.dir("build/executable/test-results/server.unit")
+        outputs.dir("build/test-results/server.unit")
 
         args = listOf("run", "serverTest", "--silent")
     }
@@ -91,12 +111,13 @@ tasks {
         inputs.dir("test/endpoint")
         outputs.dir("../test-output/endpoint")
 
-        setEnvironment(mapOf("NODE_PATH" to "../engine/build/node_modules_imported"))
+        setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
         args = listOf("run", "endpointTest", "--silent")
     }
 
     val updateWebdriver by creating(YarnTask::class) {
         dependsOn(yarn)
+        inputs.file("package.json")
         outputs.dir("node_modules/webdriver-manager/selenium/")
         args = listOf("run", "update-webdriver", "--silent")
     }
@@ -112,11 +133,11 @@ tasks {
         inputs.dir("../test/e2e")
         outputs.dir("../test-output/e2e")
 
-        setEnvironment(mapOf("NODE_PATH" to "../engine/build/node_modules_imported"))
+        setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
         args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
-    val test by creating {
+    val test by getting {
         dependsOn(serverTest, endpointTest)
     }
 

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "noImplicitAny": false,
+        "sourceMap": true
+    },
+    "include": [
+        "./typescript-settings/main.d.ts",
+        "./app/**/*.ts",
+        "./common/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

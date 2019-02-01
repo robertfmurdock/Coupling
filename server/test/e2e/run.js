@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
-const webpackRunner = require('../webpackRunner');
+const webpackRunner = require('../../../test/webpackRunner');
 const webpackConfig = require('./webpack.config');
 const couplingApp = require('../../server/build/executable/app');
 

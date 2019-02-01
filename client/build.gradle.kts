@@ -45,7 +45,7 @@ tasks {
         inputs.file(file("package.json"))
         inputs.file(file("yarn.lock"))
         inputs.file(file("webpack.config.js"))
-        inputs.file(file("../tsconfig.json"))
+        inputs.file(file("tsconfig.json"))
         inputs.dir("../common")
         inputs.dir("../commonKt/build")
         inputs.dir("./app")

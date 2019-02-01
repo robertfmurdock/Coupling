@@ -1,5 +1,5 @@
 
-import PairAssignmentDocument from "./PairAssignmentDocument";
+import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import * as filter from "ramda/src/filter";
 import * as pipe from "ramda/src/pipe";
 import * as unnest from "ramda/src/unnest";
@@ -7,10 +7,10 @@ import * as curry from "ramda/src/curry";
 import * as prop from "ramda/src/prop";
 import * as map from "ramda/src/map";
 import * as length from "ramda/src/length";
-import Comparators from "./Comparators";
-import Pair from "./Pair";
-import Player from "./Player";
-import PairAssignmentSet from "./PairAssignmentSet";
+import Comparators from "../../../common/Comparators";
+import Pair from "../../../common/Pair";
+import Player from "../../../common/Player";
+import PairAssignmentSet from "../../../common/PairAssignmentSet";
 
 const heatIncrements = [0, 1, 2.5, 4.5, 7, 10];
 const rotationHeatWindow = 5;

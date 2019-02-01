@@ -19,14 +19,14 @@ const config = {
   target: 'node',
   externals: [
     nodeExternals(),
-    nodeExternals({modulesDir: path.resolve(__dirname, '../engine/build/node_modules_imported')}),
+    nodeExternals({modulesDir: path.resolve(__dirname, 'build/node_modules_imported')}),
   ],
   resolve: {
     extensions: ['.js', '.ts'],
     modules: [
-      path.resolve(__dirname, '../engine/build/classes/kotlin/js/main'),
-      path.resolve(__dirname, '../engine/build/node_modules_imported'),
-      path.resolve(__dirname, '../node_modules')
+      path.resolve(__dirname, 'build/classes/kotlin/js/main'),
+      path.resolve(__dirname, 'build/node_modules_imported'),
+      path.resolve(__dirname, 'node_modules')
     ]
   },
   module: {

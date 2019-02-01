@@ -3,7 +3,7 @@ import {browser, element, By} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 
-const config = require("../../server/config/config");
+const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');

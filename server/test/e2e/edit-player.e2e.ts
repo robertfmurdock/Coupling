@@ -2,12 +2,12 @@
 import {browser, By, element} from "protractor";
 import {playersCollection, tribeCollection} from "./database";
 import e2eHelp from "./e2e-help";
-import Tribe from "../../common/Tribe";
+import Tribe from "../../../common/Tribe";
 import * as monk from "monk";
 import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
 
-const config = require("../../server/config/config");
+const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
 describe('The edit player page', function () {

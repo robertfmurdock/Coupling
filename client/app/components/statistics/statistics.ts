@@ -3,8 +3,8 @@ import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
 import {module} from "angular";
 import * as Styles from "./styles.css";
-import PlayerHeatCalculator from "../../../../common/PlayerHeatCalculator";
-import StatisticComposer from "../../../../common/StatisticComposer";
+import PlayerHeatCalculator from "../../runners/PlayerHeatCalculator";
+import StatisticComposer from "../../runners/StatisticComposer";
 
 export class StatisticsController {
     public tribe: Tribe;

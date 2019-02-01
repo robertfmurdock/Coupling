@@ -1,6 +1,6 @@
-import Player from "./Player";
+import Player from "../../../common/Player";
 import * as map from "ramda/src/map";
-import PairAssignmentSet from "./PairAssignmentSet";
+import PairAssignmentSet from "../../../common/PairAssignmentSet";
 import PairHeatCalculator from "./PairHeatCalculator";
 
 const pairHeatCalculator = new PairHeatCalculator();

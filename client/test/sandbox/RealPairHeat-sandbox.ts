@@ -1,10 +1,10 @@
-import PairHeatCalculator from "../../../common/PairHeatCalculator";
+import PairHeatCalculator from "../../app/runners/PairHeatCalculator";
 import * as menuHistory from "./menu-history-bla.json";
 import * as menuPlayers from "./menu-players.json";
 import Pair from "../../../common/Pair";
 import PairAssignmentSet from "../../../common/PairAssignmentSet";
 import Player from "../../../common/Player";
-import StatisticComposer from "../../../common/StatisticComposer";
+import StatisticComposer from "../../app/runners/StatisticComposer";
 import * as pluck from 'ramda/src/pluck'
 import * as pipe from 'ramda/src/pipe'
 import * as map from 'ramda/src/map'

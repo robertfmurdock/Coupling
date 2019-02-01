@@ -1,6 +1,6 @@
-import PairAssignmentDocument from "./PairAssignmentDocument";
-import Tribe from "./Tribe";
-import Player from "./Player";
+import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
+import Tribe from "../../../common/Tribe";
+import Player from "../../../common/Player";
 import * as distanceInWords from "date-fns/distance_in_words"
 // @ts-ignore
 import {ComposeStatisticsActionDispatcher} from 'commonKt'

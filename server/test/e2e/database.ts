@@ -1,6 +1,6 @@
 import * as monk from "monk";
 
-const config = require("../../server/config/config");
+const config = require("../../config/config");
 
 export const database = monk.default(config.tempMongoUrl);
 

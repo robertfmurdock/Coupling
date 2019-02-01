@@ -12,12 +12,14 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinSingleJavaTargetExtension
+import org.jetbrains.kotlin.gradle.plugin.Kotlin2JsPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
 import org.jetbrains.kotlin.utils.LibraryUtils
 import java.io.File
+import kotlin.reflect.full.declaredMemberProperties
 
 /**
  * Hat tip to Sergey Mashkov, needed to adopt and tweak this because the frontend plugin isn't ready
@@ -127,13 +129,20 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
         resultFile.bufferedWriter().use { writer -> resultNames?.joinTo(writer, separator = "\n", postfix = "\n") { "${it.name}/${it.version}/${it.semver}/${it.uri}" } }
     }
 
-    private fun List<Configuration>.getProjectDependencyConfigs() = asSequence()
+    private fun List<Configuration>.getProjectDependencyConfigs(): List<MainAndTestKtConfiguration> = asSequence()
             .map { it.allDependencies }
             .flatten()
             .filterIsInstance<ProjectDependency>()
             .map { it.dependencyProject }
             .toSet()
             .map { dependencyProject -> forEachJsTarget(dependencyProject) }
+            .map {
+                val projectDependencyConfigs = it.main.getProjectDependencyConfigs()
+                        .map(MainAndTestKtConfiguration::main)
+                        .flatten()
+                it.copy(main = it.main + projectDependencyConfigs)
+            }
+
 
     data class NameVersionsUri(val name: String, val version: String, val semver: String, val uri: String)
 
@@ -157,22 +166,32 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
 
 fun File.toLocalURI() = toURI().toASCIIString().replaceFirst("file:[/]+".toRegex(), "file:///")
 
-fun forEachJsTarget(project: Project) = project.multiPlatformExtension
+fun forEachJsTarget(project: Project) = project.javascriptTarget()
+        .mainAndTest()
+
+private fun Project.javascriptTarget(): KotlinTarget = multiPlatformExtension
         ?.javascriptTarget()
-        ?.mainAndTest()
-        ?: MainAndTestKtConfiguration(emptyList(), emptyList())
+        ?: kotlinExtension.javascriptTarget()
+
+private fun KotlinSingleJavaTargetExtension.javascriptTarget() = this.internalTarget
 
 private fun KotlinTarget.mainAndTest(): MainAndTestKtConfiguration {
-    val mainCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
-    val testCompilation = emptyList<KotlinJsCompilation?>().toMutableList()
+    val mainCompilation = emptyList<KotlinCompilation<*>?>().toMutableList()
+    val testCompilation = emptyList<KotlinCompilation<*>?>().toMutableList()
     this.compilations.forEach { compilation ->
         when (compilation.name) {
-            KotlinCompilation.MAIN_COMPILATION_NAME -> mainCompilation += (compilation as? KotlinJsCompilation)
-            KotlinCompilation.TEST_COMPILATION_NAME -> testCompilation += (compilation as? KotlinJsCompilation)
+            KotlinCompilation.MAIN_COMPILATION_NAME -> mainCompilation += compilation
+            KotlinCompilation.TEST_COMPILATION_NAME -> testCompilation += compilation
         }
     }
+    if (mainCompilation.isEmpty()) {
+        throw Error("Could not find any kotlin compilations for project ${project.name}")
+    }
+
     return MainAndTestKtConfiguration(
-            mainCompilation.filterNotNull().findConfigurations(project),
+            mainCompilation.filterNotNull().findConfigurations(project)
+                    .apply { if (isEmpty()) throw Error("Could not find main configurations for project ${project.name}") }
+            ,
             testCompilation.filterNotNull().findConfigurations(project)
     )
 }
@@ -186,5 +205,12 @@ val Project.multiPlatformExtension
     get(): KotlinMultiplatformExtension? =
         project.extensions.findByName("kotlin") as? KotlinMultiplatformExtension
 
-fun List<KotlinJsCompilation>.findConfigurations(project: Project) =
+private val Project.kotlinExtension: KotlinSingleJavaTargetExtension
+    get() = project.pluginManager.apply(Kotlin2JsPluginWrapper::class.java)
+            .let { extensions.getByName("kotlin") as KotlinSingleJavaTargetExtension }
+
+private val KotlinSingleJavaTargetExtension.internalTarget: KotlinTarget
+    get() = KotlinSingleJavaTargetExtension::class.declaredMemberProperties.find { it.name == "target" }!!.get(this) as KotlinTarget
+
+fun List<KotlinCompilation<*>>.findConfigurations(project: Project) =
         map { project.configurations.getByName(it.compileDependencyConfigurationName) }

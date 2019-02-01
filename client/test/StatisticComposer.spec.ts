@@ -3,7 +3,7 @@ import Tribe from "../../common/Tribe";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import Pair from "../../common/Pair";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
-import StatisticComposer from "../../common/StatisticComposer";
+import StatisticComposer from "../app/runners/StatisticComposer";
 import * as map from 'ramda/src/map'
 import * as pluck from 'ramda/src/pluck'
 import * as addIndex from 'ramda/src/addIndex'

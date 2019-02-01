@@ -1,5 +1,5 @@
-const runHelpers = require('../../../test/run-helpers');
-const webpackRunner = require('../../../test/webpackRunner');
+const runHelpers = require('../run-helpers');
+const webpackRunner = require('../webpackRunner');
 let config = require('./webpack.config');
 
 const startJasmine = function () {

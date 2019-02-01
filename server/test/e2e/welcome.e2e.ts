@@ -2,7 +2,7 @@
 import {element, browser, By} from "protractor";
 import e2eHelp from "./e2e-help";
 
-const config = require("../../server/config/config");
+const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
 describe('The welcome page', function () {

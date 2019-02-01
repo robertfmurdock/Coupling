@@ -1,9 +1,0 @@
-{
-  "name": "Coupling",
-  "version": false,
-  "dependencies": {
-    "superagent": "registry:dt/superagent#2.0.0+20161124104740",
-    "supertest": "registry:dt/supertest#1.1.0+20161122042843",
-    "supertest-as-promised": "registry:dt/supertest-as-promised#2.0.2+20160817183444"
-  }
-}

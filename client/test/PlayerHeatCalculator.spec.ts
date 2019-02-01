@@ -1,4 +1,4 @@
-import PlayerHeatCalculator from "../../common/PlayerHeatCalculator";
+import PlayerHeatCalculator from "../app/runners/PlayerHeatCalculator";
 import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
 

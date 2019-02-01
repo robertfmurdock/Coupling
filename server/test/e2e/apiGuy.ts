@@ -1,6 +1,6 @@
 import * as supertest from "supertest";
 
-const config = require('../../server/config/config');
+const config = require('../../config/config');
 const hostName = `http://${config.publicHost}:${config.port}`;
 const agent = supertest.agent(hostName);
 

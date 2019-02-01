@@ -116,7 +116,7 @@ tasks {
     assemble.dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
 
     val jasmine by creating(NodeTask::class) {
-        dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
+        dependsOn(yarn, compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
         mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
 
         val relevantPaths = listOf(

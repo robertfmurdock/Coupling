@@ -21,11 +21,7 @@ function testResolve() {
   let resolve = clone(config.resolve);
   resolve.modules = [
     path.resolve(__dirname, '../../../test-style/build/classes/kotlin/js/main'),
-    path.resolve(__dirname, '../../../commonKt/build/classes/kotlin/js/main'),
-    path.resolve(__dirname, '../../../commonKt/build/node_modules_imported'),
-    path.resolve(__dirname, '../../../commonKt/build/classes/kotlin/js/test'),
-    path.resolve(__dirname, '../../../engine/build/classes/kotlin/js/main'),
-    path.resolve(__dirname, '../../../engine/build/classes/kotlin/js/test'),
+    path.resolve(__dirname, '../../build/node_modules_imported')
   ];
 
   return resolve;

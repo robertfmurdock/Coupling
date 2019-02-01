@@ -1,7 +1,7 @@
-const webpackRunner = require('../../../test/webpackRunner');
-let config = require('./webpack.config');
+const webpackRunner = require('../webpackRunner');
+const config = require('./webpack.config');
 
-const runHelpers = require('../../../test/run-helpers');
+const runHelpers = require('..//run-helpers');
 
 const startJasmine = function () {
   return runHelpers.startJasmine('test/endpoint', '.tmp', 'test.js', __dirname + '/../../build/test-results/endpoint', 'endpoint.xml')

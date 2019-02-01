@@ -1,4 +1,4 @@
-import PairHeatCalculator from "../../common/PairHeatCalculator";
+import PairHeatCalculator from "../app/runners/PairHeatCalculator";
 import Pair from "../../common/Pair";
 import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import * as unnest from 'ramda/src/unnest'
