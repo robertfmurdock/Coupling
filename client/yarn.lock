@@ -3829,23 +3829,6 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
   integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
 
-kotlin-test@^1.3.20:
-  version "1.3.20"
-  resolved "https://registry.yarnpkg.com/kotlin-test/-/kotlin-test-1.3.20.tgz#1edd5110cb9b9b08be56a9876a457816535129a6"
-  integrity sha512-y99/q26MNF/XWfh5sCQdLLK73jNFiQzFfaSivBxtBIrTomxbdcJF/ksdrT/HB8y49+6VRXfjFkrCQpTmoQ44Qg==
-  dependencies:
-    kotlin "1.3.20"
-
-kotlin@1.3.20:
-  version "1.3.20"
-  resolved "https://registry.yarnpkg.com/kotlin/-/kotlin-1.3.20.tgz#a08005ad5f1655f592cd348d5f7e28cacb1b4885"
-  integrity sha512-1+AiHq0KZZ9uv1llXOJVGdQJYIdbki+5bMZPWCIe0W6tqJxR6swCFByQ8l3/tFRqnuVtZMNRhutgt5o01XhxoA==
-
-kotlinx-coroutines-core@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/kotlinx-coroutines-core/-/kotlinx-coroutines-core-1.1.1.tgz#f2034295880b34d8cc8ae1a1a0083722d47f92e9"
-  integrity sha512-RnxF8HVQlMmLQcmJXSZQowR9WpsoeslY6ogqDovb/2HumkkaUBlJuR4eiXwX0DDnoAq8mGPvncl1lRAhK2+ovg==
-
 lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
