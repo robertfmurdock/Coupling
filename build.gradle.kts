@@ -50,7 +50,7 @@ tasks {
         into("build/test-output/engine")
     }
 
-    val copyEndToEndestResults by creating(Copy::class) {
+    val copyEndToEndResults by creating(Copy::class) {
         dependsOn(":server:endToEndTest")
         from("test-output/e2e")
         into("build/test-output/e2e")
@@ -62,7 +62,7 @@ tasks {
                 copyServerTestResults,
                 copyCommonKtTestResults,
                 copyEngineTestResults,
-                copyEndToEndestResults
+                copyEndToEndResults
         )
     }
 
