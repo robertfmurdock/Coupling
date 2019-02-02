@@ -1,7 +1,7 @@
+
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
-import com.moowork.gradle.node.yarn.YarnInstallTask
 
 plugins {
     id("com.github.node-gradle.node") version "1.3.0" apply false
@@ -16,7 +16,6 @@ docker {
         email.set(System.getenv("DOCKER_EMAIL"))
     }
 }
-
 
 tasks {
     val clean by creating {
@@ -97,19 +96,13 @@ tasks {
         imageName.set("zegreatrob/coupling")
         tag.set("latest")
     }
-}
 
-gradle.projectsEvaluated {
-    val installTasks = getAllTasks(true)
-            .map { (_, tasks) -> tasks }
-            .flatten()
-            .filterIsInstance<YarnInstallTask>()
-
-    installTasks.zipWithNext { a: YarnInstallTask, b: YarnInstallTask ->
-        println("${a.name} must run after ${b.name}")
-        a.mustRunAfter(b)
-    }
+    val serverYarn = getByPath(":server:yarn")
+    val clientYarn = getByPath(":client:yarn")
+    serverYarn.mustRunAfter(clientYarn)
+    val commonYarn = getByPath(":commonKt:yarn")
+    clientYarn.mustRunAfter(commonYarn)
+    val engineYarn = getByPath(":engine:yarn")
+    commonYarn.mustRunAfter(engineYarn)
 
 }
-
-
