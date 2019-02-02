@@ -109,4 +109,8 @@ tasks {
 
     val jsTest by getting
     jsTest.dependsOn(jasmine)
+
+    val test by creating {
+        dependsOn(jsTest)
+    }
 }

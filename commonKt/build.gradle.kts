@@ -2,6 +2,7 @@
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
+import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
@@ -88,26 +89,10 @@ tasks {
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:assemble")
 
-        customCompileConfiguration = listOf(
-                project.configurations.getByName("jsCompile"),
-                project.configurations.getByName("jsMainImplementation"),
-                project.configurations.getByName("jsMainRuntimeOnly"),
-                project.configurations.getByName("jsMainApi"),
-                project.configurations.getByName("jsDefault")
-        )
-        customTestCompileConfiguration = listOf(
-                project.configurations.getByName("jsTestApiDependenciesMetadata"),
-                project.configurations.getByName("jsTestCompile"),
-                project.configurations.getByName("jsTestCompileClasspath"),
-                project.configurations.getByName("jsTestCompileOnly"),
-                project.configurations.getByName("jsTestCompileOnlyDependenciesMetadata"),
-                project.configurations.getByName("jsTestImplementationDependenciesMetadata"),
-                project.configurations.getByName("jsTestRuntime"),
-                project.configurations.getByName("jsTestRuntimeClasspath"),
-                project.configurations.getByName("jsTestRuntimeOnlyDependenciesMetadata"),
-                project.configurations.getByName("jsTestCompile"),
-                project.configurations.getByName("jsTestCompileOnly")
-        )
+        forEachJsTarget(project).let { (main, test) ->
+            customCompileConfiguration = main
+            customTestCompileConfiguration = test
+        }
     }
 
     val jsTestProcessResources by getting(ProcessResources::class)
@@ -144,4 +129,8 @@ tasks {
 
     val jsTest by getting
     jsTest.dependsOn(jasmine)
+
+    val test by creating {
+        dependsOn(jsTest)
+    }
 }

@@ -31,29 +31,41 @@ tasks {
         dependsOn(":client:test")
 
         from("client/build/test-results")
-        into("test-output/client")
+        into("build/test-output/client")
     }
 
     val copyCommonKtTestResults by creating(Copy::class) {
         dependsOn(":commonKt:jsTest")
         from("commonKt/build/test-results/jsTest")
-        into("test-output/commonKt")
+        into("build/test-output/commonKt")
     }
 
     val copyServerTestResults by creating(Copy::class) {
         dependsOn(":server:test")
         from("server/build/test-results")
-        into("test-output")
+        into("build/test-output")
     }
 
     val copyEngineTestResults by creating(Copy::class) {
         dependsOn(":engine:jsTest")
         from("engine/build/test-results/jsTest")
-        into("test-output/engine")
+        into("build/test-output/engine")
+    }
+
+    val copyEndToEndestResults by creating(Copy::class) {
+        dependsOn(":server:endToEndTest")
+        from("test-output/e2e")
+        into("build/test-output/e2e")
     }
 
     val copyTestResultsForCircle by creating {
-        dependsOn(copyClientTestResults, copyServerTestResults, copyCommonKtTestResults, copyEngineTestResults)
+        dependsOn(
+                copyClientTestResults,
+                copyServerTestResults,
+                copyCommonKtTestResults,
+                copyEngineTestResults,
+                copyEndToEndestResults
+        )
     }
 
     val test by creating {
@@ -61,7 +73,7 @@ tasks {
     }
 
     val check by creating {
-        dependsOn(test)
+        dependsOn(test, copyTestResultsForCircle)
     }
 
     val build by creating {

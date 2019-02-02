@@ -72,9 +72,11 @@ export class WelcomeController {
     public leftPlayer: Player;
     public rightPlayer: Player;
     public styles: any;
+    public showLoginChooser: boolean;
 
     constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer, public $scope) {
         this.show = false;
+        this.showLoginChooser = false;
         const choice = WelcomeController.chooseWelcomeCards(randomizer);
         this.leftPlayer = makePlayerForCard(choice.leftCard);
         this.rightPlayer = makePlayerForCard(choice.rightCard);
@@ -83,8 +85,8 @@ export class WelcomeController {
         $timeout(() => this.show = true, 0);
     }
 
-    async signIn() {
-        await GoogleSignIn.signIn();
+    signIn() {
+        this.showLoginChooser = true
     }
 
 }

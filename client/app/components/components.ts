@@ -14,6 +14,7 @@ import Welcome from "./welcome/WelcomeDirective";
 import TribeBrowserDirective from "./tribebrowser/TribeBrowserDirective";
 import Statistics from "./statistics/statistics";
 import RetiredPlayers from "./retired-players/retired-players";
+import LoginChooser from './login-chooser/login-chooser'
 import {module} from "angular";
 import debounce from 'lodash.debounce'
 
@@ -35,7 +36,8 @@ module('coupling.component', [
     TribeList.name,
     Welcome.name,
     HeatMap.name,
-    TribeBrowserDirective.name
+    TribeBrowserDirective.name,
+    LoginChooser.name
 ])
     .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
         fitTextConfigProvider.config = {

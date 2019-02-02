@@ -19,12 +19,11 @@ jobs:
             - ".gradle"
             - "client/.gradle"
             - "node_modules"
-      - run: "./gradlew check endToEndTest"
-      - run: "./gradlew copyTestResultsForCircle"
+      - run: "./gradlew check"
       - store_artifacts:
-          path: test-output
+          path: build/test-output
       - store_test_results:
-          path: test-output
+          path: build/test-output
       - persist_to_workspace:
           root: ./
           paths:

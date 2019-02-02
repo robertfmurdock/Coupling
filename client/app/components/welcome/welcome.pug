@@ -9,4 +9,5 @@ div(ng-show="welcome.show" ng-class="welcome.styles.className")
             div(ng-class="welcome.styles.welcomeProverb" ng-show="welcome.show") {{welcome.proverb}}
     div
         div(ng-class="welcome.styles.enterButtonContainer")
-            a(ng-class="welcome.styles.enterButton" ng-click="welcome.signIn()" target='_self' class="enter-button super pink button") Come on in!
+            a(ng-hide="welcome.showLoginChooser" ng-class="welcome.styles.enterButton" ng-click="welcome.signIn()" target='_self' class="enter-button super pink button") Come on in!
+            loginchooser(ng-show="welcome.showLoginChooser")

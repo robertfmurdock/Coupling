@@ -43,12 +43,17 @@
 }
 
 :local(.enterButtonContainer) {
-    padding-top: 35px;
+    padding-top: 15px;
     padding-bottom: 50px;
     display: inline-block;
 }
 
-:local(.enterButton) {
+:local(.enterButtonContainer) :local(.enterButton) {
+    margin-top: 20px;
+}
+
+:local(.enterButton).ng-hide {
+    display: none;
 }
 
 :local(.enterButtonContainer) {
@@ -56,7 +61,7 @@
     animation-iteration-count: infinite;
 }
 
-:local(.enterButton) {
+:local(.enterButtonContainer) .button {
     animation: 0.5s pulsate;
     animation-iteration-count: infinite;
     animation-play-state: paused;
@@ -66,7 +71,7 @@
     animation-play-state: paused;
 }
 
-:local(.enterButton):hover {
+:local(.enterButtonContainer) .button:hover {
     animation-play-state: running;
 }
 

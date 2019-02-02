@@ -130,7 +130,7 @@ tasks {
         inputs.files(serverTest.inputs.files)
         inputs.files(serverCompile.outputs.files)
         inputs.file(file("package.json"))
-        inputs.dir("../test/e2e")
+        inputs.dir("test/e2e")
         outputs.dir("../test-output/e2e")
 
         setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
@@ -138,7 +138,11 @@ tasks {
     }
 
     val test by getting {
-        dependsOn(serverTest, endpointTest)
+        dependsOn(serverTest)
+    }
+
+    val check by getting {
+        dependsOn(endpointTest)
     }
 
     val start by creating(YarnTask::class) {
