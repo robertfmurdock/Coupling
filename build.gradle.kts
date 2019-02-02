@@ -2,7 +2,6 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.moowork.gradle.node.yarn.YarnInstallTask
-import com.moowork.gradle.node.yarn.YarnSetupTask
 
 plugins {
     id("com.github.node-gradle.node") version "1.3.0" apply false
@@ -100,30 +99,13 @@ tasks {
     }
 }
 
-afterEvaluate {
+gradle.projectsEvaluated {
     val installTasks = getAllTasks(true)
             .map { (_, tasks) -> tasks }
             .flatten()
             .filterIsInstance<YarnInstallTask>()
 
-    installTasks.forEachIndexed { index: Int, yarnInstallTask: YarnInstallTask ->
-        installTasks.slice(index + 1..installTasks.lastIndex)
-                .forEach {
-                    yarnInstallTask.mustRunAfter(it)
-                }
-    }
-
     installTasks.zipWithNext { a: YarnInstallTask, b: YarnInstallTask -> a.mustRunAfter(b) }
-
-    val setupTasks = getAllTasks(true)
-            .map { (_, tasks) -> tasks }
-            .flatten()
-            .filterIsInstance<YarnSetupTask>()
-    setupTasks.zipWithNext { a: YarnSetupTask, b: YarnSetupTask -> a.mustRunAfter(b) }
-
-    installTasks.forEach { installTask ->
-        setupTasks.forEach { setupTask ->
-            installTask.mustRunAfter(setupTask)
-        }
-    }
 }
+
+
