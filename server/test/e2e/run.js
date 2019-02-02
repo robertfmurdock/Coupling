@@ -1,8 +1,8 @@
 const fs = require('fs-extra');
 const Promise = require('bluebird');
-const webpackRunner = require('../../../test/webpackRunner');
+const webpackRunner = require('../webpackRunner');
 const webpackConfig = require('./webpack.config');
-const couplingApp = require('../../server/build/executable/app');
+const couplingApp = require('../../build/executable/app');
 
 const childProcess = require('child_process');
 

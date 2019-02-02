@@ -9,18 +9,15 @@ describe('The welcome page', function () {
 
     const pageBody = element(By.tagName('body'));
     const enterButton = element(By.className("enter-button"));
+    const googleButton = element(By.className("google-login"));
+    const microsoftButton = element(By.className("ms-login"));
 
-    it('has an enter button redirects to google login', async function () {
-        browser.get(hostName + '/welcome');
-        pageBody.allowAnimations(false);
-
-        enterButton.click();
-        browser.waitForAngularEnabled(false);
-
+    async function waitToArriveAt(expectedHost: string) {
         await browser.wait(async () => {
             try {
                 const url = await browser.getCurrentUrl();
-                return url.startsWith('https://accounts.google.com');
+
+                return url.startsWith(expectedHost);
             } catch (e) {
                 console.log(e);
                 return false
@@ -28,9 +25,36 @@ describe('The welcome page', function () {
         }, 5000);
 
         browser.getCurrentUrl().then(function (url) {
-            expect(url.startsWith('https://accounts.google.com')).toBe(true, `url was ${url}`);
+            expect(url.startsWith(expectedHost)).toBe(true, `url was ${url}`);
         });
+    }
 
+    it('has an enter button redirects to google login', async function () {
+        browser.get(hostName + '/welcome');
+        pageBody.allowAnimations(false);
+
+        enterButton.click();
+        googleButton.click();
+
+        browser.waitForAngularEnabled(false);
+
+        let expectedHost = 'https://accounts.google.com';
+
+        await waitToArriveAt(expectedHost);
+    });
+
+    it('has an enter button redirects to ms login', async function () {
+        browser.get(hostName + '/welcome');
+        pageBody.allowAnimations(false);
+
+        enterButton.click();
+        microsoftButton.click();
+
+        browser.waitForAngularEnabled(false);
+
+        let expectedHost = 'https://login.live.com';
+
+        await waitToArriveAt(expectedHost);
     });
 
     afterEach(function () {

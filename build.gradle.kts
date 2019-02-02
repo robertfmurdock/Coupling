@@ -105,7 +105,11 @@ gradle.projectsEvaluated {
             .flatten()
             .filterIsInstance<YarnInstallTask>()
 
-    installTasks.zipWithNext { a: YarnInstallTask, b: YarnInstallTask -> a.mustRunAfter(b) }
+    installTasks.zipWithNext { a: YarnInstallTask, b: YarnInstallTask ->
+        println("${a.name} must run after ${b.name}")
+        a.mustRunAfter(b)
+    }
+
 }
 
 
