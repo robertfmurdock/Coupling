@@ -7,7 +7,6 @@
     "test": "test"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.8.7",
     "@types/angular": "^1.6.53",
     "@types/angular-mocks": "^1.7.0",
     "@types/angular-resource": "^1.5.15",

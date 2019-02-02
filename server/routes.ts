@@ -38,6 +38,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
             .then(({isAuthorized}) => {
                 if (isAuthorized) {
                     const tribeId = request.params.tribeId;
+                    connection.tribeId = tribeId;
                     broadcastConnectionCountForTribe(tribeId);
 
                     connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
@@ -49,12 +50,11 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     });
 
     function broadcast(message: string, clients: WebSocket[]) {
-        console.log('Broadcasting. Total connections: ' + wsInstance.getWss().clients.size);
         clients.forEach((client: WebSocket) => client.send(message));
     }
 
     let connectionIsOpenAndForSameTribe = function (client, tribeId) {
-        return client.readyState === WebSocket.OPEN && client.upgradeReq.params.tribeId === tribeId;
+        return client.readyState === WebSocket.OPEN && client.tribeId === tribeId;
     };
 
     let broadcastConnectionCountForTribe = function (tribeId) {

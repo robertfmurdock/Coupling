@@ -1,5 +1,5 @@
 import * as WebSocket from "ws";
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import * as supertest from "supertest";
 import * as monk from "monk";
 import Tribe from "../../../common/Tribe";
@@ -27,8 +27,8 @@ describe('Current connections websocket', function () {
         _id: string
     }
 
-    const tribe: Tribe &  DatabaseEntity = {id: 'LOL', name: 'League of Losers', _id: undefined};
-    const unauthorizedTribe: Tribe &  DatabaseEntity = {
+    const tribe: Tribe & DatabaseEntity = {id: 'LOL', name: 'League of Losers', _id: undefined};
+    const unauthorizedTribe: Tribe & DatabaseEntity = {
         id: 'ROFL',
         name: 'Royal Observatory of Fluid Lightning',
         _id: undefined
@@ -47,7 +47,7 @@ describe('Current connections websocket', function () {
         agent.get('/test-login?username=' + userEmail + '&password=pw')
             .expect(302)
             .then(response => this.authenticatedHeaders = {cookie: response.headers['set-cookie']})
-            .then(() => Promise.all([
+            .then(() => Bluebird.all([
                 playersCollection.drop(),
                 tribesCollection.drop()
             ]))
@@ -56,7 +56,7 @@ describe('Current connections websocket', function () {
             .then(done, done.fail);
 
         this.promiseWebsocket = function (tribeId = tribe.id) {
-            return new Promise((resolve, reject) => {
+            return new Bluebird((resolve, reject) => {
                 const options = {headers: this.authenticatedHeaders};
                 const websocket = new WebSocket(`ws://${server}/api/${tribeId}/pairAssignments/current`, options);
                 const messages = [];
@@ -76,8 +76,8 @@ describe('Current connections websocket', function () {
         };
     });
 
-    it('when you are the only connection, gives you a count of one', function (done) {
-        new Promise((resolve, reject) => {
+    it('when you are the only connection, gives you a count of one', async function () {
+        await new Bluebird((resolve, reject) => {
             const options = {headers: this.authenticatedHeaders};
             const websocket = new WebSocket(`ws://${server}/api/${tribe.id}/pairAssignments/current`, options);
 
@@ -92,16 +92,15 @@ describe('Current connections websocket', function () {
 
             setupErrorHandler(websocket, reject);
         })
-            .timeout(100)
+            .timeout(1000)
             .then((message) => {
                 expect(message).toEqual(makeConnectionMessage(1));
             })
-            .then(done, done.fail);
     });
 
     it('when there are multiple connections, gives you the total connection count', function (done) {
-        Promise.all([this.promiseWebsocket(), this.promiseWebsocket()])
-            .then(bundles => Promise.all(bundles.concat(this.promiseWebsocket())))
+        Bluebird.all([this.promiseWebsocket(), this.promiseWebsocket()])
+            .then(bundles => Bluebird.all(bundles.concat(this.promiseWebsocket())))
             .then(bundles => {
                 expect(bundles[2].messages).toEqual([makeConnectionMessage(3)]);
                 return bundles;
@@ -111,16 +110,16 @@ describe('Current connections websocket', function () {
     });
 
     it('when there are multiple connections, gives you the total connection count for the current tribe', function (done) {
-        Promise.all([
+        Bluebird.all([
             this.promiseWebsocket(tribeA.id),
             this.promiseWebsocket(tribeB.id),
         ])
-            .then(bundles => Promise.all(bundles.concat([
+            .then(bundles => Bluebird.all(bundles.concat([
                 this.promiseWebsocket(tribeA.id),
                 this.promiseWebsocket(tribeB.id),
                 this.promiseWebsocket(tribeB.id),
             ])))
-            .then(bundles => Promise.all(bundles.concat([
+            .then(bundles => Bluebird.all(bundles.concat([
                 this.promiseWebsocket(tribeC.id),
                 this.promiseWebsocket(tribeB.id),
             ])))
@@ -145,7 +144,7 @@ describe('Current connections websocket', function () {
     }
 
     let promiseWebsocketClose = function (bundle) {
-        return new Promise(resolve => {
+        return new Bluebird(resolve => {
             bundle.websocket.on('close', () => resolve());
             bundle.websocket.close();
         })
@@ -154,17 +153,17 @@ describe('Current connections websocket', function () {
 
     function closeAllSockets() {
         return bundles => {
-            return Promise.all(bundles.map(bundle => promiseWebsocketClose(bundle)));
+            return Bluebird.all(bundles.map(bundle => promiseWebsocketClose(bundle)));
         }
     }
 
     it('starting with multiple connections then closing one updates the total connection count', function (done) {
-        Promise.all([this.promiseWebsocket(), this.promiseWebsocket()])
+        Bluebird.all([this.promiseWebsocket(), this.promiseWebsocket()])
             .then(bundles => {
                 return promiseWebsocketClose(bundles[0])
                     .then(() => {
                         const newBundles = [bundles[1]];
-                        return Promise.all(newBundles.concat(this.promiseWebsocket()));
+                        return Bluebird.all(newBundles.concat(this.promiseWebsocket()));
                     });
             })
             .then(bundles => {
@@ -177,7 +176,7 @@ describe('Current connections websocket', function () {
 
     it('when a new connection is open existing connections receive a message with the new count', function (done) {
         this.promiseWebsocket()
-            .then(bundle => Promise.all([bundle, this.promiseWebsocket()]))
+            .then(bundle => Bluebird.all([bundle, this.promiseWebsocket()]))
             .then(bundles => {
                 expect(bundles[0].messages).toEqual([makeConnectionMessage(1), makeConnectionMessage(2)]);
                 return bundles;
@@ -189,13 +188,13 @@ describe('Current connections websocket', function () {
     it('when a connection closes existing connections receive a message with the new count', function (done) {
         this.promiseWebsocket()
             .then(bundle => {
-                return Promise.all([bundle, this.promiseWebsocket()])
+                return Bluebird.all([bundle, this.promiseWebsocket()])
             })
             .then(bundles => {
                 const [bundleToClose, openBundle] = bundles;
-                return Promise.all([
+                return Bluebird.all([
                     promiseWebsocketClose(bundleToClose),
-                    new Promise((resolve) => openBundle.websocket.on('message', resolve))
+                    new Bluebird((resolve) => openBundle.websocket.on('message', resolve))
                         .timeout(100)
                 ])
                     .then(() => openBundle);
@@ -209,7 +208,7 @@ describe('Current connections websocket', function () {
     });
 
     it('does not talk to you if you are not authenticated', function (done) {
-        const socketPromise = new Promise((resolve, reject) => {
+        const socketPromise = new Bluebird((resolve, reject) => {
             const unauthenticatedHeaders = {};
             const websocket = new WebSocket(`ws://${server}/api/${tribe.id}/pairAssignments/current`, unauthenticatedHeaders);
             websocket.on('close', resolve);
@@ -222,7 +221,7 @@ describe('Current connections websocket', function () {
     });
 
     it('does not talk to you if are not authorized for the tribe requested', function (done) {
-        const socketPromise = new Promise((resolve, reject) => {
+        const socketPromise = new Bluebird((resolve, reject) => {
             const options = {headers: this.authenticatedHeaders};
             const websocket = new WebSocket(`ws://${server}/api/${unauthorizedTribe.id}/pairAssignments/current`, options);
             websocket.on('close', resolve);
@@ -235,7 +234,7 @@ describe('Current connections websocket', function () {
     });
 
     it('going to a socket location which does not exist will not crash the server', function (done) {
-        new Promise((resolve, reject) => {
+        new Bluebird((resolve, reject) => {
             const options = {headers: this.authenticatedHeaders};
             const websocket = new WebSocket(`ws://${server}/api/404WTF`, options);
 
@@ -250,7 +249,7 @@ describe('Current connections websocket', function () {
     });
 
     it('server will not crash when socket is immediately closed', function (done) {
-        new Promise(resolve => {
+        new Bluebird(resolve => {
             const options = {headers: this.authenticatedHeaders};
             const websocket = new WebSocket(`ws://${server}/api/${tribe.id}/pairAssignments/current`, options);
             websocket.on('open', () => websocket.close());
