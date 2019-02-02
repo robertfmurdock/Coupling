@@ -106,6 +106,13 @@ afterEvaluate {
             .flatten()
             .filterIsInstance<YarnInstallTask>()
 
+    installTasks.forEachIndexed { index: Int, yarnInstallTask: YarnInstallTask ->
+        installTasks.slice(index + 1..installTasks.lastIndex)
+                .forEach {
+                    yarnInstallTask.mustRunAfter(it)
+                }
+    }
+
     installTasks.zipWithNext { a: YarnInstallTask, b: YarnInstallTask -> a.mustRunAfter(b) }
 
     val setupTasks = getAllTasks(true)
