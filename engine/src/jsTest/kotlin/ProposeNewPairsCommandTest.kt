@@ -1,26 +1,30 @@
+
 import com.soywiz.klock.DateTime
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
 import kotlin.random.Random
 import kotlin.test.Test
 
 class ProposeNewPairsCommandTest {
 
     @Test
-    fun willUseRepositoryToGetThings() = GlobalScope.promise {
-        setup(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
+    fun willUseRepositoryToGetThingsAsync() = testAsync {
+        setupAsync(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
             val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), ""))
             val tribe = KtTribe("Tribe Id! ${Random.nextInt(300)}", PairingRule.PreferDifferentBadge)
 
-            override fun getPins(tribeId: String) = CompletableDeferred(pins)
+            override fun getPinsAsync(tribeId: String) = CompletableDeferred(pins)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun getHistory(tribeId: String) = CompletableDeferred(history)
+            override fun getHistoryAsync(tribeId: String) = CompletableDeferred(history)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun getTribe(tribeId: String): Deferred<KtTribe> = CompletableDeferred(tribe)
+            override fun getTribeAsync(tribeId: String): Deferred<KtTribe> = CompletableDeferred(tribe)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
+
+            override fun getPlayersAsync(tribeId: String): Deferred<List<Player>> = CompletableDeferred(emptyList())
 
             override val repository: CouplingDataRepository = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
@@ -30,17 +34,12 @@ class ProposeNewPairsCommandTest {
             init {
                 actionDispatcher.spyReturnValues.add(expectedPairAssignmentDocument)
             }
-        }) exercise {
-            async {
-                ProposeNewPairsCommand(tribe.id, players)
-                        .perform()
-            }
-        } verify { resultDeferred ->
-            async {
-                val result = resultDeferred.await()
-                result.assertIsEqualTo(expectedPairAssignmentDocument)
-                actionDispatcher.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
-            }
+        }) exerciseAsync {
+            ProposeNewPairsCommand(tribe.id, players)
+                    .perform()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(expectedPairAssignmentDocument)
+            actionDispatcher.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
         }
     }
 }

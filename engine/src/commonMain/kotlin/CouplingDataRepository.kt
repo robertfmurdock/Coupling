@@ -2,7 +2,8 @@ import kotlinx.coroutines.Deferred
 
 interface CouplingDataRepository {
 
-    fun getPins(tribeId: String): Deferred<List<Pin>>
-    fun getHistory(tribeId: String): Deferred<List<PairAssignmentDocument>>
-    fun getTribe(tribeId: String): Deferred<KtTribe>
+    fun getPlayersAsync(tribeId: String) : Deferred<List<Player>>
+    fun getPinsAsync(tribeId: String): Deferred<List<Pin>>
+    fun getHistoryAsync(tribeId: String): Deferred<List<PairAssignmentDocument>>
+    fun getTribeAsync(tribeId: String): Deferred<KtTribe>
 }

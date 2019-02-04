@@ -1,7 +1,7 @@
 // Vernacular based on http://xunitpatterns.com/Four%20Phase%20Test.html
 
-class Exercise<C, R>(val context: C, val result: R)
 class Setup<C>(val context: C)
+class Exercise<C, R>(val context: C, val result: R)
 
 fun <C> setup(context: C) = Setup(context)
 
