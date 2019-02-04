@@ -32,12 +32,13 @@ private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
 
 @Suppress("unused")
 @JsName("proposeNewPairsCommandDispatcher")
-fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): CommandDispatcher = object : CommandDispatcher,
+fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): ProposeNewPairsCommandDispatcher = object :
         ProposeNewPairsCommandDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
+        RunGameActionDispatcher,
         Wheel {
     override val repository: CouplingDataRepository = dataRepository(jsRepository)
     override val actionDispatcher = this
@@ -47,7 +48,7 @@ fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): CommandDispatcher =
     @JsName("performCommand")
     fun performCommand(tribeId: String, players: Array<Json>) =
             GlobalScope.promise {
-                ProposeNewPairsCommand(tribeId, players.map { it.toPlayer() })
+                ProposeNewPairsCommand(tribeId, players.map(Json::toPlayer))
                         .perform()
                         .let {
                             json(
@@ -57,4 +58,21 @@ fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): CommandDispatcher =
                             )
                         }
             }
+}
+
+@Suppress("unused")
+@JsName("playersQueryDispatcher")
+fun playersQueryDispatcher(jsRepository: dynamic): PlayersQueryDispatcher = object : PlayersQueryDispatcher {
+    override val repository: CouplingDataRepository
+        get() = dataRepository(jsRepository)
+
+    @Suppress("unused")
+    @JsName("performQuery")
+    fun performQuery(tribeId: String) = GlobalScope.promise {
+        PlayersQuery(tribeId)
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
+    }
+
 }

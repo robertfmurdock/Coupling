@@ -1,13 +1,19 @@
 import * as express from "express";
+// @ts-ignore
+import {playersQueryDispatcher} from "server"
 
 class PlayerRoutes {
-    listTribeMembers(request, response) {
-        request.dataService.requestPlayers(request.params.tribeId).then(function (players) {
-            response.send(players);
-        }, function (error) {
-            response.send(error);
-        })
+    listPlayers(request, response) {
+        playersQueryDispatcher(request.dataService)
+            .performQuery(request.params.tribeId)
+            .then(function (players) {
+                response.send(players);
+            }, function (error) {
+                console.log('error', error);
+                response.send(error);
+            })
     };
+
     savePlayer(request, response) {
         const player = request.body;
         request.dataService.savePlayer(player)
@@ -18,6 +24,7 @@ class PlayerRoutes {
                 response.send(err);
             });
     };
+
     removePlayer(request, response) {
         request.dataService.removePlayer(request.params.playerId, function (error) {
             if (error) {
@@ -28,6 +35,7 @@ class PlayerRoutes {
             }
         });
     };
+
     listRetiredMembers(request, response) {
         request.dataService.requestRetiredPlayers(request.params.tribeId).then(function (players) {
             response.send(players);
@@ -40,7 +48,7 @@ class PlayerRoutes {
 const players = new PlayerRoutes();
 const router = express.Router({mergeParams: true});
 router.route('/')
-    .get(players.listTribeMembers)
+    .get(players.listPlayers)
     .post(players.savePlayer);
 router.delete('/:playerId', players.removePlayer);
 router.get('/retired', players.listRetiredMembers);

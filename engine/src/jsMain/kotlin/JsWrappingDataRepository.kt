@@ -15,7 +15,7 @@ class JsWrappingDataRepository(private val jsRepository: dynamic) : CouplingData
 
     private fun requestJsPlayers(tribeId: String) = jsRepository
             .requestPlayers(tribeId)
-            .unsafeCast<Promise<List<Json>>>()
+            .unsafeCast<Promise<Array<Json>>>()
 
     override fun getPinsAsync(tribeId: String) = requestPins(tribeId)
             .then { it.toPins() }
