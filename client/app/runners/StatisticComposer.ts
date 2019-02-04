@@ -3,7 +3,9 @@ import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import * as distanceInWords from "date-fns/distance_in_words"
 // @ts-ignore
-import {ComposeStatisticsActionDispatcher, performComposeStatisticsAction} from 'commonKt'
+import {ComposeStatisticsActionDispatcher} from 'commonKt'
+// @ts-ignore
+import {performComposeStatisticsAction} from 'client'
 const dispatcher = new ComposeStatisticsActionDispatcher();
 
 export default class StatisticComposer {

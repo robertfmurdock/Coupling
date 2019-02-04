@@ -1,9 +1,9 @@
-
 import com.moowork.gradle.node.task.NodeTask
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import com.zegreatrob.coupling.build.forEachJsTarget
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("kotlin2js")
@@ -12,6 +12,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
 }
 
 node {
@@ -24,6 +25,8 @@ node {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":engine"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+    implementation("com.soywiz:klock:1.1.1")
 }
 
 tasks {
@@ -31,11 +34,17 @@ tasks {
         inputs.file(file("package.json"))
         outputs.dir(file("node_modules"))
     }
-    
+
     val clean by getting {
         doLast {
             delete(file("build"))
         }
+    }
+
+    val compileKotlin2Js by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
     }
 
     val copyServerIcons by creating(Copy::class) {
@@ -58,20 +67,22 @@ tasks {
         into("build/executable/public/app/build")
     }
 
-    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        dependsOn(":engine:assemble")
+    val unpackJsGradleDependencies
+            by creating(UnpackGradleDependenciesTask::class) {
+                dependsOn(":engine:assemble")
 
-        forEachJsTarget(project).let { (main, test) ->
-            customCompileConfiguration = main
-            customTestCompileConfiguration = test
-        }
-    }
+                forEachJsTarget(project).let { (main, test) ->
+                    customCompileConfiguration = main
+                    customTestCompileConfiguration = test
+                }
+            }
 
     val serverCompile by creating(YarnTask::class) {
-        dependsOn(yarn, copyServerResources, unpackJsGradleDependencies)
+        dependsOn(yarn, copyServerResources, unpackJsGradleDependencies, compileKotlin2Js)
         mustRunAfter(clean)
+        inputs.dir("build/classes")
+        inputs.dir("build/node_modules_imported")
         inputs.dir("node_modules")
-        inputs.files(findByPath(":engine:assemble")?.outputs?.files)
         inputs.file(file("package.json"))
         inputs.file(file("tsconfig.json"))
         inputs.file(file("webpack.config.js"))
@@ -93,7 +104,7 @@ tasks {
     }
 
     val serverTest by creating(YarnTask::class) {
-        dependsOn(yarn, unpackJsGradleDependencies)
+        dependsOn(yarn, unpackJsGradleDependencies, compileKotlin2Js)
         inputs.file(file("package.json"))
         inputs.files(serverCompile.inputs.files)
         inputs.dir("test/unit")

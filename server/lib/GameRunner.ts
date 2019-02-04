@@ -1,7 +1,9 @@
 import Player from "../../common/Player";
 
 // @ts-ignore
-import {spinContext, performRunGameCommand} from "engine";
+import {spinContext} from "engine";
+// @ts-ignore
+import {performRunGameCommand} from "server";
 
 const context = spinContext();
 

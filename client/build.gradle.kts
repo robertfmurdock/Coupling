@@ -1,9 +1,19 @@
+
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 import java.io.FileOutputStream
 
 plugins {
+    id("kotlin2js")
+    id("kotlin-dce-js")
     id("com.github.node-gradle.node")
+}
+
+repositories {
+    mavenCentral()
+    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
 }
 
 node {
@@ -13,24 +23,49 @@ node {
     download = true
 }
 
+dependencies {
+    implementation(kotlin("stdlib-js"))
+    implementation(project(":commonKt"))
+    implementation("com.soywiz:klock:1.1.1")
+}
+
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
-
-    getByName("yarn") {
+    val yarn by getting {
         mustRunAfter(":commonKt:yarn")
     }
 
-    task("clean") {
+    val clean by getting {
         doLast {
             delete(file("build"))
         }
     }
 
-    task<YarnTask>("vendorCompile") {
-        dependsOn("yarn", ":commonKt:assemble", ":commonKt:runDceJsKotlin")
+    val compileKotlin2Js by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
+    val compileTestKotlin2Js by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "commonjs"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
+
+    val runDceKotlinJs by getting(KotlinJsDce::class) {
+        keep(
+                "commonKt.historyFromArray",
+                "commonKt.ComposeStatisticsActionDispatcher",
+                "client.performComposeStatisticsAction"
+        )
+    }
+
+    val vendorCompile by creating(YarnTask::class) {
+        dependsOn(yarn, runDceKotlinJs)
         mustRunAfter("clean")
-        
+
+        inputs.files(runDceKotlinJs.outputs)
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("vendor.webpack.config.js"))
@@ -40,14 +75,13 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn("yarn", "vendorCompile", ":commonKt:assemble")
+        dependsOn(yarn, vendorCompile, runDceKotlinJs)
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("yarn.lock"))
         inputs.file(file("webpack.config.js"))
         inputs.file(file("tsconfig.json"))
         inputs.dir("../common")
-        inputs.dir("../commonKt/build")
         inputs.dir("./app")
         inputs.dir("./images")
         inputs.dir("./stylesheets")
@@ -56,19 +90,18 @@ tasks {
         args = listOf("webpack", "--config", "webpack.config.js")
     }
 
-    task<YarnTask>("test") {
-        dependsOn("yarn", "vendorCompile", ":commonKt:jsTest")
+    val karma by creating(YarnTask::class) {
+        dependsOn(yarn, vendorCompile, ":commonKt:jsTest")
         inputs.file(file("package.json"))
-        inputs.files(findByName("vendorCompile")?.inputs?.files)
-        inputs.files(findByPath(":engine:assemble")?.outputs?.files)
+        inputs.files(vendorCompile.inputs.files)
         inputs.dir("test")
         outputs.dir(file("build/test-results"))
 
         args = listOf("run", "test", "--silent")
     }
 
-    task("check") {
-        dependsOn("test")
+    val test by getting {
+        dependsOn(karma)
     }
 
     task<YarnTask>("testWatch") {
@@ -76,7 +109,7 @@ tasks {
     }
 
     task<YarnTask>("stats") {
-        dependsOn("yarn", "vendorCompile")
+        dependsOn(yarn, vendorCompile)
 
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "webpack.config.js")
@@ -88,7 +121,7 @@ tasks {
     }
 
     task<YarnTask>("vendorStats") {
-        dependsOn("yarn", ":engine:build", ":commonKt:runDceJsKotlin")
+        dependsOn(yarn, runDceKotlinJs)
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 
@@ -98,5 +131,6 @@ tasks {
         })
     }
 
-    forEach { if (it.name != "clean") it.mustRunAfter("clean") }
+    forEach { if (!it.name.startsWith("clean")) it.mustRunAfter("clean") }
+
 }

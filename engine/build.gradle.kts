@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -16,10 +15,6 @@ node {
     npmVersion = BuildConstants.npmVersion
     yarnVersion = BuildConstants.yarnVersion
     download = true
-}
-
-apply {
-    plugin("kotlin-dce-js")
 }
 
 repositories {
@@ -64,9 +59,6 @@ tasks {
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
-    val runDceJsKotlin by getting(KotlinJsDce::class) {
-        keep("engine.spinContext")
-    }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:assemble", ":commonKt:assemble")
@@ -79,7 +71,7 @@ tasks {
     val jsTestProcessResources by getting(ProcessResources::class)
 
     val assemble by getting
-    assemble.dependsOn(runDceJsKotlin, unpackJsGradleDependencies)
+    assemble.dependsOn(unpackJsGradleDependencies)
 
     val jasmine by creating(NodeTask::class) {
         dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)

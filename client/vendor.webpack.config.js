@@ -74,7 +74,7 @@ const config = {
   },
   resolve: {
     modules: [
-      path.resolve(__dirname, '../commonKt/build/kotlin-js-min/js/main'),
+      path.resolve(__dirname, 'build/kotlin-js-min/main'),
       path.resolve(__dirname, 'node_modules')
     ]
   },

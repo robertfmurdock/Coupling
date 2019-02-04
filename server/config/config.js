@@ -29,20 +29,10 @@ var config = {
     return process.env.GOOGLE_CLIENT_SECRET || 'ZVTj-iV5ZzW3-6so_1Q-bSPQ';
   },
   get gitRev() {
-    try {
-      const fileJSON = require('./version');
-      return fileJSON.gitRev;
-    } catch (err) {
       return 'None';
-    }
   },
   get buildDate() {
-    try {
-      const fileJSON = require('./version');
-      return fileJSON.date;
-    } catch (err) {
       return 'None';
-    }
   },
   microsoft: msConfig
 };

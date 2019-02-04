@@ -1,5 +1,7 @@
 // @ts-ignore
-import {spinContext2, performProposeNewPairsCommand} from "engine";
+import {spinContext2} from "engine";
+// @ts-ignore
+import {performProposeNewPairsCommand} from "server";
 
 export default function (request, response) {
     const tribeId = request.params.tribeId;

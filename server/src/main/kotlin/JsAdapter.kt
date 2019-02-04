@@ -1,3 +1,4 @@
+import com.soywiz.klock.internal.toDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Json
@@ -37,7 +38,7 @@ fun ProposeNewPairsCommandDispatcher.performProposeNewPairsCommand(tribeId: Stri
                     .perform()
                     .let {
                         json(
-                                "date" to it.date,
+                                "date" to it.date.toDate(),
                                 "pairs" to toJs(it),
                                 "tribe" to it.tribeId
                         )
