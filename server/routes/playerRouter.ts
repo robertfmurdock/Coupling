@@ -1,28 +1,33 @@
 import * as express from "express";
 // @ts-ignore
-import {playersQueryDispatcher} from "server"
+import {playersQueryDispatcher, savePlayerCommandDispatcher} from "server"
+
+function respond(response, promise) {
+    promise
+        .then(function (players) {
+            response.send(players);
+        }, function (error) {
+            console.log('error', error);
+            response.statusCode = 500;
+            response.send(error);
+        })
+}
 
 class PlayerRoutes {
     listPlayers(request, response) {
-        playersQueryDispatcher(request.dataService)
-            .performQuery(request.params.tribeId)
-            .then(function (players) {
-                response.send(players);
-            }, function (error) {
-                console.log('error', error);
-                response.send(error);
-            })
+        respond(
+            response,
+            playersQueryDispatcher(request.dataService)
+                .performQuery(request.params.tribeId)
+        );
     };
 
     savePlayer(request, response) {
-        const player = request.body;
-        request.dataService.savePlayer(player)
-            .then(function () {
-                response.send(player);
-            })
-            .catch(function (err) {
-                response.send(err);
-            });
+        respond(
+            response,
+            savePlayerCommandDispatcher(request.dataService)
+                .performCommand(request.body)
+        )
     };
 
     removePlayer(request, response) {
@@ -37,12 +42,13 @@ class PlayerRoutes {
     };
 
     listRetiredMembers(request, response) {
-        request.dataService.requestRetiredPlayers(request.params.tribeId).then(function (players) {
-            response.send(players);
-        }, function (error) {
-            response.send(error);
-        })
+        respond(
+            response,
+            request.dataService.requestRetiredPlayers(request.params.tribeId)
+        );
     };
+
+
 }
 
 const players = new PlayerRoutes();

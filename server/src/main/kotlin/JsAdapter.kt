@@ -40,7 +40,7 @@ fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): ProposeNewPairsComm
         CreatePairCandidateReportsActionDispatcher,
         RunGameActionDispatcher,
         Wheel {
-    override val repository: CouplingDataRepository = dataRepository(jsRepository)
+    override val repository = dataRepository(jsRepository)
     override val actionDispatcher = this
     override val wheel = this
 
@@ -63,8 +63,7 @@ fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): ProposeNewPairsComm
 @Suppress("unused")
 @JsName("playersQueryDispatcher")
 fun playersQueryDispatcher(jsRepository: dynamic): PlayersQueryDispatcher = object : PlayersQueryDispatcher {
-    override val repository: CouplingDataRepository
-        get() = dataRepository(jsRepository)
+    override val repository = dataRepository(jsRepository)
 
     @Suppress("unused")
     @JsName("performQuery")
@@ -73,6 +72,21 @@ fun playersQueryDispatcher(jsRepository: dynamic): PlayersQueryDispatcher = obje
                 .perform()
                 .map { it.toJson() }
                 .toTypedArray()
+    }
+
+}
+
+@Suppress("unused")
+@JsName("savePlayerCommandDispatcher")
+fun savePlayerCommandDispatcher(jsRepository: dynamic): SavePlayerCommandDispatcher = object : SavePlayerCommandDispatcher {
+    override val repository = dataRepository(jsRepository)
+
+    @Suppress("unused")
+    @JsName("performCommand")
+    fun performCommand(player: Json) = GlobalScope.promise {
+        SavePlayerCommand(player.toPlayer())
+                .perform()
+                .let { it.toJson() }
     }
 
 }
