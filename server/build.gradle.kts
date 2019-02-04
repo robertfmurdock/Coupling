@@ -67,15 +67,14 @@ tasks {
         into("build/executable/public/app/build")
     }
 
-    val unpackJsGradleDependencies
-            by creating(UnpackGradleDependenciesTask::class) {
-                dependsOn(":engine:assemble")
+    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
+        dependsOn(":engine:assemble")
 
-                forEachJsTarget(project).let { (main, test) ->
-                    customCompileConfiguration = main
-                    customTestCompileConfiguration = test
-                }
-            }
+        forEachJsTarget(project).let { (main, test) ->
+            customCompileConfiguration = main
+            customTestCompileConfiguration = test
+        }
+    }
 
     val serverCompile by creating(YarnTask::class) {
         dependsOn(yarn, copyServerResources, unpackJsGradleDependencies, compileKotlin2Js)

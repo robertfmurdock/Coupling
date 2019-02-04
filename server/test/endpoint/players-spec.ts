@@ -128,7 +128,7 @@ describe(path, function () {
             let badId = monk.id();
             let httpDelete = couplingServer.delete(path + "/" + badId);
             httpDelete
-                .expect(404)
+                .expect(500)
                 .expect({message: 'Failed to remove the player because it did not exist.'})
                 .then(done, done.fail);
         });

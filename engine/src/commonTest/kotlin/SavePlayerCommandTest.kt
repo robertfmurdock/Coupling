@@ -27,6 +27,8 @@ class SavePlayerCommandTest {
 
     class PlayersRepositorySpy : PlayersRepository, Spy<Player, Unit> by SpyData() {
         override fun getPlayersAsync(tribeId: String) = cancel()
+
         override suspend fun save(player: Player) = spyFunction(player)
+        override suspend fun delete(playerId: String)  = cancel()
     }
 }

@@ -90,3 +90,18 @@ fun savePlayerCommandDispatcher(jsRepository: dynamic): SavePlayerCommandDispatc
     }
 
 }
+
+@Suppress("unused")
+@JsName("deletePlayerCommandDispatcher")
+fun deletePlayerCommandDispatcher(jsRepository: dynamic): DeletePlayerCommandDispatcher = object : DeletePlayerCommandDispatcher {
+    override val repository = dataRepository(jsRepository)
+
+    @Suppress("unused")
+    @JsName("performCommand")
+    fun performCommand(playerId: String) = GlobalScope.promise {
+        DeletePlayerCommand(playerId)
+                .perform()
+                .let { json() }
+    }
+
+}

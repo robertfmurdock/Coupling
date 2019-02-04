@@ -25,6 +25,8 @@ class PlayersQueryTest {
 
     class PlayersRepositorySpy : PlayersRepository, Spy<String, Deferred<List<Player>>> by SpyData() {
         override fun getPlayersAsync(tribeId: String) = spyFunction((tribeId))
+
         override suspend fun save(player: Player) = cancel()
+        override suspend fun delete(playerId: String) = cancel()
     }
 }

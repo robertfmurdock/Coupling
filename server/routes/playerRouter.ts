@@ -1,6 +1,6 @@
 import * as express from "express";
 // @ts-ignore
-import {playersQueryDispatcher, savePlayerCommandDispatcher} from "server"
+import {playersQueryDispatcher, savePlayerCommandDispatcher, deletePlayerCommandDispatcher} from "server"
 
 function respond(response, promise) {
     promise
@@ -9,7 +9,7 @@ function respond(response, promise) {
         }, function (error) {
             console.log('error', error);
             response.statusCode = 500;
-            response.send(error);
+            response.send({message: error.message});
         })
 }
 
@@ -31,14 +31,11 @@ class PlayerRoutes {
     };
 
     removePlayer(request, response) {
-        request.dataService.removePlayer(request.params.playerId, function (error) {
-            if (error) {
-                response.statusCode = 404;
-                response.send(error);
-            } else {
-                response.send({});
-            }
-        });
+        respond(
+            response,
+            deletePlayerCommandDispatcher(request.dataService)
+                .performCommand(request.params.playerId)
+        );
     };
 
     listRetiredMembers(request, response) {
@@ -47,7 +44,6 @@ class PlayerRoutes {
             request.dataService.requestRetiredPlayers(request.params.tribeId)
         );
     };
-
 
 }
 

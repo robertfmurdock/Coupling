@@ -1,5 +1,10 @@
+
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
+import kotlinx.coroutines.await
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.js.Json
 import kotlin.js.Promise
 
@@ -7,8 +12,19 @@ import kotlin.js.Promise
 fun dataRepository(jsRepository: dynamic) = JsWrappingDataRepository(jsRepository)
 
 class JsWrappingDataRepository(private val jsRepository: dynamic) : CouplingDataRepository {
+    override suspend fun delete(playerId: String) = suspendCancellableCoroutine<Unit> {
+        jsRepository.removePlayer(playerId) { error: Json? ->
+            if (error == null) {
+                it.resume(Unit)
+            } else {
+                it.resumeWithException(Exception(message = error["message"]?.toString()))
+            }
+        }.unsafeCast<Unit>()
+    }
+
     override suspend fun save(player: Player) = player.toJson()
-            .run { jsRepository.savePlayer(this).unsafeCast<Unit>() }
+            .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }
+            .await()
 
     override fun getPlayersAsync(tribeId: String) =
             requestJsPlayers(tribeId)
