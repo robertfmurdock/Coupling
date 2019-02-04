@@ -1,7 +1,4 @@
-
 import com.soywiz.klock.DateTime
-import kotlin.js.Json
-import kotlin.js.json
 
 data class RunGameAction(
         val players: List<Player>,
@@ -11,33 +8,6 @@ data class RunGameAction(
 )
 
 interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
-
-    @JsName("performRunGameCommand")
-    fun performRunGameCommand(history: Array<Json>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
-            RunGameAction(
-                    players = players.map { it.toPlayer() }.toList(),
-                    pins = pins.toPins(),
-                    history = historyFromArray(history),
-                    tribe = tribe.toTribe()
-            )
-                    .perform()
-                    .let {
-                        json(
-                                "date" to it.date,
-                                "pairs" to toJs(it),
-                                "tribe" to it.tribeId
-                        )
-                    }
-
-    private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
-        it.asArray()
-                .map { player ->
-                    player.toJson()
-                }
-                .toTypedArray()
-    }
-            .toTypedArray()
-
 
     val actionDispatcher: FindNewPairsActionDispatcher
 

@@ -1,6 +1,6 @@
 import kotlin.test.Test
 
-class CreateAllPairCandidateReportsActionTest {
+class CreatePairCandidateReportsActionDispatcherTest {
 
     class WhenTheTribePrefersPairingWithDifferentBadges : CreatePairCandidateReportsActionDispatcher {
         override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()

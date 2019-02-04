@@ -1,13 +1,5 @@
-import kotlin.js.JsName
-
-@Suppress("unused")
-@JsName("pairingTimeCalculator")
-fun pairingTimeCalculator() = object : PairingTimeCalculationSyntax {
-}
-
 interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
 
-    @JsName("calculateTimeSinceLastPartnership")
     fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairAssignmentDocument>): TimeResult {
         val documentsSinceLastPartnership = history.indexOfFirst { historyDocument -> pairingExistsInDocument(historyDocument, pair) }
 

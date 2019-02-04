@@ -40,3 +40,5 @@ class SpyData<I, O> : Spy<I, O> {
     override val spyReceivedValues = mutableListOf<I>()
     override val spyReturnValues = mutableListOf<O>()
 }
+
+fun <T> MutableList<T>.popValue() = getOrNull(0)?.also { removeAt(0) }

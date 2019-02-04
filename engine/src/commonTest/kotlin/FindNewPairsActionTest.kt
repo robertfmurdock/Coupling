@@ -81,4 +81,3 @@ class StubNextPlayerActionDispatcher : NextPlayerActionDispatcher,
     override fun NextPlayerAction.perform() = spyFunction(this)
 }
 
-fun <T> MutableList<T>.popValue() = getOrNull(0)?.also { removeAt(0) }

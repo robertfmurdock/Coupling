@@ -1,36 +1,5 @@
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.promise
-import kotlin.js.Json
-import kotlin.js.json
-
 data class ProposeNewPairsCommand(val tribeId: String, val players: List<Player>)
 interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
-
-    @Suppress("unused")
-    @JsName("performProposeNewPairsCommand")
-    fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) =
-            GlobalScope.promise {
-                ProposeNewPairsCommand(tribeId, players.map { it.toPlayer() })
-                        .perform()
-                        .let {
-                            json(
-                                    "date" to it.date,
-                                    "pairs" to toJs(it),
-                                    "tribe" to it.tribeId
-                            )
-                        }
-            }
-
-    private fun toJs(it: PairAssignmentDocument): Array<Array<Json>> {
-        return it.pairs.map {
-            it.asArray()
-                    .map { player ->
-                        player.toJson()
-                    }
-                    .toTypedArray()
-        }
-                .toTypedArray()
-    }
 
     val actionDispatcher: RunGameActionDispatcher
 
