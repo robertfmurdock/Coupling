@@ -10,6 +10,8 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
         setupAsync(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
+
+
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
             val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), ""))
@@ -25,6 +27,8 @@ class ProposeNewPairsCommandTest {
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override fun getPlayersAsync(tribeId: String): Deferred<List<Player>> = CompletableDeferred(emptyList())
+
+            override suspend fun save(player: Player) = Unit
 
             override val repository: CouplingDataRepository = this
             override val actionDispatcher = SpyRunGameActionDispatcher()

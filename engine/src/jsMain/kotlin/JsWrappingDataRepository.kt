@@ -7,6 +7,9 @@ import kotlin.js.Promise
 fun dataRepository(jsRepository: dynamic) = JsWrappingDataRepository(jsRepository)
 
 class JsWrappingDataRepository(private val jsRepository: dynamic) : CouplingDataRepository {
+    override suspend fun save(player: Player) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun getPlayersAsync(tribeId: String) =
             requestJsPlayers(tribeId)
