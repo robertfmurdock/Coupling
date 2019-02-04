@@ -31,16 +31,30 @@ private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
         .toTypedArray()
 
 @Suppress("unused")
-@JsName("performProposeNewPairsCommand")
-fun ProposeNewPairsCommandDispatcher.performProposeNewPairsCommand(tribeId: String, players: Array<Json>) =
-        GlobalScope.promise {
-            ProposeNewPairsCommand(tribeId, players.map { it.toPlayer() })
-                    .perform()
-                    .let {
-                        json(
-                                "date" to it.date.toDate(),
-                                "pairs" to toJs(it),
-                                "tribe" to it.tribeId
-                        )
-                    }
-        }
+@JsName("proposeNewPairsCommandDispatcher")
+fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): CommandDispatcher = object : CommandDispatcher,
+        ProposeNewPairsCommandDispatcher,
+        FindNewPairsActionDispatcher,
+        NextPlayerActionDispatcher,
+        CreatePairCandidateReportActionDispatcher,
+        CreatePairCandidateReportsActionDispatcher,
+        Wheel {
+    override val repository: CouplingDataRepository = dataRepository(jsRepository)
+    override val actionDispatcher = this
+    override val wheel = this
+
+    @Suppress("unused")
+    @JsName("performCommand")
+    fun performCommand(tribeId: String, players: Array<Json>) =
+            GlobalScope.promise {
+                ProposeNewPairsCommand(tribeId, players.map { it.toPlayer() })
+                        .perform()
+                        .let {
+                            json(
+                                    "date" to it.date.toDate(),
+                                    "pairs" to toJs(it),
+                                    "tribe" to it.tribeId
+                            )
+                        }
+            }
+}

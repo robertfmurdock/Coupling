@@ -1,15 +1,12 @@
 // @ts-ignore
-import {spinContext2} from "engine";
-// @ts-ignore
-import {performProposeNewPairsCommand} from "server";
+import {performProposeNewPairsCommand, proposeNewPairsCommandDispatcher} from "server";
 
 export default function (request, response) {
     const tribeId = request.params.tribeId;
     const availablePlayers = request.body;
 
-    const context = spinContext2(request.dataService);
-
-    performProposeNewPairsCommand(context, tribeId, availablePlayers)
+    proposeNewPairsCommandDispatcher(request.dataService)
+        .performCommand(tribeId, availablePlayers)
         .then(result => response.send(result), err => {
             console.log('Err!', err);
             response.send(err)
