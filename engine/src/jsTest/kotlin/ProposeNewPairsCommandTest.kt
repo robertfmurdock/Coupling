@@ -1,5 +1,6 @@
+
+import com.soywiz.klock.DateTime
 import kotlinx.coroutines.*
-import kotlin.js.Date
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -10,7 +11,7 @@ class ProposeNewPairsCommandTest {
         setup(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
-            val history = listOf(PairAssignmentDocument(Date(), emptyList(), ""))
+            val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), ""))
             val tribe = KtTribe("Tribe Id! ${Random.nextInt(300)}", PairingRule.PreferDifferentBadge)
 
             override fun getPins(tribeId: String) = CompletableDeferred(pins)
@@ -25,7 +26,7 @@ class ProposeNewPairsCommandTest {
             override val repository: CouplingDataRepository = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
 
-            val expectedPairAssignmentDocument = PairAssignmentDocument(Date(), listOf(), tribe.id)
+            val expectedPairAssignmentDocument = PairAssignmentDocument(DateTime.now(), listOf(), tribe.id)
 
             init {
                 actionDispatcher.spyReturnValues.add(expectedPairAssignmentDocument)

@@ -38,6 +38,7 @@ kotlin {
                 api(project(":commonKt"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+                implementation("com.soywiz:klock:1.1.1")
             }
         }
         getByName("commonTest") {

@@ -1,4 +1,5 @@
-import kotlin.js.Date
+
+import com.soywiz.klock.DateTime
 import kotlin.test.Test
 
 class RunGameActionTest {
@@ -6,7 +7,7 @@ class RunGameActionTest {
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
         override val actionDispatcher = SpyFindNewPairsActionDispatcher()
-        val expectedDate = Date()
+        val expectedDate = DateTime.now()
         override fun currentDate() = expectedDate
         val tribe = KtTribe("1", PairingRule.LongestTime)
         val players = emptyList<Player>()

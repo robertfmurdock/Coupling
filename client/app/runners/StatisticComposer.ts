@@ -3,13 +3,13 @@ import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import * as distanceInWords from "date-fns/distance_in_words"
 // @ts-ignore
-import {ComposeStatisticsActionDispatcher} from 'commonKt'
+import {ComposeStatisticsActionDispatcher, performComposeStatisticsAction} from 'commonKt'
 const dispatcher = new ComposeStatisticsActionDispatcher();
 
 export default class StatisticComposer {
 
     compose(tribe: Tribe, players: Player[], history: PairAssignmentDocument[]) {
-        const result = dispatcher.performComposeStatisticsAction(tribe, players, history);
+        const result = performComposeStatisticsAction(dispatcher, tribe, players, history);
 
         return {
             spinsUntilFullRotation: result.spinsUntilFullRotation,

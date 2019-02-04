@@ -1,3 +1,4 @@
+import com.soywiz.klock.internal.toDateTime
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
@@ -68,7 +69,7 @@ fun historyFromArray(history: Array<Json>) =
         }
 
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() },
+        date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
         pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
         tribeId = this["tribeId"].unsafeCast<String>()
 )
@@ -95,3 +96,13 @@ fun PairReport.toJson() = json(
             NeverPaired -> "NeverPaired"
         }
 )
+
+@JsName("performComposeStatisticsAction")
+fun ComposeStatisticsActionDispatcher.performComposeStatisticsAction(tribe: Json, players: Array<Json>, history: Array<Json>) =
+        ComposeStatisticsAction(
+                tribe.toTribe(),
+                players.map { it.toPlayer() },
+                history.map { it.toPairAssignmentDocument() }
+        )
+                .perform()
+                .toJson()

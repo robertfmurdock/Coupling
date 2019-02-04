@@ -3,8 +3,6 @@
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
-import com.soywiz.klock.internal.toDate
-import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.test.Test
 
@@ -172,7 +170,7 @@ class ComposeStatisticsActionTest {
             val player2 = players[1]
             val player3 = players[2]
             val player4 = players[3]
-            val stubDate = Date()
+            val stubDate = DateTime.now()
             val history = listOf(
                     pairAssignmentDocument(listOf(
                             CouplingPair.Double(player1, player3),
@@ -232,7 +230,7 @@ class ComposeStatisticsActionTest {
 
         companion object {
             private fun pairAssignmentDocument(dateTime: DateTime) = PairAssignmentDocument(
-                    dateTime.toDate(),
+                    dateTime,
                     emptyList(),
                     tribe.id
             )
@@ -308,7 +306,7 @@ class ComposeStatisticsActionTest {
         fun withOneHistoryEntryWillReturnNull() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    PairAssignmentDocument(DateTime(2017, 2, 17).toDate(), emptyList(), tribe.id)
+                    PairAssignmentDocument(DateTime(2017, 2, 17), emptyList(), tribe.id)
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)

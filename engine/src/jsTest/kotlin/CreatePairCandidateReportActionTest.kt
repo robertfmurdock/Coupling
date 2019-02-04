@@ -1,4 +1,5 @@
-import kotlin.js.Date
+
+import com.soywiz.klock.DateTime
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -6,7 +7,7 @@ class CreatePairCandidateReportActionTest {
 
     companion object : CreatePairCandidateReportActionDispatcher {
 
-        fun pairAssignmentDocument(pairs: List<CouplingPair>) = PairAssignmentDocument(Date(), pairs, "")
+        fun pairAssignmentDocument(pairs: List<CouplingPair>) = PairAssignmentDocument(DateTime.now(), pairs, "")
     }
 
     @Test

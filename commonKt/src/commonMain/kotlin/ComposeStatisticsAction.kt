@@ -1,7 +1,6 @@
+
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.internal.toDateTime
-import kotlin.js.Json
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(
@@ -11,16 +10,6 @@ data class ComposeStatisticsAction(
 )
 
 interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
-
-    @JsName("performComposeStatisticsAction")
-    fun performComposeStatisticsAction(tribe: Json, players: Array<Json>, history: Array<Json>) =
-            ComposeStatisticsAction(
-                    tribe.toTribe(),
-                    players.map { it.toPlayer() },
-                    history.map { it.toPairAssignmentDocument() }
-            )
-                    .perform()
-                    .toJson()
 
     fun ComposeStatisticsAction.perform() = StatisticsReport(
             spinsUntilFullRotation = calculateFullRotation(),
@@ -74,7 +63,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
 
     private fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
 
-    private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date.toDateTime() }
+    private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date }
 
 }
 

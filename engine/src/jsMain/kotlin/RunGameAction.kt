@@ -1,4 +1,5 @@
-import kotlin.js.Date
+
+import com.soywiz.klock.DateTime
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -66,6 +67,6 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
 }
 
 interface Clock {
-    fun currentDate() = Date()
+    fun currentDate() = DateTime.now()
 }
 
