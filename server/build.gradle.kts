@@ -27,6 +27,9 @@ dependencies {
     implementation(project(":engine"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
     implementation("com.soywiz:klock:1.1.1")
+
+    testImplementation(kotlin("test-js"))
+    testImplementation(project(":test-style"))
 }
 
 tasks {
@@ -42,6 +45,12 @@ tasks {
     }
 
     val compileKotlin2Js by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
+
+    val compileTestKotlin2Js by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
@@ -103,7 +112,7 @@ tasks {
     }
 
     val serverTest by creating(YarnTask::class) {
-        dependsOn(yarn, unpackJsGradleDependencies, compileKotlin2Js)
+        dependsOn(yarn, unpackJsGradleDependencies, compileKotlin2Js, compileTestKotlin2Js)
         inputs.file(file("package.json"))
         inputs.files(serverCompile.inputs.files)
         inputs.dir("test/unit")
