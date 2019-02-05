@@ -1,12 +1,6 @@
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
-import kotlinx.coroutines.await
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.js.Date
-import kotlin.js.Json
-import kotlin.js.Promise
+import kotlin.js.*
 
 fun dataRepository(jsRepository: dynamic) = MongoDataRepository(jsRepository)
 
@@ -33,28 +27,3 @@ class MongoDataRepository(private val jsRepository: dynamic) : CouplingDataRepos
 
 }
 
-class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
-    override suspend fun delete(playerId: String) = suspendCancellableCoroutine<Unit> {
-        jsRepository.removePlayer(playerId) { error: Json? ->
-            if (error == null) {
-                it.resume(Unit)
-            } else {
-                it.resumeWithException(Exception(message = error["message"]?.toString()))
-            }
-        }.unsafeCast<Unit>()
-    }
-
-    override suspend fun save(player: Player) = player.toJson()
-            .apply { this["timestamp"] = Date() }
-            .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }
-            .await()
-
-    override fun getPlayersAsync(tribeId: String) =
-            requestJsPlayers(tribeId)
-                    .then { it.map(Json::toPlayer) }
-                    .asDeferred()
-
-    private fun requestJsPlayers(tribeId: String) = jsRepository
-            .requestPlayers(tribeId)
-            .unsafeCast<Promise<Array<Json>>>()
-}
