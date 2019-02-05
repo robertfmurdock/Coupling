@@ -10,6 +10,7 @@ div(ng-class="prepare.styles.className")
             ) Spin!
         playercard(ng-repeat="selectable in prepare.selectablePlayers"
         player="selectable.player"
+        tribe-id="selectable.tribe.id"
         ng-class="{disabled:!selectable.isSelected}"
         ng-click="prepare.clickPlayerCard(selectable)"
         disabled="true"

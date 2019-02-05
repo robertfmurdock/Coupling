@@ -56,7 +56,7 @@ describe('PlayerConfigController', function () {
         $scope.data = Coupling.data;
         $scope.$apply = jasmine.createSpy("applySpy");
         $scope.$on = jasmine.createSpy('on');
-        player = {_id: 'blarg', tribe: tribe.id};
+        player = {_id: 'blarg'};
     });
 
     it('when the given player has no badge, will use default badge', function () {
@@ -102,7 +102,7 @@ describe('PlayerConfigController', function () {
 
             controller.player.name = 'nonsense';
             controller.savePlayer();
-            expect(Coupling.savePlayer).toHaveBeenCalledWith(controller.player);
+            expect(Coupling.savePlayer).toHaveBeenCalledWith(controller.player, tribe.id);
             saveDefer.resolve();
 
 

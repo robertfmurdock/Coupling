@@ -12,12 +12,12 @@ const statComposer = new StatisticComposer();
 
 describe('StatisticComposer', function () {
 
-    let makePlayer = function (tribe: Tribe, id: string) {
-        return {_id: id, tribe: tribe.id};
+    let makePlayer = function (id: string) {
+        return {_id: id};
     };
 
-    let makePlayers = function (tribe: Tribe, numberOfPlayers: number) {
-        let mapToNewPlayer = addIndex(map)((value, index) => makePlayer(tribe, (index + 1).toString()));
+    let makePlayers = function (numberOfPlayers: number) {
+        let mapToNewPlayer = addIndex(map)((value, index) => makePlayer((index + 1).toString()));
         return mapToNewPlayer(Array.apply(null, {length: numberOfPlayers}));
     };
 
@@ -27,37 +27,37 @@ describe('StatisticComposer', function () {
         const history: PairAssignmentDocument[] = [];
 
         it('and it will be 1 with one player', function () {
-            const players: Player[] = makePlayers(tribe, 1);
+            const players: Player[] = makePlayers(1);
             const {spinsUntilFullRotation} = statComposer.compose(tribe, players, history);
             expect(spinsUntilFullRotation).toBe(1);
         });
 
         it('and it will be 1 with two players', function () {
-            const players: Player[] = makePlayers(tribe, 2);
+            const players: Player[] = makePlayers(2);
             const {spinsUntilFullRotation} = statComposer.compose(tribe, players, history);
             expect(spinsUntilFullRotation).toBe(1);
         });
 
         it('and it will be 3 with three players', function () {
-            const players: Player[] = makePlayers(tribe, 3);
+            const players: Player[] = makePlayers(3);
             const {spinsUntilFullRotation} = statComposer.compose(tribe, players, history);
             expect(spinsUntilFullRotation).toBe(3);
         });
 
         it('and it will be 3 with four players', function () {
-            const players: Player[] = makePlayers(tribe, 4);
+            const players: Player[] = makePlayers(4);
             const {spinsUntilFullRotation} = statComposer.compose(tribe, players, history);
             expect(spinsUntilFullRotation).toBe(3);
         });
 
         it('and it will be 7 with seven players', function () {
-            const players: Player[] = makePlayers(tribe, 7);
+            const players: Player[] = makePlayers(7);
             const {spinsUntilFullRotation} = statComposer.compose(tribe, players, history);
             expect(spinsUntilFullRotation).toBe(7);
         });
 
         it('and it will be 7 with eight players', function () {
-            const players: Player[] = makePlayers(tribe, 8);
+            const players: Player[] = makePlayers(8);
             const {spinsUntilFullRotation} = statComposer.compose(tribe, players, history);
             expect(spinsUntilFullRotation).toBe(7);
         });
@@ -77,7 +77,7 @@ describe('StatisticComposer', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const history: PairAssignmentDocument[] = [];
 
-            const players: Player[] = makePlayers(tribe, 1);
+            const players: Player[] = makePlayers(1);
             const {pairReports} = statComposer.compose(tribe, players, history);
             expect(pairReports).toEqual([]);
         });
@@ -86,7 +86,7 @@ describe('StatisticComposer', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const history: PairAssignmentDocument[] = [];
 
-            const players: Player[] = makePlayers(tribe, 2);
+            const players: Player[] = makePlayers(2);
             const [player1, player2] = players;
             const {pairReports} = statComposer.compose(tribe, players, history);
             expect(pairReports.length).toBe(1);
@@ -98,7 +98,7 @@ describe('StatisticComposer', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const history: PairAssignmentDocument[] = [];
 
-            const players: Player[] = makePlayers(tribe, 5);
+            const players: Player[] = makePlayers(5);
             const [player1, player2, player3, player4, player5] = players;
             const {pairReports} = statComposer.compose(tribe, players, history);
 
@@ -129,7 +129,7 @@ describe('StatisticComposer', function () {
 
         it('with four players, pair reports are ordered by longest time since last pairing', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
-            const players: Player[] = makePlayers(tribe, 4);
+            const players: Player[] = makePlayers(4);
             const [player1, player2, player3, player4] = players;
 
             const history: PairAssignmentDocument[] = [

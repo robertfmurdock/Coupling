@@ -38,18 +38,16 @@ describe('The history page', function () {
             const pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [[
                 {
                     name: 'Ollie',
-                    tribe: tribe.id,
                     _id: monk.id()
                 },
                 {
                     name: 'Speedy',
-                    tribe: tribe.id,
                     _id: monk.id()
                 }
             ]], tribe.id);
             const pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[
-                {name: 'Arthur', tribe: tribe.id, _id: monk.id()},
-                {name: 'Garth', tribe: tribe.id, _id: monk.id()}
+                {name: 'Arthur', _id: monk.id()},
+                {name: 'Garth', _id: monk.id()}
             ]], tribe.id);
 
             const apiGuy = await ApiGuy.new();

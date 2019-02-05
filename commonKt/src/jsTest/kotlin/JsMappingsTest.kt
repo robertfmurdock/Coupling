@@ -11,7 +11,6 @@ class JsMappingsTest {
             val original = json(
                     "_id" to "599ae087ce362e001a8c1620",
                     "badge" to 1,
-                    "tribe" to "pay",
                     "name" to "Neal",
                     "email" to "nfebbrar@gmail.com"
             )
@@ -24,7 +23,6 @@ class JsMappingsTest {
             val original = json(
                     "_id" to "TheGuy",
                     "badge" to 2,
-                    "tribe" to "they",
                     "name" to "Teal",
                     "email" to "tealguy@gmail.com",
                     "callSignAdjective" to "Furious",

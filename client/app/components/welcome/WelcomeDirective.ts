@@ -4,7 +4,6 @@ import * as services from "../../services";
 import * as template from "./welcome.pug";
 import * as styles from "./styles.css";
 import Player from "../../../../common/Player";
-import GoogleSignIn from "../../GoogleSignIn";
 
 interface Card {
     name: string
@@ -53,7 +52,6 @@ let makePlayerForCard = function (card: Card) {
     return {
         _id: card.name,
         name: card.name,
-        tribe: 'welcome',
         imageURL: `/images/icons/players/${card.imagePath}`
     };
 };

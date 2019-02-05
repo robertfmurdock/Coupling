@@ -27,5 +27,5 @@ div
                 ng-disabled="playerConfig.saving"
                 )
                 div(ng-show="playerConfig.player._id" class="small red button delete-button" ng-click="playerConfig.removePlayer()") Retire
-        playercard(player="playerConfig.player" size="250")
+        playercard(player="playerConfig.player" tribe-id="playerConfig.tribe.id" size="250")
 player-roster(class="player-roster" players="playerConfig.players" tribe="playerConfig.tribe")

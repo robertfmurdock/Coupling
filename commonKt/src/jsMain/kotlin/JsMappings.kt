@@ -4,7 +4,6 @@ import kotlin.js.*
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
         .plusIfNotNull("_id", id)
         .plusIfNotNull("name", name)
-        .plusIfNotNull("tribe", tribe)
         .plusIfNotNull("email", email)
         .plusIfNotNull("badge", badge)
         .plusIfNotNull("callSignAdjective", callSignAdjective)
@@ -33,7 +32,6 @@ fun Json.toPlayer(): Player = Player(
         id = stringValue("_id"),
         badge = this["badge"]?.unsafeCast<Int>(),
         name = stringValue("name"),
-        tribe = stringValue("tribe"),
         email = stringValue("email"),
         callSignAdjective = stringValue("callSignAdjective"),
         callSignNoun = stringValue("callSignNoun"),
@@ -53,12 +51,6 @@ fun Array<Json>.toPins() = map {
             name = it["name"]?.toString(),
             tribe = it["tribe"]?.toString()
     )
-}
-
-external interface PairingDocument {
-    val pairs: Array<Array<Json>>?
-    val date: Date
-    val tribeId: String
 }
 
 @Suppress("unused")

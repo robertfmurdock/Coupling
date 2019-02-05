@@ -1,4 +1,3 @@
-///<reference path="../../node_modules/@types/jasmine/index.d.ts"/>
 "use strict";
 
 import "angular";
@@ -35,7 +34,6 @@ describe('The controller named ', function () {
 
         let controller;
 
-
         beforeEach(function () {
             this.location = {
                 path: jasmine.createSpy('path')
@@ -46,9 +44,9 @@ describe('The controller named ', function () {
 
                 controller.player = {
                     name: 'Chad',
-                    _id: 'PrettyGreatPlayerId',
-                    tribe: 'awful'
+                    _id: 'PrettyGreatPlayerId'
                 };
+                controller.tribeId = 'awful'
 
             } catch (err) {
                 console.error(err);
@@ -59,7 +57,7 @@ describe('The controller named ', function () {
         describe('clickPlayerName', function () {
 
             it('will redirect to the players page', function () {
-                const expectedPath = `/${controller.player.tribe}/player/${controller.player._id}`;
+                const expectedPath = `/${controller.tribeId}/player/${controller.player._id}`;
                 expect(this.location.path).not.toHaveBeenCalledWith(expectedPath);
                 const event = {};
                 controller.clickPlayerName(event);
@@ -299,27 +297,27 @@ describe('The controller named ', function () {
             const tribeId = 'numbers';
             const currentPairs: Pair[] = [
                 [
-                    {name: 'tom', _id: '0', tribe: tribeId},
-                    {name: 'jerry', _id: 'z', tribe: tribeId}
+                    {name: 'tom', _id: '0'},
+                    {name: 'jerry', _id: 'z'}
                 ], [
-                    {name: 'fellow', _id: '3', tribe: tribeId},
-                    {name: 'guy', _id: '2', tribe: tribeId}
+                    {name: 'fellow', _id: '3'},
+                    {name: 'guy', _id: '2'}
                 ]
             ];
             const players = [
-                {name: 'rigby', _id: '1', tribe: tribeId},
-                {name: 'guy', _id: '2', tribe: tribeId},
-                {name: 'fellow', _id: '3', tribe: tribeId},
-                {name: 'nerd', _id: '4', tribe: tribeId},
-                {name: 'pantsmaster', _id: '5', tribe: tribeId}];
+                {name: 'rigby', _id: '1'},
+                {name: 'guy', _id: '2'},
+                {name: 'fellow', _id: '3'},
+                {name: 'nerd', _id: '4'},
+                {name: 'pantsmaster', _id: '5'}];
             const controller = new PairAssignmentsController(Coupling, location, {});
             controller.pairAssignments = {pairs: currentPairs, tribe: tribeId, date: ''};
             controller.players = players;
 
             expect(controller.unpairedPlayers).toEqual([
-                {name: 'rigby', _id: '1', tribe: tribeId},
-                {name: 'nerd', _id: '4', tribe: tribeId},
-                {name: 'pantsmaster', _id: '5', tribe: tribeId}
+                {name: 'rigby', _id: '1'},
+                {name: 'nerd', _id: '4'},
+                {name: 'pantsmaster', _id: '5'}
             ]);
         });
 

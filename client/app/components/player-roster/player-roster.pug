@@ -2,5 +2,5 @@ div
    div
       div(class="roster-header")
          text(ng-show="players[0]") {{label || 'Players'}}:
-      playercard(player="player" ng-repeat="player in players")
+      playercard(player="player" tribe-id="tribe.id" ng-repeat="player in players")
    a(id="add-player-button" class="large orange button" href="/{{tribe.id}}/player/new/") Add a new player!

@@ -26,7 +26,7 @@ class PlayerRoutes {
         respond(
             response,
             savePlayerCommandDispatcher(request.dataService)
-                .performCommand(request.body)
+                .performCommand(request.body, request.params.tribeId)
         )
     };
 

@@ -1,4 +1,3 @@
-
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.internal.toDateTime
 import com.soywiz.klock.seconds
@@ -47,7 +46,6 @@ class PlayerRepositoryTest {
             val player = Player(
                     id = id(),
                     badge = 1,
-                    tribe = tribe,
                     name = "Tim",
                     callSignAdjective = "Spicy",
                     callSignNoun = "Meatball",
@@ -55,7 +53,7 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player)
+            save(player, tribe)
             getPlayersAsync(tribe).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
@@ -70,7 +68,6 @@ class PlayerRepositoryTest {
             val player = Player(
                     id = id(),
                     badge = 1,
-                    tribe = tribeId,
                     name = "Tim",
                     callSignAdjective = "Spicy",
                     callSignNoun = "Meatball",
@@ -78,7 +75,7 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player)
+            save(player, tribeId)
             getDbPlayers(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
@@ -95,7 +92,6 @@ class PlayerRepositoryTest {
             val player = Player(
                     id = id(),
                     badge = 1,
-                    tribe = tribeId,
                     name = "Tim",
                     callSignAdjective = "Spicy",
                     callSignNoun = "Meatball",
@@ -105,13 +101,13 @@ class PlayerRepositoryTest {
             val updatedPlayer = player.copy(name = "Timmy")
         }) {
             dropPlayers()
-            save(player)
+            save(player, tribeId)
         }
 
         @Test
         fun willNotDeleteOriginalRecord() = testAsync {
             setupSavedPlayer() exerciseAsync {
-                save(updatedPlayer)
+                save(updatedPlayer, tribeId)
                 getDbPlayers(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
@@ -123,7 +119,7 @@ class PlayerRepositoryTest {
         @Test
         fun getWillOnlyReturnTheUpdatedPlayer() = testAsync {
             setupSavedPlayer() exerciseAsync {
-                save(updatedPlayer)
+                save(updatedPlayer, tribeId)
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
@@ -142,7 +138,6 @@ class PlayerRepositoryTest {
             val player = Player(
                     id = playerId,
                     badge = 0,
-                    tribe = tribe,
                     name = "Jim",
                     callSignAdjective = "Spicy",
                     callSignNoun = "Meatball",
@@ -150,7 +145,7 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player)
+            save(player, tribe)
             delete(playerId)
             getPlayersAsync(tribe).await()
         } verifyAsync { result ->
@@ -182,7 +177,6 @@ class PlayerRepositoryTest {
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(Player(
                         id = playerId,
-                        tribe = tribeId,
                         name = playerDbJson["name"].toString()
                 )))
             }
@@ -211,14 +205,13 @@ class PlayerRepositoryTest {
 
                 val updatedPlayer = Player(
                         id = playerId,
-                        tribe = tribeId,
                         name = "Clean Monster"
                 )
             }) {
                 dropPlayers()
                 playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             } exerciseAsync {
-                save(updatedPlayer)
+                save(updatedPlayer, tribeId)
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
@@ -243,13 +236,15 @@ class PlayerRepositoryTest {
         }) {
             dropPlayers()
             playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
-            save(Player(
-                    id = "5c59ca700e6e5e3cce737c6e",
-                    name = "Guy guy",
-                    tribe = tribeId,
-                    email = "duder",
-                    badge = 2
-            ))
+            save(
+                    Player(
+                            id = "5c59ca700e6e5e3cce737c6e",
+                            name = "Guy guy",
+                            email = "duder",
+                            badge = 2
+                    ),
+                    tribeId
+            )
 
             playerCollection.find(json("tribe" to tribeId)).unsafeCast<Promise<Array<Json>>>().await()
         } exerciseAsync {

@@ -154,7 +154,7 @@ describe('CouplingDataService', function () {
     });
 
     it('can save a new player', function (done) {
-        const player: Player = {_id: null, name: 'Tom', email: 'Bombadil@shire.gov', tribe: null};
+        const player: Player = {_id: null, name: 'Tom', email: 'Bombadil@shire.gov'};
         couplingDataService.savePlayer(player)
             .then(function () {
                 return couplingDataService.requestPlayers(null);

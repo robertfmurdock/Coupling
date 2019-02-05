@@ -2,7 +2,6 @@ import * as angular from "angular";
 import "ng-fittext";
 import "../app/app";
 import Tribe from "../../common/Tribe";
-import * as addIndex from 'ramda/src/addIndex'
 import * as times from 'ramda/src/times'
 import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
@@ -11,8 +10,6 @@ import * as map from "ramda/src/map";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 
 const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
-
-let mapWithIndex = addIndex(map);
 
 describe('Statistics directive', function () {
 
@@ -41,10 +38,10 @@ describe('Statistics directive', function () {
     it('will show the rotation number', inject(function ($compile, $rootScope) {
         const tribe: Tribe = {id: '2', name: 'Mathematica'};
         const players: Player[] = [
-            {_id: 'harry', tribe: '2'},
-            {_id: 'larry', tribe: '2'},
-            {_id: 'curly', tribe: '2'},
-            {_id: 'moe', tribe: '2'}
+            {_id: 'harry'},
+            {_id: 'larry'},
+            {_id: 'curly'},
+            {_id: 'moe'}
         ];
 
         const statisticsDirective = buildDirective($rootScope, $compile, tribe, players, []);

@@ -16,6 +16,6 @@ class DeletePlayerCommandTest {
         override suspend fun delete(playerId: String) = spyFunction(playerId)
 
         override fun getPlayersAsync(tribeId: String) = cancel()
-        override suspend fun save(player: Player) = cancel()
+        override suspend fun save(player: Player, tribeId: String) = cancel()
     }
 }

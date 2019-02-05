@@ -29,13 +29,13 @@ export class PlayerConfigController {
 
     savePlayer() {
         this.saving = true;
-        this.Coupling.savePlayer(this.player)
+        this.Coupling.savePlayer(this.player, this.tribe.id)
             .then(() => this.$route.reload());
     }
 
     async removePlayer() {
         if (confirm("Are you sure you want to delete this player?")) {
-            await this.Coupling.removePlayer(this.player);
+            await this.Coupling.removePlayer(this.player, this.tribe.id);
             this.navigateToCurrentPairAssignments();
             this.$scope.$apply();
         }

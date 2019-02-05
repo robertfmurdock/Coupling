@@ -89,20 +89,18 @@ describe('Service: ', function () {
             it('will use axios', function (done) {
 
                 const player = {
-                    name: 'Navi',
-                    tribe: 'tribo'
+                    name: 'Navi'
                 };
 
                 const expectedUpdatedPlayer = {
                     name: 'Navi',
-                    tribe: 'tribo',
                     _id: '123'
                 };
 
                 const postSpy = spyOn(axios, 'post')
                     .and.returnValue(Promise.resolve({data: expectedUpdatedPlayer}));
 
-                Coupling.savePlayer(player).then(function (updatedPlayer) {
+                Coupling.savePlayer(player, 'tribo').then(function (updatedPlayer) {
                     expect(updatedPlayer).toEqual(expectedUpdatedPlayer);
                     expect(postSpy).toHaveBeenCalledWith('/api/tribo/players', player);
                     done();

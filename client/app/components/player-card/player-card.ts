@@ -10,6 +10,7 @@ export class PlayerCardController implements IController {
 
     styles: any;
     player: Player;
+    tribeId: string;
     size: number;
     disabled: boolean;
     maxFontHeight: number;
@@ -48,7 +49,7 @@ export class PlayerCardController implements IController {
             return;
         }
         if ($event.stopPropagation) $event.stopPropagation();
-        this.$location.path("/" + this.player.tribe + "/player/" + this.player._id);
+        this.$location.path("/" + this.tribeId + "/player/" + this.player._id);
     }
 
 }
@@ -62,6 +63,7 @@ export default module('coupling.playerCard', [])
             controller: 'PlayerCardController',
             controllerAs: 'playerCard',
             scope: {
+                tribeId: '=',
                 player: '=',
                 size: '=?',
                 disabled: '=?'

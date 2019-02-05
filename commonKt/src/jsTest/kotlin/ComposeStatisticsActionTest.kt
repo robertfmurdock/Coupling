@@ -11,10 +11,10 @@ class ComposeStatisticsActionTest {
     companion object : ComposeStatisticsActionDispatcher {
         val tribe = KtTribe("LOL", PairingRule.LongestTime)
 
-        fun makePlayers(tribe: KtTribe, numberOfPlayers: Int) = (1..numberOfPlayers)
-                .map { number -> makePlayer(tribe, "$number") }
+        fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
+                .map { number -> makePlayer("$number") }
 
-        private fun makePlayer(tribe: KtTribe, id: String) = Player(id = id, tribe = tribe.id)
+        private fun makePlayer(id: String) = Player(id = id)
 
         private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(
@@ -38,7 +38,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun whenGivenOnePlayerWillReturnOne() = setup(object {
-            val players = makePlayers(tribe, 1)
+            val players = makePlayers(1)
         }) exercise {
             composeStatisticsAction(players)
                     .perform()
@@ -48,7 +48,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun whenGivenTwoPlayersWillReturnOne() = setup(object {
-            val players = makePlayers(tribe, 2)
+            val players = makePlayers(2)
         }) exercise {
             composeStatisticsAction(players)
                     .perform()
@@ -58,7 +58,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun whenGivenThreePlayersWillReturnThree() = setup(object {
-            val players = makePlayers(tribe, 3)
+            val players = makePlayers(3)
         }) exercise {
             composeStatisticsAction(players)
                     .perform()
@@ -68,7 +68,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun whenGivenFourPlayersWillReturnThree() = setup(object {
-            val players = makePlayers(tribe, 4)
+            val players = makePlayers(4)
         }) exercise {
             composeStatisticsAction(players)
                     .perform()
@@ -78,7 +78,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun whenGivenSevenPlayersWillReturnSeven() = setup(object {
-            val players = makePlayers(tribe, 7)
+            val players = makePlayers(7)
         }) exercise {
             composeStatisticsAction(players)
                     .perform()
@@ -88,7 +88,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun whenGivenEightPlayersWillReturnSeven() = setup(object {
-            val players = makePlayers(tribe, 8)
+            val players = makePlayers(8)
         }) exercise {
             composeStatisticsAction(players)
                     .perform()
@@ -106,7 +106,7 @@ class ComposeStatisticsActionTest {
 
             @Test
             fun withNoPlayersNoPairReportsWillBeCreated() = setup(object {
-                val players = makePlayers(tribe, 0)
+                val players = makePlayers(0)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
                         .perform()
@@ -116,7 +116,7 @@ class ComposeStatisticsActionTest {
 
             @Test
             fun withOnePlayersNoPairReportsWillBeCreated() = setup(object {
-                val players = makePlayers(tribe, 1)
+                val players = makePlayers(1)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
                         .perform()
@@ -126,7 +126,7 @@ class ComposeStatisticsActionTest {
 
             @Test
             fun withTwoPlayersOnePairReportWillBeCreated() = setup(object {
-                val players = makePlayers(tribe, 2)
+                val players = makePlayers(2)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
                         .perform()
@@ -140,7 +140,7 @@ class ComposeStatisticsActionTest {
 
             @Test
             fun withFivePlayersOnePairReportWillBeCreated() = setup(object {
-                val players = makePlayers(tribe, 5)
+                val players = makePlayers(5)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
                         .perform()
@@ -165,7 +165,7 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun withFourPlayersThePairReportsAreOrderedByLongestTimeSinceLastPairing() = setup(object {
-            val players = makePlayers(tribe, 4)
+            val players = makePlayers(4)
             val player1 = players[0]
             val player2 = players[1]
             val player3 = players[2]

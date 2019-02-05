@@ -77,12 +77,12 @@ class Coupling {
         return response.data;
     }
 
-    savePlayer(player) {
-        return this.post(`/api/${player.tribe}/players`, player);
+    savePlayer(player, tribeId: string) {
+        return this.post(`/api/${tribeId}/players`, player);
     }
 
-    removePlayer(player) {
-        return axios.delete(`/api/${player.tribe}/players/${player._id}`);
+    removePlayer(player, tribeId: string) {
+        return axios.delete(`/api/${tribeId}/players/${player._id}`);
     }
 
     getSelectedPlayers(players: Player[], history) {

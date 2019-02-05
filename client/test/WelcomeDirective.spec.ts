@@ -69,13 +69,11 @@ describe('Welcome Directive:', function () {
             const expectedLeftPlayer: Player = {
                 _id: 'Frodo',
                 name: 'Frodo',
-                tribe: 'welcome',
                 imageURL: '/images/icons/players/frodo-icon.png'
             };
             const expectedRightPlayer: Player = {
                 _id: 'Sam',
                 name: 'Sam',
-                tribe: 'welcome',
                 imageURL: '/images/icons/players/samwise-icon.png'
             };
             expect(controller.leftPlayer).toEqual(expectedLeftPlayer);
@@ -92,13 +90,11 @@ describe('Welcome Directive:', function () {
             const expectedLeftPlayer: Player = {
                 _id: 'Batman',
                 name: 'Batman',
-                tribe: 'welcome',
                 imageURL: '/images/icons/players/grayson-icon.png'
             };
             const expectedRightPlayer: Player = {
                 _id: 'Robin',
                 name: 'Robin',
-                tribe: 'welcome',
                 imageURL: '/images/icons/players/wayne-icon.png'
             };
 
@@ -116,13 +112,11 @@ describe('Welcome Directive:', function () {
             const expectedLeftPlayer: Player = {
                 _id: 'Rosie',
                 name: 'Rosie',
-                tribe: 'welcome',
                 imageURL: '/images/icons/players/rosie-icon.png'
             };
             const expectedRightPlayer: Player = {
                 _id: 'Wendy',
                 name: 'Wendy',
-                tribe: 'welcome',
                 imageURL: '/images/icons/players/wendy-icon.png'
             };
 

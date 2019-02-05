@@ -17,10 +17,11 @@ class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
             playersCollection.find(json("id" to playerId)).unsafeCast<Promise<Array<Json>>>().await() +
                     playersCollection.find(json("_id" to playerId)).unsafeCast<Promise<Array<Json>>>().await()
 
-    override suspend fun save(player: Player) = player.toJson()
+    override suspend fun save(player: Player, tribeId: String) = player.toJson()
             .apply {
                 this["id"] = player.id
                 this["_id"] = null
+                this["tribe"] = tribeId
                 this["timestamp"] = Date()
             }
             .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }

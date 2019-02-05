@@ -4,8 +4,8 @@ div(ng-show="welcome.show" ng-class="welcome.styles.className")
             div(ng-class="welcome.styles.welcomeTitle" data-fittext=1 data-fittext-min="72px") Coupling!
             div
                 div(ng-class="welcome.styles.welcomePair")
-                    playercard(class="left" ng-show="welcome.show" player="welcome.leftPlayer" size="100" disabled="true")
-                    playercard(class="right" ng-show="welcome.show" player="welcome.rightPlayer" size="100" disabled="true")
+                    playercard(class="left" ng-show="welcome.show" player="welcome.leftPlayer" tribe-id="welcome" size="100" disabled="true")
+                    playercard(class="right" ng-show="welcome.show" player="welcome.rightPlayer" tribe-id="welcome" size="100" disabled="true")
             div(ng-class="welcome.styles.welcomeProverb" ng-show="welcome.show") {{welcome.proverb}}
     div
         div(ng-class="welcome.styles.enterButtonContainer")

@@ -11,6 +11,7 @@ div(ng-class="pairAssignments.styles.className")
                     playercard(
                     ng-repeat='player in pair'
                     player="player"
+                    tribe-id='pairAssignments.tribe.id'
                     ng-class="{hoverzoom: !pairAssignments._id}"
                     ui-draggable="pairAssignments.isNew"
                     drag="player"

@@ -3,5 +3,6 @@ div
     div(class="retired-players-header") Retired Players
     div
         playercard(player="player"
+        tribe-id="tribe.id"
         ng-repeat="player in retiredPlayers"
         ng-class="{disabled:!selectable.isSelected}")

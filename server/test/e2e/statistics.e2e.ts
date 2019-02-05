@@ -1,4 +1,4 @@
-import {browser, element, by, By} from "protractor";
+import {browser, element, By} from "protractor";
 import e2eHelp from "./e2e-help";
 import * as monk from "monk";
 import Player from "../../../common/Player";
@@ -16,7 +16,7 @@ describe('The statistics page', function () {
         name: 'Funkytown'
     };
 
-    const players: Player[] = [
+    const players = [
         {_id: monk.id(), tribe: tribe.id},
         {_id: monk.id(), tribe: tribe.id},
         {_id: monk.id(), tribe: tribe.id},
