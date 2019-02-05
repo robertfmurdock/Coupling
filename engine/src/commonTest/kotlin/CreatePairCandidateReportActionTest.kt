@@ -15,7 +15,7 @@ class CreatePairCandidateReportActionTest {
         val players: List<Player> = emptyList()
         val history: List<PairAssignmentDocument> = emptyList()
     }) exercise {
-        CreatePairCandidateReportAction(Player(_id = "player"), history, players)
+        CreatePairCandidateReportAction(Player(id = "player"), history, players)
                 .perform()
     } verify {
         assertTrue(it.partners.isEmpty())
@@ -23,10 +23,10 @@ class CreatePairCandidateReportActionTest {
 
     class ShouldDeterminePossiblePartnersForPlayerByChoosingPartner {
         companion object {
-            val bruce = Player(_id = "Batman")
-            val jezebel = Player(_id = "Jezebel Jett")
-            val talia = Player(_id = "Talia")
-            val selena = Player(_id = "Catwoman")
+            val bruce = Player(id = "Batman")
+            val jezebel = Player(id = "Jezebel Jett")
+            val talia = Player(id = "Talia")
+            val selena = Player(id = "Catwoman")
             val availableOtherPlayers = listOf(selena, talia, jezebel)
 
             private fun createPairCandidateReportAction(history: List<PairAssignmentDocument>, availablePlayers: List<Player>) =
@@ -57,8 +57,8 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun withPlentyOfHistory() = setup(object {
                 val history = listOf(
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, Player(_id = "Batgirl")))),
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, Player(_id = "Robin"))))
+                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, Player(id = "Batgirl")))),
+                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, Player(id = "Robin"))))
                 )
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)

@@ -45,7 +45,7 @@ class PlayerRepositoryTest {
         setupAsync(object {
             val tribe = "woo"
             val player = Player(
-                    _id = id(),
+                    id = id(),
                     badge = 1,
                     tribe = tribe,
                     name = "Tim",
@@ -69,7 +69,7 @@ class PlayerRepositoryTest {
         setupAsync(object {
             val tribeId = "woo"
             val player = Player(
-                    _id = id(),
+                    id = id(),
                     badge = 1,
                     tribe = tribeId,
                     name = "Tim",
@@ -95,7 +95,7 @@ class PlayerRepositoryTest {
         private suspend fun setupSavedPlayer() = setupAsync(object {
             val tribeId = "boo"
             val player = Player(
-                    _id = id(),
+                    id = id(),
                     badge = 1,
                     tribe = tribeId,
                     name = "Tim",
@@ -143,7 +143,7 @@ class PlayerRepositoryTest {
             val tribe = "hoo"
             val playerId = id()
             val player = Player(
-                    _id = playerId,
+                    id = playerId,
                     badge = 0,
                     tribe = tribe,
                     name = "Jim",
@@ -185,7 +185,7 @@ class PlayerRepositoryTest {
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(Player(
-                        _id = playerId,
+                        id = playerId,
                         tribe = tribeId,
                         name = playerDbJson["name"].toString()
                 )))
@@ -214,7 +214,7 @@ class PlayerRepositoryTest {
                 )
 
                 val updatedPlayer = Player(
-                        _id = playerId,
+                        id = playerId,
                         tribe = tribeId,
                         name = "Clean Monster"
                 )
@@ -248,7 +248,7 @@ class PlayerRepositoryTest {
             dropPlayers()
             playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             save(Player(
-                    _id = "5c59ca700e6e5e3cce737c6e",
+                    id = "5c59ca700e6e5e3cce737c6e",
                     name = "Guy guy",
                     tribe = tribeId,
                     email = "duder",

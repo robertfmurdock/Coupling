@@ -19,7 +19,7 @@ class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
 
     override suspend fun save(player: Player) = player.toJson()
             .apply {
-                this["id"] = player._id
+                this["id"] = player.id
                 this["_id"] = null
                 this["timestamp"] = Date()
             }

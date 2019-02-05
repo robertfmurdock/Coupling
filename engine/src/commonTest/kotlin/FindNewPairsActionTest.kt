@@ -16,8 +16,8 @@ class FindNewPairsActionTest {
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
         override val actionDispatcher = StubNextPlayerActionDispatcher()
         override val wheel = StubWheel()
-        val bill: Player = Player(_id = "Bill")
-        val ted: Player = Player(_id = "Ted")
+        val bill: Player = Player(id = "Bill")
+        val ted: Player = Player(id = "Ted")
         val players = listOf(bill, ted)
 
         init {
@@ -38,9 +38,9 @@ class FindNewPairsActionTest {
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
         override val actionDispatcher = StubNextPlayerActionDispatcher()
         override val wheel = StubWheel()
-        val bill: Player = Player(_id = "Bill")
-        val ted: Player = Player(_id = "Ted")
-        val mozart: Player = Player(_id = "Mozart")
+        val bill: Player = Player(id = "Bill")
+        val ted: Player = Player(id = "Ted")
+        val mozart: Player = Player(id = "Mozart")
         val players = listOf(bill, ted, mozart)
 
         val pairCandidateReports = listOf(

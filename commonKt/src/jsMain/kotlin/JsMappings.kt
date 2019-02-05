@@ -2,7 +2,7 @@ import com.soywiz.klock.internal.toDateTime
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
-        .plusIfNotNull("_id", _id)
+        .plusIfNotNull("_id", id)
         .plusIfNotNull("name", name)
         .plusIfNotNull("tribe", tribe)
         .plusIfNotNull("email", email)
@@ -29,7 +29,7 @@ private fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
 
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
-        _id = stringValue("_id"),
+        id = stringValue("_id"),
         badge = this["badge"]?.unsafeCast<Int>(),
         name = stringValue("name"),
         tribe = stringValue("tribe"),

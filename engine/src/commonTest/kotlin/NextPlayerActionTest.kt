@@ -3,10 +3,10 @@ import kotlin.test.Test
 class NextPlayerActionTest : NextPlayerActionDispatcher {
     override val actionDispatcher = StubCreatePairCandidateReportsActionDispatcher()
 
-    private val bill = Player(_id = "Bill")
-    private val ted = Player(_id = "Ted")
-    private val amadeus = Player(_id = "Mozart")
-    private val shorty = Player(_id = "Napoleon")
+    private val bill = Player(id = "Bill")
+    private val ted = Player(id = "Ted")
+    private val amadeus = Player(id = "Mozart")
+    private val shorty = Player(id = "Napoleon")
 
     @Test
     fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = setup(object {

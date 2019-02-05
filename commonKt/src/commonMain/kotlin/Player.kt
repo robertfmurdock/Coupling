@@ -1,5 +1,5 @@
 data class Player(
-        val _id: String? = null,
+        val id: String? = null,
         val badge: Int? = null,
         val name: String? = null,
         val tribe: String? = null,

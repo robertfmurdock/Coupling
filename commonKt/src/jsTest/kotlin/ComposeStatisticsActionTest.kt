@@ -14,7 +14,7 @@ class ComposeStatisticsActionTest {
         fun makePlayers(tribe: KtTribe, numberOfPlayers: Int) = (1..numberOfPlayers)
                 .map { number -> makePlayer(tribe, "$number") }
 
-        fun makePlayer(tribe: KtTribe, id: String) = Player(_id = id, tribe = tribe.id)
+        fun makePlayer(tribe: KtTribe, id: String) = Player(id = id, tribe = tribe.id)
 
         private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(
@@ -23,7 +23,7 @@ class ComposeStatisticsActionTest {
             )
         }
 
-        private fun List<CouplingPair>.describe() = map { it.asArray().map { player -> player._id } }
+        private fun List<CouplingPair>.describe() = map { it.asArray().map { player -> player.id } }
                 .joinToString(", ").let { "[ $it ]" }
     }
 

@@ -6,7 +6,7 @@ class SavePlayerCommandTest {
     fun willSaveToRepository() = testAsync {
         setupAsync(object : SavePlayerCommandDispatcher {
             val player = Player(
-                    _id = "1",
+                    id = "1",
                     badge = 1,
                     tribe = "woo",
                     name = "Tim",
