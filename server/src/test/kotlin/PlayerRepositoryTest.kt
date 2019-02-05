@@ -1,5 +1,9 @@
+
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.internal.toDateTime
+import com.soywiz.klock.seconds
 import kotlinx.coroutines.await
-import kotlin.js.Promise
+import kotlin.js.*
 import kotlin.test.Test
 
 const val mongoUrl = "localhost/PlayersRepositoryTest"
@@ -26,6 +30,13 @@ class PlayerRepositoryTest {
             val db = js("monk.default('$mongoUrl')")
             db.get("players").drop().unsafeCast<Promise<Unit>>().await()
         }
+
+        suspend fun getDbPlayers(tribeId: String): Array<Json> {
+            @Suppress("UNUSED_VARIABLE")
+            val monk = js("require(\"monk\")")
+            val db = js("monk.default('$mongoUrl')")
+            return db.get("players").find(json("tribe" to tribeId)).unsafeCast<Promise<Array<Json>>>().await()
+        }
     }
 
     @Test
@@ -51,6 +62,35 @@ class PlayerRepositoryTest {
             result.assertIsEqualTo(listOf(player))
         }
     }
+
+    @Test
+    fun savedPlayersIncludeModificationDate() = testAsync {
+        dropPlayers()
+        setupAsync(object {
+            val tribeId = "woo"
+            val player = Player(
+                    _id = id(),
+                    badge = 1,
+                    tribe = tribeId,
+                    name = "Tim",
+                    pins = emptyList(),
+                    callSignAdjective = "Spicy",
+                    callSignNoun = "Meatball",
+                    email = "tim@tim.meat",
+                    imageURL = "italian.jpg"
+            )
+        }) exerciseAsync {
+            save(player)
+            getDbPlayers(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.firstOrNull()?.get("timestamp").unsafeCast<Date>().toDateTime()
+                    .isCloseToNow()
+                    .assertIsEqualTo(true)
+        }
+    }
+
+    private fun DateTime.isCloseToNow() = (DateTime.now() - this) < 1.seconds
 
     @Test
     fun canSaveDeleteAndNotGetPlayer() = testAsync {

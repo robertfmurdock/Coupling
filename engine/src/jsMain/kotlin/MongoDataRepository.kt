@@ -4,12 +4,13 @@ import kotlinx.coroutines.await
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.Promise
 
-fun dataRepository(jsRepository: dynamic) = JsWrappingDataRepository(jsRepository)
+fun dataRepository(jsRepository: dynamic) = MongoDataRepository(jsRepository)
 
-class JsWrappingDataRepository(private val jsRepository: dynamic) : CouplingDataRepository,
+class MongoDataRepository(private val jsRepository: dynamic) : CouplingDataRepository,
         PlayersRepository by MongoPlayerRepository(jsRepository) {
 
     override fun getPinsAsync(tribeId: String) = requestPins(tribeId)
@@ -44,6 +45,7 @@ class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
     }
 
     override suspend fun save(player: Player) = player.toJson()
+            .apply { this["timestamp"] = Date() }
             .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }
             .await()
 
