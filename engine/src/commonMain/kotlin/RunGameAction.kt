@@ -13,22 +13,20 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
 
     private fun FindNewPairsAction.performThis() = with(actionDispatcher) { perform() }
 
-    fun RunGameAction.perform() = addPinsToPlayers()
-            .let { pinnedPlayers -> findNewPairs(pinnedPlayers) }
+    fun RunGameAction.perform() = findNewPairs()
+            .assign(pins)
             .let { pairAssignments -> pairAssignmentDocument(pairAssignments, tribe.id) }
 
-    private fun RunGameAction.findNewPairs(pinnedPlayers: List<Player>) = findNewPairsAction(pinnedPlayers)
+    private fun RunGameAction.findNewPairs() = findNewPairsAction()
             .performThis()
 
-    private fun RunGameAction.findNewPairsAction(pinnedPlayers: List<Player>) = FindNewPairsAction(Game(
+    private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(
             history,
-            pinnedPlayers,
+            players,
             tribe.pairingRule
     ))
 
-    private fun RunGameAction.addPinsToPlayers() = players.assign(pins)
-
-    private fun pairAssignmentDocument(pairAssignments: List<CouplingPair>, tribeId: String) =
+    private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>, tribeId: String) =
             PairAssignmentDocument(
                     currentDate(),
                     pairAssignments,

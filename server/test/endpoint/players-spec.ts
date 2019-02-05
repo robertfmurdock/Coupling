@@ -80,7 +80,7 @@ describe(path, function () {
     describe("POST", function () {
 
         it('will add player to tribe', function (done) {
-            let newPlayer = clean({_id: monk.id(), name: "Awesome-O", tribe: tribeId, pins: []});
+            let newPlayer = clean({_id: monk.id(), name: "Awesome-O", tribe: tribeId});
             let httpPost = couplingServer.post(path);
             httpPost.send(newPlayer)
                 .expect(200, newPlayer)

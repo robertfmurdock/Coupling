@@ -1,13 +1,14 @@
-
 import com.soywiz.klock.DateTime
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+
 class CreatePairCandidateReportActionTest {
 
     companion object : CreatePairCandidateReportActionDispatcher {
-
-        fun pairAssignmentDocument(pairs: List<CouplingPair>) = PairAssignmentDocument(DateTime.now(), pairs, "")
+        fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) = PairAssignmentDocument(DateTime.now(), pairs, "")
+        fun pinnedPair(player1: Player, player2: Player) =
+                PinnedCouplingPair(listOf(player1.withPins(emptyList()), player2.withPins(emptyList())))
     }
 
     @Test
@@ -21,6 +22,7 @@ class CreatePairCandidateReportActionTest {
         assertTrue(it.partners.isEmpty())
     }
 
+    @Suppress("unused")
     class ShouldDeterminePossiblePartnersForPlayerByChoosingPartner {
         companion object {
             val bruce = Player(id = "Batman")
@@ -57,8 +59,8 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun withPlentyOfHistory() = setup(object {
                 val history = listOf(
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, Player(id = "Batgirl")))),
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, Player(id = "Robin"))))
+                        pairAssignmentDocument(listOf(pinnedPair(bruce, Player(id = "Batgirl")))),
+                        pairAssignmentDocument(listOf(pinnedPair(bruce, Player(id = "Robin"))))
                 )
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)
@@ -70,7 +72,7 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun onlyThePersonYouWereWithLastTime() = setup(object {
                 val history = listOf(pairAssignmentDocument(listOf(
-                        CouplingPair.Double(bruce, selena)
+                        pinnedPair(bruce, selena)
                 )))
             }) exercise {
                 CreatePairCandidateReportAction(bruce, history, listOf(selena))
@@ -85,9 +87,9 @@ class CreatePairCandidateReportActionTest {
             fun whenThereIsClearlySomeoneWhoHasBeenTheLongest() = setup(object {
                 val expectedPartner = jezebel
                 val history = listOf(
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, selena))),
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, talia))),
-                        pairAssignmentDocument(listOf(CouplingPair.Double(expectedPartner, bruce)))
+                        pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
+                        pairAssignmentDocument(listOf(pinnedPair(bruce, talia))),
+                        pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce)))
                 )
             }) exercise {
                 CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
@@ -99,7 +101,7 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun whenThereIsOnePersonWhoHasPairedButNoOneElse() = setup(object {
                 val history = listOf(
-                        pairAssignmentDocument(listOf(CouplingPair.Double(bruce, selena)))
+                        pairAssignmentDocument(listOf(pinnedPair(bruce, selena)))
                 )
             }) exercise {
                 CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)

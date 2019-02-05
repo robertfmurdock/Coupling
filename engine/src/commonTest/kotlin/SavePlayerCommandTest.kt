@@ -10,7 +10,6 @@ class SavePlayerCommandTest {
                     badge = 1,
                     tribe = "woo",
                     name = "Tim",
-                    pins = emptyList(),
                     callSignAdjective = "Spicy",
                     callSignNoun = "Meatball",
                     email = "tim@tim.meat",

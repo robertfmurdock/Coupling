@@ -10,7 +10,7 @@ interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
     }
 
     private fun pairingExistsInDocument(historyDocument: PairAssignmentDocument, pair: CouplingPair) =
-            historyDocument.pairs.any { areEqualPairs(pair, it) }
+            historyDocument.pairs.any { areEqualPairs(pair, it.toPair()) }
 }
 
 interface CouplingComparisionSyntax {
@@ -33,6 +33,3 @@ sealed class TimeResult
 data class TimeResultValue(val time: Int) : TimeResult()
 
 object NeverPaired : TimeResult()
-
-
-

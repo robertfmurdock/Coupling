@@ -13,8 +13,7 @@ class JsMappingsTest {
                     "badge" to 1,
                     "tribe" to "pay",
                     "name" to "Neal",
-                    "email" to "nfebbrar@gmail.com",
-                    "pins" to emptyArray<Json>()
+                    "email" to "nfebbrar@gmail.com"
             )
         }) exercise {
             original.toPlayer().toJson()
@@ -28,7 +27,6 @@ class JsMappingsTest {
                     "tribe" to "they",
                     "name" to "Teal",
                     "email" to "tealguy@gmail.com",
-                    "pins" to emptyArray<Json>(),
                     "callSignAdjective" to "Furious",
                     "callSignNoun" to "Squirrel",
                     "imageURL" to "batman.png"

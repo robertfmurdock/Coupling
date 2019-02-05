@@ -6,12 +6,13 @@ fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
         .plusIfNotNull("name", name)
         .plusIfNotNull("tribe", tribe)
         .plusIfNotNull("email", email)
-        .plusIfNotNull("pins", pins?.toJson())
         .plusIfNotNull("badge", badge)
         .plusIfNotNull("callSignAdjective", callSignAdjective)
         .plusIfNotNull("callSignNoun", callSignNoun)
         .plusIfNotNull("imageURL", imageURL)
         .pairsToJson()
+
+fun PinnedPlayer.toJson(): Json = player.toJson().apply { this["pins"] = pins.toJson() }
 
 private fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
 
@@ -36,8 +37,7 @@ fun Json.toPlayer(): Player = Player(
         email = stringValue("email"),
         callSignAdjective = stringValue("callSignAdjective"),
         callSignNoun = stringValue("callSignNoun"),
-        imageURL = stringValue("imageURL"),
-        pins = (this["pins"] as? Array<Json>)?.toPins() ?: emptyList()
+        imageURL = stringValue("imageURL")
 )
 
 fun Json.toTribe(): KtTribe = KtTribe(
@@ -75,13 +75,11 @@ fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
 )
 
 @JsName("pairFromArray")
-fun pairFromArray(array: Array<Json>) = array.map { it.toPlayer() }.toPairs()
+fun pairFromArray(array: Array<Json>) = array.map {
+    PinnedPlayer(it.toPlayer(), it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList())
+}.toPairs()
 
-private fun List<Player>.toPairs() = when (size) {
-    1 -> CouplingPair.Single(this[0])
-    2 -> CouplingPair.Double(this[0], this[1])
-    else -> CouplingPair.Empty
-}
+private fun List<PinnedPlayer>.toPairs() = PinnedCouplingPair(this)
 
 fun StatisticsReport.toJson() = json(
         "spinsUntilFullRotation" to spinsUntilFullRotation,

@@ -14,7 +14,7 @@ class ComposeStatisticsActionTest {
         fun makePlayers(tribe: KtTribe, numberOfPlayers: Int) = (1..numberOfPlayers)
                 .map { number -> makePlayer(tribe, "$number") }
 
-        fun makePlayer(tribe: KtTribe, id: String) = Player(id = id, tribe = tribe.id)
+        private fun makePlayer(tribe: KtTribe, id: String) = Player(id = id, tribe = tribe.id)
 
         private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(
@@ -30,7 +30,7 @@ class ComposeStatisticsActionTest {
     class WillIncludeTheFullRotationNumber {
 
         companion object {
-            val history = emptyList<PairAssignmentDocument>()
+            private val history = emptyList<PairAssignmentDocument>()
 
             fun composeStatisticsAction(players: List<Player>) =
                     ComposeStatisticsAction(tribe, players, history)
@@ -173,16 +173,16 @@ class ComposeStatisticsActionTest {
             val stubDate = DateTime.now()
             val history = listOf(
                     pairAssignmentDocument(listOf(
-                            CouplingPair.Double(player1, player3),
-                            CouplingPair.Double(player2, player4)
+                            PinnedCouplingPair(listOf(player1.withPins(emptyList()), player3.withPins(emptyList()))),
+                            PinnedCouplingPair(listOf(player2.withPins(emptyList()), player4.withPins(emptyList())))
                     )),
                     pairAssignmentDocument(listOf(
-                            CouplingPair.Double(player1, player2),
-                            CouplingPair.Double(player3, player4)
+                            PinnedCouplingPair(listOf(player1.withPins(emptyList()), player2.withPins(emptyList()))),
+                            PinnedCouplingPair(listOf(player3.withPins(emptyList()), player4.withPins(emptyList())))
                     ))
             )
 
-            private fun pairAssignmentDocument(pairs: List<CouplingPair.Double>) =
+            private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
                     PairAssignmentDocument(stubDate, pairs, tribe.id)
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)

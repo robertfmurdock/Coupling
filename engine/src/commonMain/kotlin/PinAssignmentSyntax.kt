@@ -1,4 +1,4 @@
 interface PinAssignmentSyntax {
-    fun List<Player>.assign(pins: List<Pin>) = map { it.copy(pins = pins) }
-
+    fun List<CouplingPair>.assign(pins: List<Pin>) =
+            map { PinnedCouplingPair(it.asArray().toList().map { player -> player.withPins(pins) }) }
 }

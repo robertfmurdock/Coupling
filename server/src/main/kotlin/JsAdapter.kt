@@ -22,7 +22,7 @@ fun RunGameActionDispatcher.performRunGameCommand(history: Array<Json>, players:
                 }
 
 private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
-    it.asArray()
+    it.players
             .map { player ->
                 player.toJson()
             }
