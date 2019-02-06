@@ -67,11 +67,13 @@ tasks {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
+        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
     val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
+        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {

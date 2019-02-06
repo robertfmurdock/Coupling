@@ -1,4 +1,3 @@
-
 import com.soywiz.klock.DateTime
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
@@ -23,10 +22,10 @@ class ProposeNewPairsCommandTest {
             override fun getTribeAsync(tribeId: String): Deferred<KtTribe> = CompletableDeferred(tribe)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun getPlayersAsync(tribeId: String): Deferred<List<Player>> = CompletableDeferred(emptyList())
+            override fun getPlayersAsync(tribeId: TribeId): Deferred<List<Player>> = CompletableDeferred(emptyList())
 
-            override suspend fun save(player: Player, tribeId: String) = Unit
-            override suspend fun delete(playerId: String)  = Unit
+            override suspend fun save(player: Player, tribeId: TribeId) = Unit
+            override suspend fun delete(playerId: String) = Unit
 
             override val repository: CouplingDataRepository = this
             override val actionDispatcher = SpyRunGameActionDispatcher()

@@ -17,17 +17,17 @@ class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
             playersCollection.find(json("id" to playerId)).unsafeCast<Promise<Array<Json>>>().await() +
                     playersCollection.find(json("_id" to playerId)).unsafeCast<Promise<Array<Json>>>().await()
 
-    override suspend fun save(player: Player, tribeId: String) = player.toJson()
+    override suspend fun save(player: Player, tribeId: TribeId) = player.toJson()
             .apply {
                 this["id"] = player.id
                 this["_id"] = null
-                this["tribe"] = tribeId
+                this["tribe"] = tribeId.value
                 this["timestamp"] = Date()
             }
             .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }
             .await()
 
-    override fun getPlayersAsync(tribeId: String) =
+    override fun getPlayersAsync(tribeId: TribeId) =
             requestJsPlayers(tribeId)
                     .then { jsonArray -> jsonArray.dbJsonToPlayers() }
                     .asDeferred()
@@ -43,7 +43,7 @@ class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
 
     private fun Json.timeStamp() = this["timestamp"]?.unsafeCast<Date>()?.toDateTime()
 
-    private fun requestJsPlayers(tribeId: String) = jsRepository
-            .requestPlayers(tribeId)
+    private fun requestJsPlayers(tribeId: TribeId) = jsRepository
+            .requestPlayers(tribeId.value)
             .unsafeCast<Promise<Array<Json>>>()
 }

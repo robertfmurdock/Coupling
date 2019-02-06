@@ -1,4 +1,4 @@
-data class SavePlayerCommand(val player: Player, val tribeId: String)
+data class SavePlayerCommand(val player: Player, val tribeId: TribeId)
 
 interface SavePlayerCommandDispatcher {
 

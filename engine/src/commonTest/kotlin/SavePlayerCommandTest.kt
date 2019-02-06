@@ -5,7 +5,7 @@ class SavePlayerCommandTest {
     @Test
     fun willSaveToRepository() = testAsync {
         setupAsync(object : SavePlayerCommandDispatcher {
-            val tribe = "woo"
+            val tribe = TribeId("woo")
             val player = Player(
                     id = "1",
                     badge = 1,
@@ -25,9 +25,9 @@ class SavePlayerCommandTest {
     }
 
     class PlayersRepositorySpy : PlayersRepository, Spy<Player, Unit> by SpyData() {
-        override fun getPlayersAsync(tribeId: String) = cancel()
+        override fun getPlayersAsync(tribeId: TribeId) = cancel()
 
-        override suspend fun save(player: Player, tribeId: String) = spyFunction(player)
+        override suspend fun save(player: Player, tribeId: TribeId) = spyFunction(player)
         override suspend fun delete(playerId: String) = cancel()
     }
 }

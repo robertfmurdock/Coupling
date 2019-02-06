@@ -68,7 +68,7 @@ fun playersQueryDispatcher(jsRepository: dynamic): PlayersQueryDispatcher = obje
     @Suppress("unused")
     @JsName("performQuery")
     fun performQuery(tribeId: String) = GlobalScope.promise {
-        PlayersQuery(tribeId)
+        PlayersQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
                 .toTypedArray()
@@ -84,7 +84,7 @@ fun savePlayerCommandDispatcher(jsRepository: dynamic): SavePlayerCommandDispatc
     @Suppress("unused")
     @JsName("performCommand")
     fun performCommand(player: Json, tribeId: String) = GlobalScope.promise {
-        SavePlayerCommand(player.toPlayer(), tribeId)
+        SavePlayerCommand(player.toPlayer(), TribeId(tribeId))
                 .perform()
                 .let { it.toJson() }
     }

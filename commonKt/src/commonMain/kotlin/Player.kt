@@ -7,3 +7,5 @@ data class Player(
         val callSignNoun: String? = null,
         val imageURL: String? = null
 )
+
+inline class TribeId(val value: String)

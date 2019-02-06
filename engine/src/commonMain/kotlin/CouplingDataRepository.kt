@@ -7,7 +7,7 @@ interface CouplingDataRepository : PlayersRepository {
 }
 
 interface PlayersRepository {
-    fun getPlayersAsync(tribeId: String) : Deferred<List<Player>>
-    suspend fun save(player: Player, tribeId: String)
+    fun getPlayersAsync(tribeId: TribeId) : Deferred<List<Player>>
+    suspend fun save(player: Player, tribeId: TribeId)
     suspend fun delete(playerId: String)
 }

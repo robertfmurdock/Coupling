@@ -34,15 +34,15 @@ class PlayerRepositoryTest {
             playerCollection.drop().unsafeCast<Promise<Unit>>().await()
         }
 
-        suspend fun getDbPlayers(tribeId: String) =
-                playerCollection.find(json("tribe" to tribeId)).unsafeCast<Promise<Array<Json>>>().await()
+        suspend fun getDbPlayers(tribeId: TribeId) =
+                playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
     }
 
     @Test
     fun canSaveAndGetPlayer() = testAsync {
         dropPlayers()
         setupAsync(object {
-            val tribe = "woo"
+            val tribeId = TribeId("woo")
             val player = Player(
                     id = id(),
                     badge = 1,
@@ -53,8 +53,8 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player, tribe)
-            getPlayersAsync(tribe).await()
+            save(player, tribeId)
+            getPlayersAsync(tribeId).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
         }
@@ -64,7 +64,7 @@ class PlayerRepositoryTest {
     fun savedPlayersIncludeModificationDate() = testAsync {
         dropPlayers()
         setupAsync(object {
-            val tribeId = "woo"
+            val tribeId = TribeId("woo")
             val player = Player(
                     id = id(),
                     badge = 1,
@@ -88,7 +88,7 @@ class PlayerRepositoryTest {
     class SavingTheSamePlayerTwice {
 
         private suspend fun setupSavedPlayer() = setupAsync(object {
-            val tribeId = "boo"
+            val tribeId = TribeId("boo")
             val player = Player(
                     id = id(),
                     badge = 1,
@@ -133,7 +133,7 @@ class PlayerRepositoryTest {
     fun canSaveDeleteAndNotGetPlayer() = testAsync {
         dropPlayers()
         setupAsync(object {
-            val tribe = "hoo"
+            val tribe = TribeId("hoo")
             val playerId = id()
             val player = Player(
                     id = playerId,
@@ -158,10 +158,10 @@ class PlayerRepositoryTest {
         companion object {
             private suspend fun setupLegacyPlayer() = setupAsync(object {
                 val playerId = id()
-                val tribeId = "woo"
+                val tribeId = TribeId("woo")
                 val playerDbJson = json(
                         "_id" to playerId,
-                        "tribe" to tribeId,
+                        "tribe" to tribeId.value,
                         "name" to "The Foul Monster"
                 )
             }) {
@@ -196,10 +196,10 @@ class PlayerRepositoryTest {
         fun saveThenGetWillOnlyReturnTheUpdatedPlayer() = testAsync {
             setupAsync(object {
                 val playerId = id()
-                val tribeId = "woo"
+                val tribeId = TribeId("woo")
                 val playerDbJson = json(
                         "_id" to playerId,
-                        "tribe" to tribeId,
+                        "tribe" to tribeId.value,
                         "name" to "The Foul Monster"
                 )
 
@@ -222,10 +222,10 @@ class PlayerRepositoryTest {
     @Test
     fun forRealisticLegacyData() = testAsync {
         setupAsync(object {
-            val tribeId = "nah"
+            val tribeId = TribeId("nah")
             val playerDbJson = json(
                     "_id" to "5c59ca700e6e5e3cce737c6e",
-                    "tribe" to tribeId,
+                    "tribe" to tribeId.value,
                     "name" to "Guy guy",
                     "email" to "duder",
                     "pins" to emptyArray<Json>(),
@@ -246,7 +246,7 @@ class PlayerRepositoryTest {
                     tribeId
             )
 
-            playerCollection.find(json("tribe" to tribeId)).unsafeCast<Promise<Array<Json>>>().await()
+            playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         } exerciseAsync {
             getPlayersAsync(tribeId).await()
         } verifyAsync { result ->

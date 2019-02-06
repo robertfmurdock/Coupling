@@ -7,7 +7,7 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepository() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
-            val tribeId = "Excellent Tribe"
+            val tribeId = TribeId("Excellent Tribe")
             val players = listOf(
                     Player(id = "1"),
                     Player(id = "2"),
@@ -23,10 +23,10 @@ class PlayersQueryTest {
         }
     }
 
-    class PlayersRepositorySpy : PlayersRepository, Spy<String, Deferred<List<Player>>> by SpyData() {
-        override fun getPlayersAsync(tribeId: String) = spyFunction((tribeId))
+    class PlayersRepositorySpy : PlayersRepository, Spy<TribeId, Deferred<List<Player>>> by SpyData() {
+        override fun getPlayersAsync(tribeId: TribeId) = spyFunction(tribeId)
 
-        override suspend fun save(player: Player, tribeId: String) = cancel()
+        override suspend fun save(player: Player, tribeId: TribeId) = cancel()
         override suspend fun delete(playerId: String) = cancel()
     }
 }
