@@ -1,4 +1,4 @@
 interface TribeIdPlayersSyntax {
-    val repository: PlayerRepository
-    suspend fun TribeId.loadPlayers() = repository.getPlayersAsync(this).await()
+    val playerRepository: PlayerRepository
+    suspend fun TribeId.loadPlayers() = playerRepository.getPlayersAsync(this).await()
 }

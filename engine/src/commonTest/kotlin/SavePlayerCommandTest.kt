@@ -15,7 +15,7 @@ class SavePlayerCommandTest {
                     email = "tim@tim.meat",
                     imageURL = "italian.jpg"
             )
-            override val repository = PlayerRepositorySpy().apply { whenever(player, Unit) }
+            override val playerRepository = PlayerRepositorySpy().apply { whenever(player, Unit) }
         }) exerciseAsync {
             SavePlayerCommand(TribeIdPlayer(player, tribe))
                     .perform()

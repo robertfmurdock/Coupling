@@ -13,7 +13,7 @@ class PlayersQueryTest {
                     Player(id = "2"),
                     Player(id = "3")
             )
-            override val repository = PlayerRepositorySpy()
+            override val playerRepository = PlayerRepositorySpy()
                     .apply { whenever(tribeId, CompletableDeferred(players)) }
         }) exerciseAsync {
             PlayersQuery(tribeId)

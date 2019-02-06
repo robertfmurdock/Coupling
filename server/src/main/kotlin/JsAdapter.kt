@@ -44,10 +44,17 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
         NextPlayerActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
-        Wheel {
+        Wheel,
+        MongoDataRepository,
+        MongoPlayerRepository {
+    override val repository = this
+    override val jsRepository = jsRepository
+    override val playerRepository = this
+    override val userContext = object : UserContext {
+        override val username = username
+    }
     override val actionDispatcher = this
     override val wheel: Wheel = this
-    override val repository = dataRepository(jsRepository, username)
 
     @JsName("performSavePlayerCommand")
     fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {

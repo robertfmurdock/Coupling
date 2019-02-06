@@ -5,7 +5,7 @@ class DeletePlayerCommandTest {
     fun willUseRepositoryToRemove() = testAsync {
         setupAsync(object : DeletePlayerCommandDispatcher {
             val playerId = "ThatGuyGetHim"
-            override val repository = PlayerRepositorySpy().apply { whenever(playerId, Unit) }
+            override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, Unit) }
         }) exerciseAsync {
             DeletePlayerCommand(playerId)
                     .perform()

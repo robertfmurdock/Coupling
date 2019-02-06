@@ -19,9 +19,9 @@ interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
             }
 
     private fun ProposeNewPairsCommand.dataDeferred() = Triple(
-            tribeId.getHistory(),
-            tribeId.getPins(),
-            tribeId.getTribe()
+            tribeId.getHistoryAsync(),
+            tribeId.getPinsAsync(),
+            tribeId.getTribeAsync()
     )
 
 }
@@ -30,8 +30,8 @@ interface TribeIdDataSyntax {
 
     val repository: CouplingDataRepository
 
-    fun String.getHistory() = repository.getHistoryAsync(this)
-    fun String.getPins() = repository.getPinsAsync(this)
-    fun String.getTribe() = repository.getTribeAsync(this)
+    fun String.getHistoryAsync() = repository.getHistoryAsync(this)
+    fun String.getPinsAsync() = repository.getPinsAsync(this)
+    fun String.getTribeAsync() = repository.getTribeAsync(this)
 
 }

@@ -3,14 +3,9 @@ import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 import kotlin.js.Promise
 
-fun dataRepository(jsRepository: dynamic, username: String): MongoDataRepository = object : MongoDataRepository {
-    override val jsRepository: dynamic = jsRepository
-    override val userContext: UserContext = object : UserContext {
-        override val username = username
-    }
-}
+interface MongoDataRepository : CouplingDataRepository {
 
-interface MongoDataRepository : CouplingDataRepository, MongoPlayerRepository {
+    val jsRepository: dynamic
 
     override fun getPinsAsync(tribeId: String) = requestPins(tribeId)
             .then { it.toPins() }
