@@ -155,9 +155,47 @@ class MongoPlayerRepositoryTest {
         }) exerciseAsync {
             save(TribeIdPlayer(player, tribe))
             delete(playerId)
-            getPlayersAsync(tribe).await()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
+        } verifyAsync {
+            getPlayersAsync(tribe).await().assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun deleteRecordWillIncludeUsername() = testAsync {
+        dropPlayers()
+        setupAsync(object {
+            val tribeId = TribeId("hoo")
+            val playerId = id()
+            val player = Player(
+                    id = playerId,
+                    badge = 0,
+                    name = "Jim",
+                    callSignAdjective = "Spicy",
+                    callSignNoun = "Meatball",
+                    email = "jim@jim.meat",
+                    imageURL = "italian.jpg"
+            )
+            val userWhoSaved = "user that saved"
+        }) {
+            with(object : MongoPlayerRepository {
+                override val jsRepository = jsRepository()
+                override val userContext = object : UserContext {
+                    override val username = userWhoSaved
+                }
+            }) {
+                save(TribeIdPlayer(player, tribeId))
+            }
+        } exerciseAsync {
+            delete(playerId)
+        } verifyAsync {
+            getDbPlayers(tribeId)
+                    .toList()
+                    .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
+                    .map { it["modifiedByUsername"].unsafeCast<String>() }
+                    .assertIsEqualTo(listOf(
+                            username(),
+                            userWhoSaved
+                    ))
         }
     }
 
