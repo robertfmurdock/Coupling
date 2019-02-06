@@ -9,3 +9,5 @@ data class Player(
 )
 
 inline class TribeId(val value: String)
+
+data class TribeIdPlayer(val player: Player, val tribeId: TribeId)

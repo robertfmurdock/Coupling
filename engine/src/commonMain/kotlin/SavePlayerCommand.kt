@@ -1,8 +1,7 @@
-data class SavePlayerCommand(val player: Player, val tribeId: TribeId)
+data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer)
 
-interface SavePlayerCommandDispatcher {
+interface SavePlayerCommandDispatcher : TribeIdPlayerSaveSyntax {
 
-    val repository: PlayersRepository
+    suspend fun SavePlayerCommand.perform() = tribeIdPlayer.save().let { tribeIdPlayer.player }
 
-    suspend fun SavePlayerCommand.perform() = player.apply { repository.save(this, tribeId) }
 }

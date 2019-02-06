@@ -17,7 +17,7 @@ class SavePlayerCommandTest {
             )
             override val repository = PlayersRepositorySpy().apply { whenever(player, Unit) }
         }) exerciseAsync {
-            SavePlayerCommand(player, tribe)
+            SavePlayerCommand(TribeIdPlayer(player, tribe))
                     .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(player)
@@ -27,7 +27,7 @@ class SavePlayerCommandTest {
     class PlayersRepositorySpy : PlayersRepository, Spy<Player, Unit> by SpyData() {
         override fun getPlayersAsync(tribeId: TribeId) = cancel()
 
-        override suspend fun save(player: Player, tribeId: TribeId) = spyFunction(player)
+        override suspend fun save(tribeIdPlayer: TribeIdPlayer) = spyFunction(tribeIdPlayer.player)
         override suspend fun delete(playerId: String) = cancel()
     }
 }

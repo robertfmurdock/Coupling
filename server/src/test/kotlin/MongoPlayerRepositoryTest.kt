@@ -13,7 +13,7 @@ fun jsRepository(): dynamic {
     return js("new clazz('$mongoUrl')")
 }
 
-class PlayerRepositoryTest {
+class MongoPlayerRepositoryTest {
 
     companion object : PlayersRepository by MongoPlayerRepository(jsRepository()) {
 
@@ -53,7 +53,7 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player, tribeId)
+            save(TribeIdPlayer(player, tribeId))
             getPlayersAsync(tribeId).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
@@ -75,7 +75,7 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player, tribeId)
+            save(TribeIdPlayer(player, tribeId))
             getDbPlayers(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
@@ -101,13 +101,13 @@ class PlayerRepositoryTest {
             val updatedPlayer = player.copy(name = "Timmy")
         }) {
             dropPlayers()
-            save(player, tribeId)
+            save(TribeIdPlayer(player, tribeId))
         }
 
         @Test
         fun willNotDeleteOriginalRecord() = testAsync {
             setupSavedPlayer() exerciseAsync {
-                save(updatedPlayer, tribeId)
+                save(TribeIdPlayer(updatedPlayer, tribeId))
                 getDbPlayers(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
@@ -119,7 +119,7 @@ class PlayerRepositoryTest {
         @Test
         fun getWillOnlyReturnTheUpdatedPlayer() = testAsync {
             setupSavedPlayer() exerciseAsync {
-                save(updatedPlayer, tribeId)
+                save(TribeIdPlayer(updatedPlayer, tribeId))
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
@@ -145,7 +145,7 @@ class PlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(player, tribe)
+            save(TribeIdPlayer(player, tribe))
             delete(playerId)
             getPlayersAsync(tribe).await()
         } verifyAsync { result ->
@@ -211,7 +211,7 @@ class PlayerRepositoryTest {
                 dropPlayers()
                 playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             } exerciseAsync {
-                save(updatedPlayer, tribeId)
+                save(TribeIdPlayer(updatedPlayer, tribeId))
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
@@ -236,15 +236,13 @@ class PlayerRepositoryTest {
         }) {
             dropPlayers()
             playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
-            save(
-                    Player(
-                            id = "5c59ca700e6e5e3cce737c6e",
-                            name = "Guy guy",
-                            email = "duder",
-                            badge = 2
-                    ),
-                    tribeId
+            val tribeIdPlayer = Player(
+                    id = "5c59ca700e6e5e3cce737c6e",
+                    name = "Guy guy",
+                    email = "duder",
+                    badge = 2
             )
+            save(TribeIdPlayer(tribeIdPlayer, tribeId))
 
             playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         } exerciseAsync {

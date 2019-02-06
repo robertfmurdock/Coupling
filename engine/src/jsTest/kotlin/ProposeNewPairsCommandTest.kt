@@ -24,7 +24,7 @@ class ProposeNewPairsCommandTest {
 
             override fun getPlayersAsync(tribeId: TribeId): Deferred<List<Player>> = CompletableDeferred(emptyList())
 
-            override suspend fun save(player: Player, tribeId: TribeId) = Unit
+            override suspend fun save(tribeIdPlayer: TribeIdPlayer) = Unit
             override suspend fun delete(playerId: String) = Unit
 
             override val repository: CouplingDataRepository = this
