@@ -168,56 +168,6 @@ describe('CouplingDataService', function () {
             .then(done, done.fail);
     });
 
-    describe('can remove an existing player', function () {
-        beforeEach(function (done) {
-            couplingDataService.removePlayer(frodo._id, done);
-        });
-
-        it('such that it no longer appears in the players list', function (done) {
-            couplingDataService.requestPlayers(null)
-                .then(function (players) {
-                    const result = players.some(function (player) {
-                        return Comparators.areEqualPlayers(frodo, player);
-                    });
-                    expect(result).toBe(false);
-                })
-                .then(done, done.fail);
-        });
-
-        it('such that it still exists in the database', function (done) {
-            playersCollection.find({_id: frodo._id}, {})
-                .then(function (documents: Player[]) {
-                    expect(Comparators.areEqualPlayers(documents[0], frodo)).toBe(true);
-                })
-                .then(done, done.fail);
-        });
-    });
-
-    describe('what', function () {
-
-        beforeEach(function (done) {
-            couplingDataService.removePlayer(frodo._id, done);
-        });
-
-        it('can resurrect a player from retirement', async function () {
-            let fetchFrodo = function () {
-                return playersCollection.find({_id: frodo._id}, {})
-                    .then(function (players) {
-                        return Promise.resolve(players[0]);
-                    });
-            };
-
-            const player = await fetchFrodo();
-            expect(player).not.toBeUndefined();
-            expect(player.isDeleted).toEqual(true);
-            await couplingDataService.resurrectPlayer(frodo._id);
-            const playerReloaded = await fetchFrodo();
-            expect(playerReloaded).not.toBeUndefined();
-            expect(playerReloaded.isDeleted).toBe(false);
-        });
-    });
-
-
     describe('can remove old pair assignments', function () {
         beforeEach(function (done) {
             couplingDataService.removePairAssignments(pairSetOne._id)
