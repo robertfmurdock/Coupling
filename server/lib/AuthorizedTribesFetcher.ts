@@ -45,6 +45,6 @@ export function promiseTribeAndAuthorization(request) {
         tribe: request.dataService.requestTribe(request.params.tribeId),
         authorizedTribeIds: loadAuthorizedTribeIds(request.user, request.dataService)
     }).then(function (hash: any) {
-        return {isAuthorized: contains(hash.tribe.id, hash.authorizedTribeIds), tribe: hash.tribe};
+        return {isAuthorized: hash.tribe != null && contains(hash.tribe.id, hash.authorizedTribeIds), tribe: hash.tribe};
     })
 }

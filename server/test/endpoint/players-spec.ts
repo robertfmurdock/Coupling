@@ -1,5 +1,5 @@
 "use strict";
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import CouplingDataService from "../../lib/CouplingDataService";
 import Comparators from "../../../common/Comparators";
 import * as supertest from "supertest";
@@ -14,19 +14,26 @@ let path = '/api/' + tribeId + '/players';
 let database = monk.default(config.tempMongoUrl);
 let playersCollection = database.get('players');
 
+let usersCollection = monk.default(config.mongoUrl).get('users');
+
 function clean(object) {
     return JSON.parse(JSON.stringify(object));
 }
 
 describe(path, function () {
-
+    let userEmail = 'test@test.tes';
     let couplingServer = agent;
 
-    beforeEach(function (done) {
-        couplingServer.get('/test-login?username="name"&password="pw"')
+    beforeEach(async function () {
+        await authorizeUserForTribes([tribeId]);
+        await couplingServer.get(`/test-login?username=${userEmail}&password=pw`)
             .expect(302)
-            .then(done, done.fail);
     });
+
+    function authorizeUserForTribes(authorizedTribes) {
+        return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
+    }
+
 
     afterEach(function (done) {
         playersCollection.remove({tribe: tribeId}, false)
@@ -34,10 +41,16 @@ describe(path, function () {
     });
 
     describe("GET", function () {
+
+        it('is not allowed for users without access', async function () {
+            await couplingServer.get('/api/somebodyElsesTribe/players')
+                .expect(404)
+        });
+
         it('will return all available players on team.', function (done) {
             let service = new CouplingDataService(config.tempMongoUrl);
 
-            Promise.props({
+            Bluebird.props({
                 expected: service.requestPlayers(tribeId),
                 response: couplingServer.get(path)
                     .expect(200)
@@ -58,19 +71,19 @@ describe(path, function () {
                 .then(function (responseContainingTheNewId) {
                     newPlayer = responseContainingTheNewId.body;
                 })
-                .then(function() {
+                .then(function () {
                     couplingServer.delete(path + "/" + newPlayer._id)
                         .expect(200)
                 })
-                .then(function() {
-                    return Promise.props({
+                .then(function () {
+                    return Bluebird.props({
                         expected: service.requestRetiredPlayers(tribeId),
                         response: couplingServer.get(path + '/retired')
                             .expect(200)
                             .expect('Content-Type', /json/)
                     });
                 })
-                .then(function(props: any) {
+                .then(function (props: any) {
                     expect(props.response.body).toEqual(props.expected);
                 })
                 .then(done, done.fail);
@@ -93,6 +106,12 @@ describe(path, function () {
                     expect(response.body).toEqual([newPlayer]);
                 })
                 .then(done, done.fail);
+        });
+
+        it('is not allowed for users without access', async function () {
+            await couplingServer.post('/api/somebodyElsesTribe/players')
+                .send({name: 'new player'})
+                .expect(404)
         });
 
     });
@@ -131,6 +150,11 @@ describe(path, function () {
                 .expect(500)
                 .expect({message: 'Failed to remove the player because it did not exist.'})
                 .then(done, done.fail);
+        });
+
+        it('is not allowed for users without access', async function () {
+            await couplingServer.delete('/api/somebodyElsesTribe/players/playerId')
+                .expect(404)
         });
     });
 });
