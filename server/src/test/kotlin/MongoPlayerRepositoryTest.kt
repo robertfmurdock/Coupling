@@ -3,6 +3,7 @@ import com.soywiz.klock.internal.toDateTime
 import com.soywiz.klock.seconds
 import kotlinx.coroutines.await
 import kotlin.js.*
+import kotlin.random.Random
 import kotlin.test.Test
 
 const val mongoUrl = "localhost/PlayersRepositoryTest"
@@ -15,7 +16,11 @@ fun jsRepository(): dynamic {
 
 class MongoPlayerRepositoryTest {
 
-    companion object : PlayersRepository by MongoPlayerRepository(jsRepository()) {
+    companion object : MongoPlayerRepository {
+        override val jsRepository: dynamic = jsRepository()
+        override val userContext: UserContext = object : UserContext {
+            override val username: String = "User-${Random.nextInt(100)}"
+        }
 
         fun id(): String {
             @Suppress("UNUSED_VARIABLE")
@@ -61,7 +66,7 @@ class MongoPlayerRepositoryTest {
     }
 
     @Test
-    fun savedPlayersIncludeModificationDate() = testAsync {
+    fun savedPlayersIncludeModificationDateAndUsername() = testAsync {
         dropPlayers()
         setupAsync(object {
             val tribeId = TribeId("woo")
@@ -79,9 +84,12 @@ class MongoPlayerRepositoryTest {
             getDbPlayers(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
-            result.firstOrNull()?.get("timestamp").unsafeCast<Date>().toDateTime()
-                    .isCloseToNow()
-                    .assertIsEqualTo(true)
+            result.first().apply {
+                get("timestamp").unsafeCast<Date>().toDateTime()
+                        .isCloseToNow()
+                        .assertIsEqualTo(true)
+                get("modifiedByUsername").assertIsEqualTo(userContext.username)
+            }
         }
     }
 

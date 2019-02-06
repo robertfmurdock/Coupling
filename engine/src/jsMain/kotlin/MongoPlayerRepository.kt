@@ -3,9 +3,11 @@ import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.await
 import kotlin.js.*
 
-class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
+interface MongoPlayerRepository : PlayerRepository, UserContextSyntax {
 
-    val playersCollection: dynamic = jsRepository.playersCollection
+    val jsRepository: dynamic
+
+    val playersCollection: dynamic get() = jsRepository.playersCollection
 
     override suspend fun delete(playerId: String) = getPlayerJsonHistory(playerId).toList()
             .latestByTimestamp()
@@ -17,22 +19,20 @@ class MongoPlayerRepository(val jsRepository: dynamic) : PlayersRepository {
             playersCollection.find(json("id" to playerId)).unsafeCast<Promise<Array<Json>>>().await() +
                     playersCollection.find(json("_id" to playerId)).unsafeCast<Promise<Array<Json>>>().await()
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
-        tribeIdPlayer.player.toJson()
-                .apply {
-                    this["id"] = tribeIdPlayer.player.id
-                    this["_id"] = null
-                    this["tribe"] = tribeIdPlayer.tribeId.value
-                    this["timestamp"] = Date()
-                }
-                .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }
-                .await()
-    }
+    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = tribeIdPlayer.player.toJson()
+            .apply {
+                this["id"] = tribeIdPlayer.player.id
+                this["_id"] = null
+                this["tribe"] = tribeIdPlayer.tribeId.value
+                this["timestamp"] = Date()
+                this["modifiedByUsername"] = username()
+            }
+            .run { jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>() }
+            .await()
 
-    override fun getPlayersAsync(tribeId: TribeId) =
-            requestJsPlayers(tribeId)
-                    .then { jsonArray -> jsonArray.dbJsonToPlayers() }
-                    .asDeferred()
+    override fun getPlayersAsync(tribeId: TribeId) = requestJsPlayers(tribeId)
+            .then { jsonArray -> jsonArray.dbJsonToPlayers() }
+            .asDeferred()
 
     private fun Array<Json>.dbJsonToPlayers() = map { it.apply { this["_id"] = this["id"] ?: this["_id"] } }
             .groupBy { it["_id"].toString() }

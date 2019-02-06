@@ -1,6 +1,6 @@
 import * as express from "express";
 // @ts-ignore
-import {playersQueryDispatcher, savePlayerCommandDispatcher, deletePlayerCommandDispatcher} from "server"
+import {commandDispatcher} from "server"
 import * as AuthorizedTribesFetcher from "../lib/AuthorizedTribesFetcher";
 
 function respond(response, promise) {
@@ -18,24 +18,24 @@ class PlayerRoutes {
     listPlayers(request, response) {
         respond(
             response,
-            playersQueryDispatcher(request.dataService)
-                .performQuery(request.params.tribeId)
+            request.commandDispatcher
+                .performPlayersQuery(request.params.tribeId)
         );
     };
 
     savePlayer(request, response) {
         respond(
             response,
-            savePlayerCommandDispatcher(request.dataService)
-                .performCommand(request.body, request.params.tribeId)
+            request.commandDispatcher
+                .performSavePlayerCommand(request.body, request.params.tribeId)
         )
     };
 
     removePlayer(request, response) {
         respond(
             response,
-            deletePlayerCommandDispatcher(request.dataService)
-                .performCommand(request.params.playerId)
+            request.commandDispatcher
+                .performDeletePlayerCommand(request.params.playerId)
         );
     };
 

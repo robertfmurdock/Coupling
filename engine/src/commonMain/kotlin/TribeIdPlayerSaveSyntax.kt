@@ -1,6 +1,6 @@
 interface TribeIdPlayerSaveSyntax {
 
-    val repository: PlayersRepository
+    val repository: PlayerRepository
 
     suspend fun TribeIdPlayer.save() = repository.save(this)
 

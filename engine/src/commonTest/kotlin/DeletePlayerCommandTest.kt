@@ -5,14 +5,14 @@ class DeletePlayerCommandTest {
     fun willUseRepositoryToRemove() = testAsync {
         setupAsync(object : DeletePlayerCommandDispatcher {
             val playerId = "ThatGuyGetHim"
-            override val repository = PlayersRepositorySpy().apply { whenever(playerId, Unit) }
+            override val repository = PlayerRepositorySpy().apply { whenever(playerId, Unit) }
         }) exerciseAsync {
             DeletePlayerCommand(playerId)
                     .perform()
         } verifyAsync { result -> result.assertIsEqualTo(playerId) }
     }
 
-    class PlayersRepositorySpy : PlayersRepository, Spy<String, Unit> by SpyData() {
+    class PlayerRepositorySpy : PlayerRepository, Spy<String, Unit> by SpyData() {
         override suspend fun delete(playerId: String) = spyFunction(playerId)
 
         override fun getPlayersAsync(tribeId: TribeId) = cancel()

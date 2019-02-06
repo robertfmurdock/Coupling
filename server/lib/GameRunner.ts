@@ -3,7 +3,7 @@ import Player from "../../common/Player";
 // @ts-ignore
 import {spinContext} from "engine";
 // @ts-ignore
-import {performRunGameCommand} from "server";
+import {performRunGameAction} from "server";
 
 const context = spinContext();
 
@@ -12,7 +12,7 @@ export default class GameRunner {
     }
 
     public run(players: Player[], pins, history, tribe) {
-        return performRunGameCommand(
+        return performRunGameAction(
             this.commandDispatcher,
             history,
             players,

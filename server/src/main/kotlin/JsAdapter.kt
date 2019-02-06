@@ -4,8 +4,9 @@ import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.json
 
-@JsName("performRunGameCommand")
-fun RunGameActionDispatcher.performRunGameCommand(history: Array<Json>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
+@Suppress("unused")
+@JsName("performRunGameAction")
+fun RunGameActionDispatcher.performRunGameAction(history: Array<Json>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
         RunGameAction(
                 players = players.map { it.toPlayer() }.toList(),
                 pins = pins.toPins(),
@@ -30,79 +31,56 @@ private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
 }
         .toTypedArray()
 
+interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
+        PlayersQueryDispatcher,
+        SavePlayerCommandDispatcher,
+        DeletePlayerCommandDispatcher
+
 @Suppress("unused")
-@JsName("proposeNewPairsCommandDispatcher")
-fun proposeNewPairsCommandDispatcher(jsRepository: dynamic): ProposeNewPairsCommandDispatcher = object :
-        ProposeNewPairsCommandDispatcher,
+@JsName("commandDispatcher")
+fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatcher = object : CommandDispatcher,
+        RunGameActionDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
-        CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
-        RunGameActionDispatcher,
+        CreatePairCandidateReportActionDispatcher,
         Wheel {
-    override val repository = dataRepository(jsRepository)
     override val actionDispatcher = this
-    override val wheel = this
+    override val wheel: Wheel = this
+    override val repository = dataRepository(jsRepository, username)
 
-    @Suppress("unused")
-    @JsName("performCommand")
-    fun performCommand(tribeId: String, players: Array<Json>) =
-            GlobalScope.promise {
-                ProposeNewPairsCommand(tribeId, players.map(Json::toPlayer))
-                        .perform()
-                        .let {
-                            json(
-                                    "date" to it.date.toDate(),
-                                    "pairs" to toJs(it),
-                                    "tribe" to it.tribeId
-                            )
-                        }
-            }
-}
+    @JsName("performSavePlayerCommand")
+    fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {
+        SavePlayerCommand(TribeIdPlayer(player.toPlayer(), TribeId(tribeId)))
+                .perform()
+                .let { it.toJson() }
+    }
 
-@Suppress("unused")
-@JsName("playersQueryDispatcher")
-fun playersQueryDispatcher(jsRepository: dynamic): PlayersQueryDispatcher = object : PlayersQueryDispatcher {
-    override val repository = dataRepository(jsRepository)
+    @JsName("performDeletePlayerCommand")
+    fun performDeletePlayerCommand(playerId: String) = GlobalScope.promise {
+        DeletePlayerCommand(playerId)
+                .perform()
+                .let { json() }
+    }
 
-    @Suppress("unused")
-    @JsName("performQuery")
-    fun performQuery(tribeId: String) = GlobalScope.promise {
+    @JsName("performPlayersQuery")
+    fun performPlayersQuery(tribeId: String) = GlobalScope.promise {
         PlayersQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
                 .toTypedArray()
     }
 
-}
-
-@Suppress("unused")
-@JsName("savePlayerCommandDispatcher")
-fun savePlayerCommandDispatcher(jsRepository: dynamic): SavePlayerCommandDispatcher = object : SavePlayerCommandDispatcher {
-    override val repository = dataRepository(jsRepository)
-
-    @Suppress("unused")
-    @JsName("performCommand")
-    fun performCommand(player: Json, tribeId: String) = GlobalScope.promise {
-        val tribeId1 = TribeId(tribeId)
-        SavePlayerCommand(TribeIdPlayer(player.toPlayer(), tribeId1))
+    @JsName("performProposeNewPairsCommand")
+    fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = GlobalScope.promise {
+        ProposeNewPairsCommand(tribeId, players.map(Json::toPlayer))
                 .perform()
-                .let { it.toJson() }
+                .let {
+                    json(
+                            "date" to it.date.toDate(),
+                            "pairs" to toJs(it),
+                            "tribe" to it.tribeId
+                    )
+                }
     }
-
-}
-
-@Suppress("unused")
-@JsName("deletePlayerCommandDispatcher")
-fun deletePlayerCommandDispatcher(jsRepository: dynamic): DeletePlayerCommandDispatcher = object : DeletePlayerCommandDispatcher {
-    override val repository = dataRepository(jsRepository)
-
-    @Suppress("unused")
-    @JsName("performCommand")
-    fun performCommand(playerId: String) = GlobalScope.promise {
-        DeletePlayerCommand(playerId)
-                .perform()
-                .let { json() }
-    }
-
 }

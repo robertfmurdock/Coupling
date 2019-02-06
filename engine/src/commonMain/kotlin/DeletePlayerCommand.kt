@@ -5,6 +5,6 @@ interface DeletePlayerCommandDispatcher : PlayerIdDeleteSyntax {
 }
 
 interface PlayerIdDeleteSyntax {
-    val repository: PlayersRepository
+    val repository: PlayerRepository
     suspend fun String.deletePlayer() = repository.delete(this)
 }

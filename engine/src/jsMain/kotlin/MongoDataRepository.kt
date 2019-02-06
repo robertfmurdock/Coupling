@@ -1,11 +1,16 @@
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
-import kotlin.js.*
+import kotlin.js.Json
+import kotlin.js.Promise
 
-fun dataRepository(jsRepository: dynamic) = MongoDataRepository(jsRepository)
+fun dataRepository(jsRepository: dynamic, username: String): MongoDataRepository = object : MongoDataRepository {
+    override val jsRepository: dynamic = jsRepository
+    override val userContext: UserContext = object : UserContext {
+        override val username = username
+    }
+}
 
-class MongoDataRepository(private val jsRepository: dynamic) : CouplingDataRepository,
-        PlayersRepository by MongoPlayerRepository(jsRepository) {
+interface MongoDataRepository : CouplingDataRepository, MongoPlayerRepository {
 
     override fun getPinsAsync(tribeId: String) = requestPins(tribeId)
             .then { it.toPins() }

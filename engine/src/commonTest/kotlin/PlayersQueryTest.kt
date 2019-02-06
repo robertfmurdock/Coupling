@@ -13,7 +13,7 @@ class PlayersQueryTest {
                     Player(id = "2"),
                     Player(id = "3")
             )
-            override val repository = PlayersRepositorySpy()
+            override val repository = PlayerRepositorySpy()
                     .apply { whenever(tribeId, CompletableDeferred(players)) }
         }) exerciseAsync {
             PlayersQuery(tribeId)
@@ -23,7 +23,7 @@ class PlayersQueryTest {
         }
     }
 
-    class PlayersRepositorySpy : PlayersRepository, Spy<TribeId, Deferred<List<Player>>> by SpyData() {
+    class PlayerRepositorySpy : PlayerRepository, Spy<TribeId, Deferred<List<Player>>> by SpyData() {
         override fun getPlayersAsync(tribeId: TribeId) = spyFunction(tribeId)
 
         override suspend fun save(tribeIdPlayer: TribeIdPlayer) = cancel()
