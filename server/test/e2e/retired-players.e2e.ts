@@ -55,7 +55,7 @@ describe('The retired players page', function () {
         browser.setLocation(`/${tribe.id}/players/retired`);
     });
 
-    it('shows the retired players', function () {
+    it('shows the retired players', async function () {
         const playerElements = element.all(By.repeater('player in retiredPlayers'));
         expect(playerElements.getText()).toEqual(pluck('name', retiredPlayers));
     });

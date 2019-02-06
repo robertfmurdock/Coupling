@@ -40,9 +40,9 @@ export function loadAuthorizedTribeIds(user, dataService) {
         });
 }
 
-export function promiseTribeAndAuthorization(request) {
+export function promiseTribeAndAuthorization(request, tribeId = request.params.tribeId) {
     return Promise.props({
-        tribe: request.dataService.requestTribe(request.params.tribeId),
+        tribe: request.dataService.requestTribe(tribeId),
         authorizedTribeIds: loadAuthorizedTribeIds(request.user, request.dataService)
     }).then(function (hash: any) {
         return {isAuthorized: hash.tribe != null && contains(hash.tribe.id, hash.authorizedTribeIds), tribe: hash.tribe};

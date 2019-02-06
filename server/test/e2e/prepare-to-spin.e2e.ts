@@ -16,7 +16,7 @@ describe('The prepare to spin page', function () {
     const spinButton = element(By.className("spin-button"));
 
     const tribe = {
-        id: 'delete_me',
+        id: 'delete_me_prepare',
         name: 'Funkytown'
     };
 
@@ -47,6 +47,7 @@ describe('The prepare to spin page', function () {
     });
 
     afterAll(async function () {
+        await browser.setLocation(`/`);
         await tribeCollection.remove({id: tribe.id}, false)
     });
 

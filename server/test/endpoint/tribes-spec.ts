@@ -1,6 +1,6 @@
 'use strict';
 import * as supertest from "supertest";
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import * as monk from "monk";
 import * as pluck from 'ramda/src/pluck'
 import * as find from 'ramda/src/find'
@@ -27,7 +27,7 @@ describe(path, function () {
     beforeEach(function (done) {
         host.get('/test-login?username=' + userEmail + '&password=pw')
             .expect(302)
-            .then(() => Promise.all([
+            .then(() => Bluebird.all([
                 playersCollection.drop(),
                 tribesCollection.drop()
             ]))
@@ -59,7 +59,7 @@ describe(path, function () {
     it('GET will return any tribe that has a player with the given email.', function (done) {
         let tribe = {id: 'delete-me', name: 'tribe-from-endpoint-tests'};
         let playerId = monk.id();
-        Promise.all([
+        Bluebird.all([
             tribesCollection.insert(tribe),
             playersCollection.insert({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail}),
             authorizeUserForTribes([])
@@ -71,7 +71,7 @@ describe(path, function () {
             })
             .then(function (response) {
                 expect(clean(response.body)).toEqual(clean([tribe]));
-                return Promise.all([
+                return Bluebird.all([
                     tribesCollection.remove({id: 'delete-me'}, false),
                     playersCollection.remove({_id: playerId})
                 ])
@@ -112,6 +112,17 @@ describe(path, function () {
                     expect(find(whereEq(expected), response.body)).toBeDefined();
                 })
                 .then(done, done.fail);
+        });
+
+        it('when the tribe already exists and you do not have permission, will fail', async function () {
+            let tribe = {id: 'Something else', name: 'one'};
+            await Bluebird.all([
+                tribesCollection.insert(tribe),
+                authorizeUserForTribes([])
+            ]);
+            await host.post(path)
+                .send(tribe)
+                .expect(400)
         });
 
         afterAll(function (done) {

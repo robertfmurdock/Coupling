@@ -32,16 +32,24 @@ class TribeRoutes {
             });
     };
 
-    public save = (request, response) => {
+    public save = async (request, response) => {
         const database = request.dataService.database;
         const tribesCollection = database.get('tribes');
         const usersCollection = request.userDataService.database.get('users');
         const tribeJSON = request.body;
-        tribeJSON._id = tribeJSON._id || monk.id();
-        tribesCollection.update({id: tribeJSON.id}, tribeJSON, {upsert: true}, function () {
-            usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON.id}});
-            response.send(request.body);
-        });
+
+        const {isAuthorized, tribe} = await AuthorizedTribesFetcher.promiseTribeAndAuthorization(request, tribeJSON.id);
+
+        if (tribe === null || isAuthorized) {
+            tribeJSON._id = tribeJSON._id || monk.id();
+            tribesCollection.update({id: tribeJSON.id}, tribeJSON, {upsert: true}, function () {
+                usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON.id}});
+                response.send(request.body);
+            });
+        } else {
+
+            response.sendStatus(400);
+        }
     };
 }
 

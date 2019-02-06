@@ -34,7 +34,6 @@ describe(path, function () {
         return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
     }
 
-
     afterEach(function (done) {
         playersCollection.remove({tribe: tribeId}, false)
             .then(done, done.fail);
