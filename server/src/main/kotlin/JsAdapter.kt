@@ -1,4 +1,3 @@
-import com.soywiz.klock.internal.toDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Json
@@ -14,22 +13,7 @@ fun RunGameActionDispatcher.performRunGameAction(history: Array<Json>, players: 
                 tribe = tribe.toTribe()
         )
                 .perform()
-                .let {
-                    json(
-                            "date" to it.date,
-                            "pairs" to toJs(it),
-                            "tribe" to it.tribeId
-                    )
-                }
-
-private fun toJs(it: PairAssignmentDocument) = it.pairs.map {
-    it.players
-            .map { player ->
-                player.toJson()
-            }
-            .toTypedArray()
-}
-        .toTypedArray()
+                .let { it.toJson() }
 
 interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
         PlayersQueryDispatcher,
@@ -82,12 +66,7 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
     fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = GlobalScope.promise {
         ProposeNewPairsCommand(tribeId, players.map(Json::toPlayer))
                 .perform()
-                .let {
-                    json(
-                            "date" to it.date.toDate(),
-                            "pairs" to toJs(it),
-                            "tribe" to it.tribeId
-                    )
-                }
+                .let { it.toJson() }
     }
+
 }

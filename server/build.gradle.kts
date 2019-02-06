@@ -77,6 +77,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
+        inputs.files(compileKotlin2Js.inputs.files)
         dependsOn(":engine:assemble")
 
         forEachJsTarget(project).let { (main, test) ->

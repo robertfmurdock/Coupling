@@ -30,7 +30,7 @@ interface TribeIdDataSyntax {
 
     val repository: CouplingDataRepository
 
-    fun String.getHistoryAsync() = repository.getHistoryAsync(this)
+    fun String.getHistoryAsync() = repository.getPairAssignmentsAsync(this)
     fun String.getPinsAsync() = repository.getPinsAsync(this)
     fun String.getTribeAsync() = repository.getTribeAsync(this)
 

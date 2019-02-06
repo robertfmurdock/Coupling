@@ -6,9 +6,9 @@ import kotlin.js.*
 import kotlin.random.Random
 import kotlin.test.Test
 
-const val mongoUrl = "localhost/PlayersRepositoryTest"
+private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-fun jsRepository(): dynamic {
+private fun jsRepository(): dynamic {
     @Suppress("UNUSED_VARIABLE")
     val clazz = js("require('../../../../lib/CouplingDataService').default")
     return js("new clazz('$mongoUrl')")

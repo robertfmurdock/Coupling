@@ -16,7 +16,7 @@ class ProposeNewPairsCommandTest {
             override fun getPinsAsync(tribeId: String) = CompletableDeferred(pins)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun getHistoryAsync(tribeId: String) = CompletableDeferred(history)
+            override fun getPairAssignmentsAsync(tribeId: String) = CompletableDeferred(history)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override fun getTribeAsync(tribeId: String): Deferred<KtTribe> = CompletableDeferred(tribe)

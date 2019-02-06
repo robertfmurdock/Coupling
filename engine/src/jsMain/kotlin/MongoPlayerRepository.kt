@@ -4,7 +4,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlin.js.*
 
-interface MongoPlayerRepository : PlayerRepository, UserContextSyntax {
+interface MongoPlayerRepository : PlayerRepository, PlayerToDbSyntax, DbRecordInfoSyntax {
 
     val jsRepository: dynamic
 
@@ -13,14 +13,10 @@ interface MongoPlayerRepository : PlayerRepository, UserContextSyntax {
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = tribeIdPlayer.toDbJson()
             .savePlayerJson()
 
-    private fun TribeIdPlayer.toDbJson() = player.toJson()
-            .apply {
-                this["id"] = player.id
-                this["_id"] = null
-                this["tribe"] = tribeId.value
-                this["timestamp"] = Date()
-                this["modifiedByUsername"] = username()
-            }
+    private fun TribeIdPlayer.toDbJson() = player.toDbJson()
+            .apply { this["tribe"] = tribeId.value }
+            .addRecordInfo()
+
 
     private suspend fun Json.savePlayerJson() = jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>().await()
 
@@ -53,7 +49,7 @@ interface MongoPlayerRepository : PlayerRepository, UserContextSyntax {
             .map { it.value.latestByTimestamp() }
             .filterNotNull()
             .filter { it["isDeleted"] != true }
-            .map(Json::toPlayer)
+            .map { it.fromDbToPlayer() }
 
     private fun Json.applyIdCorrection() = also {
         this["_id"] = this["id"].unsafeCast<String?>() ?: this["_id"]
@@ -69,9 +65,8 @@ interface MongoPlayerRepository : PlayerRepository, UserContextSyntax {
     private fun findBy(query: Json) = playersCollection.find(query)
 
     private fun Json.toTribeIdPlayer() = TribeIdPlayer(
-            player = applyIdCorrection().toPlayer(),
+            player = applyIdCorrection().fromDbToPlayer(),
             tribeId = TribeId(this["tribe"].unsafeCast<String>())
     )
 
 }
-

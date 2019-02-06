@@ -1,3 +1,4 @@
+import com.soywiz.klock.internal.toDate
 import com.soywiz.klock.internal.toDateTime
 import kotlin.js.*
 
@@ -13,9 +14,9 @@ fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
 
 fun PinnedPlayer.toJson(): Json = player.toJson().apply { this["pins"] = pins.toJson() }
 
-private fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
+fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
 
-private fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pair<String, Any?>> {
+fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pair<String, Any?>> {
     return if (value != null)
         plus(Pair(key, value))
     else
@@ -63,7 +64,7 @@ fun historyFromArray(history: Array<Json>) =
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
         date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
         pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-        tribeId = this["tribeId"].unsafeCast<String>()
+        tribeId = this["tribe"].unsafeCast<String>()
 )
 
 @JsName("pairFromArray")
@@ -86,3 +87,16 @@ fun PairReport.toJson() = json(
             NeverPaired -> "NeverPaired"
         }
 )
+
+fun PairAssignmentDocument.toJson() = json(
+        "date" to date.toDate(),
+        "pairs" to toJsPairs(),
+        "tribe" to tribeId
+)
+
+private fun PairAssignmentDocument.toJsPairs() = pairs.map {
+    it.players
+            .map { player -> player.toJson() }
+            .toTypedArray()
+}
+        .toTypedArray()
