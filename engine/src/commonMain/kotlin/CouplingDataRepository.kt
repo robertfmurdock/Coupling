@@ -1,12 +1,18 @@
 import kotlinx.coroutines.Deferred
 
-interface CouplingDataRepository : PairAssignmentDocumentRepository {
+interface CouplingDataRepository : PairAssignmentDocumentGetter {
     fun getPinsAsync(tribeId: String): Deferred<List<Pin>>
     fun getTribeAsync(tribeId: String): Deferred<KtTribe>
 }
 
-interface PairAssignmentDocumentRepository {
+interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter
+
+interface PairAssignmentDocumentGetter {
     fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>>
+}
+
+interface PairAssignmentDocumentSaver {
+    suspend fun save(pairAssignmentDocument: PairAssignmentDocument)
 }
 
 interface PlayerRepository {

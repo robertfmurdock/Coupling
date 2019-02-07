@@ -11,9 +11,9 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     private val historyCollection: dynamic get() = jsRepository.historyCollection
 
-    suspend fun save(pairAssignmentDocument: PairAssignmentDocument) = pairAssignmentDocument
+    override suspend fun save(pairAssignmentDocument: PairAssignmentDocument) = pairAssignmentDocument
             .toDbJson()
-            .also {
+            .let {
                 jsRepository.savePairAssignmentsToHistory(it).unsafeCast<Promise<Unit>>().await()
             }
 
