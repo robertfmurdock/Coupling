@@ -8,8 +8,9 @@ class SavePairAssignmentDocumentCommandTest {
 
             val pairAssignmentDocument = PairAssignmentDocument(
                     date = DateTime.now(),
+                    pairs = emptyList(),
                     tribeId = "tribe-293",
-                    pairs = emptyList()
+                    id = null
             )
 
             override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()

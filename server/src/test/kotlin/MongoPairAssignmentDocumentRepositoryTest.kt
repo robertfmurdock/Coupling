@@ -13,7 +13,7 @@ fun jsRepository(@Suppress("UNUSED_PARAMETER") url: String): dynamic {
 
 class MongoPairAssignmentDocumentRepositoryTest {
 
-    companion object : MongoPairAssignmentDocumentRepository {
+    companion object : MongoPairAssignmentDocumentRepository, MonkToolkit {
         override val jsRepository: dynamic = jsRepository(mongoUrl)
 
         private val historyCollection: dynamic by lazy<dynamic> {
@@ -22,7 +22,6 @@ class MongoPairAssignmentDocumentRepositoryTest {
             val db = js("monk.default('$mongoUrl')")
             db.get("history")
         }
-
 
         suspend fun dropPlayers() {
             historyCollection.drop().unsafeCast<Promise<Unit>>().await()
@@ -46,7 +45,8 @@ class MongoPairAssignmentDocumentRepositoryTest {
                                     callSignAdjective = "Rural Wolf"
                             ).withPins()))
                     ),
-                    tribeId = tribeId
+                    tribeId = tribeId,
+                    id = id()
             )
         }) {
             dropPlayers()

@@ -2,12 +2,13 @@ import * as express from "express";
 
 class HistoryRoutes {
     list(request, response) {
-        request.dataService.requestHistory(request.params.tribeId).then(function (history) {
-            response.send(history);
-        }, function (error) {
-            response.statusCode = 500;
-            response.send(error.message);
-        });
+        request.commandDispatcher.performPairAssignmentDocumentListQuery(request.params.tribeId)
+            .then(function (history) {
+                response.send(history);
+            }, function (error) {
+                response.statusCode = 500;
+                response.send(error.message);
+            });
     };
 
     async savePairs(request, response) {
@@ -15,7 +16,7 @@ class HistoryRoutes {
         if (pairs.date && pairs.pairs) {
             pairs.date = new Date(pairs.date as string);
 
-            response.send(await request.dataService.savePairAssignmentsToHistory(pairs));
+            response.send(await request.commandDispatcher.performSavePairAssignmentDocumentCommand(pairs));
         } else {
             response.statusCode = 400;
             response.send({error: 'Pairs were not valid.'});

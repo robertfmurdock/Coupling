@@ -28,9 +28,13 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
         NextPlayerActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
+        SavePairAssignmentDocumentCommandDispatcher,
+        PairAssignmentDocumentListQueryDispatcher,
         Wheel,
         MongoDataRepository,
-        MongoPlayerRepository {
+        MongoPlayerRepository,
+        MongoPairAssignmentDocumentRepository {
+    override val pairAssignmentDocumentRepository = this
     override val repository = this
     override val jsRepository = jsRepository
     override val playerRepository = this
@@ -69,4 +73,18 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
                 .let { it.toJson() }
     }
 
+    @JsName("performSavePairAssignmentDocumentCommand")
+    fun performSavePairAssignmentDocumentCommand(pairAssignmentDocument: Json) = GlobalScope.promise {
+        SavePairAssignmentDocumentCommand(pairAssignmentDocument.toPairAssignmentDocument())
+                .perform()
+                .toJson()
+    }
+
+    @JsName("performPairAssignmentDocumentListQuery")
+    fun performPairAssignmentDocumentListQuery(tribeId: String) = GlobalScope.promise {
+        PairAssignmentDocumentListQuery(TribeId(tribeId))
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
+    }
 }

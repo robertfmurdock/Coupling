@@ -24,6 +24,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun requestHistory(tribeId: String) = jsRepository.requestHistory(tribeId).unsafeCast<Promise<Array<Json>>>()
 
     private fun PairAssignmentDocument.toDbJson() = json(
+            "_id" to id,
             "date" to date.toDate(),
             "pairs" to toDbJsPairs(),
             "tribe" to tribeId
@@ -53,7 +54,8 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
             date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
             pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-            tribeId = this["tribe"].unsafeCast<String>()
+            tribeId = this["tribe"].unsafeCast<String>(),
+            id = this["id"].unsafeCast<String?>() ?: this["_id"].unsafeCast<String>()
     )
 
     @JsName("pairFromArray")

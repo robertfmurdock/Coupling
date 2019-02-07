@@ -30,7 +30,8 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
             PairAssignmentDocument(
                     currentDate(),
                     pairAssignments,
-                    tribeId
+                    tribeId,
+                    null
             )
 }
 

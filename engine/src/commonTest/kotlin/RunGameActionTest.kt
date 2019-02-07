@@ -26,7 +26,8 @@ class RunGameActionTest {
         result.assertIsEqualTo(PairAssignmentDocument(
                 expectedDate,
                 expectedPairingAssignments.map { PinnedCouplingPair(it.asArray().map { player -> player.withPins() }) },
-                tribe.id
+                tribe.id,
+                null
         ))
     }
 }

@@ -19,8 +19,8 @@ describe(path, function () {
         date: new Date().toISOString(),
         pairs: [
             [
-                {name: "Shaggy"},
-                {name: "Scooby"}
+                {name: "Shaggy", pins: []},
+                {name: "Scooby", pins: []}
             ]
         ],
         _id: monk.id().toString(),
