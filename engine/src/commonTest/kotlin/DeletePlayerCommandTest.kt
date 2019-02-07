@@ -9,7 +9,10 @@ class DeletePlayerCommandTest {
         }) exerciseAsync {
             DeletePlayerCommand(playerId)
                     .perform()
-        } verifyAsync { result -> result.assertIsEqualTo(playerId) }
+        } verifyAsync { result ->
+            result.assertIsEqualTo(playerId)
+            playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
+        }
     }
 
     class PlayerRepositorySpy : PlayerRepository, Spy<String, Unit> by SpyData() {

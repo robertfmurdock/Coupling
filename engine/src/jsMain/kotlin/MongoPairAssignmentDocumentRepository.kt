@@ -46,10 +46,9 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     @Suppress("unused")
     @JsName("historyFromArray")
-    private fun historyFromArray(history: Array<Json>) =
-            history.map {
-                it.toPairAssignmentDocument()
-            }
+    private fun historyFromArray(history: Array<Json>) = history.map {
+        it.toPairAssignmentDocument()
+    }
 
     private fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
             date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
