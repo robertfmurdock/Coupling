@@ -16,7 +16,8 @@ class HistoryRoutes {
         if (pairs.date && pairs.pairs) {
             pairs.date = new Date(pairs.date as string);
 
-            response.send(await request.commandDispatcher.performSavePairAssignmentDocumentCommand(pairs));
+            let promise = request.commandDispatcher.performSavePairAssignmentDocumentCommand(pairs);
+            response.send(await promise);
         } else {
             response.statusCode = 400;
             response.send({error: 'Pairs were not valid.'});
@@ -25,7 +26,7 @@ class HistoryRoutes {
 
     async deleteMember(request, response) {
         try {
-            await request.dataService.removePairAssignments(request.params.id);
+            await request.commandDispatcher.performDeletePairAssignmentDocumentCommand(request.params.id);
             response.send({message: 'SUCCESS'});
         } catch (err) {
             console.log(err);

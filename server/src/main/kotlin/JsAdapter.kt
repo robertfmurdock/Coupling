@@ -30,6 +30,7 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
         CreatePairCandidateReportActionDispatcher,
         SavePairAssignmentDocumentCommandDispatcher,
         PairAssignmentDocumentListQueryDispatcher,
+        DeletePairAssignmentDocumentCommandDispatcher,
         Wheel,
         MongoDataRepository,
         MongoPlayerRepository,
@@ -78,6 +79,12 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
         SavePairAssignmentDocumentCommand(pairAssignmentDocument.toPairAssignmentDocument())
                 .perform()
                 .toJson()
+    }
+
+    @JsName("performDeletePairAssignmentDocumentCommand")
+    fun performDeletePairAssignmentDocumentCommand(id: String) = GlobalScope.promise {
+        DeletePairAssignmentDocumentCommand(id.let(::PairAssignmentDocumentId))
+                .perform()
     }
 
     @JsName("performPairAssignmentDocumentListQuery")
