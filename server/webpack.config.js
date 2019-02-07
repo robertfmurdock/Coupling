@@ -34,7 +34,12 @@ const config = {
       {
         test: /\.ts$/,
         loader: 'ts-loader'
-      }
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
+      },
     ]
   },
   plugins: []

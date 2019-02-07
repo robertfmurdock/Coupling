@@ -147,7 +147,7 @@ describe(path, function () {
             let httpDelete = couplingServer.delete(path + "/" + badId);
             httpDelete
                 .expect(500)
-                .expect({message: 'Failed to remove the player because it did not exist.'})
+                .expect({message: 'Player could not be deleted because they do not exist.'})
                 .then(done, done.fail);
         });
 

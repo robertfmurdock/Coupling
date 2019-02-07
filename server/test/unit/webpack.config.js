@@ -13,6 +13,7 @@ config.output = {
   libraryTarget: 'commonjs'
 };
 config.mode = "development";
+config.devtool = "inline-source-map";
 config.target = 'node';
 config.externals = [nodeExternals()];
 

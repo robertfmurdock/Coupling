@@ -1,15 +1,18 @@
 import com.soywiz.klock.internal.toDate
 import com.soywiz.klock.internal.toDateTime
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.asDeferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlin.js.*
 
-interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentRepository, PlayerToDbSyntax {
+interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentRepository,
+        PlayerToDbSyntax,
+        DbRecordInfoSyntax,
+        DbRecordLoadSyntax,
+        DbRecordDeleteSyntax {
 
     val jsRepository: dynamic
-
-    private val historyCollection: dynamic get() = jsRepository.historyCollection
 
     override suspend fun save(pairAssignmentDocument: PairAssignmentDocument) = pairAssignmentDocument
             .toDbJson()
@@ -18,21 +21,23 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             }
 
     override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) {
-        jsRepository.removePairAssignments(pairAssignmentDocumentId.value).unsafeCast<Promise<Unit>>().await()
+        deleteEntity(pairAssignmentDocumentId.value, jsRepository.historyCollection, "Pair Assignments", { toPairAssignmentDocument() }, { toDbJson() })
     }
 
-    override fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>> = requestHistory(tribeId)
-            .then { it.map { json -> json.toPairAssignmentDocument() } }
-            .asDeferred()
+    override fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>> = GlobalScope.async {
+        findByQuery(json("tribe" to tribeId), jsRepository.historyCollection)
+                .map { json -> json.toPairAssignmentDocument() }
+                .sortedByDescending { it.date }
+    }
 
     private fun requestHistory(tribeId: String) = jsRepository.requestHistory(tribeId).unsafeCast<Promise<Array<Json>>>()
 
     private fun PairAssignmentDocument.toDbJson() = json(
-            "_id" to id?.value,
+            "id" to id?.value,
             "date" to date.toDate(),
             "pairs" to toDbJsPairs(),
             "tribe" to tribeId
-    )
+    ).addRecordInfo()
 
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
         it.players

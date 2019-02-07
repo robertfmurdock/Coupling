@@ -8,32 +8,15 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-private fun jsRepository(): dynamic {
-    @Suppress("UNUSED_VARIABLE")
-    val clazz = js("require('../../../../lib/CouplingDataService').default")
-    return js("new clazz('$mongoUrl')")
-}
-
 class MongoPlayerRepositoryTest {
 
-    companion object : MongoPlayerRepository {
-        override val jsRepository: dynamic = jsRepository()
+    companion object : MongoPlayerRepository, MonkToolkit {
+        override val jsRepository: dynamic = jsRepository(mongoUrl)
         override val userContext: UserContext = object : UserContext {
             override val username: String = "User-${Random.nextInt(100)}"
         }
 
-        fun id(): String {
-            @Suppress("UNUSED_VARIABLE")
-            val monk = js("require(\"monk\")")
-            return js("monk.id()").toString()
-        }
-
-        val playerCollection: dynamic by lazy<dynamic> {
-            @Suppress("UNUSED_VARIABLE")
-            val monk = js("require(\"monk\")")
-            val db = js("monk.default('$mongoUrl')")
-            db.get("players")
-        }
+        val playerCollection: dynamic by lazy<dynamic> { getCollection("players", mongoUrl) }
 
         suspend fun dropPlayers() {
             playerCollection.drop().unsafeCast<Promise<Unit>>().await()
@@ -178,7 +161,7 @@ class MongoPlayerRepositoryTest {
             val userWhoSaved = "user that saved"
         }) {
             with(object : MongoPlayerRepository {
-                override val jsRepository = jsRepository()
+                override val jsRepository = MongoPlayerRepositoryTest.jsRepository
                 override val userContext = object : UserContext {
                     override val username = userWhoSaved
                 }
@@ -307,7 +290,7 @@ class MongoPlayerRepositoryTest {
                 delete(playerId)
             }
         } verifyAsync { result ->
-            result.message.assertIsEqualTo("Failed to remove the player because it did not exist.")
+            result.message.assertIsEqualTo("Player could not be deleted because they do not exist.")
         }
     }
 

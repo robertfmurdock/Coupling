@@ -1,13 +1,17 @@
-import com.soywiz.klock.internal.toDateTime
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
-import kotlin.js.*
+import kotlin.js.Json
+import kotlin.js.Promise
+import kotlin.js.json
 
-interface MongoPlayerRepository : PlayerRepository, PlayerToDbSyntax, DbRecordInfoSyntax {
+interface MongoPlayerRepository : PlayerRepository,
+        PlayerToDbSyntax,
+        DbRecordInfoSyntax,
+        DbRecordLoadSyntax,
+        DbRecordDeleteSyntax {
 
     val jsRepository: dynamic
-
     val playersCollection: dynamic get() = jsRepository.playersCollection
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = tribeIdPlayer.toDbJson()
@@ -20,49 +24,13 @@ interface MongoPlayerRepository : PlayerRepository, PlayerToDbSyntax, DbRecordIn
 
     private suspend fun Json.savePlayerJson() = jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>().await()
 
-    override suspend fun delete(playerId: String) = getPlayer(playerId)
-            .let { it ?: throw Exception(message = "Failed to remove the player because it did not exist.") }
-            .toDbJson()
-            .addIsDeleted()
-            .savePlayerJson()
-
-    private suspend fun getPlayer(playerId: String) = getPlayerJsonHistory(playerId).toList()
-            .latestByTimestamp()
-            ?.toTribeIdPlayer()
-
-    private suspend fun getPlayerJsonHistory(playerId: String) = listOf(
-            findBy(json("id" to playerId)).unsafeCast<Promise<Array<Json>>>(),
-            findBy(json("_id" to playerId)).unsafeCast<Promise<Array<Json>>>()
-    )
-            .map { it.await().toList() }
-            .flatten()
-
-    private fun Json.addIsDeleted() = also { this["isDeleted"] = true }
+    override suspend fun delete(playerId: String) =
+            deleteEntity(playerId, playersCollection, "Player", { toTribeIdPlayer() }, { toDbJson() })
 
     override fun getPlayersAsync(tribeId: TribeId) = GlobalScope.async {
-        requestJsPlayers(tribeId)
-                .dbJsonToPlayers()
+        findByQuery(json("tribe" to tribeId.value), playersCollection)
+                .map { it.fromDbToPlayer() }
     }
-
-    private fun Array<Json>.dbJsonToPlayers() = map { it.applyIdCorrection() }
-            .groupBy { it["_id"].toString() }
-            .map { it.value.latestByTimestamp() }
-            .filterNotNull()
-            .filter { it["isDeleted"] != true }
-            .map { it.fromDbToPlayer() }
-
-    private fun Json.applyIdCorrection() = also {
-        this["_id"] = this["id"].unsafeCast<String?>() ?: this["_id"]
-    }
-
-    private fun List<Json>.latestByTimestamp() = sortedByDescending { it.timeStamp() }.firstOrNull()
-
-    private fun Json.timeStamp() = this["timestamp"]?.unsafeCast<Date>()?.toDateTime()
-
-    private suspend fun requestJsPlayers(tribeId: TribeId) = findBy(json("tribe" to tribeId.value))
-            .unsafeCast<Promise<Array<Json>>>().await()
-
-    private fun findBy(query: Json) = playersCollection.find(query)
 
     private fun Json.toTribeIdPlayer() = TribeIdPlayer(
             player = applyIdCorrection().fromDbToPlayer(),
@@ -70,3 +38,4 @@ interface MongoPlayerRepository : PlayerRepository, PlayerToDbSyntax, DbRecordIn
     )
 
 }
+

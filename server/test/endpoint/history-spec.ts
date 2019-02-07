@@ -1,7 +1,6 @@
 "use strict";
 
 import * as Promise from "bluebird";
-import CouplingDataService from "../../lib/CouplingDataService";
 import * as supertest from "supertest";
 import * as monk from "monk";
 
@@ -81,12 +80,14 @@ describe(path, function () {
                 .then(function (response) {
                     let pairsAsSaved = response.body;
 
-                    let dataService = new CouplingDataService(config.tempMongoUrl);
-
                     return Promise.props(
                         {
                             pairsAsSaved: pairsAsSaved,
-                            history: dataService.requestHistory(tribeId)
+                            history: agent.get(path)
+                                .expect(200)
+                                .then(function (response) {
+                                    return response.body
+                                })
                         }
                     );
                 })

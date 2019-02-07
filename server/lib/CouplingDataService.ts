@@ -25,7 +25,7 @@ export default class CouplingDataService {
 
     public database;
     private playersCollection;
-    private historyCollection;
+    historyCollection;
     private tribesCollection;
     private pinCollection;
 
