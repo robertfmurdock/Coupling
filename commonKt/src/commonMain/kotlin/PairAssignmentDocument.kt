@@ -4,5 +4,5 @@ data class PairAssignmentDocument(
         val date: DateTime,
         val pairs: List<PinnedCouplingPair>,
         val tribeId: String,
-        val id: String? = null
+        val id: PairAssignmentDocumentId? = null
 )

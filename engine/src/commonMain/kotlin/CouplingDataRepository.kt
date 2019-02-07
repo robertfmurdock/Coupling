@@ -5,7 +5,11 @@ interface CouplingDataRepository : PairAssignmentDocumentGetter {
     fun getTribeAsync(tribeId: String): Deferred<KtTribe>
 }
 
-interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter
+interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter, PairAssignmentDocumentDeleter
+
+interface PairAssignmentDocumentDeleter {
+    suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId)
+}
 
 interface PairAssignmentDocumentGetter {
     fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>>

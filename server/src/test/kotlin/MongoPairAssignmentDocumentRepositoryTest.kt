@@ -26,28 +26,34 @@ class MongoPairAssignmentDocumentRepositoryTest {
         suspend fun dropPlayers() {
             historyCollection.drop().unsafeCast<Promise<Unit>>().await()
         }
+
+        private fun stubSimplePairAssignmentDocument(tribeId: String) =
+                PairAssignmentDocumentId(id())
+                        .let { id ->
+                            id to PairAssignmentDocument(
+                                    date = DateTime.now(),
+                                    pairs = listOf(
+                                            PinnedCouplingPair(listOf(Player(
+                                                    id = "zeId",
+                                                    badge = 1,
+                                                    email = "whoop whoop",
+                                                    name = "Johnny",
+                                                    imageURL = "publicDomain.png",
+                                                    callSignNoun = "Wily",
+                                                    callSignAdjective = "Rural Wolf"
+                                            ).withPins()))
+                                    ),
+                                    tribeId = tribeId,
+                                    id = id
+                            )
+                        }
     }
 
     @Test
     fun givenSimplePairSaveAndGetWorks() = testAsync {
         setupAsync(object {
             val tribeId = "tribe-id-99"
-            val document = PairAssignmentDocument(
-                    date = DateTime.now(),
-                    pairs = listOf(
-                            PinnedCouplingPair(listOf(Player(
-                                    id = "zeId",
-                                    badge = 1,
-                                    email = "whoop whoop",
-                                    name = "Johnny",
-                                    imageURL = "publicDomain.png",
-                                    callSignNoun = "Wily",
-                                    callSignAdjective = "Rural Wolf"
-                            ).withPins()))
-                    ),
-                    tribeId = tribeId,
-                    id = id()
-            )
+            val document = stubSimplePairAssignmentDocument(tribeId).second
         }) {
             dropPlayers()
         } exerciseAsync {
@@ -55,6 +61,25 @@ class MongoPairAssignmentDocumentRepositoryTest {
             getPairAssignmentsAsync(tribeId).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(document))
+        }
+    }
+
+    @Test
+    fun saveAndDeleteThenGetWillReturnNothing() = testAsync {
+        setupAsync(object {
+            val tribeId = "tribe-id-99"
+            private val pair = stubSimplePairAssignmentDocument(tribeId)
+            val id = pair.first
+            val document = pair.second
+        }) {
+            dropPlayers()
+            save(document)
+        } exerciseAsync {
+            delete(id)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(Unit)
+            getPairAssignmentsAsync(tribeId).await()
+                    .assertIsEqualTo(emptyList())
         }
     }
 }

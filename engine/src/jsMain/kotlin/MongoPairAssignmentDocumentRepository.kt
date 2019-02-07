@@ -17,6 +17,10 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
                 jsRepository.savePairAssignmentsToHistory(it).unsafeCast<Promise<Unit>>().await()
             }
 
+    override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) {
+        jsRepository.removePairAssignments(pairAssignmentDocumentId.value).unsafeCast<Promise<Unit>>().await()
+    }
+
     override fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>> = requestHistory(tribeId)
             .then { it.map { json -> json.toPairAssignmentDocument() } }
             .asDeferred()
@@ -24,7 +28,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun requestHistory(tribeId: String) = jsRepository.requestHistory(tribeId).unsafeCast<Promise<Array<Json>>>()
 
     private fun PairAssignmentDocument.toDbJson() = json(
-            "_id" to id,
+            "_id" to id?.value,
             "date" to date.toDate(),
             "pairs" to toDbJsPairs(),
             "tribe" to tribeId
@@ -55,8 +59,11 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
             pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
             tribeId = this["tribe"].unsafeCast<String>(),
-            id = this["id"].unsafeCast<String?>() ?: this["_id"].unsafeCast<String>()
+            id = idStringValue()
+                    .let(::PairAssignmentDocumentId)
     )
+
+    private fun Json.idStringValue() = let { this["id"].unsafeCast<Json?>() ?: this["_id"] }.toString()
 
     @JsName("pairFromArray")
     fun pairFromArray(array: Array<Json>) = array.map {
