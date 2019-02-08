@@ -8,10 +8,8 @@ const heatCalculator = new PairHeatCalculator();
 
 describe('PairHeatCalculator', function () {
 
-    const tribeId = "forge";
-
     it('will return 0 when the pair has never occurred', function () {
-        const pair: Pair = [{_id: "bob", tribe: tribeId}, {_id: "fred", tribe: tribeId}];
+        const pair: Pair = [{_id: "bob"}, {_id: "fred"}];
         const history = [];
         const rotationPeriod = 60;
 
@@ -22,8 +20,8 @@ describe('PairHeatCalculator', function () {
 
     describe('when there is only one possible pair', function () {
         const rotationPeriod = 1;
-        const player1 = {_id: "bob", tribe: tribeId};
-        const player2 = {_id: "fred", tribe: tribeId};
+        const player1 = {_id: "bob"};
+        const player2 = {_id: "fred"};
         const pair: Pair = [player1, player2];
 
         it('will return 1 when the pair has one pairing', function () {
@@ -68,10 +66,10 @@ describe('PairHeatCalculator', function () {
 
     describe('with three players', function () {
         const rotationPeriod = 3;
-        const player1 = {_id: "bob", tribe: tribeId};
-        const player2 = {_id: "fred", tribe: tribeId};
+        const player1 = {_id: "bob"};
+        const player2 = {_id: "fred"};
         const pair: Pair = [player1, player2];
-        const player3 = {_id: "latisha", tribe: tribeId};
+        const player3 = {_id: "latisha"};
 
         it('will return 1 with one pairing in full rotation', function () {
             const expectedPairing = makePairDocument([pair, [player3]]);
@@ -109,12 +107,12 @@ describe('PairHeatCalculator', function () {
 
     describe('with five players', function () {
         const rotationPeriod = 5;
-        const player1 = {_id: "bob", tribe: tribeId};
-        const player2 = {_id: "fred", tribe: tribeId};
+        const player1 = {_id: "bob"};
+        const player2 = {_id: "fred"};
         const pair: Pair = [player1, player2];
-        const player3 = {_id: "latisha", tribe: tribeId};
-        const player4 = {_id: "jane", tribe: tribeId};
-        const player5 = {_id: "fievel", tribe: tribeId};
+        const player3 = {_id: "latisha"};
+        const player4 = {_id: "jane"};
+        const player5 = {_id: "fievel"};
 
 
         it('will return 1 when last pairing is almost older than five rotations', function () {
@@ -165,7 +163,7 @@ describe('PairHeatCalculator', function () {
     }
 
     function makePairDocument(pairs: Pair[]) {
-        return new PairAssignmentDocument(new Date(2016, 3, 1), pairs, tribeId);
+        return new PairAssignmentDocument(new Date(2016, 3, 1), pairs);
     }
 
 

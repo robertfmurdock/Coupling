@@ -24,12 +24,11 @@ let historyCollection = database.get('history');
 
 describe(path, function () {
 
-    beforeEach(function (done) {
-        tribeCollection.drop()
-            .then(done, done.fail);
+    beforeEach(async function () {
+        await tribeCollection.drop()
     });
 
-    beforeAll(function () {
+    beforeAll(async function () {
         removeTestPin();
     });
 
@@ -73,7 +72,7 @@ describe(path, function () {
             .then(done, done.fail);
     });
 
-    it('the tribe rule is set to PreferDifferentBadge then it will', function (done) {
+    it('the tribe rule is set to PreferDifferentBadge then it will', async function () {
         const player1 = {_id: monk.id(), name: "One", tribe: tribeId, badge: Badge.Default};
         const player2 = {_id: monk.id(), name: "Two", tribe: tribeId, badge: Badge.Default};
         const player3 = {_id: monk.id(), name: "Three", tribe: tribeId, badge: Badge.Alternate};
@@ -92,11 +91,13 @@ describe(path, function () {
             ]),
         ];
 
+        const apiGuy = await ApiGuy.new();
+
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.PreferDifferentBadge};
-        historyCollection.remove({tribe: tribeId})
+        await historyCollection.remove({tribe: tribeId})
             .then(() => tribeCollection.remove({id: tribeId}))
-            .then(() => historyCollection.insert(history))
-            .then(() => tribeCollection.insert(tribe))
+            .then(() => Promise.all(history.map(doc => apiGuy.postPairAssignmentSet(tribeId, doc))))
+            .then(() => apiGuy.postTribe(tribe))
             .then(function () {
                 return superAgent.post(path)
                     .send(players)
@@ -111,8 +112,7 @@ describe(path, function () {
 
                 expect(Comparators.areEqualPairs(response.body.pairs[0], expectedPairAssignments[0])).toBe(true);
                 expect(Comparators.areEqualPairs(response.body.pairs[1], expectedPairAssignments[1])).toBe(true);
-            })
-            .then(done, done.fail);
+            });
     });
 
     it('the tribe rule is set to LongestPair then it will ignore badges', async function (done) {
@@ -133,6 +133,7 @@ describe(path, function () {
                 [player2, player4]
             ])
         ];
+
         const apiGuy = await ApiGuy.new();
 
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
@@ -159,37 +160,31 @@ describe(path, function () {
     describe("when a pin exists", function () {
         let pin = {_id: pinId, tribe: tribeId, name: 'super test pin'};
 
-        beforeEach(function (done) {
-            pinCollection.insert(pin)
-                .then(done, done.fail);
+        beforeEach(async function () {
+            await pinCollection.insert(pin)
         });
 
-        it('will assign one pin to a player', function (done) {
+        it('will assign one pin to a player', async function () {
             let players = [
                 {name: "dude1"}
             ];
 
-            tribeCollection.drop()
-                .then(function () {
-                    return tribeCollection.insert({id: tribeId});
-                })
-                .then(function () {
-                    return superAgent.post(path).send(players)
-                        .expect(200)
-                        .expect('Content-Type', /json/);
-                })
-                .then(function (response) {
-                    let expectedPinnedPlayer = {
-                        name: "dude1",
-                        pins: [pin]
-                    };
-                    let expectedPairAssignments = [
-                        [expectedPinnedPlayer]
-                    ];
-                    expect(JSON.stringify(response.body.pairs))
-                        .toEqual(JSON.stringify(expectedPairAssignments));
-                })
-                .then(done, done.fail);
+            const apiGuy = await ApiGuy.new();
+            await tribeCollection.drop();
+            await apiGuy.postTribe({id: tribeId});
+            const response = await superAgent.post(path).send(players)
+                .expect(200)
+                .expect('Content-Type', /json/);
+
+            let expectedPinnedPlayer = {
+                name: "dude1",
+                pins: [pin]
+            };
+            let expectedPairAssignments = [
+                [expectedPinnedPlayer]
+            ];
+            expect(JSON.stringify(response.body.pairs))
+                .toEqual(JSON.stringify(expectedPairAssignments));
         });
     });
 });

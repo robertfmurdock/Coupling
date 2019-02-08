@@ -13,7 +13,7 @@ describe('PlayerHeatCalculator', function () {
 
     it('with one player, produces one row with a null', function () {
         const calculator = new PlayerHeatCalculator();
-        const players: Player[] = [{_id: '0', tribe: 'peeps'}];
+        const players: Player[] = [{_id: '0'}];
         const heatMapValues = calculator.calculateHeatValues(players, [], 0);
         expect(heatMapValues).toEqual([[null]]);
     });
@@ -21,9 +21,9 @@ describe('PlayerHeatCalculator', function () {
     it('with three players and no history, produces three rows', function () {
         const calculator = new PlayerHeatCalculator();
         const players: Player[] = [
-            {_id: '0', tribe: 'peeps'},
-            {_id: '1', tribe: 'peeps'},
-            {_id: '2', tribe: 'peeps'}
+            {_id: '0'},
+            {_id: '1'},
+            {_id: '2'}
         ];
         const history: PairAssignmentSet[] = [];
         const heatMapValues = calculator.calculateHeatValues(players, history, 3);
@@ -37,12 +37,11 @@ describe('PlayerHeatCalculator', function () {
 
     it('with two players and short history, produces two rows with heat values', function () {
         const calculator = new PlayerHeatCalculator();
-        const tribeId = 'peeps';
         const players: Player[] = [
-            {_id: '0', tribe: tribeId},
-            {_id: '1', tribe: tribeId}
+            {_id: '0'},
+            {_id: '1'}
         ];
-        const history: PairAssignmentSet[] = [{pairs: [[players[0], players[1]]], date: '', tribe: tribeId}];
+        const history: PairAssignmentSet[] = [{pairs: [[players[0], players[1]]], date: ''}];
         const rotationPeriod = 1;
         const heatMapValues = calculator.calculateHeatValues(players, history, rotationPeriod);
 
@@ -54,17 +53,16 @@ describe('PlayerHeatCalculator', function () {
 
     it('with two players and full history, produces two rows with heat values', function () {
         const calculator = new PlayerHeatCalculator();
-        const tribeId = 'peeps';
         const players: Player[] = [
-            {_id: '0', tribe: tribeId},
-            {_id: '1', tribe: tribeId}
+            {_id: '0'},
+            {_id: '1'}
         ];
         const history: PairAssignmentSet[] = [
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
         ];
         const rotationPeriod = 1;
         const heatMapValues = calculator.calculateHeatValues(players, history, rotationPeriod);
@@ -77,29 +75,28 @@ describe('PlayerHeatCalculator', function () {
 
     it('with three players and interesting history, produces three rows with heat values', function () {
         const calculator = new PlayerHeatCalculator();
-        const tribeId = 'peeps';
         const players: Player[] = [
-            {_id: '0', tribe: tribeId},
-            {_id: '1', tribe: tribeId},
-            {_id: '2', tribe: tribeId},
+            {_id: '0'},
+            {_id: '1'},
+            {_id: '2'},
         ];
 
         const history: PairAssignmentSet[] = [
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[1]]], date: '', tribe: tribeId},
-            {pairs: [[players[0], players[2]]], date: '', tribe: tribeId},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[1]]], date: ''},
+            {pairs: [[players[0], players[2]]], date: ''},
         ];
         const rotationPeriod = 3;
         const heatMapValues = calculator.calculateHeatValues(players, history, rotationPeriod);

@@ -77,7 +77,7 @@ describe('PlayerConfigController', function () {
             reload(){
             }, routes: {}
         };
-        const alternatePlayer: Player = {_id: '', badge: Badge.Alternate, tribe: tribe.id};
+        const alternatePlayer: Player = {_id: '', badge: Badge.Alternate};
         controller = initPlayerController(controller, $scope, Coupling, $location, $route, tribe, alternatePlayer);
         expect(alternatePlayer.badge).toBe(Badge.Alternate);
     });

@@ -135,10 +135,10 @@ describe('StatisticComposer', function () {
             const history: PairAssignmentDocument[] = [
                 new PairAssignmentDocument('', [
                     [player1, player3], [player2, player4],
-                ], tribe.id),
+                ]),
                 new PairAssignmentDocument('', [
                     [player1, player2], [player3, player4],
-                ], tribe.id)
+                ])
             ];
 
             const {pairReports} = statComposer.compose(tribe, players, history);
@@ -186,12 +186,12 @@ describe('StatisticComposer', function () {
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
-                {date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 16), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 15), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 14), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 13), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 12), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 17), pairs: []},
+                {date: new Date(2017, 2, 16), pairs: []},
+                {date: new Date(2017, 2, 15), pairs: []},
+                {date: new Date(2017, 2, 14), pairs: []},
+                {date: new Date(2017, 2, 13), pairs: []},
+                {date: new Date(2017, 2, 12), pairs: []},
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
@@ -203,13 +203,13 @@ describe('StatisticComposer', function () {
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
-                {date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 12), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 10), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 8), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 6), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 4), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 3), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 17), pairs: []},
+                {date: new Date(2017, 2, 12), pairs: []},
+                {date: new Date(2017, 2, 10), pairs: []},
+                {date: new Date(2017, 2, 8), pairs: []},
+                {date: new Date(2017, 2, 6), pairs: []},
+                {date: new Date(2017, 2, 4), pairs: []},
+                {date: new Date(2017, 2, 3), pairs: []},
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
@@ -221,8 +221,8 @@ describe('StatisticComposer', function () {
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
-                {date: '2017-02-21T16:34:35.173Z', pairs: [], tribe: tribe.id},
-                {date: '2017-02-17T16:34:35.173Z', pairs: [], tribe: tribe.id}
+                {date: '2017-02-21T16:34:35.173Z', pairs: []},
+                {date: '2017-02-17T16:34:35.173Z', pairs: []}
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
@@ -234,12 +234,12 @@ describe('StatisticComposer', function () {
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
-                {date: new Date(2017, 2, 20), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 15), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 14), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 13), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 10), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20), pairs: []},
+                {date: new Date(2017, 2, 17), pairs: []},
+                {date: new Date(2017, 2, 15), pairs: []},
+                {date: new Date(2017, 2, 14), pairs: []},
+                {date: new Date(2017, 2, 13), pairs: []},
+                {date: new Date(2017, 2, 10), pairs: []},
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
@@ -250,7 +250,7 @@ describe('StatisticComposer', function () {
             const tribe: Tribe = {id: 'LOL', name: 'LOL'};
             const players: Player[] = [];
 
-            const history: PairAssignmentDocument[] = [{date: new Date(2017, 2, 17), pairs: [], tribe: tribe.id}];
+            const history: PairAssignmentDocument[] = [{date: new Date(2017, 2, 17), pairs: []}];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
             expect(medianSpinDuration).toBe('N/A');
@@ -261,12 +261,12 @@ describe('StatisticComposer', function () {
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
-                {date: new Date(2017, 2, 20, 21), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 20, 19), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 20, 18), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 20, 13), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 20, 12), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 20, 9), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 21), pairs: []},
+                {date: new Date(2017, 2, 20, 19), pairs: []},
+                {date: new Date(2017, 2, 20, 18), pairs: []},
+                {date: new Date(2017, 2, 20, 13), pairs: []},
+                {date: new Date(2017, 2, 20, 12), pairs: []},
+                {date: new Date(2017, 2, 20, 9), pairs: []},
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
@@ -278,12 +278,12 @@ describe('StatisticComposer', function () {
             const players: Player[] = [];
 
             const history: PairAssignmentDocument[] = [
-                {date: new Date(2017, 2, 20, 21), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 17, 19), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 15, 7), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 14, 13), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 13, 12), pairs: [], tribe: tribe.id},
-                {date: new Date(2017, 2, 10, 9), pairs: [], tribe: tribe.id},
+                {date: new Date(2017, 2, 20, 21), pairs: []},
+                {date: new Date(2017, 2, 17, 19), pairs: []},
+                {date: new Date(2017, 2, 15, 7), pairs: []},
+                {date: new Date(2017, 2, 14, 13), pairs: []},
+                {date: new Date(2017, 2, 13, 12), pairs: []},
+                {date: new Date(2017, 2, 10, 9), pairs: []},
             ];
 
             const {medianSpinDuration} = statComposer.compose(tribe, players, history);
