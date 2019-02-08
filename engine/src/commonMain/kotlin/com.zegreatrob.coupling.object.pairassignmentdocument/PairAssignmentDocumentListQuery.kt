@@ -9,5 +9,5 @@ interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentDocum
 interface TribeIdPairAssignmentDocumentGetSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentGetter
 
-    suspend fun TribeId.loadPairAssignmentDocumentList() = pairAssignmentDocumentRepository.getPairAssignmentsAsync(this.value).await()
+    suspend fun TribeId.loadPairAssignmentDocumentList() = pairAssignmentDocumentRepository.getPairAssignmentsAsync(this).await()
 }

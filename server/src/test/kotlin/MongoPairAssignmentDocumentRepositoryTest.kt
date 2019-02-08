@@ -27,7 +27,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
         suspend fun getDbHistory(tribeId: TribeId) =
                 historyCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
 
-        private fun stubSimplePairAssignmentDocument(tribeId: String, date: DateTime = DateTime.now()) =
+        private fun stubSimplePairAssignmentDocument(tribeId: TribeId, date: DateTime = DateTime.now()) =
                 PairAssignmentDocumentId(id())
                         .let { id ->
                             id to stubPairAssignmentDoc(date, tribeId, id)
@@ -35,7 +35,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
         private fun stubPairAssignmentDoc(
                 date: DateTime = DateTime.now(),
-                tribeId: String,
+                tribeId: TribeId,
                 id: PairAssignmentDocumentId? = PairAssignmentDocumentId(id())
         ) =
                 PairAssignmentDocument(
@@ -51,7 +51,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
                                         callSignAdjective = "Rural Wolf"
                                 ).withPins()))
                         ),
-                        tribeId = tribeId,
+                        tribeId = tribeId.value,
                         id = id
                 )
     }
@@ -59,7 +59,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
     @Test
     fun givenSimplePairSaveAndGetWorks() = testAsync {
         setupAsync(object {
-            val tribeId = "tribe-id-99"
+            val tribeId = TribeId("tribe-id-99")
             val document = stubSimplePairAssignmentDocument(tribeId).second
         }) {
             dropHistory()
@@ -74,7 +74,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
     @Test
     fun differentDocumentsBothShowUpInGetFromNewestToOldestByDate() = testAsync {
         setupAsync(object {
-            val tribeId = "tribe-id-99"
+            val tribeId = TribeId("tribe-id-99")
             val oldest = stubSimplePairAssignmentDocument(tribeId, date = DateTime.now().minus(3.days)).second
             val middle = stubSimplePairAssignmentDocument(tribeId, date = DateTime.now()).second
             val newest = stubSimplePairAssignmentDocument(tribeId, date = DateTime.now().plus(2.days)).second
@@ -91,7 +91,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
     @Test
     fun willAssignIdWhenDocumentHasNone() = testAsync {
         setupAsync(object {
-            val tribeId = "tribe-id-99"
+            val tribeId = TribeId("tribe-id-99")
             val document = stubPairAssignmentDoc(id = null, tribeId = tribeId)
         }) {
             dropHistory()
@@ -108,7 +108,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
     @Test
     fun saveAndDeleteThenGetWillReturnNothing() = testAsync {
         setupAsync(object {
-            val tribeId = "tribe-id-99"
+            val tribeId = TribeId("tribe-id-99")
             private val pair = stubSimplePairAssignmentDocument(tribeId)
             val id = pair.first
             val document = pair.second
@@ -129,7 +129,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
         private suspend fun setupSavedDocument() = setupAsync(object {
             val tribeId = TribeId("boo")
             val originalDateTime = DateTime.now()
-            val pairAssignmentDocument = stubSimplePairAssignmentDocument(tribeId.value, date = originalDateTime).second
+            val pairAssignmentDocument = stubSimplePairAssignmentDocument(tribeId, date = originalDateTime).second
             val updatedDateTime = originalDateTime.plus(3.days)
             val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
         }) {
@@ -156,7 +156,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
         fun getWillOnlyReturnTheUpdatedDocument() = testAsync {
             setupSavedDocument() exerciseAsync {
                 save(updatedDocument)
-                getPairAssignmentsAsync(tribeId.value).await()
+                getPairAssignmentsAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedDocument))
             }

@@ -7,17 +7,17 @@ interface MongoDataRepository : CouplingDataRepository, MongoPairAssignmentDocum
 
     override val jsRepository: dynamic
 
-    override fun getPinsAsync(tribeId: String) = requestPins(tribeId)
+    override fun getPinsAsync(tribeId: TribeId) = requestPins(tribeId)
             .then { it.toPins() }
             .asDeferred()
 
-    private fun requestPins(tribeId: String) = jsRepository.requestPins(tribeId).unsafeCast<Promise<Array<Json>>>()
+    private fun requestPins(tribeId: TribeId) = jsRepository.requestPins(tribeId.value).unsafeCast<Promise<Array<Json>>>()
 
-    override fun getTribeAsync(tribeId: String): Deferred<KtTribe> = requestTribe(tribeId)
+    override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = requestTribe(tribeId)
             .then { it.toTribe() }
             .asDeferred()
 
-    private fun requestTribe(tribeId: String) = jsRepository.requestTribe(tribeId).unsafeCast<Promise<Json>>()
+    private fun requestTribe(tribeId: TribeId) = jsRepository.requestTribe(tribeId.value).unsafeCast<Promise<Json>>()
 
 }
 

@@ -7,7 +7,7 @@ interface PairAssignmentDocumentDeleter {
 }
 
 interface PairAssignmentDocumentGetter {
-    fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>>
+    fun getPairAssignmentsAsync(tribeId: TribeId): Deferred<List<PairAssignmentDocument>>
 }
 
 interface PairAssignmentDocumentSaver {

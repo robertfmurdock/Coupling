@@ -1,4 +1,4 @@
-data class ProposeNewPairsCommand(val tribeId: String, val players: List<Player>)
+data class ProposeNewPairsCommand(val tribeId: TribeId, val players: List<Player>)
 interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
 
     val actionDispatcher: RunGameActionDispatcher
@@ -30,8 +30,8 @@ interface TribeIdDataSyntax {
 
     val repository: CouplingDataRepository
 
-    fun String.getHistoryAsync() = repository.getPairAssignmentsAsync(this)
-    fun String.getPinsAsync() = repository.getPinsAsync(this)
-    fun String.getTribeAsync() = repository.getTribeAsync(this)
+    fun TribeId.getHistoryAsync() = repository.getPairAssignmentsAsync(this)
+    fun TribeId.getPinsAsync() = repository.getPinsAsync(this)
+    fun TribeId.getTribeAsync() = repository.getTribeAsync(this)
 
 }

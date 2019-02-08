@@ -24,8 +24,8 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
         deleteEntity(pairAssignmentDocumentId.value, jsRepository.historyCollection, "Pair Assignments", { toPairAssignmentDocument() }, { toDbJson() })
     }
 
-    override fun getPairAssignmentsAsync(tribeId: String): Deferred<List<PairAssignmentDocument>> = GlobalScope.async {
-        findByQuery(json("tribe" to tribeId), jsRepository.historyCollection)
+    override fun getPairAssignmentsAsync(tribeId: TribeId): Deferred<List<PairAssignmentDocument>> = GlobalScope.async {
+        findByQuery(json("tribe" to tribeId.value), jsRepository.historyCollection)
                 .map { json -> json.toPairAssignmentDocument() }
                 .sortedByDescending { it.date }
     }

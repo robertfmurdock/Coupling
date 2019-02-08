@@ -69,7 +69,7 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
 
     @JsName("performProposeNewPairsCommand")
     fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = GlobalScope.promise {
-        ProposeNewPairsCommand(tribeId, players.map(Json::toPlayer))
+        ProposeNewPairsCommand(TribeId(tribeId), players.map(Json::toPlayer))
                 .perform()
                 .let { it.toJson() }
     }
