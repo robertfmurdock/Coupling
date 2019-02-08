@@ -9,7 +9,7 @@ import kotlin.test.Test
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
-        val tribe = KtTribe("LOL", PairingRule.LongestTime)
+        val tribe = KtTribe(TribeId("LOL"), PairingRule.LongestTime)
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
                 .map { number -> makePlayer("$number") }

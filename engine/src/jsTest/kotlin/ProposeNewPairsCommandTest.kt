@@ -11,16 +11,16 @@ class ProposeNewPairsCommandTest {
         setupAsync(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
-            val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), "", null))
-            val tribe = KtTribe("Tribe Id! ${Random.nextInt(300)}", PairingRule.PreferDifferentBadge)
+            val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), TribeId(""), null))
+            val tribe = KtTribe(TribeId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
             override fun getPinsAsync(tribeId: TribeId) = CompletableDeferred(pins)
-                    .also { tribeId.assertIsEqualTo(TribeId(tribe.id)) }
+                    .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override fun getPairAssignmentsAsync(tribeId: TribeId) = CompletableDeferred(history)
-                    .also { tribeId.assertIsEqualTo(TribeId(tribe.id)) }
+                    .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = CompletableDeferred(tribe)
-                    .also { tribeId.assertIsEqualTo(TribeId(tribe.id)) }
+                    .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override val repository: CouplingDataRepository = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
@@ -31,7 +31,7 @@ class ProposeNewPairsCommandTest {
                 actionDispatcher.spyReturnValues.add(expectedPairAssignmentDocument)
             }
         }) exerciseAsync {
-            ProposeNewPairsCommand(TribeId(tribe.id), players)
+            ProposeNewPairsCommand(tribe.id, players)
                     .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(expectedPairAssignmentDocument)

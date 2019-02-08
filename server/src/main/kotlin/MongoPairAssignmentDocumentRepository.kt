@@ -36,7 +36,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             "id" to id?.value,
             "date" to date.toDate(),
             "pairs" to toDbJsPairs(),
-            "tribe" to tribeId
+            "tribe" to tribeId.value
     ).addRecordInfo()
 
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
@@ -63,7 +63,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
             date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
             pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-            tribeId = this["tribe"].unsafeCast<String>(),
+            tribeId = TribeId(this["tribe"].unsafeCast<String>()),
             id = idStringValue()
                     .let(::PairAssignmentDocumentId)
     )

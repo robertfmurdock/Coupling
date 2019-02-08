@@ -51,7 +51,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
                                         callSignAdjective = "Rural Wolf"
                                 ).withPins()))
                         ),
-                        tribeId = tribeId.value,
+                        tribeId = tribeId,
                         id = id
                 )
     }

@@ -9,7 +9,7 @@ class SavePairAssignmentDocumentCommandTest {
             val pairAssignmentDocument = PairAssignmentDocument(
                     date = DateTime.now(),
                     pairs = emptyList(),
-                    tribeId = "tribe-293",
+                    tribeId = TribeId("tribe-293"),
                     id = null
             )
 

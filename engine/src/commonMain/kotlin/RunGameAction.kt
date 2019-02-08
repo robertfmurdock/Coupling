@@ -26,7 +26,7 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
             tribe.pairingRule
     ))
 
-    private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>, tribeId: String) =
+    private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>, tribeId: TribeId) =
             PairAssignmentDocument(
                     currentDate(),
                     pairAssignments,

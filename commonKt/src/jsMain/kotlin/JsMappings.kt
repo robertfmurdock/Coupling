@@ -40,7 +40,7 @@ fun Json.toPlayer(): Player = Player(
 )
 
 fun Json.toTribe(): KtTribe = KtTribe(
-        id = stringValue("id")!!,
+        id = TribeId(stringValue("id")!!),
         pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int)
 )
 
@@ -64,7 +64,7 @@ fun historyFromArray(history: Array<Json>) =
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
         date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
         pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-        tribeId = this["tribe"].unsafeCast<String>(),
+        tribeId = TribeId(this["tribe"].unsafeCast<String>()),
         id = this["_id"].unsafeCast<String?>()?.let { PairAssignmentDocumentId(it) }
 )
 
@@ -93,7 +93,7 @@ fun PairAssignmentDocument.toJson() = json(
         "_id" to id?.value,
         "date" to date.toDate(),
         "pairs" to toJsPairs(),
-        "tribe" to tribeId
+        "tribe" to tribeId.value
 )
 
 private fun PairAssignmentDocument.toJsPairs() = pairs.map {

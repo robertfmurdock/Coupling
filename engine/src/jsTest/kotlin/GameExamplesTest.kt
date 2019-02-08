@@ -3,7 +3,7 @@ class GameExamplesTest {
     class WithUniformBadgesAndLongestTimeRule {
 
         companion object {
-            val tribe = KtTribe(id = "JLA", pairingRule = PairingRule.LongestTime)
+            val tribe = KtTribe(id = TribeId("JLA"), pairingRule = PairingRule.LongestTime)
 
             val bruce = Player(id = "1", name = "Batman",badge = 0)
             val hal = Player(id = "2", name = "Green Lantern", badge = 0)

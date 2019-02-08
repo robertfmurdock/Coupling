@@ -8,7 +8,7 @@ class RunGameActionTest {
         override val actionDispatcher = SpyFindNewPairsActionDispatcher()
         val expectedDate = DateTime.now()
         override fun currentDate() = expectedDate
-        val tribe = KtTribe("1", PairingRule.LongestTime)
+        val tribe = KtTribe(TribeId("1"), PairingRule.LongestTime)
         val players = emptyList<Player>()
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()

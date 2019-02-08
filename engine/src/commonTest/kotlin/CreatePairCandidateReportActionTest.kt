@@ -6,7 +6,7 @@ import kotlin.test.assertTrue
 class CreatePairCandidateReportActionTest {
 
     companion object : CreatePairCandidateReportActionDispatcher {
-        fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) = PairAssignmentDocument(DateTime.now(), pairs, "", null)
+        fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) = PairAssignmentDocument(DateTime.now(), pairs, TribeId(""), null)
         fun pinnedPair(player1: Player, player2: Player) =
                 PinnedCouplingPair(listOf(player1.withPins(emptyList()), player2.withPins(emptyList())))
     }
