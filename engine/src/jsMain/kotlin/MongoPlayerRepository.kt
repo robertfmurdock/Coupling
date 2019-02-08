@@ -22,7 +22,7 @@ interface MongoPlayerRepository : PlayerRepository,
             .addRecordInfo()
 
 
-    private suspend fun Json.savePlayerJson() = jsRepository.savePlayer(this).unsafeCast<Promise<Unit>>().await()
+    private suspend fun Json.savePlayerJson() = playersCollection.insert(this).unsafeCast<Promise<Unit>>().await()
 
     override suspend fun delete(playerId: String) =
             deleteEntity(playerId, playersCollection, "Player", { toTribeIdPlayer() }, { toDbJson() })

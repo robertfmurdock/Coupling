@@ -17,7 +17,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = tribeIdPairAssignmentDocument
             .toDbJson()
             .let {
-                jsRepository.savePairAssignmentsToHistory(it).unsafeCast<Promise<Unit>>().await()
+                jsRepository.historyCollection.insert(it).unsafeCast<Promise<Unit>>().await()
             }
 
     override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) {
@@ -35,8 +35,6 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
                 .map { json -> json.toPairAssignmentDocument().document }
                 .sortedByDescending { it.date }
     }
-
-    private fun requestHistory(tribeId: String) = jsRepository.requestHistory(tribeId).unsafeCast<Promise<Array<Json>>>()
 
     private fun TribeIdPairAssignmentDocument.toDbJson() = json(
             "id" to document.id?.value,
@@ -59,8 +57,6 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     private fun Pin.toDbJson() = json("id" to _id, "tribe" to tribe, "name" to name)
 
-    @Suppress("unused")
-    @JsName("historyFromArray")
     private fun historyFromArray(history: Array<Json>) = history.map {
         it.toPairAssignmentDocument()
     }

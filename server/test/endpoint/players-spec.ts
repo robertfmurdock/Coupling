@@ -46,19 +46,19 @@ describe(path, function () {
                 .expect(404)
         });
 
-        it('will return all available players on team.', function (done) {
-            let service = new CouplingDataService(config.tempMongoUrl);
+        it('will return all available players on team.', async function () {
+            let newPlayer1 = clean({_id: monk.id(), name: "Awesome-O"});
+            let newPlayer2 = clean({_id: monk.id(), name: "Awesome-O-2"});
+            await Promise.all([
+                couplingServer.post(path).send(newPlayer1).expect(200),
+                couplingServer.post(path).send(newPlayer2).expect(200),
+            ]);
 
-            Bluebird.props({
-                expected: service.requestPlayers(tribeId),
-                response: couplingServer.get(path)
-                    .expect(200)
-                    .expect('Content-Type', /json/)
-            })
-                .then(function (props: any) {
-                    expect(props.response.body).toEqual(props.expected);
-                })
-                .then(done, done.fail);
+            const response = await couplingServer.get(path)
+                .expect(200)
+                .expect('Content-Type', /json/);
+
+            expect(response.body).toEqual([newPlayer1, newPlayer2]);
         });
 
         it('for retired players returns all retired players', function (done) {

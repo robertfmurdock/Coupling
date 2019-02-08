@@ -3,18 +3,6 @@ import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.json
 
-@Suppress("unused")
-@JsName("performRunGameAction")
-fun RunGameActionDispatcher.performRunGameAction(history: Array<Json>, players: Array<Json>, pins: Array<Json>, tribe: Json) =
-        RunGameAction(
-                players = players.map { it.toPlayer() }.toList(),
-                pins = pins.toPins(),
-                history = historyFromArray(history),
-                tribe = tribe.toTribe()
-        )
-                .perform()
-                .let { it.toJson() }
-
 interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
         PlayersQueryDispatcher,
         SavePlayerCommandDispatcher,

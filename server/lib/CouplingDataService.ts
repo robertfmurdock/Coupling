@@ -11,16 +11,6 @@ const makeDocumentPromise = function (collection, options, filter) {
     return collection.find(filter, options).catch(handleMongoError, "Wrapping error");
 };
 
-interface PlayersAndHistory {
-    players: Player[]
-    history: any[]
-}
-
-interface PinsAndHistory {
-    pins: any[]
-    history: any[]
-}
-
 export default class CouplingDataService {
 
     public database;
@@ -46,52 +36,12 @@ export default class CouplingDataService {
             .catch(handleMongoError);
     };
 
-    requestHistory(tribeId): BluebirdPromise<any[]> {
-        return makeDocumentPromise(this.historyCollection, {sort: {date: -1}}, {'tribe': tribeId, isDeleted: null});
-    };
-
-    requestPlayers(tribeId): BluebirdPromise<Player[]> {
-        return makeDocumentPromise(this.playersCollection, {}, {'tribe': tribeId, isDeleted: null});
-    };
-
     requestPins(tribeId): BluebirdPromise<any[]> {
         return makeDocumentPromise(this.pinCollection, {}, {tribe: tribeId, isDeleted: null});
     };
 
-    requestPinsAndHistory(tribeId) {
-        return BluebirdPromise.props({
-            pins: this.requestPins(tribeId),
-            history: this.requestHistory(tribeId)
-        }) as BluebirdPromise<PinsAndHistory>;
-    };
-
-    requestPlayersAndHistory(tribeId): BluebirdPromise<PlayersAndHistory> {
-        return BluebirdPromise.props({
-            players: this.requestPlayers(tribeId),
-            history: this.requestHistory(tribeId)
-        }) as BluebirdPromise<PlayersAndHistory>;
-    };
-
     requestRetiredPlayers(tribeId): BluebirdPromise<Player[]> {
         return makeDocumentPromise(this.playersCollection, {}, {tribe: tribeId, isDeleted: true});
-    };
-
-    savePairAssignmentsToHistory(pairs) {
-        return this.historyCollection.insert(pairs);
-    };
-
-    savePlayer(player) {
-        if (player._id) {
-            return this.playersCollection.update(player._id, player, {upsert: true})
-                .then(function (result) {
-                    const failureToUpdateMessage = 'Player could not be updated because it could not be found.';
-                    if (result.nModified === 0 && result.n === 0) {
-                        throw new Error(failureToUpdateMessage);
-                    }
-                });
-        } else {
-            return this.playersCollection.insert(player);
-        }
     };
 
     savePin(pin, callback) {
