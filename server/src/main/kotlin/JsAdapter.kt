@@ -75,9 +75,10 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
     }
 
     @JsName("performSavePairAssignmentDocumentCommand")
-    fun performSavePairAssignmentDocumentCommand(pairAssignmentDocument: Json) = GlobalScope.promise {
-        SavePairAssignmentDocumentCommand(pairAssignmentDocument.toPairAssignmentDocument())
+    fun performSavePairAssignmentDocumentCommand(tribeId: String, pairAssignmentDocument: Json) = GlobalScope.promise {
+        SavePairAssignmentDocumentCommand(TribeIdPairAssignmentDocument(TribeId(tribeId), pairAssignmentDocument.toPairAssignmentDocument()))
                 .perform()
+                .document
                 .toJson()
     }
 

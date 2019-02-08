@@ -44,11 +44,11 @@ describe('The history page', function () {
                     name: 'Speedy',
                     _id: monk.id()
                 }
-            ]], tribe.id);
+            ]]);
             const pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[
                 {name: 'Arthur', _id: monk.id()},
                 {name: 'Garth', _id: monk.id()}
-            ]], tribe.id);
+            ]]);
 
             const apiGuy = await ApiGuy.new();
             await apiGuy.postTribe(tribe);

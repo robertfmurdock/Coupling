@@ -27,15 +27,14 @@ class MongoPairAssignmentDocumentRepositoryTest {
         suspend fun getDbHistory(tribeId: TribeId) =
                 historyCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
 
-        private fun stubSimplePairAssignmentDocument(tribeId: TribeId, date: DateTime = DateTime.now()) =
+        private fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) =
                 PairAssignmentDocumentId(id())
                         .let { id ->
-                            id to stubPairAssignmentDoc(date, tribeId, id)
+                            id to stubPairAssignmentDoc(date, id)
                         }
 
         private fun stubPairAssignmentDoc(
                 date: DateTime = DateTime.now(),
-                tribeId: TribeId,
                 id: PairAssignmentDocumentId? = PairAssignmentDocumentId(id())
         ) =
                 PairAssignmentDocument(
@@ -51,7 +50,6 @@ class MongoPairAssignmentDocumentRepositoryTest {
                                         callSignAdjective = "Rural Wolf"
                                 ).withPins()))
                         ),
-                        tribeId = tribeId,
                         id = id
                 )
     }
@@ -60,11 +58,11 @@ class MongoPairAssignmentDocumentRepositoryTest {
     fun givenSimplePairSaveAndGetWorks() = testAsync {
         setupAsync(object {
             val tribeId = TribeId("tribe-id-99")
-            val document = stubSimplePairAssignmentDocument(tribeId).second
+            val document = stubSimplePairAssignmentDocument().second
         }) {
             dropHistory()
         } exerciseAsync {
-            save(document)
+            save(document.with(tribeId))
             getPairAssignmentsAsync(tribeId).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(document))
@@ -75,12 +73,12 @@ class MongoPairAssignmentDocumentRepositoryTest {
     fun differentDocumentsBothShowUpInGetFromNewestToOldestByDate() = testAsync {
         setupAsync(object {
             val tribeId = TribeId("tribe-id-99")
-            val oldest = stubSimplePairAssignmentDocument(tribeId, date = DateTime.now().minus(3.days)).second
-            val middle = stubSimplePairAssignmentDocument(tribeId, date = DateTime.now()).second
-            val newest = stubSimplePairAssignmentDocument(tribeId, date = DateTime.now().plus(2.days)).second
+            val oldest = stubSimplePairAssignmentDocument(date = DateTime.now().minus(3.days)).second
+            val middle = stubSimplePairAssignmentDocument(date = DateTime.now()).second
+            val newest = stubSimplePairAssignmentDocument(date = DateTime.now().plus(2.days)).second
         }) {
             dropHistory()
-            listOf(middle, oldest, newest).forEach { save(it) }
+            listOf(middle, oldest, newest).forEach { save(it.with(tribeId)) }
         } exerciseAsync {
             getPairAssignmentsAsync(tribeId).await()
         } verifyAsync { result ->
@@ -92,16 +90,16 @@ class MongoPairAssignmentDocumentRepositoryTest {
     fun willAssignIdWhenDocumentHasNone() = testAsync {
         setupAsync(object {
             val tribeId = TribeId("tribe-id-99")
-            val document = stubPairAssignmentDoc(id = null, tribeId = tribeId)
+            val tribeIdDocument = stubPairAssignmentDoc(id = null).with(tribeId)
         }) {
             dropHistory()
         } exerciseAsync {
-            save(document)
+            save(tribeIdDocument)
             getPairAssignmentsAsync(tribeId).await()
         } verifyAsync { result ->
             val resultId = result.getOrNull(0)?.id
             assertNotNull(resultId)
-            result.assertIsEqualTo(listOf(document.copy(id = resultId)))
+            result.assertIsEqualTo(listOf(tribeIdDocument.document.copy(id = resultId)))
         }
     }
 
@@ -109,9 +107,9 @@ class MongoPairAssignmentDocumentRepositoryTest {
     fun saveAndDeleteThenGetWillReturnNothing() = testAsync {
         setupAsync(object {
             val tribeId = TribeId("tribe-id-99")
-            private val pair = stubSimplePairAssignmentDocument(tribeId)
+            private val pair = stubSimplePairAssignmentDocument()
             val id = pair.first
-            val document = pair.second
+            val document = pair.second.with(tribeId)
         }) {
             dropHistory()
             save(document)
@@ -129,18 +127,18 @@ class MongoPairAssignmentDocumentRepositoryTest {
         private suspend fun setupSavedDocument() = setupAsync(object {
             val tribeId = TribeId("boo")
             val originalDateTime = DateTime.now()
-            val pairAssignmentDocument = stubSimplePairAssignmentDocument(tribeId, date = originalDateTime).second
+            val pairAssignmentDocument = stubSimplePairAssignmentDocument(date = originalDateTime).second
             val updatedDateTime = originalDateTime.plus(3.days)
             val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
         }) {
             dropHistory()
-            save(pairAssignmentDocument)
+            save(pairAssignmentDocument.with(tribeId))
         }
 
         @Test
         fun willNotDeleteOriginalRecord() = testAsync {
             setupSavedDocument() exerciseAsync {
-                save(updatedDocument)
+                save(updatedDocument.with(tribeId))
                 getDbHistory(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date?>()?.toDateTime() }
@@ -155,7 +153,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
         @Test
         fun getWillOnlyReturnTheUpdatedDocument() = testAsync {
             setupSavedDocument() exerciseAsync {
-                save(updatedDocument)
+                save(updatedDocument.with(tribeId))
                 getPairAssignmentsAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedDocument))

@@ -6,6 +6,7 @@ import Badge from "../../../common/Badge";
 import Tribe from "../../../common/Tribe";
 import PairingRule from "../../../common/PairingRule";
 import Comparators from "../../../common/Comparators";
+import ApiGuy from "../e2e/apiGuy";
 
 let config = require('../../config/config');
 
@@ -65,7 +66,6 @@ describe(path, function () {
                     .expect('Content-Type', /json/);
             })
             .then(function (response) {
-                expect(response.body.tribe).toEqual(tribeId);
                 decorateWithPins(onlyEnoughPlayersForOnePair);
                 let expectedPairAssignments = [onlyEnoughPlayersForOnePair];
                 expect(response.body.pairs).toEqual(expectedPairAssignments);
@@ -85,11 +85,11 @@ describe(path, function () {
             new PairAssignmentDocument(new Date(2014, 1, 10), [
                 [player1, player3],
                 [player2, player4]
-            ], tribeId),
+            ]),
             new PairAssignmentDocument(new Date(2014, 1, 9), [
                 [player1, player4],
                 [player2, player3]
-            ], tribeId),
+            ]),
         ];
 
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.PreferDifferentBadge};
@@ -104,7 +104,6 @@ describe(path, function () {
                     .expect('Content-Type', /json/)
             })
             .then(function (response) {
-                expect(response.body.tribe).toEqual(tribeId);
                 let expectedPairAssignments = [
                     decorateWithPins([player1, player4]),
                     decorateWithPins([player2, player3]),
@@ -116,7 +115,7 @@ describe(path, function () {
             .then(done, done.fail);
     });
 
-    it('the tribe rule is set to LongestPair then it will ignore badges', function (done) {
+    it('the tribe rule is set to LongestPair then it will ignore badges', async function (done) {
         const player1 = {_id: monk.id(), name: "One", tribe: tribeId, badge: Badge.Default};
         const player2 = {_id: monk.id(), name: "Two", tribe: tribeId, badge: Badge.Default};
         const player3 = {_id: monk.id(), name: "Three", tribe: tribeId, badge: Badge.Alternate};
@@ -128,17 +127,18 @@ describe(path, function () {
             new PairAssignmentDocument(new Date(2014, 2, 10), [
                 [player1, player4],
                 [player2, player3]
-            ], tribeId),
+            ]),
             new PairAssignmentDocument(new Date(2014, 2, 9), [
                 [player1, player3],
                 [player2, player4]
-            ], tribeId)
+            ])
         ];
+        const apiGuy = await ApiGuy.new();
 
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
         historyCollection.remove({tribe: tribeId})
-            .then(() => historyCollection.insert(history))
-            .then(() => tribeCollection.insert(tribe))
+            .then(() => Promise.all(history.map(doc => apiGuy.postPairAssignmentSet(tribeId, doc))))
+            .then(() => apiGuy.postTribe(tribe))
             .then(function () {
                 return superAgent.post(path)
                     .send(players)
@@ -146,7 +146,6 @@ describe(path, function () {
                     .expect('Content-Type', /json/)
             })
             .then(function (response) {
-                expect(response.body.tribe).toEqual(tribeId);
                 let expectedPairAssignments = [
                     decorateWithPins([player1, player2]),
                     decorateWithPins([player3, player4]),
@@ -158,7 +157,6 @@ describe(path, function () {
     });
 
     describe("when a pin exists", function () {
-
         let pin = {_id: pinId, tribe: tribeId, name: 'super test pin'};
 
         beforeEach(function (done) {
@@ -181,7 +179,6 @@ describe(path, function () {
                         .expect('Content-Type', /json/);
                 })
                 .then(function (response) {
-                    expect(response.body.tribe).toEqual(tribeId);
                     let expectedPinnedPlayer = {
                         name: "dude1",
                         pins: [pin]

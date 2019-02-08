@@ -19,7 +19,7 @@ export class HistoryController {
 
     async removeEntry(entry : PairAssignmentSet) {
         if (confirm("Are you sure you want to delete these pair assignments?")) {
-            await this.coupling.removeAssignments(entry)
+            await this.coupling.removeAssignments(entry, this.tribe.id);
             this.route.reload()
         }
     }

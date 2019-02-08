@@ -22,8 +22,7 @@ describe(path, function () {
                 {name: "Scooby", pins: []}
             ]
         ],
-        _id: monk.id().toString(),
-        tribe: tribeId
+        _id: monk.id().toString()
     };
 
     beforeAll(function (done) {

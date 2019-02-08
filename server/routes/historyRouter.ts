@@ -16,7 +16,9 @@ class HistoryRoutes {
         if (pairs.date && pairs.pairs) {
             pairs.date = new Date(pairs.date as string);
 
-            let promise = request.commandDispatcher.performSavePairAssignmentDocumentCommand(pairs);
+            let promise = request.commandDispatcher.performSavePairAssignmentDocumentCommand(
+                request.params.tribeId, pairs
+            );
             response.send(await promise);
         } else {
             response.statusCode = 400;

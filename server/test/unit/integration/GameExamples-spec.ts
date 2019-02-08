@@ -81,20 +81,22 @@ describe('The game', function () {
         it('will always pair someone who has paired with everyone but one person with that one person', function (done) {
             const gameRunner = new GameRunner();
 
-            const history = [
+            const history: any[] = [
                 new PairAssignmentDocument(new Date(2014, 1, 10), [
                     [bruce, clark]
-                ], 'JLA'),
+                ]),
                 new PairAssignmentDocument(new Date(2014, 1, 9), [
                     [bruce, diana]
-                ], 'JLA'),
+                ]),
                 new PairAssignmentDocument(new Date(2014, 1, 8), [
                     [bruce, hal]
-                ], 'JLA'),
+                ]),
                 new PairAssignmentDocument(new Date(2014, 1, 7), [
                     [bruce, barry]
-                ], 'JLA')
+                ])
             ];
+
+            history.forEach(doc => doc.tribe = tribeId);
 
             historyCollection.insert(history, function () {
                 new CouplingDataService(mongoUrl).requestPlayersAndHistory(tribeId)
@@ -149,20 +151,22 @@ describe('The game', function () {
         it('will always pair someone who has paired with everyone but one person with that one person', function (done) {
             const gameRunner = new GameRunner();
 
-            const history = [
+            const history: any[] = [
                 new PairAssignmentDocument(new Date(2014, 1, 10), [
                     [bruce, clark]
-                ], 'JLA'),
+                ]),
                 new PairAssignmentDocument(new Date(2014, 1, 9), [
                     [bruce, diana]
-                ], 'JLA'),
+                ]),
                 new PairAssignmentDocument(new Date(2014, 1, 8), [
                     [bruce, hal]
-                ], 'JLA'),
+                ]),
                 new PairAssignmentDocument(new Date(2014, 1, 7), [
                     [bruce, barry]
-                ], 'JLA')
+                ])
             ];
+
+            history.forEach(doc => doc.tribe = tribeId);
 
             const tribe = {id: tribeId, pairingRule: PairingRule.LongestTime};
 
@@ -199,13 +203,13 @@ describe('The game', function () {
         const history = [
             new PairAssignmentDocument(new Date(2014, 1, 10), [
                 [kamala, thor]
-            ], tribeId),
+            ]),
             new PairAssignmentDocument(new Date(2014, 1, 9), [
                 [kamala, steve]
-            ], tribeId),
+            ]),
             new PairAssignmentDocument(new Date(2014, 1, 8), [
                 [kamala, logan]
-            ], tribeId)
+            ])
         ];
 
         const gameRunner = new GameRunner();
@@ -232,6 +236,7 @@ describe('The game', function () {
                 return playersCollection.insert(playerRoster);
             })
             .then(function () {
+                history.forEach(doc => doc.tribe = tribeId);
                 return historyCollection.insert(history);
             })
             .then(function () {

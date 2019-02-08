@@ -3,6 +3,8 @@ import {browser, element, By} from "protractor";
 import * as monk from "monk";
 import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
+import ApiGuy from "./apiGuy";
+import apiGuy from "./apiGuy";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -33,7 +35,7 @@ describe('The current pair assignments', function () {
         player5
     ];
 
-    beforeAll(function () {
+    beforeAll(async function () {
         browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
         browser.wait(() =>
                 tribeCollection.insert(tribe)
@@ -42,6 +44,8 @@ describe('The current pair assignments', function () {
                     .then(() => playersCollection.insert(players))
             , 1000);
         browser.waitForAngular();
+
+        this.apiGuy = await ApiGuy.new()
     });
 
     afterAll(function (done) {
@@ -113,17 +117,16 @@ describe('The current pair assignments', function () {
     describe('when there is a current set of pairs', function () {
         const pairAssignmentDocument = new PairAssignmentDocument(
             new Date(2015, 5, 30),
-            [[player1, player3], [player5]],
-            tribe.id
+            [[player1, player3], [player5]]
         );
 
-        beforeAll(function () {
-            browser.wait(() => historyCollection.insert(pairAssignmentDocument), 1000);
-            browser.refresh();
+        beforeAll(async function () {
+            await this.apiGuy.postPairAssignmentSet(tribe.id, pairAssignmentDocument);
+            await browser.refresh();
         });
 
         beforeEach(function () {
-            browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+            browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
         });
 
         it('the most recent pairs are shown', function () {

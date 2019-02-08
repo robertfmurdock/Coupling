@@ -1,13 +1,13 @@
-data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAssignmentDocument)
+data class SavePairAssignmentDocumentCommand(val tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument)
 
 interface SavePairAssignmentDocumentCommandDispatcher : TribeIdPairAssignmentDocumentSaveSyntax {
 
-    suspend fun SavePairAssignmentDocumentCommand.perform() = pairAssignmentDocument.apply { save() }
+    suspend fun SavePairAssignmentDocumentCommand.perform() = tribeIdPairAssignmentDocument.apply { save() }
 
 }
 
 interface TribeIdPairAssignmentDocumentSaveSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentSaver
 
-    suspend fun PairAssignmentDocument.save() = pairAssignmentDocumentRepository.save(this)
+    suspend fun TribeIdPairAssignmentDocument.save() = pairAssignmentDocumentRepository.save(this)
 }

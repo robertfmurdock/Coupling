@@ -37,7 +37,7 @@ export class PairAssignmentsController {
     }
 
     async save() {
-        await this.Coupling.saveCurrentPairAssignments(this.pairAssignments)
+        await this.Coupling.saveCurrentPairAssignments(this.pairAssignments, this.tribe.id)
             .then(() => this.$location.path(`/${this.tribe.id}/pairAssignments/current`))
             .then(() => this.$scope.$apply());
     }

@@ -14,28 +14,34 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     val jsRepository: dynamic
 
-    override suspend fun save(pairAssignmentDocument: PairAssignmentDocument) = pairAssignmentDocument
+    override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = tribeIdPairAssignmentDocument
             .toDbJson()
             .let {
                 jsRepository.savePairAssignmentsToHistory(it).unsafeCast<Promise<Unit>>().await()
             }
 
     override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) {
-        deleteEntity(pairAssignmentDocumentId.value, jsRepository.historyCollection, "Pair Assignments", { toPairAssignmentDocument() }, { toDbJson() })
+        deleteEntity(
+                id = pairAssignmentDocumentId.value,
+                collection = jsRepository.historyCollection,
+                entityName = "Pair Assignments",
+                toDomain = { toPairAssignmentDocument() },
+                toDbJson = { toDbJson() }
+        )
     }
 
     override fun getPairAssignmentsAsync(tribeId: TribeId): Deferred<List<PairAssignmentDocument>> = GlobalScope.async {
         findByQuery(json("tribe" to tribeId.value), jsRepository.historyCollection)
-                .map { json -> json.toPairAssignmentDocument() }
+                .map { json -> json.toPairAssignmentDocument().document }
                 .sortedByDescending { it.date }
     }
 
     private fun requestHistory(tribeId: String) = jsRepository.requestHistory(tribeId).unsafeCast<Promise<Array<Json>>>()
 
-    private fun PairAssignmentDocument.toDbJson() = json(
-            "id" to id?.value,
-            "date" to date.toDate(),
-            "pairs" to toDbJsPairs(),
+    private fun TribeIdPairAssignmentDocument.toDbJson() = json(
+            "id" to document.id?.value,
+            "date" to document.date.toDate(),
+            "pairs" to document.toDbJsPairs(),
             "tribe" to tribeId.value
     ).addRecordInfo()
 
@@ -53,19 +59,20 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     private fun Pin.toDbJson() = json("id" to _id, "tribe" to tribe, "name" to name)
 
-
     @Suppress("unused")
     @JsName("historyFromArray")
     private fun historyFromArray(history: Array<Json>) = history.map {
         it.toPairAssignmentDocument()
     }
 
-    private fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-            date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
-            pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-            tribeId = TribeId(this["tribe"].unsafeCast<String>()),
-            id = idStringValue()
-                    .let(::PairAssignmentDocumentId)
+    private fun Json.toPairAssignmentDocument() = TribeIdPairAssignmentDocument(
+            TribeId(this["tribe"].unsafeCast<String>()),
+            PairAssignmentDocument(
+                    date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
+                    pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
+                    id = idStringValue()
+                            .let(::PairAssignmentDocumentId)
+            )
     )
 
     private fun Json.idStringValue() = let { this["id"].unsafeCast<Json?>() ?: this["_id"] }.toString()
@@ -82,7 +89,6 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
                 tribe = it["tribe"]?.toString()
         )
     }
-
 
     private fun List<PinnedPlayer>.toPairs() = PinnedCouplingPair(this)
 }

@@ -9,9 +9,8 @@ class SavePairAssignmentDocumentCommandTest {
             val pairAssignmentDocument = PairAssignmentDocument(
                     date = DateTime.now(),
                     pairs = emptyList(),
-                    tribeId = TribeId("tribe-293"),
                     id = null
-            )
+            ).with(TribeId("tribe-239"))
 
             override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
                     .apply { whenever(pairAssignmentDocument, Unit) }
@@ -26,6 +25,6 @@ class SavePairAssignmentDocumentCommandTest {
 }
 
 class SpyPairAssignmentDocumentRepository : PairAssignmentDocumentSaver,
-        Spy<PairAssignmentDocument, Unit> by SpyData() {
-    override suspend fun save(pairAssignmentDocument: PairAssignmentDocument) = spyFunction(pairAssignmentDocument)
+        Spy<TribeIdPairAssignmentDocument, Unit> by SpyData() {
+    override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = spyFunction(tribeIdPairAssignmentDocument)
 }

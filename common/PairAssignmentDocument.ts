@@ -2,6 +2,6 @@
 import Pair from "./Pair";
 
 export default class PairAssignmentDocument {
-    constructor(public date: Date| string, public pairs: Pair[], public tribe: string) {
+    constructor(public date: Date| string, public pairs: Pair[]) {
     }
 }

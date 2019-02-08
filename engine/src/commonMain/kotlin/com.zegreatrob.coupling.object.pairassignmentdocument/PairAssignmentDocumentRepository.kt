@@ -11,5 +11,5 @@ interface PairAssignmentDocumentGetter {
 }
 
 interface PairAssignmentDocumentSaver {
-    suspend fun save(pairAssignmentDocument: PairAssignmentDocument)
+    suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument)
 }

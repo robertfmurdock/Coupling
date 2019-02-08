@@ -57,8 +57,8 @@ class Coupling {
         return response.data;
     }
 
-    async removeAssignments(entry: PairAssignmentSet) {
-        const response = await axios.delete(`/api/${entry.tribe}/history/${entry._id}`);
+    async removeAssignments(entry: PairAssignmentSet, tribeId: String) {
+        const response = await axios.delete(`/api/${tribeId}/history/${entry._id}`);
         return response.data;
     }
 
@@ -67,8 +67,8 @@ class Coupling {
         return response.data;
     }
 
-    async saveCurrentPairAssignments(pairAssignments: common.PairAssignmentSet) {
-        const response = await axios.post(`/api/${pairAssignments.tribe}/history`, angular.copy(pairAssignments));
+    async saveCurrentPairAssignments(pairAssignments: common.PairAssignmentSet, tribeId: String) {
+        const response = await axios.post(`/api/${tribeId}/history`, angular.copy(pairAssignments));
         return response.data;
     }
 

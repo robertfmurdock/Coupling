@@ -210,8 +210,7 @@ describe('The controller named ', function () {
                     [player1, player2],
                     [player3, player4]
                 ],
-                date: '',
-                tribe: 'numbers'
+                date: ''
             };
 
             controller.onDrop(player2, player3);
@@ -249,8 +248,7 @@ describe('The controller named ', function () {
                     [player1, player2],
                     [player3, player4]
                 ],
-                date: '',
-                tribe: 'numbers'
+                date: ''
             };
 
             controller.onDrop(player4, player3);
@@ -311,7 +309,7 @@ describe('The controller named ', function () {
                 {name: 'nerd', _id: '4'},
                 {name: 'pantsmaster', _id: '5'}];
             const controller = new PairAssignmentsController(Coupling, location, {});
-            controller.pairAssignments = {pairs: currentPairs, tribe: tribeId, date: ''};
+            controller.pairAssignments = {pairs: currentPairs, date: ''};
             controller.players = players;
 
             expect(controller.unpairedPlayers).toEqual([
@@ -344,12 +342,12 @@ describe('The controller named ', function () {
                 removeAssignments: $remove
             };
             const historyController = new HistoryController(coupling, {reload: reload});
+            historyController.tribe = {id: 'me', name: 'you'};
             spyOn(window, 'confirm').and.returnValue(true);
 
             const entry: PairAssignmentSet = {
                 pairs: [],
-                date: '',
-                tribe: '',
+                date: ''
             };
             await historyController.removeEntry(entry);
             expect($remove).toHaveBeenCalled();
@@ -368,7 +366,6 @@ describe('The controller named ', function () {
             const entry: PairAssignmentSet = {
                 pairs: [],
                 date: '',
-                tribe: '',
             };
             await historyController.removeEntry(entry);
             expect($remove).not.toHaveBeenCalled();
