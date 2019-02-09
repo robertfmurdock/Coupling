@@ -156,24 +156,4 @@ describe('CouplingDataService', function () {
         });
 
     });
-
-    it('can list former players', function (done) {
-        const tribeId = 'wizards';
-        const gandalfTheGrey = {tribe: tribeId, name: 'Gandalf The Grey', isDeleted: true};
-        const gandalfTheWhite = {tribe: tribeId, name: 'Gandalf The White', isDeleted: null};
-        const saruman = {tribe: tribeId, name: 'Saruman', isDeleted: true};
-        const allPlayers = [gandalfTheGrey, gandalfTheWhite, saruman];
-        const retiredPlayers = [
-            gandalfTheGrey,
-            saruman
-        ];
-        playersCollection.insert(allPlayers)
-            .then(function () {
-                return couplingDataService.requestRetiredPlayers(tribeId);
-            })
-            .then(function (players) {
-                expect(players).toEqual(retiredPlayers);
-            })
-            .then(done, done.fail);
-    });
 });

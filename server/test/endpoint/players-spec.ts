@@ -1,6 +1,4 @@
 "use strict";
-import * as Bluebird from "bluebird";
-import CouplingDataService from "../../lib/CouplingDataService";
 import Comparators from "../../../common/Comparators";
 import * as supertest from "supertest";
 import * as monk from "monk";
@@ -49,10 +47,8 @@ describe(path, function () {
         it('will return all available players on team.', async function () {
             let newPlayer1 = clean({_id: monk.id(), name: "Awesome-O"});
             let newPlayer2 = clean({_id: monk.id(), name: "Awesome-O-2"});
-            await Promise.all([
-                couplingServer.post(path).send(newPlayer1).expect(200),
-                couplingServer.post(path).send(newPlayer2).expect(200),
-            ]);
+            await couplingServer.post(path).send(newPlayer1).expect(200);
+            await couplingServer.post(path).send(newPlayer2).expect(200);
 
             const response = await couplingServer.get(path)
                 .expect(200)
@@ -61,31 +57,16 @@ describe(path, function () {
             expect(response.body).toEqual([newPlayer1, newPlayer2]);
         });
 
-        it('for retired players returns all retired players', function (done) {
-            let service = new CouplingDataService(config.tempMongoUrl);
-            let newPlayer = {_id: monk.id(), name: "Retiree", tribe: tribeId};
+        it('for retired players returns all retired players', async function () {
+            let newPlayer = {_id: monk.id().toString(), name: "Retiree"};
 
-            couplingServer.post(path)
-                .send(newPlayer)
-                .then(function (responseContainingTheNewId) {
-                    newPlayer = responseContainingTheNewId.body;
-                })
-                .then(function () {
-                    couplingServer.delete(path + "/" + newPlayer._id)
-                        .expect(200)
-                })
-                .then(function () {
-                    return Bluebird.props({
-                        expected: service.requestRetiredPlayers(tribeId),
-                        response: couplingServer.get(path + '/retired')
-                            .expect(200)
-                            .expect('Content-Type', /json/)
-                    });
-                })
-                .then(function (props: any) {
-                    expect(props.response.body).toEqual(props.expected);
-                })
-                .then(done, done.fail);
+            await couplingServer.post(path).send(newPlayer);
+            await couplingServer.delete(path + "/" + newPlayer._id).expect(200);
+            const response = await couplingServer.get(path + '/retired')
+                .expect(200)
+                .expect('Content-Type', /json/);
+
+            expect(response.body).toEqual([newPlayer]);
         });
     });
 

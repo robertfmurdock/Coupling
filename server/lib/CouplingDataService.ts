@@ -40,10 +40,6 @@ export default class CouplingDataService {
         return makeDocumentPromise(this.pinCollection, {}, {tribe: tribeId, isDeleted: null});
     };
 
-    requestRetiredPlayers(tribeId): BluebirdPromise<Player[]> {
-        return makeDocumentPromise(this.playersCollection, {}, {tribe: tribeId, isDeleted: true});
-    };
-
     savePin(pin, callback) {
         this.pinCollection.insert(pin, callback);
     };
