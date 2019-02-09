@@ -5,8 +5,15 @@ import kotlin.js.json
 
 interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
         PlayersQueryDispatcher,
+        RetiredPlayersQueryDispatcher,
         SavePlayerCommandDispatcher,
-        DeletePlayerCommandDispatcher
+        DeletePlayerCommandDispatcher,
+        SavePairAssignmentDocumentCommandDispatcher,
+        PairAssignmentDocumentListQueryDispatcher,
+        DeletePairAssignmentDocumentCommandDispatcher {
+    override val playerRepository: PlayerRepository
+    override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
+}
 
 @Suppress("unused")
 @JsName("commandDispatcher")
@@ -16,9 +23,6 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
         NextPlayerActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
-        SavePairAssignmentDocumentCommandDispatcher,
-        PairAssignmentDocumentListQueryDispatcher,
-        DeletePairAssignmentDocumentCommandDispatcher,
         Wheel,
         MongoDataRepository,
         MongoPlayerRepository,
@@ -50,6 +54,14 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
     @JsName("performPlayersQuery")
     fun performPlayersQuery(tribeId: String) = GlobalScope.promise {
         PlayersQuery(TribeId(tribeId))
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
+    }
+
+    @JsName("performRetiredPlayersQuery")
+    fun performRetiredPlayersQuery(tribeId: String) = GlobalScope.promise {
+        RetiredPlayersQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
                 .toTypedArray()

@@ -15,7 +15,7 @@ class SavePlayerCommandTest {
                     email = "tim@tim.meat",
                     imageURL = "italian.jpg"
             )
-            override val playerRepository = PlayerRepositorySpy().apply { whenever(player with tribe, Unit) }
+            override val playerRepository = PlayerSaverSpy().apply { whenever(player with tribe, Unit) }
         }) exerciseAsync {
             SavePlayerCommand(player with tribe)
                     .perform()
@@ -24,10 +24,7 @@ class SavePlayerCommandTest {
         }
     }
 
-    class PlayerRepositorySpy : PlayerRepository, Spy<TribeIdPlayer, Unit> by SpyData() {
-        override fun getPlayersAsync(tribeId: TribeId) = cancel()
-
+    class PlayerSaverSpy : PlayerSaver, Spy<TribeIdPlayer, Unit> by SpyData() {
         override suspend fun save(tribeIdPlayer: TribeIdPlayer) = spyFunction(tribeIdPlayer)
-        override suspend fun delete(playerId: String) = cancel()
     }
 }

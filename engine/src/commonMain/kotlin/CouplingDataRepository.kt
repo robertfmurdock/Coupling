@@ -5,8 +5,3 @@ interface CouplingDataRepository : PairAssignmentDocumentGetter {
     fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe>
 }
 
-interface PlayerRepository {
-    fun getPlayersAsync(tribeId: TribeId): Deferred<List<Player>>
-    suspend fun save(tribeIdPlayer: TribeIdPlayer)
-    suspend fun delete(playerId: String)
-}

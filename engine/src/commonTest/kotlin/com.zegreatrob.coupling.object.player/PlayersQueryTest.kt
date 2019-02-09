@@ -23,10 +23,8 @@ class PlayersQueryTest {
         }
     }
 
-    class PlayerRepositorySpy : PlayerRepository, Spy<TribeId, Deferred<List<Player>>> by SpyData() {
+    class PlayerRepositorySpy : PlayerGetter, Spy<TribeId, Deferred<List<Player>>> by SpyData() {
         override fun getPlayersAsync(tribeId: TribeId) = spyFunction(tribeId)
-
-        override suspend fun save(tribeIdPlayer: TribeIdPlayer) = cancel()
-        override suspend fun delete(playerId: String) = cancel()
+        override fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>>  = cancel()
     }
 }

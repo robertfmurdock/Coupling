@@ -42,7 +42,7 @@ class PlayerRoutes {
     listRetiredMembers(request, response) {
         respond(
             response,
-            request.dataService.requestRetiredPlayers(request.params.tribeId)
+            request.commandDispatcher.performRetiredPlayersQuery(request.params.tribeId)
         );
     };
 

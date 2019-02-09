@@ -33,7 +33,7 @@ interface MongoPlayerRepository : PlayerRepository,
                 .map { it.fromDbToPlayer() }
     }
 
-    fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>> = GlobalScope.async {
+    override fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>> = GlobalScope.async {
         findDeletedByQuery(tribeId, playersCollection)
                 .map { it.fromDbToPlayer() }
     }
