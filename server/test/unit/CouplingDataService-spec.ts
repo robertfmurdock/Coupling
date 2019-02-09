@@ -1,16 +1,11 @@
 "use strict";
 import * as monk from "monk";
 import CouplingDataService from "../../lib/CouplingDataService";
-import Comparators from "../../../common/Comparators";
 
 const config = require('../../config/config');
 
 const mongoUrl = config.testMongoUrl + '/UsersTest';
 const database = monk.default(mongoUrl);
-
-interface Entity {
-    _id: string
-}
 
 describe('CouplingDataService', function () {
     const frodo = {name: 'Frodo', _id: undefined, tribe: null};
@@ -116,31 +111,6 @@ describe('CouplingDataService', function () {
         couplingDataService.requestTribes()
             .then(function (tribes) {
                 expect(expectedTribes).toEqual(tribes);
-            })
-            .then(done, done.fail);
-    });
-
-    describe('can remove old pair assignments', function () {
-        beforeEach(function (done) {
-            couplingDataService.removePairAssignments(pairSetOne._id)
-                .then(done, done.fail);
-        });
-
-        it('such that it still exists in the database', function (done) {
-            historyCollection.find({_id: pairSetOne._id}, {})
-                .then(function (documents: Entity[]) {
-                    expect(Comparators.areEqualObjectIds(documents[0]._id, pairSetOne._id)).toBe(true);
-                })
-                .then(done, done.fail);
-        });
-    });
-
-    it('will report an error on the callback when it does not remove pair assignments', function (done) {
-        couplingDataService.removePairAssignments(monk.id())
-            .then(function () {
-                fail('This should return an error.')
-            }, function (error) {
-                expect(error.message).toEqual('Pair Assignments could not be deleted because they do not exist.');
             })
             .then(done, done.fail);
     });

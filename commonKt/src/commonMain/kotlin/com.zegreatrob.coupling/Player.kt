@@ -10,4 +10,6 @@ data class Player(
 
 inline class TribeId(val value: String)
 
-data class TribeIdPlayer(val player: Player, val tribeId: TribeId)
+infix fun Player.with(tribeId: TribeId) = TribeIdPlayer(tribeId, this)
+
+data class TribeIdPlayer(val tribeId: TribeId, val player: Player)

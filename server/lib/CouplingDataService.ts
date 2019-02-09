@@ -48,10 +48,6 @@ export default class CouplingDataService {
         this.pinCollection.insert(pin, callback);
     };
 
-    resurrectPlayer(playerId) {
-        return this.playersCollection.update(playerId, {$set: {isDeleted: false}});
-    };
-
     removePin(pinId, callback) {
         this.pinCollection.update(pinId, {$set: {isDeleted: true}},
             this.makeUpdateByIdCallback('Failed to remove the pin because it did not exist.', callback));
@@ -65,12 +61,5 @@ export default class CouplingDataService {
             done(error);
         };
     }
-
-    async removePairAssignments(pairAssignmentsId) {
-        const results = await this.historyCollection.update({_id: pairAssignmentsId}, {isDeleted: true});
-        if (results.nModified === 0) {
-            throw new Error('Pair Assignments could not be deleted because they do not exist.');
-        }
-    };
 
 }

@@ -1,3 +1,4 @@
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
@@ -32,9 +33,14 @@ interface MongoPlayerRepository : PlayerRepository,
                 .map { it.fromDbToPlayer() }
     }
 
+    fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>> = GlobalScope.async {
+        findDeletedByQuery(tribeId, playersCollection)
+                .map { it.fromDbToPlayer() }
+    }
+
     private fun Json.toTribeIdPlayer() = TribeIdPlayer(
-            player = applyIdCorrection().fromDbToPlayer(),
-            tribeId = TribeId(this["tribe"].unsafeCast<String>())
+            tribeId = TribeId(this["tribe"].unsafeCast<String>()),
+            player = applyIdCorrection().fromDbToPlayer()
     )
 
 }

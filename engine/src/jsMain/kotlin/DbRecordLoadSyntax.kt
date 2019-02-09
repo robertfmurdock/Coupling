@@ -6,15 +6,25 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
 
     suspend fun findByQuery(query: Json, collection: dynamic) = rawFindBy(query, collection)
             .await()
-            .dbJsonArrayLoad()
+            .findLatestOfEachRecord()
+            .filter { it["isDeleted"] != true }
+
+    suspend fun findDeletedByQuery(tribeId: TribeId, collection: dynamic) = rawFindBy(
+            json("tribe" to tribeId.value), collection
+    )
+            .await()
+            .findLatestOfEachRecord()
+            .filter { it["isDeleted"] == true }
 
     fun rawFindBy(query: Json, collection: dynamic) = collection.find(query).unsafeCast<Promise<Array<Json>>>()
 
-    private fun Array<Json>.dbJsonArrayLoad() = map { it.applyIdCorrection() }
+    private fun Array<Json>.dbJsonArrayLoad() = findLatestOfEachRecord()
+            .filter { it["isDeleted"] != true }
+
+    private fun Array<Json>.findLatestOfEachRecord() = map { it.applyIdCorrection() }
             .groupBy { it["_id"].toString() }
             .map { it.value.latestByTimestamp() }
             .filterNotNull()
-            .filter { it["isDeleted"] != true }
 
     fun Json.applyIdCorrection() = also {
         this["_id"] = this["id"].unsafeCast<String?>() ?: this["_id"]

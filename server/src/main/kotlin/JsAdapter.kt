@@ -35,7 +35,7 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
 
     @JsName("performSavePlayerCommand")
     fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {
-        SavePlayerCommand(TribeIdPlayer(player.toPlayer(), TribeId(tribeId)))
+        SavePlayerCommand(TribeIdPlayer(TribeId(tribeId), player.toPlayer()))
                 .perform()
                 .let { it.toJson() }
     }

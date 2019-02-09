@@ -41,7 +41,7 @@ class MongoPlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(TribeIdPlayer(player, tribeId))
+            save(TribeIdPlayer(tribeId, player))
             getPlayersAsync(tribeId).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
@@ -63,7 +63,7 @@ class MongoPlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(TribeIdPlayer(player, tribeId))
+            save(TribeIdPlayer(tribeId, player))
             getDbPlayers(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
@@ -92,13 +92,13 @@ class MongoPlayerRepositoryTest {
             val updatedPlayer = player.copy(name = "Timmy")
         }) {
             dropPlayers()
-            save(TribeIdPlayer(player, tribeId))
+            save(TribeIdPlayer(tribeId, player))
         }
 
         @Test
         fun willNotDeleteOriginalRecord() = testAsync {
             setupSavedPlayer() exerciseAsync {
-                save(TribeIdPlayer(updatedPlayer, tribeId))
+                save(TribeIdPlayer(tribeId, updatedPlayer))
                 getDbPlayers(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
@@ -110,7 +110,7 @@ class MongoPlayerRepositoryTest {
         @Test
         fun getWillOnlyReturnTheUpdatedPlayer() = testAsync {
             setupSavedPlayer() exerciseAsync {
-                save(TribeIdPlayer(updatedPlayer, tribeId))
+                save(TribeIdPlayer(tribeId, updatedPlayer))
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
@@ -136,10 +136,62 @@ class MongoPlayerRepositoryTest {
                     imageURL = "italian.jpg"
             )
         }) exerciseAsync {
-            save(TribeIdPlayer(player, tribe))
+            save(TribeIdPlayer(tribe, player))
             delete(playerId)
         } verifyAsync {
             getPlayersAsync(tribe).await().assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun whenPlayerIsDeletedWillShowUpInGetDeleted() = testAsync {
+        setupAsync(object {
+            val tribeId = TribeId("hoo")
+            val playerId = id()
+            val player = Player(
+                    id = playerId,
+                    badge = 0,
+                    name = "Jim",
+                    callSignAdjective = "Spicy",
+                    callSignNoun = "Meatball",
+                    email = "jim@jim.meat",
+                    imageURL = "italian.jpg"
+            )
+        }) {
+            dropPlayers()
+            save(TribeIdPlayer(tribeId, player))
+            delete(playerId)
+        } exerciseAsync {
+            getDeletedAsync(tribeId).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(player))
+        }
+    }
+
+    @Test
+    fun whenPlayerIsDeletedThenBroughtBackThenDeletedWillShowUpOnceInGetDeleted() = testAsync {
+        setupAsync(object {
+            val tribeId = TribeId("hoo")
+            val playerId = id()
+            val player = Player(
+                    id = playerId,
+                    badge = 0,
+                    name = "Jim",
+                    callSignAdjective = "Spicy",
+                    callSignNoun = "Meatball",
+                    email = "jim@jim.meat",
+                    imageURL = "italian.jpg"
+            )
+        }) {
+            dropPlayers()
+            save(player with tribeId)
+            delete(playerId)
+            save(player with tribeId)
+            delete(playerId)
+        } exerciseAsync {
+            getDeletedAsync(tribeId).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(player))
         }
     }
 
@@ -166,7 +218,7 @@ class MongoPlayerRepositoryTest {
                     override val username = userWhoSaved
                 }
             }) {
-                save(TribeIdPlayer(player, tribeId))
+                save(TribeIdPlayer(tribeId, player))
             }
         } exerciseAsync {
             delete(playerId)
@@ -240,7 +292,7 @@ class MongoPlayerRepositoryTest {
                 dropPlayers()
                 playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             } exerciseAsync {
-                save(TribeIdPlayer(updatedPlayer, tribeId))
+                save(TribeIdPlayer(tribeId, updatedPlayer))
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
@@ -271,7 +323,7 @@ class MongoPlayerRepositoryTest {
                     email = "duder",
                     badge = 2
             )
-            save(TribeIdPlayer(tribeIdPlayer, tribeId))
+            save(TribeIdPlayer(tribeId, tribeIdPlayer))
 
             playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         } exerciseAsync {
