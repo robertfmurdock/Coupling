@@ -14,7 +14,7 @@ const makeDocumentPromise = function (collection, options, filter) {
 export default class CouplingDataService {
 
     public database;
-    private playersCollection;
+    playersCollection;
     historyCollection;
     private tribesCollection;
     private pinCollection;

@@ -3,6 +3,12 @@
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
+import com.zegreatrob.coupling.common.*
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.common.entity.tribe.PairingRule
+import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlin.js.Json
 import kotlin.test.Test
 

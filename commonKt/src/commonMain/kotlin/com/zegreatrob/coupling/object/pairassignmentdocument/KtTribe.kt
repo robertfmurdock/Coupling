@@ -1,1 +1,0 @@
-data class KtTribe(val id: TribeId, val pairingRule: PairingRule)

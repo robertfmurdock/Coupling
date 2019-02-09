@@ -3,9 +3,12 @@ import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import * as distanceInWords from "date-fns/distance_in_words"
 // @ts-ignore
-import {ComposeStatisticsActionDispatcher} from 'commonKt'
+import * as commonKt from 'commonKt'
 // @ts-ignore
 import {performComposeStatisticsAction} from 'client'
+
+let ComposeStatisticsActionDispatcher = commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher;
+
 const dispatcher = new ComposeStatisticsActionDispatcher();
 
 export default class StatisticComposer {

@@ -34,7 +34,7 @@ describe('Comparators', function () {
             expect(Comparators.areEqualPlayers(anotherBatman, batman)).toBe(true);
         });
 
-        it('equal players with object ids are equal', function () {
+        it('equal players with entity ids are equal', function () {
             const batman = {
                 name: 'Batman',
                 _id: ObjectID.createFromHexString('000000079bb31fb01ee7834c'),

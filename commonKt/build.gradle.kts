@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
@@ -16,7 +15,6 @@ node {
     yarnVersion = BuildConstants.yarnVersion
     download = true
 }
-
 
 repositories {
     mavenCentral()

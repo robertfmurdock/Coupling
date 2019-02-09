@@ -73,7 +73,7 @@ describe('UserDataService', function () {
     });
 
     describe('deserialize user', function () {
-        it('will return object in the users collection from mongo', function (done) {
+        it('will return entity in the users collection from mongo', function (done) {
             var id = monk.id();
             var expectedUser = {_id: id, uniqueValue: 'bloopers'};
             usersCollection.insert(expectedUser)

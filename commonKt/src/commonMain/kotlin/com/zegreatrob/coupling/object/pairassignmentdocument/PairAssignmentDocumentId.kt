@@ -1,1 +1,0 @@
-inline class PairAssignmentDocumentId(val value: String)
