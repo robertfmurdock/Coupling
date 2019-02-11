@@ -1,6 +1,5 @@
 import * as BluebirdPromise from "bluebird";
 import * as monk from "monk";
-import Player from "../../common/Player";
 import Tribe from "../../common/Tribe";
 
 const handleMongoError = function (error) {
@@ -16,7 +15,7 @@ export default class CouplingDataService {
     public database;
     playersCollection;
     historyCollection;
-    private tribesCollection;
+    tribesCollection;
     private pinCollection;
 
     constructor(public mongoUrl) {

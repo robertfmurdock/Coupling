@@ -9,12 +9,11 @@ import com.zegreatrob.coupling.entity.pairassignmentdocument.PairAssignmentDocum
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.await
 import kotlin.js.*
 
 interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentRepository,
         PlayerToDbSyntax,
-        DbRecordInfoSyntax,
+        DbRecordSaveSyntax,
         DbRecordLoadSyntax,
         DbRecordDeleteSyntax {
 
@@ -22,9 +21,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = tribeIdPairAssignmentDocument
             .toDbJson()
-            .let {
-                jsRepository.historyCollection.insert(it).unsafeCast<Promise<Unit>>().await()
-            }
+            .let { it.save(jsRepository.historyCollection) }
 
     override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) {
         deleteEntity(
@@ -47,7 +44,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             "date" to document.date.toDate(),
             "pairs" to document.toDbJsPairs(),
             "tribe" to tribeId.value
-    ).addRecordInfo()
+    )
 
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
         it.players

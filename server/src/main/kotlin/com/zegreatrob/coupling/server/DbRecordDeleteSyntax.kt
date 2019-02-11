@@ -1,10 +1,8 @@
 package com.zegreatrob.coupling.server
 
-import kotlinx.coroutines.await
 import kotlin.js.Json
-import kotlin.js.Promise
 
-interface DbRecordDeleteSyntax : DbRecordLoadSyntax {
+interface DbRecordDeleteSyntax : DbRecordLoadSyntax, DbRecordSaveSyntax {
     suspend fun <T> deleteEntity(
             id: String,
             collection: dynamic,
@@ -19,10 +17,7 @@ interface DbRecordDeleteSyntax : DbRecordLoadSyntax {
                     }
                     .toDbJson()
                     .addIsDeleted()
-                    .insertRecord(collection)
-
-    private suspend fun Json.insertRecord(collection: dynamic) =
-            collection.insert(this).unsafeCast<Promise<Unit>>().await()
+                    .let { it.save(collection) }
 
     private fun Json.addIsDeleted() = also { this["isDeleted"] = true }
 

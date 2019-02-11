@@ -4,20 +4,18 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
-import com.zegreatrob.coupling.server.DbRecordInfoSyntax
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
+import com.zegreatrob.coupling.server.DbRecordSaveSyntax
 import com.zegreatrob.coupling.server.PlayerToDbSyntax
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.await
 import kotlin.js.Json
-import kotlin.js.Promise
 import kotlin.js.json
 
 interface MongoPlayerRepository : PlayerRepository,
         PlayerToDbSyntax,
-        DbRecordInfoSyntax,
+        DbRecordSaveSyntax,
         DbRecordLoadSyntax,
         DbRecordDeleteSyntax {
 
@@ -29,10 +27,8 @@ interface MongoPlayerRepository : PlayerRepository,
 
     private fun TribeIdPlayer.toDbJson() = player.toDbJson()
             .apply { this["tribe"] = tribeId.value }
-            .addRecordInfo()
 
-
-    private suspend fun Json.savePlayerJson() = playersCollection.insert(this).unsafeCast<Promise<Unit>>().await()
+    private suspend fun Json.savePlayerJson() = this.save(playersCollection)
 
     override suspend fun delete(playerId: String) =
             deleteEntity(playerId, playersCollection, "Player", { toTribeIdPlayer() }, { toDbJson() })
