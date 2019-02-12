@@ -68,8 +68,8 @@ describe(path, function () {
         const response = await host.get(path)
             .expect(200)
             .expect('Content-Type', /json/);
-        expect(pluck('id',response.body)).toEqual(['delete-me']);
-        expect(pluck('name',response.body)).toEqual(['tribe-from-endpoint-tests']);
+        expect(pluck('id', response.body)).toEqual(['delete-me']);
+        expect(pluck('name', response.body)).toEqual(['tribe-from-endpoint-tests']);
 
         await Bluebird.all([
             tribesCollection.remove({id: 'delete-me'}, false),
@@ -119,7 +119,13 @@ describe(path, function () {
     });
 
     describe('POST', function () {
-        let newTribe = {name: 'TeamMadeByTest', id: 'deleteme', _id: monk.id()};
+        let newTribe = {
+            name: 'TeamMadeByTest',
+            id: 'deleteme',
+            email: 'test@test.test',
+            badgesEnabled: true,
+            _id: monk.id()
+        };
 
         it('will create a tribe and authorize it.', function (done) {
             host.post(path)
@@ -135,11 +141,15 @@ describe(path, function () {
                 })
                 .then(function (response) {
 
+                    console.log('response body', response.body)
+
                     const result = find(function (element) {
                         return element.name === 'TeamMadeByTest'
                     }, response.body);
 
                     expect(result.id).toBe('deleteme');
+                    expect(result.email).toBe('test@test.test');
+                    expect(result.badgesEnabled).toBe(true);
                 })
                 .then(done, done.fail);
         });

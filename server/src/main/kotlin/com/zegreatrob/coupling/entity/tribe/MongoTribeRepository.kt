@@ -36,16 +36,20 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             "id" to id.value,
             "pairingRule" to toValue(pairingRule),
             "name" to name,
+            "email" to email,
             "defaultBadgeName" to defaultBadgeName,
-            "alternateBadgeName" to alternateBadgeName
+            "alternateBadgeName" to alternateBadgeName,
+            "badgesEnabled" to badgesEnabled
     )
 
     private fun Json.toTribe(): KtTribe = KtTribe(
             id = TribeId(this["id"].toString()),
             pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
             name = this["name"]?.toString(),
+            email = this["email"]?.toString(),
             defaultBadgeName = this["defaultBadgeName"]?.toString(),
-            alternateBadgeName = this["alternateBadgeName"]?.toString()
+            alternateBadgeName = this["alternateBadgeName"]?.toString(),
+            badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false
     )
 
 }

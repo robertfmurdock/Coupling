@@ -49,15 +49,22 @@ fun Json.toPlayer(): Player = Player(
 
 fun Json.toTribe(): KtTribe = KtTribe(
         id = TribeId(stringValue("id")!!),
-        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int)
+        name = stringValue("name"),
+        email = stringValue("email"),
+        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
+        defaultBadgeName = stringValue("defaultBadgeName"),
+        alternateBadgeName = stringValue("alternateBadgeName"),
+        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false
 )
 
 fun KtTribe.toJson() = json(
         "id" to id.value,
         "pairingRule" to PairingRule.toValue(pairingRule),
         "name" to name,
+        "email" to email,
         "defaultBadgeName" to defaultBadgeName,
-        "alternateBadgeName" to alternateBadgeName
+        "alternateBadgeName" to alternateBadgeName,
+        "badgesEnabled" to badgesEnabled
 )
 
 private fun Json.stringValue(key: String) = this[key]?.toString()

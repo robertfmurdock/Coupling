@@ -39,7 +39,12 @@ class MongoTribeRepositoryTest {
     @Test
     fun canSaveAndLoadTribe() = testAsync {
         setupAsync(object {
-            val tribe = KtTribe(TribeId(id()), PairingRule.PreferDifferentBadge)
+            val tribe = KtTribe(
+                    id = TribeId(id()),
+                    pairingRule = PairingRule.PreferDifferentBadge,
+                    email = "safety@dance.edu",
+                    badgesEnabled = true
+            )
         }) {
             dropPlayers()
         } exerciseAsync {

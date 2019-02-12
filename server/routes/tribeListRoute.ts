@@ -1,29 +1,27 @@
 import * as express from "express";
-import * as monk from "monk";
-import * as AuthorizedTribesFetcher from "../lib/AuthorizedTribesFetcher";
 
 class TribeRoutes {
     public list = (request, response) => {
-        request.commandDispatcher.performTribeQuery()
+        request.commandDispatcher.performTribeListQuery()
             .then(function (authorizedTribes) {
                 response.send(authorizedTribes);
             })
             .catch(function (error) {
+                console.log(error)
                 response.statusCode = 500;
                 response.send(error.message);
             });
     };
 
     public get = (request, response) => {
-        AuthorizedTribesFetcher.promiseTribeAndAuthorization(request)
-            .then(function ({isAuthorized, tribe}) {
-                if (isAuthorized) {
+        request.commandDispatcher.performTribeQuery(request.params.tribeId)
+            .then(function (tribe) {
+                if (tribe !== null) {
                     response.send(tribe);
                 } else {
                     response.statusCode = 404;
                     response.send({message: 'Tribe not found.'});
                 }
-                return isAuthorized;
             })
             .catch(function (error) {
                 console.log(error);
@@ -33,23 +31,21 @@ class TribeRoutes {
     };
 
     public save = async (request, response) => {
-        const database = request.dataService.database;
-        const tribesCollection = database.get('tribes');
-        const usersCollection = request.userDataService.database.get('users');
-        const tribeJSON = request.body;
-
-        const {isAuthorized, tribe} = await AuthorizedTribesFetcher.promiseTribeAndAuthorization(request, tribeJSON.id);
-
-        if (tribe === null || isAuthorized) {
-            tribeJSON._id = tribeJSON._id || monk.id();
-            tribesCollection.update({id: tribeJSON.id}, tribeJSON, {upsert: true}, function () {
-                usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: tribeJSON.id}});
-                response.send(request.body);
+        request.commandDispatcher.performSaveTribeCommand(request.body)
+            .then(function (isSuccessful) {
+                if (isSuccessful) {
+                    const usersCollection = request.userDataService.database.get('users');
+                    usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: request.body.id}});
+                    response.send(request.body)
+                } else {
+                    response.sendStatus(400);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                response.statusCode = 500;
+                response.send(error.message);
             });
-        } else {
-
-            response.sendStatus(400);
-        }
     };
 }
 
