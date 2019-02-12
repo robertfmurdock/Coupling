@@ -1,4 +1,3 @@
-
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pin.Pin
@@ -6,7 +5,7 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.entity.CouplingDataRepository
+import com.zegreatrob.coupling.entity.PinRepository
 import com.zegreatrob.coupling.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.entity.tribe.TribeGet
 import kotlinx.coroutines.CompletableDeferred
@@ -18,7 +17,8 @@ class ProposeNewPairsCommandTest {
 
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
-        setupAsync(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository, TribeGet {
+        setupAsync(object : ProposeNewPairsCommandDispatcher, PinRepository, TribeGet, PairAssignmentDocumentGetter {
+            override val pairAssignmentDocumentRepository = this
             override val tribeRepository = this
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
@@ -33,7 +33,7 @@ class ProposeNewPairsCommandTest {
             override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = CompletableDeferred(tribe)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override val repository: CouplingDataRepository = this
+            override val pinRepository: PinRepository = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
 
             val expectedPairAssignmentDocument = PairAssignmentDocument(DateTime.now(), listOf(), null)

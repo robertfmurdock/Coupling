@@ -2,11 +2,10 @@ package com.zegreatrob.coupling.entity.pairassignmentdocument
 
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.entity.CouplingDataRepository
-import com.zegreatrob.coupling.entity.tribe.TribeGet
+import com.zegreatrob.coupling.entity.tribe.TribeIdGetSyntax
 
 data class ProposeNewPairsCommand(val tribeId: TribeId, val players: List<Player>)
-interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
+interface ProposeNewPairsCommandDispatcher : TribeIdPinsSyntax, TribeIdGetSyntax, TribeIdHistorySyntax {
 
     val actionDispatcher: RunGameActionDispatcher
 
@@ -28,18 +27,7 @@ interface ProposeNewPairsCommandDispatcher : TribeIdDataSyntax {
     private fun ProposeNewPairsCommand.dataDeferred() = Triple(
             tribeId.getHistoryAsync(),
             tribeId.getPinsAsync(),
-            tribeId.getTribeAsync()
+            tribeId.loadAsync()
     )
-
-}
-
-interface TribeIdDataSyntax {
-
-    val repository: CouplingDataRepository
-    val tribeRepository: TribeGet
-
-    fun TribeId.getHistoryAsync() = repository.getPairAssignmentsAsync(this)
-    fun TribeId.getPinsAsync() = repository.getPinsAsync(this)
-    fun TribeId.getTribeAsync() = tribeRepository.getTribeAsync(this)
 
 }

@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.coupling.common.toTribe
+import com.zegreatrob.coupling.entity.PinRepository
 import com.zegreatrob.coupling.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.entity.player.*
 import com.zegreatrob.coupling.entity.tribe.*
@@ -32,7 +33,25 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
-class Repository(override val jsRepository: dynamic, override val userContext: UserContext) : MongoTribeRepository
+interface RepositoryCatalog {
+    val tribeRepository: TribeRepository
+    val playerRepository: PlayerRepository
+    val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
+    val pinRepository: PinRepository
+}
+
+private fun repositoryCatalog(jsRepository: dynamic, userContext: UserContext) = object : RepositoryCatalog,
+        MongoTribeRepository,
+        MongoPlayerRepository,
+        MongoPairAssignmentDocumentRepository,
+        MongoPinRepository {
+    override val jsRepository: dynamic = jsRepository
+    override val userContext = userContext
+    override val tribeRepository = this
+    override val playerRepository = this
+    override val pairAssignmentDocumentRepository = this
+    override val pinRepository = this
+}
 
 @Suppress("unused")
 @JsName("commandDispatcher")
@@ -46,14 +65,7 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
             CreatePairCandidateReportsActionDispatcher,
             CreatePairCandidateReportActionDispatcher,
             Wheel,
-            MongoDataRepository,
-            MongoPlayerRepository,
-            MongoPairAssignmentDocumentRepository {
-        override val tribeRepository = Repository(jsRepository, userContext)
-        override val pairAssignmentDocumentRepository = this
-        override val repository = this
-        override val jsRepository = jsRepository
-        override val playerRepository = this
+            RepositoryCatalog by repositoryCatalog(jsRepository, userContext) {
         override val userContext = userContext
         override val actionDispatcher = this
         override val wheel: Wheel = this
