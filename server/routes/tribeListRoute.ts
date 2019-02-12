@@ -35,7 +35,7 @@ class TribeRoutes {
             .then(function (isSuccessful) {
                 if (isSuccessful) {
                     const usersCollection = request.userDataService.database.get('users');
-                    usersCollection.update({_id: request.user._id}, {$addToSet: {tribes: request.body.id}});
+                    usersCollection.update({email: request.user.email}, {$addToSet: {tribes: request.body.id}});
                     response.send(request.body)
                 } else {
                     response.sendStatus(400);

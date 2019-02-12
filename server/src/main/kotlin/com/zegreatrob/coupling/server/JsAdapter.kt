@@ -9,10 +9,11 @@ import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.coupling.common.toTribe
-import com.zegreatrob.coupling.entity.PinRepository
-import com.zegreatrob.coupling.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.entity.player.*
-import com.zegreatrob.coupling.entity.tribe.*
+import com.zegreatrob.coupling.server.entity.PinRepository
+import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.server.entity.player.*
+import com.zegreatrob.coupling.server.entity.tribe.*
+import com.zegreatrob.coupling.server.entity.user.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Json
@@ -51,6 +52,32 @@ private fun repositoryCatalog(jsRepository: dynamic, userContext: UserContext) =
     override val playerRepository = this
     override val pairAssignmentDocumentRepository = this
     override val pinRepository = this
+}
+
+@Suppress("unused")
+@JsName("authActionDispatcher")
+fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCreateUserActionDispatcher = object :
+        FindOrCreateUserActionDispatcher, FindUserActionDispatcher, MongoUserRepository {
+    override val userCollection: dynamic = userCollection
+    override val userContext: UserContext = com.zegreatrob.coupling.server.userContext(emptyArray(), userEmail)
+    override val userRepository: UserRepository = this
+
+    @JsName("performFindUserAction")
+    fun performFindUserAction() = GlobalScope.promise {
+        FindUserAction.perform()
+                ?.toJson()
+    }
+
+    @JsName("performFindOrCreateUserAction")
+    fun performFindOrCreateUserAction() = GlobalScope.promise {
+        FindOrCreateUserAction.perform()
+                .toJson()
+    }
+
+    private fun User.toJson() = json(
+            "email" to email,
+            "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
+    )
 }
 
 @Suppress("unused")
@@ -152,7 +179,7 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
     }
 }
 
-private fun userContext(tribeIds: Array<String>, userEmail: String) = object : UserContext {
+private fun userContext(tribeIds: Array<String>?, userEmail: String) = object : UserContext {
     override val tribeIds = tribeIds?.toList() ?: emptyList()
     override val userEmail = userEmail
 }

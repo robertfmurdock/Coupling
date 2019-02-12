@@ -127,31 +127,25 @@ describe(path, function () {
             _id: monk.id()
         };
 
-        it('will create a tribe and authorize it.', function (done) {
-            host.post(path)
+        it('will create a tribe and authorize it.', async function () {
+            const firstResponse = await host.post(path)
                 .send(newTribe)
                 .expect(200)
-                .expect('Content-Type', /json/)
-                .then(function (response) {
-                    expect(JSON.stringify(response.body)).toEqual(JSON.stringify(newTribe));
+                .expect('Content-Type', /json/);
 
-                    return host.get(path)
-                        .expect(200)
-                        .expect('Content-Type', /json/)
-                })
-                .then(function (response) {
+            expect(JSON.stringify(firstResponse.body)).toEqual(JSON.stringify(newTribe));
 
-                    console.log('response body', response.body)
+            const secondResponse = await host.get(path)
+                .expect(200)
+                .expect('Content-Type', /json/);
 
-                    const result = find(function (element) {
-                        return element.name === 'TeamMadeByTest'
-                    }, response.body);
+            const result = find(function (element) {
+                return element.name === 'TeamMadeByTest'
+            }, secondResponse.body);
 
-                    expect(result.id).toBe('deleteme');
-                    expect(result.email).toBe('test@test.test');
-                    expect(result.badgesEnabled).toBe(true);
-                })
-                .then(done, done.fail);
+            expect(result.id).toBe('deleteme');
+            expect(result.email).toBe('test@test.test');
+            expect(result.badgesEnabled).toBe(true);
         });
 
         it('when the tribe already exists and you do not have permission, will fail', async function () {

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.toPins
-import com.zegreatrob.coupling.entity.PinRepository
+import com.zegreatrob.coupling.server.entity.PinRepository
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 import kotlin.js.Promise

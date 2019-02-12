@@ -102,17 +102,16 @@ describe('The edit player page', function () {
         const defaultBadgeRadio = element(By.css('#default-badge-radio'));
         const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
-        beforeEach(function (done) {
+        beforeEach(async function () {
             const tribeClone: Tribe = clone(tribe);
             tribeClone.badgesEnabled = true;
             tribeClone.defaultBadgeName = "Badge 1";
             tribeClone.alternateBadgeName = "Badge 2";
-            tribeCollection.update({_id: tribe._id}, tribeClone)
-                .then(done, done.fail);
+            await tribeCollection.update({_id: tribe._id}, tribeClone)
         });
 
-        it('should show the badge selector', function () {
-            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        it('should show the badge selector', async function () {
+            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(defaultBadgeRadio.isDisplayed()).toEqual(true);
             expect(element(By.css('label[for=default-badge-radio]')).getText()).toBe('Badge 1');
 
@@ -125,50 +124,51 @@ describe('The edit player page', function () {
         });
 
         it(`should remember badge selection`, async function () {
-            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            await browser.wait(() => altBadgeRadio.isPresent(), 1000);
+
             await altBadgeRadio.click();
             await savePlayerButton.click();
             await browser.wait(() => savePlayerButton.isEnabled().then(() => true, () => false), 100);
-            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
 
     });
 
-    it('should get error on leaving when name is changed.', function (done) {
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+    it('should get error on leaving when name is changed.', async function () {
+        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
         element(By.id('player-name')).sendKeys('completely different name');
         element(By.css(`.tribe-card img`)).click();
-        browser.wait(() =>
-                browser.switchTo().alert()
-                    .then(() => true, () => false)
-            , 5000);
+        await browser.wait(() => browser.switchTo().alert().then(() => true, () => false), 5000);
 
-        browser.switchTo().alert()
-            .then(function (alertDialog) {
-                expect(alertDialog.getText())
-                    .toEqual('You have unsaved data. Would you like to save before you leave?');
-                alertDialog.dismiss();
-            })
-            .then(done, done.fail);
+        const alertDialog = await browser.switchTo().alert();
+        expect(alertDialog.getText())
+            .toEqual('You have unsaved data. Would you like to save before you leave?');
+        alertDialog.dismiss();
     });
 
     it('should not get alert on leaving when name is changed after save.', async function () {
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         playerNameTextField.sendKeys('completely different name');
 
         await savePlayerButton.click();
+        await browser.wait(async () => {
+            let currentValue = await element.all(By.css('.player-roster .player-card-header')).first().getText();
+            return currentValue === 'completely different name';
+        }, 100);
+
         await browser.wait(() =>
             tribeCardElement.click()
                 .then(() => true, () => false), 2000);
 
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(element(By.id('player-name')).getAttribute('value')).toBe('completely different name')
     });
 

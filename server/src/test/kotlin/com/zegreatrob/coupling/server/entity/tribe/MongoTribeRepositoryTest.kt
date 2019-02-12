@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.UserContext
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.entity.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.server.MonkToolkit
 import exerciseAsync
 import kotlinx.coroutines.await

@@ -43,8 +43,8 @@ function azureODICStrategy(userDataService) {
       let email = profile._json.email;
 
       if (email) {
-        userDataService.findOrCreate(email, function (user) {
-          done(null, user);
+        userDataService.findOrCreate(email, function (err, user) {
+          done(err, user);
         });
       } else {
         return done(new Error("Auth succeeded but no email found."), null);
@@ -69,8 +69,8 @@ function googleAuthTransferStrategy(userDataService) {
 
     verify(request.body.idToken)
       .then(payload => {
-        userDataService.findOrCreate(payload.email, function (user) {
-          done(null, user);
+        userDataService.findOrCreate(payload.email, function (err, user) {
+          done(err, user);
         });
       }, err => done(err))
 
@@ -109,6 +109,15 @@ module.exports = function (app, userDataService) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  app.use(function (err, req, res, next) {
+    if (err) {
+      req.logout();
+      next(err);
+    } else {
+      next();
+    }
+  });
+
   const isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
   if (isInDevelopmentMode) {
     app.use(errorHandler());
@@ -122,9 +131,11 @@ module.exports = function (app, userDataService) {
 
   if (isInDevelopmentMode) {
     passport.use(new LocalStrategy(function (username, password, done) {
-      userDataService.findOrCreate(username + "._temp", function (user) {
-        done(null, user);
+      userDataService.findOrCreate(username + "._temp", function (err, user) {
+        done(err, user);
       });
     }));
   }
+
+
 };

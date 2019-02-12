@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.player.with
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.entity.player.MongoPlayerRepository
+import com.zegreatrob.coupling.server.entity.player.MongoPlayerRepository
 import com.zegreatrob.coupling.server.MonkToolkit
 import kotlinx.coroutines.await
 import kotlin.js.*
