@@ -9,7 +9,9 @@ data class SaveTribeCommand(val tribe: KtTribe)
 interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, TribeSaveSyntax, UserPlayersSyntax {
 
     suspend fun SaveTribeCommand.perform() = isAuthorizedToSave()
-            .whenTrue { tribe.save() }
+            .whenTrue {
+                tribe.save()
+            }
 
     private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndPlayers()
             .let { (loadedTribe, players) -> shouldSave(tribe.id, loadedTribe, players) }

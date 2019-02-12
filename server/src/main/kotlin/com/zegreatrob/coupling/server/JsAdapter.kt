@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.UserContext
+import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
+import com.zegreatrob.coupling.UserEmailSyntax
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.common.entity.user.User
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
@@ -41,13 +43,14 @@ interface RepositoryCatalog {
     val pinRepository: PinRepository
 }
 
-private fun repositoryCatalog(jsRepository: dynamic, userContext: UserContext) = object : RepositoryCatalog,
+private fun repositoryCatalog(jsRepository: dynamic, user: User) = object : RepositoryCatalog,
         MongoTribeRepository,
         MongoPlayerRepository,
         MongoPairAssignmentDocumentRepository,
-        MongoPinRepository {
+        MongoPinRepository,
+        AuthenticatedUserEmailSyntax {
+    override val user = user
     override val jsRepository: dynamic = jsRepository
-    override val userContext = userContext
     override val tribeRepository = this
     override val playerRepository = this
     override val pairAssignmentDocumentRepository = this
@@ -58,8 +61,8 @@ private fun repositoryCatalog(jsRepository: dynamic, userContext: UserContext) =
 @JsName("authActionDispatcher")
 fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCreateUserActionDispatcher = object :
         FindOrCreateUserActionDispatcher, FindUserActionDispatcher, MongoUserRepository {
+    override val userEmail: String get() = userEmail
     override val userCollection: dynamic = userCollection
-    override val userContext: UserContext = com.zegreatrob.coupling.server.userContext(emptyArray(), userEmail)
     override val userRepository: UserRepository = this
 
     @JsName("performFindUserAction")
@@ -83,8 +86,7 @@ fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCrea
 @Suppress("unused")
 @JsName("commandDispatcher")
 fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<String>): CommandDispatcher {
-    val userContext = userContext(tribeIds, userEmail)
-
+    val user = User(userEmail, tribeIds.map(::TribeId))
     return object : CommandDispatcher,
             RunGameActionDispatcher,
             FindNewPairsActionDispatcher,
@@ -92,8 +94,9 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
             CreatePairCandidateReportsActionDispatcher,
             CreatePairCandidateReportActionDispatcher,
             Wheel,
-            RepositoryCatalog by repositoryCatalog(jsRepository, userContext) {
-        override val userContext = userContext
+            AuthenticatedUserEmailSyntax,
+            RepositoryCatalog by repositoryCatalog(jsRepository, user) {
+        override val user = user
         override val actionDispatcher = this
         override val wheel: Wheel = this
 
@@ -179,7 +182,6 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
     }
 }
 
-private fun userContext(tribeIds: Array<String>?, userEmail: String) = object : UserContext {
-    override val tribeIds = tribeIds?.toList() ?: emptyList()
+private fun userContext(userEmail: String) = object : UserEmailSyntax {
     override val userEmail = userEmail
 }

@@ -1,13 +1,12 @@
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.internal.toDateTime
 import com.soywiz.klock.seconds
-import com.zegreatrob.coupling.UserContext
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.player.with
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.player.MongoPlayerRepository
 import com.zegreatrob.coupling.server.MonkToolkit
+import com.zegreatrob.coupling.server.entity.player.MongoPlayerRepository
 import kotlinx.coroutines.await
 import kotlin.js.*
 import kotlin.random.Random
@@ -19,10 +18,7 @@ class MongoPlayerRepositoryTest {
 
     companion object : MongoPlayerRepository, MonkToolkit {
         override val jsRepository: dynamic = jsRepository(mongoUrl)
-        override val userContext: UserContext = object : UserContext {
-            override val tribeIds = emptyList<String>()
-            override val userEmail: String = "User-${Random.nextInt(100)}"
-        }
+        override val userEmail: String = "user-${Random.nextInt(200)}"
 
         val playerCollection: dynamic by lazy<dynamic> { getCollection("players", mongoUrl) }
 
@@ -79,7 +75,7 @@ class MongoPlayerRepositoryTest {
                 get("timestamp").unsafeCast<Date>().toDateTime()
                         .isCloseToNow()
                         .assertIsEqualTo(true)
-                get("modifiedByUsername").assertIsEqualTo(userContext.userEmail)
+                get("modifiedByUsername").assertIsEqualTo(userEmail)
             }
         }
     }
@@ -221,11 +217,8 @@ class MongoPlayerRepositoryTest {
             val userWhoSaved = "user that saved"
         }) {
             with(object : MongoPlayerRepository {
+                override val userEmail = userWhoSaved
                 override val jsRepository = MongoPlayerRepositoryTest.jsRepository
-                override val userContext = object : UserContext {
-                    override val tribeIds = emptyList<String>()
-                    override val userEmail = userWhoSaved
-                }
             }) {
                 save(TribeIdPlayer(tribeId, player))
             }
@@ -237,7 +230,7 @@ class MongoPlayerRepositoryTest {
                     .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
                     .map { it["modifiedByUsername"].unsafeCast<String>() }
                     .assertIsEqualTo(listOf(
-                            userEmail(),
+                            userEmail,
                             userWhoSaved
                     ))
         }

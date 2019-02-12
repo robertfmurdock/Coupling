@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
 import assertIsEqualTo
-import com.zegreatrob.coupling.UserContext
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -21,12 +20,7 @@ private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 class MongoTribeRepositoryTest {
 
     companion object : MongoTribeRepository, MonkToolkit {
-        override val userContext = object : UserContext {
-            override val tribeIds = emptyList<String>()
-            override val userEmail: String
-                get() = "User-${Random.nextInt(200)}"
-
-        }
+        override val userEmail: String = "user-${Random.nextInt(200)}"
         override val jsRepository: dynamic = jsRepository(mongoUrl)
         private val tribeCollection by lazy<dynamic> { getCollection("tribes", mongoUrl) }
 
