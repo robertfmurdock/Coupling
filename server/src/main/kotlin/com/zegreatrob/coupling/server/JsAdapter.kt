@@ -153,6 +153,6 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
 }
 
 private fun userContext(tribeIds: Array<String>, userEmail: String) = object : UserContext {
-    override val tribeIds = tribeIds.toList()
+    override val tribeIds = tribeIds?.toList() ?: emptyList()
     override val userEmail = userEmail
 }
