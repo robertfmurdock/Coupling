@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
-interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter
+interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted, PlayerGetByEmail
 
 interface PlayerDeleter {
     suspend fun delete(playerId: String)
@@ -17,5 +17,12 @@ interface PlayerSaver {
 
 interface PlayerGetter {
     fun getPlayersAsync(tribeId: TribeId): Deferred<List<Player>>
+}
+
+interface PlayerGetDeleted {
     fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>>
+}
+
+interface PlayerGetByEmail {
+    fun getPlayersByEmailAsync(email: String): Deferred<List<TribeIdPlayer>>
 }

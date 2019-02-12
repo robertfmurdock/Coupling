@@ -52,6 +52,14 @@ fun Json.toTribe(): KtTribe = KtTribe(
         pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int)
 )
 
+fun KtTribe.toJson() = json(
+        "id" to id.value,
+        "pairingRule" to PairingRule.toValue(pairingRule),
+        "name" to name,
+        "defaultBadgeName" to defaultBadgeName,
+        "alternateBadgeName" to alternateBadgeName
+)
+
 private fun Json.stringValue(key: String) = this[key]?.toString()
 
 fun Array<Json>.toPins() = map {

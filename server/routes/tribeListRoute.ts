@@ -4,7 +4,7 @@ import * as AuthorizedTribesFetcher from "../lib/AuthorizedTribesFetcher";
 
 class TribeRoutes {
     public list = (request, response) => {
-        AuthorizedTribesFetcher.requestAuthorizedTribes(request.user, request.dataService)
+        request.commandDispatcher.performTribeQuery()
             .then(function (authorizedTribes) {
                 response.send(authorizedTribes);
             })

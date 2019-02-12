@@ -10,5 +10,9 @@ enum class PairingRule {
             else -> LongestTime
         }
 
+        fun toValue(rule: PairingRule): Int = when (rule) {
+            PairingRule.LongestTime -> 1
+            PairingRule.PreferDifferentBadge -> 2
+        }
     }
 }

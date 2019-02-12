@@ -19,13 +19,16 @@ export default function (userDataService, couplingDataService) {
             }
         } else {
             request.userDataService = userDataService;
-            if (request.user.email.indexOf('._temp') != -1) {
+            let email = request.user.email;
+            const tempSuffixIndex = email.indexOf('._temp');
+            if (tempSuffixIndex != -1) {
                 request.dataService = tempDataService;
+                email = email.substring(0, tempSuffixIndex);
             } else {
                 request.dataService = couplingDataService;
             }
 
-            request.commandDispatcher = commandDispatcher(request.dataService, request.user.email);
+            request.commandDispatcher = commandDispatcher(request.dataService, email, request.user.tribes);
 
             next();
         }

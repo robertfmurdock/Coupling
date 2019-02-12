@@ -4,7 +4,6 @@ import * as Bluebird from "bluebird";
 import * as monk from "monk";
 import * as pluck from 'ramda/src/pluck'
 import * as find from 'ramda/src/find'
-import * as whereEq from 'ramda/src/whereEq'
 
 let config = require('../../config/config');
 let server = 'http://localhost:' + config.port;
@@ -38,45 +37,72 @@ describe(path, function () {
         return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
     }
 
-    it('GET will return all available tribes.', function (done) {
-        const tribes = [{id: 'Uno', name: 'one'}, {id: 'Dos', name: 'two'}, {id: 'Tres', name: 'three'}];
-        tribesCollection.insert(tribes)
-            .then(() => {
-                let authorizedTribes = pluck('id', tribes);
-                return authorizeUserForTribes(authorizedTribes)
-                    .then(() => tribes);
-            })
-            .then(tribeDocuments => {
-                return host.get(path)
-                    .expect(200)
-                    .expect('Content-Type', /json/)
-                    .then(function (response) {
-                        expect(response.body).toEqual(clean(tribeDocuments));
-                    })
-            }).then(done, done.fail);
+    it('GET will return all available tribes.', async function () {
+        const tribes = [
+            {id: 'Uno', name: 'one'},
+            {id: 'Dos', name: 'two'},
+            {id: 'Tres', name: 'three'}
+        ];
+
+        await tribesCollection.insert(tribes);
+        let authorizedTribes = pluck('id', tribes);
+        await authorizeUserForTribes(authorizedTribes);
+        const response = await host.get(path)
+            .expect(200)
+            .expect('Content-Type', /json/);
+
+        expect(pluck('id', response.body))
+            .toEqual(pluck('id', tribes));
+        expect(pluck('names', response.body))
+            .toEqual(pluck('names', tribes));
     });
 
-    it('GET will return any tribe that has a player with the given email.', function (done) {
+    it('GET will return any tribe that has a player with the given email.', async function () {
         let tribe = {id: 'delete-me', name: 'tribe-from-endpoint-tests'};
         let playerId = monk.id();
-        Bluebird.all([
+        await Bluebird.all([
             tribesCollection.insert(tribe),
             playersCollection.insert({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail}),
             authorizeUserForTribes([])
+        ]);
+        const response = await host.get(path)
+            .expect(200)
+            .expect('Content-Type', /json/);
+        expect(pluck('id',response.body)).toEqual(['delete-me']);
+        expect(pluck('name',response.body)).toEqual(['tribe-from-endpoint-tests']);
+
+        await Bluebird.all([
+            tribesCollection.remove({id: 'delete-me'}, false),
+            playersCollection.remove({_id: playerId})
         ])
-            .then(function () {
-                return host.get(path)
-                    .expect(200)
-                    .expect('Content-Type', /json/)
-            })
-            .then(function (response) {
-                expect(clean(response.body)).toEqual(clean([tribe]));
-                return Bluebird.all([
-                    tribesCollection.remove({id: 'delete-me'}, false),
-                    playersCollection.remove({_id: playerId})
-                ])
-            })
-            .then(done, done.fail);
+    });
+
+    it('GET will not return the tribe if a player had that email but had it removed.', async function () {
+        let tribe = {id: 'delete-me', name: 'tribe-from-endpoint-tests'};
+        let playerId = monk.id();
+        await Bluebird.all([
+            host.post(path).send(tribe),
+            host.post(path + '/players').send({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail})
+        ]);
+
+        await authorizeUserForTribes([]);
+
+        await host.post(path + '/players').send({
+            _id: playerId,
+            name: 'delete-me',
+            tribe: 'delete-me',
+            email: 'something else '
+        });
+
+        const response = await host.get(path)
+            .expect(200)
+            .expect('Content-Type', /json/);
+        expect(clean(response.body)).toEqual(clean([]));
+
+        await Bluebird.all([
+            tribesCollection.remove({id: 'delete-me'}, false),
+            playersCollection.remove({_id: playerId})
+        ]);
     });
 
     it('GET will not return all available tribes when the user does not have explicit permission.', function (done) {
@@ -108,8 +134,12 @@ describe(path, function () {
                         .expect('Content-Type', /json/)
                 })
                 .then(function (response) {
-                    let expected = clean(newTribe);
-                    expect(find(whereEq(expected), response.body)).toBeDefined();
+
+                    const result = find(function (element) {
+                        return element.name === 'TeamMadeByTest'
+                    }, response.body);
+
+                    expect(result.id).toBe('deleteme');
                 })
                 .then(done, done.fail);
         });

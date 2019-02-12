@@ -1,12 +1,12 @@
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.internal.toDateTime
 import com.soywiz.klock.seconds
+import com.zegreatrob.coupling.UserContext
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.player.with
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.entity.player.MongoPlayerRepository
-import com.zegreatrob.coupling.server.UserContext
 import com.zegreatrob.coupling.server.MonkToolkit
 import kotlinx.coroutines.await
 import kotlin.js.*
@@ -20,7 +20,8 @@ class MongoPlayerRepositoryTest {
     companion object : MongoPlayerRepository, MonkToolkit {
         override val jsRepository: dynamic = jsRepository(mongoUrl)
         override val userContext: UserContext = object : UserContext {
-            override val username: String = "User-${Random.nextInt(100)}"
+            override val tribeIds = emptyList<String>()
+            override val userEmail: String = "User-${Random.nextInt(100)}"
         }
 
         val playerCollection: dynamic by lazy<dynamic> { getCollection("players", mongoUrl) }
@@ -78,7 +79,7 @@ class MongoPlayerRepositoryTest {
                 get("timestamp").unsafeCast<Date>().toDateTime()
                         .isCloseToNow()
                         .assertIsEqualTo(true)
-                get("modifiedByUsername").assertIsEqualTo(userContext.username)
+                get("modifiedByUsername").assertIsEqualTo(userContext.userEmail)
             }
         }
     }
@@ -222,7 +223,8 @@ class MongoPlayerRepositoryTest {
             with(object : MongoPlayerRepository {
                 override val jsRepository = MongoPlayerRepositoryTest.jsRepository
                 override val userContext = object : UserContext {
-                    override val username = userWhoSaved
+                    override val tribeIds = emptyList<String>()
+                    override val userEmail = userWhoSaved
                 }
             }) {
                 save(TribeIdPlayer(tribeId, player))
@@ -235,7 +237,7 @@ class MongoPlayerRepositoryTest {
                     .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
                     .map { it["modifiedByUsername"].unsafeCast<String>() }
                     .assertIsEqualTo(listOf(
-                            username(),
+                            userEmail(),
                             userWhoSaved
                     ))
         }
@@ -350,6 +352,44 @@ class MongoPlayerRepositoryTest {
             }
         } verifyAsync { result ->
             result.message.assertIsEqualTo("Player could not be deleted because they do not exist.")
+        }
+    }
+
+    @Test
+    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testAsync {
+        setupAsync(object {
+            val email = "test@zegreatrob.com"
+            val player = Player(id(), email = email, name = "Testo")
+            val redHerring = Player(id(), email = "somethingelse", name = "Testo")
+            val updatedPlayer = player.copy(name = "Besto")
+            val tribeId = TribeId("test")
+        }) {
+            dropPlayers()
+            save(player with tribeId)
+            save(redHerring with tribeId)
+            save(updatedPlayer with tribeId)
+        } exerciseAsync {
+            getPlayersByEmailAsync(email).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(updatedPlayer with tribeId))
+        }
+    }
+
+    @Test
+    fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = testAsync {
+        setupAsync(object {
+            val email = "test@zegreatrob.com"
+            val player = Player(id(), email = email, name = "Testo")
+            val updatedPlayer = player.copy(name = "Besto", email = "something else ")
+            val tribeId = TribeId("test")
+        }) {
+            dropPlayers()
+            save(player with tribeId)
+            save(updatedPlayer with tribeId)
+        } exerciseAsync {
+            getPlayersByEmailAsync(email).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
         }
     }
 

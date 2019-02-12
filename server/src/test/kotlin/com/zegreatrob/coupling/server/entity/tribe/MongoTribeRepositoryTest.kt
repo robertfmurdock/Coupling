@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
 import assertIsEqualTo
+import com.zegreatrob.coupling.UserContext
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.entity.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.server.MonkToolkit
-import com.zegreatrob.coupling.server.UserContext
 import exerciseAsync
 import kotlinx.coroutines.await
 import setupAsync
@@ -23,7 +23,8 @@ class MongoTribeRepositoryTest {
 
     companion object : MongoTribeRepository, MonkToolkit {
         override val userContext = object : UserContext {
-            override val username: String
+            override val tribeIds = emptyList<String>()
+            override val userEmail: String
                 get() = "User-${Random.nextInt(200)}"
 
         }
@@ -66,12 +67,30 @@ class MongoTribeRepositoryTest {
                     "alternateBadgeName" to "Alternate",
                     "name" to "Safety Dance",
                     "id" to "safety"
-            ))
+            )).unsafeCast<Promise<Unit>>().await()
             Unit
         } exerciseAsync {
             getTribeAsync(expectedTribe.id).await()
         } verifyAsync { result ->
             result.assertIsEqualTo(expectedTribe)
+        }
+    }
+
+    @Test
+    fun willLoadAllTribes() = testAsync {
+        setupAsync(object {
+            val tribes = listOf(
+                    KtTribe(id = TribeId(id()), pairingRule = PairingRule.PreferDifferentBadge, name = "1"),
+                    KtTribe(id = TribeId(id()), pairingRule = PairingRule.LongestTime, name = "2"),
+                    KtTribe(id = TribeId(id()), pairingRule = PairingRule.LongestTime, name = "3")
+            )
+        }) {
+            dropPlayers()
+            tribes.forEach { save(it) }
+        } exerciseAsync {
+            getTribesAsync().await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(tribes)
         }
     }
 }

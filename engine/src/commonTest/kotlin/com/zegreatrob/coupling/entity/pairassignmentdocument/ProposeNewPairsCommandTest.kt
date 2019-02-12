@@ -1,3 +1,4 @@
+
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pin.Pin
@@ -7,6 +8,7 @@ import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.entity.CouplingDataRepository
 import com.zegreatrob.coupling.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.entity.tribe.TribeGet
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlin.random.Random
@@ -16,7 +18,8 @@ class ProposeNewPairsCommandTest {
 
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
-        setupAsync(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository {
+        setupAsync(object : ProposeNewPairsCommandDispatcher, CouplingDataRepository, TribeGet {
+            override val tribeRepository = this
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
             val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), null))

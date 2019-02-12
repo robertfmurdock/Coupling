@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.UserContextSyntax
 import kotlinx.coroutines.await
 import kotlin.js.Date
 import kotlin.js.Json
@@ -16,6 +17,6 @@ interface DbRecordSaveSyntax : DbRecordInfoSyntax {
 interface DbRecordInfoSyntax : UserContextSyntax {
     fun Json.addRecordInfo() = also {
         this["timestamp"] = Date()
-        this["modifiedByUsername"] = username()
+        this["modifiedByUsername"] = userEmail()
     }
 }

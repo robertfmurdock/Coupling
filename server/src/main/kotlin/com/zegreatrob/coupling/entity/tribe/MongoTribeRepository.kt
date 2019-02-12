@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.entity.tribe
 
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
+import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax
@@ -11,19 +12,24 @@ import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
-interface MongoTribeRepository : DbRecordSaveSyntax, DbRecordLoadSyntax {
+interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLoadSyntax {
 
     val jsRepository: dynamic
 
-    suspend fun save(tribe: KtTribe) = tribe.toDbJson()
+    override suspend fun save(tribe: KtTribe) = tribe.toDbJson()
             .let {
                 it.save(jsRepository.tribesCollection)
             }
 
-    fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = GlobalScope.async {
+    override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = GlobalScope.async {
         findByQuery(json("id" to tribeId.value), jsRepository.tribesCollection)
                 .firstOrNull()
                 ?.toTribe()
+    }
+
+    override fun getTribesAsync(): Deferred<List<KtTribe>> = GlobalScope.async {
+        findByQuery(json(), jsRepository.tribesCollection)
+                .map { it.toTribe() }
     }
 
     private fun KtTribe.toDbJson() = json(
@@ -42,9 +48,5 @@ interface MongoTribeRepository : DbRecordSaveSyntax, DbRecordLoadSyntax {
             alternateBadgeName = this["alternateBadgeName"]?.toString()
     )
 
-    private fun toValue(rule: PairingRule): Int = when (rule) {
-        PairingRule.LongestTime -> 1
-        PairingRule.PreferDifferentBadge -> 2
-    }
 }
 

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.UserContext
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
@@ -9,6 +10,9 @@ import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.coupling.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.entity.player.*
+import com.zegreatrob.coupling.entity.tribe.MongoTribeRepository
+import com.zegreatrob.coupling.entity.tribe.TribeQuery
+import com.zegreatrob.coupling.entity.tribe.TribeQueryDispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Json
@@ -21,14 +25,15 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
         DeletePlayerCommandDispatcher,
         SavePairAssignmentDocumentCommandDispatcher,
         PairAssignmentDocumentListQueryDispatcher,
-        DeletePairAssignmentDocumentCommandDispatcher {
+        DeletePairAssignmentDocumentCommandDispatcher,
+        TribeQueryDispatcher {
     override val playerRepository: PlayerRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
 @Suppress("unused")
 @JsName("commandDispatcher")
-fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatcher = object : CommandDispatcher,
+fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<String>): CommandDispatcher = object : CommandDispatcher,
         RunGameActionDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
@@ -37,16 +42,27 @@ fun commandDispatcher(jsRepository: dynamic, username: String): CommandDispatche
         Wheel,
         MongoDataRepository,
         MongoPlayerRepository,
-        MongoPairAssignmentDocumentRepository {
+        MongoPairAssignmentDocumentRepository,
+        MongoTribeRepository {
+    override val tribeRepository = this
     override val pairAssignmentDocumentRepository = this
     override val repository = this
     override val jsRepository = jsRepository
     override val playerRepository = this
     override val userContext = object : UserContext {
-        override val username = username
+        override val tribeIds = tribeIds.toList()
+        override val userEmail = userEmail
     }
     override val actionDispatcher = this
     override val wheel: Wheel = this
+
+    @JsName("performTribeQuery")
+    fun performTribeQuery() = GlobalScope.promise {
+        TribeQuery
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
+    }
 
     @JsName("performSavePlayerCommand")
     fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {

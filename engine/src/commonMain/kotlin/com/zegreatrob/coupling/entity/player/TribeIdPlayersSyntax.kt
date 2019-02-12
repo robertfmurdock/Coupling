@@ -8,6 +8,6 @@ interface TribeIdPlayersSyntax {
 }
 
 interface TribeIdRetiredPlayersSyntax {
-    val playerRepository: PlayerGetter
+    val playerRepository: PlayerGetDeleted
     suspend fun TribeId.loadRetiredPlayers() = playerRepository.getDeletedAsync(this).await()
 }
