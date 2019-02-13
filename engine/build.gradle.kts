@@ -20,6 +20,7 @@ node {
 repositories {
     mavenCentral()
     maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
+    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
 }
 
 kotlin {

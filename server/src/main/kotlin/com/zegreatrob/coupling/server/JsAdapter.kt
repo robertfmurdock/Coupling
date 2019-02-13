@@ -21,6 +21,8 @@ import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import mu.KotlinLoggingLevel
+import mu.LOG_LEVEL
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -88,6 +90,16 @@ fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCrea
             "email" to email,
             "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
     )
+}
+
+@Suppress("unused")
+@JsName("initializeLogging")
+fun initializeLogging(developmentMode: Boolean) {
+    LOG_LEVEL = if (developmentMode) {
+        KotlinLoggingLevel.DEBUG
+    } else {
+        KotlinLoggingLevel.INFO
+    }
 }
 
 @Suppress("unused")

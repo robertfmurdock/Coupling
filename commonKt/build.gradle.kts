@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    id("kotlinx-serialization") version "1.3.21"
     id("com.github.node-gradle.node")
 }
 
@@ -20,6 +21,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
+    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
 }
 
 kotlin {
@@ -34,6 +36,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
                 implementation("com.soywiz:klock:1.1.1")
+                implementation("io.github.microutils:kotlin-logging-common:1.6.10")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.10.0")
             }
         }
         getByName("commonTest") {
@@ -48,6 +52,8 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+                implementation("io.github.microutils:kotlin-logging-js:1.6.10")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
             }
         }
         val jsTest by getting {
