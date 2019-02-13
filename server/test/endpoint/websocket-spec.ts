@@ -34,8 +34,9 @@ describe('Current connections websocket', function () {
         _id: undefined
     };
 
-    function authorizeUserForTribes(authorizedTribes) {
-        return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
+    async function authorizeUserForTribes(authorizedTribes) {
+        await usersCollection.remove({email: userEmail + "._temp"});
+        await usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes, timestamp: new Date()});
     }
 
     const tribeA = {id: 'Tribe A', name: 'AAAAA'};

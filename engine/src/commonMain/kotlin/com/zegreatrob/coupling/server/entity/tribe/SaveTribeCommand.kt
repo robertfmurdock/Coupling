@@ -1,16 +1,24 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
+import com.zegreatrob.coupling.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.common.entity.user.UserSaveSyntax
 
 data class SaveTribeCommand(val tribe: KtTribe)
 
-interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, TribeSaveSyntax, UserPlayersSyntax {
+interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, TribeSaveSyntax,
+        UserPlayersSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
 
     suspend fun SaveTribeCommand.perform() = isAuthorizedToSave()
             .whenTrue {
                 tribe.save()
+
+                if (!user.authorizedTribeIds.contains(tribe.id)) {
+                    user.copy(authorizedTribeIds = user.authorizedTribeIds + tribe.id)
+                            .save()
+                }
             }
 
     private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndPlayers()

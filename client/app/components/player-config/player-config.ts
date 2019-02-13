@@ -29,6 +29,7 @@ export class PlayerConfigController {
 
     savePlayer() {
         this.saving = true;
+
         this.Coupling.savePlayer(this.player, this.tribe.id)
             .then(() => this.$route.reload());
     }

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.entity.user
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.entity.user.User
+import com.zegreatrob.coupling.common.entity.user.UserRepository
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax
 import kotlin.js.Json
@@ -16,7 +17,7 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
                 .save(userCollection)
     }
 
-    override suspend fun getUser() = findByQuery(json("email" to userEmail), userCollection)
+    override suspend fun getUser() = findByQuery(json("email" to userEmail), userCollection, "email")
             .firstOrNull()
             ?.fromDbToUser()
 
@@ -28,12 +29,7 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
 
     private fun Json.fromDbToUser() = User(
             email = this["email"].toString(),
-            authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map { TribeId(it) } ?: emptyList()
+            authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map { TribeId(it) }?.toSet() ?: emptySet()
     )
 
-}
-
-interface UserRepository {
-    suspend fun save(user: User)
-    suspend fun getUser(): User?
 }

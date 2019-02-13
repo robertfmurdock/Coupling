@@ -5,21 +5,11 @@ import {usersCollection} from "./database";
 
 const userEmail = 'protractor@test.goo';
 
-function authorizeUserForTribes(authorizedTribes) {
+async function authorizeUserForTribes(authorizedTribes) {
     const tempUserEmail = userEmail + "._temp";
-    return usersCollection.update({email: tempUserEmail}, {
-        $set: {
-            tribes: authorizedTribes
-        }
-    })
-        .then(function (response) {
-            if (response.nModified === 0) {
-                return usersCollection.insert({
-                    email: tempUserEmail,
-                    tribes: authorizedTribes
-                });
-            }
-        });
+    await usersCollection.remove({email: tempUserEmail});
+    await usersCollection.insert({email: tempUserEmail, tribes: authorizedTribes, timestamp: new Date()});
+    return null
 }
 
 const helper = {
@@ -39,8 +29,7 @@ const helper = {
                             done();
                         }, done);
                         browser.waitForAngular();
-                    }
-                    else {
+                    } else {
                         done();
                     }
                 });
@@ -54,8 +43,7 @@ const helper = {
                     if (capabilities.get('browserName') !== 'firefox') {
                         browser.manage().logs().get('browser').then(done, done.fail);
                         browser.waitForAngular();
-                    }
-                    else {
+                    } else {
                         done();
                     }
                 });

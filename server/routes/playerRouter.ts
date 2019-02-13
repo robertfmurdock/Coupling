@@ -1,7 +1,6 @@
 import * as express from "express";
 // @ts-ignore
 import {commandDispatcher} from "server"
-import * as AuthorizedTribesFetcher from "../lib/AuthorizedTribesFetcher";
 
 function respond(response, promise) {
     promise
@@ -51,7 +50,8 @@ class PlayerRoutes {
 const players = new PlayerRoutes();
 const router = express.Router({mergeParams: true});
 router.all('/*', async function (request, response, next) {
-    const {isAuthorized} = await AuthorizedTribesFetcher.promiseTribeAndAuthorization(request);
+    // @ts-ignore
+    const isAuthorized = await request.commandDispatcher.performUserIsAuthorizedAction(request.params.tribeId);
     if (isAuthorized) {
         next()
     } else {

@@ -26,10 +26,6 @@ export function requestAuthorizedTribes(user, dataService) {
 export function loadAuthorizedTribeIds(user, dataService) {
     const playersCollection = dataService.database.get('players');
     let email = user.email;
-    const tempSuffixIndex = email.indexOf('._temp');
-    if (tempSuffixIndex != -1) {
-        email = email.substring(0, tempSuffixIndex);
-    }
 
     return playersCollection.find({email: email})
         .then(function (documents) {

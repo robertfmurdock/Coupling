@@ -6,12 +6,14 @@ interface UserEmailSyntax {
     val userEmail: String
 }
 
-interface AuthenticatedUserEmailSyntax : UserEmailSyntax {
+interface AuthenticatedUserSyntax {
     val user: User
+}
+
+interface AuthenticatedUserEmailSyntax : AuthenticatedUserSyntax, UserEmailSyntax {
     override val userEmail get() = user.email
 }
 
-interface UserAuthorizedTribeIdsSyntax {
-    val user: User
+interface UserAuthorizedTribeIdsSyntax : AuthenticatedUserSyntax {
     fun userAuthorizedTribeIds() = user.authorizedTribeIds
 }

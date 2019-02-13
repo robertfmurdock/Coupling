@@ -33,8 +33,9 @@ describe(path, function () {
             .then(done, done.fail);
     });
 
-    function authorizeUserForTribes(authorizedTribes) {
-        return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
+    async function authorizeUserForTribes(authorizedTribes) {
+        await usersCollection.remove({email: userEmail + "._temp"});
+        await usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes, timestamp: new Date()});
     }
 
     it('GET will return all available tribes.', async function () {
@@ -62,7 +63,12 @@ describe(path, function () {
         let playerId = monk.id();
         await Bluebird.all([
             tribesCollection.insert(tribe),
-            playersCollection.insert({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail}),
+            playersCollection.insert({
+                _id: playerId,
+                name: 'delete-me',
+                tribe: 'delete-me',
+                email: userEmail + '._temp'
+            }),
             authorizeUserForTribes([])
         ]);
         const response = await host.get(path)
@@ -82,7 +88,12 @@ describe(path, function () {
         let playerId = monk.id();
         await Bluebird.all([
             host.post(path).send(tribe),
-            host.post(path + '/players').send({_id: playerId, name: 'delete-me', tribe: 'delete-me', email: userEmail})
+            host.post(path + '/players').send({
+                _id: playerId,
+                name: 'delete-me',
+                tribe: 'delete-me',
+                email: userEmail + '._temp'
+            })
         ]);
 
         await authorizeUserForTribes([]);
@@ -143,6 +154,7 @@ describe(path, function () {
                 return element.name === 'TeamMadeByTest'
             }, secondResponse.body);
 
+            expect(result).toBeDefined();
             expect(result.id).toBe('deleteme');
             expect(result.email).toBe('test@test.test');
             expect(result.badgesEnabled).toBe(true);

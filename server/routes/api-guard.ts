@@ -23,12 +23,16 @@ export default function (userDataService, couplingDataService) {
             const tempSuffixIndex = email.indexOf('._temp');
             if (tempSuffixIndex != -1) {
                 request.dataService = tempDataService;
-                email = email.substring(0, tempSuffixIndex);
             } else {
                 request.dataService = couplingDataService;
             }
 
-            request.commandDispatcher = commandDispatcher(request.dataService, email, request.user.tribes);
+            request.commandDispatcher = commandDispatcher(
+                request.dataService,
+                request.userDataService.usersCollection,
+                email,
+                request.user.tribes
+            );
 
             next();
         }

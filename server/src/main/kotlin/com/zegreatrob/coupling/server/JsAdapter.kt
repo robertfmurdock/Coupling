@@ -7,11 +7,14 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairA
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.entity.user.User
+import com.zegreatrob.coupling.common.entity.user.UserRepository
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.coupling.common.toTribe
 import com.zegreatrob.coupling.server.entity.PinRepository
+import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
+import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.player.*
 import com.zegreatrob.coupling.server.entity.tribe.*
@@ -41,16 +44,20 @@ interface RepositoryCatalog {
     val playerRepository: PlayerRepository
     val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
     val pinRepository: PinRepository
+    val userRepository: UserRepository
 }
 
-private fun repositoryCatalog(jsRepository: dynamic, user: User) = object : RepositoryCatalog,
+private fun repositoryCatalog(jsRepository: dynamic, userCollection: dynamic, user: User) = object : RepositoryCatalog,
         MongoTribeRepository,
         MongoPlayerRepository,
         MongoPairAssignmentDocumentRepository,
         MongoPinRepository,
+        MongoUserRepository,
         AuthenticatedUserEmailSyntax {
-    override val user = user
+    override val userCollection: dynamic = userCollection
     override val jsRepository: dynamic = jsRepository
+    override val user = user
+    override val userRepository = this
     override val tribeRepository = this
     override val playerRepository = this
     override val pairAssignmentDocumentRepository = this
@@ -85,8 +92,8 @@ fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCrea
 
 @Suppress("unused")
 @JsName("commandDispatcher")
-fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<String>): CommandDispatcher {
-    val user = User(userEmail, tribeIds.map(::TribeId))
+fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail: String, tribeIds: Array<String>): CommandDispatcher {
+    val user = User(userEmail, tribeIds.map(::TribeId).toSet())
     return object : CommandDispatcher,
             RunGameActionDispatcher,
             FindNewPairsActionDispatcher,
@@ -95,7 +102,8 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
             CreatePairCandidateReportActionDispatcher,
             Wheel,
             AuthenticatedUserEmailSyntax,
-            RepositoryCatalog by repositoryCatalog(jsRepository, user) {
+            UserIsAuthorizedActionDispatcher,
+            RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
         override val user = user
         override val actionDispatcher = this
         override val wheel: Wheel = this
@@ -178,6 +186,12 @@ fun commandDispatcher(jsRepository: dynamic, userEmail: String, tribeIds: Array<
                     .perform()
                     .map { it.toJson() }
                     .toTypedArray()
+        }
+
+        @JsName("performUserIsAuthorizedAction")
+        fun performUserIsAuthorizedAction(tribeId: String) = GlobalScope.promise {
+            UserIsAuthorizedAction(TribeId(tribeId))
+                    .perform()
         }
     }
 }

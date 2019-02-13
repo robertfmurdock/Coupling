@@ -10,6 +10,11 @@ import * as pluck from "ramda/src/pluck";
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
+async function waitForButtonToDisableThenReenable(savePlayerButton) {
+    await browser.wait(() => savePlayerButton.isEnabled().then(value => !value, () => false), 1000, 'wait for disable');
+    await browser.wait(() => savePlayerButton.isEnabled().then(value => value, () => false), 1000, 'wait for enable');
+}
+
 describe('The edit player page', function () {
 
     const tribe = {
@@ -129,7 +134,7 @@ describe('The edit player page', function () {
 
             await altBadgeRadio.click();
             await savePlayerButton.click();
-            await browser.wait(() => savePlayerButton.isEnabled().then(() => true, () => false), 100);
+            await waitForButtonToDisableThenReenable(savePlayerButton);
             await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
@@ -157,6 +162,9 @@ describe('The edit player page', function () {
         playerNameTextField.sendKeys('completely different name');
 
         await savePlayerButton.click();
+
+        await waitForButtonToDisableThenReenable(savePlayerButton);
+
         await browser.wait(async () => {
             let currentValue = await element.all(By.css('.player-roster .player-card-header')).first().getText();
             return currentValue === 'completely different name';
@@ -177,6 +185,8 @@ describe('The edit player page', function () {
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         await savePlayerButton.click();
+
+        await waitForButtonToDisableThenReenable(savePlayerButton);
 
         await browser.wait(() =>
             tribeCardElement.click()

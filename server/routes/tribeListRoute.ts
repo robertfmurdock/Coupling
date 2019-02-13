@@ -7,7 +7,7 @@ class TribeRoutes {
                 response.send(authorizedTribes);
             })
             .catch(function (error) {
-                console.log(error)
+                console.log(error);
                 response.statusCode = 500;
                 response.send(error.message);
             });
@@ -34,8 +34,6 @@ class TribeRoutes {
         request.commandDispatcher.performSaveTribeCommand(request.body)
             .then(function (isSuccessful) {
                 if (isSuccessful) {
-                    const usersCollection = request.userDataService.database.get('users');
-                    usersCollection.update({email: request.user.email}, {$addToSet: {tribes: request.body.id}});
                     response.send(request.body)
                 } else {
                     response.sendStatus(400);

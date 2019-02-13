@@ -7,16 +7,16 @@ import kotlin.js.*
 
 interface DbRecordLoadSyntax : JsonTimestampSyntax {
 
-    suspend fun findByQuery(query: Json, collection: dynamic) = rawFindBy(query, collection)
+    suspend fun findByQuery(query: Json, collection: dynamic, idProperty: String = "id") = rawFindBy(query, collection)
             .await()
-            .findLatestOfEachRecord()
+            .findLatestOfEachRecord(idProperty)
             .filter { it["isDeleted"] != true }
 
-    suspend fun findDeletedByQuery(tribeId: TribeId, collection: dynamic) = rawFindBy(
+    suspend fun findDeletedByQuery(tribeId: TribeId, collection: dynamic, idProperty: String = "id") = rawFindBy(
             json("tribe" to tribeId.value), collection
     )
             .await()
-            .findLatestOfEachRecord()
+            .findLatestOfEachRecord(idProperty)
             .filter { it["isDeleted"] == true }
 
     fun rawFindBy(query: Json, collection: dynamic) = collection.find(query).unsafeCast<Promise<Array<Json>>>()
@@ -24,13 +24,13 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
     private fun Array<Json>.dbJsonArrayLoad() = findLatestOfEachRecord()
             .filter { it["isDeleted"] != true }
 
-    private fun Array<Json>.findLatestOfEachRecord() = map { it.applyIdCorrection() }
+    private fun Array<Json>.findLatestOfEachRecord(idProperty: String = "id") = map { it.applyIdCorrection(idProperty) }
             .groupBy { it["_id"].toString() }
             .map { it.value.latestByTimestamp() }
             .filterNotNull()
 
-    fun Json.applyIdCorrection() = also {
-        this["_id"] = this["id"].unsafeCast<String?>() ?: this["_id"]
+    fun Json.applyIdCorrection(idProperty: String = "id") = also {
+        this["_id"] = this[idProperty].unsafeCast<String?>() ?: this["_id"]
     }
 
     fun List<Json>.latestByTimestamp() = sortedByDescending { it.timeStamp() }.firstOrNull()

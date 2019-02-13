@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.server.entity.user
 
 import com.zegreatrob.coupling.UserEmailSyntax
 import com.zegreatrob.coupling.common.entity.user.User
+import com.zegreatrob.coupling.common.entity.user.UserRepository
+import com.zegreatrob.coupling.common.entity.user.UserSaveSyntax
 
 object FindOrCreateUserAction
 
@@ -12,7 +14,7 @@ interface FindOrCreateUserActionDispatcher : UserEmailSyntax, UserSaveSyntax, Us
         return if (user != null) {
             user
         } else {
-            val newUser = User(email = userEmail, authorizedTribeIds = emptyList())
+            val newUser = User(email = userEmail, authorizedTribeIds = emptySet())
             newUser.save()
             newUser
         }
@@ -24,12 +26,3 @@ interface UserGetSyntax {
     suspend fun loadUser() = userRepository.getUser()
 }
 
-interface UserSaveSyntax {
-
-    val userRepository: UserRepository
-
-    suspend fun User.save() {
-        userRepository.save(this)
-    }
-
-}

@@ -23,18 +23,17 @@ describe(path, function () {
     let couplingServer = agent;
 
     beforeEach(async function () {
-        await authorizeUserForTribes([tribeId]);
         await couplingServer.get(`/test-login?username=${userEmail}&password=pw`)
-            .expect(302)
+            .expect(302);
+        await authorizeUserForTribes([tribeId]);
     });
 
     function authorizeUserForTribes(authorizedTribes) {
-        return usersCollection.update({email: userEmail + "._temp"}, {$set: {tribes: authorizedTribes}});
+        return usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes, timestamp: new Date()});
     }
 
-    afterEach(function (done) {
-        playersCollection.remove({tribe: tribeId}, false)
-            .then(done, done.fail);
+    afterEach(async function () {
+        await playersCollection.remove({tribe: tribeId}, false)
     });
 
     describe("GET", function () {
