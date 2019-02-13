@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.common.entity.user.User
 import com.zegreatrob.coupling.common.entity.user.UserSaveSyntax
 
 data class SaveTribeCommand(val tribe: KtTribe)
@@ -15,11 +16,11 @@ interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGe
             .whenTrue {
                 tribe.save()
 
-                if (!user.authorizedTribeIds.contains(tribe.id)) {
-                    user.copy(authorizedTribeIds = user.authorizedTribeIds + tribe.id)
-                            .save()
-                }
+                user.copy(authorizedTribeIds = user.authorizedTribeIds + tribe.id)
+                        .saveIfUserChanged()
             }
+
+    private suspend fun User.saveIfUserChanged() = if (this != user) this.save() else Unit
 
     private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndPlayers()
             .let { (loadedTribe, players) -> shouldSave(tribe.id, loadedTribe, players) }
