@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
+import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 
-data class SavePairAssignmentDocumentCommand(val tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument)
+data class SavePairAssignmentDocumentCommand(val tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) : Action
 
-interface SavePairAssignmentDocumentCommandDispatcher : TribeIdPairAssignmentDocumentSaveSyntax {
+interface SavePairAssignmentDocumentCommandDispatcher : ActionLoggingSyntax, TribeIdPairAssignmentDocumentSaveSyntax {
 
-    suspend fun SavePairAssignmentDocumentCommand.perform() = tribeIdPairAssignmentDocument.apply { save() }
+    suspend fun SavePairAssignmentDocumentCommand.perform() = logAsync { tribeIdPairAssignmentDocument.apply { save() } }
 
 }
 

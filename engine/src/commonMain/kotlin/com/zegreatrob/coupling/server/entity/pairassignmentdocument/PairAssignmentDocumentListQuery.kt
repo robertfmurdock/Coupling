@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
+import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 
-data class PairAssignmentDocumentListQuery(val tribeId: TribeId)
+data class PairAssignmentDocumentListQuery(val tribeId: TribeId) : Action
 
-interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentDocumentGetSyntax {
+interface PairAssignmentDocumentListQueryDispatcher : ActionLoggingSyntax, TribeIdPairAssignmentDocumentGetSyntax {
 
-    suspend fun PairAssignmentDocumentListQuery.perform() = tribeId.run { loadPairAssignmentDocumentList() }
+    suspend fun PairAssignmentDocumentListQuery.perform() = logAsync { tribeId.run { loadPairAssignmentDocumentList() } }
 
 }
 

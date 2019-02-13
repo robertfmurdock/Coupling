@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
+import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 
-data class DeletePairAssignmentDocumentCommand(val id: PairAssignmentDocumentId)
+data class DeletePairAssignmentDocumentCommand(val id: PairAssignmentDocumentId) : Action
 
-interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocumentIdDeleteSyntax {
+interface DeletePairAssignmentDocumentCommandDispatcher : ActionLoggingSyntax, PairAssignmentDocumentIdDeleteSyntax {
 
-    suspend fun DeletePairAssignmentDocumentCommand.perform() = id.delete()
+    suspend fun DeletePairAssignmentDocumentCommand.perform() = logAsync { id.delete() }
 
 }
 

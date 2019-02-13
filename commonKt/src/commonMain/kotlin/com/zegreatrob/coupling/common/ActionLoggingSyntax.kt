@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 
+interface Action
 
 interface ActionLoggingSyntax {
     companion object {
@@ -20,7 +21,7 @@ interface ActionLoggingSyntax {
             val duration: String? = null
     )
 
-    fun <I : Any, O> I.log(block: (I) -> O): O {
+    fun <I : Action, O> I.log(block: (I) -> O): O {
         val start = logStart()
         return block(this)
                 .also {
@@ -29,7 +30,7 @@ interface ActionLoggingSyntax {
 
     }
 
-    suspend fun <I : Any, O> I.logAsync(block: suspend (I) -> O): O {
+    suspend fun <I : Action, O> I.logAsync(block: suspend (I) -> O): O {
         val start = logStart()
         return block(this)
                 .also {
@@ -38,7 +39,7 @@ interface ActionLoggingSyntax {
 
     }
 
-    private fun <I : Any> I.logStart(): DateTime {
+    private fun <I : Action> I.logStart(): DateTime {
         val start = DateTime.now()
         Message(
                 className = this::class.simpleName,
@@ -50,12 +51,14 @@ interface ActionLoggingSyntax {
     }
 
     private fun Message.logInfo() {
-        println(Json.stringify(Message.serializer(), this))
-        logger.info { Json.stringify(Message.serializer(), this) }
-        logger.info { "RIGHT HERE MAN" }
+        println("logger ")
+        logger.info {
+            println("info")
+            Json.stringify(Message.serializer(), this)
+        }
     }
 
-    private fun <I : Any> I.logEnd(start: DateTime) {
+    private fun <I : Action> I.logEnd(start: DateTime) {
         val end = DateTime.now()
         val duration = end - start
         Message(

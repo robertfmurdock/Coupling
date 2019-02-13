@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
-import com.zegreatrob.coupling.UserEmailSyntax
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
@@ -206,8 +205,4 @@ fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail:
                     .perform()
         }
     }
-}
-
-private fun userContext(userEmail: String) = object : UserEmailSyntax {
-    override val userEmail = userEmail
 }

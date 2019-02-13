@@ -1,9 +1,12 @@
 package com.zegreatrob.coupling.server.entity.player
 
-data class DeletePlayerCommand(val playerId: String)
+import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 
-interface DeletePlayerCommandDispatcher : PlayerIdDeleteSyntax {
-    suspend fun DeletePlayerCommand.perform() = playerId.apply { deletePlayer() }
+data class DeletePlayerCommand(val playerId: String) : Action
+
+interface DeletePlayerCommandDispatcher : ActionLoggingSyntax, PlayerIdDeleteSyntax {
+    suspend fun DeletePlayerCommand.perform() = logAsync { playerId.apply { deletePlayer() } }
 }
 
 interface PlayerIdDeleteSyntax {

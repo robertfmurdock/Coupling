@@ -28,7 +28,7 @@ dependencies {
     implementation(project(":engine"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
     implementation("com.soywiz:klock:1.1.1")
-    implementation("io.github.microutils:kotlin-logging-js:1.6.10")
+    implementation("io.github.microutils:kotlin-logging-js:1.6.22")
 
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-style"))

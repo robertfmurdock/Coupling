@@ -1,14 +1,16 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
+import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 
-data class TribeQuery(val tribeId: TribeId)
+data class TribeQuery(val tribeId: TribeId) : Action
 
-interface TribeQueryDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, UserPlayersSyntax {
+interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, UserPlayersSyntax {
 
-    suspend fun TribeQuery.perform() = getTribeAndPlayers().onlyAuthenticatedTribes()
+    suspend fun TribeQuery.perform() = logAsync { getTribeAndPlayers().onlyAuthenticatedTribes() }
 
     private suspend fun TribeQuery.getTribeAndPlayers() = getTribeAndPlayersDeferred()
             .let { (tribeDeferred, playerDeferred) ->

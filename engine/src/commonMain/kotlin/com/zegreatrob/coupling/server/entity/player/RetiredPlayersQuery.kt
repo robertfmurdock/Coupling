@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.server.entity.player
 
+import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 
-data class RetiredPlayersQuery(val tribeId: TribeId)
+data class RetiredPlayersQuery(val tribeId: TribeId) : Action
 
-interface RetiredPlayersQueryDispatcher : TribeIdRetiredPlayersSyntax {
-    suspend fun RetiredPlayersQuery.perform() = tribeId.loadRetiredPlayers()
+interface RetiredPlayersQueryDispatcher : ActionLoggingSyntax, TribeIdRetiredPlayersSyntax {
+    suspend fun RetiredPlayersQuery.perform() = logAsync { tribeId.loadRetiredPlayers() }
 }
