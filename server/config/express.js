@@ -1,5 +1,5 @@
 "use strict";
-const server = require("server");
+const commonKt = require("commonKt");
 const compression = require('compression');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -125,7 +125,7 @@ module.exports = function (app, userDataService) {
   }
 
   // noinspection JSUnresolvedVariable, JSUnresolvedFunction
-  server.com.zegreatrob.coupling.server.initializeLogging(isInDevelopmentMode);
+  commonKt.com.zegreatrob.coupling.common.initializeLogging(isInDevelopmentMode);
 
   passport.serializeUser(userDataService.serializeUser);
   passport.deserializeUser(userDataService.deserializeUser);

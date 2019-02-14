@@ -1,4 +1,7 @@
 import * as angular from "angular";
+import {module} from "angular";
+// @ts-ignore
+import * as commonKt from 'commonKt'
 import "angular-gravatar";
 import "angular-route";
 import "ng-fittext";
@@ -23,11 +26,12 @@ import prepareTribeRoute from "./routes/PrepareTribeRoute";
 import newTribeRoute from "./routes/NewTribeRoute";
 import tribeListRoute from "./routes/TribeListRoute";
 import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
-import {module} from "angular";
-import IRouteProvider = angular.route.IRouteProvider;
 import GoogleSignIn from "./GoogleSignIn";
+import IRouteProvider = angular.route.IRouteProvider;
 
 async function bootstrapApp() {
+    commonKt.com.zegreatrob.coupling.common.initializeLogging(false);
+
     const isSignedIn = await GoogleSignIn.checkForSignedIn();
 
     const app = module('coupling', ["ngRoute",

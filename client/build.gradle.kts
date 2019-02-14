@@ -60,6 +60,7 @@ tasks {
         keep(
                 "commonKt.historyFromArray",
                 "commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher",
+                "commonKt.com.zegreatrob.coupling.common.initializeLogging",
                 "client.performComposeStatisticsAction"
         )
     }
