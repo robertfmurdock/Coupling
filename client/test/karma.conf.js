@@ -41,13 +41,11 @@ module.exports = function (config) {
 
     exclude: [],
 
-    reporters: ['progress', 'junit'],
+    reporters: ['junit'],
 
     port: 9876,
 
     colors: true,
-
-    // logLevel: config.LOG_INFO,
 
     autoWatch: true,
 
