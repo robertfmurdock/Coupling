@@ -11,6 +11,11 @@ Intended to make it quick and easy to pair off, and encourage people to pair wit
 Have fun!
 
 
+Running Locally
+---
+
+Please note, these instructions are pretty out of date, and don't reflect how development is done with it typically. They might work!... but they also might not.  Most functionality is provided via Gradle tasks now, and running "./gradlew tasks --all" should be enough to guess what does what. If looking at script commands sounds too intimidating... may I suggest you take advantage of the [hosted environment](https://coupling.zegreatrob.com)?
+
 To install and run, you'll need to have mongo and node installed... newest versions are preferable. Once you've got that...
 
 1. Clone the Coupling repository.
