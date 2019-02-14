@@ -2,71 +2,67 @@ package com.zegreatrob.coupling.common
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeSpan
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
+import kotlin.reflect.KClass
 
 interface Action
 
 interface ActionLoggingSyntax {
     companion object {
-        private val logger = KotlinLogging.logger {}
+        private val logger = KotlinLogging.logger("ActionLogger")
+        private fun Message.logInfo() = logger.info { Json.stringify(Message.serializer(), this) }
+        private fun Message.logInfo(exception: Exception) = logger.info(exception) { Json.stringify(Message.serializer(), this) }
     }
 
-    @Serializable
-    private data class Message(
-            val className: String?,
-            val type: String,
-            val timestamp: String,
-            val duration: String? = null
-    )
+    fun <I : Action, O> I.log(block: (I) -> O) = LogContext(this::class).runBlock { block(this) }
 
-    fun <I : Action, O> I.log(block: (I) -> O): O {
-        val start = logStart()
-        return block(this)
-                .also {
-                    logEnd(start)
-                }
+    suspend fun <I : Action, O> I.logAsync(block: suspend (I) -> O) = LogContext(this::class).runBlock { block(this) }
 
-    }
+    private data class LogContext(val actionClass: KClass<out Any>, val start: DateTime = DateTime.now()) {
 
-    suspend fun <I : Action, O> I.logAsync(block: suspend (I) -> O): O {
-        val start = logStart()
-        return block(this)
-                .also {
-                    logEnd(start)
-                }
+        val className get() = actionClass.simpleName
 
-    }
-
-    private fun <I : Action> I.logStart(): DateTime {
-        val start = DateTime.now()
-        Message(
-                className = this::class.simpleName,
-                type = "Start",
-                timestamp = start.toString(DateFormat.FORMAT1)
-        )
-                .logInfo()
-        return start
-    }
-
-    private fun Message.logInfo() {
-        println("logger ")
-        logger.info {
-            println("info")
-            Json.stringify(Message.serializer(), this)
+        init {
+            start()
         }
+
+        private fun start() = Message(action = className, type = "Start", timestamp = start.logFormat())
+                .logInfo()
+
+        inline fun <O> runBlock(block: () -> O) = try {
+            block().also { close() }
+        } catch (exception: Exception) {
+            closeExceptionally(exception)
+            throw exception
+        }
+
+        fun close() = DateTime.now()
+                .let { end ->
+                    logEnd(end = end, duration = end - start)
+                }
+
+        fun closeExceptionally(exception: Exception) = DateTime.now()
+                .let { end ->
+                    Message(action = className, type = "End", duration = "${end - start}", timestamp = end.logFormat())
+                            .logInfo(exception)
+                }
+
+        private fun logEnd(end: DateTime, duration: TimeSpan) =
+                Message(action = className, type = "End", duration = "$duration", timestamp = end.logFormat())
+                        .logInfo()
     }
 
-    private fun <I : Action> I.logEnd(start: DateTime) {
-        val end = DateTime.now()
-        val duration = end - start
-        Message(
-                className = this::class.simpleName,
-                type = "End",
-                duration = duration.toString(),
-                timestamp = end.toString(DateFormat.FORMAT1)
-        )
-                .logInfo()
-    }
 }
+
+private fun DateTime.logFormat() = toString(DateFormat.FORMAT1)
+
+@Serializable
+private data class Message(
+        val action: String?,
+        val type: String,
+        val timestamp: String,
+        val duration: String? = null
+)
