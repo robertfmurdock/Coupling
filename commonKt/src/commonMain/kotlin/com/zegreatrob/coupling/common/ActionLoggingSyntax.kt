@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.common
 
-import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 import kotlin.reflect.KClass
 
@@ -13,8 +10,6 @@ interface Action
 interface ActionLoggingSyntax {
     companion object {
         private val logger = KotlinLogging.logger("ActionLogger")
-        private fun Message.logInfo() = logger.info { Json.stringify(Message.serializer(), this) }
-        private fun Message.logInfo(exception: Exception) = logger.info(exception) { Json.stringify(Message.serializer(), this) }
     }
 
     fun <I : Action, O> I.log(block: (I) -> O) = LogContext(this::class).runBlock { block(this) }
@@ -29,8 +24,7 @@ interface ActionLoggingSyntax {
             start()
         }
 
-        private fun start() = Message(action = className, type = "Start", timestamp = start.logFormat())
-                .logInfo()
+        private fun start() = logger.info { mapOf("action" to className, "type" to "Start") }
 
         inline fun <O> runBlock(block: () -> O) = try {
             block().also { close() }
@@ -39,30 +33,15 @@ interface ActionLoggingSyntax {
             throw exception
         }
 
-        fun close() = DateTime.now()
-                .let { end ->
-                    logEnd(end = end, duration = end - start)
-                }
+        fun close() = logEnd(duration = DateTime.now() - start)
 
         fun closeExceptionally(exception: Exception) = DateTime.now()
                 .let { end ->
-                    Message(action = className, type = "End", duration = "${end - start}", timestamp = end.logFormat())
-                            .logInfo(exception)
+                    logger.info(exception) { mapOf("action" to className, "type" to "End", "duration" to "${end - start}") }
                 }
 
-        private fun logEnd(end: DateTime, duration: TimeSpan) =
-                Message(action = className, type = "End", duration = "$duration", timestamp = end.logFormat())
-                        .logInfo()
+        private fun logEnd(duration: TimeSpan) =
+                logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
     }
 
 }
-
-private fun DateTime.logFormat() = toString(DateFormat.FORMAT1)
-
-@Serializable
-private data class Message(
-        val action: String?,
-        val type: String,
-        val timestamp: String,
-        val duration: String? = null
-)

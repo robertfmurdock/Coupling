@@ -36,7 +36,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0")
                 implementation("com.soywiz:klock:1.1.1")
-                implementation("io.github.microutils:kotlin-logging-common:1.6.10")
+                implementation("io.github.microutils:kotlin-logging-common:1.6.24")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.10.0")
             }
         }
@@ -52,7 +52,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
-                implementation("io.github.microutils:kotlin-logging-js:1.6.22")
+                implementation("io.github.microutils:kotlin-logging-js:1.6.24")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
             }
         }
