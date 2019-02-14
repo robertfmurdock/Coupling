@@ -33,7 +33,7 @@ kotlin {
             dependencies {
                 api(project(":commonKt"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.1")
                 implementation("com.soywiz:klock:1.1.1")
             }
         }
@@ -43,7 +43,6 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
             }
         }
     }
