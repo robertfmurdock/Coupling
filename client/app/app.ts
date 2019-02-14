@@ -29,9 +29,9 @@ import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import GoogleSignIn from "./GoogleSignIn";
 import IRouteProvider = angular.route.IRouteProvider;
 
-async function bootstrapApp() {
-    commonKt.com.zegreatrob.coupling.common.initializeLogging(false);
+commonKt.com.zegreatrob.coupling.common.initializeLogging(false);
 
+async function bootstrapApp() {
     const isSignedIn = await GoogleSignIn.checkForSignedIn();
 
     const app = module('coupling', ["ngRoute",

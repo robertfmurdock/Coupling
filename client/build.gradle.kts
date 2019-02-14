@@ -65,6 +65,12 @@ tasks {
         )
     }
 
+    val runDceTestKotlinJs by getting(KotlinJsDce::class) {
+        keep(
+                "client_test.setLogLevel"
+        )
+    }
+
     val vendorCompile by creating(YarnTask::class) {
         dependsOn(yarn, runDceKotlinJs)
         mustRunAfter("clean")
@@ -95,7 +101,7 @@ tasks {
     }
 
     val karma by creating(YarnTask::class) {
-        dependsOn(yarn, vendorCompile, ":commonKt:jsTest")
+        dependsOn(yarn, vendorCompile, ":commonKt:jsTest", runDceTestKotlinJs)
         inputs.file(file("package.json"))
         inputs.files(vendorCompile.inputs.files)
         inputs.dir("test")
