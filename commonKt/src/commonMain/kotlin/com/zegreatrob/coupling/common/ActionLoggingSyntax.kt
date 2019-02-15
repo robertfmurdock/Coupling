@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.common
 
-import com.soywiz.klock.DateTime
+import com.soywiz.klock.PerformanceCounter
 import com.soywiz.klock.TimeSpan
+import com.soywiz.klock.microseconds
 import mu.KotlinLogging
-import kotlin.reflect.KClass
 
 interface Action
 
@@ -12,36 +12,38 @@ interface ActionLoggingSyntax {
         private val logger = KotlinLogging.logger("ActionLogger")
     }
 
-    fun <I : Action, O> I.log(block: (I) -> O) = LogContext(this::class).runBlock { block(this) }
+    fun <I : Action, O> I.log(block: (I) -> O) = logBlock { block(this) }
 
-    suspend fun <I : Action, O> I.logAsync(block: suspend (I) -> O) = LogContext(this::class).runBlock { block(this) }
+    suspend fun <I : Action, O> I.logAsync(block: suspend (I) -> O) = logBlock { block(this) }
 
-    private data class LogContext(val actionClass: KClass<out Any>, val start: DateTime = DateTime.now()) {
+    private inline fun <I : Action, O> I.logBlock(anotherBlock: () -> O): O {
+        val className = this::class.simpleName
+        logStart(className)
 
-        val className get() = actionClass.simpleName
-
-        init {
-            start()
-        }
-
-        private fun start() = logger.info { mapOf("action" to className, "type" to "Start") }
-
-        inline fun <O> runBlock(block: () -> O) = try {
-            block().also { close() }
+        return try {
+            runBlock(anotherBlock, className)
         } catch (exception: Exception) {
-            closeExceptionally(exception)
+            logException(exception, className)
             throw exception
         }
-
-        fun close() = logEnd(duration = DateTime.now() - start)
-
-        fun closeExceptionally(exception: Exception) = DateTime.now()
-                .let { end ->
-                    logger.info(exception) { mapOf("action" to className, "type" to "End", "duration" to "${end - start}") }
-                }
-
-        private fun logEnd(duration: TimeSpan) =
-                logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
     }
 
+    private inline fun <O> runBlock(block: () -> O, className: String?): O {
+        val start = PerformanceCounter.microseconds
+        val result = block()
+        val end = PerformanceCounter.microseconds
+        val duration = (end - start).microseconds
+        logEnd(className, duration)
+        return result
+    }
+
+    private fun logStart(className: String?) = logger.info { mapOf("action" to className, "type" to "Start") }
+
+    private fun logEnd(className: String?, duration: TimeSpan) =
+            logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
+
+    private fun logException(exception: Exception, className: String?) =
+            logger.info(exception) { mapOf("action" to className, "type" to "End") }
+
 }
+
