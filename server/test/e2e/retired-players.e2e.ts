@@ -1,5 +1,5 @@
 "use strict";
-import {browser, element, By} from "protractor";
+import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 
@@ -35,13 +35,12 @@ describe('The retired players page', function () {
     ];
 
     beforeAll(async function () {
-        browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
-        await browser.wait(() =>
-                tribeCollection.insert(tribe)
-                    .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
-                    .then(() => playersCollection.drop())
-                    .then(() => playersCollection.insert(players))
-            , 1000);
+        await tribeCollection.insert(tribe);
+        await e2eHelp.authorizeUserForTribes([tribe.id]);
+        await playersCollection.drop();
+        await playersCollection.insert(players);
+
+        await browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
         await browser.waitForAngular();
     });
 
@@ -51,8 +50,8 @@ describe('The retired players page', function () {
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
-    beforeEach(function () {
-        browser.setLocation(`/${tribe.id}/players/retired`);
+    beforeEach(async function () {
+        await browser.setLocation(`/${tribe.id}/players/retired`);
     });
 
     it('shows the retired players', async function () {
