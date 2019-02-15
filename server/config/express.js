@@ -1,9 +1,9 @@
 "use strict";
 const commonKt = require("commonKt");
+const server = require("server");
 const compression = require('compression');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const methodOverride = require('method-override');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -18,6 +18,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const statsd = require('express-statsd');
 const config = require('./config');
+const onFinished = require('on-finished');
 
 function azureODICStrategy(userDataService) {
   return new OIDCStrategy({
@@ -90,7 +91,14 @@ module.exports = function (app, userDataService) {
   app.set('view engine', 'pug');
   app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
   if (!process.env['DISABLE_LOGGING']) {
-    app.use(logger('dev'));
+    app.use(function (request, response, next) {
+      // noinspection JSUnresolvedVariable, JSUnresolvedFunction
+      server.com.zegreatrob.coupling.server.logRequestAsync(request, response, function (callback) {
+        onFinished(response, callback);
+      });
+
+      next();
+    });
   }
 
   app.use(bodyParser.urlencoded({extended: true}));
