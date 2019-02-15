@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
@@ -43,6 +42,12 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
+            }
+        }
+
+        val jsTest by getting {
+            dependencies {
+                api(project(":logging"))
             }
         }
     }

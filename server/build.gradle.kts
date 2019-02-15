@@ -34,6 +34,7 @@ dependencies {
 
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-style"))
+    testImplementation(project(":test-logging"))
 }
 
 tasks {
@@ -82,7 +83,7 @@ tasks {
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         inputs.files(compileKotlin2Js.inputs.files)
-        dependsOn(":engine:assemble")
+        dependsOn(":engine:assemble", ":test-logging:assemble")
 
         forEachJsTarget(project).let { (main, test) ->
             customCompileConfiguration = main
@@ -123,6 +124,7 @@ tasks {
         inputs.dir("test/unit")
         outputs.dir("build/test-results/server.unit")
 
+        setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
         args = listOf("run", "serverTest", "--silent")
     }
 

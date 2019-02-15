@@ -5,6 +5,7 @@ import * as express from "express";
 import * as expressWs from "express-ws";
 
 const config = require('./config/config');
+const serverKt = require("server");
 
 export function start() {
     const wsInstance = expressWs(express());
@@ -17,7 +18,14 @@ export function start() {
 
     return new Promise(function (resolve) {
         const server = app.listen(app.get('port'), function () {
-            console.log(`Express server listening on port ${app.get('port')} Deployed at: ${config.buildDate} Git revision: ${config.gitRev} ${app.get('env')}`);
+            // noinspection JSUnresolvedVariable, JSUnresolvedFunction
+            serverKt.com.zegreatrob.coupling.server.logStartup(
+                app.get('port'),
+                config.buildDate,
+                config.gitRev,
+                app.get('env')
+            );
+
             resolve(server);
         });
     });

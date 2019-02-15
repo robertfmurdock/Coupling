@@ -1,7 +1,6 @@
 pluginManagement {
     repositories {
         maven(url = "http://dl.bintray.com/kotlin/kotlin-eap")
-        // mavenLocal()
         gradlePluginPortal()
     }
     resolutionStrategy {
@@ -19,6 +18,8 @@ include("client")
 include("server")
 include("engine")
 include("commonKt")
+include("logging")
 include("test-style")
+include("test-logging")
 
 enableFeaturePreview("GRADLE_METADATA")

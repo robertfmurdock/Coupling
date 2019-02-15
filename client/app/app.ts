@@ -1,7 +1,7 @@
 import * as angular from "angular";
 import {module} from "angular";
 // @ts-ignore
-import * as commonKt from 'commonKt'
+import * as logging from 'logging'
 import "angular-gravatar";
 import "angular-route";
 import "ng-fittext";
@@ -29,7 +29,7 @@ import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import GoogleSignIn from "./GoogleSignIn";
 import IRouteProvider = angular.route.IRouteProvider;
 
-commonKt.com.zegreatrob.coupling.common.initializeLogging(false);
+logging.com.zegreatrob.coupling.logging.initializeLogging(false);
 
 async function bootstrapApp() {
     const isSignedIn = await GoogleSignIn.checkForSignedIn();

@@ -45,6 +45,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation(project(":test-style"))
+                implementation(project(":test-logging"))
             }
         }
 
@@ -80,7 +81,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        dependsOn(":test-style:assemble")
+        dependsOn(":test-style:assemble", ":test-logging:assemble")
 
         forEachJsTarget(project).let { (main, test) ->
             customCompileConfiguration = main
@@ -118,6 +119,7 @@ tasks {
         setArgs(listOf("${compileTestKotlinJs.outputFile}"))
 
         outputs.dir("build/test-results/jsTest")
+
     }
 
     val jsTest by getting

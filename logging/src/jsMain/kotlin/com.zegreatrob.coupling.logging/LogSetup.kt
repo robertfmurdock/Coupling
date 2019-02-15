@@ -1,10 +1,9 @@
-package com.zegreatrob.coupling.common
+package com.zegreatrob.coupling.logging
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import kotlinx.serialization.Serializable
 import mu.*
-import kotlin.js.JsName
 
 @Serializable
 data class Message(

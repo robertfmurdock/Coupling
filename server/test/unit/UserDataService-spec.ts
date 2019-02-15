@@ -8,6 +8,8 @@ var mongoUrl = config.testMongoUrl + '/UsersTest';
 var database = monk.default(mongoUrl);
 var userDataService = new UserDataService(database);
 
+const kotlinLogging = require('kotlin-logging');
+
 var safeDone = function (error, done) {
     if (error) {
         done.fail(error);
@@ -25,6 +27,10 @@ describe('UserDataService', function () {
 
     describe('findOrCreate', function () {
         it('will create a user if it does not already exist', function (done) {
+
+            console.log('LOG_LEVEL', kotlinLogging.mu.LOG_LEVEL);
+            console.log('messageFormatter', kotlinLogging.mu.messageFormatter);
+
             var email = 'awesome.o@super.coo';
             userDataService.findOrCreate(email, function (err, user) {
                 expect(user).not.toBe(undefined);

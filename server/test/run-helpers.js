@@ -1,6 +1,8 @@
 let Jasmine = require('jasmine');
 let reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
+// noinspection NpmUsedModulesInstalled
+const testLogging = require('test-logging');
 
 function startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix) {
   console.log('Starting tests:');
@@ -20,9 +22,15 @@ function startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix) {
   let junitReporter = new reporters.JUnitXmlReporter({
     savePath: jasmineSavePath,
     filePrefix: filePrefix,
-    consolidateAll: true
+    consolidateAll: true,
+    captureStdout: true
   });
+  // noinspection JSUnresolvedFunction
+  const loggingReporter = new testLogging.JasmineJsonLoggingReporter();
 
+  jasmine.clearReporters();
+
+  jasmine.addReporter(loggingReporter);
   jasmine.addReporter(junitReporter);
 
   return new Promise(function (resolve, reject) {

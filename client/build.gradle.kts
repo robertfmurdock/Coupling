@@ -27,9 +27,12 @@ node {
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation(project(":commonKt"))
+    implementation(project(":logging"))
     implementation("com.soywiz:klock:1.1.1")
     implementation("io.github.microutils:kotlin-logging-js:1.6.24")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
+
+    testImplementation(project(":test-logging"))
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
@@ -60,7 +63,7 @@ tasks {
         keep(
                 "commonKt.historyFromArray",
                 "commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher",
-                "commonKt.com.zegreatrob.coupling.common.initializeLogging",
+                "logging.com.zegreatrob.coupling.logging.initializeLogging",
                 "client.performComposeStatisticsAction"
         )
     }

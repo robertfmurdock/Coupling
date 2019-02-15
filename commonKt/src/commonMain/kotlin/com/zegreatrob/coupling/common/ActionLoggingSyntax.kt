@@ -7,10 +7,9 @@ import mu.KotlinLogging
 
 interface Action
 
+private val logger by lazy { KotlinLogging.logger("ActionLogger") }
+
 interface ActionLoggingSyntax {
-    companion object {
-        private val logger = KotlinLogging.logger("ActionLogger")
-    }
 
     fun <I : Action, O> I.log(block: (I) -> O) = logBlock { block(this) }
 
