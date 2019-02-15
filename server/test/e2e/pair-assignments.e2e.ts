@@ -1,10 +1,9 @@
 "use strict";
-import {browser, element, By} from "protractor";
+import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
-import apiGuy from "./apiGuy";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -36,21 +35,19 @@ describe('The current pair assignments', function () {
     ];
 
     beforeAll(async function () {
-        browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
-        browser.wait(() =>
-                tribeCollection.insert(tribe)
-                    .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
-                    .then(() => playersCollection.drop())
-                    .then(() => playersCollection.insert(players))
-            , 1000);
-        browser.waitForAngular();
+        await tribeCollection.insert(tribe);
+        await e2eHelp.authorizeUserForTribes([tribe.id]);
+        await playersCollection.drop();
+        await playersCollection.insert(players);
+        await browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
+
+        await browser.waitForAngular();
 
         this.apiGuy = await ApiGuy.new()
     });
 
-    afterAll(function (done) {
-        tribeCollection.remove({id: tribe.id}, false)
-            .then(done, done.fail);
+    afterAll(async function () {
+        await tribeCollection.remove({id: tribe.id}, false);
     });
 
     e2eHelp.afterEachAssertLogsAreEmpty();
