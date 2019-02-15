@@ -10,11 +10,6 @@ import * as pluck from "ramda/src/pluck";
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
-async function waitForButtonToDisableThenReenable(savePlayerButton) {
-    await browser.wait(() => savePlayerButton.isEnabled().then(value => !value, () => false), 1000, 'wait for disable');
-    await browser.wait(() => savePlayerButton.isEnabled().then(value => value, () => false), 1000, 'wait for enable');
-}
-
 describe('The edit player page', function () {
 
     const tribe = {
@@ -39,6 +34,15 @@ describe('The edit player page', function () {
     const tribeCardElement = element(By.className("tribe-card"));
     const deleteButton = element(By.className('delete-button'));
     const savePlayerButton = element(By.id('save-player-button'));
+
+    async function waitForSaveToComplete(expectedName) {
+        await browser.wait(() => savePlayerButton.isEnabled().then(value => value, () => false), 1000, 'wait for enable');
+
+        await browser.wait(async () => {
+            let currentValue = await element.all(By.css('.player-roster .player-card-header')).first().getText();
+            return currentValue === expectedName;
+        }, 100);
+    }
 
     beforeAll(function (done) {
         tribeCollection.drop()
@@ -134,7 +138,7 @@ describe('The edit player page', function () {
 
             await altBadgeRadio.click();
             await savePlayerButton.click();
-            await waitForButtonToDisableThenReenable(savePlayerButton);
+            await waitForSaveToComplete(player1.name);
             await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
@@ -163,12 +167,9 @@ describe('The edit player page', function () {
 
         await savePlayerButton.click();
 
-        await waitForButtonToDisableThenReenable(savePlayerButton);
+        const expectedName = 'completely different name';
 
-        await browser.wait(async () => {
-            let currentValue = await element.all(By.css('.player-roster .player-card-header')).first().getText();
-            return currentValue === 'completely different name';
-        }, 100);
+        await waitForSaveToComplete(expectedName);
 
         await browser.wait(() =>
             tribeCardElement.click()
@@ -181,16 +182,14 @@ describe('The edit player page', function () {
     });
 
     it('saving with no name will show as a default name.', async function () {
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         await savePlayerButton.click();
 
-        await waitForButtonToDisableThenReenable(savePlayerButton);
+        await waitForSaveToComplete("Unknown");
 
-        await browser.wait(() =>
-            tribeCardElement.click()
-                .then(() => true, () => false), 2000);
+        await browser.wait(() => tribeCardElement.click().then(() => true, () => false), 2000);
 
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
