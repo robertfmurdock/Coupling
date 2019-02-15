@@ -34,15 +34,12 @@ describe('The prepare to spin page', function () {
     ];
 
     beforeAll(async function () {
+        await historyCollection.drop();
+        await tribeCollection.insert(tribe);
+        await e2eHelp.authorizeUserForTribes([tribe.id]);
+        await playersCollection.drop();
+        await playersCollection.insert(players);
         await browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-
-        await browser.wait(() =>
-                historyCollection.drop()
-                    .then(() => tribeCollection.insert(tribe))
-                    .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
-                    .then(() => playersCollection.drop())
-                    .then(() => playersCollection.insert(players))
-            , 1000);
         await browser.waitForAngular();
     });
 
@@ -53,8 +50,8 @@ describe('The prepare to spin page', function () {
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
-    beforeEach(function () {
-        browser.setLocation(`/${tribe.id}/prepare/`);
+    beforeEach(async function () {
+        await browser.setLocation(`/${tribe.id}/prepare/`);
     });
 
     describe('with no history', function () {
