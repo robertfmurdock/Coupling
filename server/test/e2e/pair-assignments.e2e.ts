@@ -43,7 +43,7 @@ describe('The current pair assignments', function () {
 
         await browser.waitForAngular();
 
-        this.apiGuy = await ApiGuy.new(e2eHelp.userEmail)
+        this.apiGuy = await ApiGuy.new()
     });
 
     afterAll(async function () {

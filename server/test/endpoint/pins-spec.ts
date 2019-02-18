@@ -1,6 +1,6 @@
 "use strict";
 import CouplingDataService from "../../lib/CouplingDataService";
-import * as Bluebird from 'bluebird'
+import * as Promise from 'bluebird'
 import * as monk from 'monk'
 import * as supertest from "supertest";
 
@@ -58,9 +58,13 @@ describe(path, function () {
                 .then(done, done.fail);
         });
 
-        it('will return error when tribe is not available.', async function () {
-            await agent.get(badTribePath)
-                .expect(404)
+        it('will return error when tribe is not available.', function (done) {
+            agent.get(badTribePath)
+                .expect('Content-Type', /json/)
+                .then(function (response) {
+                    expect(response.body).toEqual([]);
+                })
+                .then(done, done.fail);
         });
     });
 
@@ -94,7 +98,7 @@ describe(path, function () {
                     let expectedPins = resultPins.concat(newPin);
                     expect(clean(response.body)).toEqual(clean(newPin));
 
-                    return Bluebird.props({
+                    return Promise.props({
                         expectedPins: expectedPins,
                         results: dataService.requestPins(tribeId)
                     });

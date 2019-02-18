@@ -4,19 +4,16 @@ const config = require('../../config/config');
 const hostName = `http://${config.publicHost}:${config.port}`;
 const agent = supertest.agent(hostName);
 
-const defaultUsername = '"name"';
-const defaultPassword = '"pw"';
-
 export default class ApiGuy {
 
-    static async new(username = defaultUsername, password = defaultPassword) {
+    static async new() {
         const apiGuy = new ApiGuy();
-        await apiGuy.loginSupertest(username, password);
+        await apiGuy.loginSupertest();
         return apiGuy;
     }
 
-    private async loginSupertest(username, password) {
-        return await agent.get('/test-login?username=' + username + '&password=' + password)
+    private async loginSupertest() {
+        return await agent.get('/test-login?username="name"&password="pw"')
             .expect(302);
     };
 

@@ -49,6 +49,15 @@ class PlayerRoutes {
 
 const players = new PlayerRoutes();
 const router = express.Router({mergeParams: true});
+router.all('/*', async function (request, response, next) {
+    // @ts-ignore
+    const isAuthorized = await request.commandDispatcher.performUserIsAuthorizedAction(request.params.tribeId);
+    if (isAuthorized) {
+        next()
+    } else {
+        response.sendStatus(404);
+    }
+});
 router.route('/')
     .get(players.listPlayers)
     .post(players.savePlayer);
