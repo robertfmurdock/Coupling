@@ -107,7 +107,7 @@ tasks {
 
         inputs.file(compileTestKotlinJs.outputFile)
 
-        val script = file("test-run.js")
+        val script = file("test-wrapper.js")
 
         inputs.file(script)
         setScript(script)
