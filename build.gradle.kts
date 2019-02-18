@@ -108,7 +108,7 @@ tasks {
 
 fun copyFor(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
     return {
-        dependsOn(testTask)
+        mustRunAfter(testTask)
 
         block()
         testTask?.finalizedBy(this)
