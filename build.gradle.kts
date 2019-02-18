@@ -24,41 +24,41 @@ tasks {
         }
     }
 
-    val copyClientTestResults by creating(Copy::class, copyForTask(findByPath(":client:test")) {
+    val copyClientTestResults by creating(Copy::class) {
+        dependsOn(":client:test")
+
         from("client/build/test-results")
         into("build/test-output/client")
-    })
+    }
 
-    val copyCommonKtTestResults by creating(Copy::class, copyForTask(findByPath(":commonKt:jsTest")) {
+    val copyCommonKtTestResults by creating(Copy::class) {
+        dependsOn(":commonKt:jsTest")
         from("commonKt/build/test-results/jsTest")
         into("build/test-output/commonKt")
-    })
+    }
 
-    val copyServerTestResults by creating(Copy::class, copyForTask(findByPath(":server:serverTest")) {
-        from("server/build/test-results/server")
-        into("build/test-output/server")
-    })
+    val copyServerTestResults by creating(Copy::class) {
+        dependsOn(":server:test")
+        from("server/build/test-results")
+        into("build/test-output")
+    }
 
-    val copyEndpointTestResults by creating(Copy::class, copyForTask(findByPath(":server:endpointTest")) {
-        from("server/build/test-results/endpoint")
-        into("build/test-output/endpoint")
-    })
-
-    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":engine:jsTest")) {
+    val copyEngineTestResults by creating(Copy::class) {
+        dependsOn(":engine:jsTest")
         from("engine/build/test-results/jsTest")
         into("build/test-output/engine")
-    })
+    }
 
-    val copyEndToEndResults by creating(Copy::class, copyForTask(findByPath(":server:endToEndTest")) {
+    val copyEndToEndResults by creating(Copy::class) {
+        dependsOn(":server:endToEndTest")
         from("test-output/e2e")
         into("build/test-output/e2e")
-    })
+    }
 
     val copyTestResultsForCircle by creating {
         dependsOn(
                 copyClientTestResults,
                 copyServerTestResults,
-                copyEndpointTestResults,
                 copyCommonKtTestResults,
                 copyEngineTestResults,
                 copyEndToEndResults
@@ -70,7 +70,7 @@ tasks {
     }
 
     val check by creating {
-        dependsOn(test)
+        dependsOn(test, copyTestResultsForCircle)
     }
 
     val build by creating {
@@ -104,13 +104,4 @@ tasks {
     val engineYarn = getByPath(":engine:yarn")
     commonYarn.mustRunAfter(engineYarn)
 
-}
-
-fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
-    return {
-        mustRunAfter(testTask)
-
-        block()
-        testTask?.finalizedBy(this)
-    }
 }
