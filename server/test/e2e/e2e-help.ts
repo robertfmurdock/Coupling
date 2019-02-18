@@ -17,22 +17,16 @@ const helper = {
     authorizeUserForTribes: authorizeUserForTribes,
     afterEachAssertLogsAreEmpty: function () {
 
-        afterEach(function (done) {
-            browser.getCapabilities()
-                .then(function (capabilities) {
-                    if (capabilities.get('browserName') !== 'firefox') {
-                        browser.manage().logs().get('browser').then(function (browserLog) {
-                            expect(browserLog).toEqual([]);
-                            if (browserLog.length > 0) {
-                                console.log('log: ' + util.inspect(browserLog));
-                            }
-                            done();
-                        }, done);
-                        browser.waitForAngular();
-                    } else {
-                        done();
-                    }
-                });
+        afterEach(async function () {
+            const capabilities = await browser.getCapabilities();
+            if (capabilities.get('browserName') !== 'firefox') {
+                const browserLog = await browser.manage().logs().get('browser');
+                expect(browserLog).toEqual([]);
+                if (browserLog.length > 0) {
+                    console.log('log: ' + util.inspect(browserLog));
+                }
+                await browser.waitForAngular();
+            }
         });
     },
     deleteAnyBrowserLogging: function () {

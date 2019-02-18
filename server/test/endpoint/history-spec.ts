@@ -1,6 +1,6 @@
 "use strict";
 
-import * as Promise from "bluebird";
+import * as Bluebird from "bluebird";
 import * as supertest from "supertest";
 import * as monk from "monk";
 
@@ -12,6 +12,11 @@ let path = '/api/' + tribeId + '/history';
 
 let database = monk.default(config.tempMongoUrl);
 let historyCollection = database.get('history');
+let tribesCollection = database.get('tribes');
+
+let usersCollection = monk.default(config.mongoUrl).get('users');
+
+const userEmail = '"name"';
 
 describe(path, function () {
     let validPairs = {
@@ -25,13 +30,22 @@ describe(path, function () {
         _id: monk.id().toString()
     };
 
-    beforeAll(function (done) {
-        historyCollection.remove({tribe: tribeId}, false)
-            .then(done, done.fail);
+
+    async function authorizeUserForTribes(authorizedTribes) {
+        await usersCollection.remove({email: userEmail + "._temp"});
+        await usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes, timestamp: new Date()});
+    }
+
+    beforeAll(async function () {
+        await historyCollection.remove({tribe: tribeId}, false);
+        let tribe = {id: tribeId, name: 'tribe-from-endpoint-tests'};
+        let tribe2 = {id: 'test2', name: 'alt-tribe-from-endpoint-tests'};
+        await tribesCollection.insert([tribe, tribe2]);
+        await authorizeUserForTribes([tribe.id, tribe2.id])
     });
 
     beforeEach(function (done) {
-        agent.get('/test-login?username="name"&password="pw"')
+        agent.get('/test-login?username=' + userEmail + '&password="pw"')
             .expect(302)
             .then(done, done.fail);
     });
@@ -67,6 +81,11 @@ describe(path, function () {
                 })
                 .then(done, done.fail);
         });
+
+        it('is not allowed for users without access', async function () {
+            await agent.get('/api/someoneElsesTribe/history')
+                .expect(404)
+        });
     });
 
     describe("POST will save pairs", function () {
@@ -79,7 +98,7 @@ describe(path, function () {
                 .then(function (response) {
                     let pairsAsSaved = response.body;
 
-                    return Promise.props(
+                    return Bluebird.props(
                         {
                             pairsAsSaved: pairsAsSaved,
                             history: agent.get(path)
