@@ -6,7 +6,8 @@ ENV \
   PUBLIC_HOST=web \
   MONGOHQ_URL=mongodb://mongo/Coupling \
   MONGO_CONNECTION=mongodb://mongo \
-  NODE_ENV=production
+  NODE_ENV=production \
+  NODE_PATH=build/node_modules_imported
 
 COPY server/package.json server/yarn.lock /usr/src/app/server/
 
@@ -16,5 +17,5 @@ COPY server/startup.js /usr/src/app/server
 COPY server/build/node_modules_imported /usr/src/app/server/build/node_modules_imported
 COPY server/build/executable /usr/src/app/server/build/executable
 
-CMD ["yarn", "run", "start-built-app"]
+CMD ["node", "./startup.js"]
 EXPOSE 3000 8125

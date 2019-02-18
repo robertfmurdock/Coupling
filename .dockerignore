@@ -1,7 +1,8 @@
-.idea
-test-output
-data
-.gradle
-node_modules
+.idea/**/*
+test-output/**/*
+data/**/*
+**/.gradle/**/*
+.git/**/*
+**/node_modules/**/*
 docker-compose.yml
 .DS_Store
