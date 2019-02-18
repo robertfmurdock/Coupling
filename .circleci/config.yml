@@ -19,7 +19,7 @@ jobs:
             - ".gradle"
             - "client/.gradle"
             - "node_modules"
-      - run: "./gradlew check"
+      - run: "./gradlew build check"
       - store_artifacts:
           path: build/test-output
       - store_test_results:

@@ -118,7 +118,13 @@ tasks {
     }
 
     val serverTest by creating(YarnTask::class) {
-        dependsOn(yarn, unpackJsGradleDependencies, compileKotlin2Js, compileTestKotlin2Js)
+        dependsOn(
+                yarn,
+                unpackJsGradleDependencies,
+                compileKotlin2Js,
+                compileTestKotlin2Js,
+                copyClient
+        )
         inputs.file(file("package.json"))
         inputs.files(serverCompile.inputs.files)
         inputs.dir("test/unit")
