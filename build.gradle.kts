@@ -70,7 +70,8 @@ tasks {
     }
 
     val check by creating {
-        dependsOn(test, copyTestResultsForCircle)
+        dependsOn(test)
+        finalizedBy(copyTestResultsForCircle)
     }
 
     val build by creating {
