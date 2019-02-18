@@ -32,9 +32,10 @@ describe(path, function () {
         removeTestPin();
     });
 
-    beforeEach(async function () {
-        await superAgent.get('/test-login?username="name"&password="pw"')
-            .expect(302);
+    beforeEach(function (done) {
+        superAgent.get('/test-login?username="name"&password="pw"')
+            .expect(302)
+            .end(done);
     });
 
     function removeTestPin() {
@@ -50,21 +51,25 @@ describe(path, function () {
         return pair;
     };
 
-    it('will take the players given and use those for pairing.', async function () {
+    it('will take the players given and use those for pairing.', function (done) {
         let onlyEnoughPlayersForOnePair = [
             {name: "dude1"},
             {name: "dude2"}
         ];
         const tribe: Tribe = {name: 'test', id: tribeId, pairingRule: PairingRule.LongestTime};
-        const apiGuy = await ApiGuy.new();
-        await apiGuy.postTribe(tribe);
-        const response = await superAgent.post(path)
-            .send(onlyEnoughPlayersForOnePair)
-            .expect(200)
-            .expect('Content-Type', /json/);
-        decorateWithPins(onlyEnoughPlayersForOnePair);
-        let expectedPairAssignments = [onlyEnoughPlayersForOnePair];
-        expect(response.body.pairs).toEqual(expectedPairAssignments);
+        tribeCollection.insert(tribe)
+            .then(function () {
+                return superAgent.post(path)
+                    .send(onlyEnoughPlayersForOnePair)
+                    .expect(200)
+                    .expect('Content-Type', /json/);
+            })
+            .then(function (response) {
+                decorateWithPins(onlyEnoughPlayersForOnePair);
+                let expectedPairAssignments = [onlyEnoughPlayersForOnePair];
+                expect(response.body.pairs).toEqual(expectedPairAssignments);
+            })
+            .then(done, done.fail);
     });
 
     it('the tribe rule is set to PreferDifferentBadge then it will', async function () {

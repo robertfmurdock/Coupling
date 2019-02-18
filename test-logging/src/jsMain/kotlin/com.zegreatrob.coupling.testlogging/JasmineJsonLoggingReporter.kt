@@ -1,3 +1,4 @@
+
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.logging.initializeLogging
 import mu.KotlinLogging
@@ -19,26 +20,14 @@ class JasmineJsonLoggingReporter {
 
     @Suppress("unused")
     @JsName("specDone")
-    fun specDone(result: dynamic) = endTest(
-            result.fullName.unsafeCast<String>(),
-            result.status.unsafeCast<String>(),
-            result.failedExpectations.unsafeCast<Array<dynamic>>()
-    )
+    fun specDone(result: dynamic) = endTest(result.fullName.unsafeCast<String>())
 
     private fun startTest(testName: String) = logger.info { mapOf("type" to "TestStart", "test" to testName) }
             .also { lastStart = DateTime.now() }
 
-    private fun endTest(testName: String, status: String, failed: Array<dynamic>) {
+    private fun endTest(testName: String) {
         val duration = lastStart?.let { DateTime.now() - it }
-        logger.info {
-            mapOf(
-                    "type" to "TestEnd",
-                    "test" to testName,
-                    "status" to status,
-                    "duration" to "$duration",
-                    "failures" to failed.map { "message: ${it.message} \nstack: ${it.stack}" }.joinToString("\n", "\n")
-            )
-        }
+        logger.info { mapOf("type" to "TestEnd", "test" to testName, "duration" to "$duration") }
                 .also { lastStart = null }
     }
 }
