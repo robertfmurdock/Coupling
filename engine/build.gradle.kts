@@ -1,12 +1,13 @@
+
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
-import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.github.node-gradle.node")
+    id("smol-js")
 }
 
 node {
@@ -65,23 +66,16 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
-    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
+    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:assemble", ":commonKt:assemble")
-
-        forEachJsTarget(project).let { (main, test) ->
-            customCompileConfiguration = main
-            customTestCompileConfiguration = test
-        }
     }
+
     val jsTestProcessResources by getting(ProcessResources::class)
 
     val assemble by getting
     assemble.dependsOn(unpackJsGradleDependencies)
 
-    val jasmine by creating(NodeTask::class) {
-        dependsOn("yarn", compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
-        mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
-
+    val jasmine by getting(NodeTask::class) {
         val relevantPaths = listOf(
                 "node_modules",
                 "build/node_modules_imported",
@@ -90,11 +84,6 @@ tasks {
         )
 
         inputs.file(compileTestKotlinJs.outputFile)
-
-        val script = file("test-run.js")
-
-        inputs.file(script)
-        setScript(script)
 
         relevantPaths.filter { file(it).exists() }.forEach { inputs.dir(it) }
 

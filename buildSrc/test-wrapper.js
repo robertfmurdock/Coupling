@@ -1,6 +1,6 @@
 const childProcess = require('child_process');
 
-const fork = childProcess.fork('./test-run', process.argv.slice(2), {
+const fork = childProcess.fork(__dirname + '/test-run', process.argv.slice(2), {
   // silent: true,
   stdio: 'pipe',
   env: process.env

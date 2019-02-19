@@ -96,11 +96,6 @@ tasks {
 
         inputs.file(compileTestKotlinJs.outputFile)
 
-        val script = file("test-wrapper.js")
-
-        inputs.file(script)
-        setScript(script)
-
         relevantPaths.forEach { inputs.dir(it) }
 
         setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))

@@ -40,9 +40,6 @@ class SmolJsPlugin : Plugin<Project> {
 
             create("jasmine", NodeTask::class.java) {
                 it.dependsOn("yarn", unpackJsGradleDependencies)
-                //                dependsOn(yarn, compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
-//                mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
-//
 //                val relevantPaths = listOf(
 //                        "node_modules",
 //                        "build/node_modules_imported",
@@ -52,11 +49,10 @@ class SmolJsPlugin : Plugin<Project> {
 //
 //                inputs.file(compileTestKotlinJs.outputFile)
 //
-//                val script = file("test-wrapper.js")
-//
-//                inputs.file(script)
-//                setScript(script)
-//
+                val script = target.rootDir.path + "/buildSrc/test-wrapper.js"
+                it.inputs.file(script)
+                it.setScript(java.io.File(script))
+
 //                relevantPaths.forEach { inputs.dir(it) }
 //
 //                setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
