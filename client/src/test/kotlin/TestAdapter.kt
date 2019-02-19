@@ -1,6 +1,6 @@
 import mu.KotlinLogging
+import mu.KotlinLoggingConfiguration.LOG_LEVEL
 import mu.KotlinLoggingLevel
-import mu.LOG_LEVEL
 
 private val logger = KotlinLogging.logger("TestAdapter")
 

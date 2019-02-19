@@ -20,14 +20,14 @@ kotlin {
             dependencies {
                 implementation(project(":logging"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging-common:1.6.24")
+                implementation("io.github.microutils:kotlin-logging-common:1.6.25")
                 implementation("com.soywiz:klock:1.1.1")
             }
         }
 
         getByName("jsMain") {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging-js:1.6.24")
+                implementation("io.github.microutils:kotlin-logging-js:1.6.25")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
         }

@@ -3,7 +3,9 @@ package com.zegreatrob.coupling.logging
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import kotlinx.serialization.Serializable
-import mu.*
+import mu.Formatter
+import mu.KotlinLoggingLevel
+import mu.Marker
 
 @Serializable
 data class Message(
@@ -21,14 +23,14 @@ fun DateTime.logFormat() = toString(DateFormat.FORMAT1)
 @Suppress("unused")
 @JsName("initializeLogging")
 fun initializeLogging(developmentMode: Boolean) {
-    LOG_LEVEL = if (developmentMode) {
+    mu.KotlinLoggingConfiguration.LOG_LEVEL = if (developmentMode) {
         KotlinLoggingLevel.DEBUG
     } else {
         KotlinLoggingLevel.INFO
     }
 
     @Suppress("CAST_NEVER_SUCCEEDS")
-    mu.messageFormatter = object : MessageFormatter {
+    mu.KotlinLoggingConfiguration.FORMATTER = object : Formatter {
 
         override fun formatMessage(level: KotlinLoggingLevel, loggerName: String, msg: () -> Any?): Any? {
             val (message, properties) = extractProperties(msg)
@@ -99,5 +101,5 @@ fun initializeLogging(developmentMode: Boolean) {
             return msg
         }
 
-    }.unsafeCast<DefaultMessageFormatter>()
+    }
 }
