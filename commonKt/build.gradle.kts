@@ -86,13 +86,7 @@ tasks {
 
     val jsTestProcessResources by getting(ProcessResources::class)
 
-    val assemble by getting
-    assemble.dependsOn(unpackJsGradleDependencies)
-
     val jasmine by getting(NodeTask::class) {
-        dependsOn(yarn, compileKotlinJs, compileTestKotlinJs)
-        mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
-
         val relevantPaths = listOf(
                 "node_modules",
                 "build/node_modules_imported",

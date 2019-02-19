@@ -4,6 +4,8 @@ import com.moowork.gradle.node.NodePlugin
 import com.moowork.gradle.node.task.NodeTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.language.jvm.tasks.ProcessResources
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 class SmolJsPlugin : Plugin<Project> {
 
@@ -11,23 +13,26 @@ class SmolJsPlugin : Plugin<Project> {
 
         target.pluginManager.apply(NodePlugin::class.java)
 
-//        target.configure(target, object : Closure<Unit>(target) {
-//            override fun call(arguments: Any?) {
-
-//                println("$arguments")
-
-//                println("WHAAAT")
-//            }
-//        })
-
         target.afterEvaluate {
+            val assemble = target.tasks.findByName("assemble")
+            assemble?.dependsOn("unpackJsGradleDependencies")
+
+            val forEachJsTarget = forEachJsTarget(target)
+
+
             target.tasks.filterIsInstance(UnpackGradleDependenciesTask::class.java)
-                    .forEach {
-                        forEachJsTarget(target).let { (main, test) ->
-                            it.customCompileConfiguration = main
-                            it.customTestCompileConfiguration = test
+                    .forEach { unpackTask ->
+                        forEachJsTarget.let { (main, test) ->
+                            unpackTask.customCompileConfiguration = main
+                            unpackTask.customTestCompileConfiguration = test
                         }
                     }
+
+            val compileKotlinJsTasks = target.tasks.filterIsInstance(Kotlin2JsCompile::class.java)
+            val processResources = target.tasks.filterIsInstance(ProcessResources::class.java)
+            val jasmine = target.tasks.getByName("jasmine")
+            jasmine.dependsOn(compileKotlinJsTasks)
+            jasmine.dependsOn(processResources)
         }
 
         target.tasks.run {

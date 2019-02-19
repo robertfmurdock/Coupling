@@ -13,7 +13,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinSingleJavaTargetExtension
-import org.jetbrains.kotlin.gradle.plugin.Kotlin2JsPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
@@ -132,6 +131,7 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
     private fun List<Configuration>.getProjectDependencyConfigs(): List<MainAndTestKtConfiguration> = asSequence()
             .map { it.allDependencies }
             .flatten()
+            .also { println("deps = "+it.joinToString(", ") { ddep -> ddep.name }) }
             .filterIsInstance<ProjectDependency>()
             .map { it.dependencyProject }
             .toSet()
@@ -167,11 +167,12 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
 fun File.toLocalURI() = toURI().toASCIIString().replaceFirst("file:[/]+".toRegex(), "file:///")
 
 fun forEachJsTarget(project: Project) = project.javascriptTarget()
-        .mainAndTest()
+        ?.mainAndTest()
+        ?: MainAndTestKtConfiguration(emptyList(), emptyList())
 
-private fun Project.javascriptTarget(): KotlinTarget = multiPlatformExtension
+private fun Project.javascriptTarget(): KotlinTarget? = multiPlatformExtension
         ?.javascriptTarget()
-        ?: kotlinExtension.javascriptTarget()
+        ?: kotlinExtension?.javascriptTarget()
 
 private fun KotlinSingleJavaTargetExtension.javascriptTarget() = this.internalTarget
 
@@ -205,9 +206,8 @@ val Project.multiPlatformExtension
     get(): KotlinMultiplatformExtension? =
         project.extensions.findByName("kotlin") as? KotlinMultiplatformExtension
 
-private val Project.kotlinExtension: KotlinSingleJavaTargetExtension
-    get() = project.pluginManager.apply(Kotlin2JsPluginWrapper::class.java)
-            .let { extensions.getByName("kotlin") as KotlinSingleJavaTargetExtension }
+private val Project.kotlinExtension: KotlinSingleJavaTargetExtension?
+    get() = extensions.findByName("kotlin") as? KotlinSingleJavaTargetExtension
 
 private val KotlinSingleJavaTargetExtension.internalTarget: KotlinTarget
     get() = KotlinSingleJavaTargetExtension::class.declaredMemberProperties.find { it.name == "target" }!!.get(this) as KotlinTarget
