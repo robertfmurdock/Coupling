@@ -80,7 +80,7 @@ tasks {
     }
 
     val build by creating {
-        dependsOn(test, ":client:compile", ":server:compile")
+        dependsOn(test, ":client:compile", ":server:build")
     }
 
     val pullProductionImage by creating(DockerPullImage::class) {

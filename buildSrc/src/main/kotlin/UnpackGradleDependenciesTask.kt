@@ -131,7 +131,6 @@ open class UnpackGradleDependenciesTask : DefaultTask() {
     private fun List<Configuration>.getProjectDependencyConfigs(): List<MainAndTestKtConfiguration> = asSequence()
             .map { it.allDependencies }
             .flatten()
-            .also { println("deps = "+it.joinToString(", ") { ddep -> ddep.name }) }
             .filterIsInstance<ProjectDependency>()
             .map { it.dependencyProject }
             .toSet()
