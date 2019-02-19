@@ -113,7 +113,7 @@ tasks {
         args = listOf("webpack", "--config", "webpack.config.js")
     }
 
-    val compile by creating {
+    val assemble by getting {
         dependsOn(serverCompile, copyClient)
     }
 
@@ -135,7 +135,7 @@ tasks {
     }
 
     val endpointTest by creating(YarnTask::class) {
-        dependsOn(yarn, serverCompile)
+        dependsOn(yarn, assemble)
         mustRunAfter(serverTest)
         inputs.files(serverTest.inputs.files)
         inputs.files(serverCompile.outputs.files)
@@ -155,7 +155,7 @@ tasks {
     }
 
     val endToEndTest by creating(YarnTask::class) {
-        dependsOn(compile, updateWebdriver)
+        dependsOn(assemble, updateWebdriver)
         mustRunAfter(serverTest, ":client:test", endpointTest)
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:compile")?.outputs?.files)
@@ -178,7 +178,7 @@ tasks {
     }
 
     val start by creating(YarnTask::class) {
-        dependsOn(compile)
+        dependsOn(assemble)
         args = listOf("run", "start-built-app")
     }
 

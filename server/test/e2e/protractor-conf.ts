@@ -24,12 +24,8 @@ export let config: Config = {
 
     onPrepare: function () {
 
-        jasmine.getEnv().addReporter(new ScreenShotReporter({
-            dest: 'test-output',
-            captureOnlyFailedSpecs: true
-        }));
-
         const jasmineReporters = require('jasmine-reporters');
+
         jasmine.getEnv().addReporter(
             new jasmineReporters.JUnitXmlReporter({
                 consolidateAll: true,
@@ -37,6 +33,12 @@ export let config: Config = {
                 savePath: 'test-output/e2e'
             })
         );
+
+        jasmine.getEnv().addReporter(new ScreenShotReporter({
+            dest: 'build/reports/e2e',
+            cleanDestination: true,
+            captureOnlyFailedSpecs: true
+        }));
 
         const disableNgAnimate = function () {
             // @ts-ignore
