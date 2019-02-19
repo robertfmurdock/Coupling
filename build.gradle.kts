@@ -3,7 +3,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 plugins {
-    id("com.github.node-gradle.node") version "1.3.0" apply false
+    id("com.github.node-gradle.node") apply false
     id("com.bmuschko.docker-remote-api") version "4.5.0"
     id("com.github.ben-manes.versions") version "0.20.0"
 }

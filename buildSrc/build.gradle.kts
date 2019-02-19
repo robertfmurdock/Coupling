@@ -1,5 +1,6 @@
 repositories {
     jcenter()
+    maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
 plugins {
@@ -11,7 +12,6 @@ plugins {
     id("net.researchgate.release") version "2.6.0"
 }
 
-
 val kotlinVersion = "1.3.21"
 
 dependencies {
@@ -21,5 +21,6 @@ dependencies {
     implementation(kotlin("gradle-plugin", kotlinVersion))
     implementation(gradleApi())
     implementation(localGroovy())
+    implementation("com.github.node-gradle:gradle-node-plugin:1.3.0")
 }
 

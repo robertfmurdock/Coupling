@@ -1,13 +1,13 @@
+
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
-import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization") version "1.3.21"
-    id("com.github.node-gradle.node")
+    id("smol-js")
 }
 
 node {
@@ -80,13 +80,8 @@ tasks {
         kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
-    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
+    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-style:assemble", ":test-logging:assemble")
-
-        forEachJsTarget(project).let { (main, test) ->
-            customCompileConfiguration = main
-            customTestCompileConfiguration = test
-        }
     }
 
     val jsTestProcessResources by getting(ProcessResources::class)
@@ -94,8 +89,8 @@ tasks {
     val assemble by getting
     assemble.dependsOn(unpackJsGradleDependencies)
 
-    val jasmine by creating(NodeTask::class) {
-        dependsOn(yarn, compileKotlinJs, compileTestKotlinJs, unpackJsGradleDependencies)
+    val jasmine by getting(NodeTask::class) {
+        dependsOn(yarn, compileKotlinJs, compileTestKotlinJs)
         mustRunAfter(compileTestKotlinJs, jsTestProcessResources)
 
         val relevantPaths = listOf(
