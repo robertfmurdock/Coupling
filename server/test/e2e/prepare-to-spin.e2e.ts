@@ -83,7 +83,10 @@ describe('The prepare to spin page', function () {
             const players = element.all(By.repeater('player in players'));
             expect(players.count()).toEqual(3);
 
-            element(By.id('save-button')).click();
+            const saveButton = element(By.id('save-button'));
+            saveButton.click();
+
+            browser.wait(async () => false === await saveButton.isDisplayed(), 2000);
 
             expect(pairs.count()).toEqual(1);
             expect(players.count()).toEqual(3);
