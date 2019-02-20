@@ -10,8 +10,28 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 class SmolJsPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-
         target.pluginManager.apply(NodePlugin::class.java)
+
+        target.extensions.configure(com.moowork.gradle.node.NodeExtension::class.java) {
+            it.version = BuildConstants.nodeVersion
+            it.npmVersion = BuildConstants.npmVersion
+            it.yarnVersion = BuildConstants.yarnVersion
+            it.download = true
+        }
+
+        target.tasks.run {
+            val unpackJsGradleDependencies = create("unpackJsGradleDependencies", UnpackGradleDependenciesTask::class.java)
+
+            create("jasmine", NodeTask::class.java) {
+                it.dependsOn("yarn", unpackJsGradleDependencies)
+                val script = target.rootDir.path + "/buildSrc/test-wrapper.js"
+                it.inputs.file(script)
+                it.inputs.file(target.file("package.json"))
+
+                it.setScript(java.io.File(script))
+                it.outputs.dir("build/test-results/jsTest")
+            }
+        }
 
         target.afterEvaluate {
             val assemble = target.tasks.findByName("assemble")
@@ -51,31 +71,19 @@ class SmolJsPlugin : Plugin<Project> {
                 setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
 
                 setArgs(listOf("${kotlinCompileTestTask.outputFile}"))
-
-                outputs.dir("build/test-results/jsTest")
             }
 
-            val jsTest = target.tasks.getByName("jsTest") {
-                it.dependsOn(jasmine)
-            }
+            val test = target.tasks.findByName("test")
+                    ?: target.tasks.create("test")
 
-            target.tasks.create("test") {
-                it.dependsOn(jsTest)
+
+            val jsTest = target.tasks.findByName("jsTest")
+                    ?: target.tasks.create("jsTest")
+            jsTest.run {
+                dependsOn(jasmine)
+                test.dependsOn(this)
             }
         }
 
-        target.tasks.run {
-            val unpackJsGradleDependencies = create("unpackJsGradleDependencies", UnpackGradleDependenciesTask::class.java)
-
-            val jasmine = create("jasmine", NodeTask::class.java) {
-                it.dependsOn("yarn", unpackJsGradleDependencies)
-                val script = target.rootDir.path + "/buildSrc/test-wrapper.js"
-                it.inputs.file(script)
-                it.setScript(java.io.File(script))
-            }
-
-        }
     }
-
-
 }

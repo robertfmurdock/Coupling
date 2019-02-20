@@ -9,13 +9,6 @@ plugins {
     id("smol-js")
 }
 
-node {
-    version = BuildConstants.nodeVersion
-    npmVersion = BuildConstants.npmVersion
-    yarnVersion = BuildConstants.yarnVersion
-    download = true
-}
-
 repositories {
     mavenCentral()
     maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
