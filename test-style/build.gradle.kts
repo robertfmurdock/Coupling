@@ -11,6 +11,7 @@ repositories {
 
 kotlin {
     targets {
+        jvm()
         add(presets["js"].createTarget("js"))
     }
 
@@ -21,6 +22,13 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.1.1")
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies  {
+                implementation("org.jetbrains.kotlin:kotlin-test-junit:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1")
             }
         }
 

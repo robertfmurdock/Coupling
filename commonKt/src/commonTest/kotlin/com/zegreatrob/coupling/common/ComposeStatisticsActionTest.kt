@@ -1,17 +1,21 @@
-@file:Suppress("unused")
+package com.zegreatrob.coupling.common
 
+import assertIsEqualTo
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
-import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import kotlin.js.Json
+import exercise
+import setup
+import verify
 import kotlin.test.Test
+import kotlin.test.fail
 
+@Suppress("unused")
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
@@ -215,13 +219,7 @@ class ComposeStatisticsActionTest {
         }
 
         @Test
-        fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadResource<Json>("realistic-sort-test-data/inputs.json").let {
-            object {
-                val tribe = it["tribe"].unsafeCast<Json>().toTribe()
-                val players = it["players"].unsafeCast<Array<Json>>().map { player -> player.toPlayer() }
-                val history = it["history"].unsafeCast<Array<Json>>().map { record -> record.toPairAssignmentDocument() }
-            }
-        }) exercise {
+        fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadJsonTribeSetup("realistic-sort-test-data/inputs.json")) exercise {
             ComposeStatisticsAction(tribe, players, history)
                     .perform()
         } verify { result ->
@@ -230,6 +228,7 @@ class ComposeStatisticsActionTest {
             result.pairReports.map { it.timeSinceLastPair }
                     .assertIsEqualTo(expectedTimesResults)
         }
+
     }
 
     class WillCalculateTheMedianSpinTime {
@@ -360,3 +359,8 @@ class ComposeStatisticsActionTest {
     }
 
 }
+
+expect fun loadJsonTribeSetup(fileResource: String): TribeSetup
+expect inline fun <reified T> loadResource(fileResource: String): T
+
+data class TribeSetup(val tribe: KtTribe, val players: List<Player>, val history: List<PairAssignmentDocument>)

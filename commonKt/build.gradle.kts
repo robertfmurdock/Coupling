@@ -19,6 +19,7 @@ repositories {
 kotlin {
 
     targets {
+        jvm()
         add(presets["js"].createTarget("js"))
     }
 
@@ -38,6 +39,20 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation(project(":test-style"))
                 implementation(project(":test-logging"))
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.github.microutils:kotlin-logging:1.6.25")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.9.7")
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-test")
+                implementation("org.jetbrains.kotlin:kotlin-test-junit")
             }
         }
 

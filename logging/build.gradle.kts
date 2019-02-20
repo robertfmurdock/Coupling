@@ -14,6 +14,7 @@ repositories {
 
 kotlin {
     targets {
+        jvm()
         add(presets["js"].createTarget("js"))
     }
 

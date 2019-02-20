@@ -12,6 +12,7 @@ repositories {
 
 kotlin {
     targets {
+        jvm()
         add(presets["js"].createTarget("js"))
     }
 
@@ -22,6 +23,13 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging-common:1.6.25")
                 implementation("com.soywiz:klock:1.1.1")
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.github.microutils:kotlin-logging:1.6.25")
+                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
             }
         }
 

@@ -1,7 +1,7 @@
 import kotlinx.coroutines.CoroutineScope
 import kotlin.test.fail
 
-expect fun <T> testAsync(block: suspend CoroutineScope.() -> T): Any
+expect fun <T> testAsync(block: suspend CoroutineScope.() -> T): Any?
 
 class SetupAsync<C>(val context: C)
 class ExerciseAsync<C, R>(val context: C, val result: R)
