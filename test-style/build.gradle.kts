@@ -15,6 +15,7 @@ kotlin {
         jvm()
         add(presets["js"].createTarget("js"))
         macosX64()
+        linuxX64()
     }
 
     sourceSets {
@@ -35,6 +36,12 @@ kotlin {
         }
 
         val macosX64Main by getting {
+            dependencies  {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
+            }
+        }
+
+        val linuxX64Main by getting {
             dependencies  {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
             }
