@@ -28,10 +28,19 @@ class SmolJsPlugin : Plugin<Project> {
                     }
 
             val compileKotlinJsTasks = target.tasks.filterIsInstance(Kotlin2JsCompile::class.java)
+
+            val kotlinTestTask = compileKotlinJsTasks.find { it.name == "compileTestKotlinJs" }
+                    ?: compileKotlinJsTasks.find { it.name == "compileTestKotlin2Js" }
+                    ?: throw Exception("Could not find kotlin test task.")
+
             val processResources = target.tasks.filterIsInstance(ProcessResources::class.java)
-            val jasmine = target.tasks.getByName("jasmine")
-            jasmine.dependsOn(compileKotlinJsTasks)
-            jasmine.dependsOn(processResources)
+            target.tasks.getByName("jasmine")
+                    .run {
+                        dependsOn(compileKotlinJsTasks)
+                        dependsOn(processResources)
+
+                        inputs.file(kotlinTestTask.outputFile)
+                    }
         }
 
         target.tasks.run {

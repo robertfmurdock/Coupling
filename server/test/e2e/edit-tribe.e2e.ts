@@ -8,7 +8,6 @@ const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 
-
 const userEmail = 'protractor@test.goo';
 
 function authorizeAllTribes() {

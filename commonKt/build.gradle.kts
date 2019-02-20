@@ -94,8 +94,6 @@ tasks {
                 jsTestProcessResources.destinationDir
         )
 
-        inputs.file(compileTestKotlinJs.outputFile)
-
         relevantPaths.forEach { inputs.dir(it) }
 
         setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
