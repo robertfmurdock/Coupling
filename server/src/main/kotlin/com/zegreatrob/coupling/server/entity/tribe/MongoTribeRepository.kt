@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax
 import kotlinx.coroutines.Deferred
@@ -12,7 +13,7 @@ import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
-interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLoadSyntax {
+interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLoadSyntax, DbRecordDeleteSyntax {
 
     val jsRepository: dynamic
 
@@ -20,6 +21,16 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             .let {
                 it.save(jsRepository.tribesCollection)
             }
+
+    override suspend fun delete(tribeId: TribeId) =
+            deleteEntity(
+                    id = tribeId.value,
+                    collection = jsRepository.tribesCollection,
+                    entityName = "Tribe",
+                    toDomain = { toTribe() },
+                    toDbJson = { toDbJson() },
+                    usesRawId = false
+            )
 
     override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = GlobalScope.async {
         findByQuery(json("id" to tribeId.value), jsRepository.tribesCollection)

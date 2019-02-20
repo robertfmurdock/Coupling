@@ -8,9 +8,10 @@ interface DbRecordDeleteSyntax : DbRecordLoadSyntax, DbRecordSaveSyntax {
             collection: dynamic,
             entityName: String,
             toDomain: Json.() -> T?,
-            toDbJson: T.() -> Json
+            toDbJson: T.() -> Json,
+            usesRawId: Boolean = true
     ) =
-            getLatestRecordWithId(id, collection)
+            getLatestRecordWithId(id, collection, usesRawId)
                     ?.toDomain()
                     .let {
                         it ?: throw Exception(message = "$entityName could not be deleted because they do not exist.")

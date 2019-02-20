@@ -45,6 +45,23 @@ class TribeRoutes {
                 response.send(error.message);
             });
     };
+
+    public delete = async (request, response) => {
+        request.commandDispatcher.performDeleteTribeCommand(request.params.tribeId)
+            .then(function (tribe) {
+                if (tribe !== null) {
+                    response.send(tribe);
+                } else {
+                    response.statusCode = 404;
+                    response.send({message: 'Tribe not found.'});
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                response.statusCode = 500;
+                response.send(error.message);
+            });
+    }
 }
 
 const tribes = new TribeRoutes();
@@ -55,6 +72,7 @@ router.route('/')
 
 router.route('/:tribeId')
     .get(tribes.get)
-    .post(tribes.save);
+    .post(tribes.save)
+    .delete(tribes.delete);
 
 export default router

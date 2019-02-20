@@ -4,10 +4,14 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
-interface TribeRepository : TribeGet, TribeListGet, TribeSave
+interface TribeRepository : TribeGet, TribeListGet, TribeSave, TribeDelete
 
 interface TribeSave {
     suspend fun save(tribe: KtTribe)
+}
+
+interface TribeDelete {
+    suspend fun delete(tribeId: TribeId)
 }
 
 interface TribeGet {

@@ -33,7 +33,8 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
         DeletePairAssignmentDocumentCommandDispatcher,
         TribeListQueryDispatcher,
         TribeQueryDispatcher,
-        SaveTribeCommandDispatcher {
+        SaveTribeCommandDispatcher,
+        DeleteTribeCommandDispatcher {
     override val playerRepository: PlayerRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
@@ -125,6 +126,12 @@ fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail:
         @JsName("performSaveTribeCommand")
         fun performSaveTribeCommand(tribe: Json) = GlobalScope.promise {
             SaveTribeCommand(tribe.toTribe())
+                    .perform()
+        }
+
+        @JsName("performDeleteTribeCommand")
+        fun performDeleteTribeCommand(tribeId: String) = GlobalScope.promise {
+            DeleteTribeCommand(TribeId(tribeId))
                     .perform()
         }
 

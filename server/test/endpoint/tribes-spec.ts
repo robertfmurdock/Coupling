@@ -176,4 +176,39 @@ describe(path, function () {
                 .then(done, done.fail);
         });
     });
+
+    describe('DELETE', function () {
+        let newTribe = {
+            name: 'TeamMadeByTest',
+            id: 'deleteme',
+            email: 'test@test.test',
+            badgesEnabled: true,
+            _id: monk.id()
+        };
+
+        it('will remove a tribe from regular communications.', async function () {
+            await host.post(path)
+                .send(newTribe)
+                .expect(200)
+                .expect('Content-Type', /json/);
+
+            await host.delete(path + "/deleteme")
+                .expect(200);
+
+            const getAllResponse = await host.get(path)
+                .expect(200)
+                .expect('Content-Type', /json/);
+
+            const result = find(function (element) {
+                return element.name === 'TeamMadeByTest'
+            }, getAllResponse.body);
+
+            expect(result).toBeUndefined();
+
+            await host.get(path + '/deleteme')
+                .expect(404)
+                .expect('Content-Type', /json/);
+
+        });
+    })
 });

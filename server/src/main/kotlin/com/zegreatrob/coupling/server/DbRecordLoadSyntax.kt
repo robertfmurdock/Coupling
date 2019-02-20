@@ -35,12 +35,13 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
 
     fun List<Json>.latestByTimestamp() = sortedByDescending { it.timeStamp() }.firstOrNull()
 
-    suspend fun getLatestRecordWithId(id: String, collection: dynamic) = getAllRecordsWithId(id, collection)
-            .latestByTimestamp()
+    suspend fun getLatestRecordWithId(id: String, collection: dynamic, usesRawId: Boolean = true) =
+            getAllRecordsWithId(id, collection, usesRawId)
+                    .latestByTimestamp()
 
-    private suspend fun getAllRecordsWithId(id: String, collection: dynamic) = listOf(
+    private suspend fun getAllRecordsWithId(id: String, collection: dynamic, usesRawId: Boolean = true) = listOf(
             rawFindBy(json("id" to id), collection),
-            rawFindBy(json("_id" to id), collection)
+            if (usesRawId) rawFindBy(json("_id" to id), collection) else Promise.resolve(emptyArray())
     )
             .map { it.await().toList() }
             .flatten()

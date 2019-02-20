@@ -19,7 +19,6 @@ class SmolJsPlugin : Plugin<Project> {
 
             val forEachJsTarget = forEachJsTarget(target)
 
-
             target.tasks.filterIsInstance(UnpackGradleDependenciesTask::class.java)
                     .forEach { unpackTask ->
                         forEachJsTarget.let { (main, test) ->
