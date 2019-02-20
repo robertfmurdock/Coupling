@@ -13,7 +13,6 @@ import exercise
 import setup
 import verify
 import kotlin.test.Test
-import kotlin.test.fail
 
 @Suppress("unused")
 class ComposeStatisticsActionTest {

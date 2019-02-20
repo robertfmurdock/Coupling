@@ -35,7 +35,7 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
             history = fileJson["history"].map {
                 PairAssignmentDocument(
                         id = it["_id"].textValue().let(::PairAssignmentDocumentId),
-                        date = it["date"].textValue().let { text -> dateFormat.parse(text).local},
+                        date = it["date"].textValue().let { text -> dateFormat.parse(text).local },
                         pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }
                 )
             }
