@@ -10,15 +10,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-13-{{ .Branch }}
+          key: coupling-cache-14-{{ .Branch }}
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-cache-13-{{ .Branch }}
+          key: coupling-cache-14-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
             - "client/.gradle"
             - "node_modules"
+            - "/root/.konan
       - run: "./gradlew build check"
       - store_artifacts:
           path: build/test-output
@@ -35,7 +36,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-13-{{ .Branch }}
+          key: coupling-cache-14-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
