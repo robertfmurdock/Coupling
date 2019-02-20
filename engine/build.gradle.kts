@@ -1,5 +1,4 @@
 
-import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -74,23 +73,6 @@ tasks {
 
     val assemble by getting
     assemble.dependsOn(unpackJsGradleDependencies)
-
-    val jasmine by getting(NodeTask::class) {
-        val relevantPaths = listOf(
-                "node_modules",
-                "build/node_modules_imported",
-                compileKotlinJs.outputFile.parent,
-                jsTestProcessResources.destinationDir
-        )
-
-        relevantPaths.filter { file(it).exists() }.forEach { inputs.dir(it) }
-
-        setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
-
-        setArgs(listOf("${compileTestKotlinJs.outputFile}"))
-
-        outputs.dir("build/test-results/jsTest")
-    }
 
     val jsTest by getting
     jsTest.dependsOn(jasmine)

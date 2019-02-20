@@ -29,18 +29,31 @@ class SmolJsPlugin : Plugin<Project> {
 
             val compileKotlinJsTasks = target.tasks.filterIsInstance(Kotlin2JsCompile::class.java)
 
-            val kotlinTestTask = compileKotlinJsTasks.find { it.name == "compileTestKotlinJs" }
+            val kotlinCompileTestTask = compileKotlinJsTasks.find { it.name == "compileTestKotlinJs" }
                     ?: compileKotlinJsTasks.find { it.name == "compileTestKotlin2Js" }
                     ?: throw Exception("Could not find kotlin test task.")
 
             val processResources = target.tasks.filterIsInstance(ProcessResources::class.java)
-            target.tasks.getByName("jasmine")
-                    .run {
-                        dependsOn(compileKotlinJsTasks)
-                        dependsOn(processResources)
+            val jasmine = target.tasks.filterIsInstance(NodeTask::class.java).find { it.name == "jasmine" }
+                    ?: throw Exception("Could not find Jasmine test task.")
+            jasmine.run {
+                dependsOn(compileKotlinJsTasks)
+                dependsOn(processResources)
 
-                        inputs.file(kotlinTestTask.outputFile)
-                    }
+                val relevantPaths = listOf("node_modules", "build/node_modules_imported") +
+                        compileKotlinJsTasks.map { it.outputFile.parent } +
+                        processResources.map { it.destinationDir.path }
+
+                inputs.file(kotlinCompileTestTask.outputFile)
+
+                relevantPaths.forEach { if (java.io.File(it).isDirectory) inputs.dir(it) }
+
+                setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
+
+                setArgs(listOf("${kotlinCompileTestTask.outputFile}"))
+
+                outputs.dir("build/test-results/jsTest")
+            }
         }
 
         target.tasks.run {
@@ -48,27 +61,9 @@ class SmolJsPlugin : Plugin<Project> {
 
             create("jasmine", NodeTask::class.java) {
                 it.dependsOn("yarn", unpackJsGradleDependencies)
-//                val relevantPaths = listOf(
-//                        "node_modules",
-//                        "build/node_modules_imported",
-//                        compileKotlinJs.outputFile.parent,
-//                        jsTestProcessResources.destinationDir
-//                )
-//
-//                inputs.file(compileTestKotlinJs.outputFile)
-//
                 val script = target.rootDir.path + "/buildSrc/test-wrapper.js"
                 it.inputs.file(script)
                 it.setScript(java.io.File(script))
-
-//                relevantPaths.forEach { inputs.dir(it) }
-//
-//                setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
-//
-//                setArgs(listOf("${compileTestKotlinJs.outputFile}"))
-//
-//                outputs.dir("build/test-results/jsTest")
-//
             }
         }
     }
