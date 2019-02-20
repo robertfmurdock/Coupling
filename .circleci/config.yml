@@ -19,7 +19,7 @@ jobs:
             - ".gradle"
             - "client/.gradle"
             - "node_modules"
-            - "/root/.konan
+            - "/root/.konan"
       - run: "./gradlew build check"
       - store_artifacts:
           path: build/test-output
