@@ -22,7 +22,6 @@ class TestStyleAsyncTest {
         }
     }
 
-
     @Test
     fun canFailAsyncWithCoroutine() {
         try {
