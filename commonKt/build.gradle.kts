@@ -83,12 +83,4 @@ tasks {
         dependsOn(":test-style:assemble", ":test-logging:assemble")
     }
 
-    val jsTestProcessResources by getting(ProcessResources::class)
-
-    val jsTest by getting
-    jsTest.dependsOn(jasmine)
-
-    val test by creating {
-        dependsOn(jsTest)
-    }
 }

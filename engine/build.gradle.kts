@@ -69,15 +69,4 @@ tasks {
         dependsOn(":test-style:assemble", ":commonKt:assemble")
     }
 
-    val jsTestProcessResources by getting(ProcessResources::class)
-
-    val assemble by getting
-    assemble.dependsOn(unpackJsGradleDependencies)
-
-    val jsTest by getting
-    jsTest.dependsOn(jasmine)
-
-    val test by creating {
-        dependsOn(jsTest)
-    }
 }

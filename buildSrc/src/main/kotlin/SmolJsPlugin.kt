@@ -54,17 +54,26 @@ class SmolJsPlugin : Plugin<Project> {
 
                 outputs.dir("build/test-results/jsTest")
             }
+
+            val jsTest = target.tasks.getByName("jsTest") {
+                it.dependsOn(jasmine)
+            }
+
+            target.tasks.create("test") {
+                it.dependsOn(jsTest)
+            }
         }
 
         target.tasks.run {
             val unpackJsGradleDependencies = create("unpackJsGradleDependencies", UnpackGradleDependenciesTask::class.java)
 
-            create("jasmine", NodeTask::class.java) {
+            val jasmine = create("jasmine", NodeTask::class.java) {
                 it.dependsOn("yarn", unpackJsGradleDependencies)
                 val script = target.rootDir.path + "/buildSrc/test-wrapper.js"
                 it.inputs.file(script)
                 it.setScript(java.io.File(script))
             }
+
         }
     }
 
