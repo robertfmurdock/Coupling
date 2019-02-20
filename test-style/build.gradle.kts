@@ -19,7 +19,7 @@ kotlin {
     }
 
     sourceSets {
-        getByName("commonMain") {
+        val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-common:${BuildConstants.kotlinVersion}")
@@ -28,6 +28,7 @@ kotlin {
             }
         }
 
+
         val jvmMain by getting {
             dependencies  {
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:${BuildConstants.kotlinVersion}")
@@ -35,17 +36,16 @@ kotlin {
             }
         }
 
-        val macosX64Main by getting {
+        val nativeCommonMain by creating {
+            dependsOn(commonMain)
             dependencies  {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
             }
         }
 
-        val linuxX64Main by getting {
-            dependencies  {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
-            }
-        }
+        val macosX64Main by getting { dependsOn(nativeCommonMain) }
+
+        val linuxX64Main by getting { dependsOn(nativeCommonMain) }
 
         getByName("jsMain") {
             dependencies {
