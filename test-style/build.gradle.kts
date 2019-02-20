@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -13,6 +14,7 @@ kotlin {
     targets {
         jvm()
         add(presets["js"].createTarget("js"))
+        macosX64()
     }
 
     sourceSets {
@@ -29,6 +31,12 @@ kotlin {
             dependencies  {
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1")
+            }
+        }
+
+        val macosX64Main by getting {
+            dependencies  {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
             }
         }
 
