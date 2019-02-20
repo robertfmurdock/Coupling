@@ -118,6 +118,7 @@ describe('The default tribes page', function () {
             const expectedValue = expectedTribe.email || '';
             expect(tribeNameElement.getAttribute('value')).toEqual(expectedValue);
         });
+
     });
 
 });

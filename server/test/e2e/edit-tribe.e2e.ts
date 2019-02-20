@@ -29,6 +29,8 @@ describe('The edit tribe page', function () {
     const checkedOption = element(By.css('#pairing-rule option:checked'));
     const tribeIdElement = element(By.id('tribe-id'));
 
+    const deleteButton = element(By.className('delete-tribe-button'));
+
     describe('for an existing tribe', function () {
         const tribe = {
             id: 'delete_me',
@@ -81,6 +83,25 @@ describe('The edit tribe page', function () {
             expect(element(By.id('default-badge-name')).getAttribute('value')).toEqual(expectedDefaultBadgeName);
             expect(element(By.id('alt-badge-name')).getAttribute('value')).toEqual(expectedAltBadgeName);
             expect(checkedOption.getAttribute('label')).toBe('Prefer Different Badges (Beta)');
+        });
+
+        it('the tribe can be deleted', async function() {
+            await browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+
+            await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
+            const tribeElements = element.all(By.repeater('tribe in tribeList.tribes'));
+            tribeElements.first().element(By.className("tribe-card-header")).click();
+
+            await expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
+
+            await expect(deleteButton.isDisplayed()).toBe(true);
+            await expect(deleteButton.isEnabled()).toBe(true);
+
+            deleteButton.click();
+
+            await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
+
+            await expect(tribeElements.count()).toBe(0);
         });
     });
 

@@ -39,6 +39,11 @@ export class TribeConfigController {
         this.$scope.$apply()
     }
 
+    async removeTribe() {
+        await Coupling.deleteTribe(this.tribe.id);
+        this.$location.path("/tribes");
+        this.$scope.$apply()
+    }
 }
 
 export default module("coupling.tribeConfig", [])

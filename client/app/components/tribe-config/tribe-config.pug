@@ -43,3 +43,4 @@ div(class="tribe-config" ng-class="self.styles.className" ng-show="self.tribe")
         ng-click="self.clickSaveButton()"
         tabIndex="0"
         value="Save")
+        div(ng-hide="self.isNew" class="small red button delete-tribe-button" ng-click="self.removeTribe()") Retire

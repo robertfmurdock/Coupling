@@ -35,6 +35,10 @@ class Coupling {
         await axios.post(`/api/tribes`, angular.copy(tribe))
     }
 
+    static async deleteTribe(tribeId: String) {
+        await axios.delete(`/api/tribes/${tribeId}`)
+    }
+
     data: CouplingData;
 
     constructor() {
