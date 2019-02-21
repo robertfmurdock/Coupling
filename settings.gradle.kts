@@ -12,7 +12,6 @@ pluginManagement {
     }
 }
 
-
 rootProject.name = "Coupling"
 include("client")
 include("server")

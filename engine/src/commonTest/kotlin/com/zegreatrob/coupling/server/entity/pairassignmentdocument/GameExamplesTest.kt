@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
+import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
 class GameExamplesTest {

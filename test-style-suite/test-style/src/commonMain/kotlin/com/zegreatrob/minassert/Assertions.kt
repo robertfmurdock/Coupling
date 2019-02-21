@@ -1,3 +1,5 @@
+package com.zegreatrob.minassert
+
 import kotlin.test.assertEquals
 
 fun <T> T?.assertIsEqualTo(expected: T, message: String? = null) = assertEquals(expected, this, message)

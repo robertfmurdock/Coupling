@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.server.entity.player
 
 import Spy
 import SpyData
-import assertIsEqualTo
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.minassert.assertIsEqualTo
 import exerciseAsync
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred

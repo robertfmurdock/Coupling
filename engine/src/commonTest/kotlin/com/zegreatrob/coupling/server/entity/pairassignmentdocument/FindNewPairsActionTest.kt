@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultVa
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
+import com.zegreatrob.minassert.assertContains
+import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

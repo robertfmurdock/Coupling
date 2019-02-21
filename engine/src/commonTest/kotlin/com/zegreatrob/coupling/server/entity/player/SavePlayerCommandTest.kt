@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.server.entity.player
 
 import Spy
 import SpyData
-import assertIsEqualTo
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.player.with
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.minassert.assertIsEqualTo
 import exerciseAsync
 import setupAsync
 import testAsync

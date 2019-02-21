@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.player
 
 import Spy
 import SpyData
-import assertIsEqualTo
+import com.zegreatrob.minassert.assertIsEqualTo
 import exerciseAsync
 import setupAsync
 import testAsync

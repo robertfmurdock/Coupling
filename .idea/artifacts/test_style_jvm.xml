@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="test-style-jvm">
     <output-path>$PROJECT_DIR$/test-style-suite/test-style/build/libs</output-path>
-    <root id="archive" name="test-style-jvm.jar" />
+    <root id="archive" name="test-style-jvm.jar">
+      <element id="module-output" name="Coupling.test-style-suite-test-style_jvmMain" />
+    </root>
   </artifact>
 </component>

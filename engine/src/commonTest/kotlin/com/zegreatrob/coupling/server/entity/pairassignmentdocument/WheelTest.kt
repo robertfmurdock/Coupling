@@ -1,5 +1,6 @@
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.Wheel
+import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.random.Random
 import kotlin.test.Test
 

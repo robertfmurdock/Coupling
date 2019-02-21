@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.common.entity.player.with
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.MonkToolkit
 import com.zegreatrob.coupling.server.entity.player.MongoPlayerRepository
+import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.await
 import kotlin.js.*
 import kotlin.random.Random

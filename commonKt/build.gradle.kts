@@ -45,7 +45,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging:1.6.25")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.9.7")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.9.8")
             }
         }
 

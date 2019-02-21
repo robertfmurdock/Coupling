@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.PinAssignmentSyntax
+import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
 class PinAssignmentSyntaxTest {

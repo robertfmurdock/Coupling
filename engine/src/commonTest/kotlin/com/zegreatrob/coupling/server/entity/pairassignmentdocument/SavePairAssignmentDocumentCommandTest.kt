@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.PairAssignmentDocumentSaver
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
+import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {
