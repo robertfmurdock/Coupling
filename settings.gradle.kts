@@ -20,6 +20,8 @@ include("engine")
 include("commonKt")
 include("logging")
 include("test-style")
+include("test-style-async")
+include("test-style-async-js")
 include("test-logging")
 
 enableFeaturePreview("GRADLE_METADATA")

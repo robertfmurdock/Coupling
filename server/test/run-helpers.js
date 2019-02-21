@@ -28,7 +28,7 @@ function startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix) {
   // noinspection JSUnresolvedFunction
   const loggingReporter = new testLogging.JasmineJsonLoggingReporter();
 
-  jasmine.clearReporters();
+  // jasmine.clearReporters();
 
   jasmine.addReporter(loggingReporter);
   jasmine.addReporter(junitReporter);

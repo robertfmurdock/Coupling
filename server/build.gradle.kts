@@ -34,6 +34,7 @@ dependencies {
 
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-style"))
+    testImplementation(project(":test-style-async-js"))
     testImplementation(project(":test-logging"))
 }
 

@@ -12,10 +12,7 @@ repositories {
 
 kotlin {
     targets {
-        jvm()
         add(presets["js"].createTarget("js"))
-        macosX64()
-        linuxX64()
     }
 
     sourceSets {
@@ -24,29 +21,18 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.1.1")
             }
         }
-        
-        val jvmMain by getting {
-            dependencies  {
-                implementation("org.jetbrains.kotlin:kotlin-test-junit:${BuildConstants.kotlinVersion}")
-            }
-        }
-
-        val nativeCommonMain by creating {
-            dependsOn(commonMain)
-        }
-
-        val macosX64Main by getting { dependsOn(nativeCommonMain) }
-
-        val linuxX64Main by getting { dependsOn(nativeCommonMain) }
 
         getByName("jsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.1")
             }
         }
+
     }
 }
 
@@ -56,4 +42,5 @@ tasks {
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
+
 }

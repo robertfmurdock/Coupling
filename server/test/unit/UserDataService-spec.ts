@@ -27,10 +27,6 @@ describe('UserDataService', function () {
 
     describe('findOrCreate', function () {
         it('will create a user if it does not already exist', function (done) {
-
-            console.log('LOG_LEVEL', kotlinLogging.mu.LOG_LEVEL);
-            console.log('messageFormatter', kotlinLogging.mu.messageFormatter);
-
             var email = 'awesome.o@super.coo';
             userDataService.findOrCreate(email, function (err, user) {
                 expect(user).not.toBe(undefined);

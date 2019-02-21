@@ -1,3 +1,4 @@
+
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
@@ -12,7 +13,6 @@ class SavePairAssignmentDocumentCommandTest {
     @Test
     fun willSendToRepository() = testAsync {
         setupAsync(object : SavePairAssignmentDocumentCommandDispatcher {
-
             val pairAssignmentDocument = PairAssignmentDocument(
                     date = DateTime.now(),
                     pairs = emptyList(),
