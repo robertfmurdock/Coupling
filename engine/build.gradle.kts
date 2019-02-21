@@ -30,8 +30,8 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":test-style"))
-                api(project(":test-style-async-js"))
+                api(project(":test-style-suite:test-style"))
+                api(project(":test-style-suite:test-style-async-js"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
@@ -59,7 +59,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":test-style:assemble", ":commonKt:assemble")
+        dependsOn(":test-style-suite:test-style:assemble", ":commonKt:assemble")
     }
 
 }

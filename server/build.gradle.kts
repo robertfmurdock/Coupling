@@ -33,8 +33,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
 
     testImplementation(kotlin("test-js"))
-    testImplementation(project(":test-style"))
-    testImplementation(project(":test-style-async-js"))
+    testImplementation(project(":test-style-suite:test-style"))
+    testImplementation(project(":test-style-suite:test-style-async-js"))
     testImplementation(project(":test-logging"))
 }
 
