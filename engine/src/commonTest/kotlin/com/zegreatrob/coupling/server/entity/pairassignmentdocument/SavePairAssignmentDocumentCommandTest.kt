@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.server.entity.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {

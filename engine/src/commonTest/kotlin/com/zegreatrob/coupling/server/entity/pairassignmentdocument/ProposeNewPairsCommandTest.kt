@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.server.entity.PinRepository
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlin.random.Random

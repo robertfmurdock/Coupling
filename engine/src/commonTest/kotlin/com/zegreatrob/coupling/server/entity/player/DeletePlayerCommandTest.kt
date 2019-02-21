@@ -3,10 +3,8 @@ package com.zegreatrob.coupling.server.entity.player
 import Spy
 import SpyData
 import com.zegreatrob.minassert.assertIsEqualTo
-import exerciseAsync
-import setupAsync
-import testAsync
-import verifyAsync
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 class DeletePlayerCommandTest {

@@ -7,10 +7,8 @@ import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.player.with
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import exerciseAsync
-import setupAsync
-import testAsync
-import verifyAsync
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 class SavePlayerCommandTest {

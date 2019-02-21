@@ -5,12 +5,10 @@ import SpyData
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import exerciseAsync
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
-import setupAsync
-import testAsync
-import verifyAsync
 import kotlin.test.Test
 
 class PlayersQueryTest {
