@@ -1,3 +1,5 @@
+package com.zegreatrob.testmints
+
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals

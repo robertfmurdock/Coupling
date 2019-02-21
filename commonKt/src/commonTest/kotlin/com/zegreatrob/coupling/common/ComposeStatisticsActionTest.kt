@@ -9,9 +9,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import exercise
-import setup
-import verify
+import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 @Suppress("unused")

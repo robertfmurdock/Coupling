@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
@@ -6,6 +7,7 @@ import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
