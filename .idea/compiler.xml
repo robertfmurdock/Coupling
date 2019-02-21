@@ -10,6 +10,7 @@
       <module name="Coupling.test-style-suite-test-style-async_jvmTest" target="1.6" />
       <module name="Coupling.test-style-suite-test-style_jvmMain" target="1.6" />
       <module name="Coupling.test-style-suite-test-style_jvmTest" target="1.6" />
+      <module name="Coupling.testmints-test-style_jvmMain" target="1.6" />
       <module name="Coupling_buildSrc_main" target="1.8" />
       <module name="Coupling_buildSrc_test" target="1.8" />
       <module name="logging_jvmMain" target="1.6" />

@@ -37,7 +37,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation(project(":test-style-suite:test-style"))
+                implementation(project(":testmints:standard"))
                 implementation(project(":test-logging"))
             }
         }
@@ -88,7 +88,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":test-style-suite:test-style:assemble", ":test-logging:assemble")
+        dependsOn(":testmints:standard:assemble", ":test-logging:assemble")
     }
 
 }
