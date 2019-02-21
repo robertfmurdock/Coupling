@@ -5,7 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-class TestStyleTest {
+class TestMintsTest {
 
     @Test
     fun verifyShouldThrowErrorWhenFailureOccurs() {

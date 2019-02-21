@@ -1,3 +1,5 @@
+package com.zegreatrob.testmints.async
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 

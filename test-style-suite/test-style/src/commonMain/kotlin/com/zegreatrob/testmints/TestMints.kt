@@ -10,7 +10,5 @@ class Setup<C>(private val context: C) {
 }
 
 class Exercise<C, R>(private val context: C, val result: R) {
-
     infix fun <R2> verify(assertionFunctions: C.(R) -> R2) = context.assertionFunctions(result)
-
 }
