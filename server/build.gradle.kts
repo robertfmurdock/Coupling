@@ -29,6 +29,7 @@ dependencies {
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-logging"))
     testImplementation("com.zegreatrob.testmints:standard:+")
+    testImplementation("com.zegreatrob.testmints:minassert:+")
     testImplementation("com.zegreatrob.testmints:async-js:+")
 }
 
