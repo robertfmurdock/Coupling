@@ -6,12 +6,6 @@ plugins {
     id("kotlinx-serialization") version "1.3.21"
 }
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
-    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-}
-
 kotlin {
     targets {
         jvm()

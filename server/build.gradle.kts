@@ -11,12 +11,6 @@ plugins {
     id("kotlinx-serialization") version "1.3.21"
 }
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
-    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-}
-
 node {
     version = BuildConstants.nodeVersion
     npmVersion = BuildConstants.npmVersion
@@ -33,9 +27,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
 
     testImplementation(kotlin("test-js"))
-    testImplementation(project(":testmints:standard"))
-    testImplementation(project(":testmints:async-js"))
     testImplementation(project(":test-logging"))
+    testImplementation("com.zegreatrob.testmints:standard:+")
+    testImplementation("com.zegreatrob.testmints:async-js:+")
 }
 
 tasks {

@@ -9,13 +9,6 @@ plugins {
     id("smol-js")
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
-    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-}
-
 kotlin {
 
     targets {
@@ -37,7 +30,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation(project(":testmints:standard"))
+                implementation("com.zegreatrob.testmints:standard:+")
                 implementation(project(":test-logging"))
             }
         }
@@ -88,7 +81,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":testmints:standard:assemble", ":test-logging:assemble")
+        dependsOn(":test-logging:assemble")
     }
 
 }

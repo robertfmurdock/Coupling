@@ -5,11 +5,6 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
 }
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
-}
-
 kotlin {
     targets {
         jvm()

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="async_jvmMain" target="1.6" />
+      <module name="async_jvmTest" target="1.6" />
       <module name="client_main" target="1.8" />
       <module name="client_test" target="1.8" />
       <module name="commonKt_jvmMain" target="1.6" />
@@ -17,6 +19,8 @@
       <module name="logging_jvmTest" target="1.6" />
       <module name="server_main" target="1.8" />
       <module name="server_test" target="1.8" />
+      <module name="standard_jvmMain" target="1.6" />
+      <module name="standard_jvmTest" target="1.6" />
       <module name="test-logging_jvmMain" target="1.6" />
       <module name="test-logging_jvmTest" target="1.6" />
       <module name="test-style-async_jvmMain" target="1.6" />

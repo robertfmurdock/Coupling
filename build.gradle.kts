@@ -8,6 +8,16 @@ plugins {
     id("com.github.ben-manes.versions") version "0.20.0"
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url = uri("https://dl.bintray.com/robertfmurdock/zegreatrob") }
+        maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
+        maven { url = uri("https://kotlin.bintray.com/kotlinx") }
+    }
+}
+
 docker {
     registryCredentials {
         username.set(System.getenv("DOCKER_USER"))
