@@ -27,6 +27,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
 
     testImplementation(project(":test-logging"))
+    testImplementation("com.zegreatrob.testmints:standard:+")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
