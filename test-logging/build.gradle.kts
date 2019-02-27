@@ -26,10 +26,14 @@ kotlin {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging:1.6.25")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.4.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.4.0")
+                implementation("org.slf4j:slf4j-simple:1.7.5")
             }
         }
 
-        getByName("jsMain") {
+        val jsMain by getting {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging-js:1.6.25")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")

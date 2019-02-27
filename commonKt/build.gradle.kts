@@ -46,7 +46,10 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-junit")
+                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+                implementation("org.junit.jupiter:junit-jupiter-api:5.4.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.4.0")
             }
         }
 
@@ -83,6 +86,12 @@ tasks {
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
         dependsOn(":test-logging:assemble")
+    }
+
+    val jvmTest by getting(Test::class) {
+        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
+        
+        useJUnitPlatform()
     }
 
 }
