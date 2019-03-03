@@ -1,16 +1,17 @@
 package com.zegreatrob.coupling.common
 
+import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
-import com.zegreatrob.coupling.common.entity.player.callsign.PickCallSignActionDispatcher
+import com.zegreatrob.coupling.common.entity.player.callsign.GenerateCallSignActionDispatcher
 import com.zegreatrob.coupling.common.entity.player.callsign.GenerateCallSignAction
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
-class PickCallSignActionTest {
+class GenerateCallSignActionTest {
 
-    companion object : PickCallSignActionDispatcher;
+    companion object : GenerateCallSignActionDispatcher;
 
     @Test
     fun whenGivenOnlyOneAdjectiveAndOneNounWillSelectThem() = setup(object {
@@ -46,6 +47,36 @@ class PickCallSignActionTest {
         action1.perform() to action2.perform()
     } verify { (result1, result2) ->
         result1.assertIsNotEqualTo(result2)
+    }
+
+    @Test
+    fun willUseDifferentAdjectiveIfAnotherPlayerAlreadyHasUsedIt() = setup(object {
+        val adjectives = setOf("Red", "Green", "Blue")
+        val nouns = setOf("Lion", "Tiger", "Bear")
+        val email = "robert.f.murdock@accenture.com"
+        val normalGeneratedCallSign = CallSign("Green", "Bear")
+        val players = listOf(Player(callSignAdjective = normalGeneratedCallSign.adjective))
+
+        val action = GenerateCallSignAction(adjectives, nouns, email, players)
+    }) exercise {
+        action.perform()
+    } verify { result ->
+        result.assertIsEqualTo(CallSign("Blue", "Bear"))
+    }
+
+    @Test
+    fun willUseDifferentNounIfAnotherPlayerAlreadyHasUsedIt() = setup(object {
+        val adjectives = setOf("Red", "Green", "Blue")
+        val nouns = setOf("Lion", "Tiger", "Bear")
+        val email = "robert.f.murdock@accenture.com"
+        val normalGeneratedCallSign = CallSign("Green", "Bear")
+        val players = listOf(Player(callSignNoun = normalGeneratedCallSign.noun))
+
+        val action = GenerateCallSignAction(adjectives, nouns, email, players)
+    }) exercise {
+        action.perform()
+    } verify { result ->
+        result.assertIsEqualTo(CallSign("Green", "Tiger"))
     }
 
 }

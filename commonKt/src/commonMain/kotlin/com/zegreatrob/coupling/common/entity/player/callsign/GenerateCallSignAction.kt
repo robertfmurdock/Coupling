@@ -10,7 +10,7 @@ data class GenerateCallSignAction(
         val players: List<Player>
 )
 
-interface PickCallSignActionDispatcher : PredictableWordPicker {
+interface GenerateCallSignActionDispatcher : PredictableWordPicker {
 
     fun GenerateCallSignAction.perform() = CallSign(
             pickAdjective(),
