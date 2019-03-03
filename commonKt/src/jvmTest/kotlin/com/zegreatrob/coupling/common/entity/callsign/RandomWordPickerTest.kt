@@ -8,8 +8,10 @@ class RandomWordPickerTest {
 
     class ChoosesTheNameUsingTheValueOfGivenString {
 
+        companion object : RandomWordPicker;
+
         @Test
-        fun consistently() = setup(object : RandomWordPicker {
+        fun consistently() = setup(object {
             val options = listOf("option1", "option2", "option3")
             val givenString = "emailjones@email.edu"
         }) exercise {
@@ -22,7 +24,7 @@ class RandomWordPickerTest {
         }
 
         @Test
-        fun withSimpleNumberInputStrings() = setup(object : RandomWordPicker {
+        fun withSimpleNumberInputStrings() = setup(object {
             val options = listOf("option1", "option2", "option3")
             val givenStrings = listOf("0", "1", "2")
         }) exercise {
@@ -37,7 +39,7 @@ class RandomWordPickerTest {
         }
 
         @Test
-        fun evenIfValueIsGreaterThanNumberOfOptions() = setup(object : RandomWordPicker {
+        fun evenIfValueIsGreaterThanNumberOfOptions() = setup(object {
             val options = listOf("option1", "option2", "option3")
             val givenStrings = listOf("1", "2", "3")
         }) exercise {
@@ -52,7 +54,7 @@ class RandomWordPickerTest {
         }
 
         @Test
-        fun evenIfValueIsNonNumeric() = setup(object : RandomWordPicker {
+        fun evenIfValueIsNonNumeric() = setup(object {
             val options = listOf(
                     "option0",
                     "option1",
@@ -78,7 +80,7 @@ class RandomWordPickerTest {
         }
 
         @Test
-        fun evenIfValueHasMoreThanOneNonNumericCharacter() = setup(object : RandomWordPicker {
+        fun evenIfValueHasMoreThanOneNonNumericCharacter() = setup(object {
             val options = listOf("option0", "option1", "option2")
             val givenStrings = listOf("aa", "bbc", "Rob")
         }) exercise {
