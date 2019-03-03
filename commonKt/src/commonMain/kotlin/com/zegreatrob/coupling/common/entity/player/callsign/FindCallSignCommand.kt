@@ -6,7 +6,7 @@ data class FindCallSignCommand(val players: List<Player>, val email: String)
 
 interface FindCallSignCommandDispatcher : GenerateCallSignActionDispatcher {
 
-    fun FindCallSignCommand.perform() = defaultOptions
+    fun FindCallSignCommand.perform() = defaultCallSignOptions
             .let { (adjectives, nouns) ->
                 generateCallSign(adjectives, nouns)
             }

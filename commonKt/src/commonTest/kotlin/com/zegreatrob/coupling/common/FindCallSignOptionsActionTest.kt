@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.common
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSignOptions
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignOptionsAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignOptionsActionDispatcher
-import com.zegreatrob.coupling.common.entity.player.callsign.defaultOptions
+import com.zegreatrob.coupling.common.entity.player.callsign.defaultCallSignOptions
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -20,7 +20,7 @@ class FindCallSignOptionsActionTest {
     }) exercise {
         action.perform()
     } verify { result ->
-        result.assertIsEqualTo(defaultOptions)
+        result.assertIsEqualTo(defaultCallSignOptions)
     }
 
     @Test
@@ -34,8 +34,8 @@ class FindCallSignOptionsActionTest {
         action.perform()
     } verify { result ->
         result.assertIsEqualTo(CallSignOptions(
-                adjectives = defaultOptions.adjectives - setOf("Modest", "Intense"),
-                nouns = defaultOptions.nouns - setOf("Tiger", "Mongoose")
+                adjectives = defaultCallSignOptions.adjectives - setOf("Modest", "Intense"),
+                nouns = defaultCallSignOptions.nouns - setOf("Tiger", "Mongoose")
         ))
     }
 }
