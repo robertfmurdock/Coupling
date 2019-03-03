@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.common
 import com.zegreatrob.coupling.common.entity.callsign.AvailableComponents
 import com.zegreatrob.coupling.common.entity.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.callsign.CallSignPicker
+import com.zegreatrob.coupling.common.entity.callsign.PickCallSignAction
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.setup
@@ -18,8 +19,9 @@ class CallSignPickerTest {
         val noun = "Tacos"
         val components = AvailableComponents(listOf(adjective), listOf(noun))
         val email = "robert.f.murdock@accenture.com"
+        val action = PickCallSignAction(components, email)
     }) exercise {
-        components.pick(email)
+        action.pick()
     } verify { result ->
         result.assertIsEqualTo(CallSign("Excellent", "Tacos"))
     }
@@ -30,8 +32,9 @@ class CallSignPickerTest {
         val nouns = listOf("Lion", "Tiger", "Bear")
         val components = AvailableComponents(adjectives, nouns)
         val email = "robert.f.murdock@accenture.com"
+        val action = PickCallSignAction(components, email)
     }) exercise {
-        components.pick(email) to components.pick(email)
+        action.pick() to action.pick()
     } verify { (result1, result2) ->
         result1.assertIsEqualTo(result2)
     }
@@ -41,10 +44,10 @@ class CallSignPickerTest {
             val adjectives = listOf("Red", "Green", "Blue")
             val nouns = listOf("Lion", "Tiger", "Bear")
             val components = AvailableComponents(adjectives, nouns)
-            val email1 = "robert.f.murdock@accenture.com"
-            val email2 = "rmurdock@pillartechnology.com"
+        val action1 = PickCallSignAction(components, "robert.f.murdock@accenture.com")
+        val action2 = PickCallSignAction(components, "rmurdock@pillartechnology.com")
     }) exercise {
-        components.pick(email1) to components.pick(email2)
+        action1.pick() to action2.pick()
     } verify { (result1, result2) ->
         result1.assertIsNotEqualTo(result2)
     }
