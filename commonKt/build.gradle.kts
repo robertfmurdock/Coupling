@@ -38,6 +38,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
+                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:1.6.25")
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.9.8")
             }
@@ -45,6 +46,8 @@ kotlin {
 
         val jvmTest by getting {
             dependencies {
+                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation("org.slf4j:slf4j-simple:1.7.5")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
 

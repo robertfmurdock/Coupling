@@ -1,14 +1,16 @@
-package com.zegreatrob.coupling.common.entity.callsign
+package com.zegreatrob.coupling.common
 
+import com.zegreatrob.coupling.common.entity.callsign.PredictableWordPicker
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
-class RandomWordPickerTest {
+@Suppress("unused")
+class PredictableWordPickerTest {
 
     class ChoosesTheNameUsingTheValueOfGivenString {
 
-        companion object : RandomWordPicker;
+        companion object : PredictableWordPicker;
 
         @Test
         fun consistently() = setup(object {

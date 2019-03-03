@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.common.entity.callsign
 
-interface RandomWordPicker {
+interface PredictableWordPicker {
 
     fun List<String>.pickForGiven(givenString: String) = givenString.map { it.toInt() }
             .sum()
