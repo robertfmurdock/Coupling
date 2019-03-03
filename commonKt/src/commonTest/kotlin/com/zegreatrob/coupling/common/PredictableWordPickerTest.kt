@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.common
 
-import com.zegreatrob.coupling.common.entity.callsign.PredictableWordPicker
+import com.zegreatrob.coupling.common.entity.player.callsign.PredictableWordPicker
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test

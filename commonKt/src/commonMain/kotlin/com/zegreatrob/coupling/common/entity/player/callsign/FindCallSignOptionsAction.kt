@@ -1,11 +1,10 @@
-package com.zegreatrob.coupling.common.entity.callsign
+package com.zegreatrob.coupling.common.entity.player.callsign
 
 import com.zegreatrob.coupling.common.entity.player.Player
 
 data class FindCallSignOptionsAction(val players: List<Player>)
 
 data class CallSignOptions(val adjectives: Set<String>, val nouns: Set<String>)
-
 
 val defaultOptions = CallSignOptions(
         adjectives = setOf(
