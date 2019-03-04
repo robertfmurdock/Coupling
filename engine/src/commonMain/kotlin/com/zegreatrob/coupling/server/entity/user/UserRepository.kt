@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.common.entity.user
+package com.zegreatrob.coupling.server.entity.user
 
 interface UserRepository {
     suspend fun save(user: User)

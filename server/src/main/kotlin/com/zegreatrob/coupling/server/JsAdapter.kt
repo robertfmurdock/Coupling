@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.common.entity.user.User
-import com.zegreatrob.coupling.common.entity.user.UserRepository
+import com.zegreatrob.coupling.server.entity.user.User
+import com.zegreatrob.coupling.server.entity.user.UserRepository
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer

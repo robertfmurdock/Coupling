@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.server.entity.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlin.random.Random
@@ -52,6 +53,7 @@ class ProposeNewPairsCommandTest {
             actionDispatcher.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
         }
     }
+
 }
 
 class SpyRunGameActionDispatcher : RunGameActionDispatcher, Spy<RunGameAction, PairAssignmentDocument> by SpyData() {

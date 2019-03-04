@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.common
 
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
-import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignCommand
-import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignCommandDispatcher
+import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
+import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
-class FindCallSignCommandTest {
+class FindCallSignActionTest {
 
-    companion object : FindCallSignCommandDispatcher {
+    companion object : FindCallSignActionDispatcher {
         val email = "robert.f.murdock@accenture.com"
         val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeast")
     }
@@ -22,7 +22,7 @@ class FindCallSignCommandTest {
                 Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
         )
 
-        val command = FindCallSignCommand(players, email)
+        val command = FindCallSignAction(players, email)
     }) exercise {
         command.perform()
     } verify { result ->
@@ -34,7 +34,7 @@ class FindCallSignCommandTest {
         val players = listOf(
                 Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
         )
-        val command = FindCallSignCommand(players, email)
+        val command = FindCallSignAction(players, email)
     }) exercise {
         command.perform()
     } verify { result ->
@@ -46,7 +46,7 @@ class FindCallSignCommandTest {
         val players = listOf(
                 Player(callSignAdjective = expectedCallSign.adjective, callSignNoun = "Mongoose")
         )
-        val command = FindCallSignCommand(players, email)
+        val command = FindCallSignAction(players, email)
     }) exercise {
         command.perform()
     } verify { result ->
@@ -58,7 +58,7 @@ class FindCallSignCommandTest {
         val players = listOf(
                 Player(callSignAdjective = "Intense", callSignNoun = expectedCallSign.noun)
         )
-        val command = FindCallSignCommand(players, email)
+        val command = FindCallSignAction(players, email)
     }) exercise {
         command.perform()
     } verify { result ->

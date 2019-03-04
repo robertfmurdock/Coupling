@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling
 
-import com.zegreatrob.coupling.common.entity.user.User
+import com.zegreatrob.coupling.server.entity.user.User
 
 interface UserEmailSyntax {
     val userEmail: String

@@ -2,16 +2,16 @@ package com.zegreatrob.coupling.common.entity.player.callsign
 
 import com.zegreatrob.coupling.common.entity.player.Player
 
-data class FindCallSignCommand(val players: List<Player>, val email: String)
+data class FindCallSignAction(val players: List<Player>, val email: String)
 
-interface FindCallSignCommandDispatcher : GenerateCallSignActionDispatcher {
+interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher {
 
-    fun FindCallSignCommand.perform() = defaultCallSignOptions
+    fun FindCallSignAction.perform() = defaultCallSignOptions
             .let { (adjectives, nouns) ->
                 generateCallSign(adjectives, nouns)
             }
 
-    private fun FindCallSignCommand.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
+    private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
             GenerateCallSignAction(adjectives, nouns, email, players)
                     .perform()
 

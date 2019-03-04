@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.common.entity.user.User
-import com.zegreatrob.coupling.common.entity.user.UserSaveSyntax
+import com.zegreatrob.coupling.server.entity.user.User
+import com.zegreatrob.coupling.server.entity.user.UserSaveSyntax
 
 data class SaveTribeCommand(val tribe: KtTribe) : Action
 
