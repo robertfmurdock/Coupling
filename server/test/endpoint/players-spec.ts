@@ -44,8 +44,18 @@ describe(path, function () {
         });
 
         it('will return all available players on team.', async function () {
-            let newPlayer1 = clean({_id: monk.id(), name: "Awesome-O"});
-            let newPlayer2 = clean({_id: monk.id(), name: "Awesome-O-2"});
+            let newPlayer1 = clean({
+                _id: monk.id(),
+                name: "Awesome-O",
+                callSignAdjective: 'Awesome',
+                callSignNoun: 'Sauce'
+            });
+            let newPlayer2 = clean({
+                _id: monk.id(),
+                name: "Awesome-O-2",
+                callSignAdjective: 'Very',
+                callSignNoun: 'Ok'
+            });
             await couplingServer.post(path).send(newPlayer1).expect(200);
             await couplingServer.post(path).send(newPlayer2).expect(200);
 
@@ -72,7 +82,7 @@ describe(path, function () {
     describe("POST", function () {
 
         it('will add player to tribe', function (done) {
-            let newPlayer = clean({_id: monk.id(), name: "Awesome-O"});
+            let newPlayer = clean({_id: monk.id(), name: "Awesome-O", callSignAdjective: 'Super', callSignNoun: 'Hot'});
             let httpPost = couplingServer.post(path);
             httpPost.send(newPlayer)
                 .expect(200, newPlayer)
