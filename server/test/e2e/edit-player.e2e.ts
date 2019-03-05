@@ -6,6 +6,7 @@ import Tribe from "../../../common/Tribe";
 import * as monk from "monk";
 import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
+import ApiGuy from "./apiGuy";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -145,6 +146,35 @@ describe('The edit player page', function () {
 
     });
 
+    describe('when the tribe has call signs enabled', function () {
+
+        const adjectiveTextInput = element(By.css('#adjective-input'));
+        const nounTextInput = element(By.css('#noun-input'));
+
+        beforeAll(async function () {
+            const tribeClone: Tribe = clone(tribe);
+            tribeClone.callSignsEnabled = true;
+            await tribeCollection.update({_id: tribe._id}, tribeClone)
+        });
+
+        it(`should allow entry of adjective and noun, and retain them`, async function () {
+            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            await browser.wait(() => adjectiveTextInput.isPresent(), 1000);
+
+            await adjectiveTextInput.clear();
+            await adjectiveTextInput.sendKeys('Superior');
+            await nounTextInput.clear();
+            await nounTextInput.sendKeys('Spider-Man');
+            await savePlayerButton.click();
+            await waitForSaveToComplete(player1.name);
+            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+
+            expect(adjectiveTextInput.getAttribute('value')).toBe('Superior');
+            expect(nounTextInput.getAttribute('value')).toBe('Spider-Man');
+        });
+
+    });
+
     it('should get error on leaving when name is changed.', async function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
@@ -207,6 +237,7 @@ describe('The edit player page', function () {
 describe('The new player page', function () {
 
     const tribe = {
+        _id: monk.id(),
         id: 'delete_me',
         name: 'Change Me'
     };
@@ -247,4 +278,24 @@ describe('The new player page', function () {
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 
+    describe('when the tribe has call signs enabled', function () {
+
+        const adjectiveTextInput = element(By.css('#adjective-input'));
+        const nounTextInput = element(By.css('#noun-input'));
+
+        beforeAll(async function () {
+            const tribeClone: Tribe = clone(tribe);
+            tribeClone.callSignsEnabled = true;
+            await tribeCollection.update({_id: tribe._id}, tribeClone)
+        });
+
+        it(`will suggest call sign`, async function () {
+            await browser.setLocation(`/${tribe.id}/player/new`);
+            await browser.wait(() => adjectiveTextInput.isPresent(), 1000);
+            let suggestedAdjective = await adjectiveTextInput.getAttribute('value');
+            let suggestedNoun = await nounTextInput.getAttribute('value');
+            await expect(suggestedAdjective).not.toBe('');
+            await expect(suggestedNoun).not.toBe('');
+        });
+    });
 });

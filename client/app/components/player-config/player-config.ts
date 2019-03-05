@@ -13,6 +13,7 @@ export class PlayerConfigController {
     player: Player;
     tribe: Tribe;
     saving: boolean;
+    callSignOptions: string[];
 
     constructor(public $scope,
                 public Coupling: services.Coupling,

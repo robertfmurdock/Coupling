@@ -10,6 +10,17 @@ div
                 div
                     label(for="player-email") Email
                     input(id="player-email" type="text" ng-model="playerConfig.player.email")
+                div(ng-if="playerConfig.tribe.callSignsEnabled")
+                    div
+                        label(for="adjective-input") Call-Sign Adjective
+                        input(id="adjective-input" type="text" list="callSignAdjectiveOptions"
+                        ng-model="playerConfig.player.callSignAdjective")
+                        datalist(id="callSignAdjectiveOptions")
+                    div
+                        label(for="noun-input") Call-Sign Noun
+                        input(id="noun-input" type="text" list="callSignNounOptions"
+                        ng-model="playerConfig.player.callSignNoun")
+                        datalist(id="callSignNounOptions")
                 div(ng-show="playerConfig.tribe.badgesEnabled" class="badge-config")
                     div
                         label(for="default-badge-radio") {{playerConfig.tribe.defaultBadgeName}}

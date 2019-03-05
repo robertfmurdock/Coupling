@@ -59,7 +59,8 @@ tasks {
                 "commonKt.historyFromArray",
                 "commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher",
                 "logging.com.zegreatrob.coupling.logging.initializeLogging",
-                "client.performComposeStatisticsAction"
+                "client.performComposeStatisticsAction",
+                "client.commandDispatcher"
         )
     }
 
