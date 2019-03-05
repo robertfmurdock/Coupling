@@ -54,7 +54,8 @@ fun Json.toTribe(): KtTribe = KtTribe(
         pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
         defaultBadgeName = stringValue("defaultBadgeName"),
         alternateBadgeName = stringValue("alternateBadgeName"),
-        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false
+        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
+        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
 )
 
 fun KtTribe.toJson() = json(
@@ -64,7 +65,8 @@ fun KtTribe.toJson() = json(
         "email" to email,
         "defaultBadgeName" to defaultBadgeName,
         "alternateBadgeName" to alternateBadgeName,
-        "badgesEnabled" to badgesEnabled
+        "badgesEnabled" to badgesEnabled,
+        "callSignsEnabled" to callSignsEnabled
 )
 
 private fun Json.stringValue(key: String) = this[key]?.toString()

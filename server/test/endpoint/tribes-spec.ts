@@ -135,6 +135,7 @@ describe(path, function () {
             id: 'deleteme',
             email: 'test@test.test',
             badgesEnabled: true,
+            callSignsEnabled: true,
             _id: monk.id()
         };
 
@@ -158,6 +159,7 @@ describe(path, function () {
             expect(result.id).toBe('deleteme');
             expect(result.email).toBe('test@test.test');
             expect(result.badgesEnabled).toBe(true);
+            expect(result.callSignsEnabled).toBe(true);
         });
 
         it('when the tribe already exists and you do not have permission, will fail', async function () {
