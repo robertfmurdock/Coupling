@@ -50,7 +50,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             "email" to email,
             "defaultBadgeName" to defaultBadgeName,
             "alternateBadgeName" to alternateBadgeName,
-            "badgesEnabled" to badgesEnabled
+            "badgesEnabled" to badgesEnabled,
+            "callSignsEnabled" to callSignsEnabled
     )
 
     private fun Json.toTribe(): KtTribe = KtTribe(
@@ -60,7 +61,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             email = this["email"]?.toString(),
             defaultBadgeName = this["defaultBadgeName"]?.toString(),
             alternateBadgeName = this["alternateBadgeName"]?.toString(),
-            badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false
+            badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
+            callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
     )
 
 }

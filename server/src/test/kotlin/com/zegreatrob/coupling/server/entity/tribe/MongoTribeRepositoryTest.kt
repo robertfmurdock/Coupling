@@ -34,7 +34,8 @@ class MongoTribeRepositoryTest {
                     id = TribeId(id()),
                     pairingRule = PairingRule.PreferDifferentBadge,
                     email = "safety@dance.edu",
-                    badgesEnabled = true
+                    badgesEnabled = true,
+                    callSignsEnabled = true
             )
         }) {
             dropPlayers()
