@@ -79,4 +79,22 @@ class GenerateCallSignActionTest {
         result.assertIsEqualTo(CallSign("Green", "Tiger"))
     }
 
+    @Test
+    fun willReturnBlanksWhenAllTermsAreUsed() = setup(object {
+        val adjectives = setOf("Red", "Green", "Blue")
+        val nouns = setOf("Lion", "Tiger", "Bear")
+        val email = "robert.f.murdock@accenture.com"
+        val players = listOf(
+                Player(callSignAdjective = "Red", callSignNoun = "Lion"),
+                Player(callSignAdjective = "Green", callSignNoun = "Tiger"),
+                Player(callSignAdjective = "Blue", callSignNoun = "Bear")
+        )
+
+        val action = GenerateCallSignAction(adjectives, nouns, email, players)
+    }) exercise {
+        action.perform()
+    } verify { result ->
+        result.assertIsEqualTo(CallSign("Blank", "Blank"))
+    }
+
 }

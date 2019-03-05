@@ -26,7 +26,9 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker {
 
     private val adjectiveRandom get() = Random(0)
 
-    private fun GenerateCallSignAction.pickNoun() = rollForUnusedTerm(shuffledNouns(), players.nouns(), email)
+    private fun GenerateCallSignAction.pickNoun(): String {
+        return rollForUnusedTerm(shuffledNouns(), players.nouns(), email)
+    }
     private fun GenerateCallSignAction.shuffledNouns() = nouns.shuffled(nounRandom)
     private val nounRandom get() = Random(1)
 
@@ -36,11 +38,14 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker {
             email: String,
             offset: Int? = null
     ): String {
+        if(usedTerms.containsAll(termList)) {
+            return "Blank"
+        }
+
         val candidate = termList.pickForGiven(email.with(offset))
-        return if (usedTerms.contains(candidate)) {
-            rollForUnusedTerm(termList, usedTerms, email, offset.next())
-        } else {
-            candidate
+        return when {
+            usedTerms.contains(candidate) -> rollForUnusedTerm(termList, usedTerms, email, offset.next())
+            else -> candidate
         }
     }
 
