@@ -63,6 +63,7 @@ describe('The edit tribe page', function () {
             element(By.id('tribe-name')).clear();
             element(By.id('tribe-name')).sendKeys(expectedNewName);
 
+            element(By.id('call-sign-checkbox')).click();
             element(By.id('badge-checkbox')).click();
             const expectedDefaultBadgeName = 'New Default Badge Name';
             updateTextBox(By.id('default-badge-name'), expectedDefaultBadgeName);
@@ -78,6 +79,7 @@ describe('The edit tribe page', function () {
             await browser.wait(() => element(By.id('tribe-name')).isPresent(), 2000);
 
             expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
+            expect(element(By.id('call-sign-checkbox')).getAttribute('checked')).toEqual('true');
             expect(element(By.id('badge-checkbox')).getAttribute('checked')).toEqual('true');
             expect(element(By.id('default-badge-name')).getAttribute('value')).toEqual(expectedDefaultBadgeName);
             expect(element(By.id('alt-badge-name')).getAttribute('value')).toEqual(expectedAltBadgeName);

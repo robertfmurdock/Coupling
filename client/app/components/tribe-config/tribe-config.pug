@@ -16,6 +16,10 @@ div(class="tribe-config" ng-class="self.styles.className" ng-show="self.tribe")
                     label(for="tribe-id") Unique Id
                     input(id="tribe-id" type="text" ng-model="self.tribe.id")
                 li
+                    label Enable Call Signs
+                    input(id="call-sign-checkbox" type="checkbox" ng-model="self.tribe.callSignsEnabled")
+                    span Every Couple needs a Call Sign. Makes things more fun!
+                li
                     label Enable Badges
                     input(id="badge-checkbox" type="checkbox" ng-model="self.tribe.badgesEnabled")
                     span Advanced users only: this lets you divide your tribe into two groups.
