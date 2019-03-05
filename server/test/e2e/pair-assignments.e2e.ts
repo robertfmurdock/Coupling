@@ -138,6 +138,49 @@ describe('The current pair assignments', function () {
             const remainingPlayerElements = element.all(By.repeater('player in players'));
             expect(remainingPlayerElements.getText()).toEqual(pluck('name', [player2, player4]));
         });
+
+        describe('and the tribe has toggled call signs off', function () {
+
+            it('will not show the call sign for the pairs', async function () {
+                await this.apiGuy.postTribe({
+                    id: 'delete_me',
+                    name: 'Funkytown',
+                    callSignsEnabled: false
+                });
+
+                await browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+                await browser.refresh();
+
+                const callSigns = element.all(By.className('call-sign'));
+                expect(await callSigns.count()).toBe(0)
+            });
+
+        });
+
+        describe('and the tribe has toggled call signs on', function () {
+
+            it('will show the call sign for the pairs', async function () {
+                await this.apiGuy.postTribe({
+                    id: 'delete_me',
+                    name: 'Funkytown',
+                    callSignsEnabled: true
+                });
+
+                await browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+                await browser.refresh();
+
+                const pairElements = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
+
+                await pairElements.each(async function(elementFinder) {
+                    const callSign = elementFinder.element(By.className('call-sign'));
+
+                    expect(await callSign.isDisplayed()).toBe(true);
+                    const callSignText = await callSign.getText();
+                    expect(callSignText.split(' ').length).toBe(2);
+                });
+            });
+
+        });
     });
 
 });

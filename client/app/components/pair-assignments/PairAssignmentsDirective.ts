@@ -42,6 +42,11 @@ export class PairAssignmentsController {
             .then(() => this.$scope.$apply());
     }
 
+    callSign(pair) {
+        const adjectivePlayer = pair.length > 1 ? pair[1] : pair[0];
+        return adjectivePlayer.callSignAdjective + ' ' + pair[0].callSignNoun
+    }
+
     onDrop(draggedPlayer, droppedPlayer) {
         const pairWithDraggedPlayer = this.findPairContainingPlayer(draggedPlayer, this.pairAssignments.pairs);
         const pairWithDroppedPlayer = this.findPairContainingPlayer(droppedPlayer, this.pairAssignments.pairs);

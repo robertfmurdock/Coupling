@@ -8,6 +8,7 @@ div(ng-class="pairAssignments.styles.className")
                     text Couples for {{pairAssignments.pairAssignments.date | date:'MM/dd/yyyy'}} - {{pairAssignments.pairAssignments.date | date: 'HH:mm:ss'}}
             div(id="pair-assignments-content")
                 span(ng-repeat='pair in pairAssignments.pairAssignments.pairs' class="pair")
+                    div(class="call-sign" ng-if="pairAssignments.tribe.callSignsEnabled") {{pairAssignments.callSign(pair)}}
                     playercard(
                     ng-repeat='player in pair'
                     player="player"
