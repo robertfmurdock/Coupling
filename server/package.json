@@ -32,14 +32,14 @@
     "ramda": "^0.26.1",
     "serve-favicon": "^2.5.0",
     "source-map-loader": "^0.2.4",
-    "ws": "^6.1.4"
+    "ws": "^6.2.0"
   },
   "devDependencies": {
     "@types/es6-shim": "^0.31.39",
     "@types/jasmine": "^3.3.9",
     "@types/jasminewd2": "^2.0.6",
     "@types/passport": "^1.0.0",
-    "@types/ramda": "0.25.50",
+    "@types/ramda": "0.25.51",
     "@types/ws": "6.0.1",
     "axios": "^0.18.0",
     "expect.js": "^0.3.1",
@@ -58,9 +58,9 @@
     "supertest": "^3.4.2",
     "text-loader": "0.0.1",
     "ts-loader": "^5.3.3",
-    "typescript": "^3.3.3",
+    "typescript": "^3.3.3333",
     "url-loader": "^1.1.2",
-    "webpack": "^4.29.5",
+    "webpack": "^4.29.6",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.2.3",
     "webpack-node-externals": "^1.7.2"
