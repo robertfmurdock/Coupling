@@ -44,7 +44,13 @@ export class PairAssignmentsController {
 
     callSign(pair) {
         const adjectivePlayer = pair.length > 1 ? pair[1] : pair[0];
-        return adjectivePlayer.callSignAdjective + ' ' + pair[0].callSignNoun
+        let adjective = adjectivePlayer.callSignAdjective;
+        let noun = pair[0].callSignNoun;
+        if(adjective && noun) {
+            return `${adjective} ${noun}`
+        } else {
+            return null
+        }
     }
 
     onDrop(draggedPlayer, droppedPlayer) {

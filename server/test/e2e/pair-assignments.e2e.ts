@@ -21,11 +21,41 @@ describe('The current pair assignments', function () {
         name: 'Funkytown'
     };
 
-    const player1 = {_id: monk.id(), tribe: tribe.id, name: "player1"};
-    const player2 = {_id: monk.id(), tribe: tribe.id, name: "player2"};
-    const player3 = {_id: monk.id(), tribe: tribe.id, name: "player3"};
-    const player4 = {_id: monk.id(), tribe: tribe.id, name: "player4"};
-    const player5 = {_id: monk.id(), tribe: tribe.id, name: "player5"};
+    const player1 = {
+        _id: monk.id(),
+        tribe: tribe.id,
+        name: "player1",
+        callSignAdjective: 'nimble',
+        callSignNoun: 'thimble'
+    };
+    const player2 = {
+        _id: monk.id(),
+        tribe: tribe.id,
+        name: "player2",
+        callSignAdjective: 'nimble',
+        callSignNoun: 'thimble'
+    };
+    const player3 = {
+        _id: monk.id(),
+        tribe: tribe.id,
+        name: "player3",
+        callSignAdjective: 'nimble',
+        callSignNoun: 'thimble'
+    };
+    const player4 = {
+        _id: monk.id(),
+        tribe: tribe.id,
+        name: "player4",
+        callSignAdjective: 'nimble',
+        callSignNoun: 'thimble'
+    };
+    const player5 = {
+        _id: monk.id(),
+        tribe: tribe.id,
+        name: "player5",
+        callSignAdjective: 'nimble',
+        callSignNoun: 'thimble'
+    };
     const players = [
         player1,
         player2,
@@ -171,7 +201,7 @@ describe('The current pair assignments', function () {
 
                 const pairElements = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
 
-                await pairElements.each(async function(elementFinder) {
+                await pairElements.each(async function (elementFinder) {
                     const callSign = elementFinder.element(By.className('call-sign'));
 
                     expect(await callSign.isDisplayed()).toBe(true);

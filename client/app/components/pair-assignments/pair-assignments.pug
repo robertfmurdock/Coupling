@@ -9,7 +9,7 @@ div(ng-class="pairAssignments.styles.className")
             div(id="pair-assignments-content")
                 span(ng-repeat='pair in pairAssignments.pairAssignments.pairs' class="pair")
                     div
-                        span(class="call-sign" ng-if="pairAssignments.tribe.callSignsEnabled") {{pairAssignments.callSign(pair)}}
+                        span(class="call-sign" ng-if="pairAssignments.tribe.callSignsEnabled && pairAssignments.callSign(pair)") {{pairAssignments.callSign(pair)}}
                     playercard(
                     ng-repeat='player in pair'
                     player="player"
