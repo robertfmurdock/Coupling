@@ -22,7 +22,7 @@
     "method-override": "^3.0.0",
     "mongodb": "^3.1.13",
     "monk": "^6.0.6",
-    "npm-check-updates": "^2.15.0",
+    "npm-check-updates": "^3.0.2",
     "on-finished": "^2.3.0",
     "passport": "^0.4.0",
     "passport-azure-ad": "^4.0.0",
