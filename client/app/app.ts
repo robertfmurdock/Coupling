@@ -29,7 +29,7 @@ import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import GoogleSignIn from "./GoogleSignIn";
 import IRouteProvider = angular.route.IRouteProvider;
 
-logging.com.zegreatrob.coupling.logging.initializeLogging(false);
+logging.com.zegreatrob.coupling.logging.initializeJasmineLogging(false);
 
 async function bootstrapApp() {
     const isSignedIn = await GoogleSignIn.checkForSignedIn();

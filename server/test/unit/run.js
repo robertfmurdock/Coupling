@@ -14,6 +14,7 @@ webpackRunner.run(config)
   .finally(removeTempDirectory)
   .then(function () {
     process.exit(0);
-  }, function () {
+  }, function (err) {
+    console.log(err);
     process.exit(1);
   });

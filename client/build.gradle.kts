@@ -58,7 +58,7 @@ tasks {
         keep(
                 "commonKt.historyFromArray",
                 "commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher",
-                "logging.com.zegreatrob.coupling.logging.initializeLogging",
+                "logging.com.zegreatrob.coupling.logging.initializeJasmineLogging",
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher"
         )

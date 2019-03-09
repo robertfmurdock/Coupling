@@ -21,8 +21,8 @@ data class Message(
 fun DateTime.logFormat() = toString(DateFormat.FORMAT1)
 
 @Suppress("unused")
-@JsName("initializeLogging")
-fun initializeLogging(developmentMode: Boolean) {
+@JsName("initializeJasmineLogging")
+fun initializeJasmineLogging(developmentMode: Boolean) {
     mu.KotlinLoggingConfiguration.LOG_LEVEL = if (developmentMode) {
         KotlinLoggingLevel.DEBUG
     } else {
@@ -83,7 +83,8 @@ fun initializeLogging(developmentMode: Boolean) {
         private fun extractProperties(msg: () -> Any?): Pair<String?, Map<String, String>?> {
             val result = msg()
             return if (result is Map<*, *>) {
-                null to result.unsafeCast<Map<String, String>>()
+                val map = result.unsafeCast<Map<String, String>>()
+                map["message"] to map.filterKeys { it === "message" }
             } else
                 result.toString() to null
         }

@@ -1,7 +1,6 @@
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.logging.initializeLogging
-import com.zegreatrob.testmints.MintReporter
-import com.zegreatrob.testmints.StandardMints
+import com.zegreatrob.coupling.logging.initializeJasmineLogging
+import com.zegreatrob.coupling.testlogging.JsonLoggingTestMintsReporter
 import mu.KotlinLogging
 
 @JsName("JasmineJsonLoggingReporter")
@@ -10,15 +9,8 @@ class JasmineJsonLoggingReporter {
     private var lastStart: DateTime? = null
 
     init {
-        initializeLogging(true)
-
-        StandardMints.reporter = object : MintReporter {
-            private val logger by lazy { KotlinLogging.logger("testmints") }
-            override fun exerciseStart() = logger.info { "exerciseStart" }
-            override fun exerciseFinish() = logger.info { "exerciseFinish" }
-            override fun verifyStart() = logger.info { "verifyStart" }
-            override fun verifyFinish() = logger.info { "verifyFinish" }
-        }
+        initializeJasmineLogging(true)
+        JsonLoggingTestMintsReporter.initialize()
     }
 
     @Suppress("unused")
