@@ -84,7 +84,7 @@ fun initializeJasmineLogging(developmentMode: Boolean) {
             val result = msg()
             return if (result is Map<*, *>) {
                 val map = result.unsafeCast<Map<String, String>>()
-                map["message"] to map.filterKeys { it === "message" }
+                map["message"] to map.filterKeys { it != "message" }
             } else
                 result.toString() to null
         }
