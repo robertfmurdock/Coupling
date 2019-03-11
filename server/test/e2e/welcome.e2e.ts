@@ -52,9 +52,9 @@ describe('The welcome page', function () {
 
         browser.waitForAngularEnabled(false);
 
-        let expectedHost = 'https://login.live.com';
+        let expectedHostThatAllowsMultiTenantAuth = 'https://login.microsoftonline.com';
 
-        await waitToArriveAt(expectedHost);
+        await waitToArriveAt(expectedHostThatAllowsMultiTenantAuth);
     });
 
     afterEach(function () {
