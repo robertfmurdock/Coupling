@@ -1,7 +1,7 @@
 let clientID = process.env.AZURE_AD_CLIENT_ID || "127e78ae-6b6a-4213-a83f-a644e2d1bb84";
 let clientSecret = process.env.AZURE_AD_CLIENT_SECRET || "bhyrMCFDF9485=aoiJD1*%{";
 
-let microsoftConsumerTenantId = `9188040d-6c67-4c5b-b112-36a304b66dad`;
+let microsoftConsumerTenantId = `common`;
 
 export default {
   "identityMetadata": `https://login.microsoftonline.com/${microsoftConsumerTenantId}/v2.0/.well-known/openid-configuration`,
@@ -11,7 +11,7 @@ export default {
   "responseMode": "form_post",
   "redirectUrl": (process.env.PUBLIC_URL || "http://localhost:3000") + "/auth/signin-microsoft",
   "allowHttpForRedirectUrl": true,
-  "validateIssuer": true,
+  "validateIssuer": false,
   "issuer": `https://login.microsoftonline.com/${microsoftConsumerTenantId}/v2.0`,
   "passReqToCallback": false,
   "useCookieInsteadOfSession": true,
