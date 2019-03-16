@@ -6,7 +6,6 @@ import Tribe from "../../../common/Tribe";
 import * as monk from "monk";
 import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
-import ApiGuy from "./apiGuy";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;

@@ -18,6 +18,7 @@ import statisticsRoute from "./routes/StatisticsRoute";
 import newPairAssignmentsRoute from "./routes/NewPairAssignmentsRoute";
 import currentPairAssignmentsRoute from "./routes/CurrentPairAssignmentsRoute";
 import editPlayerRoute from "./routes/EditPlayerRoute";
+import retiredPlayerRoute from "./routes/RetiredPlayerRoute";
 import newPlayerRoute from "./routes/NewPlayerRoute";
 import pinRoute from "./routes/PinRoute";
 import historyRoute from "./routes/HistoryRoute";
@@ -70,6 +71,7 @@ async function bootstrapApp() {
                 .when('/:tribeId/pairAssignments/new/', newPairAssignmentsRoute)
                 .when('/:tribeId/player/new/', newPlayerRoute)
                 .when('/:tribeId/player/:id/', editPlayerRoute)
+                .when('/:tribeId/retired-player/:id/', retiredPlayerRoute)
                 .when('/:tribeId/statistics', statisticsRoute)
                 .when('/:tribeId/players/retired', retiredPlayersRoute)
         }
