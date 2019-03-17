@@ -1,67 +1,47 @@
 import * as express from "express";
+import {handleRequest} from "./route-helper";
 
 class TribeRoutes {
-    public list = (request, response) => {
-        request.commandDispatcher.performTribeListQuery()
-            .then(function (authorizedTribes) {
-                response.send(authorizedTribes);
-            })
-            .catch(function (error) {
-                console.log(error);
-                response.statusCode = 500;
-                response.send(error.message);
-            });
-    };
 
-    public get = (request, response) => {
-        request.commandDispatcher.performTribeQuery(request.params.tribeId)
-            .then(function (tribe) {
-                if (tribe !== null) {
-                    response.send(tribe);
-                } else {
-                    response.statusCode = 404;
-                    response.send({message: 'Tribe not found.'});
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-                response.statusCode = 500;
-                response.send(error.message);
-            });
-    };
+    public list = handleRequest(
+        commandDispatcher => commandDispatcher.performTribeListQuery(),
+        (response, authorizedTribes) => response.send(authorizedTribes)
+    );
 
-    public save = async (request, response) => {
-        request.commandDispatcher.performSaveTribeCommand(request.body)
-            .then(function (isSuccessful) {
-                if (isSuccessful) {
-                    response.send(request.body)
-                } else {
-                    response.sendStatus(400);
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-                response.statusCode = 500;
-                response.send(error.message);
-            });
-    };
+    public get = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performTribeQuery(request.params.tribeId),
+        (response, tribe) => {
+            if (tribe !== null) {
+                response.send(tribe);
+            } else {
+                response.statusCode = 404;
+                response.send({message: 'Tribe not found.'});
+            }
+        }
+    );
 
-    public delete = async (request, response) => {
-        request.commandDispatcher.performDeleteTribeCommand(request.params.tribeId)
-            .then(function (tribe) {
-                if (tribe !== null) {
-                    response.send(tribe);
-                } else {
-                    response.statusCode = 404;
-                    response.send({message: 'Tribe not found.'});
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-                response.statusCode = 500;
-                response.send(error.message);
-            });
-    }
+    public save = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performSaveTribeCommand(request.body),
+        (response, isSuccessful, request) => {
+            if (isSuccessful) {
+                response.send(request.body)
+            } else {
+                response.sendStatus(400);
+            }
+        }
+    );
+
+    public delete = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performDeleteTribeCommand(request.params.tribeId),
+        (response, tribe) => {
+            if (tribe !== null) {
+                response.send(tribe);
+            } else {
+                response.statusCode = 404;
+                response.send({message: 'Tribe not found.'});
+            }
+        }
+    );
 }
 
 const tribes = new TribeRoutes();
