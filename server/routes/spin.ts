@@ -1,10 +1,6 @@
-export default function (request, response) {
-    const tribeId = request.params.tribeId;
-    const availablePlayers = request.body;
+import {handleRequest} from "./route-helper";
 
-    request.commandDispatcher.performProposeNewPairsCommand(tribeId, availablePlayers)
-        .then(result => response.send(result), err => {
-            console.log('Err!', err);
-            response.send(err)
-        });
-};
+export default handleRequest(
+    (commandDispatcher, request) => commandDispatcher.performProposeNewPairsCommand(request.params.tribeId, request.body),
+    (response, data) => response.send(data)
+);

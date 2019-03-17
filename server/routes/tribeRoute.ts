@@ -2,7 +2,7 @@ import * as express from "express";
 import historyRouter from "./historyRouter";
 import pinsRouter from "./pinRouter";
 import playerRouter from "./playerRouter";
-import spin from './spin';
+import spin from "./spin";
 
 let router = express.Router({mergeParams: true});
 

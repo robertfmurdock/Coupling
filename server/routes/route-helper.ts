@@ -11,4 +11,3 @@ export function handleRequest(commandRunFunction, successFunction) {
             });
     }
 }
-
