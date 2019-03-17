@@ -8,7 +8,7 @@ import kotlinx.coroutines.Deferred
 interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted, PlayerGetByEmail
 
 interface PlayerDeleter {
-    suspend fun delete(playerId: String)
+    suspend fun delete(playerId: String): Boolean
 }
 
 interface PlayerSaver {

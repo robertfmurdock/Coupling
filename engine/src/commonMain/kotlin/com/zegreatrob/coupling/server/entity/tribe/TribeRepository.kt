@@ -11,7 +11,7 @@ interface TribeSave {
 }
 
 interface TribeDelete {
-    suspend fun delete(tribeId: TribeId)
+    suspend fun delete(tribeId: TribeId): Boolean
 }
 
 interface TribeGet {

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.common.ActionLoggingSyntax
 data class DeletePlayerCommand(val playerId: String) : Action
 
 interface DeletePlayerCommandDispatcher : ActionLoggingSyntax, PlayerIdDeleteSyntax {
-    suspend fun DeletePlayerCommand.perform() = logAsync { playerId.apply { deletePlayer() } }
+    suspend fun DeletePlayerCommand.perform() = logAsync { playerId.run { deletePlayer() } }
 }
 
 interface PlayerIdDeleteSyntax {

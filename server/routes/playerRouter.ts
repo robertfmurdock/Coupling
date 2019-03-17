@@ -22,7 +22,14 @@ class PlayerRoutes {
 
     removePlayer = handleRequest(
         (commandDispatcher, request) => commandDispatcher.performDeletePlayerCommand(request.params.playerId),
-        (response, data) => response.send(data)
+        (response, data) => {
+            if (data)
+                response.send(data);
+            else {
+                response.statusCode = 404;
+                response.send({message: 'Player could not be deleted because they do not exist.'})
+            }
+        }
     );
 
 }

@@ -340,16 +340,12 @@ class MongoPlayerRepositoryTest {
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillThrowException() = testAsync {
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = testAsync {
         setupAsync(object {
             val playerId = id()
         }) exerciseAsync {
-            assertThrowsAsync {
-                delete(playerId)
-            }
-        } verifyAsync { result ->
-            result.message.assertIsEqualTo("Player could not be deleted because they do not exist.")
-        }
+            delete(playerId)
+        } verifyAsync { result -> result.assertIsEqualTo(false) }
     }
 
     @Test

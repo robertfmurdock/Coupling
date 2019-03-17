@@ -1,41 +1,45 @@
 import * as express from "express";
+import {handleRequest} from "./route-helper";
 
 class HistoryRoutes {
-    list(request, response) {
-        request.commandDispatcher.performPairAssignmentDocumentListQuery(request.params.tribeId)
-            .then(function (history) {
-                response.send(history);
-            }, function (error) {
-                response.statusCode = 500;
-                response.send(error.message);
-            });
-    };
 
-    async savePairs(request, response) {
-        const pairs = request.body;
-        if (pairs.date && pairs.pairs) {
-            pairs.date = new Date(pairs.date as string);
+    list = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performPairAssignmentDocumentListQuery(request.params.tribeId),
+        (response, data) => response.send(data)
+    );
 
-            let promise = request.commandDispatcher.performSavePairAssignmentDocumentCommand(
-                request.params.tribeId, pairs
-            );
-            response.send(await promise);
-        } else {
-            response.statusCode = 400;
-            response.send({error: 'Pairs were not valid.'});
+    savePairs = handleRequest(
+        async (commandDispatcher, request) => {
+            const pairs = request.body;
+            if (pairs.date && pairs.pairs) {
+                pairs.date = new Date(pairs.date as string);
+                return await request.commandDispatcher.performSavePairAssignmentDocumentCommand(request.params.tribeId, pairs);
+            } else {
+                return null
+            }
+        },
+        (response, data) => {
+            if (data === null) {
+                response.statusCode = 400;
+                response.send({error: 'Pairs were not valid.'});
+            } else {
+                response.send(data);
+            }
         }
-    };
+    );
 
-    async deleteMember(request, response) {
-        try {
-            await request.commandDispatcher.performDeletePairAssignmentDocumentCommand(request.params.id);
-            response.send({message: 'SUCCESS'});
-        } catch (err) {
-            console.log(err);
-            response.statusCode = 404;
-            response.send({message: err.message});
+    deleteMember = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performDeletePairAssignmentDocumentCommand(request.params.id),
+        (response, data) => {
+            if (data) {
+                response.send({message: 'SUCCESS'});
+            } else {
+                response.statusCode = 404;
+                response.send({message: 'Pair Assignments could not be deleted because they do not exist.'})
+            }
         }
-    }
+    );
+
 }
 
 const history = new HistoryRoutes();

@@ -2,6 +2,7 @@
 import * as express from 'express'
 
 class PinRoutes {
+
     list(request, response) {
         request.dataService.requestPins(request.params.tribeId).then(function (pins) {
             response.send(pins);
@@ -27,8 +28,8 @@ class PinRoutes {
     };
 }
 
-var pins = new PinRoutes();
-var router = express.Router({mergeParams: true});
+const pins = new PinRoutes();
+const router = express.Router({mergeParams: true});
 router.route('/')
     .get(pins.list)
     .post(pins.savePin);

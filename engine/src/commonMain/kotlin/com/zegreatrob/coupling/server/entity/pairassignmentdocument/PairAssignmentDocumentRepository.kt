@@ -9,7 +9,7 @@ import kotlinx.coroutines.Deferred
 interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter, PairAssignmentDocumentDeleter
 
 interface PairAssignmentDocumentDeleter {
-    suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId)
+    suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) : Boolean
 }
 
 interface PairAssignmentDocumentGetter {

@@ -29,8 +29,13 @@ interface MongoPlayerRepository : PlayerRepository,
 
     private suspend fun Json.savePlayerJson() = this.save(playersCollection)
 
-    override suspend fun delete(playerId: String) =
-            deleteEntity(playerId, playersCollection, "Player", { toTribeIdPlayer() }, { toDbJson() })
+    override suspend fun delete(playerId: String) = deleteEntity(
+            playerId,
+            playersCollection,
+            "Player",
+            { toTribeIdPlayer() },
+            { toDbJson() }
+    )
 
     override fun getPlayersAsync(tribeId: TribeId) = GlobalScope.async {
         findByQuery(json("tribe" to tribeId.value), playersCollection)

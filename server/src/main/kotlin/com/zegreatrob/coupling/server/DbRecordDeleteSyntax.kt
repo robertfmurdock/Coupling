@@ -10,15 +10,12 @@ interface DbRecordDeleteSyntax : DbRecordLoadSyntax, DbRecordSaveSyntax {
             toDomain: Json.() -> T?,
             toDbJson: T.() -> Json,
             usesRawId: Boolean = true
-    ) =
-            getLatestRecordWithId(id, collection, usesRawId)
-                    ?.toDomain()
-                    .let {
-                        it ?: throw Exception(message = "$entityName could not be deleted because they do not exist.")
-                    }
-                    .toDbJson()
-                    .addIsDeleted()
-                    .let { it.save(collection) }
+    ): Boolean = getLatestRecordWithId(id, collection, usesRawId)
+            ?.toDomain()
+            ?.toDbJson()
+            ?.addIsDeleted()
+            ?.let { it.save(collection); true }
+            ?: false
 
     private fun Json.addIsDeleted() = also { this["isDeleted"] = true }
 

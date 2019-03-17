@@ -22,15 +22,14 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
                 it.save(jsRepository.tribesCollection)
             }
 
-    override suspend fun delete(tribeId: TribeId) =
-            deleteEntity(
-                    id = tribeId.value,
-                    collection = jsRepository.tribesCollection,
-                    entityName = "Tribe",
-                    toDomain = { toTribe() },
-                    toDbJson = { toDbJson() },
-                    usesRawId = false
-            )
+    override suspend fun delete(tribeId: TribeId) = deleteEntity(
+            id = tribeId.value,
+            collection = jsRepository.tribesCollection,
+            entityName = "Tribe",
+            toDomain = { toTribe() },
+            toDbJson = { toDbJson() },
+            usesRawId = false
+    )
 
     override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = GlobalScope.async {
         findByQuery(json("id" to tribeId.value), jsRepository.tribesCollection)

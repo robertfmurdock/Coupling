@@ -23,8 +23,8 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             .toDbJson()
             .let { it.save(jsRepository.historyCollection) }
 
-    override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) {
-        deleteEntity(
+    override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
+        return deleteEntity(
                 id = pairAssignmentDocumentId.value,
                 collection = jsRepository.historyCollection,
                 entityName = "Pair Assignments",

@@ -122,9 +122,22 @@ class MongoPairAssignmentDocumentRepositoryTest {
         } exerciseAsync {
             delete(id)
         } verifyAsync { result ->
-            result.assertIsEqualTo(Unit)
+            result.assertIsEqualTo(true)
             getPairAssignmentsAsync(tribeId).await()
                     .assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun deleteWhenRecordDoesNotExistWillReturnFalse() = testAsync {
+        setupAsync(object {
+            val tribeId = TribeId("tribe-id-99")
+            private val pair = stubSimplePairAssignmentDocument()
+            val id = pair.first
+        }) exerciseAsync {
+            delete(id)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(false)
         }
     }
 

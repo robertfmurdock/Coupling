@@ -146,7 +146,6 @@ fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail:
         fun performDeletePlayerCommand(playerId: String) = GlobalScope.promise {
             DeletePlayerCommand(playerId)
                     .perform()
-                    .let { json() }
         }
 
         @JsName("performPlayersQuery")
