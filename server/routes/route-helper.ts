@@ -7,7 +7,7 @@ export function handleRequest(commandRunFunction, successFunction) {
             .catch(function (error) {
                 console.log(error);
                 response.statusCode = 500;
-                response.send(error.message);
+                response.send({message: error.message});
             });
     }
 }

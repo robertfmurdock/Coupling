@@ -1,49 +1,29 @@
 import * as express from "express";
 // @ts-ignore
 import {commandDispatcher} from "server"
-
-function respond(response, promise) {
-    promise
-        .then(function (players) {
-            response.send(players);
-        }, function (error) {
-            console.log('error', error);
-            response.statusCode = 500;
-            response.send({message: error.message});
-        })
-}
+import {handleRequest} from "./route-helper";
 
 class PlayerRoutes {
-    listPlayers(request, response) {
-        respond(
-            response,
-            request.commandDispatcher
-                .performPlayersQuery(request.params.tribeId)
-        );
-    };
 
-    savePlayer(request, response) {
-        respond(
-            response,
-            request.commandDispatcher
-                .performSavePlayerCommand(request.body, request.params.tribeId)
-        )
-    };
+    listPlayers = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performPlayersQuery(request.params.tribeId),
+        (response, data) => response.send(data)
+    );
 
-    removePlayer(request, response) {
-        respond(
-            response,
-            request.commandDispatcher
-                .performDeletePlayerCommand(request.params.playerId)
-        );
-    };
+    listRetiredMembers = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performRetiredPlayersQuery(request.params.tribeId),
+        (response, data) => response.send(data)
+    );
 
-    listRetiredMembers(request, response) {
-        respond(
-            response,
-            request.commandDispatcher.performRetiredPlayersQuery(request.params.tribeId)
-        );
-    };
+    savePlayer = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performSavePlayerCommand(request.body, request.params.tribeId),
+        (response, data) => response.send(data)
+    );
+
+    removePlayer = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performDeletePlayerCommand(request.params.playerId),
+        (response, data) => response.send(data)
+    );
 
 }
 
