@@ -11,10 +11,12 @@ import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.coupling.common.toTribe
-import com.zegreatrob.coupling.server.entity.PinRepository
+import com.zegreatrob.coupling.server.entity.pin.PinRepository
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.server.entity.pin.PinsQuery
+import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.entity.player.*
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
@@ -28,6 +30,7 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
         RetiredPlayersQueryDispatcher,
         SavePlayerCommandDispatcher,
         DeletePlayerCommandDispatcher,
+        PinsQueryDispatcher,
         SavePairAssignmentDocumentCommandDispatcher,
         PairAssignmentDocumentListQueryDispatcher,
         DeletePairAssignmentDocumentCommandDispatcher,
@@ -159,6 +162,14 @@ fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail:
         @JsName("performRetiredPlayersQuery")
         fun performRetiredPlayersQuery(tribeId: String) = GlobalScope.promise {
             RetiredPlayersQuery(TribeId(tribeId))
+                    .perform()
+                    .map { it.toJson() }
+                    .toTypedArray()
+        }
+
+        @JsName("performPinsQuery")
+        fun performPinsQuery(tribeId: String) = GlobalScope.promise {
+            PinsQuery(TribeId(tribeId))
                     .perform()
                     .map { it.toJson() }
                     .toTypedArray()

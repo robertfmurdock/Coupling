@@ -30,9 +30,9 @@ describe(path, function () {
 
     describe("GET", function () {
         let expectedPins = [
-            {_id: monk.id(), tribe: tribeId},
-            {_id: monk.id(), tribe: tribeId},
-            {_id: monk.id(), tribe: tribeId}
+            {_id: monk.id(), name: '1', tribe: tribeId},
+            {_id: monk.id(), name: '2', tribe: tribeId},
+            {_id: monk.id(), name: '3', tribe: tribeId}
         ];
 
         beforeEach(function (done) {
@@ -107,9 +107,9 @@ describe(path, function () {
     });
     describe("DELETE", function () {
         let resultPins = [
-            {_id: monk.id(), tribe: tribeId},
-            {_id: monk.id(), tribe: tribeId},
-            {_id: monk.id(), tribe: tribeId}
+            {_id: monk.id(), name: '1', tribe: tribeId},
+            {_id: monk.id(), name: '2', tribe: tribeId},
+            {_id: monk.id(), name: '3', tribe: tribeId}
         ];
 
         beforeEach(function (done) {

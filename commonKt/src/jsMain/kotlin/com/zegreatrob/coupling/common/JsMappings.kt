@@ -34,7 +34,7 @@ fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pai
 private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
         .toTypedArray()
 
-private fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
+fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
 
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(

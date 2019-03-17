@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.PinRepository
+import com.zegreatrob.coupling.server.entity.pin.PinRepository
 
 interface TribeIdPinsSyntax {
     val pinRepository: PinRepository

@@ -1,13 +1,13 @@
 "use strict";
 import * as express from 'express'
+import {handleRequest} from "./route-helper";
 
 class PinRoutes {
 
-    list(request, response) {
-        request.dataService.requestPins(request.params.tribeId).then(function (pins) {
-            response.send(pins);
-        });
-    };
+    list = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performPinsQuery(request.params.tribeId),
+        (response, data) => response.send(data)
+    );
 
     savePin(request, response) {
         var pin = request.body;
