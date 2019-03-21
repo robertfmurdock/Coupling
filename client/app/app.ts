@@ -29,6 +29,7 @@ import tribeListRoute from "./routes/TribeListRoute";
 import retiredPlayersRoute from "./routes/RetiredPlayersRoute";
 import GoogleSignIn from "./GoogleSignIn";
 import IRouteProvider = angular.route.IRouteProvider;
+import {Coupling} from "./services";
 
 logging.com.zegreatrob.coupling.logging.initializeJasmineLogging(false);
 
@@ -61,6 +62,16 @@ async function bootstrapApp() {
             routeProvider
                 .when('/', {redirectTo: '/tribes/'})
                 .when('/tribes/', tribeListRoute)
+                .when('/logout/', {
+                    resolveRedirectTo: ['Coupling', async function (Coupling: Coupling) {
+                        await Promise.all([
+                                Coupling.logout(),
+                                GoogleSignIn.signOut()
+                            ]
+                        );
+                        return '/welcome';
+                    }],
+                })
                 .when('/new-tribe/', newTribeRoute)
                 .when('/:tribeId/', {redirectTo: '/:tribeId/pairAssignments/current/'})
                 .when('/:tribeId/prepare/', prepareTribeRoute)

@@ -81,6 +81,10 @@ class Coupling {
         return response.data;
     }
 
+    async logout() {
+        await axios.get('/api/logout');
+    }
+
     savePlayer(player, tribeId: string) {
         return this.post(`/api/${tribeId}/players`, player);
     }

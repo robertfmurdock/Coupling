@@ -7,14 +7,19 @@ import * as WebSocket from "ws";
 import * as AuthorizedTribeFetcher from "./lib/AuthorizedTribesFetcher";
 
 module.exports = function (wsInstance, userDataService, couplingDataService) {
-
     const app = wsInstance.app;
+
+    app.get('/api/logout', function (req, res) {
+        req.logout();
+        res.send('ok')
+    });
 
     app.post('/auth/google-token', passport.authenticate('custom'), ((req, res) => res.sendStatus(200)));
 
     app.get('/microsoft-login', passport.authenticate('azuread-openidconnect'));
     app.post('/auth/signin-microsoft',
         passport.authenticate('azuread-openidconnect', {failureRedirect: '/'}), (req, res) => res.redirect('/'));
+
 
     const expressEnv = app.get('env');
     const isInDevMode = 'development' == expressEnv || 'test' == expressEnv;

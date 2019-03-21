@@ -29,6 +29,14 @@ export default class GoogleSignIn {
         return isSignedIn;
     }
 
+    static async signOut() {
+        const googleAuth = await this.getGoogleAuth();
+        const isSignedIn = googleAuth.isSignedIn.get();
+        if (isSignedIn) {
+            await googleAuth.signOut();
+        }
+    }
+
     private static async getGoogleAuth() {
         let auth2 = await this.loadGoogleAuth2();
 
