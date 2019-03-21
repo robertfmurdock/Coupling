@@ -9,11 +9,11 @@
     display: inline-block;
 }
 
-:local(.className) > * > * {
+:local(.className) * {
     vertical-align: middle;
 }
 
-:local(.className) > * > h1 {
+:local(.className) h1 {
     display: inline-block;
     margin: 0 20px;
     text-decoration: underline;
