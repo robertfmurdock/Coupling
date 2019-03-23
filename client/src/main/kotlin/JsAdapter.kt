@@ -1,4 +1,6 @@
 import com.zegreatrob.coupling.common.*
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
@@ -26,6 +28,19 @@ fun commandDispatcher(): CommandDispatcher = object : CommandDispatcher {
     ).perform()
             .toJson()
 
+    @JsName("performCalculateHeatMapCommand")
+    fun performCalculateHeatMapCommand(
+            players: Array<Json>,
+            history: Array<Json>,
+            rotationPeriod: Int
+    ) = CalculateHeatMapCommand(
+            players.map { it.toPlayer() },
+            historyFromArray(history),
+            rotationPeriod
+    ).perform()
+            .map { it.toTypedArray() }
+            .toTypedArray()
+
 }
 
 private fun CallSign.toJson() = json(
@@ -33,5 +48,5 @@ private fun CallSign.toJson() = json(
         "noun" to noun
 )
 
-interface CommandDispatcher : FindCallSignActionDispatcher
+interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 

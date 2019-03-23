@@ -47,13 +47,11 @@ interface FindNewPairsActionDispatcher {
             remainingPlayers = remainingPlayers.minus(newPair.asArray())
     )
 
-    private fun PairCandidateReport.spinForPartner(): CouplingPair {
-        return if (partners.isEmpty()) {
-            CouplingPair.Single(player)
-        } else {
-            partners.spin()
-                    .let { partner -> CouplingPair.Double(player, partner) }
-        }
+    private fun PairCandidateReport.spinForPartner() = if (partners.isEmpty()) {
+        CouplingPair.Single(player)
+    } else {
+        partners.spin()
+                .let { partner -> CouplingPair.Double(player, partner) }
     }
 
     private fun List<Player>.spin() = with(wheel) { toTypedArray().spin() }

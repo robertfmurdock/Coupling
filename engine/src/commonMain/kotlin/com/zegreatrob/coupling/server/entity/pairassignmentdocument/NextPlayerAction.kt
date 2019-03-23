@@ -25,12 +25,11 @@ interface NextPlayerActionDispatcher {
     fun NextPlayerAction.createPairCandidateReports() = CreatePairCandidateReportsAction(gameSpin)
             .performThis()
 
-    private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport): PairCandidateReport {
-        return when {
-            report.partners.size < reportWithLongestTime.partners.size -> report
-            else -> reportWithLongestTime
-        }
-    }
+    private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
+            when {
+                report.partners.size < reportWithLongestTime.partners.size -> report
+                else -> reportWithLongestTime
+            }
 
     private fun timeSinceLastPairedIsLonger(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport): Boolean {
         return if (report.timeResult is TimeResultValue && reportWithLongestTime.timeResult is TimeResultValue) {

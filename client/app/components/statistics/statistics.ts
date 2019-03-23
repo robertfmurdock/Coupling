@@ -3,8 +3,12 @@ import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
 import {module} from "angular";
 import * as Styles from "./styles.css";
-import PlayerHeatCalculator from "../../runners/PlayerHeatCalculator";
 import StatisticComposer from "../../runners/StatisticComposer";
+// @ts-ignore
+import * as client from 'client'
+
+const commandDispatcher = client.commandDispatcher();
+
 
 export class StatisticsController {
     public tribe: Tribe;
@@ -17,13 +21,10 @@ export class StatisticsController {
 
     $onInit() {
         const composer = new StatisticComposer();
-        const playerHeatCalculator = new PlayerHeatCalculator();
 
         this.statistics = composer.compose(this.tribe, this.players, this.history);
         this.styles = Styles;
-        this.data = playerHeatCalculator.calculateHeatValues(this.players,
-            this.history,
-            this.statistics.spinsUntilFullRotation);
+        this.data = commandDispatcher.performCalculateHeatMapCommand(this.players, this.history, this.statistics.spinsUntilFullRotation);
         this.activePlayerCount = this.players.length;
     }
 }
