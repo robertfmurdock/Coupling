@@ -1,0 +1,36 @@
+package com.zegreatrob.coupling.common.entity.pairassignmentdocument
+
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair.Companion.equivalent
+import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.setup
+import kotlin.test.Test
+
+class CouplingPairTest {
+
+    @Test
+    fun pairsWithSwappedPositionShouldBeEquivalent() = setup(object {
+        private val player1 = Player(id = "1")
+        private val player2 = Player(id = "2")
+        val pair1 = CouplingPair.Double(player1, player2)
+        val pair2 = CouplingPair.Double(player2, player1)
+    }) exercise {
+        equivalent(pair1, pair2)
+    } verify { result ->
+        result.assertIsEqualTo(true)
+    }
+
+    @Test
+    fun differentPairsAreNotEquivalent() = setup(object {
+        private val player1 = Player(id = "1")
+        private val player2 = Player(id = "2")
+        private val player3 = Player(id = "3")
+        val pair1 = CouplingPair.Double(player1, player2)
+        val pair2 = CouplingPair.Double(player1, player3)
+    }) exercise {
+        equivalent(pair1, pair2)
+    } verify { result ->
+        result.assertIsEqualTo(false)
+    }
+
+}

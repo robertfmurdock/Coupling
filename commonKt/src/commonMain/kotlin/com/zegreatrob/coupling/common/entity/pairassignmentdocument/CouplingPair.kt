@@ -19,6 +19,10 @@ sealed class CouplingPair {
     data class Double(val player1: Player, val player2: Player) : CouplingPair() {
         override fun asArray() = arrayOf(player1, player2)
     }
+
+    companion object : CouplingComparisionSyntax {
+        fun equivalent(pair1: CouplingPair, pair2: CouplingPair) = areEqualPairs(pair1, pair2)
+    }
 }
 
 fun Player.withPins(pins: List<Pin> = emptyList()) = PinnedPlayer(this, pins)

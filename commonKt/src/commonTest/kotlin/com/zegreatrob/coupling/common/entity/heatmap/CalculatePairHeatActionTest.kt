@@ -31,6 +31,22 @@ class CalculatePairHeatActionTest {
         result.assertIsEqualTo(0.toDouble())
     }
 
+    @Test
+    fun willReturnOneWhenPairHasOccurredButDifferentPositions() = setup(object {
+        private val player1 = Player(id = "bob")
+        private val player2 = Player(id = "fred")
+        val pair = CouplingPair.Double(player1, player2)
+        val history = listOf(
+                listOf(CouplingPair.Double(player2, player1)).pairAssignmentDocument()
+        )
+        val rotationPeriod = 60
+        val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+    }) exercise {
+        action.perform()
+    } verify { result ->
+        result.assertIsEqualTo(1.0)
+    }
+
     class WhenThereIsOnlyOnePossiblePair {
 
         private fun makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs: Int): CalculatePairHeatAction {
@@ -123,7 +139,6 @@ class CalculatePairHeatActionTest {
             val history = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
                     .buildHistoryByRepeating(intervalsUntilCooling)
                     .plus(expectedPairing.pairAssignmentDocument())
-                    .also { println("history size ${it.size}") }
 
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.common.entity.heatmap
 
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair.Companion.equivalent
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedCouplingPair
 import kotlin.math.min
@@ -20,7 +21,7 @@ interface CalculatePairHeatActionDispatcher {
 
     private fun CalculatePairHeatAction.timesPaired() = historyInHeatWindow()
             .flattenedPairings()
-            .count { it == pair }
+            .count { equivalent(it, pair) }
 
     private fun CalculatePairHeatAction.historyInHeatWindow() = history.slice(
             0 until min(lastRelevantRotation, history.size)
