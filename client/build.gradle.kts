@@ -23,7 +23,7 @@ dependencies {
     implementation(project(":commonKt"))
     implementation(project(":logging"))
     implementation("com.soywiz:klock:1.1.1")
-    implementation("io.github.microutils:kotlin-logging-js:1.6.25")
+    implementation("io.github.microutils:kotlin-logging-js:1.6.26")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
 
     testImplementation(project(":test-logging"))
