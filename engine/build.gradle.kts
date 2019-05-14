@@ -18,7 +18,8 @@ kotlin {
             dependencies {
                 api(project(":commonKt"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.1.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.2.1")
                 implementation("com.soywiz:klock:1.1.1")
             }
         }
@@ -33,6 +34,11 @@ kotlin {
             }
         }
 
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.2.1")
+            }
+        }
         val jsTest by getting {
             dependencies {
                 api(project(":logging"))
