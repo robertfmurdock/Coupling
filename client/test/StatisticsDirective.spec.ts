@@ -5,6 +5,7 @@ import Tribe from "../../common/Tribe";
 import * as times from 'ramda/src/times'
 import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
+// @ts-ignore
 import * as Styles from "../../client/app/components/statistics/styles.css";
 import * as map from "ramda/src/map";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";

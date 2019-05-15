@@ -29,7 +29,7 @@ describe('Service: ', function () {
                 }];
 
                 const getSpy = spyOn(axios, 'get')
-                    .and.returnValue(Promise.resolve({data: expectedHistory}));
+                    .and.returnValue(Bluebird.resolve({data: expectedHistory}));
 
                 const resultHistory = await Coupling.getHistory('tribo');
 
@@ -50,7 +50,7 @@ describe('Service: ', function () {
                 }];
 
                 const getSpy = spyOn(axios, 'get')
-                    .and.returnValue(Promise.resolve({data: expectedTribes}));
+                    .and.returnValue(Bluebird.resolve({data: expectedTribes}));
 
                 const resultTribes = await Coupling.getTribes();
                 expect(getSpy).toHaveBeenCalledWith('/api/tribes');
@@ -63,7 +63,7 @@ describe('Service: ', function () {
                 const expectedData = 'nonsense';
 
                 const getSpy = spyOn(axios, 'get')
-                    .and.returnValue(Promise.reject(
+                    .and.returnValue(Bluebird.reject(
                         {
                             response: {status: statusCode, data: expectedData}
                         }
@@ -98,7 +98,7 @@ describe('Service: ', function () {
                 };
 
                 const postSpy = spyOn(axios, 'post')
-                    .and.returnValue(Promise.resolve({data: expectedUpdatedPlayer}));
+                    .and.returnValue(Bluebird.resolve({data: expectedUpdatedPlayer}));
 
                 Coupling.savePlayer(player, 'tribo').then(function (updatedPlayer) {
                     expect(updatedPlayer).toEqual(expectedUpdatedPlayer);
@@ -120,7 +120,7 @@ describe('Service: ', function () {
                 }];
 
                 const getSpy = spyOn(axios, 'get')
-                    .and.returnValue(Promise.resolve({data: expectedPins}));
+                    .and.returnValue(Bluebird.resolve({data: expectedPins}));
 
                 Bluebird.resolve(Coupling.getPins(tribeId))
                     .then(function (pins) {
@@ -139,7 +139,7 @@ describe('Service: ', function () {
                 const statusCode = 404;
                 const expectedData = 'nonsense';
                 const getSpy = spyOn(axios, 'get')
-                    .and.returnValue(Promise.reject({
+                    .and.returnValue(Bluebird.reject({
                         response: {status: statusCode, data: expectedData}
                     }));
 
