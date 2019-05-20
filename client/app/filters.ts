@@ -1,18 +1,4 @@
 const filters = angular.module("coupling.filters", []);
-filters.filter('gravatarUrl', ['gravatarService', function (gravatarService) {
-    return function (player, options) {
-        if (player && player.imageURL) {
-            return player.imageURL;
-        } else {
-            options['default'] = "retro";
-            let email = "";
-            if (player) {
-                email = player.email ? player.email : player.name;
-            }
-            return gravatarService.url(email, options);
-        }
-    }
-}]);
 
 filters.filter('tribeImageUrl', ['gravatarService', function (gravatarService) {
     return function (tribe, options) {

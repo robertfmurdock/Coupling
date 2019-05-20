@@ -1,10 +1,8 @@
 import {module} from "angular";
-import * as ReactDOM from 'react-dom'
-import * as React from 'react'
-
-import IController = angular.IController;
 import Player from "../../../../common/Player";
 import ReactPlayerCard from "./ReactPlayerCard";
+import IController = angular.IController;
+import {connectReactToNg} from "../ReactNgAdapter";
 
 export class PlayerCardController implements IController {
     static $inject = ['$location', '$scope', '$element'];
@@ -15,29 +13,19 @@ export class PlayerCardController implements IController {
     disabled: boolean;
 
     constructor(public $location, $scope, element) {
-
-        const renderReactElement = () => {
-            if (this.player) {
-                ReactDOM.render(
-                    React.createElement(ReactPlayerCard, {
-                        player: this.player,
-                        size: this.size,
-                        tribeId: this.tribeId,
-                        disabled: this.disabled
-                    }),
-                    element[0]
-                );
-            }
-        };
-
-        $scope.$watch("player", renderReactElement);
-        $scope.$on("$destroy", unmountReactElement);
-
-        function unmountReactElement() {
-            ReactDOM.unmountComponentAtNode(element[0]);
-        }
+        connectReactToNg({
+            component: ReactPlayerCard,
+            props: () => ({
+                player: this.player,
+                size: this.size,
+                tribeId: this.tribeId,
+                disabled: this.disabled
+            }),
+            domNode: element[0],
+            $scope: $scope,
+            watchExpression: "player"
+        });
     }
-
 }
 
 export default module('coupling.playerCard', [])
