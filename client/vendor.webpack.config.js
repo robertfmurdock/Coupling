@@ -19,9 +19,9 @@ const config = {
       "axios",
       "kotlin",
       "kotlin-logging",
+      "kotlinx-serialization-runtime-js",
       "logging",
       "prefixfree",
-      "kotlinx-serialization-runtime-js",
       "klock",
       "d3-color",
       "d3-interpolate",
@@ -51,6 +51,7 @@ const config = {
       "font-awesome/css/font-awesome.css",
       "date-fns/parse",
       "date-fns/distance_in_words",
+      "fitty",
     ]
   },
   output: {
