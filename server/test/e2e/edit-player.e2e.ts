@@ -223,7 +223,7 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        expect(element(By.css('[ng-model="playerCard.player.name"]')).getText()).toBe('Unknown')
+        expect(element(By.css('.player-card-header')).getText()).toBe('Unknown')
     });
 
     it('will show all players', function () {

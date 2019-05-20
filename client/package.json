@@ -74,7 +74,17 @@
     "webpack": "^4.29.6",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.2.3",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "@types/react": "^16.8.17",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
+    "blueimp-md5": "^2.10.0",
+    "classnames": "^2.2.6",
+    "fitty": "^2.2.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "scripts": {
     "webpack": "webpack",

@@ -46,6 +46,8 @@ const config = {
       "ramda/src/contains",
       "ramda/src/union",
       "ramda/src/pluck",
+      "react",
+      "react-dom",
       "font-awesome/css/font-awesome.css",
       "date-fns/parse",
       "date-fns/distance_in_words",

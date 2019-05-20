@@ -22,4 +22,4 @@ declare module 'protractor-jasmine2-screenshot-reporter' {
 }
 
 // noinspection ES6UnusedImports
-import IPromise = angular.IPromise
+import IPromise = angular.IPromise;

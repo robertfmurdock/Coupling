@@ -75,7 +75,7 @@ describe('Statistics directive', function () {
 
             const actualPairedPlayerNames = times((index) => {
                 let children = pairElements.eq(index)
-                    .find('[ng-repeat="player in report.pair"] text[ng-model="playerCard.player.name"]');
+                    .find('[ng-repeat="player in report.pair"] .player-card-header');
                 return [children.eq(0).text(), children.eq(1).text()];
             }, numberOfElements);
 

@@ -1,55 +1,41 @@
 import {module} from "angular";
-import * as template from "./playercard.pug";
-import * as styles from './styles.css'
+import * as ReactDOM from 'react-dom'
+import * as React from 'react'
 
 import IController = angular.IController;
 import Player from "../../../../common/Player";
+import ReactPlayerCard from "./ReactPlayerCard";
 
 export class PlayerCardController implements IController {
-    static $inject = ['$location'];
+    static $inject = ['$location', '$scope', '$element'];
 
-    styles: any;
     player: Player;
     tribeId: string;
     size: number;
     disabled: boolean;
-    maxFontHeight: number;
-    minFontHeight: number;
-    cardStyle: any;
-    headerStyle: any;
 
-    constructor(public $location) {
-        this.styles = styles;
-    }
+    constructor(public $location, $scope, element) {
 
-    $onInit?() {
-        if (!this.size) {
-            this.size = 100;
-        }
-
-        const pixelWidth = this.size;
-        const pixelHeight = (this.size * 1.4);
-        const paddingAmount = (this.size * 0.06);
-
-        const borderAmount = (this.size * 0.01);
-        this.maxFontHeight = (this.size * 0.31);
-        this.minFontHeight = (this.size * 0.16);
-        this.cardStyle = {
-            width: `${pixelWidth}px`,
-            height: `${pixelHeight}px`,
-            padding: `${paddingAmount}px`,
-            'border-width': `${borderAmount}px`,
+        const renderReactElement = () => {
+            if (this.player) {
+                ReactDOM.render(
+                    React.createElement(ReactPlayerCard, {
+                        player: this.player,
+                        size: this.size,
+                        tribeId: this.tribeId,
+                        disabled: this.disabled
+                    }),
+                    element[0]
+                );
+            }
         };
-        const headerMargin = (this.size * 0.02);
-        this.headerStyle = { margin: `${headerMargin}px 0 0 0`, }
-    }
 
-    clickPlayerName($event) {
-        if(this.disabled) {
-            return;
+        $scope.$watch("player", renderReactElement);
+        $scope.$on("$destroy", unmountReactElement);
+
+        function unmountReactElement() {
+            ReactDOM.unmountComponentAtNode(element[0]);
         }
-        if ($event.stopPropagation) $event.stopPropagation();
-        this.$location.path("/" + this.tribeId + "/player/" + this.player._id);
     }
 
 }
@@ -58,7 +44,7 @@ export default module('coupling.playerCard', [])
     .controller('PlayerCardController', PlayerCardController)
     .directive('playercard', () => {
         return {
-            template: template,
+            template: '<div/>',
             restrict: 'E',
             controller: 'PlayerCardController',
             controllerAs: 'playerCard',

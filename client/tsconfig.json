@@ -2,7 +2,8 @@
     "compilerOptions": {
         "target": "es5",
         "noImplicitAny": false,
-        "sourceMap": true
+        "sourceMap": true,
+        "jsx": "react"
     },
     "include": [
         "./typescript-settings/main.d.ts",

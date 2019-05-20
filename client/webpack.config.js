@@ -17,7 +17,7 @@ const config = {
       path.resolve(__dirname, 'build/kotlin-js-min/main'),
       path.resolve(__dirname, 'node_modules')
     ],
-    extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.json'],
+    extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
   },
   externals: {
     ws: {},
@@ -26,10 +26,13 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        loader: 'ts-loader?' + JSON.stringify({
-          silent: true
-        })
+        test: /\.ts(x?)$/,
+        use: [
+          'babel-loader',
+          'ts-loader?' + JSON.stringify({
+            silent: true
+          })
+        ]
       },
       {
         test: /\.js$/,

@@ -21,7 +21,6 @@
 
 :local(.heatmapPlayersSideRow) {
     display: inline-block;
-    line-height: 0;
 }
 
 :local(.heatmapPlayersSideRow) playercard {

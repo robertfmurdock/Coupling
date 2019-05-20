@@ -30,51 +30,6 @@ describe('The controller named ', function () {
         scope = {};
     });
 
-    describe('PlayerCardController', function () {
-
-        let controller;
-
-        beforeEach(function () {
-            this.location = {
-                path: jasmine.createSpy('path')
-            };
-
-            try {
-                controller = new PlayerCardController(this.location);
-
-                controller.player = {
-                    name: 'Chad',
-                    _id: 'PrettyGreatPlayerId'
-                };
-                controller.tribeId = 'awful'
-
-            } catch (err) {
-                console.error(err);
-                throw err;
-            }
-        });
-
-        describe('clickPlayerName', function () {
-
-            it('will redirect to the players page', function () {
-                const expectedPath = `/${controller.tribeId}/player/${controller.player._id}`;
-                expect(this.location.path).not.toHaveBeenCalledWith(expectedPath);
-                const event = {};
-                controller.clickPlayerName(event);
-                expect(this.location.path).toHaveBeenCalledWith(expectedPath);
-            });
-
-            it('will stop propagation to other click events', function () {
-                const event = {
-                    stopPropagation: jasmine.createSpy('stopPropagation')
-                };
-                controller.clickPlayerName(event);
-                expect(event.stopPropagation).toHaveBeenCalled();
-            });
-        });
-
-    });
-
     describe('TribeCardController', function () {
 
         let location;

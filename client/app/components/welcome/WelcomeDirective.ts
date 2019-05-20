@@ -4,6 +4,7 @@ import * as services from "../../services";
 import * as template from "./welcome.pug";
 import * as styles from "./styles.css";
 import Player from "../../../../common/Player";
+import fitty from "fitty";
 
 interface Card {
     name: string
@@ -81,6 +82,8 @@ export class WelcomeController {
         this.proverb = choice.proverb;
         this.styles = styles;
         $timeout(() => this.show = true, 0);
+        // @ts-ignore
+        $timeout(() => fitty.fitAll(), 100);
     }
 
     signIn() {
