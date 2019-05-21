@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as classNames from 'classNames'
+import * as classNames from 'classnames'
 import Tribe from "../../../../common/Tribe";
 import * as styles from './styles.css'
 import {tribeGravatarUrl} from "../player-card/GravatarHelper";
