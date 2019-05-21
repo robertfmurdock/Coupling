@@ -30,53 +30,6 @@ describe('The controller named ', function () {
         scope = {};
     });
 
-    describe('TribeCardController', function () {
-
-        let location;
-        let controller;
-
-        beforeEach(function () {
-            location = {
-                path: jasmine.createSpy('path')
-            };
-            controller = new TribeCardController(location);
-        });
-
-        describe('clickOnTribeCard', function () {
-            it('that changes location to that tribe\'s current pair assignments', function () {
-                controller.tribe = {
-                    id: 'amazingMagicId'
-                };
-
-                expect(location.path).not.toHaveBeenCalled();
-                controller.clickOnTribeCard();
-                expect(location.path).toHaveBeenCalledWith("/" + controller.tribe.id + "/pairAssignments/current");
-            });
-        });
-
-        describe('clickOnTribeName', function () {
-            it('that changes location to that tribe', function () {
-                controller.tribe = {
-                    id: 'amazingMagicId'
-                };
-                expect(location.path).not.toHaveBeenCalled();
-                controller.clickOnTribeName({});
-                expect(location.path).toHaveBeenCalledWith("/" + controller.tribe.id + '/edit/');
-            });
-
-            it('will stop propagation to other click events', function () {
-                const event = {
-                    stopPropagation: jasmine.createSpy('stopPropagation')
-                };
-                controller.tribe = {
-                    _id: 'amazingMagicId'
-                };
-                controller.clickOnTribeName(event);
-                expect(event.stopPropagation).toHaveBeenCalled();
-            });
-        });
-    });
-
     describe('PairAssignmentsController', function () {
         let Coupling, location, routeParams;
         const spinDefer = defer();

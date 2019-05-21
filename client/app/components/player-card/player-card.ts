@@ -23,7 +23,8 @@ export class PlayerCardController implements IController {
             }),
             domNode: element[0],
             $scope: $scope,
-            watchExpression: "player"
+            watchExpression: "player",
+            $location: $location
         });
     }
 }

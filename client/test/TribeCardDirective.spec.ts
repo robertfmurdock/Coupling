@@ -20,7 +20,7 @@ describe('Tribe card directive', function () {
         const tribe: Tribe = {id: '1', name: ''};
         const tribeCardDirective = buildDirective($rootScope, $compile, tribe);
 
-        const nameElement = tribeCardDirective.find('[ng-model="tribecard.tribe.name"]');
+        const nameElement = tribeCardDirective.find('.tribe-card-header');
         expect(nameElement.text()).toBe('Unknown');
     }));
 

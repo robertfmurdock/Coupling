@@ -1,7 +1,13 @@
 import Player from "../../../../common/Player";
+import Tribe from "../../../../common/Tribe";
 import * as md5 from 'blueimp-md5'
 
-export function gravatarUrl(player: Player, options) {
+function gravatarUrl(email, options) {
+    const codedEmail = md5(email.toLowerCase().trim());
+    return `https://www.gravatar.com/avatar/${codedEmail}?default=${options.default}&s=${options.size}`;
+}
+
+export function playerGravatarUrl(player: Player, options) {
     if (player && player.imageURL) {
         return player.imageURL;
     } else {
@@ -10,9 +16,16 @@ export function gravatarUrl(player: Player, options) {
         if (player) {
             email = player.email ? player.email : player.name || '';
         }
-
-        const codedEmail = md5(email.toLowerCase().trim());
-
-        return `https://www.gravatar.com/avatar/${codedEmail}?default=retro&s=${options.size}`;
+        return gravatarUrl(email, options);
     }
+}
+
+export function tribeGravatarUrl(tribe: Tribe, options) {
+    if (tribe) {
+        if (tribe.email) {
+            options['default'] = "identicon";
+            return gravatarUrl(tribe.email, options);
+        }
+    }
+    return "/images/icons/tribes/no-tribe.png";
 }

@@ -7,6 +7,7 @@ interface Tribe {
     callSignsEnabled?: boolean;
     defaultBadgeName?: string;
     alternateBadgeName?: string;
+    email?: string;
     pairingRule?: PairingRule
 }
 

@@ -1,14 +1,15 @@
 import * as React from 'react'
 import * as styles from './styles.css'
 import Player from "../../../../common/Player";
-import {gravatarUrl} from "./GravatarHelper";
-import {fitPlayerName} from "../ReactFittyHelper";
+import {playerGravatarUrl} from "./GravatarHelper";
+import {fitHeaderText} from "../ReactFittyHelper";
 
 interface Props {
     player: Player,
     tribeId: string,
     disabled: boolean,
-    size: number
+    size: number,
+    pathSetter: (string) => void
 }
 
 export default class ReactPlayerCard extends React.Component<Props> {
@@ -27,7 +28,7 @@ export default class ReactPlayerCard extends React.Component<Props> {
         return <div className={`${styles.player}`} style={cardStyle}>
             <img
                 className="player-icon"
-                src={gravatarUrl(player, {size})}
+                src={playerGravatarUrl(player, {size})}
                 alt="icon"
                 width={size}
                 height={size}
@@ -64,11 +65,17 @@ export default class ReactPlayerCard extends React.Component<Props> {
     }
 
     componentDidMount(): void {
-        fitPlayerName(this, this.props.size);
+        this.fitPlayerName(this, this.props.size, styles.header);
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
-        fitPlayerName(this, this.props.size);
+        this.fitPlayerName(this, this.props.size, styles.header);
+    }
+
+    fitPlayerName(component: any, size: any, className: any) {
+        const maxFontHeight = (size * 0.31);
+        const minFontHeight = (size * 0.16);
+        fitHeaderText(maxFontHeight, minFontHeight, component, className);
     }
 
     private clickPlayerName(event) {
@@ -78,7 +85,7 @@ export default class ReactPlayerCard extends React.Component<Props> {
 
         if (event.stopPropagation) event.stopPropagation();
 
-        window.location.pathname = `/${this.props.tribeId}/player/${this.props.player._id}`
+        this.props.pathSetter(`/${this.props.tribeId}/player/${this.props.player._id}`)
     }
 
 }
