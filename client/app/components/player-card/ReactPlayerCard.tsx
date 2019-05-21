@@ -1,8 +1,8 @@
 import * as React from 'react'
 import * as styles from './styles.css'
 import Player from "../../../../common/Player";
-import {gravatarUrl} from "./GravatarHelper";
 import {fitHeaderText} from "../ReactFittyHelper";
+import GravatarImage from "../gravatar/GravatarImage";
 
 interface Props {
     player: Player,
@@ -10,19 +10,6 @@ interface Props {
     disabled: boolean,
     size: number,
     pathSetter: (string) => void
-}
-
-function playerGravatarUrl(player: Player, options) {
-    if (player && player.imageURL) {
-        return player.imageURL;
-    } else {
-        options['default'] = "retro";
-        let email = "";
-        if (player) {
-            email = player.email ? player.email : player.name || '';
-        }
-        return gravatarUrl(email, options);
-    }
 }
 
 export default class ReactPlayerCard extends React.Component<Props> {
@@ -55,13 +42,23 @@ export default class ReactPlayerCard extends React.Component<Props> {
     private gravatarImage() {
         const player = this.props.player;
         const size = this.props.size;
-        return <img
-            className="player-icon"
-            src={playerGravatarUrl(player, {size})}
-            alt="icon"
-            width={size}
-            height={size}
-        />;
+        if (player.imageURL) {
+            return <img
+                src={player.imageURL}
+                className="player-icon"
+                width={size}
+                height={size}
+                alt="icon"
+            />
+        } else {
+            const email = player.email ? player.email : player.name || '';
+            return <GravatarImage
+                className="player-icon"
+                email={email}
+                alt="icon"
+                options={{size, default: 'retro'}}
+            />
+        }
     }
 
     private cardHeader() {

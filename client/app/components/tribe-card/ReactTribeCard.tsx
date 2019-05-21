@@ -2,28 +2,13 @@ import * as React from "react";
 import * as classNames from 'classnames'
 import Tribe from "../../../../common/Tribe";
 import * as styles from './styles.css'
-import {gravatarUrl} from "../player-card/GravatarHelper";
 import {fitHeaderText} from "../ReactFittyHelper";
+import GravatarImage from "../gravatar/GravatarImage";
 
 interface Props {
     tribe: Tribe,
     size: number,
     pathSetter: (string) => void
-}
-
-function GravatarImage(props: { email, fallback: string, alt: string, options: { default: string; size: any } }) {
-
-    const {email, fallback, alt, options} = props;
-    let src = myGravatarUrl(options, email, fallback);
-    return <img src={src} width={options.size} height={options.size} alt={alt}/>;
-}
-
-function myGravatarUrl(options, email: string, fallback: string) {
-    if (email) {
-        return gravatarUrl(email, options);
-    } else {
-        return fallback;
-    }
 }
 
 export default class ReactTribeCard extends React.Component<Props> {
