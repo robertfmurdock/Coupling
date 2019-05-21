@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as styles from './styles.css'
 import Player from "../../../../common/Player";
-import {playerGravatarUrl} from "./GravatarHelper";
+import {gravatarUrl} from "./GravatarHelper";
 import {fitHeaderText} from "../ReactFittyHelper";
 
 interface Props {
@@ -10,6 +10,19 @@ interface Props {
     disabled: boolean,
     size: number,
     pathSetter: (string) => void
+}
+
+function playerGravatarUrl(player: Player, options) {
+    if (player && player.imageURL) {
+        return player.imageURL;
+    } else {
+        options['default'] = "retro";
+        let email = "";
+        if (player) {
+            email = player.email ? player.email : player.name || '';
+        }
+        return gravatarUrl(email, options);
+    }
 }
 
 export default class ReactPlayerCard extends React.Component<Props> {

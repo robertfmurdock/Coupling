@@ -177,7 +177,7 @@ describe('The edit player page', function () {
 
     });
 
-    fit('should get error on leaving when name is changed.', async function () {
+    it('should get error on leaving when name is changed.', async function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
