@@ -19,42 +19,17 @@ export default class ReactPlayerCard extends React.Component<Props> {
     };
 
     render() {
-        const player = this.props.player;
-        const size = this.props.size;
-
-        const cardStyle = this.calculateCardStyle(size);
-        const headerStyle = this.calculateHeaderStyle(size);
-
-        return <div className={`${styles.player}`} style={cardStyle}>
-            <img
-                className="player-icon"
-                src={playerGravatarUrl(player, {size})}
-                alt="icon"
-                width={size}
-                height={size}
-            />
-            <div className={`player-card-header ${styles.header}`}
-                 style={headerStyle}
-                 onClick={(event) => this.clickPlayerName(event)}
-            >
-                <div>
-                    {player._id ? '' : 'NEW:'}
-                    {player.name || 'Unknown'}
-                </div>
-            </div>
+        return <div className={`${styles.player}`} style={this.cardStyle()}>
+            {this.gravatarImage()}
+            {this.cardHeader()}
         </div>
     }
 
-    private calculateHeaderStyle(size) {
-        const headerMargin = (size * 0.02);
-        return {margin: `${headerMargin}px 0 0 0`,};
-    }
-
-    private calculateCardStyle(size) {
+    private cardStyle() {
+        const size = this.props.size;
         const pixelWidth = size;
         const pixelHeight = (size * 1.4);
         const paddingAmount = (size * 0.06);
-
         const borderAmount = (size * 0.01);
         return {
             width: `${pixelWidth}px`,
@@ -64,18 +39,35 @@ export default class ReactPlayerCard extends React.Component<Props> {
         };
     }
 
-    componentDidMount(): void {
-        this.fitPlayerName(this, this.props.size, styles.header);
+    private gravatarImage() {
+        const player = this.props.player;
+        const size = this.props.size;
+        return <img
+            className="player-icon"
+            src={playerGravatarUrl(player, {size})}
+            alt="icon"
+            width={size}
+            height={size}
+        />;
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
-        this.fitPlayerName(this, this.props.size, styles.header);
+    private cardHeader() {
+        const player = this.props.player;
+        return <div className={`player-card-header ${styles.header}`}
+                    style={this.headerStyle()}
+                    onClick={(event) => this.clickPlayerName(event)}
+        >
+            <div>
+                {player._id ? '' : 'NEW:'}
+                {player.name || 'Unknown'}
+            </div>
+        </div>;
     }
 
-    fitPlayerName(component: any, size: any, className: any) {
-        const maxFontHeight = (size * 0.31);
-        const minFontHeight = (size * 0.16);
-        fitHeaderText(maxFontHeight, minFontHeight, component, className);
+    private headerStyle() {
+        const size = this.props.size;
+        const headerMargin = (size * 0.02);
+        return {margin: `${headerMargin}px 0 0 0`,};
     }
 
     private clickPlayerName(event) {
@@ -86,6 +78,21 @@ export default class ReactPlayerCard extends React.Component<Props> {
         if (event.stopPropagation) event.stopPropagation();
 
         this.props.pathSetter(`/${this.props.tribeId}/player/${this.props.player._id}`)
+    }
+
+    componentDidMount(): void {
+        this.fitPlayerName();
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
+        this.fitPlayerName();
+    }
+
+    private fitPlayerName() {
+        const size = this.props.size;
+        const maxFontHeight = (size * 0.31);
+        const minFontHeight = (size * 0.16);
+        fitHeaderText(maxFontHeight, minFontHeight, this, styles.header);
     }
 
 }

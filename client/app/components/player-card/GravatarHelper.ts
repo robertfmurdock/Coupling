@@ -21,11 +21,10 @@ export function playerGravatarUrl(player: Player, options) {
 }
 
 export function tribeGravatarUrl(tribe: Tribe, options) {
-    if (tribe) {
-        if (tribe.email) {
-            options['default'] = "identicon";
-            return gravatarUrl(tribe.email, options);
-        }
+    if (tribe && tribe.email) {
+        options['default'] = "identicon";
+        return gravatarUrl(tribe.email, options);
+    } else {
+        return "/images/icons/tribes/no-tribe.png";
     }
-    return "/images/icons/tribes/no-tribe.png";
 }

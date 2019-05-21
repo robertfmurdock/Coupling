@@ -18,50 +18,19 @@ export default class ReactTribeCard extends React.Component<Props> {
     };
 
     render() {
-        const {tribe, size} = this.props;
-
         return <span
             className={classNames("tribe-card", styles.className)}
             onClick={() => this.onClick()}
             tabIndex={0}
             style={this.cardStyle()}
         >
-            <div style={this.headerStyle()} className={"tribe-card-header"}>
-                <div
-                    className={styles.header}
-                    onClick={event => this.onClickHeader(event)}
-                >
-                    <div>
-                        {tribe.name || "Unknown"}
-                    </div>
-                </div>
-            </div>
-            <img src={tribeGravatarUrl(tribe, {size})} width={size} height={size} alt={"tribe-img"}/>
+            {this.cardHeader()}
+            {this.gravatarImage()}
         </span>;
-    }
-
-    fitHeader() {
-        const {size} = this.props;
-        const maxFontHeight = (size * 0.15);
-        const minFontHeight = (size * 0.16);
-        fitHeaderText(maxFontHeight, minFontHeight, this, styles.header);
-    }
-
-    componentDidMount(): void {
-        this.fitHeader();
-    }
-
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
-        this.fitHeader();
     }
 
     private onClick() {
         this.props.pathSetter(`/${this.props.tribe.id}/pairAssignments/current`)
-    }
-
-    private onClickHeader(event: React.MouseEvent<HTMLDivElement>) {
-        if (event.stopPropagation) event.stopPropagation();
-        this.props.pathSetter(`/${this.props.tribe.id}/edit`)
     }
 
     private cardStyle() {
@@ -78,13 +47,47 @@ export default class ReactTribeCard extends React.Component<Props> {
         };
     }
 
+    private cardHeader() {
+        const {tribe} = this.props;
+        return <div style={this.headerStyle()} className={"tribe-card-header"}>
+            <div className={styles.header} onClick={event => this.onClickHeader(event)}>
+                <div>{tribe.name || "Unknown"}</div>
+            </div>
+        </div>;
+    }
+
     private headerStyle() {
         const {size} = this.props;
-        const headerMargin = (size * 0.02);
+        const headerMargin = size * 0.02;
         const maxHeaderHeight = size * 0.35;
         return {
             margin: `${headerMargin}px 0 0 0`,
             'height': `${maxHeaderHeight}px`
         };
+    }
+
+    private onClickHeader(event: React.MouseEvent<HTMLDivElement>) {
+        if (event.stopPropagation) event.stopPropagation();
+        this.props.pathSetter(`/${this.props.tribe.id}/edit`)
+    }
+
+    private gravatarImage() {
+        const {tribe, size} = this.props;
+        return <img src={tribeGravatarUrl(tribe, {size})} width={size} height={size} alt={"tribe-img"}/>;
+    }
+
+    componentDidMount(): void {
+        this.fitHeader();
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
+        this.fitHeader();
+    }
+
+    private fitHeader() {
+        const {size} = this.props;
+        const maxFontHeight = (size * 0.15);
+        const minFontHeight = (size * 0.16);
+        fitHeaderText(maxFontHeight, minFontHeight, this, styles.header);
     }
 }
