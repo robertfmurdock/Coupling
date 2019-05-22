@@ -54,7 +54,7 @@ describe('The edit tribe page', function () {
             await browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
 
             await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
-            const tribeElements = element.all(By.repeater('tribe in tribeList.tribes'));
+            const tribeElements = element.all(By.className('tribe-card'));
             tribeElements.first().element(By.className("tribe-card-header")).click();
 
             expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
@@ -90,7 +90,7 @@ describe('The edit tribe page', function () {
             await browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
 
             await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
-            const tribeElements = element.all(By.repeater('tribe in tribeList.tribes'));
+            const tribeElements = element.all(By.className('tribe-card'));
             tribeElements.first().element(By.className("tribe-card-header")).click();
 
             await expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');

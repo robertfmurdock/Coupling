@@ -32,7 +32,7 @@ const tribeConfigElement = element(By.className("tribe-config"));
 
 const tribeListPage = {
     getTribeElements: function () {
-        return element.all(By.repeater('tribe in tribeList.tribes'));
+        return element.all(By.className('tribe-card'));
     },
     getTribeNameLabel: function (tribeElement) {
         return tribeElement.element(tribeCardHeaderLocator);

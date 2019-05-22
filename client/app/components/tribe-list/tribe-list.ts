@@ -1,19 +1,31 @@
 import {module} from "angular";
-import * as template from "./tribe-list.pug";
 import * as styles from "./styles.css";
+
+import ReactTribeList from "./ReactTribeList"
+import {connectReactToNg} from "../ReactNgAdapter";
 
 export default module("coupling.tribeList", [])
     .directive('tribelist', function () {
         return {
-            controller: function () {
+            controller: ['$element', '$scope', '$location', function ($element, $scope, $location) {
                 this.styles = styles;
-            },
+                connectReactToNg({
+                    component: ReactTribeList,
+                    props: () => ({
+                        tribes: this.tribes
+                    }),
+                    domNode: $element[0],
+                    $scope: $scope,
+                    watchExpression: "tribes",
+                    $location: $location
+                });
+            }],
             controllerAs: 'tribeList',
             bindToController: true,
             scope: {
                 tribes: '='
             },
             restrict: 'E',
-            template: template
+            template: "<div/>"
         }
     });
