@@ -1,27 +1,36 @@
 import {module} from "angular";
-import * as template from './history.pug'
 import Tribe from "../../../../common/Tribe";
 import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import {Coupling} from "../../services";
+import ReactHistory from "./ReactHistory";
+import {connectReactToNg} from "../ReactNgAdapter";
 
 export class HistoryController {
 
-    static $inject = ['Coupling', '$route'];
+    static $inject = ['Coupling', '$route', '$scope', '$element', '$location'];
 
     tribe: Tribe;
+    history: PairAssignmentSet[];
     coupling: Coupling;
     private route: any;
 
-    constructor(coupling, route) {
+    constructor(coupling, route, $scope, $element, $location) {
         this.coupling = coupling;
         this.route = route;
-    }
 
-    async removeEntry(entry : PairAssignmentSet) {
-        if (confirm("Are you sure you want to delete these pair assignments?")) {
-            await this.coupling.removeAssignments(entry, this.tribe.id);
-            this.route.reload()
-        }
+        connectReactToNg({
+            component: ReactHistory,
+            props: () => ({
+                tribe: this.tribe,
+                history: this.history,
+                coupling: this.coupling,
+                reload: () => $scope.$apply(() => route.reload())
+            }),
+            domNode: $element[0],
+            $scope: $scope,
+            watchExpression: "history",
+            $location: $location
+        });
     }
 
 }
@@ -38,6 +47,6 @@ export default module("coupling.history", [])
                 history: '='
             },
             restrict: 'E',
-            template: template
+            template: "<div />"
         }
     });

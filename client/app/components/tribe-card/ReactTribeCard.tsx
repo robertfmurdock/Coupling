@@ -4,11 +4,14 @@ import Tribe from "../../../../common/Tribe";
 import * as styles from './styles.css'
 import {fitHeaderText} from "../ReactFittyHelper";
 import GravatarImage from "../gravatar/GravatarImage";
+import PathSetter from "../PathSetter";
+
+
 
 interface Props {
     tribe: Tribe,
     size: number,
-    pathSetter: (string) => void
+    pathSetter: PathSetter
 }
 
 export default class ReactTribeCard extends React.Component<Props> {

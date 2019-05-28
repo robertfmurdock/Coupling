@@ -1,4 +1,3 @@
-
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
@@ -38,7 +37,9 @@ class RunGameActionTest {
     } verify { result ->
         result.assertIsEqualTo(PairAssignmentDocument(
                 expectedDate,
-                expectedPairingAssignments.map { PinnedCouplingPair(it.asArray().map { player -> player.withPins() }) }
+                expectedPairingAssignments.map {
+                    PinnedCouplingPair(it.asArray().map { player -> player.withPins() })
+                }
         ))
     }
 }

@@ -200,7 +200,6 @@ describe('The controller named ', function () {
         });
 
         it('will provide all of the players that are not in the current pairs', function () {
-            const tribeId = 'numbers';
             const currentPairs: Pair[] = [
                 [
                     {name: 'tom', _id: '0'},
@@ -240,44 +239,6 @@ describe('The controller named ', function () {
             controller.players = players;
             expect(controller.unpairedPlayers).toEqual(players);
         })
-    });
-
-    describe('HistoryController', function () {
-        it('will delete pair set when remove is called and confirmed', async function () {
-            const $remove = jasmine.createSpy('removeSpy');
-            const reload = jasmine.createSpy('reload');
-            const coupling = {
-                removeAssignments: $remove
-            };
-            const historyController = new HistoryController(coupling, {reload: reload});
-            historyController.tribe = {id: 'me', name: 'you'};
-            spyOn(window, 'confirm').and.returnValue(true);
-
-            const entry: PairAssignmentSet = {
-                pairs: [],
-                date: ''
-            };
-            await historyController.removeEntry(entry);
-            expect($remove).toHaveBeenCalled();
-            expect(reload).toHaveBeenCalled();
-        });
-
-        it('will not delete pair set when remove is called and not confirmed', async function () {
-            const $remove = jasmine.createSpy('removeSpy');
-            const coupling = {
-                removeAssignments: $remove
-            };
-            const historyController = new HistoryController(coupling, {});
-
-            spyOn(window, 'confirm').and.returnValue(false);
-
-            const entry: PairAssignmentSet = {
-                pairs: [],
-                date: '',
-            };
-            await historyController.removeEntry(entry);
-            expect($remove).not.toHaveBeenCalled();
-        });
     });
 
 });
