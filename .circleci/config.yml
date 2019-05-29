@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: openjdk:8-jdk-slim
+      - image: openjdk:8-jdk
       - image: mongo:latest
       - image: selenium/standalone-chrome
     environment:
