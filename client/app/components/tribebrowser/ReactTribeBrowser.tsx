@@ -27,6 +27,12 @@ export default class ReactTribeBrowser extends React.Component<Props> {
                     </a>
                     <a id="tribe-select-button" className="large gray button" href="/tribes">
                         <i className="fa fa-arrow-circle-up"/>
+                        <text className="icon-button-text">Tribe select</text>
+                    </a>
+                </span>
+                <span>
+                    <a id="logout-button" className="large red button" href="/logout">
+                        <i className="fa fa-sign-out"/>
                         <text className="icon-button-text">Sign Out</text>
                     </a>
                 </span>
