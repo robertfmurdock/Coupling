@@ -7,7 +7,6 @@ import waitFor from "./WaitFor";
 
 configure({adapter: new Adapter()});
 
-
 describe('ReactHistory Spec', function () {
 
     it('will delete pair set when remove is called and confirmed', async function () {

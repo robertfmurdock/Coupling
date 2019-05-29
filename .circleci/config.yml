@@ -31,7 +31,7 @@ jobs:
             - "*"
   deploy-prod:
     docker:
-      - image: openjdk:8-jre-slim
+      - image: openjdk:8-jdk
     steps:
       - attach_workspace:
           at: ./
