@@ -14,14 +14,14 @@ describe('ReactHistory Spec', function () {
         const reload = jasmine.createSpy('reload');
         const coupling = {removeAssignments: $remove};
         const tribe = {id: 'me', name: 'you'};
-        const entry: PairAssignmentSet = {
+        const history: PairAssignmentSet[] = [{
             pairs: [],
             date: ''
-        };
+        }];
 
         const wrapper = mount(<ReactHistory
-            tribe={tribe} history={[entry]} coupling={coupling}, reload={reload}
-    />)
+            tribe={tribe} history={history} coupling={coupling} reload={reload}
+            pathSetter={() => undefined}/>);
         spyOn(window, 'confirm').and.returnValue(true);
         wrapper.find('.delete-button').simulate('click');
 
@@ -33,16 +33,17 @@ describe('ReactHistory Spec', function () {
     it('will not delete pair set when remove is called and not confirmed', async function () {
         const $remove = jasmine.createSpy('removeSpy');
         const tribe = {id: 'me', name: 'you'};
-        const entry: PairAssignmentSet = {
+        const history: PairAssignmentSet[] = [{
             pairs: [],
             date: ''
-        };
+        }];
+
         const coupling = {
             removeAssignments: $remove
         };
         const wrapper = mount(<ReactHistory
-            tribe={tribe} history={[entry]} coupling={coupling}
-    />)
+            tribe={tribe} history={history} coupling={coupling}
+            pathSetter={() => undefined} reload={() => undefined}/>);
 
         spyOn(window, 'confirm').and.returnValue(false);
         wrapper.find('.delete-button').simulate('click');
