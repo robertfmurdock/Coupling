@@ -1,9 +1,9 @@
 import IRoute = angular.route.IRoute;
 import * as services from "../services";
-import * as pipe from "ramda/src/pipe";
-import * as values from "ramda/src/values";
-import * as filter from "ramda/src/filter";
-import * as map from "ramda/src/map";
+import pipe from "ramda/es/pipe";
+import values from "ramda/es/values";
+import filter from "ramda/es/filter";
+import map from "ramda/es/map";
 import Tribe from "../../../common/Tribe";
 import Player from "../../../common/Player";
 import PairAssignmentSet from "../../../common/PairAssignmentSet";

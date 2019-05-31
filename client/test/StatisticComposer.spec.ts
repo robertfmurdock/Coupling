@@ -4,9 +4,9 @@ import PairAssignmentDocument from "../../common/PairAssignmentDocument";
 import Pair from "../../common/Pair";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 import StatisticComposer from "../app/runners/StatisticComposer";
-import * as map from 'ramda/src/map'
-import * as pluck from 'ramda/src/pluck'
-import * as addIndex from 'ramda/src/addIndex'
+import map from 'ramda/es/map'
+import pluck from 'ramda/es/pluck'
+import addIndex from 'ramda/es/addIndex'
 
 const statComposer = new StatisticComposer();
 

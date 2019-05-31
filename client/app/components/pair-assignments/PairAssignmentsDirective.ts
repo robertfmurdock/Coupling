@@ -1,10 +1,10 @@
 import {module} from "angular";
-import * as find from "ramda/src/find";
-import * as propEq from "ramda/src/propEq";
-import * as eqBy from "ramda/src/eqBy";
-import * as prop from "ramda/src/prop";
-import * as differenceWith from "ramda/src/differenceWith";
-import * as flatten from "ramda/src/flatten";
+import find from "ramda/es/find";
+import propEq from "ramda/es/propEq";
+import eqBy from "ramda/es/eqBy";
+import prop from "ramda/es/prop";
+import differenceWith from "ramda/es/differenceWith";
+import flatten from "ramda/es/flatten";
 import * as template from "./pair-assignments.pug";
 
 import Tribe from "../../../../common/Tribe";

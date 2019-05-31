@@ -3,7 +3,7 @@ import * as services from "../../services";
 import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
 import Badge from "../../../../common/Badge";
-import * as merge from "ramda/src/merge";
+import merge from "ramda/es/merge";
 import Player from "../../../../common/Player";
 import IRouteService = angular.route.IRouteService;
 

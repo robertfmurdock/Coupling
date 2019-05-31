@@ -3,7 +3,7 @@ import "ng-fittext";
 import "../app/components/components";
 import {Randomizer} from "../../client/app/services";
 import Player from "../../common/Player";
-import * as map from 'ramda/src/map'
+import map from 'ramda/es/map'
 
 describe('Welcome Directive:', function () {
 

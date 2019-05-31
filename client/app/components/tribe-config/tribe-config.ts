@@ -1,8 +1,8 @@
 import {module} from "angular";
 import * as template from "./tribe-config.pug";
 import PairingRule from "../../../../common/PairingRule";
-import * as flip from "ramda/src/flip";
-import * as merge from "ramda/src/merge";
+import flip from "ramda/es/flip";
+import merge from "ramda/es/merge";
 
 import * as styles from './styles.css'
 import {Coupling} from "../../services";

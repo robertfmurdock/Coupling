@@ -1,6 +1,6 @@
 import {module} from "angular";
 import * as template from "./template.pug";
-import * as without from 'ramda/src/without'
+import without from 'ramda/es/without'
 import ITimeoutService = angular.ITimeoutService;
 import ILocationService = angular.ILocationService;
 import IController = angular.IController;

@@ -1,11 +1,11 @@
 import * as angular from "angular";
 import "angular-resource";
-import * as map from "ramda/src/map";
-import * as find from "ramda/src/find";
-import * as mergeAll from "ramda/src/mergeAll";
-import * as pipe from "ramda/src/pipe";
-import * as flatten from "ramda/src/flatten";
-import * as propEq from "ramda/src/propEq";
+import map from "ramda/es/map";
+import find from "ramda/es/find";
+import mergeAll from "ramda/es/mergeAll";
+import pipe from "ramda/es/pipe";
+import flatten from "ramda/es/flatten";
+import propEq from "ramda/es/propEq";
 import Player from "../../common/Player";
 import * as common from "../../common/index";
 import Randomizer from "./Randomizer";

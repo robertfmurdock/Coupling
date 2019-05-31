@@ -2,8 +2,8 @@ import {module, IController} from "angular";
 import {rgb} from "d3-color";
 import {interpolateRgbBasis} from "d3-interpolate";
 import {select} from "d3-selection";
-import * as flatten from "ramda/src/flatten";
 import * as Styles from "./styles.css";
+import flatten from "ramda/es/flatten";
 import * as template from "./heatmap.pug";
 
 const colorSuggestions = [

@@ -1,6 +1,6 @@
 import {module} from "angular";
 import * as services from "../../services";
-import * as values from "ramda/src/values";
+import values from "ramda/es/values";
 import * as template from "./prepare.pug";
 import * as styles from './styles.css'
 import Player from "../../../../common/Player";

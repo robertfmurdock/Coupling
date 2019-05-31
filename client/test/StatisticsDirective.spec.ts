@@ -2,12 +2,12 @@ import * as angular from "angular";
 import "ng-fittext";
 import "../app/app";
 import Tribe from "../../common/Tribe";
-import * as times from 'ramda/src/times'
+import times from 'ramda/es/times'
 import Player from "../../common/Player";
+import map from "ramda/es/map";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
 // @ts-ignore
 import * as Styles from "../../client/app/components/statistics/styles.css";
-import * as map from "ramda/src/map";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
 
 const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
@@ -134,7 +134,7 @@ describe('Statistics directive', function () {
         ]);
     }));
 
-    let getPlayersFromCards = map(function (card) {
+    let getPlayersFromCards = map(function (card: string) {
         return angular.element(card).isolateScope()["playerCard"].player;
     });
 

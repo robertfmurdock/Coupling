@@ -1,5 +1,5 @@
-import * as find from "ramda/src/find";
-import * as propEq from "ramda/src/propEq";
+import find from "ramda/es/find";
+import propEq from "ramda/es/propEq";
 import {tribeResolution, retiredPlayersResolution} from "./Resolutions";
 
 import IRoute = angular.route.IRoute;
