@@ -6,8 +6,6 @@ import {fitHeaderText} from "../ReactFittyHelper";
 import GravatarImage from "../gravatar/GravatarImage";
 import PathSetter from "../PathSetter";
 
-
-
 interface Props {
     tribe: Tribe,
     size: number,

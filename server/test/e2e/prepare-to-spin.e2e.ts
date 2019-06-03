@@ -80,7 +80,8 @@ describe('The prepare to spin page', function () {
 
             const pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
             expect(pairs.count()).toEqual(1);
-            const players = element.all(By.repeater('player in players'));
+
+            const players = element.all(By.css('.react-player-roster .react-player-card'));
             expect(players.count()).toEqual(3);
 
             const saveButton = element(By.id('save-button'));

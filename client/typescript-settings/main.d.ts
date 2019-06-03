@@ -16,6 +16,7 @@ declare module '*.css' {
 }
 
 declare module 'protractor-jasmine2-screenshot-reporter' {
+    // @ts-ignore
     export = class {
         constructor(options: any)
     }

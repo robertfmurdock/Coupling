@@ -19,7 +19,7 @@ export default class ReactPlayerCard extends React.Component<Props> {
     };
 
     render() {
-        return <div className={`${styles.player}`} style={this.cardStyle()}>
+        return <div className={`${styles.player} react-player-card`} style={this.cardStyle()}>
             {this.gravatarImage()}
             {this.cardHeader()}
         </div>

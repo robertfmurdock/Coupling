@@ -10,6 +10,8 @@ import * as pluck from "ramda/src/pluck";
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
+const playerElements = element.all(By.css('.react-player-roster .react-player-card'));
+
 describe('The edit player page', function () {
 
     const tribe = {
@@ -231,7 +233,6 @@ describe('The edit player page', function () {
 
     it('will show all players', function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        const playerElements = element.all(By.repeater('player in players'));
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 });
@@ -276,7 +277,6 @@ describe('The new player page', function () {
 
     it('will show all players', function () {
         browser.setLocation(`/${tribe.id}/player/new`);
-        const playerElements = element.all(By.repeater('player in players'));
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 

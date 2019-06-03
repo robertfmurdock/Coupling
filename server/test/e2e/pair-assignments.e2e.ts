@@ -14,6 +14,8 @@ const historyCollection = database.get('history');
 
 const pluck = require('ramda/src/pluck');
 
+const unpairedPlayerElements = element.all(By.css('.react-player-roster .react-player-card'));
+
 describe('The current pair assignments', function () {
 
     const tribe = {
@@ -99,7 +101,7 @@ describe('The current pair assignments', function () {
     it('will let you edit an existing player', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
 
-        element.all(By.repeater('player in players'))
+        unpairedPlayerElements
             .first().element(By.className("player-card-header"))
             .click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/${player1._id}/`);
@@ -136,8 +138,8 @@ describe('The current pair assignments', function () {
         });
         it('will display all the existing players in the player roster', function () {
             browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
-            const playerElements = element.all(By.repeater('player in players'));
-            expect(playerElements.getText()).toEqual(pluck('name', players));
+
+            expect(unpairedPlayerElements.getText()).toEqual(pluck('name', players));
         });
     });
 
@@ -165,8 +167,7 @@ describe('The current pair assignments', function () {
         });
 
         it('only players that are not in the most recent pairs are displayed', function () {
-            const remainingPlayerElements = element.all(By.repeater('player in players'));
-            expect(remainingPlayerElements.getText()).toEqual(pluck('name', [player2, player4]));
+            expect(unpairedPlayerElements.getText()).toEqual(pluck('name', [player2, player4]));
         });
 
         describe('and the tribe has toggled call signs off', function () {

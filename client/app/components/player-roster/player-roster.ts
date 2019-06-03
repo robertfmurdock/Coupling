@@ -1,5 +1,7 @@
 import {module} from "angular";
-import * as template from "./player-roster.pug";
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactPlayerRoster from "./ReactPlayerRoster";
+
 export default module("coupling.playerRoster", [])
     .directive('playerRoster', () => {
         return {
@@ -8,7 +10,24 @@ export default module("coupling.playerRoster", [])
                 players: '=',
                 label: '=?'
             },
+            bindToController: true,
             restrict: 'E',
-            template: template
+            template: "<div/>",
+            controller: ["$location", "$scope", "$element",
+                function ($location, $scope, $element) {
+                    connectReactToNg({
+                        component: ReactPlayerRoster,
+                        props: () => ({
+                            label: this.label,
+                            players: this.players,
+                            tribeId: this.tribe.id
+                        }),
+                        domNode: $element[0],
+                        $scope: $scope,
+                        watchExpression: "players",
+                        $location: $location
+                    });
+                }
+            ]
         }
     });
