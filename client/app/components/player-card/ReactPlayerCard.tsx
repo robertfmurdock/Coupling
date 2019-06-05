@@ -51,6 +51,12 @@ function PlayerCardHeader(props: PlayerCardProps) {
     </div>;
 }
 
+function fitPlayerName(size: number, node: any) {
+    const maxFontHeight = (size * 0.31);
+    const minFontHeight = (size * 0.16);
+    fitHeaderNode(node, maxFontHeight, minFontHeight);
+}
+
 function headerStyle(size: any) {
     const headerMargin = (size * 0.02);
     return {margin: `${headerMargin}px 0 0 0`,};
@@ -66,7 +72,6 @@ function clickPlayerName(event, props: PlayerCardProps) {
     props.pathSetter(`/${props.tribeId}/player/${props.player._id}`)
 }
 
-
 export default function ReactPlayerCard(props: PlayerCardProps) {
     props.size = props.size || 100;
     const {player, size} = props;
@@ -75,12 +80,6 @@ export default function ReactPlayerCard(props: PlayerCardProps) {
         <PlayerGravatarImage player={player} size={size}/>
         <PlayerCardHeader {...props} />
     </div>
-}
-
-function fitPlayerName(size: number, node: any) {
-    const maxFontHeight = (size * 0.31);
-    const minFontHeight = (size * 0.16);
-    fitHeaderNode(node, maxFontHeight, minFontHeight);
 }
 
 function playerCardStyle(size: number) {

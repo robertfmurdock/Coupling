@@ -1,32 +1,29 @@
 import {IController, module} from "angular";
-import * as template from "./login-chooser.pug";
-import * as styles from "./styles.css";
-
-import GoogleSignIn from "../../GoogleSignIn";
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactLoginChooser from "./ReactLoginChooser";
 
 export class LoginChooserController implements IController {
 
+    static $inject = ['$location', '$scope', '$element'];
     styles: any;
 
-    constructor() {
-        this.styles = styles;
+    constructor(public $location, $scope, element) {
+        connectReactToNg({
+            component: ReactLoginChooser,
+            props: () => ({}),
+            domNode: element[0],
+            $scope: $scope,
+            watchExpression: "",
+            $location: $location
+        });
     }
-
-    async googleSignIn() {
-        await GoogleSignIn.signIn();
-    }
-
-    microsoftSignIn() {
-        window.location.pathname = "/microsoft-login"
-    }
-
 }
 
 export default module('coupling.loginChooser', [])
     .controller('LoginChooserController', LoginChooserController)
     .directive('loginchooser', () => {
         return {
-            template: template,
+            template: "<div/>",
             restrict: 'E',
             controller: 'LoginChooserController',
             controllerAs: 'loginChooser',
