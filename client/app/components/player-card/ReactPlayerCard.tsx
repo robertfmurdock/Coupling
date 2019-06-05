@@ -10,7 +10,8 @@ interface PlayerCardProps {
     tribeId: string,
     disabled: boolean,
     size?: number,
-    pathSetter: (string) => void
+    pathSetter?: (string) => void,
+    className?: string
 }
 
 function PlayerGravatarImage({player, size}: { player: Player, size: number }) {
@@ -74,9 +75,9 @@ function clickPlayerName(event, props: PlayerCardProps) {
 
 export default function ReactPlayerCard(props: PlayerCardProps) {
     props.size = props.size || 100;
-    const {player, size} = props;
+    const {player, size, className} = props;
 
-    return <div className={`${styles.player} react-player-card`} style={playerCardStyle(size)}>
+    return <div className={`${styles.player} react-player-card ${className}`} style={playerCardStyle(size)}>
         <PlayerGravatarImage player={player} size={size}/>
         <PlayerCardHeader {...props} />
     </div>

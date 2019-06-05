@@ -1,95 +1,22 @@
-import * as angular from "angular";
 import {module} from "angular";
 import * as services from "../../services";
-import * as template from "./welcome.pug";
-import * as styles from "./styles.css";
-import Player from "../../../../common/Player";
-import fitty from "fitty";
-
-interface Card {
-    name: string
-    imagePath: string
-}
-
-interface WelcomeCardSet {
-    leftCard: Card
-    rightCard: Card
-    proverb: string
-}
-
-const candidates: WelcomeCardSet[] = [{
-    leftCard: {
-        name: 'Frodo',
-        imagePath: 'frodo-icon.png'
-    },
-    rightCard: {
-        name: 'Sam',
-        imagePath: 'samwise-icon.png'
-    },
-    proverb: 'Together, climb mountains.'
-}, {
-    leftCard: {
-        name: 'Batman',
-        imagePath: 'grayson-icon.png'
-    },
-    rightCard: {
-        name: 'Robin',
-        imagePath: 'wayne-icon.png'
-    },
-    proverb: 'Clean up the city, together.'
-}, {
-    leftCard: {
-        name: 'Rosie',
-        imagePath: 'rosie-icon.png'
-    },
-    rightCard: {
-        name: 'Wendy',
-        imagePath: 'wendy-icon.png'
-    },
-    proverb: 'Team up. Get things done.'
-}];
-
-let makePlayerForCard = function (card: Card) {
-    return {
-        _id: card.name,
-        name: card.name,
-        imageURL: `/images/icons/players/${card.imagePath}`
-    };
-};
-
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactWelcomeView from "./ReactWelcomeView";
 export class WelcomeController {
 
-    private static chooseWelcomeCards(randomizer): WelcomeCardSet {
-        const indexToUse = randomizer.next(candidates.length - 1);
-        return candidates[indexToUse];
+    static $inject = ['randomizer', '$scope', '$element'];
+
+    constructor(randomizer: services.Randomizer, public $scope, $element) {
+        connectReactToNg({
+            component: ReactWelcomeView,
+            props: () => ({
+                randomizer:randomizer
+            }),
+            domNode: $element[0],
+            $scope: $scope,
+            watchExpression: ""
+        });
     }
-
-    static $inject = ['$timeout', 'randomizer', '$scope'];
-
-    public show: boolean;
-    public proverb: String;
-    public leftPlayer: Player;
-    public rightPlayer: Player;
-    public styles: any;
-    public showLoginChooser: boolean;
-
-    constructor($timeout: angular.ITimeoutService, randomizer: services.Randomizer, public $scope) {
-        this.show = false;
-        this.showLoginChooser = false;
-        const choice = WelcomeController.chooseWelcomeCards(randomizer);
-        this.leftPlayer = makePlayerForCard(choice.leftCard);
-        this.rightPlayer = makePlayerForCard(choice.rightCard);
-        this.proverb = choice.proverb;
-        this.styles = styles;
-        $timeout(() => this.show = true, 0);
-        // @ts-ignore
-        $timeout(() => fitty.fitAll(), 100);
-    }
-
-    signIn() {
-        this.showLoginChooser = true
-    }
-
 }
 
 export default module('coupling.welcome', [])
@@ -99,6 +26,6 @@ export default module('coupling.welcome', [])
             restrict: 'E',
             controller: 'WelcomeController',
             controllerAs: 'welcome',
-            template: template,
+            template: '<div/>'
         }
     });
