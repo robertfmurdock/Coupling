@@ -2,7 +2,7 @@ import * as React from "react";
 import * as classNames from 'classnames'
 import Tribe from "../../../../common/Tribe";
 import * as styles from './styles.css'
-import {fitHeaderText} from "../ReactFittyHelper";
+import {fitHeaderTextOnCardComponent} from "../ReactFittyHelper";
 import GravatarImage from "../gravatar/GravatarImage";
 import PathSetter from "../PathSetter";
 
@@ -94,6 +94,6 @@ export default class ReactTribeCard extends React.Component<Props> {
         const {size} = this.props;
         const maxFontHeight = (size * 0.15);
         const minFontHeight = (size * 0.16);
-        fitHeaderText(maxFontHeight, minFontHeight, this, styles.header);
+        fitHeaderTextOnCardComponent(maxFontHeight, minFontHeight, this, styles.header);
     }
 }

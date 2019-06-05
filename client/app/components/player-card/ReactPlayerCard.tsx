@@ -1,14 +1,15 @@
 import * as React from 'react'
 import * as styles from './styles.css'
 import Player from "../../../../common/Player";
-import {fitHeaderText} from "../ReactFittyHelper";
+import {fitHeaderNode} from "../ReactFittyHelper";
 import GravatarImage from "../gravatar/GravatarImage";
+import {useRef, useLayoutEffect} from "react";
 
 interface PlayerCardProps {
     player: Player,
     tribeId: string,
     disabled: boolean,
-    size: number,
+    size?: number,
     pathSetter: (string) => void
 }
 
@@ -34,9 +35,14 @@ function PlayerGravatarImage({player, size}: { player: Player, size: number }) {
 
 function PlayerCardHeader(props: PlayerCardProps) {
     const {player, size} = props;
+    const cardHeaderRef = useRef(null);
+
+    useLayoutEffect(() => fitPlayerName(size, cardHeaderRef.current));
+
     return <div className={`player-card-header ${styles.header}`}
                 style={headerStyle(size)}
                 onClick={(event) => clickPlayerName(event, props)}
+                ref={cardHeaderRef}
     >
         <div>
             {player._id ? '' : 'NEW:'}
@@ -61,36 +67,20 @@ function clickPlayerName(event, props: PlayerCardProps) {
 }
 
 
-export default class ReactPlayerCard extends React.Component<PlayerCardProps> {
+export default function ReactPlayerCard(props: PlayerCardProps) {
+    props.size = props.size || 100;
+    const {player, size} = props;
 
-    static defaultProps = {
-        size: 100
-    };
+    return <div className={`${styles.player} react-player-card`} style={playerCardStyle(size)}>
+        <PlayerGravatarImage player={player} size={size}/>
+        <PlayerCardHeader {...props} />
+    </div>
+}
 
-    render() {
-        const {player, size} = this.props;
-        return <div className={`${styles.player} react-player-card`} style={playerCardStyle(size)}>
-            <PlayerGravatarImage player={player} size={size}/>
-            <PlayerCardHeader {...this.props}/>
-        </div>
-    }
-
-
-    componentDidMount(): void {
-        this.fitPlayerName();
-    }
-
-    componentDidUpdate(prevProps: Readonly<PlayerCardProps>, prevState: Readonly<{}>, snapshot?: any): void {
-        this.fitPlayerName();
-    }
-
-    private fitPlayerName() {
-        const size = this.props.size;
-        const maxFontHeight = (size * 0.31);
-        const minFontHeight = (size * 0.16);
-        fitHeaderText(maxFontHeight, minFontHeight, this, styles.header);
-    }
-
+function fitPlayerName(size: number, node: any) {
+    const maxFontHeight = (size * 0.31);
+    const minFontHeight = (size * 0.16);
+    fitHeaderNode(node, maxFontHeight, minFontHeight);
 }
 
 function playerCardStyle(size: number) {

@@ -36,7 +36,6 @@ class HeatmapController implements IController {
     }
 }
 
-
 export default module('coupling.heatmap', [])
     .directive('heatmap', function () {
         return {
