@@ -4,6 +4,7 @@ import * as Styles from "./styles.css";
 import ReactPlayerCard from "../player-card/ReactPlayerCard";
 import ReactLoginChooser from "../login-chooser/ReactLoginChooser";
 import * as services from "../../services";
+import fitty from "fitty";
 import {useLayoutEffect} from "react";
 
 interface Card {
@@ -62,6 +63,21 @@ let makePlayerForCard = function (card: Card) {
     };
 };
 
+function WelcomeTitle() {
+    const welcomeTitleRef = useRef(null);
+    useLayoutEffect(() => {
+        fitty(welcomeTitleRef.current, {
+            maxSize: 75,
+            minSize: 5,
+            multiLine: false
+        });
+    });
+
+    return <div className={Styles.welcomeTitle} ref={welcomeTitleRef}>
+        Coupling!
+    </div>
+}
+
 
 export default function (props: { randomizer: services.Randomizer }) {
     let tribeId = "welcome";
@@ -88,9 +104,7 @@ export default function (props: { randomizer: services.Randomizer }) {
     return <div className={`${Styles.className} ${hiddenTag}`}>
         <div>
             <span className={Styles.welcome}>
-<div className={Styles.welcomeTitle}>
-    Coupling!
-</div>
+<WelcomeTitle/>
                 <div>
                     <div className={Styles.welcomePair}>
                         <ReactPlayerCard className={`left ${Styles.playerCard}`} player={leftPlayer} size={100}
