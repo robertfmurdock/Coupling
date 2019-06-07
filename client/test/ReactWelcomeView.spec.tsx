@@ -3,12 +3,12 @@ import "ng-fittext";
 import "../app/components/components";
 import {Randomizer} from "../../client/app/services";
 import Player from "../../common/Player";
-import ReactWelcomeView from "../app/components/welcome/ReactWelcomeView";
+import ReactWelcomeView, {WelcomeSplash} from "../app/components/welcome/ReactWelcomeView";
 import * as React from "react";
 import * as Styles from '../app/components/welcome/styles.css'
 import waitFor from "./WaitFor";
 
-fdescribe('ReactWelcomeView:', function () {
+describe('ReactWelcomeView:', function () {
 
     function buildView(randomValue) {
         let randomizer = new Randomizer();
@@ -27,14 +27,14 @@ fdescribe('ReactWelcomeView:', function () {
         await waitFor(() => {
             wrapper.update();
             return wrapper.find(`.${Styles.className}`).hasClass(Styles.hidden) === false;
-        }, 30);
+        }, 100);
     });
 
     it('will choose return hobbits when it rolls a zero.', function () {
         let randomValue = 0;
         let randomizer = new Randomizer();
         spyOn(randomizer, 'next').and.returnValue(randomValue);
-        const wrapper = shallow(<ReactWelcomeView randomizer={randomizer}/>);
+        const wrapper = shallow(<WelcomeSplash randomizer={randomizer} hiddenTag={""}/>);
 
         const expectedLeftPlayer: Player = {
             _id: 'Frodo',
@@ -46,12 +46,10 @@ fdescribe('ReactWelcomeView:', function () {
             name: 'Sam',
             imageURL: '/images/icons/players/samwise-icon.png'
         };
-        let reactPlayerCards = wrapper.find('ReactPlayerCard');
 
-        expect(reactPlayerCards.find('.left').props().player)
-            .toEqual(expectedLeftPlayer);
-        expect(reactPlayerCards.find('.right').props().player)
-            .toEqual(expectedRightPlayer);
+        let welcomePair = wrapper.find('WelcomePair');
+        expect(welcomePair.props().leftPlayer).toEqual(expectedLeftPlayer);
+        expect(welcomePair.props().rightPlayer).toEqual(expectedRightPlayer);
         expect(wrapper.find(`.${Styles.welcomeProverb}`).text())
             .toEqual('Together, climb mountains.');
     });
@@ -60,7 +58,7 @@ fdescribe('ReactWelcomeView:', function () {
         let randomValue = 1;
         let randomizer = new Randomizer();
         spyOn(randomizer, 'next').and.returnValue(randomValue);
-        const wrapper = shallow(<ReactWelcomeView randomizer={randomizer}/>);
+        const wrapper = shallow(<WelcomeSplash randomizer={randomizer} hiddenTag={""}/>);
 
         const expectedLeftPlayer: Player = {
             _id: 'Batman',
@@ -73,20 +71,18 @@ fdescribe('ReactWelcomeView:', function () {
             imageURL: '/images/icons/players/wayne-icon.png'
         };
 
-        let reactPlayerCards = wrapper.find('ReactPlayerCard');
-        expect(reactPlayerCards.find('.left').props().player)
-            .toEqual(expectedLeftPlayer);
-        expect(reactPlayerCards.find('.right').props().player)
-            .toEqual(expectedRightPlayer);
+        let welcomePair = wrapper.find('WelcomePair');
+        expect(welcomePair.props().leftPlayer).toEqual(expectedLeftPlayer);
+        expect(welcomePair.props().rightPlayer).toEqual(expectedRightPlayer);
         expect(wrapper.find(`.${Styles.welcomeProverb}`).text())
-        .toEqual('Clean up the city, together.');
+            .toEqual('Clean up the city, together.');
     });
 
-    it('will return the heros of WW II when it rolls a two.', function () {
+    it('will return the heroes of WW II when it rolls a two.', function () {
         let randomValue = 2;
         let randomizer = new Randomizer();
         spyOn(randomizer, 'next').and.returnValue(randomValue);
-        const wrapper = shallow(<ReactWelcomeView randomizer={randomizer}/>);
+        const wrapper = shallow(<WelcomeSplash randomizer={randomizer} hiddenTag={""}/>);
 
         const expectedLeftPlayer: Player = {
             _id: 'Rosie',
@@ -99,11 +95,9 @@ fdescribe('ReactWelcomeView:', function () {
             imageURL: '/images/icons/players/wendy-icon.png'
         };
 
-        let reactPlayerCards = wrapper.find('ReactPlayerCard');
-        expect(reactPlayerCards.find('.left').props().player)
-            .toEqual(expectedLeftPlayer);
-        expect(reactPlayerCards.find('.right').props().player)
-            .toEqual(expectedRightPlayer);
+        let welcomePair = wrapper.find('WelcomePair');
+        expect(welcomePair.props().leftPlayer).toEqual(expectedLeftPlayer);
+        expect(welcomePair.props().rightPlayer).toEqual(expectedRightPlayer);
         expect(wrapper.find(`.${Styles.welcomeProverb}`).text())
             .toEqual('Team up. Get things done.');
     });

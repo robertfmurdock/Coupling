@@ -1,11 +1,11 @@
 import * as React from 'react'
-import {useRef, useState} from 'react'
+import {useLayoutEffect, useRef, useState} from 'react'
 import * as Styles from "./styles.css";
 import ReactPlayerCard from "../player-card/ReactPlayerCard";
 import ReactLoginChooser from "../login-chooser/ReactLoginChooser";
 import * as services from "../../services";
 import fitty from "fitty";
-import {useLayoutEffect} from "react";
+import Player from '../../../../common/Player';
 
 interface Card {
     name: string
@@ -78,58 +78,76 @@ function WelcomeTitle() {
     </div>
 }
 
+function WelcomePair(props: { leftPlayer: Player, rightPlayer: Player }) {
+    const {leftPlayer, rightPlayer} = props;
+    return <div className={Styles.welcomePair}>
+        <ReactPlayerCard className={`left ${Styles.playerCard}`} player={leftPlayer} size={100}
+                         tribeId={"welcome"}
+                         disabled={true}/>
+        <ReactPlayerCard className={`right  ${Styles.playerCard}`} player={rightPlayer} size={100}
+                         tribeId={"welcome"}
+                         disabled={true}/>
+    </div>
+}
 
-export default function (props: { randomizer: services.Randomizer }) {
-    let tribeId = "welcome";
-    const {randomizer} = props;
-
-    const [show, setShow] = useState(false);
+function ComeOnIn(props: { hiddenTag: string }) {
     const [showLoginChooser, setShowLoginChooser] = useState(false);
+
+    return <div className={Styles.enterButtonContainer}>
+        {
+            showLoginChooser
+                ? <ReactLoginChooser/>
+                : <a className={`${Styles.enterButton} ${props.hiddenTag} enter-button super pink button`}
+                     onClick={() => setShowLoginChooser(true)}
+                     target={'_self'}> Come on in! </a>
+        }
+    </div>
+}
+
+export function WelcomeSplash(props: { randomizer, hiddenTag }) {
+    const {randomizer, hiddenTag} = props;
     const pairRef = useRef(null);
 
     if (!pairRef.current) {
-        const choice = chooseWelcomeCards(randomizer);
-        const leftPlayer = makePlayerForCard(choice.leftCard);
-        const rightPlayer = makePlayerForCard(choice.rightCard);
-        const proverb = choice.proverb;
-        pairRef.current = {leftPlayer, rightPlayer, proverb}
+        pairRef.current = choosePairAndProverb(randomizer)
     }
 
-    setTimeout(() => setShow(true), 0);
+    const pairAndProverb = pairRef.current;
 
-    const {leftPlayer, rightPlayer, proverb} = pairRef.current;
+    return <span className={Styles.welcome}>
+<WelcomeTitle/>
+                <div>
+                    <WelcomePair {...pairAndProverb}/>
+                </div>
+                <div className={`${Styles.welcomeProverb} ${hiddenTag}`}>
+                    {pairAndProverb.proverb}
+                </div>
+                </span>
+}
+
+function choosePairAndProverb(randomizer): { leftPlayer: Player, rightPlayer: Player, proverb: string } {
+    const choice = chooseWelcomeCards(randomizer);
+    const leftPlayer = makePlayerForCard(choice.leftCard);
+    const rightPlayer = makePlayerForCard(choice.rightCard);
+    const proverb = choice.proverb;
+    return {leftPlayer, rightPlayer, proverb};
+}
+
+export default function ReactWelcomeView(props: { randomizer: services.Randomizer }) {
+    const {randomizer} = props;
+
+    const [show, setShow] = useState(false);
+
+    setTimeout(() => setShow(true), 0);
 
     let hiddenTag = show ? "" : `${Styles.hidden}`;
 
     return <div className={`${Styles.className} ${hiddenTag}`}>
         <div>
-            <span className={Styles.welcome}>
-<WelcomeTitle/>
-                <div>
-                    <div className={Styles.welcomePair}>
-                        <ReactPlayerCard className={`left ${Styles.playerCard}`} player={leftPlayer} size={100}
-                                         tribeId={tribeId}
-                                         disabled={true}/>
-                        <ReactPlayerCard className={`right  ${Styles.playerCard}`} player={rightPlayer} size={100}
-                                         tribeId={tribeId}
-                                         disabled={true}/>
-                    </div>
-                </div>
-                <div className={`${Styles.welcomeProverb} ${hiddenTag}`}>
-                    {proverb}
-                </div>
-                </span>
+            <WelcomeSplash randomizer={randomizer} hiddenTag={hiddenTag}/>
         </div>
         <div>
-            <div className={Styles.enterButtonContainer}>
-                {
-                    showLoginChooser
-                        ? <ReactLoginChooser/>
-                        : <a className={`${Styles.enterButton} ${hiddenTag} enter-button super pink button`}
-                             onClick={() => setShowLoginChooser(true)}
-                             target={'_self'}> Come on in! </a>
-                }
-            </div>
+            <ComeOnIn hiddenTag={hiddenTag}/>
         </div>
     </div>
 }
