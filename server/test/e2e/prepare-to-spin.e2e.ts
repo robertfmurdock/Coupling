@@ -57,7 +57,7 @@ describe('The prepare to spin page', function () {
     describe('with no history', function () {
 
         it('will show all the players ', function () {
-            const playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
+            const playerElements = element.all(By.css('.react-player-card'));
             expect(playerElements.getText()).toEqual(pluck('name', players));
         });
 
@@ -69,7 +69,7 @@ describe('The prepare to spin page', function () {
         });
 
         it('spinning with two players disabled will only yield one pair and then saving persists the pair', function () {
-            const playerElements = element.all(By.repeater('selectable in prepare.selectablePlayers'));
+            const playerElements = element.all(By.css('.react-player-card'));
             expect(playerElements.count()).toEqual(5);
 
             playerElements.get(0).element(By.css('.player-icon')).click();
@@ -87,7 +87,15 @@ describe('The prepare to spin page', function () {
             const saveButton = element(By.id('save-button'));
             saveButton.click();
 
-            browser.wait(async () => false === await saveButton.isDisplayed(), 2000);
+            async function saveButtonIsDisplayed() {
+                try {
+                    return await saveButton.isDisplayed();
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            browser.wait(async () => false === await saveButtonIsDisplayed(), 2000);
 
             expect(pairs.count()).toEqual(1);
             expect(players.count()).toEqual(3);

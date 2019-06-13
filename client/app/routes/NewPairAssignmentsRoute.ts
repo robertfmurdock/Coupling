@@ -32,8 +32,10 @@ const newPairAssignmentsRoute: IRoute = {
     controllerAs: 'main',
     controller: NewPairAssignmentsRouteController,
     resolve: {
-        requirements: ['$route', '$q', 'Coupling', function ($route: ng.route.IRouteService, $q: angular.IQService, Coupling: services.Coupling) {
+        requirements: ['$route', '$location', '$q', 'Coupling', function ($route: ng.route.IRouteService, $location, $q: angular.IQService, Coupling: services.Coupling) {
             const tribeId = $route.current.params.tribeId;
+
+            let query = $location.search();
 
             const promises: any = {
                 tribe: Coupling.getTribe(tribeId),
@@ -44,8 +46,16 @@ const newPairAssignmentsRoute: IRoute = {
                 .then(options => {
                     const players = options['players'] as Player[];
                     const history = options['history'];
-                    const selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
-                    options['selectedPlayers'] = convertMapToSelectedPlayers(selectablePlayerMap);
+
+                    if (query.player) {
+                        options['selectedPlayers'] = players.filter(
+                            player => query.player.includes(player._id)
+                        )
+                    } else {
+                        const selectablePlayerMap = Coupling.getSelectedPlayers(players, history);
+                        options['selectedPlayers'] = convertMapToSelectedPlayers(selectablePlayerMap);
+                    }
+
                     return options;
                 })
                 .then(options => {

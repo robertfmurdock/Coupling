@@ -9,23 +9,26 @@
     border-radius: 82px;
 }
 
-:local(.className) playercard > div {
+:local(.playerCard) {
+}
+
+:local(.playerCard) {
     transition: all 0.25s ease-out;
     transition-property: top, background-color, margin-bottom;
 }
 
-:local(.className) playercard > div.disabled,
-:local(.className) playercard > div.ng-enter {
+:local(.playerCard).disabled,
+:local(.playerCard).ng-enter {
     transition: all 0.25s ease-out;
 }
 
-:local(.className) playercard > div.ng-leave {
+:local(.playerCard).ng-leave {
     transition: none;
     animation: none;
 }
 
-:local(.className) playercard > div.ng-hide-add,
-:local(.className) playercard > div.ng-hide-remove {
+:local(.playerCard).ng-hide-add,
+:local(.playerCard).ng-hide-remove {
     display: inline-block !important;
     transition: all ease-in .2s;
 }

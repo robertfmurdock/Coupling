@@ -1,30 +1,31 @@
 import {module} from "angular";
-import * as services from "../../services";
-import values from "ramda/es/values";
-import * as template from "./prepare.pug";
-import * as styles from './styles.css'
 import Player from "../../../../common/Player";
 import Tribe from "../../../../common/Tribe";
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactPrepareSpin from "./ReactPrepareSpin";
+import {PairAssignmentSet} from "../../../../common";
 
 class PrepareController {
-    static $inject = ['$location', 'Coupling'];
+    static $inject = ['$location', '$element', '$scope'];
 
     players: Player[];
-    selectablePlayers: services.SelectablePlayer[];
     tribe: Tribe;
-    styles: any;
+    history: PairAssignmentSet[];
 
-    constructor(private $location: angular.ILocationService, private Coupling: services.Coupling) {
-        this.selectablePlayers = values(Coupling.data.selectablePlayers);
-        this.styles = styles;
-    }
+    constructor(private $location: angular.ILocationService, $element, $scope) {
+        connectReactToNg({
+            component: ReactPrepareSpin,
+            props: () => ({
+                players: this.players,
+                tribe: this.tribe,
+                history: this.history
+            }),
+            domNode: $element[0],
+            $scope: $scope,
+            watchExpression: "players",
+            $location: $location
+        });
 
-    clickPlayerCard(selectable: services.SelectablePlayer) {
-        selectable.isSelected = !selectable.isSelected;
-    }
-
-    clickSpinButton() {
-        this.$location.path(this.tribe.id + "/pairAssignments/new");
     }
 
 }
@@ -38,9 +39,10 @@ export default module("coupling.prepare", [])
             bindToController: true,
             scope: {
                 tribe: '=',
-                players: '='
+                players: '=',
+                history: '='
             },
             restrict: 'E',
-            template: template
+            template: '<div/>'
         }
     });

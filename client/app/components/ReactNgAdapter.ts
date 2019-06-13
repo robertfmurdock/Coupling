@@ -6,7 +6,7 @@ export function connectReactToNg(options) {
 
     const renderReactElement = () => {
         let theProps = props();
-        theProps.pathSetter = url => $scope.$apply(() => $location.path(url));
+        theProps.pathSetter = url => $scope.$apply(() => $location.url(url));
 
         ReactDOM.render(
             React.createElement(component, theProps),

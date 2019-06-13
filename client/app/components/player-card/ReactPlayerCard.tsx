@@ -4,6 +4,7 @@ import Player from "../../../../common/Player";
 import {fitHeaderNode} from "../ReactFittyHelper";
 import GravatarImage from "../gravatar/GravatarImage";
 import {useRef, useLayoutEffect} from "react";
+import {MouseEventHandler} from "react";
 
 interface PlayerCardProps {
     player: Player,
@@ -11,7 +12,8 @@ interface PlayerCardProps {
     disabled: boolean,
     size?: number,
     pathSetter?: (string) => void,
-    className?: string
+    className?: string,
+    onClick?: MouseEventHandler
 }
 
 function PlayerGravatarImage({player, size}: { player: Player, size: number }) {
@@ -75,9 +77,13 @@ function clickPlayerName(event, props: PlayerCardProps) {
 
 export default function ReactPlayerCard(props: PlayerCardProps) {
     props.size = props.size || 100;
-    const {player, size, className} = props;
+    const {player, size, className,onClick} = props;
 
-    return <div className={`${styles.player} react-player-card ${className}`} style={playerCardStyle(size)}>
+    return <div
+        className={`${styles.player} react-player-card ${className}`}
+        style={playerCardStyle(size)}
+        onClick={onClick}
+    >
         <PlayerGravatarImage player={player} size={size}/>
         <PlayerCardHeader {...props} />
     </div>
