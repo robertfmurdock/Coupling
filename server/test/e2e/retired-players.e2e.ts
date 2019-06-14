@@ -55,7 +55,7 @@ describe('The retired players page', function () {
     });
 
     it('shows the retired players', async function () {
-        const playerElements = element.all(By.repeater('player in retiredPlayers'));
+        const playerElements = element.all(By.css('.react-player-card'));
         expect(playerElements.getText()).toEqual(pluck('name', retiredPlayers));
     });
 

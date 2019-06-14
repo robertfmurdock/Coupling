@@ -1,4 +1,4 @@
-.retired-players-header {
+:local(.retiredPlayersHeader) {
     display: inline-block;
     border-radius: 25px;
     padding: 10px;
