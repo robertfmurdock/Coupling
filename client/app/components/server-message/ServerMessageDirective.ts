@@ -14,7 +14,7 @@ export class ServerMessageController implements IController {
             component: ReactServerMessage,
             props: () => ({
                 tribeId: this.tribeId,
-                useSsl: 'https' === window.location.protocol,
+                useSsl: 'https:' === window.location.protocol,
             }),
             domNode: $element[0],
             $scope: $scope,
