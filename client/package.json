@@ -73,6 +73,7 @@
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-websocket": "^2.0.1",
     "require-from-string": "^2.0.2",
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",

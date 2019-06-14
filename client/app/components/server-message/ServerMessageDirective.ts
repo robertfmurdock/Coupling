@@ -1,59 +1,32 @@
 import {module} from "angular";
-import * as template from "./template.pug";
-import without from 'ramda/es/without'
-import ITimeoutService = angular.ITimeoutService;
-import ILocationService = angular.ILocationService;
 import IController = angular.IController;
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactServerMessage from "./ReactServerMessage";
 
 export class ServerMessageController implements IController {
 
-    static $inject = ['$websocket', '$timeout', '$location'];
+    static $inject = ['$scope', '$element'];
 
-    private $websocket;
-    private $timeout: ITimeoutService;
-    private $location: ILocationService;
-    liveSocket;
-    message: string;
     tribeId: string;
 
-    constructor(private _$websocket_, _$timeout_: ITimeoutService, $location: ILocationService) {
-        this.$websocket = _$websocket_;
-        this.$timeout = _$timeout_;
-        this.$location = $location;
-    }
-
-    $onInit() {
-        this.connectToWebsocket();
-    }
-
-    $onDestroy(): void {
-        this.liveSocket.onCloseCallbacks = without(this.liveSocket.onCloseCallbacks, this.handleSocketClose);
-        this.liveSocket.close();
-    }
-
-    private connectToWebsocket() {
-        this.liveSocket = this.$websocket(this.buildSocketUrl());
-        this.liveSocket.onMessage(message => this.message = message.data);
-        this.liveSocket.onClose(this.handleSocketClose);
-    }
-
-    private buildSocketUrl() {
-        const protocol = 'https' === this.$location.protocol() ? 'wss' : 'ws';
-        return `${protocol}://${window.location.host}/api/${this.tribeId}/pairAssignments/current`;
-
-
-    }
-
-    private handleSocketClose = () => {
-        this.message = 'Not connected';
-        this.$timeout(() => this.connectToWebsocket(), 10000);
+    constructor($scope, $element) {
+        connectReactToNg({
+            component: ReactServerMessage,
+            props: () => ({
+                tribeId: this.tribeId,
+                useSsl: 'https' === window.location.protocol,
+            }),
+            domNode: $element[0],
+            $scope: $scope,
+            watchExpression: "tribeId"
+        });
     }
 }
 
-export default module('coupling.serverMessage', ['ngWebSocket'])
+export default module('coupling.serverMessage', [])
     .directive('serverMessage', function () {
         return {
-            template: template,
+            template: '<div/>',
             controller: ServerMessageController,
             controllerAs: 'socket',
             bindToController: true,

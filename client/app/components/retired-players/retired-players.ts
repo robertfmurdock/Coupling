@@ -23,7 +23,6 @@ export class RetiredPlayersController {
         });
     }
 
-
 }
 
 export default module("coupling.retiredPlayers", [])
