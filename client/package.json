@@ -102,5 +102,9 @@
   "bugs": {
     "url": "https://github.com/robertfmurdock/Coupling/issues"
   },
-  "homepage": "https://github.com/robertfmurdock/Coupling"
+  "homepage": "https://github.com/robertfmurdock/Coupling",
+  "dependencies": {
+    "react-dnd": "^8.0.0",
+    "react-dnd-html5-backend": "^8.0.0"
+  }
 }

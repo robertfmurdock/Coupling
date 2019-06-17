@@ -38,7 +38,7 @@
 .pair-assignments .on-drag-enter {
 }
 
-.pair-assignments .on-drag-hover > div {
+.pair-assignments .on-drag-hover {
     background-color: orange;
 }
 

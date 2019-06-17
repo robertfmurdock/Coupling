@@ -159,10 +159,10 @@ describe('The current pair assignments', function () {
         });
 
         it('the most recent pairs are shown', function () {
-            const pairElements = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
-            const firstPair = pairElements.get(0).all(By.repeater('player in pair'));
+            const pairElements = element.all(By.css('.pair'));
+            const firstPair = pairElements.get(0).all(By.css('.react-player-card'));
             expect(firstPair.getText()).toEqual(pluck('name', [player1, player3]));
-            const secondPair = pairElements.get(1).all(By.repeater('player in pair'));
+            const secondPair = pairElements.get(1).all(By.css('.react-player-card'));
             expect(secondPair.getText()).toEqual(pluck('name', [player5]));
         });
 

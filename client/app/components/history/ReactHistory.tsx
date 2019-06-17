@@ -75,8 +75,6 @@ export default class ReactHistory extends React.Component<Props> {
         if (confirm("Are you sure you want to delete these pair assignments?")) {
             await coupling.removeAssignments(pairAssignments, tribe.id);
             reload()
-        } else {
-            console.log('hohohohohohool')
         }
     }
 }

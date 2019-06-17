@@ -77,7 +77,7 @@ function clickPlayerName(event, props: PlayerCardProps) {
 
 export default function ReactPlayerCard(props: PlayerCardProps) {
     props.size = props.size || 100;
-    const {player, size, className,onClick} = props;
+    const {player, size, className, onClick} = props;
 
     return <div
         className={`${styles.player} react-player-card ${className}`}

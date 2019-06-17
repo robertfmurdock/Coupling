@@ -64,7 +64,7 @@ describe('The prepare to spin page', function () {
         it('spinning with all players on will get all players back', function () {
             spinButton.click();
 
-            const pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
+            const pairs = element.all(By.css('.pair'));
             expect(pairs.count()).toEqual(3);
         });
 
@@ -78,7 +78,7 @@ describe('The prepare to spin page', function () {
 
             spinButton.click();
 
-            const pairs = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
+            const pairs = element.all(By.css('.pair'));
             expect(pairs.count()).toEqual(1);
 
             const players = element.all(By.css('.react-player-roster .react-player-card'));

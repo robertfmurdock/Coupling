@@ -1,6 +1,6 @@
 import Badge from "./Badge";
 interface Player {
-    _id?: any;
+    _id?: string | any;
     name?: string;
     email?: string;
     callSignAdjective?: string;

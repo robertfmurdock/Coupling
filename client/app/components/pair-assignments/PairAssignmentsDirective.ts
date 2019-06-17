@@ -12,9 +12,11 @@ import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import Player from "../../../../common/Player";
 import * as Styles from './styles.css';
 import {Coupling} from "../../services";
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactPairAssignments from "./ReactPairAssignments";
 
 export class PairAssignmentsController {
-    static $inject = ['Coupling', '$location', '$scope'];
+    static $inject = ['Coupling', '$location', '$scope', '$element'];
     tribe: Tribe;
     players: Player[];
     pairAssignments: PairAssignmentSet;
@@ -23,8 +25,24 @@ export class PairAssignmentsController {
     private _unpairedPlayers: Player[];
     private differenceOfPlayers = differenceWith(eqBy(prop('_id')));
 
-    constructor(public Coupling: Coupling, private $location, public $scope) {
+    constructor(public Coupling: Coupling, private $location, public $scope, $element?) {
         this.styles = Styles;
+
+
+        connectReactToNg({
+            component: ReactPairAssignments,
+            props: () => ({
+                tribe: this.tribe,
+                pairAssignments: this.pairAssignments,
+                isNew: this.isNew,
+                players: this.players,
+                coupling: Coupling
+            }),
+            domNode: $element[0],
+            $scope: $scope,
+            watchExpression: "pairAssignments",
+            $location: $location
+        });
     }
 
     get unpairedPlayers(): Player[] {
@@ -46,7 +64,7 @@ export class PairAssignmentsController {
         const adjectivePlayer = pair.length > 1 ? pair[1] : pair[0];
         let adjective = adjectivePlayer.callSignAdjective;
         let noun = pair[0].callSignNoun;
-        if(adjective && noun) {
+        if (adjective && noun) {
             return `${adjective} ${noun}`
         } else {
             return null
@@ -98,6 +116,6 @@ export default module('coupling.pairAssignments', [])
                 isNew: '='
             },
             restrict: 'E',
-            template: template
+            template: '<div/>'
         }
     });
