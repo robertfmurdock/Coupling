@@ -31,6 +31,25 @@ interface Props {
     pathSetter: (url: String) => void
 }
 
+function TeamStatistics(props: { spinsUntilFullRotation, activePlayerCount, medianSpinDuration }) {
+    const {spinsUntilFullRotation, activePlayerCount, medianSpinDuration} = props;
+    return <div className={Styles.teamStatistics}>
+        <div className={Styles.statsHeader}>Team Stats</div>
+        <div>
+            <span className={Styles.statLabel}>Spins Until Ful Rotation:</span>
+            <span className={"rotation-number"}>{spinsUntilFullRotation}</span>
+        </div>
+        <div>
+            <span className={Styles.statLabel}>Number of Active Players:</span>
+            <span className={Styles.activePlayerCount}>{activePlayerCount}</span>
+        </div>
+        <div>
+            <span className={Styles.statLabel}>Median Spin Duration:</span>
+            <span className={Styles.medianSpinDuration}>{medianSpinDuration}</span>
+        </div>
+    </div>;
+}
+
 export default function ReactTribeStatistics(props: Props) {
     const {tribe, players, history, pathSetter} = props;
 
@@ -40,26 +59,14 @@ export default function ReactTribeStatistics(props: Props) {
     const activePlayerCount = players.length;
 
     return <div className={Styles.statsPage}>
-
         <div>
             <ReactTribeCard tribe={tribe} pathSetter={pathSetter}/>
-            <div className={Styles.teamStatistics}>
-                <div className={Styles.statsHeader}>Team Stats</div>
-                <div>
-                    <span className={Styles.statLabel}>Spins Until Ful Rotation:</span>
-                    <span className={"rotation-number"}>{spinsUntilFullRotation}</span>
-                </div>
-                <div>
-                    <span className={Styles.statLabel}>Number of Active Players:</span>
-                    <span className={Styles.activePlayerCount}>{activePlayerCount}</span>
-                </div>
-                <div>
-                    <span className={Styles.statLabel}>Median Spin Duration:</span>
-                    <span className={Styles.medianSpinDuration}>{medianSpinDuration}</span>
-                </div>
-            </div>
+            <TeamStatistics
+                spinsUntilFullRotation={spinsUntilFullRotation}
+                activePlayerCount={activePlayerCount}
+                medianSpinDuration={medianSpinDuration}
+            />
         </div>
-
         <div>
             <div className={Styles.leftSection}>
                 <div className={Styles.pairReportTable}>
