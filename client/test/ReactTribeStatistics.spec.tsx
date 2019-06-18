@@ -2,41 +2,32 @@ import * as angular from "angular";
 import "ng-fittext";
 import "../app/app";
 import Tribe from "../../common/Tribe";
+import {shallow} from 'enzyme';
 import times from 'ramda/es/times'
 import Player from "../../common/Player";
 import map from "ramda/es/map";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
-// @ts-ignore
 import * as Styles from "../../client/app/components/statistics/styles.css";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
+import ReactTribeStatistics from "../app/components/statistics/ReactTribeStatistics";
+import * as React from "react";
 
-const tribeCardStyles = require('../../client/app/components/tribe-card/styles.css');
+describe('ReactTribeStatistics', function () {
 
-describe('Statistics directive', function () {
-
-    beforeEach(angular.mock.module('coupling'));
-
-    function buildDirective($rootScope, $compile: angular.ICompileService, tribe: Tribe, players: Player[], history: PairAssignmentSet[]) {
-        const element = angular.element('<statistics tribe="tribe" players="players" history="history"/>');
-        const scope = $rootScope.$new();
-        scope.tribe = tribe;
-        scope.players = players;
-        scope.history = history;
-        const statisticsDirective = $compile(element)(scope);
-
-        scope.$digest();
-        return statisticsDirective;
+    function buildWrapper(tribe: Tribe, players: Player[], history: PairAssignmentSet[]) {
+        return shallow(<ReactTribeStatistics
+            tribe={tribe} players={players} history={history} pathSetter={() => undefined}
+        />);
     }
 
-    it('will show a tribe card', inject(function ($compile, $rootScope) {
+    it('will show a tribe card', function () {
         const tribe: Tribe = {id: '1', name: 'Super'};
-        const statisticsDirective = buildDirective($rootScope, $compile, tribe, [], []);
-        const tribeNameElement = statisticsDirective.find(`.${tribeCardStyles.header}`);
+        const wrapper = buildWrapper(tribe, [], []);
+        const tribeCard = wrapper.find(`ReactTribeCard`);
+        expect(tribeCard.props().tribe).toBe(tribe);
+    });
 
-        expect(tribeNameElement.text()).toBe(tribe.name);
-    }));
-
-    it('will show the rotation number', inject(function ($compile, $rootScope) {
+    it('will show the rotation number', function () {
         const tribe: Tribe = {id: '2', name: 'Mathematica'};
         const players: Player[] = [
             {_id: 'harry'},
@@ -45,10 +36,10 @@ describe('Statistics directive', function () {
             {_id: 'moe'}
         ];
 
-        const statisticsDirective = buildDirective($rootScope, $compile, tribe, players, []);
-        const rotationNumberElement = statisticsDirective.find('.rotation-number');
+        const wrapper = buildWrapper(tribe, players, []);
+        const rotationNumberElement = wrapper.find('.rotation-number');
         expect(rotationNumberElement.text()).toBe('3');
-    }));
+    });
 
     describe('will show pairings', function () {
 
@@ -68,15 +59,20 @@ describe('Statistics directive', function () {
             }];
         });
 
-        it('ordered by longest time since last paired', inject(function ($compile, $rootScope) {
-            this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
-            const pairElements = this.statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"]');
+        it('ordered by longest time since last paired', function () {
+            this.wrapper = buildWrapper(this.tribe, this.players, this.history);
+            const pairElements = this.wrapper.find(`.${Styles.pairReport}`);
             let numberOfElements = pairElements.length;
 
             const actualPairedPlayerNames = times((index) => {
-                let children = pairElements.eq(index)
-                    .find('[ng-repeat="player in report.pair"] .player-card-header');
-                return [children.eq(0).text(), children.eq(1).text()];
+
+                let children = pairElements.at(index)
+                    .find(`.${Styles.pairReport} ReactPlayerCard`);
+
+                return [
+                    children.at(0).props().player.name,
+                    children.at(1).props().player.name
+                ];
             }, numberOfElements);
 
             expect(actualPairedPlayerNames).toEqual([
@@ -87,13 +83,13 @@ describe('Statistics directive', function () {
                 ['Harry', 'Larry'],
                 ['Curly', 'Moe'],
             ]);
-        }));
+        });
 
-        it('with the time since that pair last occurred', inject(function ($compile, $rootScope) {
-            this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
-            const timeElements = this.statisticsDirective.find('[ng-repeat="report in self.statistics.pairReports"] .time-since-last-pairing');
+        it('with the time since that pair last occurred', function () {
+            this.wrapper = buildWrapper(this.tribe, this.players, this.history);
+            const timeElements = this.wrapper.find(`.${Styles.pairReport} .time-since-last-pairing`);
 
-            const timeValues = times(index => timeElements.eq(index).text(), timeElements.length);
+            const timeValues = times(index => timeElements.at(index).text(), timeElements.length);
 
             expect(timeValues).toEqual([
                 NEVER_PAIRED,
@@ -103,10 +99,10 @@ describe('Statistics directive', function () {
                 '0',
                 '0'
             ]);
-        }));
+        });
     });
 
-    it('sends player heat data to subdirective', inject(function ($compile, $rootScope) {
+    it('sends player heat data to subdirective', function () {
 
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
@@ -122,23 +118,20 @@ describe('Statistics directive', function () {
             tribe: this.tribe.id
         }];
 
-        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
-        const heatmapElement = this.statisticsDirective.find('heatmap');
-        const isolateScope = heatmapElement.isolateScope();
+        this.wrapper = buildWrapper(this.tribe, this.players, this.history);
+        const heatmapElement = this.wrapper.find("ReactHeatmap");
 
-        expect(isolateScope.me.data).toEqual([
+        expect(heatmapElement.props().data).toEqual([
             [null, 1, 0, 0],
             [1, null, 0, 0],
             [0, 0, null, 1],
             [0, 0, 1, null]
         ]);
-    }));
-
-    let getPlayersFromCards = map(function (card: string) {
-        return angular.element(card).isolateScope()["playerCard"].player;
     });
 
-    it('has row of players above heatmap', inject(function ($compile, $rootScope) {
+    const getPlayersFromCards = map(playerCardWrapper => playerCardWrapper.props().player);
+
+    it('has row of players above heatmap', function () {
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
             {_id: 'harry', name: 'Harry', tribe: '2'},
@@ -147,16 +140,16 @@ describe('Statistics directive', function () {
             {_id: 'moe', name: 'Moe', tribe: '2'}
         ];
 
-        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, []);
-        const playersRowElement = this.statisticsDirective.find(`.${Styles.heatmapPlayersTopRow}`);
-        const playerCards = playersRowElement.find('playercard');
+        this.wrapper = buildWrapper(this.tribe, this.players, []);
+        const playersRowElement = this.wrapper.find(`.${Styles.heatmapPlayersTopRow}`);
+        const playerCards = playersRowElement.find('ReactPlayerCard');
 
-        const playersOnCards = getPlayersFromCards(playerCards.toArray());
+        const playersOnCards = getPlayersFromCards(playerCards);
 
         expect(playersOnCards).toEqual(this.players);
-    }));
+    });
 
-    it('has a row of players to the side of the heatmap', inject(function ($compile, $rootScope) {
+    it('has a row of players to the side of the heatmap', function () {
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
             {_id: 'harry', name: 'Harry', tribe: '2'},
@@ -165,16 +158,16 @@ describe('Statistics directive', function () {
             {_id: 'moe', name: 'Moe', tribe: '2'}
         ];
 
-        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, []);
-        const playersRowElement = this.statisticsDirective.find(`.${Styles.heatmapPlayersSideRow}`);
-        const playerCards = playersRowElement.find('playercard');
+        this.wrapper = buildWrapper(this.tribe, this.players, []);
+        const playersRowElement = this.wrapper.find(`.${Styles.heatmapPlayersSideRow}`);
+        const playerCards = playersRowElement.find('ReactPlayerCard');
 
-        const playersOnCards = getPlayersFromCards(playerCards.toArray());
+        const playersOnCards = getPlayersFromCards(playerCards);
 
         expect(playersOnCards).toEqual(this.players);
-    }));
+    });
 
-    it('will show the current number of active players', inject(function ($compile, $rootScope) {
+    it('will show the current number of active players', function () {
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
             {_id: 'harry', name: 'Harry', tribe: '2'},
@@ -183,13 +176,13 @@ describe('Statistics directive', function () {
             {_id: 'moe', name: 'Moe', tribe: '2'}
         ];
 
-        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, []);
-        const activePlayerCountElement = this.statisticsDirective.find(`.${Styles.activePlayerCount}`);
+        this.wrapper = buildWrapper(this.tribe, this.players, []);
+        const activePlayerCountElement = this.wrapper.find(`.${Styles.activePlayerCount}`);
 
         expect(activePlayerCountElement.text()).toEqual('4');
-    }));
+    });
 
-    it('will show the median spin time', inject(function ($compile, $rootScope) {
+    it('will show the median spin time', function () {
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
             {_id: 'harry', name: 'Harry', tribe: '2'},
@@ -211,10 +204,10 @@ describe('Statistics directive', function () {
             },
         ];
 
-        this.statisticsDirective = buildDirective($rootScope, $compile, this.tribe, this.players, this.history);
-        const medianSpinDurationElement = this.statisticsDirective.find(`.${Styles.medianSpinDuration}`);
+        this.wrapper = buildWrapper(this.tribe, this.players, this.history);
+        const medianSpinDurationElement = this.wrapper.find(`.${Styles.medianSpinDuration}`);
 
         expect(medianSpinDurationElement.text()).toEqual('2 days');
-    }));
+    });
 
 });

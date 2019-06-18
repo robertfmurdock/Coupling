@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useLayoutEffect, useRef} from "react";
 import * as Styles from './styles.css'
-
+import * as classNames from 'classnames'
 import flatten from "ramda/es/flatten";
 import {select} from "d3-selection";
 import {rgb} from "d3-color";
@@ -39,8 +39,13 @@ function renderD3Heatmap(element, data) {
         });
 }
 
-export default function ReactHeatmap(props) {
-    const {data} = props;
+interface Props {
+    data,
+    className?: string
+}
+
+export default function ReactHeatmap(props: Props) {
+    const {data, className} = props;
 
     const rowSize = data.length * 90;
     const heatmapStyle = {
@@ -52,5 +57,5 @@ export default function ReactHeatmap(props) {
 
     useLayoutEffect(() => renderD3Heatmap(ref.current, flatten(data)));
 
-    return <div ref={ref} className={Styles.heatmap} style={heatmapStyle}/>
+    return <div ref={ref} className={classNames(Styles.heatmap, className)} style={heatmapStyle}/>
 }

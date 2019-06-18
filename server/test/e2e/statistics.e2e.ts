@@ -1,7 +1,6 @@
 import {browser, element, By} from "protractor";
 import e2eHelp from "./e2e-help";
 import * as monk from "monk";
-import Player from "../../../common/Player";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -57,7 +56,7 @@ describe('The statistics page', function () {
     });
 
     it('has the pair reports', function () {
-        const pairReports = element.all(By.css('[ng-repeat="report in self.statistics.pairReports"]'));
+        const pairReports = element.all(By.className('react-pair-report'));
         expect(pairReports.count()).toBe(15);
     });
 

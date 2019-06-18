@@ -6,6 +6,7 @@ import ReactLoginChooser from "../login-chooser/ReactLoginChooser";
 import * as services from "../../services";
 import fitty from "fitty";
 import Player from '../../../../common/Player';
+import {MutableRefObject} from "react";
 
 interface Card {
     name: string
@@ -106,13 +107,7 @@ function ComeOnIn(props: { hiddenTag: string }) {
 
 export function WelcomeSplash(props: { randomizer, hiddenTag }) {
     const {randomizer, hiddenTag} = props;
-    const pairRef = useRef(null);
-
-    if (!pairRef.current) {
-        pairRef.current = choosePairAndProverb(randomizer)
-    }
-
-    const pairAndProverb = pairRef.current;
+    const [pairAndProverb] = useState(() => choosePairAndProverb(randomizer));
 
     return <span className={Styles.welcome}>
 <WelcomeTitle/>

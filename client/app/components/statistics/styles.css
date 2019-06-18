@@ -3,7 +3,7 @@
     text-align: left;
 }
 
-:local(.statsPage) heatmap {
+:local(.statsPage) :local(.heatmap) {
     display: inline-block;
     vertical-align: top;
 }
@@ -13,7 +13,11 @@
     width: 62px;
 }
 
-:local(.heatmapPlayersTopRow) playercard {
+:local(.playerCard) {
+    display: inline-block;
+}
+
+:local(.heatmapPlayersTopRow) :local(.playerCard) {
     width: 90px;
     display: inline-block;
     text-align: center;
@@ -23,12 +27,12 @@
     display: inline-block;
 }
 
-:local(.heatmapPlayersSideRow) playercard {
+:local(.heatmapPlayersSideRow) :local(.playerCard) {
     height: 90px;
     display: block;
 }
 
-:local(.heatmapPlayersSideRow) playercard > div {
+:local(.heatmapPlayersSideRow) :local(.playerCard) > div {
     vertical-align: middle;
 }
 
@@ -82,7 +86,7 @@
 }
 
 :local(.activePlayerCount) {
-    
+
 }
 
 :local(.medianSpinDuration) {

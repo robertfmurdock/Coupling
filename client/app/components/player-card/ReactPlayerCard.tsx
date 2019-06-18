@@ -9,7 +9,7 @@ import {MouseEventHandler} from "react";
 interface PlayerCardProps {
     player: Player,
     tribeId: string,
-    disabled: boolean,
+    disabled?: boolean,
     size?: number,
     pathSetter?: (string) => void,
     className?: string,
