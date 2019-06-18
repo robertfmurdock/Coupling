@@ -23,7 +23,7 @@
   }
 }
 
-.pair-assignments playercard.hoverzoom:hover > div, .player.hoverzoom:hover {
+.pair-assignments .react-player-card .hoverzoom:hover > div, .player.hoverzoom:hover {
   transition: all ease-in 0.4s;
   z-index: 1;
   animation: 0.5s twitch;

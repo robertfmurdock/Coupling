@@ -42,7 +42,7 @@
     background-color: orange;
 }
 
-.pair-assignments playercard {
+.pair-assignments .react-player-card {
     display: inline-block;
     overflow: hidden;
 }
