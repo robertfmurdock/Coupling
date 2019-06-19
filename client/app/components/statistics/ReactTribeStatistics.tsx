@@ -2,15 +2,15 @@
 import * as client from 'client'
 import * as Styles from './styles.css'
 import * as React from "react";
+import {useState} from "react";
 import * as classNames from 'classnames'
 import ReactTribeCard from "../tribe-card/ReactTribeCard";
 import ReactPlayerCard from "../player-card/ReactPlayerCard";
-import ReactHeatmap from "../heatmap/ReactHeatmap";
-import {useState} from "react";
 import StatisticComposer from "../../runners/StatisticComposer";
 import Tribe from '../../../../common/Tribe';
 import Player from '../../../../common/Player';
 import PairAssignmentSet from '../../../../common/PairAssignmentSet';
+import PlayerHeatmap from "./PlayersHeatmap";
 
 const commandDispatcher = client.commandDispatcher();
 
@@ -31,7 +31,7 @@ interface Props {
     pathSetter: (url: String) => void
 }
 
-function TeamStatistics(props: { spinsUntilFullRotation, activePlayerCount, medianSpinDuration }) {
+export function TeamStatistics(props: { spinsUntilFullRotation, activePlayerCount, medianSpinDuration }) {
     const {spinsUntilFullRotation, activePlayerCount, medianSpinDuration} = props;
     return <div className={Styles.teamStatistics}>
         <div className={Styles.statsHeader}>Team Stats</div>
@@ -47,6 +47,28 @@ function TeamStatistics(props: { spinsUntilFullRotation, activePlayerCount, medi
             <span className={Styles.statLabel}>Median Spin Duration:</span>
             <span className={Styles.medianSpinDuration}>{medianSpinDuration}</span>
         </div>
+    </div>;
+}
+
+export function PairReportTable(props: { pairReports, tribe }) {
+    const {pairReports, tribe} = props;
+    return <div className={Styles.pairReportTable}>
+        {
+            pairReports.map(report =>
+                <div className={classNames(Styles.pairReport, 'react-pair-report')}>
+                    {
+                        report.pair.map(player =>
+                            <div className={Styles.playerCard}>
+                                <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
+                            </div>)
+                    }
+                    <div className={Styles.pairStatistics}>
+                        <div className={Styles.statsHeader}>Stats</div>
+                        <span className={Styles.statLabel}>Spins since last paired:</span>
+                        <span className={"time-since-last-pairing"}>{report.timeSinceLastPaired}</span>
+                    </div>
+                </div>)
+        }
     </div>;
 }
 
@@ -69,47 +91,9 @@ export default function ReactTribeStatistics(props: Props) {
         </div>
         <div>
             <div className={Styles.leftSection}>
-                <div className={Styles.pairReportTable}>
-                    {
-                        pairReports.map(report =>
-                            <div className={classNames(Styles.pairReport, 'react-pair-report')}>
-                                {
-                                    report.pair.map(player =>
-                                        <div className={Styles.playerCard}>
-                                            <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
-                                        </div>)
-                                }
-                                <div className={Styles.pairStatistics}>
-                                    <div className={Styles.statsHeader}>Stats</div>
-                                    <span className={Styles.statLabel}>Spins since last paired:</span>
-                                    <span className={"time-since-last-pairing"}>{report.timeSinceLastPaired}</span>
-                                </div>
-                            </div>)
-                    }
-                </div>
+                <PairReportTable tribe={tribe} pairReports={pairReports}/>
             </div>
-            <div className={Styles.rightSection}>
-                <div className={Styles.heatmapPlayersTopRow}>
-                    <div className={Styles.spacer}/>
-                    {
-                        players.map(player =>
-                            <div className={Styles.playerCard}>
-                                <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
-                            </div>
-                        )
-                    }
-                </div>
-                <div className={Styles.heatmapPlayersSideRow}>
-                    {
-                        players.map(player =>
-                            <div className={Styles.playerCard}>
-                                <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
-                            </div>
-                        )
-                    }
-                </div>
-                <ReactHeatmap data={heatmapData} className={Styles.heatmap}/>
-            </div>
+            <PlayerHeatmap players={players} tribe={tribe} heatmapData={heatmapData}/>
         </div>
     </div>
 }

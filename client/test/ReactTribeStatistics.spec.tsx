@@ -1,16 +1,13 @@
-import * as angular from "angular";
-import "ng-fittext";
-import "../app/app";
-import Tribe from "../../common/Tribe";
+import * as React from "react";
 import {shallow} from 'enzyme';
 import times from 'ramda/es/times'
-import Player from "../../common/Player";
 import map from "ramda/es/map";
+import Tribe from "../../common/Tribe";
+import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
-import * as Styles from "../../client/app/components/statistics/styles.css";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
-import ReactTribeStatistics from "../app/components/statistics/ReactTribeStatistics";
-import * as React from "react";
+import ReactTribeStatistics, {TeamStatistics} from "../app/components/statistics/ReactTribeStatistics";
+import PlayerHeatmap from "../app/components/statistics/PlayersHeatmap";
 
 describe('ReactTribeStatistics', function () {
 
@@ -25,20 +22,6 @@ describe('ReactTribeStatistics', function () {
         const wrapper = buildWrapper(tribe, [], []);
         const tribeCard = wrapper.find(`ReactTribeCard`);
         expect(tribeCard.props().tribe).toBe(tribe);
-    });
-
-    it('will show the rotation number', function () {
-        const tribe: Tribe = {id: '2', name: 'Mathematica'};
-        const players: Player[] = [
-            {_id: 'harry'},
-            {_id: 'larry'},
-            {_id: 'curly'},
-            {_id: 'moe'}
-        ];
-
-        const wrapper = buildWrapper(tribe, players, []);
-        const rotationNumberElement = wrapper.find('.rotation-number');
-        expect(rotationNumberElement.text()).toBe('3');
     });
 
     describe('will show pairings', function () {
@@ -61,17 +44,17 @@ describe('ReactTribeStatistics', function () {
 
         it('ordered by longest time since last paired', function () {
             this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-            const pairElements = this.wrapper.find(`.${Styles.pairReport}`);
-            let numberOfElements = pairElements.length;
+            const pairElements = this.wrapper.find(`PairReportTable`);
+            let pairReports = pairElements.props().pairReports;
+            let numberOfElements = pairReports.length;
 
             const actualPairedPlayerNames = times((index) => {
 
-                let children = pairElements.at(index)
-                    .find(`.${Styles.pairReport} ReactPlayerCard`);
+                let children = pairReports[index].pair;
 
                 return [
-                    children.at(0).props().player.name,
-                    children.at(1).props().player.name
+                    children[0].name,
+                    children[1].name
                 ];
             }, numberOfElements);
 
@@ -87,23 +70,21 @@ describe('ReactTribeStatistics', function () {
 
         it('with the time since that pair last occurred', function () {
             this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-            const timeElements = this.wrapper.find(`.${Styles.pairReport} .time-since-last-pairing`);
-
-            const timeValues = times(index => timeElements.at(index).text(), timeElements.length);
-
+            const pairReportTableWrapper = this.wrapper.find(`PairReportTable`);
+            let pairReports = pairReportTableWrapper.props().pairReports;
+            const timeValues = pairReports.map(report => report.timeSinceLastPaired);
             expect(timeValues).toEqual([
                 NEVER_PAIRED,
                 NEVER_PAIRED,
                 NEVER_PAIRED,
                 NEVER_PAIRED,
-                '0',
-                '0'
+                0,
+                0
             ]);
         });
     });
 
     it('sends player heat data to subdirective', function () {
-
         this.tribe = {id: '2', name: 'Mathematica'};
         this.players = [
             {_id: 'harry', name: 'Harry', tribe: '2'},
@@ -119,52 +100,14 @@ describe('ReactTribeStatistics', function () {
         }];
 
         this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-        const heatmapElement = this.wrapper.find("ReactHeatmap");
+        const heatmapElement = this.wrapper.find("PlayerHeatmap");
 
-        expect(heatmapElement.props().data).toEqual([
+        expect(heatmapElement.props().heatmapData).toEqual([
             [null, 1, 0, 0],
             [1, null, 0, 0],
             [0, 0, null, 1],
             [0, 0, 1, null]
         ]);
-    });
-
-    const getPlayersFromCards = map(playerCardWrapper => playerCardWrapper.props().player);
-
-    it('has row of players above heatmap', function () {
-        this.tribe = {id: '2', name: 'Mathematica'};
-        this.players = [
-            {_id: 'harry', name: 'Harry', tribe: '2'},
-            {_id: 'larry', name: 'Larry', tribe: '2'},
-            {_id: 'curly', name: 'Curly', tribe: '2'},
-            {_id: 'moe', name: 'Moe', tribe: '2'}
-        ];
-
-        this.wrapper = buildWrapper(this.tribe, this.players, []);
-        const playersRowElement = this.wrapper.find(`.${Styles.heatmapPlayersTopRow}`);
-        const playerCards = playersRowElement.find('ReactPlayerCard');
-
-        const playersOnCards = getPlayersFromCards(playerCards);
-
-        expect(playersOnCards).toEqual(this.players);
-    });
-
-    it('has a row of players to the side of the heatmap', function () {
-        this.tribe = {id: '2', name: 'Mathematica'};
-        this.players = [
-            {_id: 'harry', name: 'Harry', tribe: '2'},
-            {_id: 'larry', name: 'Larry', tribe: '2'},
-            {_id: 'curly', name: 'Curly', tribe: '2'},
-            {_id: 'moe', name: 'Moe', tribe: '2'}
-        ];
-
-        this.wrapper = buildWrapper(this.tribe, this.players, []);
-        const playersRowElement = this.wrapper.find(`.${Styles.heatmapPlayersSideRow}`);
-        const playerCards = playersRowElement.find('ReactPlayerCard');
-
-        const playersOnCards = getPlayersFromCards(playerCards);
-
-        expect(playersOnCards).toEqual(this.players);
     });
 
     it('will show the current number of active players', function () {
@@ -177,9 +120,23 @@ describe('ReactTribeStatistics', function () {
         ];
 
         this.wrapper = buildWrapper(this.tribe, this.players, []);
-        const activePlayerCountElement = this.wrapper.find(`.${Styles.activePlayerCount}`);
 
-        expect(activePlayerCountElement.text()).toEqual('4');
+        const teamStatisticsWrapper = this.wrapper.find('TeamStatistics');
+        expect(teamStatisticsWrapper.props().activePlayerCount).toBe(4);
+    });
+
+    it('will show the rotation number', function () {
+        const tribe: Tribe = {id: '2', name: 'Mathematica'};
+        const players: Player[] = [
+            {_id: 'harry'},
+            {_id: 'larry'},
+            {_id: 'curly'},
+            {_id: 'moe'}
+        ];
+
+        const wrapper = buildWrapper(tribe, players, []);
+        const teamStatisticsWrapper = wrapper.find('TeamStatistics');
+        expect(teamStatisticsWrapper.props().spinsUntilFullRotation).toBe(3);
     });
 
     it('will show the median spin time', function () {
@@ -203,11 +160,8 @@ describe('ReactTribeStatistics', function () {
                 tribe: this.tribe.id
             },
         ];
-
-        this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-        const medianSpinDurationElement = this.wrapper.find(`.${Styles.medianSpinDuration}`);
-
-        expect(medianSpinDurationElement.text()).toEqual('2 days');
+        const wrapper = buildWrapper(this.tribe, this.players, this.history);
+        const teamStatisticsWrapper = wrapper.find('TeamStatistics');
+        expect(teamStatisticsWrapper.props().medianSpinDuration).toBe('2 days');
     });
-
 });
