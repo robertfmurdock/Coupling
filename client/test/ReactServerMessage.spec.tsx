@@ -1,4 +1,3 @@
-import "angular-websocket/dist/angular-websocket-mock";
 import {shallow} from 'enzyme';
 import * as React from "react";
 import ReactServerMessage from "../app/components/server-message/ReactServerMessage";

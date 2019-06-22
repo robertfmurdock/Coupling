@@ -107,8 +107,8 @@ function findUnpairedPlayers(players: Player[], pairAssignmentDocument: PairAssi
     return differenceOfPlayers(players, currentlyPairedPlayers);
 }
 
-function AssignedPair(props: { pair, tribe: Tribe, pairAssignments, swapCallback: (droppedPlayerId: string, player: Player, pair: Player[]) => void, isNew: boolean }) {
-    const {pair, tribe, pairAssignments, swapCallback, isNew} = props;
+function AssignedPair(props: { pair, tribe: Tribe, pairAssignments, swapCallback: (droppedPlayerId: string, player: Player, pair: Player[]) => void, isNew: boolean, pathSetter }) {
+    const {pair, tribe, pairAssignments, swapCallback, isNew, pathSetter} = props;
     let callSign = findCallSign(pair);
     return <span className={"pair"}>
                                 <div>
@@ -132,6 +132,7 @@ function AssignedPair(props: { pair, tribe: Tribe, pairAssignments, swapCallback
                         player={player}
                         tribeId={tribe.id}
                         disabled={false}
+                        pathSetter={pathSetter}
                     />
             )
         }
@@ -222,7 +223,7 @@ export function ReactPairAssignments(props: Props) {
                         </div>
                 }
                 <div id={'pair-assignments-content'}>
-                    { pairAssignments
+                    {pairAssignments
                         ?
                         pairAssignments.pairs.map((pair, index) =>
                             <AssignedPair
@@ -230,6 +231,7 @@ export function ReactPairAssignments(props: Props) {
                                 pair={pair}
                                 tribe={tribe}
                                 isNew={isNew}
+                                pathSetter={pathSetter}
                                 pairAssignments={pairAssignments}
                                 swapCallback={(droppedPlayerId, targetPlayer, targetPair) =>
                                     setPairAssignments(swapPlayers(

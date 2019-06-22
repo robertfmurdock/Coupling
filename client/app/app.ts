@@ -6,8 +6,6 @@ import "angular-gravatar";
 import "angular-route";
 import "ng-fittext";
 import "prefixfree";
-import "angular-native-dragdrop";
-import "angular-websocket";
 import "./filters";
 import "./animations";
 import "./components/components";
@@ -39,7 +37,6 @@ async function bootstrapApp() {
     const app = module('coupling', ["ngRoute",
         'ngFitText',
         'ui.gravatar',
-        'ang-drag-drop',
         'coupling.component',
         'coupling.filters',
         'coupling.animations']);

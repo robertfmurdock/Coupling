@@ -1,20 +1,22 @@
 import * as React from "react";
+import * as classNames from 'classnames'
 import ReactPlayerCard from "../player-card/ReactPlayerCard";
 import Player from "../../../../common/Player";
 
 interface Props {
-    label: string,
+    label?: string,
     players: Player[],
     tribeId: string,
-    pathSetter: (string) => void
+    pathSetter: (string) => void,
+    className?: string
 }
 
 export default class ReactPlayerRoster extends React.Component<Props> {
 
     render() {
-        const {label, tribeId} = this.props;
+        const {label, tribeId, className} = this.props;
 
-        return <div className={"react-player-roster"}>
+        return <div className={classNames("react-player-roster", className)}>
             <div>
                 <div className="roster-header">
                     <text>{label || 'Players'}</text>

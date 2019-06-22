@@ -12,6 +12,9 @@ const hostName = `http://${config.publicHost}:${config.port}`;
 
 const playerElements = element.all(By.css('.react-player-roster .react-player-card'));
 
+const defaultBadgeRadio = element(By.css('#default-badge-radio'));
+const altBadgeRadio = element(By.css('#alt-badge-radio'));
+
 describe('The edit player page', function () {
 
     const tribe = {
@@ -104,17 +107,12 @@ describe('The edit player page', function () {
 
         it('should not show the badge selector', function () {
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            const defaultBadgeRadio = element(By.css('#default-badge-radio'));
-            expect(defaultBadgeRadio.isDisplayed()).toEqual(false);
-            const altBadgeRadio = element(By.css('#alt-badge-radio'));
-            expect(altBadgeRadio.isDisplayed()).toEqual(false);
+            expect(defaultBadgeRadio.isPresent()).toEqual(false);
+            expect(altBadgeRadio.isPresent()).toEqual(false);
         });
     });
 
     describe('when the tribe does have badging enabled', function () {
-
-        const defaultBadgeRadio = element(By.css('#default-badge-radio'));
-        const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
         beforeEach(async function () {
             const tribeClone: Tribe = clone(tribe);
@@ -219,6 +217,8 @@ describe('The edit player page', function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
+        playerNameTextField.sendKeys(' \b');
+
         await savePlayerButton.click();
 
         await waitForSaveToComplete("Unknown");
