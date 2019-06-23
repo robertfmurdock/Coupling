@@ -12,7 +12,6 @@ const config = {
       "angular-animate",
       "angular-gravatar",
       "angular-mocks",
-      "angular-resource",
       "angular-route",
       "axios",
       "kotlin",

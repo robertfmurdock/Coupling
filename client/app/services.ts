@@ -1,5 +1,4 @@
 import * as angular from "angular";
-import "angular-resource";
 import map from "ramda/es/map";
 import find from "ramda/es/find";
 import mergeAll from "ramda/es/mergeAll";
@@ -146,7 +145,7 @@ class Coupling {
 
 }
 
-angular.module("coupling.services", ['ngResource'])
+angular.module("coupling.services", [])
     .service("Coupling", Coupling)
     .service('randomizer', Randomizer);
 

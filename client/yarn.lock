@@ -189,13 +189,6 @@
   dependencies:
     "@types/angular" "*"
 
-"@types/angular-resource@^1.5.15":
-  version "1.5.15"
-  resolved "https://registry.yarnpkg.com/@types/angular-resource/-/angular-resource-1.5.15.tgz#5afad92af99b74884ca788fc48d47ebe4be32413"
-  integrity sha512-9YZwDxh+YMYtVvgEtW8oVQXKDJf0QcLrvR5hS9NMi/faDm2V+87TuHBtQBMPKEgMo0SyyVxKzhg8gsscNVMFUw==
-  dependencies:
-    "@types/angular" "*"
-
 "@types/angular-route@^1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@types/angular-route/-/angular-route-1.7.0.tgz#ba12d09df1aac3c88e3684500001daedfc97fb69"
@@ -880,11 +873,6 @@ angular-native-dragdrop@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/angular-native-dragdrop/-/angular-native-dragdrop-1.2.2.tgz#d646c6b75b131c48073c3f6e36a225b2726d8bae"
   integrity sha1-1kbGt1sTHEgHPD9uNqIlsnJti64=
-
-angular-resource@~1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/angular-resource/-/angular-resource-1.7.8.tgz#9577dbcc02cdbb76398febc5fc7ee103c86c5c50"
-  integrity sha512-zuPQ0ZX9Q8WnZ0KMtJlKYUSIXWRQSbFzMkRV9zG8cYYSsMAZlXar5Hqmd5gzxC3O28AGM7BCEJ+iYs3UNL4qdA==
 
 angular-route@~1.7.8:
   version "1.7.8"
