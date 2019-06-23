@@ -42,6 +42,111 @@ interface Props {
 
 const defaultPlayerAttributes = {badge: Badge.Default};
 
+function BadgeConfig(props: { tribe: Tribe, updatedPlayer: Player, onChange }) {
+    const {tribe, updatedPlayer, onChange} = props;
+    return <div className={"badge-config"}>
+        <div>
+            <label htmlFor="default-badge-radio">{tribe.defaultBadgeName}</label>
+            <input
+                name="badge"
+                id={"default-badge-radio"}
+                type={"radio"}
+                value={Badge.Default}
+                checked={updatedPlayer.badge == Badge.Default}
+                onChange={onChange}
+            />
+        </div>
+        <div>
+            <label htmlFor="alt-badge-radio">{tribe.alternateBadgeName}</label>
+            <input
+                name="badge"
+                id={"alt-badge-radio"}
+                type={"radio"}
+                value={Badge.Alternate}
+                checked={updatedPlayer.badge == Badge.Alternate}
+                onChange={onChange}
+            />
+        </div>
+    </div>;
+}
+
+function CallSignConfig(props: { updatedPlayer: Player, onChange }) {
+    const {updatedPlayer, onChange} = props;
+    return <div>
+        <div>
+            <label htmlFor="adjective-input">Call-Sign Adjective</label>
+            <input
+                name="callSignAdjective"
+                id={"adjective-input"}
+                type={"text"}
+                list="callSignAdjectiveOptions"
+                value={updatedPlayer.callSignAdjective}
+                onChange={onChange}
+            />
+            <datalist id="callSignAdjectiveOptions"/>
+        </div>
+        <div>
+            <label htmlFor="noun-input">Call-Sign Noun</label>
+            <input
+                name="callSignNoun"
+                id={"noun-input"}
+                type={"text"}
+                list="callSignNounOptions"
+                value={updatedPlayer.callSignNoun}
+                onChange={onChange}
+            >
+            </input>
+            <datalist id="callSignNounOptions"/>
+        </div>
+    </div>;
+}
+
+function PlayerConfigForm(props: { onSubmit, player: Player, onChange, tribe: Tribe, removePlayer }) {
+    const {onSubmit, player, onChange, tribe, removePlayer} = props;
+
+    const [isSaving, setIsSaving] = useState(false);
+
+    return <form name="playerForm" onSubmit={event => {
+        setIsSaving(true);
+        onSubmit(event);
+    }}>
+        <div>
+            <label htmlFor="player-name">Name</label>
+            <input name="name" id={"player-name"} type={"text"} value={player.name}
+                   onChange={onChange}/>
+        </div>
+        <div>
+            <label htmlFor="player-email">Email</label>
+            <input name="email" id={"player-email"} type={"text"} value={player.email}
+                   onChange={onChange}/>
+        </div>
+        {
+            tribe.callSignsEnabled
+                ? <CallSignConfig updatedPlayer={player} onChange={onChange}/>
+                : []
+        }
+        {
+            tribe.badgesEnabled
+                ? <BadgeConfig tribe={tribe} updatedPlayer={player} onChange={onChange}/>
+                : []
+        }
+        <button
+            id={"save-player-button"}
+            type={"submit"}
+            className={"large blue button save-button"}
+            tabIndex={0}
+            value={"Save"}
+            disabled={isSaving}>
+            Save
+        </button>
+        {
+            player._id
+                ? <div className={"small red button delete-button"} onClick={removePlayer}>Retire</div>
+                : []
+        }
+    </form>;
+}
+
 export default function ReactPlayerConfig(props: Props) {
     const {tribe, players, pathSetter, coupling, locationChanger, reloader = () => window.location.reload()} = props;
     const player = merge(defaultPlayerAttributes, props.player);
@@ -49,7 +154,6 @@ export default function ReactPlayerConfig(props: Props) {
     const [values, handleChange, handleSubmit] = useForm(savePlayer, player);
     const updatedPlayer = merge(player, values);
 
-    const [isSaving, setIsSaving] = useState(false);
     let promptIsUp = false;
     locationChanger(async () => {
         if (!equals(updatedPlayer, player) && !promptIsUp) {
@@ -62,8 +166,6 @@ export default function ReactPlayerConfig(props: Props) {
     });
 
     async function savePlayer() {
-        console.log('lol save player')
-        setIsSaving(true);
         await coupling.savePlayer(updatedPlayer, tribe.id);
         reloader();
     }
@@ -82,91 +184,13 @@ export default function ReactPlayerConfig(props: Props) {
             </div>
             <span id={"player-view"}>
             <span className={"player"}>
-                <form name="playerForm" onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="player-name">Name</label>
-                        <input name="name" id={"player-name"} type={"text"} value={updatedPlayer.name}
-                               onChange={handleChange}/>
-                    </div>
-                    <div>
-                        <label htmlFor="player-email">Email</label>
-                        <input name="email" id={"player-email"} type={"text"} value={updatedPlayer.email}
-                               onChange={handleChange}/>
-                    </div>
-                    {
-                        tribe.callSignsEnabled
-                            ? <div>
-                                <div>
-                                    <label htmlFor="adjective-input">Call-Sign Adjective</label>
-                                    <input
-                                        name="callSignAdjective"
-                                        id={"adjective-input"}
-                                        type={"text"}
-                                        list="callSignAdjectiveOptions"
-                                        value={updatedPlayer.callSignAdjective}
-                                        onChange={handleChange}
-                                    />
-                                    <datalist id="callSignAdjectiveOptions"/>
-                                </div>
-                                <div>
-                                    <label htmlFor="noun-input">Call-Sign Noun</label>
-                                    <input
-                                        name="callSignNoun"
-                                        id={"noun-input"}
-                                        type={"text"}
-                                        list="callSignNounOptions"
-                                        value={updatedPlayer.callSignNoun}
-                                        onChange={handleChange}
-                                    >
-                                    </input>
-                                    <datalist id="callSignNounOptions"/>
-                                </div>
-                            </div>
-                            : []
-                    }
-                    {
-                        tribe.badgesEnabled
-                            ? <div className={"badge-config"}>
-                                <div>
-                                    <label htmlFor="default-badge-radio">{tribe.defaultBadgeName}</label>
-                                    <input
-                                        name="badge"
-                                        id={"default-badge-radio"}
-                                        type={"radio"}
-                                        value={Badge.Default}
-                                        checked={updatedPlayer.badge == Badge.Default}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                                <div>
-                                    <label htmlFor="alt-badge-radio">{tribe.alternateBadgeName}</label>
-                                    <input
-                                        name="badge"
-                                        id={"alt-badge-radio"}
-                                        type={"radio"}
-                                        value={Badge.Alternate}
-                                        checked={updatedPlayer.badge == Badge.Alternate}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                            : []
-                    }
-                    <button
-                        id={"save-player-button"}
-                        type={"submit"}
-                        className={"large blue button save-button"}
-                        tabIndex={0}
-                        value={"Save"}
-                        disabled={isSaving}>
-                        Save
-                    </button>
-                    {
-                        player._id
-                            ? <div className={"small red button delete-button"} onClick={removePlayer}>Retire</div>
-                            : []
-                    }
-                </form>
+                <PlayerConfigForm
+                    player={updatedPlayer}
+                    tribe={tribe}
+                    onChange={handleChange}
+                    onSubmit={handleSubmit}
+                    removePlayer={removePlayer}
+                />
             </span>
             <ReactPlayerCard player={updatedPlayer} tribeId={tribe.id} size={250}/>
         </span>

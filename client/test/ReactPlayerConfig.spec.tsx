@@ -1,5 +1,5 @@
 import * as React from "react";
-import {configure, shallow} from 'enzyme';
+import {configure, shallow, mount} from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import Player from "../../common/Player";
 import Badge from "../../common/Badge";
@@ -43,7 +43,7 @@ describe('ReactPlayerConfig', function () {
 
     it('when the given player has no badge, will use default badge', function () {
         const player = {_id: 'blarg'};
-        const wrapper = shallow(<ReactPlayerConfig
+        const wrapper = mount(<ReactPlayerConfig
             tribe={{
                 name: 'Party tribe.',
                 id: 'party',
@@ -61,7 +61,7 @@ describe('ReactPlayerConfig', function () {
 
     it('when the given player has alt badge, will not modify player', function () {
         const alternatePlayer: Player = {_id: '', badge: Badge.Alternate};
-        const wrapper = shallow(<ReactPlayerConfig
+        const wrapper = mount(<ReactPlayerConfig
             tribe={{
                 name: 'Party tribe.',
                 id: 'party',
@@ -82,7 +82,7 @@ describe('ReactPlayerConfig', function () {
     it('can save player using Coupling service and then reloads', async function () {
         const player = {_id: 'blarg', badge: Badge.Alternate};
         let reloader = jasmine.createSpy();
-        const wrapper = shallow(<ReactPlayerConfig
+        const wrapper = mount(<ReactPlayerConfig
             tribe={{
                 name: 'Party tribe.',
                 id: 'party',
@@ -120,7 +120,7 @@ describe('ReactPlayerConfig', function () {
             const deleteDefer = defer();
             this.coupling.removePlayer.and.returnValue(deleteDefer.promise);
             const player = {_id: 'blarg', badge: Badge.Alternate};
-            const wrapper = shallow(<ReactPlayerConfig
+            const wrapper = mount(<ReactPlayerConfig
                 tribe={{
                     name: 'Party tribe.',
                     id: 'party',
@@ -151,7 +151,7 @@ describe('ReactPlayerConfig', function () {
         it('will do nothing when not confirmed', inject(function (_$controller_) {
             const confirmSpy = spyOn(window, 'confirm');
             const player = {_id: 'blarg'};
-            const wrapper = shallow(<ReactPlayerConfig
+            const wrapper = mount(<ReactPlayerConfig
                 tribe={{
                     name: 'Party tribe.',
                     id: 'party'
@@ -178,7 +178,7 @@ describe('ReactPlayerConfig', function () {
         const player = {_id: 'blarg', badge: Badge.Alternate};
 
         beforeEach(function () {
-            this.wrapper = shallow(<ReactPlayerConfig
+            this.wrapper = mount(<ReactPlayerConfig
                 tribe={{
                     name: 'Party tribe.',
                     id: 'party'
