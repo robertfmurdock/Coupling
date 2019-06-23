@@ -1,6 +1,5 @@
 import * as angular from "angular";
 import * as services from "../../services";
-import * as template from "./player-config.pug";
 import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
 import IRouteService = angular.route.IRouteService;
@@ -56,6 +55,6 @@ export default angular.module("coupling.playerConfig", [])
                 tribe: '='
             },
             restrict: 'E',
-            template: template
+            template: '<div />'
         }
     });

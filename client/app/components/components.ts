@@ -2,7 +2,6 @@ import History from "./history/history";
 import PairAssignments from "./pair-assignments/PairAssignmentsDirective";
 import HeatMap from './heatmap/heatmap'
 import PinList from "./pin-list/pin-list";
-import PlayerCard from "./player-card/player-card";
 import PlayerConfig from "./player-config/player-config";
 import PlayerRoster from "./player-roster/player-roster";
 import Prepare from "./prepare/PrepareDirective";
@@ -25,7 +24,6 @@ module('coupling.component', [
     History.name,
     PinList.name,
     PlayerConfig.name,
-    PlayerCard.name,
     PlayerRoster.name,
     Prepare.name,
     RetiredPlayers.name,
