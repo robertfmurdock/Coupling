@@ -10,7 +10,6 @@ const config = {
     vendor: [
       "angular",
       "angular-animate",
-      "angular-gravatar",
       "angular-mocks",
       "angular-route",
       "axios",

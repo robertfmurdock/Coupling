@@ -22,7 +22,6 @@
     "@types/ws": "6.0.1",
     "angular": "~1.7.8",
     "angular-animate": "~1.7.8",
-    "angular-gravatar": "^0.4.2",
     "angular-mocks": "~1.7.8",
     "angular-native-dragdrop": "^1.2.2",
     "angular-route": "~1.7.8",

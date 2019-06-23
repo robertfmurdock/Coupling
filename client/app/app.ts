@@ -2,7 +2,6 @@ import * as angular from "angular";
 import {module} from "angular";
 // @ts-ignore
 import * as logging from 'logging'
-import "angular-gravatar";
 import "angular-route";
 import "prefixfree";
 import "./filters";
@@ -34,7 +33,6 @@ async function bootstrapApp() {
     const isSignedIn = await GoogleSignIn.checkForSignedIn();
 
     const app = module('coupling', ["ngRoute",
-        'ui.gravatar',
         'coupling.component',
         'coupling.filters',
         'coupling.animations']);
@@ -82,18 +80,6 @@ async function bootstrapApp() {
                 .when('/:tribeId/players/retired', retiredPlayersRoute)
         }
     }]);
-
-    module('ui.gravatar')
-        .config([
-            'gravatarServiceProvider',
-            function (gravatarServiceProvider) {
-                gravatarServiceProvider.defaults = {
-                    size: 100,
-                    "default": 'mm'
-                };
-                gravatarServiceProvider.secure = true;
-            }
-        ]);
 
     angular.element(() => angular.bootstrap(document, ['coupling']));
 }

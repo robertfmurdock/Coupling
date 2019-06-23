@@ -857,13 +857,6 @@ angular-animate@~1.7.8:
   resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.7.8.tgz#c95f237efe7ecfe0e6003adb5e2c7ef0e5a2b9d4"
   integrity sha512-bINtzizq7TbJzfVrDpwLfTxVl0Qd7fRNWFb5jKYI1vaFZobQNX/QONXlLow6ySsDbZ6eLECycB7mvWtfh1YYaw==
 
-angular-gravatar@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/angular-gravatar/-/angular-gravatar-0.4.2.tgz#91f0a18600b1e16b938d947474a889053ac33f97"
-  integrity sha1-kfChhgCx4WuTjZR0dKiJBTrDP5c=
-  dependencies:
-    angular "^1.2.5"
-
 angular-mocks@~1.7.8:
   version "1.7.8"
   resolved "https://registry.yarnpkg.com/angular-mocks/-/angular-mocks-1.7.8.tgz#95e7887ca91d1a3e176cc22f2d1941d284ce9767"
@@ -887,7 +880,7 @@ angular-websocket@^2.0.1:
     angular "*"
     ws "^1.0.0"
 
-angular@*, angular@^1.2.5, angular@~1.7.8:
+angular@*, angular@~1.7.8:
   version "1.7.8"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.7.8.tgz#b77ede272ce1b261e3be30c1451a0b346905a3c9"
   integrity sha512-wtef/y4COxM7ZVhddd7JtAAhyYObq9YXKar9tsW7558BImeVYteJiTxCKeJOL45lJ/+7B4wrAC49j8gTFYEthg==
