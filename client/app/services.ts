@@ -31,11 +31,11 @@ class SelectablePlayer {
 
 class Coupling {
 
-    static async saveTribe(tribe: common.Tribe) {
+    async saveTribe(tribe: common.Tribe) {
         await axios.post(`/api/tribes`, angular.copy(tribe))
     }
 
-    static async deleteTribe(tribeId: String) {
+    async deleteTribe(tribeId: String) {
         await axios.delete(`/api/tribes/${tribeId}`)
     }
 

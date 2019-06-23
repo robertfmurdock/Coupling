@@ -1,8 +1,9 @@
-import {TribeConfigController} from "../app/components/tribe-config/tribe-config";
-import PairingRule from "../../common/PairingRule";
 import * as Bluebird from 'bluebird';
-import * as angular from "angular";
-import {Coupling} from "../app/services";
+import * as React from "react";
+import {shallow} from 'enzyme';
+import PairingRule from "../../common/PairingRule";
+import ReactTribeConfig from "../app/components/tribe-config/ReactTribeConfig";
+import waitFor from "./WaitFor";
 
 const defer = function () {
     const defer = {
@@ -17,34 +18,28 @@ const defer = function () {
     return defer;
 };
 
-describe('TribeConfigController', function () {
+describe('ReactTribeConfig', function () {
 
-    let coupling, location, routeParams;
     const selectTribeDefer = defer();
     let selectedTribeId;
 
-    beforeEach(angular.mock.module('coupling'));
-
     beforeEach(function () {
-        location = {
-            path: jasmine.createSpy('path')
-        };
+        this.pathSetter = jasmine.createSpy('path');
         const selectedTribe = {
             name: 'Party tribe.',
             id: 'TotallyAwesome',
             _id: 'party'
         };
-        coupling = {
+        this.coupling = {
             data: {
                 selectedTribe: selectedTribe
+            },
+            saveTribe: function () {
             },
             selectTribe: function (tribeId) {
                 selectedTribeId = tribeId;
                 return selectTribeDefer.promise;
             }
-        };
-        routeParams = {
-            tribeId: selectedTribe.id
         };
     });
 
@@ -52,21 +47,28 @@ describe('TribeConfigController', function () {
 
         beforeEach(function () {
             const tribe = {id: '1', name: '1'};
-            this.controller = new TribeConfigController(location, coupling, {});
-            this.controller.tribe = tribe;
-            this.controller.$onInit();
+
+            this.wrapper = shallow(<ReactTribeConfig
+                tribe={tribe}
+                pathSetter={this.pathSetter}
+                coupling={this.coupling}
+                isNew={true}
+            />);
         });
 
         it('to having standard pairing rule', function () {
-            expect(this.controller.tribe.pairingRule).toBe(PairingRule.LongestTime);
+            expect(this.wrapper.find('TribeForm').props().tribe.pairingRule)
+                .toBe(PairingRule.LongestTime);
         });
 
         it('to having default badge name', function () {
-            expect(this.controller.tribe.defaultBadgeName).toBe('Default');
+            expect(this.wrapper.find('TribeForm').props().tribe.defaultBadgeName)
+                .toBe('Default');
         });
 
         it('to having alternate badge name', function () {
-            expect(this.controller.tribe.alternateBadgeName).toBe('Alternate');
+            expect(this.wrapper.find('TribeForm').props().tribe.alternateBadgeName)
+                .toBe('Alternate');
         });
     });
 
@@ -74,42 +76,42 @@ describe('TribeConfigController', function () {
 
         const saveTribeDefer = defer();
         let tribe;
-        let controller;
 
         beforeEach(function () {
-            this.saveTribeSpy = spyOn(Coupling, 'saveTribe').and.returnValue(saveTribeDefer.promise);
+            this.saveTribeSpy = spyOn(this.coupling, 'saveTribe').and.returnValue(saveTribeDefer.promise);
 
             tribe = {};
 
-            controller = new TribeConfigController(location, coupling, {
-                $apply() {
-                }
-            });
-            controller.tribe = tribe;
-            controller.$onInit();
+            this.wrapper = shallow(<ReactTribeConfig
+                tribe={tribe}
+                pathSetter={this.pathSetter}
+                coupling={this.coupling}
+                isNew={true}
+            />);
         });
 
         it('will use the Coupling service to save the tribe', async function () {
             saveTribeDefer.resolve();
-            await controller.clickSaveButton();
+            this.wrapper.find('#save-tribe-button').simulate('click');
             expect(this.saveTribeSpy).toHaveBeenCalled();
         });
 
         describe('when the save is complete', function () {
 
             it('will change the location to the current pair assignments', async function () {
-                const saveClickPromise = controller.clickSaveButton();
+                this.wrapper.find('#save-tribe-button').simulate('click');
                 const newTribeId = 'expectedId';
                 const expectedPath = '/tribes';
-                expect(location.path).not.toHaveBeenCalledWith(expectedPath);
+                expect(this.pathSetter).not.toHaveBeenCalledWith(expectedPath);
 
                 const updatedTribe = {
                     _id: newTribeId
                 };
                 saveTribeDefer.resolve(updatedTribe);
 
-                await saveClickPromise;
-                expect(location.path).toHaveBeenCalledWith(expectedPath);
+                await waitFor(()=> this.pathSetter.calls.any(), 500);
+
+                expect(this.pathSetter).toHaveBeenCalledWith(expectedPath);
             });
         });
     });

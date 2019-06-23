@@ -1,49 +1,31 @@
 import {module} from "angular";
-import * as template from "./tribe-config.pug";
-import PairingRule from "../../../../common/PairingRule";
-import flip from "ramda/es/flip";
-import merge from "ramda/es/merge";
-
-import * as styles from './styles.css'
 import {Coupling} from "../../services";
 import Tribe from "../../../../common/Tribe";
-
-const defaults = flip(merge);
+import {connectReactToNg} from "../ReactNgAdapter";
+import ReactTribeConfig from "./ReactTribeConfig";
 
 export class TribeConfigController {
-    static $inject = ['$location', 'Coupling', '$scope'];
+    static $inject = ['$location', 'Coupling', '$scope', '$element'];
     public tribe: Tribe;
     public isNew: boolean;
     public styles: any;
     public pairingRules;
 
-    constructor(public $location: angular.ILocationService, public Coupling: Coupling, public $scope) {
-        this.styles = styles;
-        this.pairingRules = [
-            {id: PairingRule.LongestTime, description: "Prefer Longest Time"},
-            {id: PairingRule.PreferDifferentBadge, description: "Prefer Different Badges (Beta)"},
-        ];
-    }
-
-    $onInit() {
-        this.tribe = defaults(this.tribe, {
-            pairingRule: PairingRule.LongestTime,
-            defaultBadgeName: 'Default',
-            alternateBadgeName: 'Alternate',
+    constructor(public $location: angular.ILocationService, public Coupling: Coupling, public $scope, $element?) {
+        connectReactToNg({
+            component: ReactTribeConfig,
+            props: () => ({
+                tribe: this.tribe,
+                coupling: this.Coupling,
+                isNew: this.isNew
+            }),
+            domNode: $element[0],
+            $scope: $scope,
+            watchExpression: "tribe",
+            $location: $location
         });
     }
 
-    async clickSaveButton() {
-        await Coupling.saveTribe(this.tribe);
-        this.$location.path("/tribes");
-        this.$scope.$apply()
-    }
-
-    async removeTribe() {
-        await Coupling.deleteTribe(this.tribe.id);
-        this.$location.path("/tribes");
-        this.$scope.$apply()
-    }
 }
 
 export default module("coupling.tribeConfig", [])
@@ -58,6 +40,6 @@ export default module("coupling.tribeConfig", [])
                 isNew: '=isNew'
             },
             restrict: 'E',
-            template: template
+            template: '<div />'
         }
     });
