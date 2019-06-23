@@ -9,7 +9,6 @@ export class TribeConfigController {
     public tribe: Tribe;
     public isNew: boolean;
     public styles: any;
-    public pairingRules;
 
     constructor(public $location: angular.ILocationService, public Coupling: Coupling, public $scope, $element?) {
         connectReactToNg({
