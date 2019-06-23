@@ -5320,10 +5320,6 @@ next-tick@^1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-"ng-fittext@github:patrickmarabeas/ng-FitText.js":
-  version "4.2.3"
-  resolved "https://codeload.github.com/patrickmarabeas/ng-FitText.js/tar.gz/f3454b0ec3e78bcdad28ff9b0a4e8f258490fbb3"
-
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

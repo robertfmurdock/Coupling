@@ -11,11 +11,9 @@ import TribeBrowserDirective from "./tribebrowser/TribeBrowserDirective";
 import Statistics from "./statistics/statistics";
 import RetiredPlayers from "./retired-players/retired-players";
 import {module} from "angular";
-import debounce from 'lodash.debounce'
 
 module('coupling.component', [
     'coupling.services',
-    'ngFitText',
     PairAssignments.name,
     History.name,
     PinList.name,
@@ -28,10 +26,4 @@ module('coupling.component', [
     TribeList.name,
     Welcome.name,
     TribeBrowserDirective.name,
-])
-    .config(['fitTextConfigProvider', function (fitTextConfigProvider) {
-        fitTextConfigProvider.config = {
-            debounce: debounce,
-            delay: 1000
-        };
-    }]);
+]);

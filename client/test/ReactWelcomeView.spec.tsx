@@ -1,5 +1,4 @@
 import {mount, shallow} from 'enzyme';
-import "ng-fittext";
 import "../app/components/components";
 import {Randomizer} from "../../client/app/services";
 import Player from "../../common/Player";

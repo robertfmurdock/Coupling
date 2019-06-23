@@ -4,7 +4,6 @@ import {module} from "angular";
 import * as logging from 'logging'
 import "angular-gravatar";
 import "angular-route";
-import "ng-fittext";
 import "prefixfree";
 import "./filters";
 import "./animations";
@@ -35,7 +34,6 @@ async function bootstrapApp() {
     const isSignedIn = await GoogleSignIn.checkForSignedIn();
 
     const app = module('coupling', ["ngRoute",
-        'ngFitText',
         'ui.gravatar',
         'coupling.component',
         'coupling.filters',

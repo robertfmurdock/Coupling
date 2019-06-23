@@ -62,7 +62,6 @@
     "karma-webdriver-launcher": "^1.0.5",
     "karma-webpack": "^3.0.5",
     "lodash.debounce": "^4.0.8",
-    "ng-fittext": "github:patrickmarabeas/ng-FitText.js",
     "node-sass": "^4.12.0",
     "prefixfree": "^1.0.0",
     "protractor": "^5.4.2",

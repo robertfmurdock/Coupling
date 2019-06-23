@@ -1,5 +1,4 @@
 import * as angular from 'angular'
-import "ng-fittext";
 import "../app/app";
 import Tribe from "../../common/Tribe";
 
