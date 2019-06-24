@@ -12,9 +12,8 @@ import {useState} from "react";
 const defaults = flip(merge);
 
 interface Props {
-    tribe: Tribe
+    tribe?: Tribe
     pathSetter: (string) => void
-    isNew: boolean
     coupling: Coupling
 }
 
@@ -130,12 +129,14 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
 }
 
 export default function ReactTribeConfig(props: Props) {
-    const {pathSetter, isNew, coupling} = props;
+    const {pathSetter, coupling} = props;
     const tribe = defaults(props.tribe, {
+        name: 'New Tribe',
         pairingRule: PairingRule.LongestTime,
         defaultBadgeName: 'Default',
         alternateBadgeName: 'Alternate',
     });
+    const isNew = !tribe.id;
     const [values, setValues] = useState(tribe);
     const updatedTribe = defaults(values, tribe);
 

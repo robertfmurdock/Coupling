@@ -1,7 +1,7 @@
 import IRoute = angular.route.IRoute;
 
 const newTribeRoute: IRoute = {
-    template: '<tribe-config tribe="self.tribe" is-new=true>',
+    template: '<tribe-config />',
     controllerAs: 'self',
     controller: [function () {
         this.tribe = {};

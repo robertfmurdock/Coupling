@@ -1,26 +1,23 @@
 import {module} from "angular";
 import {Coupling} from "../../services";
-import Tribe from "../../../../common/Tribe";
 import {connectReactToNg} from "../ReactNgAdapter";
-import ReactTribeConfig from "./ReactTribeConfig";
+import TribeConfigPage from "./TribeConfigPage";
 
 export class TribeConfigController {
     static $inject = ['$location', 'Coupling', '$scope', '$element'];
-    public tribe: Tribe;
+    public tribeId: string;
     public isNew: boolean;
-    public styles: any;
 
-    constructor(public $location: angular.ILocationService, public Coupling: Coupling, public $scope, $element?) {
+    constructor($location: angular.ILocationService, coupling: Coupling, $scope, $element) {
         connectReactToNg({
-            component: ReactTribeConfig,
+            component: TribeConfigPage,
             props: () => ({
-                tribe: this.tribe,
-                coupling: this.Coupling,
-                isNew: this.isNew
+                tribeId: this.tribeId,
+                isNew: this.isNew,
+                coupling: coupling
             }),
             domNode: $element[0],
             $scope: $scope,
-            watchExpression: "tribe",
             $location: $location
         });
     }
@@ -35,8 +32,7 @@ export default module("coupling.tribeConfig", [])
             controllerAs: 'self',
             bindToController: true,
             scope: {
-                tribe: '=tribe',
-                isNew: '=isNew'
+                tribeId: '=tribeId'
             },
             restrict: 'E',
             template: '<div />'

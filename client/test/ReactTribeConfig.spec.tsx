@@ -52,7 +52,6 @@ describe('ReactTribeConfig', function () {
                 tribe={tribe}
                 pathSetter={this.pathSetter}
                 coupling={this.coupling}
-                isNew={true}
             />);
         });
 
@@ -86,7 +85,6 @@ describe('ReactTribeConfig', function () {
                 tribe={tribe}
                 pathSetter={this.pathSetter}
                 coupling={this.coupling}
-                isNew={true}
             />);
         });
 

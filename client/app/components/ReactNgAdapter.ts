@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 export function connectReactToNg(options) {
-    const {component, props, domNode, $scope, watchExpression, $location} = options;
+    const {component, props, domNode, $scope, watchExpression = '', $location} = options;
 
     const renderReactElement = () => {
         let theProps = props();
