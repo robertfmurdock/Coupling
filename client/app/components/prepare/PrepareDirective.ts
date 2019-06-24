@@ -4,25 +4,25 @@ import Tribe from "../../../../common/Tribe";
 import {connectReactToNg} from "../ReactNgAdapter";
 import ReactPrepareSpin from "./ReactPrepareSpin";
 import {PairAssignmentSet} from "../../../../common";
+import PrepareForSpinPage from "./PrepareForSpinPage";
 
 class PrepareController {
-    static $inject = ['$location', '$element', '$scope'];
+    static $inject = ['$location', '$element', '$scope', 'Coupling'];
 
     players: Player[];
     tribe: Tribe;
     history: PairAssignmentSet[];
 
-    constructor(private $location: angular.ILocationService, $element, $scope) {
+    constructor(private $location: angular.ILocationService, $element, $scope, coupling) {
         connectReactToNg({
-            component: ReactPrepareSpin,
+            component: PrepareForSpinPage,
             props: () => ({
-                players: this.players,
-                tribe: this.tribe,
-                history: this.history
+                tribeId: this.tribe.id,
+                coupling: coupling
             }),
             domNode: $element[0],
             $scope: $scope,
-            watchExpression: "players",
+            watchExpression: "tribeId",
             $location: $location
         });
 
