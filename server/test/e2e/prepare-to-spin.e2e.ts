@@ -11,9 +11,18 @@ const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 const historyCollection = database.get('history');
 
+const prepareToSpinPage = element(By.css('.react-prepare-spin'));
+
 async function goToPrepare(tribe) {
     await browser.setLocation(`/${tribe.id}/prepare/`);
-    await browser.wait(() => element(By.className('react-prepare-spin')).isPresent(), 2000)
+    await browser.wait(() => prepareToSpinPage.isPresent(), 2000)
+}
+
+const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
+
+function waitForCurrentPairAssignmentPage() {
+    browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
+
 }
 
 describe('The prepare to spin page', function () {
@@ -59,12 +68,6 @@ describe('The prepare to spin page', function () {
         await goToPrepare(tribe);
     });
 
-    const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
-
-    function waitForCurrentPairAssignmentPage() {
-        browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
-    }
-
     describe('with no history', function () {
 
         it('will show all the players ', function () {
@@ -80,7 +83,7 @@ describe('The prepare to spin page', function () {
             expect(pairs.count()).toEqual(3);
         });
 
-        it('spinning with two players disabled will only yield one pair and then saving persists the pair', function () {
+        it('spinning with two players disabled will only yield one pair and then saving persists the pair', async function () {
             const playerElements = element.all(By.css('.react-player-card'));
             expect(playerElements.count()).toEqual(5);
 
@@ -109,7 +112,8 @@ describe('The prepare to spin page', function () {
                 }
             }
 
-            browser.wait(async () => false === await saveButtonIsDisplayed(), 2000);
+            await browser.wait(async () => false === await saveButtonIsDisplayed(), 2000);
+            waitForCurrentPairAssignmentPage();
 
             expect(pairs.count()).toEqual(1);
             expect(players.count()).toEqual(3);

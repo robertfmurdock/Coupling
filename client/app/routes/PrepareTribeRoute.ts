@@ -1,25 +1,11 @@
-import {historyResolution, tribeResolution} from "./Resolutions";
-import * as services from "../services";
 import IRoute = angular.route.IRoute;
 
 const prepareTribeRoute: IRoute = {
-    template: '<prepare tribe="$resolve.tribe" players="$resolve.players" history="$resolve.history">',
-    resolve: {
-        tribe: tribeResolution,
-        history: historyResolution,
-        players: ['$route', '$q', 'Coupling', function ($route, $q, Coupling: services.Coupling) {
-            const tribeId = $route.current.params.tribeId;
-            return $q.all({
-                players: Coupling.getPlayers(tribeId),
-                history: Coupling.getHistory(tribeId)
-            }).then((options: any) => {
-                options.selectedPlayers = Coupling.getSelectedPlayers(options.players, options.history);
-                return options;
-            }).then(options => {
-                return options.players;
-            });
-        }]
-    }
+    template: '<prepare tribe-id="main.tribeId" />',
+    controller:['$route', function($route) {
+        this.tribeId = $route.current.params.tribeId;
+    }],
+    controllerAs:'main'
 };
 
 export default prepareTribeRoute;

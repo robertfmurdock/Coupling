@@ -15,6 +15,12 @@ const playerElements = element.all(By.css('.react-player-roster .react-player-ca
 const defaultBadgeRadio = element(By.css('#default-badge-radio'));
 const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
+let playerConfigPage = element(By.css('.react-player-config'));
+
+function waitForPlayerConfig() {
+    browser.wait(() => playerConfigPage.isPresent(), 2000);
+}
+
 describe('The edit player page', function () {
 
     const tribe = {
@@ -76,6 +82,7 @@ describe('The edit player page', function () {
 
     it('should not alert on leaving when nothing has changed.', async function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
         tribeCardElement.click();
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
         await browser.waitForAngular();
@@ -83,6 +90,7 @@ describe('The edit player page', function () {
 
     it('retire player should have intended effect.', async function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
         await browser.waitForAngular();
 
         deleteButton.click();
@@ -107,6 +115,7 @@ describe('The edit player page', function () {
 
         it('should not show the badge selector', function () {
             browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            waitForPlayerConfig();
             expect(defaultBadgeRadio.isPresent()).toEqual(false);
             expect(altBadgeRadio.isPresent()).toEqual(false);
         });
@@ -124,6 +133,7 @@ describe('The edit player page', function () {
 
         it('should show the badge selector', async function () {
             await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            waitForPlayerConfig();
             expect(defaultBadgeRadio.isDisplayed()).toEqual(true);
             expect(element(By.css('label[for=default-badge-radio]')).getText()).toBe('Badge 1');
 
@@ -137,6 +147,7 @@ describe('The edit player page', function () {
 
         it(`should remember badge selection`, async function () {
             await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            waitForPlayerConfig();
             await browser.wait(() => altBadgeRadio.isPresent(), 1000);
 
             await altBadgeRadio.click();
@@ -161,6 +172,7 @@ describe('The edit player page', function () {
 
         it(`should allow entry of adjective and noun, and retain them`, async function () {
             await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            waitForPlayerConfig();
             await browser.wait(() => adjectiveTextInput.isPresent(), 1000);
 
             await adjectiveTextInput.clear();
@@ -179,6 +191,7 @@ describe('The edit player page', function () {
 
     it('should get error on leaving when name is changed.', async function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
         element(By.id('player-name')).sendKeys('completely different name');
@@ -193,6 +206,7 @@ describe('The edit player page', function () {
 
     it('should not get alert on leaving when name is changed after save.', async function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         playerNameTextField.sendKeys('completely different name');
@@ -215,6 +229,8 @@ describe('The edit player page', function () {
 
     it('saving with no name will show as a default name.', async function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
+
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         playerNameTextField.sendKeys(' \b');
@@ -228,11 +244,13 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
         expect(element(By.css('.player-card-header')).getText()).toBe('Unknown')
     });
 
     it('will show all players', function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        waitForPlayerConfig();
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 });

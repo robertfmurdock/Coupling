@@ -177,7 +177,7 @@ export default function ReactPlayerConfig(props: Props) {
         }
     }
 
-    return <div>
+    return <div className={"react-player-config"}>
         <div>
             <div id={"tribe-browser"}>
                 <ReactTribeCard tribe={tribe} pathSetter={pathSetter}/>
