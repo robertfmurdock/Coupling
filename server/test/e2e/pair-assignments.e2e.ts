@@ -14,7 +14,13 @@ const historyCollection = database.get('history');
 
 const pluck = require('ramda/src/pluck');
 
+const tribeCardHeaderElement = element(By.className("tribe-card-header"));
+const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
 const unpairedPlayerElements = element.all(By.css('.react-player-roster .react-player-card'));
+
+function waitForCurrentPairAssignmentPage() {
+    browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
+}
 
 describe('The current pair assignments', function () {
 
@@ -84,22 +90,25 @@ describe('The current pair assignments', function () {
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
-    const tribeCardHeaderElement = element(By.className("tribe-card-header"));
 
     it('shows the tribe', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+        waitForCurrentPairAssignmentPage();
 
         expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
     });
 
     it('will let you add players', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+        waitForCurrentPairAssignmentPage();
+
         element(By.id('add-player-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/new/`);
     });
 
     it('will let you edit an existing player', function () {
         browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+        waitForCurrentPairAssignmentPage();
 
         unpairedPlayerElements
             .first().element(By.className("player-card-header"))
@@ -109,24 +118,28 @@ describe('The current pair assignments', function () {
 
     it('will let you view history', function () {
         browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+        waitForCurrentPairAssignmentPage();
         element(By.id('view-history-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/history/`);
     });
 
     it('will let you prepare new pairs', function () {
         browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+        waitForCurrentPairAssignmentPage();
         element(By.id('new-pairs-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/prepare/`);
     });
 
     it('will let you go to the stats page', function () {
         browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+        waitForCurrentPairAssignmentPage();
         element(By.className("statistics-button")).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
 
     it('will let you see retired players', function () {
         browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+        waitForCurrentPairAssignmentPage();
         element(By.id('retired-players-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/players/retired`);
     });
@@ -138,6 +151,7 @@ describe('The current pair assignments', function () {
         });
         it('will display all the existing players in the player roster', function () {
             browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+            waitForCurrentPairAssignmentPage();
 
             expect(unpairedPlayerElements.getText()).toEqual(pluck('name', players));
         });
@@ -180,6 +194,7 @@ describe('The current pair assignments', function () {
                 });
 
                 await browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+                waitForCurrentPairAssignmentPage();
                 await browser.refresh();
 
                 const callSigns = element.all(By.className('call-sign'));
@@ -198,7 +213,9 @@ describe('The current pair assignments', function () {
                 });
 
                 await browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+                waitForCurrentPairAssignmentPage();
                 await browser.refresh();
+                waitForCurrentPairAssignmentPage();
 
                 const pairElements = element.all(By.repeater('pair in pairAssignments.pairAssignments.pairs'));
 

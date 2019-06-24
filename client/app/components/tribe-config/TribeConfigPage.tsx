@@ -3,7 +3,7 @@ import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
 import ReactTribeConfig from "./ReactTribeConfig";
 import {Coupling} from "../../services";
 
-const LoadedTribeList = reactDataLoadWrapper(ReactTribeConfig);
+const LoadedTribeConfig = reactDataLoadWrapper(ReactTribeConfig);
 
 interface Props {
     tribeId: string
@@ -14,7 +14,7 @@ interface Props {
 export default function (props: Props) {
     const {coupling, tribeId} = props;
     if (tribeId) {
-        return <LoadedTribeList
+        return <LoadedTribeConfig
             getDataAsync={async () => ({tribe: await coupling.getTribe(tribeId)})}
             {...props}
         />

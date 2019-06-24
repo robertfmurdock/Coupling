@@ -1,5 +1,6 @@
 import History from "./history/history";
-import PairAssignments from "./pair-assignments/PairAssignmentsDirective";
+import NewPairAssignments from "./pair-assignments/NewPairAssignmentsDirective";
+import CurrentPairAssignments from "./pair-assignments/CurrentPairAssignmentsDirective";
 import PinList from "./pin-list/pin-list";
 import PlayerConfig from "./player-config/player-config";
 import Prepare from "./prepare/PrepareDirective";
@@ -14,7 +15,8 @@ import {module} from "angular";
 
 module('coupling.component', [
     'coupling.services',
-    PairAssignments.name,
+    NewPairAssignments.name,
+    CurrentPairAssignments.name,
     History.name,
     PinList.name,
     PlayerConfig.name,

@@ -6,8 +6,8 @@ async function loadData(getDataAsync, setData) {
     setData(data);
 }
 
-export default function reactDataLoadWrapper(WrappedComponent) {
-    return (props: { getDataAsync }) => {
+export default function reactDataLoadWrapper<P>(WrappedComponent) {
+    return (props: { getDataAsync } & any) => {
         const {getDataAsync} = props;
 
         const [data, setData] = useState(null);

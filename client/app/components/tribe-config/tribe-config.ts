@@ -6,14 +6,12 @@ import TribeConfigPage from "./TribeConfigPage";
 export class TribeConfigController {
     static $inject = ['$location', 'Coupling', '$scope', '$element'];
     public tribeId: string;
-    public isNew: boolean;
 
     constructor($location: angular.ILocationService, coupling: Coupling, $scope, $element) {
         connectReactToNg({
             component: TribeConfigPage,
             props: () => ({
                 tribeId: this.tribeId,
-                isNew: this.isNew,
                 coupling: coupling
             }),
             domNode: $element[0],
@@ -21,7 +19,6 @@ export class TribeConfigController {
             $location: $location
         });
     }
-
 }
 
 export default module("coupling.tribeConfig", [])
