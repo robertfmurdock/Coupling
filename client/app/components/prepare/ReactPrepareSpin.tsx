@@ -46,7 +46,7 @@ export default function ReactPrepareSpin(props: Props) {
         return {player: player, isSelected: isInLastSetOfPairs(player, history)}
     }));
 
-    return <div className={Styles.className}>
+    return <div className={classNames(Styles.className, 'react-prepare-spin')}>
         <div>
             <ReactTribeBrowser {...props} />
         </div>

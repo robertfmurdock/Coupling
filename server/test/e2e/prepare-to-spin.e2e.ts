@@ -11,6 +11,11 @@ const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 const historyCollection = database.get('history');
 
+async function goToPrepare(tribe) {
+    await browser.setLocation(`/${tribe.id}/prepare/`);
+    await browser.wait(() => element(By.className('react-prepare-spin')).isPresent(), 2000)
+}
+
 describe('The prepare to spin page', function () {
 
     const spinButton = element(By.className("spin-button"));
@@ -51,8 +56,14 @@ describe('The prepare to spin page', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
     beforeEach(async function () {
-        await browser.setLocation(`/${tribe.id}/prepare/`);
+        await goToPrepare(tribe);
     });
+
+    const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
+
+    function waitForCurrentPairAssignmentPage() {
+        browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
+    }
 
     describe('with no history', function () {
 
@@ -63,6 +74,7 @@ describe('The prepare to spin page', function () {
 
         it('spinning with all players on will get all players back', function () {
             spinButton.click();
+            waitForCurrentPairAssignmentPage();
 
             const pairs = element.all(By.css('.pair'));
             expect(pairs.count()).toEqual(3);
@@ -77,6 +89,7 @@ describe('The prepare to spin page', function () {
             playerElements.get(3).element(By.css('.player-icon')).click();
 
             spinButton.click();
+            waitForCurrentPairAssignmentPage();
 
             const pairs = element.all(By.css('.pair'));
             expect(pairs.count()).toEqual(1);
@@ -86,6 +99,7 @@ describe('The prepare to spin page', function () {
 
             const saveButton = element(By.id('save-button'));
             saveButton.click();
+            waitForCurrentPairAssignmentPage();
 
             async function saveButtonIsDisplayed() {
                 try {

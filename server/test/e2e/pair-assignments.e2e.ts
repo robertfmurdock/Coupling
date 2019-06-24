@@ -170,6 +170,7 @@ describe('The current pair assignments', function () {
 
         beforeEach(function () {
             browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+            waitForCurrentPairAssignmentPage();
         });
 
         it('the most recent pairs are shown', function () {

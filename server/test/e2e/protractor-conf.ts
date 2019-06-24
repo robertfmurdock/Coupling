@@ -30,7 +30,7 @@ export let config: Config = {
             new jasmineReporters.JUnitXmlReporter({
                 consolidateAll: true,
                 filePrefix: 'e2e',
-                savePath: 'build/test-output/e2e'
+                savePath: 'build/test-results/e2e'
             })
         );
 

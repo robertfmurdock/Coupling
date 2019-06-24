@@ -7,9 +7,6 @@ const LoadedPairAssignments = reactDataLoadWrapper(ReactPairAssignments);
 
 export default function (props: { tribeId: string, coupling: Coupling }) {
     const {coupling, tribeId} = props;
-
-    console.log('current pair assignments whaaat')
-
     return <LoadedPairAssignments
         getDataAsync={async function () {
             const [tribe, players, [pairAssignments]] = await Promise.all([
