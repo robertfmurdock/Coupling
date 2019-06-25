@@ -10,6 +10,10 @@ const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 const pluck = require('ramda/src/pluck');
 
+function waitForRetiredPlayersPage() {
+    return browser.wait(() => element(By.className('react-retired-players')).isPresent(), 2000);
+}
+
 describe('The retired players page', function () {
 
     const tribe = {
@@ -52,6 +56,7 @@ describe('The retired players page', function () {
 
     beforeEach(async function () {
         await browser.setLocation(`/${tribe.id}/players/retired`);
+        await waitForRetiredPlayersPage();
     });
 
     it('shows the retired players', async function () {

@@ -19,7 +19,3 @@ export const pinsResolution = ['$route', 'Coupling', function ($route, Coupling:
 export const retiredPlayersResolution = ['$route', 'Coupling', function ($route, Coupling: Coupling) {
     return Coupling.getRetiredPlayers($route.current.params.tribeId);
 }];
-
-export const tribesResolution = ['Coupling', function (Coupling: Coupling) {
-    return Coupling.getTribes();
-}];

@@ -18,7 +18,7 @@ const altBadgeRadio = element(By.css('#alt-badge-radio'));
 let playerConfigPage = element(By.css('.react-player-config'));
 
 function waitForPlayerConfig() {
-    browser.wait(() => playerConfigPage.isPresent(), 2000);
+    return browser.wait(() => playerConfigPage.isPresent(), 2000);
 }
 
 describe('The edit player page', function () {
@@ -229,7 +229,7 @@ describe('The edit player page', function () {
 
     it('saving with no name will show as a default name.', async function () {
         await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
+        await waitForPlayerConfig();
 
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
@@ -244,13 +244,13 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
+        await waitForPlayerConfig();
         expect(element(By.css('.player-card-header')).getText()).toBe('Unknown')
     });
 
-    it('will show all players', function () {
+    it('will show all players', async function () {
         browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
+        await waitForPlayerConfig();
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 });

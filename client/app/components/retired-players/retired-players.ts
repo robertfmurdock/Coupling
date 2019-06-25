@@ -3,36 +3,29 @@ import Tribe from "../../../../common/Tribe";
 import {connectReactToNg} from "../ReactNgAdapter";
 import ReactRetiredPlayers from "./ReactRetiredPlayers";
 import Player from "../../../../common/Player";
+import RetiredPlayersPage from "./RetiredPlayersPage";
 
 export class RetiredPlayersController {
-    static $inject = ['$location', '$element', '$scope'];
-    tribe: Tribe;
-    retiredPlayers: Player[];
+    static $inject = ['$location', '$element', '$scope', 'Coupling'];
+    tribeId: string;
 
-    constructor($location, $element, $scope) {
+    constructor($location, $element, $scope, coupling) {
         connectReactToNg({
-            component: ReactRetiredPlayers,
-            props: () => ({
-                tribe: this.tribe,
-                retiredPlayers: this.retiredPlayers
-            }),
+            component: RetiredPlayersPage,
+            props: () => ({tribeId: this.tribeId, coupling}),
             domNode: $element[0],
             $scope: $scope,
-            watchExpression: "player",
+            watchExpression: "tribeId",
             $location: $location
         });
     }
-
 }
 
 export default module("coupling.retiredPlayers", [])
     .directive('retiredPlayers', () => {
         return {
             controller: RetiredPlayersController,
-            scope: {
-                retiredPlayers: '=',
-                tribe: '='
-            },
+            scope: {tribeId: '='},
             bindToController: true,
             restrict: 'E',
             template: '<div />'

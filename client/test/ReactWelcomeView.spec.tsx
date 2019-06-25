@@ -26,7 +26,7 @@ describe('ReactWelcomeView:', function () {
         await waitFor(() => {
             wrapper.update();
             return wrapper.find(`.${Styles.className}`).hasClass(Styles.hidden) === false;
-        }, 100);
+        }, 300);
     });
 
     it('will choose return hobbits when it rolls a zero.', function () {

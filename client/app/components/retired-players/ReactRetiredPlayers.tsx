@@ -9,7 +9,7 @@ export default function ReactRetiredPlayers(props: { tribe: Tribe, retiredPlayer
 
     const {tribe, retiredPlayers, pathSetter} = props;
 
-    return <div>
+    return <div className={"react-retired-players"}>
         <ReactTribeBrowser tribe={tribe} pathSetter={pathSetter}/>
         <div className={Styles.retiredPlayersHeader}>Retired Players</div>
         <div>
