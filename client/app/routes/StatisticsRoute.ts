@@ -1,13 +1,11 @@
 import IRoute = angular.route.IRoute;
-import {tribeResolution, playersResolution, historyResolution} from "./Resolutions";
 
 const statisticsRoute: IRoute = {
-    template: '<statistics tribe="$resolve.tribe" players="$resolve.players" history="$resolve.history">',
-    resolve: {
-        tribe: tribeResolution,
-        players: playersResolution,
-        history: historyResolution
-    }
+    template: '<statistics tribe-id="main.tribeId" />',
+    controller: ['$route', function ($route) {
+        this.tribeId = $route.current.params.tribeId;
+    }],
+    controllerAs: 'main'
 };
 
 export default statisticsRoute;
