@@ -101,6 +101,7 @@
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
     "react-dnd": "^8.0.0",
-    "react-dnd-html5-backend": "^8.0.0"
+    "react-dnd-html5-backend": "^8.0.0",
+    "react-router-dom": "^5.0.1"
   }
 }
