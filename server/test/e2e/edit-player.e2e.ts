@@ -66,16 +66,14 @@ describe('The edit player page', function () {
         browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
     });
 
-    beforeEach(function (done) {
-        playersCollection.drop()
-            .then(() => playersCollection.insert(players))
-            .then(done, done.fail);
+    beforeEach(async function () {
+        await playersCollection.drop();
+        await playersCollection.insert(players);
     });
 
-    afterAll(function (done) {
-        tribeCollection.remove({id: tribe.id}, false)
-            .then(() => playersCollection.drop())
-            .then(done, done.fail);
+    afterAll(async function () {
+        await tribeCollection.remove({id: tribe.id}, false);
+        await playersCollection.drop()
     });
 
     e2eHelp.afterEachAssertLogsAreEmpty();
@@ -182,6 +180,7 @@ describe('The edit player page', function () {
             await savePlayerButton.click();
             await waitForSaveToComplete(player1.name);
             await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            waitForPlayerConfig();
 
             expect(adjectiveTextInput.getAttribute('value')).toBe('Superior');
             expect(nounTextInput.getAttribute('value')).toBe('Spider-Man');

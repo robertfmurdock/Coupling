@@ -1,20 +1,12 @@
-import find from "ramda/es/find";
-import propEq from "ramda/es/propEq";
-import {tribeResolution, retiredPlayersResolution} from "./Resolutions";
-
 import IRoute = angular.route.IRoute;
 
 const retiredPlayerRoute: IRoute = {
-    template: '<player-config player="self.player" players="$resolve.retiredPlayers" tribe="$resolve.tribe">',
-    controller: ['players', '$route', function (players, $route) {
-        const playerId = $route.current.params.id;
-        this.player = find(propEq('_id', playerId), players);
+    template: '<retired-player-config player-id="self.playerId" tribe-id="self.tribeId">',
+    controller: ['$route', function ($route) {
+        this.tribeId = $route.current.params.tribeId;
+        this.playerId = $route.current.params.id;
     }],
     controllerAs: 'self',
-    resolve: {
-        tribe: tribeResolution,
-        players: retiredPlayersResolution,
-    }
 };
 
 export default retiredPlayerRoute;

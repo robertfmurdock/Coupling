@@ -3,6 +3,7 @@ import NewPairAssignments from "./pair-assignments/NewPairAssignmentsDirective";
 import CurrentPairAssignments from "./pair-assignments/CurrentPairAssignmentsDirective";
 import PinList from "./pin-list/pin-list";
 import PlayerConfig from "./player-config/player-config";
+import RetiredPlayerConfig from "./player-config/retired-player-config";
 import Prepare from "./prepare/PrepareDirective";
 import TribeCard from "./tribe-card/TribeCardController";
 import TribeConfig from "./tribe-config/tribe-config";
@@ -27,5 +28,6 @@ module('coupling.component', [
     TribeConfig.name,
     TribeList.name,
     Welcome.name,
+    RetiredPlayerConfig.name,
     TribeBrowserDirective.name,
 ]);

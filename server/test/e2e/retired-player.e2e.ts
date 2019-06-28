@@ -10,7 +10,13 @@ const deletedPlayerPage = {
     playerNameTextField: element(By.id('player-name'))
 };
 
-describe('The deleted player page ', function () {
+let playerConfigPage = element(By.css('.react-player-config'));
+
+function waitForPlayerConfig() {
+    return browser.wait(() => playerConfigPage.isPresent(), 2000);
+}
+
+describe('The retired player page ', function () {
 
     const tribe = {
         _id: monk.id(),
@@ -38,6 +44,7 @@ describe('The deleted player page ', function () {
 
     it('will show the player data', async function () {
         await browser.setLocation(`/${tribe.id}/retired-player/${player1._id}`);
+        waitForPlayerConfig();
 
         expect(await deletedPlayerPage.playerNameTextField.getAttribute('value'))
             .toBe(player1.name)
