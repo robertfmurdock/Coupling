@@ -147,6 +147,6 @@ class Coupling {
 
 angular.module("coupling.services", [])
     .service("Coupling", Coupling)
-    .service('randomizer', Randogmizer);
+    .service('randomizer', Randomizer);
 
 export {SelectablePlayer, Coupling, Randomizer}
