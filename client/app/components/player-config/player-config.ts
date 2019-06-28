@@ -1,16 +1,13 @@
 import * as angular from "angular";
 import * as services from "../../services";
-import Tribe from "../../../../common/Tribe";
-import Player from "../../../../common/Player";
 import IRouteService = angular.route.IRouteService;
 import {connectReactToNg} from "../ReactNgAdapter";
-import ReactPlayerConfig from "./ReactPlayerConfig";
+import PlayerPage from "./PlayerPage";
 
 export class PlayerConfigController {
     static $inject = ['$scope', 'Coupling', '$location', '$route', '$element'];
-    player: Player;
-    players: Player[];
-    tribe: Tribe;
+    playerId?: string;
+    tribeId: string;
 
     constructor(public $scope,
                 public Coupling: services.Coupling,
@@ -20,11 +17,10 @@ export class PlayerConfigController {
         let locationChangeCallback = () => undefined;
 
         connectReactToNg({
-            component: ReactPlayerConfig,
+            component: PlayerPage,
             props: () => ({
-                tribe: this.tribe,
-                player: this.player,
-                players: this.players,
+                tribeId: this.tribeId,
+                playerId: this.playerId,
                 coupling: this.Coupling,
                 locationChanger: (callback) => {
                     locationChangeCallback = callback;
@@ -47,12 +43,10 @@ export default angular.module("coupling.playerConfig", [])
     .directive('playerConfig', () => {
         return {
             controller: 'PlayerConfigController',
-            controllerAs: 'playerConfig',
             bindToController: true,
             scope: {
-                player: '=',
-                players: '=',
-                tribe: '='
+                tribeId: '=',
+                playerId: '=',
             },
             restrict: 'E',
             template: '<div />'

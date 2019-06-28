@@ -1,10 +1,7 @@
 import * as angular from "angular";
 import * as services from "../../services";
-import Tribe from "../../../../common/Tribe";
-import Player from "../../../../common/Player";
 import IRouteService = angular.route.IRouteService;
 import {connectReactToNg} from "../ReactNgAdapter";
-import ReactPlayerConfig from "./ReactPlayerConfig";
 import RetiredPlayerPage from "./RetiredPlayerPage";
 
 export class PlayerConfigController {

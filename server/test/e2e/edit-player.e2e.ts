@@ -294,6 +294,7 @@ describe('The new player page', function () {
 
     it('will show all players', function () {
         browser.setLocation(`/${tribe.id}/player/new`);
+        waitForPlayerConfig();
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 
@@ -310,6 +311,7 @@ describe('The new player page', function () {
 
         it(`will suggest call sign`, async function () {
             await browser.setLocation(`/${tribe.id}/player/new`);
+            waitForPlayerConfig();
             await browser.wait(() => adjectiveTextInput.isPresent(), 1000);
             let suggestedAdjective = await adjectiveTextInput.getAttribute('value');
             let suggestedNoun = await nounTextInput.getAttribute('value');
