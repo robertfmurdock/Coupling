@@ -4,13 +4,13 @@ import PairAssignmentSet from "../../../../common/PairAssignmentSet";
 import {Coupling} from "../../services";
 import ReactHistory from "./ReactHistory";
 import {connectReactToNg} from "../ReactNgAdapter";
+import HistoryPage from "./HistoryPage";
 
 export class HistoryController {
 
     static $inject = ['Coupling', '$route', '$scope', '$element', '$location'];
 
-    tribe: Tribe;
-    history: PairAssignmentSet[];
+    tribeId: string;
     coupling: Coupling;
     private route: any;
 
@@ -19,16 +19,15 @@ export class HistoryController {
         this.route = route;
 
         connectReactToNg({
-            component: ReactHistory,
+            component: HistoryPage,
             props: () => ({
-                tribe: this.tribe,
-                history: this.history,
+                tribeId: this.tribeId,
                 coupling: this.coupling,
                 reload: () => $scope.$apply(() => route.reload())
             }),
             domNode: $element[0],
             $scope: $scope,
-            watchExpression: "history",
+            watchExpression: "tribeId",
             $location: $location
         });
     }
@@ -43,8 +42,7 @@ export default module("coupling.history", [])
             controllerAs: 'history',
             bindToController: true,
             scope: {
-                tribe: '=',
-                history: '='
+                tribeId: '='
             },
             restrict: 'E',
             template: "<div />"
