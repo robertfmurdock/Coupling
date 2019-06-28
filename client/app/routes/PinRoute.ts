@@ -1,11 +1,11 @@
 import IRoute = angular.route.IRoute;
-import {pinsResolution} from "./Resolutions";
 
 const pinRoute: IRoute = {
-    template: '<pin-list pins="$resolve.pins">',
-    resolve: {
-        pins: pinsResolution
-    }
+    template: '<pin-list tribe-id="main.tribeId">',
+    controller: ['$route', function ($route) {
+        this.tribeId = $route.current.params.tribeId;
+    }],
+    controllerAs: 'main'
 };
 
 export default pinRoute;
