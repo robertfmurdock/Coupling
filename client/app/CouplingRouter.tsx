@@ -106,9 +106,9 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
                             <Route
                                 path="/:tribeId/pins"
                                 exact
-                                render={props => <PinPage
+                                render={({match}) => <PinPage
                                     coupling={coupling}
-                                    tribeId={props.match.params.tribeId}
+                                    tribeId={match.params.tribeId}
                                 />}
                             />
                             <Route
@@ -166,17 +166,19 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
                             <Route
                                 path="/:tribeId/statistics"
                                 exact
-                                render={props => <StatisticsPage
+                                render={({match, history}) => <StatisticsPage
                                     coupling={coupling}
-                                    {...props.match.params}
+                                    pathSetter={pathSetter(history)}
+                                    {...match.params}
                                 />}
                             />
                             <Route
                                 path="/:tribeId/players/retired"
                                 exact
-                                render={props => <RetiredPlayersPage
+                                render={({match, history}) => <RetiredPlayersPage
                                     coupling={coupling}
-                                    {...props.match.params}
+                                    pathSetter={pathSetter(history)}
+                                    {...match.params}
                                 />}
                             />
                         </Switch>
