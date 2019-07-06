@@ -9,11 +9,13 @@ interface Props {
     tribeId: string
     playerIds: string[]
     coupling: Coupling
+    search
     pathSetter: (url: string) => void
 }
 
 export default function (props: Props) {
-    const {coupling, tribeId, playerIds} = props;
+    const {coupling, tribeId, search} = props;
+    const playerIds = new URLSearchParams(search).getAll('player')
     return <LoadedPairAssignments
         getDataAsync={async function () {
             const [tribe, players] = await Promise.all([

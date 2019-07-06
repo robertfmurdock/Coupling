@@ -48,11 +48,59 @@ function Logout(props: { coupling: Coupling }) {
 export const AnimationContext: any = React.createContext({
     name: 'animationContext',
 });
+export const ServiceContext: any = React.createContext({
+    name: 'serviceContext',
+});
+
+function CouplingRoute(props: { path: string, component }) {
+    const {component, path} = props;
+    const WrappedComponent = component;
+    return <ServiceContext.Consumer>
+        {
+            coupling => <Route
+                path={path}
+                exact
+                render={({history, match, location}) =>
+                    <WrappedComponent
+                        coupling={coupling}
+                        pathSetter={pathSetter(history)}
+                        {...match.params}
+                        search={location.search}
+                    />}
+            />
+        }
+    </ServiceContext.Consumer>
+}
+
+
+function AuthenticatedRoutes() {
+    let {current: coupling} = useRef(new Coupling());
+    return <ServiceContext.Provider value={coupling}>
+        <Switch>
+            <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
+            <CouplingRoute path={"/tribes/"} component={TribeListPage}/>
+            <CouplingRoute path={"/logout/"} component={Logout}/>
+            <CouplingRoute path={"/new-tribe/"} component={TribeConfigPage}/>
+            <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
+                <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
+            />
+            <CouplingRoute path={"/:tribeId/prepare/"} component={PrepareForSpinPage}/>
+            <CouplingRoute path={"/:tribeId/edit/"} component={TribeConfigPage}/>
+            <CouplingRoute path={"/:tribeId/history"} component={HistoryPage}/>
+            <CouplingRoute path={"/:tribeId/pins"} component={PinPage}/>
+            <CouplingRoute path={"/:tribeId/pairAssignments/current/"} component={CurrentPairAssignmentsPage}/>
+            <CouplingRoute path={"/:tribeId/pairAssignments/new"} component={NewPairAssignmentsPage}/>
+            <CouplingRoute path={"/:tribeId/player/new/"} component={PlayerPage}/>
+            <CouplingRoute path={"/:tribeId/player/:playerId/"} component={PlayerPage}/>
+            <CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={RetiredPlayerPage}/>
+            <CouplingRoute path={"/:tribeId/statistics"} component={StatisticsPage}/>
+            <CouplingRoute path={"/:tribeId/players/retired"} component={RetiredPlayersPage}/>
+        </Switch>
+    </ServiceContext.Provider>;
+}
 
 export default function CouplingRouter(props: { isSignedIn: boolean, animationsDisabled: boolean }) {
     const {isSignedIn, animationsDisabled} = props;
-
-    let {current: coupling} = useRef(new Coupling());
 
     return <Router>
         <AnimationContext.Provider value={animationsDisabled}>
@@ -60,128 +108,7 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
                 <Route path="/welcome" exact render={() => <WelcomePage randomizer={new Randomizer()}/>}/>
                 {
                     isSignedIn
-                        ? <Switch>
-                            <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
-                            <Route path="/tribes/" exact
-                                   render={({history}) => <TribeListPage coupling={coupling}
-                                                                         pathSetter={pathSetter(history)}/>}/>
-                            <Route path="/logout/" exact render={() => <Logout coupling={coupling}/>}/>
-                            <Route path="/new-tribe/" exact
-                                   render={({history}) => <TribeConfigPage coupling={coupling}
-                                                                           pathSetter={pathSetter(history)}
-                                                                           tribeId={null}/>}/>
-                            <Route
-                                path="/:tribeId/"
-                                exact
-                                render={props => <Redirect to={`/${props.match.params.tribeId}/pairAssignments/current/`}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/prepare/"
-                                exact
-                                render={({match, history}) => <PrepareForSpinPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    tribeId={match.params.tribeId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/edit/"
-                                exact
-                                render={({match, history}) => <TribeConfigPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    tribeId={match.params.tribeId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/history"
-                                exact
-                                render={({match, history}) => <HistoryPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    tribeId={match.params.tribeId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/pins"
-                                exact
-                                render={({match}) => <PinPage
-                                    coupling={coupling}
-                                    tribeId={match.params.tribeId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/pairAssignments/current/"
-                                exact
-                                render={({match, history}) => <CurrentPairAssignmentsPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    tribeId={match.params.tribeId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/pairAssignments/new"
-                                exact
-                                render={({match, history, location}) => <NewPairAssignmentsPage
-                                    coupling={coupling}
-                                    tribeId={match.params.tribeId}
-                                    pathSetter={pathSetter(history)}
-                                    playerIds={new URLSearchParams(location.search).getAll('player')}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/player/new/"
-                                exact
-                                render={({match, history}) => <PlayerPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    locationChanger={() => undefined}
-                                    tribeId={match.params.tribeId}
-                                    playerId={match.params.playerId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/player/:playerId/"
-                                exact
-                                render={({match, history}) => <PlayerPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    locationChanger={() => undefined}
-                                    tribeId={match.params.tribeId}
-                                    playerId={match.params.playerId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/retired-player/:playerId/"
-                                exact
-                                render={({match, history}) => <RetiredPlayerPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    locationChanger={() => undefined}
-                                    tribeId={match.params.tribeId}
-                                    playerId={match.params.playerId}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/statistics"
-                                exact
-                                render={({match, history}) => <StatisticsPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    {...match.params}
-                                />}
-                            />
-                            <Route
-                                path="/:tribeId/players/retired"
-                                exact
-                                render={({match, history}) => <RetiredPlayersPage
-                                    coupling={coupling}
-                                    pathSetter={pathSetter(history)}
-                                    {...match.params}
-                                />}
-                            />
-                        </Switch>
+                        ? <AuthenticatedRoutes/>
                         : (() => {
                             console.warn('not signed in!!!!', window.location.pathname);
                             return <Redirect to={"/welcome"}/>;
@@ -190,5 +117,6 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
                 {withRouter(({location}) => <div>Hmm, you seem to be lost. At {location.pathname}</div>)}
             </Switch>
         </AnimationContext.Provider>
+
     </Router>
 }

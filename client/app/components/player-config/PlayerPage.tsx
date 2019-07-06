@@ -18,7 +18,6 @@ interface Props {
     tribeId: string
     playerId: string
     pathSetter: (url: string) => void
-    locationChanger: (callback: () => void) => void
 }
 
 export default function (props: Props) {

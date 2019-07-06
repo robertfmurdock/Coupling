@@ -1,6 +1,5 @@
 import {browser, By, Config, element} from "protractor";
 import e2eHelper from './e2e-help'
-import TribeListPage from "./page-objects/TribeListPage";
 
 let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
 
