@@ -2,10 +2,8 @@ import * as React from "react";
 import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
 import Randomizer from "./Randomizer";
-import GoogleSignIn from "./GoogleSignIn";
 import TribeListPage from "./components/tribe-list-page/TribeListPage";
 import {Coupling} from "./services";
-import {useState} from "react";
 import TribeConfigPage from "./components/tribe-config/TribeConfigPage";
 import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import HistoryPage from "./components/history/HistoryPage";
@@ -17,33 +15,8 @@ import RetiredPlayerPage from "./components/player-config/RetiredPlayerPage";
 import StatisticsPage from "./components/statistics/StatisticsPage";
 import RetiredPlayersPage from "./components/retired-players/RetiredPlayersPage";
 import WelcomePage from "./components/welcome/WelcomePage";
-
-function pathSetter(history) {
-    return path => history.push(path);
-}
-
-async function loadData(setData, coupling) {
-    const data = await Promise.all([
-            coupling.logout(),
-            GoogleSignIn.signOut()
-        ]
-    );
-    setData(data);
-}
-
-function Logout(props: { coupling: Coupling }) {
-    const {coupling} = props;
-    const [isLoggedOut, setIsLoggedOut] = useState(false);
-    const [logoutPromise, setLogout] = useState(null);
-
-    if (!logoutPromise) {
-        setLogout(
-            loadData(setIsLoggedOut, coupling)
-        );
-    }
-
-    return isLoggedOut ? <Redirect to={"/welcome"}/> : <div/>;
-}
+import CouplingRoute from "./CouplingRoute";
+import Logout from "./Logout";
 
 export const AnimationContext: any = React.createContext({
     name: 'animationContext',
@@ -52,26 +25,26 @@ export const ServiceContext: any = React.createContext({
     name: 'serviceContext',
 });
 
-function CouplingRoute(props: { path: string, component }) {
-    const {component, path} = props;
-    const WrappedComponent = component;
-    return <ServiceContext.Consumer>
-        {
-            coupling => <Route
-                path={path}
-                exact
-                render={({history, match, location}) =>
-                    <WrappedComponent
-                        coupling={coupling}
-                        pathSetter={pathSetter(history)}
-                        {...match.params}
-                        search={location.search}
-                    />}
-            />
-        }
-    </ServiceContext.Consumer>
-}
+export default function CouplingRouter(props: { isSignedIn: boolean, animationsDisabled: boolean }) {
+    const {isSignedIn, animationsDisabled} = props;
 
+    return <Router>
+        <AnimationContext.Provider value={animationsDisabled}>
+            <Switch>
+                <Route path="/welcome" exact render={() => <WelcomePage randomizer={new Randomizer()}/>}/>
+                {
+                    isSignedIn
+                        ? <AuthenticatedRoutes/>
+                        : (() => {
+                            console.warn('not signed in!!!!', window.location.pathname);
+                            return <Redirect to={"/welcome"}/>;
+                        })()
+                }
+                {withRouter(({location}) => <div>Hmm, you seem to be lost. At {location.pathname}</div>)}
+            </Switch>
+        </AnimationContext.Provider>
+    </Router>
+}
 
 function AuthenticatedRoutes() {
     let {current: coupling} = useRef(new Coupling());
@@ -97,26 +70,4 @@ function AuthenticatedRoutes() {
             <CouplingRoute path={"/:tribeId/players/retired"} component={RetiredPlayersPage}/>
         </Switch>
     </ServiceContext.Provider>;
-}
-
-export default function CouplingRouter(props: { isSignedIn: boolean, animationsDisabled: boolean }) {
-    const {isSignedIn, animationsDisabled} = props;
-
-    return <Router>
-        <AnimationContext.Provider value={animationsDisabled}>
-            <Switch>
-                <Route path="/welcome" exact render={() => <WelcomePage randomizer={new Randomizer()}/>}/>
-                {
-                    isSignedIn
-                        ? <AuthenticatedRoutes/>
-                        : (() => {
-                            console.warn('not signed in!!!!', window.location.pathname);
-                            return <Redirect to={"/welcome"}/>;
-                        })()
-                }
-                {withRouter(({location}) => <div>Hmm, you seem to be lost. At {location.pathname}</div>)}
-            </Switch>
-        </AnimationContext.Provider>
-
-    </Router>
 }
