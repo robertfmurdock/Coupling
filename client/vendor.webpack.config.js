@@ -43,6 +43,8 @@ const config = {
       "history",
       "react-router-dom",
       "react-dom",
+      "react-dnd",
+      "react-dnd-html5-backend",
       "react-websocket",
       "font-awesome/css/font-awesome.css",
       "date-fns/parse",
