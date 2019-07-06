@@ -189,32 +189,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@types/angular-mocks@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@types/angular-mocks/-/angular-mocks-1.7.0.tgz#310d999a3c47c10ecd8eef466b5861df84799429"
-  integrity sha512-MeT5vxWBx4Ny5/sNZJjpZdv4K2KGwqQYiRQQZctan1TTaNyiVlFRYbcmheolhM4KKbTWmoxTVeuvGzniTDg1kw==
-  dependencies:
-    "@types/angular" "*"
-
-"@types/angular-route@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@types/angular-route/-/angular-route-1.7.0.tgz#ba12d09df1aac3c88e3684500001daedfc97fb69"
-  integrity sha512-gctkSXUY7hDwFeW8il7f3+sdMmds0JaMnHvrZmqX79DHXf2D72+SHxJHIt5i6+0BrhoqdWdpgziSxuKnkAUAQw==
-  dependencies:
-    "@types/angular" "*"
-
-"@types/angular-websocket@^2.0.8":
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@types/angular-websocket/-/angular-websocket-2.0.8.tgz#adfc4c8663a84520422db6509dd818ecd40986cb"
-  integrity sha512-tlUPNgUiVmdXyaxKAGHth3p5xpj2Vts4LGAGgy+WBr7p73TXhMwiZxAT7fmiO3XxzRdf+zsexKfgJ/sDJuBvaA==
-  dependencies:
-    "@types/angular" "*"
-
-"@types/angular@*", "@types/angular@^1.6.54":
-  version "1.6.54"
-  resolved "https://registry.yarnpkg.com/@types/angular/-/angular-1.6.54.tgz#f9d5a03e4da7b021a6dabe5d63e899ed4567a5bd"
-  integrity sha512-xA1FuozWXeRQ7FClUbvk8ePL+dydBeDoCWRPFTHU5+8uvVtIIfLGiHA8CMkwsbddFCYnTDVbLxG85a/HBx7LtA==
-
 "@types/asap@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/asap/-/asap-2.0.0.tgz#d529e9608c83499a62ae08c871c5e62271aa2963"
@@ -858,39 +832,6 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
-
-angular-animate@~1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.7.8.tgz#c95f237efe7ecfe0e6003adb5e2c7ef0e5a2b9d4"
-  integrity sha512-bINtzizq7TbJzfVrDpwLfTxVl0Qd7fRNWFb5jKYI1vaFZobQNX/QONXlLow6ySsDbZ6eLECycB7mvWtfh1YYaw==
-
-angular-mocks@~1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/angular-mocks/-/angular-mocks-1.7.8.tgz#95e7887ca91d1a3e176cc22f2d1941d284ce9767"
-  integrity sha512-LB13ESBT0eJrhQhfPXyLR9qm4LI9g44hyBFwUqZKEHEA4DpfxVTu0ONipiNoN0zWtmEAezA8u2gjcoaO2TStig==
-
-angular-native-dragdrop@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/angular-native-dragdrop/-/angular-native-dragdrop-1.2.2.tgz#d646c6b75b131c48073c3f6e36a225b2726d8bae"
-  integrity sha1-1kbGt1sTHEgHPD9uNqIlsnJti64=
-
-angular-route@~1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/angular-route/-/angular-route-1.7.8.tgz#d502aa605dcbb253a93e844c0adf51c9bc36b9fa"
-  integrity sha512-VVk89PH0fsY5kfbx+N7IVX1IwnaPWYhMGY0uA+rjej2v1sjvrTx1SLkxUK4E0UpW1hXeLJhN7ncBcwoBiPtAtA==
-
-angular-websocket@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/angular-websocket/-/angular-websocket-2.0.1.tgz#0fb4d60ed9018be583d031eec4e56b457cb8dcee"
-  integrity sha1-D7TWDtkBi+WD0DHuxOVrRXy43O4=
-  dependencies:
-    angular "*"
-    ws "^1.0.0"
-
-angular@*, angular@~1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/angular/-/angular-1.7.8.tgz#b77ede272ce1b261e3be30c1451a0b346905a3c9"
-  integrity sha512-wtef/y4COxM7ZVhddd7JtAAhyYObq9YXKar9tsW7558BImeVYteJiTxCKeJOL45lJ/+7B4wrAC49j8gTFYEthg==
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -5649,11 +5590,6 @@ optimist@^0.6.1, optimist@~0.6.0:
     minimist "~0.0.1"
     wordwrap "~0.0.2"
 
-options@>=0.0.5:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
-  integrity sha1-7CLTEoBrtT5zF3Pnza788cZDEo8=
-
 os-browserify@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/os-browserify/-/os-browserify-0.3.0.tgz#854373c7f5c2315914fc9bfc6bd8238fdda1ec27"
@@ -7872,11 +7808,6 @@ uglify-to-browserify@~1.0.0:
   resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
   integrity sha1-bgkk1r2mta/jSeOabWMoUKD4grc=
 
-ultron@1.0.x:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
-  integrity sha1-rOEWq1V80Zc4ak6I9GhTeMiy5Po=
-
 ultron@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
@@ -8278,14 +8209,6 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
-
-ws@^1.0.0:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-1.1.5.tgz#cbd9e6e75e09fc5d2c90015f21f0c40875e0dd51"
-  integrity sha512-o3KqipXNUdS7wpQzBHSe180lBGO60SoK0yVo3CYJgb2MkobuWuBX6dhkYP5ORCLd55y+SaflMOV5fqAB53ux4w==
-  dependencies:
-    options ">=0.0.5"
-    ultron "1.0.x"
 
 ws@~3.3.1:
   version "3.3.3"

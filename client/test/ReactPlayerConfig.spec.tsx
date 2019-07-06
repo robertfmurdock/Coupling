@@ -146,7 +146,7 @@ describe('ReactPlayerConfig', function () {
             expect(this.pathSetter).toHaveBeenCalledWith(`/${tribe.id}/pairAssignments/current/`);
         });
 
-        it('will do nothing when not confirmed', inject(function (_$controller_) {
+        it('will do nothing when not confirmed', function () {
             const confirmSpy = spyOn(window, 'confirm');
             const player = {_id: 'blarg'};
             const wrapper = shallow(<ReactPlayerConfig
@@ -166,7 +166,7 @@ describe('ReactPlayerConfig', function () {
 
             expect(this.coupling.removePlayer).not.toHaveBeenCalled();
             expect(this.pathSetter).not.toHaveBeenCalledWith(`/${tribe.id}/pairAssignments/current`);
-        }));
+        });
     });
 
     describe('on location change', function () {

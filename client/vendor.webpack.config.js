@@ -8,10 +8,6 @@ const config = {
   mode: process.env.NODE_ENV,
   entry: {
     vendor: [
-      "angular",
-      "angular-animate",
-      "angular-mocks",
-      "angular-route",
       "axios",
       "kotlin",
       "kotlin-logging",
