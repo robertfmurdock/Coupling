@@ -43,6 +43,7 @@ const config = {
       "history",
       "react-router-dom",
       "react-dom",
+      "react-websocket",
       "font-awesome/css/font-awesome.css",
       "date-fns/parse",
       "date-fns/distance_in_words",
@@ -55,7 +56,6 @@ const config = {
     library: "[name]_lib"
   },
   module: {
-    noParse: /ws/,
     rules: [
       {
         test: /\.(css)$/,
