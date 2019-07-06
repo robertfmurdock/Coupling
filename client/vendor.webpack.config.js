@@ -39,6 +39,8 @@ const config = {
       "ramda/es/contains",
       "ramda/es/union",
       "ramda/es/pluck",
+      "ramda/es/clone",
+      "ramda/es/flip",
       "react",
       "history",
       "react-router-dom",
