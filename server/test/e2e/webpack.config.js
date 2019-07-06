@@ -8,6 +8,16 @@ config.entry = {
   test: path.resolve(jsPath, './test.js')
 };
 
+config.module.rules.push({
+  test: /\.(css)$/,
+  loader: 'css-loader?' + JSON.stringify({minimize: true}),
+  options: {
+    modules: {
+      context: path.resolve(__dirname, '../../../client/')
+    }
+  }
+});
+
 config.output = {
   path: path.resolve(__dirname, '.tmp'),
   filename: '[name].js',

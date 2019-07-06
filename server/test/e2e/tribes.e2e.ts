@@ -4,12 +4,14 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 
+import TribeListPage from './page-objects/TribeListPage'
+import TestLogin from "./TestLogin";
+import TribeConfigPage from "./page-objects/TribeConfigPage";
+
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
-
-const userEmail = 'protractor@test.goo';
 
 function authorizeAllTribes() {
     return tribeCollection.find({}, {})
@@ -19,36 +21,13 @@ function authorizeAllTribes() {
         });
 }
 
-function waitUntilAnimateIsGone() {
-    browser.wait(function () {
-        return element(By.css('.ng-animate'))
-            .isPresent()
-            .then(isPresent => !isPresent, () => false);
-    }, 5000);
-}
-
-const tribeCardHeaderLocator = By.className("tribe-card-header");
-const tribeConfigElement = element(By.className("tribe-config"));
-
-const tribeListPage = {
-    getTribeElements: function () {
-        return element.all(By.className('tribe-card'));
-    },
-    getTribeNameLabel: function (tribeElement) {
-        return tribeElement.element(tribeCardHeaderLocator);
-    },
-    getNewTribeButton: function () {
-        return element(By.id('new-tribe-button'));
-    }
-};
-
 describe('The default tribes page', function () {
 
     let tribeDocuments;
 
-    beforeAll(function () {
-        browser.driver.manage().deleteAllCookies();
-        browser.wait(() => tribeCollection.drop()
+    beforeAll(async function () {
+        await browser.driver.manage().deleteAllCookies();
+        await browser.wait(() => tribeCollection.drop()
             .then(() => tribeCollection.insert([
                 {
                     id: 'e2e1',
@@ -64,48 +43,46 @@ describe('The default tribes page', function () {
                 tribeDocuments = tribesInCollection;
                 return true;
             }));
-        browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+        await TestLogin.login();
     });
 
-    beforeEach(function () {
-        browser.setLocation('/tribes');
+    beforeEach(async function () {
+        await TribeListPage.goTo();
         expect(browser.getCurrentUrl()).toEqual(hostName + '/tribes/');
     });
-    e2eHelp.afterEachAssertLogsAreEmpty();
 
+    e2eHelp.afterEachAssertLogsAreEmpty();
+    
     it('should have a section for each tribe', function () {
-        const tribeElements = tribeListPage.getTribeElements();
+        const tribeElements = TribeListPage.getTribeElements();
         expect(tribeElements.getText()).toEqual(pluck('name', tribeDocuments));
     });
 
     it('can navigate to the a specific tribe page', function () {
-        const tribeElements = tribeListPage.getTribeElements();
-        tribeListPage.getTribeNameLabel(tribeElements.first()).click();
+        const tribeElements = TribeListPage.getTribeElements();
+        TribeListPage.getTribeNameLabel(tribeElements.first()).click();
         expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribeDocuments[0].id + '/edit/');
     });
 
     it('can navigate to the new tribe page', function () {
-        tribeListPage.getNewTribeButton().click();
+        TribeListPage.getNewTribeButton().click();
         expect(browser.getCurrentUrl()).toBe(hostName + '/new-tribe/');
     });
 
     describe('when a tribe exists, on the tribe page', function () {
 
         let expectedTribe;
-        beforeAll(function () {
+        beforeAll(async function () {
             expectedTribe = tribeDocuments[0];
-            browser.setLocation('/' + expectedTribe.id + '/');
-            element(By.tagName('body')).allowAnimations(false);
-            waitUntilAnimateIsGone();
         });
 
-        beforeEach(function () {
-            browser.setLocation('/' + expectedTribe.id + '/edit/');
-            expect(browser.getCurrentUrl()).toEqual(hostName + '/' + expectedTribe.id + '/edit/');
+        beforeEach(async function () {
+            await TribeConfigPage.goTo(expectedTribe.id);
+            expect(browser.getCurrentUrl()).toEqual(`${hostName}/${expectedTribe.id}/edit/`);
         });
 
         it('the tribe view is shown', function () {
-            expect(tribeConfigElement.isDisplayed()).toBe(true);
+            expect(TribeConfigPage.tribeConfigElement.isDisplayed()).toBe(true);
         });
 
         it('the tribe name is shown', function () {

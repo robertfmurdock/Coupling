@@ -99,7 +99,7 @@ describe('ReactTribeConfig', function () {
             it('will change the location to the current pair assignments', async function () {
                 this.wrapper.find('#save-tribe-button').simulate('click');
                 const newTribeId = 'expectedId';
-                const expectedPath = '/tribes';
+                const expectedPath = '/tribes/';
                 expect(this.pathSetter).not.toHaveBeenCalledWith(expectedPath);
 
                 const updatedTribe = {

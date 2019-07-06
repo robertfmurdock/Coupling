@@ -151,12 +151,12 @@ export default function ReactTribeConfig(props: Props) {
 
     async function clickSaveButton() {
         await coupling.saveTribe(updatedTribe);
-        pathSetter("/tribes");
+        pathSetter("/tribes/");
     }
 
     async function onDeleteClick() {
         await coupling.deleteTribe(tribe.id);
-        pathSetter("/tribes");
+        pathSetter("/tribes/");
     }
 
     return <div className={classNames("tribe-config", Styles.className)}>

@@ -196,7 +196,7 @@ function SaveButton(props: { coupling, pairAssignments, tribe, pathSetter }) {
         className={"super green button"}
         onClick={() =>
             coupling.saveCurrentPairAssignments(pairAssignments, tribe.id)
-                .then(() => pathSetter(`/${tribe.id}/pairAssignments/current`))
+                .then(() => pathSetter(`/${tribe.id}/pairAssignments/current/`))
         }>Save!</a>;
 }
 

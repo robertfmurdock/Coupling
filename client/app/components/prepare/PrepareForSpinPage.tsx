@@ -8,6 +8,7 @@ const LoadedPrepareSpin = reactDataLoadWrapper(ReactPrepareSpin);
 interface Props {
     coupling: Coupling
     tribeId: string
+    pathSetter: (url: String) => void
 }
 
 export default function (props: Props) {

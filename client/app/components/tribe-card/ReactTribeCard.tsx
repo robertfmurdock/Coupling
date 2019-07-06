@@ -31,7 +31,7 @@ export default class ReactTribeCard extends React.Component<Props> {
     }
 
     private onClick() {
-        this.props.pathSetter(`/${this.props.tribe.id}/pairAssignments/current`)
+        this.props.pathSetter(`/${this.props.tribe.id}/pairAssignments/current/`)
     }
 
     private cardStyle() {
@@ -69,7 +69,7 @@ export default class ReactTribeCard extends React.Component<Props> {
 
     private onClickHeader(event: React.MouseEvent<HTMLDivElement>) {
         if (event.stopPropagation) event.stopPropagation();
-        this.props.pathSetter(`/${this.props.tribe.id}/edit`)
+        this.props.pathSetter(`/${this.props.tribe.id}/edit/`)
     }
 
     private gravatarImage() {

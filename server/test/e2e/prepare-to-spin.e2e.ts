@@ -3,6 +3,7 @@ import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
+import setLocation from "./setLocation";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -14,7 +15,7 @@ const historyCollection = database.get('history');
 const prepareToSpinPage = element(By.css('.react-prepare-spin'));
 
 async function goToPrepare(tribe) {
-    await browser.setLocation(`/${tribe.id}/prepare/`);
+    await setLocation(`/${tribe.id}/prepare/`);
     await browser.wait(() => prepareToSpinPage.isPresent(), 2000)
 }
 
@@ -54,11 +55,10 @@ describe('The prepare to spin page', function () {
         await playersCollection.drop();
         await playersCollection.insert(players);
         await browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-        await browser.waitForAngular();
     });
 
     afterAll(async function () {
-        await browser.setLocation(`/`);
+        await setLocation(`/`);
         await tribeCollection.remove({id: tribe.id}, false)
     });
 

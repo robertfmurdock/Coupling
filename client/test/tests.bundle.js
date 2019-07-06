@@ -12,6 +12,8 @@ require("../app/app");
 
 clientTest.setLogLevel();
 
+require('./enzymeConfig');
+
 const context = require.context('.', true, /.+\.spec\*?$/);
 context.keys().forEach(context);
 

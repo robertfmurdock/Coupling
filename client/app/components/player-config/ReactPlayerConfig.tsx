@@ -10,6 +10,8 @@ import {Coupling} from "../../services";
 import Tribe from "../../../../common/Tribe";
 import Player from "../../../../common/Player";
 
+import {Prompt} from 'react-router'
+
 const useForm = (callback, initialValues) => {
     const [values, setValues] = useState(initialValues);
 
@@ -36,7 +38,6 @@ interface Props {
     players: Player[]
     pathSetter: (url: string) => void
     coupling: Coupling
-    locationChanger: (callback: () => void) => void
     reloader?: () => void
 }
 
@@ -148,22 +149,13 @@ function PlayerConfigForm(props: { onSubmit, player: Player, onChange, tribe: Tr
 }
 
 export default function ReactPlayerConfig(props: Props) {
-    const {tribe, players, pathSetter, coupling, locationChanger, reloader = () => window.location.reload()} = props;
+    const {tribe, players, pathSetter, coupling, reloader = () => window.location.reload()} = props;
     const player = merge(defaultPlayerAttributes, props.player);
 
     const [values, handleChange, handleSubmit] = useForm(savePlayer, player);
     const updatedPlayer = merge(player, values);
 
-    let promptIsUp = false;
-    locationChanger(async () => {
-        if (!equals(updatedPlayer, player) && !promptIsUp) {
-            promptIsUp = true;
-            const answer = confirm("You have unsaved data. Would you like to save before you leave?");
-            if (answer) {
-                await coupling.savePlayer(updatedPlayer, tribe.id);
-            }
-        }
-    });
+    const shouldShowPrompt = !equals(updatedPlayer, player);
 
     async function savePlayer() {
         await coupling.savePlayer(updatedPlayer, tribe.id);
@@ -173,7 +165,7 @@ export default function ReactPlayerConfig(props: Props) {
     async function removePlayer() {
         if (confirm("Are you sure you want to delete this player?")) {
             await coupling.removePlayer(player, tribe.id);
-            pathSetter(`/${tribe.id}/pairAssignments/current`);
+            pathSetter(`/${tribe.id}/pairAssignments/current/`);
         }
     }
 
@@ -190,6 +182,10 @@ export default function ReactPlayerConfig(props: Props) {
                     onChange={handleChange}
                     onSubmit={handleSubmit}
                     removePlayer={removePlayer}
+                />
+                <Prompt
+                    when={shouldShowPrompt}
+                    message={"You have unsaved data. Would you like to save before you leave?"}
                 />
             </span>
             <ReactPlayerCard player={updatedPlayer} tribeId={tribe.id} size={250}/>

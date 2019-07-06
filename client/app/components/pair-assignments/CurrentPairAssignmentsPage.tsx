@@ -5,7 +5,7 @@ import {Coupling} from "../../services";
 
 const LoadedPairAssignments = reactDataLoadWrapper(ReactPairAssignments);
 
-export default function (props: { tribeId: string, coupling: Coupling }) {
+export default function (props: { tribeId: string, coupling: Coupling, pathSetter: (string) => void }) {
     const {coupling, tribeId} = props;
     return <LoadedPairAssignments
         getDataAsync={async function () {

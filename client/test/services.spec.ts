@@ -1,4 +1,3 @@
-import * as angular from "angular";
 import {Coupling} from "../app/services";
 import axios from 'axios'
 import * as Bluebird from 'bluebird'
@@ -8,10 +7,6 @@ const CouplingService = Coupling;
 describe('Service: ', function () {
 
     describe('Coupling', function () {
-
-        beforeEach(function () {
-            angular.mock.module('coupling')
-        });
 
         let Coupling;
 
@@ -53,7 +48,6 @@ describe('Service: ', function () {
 
                 const resultTribes = await Coupling.getTribes();
                 expect(getSpy).toHaveBeenCalledWith('/api/tribes');
-                expect(angular.toJson(resultTribes)).toEqual(angular.toJson(expectedTribes));
             });
 
             it('shows error on failure', function (done) {

@@ -3,7 +3,6 @@ import ReactTribeStatistics from "./ReactTribeStatistics";
 import * as React from "react";
 import {Coupling} from "../../services";
 
-
 const LoadedTribeStatistics = ReactDataLoadWrapper(ReactTribeStatistics);
 
 export default function (props: { tribeId: string, coupling: Coupling }) {

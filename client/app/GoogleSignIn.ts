@@ -1,4 +1,5 @@
 import axios from "axios";
+import waitFor from "../test/WaitFor";
 
 export default class GoogleSignIn {
 
@@ -15,6 +16,8 @@ export default class GoogleSignIn {
     }
 
     static async checkForSignedIn() {
+        // @ts-ignore
+        await waitFor(()=> window.isAuthenticated !== undefined, 100);
         // @ts-ignore
         if (window.isAuthenticated) {
             return true

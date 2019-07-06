@@ -1,16 +1,12 @@
 "use strict";
 import {element, browser, By} from "protractor";
 import e2eHelp from "./e2e-help";
+import WelcomePage from "./page-objects/WelcomePage";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
 describe('The welcome page', function () {
-
-    const pageBody = element(By.tagName('body'));
-    const enterButton = element(By.className("enter-button"));
-    const googleButton = element(By.className("google-login"));
-    const microsoftButton = element(By.className("ms-login"));
 
     async function waitToArriveAt(expectedHost: string) {
         await browser.wait(async () => {
@@ -30,13 +26,10 @@ describe('The welcome page', function () {
     }
 
     it('has an enter button redirects to google login', async function () {
-        browser.get(hostName + '/welcome');
-        pageBody.allowAnimations(false);
+        await WelcomePage.goTo();
 
-        enterButton.click();
-        googleButton.click();
-
-        browser.waitForAngularEnabled(false);
+        WelcomePage.enterButton.click();
+        WelcomePage.googleButton.click();
 
         let expectedHost = 'https://accounts.google.com';
 
@@ -44,21 +37,14 @@ describe('The welcome page', function () {
     });
 
     it('has an enter button redirects to ms login', async function () {
-        browser.get(hostName + '/welcome');
-        pageBody.allowAnimations(false);
+        await WelcomePage.goTo();
 
-        enterButton.click();
-        microsoftButton.click();
-
-        browser.waitForAngularEnabled(false);
+        WelcomePage.enterButton.click();
+        WelcomePage.microsoftButton.click();
 
         let expectedHostThatAllowsMultiTenantAuth = 'https://login.microsoftonline.com';
 
         await waitToArriveAt(expectedHostThatAllowsMultiTenantAuth);
-    });
-
-    afterEach(function () {
-        browser.waitForAngularEnabled(true);
     });
 
     e2eHelp.deleteAnyBrowserLogging();

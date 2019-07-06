@@ -2,6 +2,7 @@ import {playersCollection, tribeCollection} from "./database";
 import e2eHelp from "./e2e-help";
 import {browser, By, element} from "protractor";
 import * as monk from "monk";
+import setLocation from "./setLocation";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -43,7 +44,7 @@ describe('The retired player page ', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
     it('will show the player data', async function () {
-        await browser.setLocation(`/${tribe.id}/retired-player/${player1._id}`);
+        await setLocation(`/${tribe.id}/retired-player/${player1._id}`);
         waitForPlayerConfig();
 
         expect(await deletedPlayerPage.playerNameTextField.getAttribute('value'))

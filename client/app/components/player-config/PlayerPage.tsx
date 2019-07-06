@@ -7,12 +7,21 @@ import ReactPlayerConfig from "./ReactPlayerConfig";
 
 // @ts-ignore
 import * as client from 'client'
+import {Coupling} from "../../services";
 
 const commandDispatcher = client.commandDispatcher();
 
 const LoadedPairAssignments = reactDataLoadWrapper(ReactPlayerConfig);
 
-export default function (props) {
+interface Props {
+    coupling: Coupling
+    tribeId: string
+    playerId: string
+    pathSetter: (url: string) => void
+    locationChanger: (callback: () => void) => void
+}
+
+export default function (props: Props) {
     const {coupling, tribeId, playerId} = props;
     return <LoadedPairAssignments
         getDataAsync={async function () {

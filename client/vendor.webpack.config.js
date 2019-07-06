@@ -44,6 +44,8 @@ const config = {
       "ramda/es/union",
       "ramda/es/pluck",
       "react",
+      "history",
+      "react-router-dom",
       "react-dom",
       "font-awesome/css/font-awesome.css",
       "date-fns/parse",

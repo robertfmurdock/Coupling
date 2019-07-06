@@ -12,6 +12,13 @@ async function authorizeUserForTribes(authorizedTribes) {
     return null
 }
 
+async function clearBrowserLogs() {
+    const capabilities = await browser.getCapabilities();
+    if (capabilities.get('browserName') !== 'firefox') {
+        await browser.manage().logs().get('browser');
+    }
+}
+
 const helper = {
     userEmail: userEmail,
     authorizeUserForTribes: authorizeUserForTribes,
@@ -25,24 +32,16 @@ const helper = {
                 if (browserLog.length > 0) {
                     console.log('log: ' + util.inspect(browserLog));
                 }
-                await browser.waitForAngular();
             }
         });
     },
     deleteAnyBrowserLogging: function () {
 
-        afterEach(function (done) {
-            browser.getCapabilities()
-                .then(function (capabilities) {
-                    if (capabilities.get('browserName') !== 'firefox') {
-                        browser.manage().logs().get('browser').then(done, done.fail);
-                        browser.waitForAngular();
-                    } else {
-                        done();
-                    }
-                });
+        afterEach(async function () {
+            await clearBrowserLogs();
         });
-    }
+    },
+    clearBrowserLogs
 };
 
 export default helper;

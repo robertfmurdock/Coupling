@@ -2,6 +2,7 @@
 import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
+import setLocation from "./setLocation";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -45,7 +46,6 @@ describe('The retired players page', function () {
         await playersCollection.insert(players);
 
         await browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
-        await browser.waitForAngular();
     });
 
     afterAll(async function () {
@@ -55,7 +55,7 @@ describe('The retired players page', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
     beforeEach(async function () {
-        await browser.setLocation(`/${tribe.id}/players/retired`);
+        await setLocation(`/${tribe.id}/players/retired`);
         await waitForRetiredPlayersPage();
     });
 

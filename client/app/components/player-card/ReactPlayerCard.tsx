@@ -72,7 +72,7 @@ function clickPlayerName(event, props: PlayerCardProps) {
 
     if (event.stopPropagation) event.stopPropagation();
 
-    props.pathSetter(`/${props.tribeId}/player/${props.player._id}`)
+    props.pathSetter(`/${props.tribeId}/player/${props.player._id}/`)
 }
 
 export default function ReactPlayerCard(props: PlayerCardProps) {

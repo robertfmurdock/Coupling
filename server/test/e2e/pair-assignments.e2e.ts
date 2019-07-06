@@ -4,6 +4,7 @@ import * as monk from "monk";
 import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
+import setLocation from "./setLocation";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -79,8 +80,6 @@ describe('The current pair assignments', function () {
         await playersCollection.insert(players);
         await browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
 
-        await browser.waitForAngular();
-
         this.apiGuy = await ApiGuy.new(e2eHelp.userEmail)
     });
 
@@ -91,23 +90,23 @@ describe('The current pair assignments', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
 
-    it('shows the tribe', function () {
-        browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+    it('shows the tribe', async function () {
+        await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
 
         expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
     });
 
-    it('will let you add players', function () {
-        browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+    it('will let you add players', async function () {
+        await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
 
         element(By.id('add-player-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/new/`);
     });
 
-    it('will let you edit an existing player', function () {
-        browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+    it('will let you edit an existing player', async function () {
+        await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
 
         unpairedPlayerElements
@@ -116,29 +115,29 @@ describe('The current pair assignments', function () {
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/${player1._id}/`);
     });
 
-    it('will let you view history', function () {
-        browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+    it('will let you view history', async function () {
+        await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
         element(By.id('view-history-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/history/`);
     });
 
-    it('will let you prepare new pairs', function () {
-        browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+    it('will let you prepare new pairs', async function () {
+        await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
         element(By.id('new-pairs-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/prepare/`);
     });
 
-    it('will let you go to the stats page', function () {
-        browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+    it('will let you go to the stats page', async function () {
+        await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
         element(By.className("statistics-button")).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
 
-    it('will let you see retired players', function () {
-        browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+    it('will let you see retired players', async function () {
+        await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
         element(By.id('retired-players-button')).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/players/retired`);
@@ -149,8 +148,8 @@ describe('The current pair assignments', function () {
             historyCollection.drop()
                 .then(done, done.fail);
         });
-        it('will display all the existing players in the player roster', function () {
-            browser.setLocation('/' + tribe.id + '/pairAssignments/current/');
+        it('will display all the existing players in the player roster', async function () {
+            await setLocation('/' + tribe.id + '/pairAssignments/current/');
             waitForCurrentPairAssignmentPage();
 
             expect(unpairedPlayerElements.getText()).toEqual(pluck('name', players));
@@ -168,8 +167,8 @@ describe('The current pair assignments', function () {
             await browser.refresh();
         });
 
-        beforeEach(function () {
-            browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+        beforeEach(async function () {
+            await setLocation(`/${tribe.id}/pairAssignments/current/`);
             waitForCurrentPairAssignmentPage();
         });
 
@@ -194,7 +193,7 @@ describe('The current pair assignments', function () {
                     callSignsEnabled: false
                 });
 
-                await browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+                await setLocation(`/${tribe.id}/pairAssignments/current/`);
                 waitForCurrentPairAssignmentPage();
                 await browser.refresh();
 
@@ -213,7 +212,7 @@ describe('The current pair assignments', function () {
                     callSignsEnabled: true
                 });
 
-                await browser.setLocation(`/${tribe.id}/pairAssignments/current/`);
+                await setLocation(`/${tribe.id}/pairAssignments/current/`);
                 waitForCurrentPairAssignmentPage();
                 await browser.refresh();
                 waitForCurrentPairAssignmentPage();

@@ -6,6 +6,8 @@ import Tribe from "../../../common/Tribe";
 import * as monk from "monk";
 import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
+import PlayerConfigPage from "./PlayerConfigPage";
+import TestLogin from "./TestLogin";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -15,11 +17,10 @@ const playerElements = element.all(By.css('.react-player-roster .react-player-ca
 const defaultBadgeRadio = element(By.css('#default-badge-radio'));
 const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
-let playerConfigPage = element(By.css('.react-player-config'));
 
-function waitForPlayerConfig() {
-    return browser.wait(() => playerConfigPage.isPresent(), 2000);
-}
+const tribeCardElement = element(By.className("tribe-card"));
+const deleteButton = element(By.className('delete-button'));
+const savePlayerButton = element(By.id('save-player-button'));
 
 describe('The edit player page', function () {
 
@@ -42,10 +43,6 @@ describe('The edit player page', function () {
         player5
     ];
 
-    const tribeCardElement = element(By.className("tribe-card"));
-    const deleteButton = element(By.className('delete-button'));
-    const savePlayerButton = element(By.id('save-player-button'));
-
     async function waitForSaveToComplete(expectedName) {
         await browser.wait(() => savePlayerButton.isEnabled().then(value => value, () => false), 1000, 'wait for enable');
 
@@ -55,15 +52,14 @@ describe('The edit player page', function () {
         }, 100);
     }
 
-    beforeAll(function (done) {
-        tribeCollection.drop()
-            .then(() => tribeCollection.insert(tribe))
-            .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
-            .then(done, done.fail);
+    beforeAll(async function () {
+        await tribeCollection.drop();
+        await tribeCollection.insert(tribe);
+        await e2eHelp.authorizeUserForTribes([tribe.id]);
     });
 
-    beforeAll(function () {
-        browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
+    beforeAll(async function () {
+        await TestLogin.login();
     });
 
     beforeEach(async function () {
@@ -79,26 +75,22 @@ describe('The edit player page', function () {
     e2eHelp.afterEachAssertLogsAreEmpty();
 
     it('should not alert on leaving when nothing has changed.', async function () {
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
         tribeCardElement.click();
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
-        await browser.waitForAngular();
     });
 
     it('retire player should have intended effect.', async function () {
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
-        await browser.waitForAngular();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
-        deleteButton.click();
+        await browser.wait(async () => deleteButton.isPresent(), 5000);
+
+        await deleteButton.click();
         const alert = await browser.switchTo().alert();
 
         await alert.accept();
 
-        await browser.waitForAngular();
-
-        browser.wait(async function () {
+        await browser.wait(async function () {
             return await browser.getCurrentUrl() === `${hostName}/${tribe.id}/pairAssignments/current/`
         }, 100);
     });
@@ -111,9 +103,9 @@ describe('The edit player page', function () {
             await tribeCollection.update({_id: tribe._id}, tribeClone)
         });
 
-        it('should not show the badge selector', function () {
-            browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            waitForPlayerConfig();
+        it('should not show the badge selector', async function () {
+            await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
+
             expect(defaultBadgeRadio.isPresent()).toEqual(false);
             expect(altBadgeRadio.isPresent()).toEqual(false);
         });
@@ -130,8 +122,8 @@ describe('The edit player page', function () {
         });
 
         it('should show the badge selector', async function () {
-            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            waitForPlayerConfig();
+            await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
+
             expect(defaultBadgeRadio.isDisplayed()).toEqual(true);
             expect(element(By.css('label[for=default-badge-radio]')).getText()).toBe('Badge 1');
 
@@ -144,14 +136,14 @@ describe('The edit player page', function () {
         });
 
         it(`should remember badge selection`, async function () {
-            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            waitForPlayerConfig();
+            await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
+
             await browser.wait(() => altBadgeRadio.isPresent(), 1000);
 
             await altBadgeRadio.click();
             await savePlayerButton.click();
             await waitForSaveToComplete(player1.name);
-            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+            await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
             expect(altBadgeRadio.getAttribute('checked')).toBe('true');
         });
 
@@ -169,8 +161,7 @@ describe('The edit player page', function () {
         });
 
         it(`should allow entry of adjective and noun, and retain them`, async function () {
-            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            waitForPlayerConfig();
+            await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
             await browser.wait(() => adjectiveTextInput.isPresent(), 1000);
 
             await adjectiveTextInput.clear();
@@ -179,8 +170,7 @@ describe('The edit player page', function () {
             await nounTextInput.sendKeys('Spider-Man');
             await savePlayerButton.click();
             await waitForSaveToComplete(player1.name);
-            await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-            waitForPlayerConfig();
+            await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
             expect(adjectiveTextInput.getAttribute('value')).toBe('Superior');
             expect(nounTextInput.getAttribute('value')).toBe('Spider-Man');
@@ -189,8 +179,7 @@ describe('The edit player page', function () {
     });
 
     it('should get error on leaving when name is changed.', async function () {
-        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
         element(By.id('player-name')).sendKeys('completely different name');
@@ -204,8 +193,7 @@ describe('The edit player page', function () {
     });
 
     it('should not get alert on leaving when name is changed after save.', async function () {
-        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        waitForPlayerConfig();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
         playerNameTextField.sendKeys('completely different name');
@@ -222,13 +210,12 @@ describe('The edit player page', function () {
 
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
-        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
         expect(element(By.id('player-name')).getAttribute('value')).toBe('completely different name')
     });
 
     it('saving with no name will show as a default name.', async function () {
-        await browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        await waitForPlayerConfig();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
@@ -237,19 +224,18 @@ describe('The edit player page', function () {
         await savePlayerButton.click();
 
         await waitForSaveToComplete("Unknown");
+        await PlayerConfigPage.waitForPlayerConfig();
 
         await browser.wait(() => tribeCardElement.click().then(() => true, () => false), 2000);
 
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        await waitForPlayerConfig();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
         expect(element(By.css('.player-card-header')).getText()).toBe('Unknown')
     });
 
     it('will show all players', async function () {
-        browser.setLocation(`/${tribe.id}/player/${player1._id}`);
-        await waitForPlayerConfig();
+        await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 });
@@ -275,26 +261,23 @@ describe('The new player page', function () {
         player5
     ];
 
-    beforeAll(function (done) {
-        browser.get(`${hostName}/test-login?username=${e2eHelp.userEmail}&password="pw"`);
+    beforeAll(async function () {
+        await TestLogin.login();
 
-        tribeCollection.insert(tribe)
-            .then(() => playersCollection.insert(players))
-            .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
-            .then(done, done.fail);
+        await tribeCollection.insert(tribe);
+        await playersCollection.insert(players);
+        await e2eHelp.authorizeUserForTribes([tribe.id]);
     });
 
-    afterAll(function (done) {
-        tribeCollection.remove({id: tribe.id}, false)
-            .then(() => playersCollection.drop())
-            .then(done, done.fail);
+    afterAll(async function () {
+        await tribeCollection.remove({id: tribe.id}, false);
+        await playersCollection.drop();
     });
 
     e2eHelp.afterEachAssertLogsAreEmpty();
 
-    it('will show all players', function () {
-        browser.setLocation(`/${tribe.id}/player/new`);
-        waitForPlayerConfig();
+    it('will show all players', async function () {
+        await PlayerConfigPage.goToNewPlayerConfig(tribe.id);
         expect(playerElements.getText()).toEqual(pluck('name', players));
     });
 
@@ -310,11 +293,10 @@ describe('The new player page', function () {
         });
 
         it(`will suggest call sign`, async function () {
-            await browser.setLocation(`/${tribe.id}/player/new`);
-            waitForPlayerConfig();
+            await PlayerConfigPage.goToNewPlayerConfig(tribe.id);
             await browser.wait(() => adjectiveTextInput.isPresent(), 1000);
-            let suggestedAdjective = await adjectiveTextInput.getAttribute('value');
-            let suggestedNoun = await nounTextInput.getAttribute('value');
+            const suggestedAdjective = await adjectiveTextInput.getAttribute('value');
+            const suggestedNoun = await nounTextInput.getAttribute('value');
             await expect(suggestedAdjective).not.toBe('');
             await expect(suggestedNoun).not.toBe('');
         });

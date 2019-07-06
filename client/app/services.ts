@@ -1,4 +1,3 @@
-import * as angular from "angular";
 import map from "ramda/es/map";
 import find from "ramda/es/find";
 import mergeAll from "ramda/es/mergeAll";
@@ -31,7 +30,7 @@ class SelectablePlayer {
 class Coupling {
 
     async saveTribe(tribe: common.Tribe) {
-        await axios.post(`/api/tribes`, angular.copy(tribe))
+        await axios.post(`/api/tribes`, tribe)
     }
 
     async deleteTribe(tribeId: String) {
@@ -66,12 +65,12 @@ class Coupling {
     }
 
     async spin(players, tribeId): Promise<PairAssignmentSet> {
-        const response = await axios.post(`/api/${tribeId}/spin`, angular.copy(players));
+        const response = await axios.post(`/api/${tribeId}/spin`, players);
         return response.data;
     }
 
     async saveCurrentPairAssignments(pairAssignments: common.PairAssignmentSet, tribeId: String) {
-        const response = await axios.post(`/api/${tribeId}/history`, angular.copy(pairAssignments));
+        const response = await axios.post(`/api/${tribeId}/history`, pairAssignments);
         return response.data;
     }
 
@@ -108,7 +107,7 @@ class Coupling {
     }
 
     private async post<T>(url, object: T): Promise<T> {
-        const response = await axios.post(url, angular.copy(object));
+        const response = await axios.post(url, object);
         return response.data;
     }
 
@@ -144,9 +143,5 @@ class Coupling {
 
 
 }
-
-angular.module("coupling.services", [])
-    .service("Coupling", Coupling)
-    .service('randomizer', Randomizer);
 
 export {SelectablePlayer, Coupling, Randomizer}

@@ -132,7 +132,7 @@ describe('ReactPairAssignments', function () {
 
         expect(Coupling.saveCurrentPairAssignments).toHaveBeenCalled();
         await successPromise;
-        expect(pathSetter).toHaveBeenCalledWith(`/${selectedTribe.id}/pairAssignments/current`);
+        expect(pathSetter).toHaveBeenCalledWith(`/${selectedTribe.id}/pairAssignments/current/`);
     });
 
     it('onDrop will take two players and swap their places', function () {

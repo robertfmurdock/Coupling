@@ -1,9 +1,11 @@
 import {browser, element, By} from "protractor";
 import e2eHelp from "./e2e-help";
 import * as monk from "monk";
+import setLocation from "./setLocation";
+import TestLogin from "./TestLogin";
+import StatisticsPage from "./page-objects/StatisticsPage";
 
 const config = require("../../config/config");
-const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playerCollection = database.get('players');
@@ -26,24 +28,21 @@ describe('The statistics page', function () {
 
     const tribeCardHeaderElement = element(By.className("tribe-card-header"));
 
-    beforeAll(function (done) {
-        browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
-
-        tribeCollection.remove({id: tribe.id})
-            .then(() => tribeCollection.insert(tribe))
-            .then(() => playerCollection.remove({tribe: tribe.id}))
-            .then(() => playerCollection.insert(players))
-            .then(() => e2eHelp.authorizeUserForTribes([tribe.id]))
-            .then(done, done.fail);
+    beforeAll(async function () {
+        await TestLogin.login();
+        await tribeCollection.remove({id: tribe.id});
+        await tribeCollection.insert(tribe);
+        await playerCollection.remove({tribe: tribe.id});
+        await playerCollection.insert(players);
+        await e2eHelp.authorizeUserForTribes([tribe.id]);
     });
 
-    beforeAll(function () {
-        browser.setLocation('/' + tribe.id + '/statistics/');
+    beforeAll(async function () {
+        await StatisticsPage.goTo(tribe.id);
     });
 
     it('has a route which works', function () {
-        const statisticsElement = element(By.css('statistics'));
-        expect(statisticsElement.isPresent()).toBe(true);
+        expect(StatisticsPage.statisticsElement.isPresent()).toBe(true);
     });
 
     it('has a tribe card with matching tribe', function () {

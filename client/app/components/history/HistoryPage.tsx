@@ -1,10 +1,18 @@
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
 import ReactHistory from "./ReactHistory";
 import * as React from "react";
+import {Coupling} from "../../services";
+import PathSetter from "../PathSetter";
 
 const LoadedPairAssignments = reactDataLoadWrapper(ReactHistory);
 
-export default function (props) {
+interface Props {
+    tribeId: string
+    coupling: Coupling
+    pathSetter: PathSetter
+}
+
+export default function (props: Props) {
     const {tribeId, coupling} = props;
     return <LoadedPairAssignments
         getDataAsync={async function () {

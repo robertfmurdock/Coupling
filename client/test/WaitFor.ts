@@ -1,5 +1,3 @@
-import * as Bluebird from 'bluebird'
-
 function timeSince(start: Date) {
     return new Date().getTime() - start.getTime();
 }
@@ -7,7 +5,7 @@ function timeSince(start: Date) {
 export default async function waitFor(isReady: () => boolean, timeout: number) {
     const start = new Date();
     while (!isReady() && (timeSince(start)) < timeout) {
-        await new Bluebird(resolve => setTimeout(resolve, 1));
+        await new Promise(resolve => setTimeout(resolve, 1));
     }
 
     if ((timeSince(start)) >= timeout) {

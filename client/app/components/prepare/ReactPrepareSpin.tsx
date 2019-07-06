@@ -55,7 +55,7 @@ export default function ReactPrepareSpin(props: Props) {
                 <a
                     className={classNames(Styles.spinButton, 'spin-button', 'super', 'pink', 'button')}
                     onClick={() => {
-                        let url = `${tribe.id}/pairAssignments/new?`
+                        let url = `/${tribe.id}/pairAssignments/new?`
                             + playerSelections.filter(element => element.isSelected)
                                 .map(element => "player=" + encodeURIComponent(element.player._id))
                                 .join('&');

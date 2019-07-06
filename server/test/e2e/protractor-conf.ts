@@ -1,4 +1,7 @@
-import {browser, Config} from "protractor";
+import {browser, By, Config, element} from "protractor";
+import e2eHelper from './e2e-help'
+import TribeListPage from "./page-objects/TribeListPage";
+
 let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
 
 export let config: Config = {
@@ -22,8 +25,10 @@ export let config: Config = {
         defaultTimeoutInterval: 10000
     },
 
-    onPrepare: function () {
+    onPrepare: async function () {
+        await browser.waitForAngularEnabled(false);
 
+        browser.baseUrl = 'http://localhost:3001';
         const jasmineReporters = require('jasmine-reporters');
 
         jasmine.getEnv().addReporter(
@@ -40,13 +45,11 @@ export let config: Config = {
             captureOnlyFailedSpecs: true
         }));
 
-        const disableNgAnimate = function () {
-            // @ts-ignore
-            angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {
-                $animate.enabled(false);
-            }]);
-        };
+        await browser.get('http://localhost:3001');
+        await browser.executeScript('window.sessionStorage.setItem(\'animationDisabled\', true)');
 
-        browser.addMockModule('disableNgAnimate', disableNgAnimate);
+        await browser.wait(() => element(By.className('view-frame')).isPresent(), 2000);
+
+        await e2eHelper.clearBrowserLogs();
     }
 };

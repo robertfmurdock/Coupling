@@ -2,13 +2,15 @@ import {browser, element, By} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
+import setLocation from "./setLocation";
+import TestLogin from "./TestLogin";
+import TribeConfigPage from "./page-objects/TribeConfigPage";
+import TribeListPage from "./page-objects/TribeListPage";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
-
-const userEmail = 'protractor@test.goo';
 
 function authorizeAllTribes() {
     return tribeCollection.find({}, {})
@@ -27,7 +29,6 @@ describe('The edit tribe page', function () {
 
     const checkedOption = element(By.css('#pairing-rule option:checked'));
     const tribeIdElement = element(By.id('tribe-id'));
-
     const deleteButton = element(By.className('delete-tribe-button'));
 
     describe('for an existing tribe', function () {
@@ -36,28 +37,28 @@ describe('The edit tribe page', function () {
             name: 'Change Me'
         };
 
-        beforeAll(function (done) {
-            tribeCollection.drop()
-                .then(() => tribeCollection.insert(tribe))
-                .then(() => authorizeAllTribes())
-                .then(done, done.fail);
+        beforeAll(async function () {
+            await tribeCollection.drop();
+            await tribeCollection.insert(tribe);
+            await authorizeAllTribes();
         });
 
-        afterAll(function (done) {
-            tribeCollection.remove({id: tribe.id}, false)
-                .then(done, done.fail);
+        afterAll(async function () {
+            await tribeCollection.remove({id: tribe.id}, false);
         });
 
         e2eHelp.afterEachAssertLogsAreEmpty();
 
         it('can save edits to a tribe correctly', async function () {
-            await browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+            await TestLogin.login();
+            await TribeListPage.goTo();
 
-            await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
             const tribeElements = element.all(By.className('tribe-card'));
             tribeElements.first().element(By.className("tribe-card-header")).click();
 
             expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
+            await TribeConfigPage.waitForPage();
+
             expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);
             const expectedNewName = 'Different name';
             element(By.id('tribe-name')).clear();
@@ -75,7 +76,7 @@ describe('The edit tribe page', function () {
             element(By.id('save-tribe-button')).click();
             await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
 
-            await browser.setLocation('/' + tribe.id + '/edit/');
+            await TribeConfigPage.goTo(tribe.id);
             await browser.wait(() => element(By.id('tribe-name')).isPresent(), 2000);
 
             expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(expectedNewName);
@@ -86,13 +87,14 @@ describe('The edit tribe page', function () {
             expect(checkedOption.getAttribute('label')).toBe('Prefer Different Badges (Beta)');
         });
 
-        it('the tribe can be deleted', async function() {
-            await browser.get(hostName + '/test-login?username=' + userEmail + '&password="pw"');
+        it('the tribe can be deleted', async function () {
+            await TestLogin.login();
+            await TribeListPage.goTo();
 
-            await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
             const tribeElements = element.all(By.className('tribe-card'));
             tribeElements.first().element(By.className("tribe-card-header")).click();
 
+            await TribeConfigPage.waitForPage();
             await expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
 
             await expect(deleteButton.isDisplayed()).toBe(true);
@@ -108,8 +110,8 @@ describe('The edit tribe page', function () {
 
     describe('on the new tribe page', function () {
 
-        beforeAll(function () {
-            browser.setLocation('/new-tribe/');
+        beforeAll(async function () {
+            await setLocation('/new-tribe/');
         });
 
         it('the id field shows and does not disappear when text is added', function () {

@@ -1,5 +1,4 @@
 import {mount, shallow} from 'enzyme';
-import "../app/components/components";
 import {Randomizer} from "../../client/app/services";
 import Player from "../../common/Player";
 import ReactWelcomeView, {WelcomeSplash} from "../app/components/welcome/ReactWelcomeView";
