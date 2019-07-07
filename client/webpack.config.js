@@ -1,6 +1,7 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const jsPath = path.resolve(__dirname, './app');
 
@@ -45,18 +46,22 @@ const config = {
         include: jsPath
       },
       {
-        test: /\.(css)$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader?' + JSON.stringify({minimize: true})
-        })
-      },
-      {
-        test: /\.(scss)$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader?' + JSON.stringify({minimize: true}) + '!sass-loader'
-        })
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: process.env.NODE_ENV === 'development',
+            },
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: 'global',
+            }
+          },
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -65,11 +70,13 @@ const config = {
     ]
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: './styles.css'
+    }),
     new WebpackCleanupPlugin({
       quiet: true,
       exclude: ["vendor/*"],
     }),
-    new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
     new webpack.DllReferencePlugin({
       context: '.',
       manifest: require('./build/lib/vendor/vendor-manifest.json')

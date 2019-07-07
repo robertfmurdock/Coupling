@@ -1,6 +1,6 @@
 const clone = require('ramda/src/clone');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpackConfig = clone(require('../webpack.config'));
 const path = require('path');
 
@@ -23,7 +23,9 @@ const config = {
   externals: webpackConfig.externals,
   mode: "development",
   plugins: [
-    new ExtractTextPlugin({filename: './styles.css', allChunks: true}),
+    new MiniCssExtractPlugin({
+      filename: './styles.css'
+    }),
     new webpack.DllReferencePlugin({
       context: '.',
       manifest: require('../build/lib/vendor/vendor-manifest.json')

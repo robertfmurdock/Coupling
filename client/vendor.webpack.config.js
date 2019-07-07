@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const buildPath = path.resolve(__dirname, 'build/lib/vendor');
 
@@ -66,15 +66,19 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(css)$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader?' + JSON.stringify({minimize: true})
-        })
-      },
-      {
-        test: /\.(scss)$/,
-        loader: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader!sass-loader'})
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: process.env.NODE_ENV === 'development',
+            },
+          },
+          {
+            loader: 'css-loader',
+          },
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -92,7 +96,9 @@ const config = {
     ws: {}
   },
   plugins: [
-    new ExtractTextPlugin({filename: '[name]-styles.css', allChunks: true}),
+    new MiniCssExtractPlugin({
+      filename: '[name]-styles.css'
+    }),
     new webpack.DllPlugin({
       path: path.resolve(buildPath, '[name]-manifest.json'),
       name: '[name]_lib'
