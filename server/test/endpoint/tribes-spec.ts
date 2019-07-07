@@ -151,7 +151,7 @@ describe(path, function () {
                 .expect(200)
                 .expect('Content-Type', /json/);
 
-            const result = find(function (element) {
+            const result = find(function (element: any) {
                 return element.name === 'TeamMadeByTest'
             }, secondResponse.body);
 
@@ -201,7 +201,7 @@ describe(path, function () {
                 .expect(200)
                 .expect('Content-Type', /json/);
 
-            const result = find(function (element) {
+            const result = find(function (element: any) {
                 return element.name === 'TeamMadeByTest'
             }, getAllResponse.body);
 
