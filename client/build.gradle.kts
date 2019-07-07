@@ -25,6 +25,9 @@ dependencies {
     implementation("com.soywiz:klock:1.1.1")
     implementation("io.github.microutils:kotlin-logging-js:1.6.26")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.9-kotlin-1.2.20")
+    implementation("org.jetbrains:kotlin-react:16.6.0-pre.77-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.77-kotlin-1.3.41")
 
     testImplementation(project(":test-logging"))
     testImplementation("com.zegreatrob.testmints:standard:+")
@@ -60,7 +63,8 @@ tasks {
                 "commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher",
                 "logging.com.zegreatrob.coupling.logging.initializeJasmineLogging",
                 "client.performComposeStatisticsAction",
-                "client.commandDispatcher"
+                "client.commandDispatcher",
+                "client.GravatarImage"
         )
     }
 

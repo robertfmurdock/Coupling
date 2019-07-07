@@ -9,7 +9,11 @@ const config = {
   entry: {
     vendor: [
       "axios",
+      "core-js",
       "kotlin",
+      "kotlin-extensions",
+      "kotlin-react",
+      "kotlin-react-dom",
       "kotlin-logging",
       "kotlinx-serialization-runtime-js",
       "logging",

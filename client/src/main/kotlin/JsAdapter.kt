@@ -4,9 +4,11 @@ import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDisp
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
+import react.buildElements
 import kotlin.js.Json
 import kotlin.js.json
 
+@Suppress("unused")
 @JsName("performComposeStatisticsAction")
 fun ComposeStatisticsActionDispatcher.performComposeStatisticsAction(tribe: Json, players: Array<Json>, history: Array<Json>) =
         ComposeStatisticsAction(
@@ -50,3 +52,14 @@ private fun CallSign.toJson() = json(
 
 interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 
+@Suppress("unused")
+@JsName("GravatarImage")
+fun gravatarImageJs(props: dynamic): dynamic = buildElements {
+    gravatarImage(
+            props.email as String?,
+            props.fallback as String?,
+            props.className as String?,
+            props.alt as String?,
+            props.options.unsafeCast<GravatarOptions>()
+    )
+}
