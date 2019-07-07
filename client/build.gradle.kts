@@ -64,7 +64,8 @@ tasks {
                 "logging.com.zegreatrob.coupling.logging.initializeJasmineLogging",
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
-                "client.GravatarImage"
+                "client.GravatarImage",
+                "client.PlayerCard"
         )
     }
 
@@ -88,7 +89,7 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn(yarn, vendorCompile, runDceKotlinJs)
+        dependsOn(yarn, vendorCompile, runDceKotlinJs, processResources)
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("yarn.lock"))

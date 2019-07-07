@@ -1,3 +1,5 @@
+package com.zegreatrob.coupling.client
+
 import kotlinx.html.IMG
 import react.dom.RDOMBuilder
 

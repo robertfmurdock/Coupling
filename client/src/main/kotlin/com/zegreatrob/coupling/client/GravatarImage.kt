@@ -1,7 +1,9 @@
+package com.zegreatrob.coupling.client
+
 import react.RBuilder
 import react.dom.img
 
-val gravatarUrl: dynamic = js("require('../../../app/components/player-card/GravatarHelper').gravatarUrl")
+private val gravatarUrl: dynamic = js("require('../../../app/components/player-card/GravatarHelper').gravatarUrl")
 
 external interface GravatarOptions {
     @Suppress("unused")

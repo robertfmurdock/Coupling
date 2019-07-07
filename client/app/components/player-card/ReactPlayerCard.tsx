@@ -6,6 +6,9 @@ import GravatarImage from "../gravatar/GravatarImage";
 import {useRef, useLayoutEffect} from "react";
 import {MouseEventHandler} from "react";
 
+// @ts-ignore
+import {PlayerCard} from 'client'
+
 interface PlayerCardProps {
     player: Player,
     tribeId: string,

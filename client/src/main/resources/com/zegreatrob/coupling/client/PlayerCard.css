@@ -1,0 +1,41 @@
+:local(.player) {
+    position: relative;
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    border: 3px outset gold;
+    background: darkseagreen url(../../../../../../../images/overlay.png) repeat-x;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.6);
+    color: black;
+    margin: 0 2px 0 2px;
+    top: 0
+}
+
+:local(.player) img {
+    display: block;
+}
+
+:local(.header) {
+    background: rgba(255, 255, 255, 0.4) url(../../../../../../../images/overlay.png) repeat-x;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+:local(.player).disabled {
+    top: 30px;
+    background-color: #ca6363;
+    margin-bottom: 0;
+}
+
+:local(.header) {
+    transition: all ease-out 0.4s;
+}
+
+:local(.player):not([disabled="true"]) :local(.header):hover {
+    transition: all ease-out 0.4s;
+    z-index: 1;
+    background: lightyellow url(../../../../../../../images/overlay.png) repeat-x;
+}

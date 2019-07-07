@@ -1,3 +1,6 @@
+import com.zegreatrob.coupling.client.GravatarOptions
+import com.zegreatrob.coupling.client.gravatarImage
+import com.zegreatrob.coupling.client.playerCard
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -62,4 +65,10 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
             props.alt as String?,
             props.options.unsafeCast<GravatarOptions>()
     )
+}
+
+@Suppress("unused")
+@JsName("PlayerCard")
+fun playerCardJs(): dynamic = buildElements {
+    playerCard()
 }
