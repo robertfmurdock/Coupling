@@ -57,6 +57,7 @@
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
     "ramda": "^0.26.1",
+    "js-yaml":"^3.13.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-websocket": "^2.0.1",
