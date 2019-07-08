@@ -8,7 +8,8 @@ import kotlinx.html.js.onClickFunction
 import loadStyles
 import org.w3c.dom.Node
 import org.w3c.dom.events.Event
-import react.*
+import react.RBuilder
+import react.RProps
 import react.dom.div
 import react.dom.img
 import styled.StyledDOMBuilder
@@ -22,7 +23,7 @@ private external interface Styles {
 
 private val styles: Styles = loadStyles("PlayerCard")
 
-interface PlayerCardProps : RProps {
+external interface PlayerCardProps : RProps {
     var tribeId: String
     var player: Player
     var disabled: Boolean?
@@ -32,41 +33,29 @@ interface PlayerCardProps : RProps {
     var pathSetter: (String) -> Unit
 }
 
-val playerCard = { props: PlayerCardProps ->
-    buildElement {
-        playerCard(
-                props.tribeId,
-                props.player,
-                props.disabled ?: false,
-                props.className,
-                props.size ?: 100,
-                props.onClick ?: {},
-                props.pathSetter
-        )
-    }
-}.unsafeCast<RClass<PlayerCardProps>>()
+fun PlayerCardProps.getDisabled(): Boolean = disabled ?: false
+fun PlayerCardProps.getSize(): Int = size ?: 100
+fun PlayerCardProps.getOnClick(): (Event) -> Unit = onClick ?: {}
 
-private fun RBuilder.playerCard(
-        tribeId: String,
-        player: Player,
-        disabled: Boolean,
-        className: String?,
-        size: Int,
-        onClick: (Event) -> Unit = {},
-        pathSetter: (String) -> Unit
-): ReactElement {
-    return styledDiv {
+val playerCard = rFunction { props: PlayerCardProps ->
+    styledDiv {
         attrs {
             classes += setOf(
                     styles.player,
                     "react-player-card",
-                    className
+                    props.className
             ).filterNotNull()
-            playerCardStyle(size)
-            onClickFunction = onClick
+            playerCardStyle(props.getSize())
+            onClickFunction = props.getOnClick()
         }
-        playerGravatarImage(player, size)
-        playerCardHeader(tribeId, player, size, disabled, pathSetter)
+        playerGravatarImage(props.player, props.getSize())
+        playerCardHeader(
+                tribeId = props.tribeId,
+                player = props.player,
+                size = props.getSize(),
+                disabled = props.getDisabled(),
+                pathSetter = props.pathSetter
+        )
     }
 }
 

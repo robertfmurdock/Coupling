@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import react.RReadableRef
+import react.*
 
 @JsModule("react")
 @JsNonModule
@@ -14,3 +14,9 @@ fun useLayoutEffect(callback: () -> Unit) {
         undefined
     }
 }
+
+fun <T : RProps> rFunction(handler: RBuilder.(props: T) -> Unit) = { props: T ->
+    buildElement {
+        handler(props)
+    }
+}.unsafeCast<RClass<T>>()
