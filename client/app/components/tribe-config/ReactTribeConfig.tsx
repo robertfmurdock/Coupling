@@ -117,7 +117,7 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
                             name="pairingRule"
                             onChange={handleChange}
                         >{pairingRules.map(rule =>
-                            <option value={rule.id} label={rule.description}/>)
+                            <option key={rule.id} value={rule.id} label={rule.description}/>)
                         }
                         </select>
                         <span>Advanced users only: This rule affects how players are assigned.</span>

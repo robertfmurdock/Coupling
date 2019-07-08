@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDisp
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
+import org.w3c.dom.events.Event
 import react.buildElements
 import kotlin.js.Json
 import kotlin.js.json
@@ -69,6 +70,14 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
 
 @Suppress("unused")
 @JsName("PlayerCard")
-fun playerCardJs(): dynamic = buildElements {
-    playerCard()
+fun playerCardJs(props: dynamic): dynamic = buildElements {
+    playerCard(
+            tribeId = props.tribeId.unsafeCast<String>(),
+            player = props.player.unsafeCast<Json>().toPlayer(),
+            className = props.className.unsafeCast<String?>(),
+            size = props.size.unsafeCast<Int>(),
+            onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
+            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+            disabled = props.disabled.unsafeCast<Boolean?>() ?: false
+    )
 }

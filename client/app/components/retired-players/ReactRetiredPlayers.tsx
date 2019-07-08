@@ -14,9 +14,14 @@ export default function ReactRetiredPlayers(props: { tribe: Tribe, retiredPlayer
         <div className={Styles.retiredPlayersHeader}>Retired Players</div>
         <div>
             {
-                retiredPlayers.map(player => {
-                    return <ReactPlayerCard player={player} tribeId={tribe.id} disabled={true} className={"disabled"}/>
-                })
+                retiredPlayers.map(player =>
+                    <ReactPlayerCard
+                        key={player._id}
+                        player={player}
+                        tribeId={tribe.id}
+                        disabled={true}
+                        className={"disabled"}
+                    />)
             }
         </div>
     </div>

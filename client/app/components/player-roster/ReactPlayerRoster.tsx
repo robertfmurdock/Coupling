@@ -19,7 +19,7 @@ export default class ReactPlayerRoster extends React.Component<Props> {
         return <div className={classNames("react-player-roster", className)}>
             <div>
                 <div className="roster-header">
-                    <text>{label || 'Players'}</text>
+                    {label || 'Players'}
                 </div>
                 {this.renderPlayers()}
             </div>
@@ -34,7 +34,13 @@ export default class ReactPlayerRoster extends React.Component<Props> {
 
         if (players) {
             return players.map(player => {
-                return <ReactPlayerCard player={player} tribeId={tribeId} pathSetter={pathSetter} disabled={false}/>;
+                return <ReactPlayerCard
+                    player={player}
+                    tribeId={tribeId}
+                    pathSetter={pathSetter}
+                    disabled={false}
+                    key={player._id}
+                />;
             })
         } else {
             return undefined;

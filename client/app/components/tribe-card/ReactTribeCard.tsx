@@ -44,7 +44,7 @@ export default class ReactTribeCard extends React.Component<Props> {
             width: `${pixelWidth}px`,
             height: `${pixelHeight}px`,
             padding: `${paddingAmount}px`,
-            'border-width': `${borderAmount}px`,
+            borderWidth: `${borderAmount}px`,
         };
     }
 

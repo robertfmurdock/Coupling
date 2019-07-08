@@ -12,7 +12,7 @@ export default function PlayerHeatmap(props: { players: Player[], tribe: Tribe, 
             <div className={Styles.spacer}/>
             {
                 players.map(player =>
-                    <div className={Styles.playerCard}>
+                    <div key={player._id} className={Styles.playerCard}>
                         <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
                     </div>
                 )
@@ -21,7 +21,7 @@ export default function PlayerHeatmap(props: { players: Player[], tribe: Tribe, 
         <div className={Styles.heatmapPlayersSideRow}>
             {
                 players.map(player =>
-                    <div className={Styles.playerCard}>
+                    <div key={player._id} className={Styles.playerCard}>
                         <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
                     </div>
                 )

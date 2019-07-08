@@ -34,8 +34,8 @@ export default class ReactHistory extends React.Component<Props> {
     private pairAssignmentList() {
         const {history} = this.props;
 
-        return history.map(pairAssignments => {
-            return <div className="pair-assignments">
+        return history.map(pairAssignments =>
+            <div key={pairAssignments._id} className="pair-assignments">
                     <span className="pair-assignments-header">
                         {this.dateText(pairAssignments)}
                     </span>
@@ -44,15 +44,14 @@ export default class ReactHistory extends React.Component<Props> {
                     DELETE
                 </span>
                 <div> {this.showPairs(pairAssignments)} </div>
-            </div>;
-        })
+            </div>)
     }
 
     private showPairs(pairAssignments: PairAssignmentSet) {
-        return pairAssignments.pairs.map(pair =>
-            <span className="pair">
+        return pairAssignments.pairs.map((pair, index) =>
+            <span key={index} className="pair">
                 {pair.map(player =>
-                    <span className="player">
+                    <span key={player._id} className="player">
                         <div className="player-header">{player.name}</div>
                     </span>)}
             </span>);

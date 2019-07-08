@@ -68,6 +68,7 @@ export default function ReactPrepareSpin(props: Props) {
             {
                 playerSelections.map(({player, isSelected}) =>
                     <ReactPlayerCard
+                        key={player._id}
                         player={player}
                         tribeId={tribe.id}
                         disabled={true}

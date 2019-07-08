@@ -129,6 +129,7 @@ function AssignedPair(props: { pair, tribe: Tribe, pairAssignments, swapCallback
                         swapCallback={(droppedPlayerId) => swapCallback(droppedPlayerId, player, pair)}
                     />
                     : <ReactPlayerCard
+                        key={player._id}
                         player={player}
                         tribeId={tribe.id}
                         disabled={false}

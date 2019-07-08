@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import kotlinx.html.classes
 import react.RBuilder
 import react.dom.img
 
@@ -13,7 +14,7 @@ external interface GravatarOptions {
 
 fun RBuilder.gravatarImage(
         email: String?,
-        fallback: String?,
+        fallback: String? = null,
         className: String?,
         alt: String?,
         options: GravatarOptions
@@ -21,11 +22,13 @@ fun RBuilder.gravatarImage(
         src = myGravatarUrl(options, email, fallback),
         alt = alt
 ) {
-    withAttributes(mapOf(
-            "width" to options.size,
-            "height" to options.size,
-            "className" to className
-    ))
+    attrs {
+        width = options.size.toString()
+        height = options.size.toString()
+        className?.let {
+            classes += className
+        }
+    }
 }
 
 private fun myGravatarUrl(options: GravatarOptions, email: String?, fallback: String?) =

@@ -40,7 +40,9 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
                             return <Redirect to={"/welcome"}/>;
                         })()
                 }
-                {withRouter(({location}) => <div>Hmm, you seem to be lost. At {location.pathname}</div>)}
+                <Route
+                    render={withRouter(({location}) => <div>Hmm, you seem to be lost. At {location.pathname}</div>)}
+                />
             </Switch>
         </AnimationContext.Provider>
     </Router>

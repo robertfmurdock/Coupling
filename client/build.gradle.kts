@@ -26,6 +26,8 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-js:1.6.26")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.9-kotlin-1.2.20")
+    implementation("org.jetbrains:kotlin-css:1.0.0-pre.78-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.78-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-react:16.6.0-pre.77-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.77-kotlin-1.3.41")
 
@@ -91,6 +93,7 @@ tasks {
     task<YarnTask>("compile") {
         dependsOn(yarn, vendorCompile, runDceKotlinJs, processResources)
         inputs.dir("node_modules")
+        inputs.files(runDceKotlinJs.outputs)
         inputs.file(file("package.json"))
         inputs.file(file("yarn.lock"))
         inputs.file(file("webpack.config.js"))
@@ -99,6 +102,7 @@ tasks {
         inputs.dir("./app")
         inputs.dir("./images")
         inputs.dir("./stylesheets")
+        inputs.dir("build/lib/vendor")
         outputs.dir("build/lib")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "webpack.config.js")

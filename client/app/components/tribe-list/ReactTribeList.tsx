@@ -15,7 +15,7 @@ export default class ReactTribeList extends React.Component<Props> {
 
         return <div className={Styles.className}>
             <div>
-                {tribes.map(tribe => <ReactTribeCard tribe={tribe} pathSetter={pathSetter}/>)}
+                {tribes.map(tribe => <ReactTribeCard key={tribe.id} tribe={tribe} pathSetter={pathSetter}/>)}
             </div>
             <div>
                 <a type="button" id="new-tribe-button" className="super green button" href="/new-tribe/">
