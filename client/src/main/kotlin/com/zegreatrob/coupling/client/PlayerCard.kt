@@ -9,23 +9,18 @@ import loadStyles
 import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
-import react.RReadableRef
 import react.dom.div
 import react.dom.img
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-@JsModule("react")
-@JsNonModule
-private external val React: dynamic
-
 private external interface Styles {
     var player: String
     var header: String
 }
 
-private val styles: Styles = loadStyles("PlayerCard").unsafeCast<Styles>()
+private val styles: Styles = loadStyles("PlayerCard")
 
 fun RBuilder.playerCard(
         tribeId: String,
@@ -51,30 +46,33 @@ fun RBuilder.playerCard(
     }
 }
 
-fun RBuilder.playerGravatarImage(player: Player, size: Int) {
-    if (player.imageURL != null) {
-        img(
-                src = player.imageURL,
-                classes = "player-icon",
-                alt = "icon"
-        ) {
-            attrs {
-                width = size.toString()
-                height = size.toString()
-            }
-        }
-    } else {
-        val email = player.email ?: player.name ?: ""
-        gravatarImage(
-                email = email,
-                className = "player-icon",
-                alt = "icon",
-                options = object : GravatarOptions {
-                    override val size = size
-                    override val default = "retro"
-                }
-        )
+private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
+    css {
+        width = size.px
+        height = (size * 1.4).px
+        padding(all = (size * 0.06).px)
+        borderWidth = (size * 0.01).px
     }
+}
+
+fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
+    img(src = player.imageURL, classes = "player-icon", alt = "icon") {
+        attrs {
+            width = size.toString()
+            height = size.toString()
+        }
+    }
+} else {
+    val email = player.email ?: player.name ?: ""
+    gravatarImage(
+            email = email,
+            className = "player-icon",
+            alt = "icon",
+            options = object : GravatarOptions {
+                override val size = size
+                override val default = "retro"
+            }
+    )
 }
 
 fun RBuilder.playerCardHeader(
@@ -84,12 +82,8 @@ fun RBuilder.playerCardHeader(
         disabled: Boolean,
         pathSetter: (String) -> Unit
 ) {
-    val playerNameRef: RReadableRef<Node> = React.useRef(null).unsafeCast<RReadableRef<Node>>()
-
-    React.useLayoutEffect {
-        playerNameRef.current?.fitPlayerName(size)
-        return@useLayoutEffect undefined
-    }
+    val playerNameRef = useRef(null)
+    useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
 
     styledDiv {
         attrs {
@@ -100,14 +94,13 @@ fun RBuilder.playerCardHeader(
             margin(top = (size * 0.02).px)
         }
         div {
-            attrs {
-                ref = playerNameRef
-            }
+            attrs { ref = playerNameRef }
             +(if (player.id == null) "NEW:" else "")
             +(if (player.name.isNullOrBlank()) "Unknown" else player.name!!)
         }
     }
 }
+
 
 private fun handleNameClick(
         tribeId: String,
@@ -127,11 +120,3 @@ private fun Node.fitPlayerName(size: Int) {
     fitHeaderNode(maxFontHeight, minFontHeight)
 }
 
-private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
-    css {
-        width = size.px
-        height = (size * 1.4).px
-        padding(all = (size * 0.06).px)
-        borderWidth = (size * 0.01).px
-    }
-}
