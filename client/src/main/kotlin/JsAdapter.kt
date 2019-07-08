@@ -71,13 +71,15 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
 @Suppress("unused")
 @JsName("PlayerCard")
 fun playerCardJs(props: dynamic): dynamic = buildElements {
-    playerCard(
-            tribeId = props.tribeId.unsafeCast<String>(),
-            player = props.player.unsafeCast<Json>().toPlayer(),
-            className = props.className.unsafeCast<String?>(),
-            size = props.size.unsafeCast<Int>(),
-            onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+    playerCard {
+        attrs {
+            tribeId = props.tribeId.unsafeCast<String>()
+            player = props.player.unsafeCast<Json>().toPlayer()
+            className = props.className.unsafeCast<String?>()
+            size = props.size.unsafeCast<Int>()
+            onClick = props.onClick.unsafeCast<Function1<Event, Unit>>()
+            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
             disabled = props.disabled.unsafeCast<Boolean?>() ?: false
-    )
+        }
+    }
 }

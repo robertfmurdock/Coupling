@@ -8,7 +8,7 @@ import kotlinx.html.js.onClickFunction
 import loadStyles
 import org.w3c.dom.Node
 import org.w3c.dom.events.Event
-import react.RBuilder
+import react.*
 import react.dom.div
 import react.dom.img
 import styled.StyledDOMBuilder
@@ -22,16 +22,40 @@ private external interface Styles {
 
 private val styles: Styles = loadStyles("PlayerCard")
 
-fun RBuilder.playerCard(
+interface PlayerCardProps : RProps {
+    var tribeId: String
+    var player: Player
+    var disabled: Boolean?
+    var className: String?
+    var size: Int?
+    var onClick: ((Event) -> Unit)?
+    var pathSetter: (String) -> Unit
+}
+
+val playerCard = { props: PlayerCardProps ->
+    buildElement {
+        playerCard(
+                props.tribeId,
+                props.player,
+                props.disabled ?: false,
+                props.className,
+                props.size ?: 100,
+                props.onClick ?: {},
+                props.pathSetter
+        )
+    }
+}.unsafeCast<RClass<PlayerCardProps>>()
+
+private fun RBuilder.playerCard(
         tribeId: String,
         player: Player,
-        disabled: Boolean = false,
+        disabled: Boolean,
         className: String?,
-        size: Int = 100,
-        onClick: (Event) -> Unit,
+        size: Int,
+        onClick: (Event) -> Unit = {},
         pathSetter: (String) -> Unit
-) {
-    styledDiv {
+): ReactElement {
+    return styledDiv {
         attrs {
             classes += setOf(
                     styles.player,
