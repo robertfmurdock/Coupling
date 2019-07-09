@@ -22,6 +22,7 @@ interface Props {
 
 export default function (props: Props) {
     const {coupling, tribeId, playerId} = props;
+    console.log("player id", playerId)
     return <LoadedPairAssignments
         getDataAsync={async function () {
             const [tribe, players] = await Promise.all([

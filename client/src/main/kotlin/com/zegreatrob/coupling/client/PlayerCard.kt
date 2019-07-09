@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.css.*
 import kotlinx.html.DIV
 import kotlinx.html.classes
@@ -24,7 +25,7 @@ private external interface Styles {
 private val styles: Styles = loadStyles("PlayerCard")
 
 data class PlayerCardProps(
-        val tribeId: String,
+        val tribeId: TribeId,
         val player: Player,
         val pathSetter: (String) -> Unit,
         val disabled: Boolean = false,
@@ -33,29 +34,27 @@ data class PlayerCardProps(
         val onClick: ((Event) -> Unit) = {}
 ) : RProps
 
-fun PlayerCardProps.getDisabled(): Boolean = disabled
-fun PlayerCardProps.getSize(): Int = size
-fun PlayerCardProps.getOnClick(): (Event) -> Unit = onClick
-
 val playerCard = rFunction { props: PlayerCardProps ->
-    styledDiv {
-        attrs {
-            classes += setOf(
-                    styles.player,
-                    "react-player-card",
-                    props.className
-            ).filterNotNull()
-            playerCardStyle(props.getSize())
-            onClickFunction = props.getOnClick()
+    with(props) {
+        styledDiv {
+            attrs {
+                classes += setOf(
+                        styles.player,
+                        "react-player-card",
+                        props.className
+                ).filterNotNull()
+                playerCardStyle(size)
+                onClickFunction = onClick
+            }
+            playerGravatarImage(player, size)
+            playerCardHeader(
+                    tribeId = tribeId,
+                    player = player,
+                    size = size,
+                    disabled = disabled,
+                    pathSetter = pathSetter
+            )
         }
-        playerGravatarImage(props.player, props.getSize())
-        playerCardHeader(
-                tribeId = props.tribeId,
-                player = props.player,
-                size = props.getSize(),
-                disabled = props.getDisabled(),
-                pathSetter = props.pathSetter
-        )
     }
 }
 
@@ -89,7 +88,7 @@ fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageUR
 }
 
 fun RBuilder.playerCardHeader(
-        tribeId: String,
+        tribeId: TribeId,
         player: Player,
         size: Int,
         disabled: Boolean,
@@ -114,16 +113,15 @@ fun RBuilder.playerCardHeader(
     }
 }
 
-
 private fun handleNameClick(
-        tribeId: String,
+        tribeId: TribeId,
         player: Player,
         disabled: Boolean,
         pathSetter: (String) -> Unit) = { event: Event ->
     if (!disabled) {
         event.stopPropagation()
 
-        pathSetter("/$tribeId/player/${player.id}/")
+        pathSetter("/${tribeId.value}/player/${player.id}/")
     }
 }
 

@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDisp
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
+import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import org.w3c.dom.events.Event
 import react.buildElements
 import kotlin.js.Json
@@ -70,7 +71,7 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
 @JsName("PlayerCard")
 fun playerCardJs(props: dynamic): dynamic = buildElements {
     element(playerCard, PlayerCardProps(
-            tribeId = props.tribeId.unsafeCast<String>(),
+            tribeId = TribeId(props.tribeId.unsafeCast<String>()),
             player = props.player.unsafeCast<Json>().toPlayer(),
             className = props.className.unsafeCast<String?>(),
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
@@ -84,7 +85,7 @@ fun playerCardJs(props: dynamic): dynamic = buildElements {
 @JsName("PlayerRoster")
 fun playerRosterJs(props: dynamic): dynamic = buildElements {
     element(playerRoster, PlayerRosterProps(
-            tribeId = props.tribeId.unsafeCast<String>(),
+            tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
             players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
             label = props.label.unsafeCast<String?>(),
             className = props.className.unsafeCast<String?>(),
