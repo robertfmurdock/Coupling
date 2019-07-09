@@ -30,7 +30,7 @@ val playerRoster = rFunction { props: PlayerRosterProps ->
                 }
                 renderPlayers(props)
             }
-            a(href = "/$tribeId/player/new/", classes = "large orange button") {
+            a(href = "/${tribeId.value}/player/new/", classes = "large orange button") {
                 attrs {
                     id = "add-player-button"
                 }
