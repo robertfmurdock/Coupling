@@ -2,41 +2,54 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.player.Player
 import kotlinx.html.classes
+import kotlinx.html.id
 import react.RBuilder
 import react.RProps
+import react.dom.a
 import react.dom.div
-import react.key
 
 
-external interface PlayerRosterProps : RProps {
-    var label: String?
-    var players: List<Player>
-    var tribeId: String
-    var pathSetter: (String) -> Unit
-    var className: String?
-}
+data class PlayerRosterProps(
+        val label: String?,
+        val players: List<Player>,
+        val tribeId: String,
+        val pathSetter: (String) -> Unit,
+        val className: String?
+) : RProps
 
 val playerRoster = rFunction { props: PlayerRosterProps ->
     div {
         attrs {
             classes = setOf("react-player-roster", props.className ?: "")
         }
-        div(classes = "roster-header") {
-            +(props.label ?: "Players")
+        div {
+            div(classes = "roster-header") {
+                +(props.label ?: "Players")
+            }
+            renderPlayers(props)
         }
-        renderPlayers(props)
+        a(href = "/${props.tribeId}/player/new/", classes = "large orange button") {
+            attrs {
+                id = "add-player-button"
+            }
+
+            +"Add a new player!"
+        }
     }
 }
 
 private fun RBuilder.renderPlayers(props: PlayerRosterProps) {
     props.players.forEach { player ->
-        playerCard {
+        child(
+                type = playerCard,
+                props = PlayerCardProps(
+                        tribeId = props.tribeId,
+                        player = player,
+                        className = null,
+                        pathSetter = props.pathSetter
+                )) {
             attrs {
-                this.key = player.id ?: ""
-                this.tribeId = props.tribeId
-                this.player = player
-                this.pathSetter = props.pathSetter
-                this.disabled = false
+                key = player.id ?: ""
             }
         }
     }

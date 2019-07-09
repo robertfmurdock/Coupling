@@ -23,21 +23,24 @@ private external interface Styles {
 
 private val styles: Styles = loadStyles("PlayerCard")
 
-external interface PlayerCardProps : RProps {
-    var tribeId: String
-    var player: Player
-    var disabled: Boolean?
-    var className: String?
-    var size: Int?
-    var onClick: ((Event) -> Unit)?
-    var pathSetter: (String) -> Unit
-}
+data class PlayerCardProps(
+        val tribeId: String,
+        val player: Player,
+        val pathSetter: (String) -> Unit,
+        val disabled: Boolean = false,
+        val className: String? = null,
+        val size: Int = 100,
+        val onClick: ((Event) -> Unit) = {}
+) : RProps
 
-fun PlayerCardProps.getDisabled(): Boolean = disabled ?: false
-fun PlayerCardProps.getSize(): Int = size ?: 100
-fun PlayerCardProps.getOnClick(): (Event) -> Unit = onClick ?: {}
+fun PlayerCardProps.getDisabled(): Boolean = disabled
+fun PlayerCardProps.getSize(): Int = size
+fun PlayerCardProps.getOnClick(): (Event) -> Unit = onClick
 
 val playerCard = rFunction { props: PlayerCardProps ->
+
+    console.log(props)
+    console.log(props.player)
     styledDiv {
         attrs {
             classes += setOf(

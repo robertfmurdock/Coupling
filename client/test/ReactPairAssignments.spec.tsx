@@ -4,6 +4,7 @@ import * as React from "react";
 import {ReactPairAssignments} from "../app/components/pair-assignments/ReactPairAssignments";
 import {path} from "d3-path";
 import {Player} from "../../common";
+import PlayerRoster from "../app/components/player-roster/ReactPlayerRoster";
 
 const defer = function () {
     const defer = {
@@ -56,7 +57,7 @@ describe('ReactPairAssignments', function () {
             pathSetter={() => undefined}
         />);
 
-        let rosterWrapper = wrapper.find('ReactPlayerRoster');
+        let rosterWrapper = wrapper.find(PlayerRoster);
 
         expect(rosterWrapper.props().players).toEqual([
             {name: 'rigby', _id: '1'},
@@ -82,7 +83,7 @@ describe('ReactPairAssignments', function () {
             coupling={Coupling}
             pathSetter={() => undefined}
         />);
-        let rosterWrapper = wrapper.find('ReactPlayerRoster');
+        let rosterWrapper = wrapper.find(PlayerRoster);
 
         expect(rosterWrapper.props().players).toEqual(players);
     });
