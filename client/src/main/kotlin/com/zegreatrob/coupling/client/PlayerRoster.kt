@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import kotlinx.html.classes
 import kotlinx.html.id
 import react.RBuilder
+import react.RClass
+import react.RHandler
 import react.RProps
 import react.dom.a
 import react.dom.div
@@ -40,14 +42,15 @@ val playerRoster = rFunction { props: PlayerRosterProps ->
 
 private fun RBuilder.renderPlayers(props: PlayerRosterProps) {
     props.players.forEach { player ->
-        child(
-                type = playerCard,
-                props = PlayerCardProps(
+        element(
+                playerCard,
+                PlayerCardProps(
                         tribeId = props.tribeId,
                         player = player,
                         className = null,
                         pathSetter = props.pathSetter
-                )) {
+                )
+        ) {
             attrs {
                 key = player.id ?: ""
             }

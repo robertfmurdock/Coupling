@@ -1,6 +1,4 @@
 import * as express from "express";
-// @ts-ignore
-import {commandDispatcher} from "server"
 import {handleRequest} from "./route-helper";
 
 class PlayerRoutes {

@@ -20,3 +20,11 @@ fun <T : RProps> rFunction(handler: RBuilder.(props: T) -> Unit) = { props: T ->
         handler(props)
     }
 }.unsafeCast<RClass<T>>()
+
+fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, handler: RHandler<P> = {}) {
+    child(
+            type = clazz,
+            props = props,
+            handler = handler
+    )
+}

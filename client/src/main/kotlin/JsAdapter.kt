@@ -69,7 +69,7 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
 @Suppress("unused")
 @JsName("PlayerCard")
 fun playerCardJs(props: dynamic): dynamic = buildElements {
-    child(playerCard, PlayerCardProps(
+    element(playerCard, PlayerCardProps(
             tribeId = props.tribeId.unsafeCast<String>(),
             player = props.player.unsafeCast<Json>().toPlayer(),
             className = props.className.unsafeCast<String?>(),
@@ -77,19 +77,17 @@ fun playerCardJs(props: dynamic): dynamic = buildElements {
             size = props.size.unsafeCast<Int>(),
             onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
             disabled = props.disabled.unsafeCast<Boolean?>() ?: false
-    )) {
-    }
+    ))
 }
 
 @Suppress("unused")
 @JsName("PlayerRoster")
 fun playerRosterJs(props: dynamic): dynamic = buildElements {
-    child(playerRoster, PlayerRosterProps(
+    element(playerRoster, PlayerRosterProps(
             tribeId = props.tribeId.unsafeCast<String>(),
             players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
             label = props.label.unsafeCast<String?>(),
             className = props.className.unsafeCast<String?>(),
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-    )) {
-    }
+    ))
 }
