@@ -1,36 +1,42 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.html.classes
 import react.RBuilder
+import react.RProps
 import react.dom.div
 import react.key
 
-fun RBuilder.playerRoster(
-        label: String?,
-        players: List<Player>,
-        tribeId: TribeId,
-        pathSetter: (String) -> Unit,
-        className: String?
-) {
+
+external interface PlayerRosterProps : RProps {
+    var label: String?
+    var players: List<Player>
+    var tribeId: String
+    var pathSetter: (String) -> Unit
+    var className: String?
+}
+
+val playerRoster = rFunction { props: PlayerRosterProps ->
     div {
         attrs {
-            classes = setOf("react-player-roster", className ?: "")
+            classes = setOf("react-player-roster", props.className ?: "")
         }
         div(classes = "roster-header") {
-            +(label ?: "Players")
+            +(props.label ?: "Players")
         }
+        renderPlayers(props)
+    }
+}
 
-        players.forEach { player ->
-            playerCard {
-                attrs {
-                    this.key = player.id ?: ""
-                    this.tribeId = tribeId.value
-                    this.player = player
-                    this.pathSetter = pathSetter
-                    this.disabled = false
-                }
+private fun RBuilder.renderPlayers(props: PlayerRosterProps) {
+    props.players.forEach { player ->
+        playerCard {
+            attrs {
+                this.key = player.id ?: ""
+                this.tribeId = props.tribeId
+                this.player = player
+                this.pathSetter = props.pathSetter
+                this.disabled = false
             }
         }
     }

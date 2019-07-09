@@ -3,6 +3,9 @@ import * as classNames from 'classnames'
 import ReactPlayerCard from "../player-card/ReactPlayerCard";
 import Player from "../../../../common/Player";
 
+// @ts-ignore
+import {PlayerCard} from 'client'
+
 interface Props {
     label?: string,
     players: Player[],

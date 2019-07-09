@@ -67,7 +67,8 @@ tasks {
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
                 "client.GravatarImage",
-                "client.PlayerCard"
+                "client.PlayerCard",
+                "client.PlayerRoster"
         )
     }
 
