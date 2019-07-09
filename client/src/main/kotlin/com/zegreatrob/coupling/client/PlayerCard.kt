@@ -38,9 +38,6 @@ fun PlayerCardProps.getSize(): Int = size
 fun PlayerCardProps.getOnClick(): (Event) -> Unit = onClick
 
 val playerCard = rFunction { props: PlayerCardProps ->
-
-    console.log(props)
-    console.log(props.player)
     styledDiv {
         attrs {
             classes += setOf(

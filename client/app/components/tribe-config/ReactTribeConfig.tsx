@@ -33,7 +33,7 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
                             id={"tribe-name"}
                             type={"text"}
                             name="name"
-                            value={tribe.name}
+                            value={tribe.name || ''}
                             placeholder={"Enter the tribe name here"}
                             onChange={handleChange}
                         />
@@ -45,7 +45,7 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
                             id={"tribe-email"}
                             type={"text"}
                             name="email"
-                            value={tribe.email}
+                            value={tribe.email || ''}
                             placeholder={"Enter the tribe email here"}
                             onChange={handleChange}
                         />
@@ -59,7 +59,7 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
                                     id={"tribe-id"}
                                     type={"text"}
                                     name="id"
-                                    value={tribe.id}
+                                    value={tribe.id || ''}
                                     onChange={handleChange}
                                 />
                             </li>
@@ -93,7 +93,7 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
                             id={"default-badge-name"}
                             type={"text"}
                             name="defaultBadgeName"
-                            value={tribe.defaultBadgeName}
+                            value={tribe.defaultBadgeName || ''}
                             onChange={handleChange}
                         />
                         <span>The first badge a player can be given. When badges are enabled, existing players default to having this badge.</span>
@@ -104,7 +104,7 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
                             id={"alt-badge-name"}
                             type={"text"}
                             name="alternateBadgeName"
-                            value={tribe.alternateBadgeName}
+                            value={tribe.alternateBadgeName || ''}
                             onChange={handleChange}
                         />
                         <span>The other badge a player can be given. A player can only have one badge at a time.</span>
