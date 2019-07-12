@@ -5,6 +5,7 @@ import {ReactPairAssignments} from "../app/components/pair-assignments/ReactPair
 import {path} from "d3-path";
 import {Player} from "../../common";
 import PlayerRoster from "../app/components/player-roster/ReactPlayerRoster";
+import ServerMessage from "../app/components/server-message/ReactServerMessage";
 
 const defer = function () {
     const defer = {
@@ -241,7 +242,7 @@ describe('ReactPairAssignments', function () {
             pathSetter={pathSetter}
         />);
 
-        const serverMessage = wrapper.find('ReactServerMessage');
+        const serverMessage = wrapper.find(ServerMessage);
 
         expect(serverMessage.props().tribeId).toEqual(selectedTribe.id);
     });
