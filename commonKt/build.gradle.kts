@@ -41,7 +41,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:1.6.26")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.9.8")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.9.9.1")
             }
         }
 
@@ -52,8 +52,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
-                implementation("org.junit.jupiter:junit-jupiter-api:5.4.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.4.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.5.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.5.0")
             }
         }
 
