@@ -4,10 +4,16 @@ import kotlinx.html.classes
 import react.RBuilder
 import react.dom.img
 
-private val gravatarUrl: dynamic = js("require('../../../app/components/player-card/GravatarHelper').gravatarUrl")
+@JsModule("blueimp-md5")
+@JsNonModule
+external val md5: dynamic
 
-external interface GravatarOptions {
-    @Suppress("unused")
+fun gravatarUrl(email: String?, options: GravatarOptions): String {
+    val codedEmail = md5(email?.toLowerCase()?.trim())
+    return "https://www.gravatar.com/avatar/$codedEmail?default=${options.default}&s=${options.size}"
+}
+
+interface GravatarOptions {
     val default: String
     val size: Int
 }
