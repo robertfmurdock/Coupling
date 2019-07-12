@@ -1,7 +1,6 @@
+
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
-import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 import java.io.FileOutputStream
@@ -26,19 +25,14 @@ dependencies {
     implementation("com.soywiz:klock:1.1.1")
     implementation("io.github.microutils:kotlin-logging-js:1.6.26")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.78-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.9-kotlin-1.2.20")
     implementation("org.jetbrains:kotlin-css:1.0.0-pre.78-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-styled:1.0.0-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react:1.0.1-pre.78-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react-dom:1.0.1-pre.78-kotlin-1.3.41")
-
+    implementation("org.jetbrains:kotlin-react:16.6.0-pre.77-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.77-kotlin-1.3.41")
 
     testImplementation(project(":test-logging"))
-    testImplementation("org.jetbrains.kotlin:kotlin-test-common")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-js")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
     testImplementation("com.zegreatrob.testmints:standard:+")
-    testImplementation("com.zegreatrob.testmints:minassert:+")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
@@ -65,16 +59,6 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
-    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        inputs.files(compileKotlin2Js.inputs.files)
-        dependsOn(":engine:assemble", ":test-logging:assemble")
-
-        forEachJsTarget(project).let { (main, test) ->
-            customCompileConfiguration = main
-            customTestCompileConfiguration = test
-        }
-    }
-
     val runDceKotlinJs by getting(KotlinJsDce::class) {
         keep(
                 "commonKt.historyFromArray",
@@ -84,8 +68,7 @@ tasks {
                 "client.commandDispatcher",
                 "client.GravatarImage",
                 "client.PlayerCard",
-                "client.PlayerRoster",
-                "client.ServerMessage"
+                "client.PlayerRoster"
         )
     }
 
@@ -127,14 +110,7 @@ tasks {
     }
 
     val karma by creating(YarnTask::class) {
-        dependsOn(
-                yarn,
-                vendorCompile,
-                ":commonKt:jsTest",
-                compileTestKotlin2Js,
-                runDceTestKotlinJs,
-                unpackJsGradleDependencies
-        )
+        dependsOn(yarn, vendorCompile, ":commonKt:jsTest", runDceTestKotlinJs)
         inputs.file(file("package.json"))
         inputs.files(vendorCompile.inputs.files)
         inputs.dir("test")
