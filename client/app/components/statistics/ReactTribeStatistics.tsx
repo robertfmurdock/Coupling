@@ -54,20 +54,22 @@ export function PairReportTable(props: { pairReports, tribe }) {
     const {pairReports, tribe} = props;
     return <div className={Styles.pairReportTable}>
         {
-            pairReports.map(report =>
-                <div key={report._id} className={classNames(Styles.pairReport, 'react-pair-report')}>
+            pairReports.map((report, index) =>
+                <div key={index} className={classNames(Styles.pairReport, 'react-pair-report')}>
                     {
                         report.pair.map(player =>
                             <div key={player._id} className={Styles.playerCard}>
-                                <ReactPlayerCard player={player} tribeId={tribe.id} size={50} />
-                            </div>)
+                                <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
+                            </div>
+                        )
                     }
                     <div className={Styles.pairStatistics}>
                         <div className={Styles.statsHeader}>Stats</div>
                         <span className={Styles.statLabel}>Spins since last paired:</span>
                         <span className={"time-since-last-pairing"}>{report.timeSinceLastPaired}</span>
                     </div>
-                </div>)
+                </div>
+            )
         }
     </div>;
 }

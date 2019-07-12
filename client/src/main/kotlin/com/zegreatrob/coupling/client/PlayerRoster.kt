@@ -9,7 +9,6 @@ import react.RProps
 import react.dom.a
 import react.dom.div
 
-
 data class PlayerRosterProps(
         val label: String?,
         val players: List<Player>,

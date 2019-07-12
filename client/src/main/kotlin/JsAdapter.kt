@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -90,5 +91,14 @@ fun playerRosterJs(props: dynamic): dynamic = buildElements {
             label = props.label.unsafeCast<String?>(),
             className = props.className.unsafeCast<String?>(),
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+    ))
+}
+
+@Suppress("unused")
+@JsName("ServerMessage")
+fun serverMessageJs(props: dynamic): dynamic = buildElements {
+    element(serverMessage, ServerMessageProps(
+            tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
+            useSsl = props.useSsl.unsafeCast<Boolean>()
     ))
 }
