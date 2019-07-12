@@ -41,5 +41,5 @@ private fun myGravatarUrl(options: GravatarOptions, email: String?, fallback: St
         if (email == null && fallback != null) {
             fallback
         } else {
-            gravatarUrl(email, options) as String
+            gravatarUrl(email, options)
         }
