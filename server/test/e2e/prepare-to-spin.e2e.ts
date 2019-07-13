@@ -4,6 +4,7 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
+import {PlayerCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -71,7 +72,7 @@ describe('The prepare to spin page', function () {
     describe('with no history', function () {
 
         it('will show all the players ', function () {
-            const playerElements = element.all(By.css('.react-player-card'));
+            const playerElements = element.all(By.className(PlayerCardStyles.player));
             expect(playerElements.getText()).toEqual(pluck('name', players));
         });
 
@@ -84,7 +85,7 @@ describe('The prepare to spin page', function () {
         });
 
         it('spinning with two players disabled will only yield one pair and then saving persists the pair', async function () {
-            const playerElements = element.all(By.css('.react-player-card'));
+            const playerElements = element.all(By.className(PlayerCardStyles.player));
             expect(playerElements.count()).toEqual(5);
 
             playerElements.get(0).element(By.css('.player-icon')).click();
@@ -97,7 +98,7 @@ describe('The prepare to spin page', function () {
             const pairs = element.all(By.css('.pair'));
             expect(pairs.count()).toEqual(1);
 
-            const players = element.all(By.css('.react-player-roster .react-player-card'));
+            const players = element.all(By.css(`.react-player-roster .${PlayerCardStyles.player}`));
             expect(players.count()).toEqual(3);
 
             const saveButton = element(By.id('save-button'));

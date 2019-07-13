@@ -40,7 +40,6 @@ val playerCard = rFunction { props: PlayerCardProps ->
             attrs {
                 classes += setOf(
                         styles.player,
-                        "react-player-card",
                         props.className
                 ).filterNotNull()
                 playerCardStyle(size)

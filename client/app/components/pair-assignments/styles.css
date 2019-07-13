@@ -9,6 +9,10 @@
     border-radius: 82px;
 }
 
+:local(.playerCard) {
+
+}
+
 .pair-assignments-header {
     display: inline-block;
     font-size: 28px;
@@ -42,10 +46,18 @@
     background-color: orange;
 }
 
-.pair-assignments .react-player-card {
+.pair-assignments :local(.playerCard) {
     display: inline-block;
     overflow: hidden;
 }
+
+.pair-assignments :local(.playerCard).hoverzoom:hover {
+    transition: all ease-in 0.4s;
+    z-index: 1;
+    animation: 0.5s twitch;
+    animation-iteration-count: infinite;
+}
+
 
 :local(.unpairedPlayerRoster) {
     display: inline-block;

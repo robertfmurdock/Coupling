@@ -10,12 +10,18 @@ config.entry = {
 
 config.module.rules.push({
   test: /\.(css)$/,
-  loader: 'css-loader?' + JSON.stringify({minimize: true}),
+  loader: 'css-loader',
   options: {
     modules: {
-      context: path.resolve(__dirname, '../../../client/')
-    }
+      context: path.resolve(__dirname, '../../../client/'),
+    },
+    onlyLocals: true,
   }
+});
+
+config.module.rules.push({
+  test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
+  loader: 'url-loader?limit=100000'
 });
 
 config.output = {

@@ -5,6 +5,7 @@ import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
+import {PlayerCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -17,7 +18,8 @@ const pluck = require('ramda/src/pluck');
 
 const tribeCardHeaderElement = element(By.className("tribe-card-header"));
 const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
-const unpairedPlayerElements = element.all(By.css('.react-player-roster .react-player-card'));
+
+const unpairedPlayerElements = element.all(By.css(`.react-player-roster .${PlayerCardStyles.player}`));
 
 function waitForCurrentPairAssignmentPage() {
     browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
@@ -174,9 +176,9 @@ describe('The current pair assignments', function () {
 
         it('the most recent pairs are shown', function () {
             const pairElements = element.all(By.css('.pair'));
-            const firstPair = pairElements.get(0).all(By.css('.react-player-card'));
+            const firstPair = pairElements.get(0).all(By.className(PlayerCardStyles.player));
             expect(firstPair.getText()).toEqual(pluck('name', [player1, player3]));
-            const secondPair = pairElements.get(1).all(By.css('.react-player-card'));
+            const secondPair = pairElements.get(1).all(By.className(PlayerCardStyles.player));
             expect(secondPair.getText()).toEqual(pluck('name', [player5]));
         });
 

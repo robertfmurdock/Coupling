@@ -1,0 +1,1 @@
+export const PlayerCardStyles = require("../../../../client/build/resources/main/com/zegreatrob/coupling/client/PlayerCard.css");

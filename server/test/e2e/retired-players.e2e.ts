@@ -3,6 +3,7 @@ import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import setLocation from "./setLocation";
+import {PlayerCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -60,7 +61,7 @@ describe('The retired players page', function () {
     });
 
     it('shows the retired players', async function () {
-        const playerElements = element.all(By.css('.react-player-card'));
+        const playerElements = element.all(By.className(PlayerCardStyles.player));
         expect(playerElements.getText()).toEqual(pluck('name', retiredPlayers));
     });
 

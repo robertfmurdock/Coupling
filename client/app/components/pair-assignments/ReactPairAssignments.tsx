@@ -86,10 +86,12 @@ function DraggablePlayer(props: {
             player={player}
             tribeId={tribe.id}
             disabled={false}
-            className={classNames({
-                hoverzoom: !pairAssignments._id,
-                'on-drag-hover': isOver
-            })}
+            className={classNames(
+                Styles.playerCard,
+                {
+                    hoverzoom: !pairAssignments._id,
+                    'on-drag-hover': isOver
+                })}
         />
     </div>;
 }
