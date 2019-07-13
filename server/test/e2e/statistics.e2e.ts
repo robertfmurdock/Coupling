@@ -4,6 +4,7 @@ import * as monk from "monk";
 import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
 import StatisticsPage from "./page-objects/StatisticsPage";
+import {TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const database = monk.default(config.tempMongoUrl);
@@ -26,7 +27,7 @@ describe('The statistics page', function () {
         {_id: monk.id(), tribe: tribe.id},
     ];
 
-    const tribeCardHeaderElement = element(By.className("tribe-card-header"));
+    const tribeCardHeaderElement = element(By.className(TribeCardStyles.header));
 
     beforeAll(async function () {
         await TestLogin.login();

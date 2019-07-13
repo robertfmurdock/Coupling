@@ -3,7 +3,7 @@ import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import setLocation from "./setLocation";
-import {PlayerCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -66,7 +66,7 @@ describe('The retired players page', function () {
     });
 
     it('has a tribe card', function () {
-        const tribeCardHeaderElement = element(By.className("tribe-card-header"));
+        const tribeCardHeaderElement = element(By.className(TribeCardStyles.header));
         expect(tribeCardHeaderElement.getText()).toEqual(tribe.name);
     });
 

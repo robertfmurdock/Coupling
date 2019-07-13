@@ -6,9 +6,10 @@ import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
 import TribeConfigPage from "./page-objects/TribeConfigPage";
 import TribeListPage from "./page-objects/TribeListPage";
+import {TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
-const hostName = 'http://' + config.publicHost + ':' + config.port;
+const hostName = `http://${config.publicHost}:${config.port}`;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 
@@ -53,8 +54,8 @@ describe('The edit tribe page', function () {
             await TestLogin.login();
             await TribeListPage.goTo();
 
-            const tribeElements = element.all(By.className('tribe-card'));
-            tribeElements.first().element(By.className("tribe-card-header")).click();
+            const tribeElements = element.all(By.className(TribeCardStyles.className));
+            tribeElements.first().element(By.className(TribeCardStyles.header)).click();
 
             expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
             await TribeConfigPage.waitForPage();
@@ -91,8 +92,8 @@ describe('The edit tribe page', function () {
             await TestLogin.login();
             await TribeListPage.goTo();
 
-            const tribeElements = element.all(By.className('tribe-card'));
-            tribeElements.first().element(By.className("tribe-card-header")).click();
+            const tribeElements = element.all(By.className(TribeCardStyles.className));
+            tribeElements.first().element(By.className(TribeCardStyles.header)).click();
 
             await TribeConfigPage.waitForPage();
             await expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');

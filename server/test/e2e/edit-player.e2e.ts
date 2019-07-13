@@ -8,7 +8,7 @@ import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
 import PlayerConfigPage from "./PlayerConfigPage";
 import TestLogin from "./TestLogin";
-import {PlayerCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -19,7 +19,7 @@ const defaultBadgeRadio = element(By.css('#default-badge-radio'));
 const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
 
-const tribeCardElement = element(By.className("tribe-card"));
+const tribeCardElement = element(By.className(TribeCardStyles.className));
 const deleteButton = element(By.className('delete-button'));
 const savePlayerButton = element(By.id('save-player-button'));
 
@@ -184,7 +184,7 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/player/${player1._id}/`);
         element(By.id('player-name')).clear();
         element(By.id('player-name')).sendKeys('completely different name');
-        element(By.css(`.tribe-card img`)).click();
+        element(By.css(`.${TribeCardStyles.className} img`)).click();
         await browser.wait(() => browser.switchTo().alert().then(() => true, () => false), 5000);
 
         const alertDialog = await browser.switchTo().alert();
