@@ -24,6 +24,7 @@ const pairingRules = [
 
 export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, pathSetter }) {
     const {tribe, isNew, handleChange, pathSetter} = props;
+
     return <div>
             <span>
                 <ul className={Styles.editor}>
@@ -130,13 +131,16 @@ export function TribeForm(props: { tribe: Tribe, isNew: boolean, handleChange, p
 
 export default function ReactTribeConfig(props: Props) {
     const {pathSetter, coupling} = props;
+
     const tribe = defaults(props.tribe, {
+        id: '',
         name: 'New Tribe',
         pairingRule: PairingRule.LongestTime,
         defaultBadgeName: 'Default',
         alternateBadgeName: 'Alternate',
     });
-    const isNew = !tribe.id;
+    const isNew = tribe.id === '';
+
     const [values, setValues] = useState(tribe);
     const updatedTribe = defaults(values, tribe);
 

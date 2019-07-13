@@ -6,8 +6,9 @@ import Tribe from "../../common/Tribe";
 import Player from "../../common/Player";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
 import {NEVER_PAIRED} from "../../common/PairingTimeCalculator";
-import ReactTribeStatistics, {TeamStatistics} from "../app/components/statistics/ReactTribeStatistics";
+import ReactTribeStatistics, {PairReportTable, TeamStatistics} from "../app/components/statistics/ReactTribeStatistics";
 import PlayerHeatmap from "../app/components/statistics/PlayersHeatmap";
+import TribeCard from "../app/components/tribe-card/ReactTribeCard";
 
 describe('ReactTribeStatistics', function () {
 
@@ -20,7 +21,7 @@ describe('ReactTribeStatistics', function () {
     it('will show a tribe card', function () {
         const tribe: Tribe = {id: '1', name: 'Super'};
         const wrapper = buildWrapper(tribe, [], []);
-        const tribeCard = wrapper.find(`ReactTribeCard`);
+        const tribeCard = wrapper.find(TribeCard);
         expect(tribeCard.props().tribe).toBe(tribe);
     });
 
@@ -44,7 +45,7 @@ describe('ReactTribeStatistics', function () {
 
         it('ordered by longest time since last paired', function () {
             this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-            const pairElements = this.wrapper.find(`PairReportTable`);
+            const pairElements = this.wrapper.find(PairReportTable);
             let pairReports = pairElements.props().pairReports;
             let numberOfElements = pairReports.length;
 
@@ -70,7 +71,7 @@ describe('ReactTribeStatistics', function () {
 
         it('with the time since that pair last occurred', function () {
             this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-            const pairReportTableWrapper = this.wrapper.find(`PairReportTable`);
+            const pairReportTableWrapper = this.wrapper.find(PairReportTable);
             let pairReports = pairReportTableWrapper.props().pairReports;
             const timeValues = pairReports.map(report => report.timeSinceLastPaired);
             expect(timeValues).toEqual([
@@ -100,7 +101,7 @@ describe('ReactTribeStatistics', function () {
         }];
 
         this.wrapper = buildWrapper(this.tribe, this.players, this.history);
-        const heatmapElement = this.wrapper.find("PlayerHeatmap");
+        const heatmapElement = this.wrapper.find(PlayerHeatmap);
 
         expect(heatmapElement.props().heatmapData).toEqual([
             [null, 1, 0, 0],
@@ -121,7 +122,7 @@ describe('ReactTribeStatistics', function () {
 
         this.wrapper = buildWrapper(this.tribe, this.players, []);
 
-        const teamStatisticsWrapper = this.wrapper.find('TeamStatistics');
+        const teamStatisticsWrapper = this.wrapper.find(TeamStatistics);
         expect(teamStatisticsWrapper.props().activePlayerCount).toBe(4);
     });
 
@@ -135,7 +136,7 @@ describe('ReactTribeStatistics', function () {
         ];
 
         const wrapper = buildWrapper(tribe, players, []);
-        const teamStatisticsWrapper = wrapper.find('TeamStatistics');
+        const teamStatisticsWrapper = wrapper.find(TeamStatistics);
         expect(teamStatisticsWrapper.props().spinsUntilFullRotation).toBe(3);
     });
 
@@ -161,7 +162,7 @@ describe('ReactTribeStatistics', function () {
             },
         ];
         const wrapper = buildWrapper(this.tribe, this.players, this.history);
-        const teamStatisticsWrapper = wrapper.find('TeamStatistics');
+        const teamStatisticsWrapper = wrapper.find(TeamStatistics);
         expect(teamStatisticsWrapper.props().medianSpinDuration).toBe('2 days');
     });
 });

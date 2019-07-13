@@ -83,6 +83,7 @@ tasks {
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
                 "client.GravatarImage",
+                "client.TribeCard",
                 "client.PlayerCard",
                 "client.PlayerRoster",
                 "client.ServerMessage"

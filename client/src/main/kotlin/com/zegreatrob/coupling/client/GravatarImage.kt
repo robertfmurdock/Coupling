@@ -21,7 +21,7 @@ interface GravatarOptions {
 fun RBuilder.gravatarImage(
         email: String?,
         fallback: String? = null,
-        className: String?,
+        className: String? = null,
         alt: String?,
         options: GravatarOptions
 ) = img(

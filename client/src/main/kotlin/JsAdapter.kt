@@ -69,6 +69,16 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
 }
 
 @Suppress("unused")
+@JsName("TribeCard")
+fun tribeCardJs(props: dynamic): dynamic = buildElements {
+    element(tribeCard, TribeCardProps(
+            tribe = props.tribe.unsafeCast<Json>().toTribe(),
+            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+            size = props.size.unsafeCast<Int?>() ?: 150
+    ))
+}
+
+@Suppress("unused")
 @JsName("PlayerCard")
 fun playerCardJs(props: dynamic): dynamic = buildElements {
     element(playerCard, PlayerCardProps(

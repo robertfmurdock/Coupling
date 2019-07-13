@@ -17,12 +17,12 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-private external interface Styles {
+private external interface PlayerCardStyles {
     var player: String
     var header: String
 }
 
-private val styles: Styles = loadStyles("PlayerCard")
+private val styles: PlayerCardStyles = loadStyles("PlayerCard")
 
 data class PlayerCardProps(
         val tribeId: TribeId,

@@ -19,6 +19,6 @@ export default function (props: Props) {
             {...props}
         />
     } else {
-        return <ReactTribeConfig {...props} />
+        return <LoadedTribeConfig {...props} />
     }
 }
