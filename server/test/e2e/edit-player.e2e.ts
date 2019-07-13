@@ -100,7 +100,7 @@ describe('The edit player page', function () {
         beforeEach(async function () {
             const tribeClone: Tribe = clone(tribe);
             tribeClone.badgesEnabled = false;
-            await tribeCollection.update({_id: tribe._id}, tribeClone)
+            await tribeCollection.update({_id: tribe._id}, {$set: tribeClone})
         });
 
         it('should not show the badge selector', async function () {
@@ -118,7 +118,7 @@ describe('The edit player page', function () {
             tribeClone.badgesEnabled = true;
             tribeClone.defaultBadgeName = "Badge 1";
             tribeClone.alternateBadgeName = "Badge 2";
-            await tribeCollection.update({_id: tribe._id}, tribeClone)
+            await tribeCollection.update({_id: tribe._id}, {$set: tribeClone})
         });
 
         it('should show the badge selector', async function () {
@@ -157,7 +157,7 @@ describe('The edit player page', function () {
         beforeAll(async function () {
             const tribeClone: Tribe = clone(tribe);
             tribeClone.callSignsEnabled = true;
-            await tribeCollection.update({_id: tribe._id}, tribeClone)
+            await tribeCollection.update({_id: tribe._id}, {$set: tribeClone})
         });
 
         it(`should allow entry of adjective and noun, and retain them`, async function () {
@@ -289,7 +289,7 @@ describe('The new player page', function () {
         beforeAll(async function () {
             const tribeClone: Tribe = clone(tribe);
             tribeClone.callSignsEnabled = true;
-            await tribeCollection.update({_id: tribe._id}, tribeClone)
+            await tribeCollection.update({_id: tribe._id}, {$set: tribeClone})
         });
 
         it(`will suggest call sign`, async function () {

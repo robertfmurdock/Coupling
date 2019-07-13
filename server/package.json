@@ -22,8 +22,8 @@
     "google-auth-library": "^4.2.5",
     "method-override": "^3.0.0",
     "mongodb": "^3.2.7",
-    "monk": "^6.0.6",
-    "npm-check-updates": "^3.1.15",
+    "monk": "^7.0.0",
+    "npm-check-updates": "^3.1.18",
     "on-finished": "^2.3.0",
     "passport": "^0.4.0",
     "passport-azure-ad": "^4.1.0",
@@ -33,7 +33,7 @@
     "ramda": "^0.26.1",
     "serve-favicon": "^2.5.0",
     "source-map-loader": "^0.2.4",
-    "ws": "^7.0.1"
+    "ws": "^7.1.0"
   },
   "devDependencies": {
     "@types/es6-shim": "^0.31.39",
@@ -58,9 +58,9 @@
     "supertest": "^4.0.2",
     "text-loader": "0.0.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.5.2",
+    "typescript": "^3.5.3",
     "url-loader": "^2.0.1",
-    "webpack": "^4.35.2",
+    "webpack": "^4.35.3",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.5",
     "webpack-node-externals": "^1.7.2"
