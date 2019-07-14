@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.common.*
@@ -9,7 +8,6 @@ import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import org.w3c.dom.events.Event
-import react.buildElements
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -82,7 +80,7 @@ fun tribeCardJs(props: dynamic): dynamic = buildElements {
 @Suppress("unused")
 @JsName("TribeList")
 fun tribeListJs(props: dynamic): dynamic = buildElements {
-    element(tribeList, TribeListProps(
+    tribeList(TribeListProps(
             tribes = props.tribes.unsafeCast<Array<Json>>().map { it.toTribe() },
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
     ))
