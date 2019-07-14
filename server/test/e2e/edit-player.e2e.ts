@@ -48,7 +48,7 @@ describe('The edit player page', function () {
         await browser.wait(() => savePlayerButton.isEnabled().then(value => value, () => false), 1000, 'wait for enable');
 
         await browser.wait(async () => {
-            let currentValue = await element.all(By.css('.player-roster .player-card-header')).first().getText();
+            let currentValue = await element.all(By.css(`.player-roster .${PlayerCardStyles.header}`)).first().getText();
             return currentValue === expectedName;
         }, 100);
     }
@@ -232,7 +232,7 @@ describe('The edit player page', function () {
         expect(browser.getCurrentUrl()).toBe(`${hostName}/${tribe.id}/pairAssignments/current/`);
 
         await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
-        expect(element(By.css('.player-card-header')).getText()).toBe('Unknown')
+        expect(element(By.className(PlayerCardStyles.header)).getText()).toBe('Unknown')
     });
 
     it('will show all players', async function () {

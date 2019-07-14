@@ -88,9 +88,9 @@ describe('The prepare to spin page', function () {
             const playerElements = element.all(By.className(PlayerCardStyles.player));
             expect(playerElements.count()).toEqual(5);
 
-            playerElements.get(0).element(By.css('.player-icon')).click();
-            playerElements.get(2).element(By.css('.player-icon')).click();
-            playerElements.get(3).element(By.css('.player-icon')).click();
+            playerElements.get(0).element(By.className(PlayerCardStyles.playerIcon)).click();
+            playerElements.get(2).element(By.className(PlayerCardStyles.playerIcon)).click();
+            playerElements.get(3).element(By.className(PlayerCardStyles.playerIcon)).click();
 
             spinButton.click();
             waitForCurrentPairAssignmentPage();

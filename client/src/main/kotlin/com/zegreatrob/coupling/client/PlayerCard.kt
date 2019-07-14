@@ -18,8 +18,9 @@ import styled.css
 import styled.styledDiv
 
 private external interface PlayerCardStyles {
-    var player: String
-    var header: String
+    val player: String
+    val header: String
+    val playerIcon: String
 }
 
 private val styles: PlayerCardStyles = loadStyles("PlayerCard")
@@ -67,7 +68,7 @@ private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
 }
 
 fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
-    img(src = player.imageURL, classes = "player-icon", alt = "icon") {
+    img(src = player.imageURL, classes = styles.playerIcon, alt = "icon") {
         attrs {
             width = size.toString()
             height = size.toString()
@@ -77,7 +78,7 @@ fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageUR
     val email = player.email ?: player.name ?: ""
     gravatarImage(
             email = email,
-            className = "player-icon",
+            className = styles.playerIcon,
             alt = "icon",
             options = object : GravatarOptions {
                 override val size = size
@@ -98,7 +99,7 @@ fun RBuilder.playerCardHeader(
 
     styledDiv {
         attrs {
-            classes = setOf("player-card-header", styles.header)
+            classes += styles.header
             onClickFunction = handleNameClick(tribeId, player, disabled, pathSetter)
         }
         css {

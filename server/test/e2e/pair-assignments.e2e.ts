@@ -112,7 +112,7 @@ describe('The current pair assignments', function () {
         waitForCurrentPairAssignmentPage();
 
         unpairedPlayerElements
-            .first().element(By.className("player-card-header"))
+            .first().element(By.className(PlayerCardStyles.header))
             .click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/${player1._id}/`);
     });

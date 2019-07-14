@@ -39,3 +39,7 @@
     z-index: 1;
     background: lightyellow url(../../../../../../../images/overlay.png) repeat-x;
 }
+
+:local(.playerIcon) {
+    /*! Do not remove */
+}
