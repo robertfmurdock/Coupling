@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import kotlinx.html.id
+import kotlinx.html.classes
 import loadStyles
 import react.RProps
 import react.dom.a
@@ -11,6 +11,7 @@ data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) ->
 
 interface TribeListCss {
     val className: String
+    val newTribeButton: String
 }
 
 val tribeListStyles = loadStyles<TribeListCss>("TribeList")
@@ -27,7 +28,7 @@ val tribeList = rFunction { props: TribeListProps ->
         div {
             a(href = "/new-tribe/", classes = "super green button") {
                 attrs {
-                    id = "new-tribe-button"
+                    classes += tribeListStyles.newTribeButton
                     type = "button"
                 }
                 +"Add a new tribe!"

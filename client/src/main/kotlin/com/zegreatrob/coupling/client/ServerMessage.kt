@@ -19,7 +19,6 @@ external interface WebsocketProps : RProps {
 
 const val disconnectedMessage = "Not connected"
 
-
 object Components {
     val serverMessage = rFunction<ServerMessageProps> { props ->
         val (tribeId, useSsl) = props

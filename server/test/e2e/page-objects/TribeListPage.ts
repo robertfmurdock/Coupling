@@ -1,9 +1,9 @@
 import {browser, By, element} from "protractor";
 import setLocation from "../setLocation";
-import {TribeCardStyles} from "./Styles";
+import {TribeCardStyles, TribeListStyles} from "./Styles";
 
+const newTribeButton = element(By.className(TribeListStyles.newTribeButton));
 const tribeCardHeaderLocator = By.className(TribeCardStyles.header);
-const newTribeButton = element(By.id('new-tribe-button'));
 
 export default {
     waitForTribeListPage: function () {

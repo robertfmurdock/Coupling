@@ -9,3 +9,7 @@
 :local(.className) > div {
     padding: 7px;
 }
+
+:local(.newTribeButton) {
+    /*! Do not remove */
+}
