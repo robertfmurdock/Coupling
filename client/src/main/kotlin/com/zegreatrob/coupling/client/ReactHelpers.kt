@@ -50,39 +50,3 @@ fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = nul
             handler = handler
     )
 }
-
-fun buildElements(handler: MagicBuilder.() -> Unit): dynamic {
-    val nodes = MagicBuilder().apply(handler).childList
-    return when {
-        nodes.size == 0 -> null
-        nodes.size == 1 -> nodes.first()
-        else -> throw Exception("Did you forget to build an element?")
-    }
-}
-
-class MagicBuilder : RBuilder() {
-
-    operator fun <P : RProps> RClass<P>.invoke(props: P, key: String? = null, handler: MagicHandler<P> = {}) {
-        key?.let { props.key = it }
-        child(
-                type = this,
-                props = props,
-                handler = handler
-        )
-    }
-
-    private fun <P : RProps> child(type: Any, props: P, handler: MagicHandler<P>): ReactElement {
-        val children = with(MagicElementBuilder(props)) {
-            handler()
-            childList
-        }
-        return child(type, props, children)
-    }
-
-}
-
-class MagicElementBuilder<out P : RProps>(override val attrs: P) : RElementBuilder<P>(attrs) {
-
-}
-
-typealias MagicHandler<P> = MagicElementBuilder<P>.() -> Unit
