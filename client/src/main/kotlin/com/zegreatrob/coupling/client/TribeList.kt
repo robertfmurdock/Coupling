@@ -14,12 +14,12 @@ interface TribeListCss {
     val newTribeButton: String
 }
 
-val tribeListStyles = loadStyles<TribeListCss>("TribeList")
+private val styles = loadStyles<TribeListCss>("TribeList")
 
 val tribeList = rFunction { props: TribeListProps ->
     val (tribes, pathSetter) = props
 
-    div(classes = tribeListStyles.className) {
+    div(classes = styles.className) {
         div {
             tribes.forEach { tribe ->
                 element(tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter), key = tribe.id.value)
@@ -28,7 +28,7 @@ val tribeList = rFunction { props: TribeListProps ->
         div {
             a(href = "/new-tribe/", classes = "super green button") {
                 attrs {
-                    classes += tribeListStyles.newTribeButton
+                    classes += styles.newTribeButton
                     type = "button"
                 }
                 +"Add a new tribe!"

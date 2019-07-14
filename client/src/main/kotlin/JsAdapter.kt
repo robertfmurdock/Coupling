@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.common.*
@@ -119,6 +118,16 @@ fun playerRosterJs(props: dynamic): dynamic = buildElements {
             players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
             label = props.label.unsafeCast<String?>(),
             className = props.className.unsafeCast<String?>(),
+            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+    ))
+}
+
+@Suppress("unused")
+@JsName("RetiredPlayers")
+fun retiredPlayersJs(props: dynamic): dynamic = buildElements {
+    element(retiredPlayers, RetiredPlayersProps(
+            tribe = props.tribe.unsafeCast<Json>().toTribe(),
+            retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
     ))
 }

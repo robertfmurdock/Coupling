@@ -88,6 +88,7 @@ tasks {
                 "client.TribeBrowser",
                 "client.PlayerCard",
                 "client.PlayerRoster",
+                "client.RetiredPlayers",
                 "client.ServerMessage"
         )
     }
