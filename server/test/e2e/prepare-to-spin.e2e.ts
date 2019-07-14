@@ -4,7 +4,7 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
-import {PlayerCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, PlayerRosterStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -98,7 +98,7 @@ describe('The prepare to spin page', function () {
             const pairs = element.all(By.css('.pair'));
             expect(pairs.count()).toEqual(1);
 
-            const players = element.all(By.css(`.react-player-roster .${PlayerCardStyles.player}`));
+            const players = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
             expect(players.count()).toEqual(3);
 
             const saveButton = element(By.id('save-button'));

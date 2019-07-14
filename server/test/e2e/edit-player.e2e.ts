@@ -8,12 +8,12 @@ import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
 import PlayerConfigPage from "./PlayerConfigPage";
 import TestLogin from "./TestLogin";
-import {PlayerCardStyles, TribeCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, PlayerRosterStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
 
-const playerElements = element.all(By.css(`.react-player-roster .${PlayerCardStyles.player}`));
+const playerElements = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
 
 const defaultBadgeRadio = element(By.css('#default-badge-radio'));
 const altBadgeRadio = element(By.css('#alt-badge-radio'));

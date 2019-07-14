@@ -5,7 +5,7 @@ import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
-import {PlayerCardStyles, TribeBrowserStyles, TribeCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, PlayerRosterStyles, TribeBrowserStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -19,7 +19,7 @@ const pluck = require('ramda/src/pluck');
 const tribeCardHeaderElement = element(By.className(TribeCardStyles.header));
 const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
 
-const unpairedPlayerElements = element.all(By.css(`.react-player-roster .${PlayerCardStyles.player}`));
+const unpairedPlayerElements = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
 
 function waitForCurrentPairAssignmentPage() {
     browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
@@ -103,7 +103,7 @@ describe('The current pair assignments', function () {
         await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
 
-        element(By.id('add-player-button')).click();
+        element(By.className(PlayerRosterStyles.addPlayerButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/player/new/`);
     });
 

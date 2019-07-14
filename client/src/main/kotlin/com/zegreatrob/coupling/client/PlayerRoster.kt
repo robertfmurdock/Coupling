@@ -3,11 +3,19 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.html.classes
-import kotlinx.html.id
+import loadStyles
 import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
+
+private val styles: PlayerRosterStyles = loadStyles("PlayerRoster")
+
+interface PlayerRosterStyles {
+    val className: String
+    val addPlayerButton: String
+    val header: String
+}
 
 data class PlayerRosterProps(
         val label: String?,
@@ -19,21 +27,16 @@ data class PlayerRosterProps(
 
 val playerRoster = rFunction { props: PlayerRosterProps ->
     with(props) {
-        div {
-            attrs {
-                classes = setOf("react-player-roster", className ?: "")
-            }
+        div(classes = className) {
+            attrs { classes += styles.className }
             div {
-                div(classes = "roster-header") {
+                div(classes = styles.header) {
                     +(label ?: "Players")
                 }
                 renderPlayers(props)
             }
             a(href = "/${tribeId.value}/player/new/", classes = "large orange button") {
-                attrs {
-                    id = "add-player-button"
-                }
-
+                attrs { classes += styles.addPlayerButton }
                 +"Add a new player!"
             }
         }
@@ -51,9 +54,7 @@ fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
                         pathSetter = pathSetter
                 )
         ) {
-            attrs {
-                key = player.id ?: ""
-            }
+            attrs { key = player.id ?: "" }
         }
     }
 }
