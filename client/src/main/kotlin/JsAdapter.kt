@@ -89,6 +89,15 @@ fun tribeListJs(props: dynamic): dynamic = buildElements {
 }
 
 @Suppress("unused")
+@JsName("TribeBrowser")
+fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
+    element(tribeBrowser, TribeBrowserProps(
+            tribe = props.tribe.unsafeCast<Json>().toTribe(),
+            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+    ))
+}
+
+@Suppress("unused")
 @JsName("PlayerCard")
 fun playerCardJs(props: dynamic): dynamic = buildElements {
     element(playerCard, PlayerCardProps(

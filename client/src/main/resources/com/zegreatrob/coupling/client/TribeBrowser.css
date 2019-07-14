@@ -1,0 +1,24 @@
+:local(.className) {
+    white-space: normal;
+    display: block;
+    margin: 5px;
+    text-align: left;
+}
+
+:local(.className) tribecard {
+    display: inline-block;
+}
+
+:local(.className) * {
+    vertical-align: middle;
+}
+
+:local(.className) h1 {
+    display: inline-block;
+    margin: 0 20px;
+    text-decoration: underline;
+}
+
+:local(.statisticsButton) {
+
+}
