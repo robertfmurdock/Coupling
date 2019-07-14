@@ -5,7 +5,7 @@ import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
-import {PlayerCardStyles, TribeCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, TribeBrowserStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -134,7 +134,7 @@ describe('The current pair assignments', function () {
     it('will let you go to the stats page', async function () {
         await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
-        element(By.className("statistics-button")).click();
+        element(By.className(TribeBrowserStyles.statisticsButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
 

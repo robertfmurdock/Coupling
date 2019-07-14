@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
-import kotlinx.html.id
 import loadStyles
 import react.RProps
 import react.dom.*
@@ -12,6 +11,8 @@ data class TribeBrowserProps(val tribe: KtTribe, val pathSetter: (String) -> Uni
 interface TribeBrowserCss {
     val className: String
     val statisticsButton: String
+    val tribeSelectButton: String
+    val logoutButton: String
 }
 
 val tribeBrowserStyles = loadStyles<TribeBrowserCss>("TribeBrowser")
@@ -25,21 +26,19 @@ val tribeBrowser = rFunction { props: TribeBrowserProps ->
         }
         span {
             span {
-                a(href = "/${tribe.id.value}/statistics") {
-                    attrs {
-                        classes = setOf(tribeBrowserStyles.statisticsButton, "statistics-button", "large gray button")
-                    }
+                a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
+                    attrs { classes += tribeBrowserStyles.statisticsButton }
                     span(classes = "icon-button-text") { +"Statistics" }
                 }
                 a(href = "/tribes/", classes = "large gray button") {
-                    attrs { id = "tribe-select-button" }
+                    attrs { classes += tribeBrowserStyles.tribeSelectButton }
                     i(classes = "fa fa-arrow-circle-up") {}
                     span(classes = "icon-button-text") { +"Tribe select" }
                 }
             }
             span {
                 a(href = "/logout", classes = "large red button") {
-                    attrs { id = "logout-button" }
+                    attrs { classes += tribeBrowserStyles.logoutButton }
                     i(classes = "fa fa-sign-out") {}
                     span(classes = "icon-button-text") { +"Sign Out" }
                 }

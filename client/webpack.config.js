@@ -57,7 +57,7 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              modules: 'global',
+              modules: 'global'
             }
           },
           'sass-loader',

@@ -20,5 +20,13 @@
 }
 
 :local(.statisticsButton) {
+    /*! Do not remove */
+}
 
+:local(.tribeSelectButton) {
+    /*! Do not remove */
+}
+
+:local(.logoutButton) {
+    /*! Do not remove */
 }
