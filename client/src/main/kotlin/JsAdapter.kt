@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.common.*
@@ -75,6 +76,15 @@ fun tribeCardJs(props: dynamic): dynamic = buildElements {
             tribe = props.tribe.unsafeCast<Json>().toTribe(),
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
             size = props.size.unsafeCast<Int?>() ?: 150
+    ))
+}
+
+@Suppress("unused")
+@JsName("TribeList")
+fun tribeListJs(props: dynamic): dynamic = buildElements {
+    element(tribeList, TribeListProps(
+            tribes = props.tribes.unsafeCast<Array<Json>>().map { it.toTribe() },
+            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
     ))
 }
 

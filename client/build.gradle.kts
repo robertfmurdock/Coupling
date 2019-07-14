@@ -84,6 +84,7 @@ tasks {
                 "client.commandDispatcher",
                 "client.GravatarImage",
                 "client.TribeCard",
+                "client.TribeList",
                 "client.PlayerCard",
                 "client.PlayerRoster",
                 "client.ServerMessage"

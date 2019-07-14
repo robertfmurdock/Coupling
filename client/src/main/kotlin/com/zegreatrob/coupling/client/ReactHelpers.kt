@@ -42,7 +42,8 @@ inline fun <reified T : RProps> restoreKotlinType(@Suppress("UNUSED_PARAMETER") 
     return newProps.unsafeCast<T>()
 }
 
-fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, handler: RHandler<P> = {}) {
+fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = null, handler: RHandler<P> = {}) {
+    key?.let { props.key = it }
     child(
             type = clazz,
             props = props,
