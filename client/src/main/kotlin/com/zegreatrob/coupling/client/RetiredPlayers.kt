@@ -20,7 +20,7 @@ interface RetiredPlayersCss {
 private val styles = loadStyles<RetiredPlayersCss>("RetiredPlayers")
 
 val retiredPlayers = rFunction { (tribe, players, pathSetter): RetiredPlayersProps ->
-    div(classes = "react-retired-players") {
+    div(classes = styles.className) {
         element(tribeBrowser, TribeBrowserProps(tribe, pathSetter))
         div(classes = styles.header) { +"Retired Players" }
         div {

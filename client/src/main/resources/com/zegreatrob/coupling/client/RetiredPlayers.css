@@ -1,3 +1,7 @@
+:local(.className) {
+    /*! Do not remove */
+}
+
 :local(.header) {
     display: inline-block;
     border-radius: 25px;

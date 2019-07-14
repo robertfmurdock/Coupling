@@ -3,7 +3,7 @@ import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import setLocation from "./setLocation";
-import {PlayerCardStyles, TribeCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, RetiredPlayersStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -13,7 +13,7 @@ const playersCollection = database.get('players');
 const pluck = require('ramda/src/pluck');
 
 function waitForRetiredPlayersPage() {
-    return browser.wait(() => element(By.className('react-retired-players')).isPresent(), 2000);
+    return browser.wait(() => element(By.className(RetiredPlayersStyles.className)).isPresent(), 2000);
 }
 
 describe('The retired players page', function () {
