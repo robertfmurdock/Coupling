@@ -1,5 +1,7 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.element
+import com.zegreatrob.coupling.client.rFunction
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import loadStyles
@@ -14,7 +16,7 @@ interface TribeListCss {
     val newTribeButton: String
 }
 
-private val styles = loadStyles<TribeListCss>("TribeList")
+private val styles = loadStyles<TribeListCss>("tribe/TribeList")
 
 val tribeList = rFunction { props: TribeListProps ->
     val (tribes, pathSetter) = props

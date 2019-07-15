@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.css.*
@@ -35,14 +36,14 @@ data class PlayerCardProps(
 
 interface PlayerCardRenderer : ReactComponentRenderer {
 
-    val RBuilder.playerCard: RFunction<PlayerCardProps> get() = PlayerCardRenderer.playerCard
+    val RBuilder.playerCard: RFunction<PlayerCardProps> get() = render
 
     fun RBuilder.playerCard(props: PlayerCardProps, key: String? = null) = element(playerCard, props, key)
 
     companion object {
-        private val styles: PlayerCardStyles = loadStyles("PlayerCard")
+        private val styles: PlayerCardStyles = loadStyles("player/PlayerCard")
 
-        val playerCard = rFunction { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
+        private val render = rFunction { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
 
             styledDiv {
                 attrs {

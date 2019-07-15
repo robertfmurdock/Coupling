@@ -1,5 +1,7 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.element
+import com.zegreatrob.coupling.client.rFunction
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import loadStyles
@@ -15,7 +17,7 @@ interface TribeBrowserCss {
     val logoutButton: String
 }
 
-private val styles = loadStyles<TribeBrowserCss>("TribeBrowser")
+private val styles = loadStyles<TribeBrowserCss>("tribe/TribeBrowser")
 
 val tribeBrowser = rFunction { props: TribeBrowserProps ->
     val (tribe, pathSetter) = props

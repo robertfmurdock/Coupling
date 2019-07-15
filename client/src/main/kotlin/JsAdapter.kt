@@ -1,5 +1,11 @@
-import com.zegreatrob.coupling.client.*
+
 import com.zegreatrob.coupling.client.Components.serverMessage
+import com.zegreatrob.coupling.client.GravatarOptions
+import com.zegreatrob.coupling.client.ServerMessageProps
+import com.zegreatrob.coupling.client.element
+import com.zegreatrob.coupling.client.gravatarImage
+import com.zegreatrob.coupling.client.player.*
+import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher

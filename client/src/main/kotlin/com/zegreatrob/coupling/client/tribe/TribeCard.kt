@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.css.*
 import kotlinx.html.SPAN
@@ -21,7 +22,7 @@ private external interface TribeCardStyles {
     val header: String
 }
 
-private val styles: TribeCardStyles = loadStyles("TribeCard")
+private val styles: TribeCardStyles = loadStyles("tribe/TribeCard")
 
 data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 

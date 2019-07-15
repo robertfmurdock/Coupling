@@ -1,5 +1,9 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.ReactComponentRenderer
+import com.zegreatrob.coupling.client.rFunction
+import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
+import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import loadStyles
@@ -21,7 +25,7 @@ interface RetiredPlayersCss {
 interface RetiredPlayersRenderer : PlayerCardRenderer, ReactComponentRenderer {
 
     companion object {
-        private val styles = loadStyles<RetiredPlayersCss>("RetiredPlayers")
+        private val styles = loadStyles<RetiredPlayersCss>("player/RetiredPlayers")
     }
 
     val RBuilder.retiredPlayers
