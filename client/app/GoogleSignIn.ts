@@ -3,13 +3,6 @@ import waitFor from "../test/WaitFor";
 
 export default class GoogleSignIn {
 
-    static async signIn() {
-        const googleAuth = await this.getGoogleAuth();
-        const user = await this.performSignIn(googleAuth);
-        await this.createSession(user);
-        window.location.pathname = "/"
-    }
-
     private static async createSession(user) {
         const idToken = user.getAuthResponse().id_token;
         await axios.post(`/auth/google-token`, {idToken: idToken});
@@ -57,20 +50,6 @@ export default class GoogleSignIn {
                 resolve(gapi.auth2)
             })
         });
-    }
-
-    private static async performSignIn(googleAuth) {
-        const isSignedIn = googleAuth.isSignedIn.get();
-        if (!isSignedIn) {
-            return await googleAuth.signIn({
-                scope: 'profile email',
-                prompt: 'consent',
-                ux_mode: 'redirect',
-                redirect_uri: window.location.origin
-            });
-        } else {
-            return await googleAuth.currentUser.get();
-        }
     }
 
 }

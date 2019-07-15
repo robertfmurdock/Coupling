@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.promise
 import kotlinx.html.js.onClickFunction
 import loadStyles
 import react.RProps
@@ -11,11 +13,11 @@ interface LoginChooserCss {
     val className: String
 }
 
-@JsModule("GoogleSignIn")
-@JsNonModule
-private external val GoogleSignIn: dynamic
+//@JsModule("GoogleSignIn")
+//@JsNonModule
+//private external val GoogleSignIn: dynamic
 
-interface LoginChooserRenderer : ReactComponentRenderer {
+interface LoginChooserRenderer : ReactComponentRenderer, GoogleSignIn {
 
     companion object {
         private val styles = loadStyles<LoginChooserCss>("LoginChooser")
@@ -27,9 +29,7 @@ interface LoginChooserRenderer : ReactComponentRenderer {
                 div(classes = styles.className) {
                     div {
                         div(classes = "google-login super white button") {
-                            attrs {
-                                onClickFunction = { GoogleSignIn.default.signIn() }
-                            }
+                            attrs { onClickFunction = { GlobalScope.promise { signIn() } } }
                             +"Google"
                         }
                     }
