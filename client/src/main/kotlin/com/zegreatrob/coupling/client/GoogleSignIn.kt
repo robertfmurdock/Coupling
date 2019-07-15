@@ -16,20 +16,20 @@ interface GoogleSignIn {
         window.location.pathname = "/"
     }
 
-    suspend fun createSession(user: GoogleUser) {
+    private suspend fun createSession(user: GoogleUser) {
         val idToken = user.getAuthResponse().id_token
         axios.post("/auth/google-token", json("idToken" to idToken))
                 .await()
     }
 
-    suspend fun getGoogleAuth(): GoogleAuth {
+    private suspend fun getGoogleAuth(): GoogleAuth {
         val auth2 = loadGoogleAuth2()
 
         return auth2.init(jsObject { client_id = window["googleClientId"] })
                 .await()
     }
 
-    suspend fun loadGoogleAuth2() = CompletableDeferred<GoogleAuth2>()
+    private suspend fun loadGoogleAuth2() = CompletableDeferred<GoogleAuth2>()
             .apply {
                 gapi.load("auth2") {
                     complete(gapi.auth2)
@@ -37,7 +37,7 @@ interface GoogleSignIn {
             }
             .await()
 
-    suspend fun performSignIn(googleAuth: GoogleAuth): GoogleUser {
+    private suspend fun performSignIn(googleAuth: GoogleAuth): GoogleUser {
         val isSignedIn = googleAuth.isSignedIn.get().unsafeCast<Boolean>()
         return if (isSignedIn) {
             googleAuth.currentUser.get()
