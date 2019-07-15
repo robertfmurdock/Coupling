@@ -35,27 +35,27 @@ data class PlayerCardProps(
         val onClick: ((Event) -> Unit) = {}
 ) : RProps
 
-val playerCard = rFunction { props: PlayerCardProps ->
-    with(props) {
-        styledDiv {
-            attrs {
-                classes += setOf(
-                        styles.player,
-                        props.className
-                ).filterNotNull()
-                playerCardStyle(size)
-                onClickFunction = onClick
+interface PlayerCardRenderer : ReactComponentRenderer {
+
+    val RBuilder.playerCard: RFunction<PlayerCardProps>
+        get() = rFunction { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
+
+            styledDiv {
+                attrs {
+                    classes += setOf(styles.player, className).filterNotNull()
+                    playerCardStyle(size)
+                    onClickFunction = onClick
+                }
+                playerGravatarImage(player, size)
+                playerCardHeader(
+                        tribeId = tribeId,
+                        player = player,
+                        size = size,
+                        disabled = disabled,
+                        pathSetter = pathSetter
+                )
             }
-            playerGravatarImage(player, size)
-            playerCardHeader(
-                    tribeId = tribeId,
-                    player = player,
-                    size = size,
-                    disabled = disabled,
-                    pathSetter = pathSetter
-            )
         }
-    }
 }
 
 private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {

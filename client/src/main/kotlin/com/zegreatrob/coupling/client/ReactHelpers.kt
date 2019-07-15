@@ -27,13 +27,15 @@ fun <T> useState(default: T): StateValueContent<T> {
     )
 }
 
+interface RFunction<P : RProps> : RClass<P>
+
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
 inline fun <reified T : RProps> rFunction(crossinline handler: RBuilder.(props: T) -> Unit) = { props: T ->
     buildElement {
         handler(restoreKotlinType(props))
     }
-}.unsafeCast<RClass<T>>()
+}.unsafeCast<RFunction<T>>()
 
 inline fun <reified T : RProps> restoreKotlinType(@Suppress("UNUSED_PARAMETER") props: T): T {
     @Suppress("UNUSED_VARIABLE") val jsClass = T::class.js.unsafeCast<T>()

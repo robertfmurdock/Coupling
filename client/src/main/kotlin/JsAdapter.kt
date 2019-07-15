@@ -56,6 +56,11 @@ private fun CallSign.toJson() = json(
 
 interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 
+object ReactComponents : PlayerCardRenderer, RetiredPlayersRenderer, PlayerRosterRenderer {
+
+}
+
+
 @Suppress("unused")
 @JsName("GravatarImage")
 fun gravatarImageJs(props: dynamic): dynamic = buildElements {
@@ -98,38 +103,47 @@ fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
 
 @Suppress("unused")
 @JsName("PlayerCard")
-fun playerCardJs(props: dynamic): dynamic = buildElements {
-    element(playerCard, PlayerCardProps(
-            tribeId = TribeId(props.tribeId.unsafeCast<String>()),
-            player = props.player.unsafeCast<Json>().toPlayer(),
-            className = props.className.unsafeCast<String?>(),
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-            size = props.size.unsafeCast<Int>(),
-            onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
-            disabled = props.disabled.unsafeCast<Boolean?>() ?: false
-    ))
+fun playerCardJs(props: dynamic): dynamic = with(ReactComponents) {
+    buildElements {
+        element(playerCard, PlayerCardProps(
+                tribeId = TribeId(props.tribeId.unsafeCast<String>()),
+                player = props.player.unsafeCast<Json>().toPlayer(),
+                className = props.className.unsafeCast<String?>(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                size = props.size.unsafeCast<Int>(),
+                onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
+                disabled = props.disabled.unsafeCast<Boolean?>() ?: false
+        ))
+    }
 }
+
 
 @Suppress("unused")
 @JsName("PlayerRoster")
 fun playerRosterJs(props: dynamic): dynamic = buildElements {
-    element(playerRoster, PlayerRosterProps(
-            tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
-            players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-            label = props.label.unsafeCast<String?>(),
-            className = props.className.unsafeCast<String?>(),
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-    ))
+    with(ReactComponents) {
+        element(playerRoster,
+                PlayerRosterProps(
+                        tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
+                        players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                        label = props.label.unsafeCast<String?>(),
+                        className = props.className.unsafeCast<String?>(),
+                        pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                )
+        )
+    }
 }
 
 @Suppress("unused")
 @JsName("RetiredPlayers")
 fun retiredPlayersJs(props: dynamic): dynamic = buildElements {
-    element(retiredPlayers, RetiredPlayersProps(
-            tribe = props.tribe.unsafeCast<Json>().toTribe(),
-            retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-    ))
+    with(ReactComponents) {
+        element(retiredPlayers, RetiredPlayersProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
 }
 
 @Suppress("unused")

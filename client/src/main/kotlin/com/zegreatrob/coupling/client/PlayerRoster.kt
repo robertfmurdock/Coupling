@@ -25,36 +25,35 @@ data class PlayerRosterProps(
         val className: String?
 ) : RProps
 
-val playerRoster = rFunction { props: PlayerRosterProps ->
-    with(props) {
-        div(classes = className) {
-            attrs { classes += styles.className }
-            div {
-                div(classes = styles.header) {
-                    +(label ?: "Players")
-                }
-                renderPlayers(props)
-            }
-            a(href = "/${tribeId.value}/player/new/", classes = "large orange button") {
-                attrs { classes += styles.addPlayerButton }
-                +"Add a new player!"
-            }
-        }
-    }
-}
+interface PlayerRosterRenderer : PlayerCardRenderer {
 
-fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
-    players.forEach { player ->
-        element(
-                playerCard,
-                PlayerCardProps(
-                        tribeId = tribeId,
-                        player = player,
-                        className = null,
-                        pathSetter = pathSetter
-                )
-        ) {
-            attrs { key = player.id ?: "" }
+    val RBuilder.playerRoster
+        get() = rFunction { props: PlayerRosterProps ->
+            with(props) {
+                div(classes = className) {
+                    attrs { classes += styles.className }
+                    div {
+                        div(classes = styles.header) {
+                            +(label ?: "Players")
+                        }
+                        renderPlayers(props)
+                    }
+                    a(href = "/${tribeId.value}/player/new/", classes = "large orange button") {
+                        attrs { classes += styles.addPlayerButton }
+                        +"Add a new player!"
+                    }
+                }
+            }
+        }
+
+    private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
+        players.forEach { player ->
+            element(
+                    playerCard,
+                    PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
+                    key = player.id
+            )
         }
     }
+
 }
