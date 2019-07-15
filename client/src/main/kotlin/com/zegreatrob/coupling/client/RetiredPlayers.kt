@@ -18,10 +18,11 @@ interface RetiredPlayersCss {
     val header: String
 }
 
-private val styles = loadStyles<RetiredPlayersCss>("RetiredPlayers")
-
-
 interface RetiredPlayersRenderer : PlayerCardRenderer, ReactComponentRenderer {
+
+    companion object {
+        private val styles = loadStyles<RetiredPlayersCss>("RetiredPlayers")
+    }
 
     val RBuilder.retiredPlayers
         get() = rFunction { (tribe, players, pathSetter): RetiredPlayersProps ->
@@ -30,15 +31,8 @@ interface RetiredPlayersRenderer : PlayerCardRenderer, ReactComponentRenderer {
                 div(classes = styles.header) { +"Retired Players" }
                 div {
                     players.forEach { player ->
-                        element(
-                                playerCard,
-                                PlayerCardProps(
-                                        tribe.id,
-                                        player,
-                                        pathSetter,
-                                        true,
-                                        className = "disabled"
-                                ),
+                        playerCard(
+                                PlayerCardProps(tribe.id, player, pathSetter, true, className = "disabled"),
                                 key = player.id
                         )
                     }

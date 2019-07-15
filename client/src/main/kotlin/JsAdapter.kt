@@ -105,7 +105,7 @@ fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
 @JsName("PlayerCard")
 fun playerCardJs(props: dynamic): dynamic = with(ReactComponents) {
     buildElements {
-        element(playerCard, PlayerCardProps(
+        playerCard(PlayerCardProps(
                 tribeId = TribeId(props.tribeId.unsafeCast<String>()),
                 player = props.player.unsafeCast<Json>().toPlayer(),
                 className = props.className.unsafeCast<String?>(),
