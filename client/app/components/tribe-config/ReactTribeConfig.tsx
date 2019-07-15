@@ -146,7 +146,9 @@ export default function ReactTribeConfig(props: Props) {
 
     const handleChange = (event) => {
         event.persist();
-        if (event.target.name === 'pairingRule') {
+        if(event.target.type == 'checkbox') {
+            setValues(values => ({...values, [event.target.name]: !updatedTribe[event.target.name]}));
+        } else if (event.target.name === 'pairingRule') {
             setValues(values => ({...values, pairingRule: Number(event.target.value)}));
         } else {
             setValues(values => ({...values, [event.target.name]: event.target.value}));
