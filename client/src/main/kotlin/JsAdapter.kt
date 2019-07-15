@@ -1,9 +1,5 @@
-
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
-import com.zegreatrob.coupling.client.GravatarOptions
-import com.zegreatrob.coupling.client.ServerMessageProps
-import com.zegreatrob.coupling.client.element
-import com.zegreatrob.coupling.client.gravatarImage
 import com.zegreatrob.coupling.client.player.*
 import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
@@ -14,6 +10,7 @@ import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import org.w3c.dom.events.Event
+import react.RProps
 import react.buildElements
 import kotlin.js.Json
 import kotlin.js.json
@@ -62,7 +59,7 @@ private fun CallSign.toJson() = json(
 
 interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 
-object ReactComponents : PlayerCardRenderer, RetiredPlayersRenderer, PlayerRosterRenderer {
+object ReactComponents : PlayerCardRenderer, RetiredPlayersRenderer, PlayerRosterRenderer, LoginChooserRenderer {
 
 }
 
@@ -159,4 +156,12 @@ fun serverMessageJs(props: dynamic): dynamic = buildElements {
             tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
             useSsl = props.useSsl.unsafeCast<Boolean>()
     ))
+}
+
+@Suppress("unused")
+@JsName("LoginChooser")
+fun loginChooserJs(): dynamic = with(ReactComponents) {
+    buildElements {
+        element(loginChooser, object : RProps {})
+    }
 }

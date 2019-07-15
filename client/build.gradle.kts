@@ -89,6 +89,7 @@ tasks {
                 "client.PlayerCard",
                 "client.PlayerRoster",
                 "client.RetiredPlayers",
+                "client.LoginChooser",
                 "client.ServerMessage"
         )
     }

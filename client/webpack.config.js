@@ -16,7 +16,8 @@ const config = {
   resolve: {
     modules: [
       path.resolve(__dirname, 'build/kotlin-js-min/main'),
-      path.resolve(__dirname, 'node_modules')
+      path.resolve(__dirname, 'node_modules'),
+      jsPath
     ],
     extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
   },
