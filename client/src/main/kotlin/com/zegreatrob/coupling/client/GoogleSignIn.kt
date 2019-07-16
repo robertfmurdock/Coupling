@@ -9,49 +9,43 @@ import kotlin.js.json
 
 interface GoogleSignIn {
 
-    suspend fun signIn() {
-        val googleAuth = getGoogleAuth()
-        val user = performSignIn(googleAuth)
-        createSession(user)
-        window.location.pathname = "/"
-    }
+    suspend fun signIn() = getGoogleAuth()
+            .performSignIn()
+            .createSession()
+            .also { window.location.pathname = "/" }
 
-    private suspend fun createSession(user: GoogleUser) {
-        val idToken = user.getAuthResponse().id_token
-        axios.post("/auth/google-token", json("idToken" to idToken))
-                .await()
-    }
+    private suspend fun GoogleUser.createSession() = getAuthResponse()
+            .createSessionOnCoupling()
+            .await()
 
-    private suspend fun getGoogleAuth(): GoogleAuth {
-        val auth2 = loadGoogleAuth2()
+    private fun AuthResponse.createSessionOnCoupling() = axios.post(
+            "/auth/google-token",
+            json("idToken" to id_token)
+    )
 
-        return auth2.init(jsObject { client_id = window["googleClientId"] })
-                .await()
-    }
+    private suspend fun getGoogleAuth() = loadGoogleAuth2()
+            .init(jsObject { client_id = window["googleClientId"] })
+            .await()
 
     private suspend fun loadGoogleAuth2() = CompletableDeferred<GoogleAuth2>()
             .apply {
-                gapi.load("auth2") {
-                    complete(gapi.auth2)
-                }
+                gapi.load("auth2") { complete(gapi.auth2) }
             }
             .await()
 
-    private suspend fun performSignIn(googleAuth: GoogleAuth): GoogleUser {
-        val isSignedIn = googleAuth.isSignedIn.get().unsafeCast<Boolean>()
-        return if (isSignedIn) {
-            googleAuth.currentUser.get()
-        } else {
-            val origin = window.location.origin
+    private suspend fun GoogleAuth.performSignIn() = if (isSignedIn.get()) {
+        currentUser.get()
+    } else {
+        signIn().await()
+    }
 
-            googleAuth.signIn(jsObject {
+    private fun GoogleAuth.signIn() = signIn(
+            jsObject {
                 scope = "profile email"
                 prompt = "consent"
                 ux_mode = "redirect"
-                redirect_uri = origin
-            })
-                    .await()
-        }
-    }
+                redirect_uri = window.location.origin
+            }
+    )
 
 }
