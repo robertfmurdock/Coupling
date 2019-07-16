@@ -14,6 +14,13 @@ interface GoogleSignIn {
             .createSession()
             .also { window.location.pathname = "/" }
 
+    suspend fun signOut(): Unit = getGoogleAuth()
+            .whenLoggedInSignOut()
+
+    private suspend fun GoogleAuth.whenLoggedInSignOut(): Unit = if (isSignedIn.get()) {
+        signOut().await()
+    } else Unit
+
     private suspend fun GoogleUser.createSession() = getAuthResponse()
             .createSessionOnCoupling()
             .await()

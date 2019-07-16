@@ -16,6 +16,7 @@ external interface GoogleAuth {
     val isSignedIn: GoogleProperty<Boolean>
     val currentUser: GoogleProperty<GoogleUser>
     fun signIn(options: SignInOptions): Promise<GoogleUser>
+    fun signOut(): Promise<Unit>
 }
 
 external interface SignInOptions {

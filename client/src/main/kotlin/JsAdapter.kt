@@ -59,10 +59,11 @@ private fun CallSign.toJson() = json(
 
 interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 
-object ReactComponents : PlayerCardRenderer, RetiredPlayersRenderer, PlayerRosterRenderer, LoginChooserRenderer {
-
-}
-
+object ReactComponents : PlayerCardRenderer,
+        RetiredPlayersRenderer,
+        PlayerRosterRenderer,
+        LoginChooserRenderer,
+        LogoutRenderer
 
 @Suppress("unused")
 @JsName("GravatarImage")
@@ -163,5 +164,13 @@ fun serverMessageJs(props: dynamic): dynamic = buildElements {
 fun loginChooserJs(): dynamic = with(ReactComponents) {
     buildElements {
         element(loginChooser, object : RProps {})
+    }
+}
+
+@Suppress("unused")
+@JsName("Logout")
+fun logoutJs(props: dynamic): dynamic = with(ReactComponents) {
+    buildElements {
+        element(logout, LogoutRendererProps(props.coupling))
     }
 }

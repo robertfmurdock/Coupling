@@ -31,7 +31,7 @@ interface RFunction<P : RProps> : RClass<P>
 
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
-inline fun <reified T : RProps> rFunction(crossinline handler: RBuilder.(props: T) -> Unit) = { props: T ->
+inline fun <reified T : RProps> rFunction(crossinline handler: RBuilder.(props: T) -> ReactElement) = { props: T ->
     buildElement {
         handler(restoreKotlinType(props))
     }

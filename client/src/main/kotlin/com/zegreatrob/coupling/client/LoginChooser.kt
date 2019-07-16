@@ -13,10 +13,6 @@ interface LoginChooserCss {
     val className: String
 }
 
-//@JsModule("GoogleSignIn")
-//@JsNonModule
-//private external val GoogleSignIn: dynamic
-
 interface LoginChooserRenderer : ReactComponentRenderer, GoogleSignIn {
 
     companion object {
