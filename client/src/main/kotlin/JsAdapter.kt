@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.client.player.*
@@ -9,6 +10,8 @@ import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.promise
 import org.w3c.dom.events.Event
 import react.RProps
 import react.buildElements
@@ -174,3 +177,7 @@ fun logoutJs(props: dynamic): dynamic = with(ReactComponents) {
         element(logout, LogoutRendererProps(props.coupling))
     }
 }
+
+@Suppress("unused")
+@JsName("googleCheckForSignedIn")
+fun googleCheckFoSignedIn(): dynamic = with(ReactComponents) { GlobalScope.promise { checkForSignedIn() } }

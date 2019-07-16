@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.client
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.await
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.yield
 import org.w3c.dom.get
 import kotlin.browser.window
 import kotlin.js.json
@@ -16,6 +18,30 @@ interface GoogleSignIn {
 
     suspend fun signOut(): Unit = getGoogleAuth()
             .whenLoggedInSignOut()
+
+    suspend fun checkForSignedIn() = coroutineScope {
+        waitForIsAuthenticatedToLoad()
+
+        if (window["isAuthenticated"] == true) {
+            true
+        } else {
+            val googleAuth = getGoogleAuth()
+            val isSignedIn = googleAuth.isSignedIn.get()
+
+            if (isSignedIn) {
+                googleAuth.currentUser.get()
+                        .createSession()
+            }
+            isSignedIn
+        }
+
+    }
+
+    private suspend fun waitForIsAuthenticatedToLoad() {
+        while (window["isAuthenticated"] === undefined) {
+            yield()
+        }
+    }
 
     private suspend fun GoogleAuth.whenLoggedInSignOut(): Unit = if (isSignedIn.get()) {
         signOut().await()

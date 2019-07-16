@@ -92,7 +92,8 @@ tasks {
                 "client.RetiredPlayers",
                 "client.LoginChooser",
                 "client.Logout",
-                "client.ServerMessage"
+                "client.ServerMessage",
+                "client.googleCheckForSignedIn"
         )
     }
 
