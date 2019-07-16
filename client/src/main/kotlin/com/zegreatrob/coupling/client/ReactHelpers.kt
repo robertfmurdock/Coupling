@@ -39,9 +39,13 @@ inline fun <reified T : RProps> rFunction(crossinline handler: RBuilder.(props: 
 
 inline fun <reified T : RProps> restoreKotlinType(@Suppress("UNUSED_PARAMETER") props: T): T {
     @Suppress("UNUSED_VARIABLE") val jsClass = T::class.js.unsafeCast<T>()
-    val newProps = js("new jsClass()")
-    objectAssign(newProps, props)
-    return newProps.unsafeCast<T>()
+    return if (props::class.js == jsClass) {
+        props
+    } else {
+        val newProps = js("new jsClass()")
+        objectAssign(newProps, props)
+        newProps.unsafeCast<T>()
+    }
 }
 
 fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = null, handler: RHandler<P> = {}) {
