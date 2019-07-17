@@ -1,6 +1,7 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
+import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
+import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.player.*
 import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
@@ -66,7 +67,8 @@ object ReactComponents : PlayerCardRenderer,
         RetiredPlayersRenderer,
         PlayerRosterRenderer,
         LoginChooserRenderer,
-        LogoutRenderer
+        LogoutRenderer,
+        PrepareSpinRenderer
 
 @Suppress("unused")
 @JsName("GravatarImage")
@@ -167,6 +169,19 @@ fun serverMessageJs(props: dynamic): dynamic = buildElements {
 fun loginChooserJs(): dynamic = with(ReactComponents) {
     buildElements {
         element(loginChooser, object : RProps {})
+    }
+}
+
+@Suppress("unused")
+@JsName("PrepareSpin")
+fun prepareSpinJs(props: dynamic): dynamic = with(ReactComponents) {
+    buildElements {
+        element(prepareSpin, PrepareSpinProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() }
+        ))
     }
 }
 

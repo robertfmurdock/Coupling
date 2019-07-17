@@ -93,6 +93,7 @@ tasks {
                 "client.LoginChooser",
                 "client.Logout",
                 "client.ServerMessage",
+                "client.PrepareSpin",
                 "client.googleCheckForSignedIn"
         )
     }
