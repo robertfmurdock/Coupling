@@ -4,7 +4,7 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
-import {PlayerCardStyles, PlayerRosterStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, PlayerRosterStyles, PrepareSpinStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -13,7 +13,7 @@ const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
 const historyCollection = database.get('history');
 
-const prepareToSpinPage = element(By.css('.react-prepare-spin'));
+const prepareToSpinPage = element(By.className(PrepareSpinStyles.className));
 
 async function goToPrepare(tribe) {
     await setLocation(`/${tribe.id}/prepare/`);

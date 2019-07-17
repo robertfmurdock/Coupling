@@ -32,9 +32,7 @@ interface PrepareSpinRenderer : PlayerCardRenderer {
                     players.map { it to isInLastSetOfPairs(it, history) }
             )
 
-            div(classes = "react-prepare-spin") {
-                attrs { classes += styles.className }
-
+            div(classes = styles.className) {
                 div {
                     element(tribeBrowser, TribeBrowserProps(tribe, pathSetter))
                 }
