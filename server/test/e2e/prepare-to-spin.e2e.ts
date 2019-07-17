@@ -29,7 +29,7 @@ function waitForCurrentPairAssignmentPage() {
 
 describe('The prepare to spin page', function () {
 
-    const spinButton = element(By.className("spin-button"));
+    const spinButton = element(By.className(PrepareSpinStyles.spinButton));
 
     const tribe = {
         id: 'delete_me_prepare',

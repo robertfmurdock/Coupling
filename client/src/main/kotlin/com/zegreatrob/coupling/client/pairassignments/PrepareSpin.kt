@@ -38,7 +38,7 @@ interface PrepareSpinRenderer : PlayerCardRenderer {
                 }
                 div {
                     div {
-                        a(classes = "spin-button super pink button") {
+                        a(classes = "super pink button") {
                             attrs {
                                 classes += styles.spinButton
                                 onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections) }
