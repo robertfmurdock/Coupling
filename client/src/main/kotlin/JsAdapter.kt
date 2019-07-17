@@ -176,7 +176,7 @@ fun loginChooserJs(): dynamic = with(ReactComponents) {
 @JsName("PrepareSpin")
 fun prepareSpinJs(props: dynamic): dynamic = with(ReactComponents) {
     buildElements {
-        element(prepareSpin, PrepareSpinProps(
+        element(::prepareSpin, PrepareSpinProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),

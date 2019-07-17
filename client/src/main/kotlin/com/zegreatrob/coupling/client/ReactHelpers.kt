@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import react.*
+import kotlin.reflect.KFunction1
 
 @JsModule("react")
 @JsNonModule
@@ -48,7 +49,7 @@ inline fun <reified T : RProps> restoreKotlinType(@Suppress("UNUSED_PARAMETER") 
     }
 }
 
-fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = null, handler: RHandler<P> = {}) {
+inline fun <reified P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = null, noinline handler: RHandler<P> = {}) {
     key?.let { props.key = it }
     child(
             type = clazz,
@@ -56,3 +57,9 @@ fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = nul
             handler = handler
     )
 }
+
+inline fun <reified P : RProps> RBuilder.element(func: KFunction1<P, ReactElement?>, props: P, key: String? = null, noinline handler: RHandler<P> = {}) =
+        element(func.rFunction(), props, key, handler)
+
+inline fun <reified T : RProps> KFunction1<T, ReactElement?>.rFunction() =
+        { it: T -> this(restoreKotlinType(it)) }.unsafeCast<RClass<T>>()
