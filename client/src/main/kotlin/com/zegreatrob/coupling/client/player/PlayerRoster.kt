@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.component
 import com.zegreatrob.coupling.client.rFunction
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -51,15 +52,12 @@ interface PlayerRosterRenderer {
 
         private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
             players.forEach { player ->
-                element(
-                        playerCard,
+                component(
+                        PlayerCardRenderer.playerCard,
                         PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
                         key = player.id
                 )
             }
         }
-
     }
-
-
 }

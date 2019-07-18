@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.element
+import com.zegreatrob.coupling.client.component
 import com.zegreatrob.coupling.client.rFunction
+import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import loadStyles
@@ -23,7 +24,7 @@ val tribeBrowser = rFunction { props: TribeBrowserProps ->
     val (tribe, pathSetter) = props
     div(classes = styles.className) {
         span {
-            element(tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
+            component(tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
             h1 { +(tribe.name ?: "") }
         }
         span {

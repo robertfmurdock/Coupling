@@ -1,10 +1,16 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer.Companion.prepareSpin
 import com.zegreatrob.coupling.client.player.*
-import com.zegreatrob.coupling.client.tribe.*
+import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
+import com.zegreatrob.coupling.client.tribe.TribeCardProps
+import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
+import com.zegreatrob.coupling.client.tribe.TribeListProps
+import com.zegreatrob.coupling.client.tribe.TribeListRenderer.Companion.tribeList
+import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -67,8 +73,7 @@ private fun CallSign.toJson() = json(
 interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 
 @JsName("components")
-object ReactComponents : PlayerCardRenderer,
-        RetiredPlayersRenderer,
+object ReactComponents : RetiredPlayersRenderer,
         PlayerRosterRenderer,
         LoginChooserRenderer,
         LogoutRenderer,
@@ -84,6 +89,40 @@ object ReactComponents : PlayerCardRenderer,
                 history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() }
         ))
     }
+
+    @Suppress("unused")
+    @JsName("PlayerCard")
+    val playerCardJs = jsReactFunction { props: dynamic ->
+        component(PlayerCardRenderer.playerCard, PlayerCardProps(
+                tribeId = TribeId(props.tribeId.unsafeCast<String>()),
+                player = props.player.unsafeCast<Json>().toPlayer(),
+                className = props.className.unsafeCast<String?>(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                size = props.size.unsafeCast<Int>(),
+                onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
+                disabled = props.disabled.unsafeCast<Boolean?>() ?: false
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("TribeCard")
+    val tribeCardJs = jsReactFunction { props ->
+        component(tribeCard, TribeCardProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                size = props.size.unsafeCast<Int?>() ?: 150
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("TribeList")
+    val tribeListJs = jsReactFunction { props ->
+        component(tribeList, TribeListProps(
+                tribes = props.tribes.unsafeCast<Array<Json>>().map { it.toTribe() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
 
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
@@ -106,25 +145,6 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
 }
 
 @Suppress("unused")
-@JsName("TribeCard")
-fun tribeCardJs(props: dynamic): dynamic = buildElements {
-    element(tribeCard, TribeCardProps(
-            tribe = props.tribe.unsafeCast<Json>().toTribe(),
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-            size = props.size.unsafeCast<Int?>() ?: 150
-    ))
-}
-
-@Suppress("unused")
-@JsName("TribeList")
-fun tribeListJs(props: dynamic): dynamic = buildElements {
-    element(tribeList, TribeListProps(
-            tribes = props.tribes.unsafeCast<Array<Json>>().map { it.toTribe() },
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-    ))
-}
-
-@Suppress("unused")
 @JsName("TribeBrowser")
 fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
     element(tribeBrowser, TribeBrowserProps(
@@ -132,23 +152,6 @@ fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
             pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
     ))
 }
-
-@Suppress("unused")
-@JsName("PlayerCard")
-fun playerCardJs(props: dynamic): dynamic = with(ReactComponents) {
-    buildElements {
-        playerCard(PlayerCardProps(
-                tribeId = TribeId(props.tribeId.unsafeCast<String>()),
-                player = props.player.unsafeCast<Json>().toPlayer(),
-                className = props.className.unsafeCast<String?>(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                size = props.size.unsafeCast<Int>(),
-                onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
-                disabled = props.disabled.unsafeCast<Boolean?>() ?: false
-        ))
-    }
-}
-
 
 @Suppress("unused")
 @JsName("PlayerRoster")

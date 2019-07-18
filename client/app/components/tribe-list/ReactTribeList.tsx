@@ -1,4 +1,4 @@
 // @ts-ignore
-import {TribeList} from 'client'
+import {components} from 'client'
 
-export default TribeList
+export default components.TribeList

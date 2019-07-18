@@ -36,15 +36,12 @@ data class PlayerCardProps(
 
 interface PlayerCardRenderer : ReactComponentRenderer {
 
-    val RBuilder.playerCard: RFunction<PlayerCardProps> get() = render
-
-    fun RBuilder.playerCard(props: PlayerCardProps, key: String? = null) = element(playerCard, props, key)
+    fun RBuilder.playerCard(props: PlayerCardProps, key: String? = null) = component(playerCard, props, key)
 
     companion object {
         private val styles: PlayerCardStyles = loadStyles("player/PlayerCard")
 
-        private val render = rFunction { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
-
+        val playerCard = reactFunctionComponent { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
             styledDiv {
                 attrs {
                     classes += setOf(styles.player, className).filterNotNull()

@@ -3,7 +3,7 @@ import Player from "../../../../common/Player";
 import {MouseEventHandler} from "react";
 
 // @ts-ignore
-import {PlayerCard} from 'client'
+import {components} from 'client'
 
 interface PlayerCardProps {
     player: Player,
@@ -16,5 +16,5 @@ interface PlayerCardProps {
 }
 
 export default function ReactPlayerCard(props: PlayerCardProps) {
-    return <PlayerCard {...props}/>
+    return <components.PlayerCard {...props}/>
 }

@@ -26,65 +26,72 @@ private val styles: TribeCardStyles = loadStyles("tribe/TribeCard")
 
 data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
-val tribeCard = rFunction { props: TribeCardProps ->
-    val (tribe, size) = props
+interface TribeCardRenderer {
 
-    styledSpan {
-        attrs {
-            classes = setOf(styles.className)
-            onClickFunction = { props.goToPairAssignments() }
-            tabIndex = "0"
-            tribeCardCss(size)
-        }
-        tribeCardHeader(props)
-        tribeGravatar(tribe, size)
-    }
-}
+    companion object {
+        val tribeCard = reactFunctionComponent { props: TribeCardProps ->
+            val (tribe, size) = props
 
-private fun TribeCardProps.goToPairAssignments() = pathSetter("/${tribe.id.value}/pairAssignments/current/")
-
-private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
-    width = size.px
-    height = (size * 1.4).px
-    padding((size * 0.02).px)
-    borderWidth = (size * 0.01).px
-}
-
-private fun StyledDOMBuilder<SPAN>.tribeCardHeader(props: TribeCardProps) = with(props) {
-    val tribeNameRef = useRef(null)
-    useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
-
-    styledDiv {
-        attrs {
-            classes = setOf(styles.header)
-            css {
-                margin((size * 0.02).px, 0.px, 0.px, 0.px)
-                height = (size * 0.35).px
+            styledSpan {
+                attrs {
+                    classes = setOf(styles.className)
+                    onClickFunction = { props.goToPairAssignments() }
+                    tabIndex = "0"
+                    tribeCardCss(size)
+                }
+                tribeCardHeader(props)
+                tribeGravatar(tribe, size)
             }
-            onClickFunction = { event -> goToConfigTribe(event) }
         }
-        div {
-            attrs { ref = tribeNameRef }
-            +(tribe.name ?: "Unknown")
+
+        private fun TribeCardProps.goToPairAssignments() = pathSetter("/${tribe.id.value}/pairAssignments/current/")
+
+        private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
+            width = size.px
+            height = (size * 1.4).px
+            padding((size * 0.02).px)
+            borderWidth = (size * 0.01).px
         }
+
+        private fun StyledDOMBuilder<SPAN>.tribeCardHeader(props: TribeCardProps) = with(props) {
+            val tribeNameRef = useRef(null)
+            useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
+
+            styledDiv {
+                attrs {
+                    classes = setOf(styles.header)
+                    css {
+                        margin((size * 0.02).px, 0.px, 0.px, 0.px)
+                        height = (size * 0.35).px
+                    }
+                    onClickFunction = { event -> goToConfigTribe(event) }
+                }
+                div {
+                    attrs { ref = tribeNameRef }
+                    +(tribe.name ?: "Unknown")
+                }
+            }
+        }
+
+        private fun TribeCardProps.goToConfigTribe(event: Event) {
+            event.stopPropagation(); pathSetter("/${tribe.id.value}/edit/")
+        }
+
+        private fun Node.fitTribeName(size: Int) = fitHeaderNode(
+                maxFontHeight = (size * 0.3),
+                minFontHeight = (size * 0.16)
+        )
+
+        private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: KtTribe, size: Int) = gravatarImage(
+                email = tribe.email,
+                alt = "tribe-img",
+                fallback = "/images/icons/tribes/no-tribe.png",
+                options = object : GravatarOptions {
+                    override val size = size
+                    override val default = "identicon"
+                }
+        )
+
     }
 }
 
-private fun TribeCardProps.goToConfigTribe(event: Event) {
-    event.stopPropagation(); pathSetter("/${tribe.id.value}/edit/")
-}
-
-private fun Node.fitTribeName(size: Int) = fitHeaderNode(
-        maxFontHeight = (size * 0.3),
-        minFontHeight = (size * 0.16)
-)
-
-private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: KtTribe, size: Int) = gravatarImage(
-        email = tribe.email,
-        alt = "tribe-img",
-        fallback = "/images/icons/tribes/no-tribe.png",
-        options = object : GravatarOptions {
-            override val size = size
-            override val default = "identicon"
-        }
-)

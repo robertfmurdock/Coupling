@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.element
-import com.zegreatrob.coupling.client.rFunction
+import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.reactFunctionComponent
+import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import loadStyles
@@ -18,23 +19,29 @@ interface TribeListCss {
 
 private val styles = loadStyles<TribeListCss>("tribe/TribeList")
 
-val tribeList = rFunction { props: TribeListProps ->
-    val (tribes, pathSetter) = props
+interface TribeListRenderer {
 
-    div(classes = styles.className) {
-        div {
-            tribes.forEach { tribe ->
-                element(tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter), key = tribe.id.value)
-            }
-        }
-        div {
-            a(href = "/new-tribe/", classes = "super green button") {
-                attrs {
-                    classes += styles.newTribeButton
-                    type = "button"
+    companion object {
+        val tribeList = reactFunctionComponent { props: TribeListProps ->
+            val (tribes, pathSetter) = props
+
+            div(classes = styles.className) {
+                div {
+                    tribes.forEach { tribe ->
+                        component(tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter), key = tribe.id.value)
+                    }
                 }
-                +"Add a new tribe!"
+                div {
+                    a(href = "/new-tribe/", classes = "super green button") {
+                        attrs {
+                            classes += styles.newTribeButton
+                            type = "button"
+                        }
+                        +"Add a new tribe!"
+                    }
+                }
             }
         }
     }
 }
+

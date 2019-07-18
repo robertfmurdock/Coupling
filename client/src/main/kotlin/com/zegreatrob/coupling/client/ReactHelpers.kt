@@ -64,6 +64,10 @@ inline fun <reified P : RProps> RBuilder.element(func: KFunction1<P, ReactElemen
 
 inline fun <reified T : RProps> KFunction1<T, ReactElement?>.rFunction() = { it: T -> this(restoreKotlinType(it)) }
 
+
+inline fun <reified P : RProps> reactFunctionComponent(noinline builder: RBuilder.(props: P) -> ReactElement) =
+        ReactFunctionComponent(P::class, builder)
+
 class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private val builder: RBuilder.(props: P) -> ReactElement) {
 
     val rFunction by kotlin.lazy {
@@ -84,4 +88,5 @@ class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private v
 
 }
 
-fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P) = element(component.rFunction, props)
+fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P, key: String? = null) =
+        element(component.rFunction, props, key)

@@ -1,4 +1,4 @@
 // @ts-ignore
-import {TribeCard} from 'client'
+import {components} from 'client'
 
-export default TribeCard
+export default components.TribeCard
