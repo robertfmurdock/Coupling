@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.ReactFunctionComponent
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
-import com.zegreatrob.coupling.client.rFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.useState
@@ -20,12 +20,13 @@ import react.dom.div
 
 external fun encodeURIComponent(input: String?)
 
+
 interface PrepareSpinRenderer {
 
     companion object : PlayerCardRenderer {
         private val styles: PrepareSpinStyles = loadStyles("PrepareSpin")
 
-        val prepareSpin = rFunction { props: PrepareSpinProps ->
+        val prepareSpin: ReactFunctionComponent<PrepareSpinProps> = ReactFunctionComponent(clazz = PrepareSpinProps::class) { props: PrepareSpinProps ->
             val (tribe, players, history, pathSetter) = props
             val (playerSelections, setPlayerSelections) = useState(
                     players.map { it to isInLastSetOfPairs(it, history) }
@@ -111,7 +112,6 @@ interface PrepareSpinRenderer {
                     .contains(player.id)
         }
     }
-
 
 }
 

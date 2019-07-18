@@ -15,7 +15,9 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import org.w3c.dom.events.Event
+import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.buildElements
 import kotlin.js.Json
 import kotlin.js.json
@@ -74,14 +76,18 @@ object ReactComponents : PlayerCardRenderer,
 
     @Suppress("unused")
     @JsName("PrepareSpin")
-    val prepareSpinJs = { props: dynamic ->
+    val prepareSpinJs = jsReactFunction { props: dynamic ->
+        component(prepareSpin, PrepareSpinProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() }
+        ))
+    }
+
+    private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
-            element(prepareSpin, PrepareSpinProps(
-                    tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                    players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                    pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                    history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() }
-            ))
+            handler(props)
         }
     }
 
