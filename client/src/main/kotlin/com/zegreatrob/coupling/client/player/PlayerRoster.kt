@@ -24,14 +24,14 @@ data class PlayerRosterProps(
         val className: String?
 ) : RProps
 
-interface PlayerRosterRenderer : PlayerCardRenderer {
+interface PlayerRosterRenderer {
 
-    companion object {
+    val playerRoster get() = Companion.playerRoster
+
+    companion object : PlayerCardRenderer {
         private val styles: PlayerRosterStyles = loadStyles("player/PlayerRoster")
-    }
 
-    val RBuilder.playerRoster
-        get() = rFunction { props: PlayerRosterProps ->
+        val playerRoster = rFunction { props: PlayerRosterProps ->
             with(props) {
                 div(classes = className) {
                     attrs { classes += styles.className }
@@ -49,14 +49,17 @@ interface PlayerRosterRenderer : PlayerCardRenderer {
             }
         }
 
-    private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
-        players.forEach { player ->
-            element(
-                    playerCard,
-                    PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
-                    key = player.id
-            )
+        private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
+            players.forEach { player ->
+                element(
+                        playerCard,
+                        PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
+                        key = player.id
+                )
+            }
         }
+
     }
+
 
 }

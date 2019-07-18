@@ -1,4 +1,4 @@
 // @ts-ignore
-import {PrepareSpin} from 'client'
+import {components} from 'client'
 
-export default PrepareSpin
+export default components.PrepareSpin

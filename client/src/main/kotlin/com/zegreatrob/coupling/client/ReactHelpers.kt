@@ -59,7 +59,6 @@ inline fun <reified P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key
 }
 
 inline fun <reified P : RProps> RBuilder.element(func: KFunction1<P, ReactElement?>, props: P, key: String? = null, noinline handler: RHandler<P> = {}) =
-        element(func.rFunction(), props, key, handler)
+        element(func.unsafeCast<RClass<P>>(), props, key, handler)
 
-inline fun <reified T : RProps> KFunction1<T, ReactElement?>.rFunction() =
-        { it: T -> this(restoreKotlinType(it)) }.unsafeCast<RClass<T>>()
+inline fun <reified T : RProps> KFunction1<T, ReactElement?>.rFunction() = { it: T -> this(restoreKotlinType(it)) }

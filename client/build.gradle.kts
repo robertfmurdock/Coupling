@@ -83,6 +83,7 @@ tasks {
                 "logging.com.zegreatrob.coupling.logging.initializeJasmineLogging",
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
+                "client.components",
                 "client.GravatarImage",
                 "client.TribeCard",
                 "client.TribeList",
