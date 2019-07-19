@@ -1,4 +1,4 @@
 // @ts-ignore
-import {LoginChooser} from 'client'
+import {components} from 'client'
 
-export default LoginChooser
+export default components.LoginChooser

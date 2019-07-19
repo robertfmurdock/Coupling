@@ -84,7 +84,6 @@ tasks {
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
                 "client.components",
-                "client.LoginChooser",
                 "client.Logout",
                 "client.PrepareSpin",
                 "client.googleCheckForSignedIn"

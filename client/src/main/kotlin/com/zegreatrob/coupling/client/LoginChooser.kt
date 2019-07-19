@@ -13,14 +13,12 @@ interface LoginChooserCss {
     val className: String
 }
 
-interface LoginChooserRenderer : ReactComponentRenderer, GoogleSignIn {
+interface LoginChooserRenderer {
 
-    companion object {
+    companion object : ReactComponentRenderer, GoogleSignIn {
         private val styles = loadStyles<LoginChooserCss>("LoginChooser")
-    }
 
-    val loginChooser
-        get() = {
+        val loginChooser = {
             buildElement {
                 div(classes = styles.className) {
                     div {
@@ -38,5 +36,6 @@ interface LoginChooserRenderer : ReactComponentRenderer, GoogleSignIn {
                 }
             }
         }.unsafeCast<RFunction<RProps>>()
+    }
 
 }

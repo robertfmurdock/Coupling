@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.LoginChooserRenderer.Companion.loginChooser
 import com.zegreatrob.coupling.client.ServerMessageRenderer.Companion.serverMessage
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
@@ -166,6 +167,14 @@ object ReactComponents : RetiredPlayersRenderer,
         ))
     }
 
+    @Suppress("unused")
+    @JsName("LoginChooser")
+    val loginChooserJs = {
+        buildElements {
+            element(loginChooser, object : RProps {})
+        }
+    }
+
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
             handler(props)
@@ -174,14 +183,6 @@ object ReactComponents : RetiredPlayersRenderer,
 
 }
 
-
-@Suppress("unused")
-@JsName("LoginChooser")
-fun loginChooserJs(): dynamic = with(ReactComponents) {
-    buildElements {
-        element(loginChooser, object : RProps {})
-    }
-}
 
 @Suppress("unused")
 @JsName("Logout")
