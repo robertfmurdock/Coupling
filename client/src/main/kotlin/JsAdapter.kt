@@ -146,7 +146,7 @@ object ReactComponents : RetiredPlayersRenderer,
         ))
     }
 
-    private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
+g    private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
             handler(props)
         }
@@ -154,17 +154,6 @@ object ReactComponents : RetiredPlayersRenderer,
 
 }
 
-@Suppress("unused")
-@JsName("GravatarImage")
-fun gravatarImageJs(props: dynamic): dynamic = buildElements {
-    gravatarImage(
-            props.email as String?,
-            props.fallback as String?,
-            props.className as String?,
-            props.alt as String?,
-            props.options.unsafeCast<GravatarOptions>()
-    )
-}
 
 @Suppress("unused")
 @JsName("RetiredPlayers")
