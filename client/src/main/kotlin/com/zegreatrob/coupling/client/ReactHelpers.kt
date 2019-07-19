@@ -59,6 +59,7 @@ class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private v
             }
         }.unsafeCast<RFunction<P>>()
     }
+
 }
 
 fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P, key: String? = null) =

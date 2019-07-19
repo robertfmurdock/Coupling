@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCar
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import loadStyles
+import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
@@ -20,6 +21,8 @@ interface TribeListCss {
 private val styles = loadStyles<TribeListCss>("tribe/TribeList")
 
 interface TribeListRenderer {
+
+    fun RBuilder.tribeList(props: TribeListProps) = component(tribeList, props)
 
     companion object {
         val tribeList = reactFunctionComponent { props: TribeListProps ->

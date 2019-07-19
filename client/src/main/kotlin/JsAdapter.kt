@@ -1,19 +1,8 @@
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.LoginChooserRenderer.Companion.loginChooser
-import com.zegreatrob.coupling.client.LogoutRenderer.Companion.logout
-import com.zegreatrob.coupling.client.ServerMessageRenderer.Companion.serverMessage
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
-import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer.Companion.prepareSpin
 import com.zegreatrob.coupling.client.player.*
-import com.zegreatrob.coupling.client.player.PlayerRosterRenderer.Companion.playerRoster
-import com.zegreatrob.coupling.client.player.RetiredPlayersRenderer.Companion.retiredPlayers
-import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
-import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer.Companion.tribeBrowser
-import com.zegreatrob.coupling.client.tribe.TribeCardProps
-import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
-import com.zegreatrob.coupling.client.tribe.TribeListProps
-import com.zegreatrob.coupling.client.tribe.TribeListRenderer.Companion.tribeList
+import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -25,7 +14,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import org.w3c.dom.events.Event
 import react.RBuilder
-import react.RProps
 import react.ReactElement
 import react.buildElements
 import kotlin.js.Json
@@ -81,13 +69,18 @@ object ReactComponents : RetiredPlayersRenderer,
         PlayerRosterRenderer,
         LoginChooserRenderer,
         LogoutRenderer,
+        PlayerCardRenderer,
+        TribeCardRenderer,
+        TribeBrowserRenderer,
+        TribeListRenderer,
         PrepareSpinRenderer,
+        ServerMessageRenderer,
         GoogleSignIn {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
     val prepareSpinJs = jsReactFunction { props: dynamic ->
-        component(prepareSpin, PrepareSpinProps(
+        prepareSpin(PrepareSpinProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
@@ -98,7 +91,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("PlayerCard")
     val playerCardJs = jsReactFunction { props: dynamic ->
-        component(PlayerCardRenderer.playerCard, PlayerCardProps(
+        playerCard(PlayerCardProps(
                 tribeId = TribeId(props.tribeId.unsafeCast<String>()),
                 player = props.player.unsafeCast<Json>().toPlayer(),
                 className = props.className.unsafeCast<String?>(),
@@ -112,7 +105,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("TribeCard")
     val tribeCardJs = jsReactFunction { props ->
-        component(tribeCard, TribeCardProps(
+        tribeCard(TribeCardProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 size = props.size.unsafeCast<Int?>() ?: 150
@@ -122,7 +115,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("TribeList")
     val tribeListJs = jsReactFunction { props ->
-        component(tribeList, TribeListProps(
+        tribeList(TribeListProps(
                 tribes = props.tribes.unsafeCast<Array<Json>>().map { it.toTribe() },
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
@@ -131,7 +124,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("PlayerRoster")
     val playerRosterJs = jsReactFunction { props ->
-        component(playerRoster,
+        playerRoster(
                 PlayerRosterProps(
                         tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
                         players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
@@ -145,7 +138,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("TribeBrowser")
     val tribeBrowserJs = jsReactFunction { props ->
-        component(tribeBrowser, TribeBrowserProps(
+        tribeBrowser(TribeBrowserProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
@@ -154,7 +147,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("RetiredPlayers")
     val retiredPlayersJs = jsReactFunction { props ->
-        component(retiredPlayers, RetiredPlayersProps(
+        retiredPlayers(RetiredPlayersProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
@@ -164,7 +157,7 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("ServerMessage")
     val serverMessageJs = jsReactFunction { props ->
-        component(serverMessage, ServerMessageProps(
+        serverMessage(ServerMessageProps(
                 tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
                 useSsl = props.useSsl.unsafeCast<Boolean>()
         ))
@@ -173,26 +166,19 @@ object ReactComponents : RetiredPlayersRenderer,
     @Suppress("unused")
     @JsName("Logout")
     val logoutJs = jsReactFunction { props ->
-        component(logout, LogoutRendererProps(props.coupling))
+        logout(LogoutProps(props.coupling))
     }
-
 
     @Suppress("unused")
     @JsName("LoginChooser")
-    val loginChooserJs = {
-        buildElements {
-            element(loginChooser, object : RProps {})
-        }
-    }
+    val loginChooserJs = { buildElements { loginChooser() } }
 
     @Suppress("unused")
     @JsName("googleCheckForSignedIn")
     fun googleCheckFoSignedIn(): dynamic = GlobalScope.promise { checkForSignedIn() }
 
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
-        buildElements {
-            handler(props)
-        }
+        buildElements { handler(props) }
     }
 
 }

@@ -4,6 +4,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlinx.html.js.onClickFunction
 import loadStyles
+import react.RBuilder
 import react.RProps
 import react.buildElement
 import react.dom.div
@@ -15,10 +16,12 @@ interface LoginChooserCss {
 
 interface LoginChooserRenderer {
 
+    fun RBuilder.loginChooser() = element(loginChooser, object : RProps {})
+
     companion object : ReactComponentRenderer, GoogleSignIn {
         private val styles = loadStyles<LoginChooserCss>("LoginChooser")
 
-        val loginChooser = {
+        private val loginChooser = {
             buildElement {
                 div(classes = styles.className) {
                     div {

@@ -2,17 +2,21 @@ package com.zegreatrob.coupling.client
 
 
 import kotlinx.coroutines.*
+import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.router.dom.redirect
 import kotlin.js.Promise
 
-data class LogoutRendererProps(val coupling: dynamic) : RProps
+data class LogoutProps(val coupling: dynamic) : RProps
 
 interface LogoutRenderer {
+
+    fun RBuilder.logout(props: LogoutProps) = component(logout, props)
+
     companion object : ReactComponentRenderer, GoogleSignIn {
 
-        val logout = reactFunctionComponent<LogoutRendererProps> { (coupling) ->
+        private val logout = reactFunctionComponent<LogoutProps> { (coupling) ->
             val (isLoggedOut, setIsLoggedOut) = useState(false)
             val (logoutPromise, setLogout) = useState<Any?>(null)
             if (logoutPromise == null) {

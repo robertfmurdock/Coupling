@@ -1,6 +1,5 @@
 
-import com.zegreatrob.coupling.client.ReactFunctionComponent
-import com.zegreatrob.coupling.client.component
+import react.RBuilder
 import react.RClass
 import react.RProps
 import react.buildElement
@@ -24,5 +23,4 @@ external interface ShallowWrapper<T> {
 @JsNonModule
 external val enzyme: Enzyme
 
-fun <P : RProps> ReactFunctionComponent<P>.shallowRender(props: P) =
-        enzyme.shallow(buildElement { component(this@shallowRender, props) })
+fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(function))

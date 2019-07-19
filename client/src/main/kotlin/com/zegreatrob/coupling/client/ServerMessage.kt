@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import react.RBuilder
 import react.RClass
 import react.RProps
 import react.dom.div
@@ -22,8 +23,11 @@ const val disconnectedMessage = "Not connected"
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
 interface ServerMessageRenderer {
+
+    fun RBuilder.serverMessage(props: ServerMessageProps) = component(serverMessage, props)
+
     companion object {
-        val serverMessage = reactFunctionComponent<ServerMessageProps> { props ->
+        private val serverMessage = reactFunctionComponent<ServerMessageProps> { props ->
             val (tribeId, useSsl) = props
             val (message, setMessage) = useState(disconnectedMessage)
 

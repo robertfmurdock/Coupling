@@ -27,10 +27,12 @@ data class PlayerRosterProps(
 
 interface PlayerRosterRenderer {
 
+    fun RBuilder.playerRoster(props: PlayerRosterProps) = component(playerRoster, props)
+
     companion object : PlayerCardRenderer {
         private val styles: PlayerRosterStyles = loadStyles("player/PlayerRoster")
 
-        val playerRoster = reactFunctionComponent{ props: PlayerRosterProps ->
+        private val playerRoster = reactFunctionComponent { props: PlayerRosterProps ->
             with(props) {
                 div(classes = className) {
                     attrs { classes += styles.className }

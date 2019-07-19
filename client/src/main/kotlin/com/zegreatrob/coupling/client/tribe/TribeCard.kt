@@ -10,6 +10,7 @@ import kotlinx.html.tabIndex
 import loadStyles
 import org.w3c.dom.Node
 import org.w3c.dom.events.Event
+import react.RBuilder
 import react.RProps
 import react.dom.div
 import styled.StyledDOMBuilder
@@ -27,6 +28,8 @@ private val styles: TribeCardStyles = loadStyles("tribe/TribeCard")
 data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
 interface TribeCardRenderer {
+
+    fun RBuilder.tribeCard(props: TribeCardProps) = component(tribeCard, props)
 
     companion object {
         val tribeCard = reactFunctionComponent { props: TribeCardProps ->

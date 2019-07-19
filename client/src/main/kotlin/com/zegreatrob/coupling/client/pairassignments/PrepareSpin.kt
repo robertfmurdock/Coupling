@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.client.reactFunctionComponent
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
-import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer.Companion.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer
 import com.zegreatrob.coupling.client.useState
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
@@ -14,6 +14,7 @@ import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import loadStyles
+import react.RBuilder
 import react.RProps
 import react.dom.RDOMBuilder
 import react.dom.a
@@ -23,7 +24,10 @@ external fun encodeURIComponent(input: String?)
 
 interface PrepareSpinRenderer {
 
-    companion object : PlayerCardRenderer {
+    fun RBuilder.prepareSpin(props: PrepareSpinProps) = component(prepareSpin, props)
+
+    companion object : PlayerCardRenderer, TribeBrowserRenderer{
+
         private val styles: PrepareSpinStyles = loadStyles("PrepareSpin")
 
         val prepareSpin = reactFunctionComponent { props: PrepareSpinProps ->
@@ -33,7 +37,7 @@ interface PrepareSpinRenderer {
             )
 
             div(classes = styles.className) {
-                div { component(tribeBrowser, TribeBrowserProps(tribe, pathSetter)) }
+                div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
                 div {
                     div { spinButton(tribe, playerSelections, pathSetter) }
                     selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections)
