@@ -26,11 +26,11 @@ interface PrepareSpinRenderer {
 
     fun RBuilder.prepareSpin(props: PrepareSpinProps) = component(prepareSpin, props)
 
-    companion object : PlayerCardRenderer, TribeBrowserRenderer{
+    companion object : PlayerCardRenderer, TribeBrowserRenderer {
 
         private val styles: PrepareSpinStyles = loadStyles("PrepareSpin")
 
-        val prepareSpin = reactFunctionComponent { props: PrepareSpinProps ->
+        private val prepareSpin = reactFunctionComponent { props: PrepareSpinProps ->
             val (tribe, players, history, pathSetter) = props
             val (playerSelections, setPlayerSelections) = useState(
                     players.map { it to isInLastSetOfPairs(it, history) }
@@ -67,7 +67,7 @@ interface PrepareSpinRenderer {
         }
 
         private fun RDOMBuilder<DIV>.playerCard(tribe: KtTribe, player: Player, pathSetter: (String) -> Unit, isSelected: Boolean, setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit, playerSelections: List<Pair<Player, Boolean>>) {
-            component(PlayerCardRenderer.playerCard, PlayerCardProps(
+            playerCard(PlayerCardProps(
                     tribe.id,
                     player,
                     pathSetter,
@@ -78,7 +78,7 @@ interface PrepareSpinRenderer {
                                 flipSelectionForPlayer(player, isSelected, playerSelections)
                         )
                     }
-            ), null)
+            ))
         }
 
         private fun flipSelectionForPlayer(

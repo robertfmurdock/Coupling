@@ -29,10 +29,10 @@ data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSette
 
 interface TribeCardRenderer {
 
-    fun RBuilder.tribeCard(props: TribeCardProps) = component(tribeCard, props)
+    fun RBuilder.tribeCard(props: TribeCardProps, key: String? = null) = component(tribeCard, props, key)
 
     companion object {
-        val tribeCard = reactFunctionComponent { props: TribeCardProps ->
+        private val tribeCard = reactFunctionComponent { props: TribeCardProps ->
             val (tribe, size) = props
 
             styledSpan {

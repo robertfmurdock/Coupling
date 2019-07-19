@@ -22,7 +22,7 @@ interface TribeBrowserRenderer {
 
     fun RBuilder.tribeBrowser(props: TribeBrowserProps) = component(tribeBrowser, props)
 
-    companion object {
+    companion object : TribeCardRenderer {
 
         private val styles = loadStyles<TribeBrowserCss>("tribe/TribeBrowser")
 
@@ -30,7 +30,7 @@ interface TribeBrowserRenderer {
             val (tribe, pathSetter) = props
             div(classes = styles.className) {
                 span {
-                    component(TribeCardRenderer.tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
+                    tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
                     h1 { +(tribe.name ?: "") }
                 }
                 span {

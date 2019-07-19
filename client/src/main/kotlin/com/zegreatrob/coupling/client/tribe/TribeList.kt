@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.component
 import com.zegreatrob.coupling.client.reactFunctionComponent
-import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import loadStyles
@@ -24,14 +23,14 @@ interface TribeListRenderer {
 
     fun RBuilder.tribeList(props: TribeListProps) = component(tribeList, props)
 
-    companion object {
-        val tribeList = reactFunctionComponent { props: TribeListProps ->
+    companion object : TribeCardRenderer {
+        private val tribeList = reactFunctionComponent { props: TribeListProps ->
             val (tribes, pathSetter) = props
 
             div(classes = styles.className) {
                 div {
                     tribes.forEach { tribe ->
-                        component(tribeCard, TribeCardProps(tribe = tribe, pathSetter = pathSetter), key = tribe.id.value)
+                        tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter), key = tribe.id.value)
                     }
                 }
                 div {

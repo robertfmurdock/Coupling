@@ -52,8 +52,7 @@ interface PlayerRosterRenderer {
 
         private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
             players.forEach { player ->
-                component(
-                        PlayerCardRenderer.playerCard,
+                playerCard(
                         PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
                         key = player.id
                 )

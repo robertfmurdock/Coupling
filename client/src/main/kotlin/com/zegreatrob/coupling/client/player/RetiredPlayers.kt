@@ -45,8 +45,6 @@ interface RetiredPlayersRenderer {
             }
         }
     }
-
-
 }
 
 

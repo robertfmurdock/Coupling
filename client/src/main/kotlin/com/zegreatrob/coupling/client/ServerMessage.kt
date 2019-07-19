@@ -46,7 +46,6 @@ interface ServerMessageRenderer {
             }
         }
     }
-
 }
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean): String {
