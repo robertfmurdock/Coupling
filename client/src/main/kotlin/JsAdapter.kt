@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer.Compan
 import com.zegreatrob.coupling.client.player.*
 import com.zegreatrob.coupling.client.player.PlayerRosterRenderer.Companion.playerRoster
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
+import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer.Companion.tribeBrowser
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
 import com.zegreatrob.coupling.client.tribe.TribeListProps
 import com.zegreatrob.coupling.client.tribe.TribeListRenderer.Companion.tribeList
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -137,6 +137,15 @@ object ReactComponents : RetiredPlayersRenderer,
         )
     }
 
+    @Suppress("unused")
+    @JsName("TribeBrowser")
+    val tribeBrowserJs = jsReactFunction { props ->
+        component(tribeBrowser, TribeBrowserProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
             handler(props)
@@ -156,16 +165,6 @@ fun gravatarImageJs(props: dynamic): dynamic = buildElements {
             props.options.unsafeCast<GravatarOptions>()
     )
 }
-
-@Suppress("unused")
-@JsName("TribeBrowser")
-fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
-    element(tribeBrowser, TribeBrowserProps(
-            tribe = props.tribe.unsafeCast<Json>().toTribe(),
-            pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-    ))
-}
-
 
 @Suppress("unused")
 @JsName("RetiredPlayers")

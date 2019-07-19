@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.client.reactFunctionComponent
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer.Companion.tribeBrowser
 import com.zegreatrob.coupling.client.useState
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
@@ -33,7 +33,7 @@ interface PrepareSpinRenderer {
             )
 
             div(classes = styles.className) {
-                div { element(tribeBrowser, TribeBrowserProps(tribe, pathSetter)) }
+                div { component(tribeBrowser, TribeBrowserProps(tribe, pathSetter)) }
                 div {
                     div { spinButton(tribe, playerSelections, pathSetter) }
                     selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections)

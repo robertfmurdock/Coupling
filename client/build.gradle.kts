@@ -85,7 +85,6 @@ tasks {
                 "client.commandDispatcher",
                 "client.components",
                 "client.GravatarImage",
-                "client.TribeBrowser",
                 "client.RetiredPlayers",
                 "client.LoginChooser",
                 "client.Logout",

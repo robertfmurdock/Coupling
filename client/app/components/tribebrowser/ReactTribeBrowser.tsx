@@ -1,4 +1,4 @@
 // @ts-ignore
-import {TribeBrowser} from 'client'
+import {components} from 'client'
 
-export default TribeBrowser
+export default components.TribeBrowser
