@@ -1,6 +1,4 @@
-import * as React from "react";
-
 // @ts-ignore
-import {PlayerRoster} from 'client'
+import {components} from 'client'
 
-export default PlayerRoster
+export default components.PlayerRoster

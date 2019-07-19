@@ -1,10 +1,10 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer.Companion.prepareSpin
 import com.zegreatrob.coupling.client.player.*
+import com.zegreatrob.coupling.client.player.PlayerRosterRenderer.Companion.playerRoster
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.TribeCardRenderer.Companion.tribeCard
@@ -123,6 +123,19 @@ object ReactComponents : RetiredPlayersRenderer,
         ))
     }
 
+    @Suppress("unused")
+    @JsName("PlayerRoster")
+    val playerRosterJs = jsReactFunction { props ->
+        component(playerRoster,
+                PlayerRosterProps(
+                        tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
+                        players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                        label = props.label.unsafeCast<String?>(),
+                        className = props.className.unsafeCast<String?>(),
+                        pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                )
+        )
+    }
 
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
@@ -153,21 +166,6 @@ fun tribeBrowserJs(props: dynamic): dynamic = buildElements {
     ))
 }
 
-@Suppress("unused")
-@JsName("PlayerRoster")
-fun playerRosterJs(props: dynamic): dynamic = buildElements {
-    with(ReactComponents) {
-        element(playerRoster,
-                PlayerRosterProps(
-                        tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
-                        players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                        label = props.label.unsafeCast<String?>(),
-                        className = props.className.unsafeCast<String?>(),
-                        pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-                )
-        )
-    }
-}
 
 @Suppress("unused")
 @JsName("RetiredPlayers")

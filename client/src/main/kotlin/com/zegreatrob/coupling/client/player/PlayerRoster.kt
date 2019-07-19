@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.rFunction
+import com.zegreatrob.coupling.client.reactFunctionComponent
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.html.classes
@@ -27,12 +27,10 @@ data class PlayerRosterProps(
 
 interface PlayerRosterRenderer {
 
-    val playerRoster get() = Companion.playerRoster
-
     companion object : PlayerCardRenderer {
         private val styles: PlayerRosterStyles = loadStyles("player/PlayerRoster")
 
-        val playerRoster = rFunction { props: PlayerRosterProps ->
+        val playerRoster = reactFunctionComponent{ props: PlayerRosterProps ->
             with(props) {
                 div(classes = className) {
                     attrs { classes += styles.className }
