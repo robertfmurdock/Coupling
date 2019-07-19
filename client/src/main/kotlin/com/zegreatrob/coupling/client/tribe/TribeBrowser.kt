@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.reactFunctionComponent
+import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
-import loadStyles
 import react.RBuilder
 import react.RProps
 import react.dom.*
@@ -24,9 +23,9 @@ interface TribeBrowserRenderer {
 
     companion object : TribeCardRenderer {
 
-        private val styles = loadStyles<TribeBrowserCss>("tribe/TribeBrowser")
-
-        private val tribeBrowser = reactFunctionComponent { props: TribeBrowserProps ->
+        private val tribeBrowser = styledComponent(
+                "tribe/TribeBrowser"
+        ) { props: TribeBrowserProps, styles: TribeBrowserCss ->
             val (tribe, pathSetter) = props
             div(classes = styles.className) {
                 span {

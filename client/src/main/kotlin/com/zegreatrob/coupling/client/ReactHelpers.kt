@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import loadStyles
 import react.*
 import kotlin.reflect.KClass
 
@@ -64,3 +65,14 @@ class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private v
 
 fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P, key: String? = null) =
         element(component.rFunction, props, key)
+
+inline fun <reified P : RProps, S> styledComponent(
+        styleName: String,
+        crossinline builder: RBuilder.(props: P, styles: S) -> ReactElement
+): ReactFunctionComponent<P> {
+    val styles = loadStyles<S>(styleName)
+
+    return reactFunctionComponent { props: P ->
+        builder(props, styles)
+    }
+}
