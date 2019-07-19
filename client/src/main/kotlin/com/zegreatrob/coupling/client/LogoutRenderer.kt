@@ -1,15 +1,18 @@
 package com.zegreatrob.coupling.client
 
+
 import kotlinx.coroutines.*
 import react.RProps
 import react.dom.div
 import react.router.dom.redirect
 import kotlin.js.Promise
 
-interface LogoutRenderer : ReactComponentRenderer, GoogleSignIn {
+data class LogoutRendererProps(val coupling: dynamic) : RProps
 
-    val logout
-        get() = rFunction<LogoutRendererProps> { (coupling) ->
+interface LogoutRenderer {
+    companion object : ReactComponentRenderer, GoogleSignIn {
+
+        val logout = reactFunctionComponent<LogoutRendererProps> { (coupling) ->
             val (isLoggedOut, setIsLoggedOut) = useState(false)
             val (logoutPromise, setLogout) = useState<Any?>(null)
             if (logoutPromise == null) {
@@ -25,11 +28,11 @@ interface LogoutRenderer : ReactComponentRenderer, GoogleSignIn {
             }
         }
 
-    private suspend fun waitForLogout(setIsLoggedOut: (Boolean) -> Unit, coupling: dynamic): Unit = coroutineScope {
-        launch { coupling.logout().unsafeCast<Promise<Unit>>().await() }
-        launch { signOut() }
-    }.run { setIsLoggedOut(true) }
+        private suspend fun waitForLogout(setIsLoggedOut: (Boolean) -> Unit, coupling: dynamic): Unit = coroutineScope {
+            launch { coupling.logout().unsafeCast<Promise<Unit>>().await() }
+            launch { signOut() }
+        }.run { setIsLoggedOut(true) }
+
+    }
 
 }
-
-data class LogoutRendererProps(val coupling: dynamic) : RProps

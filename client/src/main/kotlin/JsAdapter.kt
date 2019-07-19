@@ -1,5 +1,6 @@
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.LoginChooserRenderer.Companion.loginChooser
+import com.zegreatrob.coupling.client.LogoutRenderer.Companion.logout
 import com.zegreatrob.coupling.client.ServerMessageRenderer.Companion.serverMessage
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
@@ -74,12 +75,14 @@ private fun CallSign.toJson() = json(
 
 interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapCommandDispatcher
 
+@Suppress("unused")
 @JsName("components")
 object ReactComponents : RetiredPlayersRenderer,
         PlayerRosterRenderer,
         LoginChooserRenderer,
         LogoutRenderer,
-        PrepareSpinRenderer {
+        PrepareSpinRenderer,
+        GoogleSignIn {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
@@ -168,12 +171,23 @@ object ReactComponents : RetiredPlayersRenderer,
     }
 
     @Suppress("unused")
+    @JsName("Logout")
+    val logoutJs = jsReactFunction { props ->
+        component(logout, LogoutRendererProps(props.coupling))
+    }
+
+
+    @Suppress("unused")
     @JsName("LoginChooser")
     val loginChooserJs = {
         buildElements {
             element(loginChooser, object : RProps {})
         }
     }
+
+    @Suppress("unused")
+    @JsName("googleCheckForSignedIn")
+    fun googleCheckFoSignedIn(): dynamic = GlobalScope.promise { checkForSignedIn() }
 
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
@@ -182,16 +196,3 @@ object ReactComponents : RetiredPlayersRenderer,
     }
 
 }
-
-
-@Suppress("unused")
-@JsName("Logout")
-fun logoutJs(props: dynamic): dynamic = with(ReactComponents) {
-    buildElements {
-        element(logout, LogoutRendererProps(props.coupling))
-    }
-}
-
-@Suppress("unused")
-@JsName("googleCheckForSignedIn")
-fun googleCheckFoSignedIn(): dynamic = with(ReactComponents) { GlobalScope.promise { checkForSignedIn() } }

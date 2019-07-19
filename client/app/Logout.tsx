@@ -1,4 +1,4 @@
 // @ts-ignore
-import {Logout} from 'client'
+import {components} from 'client'
 
-export default Logout
+export default components.Logout

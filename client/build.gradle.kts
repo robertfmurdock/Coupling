@@ -83,10 +83,7 @@ tasks {
                 "logging.com.zegreatrob.coupling.logging.initializeJasmineLogging",
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
-                "client.components",
-                "client.Logout",
-                "client.PrepareSpin",
-                "client.googleCheckForSignedIn"
+                "client.components"
         )
     }
 
