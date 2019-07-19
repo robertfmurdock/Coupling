@@ -1,5 +1,5 @@
-import com.zegreatrob.coupling.client.Components.serverMessage
 import com.zegreatrob.coupling.client.ServerMessageProps
+import com.zegreatrob.coupling.client.ServerMessageRenderer.Companion.serverMessage
 import com.zegreatrob.coupling.client.WebsocketProps
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo

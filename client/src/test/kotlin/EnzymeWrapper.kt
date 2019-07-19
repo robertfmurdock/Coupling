@@ -1,5 +1,6 @@
-import com.zegreatrob.coupling.client.ServerMessageProps
-import com.zegreatrob.coupling.client.element
+
+import com.zegreatrob.coupling.client.ReactFunctionComponent
+import com.zegreatrob.coupling.client.component
 import react.RClass
 import react.RProps
 import react.buildElement
@@ -23,5 +24,5 @@ external interface ShallowWrapper<T> {
 @JsNonModule
 external val enzyme: Enzyme
 
-fun RClass<ServerMessageProps>.shallowRender(props: ServerMessageProps) =
-        enzyme.shallow(buildElement { element(this@shallowRender, props) })
+fun <P : RProps> ReactFunctionComponent<P>.shallowRender(props: P) =
+        enzyme.shallow(buildElement { component(this@shallowRender, props) })

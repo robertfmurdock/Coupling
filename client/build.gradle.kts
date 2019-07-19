@@ -86,7 +86,6 @@ tasks {
                 "client.components",
                 "client.LoginChooser",
                 "client.Logout",
-                "client.ServerMessage",
                 "client.PrepareSpin",
                 "client.googleCheckForSignedIn"
         )

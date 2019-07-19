@@ -1,5 +1,5 @@
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.Components.serverMessage
+import com.zegreatrob.coupling.client.ServerMessageRenderer.Companion.serverMessage
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer.Companion.prepareSpin
@@ -157,6 +157,15 @@ object ReactComponents : RetiredPlayersRenderer,
         ))
     }
 
+    @Suppress("unused")
+    @JsName("ServerMessage")
+    val serverMessageJs = jsReactFunction { props ->
+        component(serverMessage, ServerMessageProps(
+                tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
+                useSsl = props.useSsl.unsafeCast<Boolean>()
+        ))
+    }
+
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements {
             handler(props)
@@ -165,14 +174,6 @@ object ReactComponents : RetiredPlayersRenderer,
 
 }
 
-@Suppress("unused")
-@JsName("ServerMessage")
-fun serverMessageJs(props: dynamic): dynamic = buildElements {
-    element(serverMessage, ServerMessageProps(
-            tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
-            useSsl = props.useSsl.unsafeCast<Boolean>()
-    ))
-}
 
 @Suppress("unused")
 @JsName("LoginChooser")

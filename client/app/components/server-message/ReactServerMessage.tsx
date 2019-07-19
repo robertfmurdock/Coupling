@@ -1,4 +1,4 @@
 // @ts-ignore
-import {ServerMessage} from 'client'
+import {components} from 'client'
 
-export default ServerMessage
+export default components.ServerMessage
