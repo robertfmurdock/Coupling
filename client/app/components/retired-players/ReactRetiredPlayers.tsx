@@ -1,4 +1,4 @@
 // @ts-ignore
-import {RetiredPlayers} from 'client'
+import {components} from 'client'
 
-export default RetiredPlayers
+export default components.RetiredPlayers

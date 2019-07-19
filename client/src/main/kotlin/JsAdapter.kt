@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer.Companion.prepareSpin
 import com.zegreatrob.coupling.client.player.*
 import com.zegreatrob.coupling.client.player.PlayerRosterRenderer.Companion.playerRoster
+import com.zegreatrob.coupling.client.player.RetiredPlayersRenderer.Companion.retiredPlayers
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer.Companion.tribeBrowser
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -146,25 +147,22 @@ object ReactComponents : RetiredPlayersRenderer,
         ))
     }
 
-g    private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
-        buildElements {
-            handler(props)
-        }
-    }
-
-}
-
-
-@Suppress("unused")
-@JsName("RetiredPlayers")
-fun retiredPlayersJs(props: dynamic): dynamic = buildElements {
-    with(ReactComponents) {
-        element(retiredPlayers, RetiredPlayersProps(
+    @Suppress("unused")
+    @JsName("RetiredPlayers")
+    val retiredPlayersJs = jsReactFunction { props ->
+        component(retiredPlayers, RetiredPlayersProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }
+
+    private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
+        buildElements {
+            handler(props)
+        }
+    }
+
 }
 
 @Suppress("unused")

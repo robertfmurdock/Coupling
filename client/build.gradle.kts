@@ -84,8 +84,6 @@ tasks {
                 "client.performComposeStatisticsAction",
                 "client.commandDispatcher",
                 "client.components",
-                "client.GravatarImage",
-                "client.RetiredPlayers",
                 "client.LoginChooser",
                 "client.Logout",
                 "client.ServerMessage",

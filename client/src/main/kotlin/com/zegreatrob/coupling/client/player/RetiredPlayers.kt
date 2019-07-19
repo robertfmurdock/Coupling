@@ -2,13 +2,12 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.ReactComponentRenderer
 import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.rFunction
+import com.zegreatrob.coupling.client.reactFunctionComponent
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.TribeBrowserRenderer.Companion.tribeBrowser
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import loadStyles
-import react.RBuilder
 import react.RProps
 import react.dom.div
 
@@ -23,14 +22,12 @@ interface RetiredPlayersCss {
     val header: String
 }
 
-interface RetiredPlayersRenderer : PlayerCardRenderer, ReactComponentRenderer {
+interface RetiredPlayersRenderer {
 
-    companion object {
+    companion object : PlayerCardRenderer, ReactComponentRenderer {
         private val styles = loadStyles<RetiredPlayersCss>("player/RetiredPlayers")
-    }
 
-    val RBuilder.retiredPlayers
-        get() = rFunction { (tribe, players, pathSetter): RetiredPlayersProps ->
+        val retiredPlayers = reactFunctionComponent { (tribe, players, pathSetter): RetiredPlayersProps ->
             div(classes = styles.className) {
                 component(tribeBrowser, TribeBrowserProps(tribe, pathSetter))
                 div(classes = styles.header) { +"Retired Players" }
@@ -44,6 +41,9 @@ interface RetiredPlayersRenderer : PlayerCardRenderer, ReactComponentRenderer {
                 }
             }
         }
+    }
+
+
 }
 
 
