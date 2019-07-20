@@ -13,12 +13,12 @@
     display: inline-block;
 }
 
-:local(.historyView) .player {
+:local(.historyView) :local(.player) {
     width: auto;
     height: auto;
 }
 
-:local(.historyView) .header {
+:local(.historyView) :local(.header) {
     display: inline-block;
     border-radius: 25px;
     padding: 10px;
@@ -28,4 +28,8 @@
     text-stroke-color: darkred;
     font-size: xx-large;
     background: steelblue url(../../../../../../../../images/overlay.png) repeat-x;
+}
+
+:local(.deleteButton) {
+    /*! Do not remove */
 }

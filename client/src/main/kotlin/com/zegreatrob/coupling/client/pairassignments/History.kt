@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.common.toJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
@@ -29,6 +30,9 @@ interface HistorySyntax {
 external interface HistoryStyles {
     val tribeBrowser: String
     val historyView: String
+    val header: String
+    val player: String
+    val deleteButton: String
 }
 
 data class HistoryProps(
@@ -54,21 +58,24 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
                 tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
             }
             span(classes = styles.historyView) {
-                div(classes = "header") { +"History!" }
-                pairAssignmentList(props, scope)
+                div(classes = styles.header) { +"History!" }
+                pairAssignmentList(props, scope, styles)
             }
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope) = props.history.map {
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles): List<Any> = props.history.map {
         div(classes = "pair-assignments") {
             attrs { key = it.id?.value ?: "" }
             span(classes = "pair-assignments-header") { +it.dateText() }
-            span(classes = "small red button delete-button") {
-                attrs { onClickFunction = { _ -> scope.launch { props.removeButtonOnClick(it) } } }
+            span(classes = "small red button") {
+                attrs {
+                    classes += styles.deleteButton
+                    onClickFunction = { _ -> scope.launch { props.removeButtonOnClick(it) } }
+                }
                 +"DELETE"
             }
-            div { showPairs(it) }
+            div { showPairs(it, styles) }
         }
     }
 
@@ -84,12 +91,12 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
         }
     }
 
-    private fun RBuilder.showPairs(document: PairAssignmentDocument) =
+    private fun RBuilder.showPairs(document: PairAssignmentDocument, styles: HistoryStyles) =
             document.pairs.mapIndexed { index, pair ->
                 span(classes = "pair") {
                     attrs { key = "$index" }
                     pair.players.map { pinnedPlayer: PinnedPlayer ->
-                        span(classes = "player") {
+                        span(classes = styles.player) {
                             attrs { key = "${pinnedPlayer.player.id}" }
                             div(classes = "player-header") {
                                 +(pinnedPlayer.player.name ?: "Unknown")

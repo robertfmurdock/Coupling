@@ -71,7 +71,7 @@ describe('The history page', function () {
 
         it('can be deleted', async function () {
             const pairAssignmentSetElements = element.all(by.className('pair-assignments'));
-            const deleteButton = pairAssignmentSetElements.get(0).element(By.css('.delete-button'));
+            const deleteButton = pairAssignmentSetElements.get(0).element(By.className(HistoryStyles.deleteButton));
 
             deleteButton.click();
             const alert = await browser.switchTo().alert();
