@@ -32,6 +32,7 @@ external interface HistoryStyles {
     val historyView: String
     val header: String
     val player: String
+    val playerHeader: String
     val deleteButton: String
 }
 
@@ -96,13 +97,16 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
                 span(classes = "pair") {
                     attrs { key = "$index" }
                     pair.players.map { pinnedPlayer: PinnedPlayer ->
-                        span(classes = styles.player) {
-                            attrs { key = "${pinnedPlayer.player.id}" }
-                            div(classes = "player-header") {
-                                +(pinnedPlayer.player.name ?: "Unknown")
-                            }
-                        }
+                        showPlayer(styles, pinnedPlayer)
                     }
+                }
+            }
+
+    private fun RBuilder.showPlayer(styles: HistoryStyles, pinnedPlayer: PinnedPlayer) =
+            span(classes = styles.player) {
+                attrs { key = "${pinnedPlayer.player.id}" }
+                div(classes = styles.playerHeader) {
+                    +(pinnedPlayer.player.name ?: "Unknown")
                 }
             }
 }
