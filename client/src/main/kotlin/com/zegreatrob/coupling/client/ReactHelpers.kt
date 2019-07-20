@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import kotlinx.coroutines.*
 import loadStyles
 import react.*
 import kotlin.reflect.KClass
@@ -21,7 +22,26 @@ fun useLayoutEffect(callback: () -> Unit) {
     }
 }
 
+fun useEffect(callback: () -> Unit) {
+    React.useEffect {
+        callback()
+        undefined
+    }
+}
+
+fun useEffectWithCleanup(dependencies: Array<Any>? = null, callback: () -> () -> Unit) {
+    React.useEffect({ return@useEffect callback() }, dependencies)
+}
+
 fun <T> useState(default: T): StateValueContent<T> {
+    val stateArray = React.useState(default)
+    return StateValueContent(
+            value = stateArray[0].unsafeCast<T>(),
+            setter = stateArray[1].unsafeCast<(T) -> Unit>()
+    )
+}
+
+fun <T> useState(default: () -> T): StateValueContent<T> {
     val stateArray = React.useState(default)
     return StateValueContent(
             value = stateArray[0].unsafeCast<T>(),
@@ -75,4 +95,23 @@ inline fun <reified P : RProps, S> styledComponent(
     return reactFunctionComponent { props: P ->
         builder(props, styles)
     }
+}
+
+inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
+        styleName: String,
+        crossinline builder: RBuilder.(props: P, styles: S, scope: CoroutineScope) -> ReactElement
+): ReactFunctionComponent<P> {
+    val styles = loadStyles<S>(styleName)
+
+    return reactFunctionComponent { props: P ->
+        val (scope) = useState { buildScope() + CoroutineName(styleName) }
+        useEffectWithCleanup(arrayOf()) {
+            { scope.cancel() }
+        }
+        builder(props, styles, scope)
+    }
+}
+
+interface ScopeProvider {
+    fun buildScope(): CoroutineScope = MainScope()
 }

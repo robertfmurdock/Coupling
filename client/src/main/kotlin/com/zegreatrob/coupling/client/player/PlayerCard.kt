@@ -95,7 +95,7 @@ interface PlayerCardRenderer : ReactComponentRenderer {
                 disabled: Boolean,
                 pathSetter: (String) -> Unit
         ) {
-            val playerNameRef = useRef(null)
+            val playerNameRef = useRef<Node>(null)
             useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
 
             styledDiv {

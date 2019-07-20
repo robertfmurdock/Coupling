@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.client.ReactFunctionComponent
+import com.zegreatrob.coupling.client.ScopeProvider
 import com.zegreatrob.coupling.client.component
 import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -11,7 +12,6 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.toJson
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import kotlinx.html.id
@@ -31,13 +31,14 @@ interface HistorySyntax {
     }
 }
 
-interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>, WindowFunctions, TribeCardRenderer {
-
-    val scope: CoroutineScope get() = MainScope()
+interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
+        WindowFunctions,
+        TribeCardRenderer,
+        ScopeProvider {
 
     override fun build() = styledComponent<HistoryProps, HistoryStyles>(
             "pairassignments/History"
-    ) { props, styles ->
+    ) { props, styles, scope ->
         val (tribe, pathSetter) = props
 
         div {
@@ -48,12 +49,12 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>, WindowFuncti
             span {
                 attrs { id = "history-view" }
                 div(classes = "header") { +"History!" }
-                pairAssignmentList(props)
+                pairAssignmentList(props, scope)
             }
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps) = props.history.map {
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope): List<Any> = props.history.map {
         div(classes = "pair-assignments") {
             attrs { key = it.id?.value ?: "" }
             span(classes = "pair-assignments-header") { +it.dateText() }
@@ -69,7 +70,6 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>, WindowFuncti
             "${date.format(DateFormat("MM/dd/YYYY"))} - ${date.format(DateFormat("HH:mm:ss"))}"
 
     private suspend fun HistoryProps.removeButtonOnClick(document: PairAssignmentDocument) {
-        console.log("REMOVE BUTTON CLICK")
         if (window.confirm("Are you sure you want to delete these pair assignments?")) {
             coupling.removeAssignments(document.toJson(), tribe.id.value)
                     .unsafeCast<Promise<Unit>>()

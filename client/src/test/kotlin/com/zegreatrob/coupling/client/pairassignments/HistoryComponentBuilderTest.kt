@@ -10,7 +10,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinext.js.jsObject
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
@@ -25,7 +24,7 @@ class HistoryComponentBuilderTest {
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryComponentBuilder {
-                override val scope: CoroutineScope = this@withContext
+                override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val tribe = KtTribe(TribeId("me"))
@@ -55,7 +54,7 @@ class HistoryComponentBuilderTest {
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryComponentBuilder {
-                override val scope: CoroutineScope = this@withContext
+                override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
 
                 val tribe = KtTribe(TribeId("me"))

@@ -57,7 +57,7 @@ interface TribeCardRenderer {
         }
 
         private fun StyledDOMBuilder<SPAN>.tribeCardHeader(props: TribeCardProps) = with(props) {
-            val tribeNameRef = useRef(null)
+            val tribeNameRef = useRef<Node>(null)
             useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
 
             styledDiv {
