@@ -32,24 +32,28 @@ interface TribeBrowserRenderer {
                     tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
                     h1 { +(tribe.name ?: "") }
                 }
+                tribeControlButtons(tribe, styles)
+            }
+        }
+
+        private fun RBuilder.tribeControlButtons(tribe: KtTribe, styles: TribeBrowserCss) {
+            span {
                 span {
-                    span {
-                        a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
-                            attrs { classes += styles.statisticsButton }
-                            span(classes = "icon-button-text") { +"Statistics" }
-                        }
-                        a(href = "/tribes/", classes = "large gray button") {
-                            attrs { classes += styles.tribeSelectButton }
-                            i(classes = "fa fa-arrow-circle-up") {}
-                            span(classes = "icon-button-text") { +"Tribe select" }
-                        }
+                    a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
+                        attrs { classes += styles.statisticsButton }
+                        span(classes = "icon-button-text") { +"Statistics" }
                     }
-                    span {
-                        a(href = "/logout", classes = "large red button") {
-                            attrs { classes += styles.logoutButton }
-                            i(classes = "fa fa-sign-out") {}
-                            span(classes = "icon-button-text") { +"Sign Out" }
-                        }
+                    a(href = "/tribes/", classes = "large gray button") {
+                        attrs { classes += styles.tribeSelectButton }
+                        i(classes = "fa fa-arrow-circle-up") {}
+                        span(classes = "icon-button-text") { +"Tribe select" }
+                    }
+                }
+                span {
+                    a(href = "/logout", classes = "large red button") {
+                        attrs { classes += styles.logoutButton }
+                        i(classes = "fa fa-sign-out") {}
+                        span(classes = "icon-button-text") { +"Sign Out" }
                     }
                 }
             }

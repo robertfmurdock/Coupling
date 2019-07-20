@@ -1,4 +1,5 @@
-
+import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.pairassignments.ComponentBuilder
 import react.RBuilder
 import react.RClass
 import react.RProps
@@ -16,7 +17,11 @@ external interface ShallowWrapper<T> {
 
     fun update()
 
+    fun debug(): String
+
     fun text(): String
+
+    fun simulate(eventName: String)
 }
 
 @JsModule("enzyme")
@@ -24,3 +29,6 @@ external interface ShallowWrapper<T> {
 external val enzyme: Enzyme
 
 fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(function))
+
+fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { component(build(), props) }
+

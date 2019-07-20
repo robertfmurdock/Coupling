@@ -1,4 +1,7 @@
+
 import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.pairassignments.HistoryProps
+import com.zegreatrob.coupling.client.pairassignments.HistorySyntax
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.player.*
@@ -75,6 +78,7 @@ object ReactComponents : RetiredPlayersRenderer,
         TribeListRenderer,
         PrepareSpinRenderer,
         ServerMessageRenderer,
+        HistorySyntax,
         GoogleSignIn {
 
     @Suppress("unused")
@@ -164,6 +168,18 @@ object ReactComponents : RetiredPlayersRenderer,
     }
 
     @Suppress("unused")
+    @JsName("History")
+    val historyJs = jsReactFunction { props ->
+        history(HistoryProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                coupling = props.coupling,
+                reload = props.reload.unsafeCast<Function0<Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("Logout")
     val logoutJs = jsReactFunction { props ->
         logout(LogoutProps(props.coupling))
@@ -175,7 +191,7 @@ object ReactComponents : RetiredPlayersRenderer,
 
     @Suppress("unused")
     @JsName("googleCheckForSignedIn")
-    fun googleCheckFoSignedIn(): dynamic = GlobalScope.promise { checkForSignedIn() }
+    fun googleCheckForSignedIn(): dynamic = GlobalScope.promise { checkForSignedIn() }
 
     private fun jsReactFunction(handler: RBuilder.(dynamic) -> ReactElement) = { props: dynamic ->
         buildElements { handler(props) }
