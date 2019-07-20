@@ -4,7 +4,7 @@ import * as monk from "monk";
 import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
 import StatisticsPage from "./page-objects/StatisticsPage";
-import {TribeCardStyles} from "./page-objects/Styles";
+import {TeamStatisticsStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const database = monk.default(config.tempMongoUrl);
@@ -51,7 +51,7 @@ describe('The statistics page', function () {
     });
 
     it('has the number of spins until full rotation', function () {
-        const rotationNumberElement = element(By.css('.rotation-number'));
+        const rotationNumberElement = element(By.className(TeamStatisticsStyles.rotationNumber));
         expect(rotationNumberElement.getText()).toBe('5');
     });
 

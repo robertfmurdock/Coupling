@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pin.PinListProps
 import com.zegreatrob.coupling.client.pin.PinListSyntax
 import com.zegreatrob.coupling.client.player.*
+import com.zegreatrob.coupling.client.stats.TeamStatisticsProps
+import com.zegreatrob.coupling.client.stats.TeamStatisticsSyntax
 import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
@@ -81,7 +83,8 @@ object ReactComponents : RetiredPlayersRenderer,
         ServerMessageRenderer,
         HistorySyntax,
         GoogleSignIn,
-        PinListSyntax {
+        PinListSyntax,
+        TeamStatisticsSyntax {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
@@ -187,6 +190,16 @@ object ReactComponents : RetiredPlayersRenderer,
         pinList(PinListProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 pins = props.pins.unsafeCast<Array<Json>>().toPins()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("TeamStatistics")
+    val teamStatisticsJs = jsReactFunction { props ->
+        teamStatistics(TeamStatisticsProps(
+                spinsUntilFullRotation = props.spinsUntilFullRotation.unsafeCast<Int>(),
+                activePlayerCount = props.activePlayerCount.unsafeCast<Int>(),
+                medianSpinDuration = props.medianSpinDuration.unsafeCast<String>()
         ))
     }
 

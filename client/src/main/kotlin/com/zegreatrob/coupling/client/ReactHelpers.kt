@@ -83,8 +83,8 @@ class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private v
 
 }
 
-fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P, key: String? = null) =
-        element(component.rFunction, props, key)
+fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P, key: String? = null, handler: RHandler<P> = {}) =
+        element(component.rFunction, props, key, handler)
 
 inline fun <reified P : RProps, S> styledComponent(
         styleName: String,
@@ -110,6 +110,12 @@ inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
         }
         builder(props, styles, scope)
     }
+}
+
+object EmptyProps : RProps
+
+external interface SimpleStyle {
+    val className: String
 }
 
 interface ScopeProvider {

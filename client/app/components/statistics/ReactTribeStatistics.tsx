@@ -31,24 +31,7 @@ interface Props {
     pathSetter: (url: String) => void
 }
 
-export function TeamStatistics(props: { spinsUntilFullRotation, activePlayerCount, medianSpinDuration }) {
-    const {spinsUntilFullRotation, activePlayerCount, medianSpinDuration} = props;
-    return <div className={Styles.teamStatistics}>
-        <div className={Styles.statsHeader}>Team Stats</div>
-        <div>
-            <span className={Styles.statLabel}>Spins Until Full Rotation:</span>
-            <span className={"rotation-number"}>{spinsUntilFullRotation}</span>
-        </div>
-        <div>
-            <span className={Styles.statLabel}>Number of Active Players:</span>
-            <span className={Styles.activePlayerCount}>{activePlayerCount}</span>
-        </div>
-        <div>
-            <span className={Styles.statLabel}>Median Spin Duration:</span>
-            <span className={Styles.medianSpinDuration}>{medianSpinDuration}</span>
-        </div>
-    </div>;
-}
+export const TeamStatistics = client.components.TeamStatistics;
 
 export function PairReportTable(props: { pairReports, tribe }) {
     const {pairReports, tribe} = props;

@@ -1,0 +1,22 @@
+:local(.className) {
+    display: inline-block;
+    vertical-align: top;
+    margin: 8px;
+    padding: 10px;
+    border: 2px solid #ffffe6;
+    border-radius: 5px;
+    background: #ffffe6;
+}
+
+
+:local(.rotationNumber) {
+    /*! Do not remove */
+}
+
+:local(.activePlayerCount) {
+    /*! Do not remove */
+}
+
+:local(.medianSpinDuration) {
+    /*! Do not remove */
+}

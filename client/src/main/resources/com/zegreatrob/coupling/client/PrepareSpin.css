@@ -10,9 +10,6 @@
 }
 
 :local(.playerCard) {
-}
-
-:local(.playerCard) {
     transition: all 0.25s ease-out;
     transition-property: top, background-color, margin-bottom;
 }
