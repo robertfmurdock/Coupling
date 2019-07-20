@@ -1,5 +1,5 @@
 import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.pairassignments.ComponentBuilder
+import com.zegreatrob.coupling.client.ComponentBuilder
 import react.RBuilder
 import react.RClass
 import react.RProps

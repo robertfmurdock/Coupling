@@ -6,6 +6,7 @@ import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
+import {HistoryStyles} from "./page-objects/Styles";
 
 const config = require('../../config/config');
 const database = monk.default(config.tempMongoUrl);
@@ -59,7 +60,7 @@ describe('The history page', function () {
             ]);
 
             await setLocation(`/${tribe.id}/history`);
-            await browser.wait(() => element(By.id('history-view')).isPresent(), 2000)
+            await browser.wait(() => element(By.className(HistoryStyles.historyView)).isPresent(), 2000)
         });
 
         it('shows recent pairings', async function () {

@@ -1,0 +1,31 @@
+:local(.tribeBrowser) {
+    white-space: normal;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 20px;
+    padding: 10px;
+    border: 11px outset darkorange;
+    background-color: lightgoldenrodyellow;
+    margin: 15px;
+}
+
+:local(.historyView) {
+    display: inline-block;
+}
+
+:local(.historyView) .player {
+    width: auto;
+    height: auto;
+}
+
+:local(.historyView) .header {
+    display: inline-block;
+    border-radius: 25px;
+    padding: 10px;
+    margin: 10px;
+    text-fill-color: white;
+    text-stroke-width: 1.5px;
+    text-stroke-color: darkred;
+    font-size: xx-large;
+    background: steelblue url(../../../../../../../../images/overlay.png) repeat-x;
+}

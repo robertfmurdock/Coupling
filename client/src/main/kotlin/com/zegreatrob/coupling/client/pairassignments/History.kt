@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateFormat
-import com.zegreatrob.coupling.client.ReactFunctionComponent
-import com.zegreatrob.coupling.client.ScopeProvider
-import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.styledComponent
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.TribeCardRenderer
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
@@ -14,9 +11,7 @@ import com.zegreatrob.coupling.common.toJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
-import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.Window
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -24,12 +19,25 @@ import react.dom.span
 import kotlin.js.Promise
 
 interface HistorySyntax {
-    fun RBuilder.history(props: HistoryProps) = component(history, props)
-
     companion object : HistoryComponentBuilder {
         private val history = build()
     }
+
+    fun RBuilder.history(props: HistoryProps) = component(history, props)
 }
+
+external interface HistoryStyles {
+    val tribeBrowser: String
+    val historyView: String
+}
+
+data class HistoryProps(
+        val tribe: KtTribe,
+        val pathSetter: (String) -> Unit,
+        val history: List<PairAssignmentDocument>,
+        val coupling: dynamic,
+        val reload: () -> Unit
+) : RProps
 
 interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
         WindowFunctions,
@@ -42,19 +50,17 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
         val (tribe, pathSetter) = props
 
         div {
-            div {
-                attrs { id = "tribe-browser" }
+            div(classes = styles.tribeBrowser) {
                 tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
             }
-            span {
-                attrs { id = "history-view" }
+            span(classes = styles.historyView) {
                 div(classes = "header") { +"History!" }
                 pairAssignmentList(props, scope)
             }
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope): List<Any> = props.history.map {
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope) = props.history.map {
         div(classes = "pair-assignments") {
             attrs { key = it.id?.value ?: "" }
             span(classes = "pair-assignments-header") { +it.dateText() }
@@ -94,20 +100,3 @@ interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
             }
 }
 
-interface ComponentBuilder<P : RProps> {
-    fun build(): ReactFunctionComponent<P>
-}
-
-interface WindowFunctions {
-    val window: Window get() = kotlin.browser.window
-}
-
-external interface HistoryStyles
-
-data class HistoryProps(
-        val tribe: KtTribe,
-        val pathSetter: (String) -> Unit,
-        val history: List<PairAssignmentDocument>,
-        val coupling: dynamic,
-        val reload: () -> Unit
-) : RProps
