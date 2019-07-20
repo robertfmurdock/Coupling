@@ -1,9 +1,10 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.HistorySyntax
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
+import com.zegreatrob.coupling.client.pin.PinListProps
+import com.zegreatrob.coupling.client.pin.PinListSyntax
 import com.zegreatrob.coupling.client.player.*
 import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
@@ -79,7 +80,8 @@ object ReactComponents : RetiredPlayersRenderer,
         PrepareSpinRenderer,
         ServerMessageRenderer,
         HistorySyntax,
-        GoogleSignIn {
+        GoogleSignIn,
+        PinListSyntax {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
@@ -176,6 +178,15 @@ object ReactComponents : RetiredPlayersRenderer,
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 coupling = props.coupling,
                 reload = props.reload.unsafeCast<Function0<Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("PinList")
+    val pinListJs = jsReactFunction { props ->
+        pinList(PinListProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                pins = props.pins.unsafeCast<Array<Json>>().toPins()
         ))
     }
 
