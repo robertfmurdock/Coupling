@@ -36,7 +36,7 @@ export function TeamStatistics(props: { spinsUntilFullRotation, activePlayerCoun
     return <div className={Styles.teamStatistics}>
         <div className={Styles.statsHeader}>Team Stats</div>
         <div>
-            <span className={Styles.statLabel}>Spins Until Ful Rotation:</span>
+            <span className={Styles.statLabel}>Spins Until Full Rotation:</span>
             <span className={"rotation-number"}>{spinsUntilFullRotation}</span>
         </div>
         <div>
