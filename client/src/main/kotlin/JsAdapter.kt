@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.HistorySyntax
@@ -6,6 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pin.PinListProps
 import com.zegreatrob.coupling.client.pin.PinListSyntax
 import com.zegreatrob.coupling.client.player.*
+import com.zegreatrob.coupling.client.stats.PairReportTableSyntax
 import com.zegreatrob.coupling.client.stats.TeamStatisticsProps
 import com.zegreatrob.coupling.client.stats.TeamStatisticsSyntax
 import com.zegreatrob.coupling.client.tribe.*
@@ -84,7 +86,8 @@ object ReactComponents : RetiredPlayersRenderer,
         HistorySyntax,
         GoogleSignIn,
         PinListSyntax,
-        TeamStatisticsSyntax {
+        TeamStatisticsSyntax,
+        PairReportTableSyntax {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
