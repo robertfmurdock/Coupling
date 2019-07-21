@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.HistorySyntax
@@ -7,9 +6,7 @@ import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
 import com.zegreatrob.coupling.client.pin.PinListProps
 import com.zegreatrob.coupling.client.pin.PinListSyntax
 import com.zegreatrob.coupling.client.player.*
-import com.zegreatrob.coupling.client.stats.PairReportTableSyntax
-import com.zegreatrob.coupling.client.stats.TeamStatisticsProps
-import com.zegreatrob.coupling.client.stats.TeamStatisticsSyntax
+import com.zegreatrob.coupling.client.stats.*
 import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
@@ -87,7 +84,8 @@ object ReactComponents : RetiredPlayersRenderer,
         GoogleSignIn,
         PinListSyntax,
         TeamStatisticsSyntax,
-        PairReportTableSyntax {
+        PairReportTableSyntax,
+        TribeStatisticsSyntax {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
@@ -203,6 +201,18 @@ object ReactComponents : RetiredPlayersRenderer,
                 spinsUntilFullRotation = props.spinsUntilFullRotation.unsafeCast<Int>(),
                 activePlayerCount = props.activePlayerCount.unsafeCast<Int>(),
                 medianSpinDuration = props.medianSpinDuration.unsafeCast<String>()
+        ))
+    }
+
+
+    @Suppress("unused")
+    @JsName("TribeStatistics")
+    val tribeStatisticsJs = jsReactFunction { props ->
+        tribeStatistics(TribeStatisticsProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }
 

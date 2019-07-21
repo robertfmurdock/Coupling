@@ -120,7 +120,9 @@ tasks {
         inputs.dir("./images")
         inputs.dir("./stylesheets")
         inputs.dir("build/lib/vendor")
-        outputs.dir("build/lib")
+        inputs.dir("build/resources")
+        outputs.file("build/lib/main.js")
+        outputs.file("build/lib/styles.css")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "webpack.config.js")
     }
@@ -136,6 +138,8 @@ tasks {
         )
         inputs.file(file("package.json"))
         inputs.files(vendorCompile.inputs.files)
+        inputs.dir("build/kotlin-js-min/main")
+        inputs.dir("build/kotlin-js-min/test")
         inputs.dir("test")
         outputs.dir(file("build/test-results"))
 

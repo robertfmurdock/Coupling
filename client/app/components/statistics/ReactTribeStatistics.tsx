@@ -12,73 +12,78 @@ import Player from '../../../../common/Player';
 import PairAssignmentSet from '../../../../common/PairAssignmentSet';
 import PlayerHeatmap from "./PlayersHeatmap";
 
-const commandDispatcher = client.commandDispatcher();
 
-function calculateStats(tribe, players, history) {
-    const composer = new StatisticComposer();
 
-    const statSet = composer.compose(tribe, players, history);
 
-    const heatmapData = commandDispatcher.performCalculateHeatMapCommand(players, history, statSet.spinsUntilFullRotation);
+export default client.components.TribeStatistics
 
-    return {statSet, heatmapData};
-}
-
-interface Props {
-    tribe: Tribe
-    players: Player[]
-    history: PairAssignmentSet[]
-    pathSetter: (url: String) => void
-}
-
-export const TeamStatistics = client.components.TeamStatistics;
-
-export function PairReportTable(props: { pairReports, tribe }) {
-    const {pairReports, tribe} = props;
-    return <div className={Styles.pairReportTable}>
-        {
-            pairReports.map((report, index) =>
-                <div key={index} className={classNames(Styles.pairReport, 'react-pair-report')}>
-                    {
-                        report.pair.map(player =>
-                            <div key={player._id} className={Styles.playerCard}>
-                                <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
-                            </div>
-                        )
-                    }
-                    <div className={Styles.pairStatistics}>
-                        <div className={Styles.statsHeader}>Stats</div>
-                        <span className={Styles.statLabel}>Spins since last paired:</span>
-                        <span className={"time-since-last-pairing"}>{report.timeSinceLastPaired}</span>
-                    </div>
-                </div>
-            )
-        }
-    </div>;
-}
-
-export default function ReactTribeStatistics(props: Props) {
-    const {tribe, players, history, pathSetter} = props;
-
-    const [statistics] = useState(() => calculateStats(tribe, players, history));
-    const {statSet: {spinsUntilFullRotation, medianSpinDuration, pairReports}, heatmapData} = statistics;
-
-    const activePlayerCount = players.length;
-
-    return <div className={Styles.statsPage}>
-        <div>
-            <ReactTribeCard tribe={tribe} pathSetter={pathSetter}/>
-            <TeamStatistics
-                spinsUntilFullRotation={spinsUntilFullRotation}
-                activePlayerCount={activePlayerCount}
-                medianSpinDuration={medianSpinDuration}
-            />
-        </div>
-        <div>
-            <div className={Styles.leftSection}>
-                <PairReportTable tribe={tribe} pairReports={pairReports}/>
-            </div>
-            <PlayerHeatmap players={players} tribe={tribe} heatmapData={heatmapData}/>
-        </div>
-    </div>
-}
+// const commandDispatcher = client.commandDispatcher();
+//
+// function calculateStats(tribe, players, history) {
+//     const composer = new StatisticComposer();
+//
+//     const statSet = composer.compose(tribe, players, history);
+//
+//     const heatmapData = commandDispatcher.performCalculateHeatMapCommand(players, history, statSet.spinsUntilFullRotation);
+//
+//     return {statSet, heatmapData};
+// }
+//
+// interface Props {
+//     tribe: Tribe
+//     players: Player[]
+//     history: PairAssignmentSet[]
+//     pathSetter: (url: String) => void
+// }
+//
+// export const TeamStatistics = client.components.TeamStatistics;
+//
+// export function PairReportTable(props: { pairReports, tribe }) {
+//     const {pairReports, tribe} = props;
+//     return <div className={Styles.pairReportTable}>
+//         {
+//             pairReports.map((report, index) =>
+//                 <div key={index} className={classNames(Styles.pairReport, 'react-pair-report')}>
+//                     {
+//                         report.pair.map(player =>
+//                             <div key={player._id} className={Styles.playerCard}>
+//                                 <ReactPlayerCard player={player} tribeId={tribe.id} size={50}/>
+//                             </div>
+//                         )
+//                     }
+//                     <div className={Styles.pairStatistics}>
+//                         <div className={Styles.statsHeader}>Stats</div>
+//                         <span className={Styles.statLabel}>Spins since last paired:</span>
+//                         <span className={"time-since-last-pairing"}>{report.timeSinceLastPaired}</span>
+//                     </div>
+//                 </div>
+//             )
+//         }
+//     </div>;
+// }
+//
+// export default function ReactTribeStatistics(props: Props) {
+//     const {tribe, players, history, pathSetter} = props;
+//
+//     const [statistics] = useState(() => calculateStats(tribe, players, history));
+//     const {statSet: {spinsUntilFullRotation, medianSpinDuration, pairReports}, heatmapData} = statistics;
+//
+//     const activePlayerCount = players.length;
+//
+//     return <div className={Styles.statsPage}>
+//         <div>
+//             <ReactTribeCard tribe={tribe} pathSetter={pathSetter}/>
+//             <TeamStatistics
+//                 spinsUntilFullRotation={spinsUntilFullRotation}
+//                 activePlayerCount={activePlayerCount}
+//                 medianSpinDuration={medianSpinDuration}
+//             />
+//         </div>
+//         <div>
+//             <div className={Styles.leftSection}>
+//                 <PairReportTable tribe={tribe} pairReports={pairReports}/>
+//             </div>
+//             <PlayerHeatmap players={players} tribe={tribe} heatmapData={heatmapData}/>
+//         </div>
+//     </div>
+// }

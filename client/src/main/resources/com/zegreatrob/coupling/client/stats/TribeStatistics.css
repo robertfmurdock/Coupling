@@ -1,0 +1,9 @@
+:local(.className) {
+    text-align: left;
+    display: inline-block;
+}
+
+:local(.leftSection) {
+    display: inline-block;
+    vertical-align: top;
+}

@@ -10,7 +10,7 @@ import react.dom.span
 
 interface TeamStatisticsSyntax {
     companion object : TeamStatisticsBuilder {
-        private val component = build()
+        val component = build()
     }
 
     fun RBuilder.teamStatistics(props: TeamStatisticsProps) = component(component, props)

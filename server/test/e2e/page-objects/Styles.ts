@@ -7,3 +7,4 @@ export const RetiredPlayersStyles = require(`${"../../../../client/build/resourc
 export const PrepareSpinStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/PrepareSpin.css`);
 export const HistoryStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/pairassignments/History.css`);
 export const TeamStatisticsStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/stats/TeamStatistics.css`);
+export const TribeStatisticsStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/stats/TribeStatistics.css`);

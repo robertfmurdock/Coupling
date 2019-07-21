@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.common.PairReport
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
@@ -30,7 +32,7 @@ interface PairReportTableBuider :
         StatsHeaderSyntax,
         StatLabelSyntax {
 
-    override fun build() = styledComponent("stats/pairReportTable")
+    override fun build() = styledComponent("stats/PairReportTable")
     { props: PairReportTableProps, styles: PairReportTableStyles ->
         val (tribe, pairReports) = props
         div(classes = styles.className) {
@@ -52,7 +54,15 @@ interface PairReportTableBuider :
         div(classes = styles.pairStatistics) {
             statsHeader { +"Stats" }
             statLabel { +"Spins since last paired:" }
-            span(classes = "time-since-last-pairing") { +"${pairReport.timeSinceLastPair}" }
+            span(classes = "time-since-last-pairing") {
+                +pairReport.timeSinceLastPair.let {
+                    when (it) {
+                        is TimeResultValue ->
+                            "${it.time}"
+                        NeverPaired -> "Never Paired"
+                    }
+                }
+            }
         }
     }
 

@@ -4,6 +4,10 @@ import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.player.Player
 import kotlin.js.JsName
 
+
+fun pairOf(player1: Player) = CouplingPair.Single(player1)
+fun pairOf(player1: Player, player2: Player) = CouplingPair.Double(player1, player2)
+
 sealed class CouplingPair {
     @JsName("asArray")
     abstract fun asArray(): Array<Player>

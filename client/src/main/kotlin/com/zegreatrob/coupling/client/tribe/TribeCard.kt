@@ -32,7 +32,7 @@ interface TribeCardRenderer {
     fun RBuilder.tribeCard(props: TribeCardProps, key: String? = null) = component(tribeCard, props, key)
 
     companion object {
-        private val tribeCard = reactFunctionComponent { props: TribeCardProps ->
+        val tribeCard = reactFunctionComponent { props: TribeCardProps ->
             val (tribe, size) = props
 
             styledSpan {

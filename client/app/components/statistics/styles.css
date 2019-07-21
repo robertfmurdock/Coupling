@@ -3,7 +3,7 @@
     text-align: left;
 }
 
-:local(.statsPage) :local(.heatmap) {
+:local(.heatmap) {
     display: inline-block;
     vertical-align: top;
 }
