@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentBuilder
-import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.client.styledComponent
@@ -18,15 +18,11 @@ import react.dom.RDOMBuilder
 import react.dom.div
 import react.dom.span
 
-interface PairReportTableSyntax {
-    companion object : PairReportTableBuider {
-        val component = build()
-    }
+object PairReportTable : ComponentProvider<PairReportTableProps>(), PairReportTableBuilder
 
-    fun RBuilder.pairReportTable(props: PairReportTableProps) = component(component, props)
-}
+val RBuilder.pairReportTable get() = PairReportTable.captor(this)
 
-interface PairReportTableBuider :
+interface PairReportTableBuilder :
         ComponentBuilder<PairReportTableProps>,
         PlayerCardRenderer,
         StatsHeaderSyntax,

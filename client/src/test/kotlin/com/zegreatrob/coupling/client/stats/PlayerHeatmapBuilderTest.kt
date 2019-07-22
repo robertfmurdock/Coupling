@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.findComponent
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import findComponent
 import loadStyles
 import shallow
 import kotlin.test.Test

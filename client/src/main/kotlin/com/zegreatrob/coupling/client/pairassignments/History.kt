@@ -19,13 +19,10 @@ import react.dom.div
 import react.dom.span
 import kotlin.js.Promise
 
-interface HistorySyntax {
-    companion object : HistoryComponentBuilder {
-        private val history = build()
-    }
 
-    fun RBuilder.history(props: HistoryProps) = component(history, props)
-}
+object History : ComponentProvider<HistoryProps>(), HistoryComponentBuilder
+
+val RBuilder.history get() = History.captor(this)
 
 external interface HistoryStyles {
     val tribeBrowser: String

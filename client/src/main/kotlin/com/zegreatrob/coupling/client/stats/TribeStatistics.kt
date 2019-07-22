@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentBuilder
-import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.TribeCardRenderer
@@ -23,18 +23,13 @@ import react.dom.div
 @JsNonModule
 external val distanceInWorks: (Int, Int?) -> String
 
+object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatisticsBuilder
 
-interface TribeStatisticsSyntax {
-    companion object : TribeStatisticsBuilder {
-        val component = build()
-    }
-
-    fun RBuilder.tribeStatistics(props: TribeStatisticsProps) = component(component, props)
-}
+val RBuilder.tribeStatistics get() = TribeStatistics.captor(this)
 
 interface TribeStatisticsBuilder : ComponentBuilder<TribeStatisticsProps>,
-        TribeCardRenderer, TeamStatisticsSyntax, PairReportTableSyntax,
-        PlayerHeatmapSyntax, ComposeStatisticsActionDispatcher, CalculateHeatMapCommandDispatcher {
+        TribeCardRenderer, TeamStatisticsSyntax, ComposeStatisticsActionDispatcher,
+        CalculateHeatMapCommandDispatcher {
 
     override fun build() = styledComponent("stats/TribeStatistics")
     { props: TribeStatisticsProps, styles: TribeStatisticsStyles ->
@@ -58,6 +53,7 @@ interface TribeStatisticsBuilder : ComponentBuilder<TribeStatisticsProps>,
                 div(classes = styles.leftSection) {
                     pairReportTable(PairReportTableProps(tribe, pairReports))
                 }
+
                 playerHeatmap(PlayerHeatmapProps(tribe, players, heatmapData))
             }
         }

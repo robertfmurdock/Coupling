@@ -1,4 +1,6 @@
 import com.zegreatrob.coupling.client.ComponentBuilder
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.ReactFunctionComponent
 import com.zegreatrob.coupling.client.component
 import react.RBuilder
 import react.RClass
@@ -34,3 +36,10 @@ fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(f
 
 fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { component(build(), props) }
 
+fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
+        reactFunctionComponent: ReactFunctionComponent<P>
+): ShallowWrapper<P> = find(reactFunctionComponent.rFunction)
+
+fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
+        componentProvider: ComponentProvider<P>
+): ShallowWrapper<P> = find(componentProvider.component.rFunction)

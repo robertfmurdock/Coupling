@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ComponentBuilder
-import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -12,15 +12,15 @@ import react.RBuilder
 import react.RProps
 import react.dom.*
 
-interface PinListSyntax {
-    companion object : PinListComponentBuilder {
-        private val component = build()
-    }
+object PinList : ComponentProvider<PinListProps>(), PinListBuilder
 
-    fun RBuilder.pinList(props: PinListProps) = component(component, props)
-}
+val RBuilder.pinList get() = PinList.captor(this)
 
-interface PinListComponentBuilder : ComponentBuilder<PinListProps> {
+external interface PinListStyles
+
+data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
+
+interface PinListBuilder : ComponentBuilder<PinListProps> {
     override fun build() = styledComponent<PinListProps, PinListStyles>("pin/PinList")
     { props, styles ->
         val (tribe, pins) = props
@@ -53,8 +53,3 @@ interface PinListComponentBuilder : ComponentBuilder<PinListProps> {
     }
 }
 
-external interface PinListStyles {
-
-}
-
-data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps

@@ -1,12 +1,16 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.HistoryProps
-import com.zegreatrob.coupling.client.pairassignments.HistorySyntax
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
+import com.zegreatrob.coupling.client.pairassignments.history
 import com.zegreatrob.coupling.client.pin.PinListProps
-import com.zegreatrob.coupling.client.pin.PinListSyntax
+import com.zegreatrob.coupling.client.pin.pinList
 import com.zegreatrob.coupling.client.player.*
-import com.zegreatrob.coupling.client.stats.*
+import com.zegreatrob.coupling.client.stats.TeamStatisticsProps
+import com.zegreatrob.coupling.client.stats.TeamStatisticsSyntax
+import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
+import com.zegreatrob.coupling.client.stats.tribeStatistics
 import com.zegreatrob.coupling.client.tribe.*
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
@@ -80,12 +84,8 @@ object ReactComponents : RetiredPlayersRenderer,
         TribeListRenderer,
         PrepareSpinRenderer,
         ServerMessageRenderer,
-        HistorySyntax,
         GoogleSignIn,
-        PinListSyntax,
-        TeamStatisticsSyntax,
-        PairReportTableSyntax,
-        TribeStatisticsSyntax {
+        TeamStatisticsSyntax {
 
     @Suppress("unused")
     @JsName("PrepareSpin")

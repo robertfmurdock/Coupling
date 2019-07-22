@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentBuilder
-import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.client.styledComponent
@@ -14,21 +14,24 @@ import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.div
 
-interface PlayerHeatmapSyntax {
+object PlayerHeatmap : ComponentProvider<PlayerHeatmapProps>(), PlayerHeatmapBuilder
 
-    companion object : PlayerHeatmapBuilder {
-        val component = build()
-    }
-
-    fun RBuilder.playerHeatmap(props: PlayerHeatmapProps) = component(component, props)
-
-}
+val RBuilder.playerHeatmap get() = PlayerHeatmap.captor(this)
 
 data class PlayerHeatmapProps(
         val tribe: KtTribe,
         val players: List<Player>,
         val heatmapData: List<List<Double?>>
 ) : RProps
+
+external interface PlayerHeatmapStyles {
+    val rightSection: String
+    val heatmapPlayersTopRow: String
+    val spacer: String
+    val playerCard: String
+    val heatmapPlayersSideRow: String
+    val heatmap: String
+}
 
 interface PlayerHeatmapBuilder : ComponentBuilder<PlayerHeatmapProps>, PlayerCardRenderer, HeatmapSyntax {
 
@@ -58,13 +61,4 @@ interface PlayerHeatmapBuilder : ComponentBuilder<PlayerHeatmapProps>, PlayerCar
         }
     }
 
-}
-
-external interface PlayerHeatmapStyles {
-    val rightSection: String
-    val heatmapPlayersTopRow: String
-    val spacer: String
-    val playerCard: String
-    val heatmapPlayersSideRow: String
-    val heatmap: String
 }

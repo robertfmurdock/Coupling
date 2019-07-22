@@ -1,8 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.stats
 
-import ShallowWrapper
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.stats.*
 import com.zegreatrob.coupling.client.tribe.TribeCardRenderer
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
@@ -11,7 +9,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import react.RProps
+import findComponent
 import shallow
 import kotlin.test.Test
 
@@ -53,7 +51,7 @@ class TribeStatisticsBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.findComponent(PairReportTableSyntax.component)
+        wrapper.findComponent(PairReportTable)
                 .props()
                 .pairReports
                 .assertIsOrderedByLongestTimeSinceLastPairing()
@@ -113,7 +111,7 @@ class TribeStatisticsBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.findComponent(PlayerHeatmapSyntax.component)
+        wrapper.findComponent(PlayerHeatmap)
                 .props()
                 .heatmapData
                 .assertIsEqualTo(listOf(
@@ -191,6 +189,3 @@ private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
 private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
 
-fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
-        reactFunctionComponent: ReactFunctionComponent<P>
-): ShallowWrapper<P> = find(reactFunctionComponent.rFunction)
