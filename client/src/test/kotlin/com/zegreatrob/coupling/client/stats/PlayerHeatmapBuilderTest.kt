@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.player.PlayerCardRenderer
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -32,7 +32,7 @@ class PlayerHeatmapBuilderTest {
         shallow(props)
     } verify { wrapper ->
         wrapper.find(".${styles.heatmapPlayersSideRow}")
-                .findComponent(PlayerCardRenderer.playerCard)
+                .findComponent(PlayerCard)
                 .map { it.props().player }
                 .toList()
                 .assertIsEqualTo(players)
@@ -55,7 +55,7 @@ class PlayerHeatmapBuilderTest {
         shallow(props)
     } verify { wrapper ->
         wrapper.find(".${styles.heatmapPlayersTopRow}")
-                .findComponent(PlayerCardRenderer.playerCard)
+                .findComponent(PlayerCard)
                 .map { it.props().player }
                 .toList()
                 .assertIsEqualTo(players)

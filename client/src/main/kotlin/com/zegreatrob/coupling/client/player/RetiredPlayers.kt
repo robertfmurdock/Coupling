@@ -27,7 +27,7 @@ interface RetiredPlayersRenderer {
 
     fun RBuilder.retiredPlayers(props: RetiredPlayersProps) = component(retiredPlayers, props)
 
-    companion object : PlayerCardRenderer, ReactComponentRenderer {
+    companion object : ReactComponentRenderer {
         private val styles = loadStyles<RetiredPlayersCss>("player/RetiredPlayers")
 
         private val retiredPlayers = reactFunctionComponent { (tribe, players, pathSetter): RetiredPlayersProps ->

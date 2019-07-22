@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.component
 import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.PlayerCardRenderer
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunctionComponent
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
@@ -26,7 +26,7 @@ interface PrepareSpinRenderer {
 
     fun RBuilder.prepareSpin(props: PrepareSpinProps) = component(prepareSpin, props)
 
-    companion object : PlayerCardRenderer {
+    companion object {
 
         private val styles: PrepareSpinStyles = loadStyles("PrepareSpin")
 

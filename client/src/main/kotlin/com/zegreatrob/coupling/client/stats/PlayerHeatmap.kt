@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.StyledComponentBuilder
 import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.PlayerCardRenderer
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
@@ -34,7 +34,7 @@ external interface PlayerHeatmapStyles {
 }
 
 interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, PlayerHeatmapStyles>,
-        PlayerCardRenderer, HeatmapSyntax {
+        HeatmapSyntax {
 
     override val componentPath get() = "stats/PlayerHeatmap"
 

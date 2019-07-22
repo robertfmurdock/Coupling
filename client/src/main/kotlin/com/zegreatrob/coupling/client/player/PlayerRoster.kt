@@ -29,7 +29,7 @@ interface PlayerRosterRenderer {
 
     fun RBuilder.playerRoster(props: PlayerRosterProps) = component(playerRoster, props)
 
-    companion object : PlayerCardRenderer {
+    companion object {
         private val styles: PlayerRosterStyles = loadStyles("player/PlayerRoster")
 
         private val playerRoster = reactFunctionComponent { props: PlayerRosterProps ->

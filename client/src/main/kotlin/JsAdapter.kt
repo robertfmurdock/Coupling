@@ -76,7 +76,6 @@ object ReactComponents : RetiredPlayersRenderer,
         PlayerRosterRenderer,
         LoginChooserRenderer,
         LogoutRenderer,
-        PlayerCardRenderer,
         PrepareSpinRenderer,
         ServerMessageRenderer,
         GoogleSignIn {

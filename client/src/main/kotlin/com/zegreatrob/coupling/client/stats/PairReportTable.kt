@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.StyledComponentBuilder
 import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.PlayerCardRenderer
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
@@ -24,8 +24,7 @@ object PairReportTable : ComponentProvider<PairReportTableProps>(), PairReportTa
 val RBuilder.pairReportTable get() = PairReportTable.captor(this)
 
 interface PairReportTableBuilder :
-        StyledComponentBuilder<PairReportTableProps, PairReportTableStyles>,
-        PlayerCardRenderer {
+        StyledComponentBuilder<PairReportTableProps, PairReportTableStyles> {
 
     override val componentPath: String get() = "stats/PairReportTable"
 

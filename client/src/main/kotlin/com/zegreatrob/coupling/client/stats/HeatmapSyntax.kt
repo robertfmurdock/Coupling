@@ -10,7 +10,6 @@ import kotlin.js.json
 @JsNonModule
 private external val reactHeatmapModule: dynamic
 
-
 interface HeatmapSyntax {
 
     companion object {
