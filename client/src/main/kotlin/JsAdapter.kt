@@ -7,8 +7,6 @@ import com.zegreatrob.coupling.client.pairassignments.history
 import com.zegreatrob.coupling.client.pin.PinListProps
 import com.zegreatrob.coupling.client.pin.pinList
 import com.zegreatrob.coupling.client.player.*
-import com.zegreatrob.coupling.client.stats.TeamStatisticsProps
-import com.zegreatrob.coupling.client.stats.TeamStatisticsSyntax
 import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
 import com.zegreatrob.coupling.client.stats.tribeStatistics
 import com.zegreatrob.coupling.client.tribe.*
@@ -84,8 +82,7 @@ object ReactComponents : RetiredPlayersRenderer,
         TribeListRenderer,
         PrepareSpinRenderer,
         ServerMessageRenderer,
-        GoogleSignIn,
-        TeamStatisticsSyntax {
+        GoogleSignIn {
 
     @Suppress("unused")
     @JsName("PrepareSpin")
@@ -193,17 +190,6 @@ object ReactComponents : RetiredPlayersRenderer,
                 pins = props.pins.unsafeCast<Array<Json>>().toPins()
         ))
     }
-
-    @Suppress("unused")
-    @JsName("TeamStatistics")
-    val teamStatisticsJs = jsReactFunction { props ->
-        teamStatistics(TeamStatisticsProps(
-                spinsUntilFullRotation = props.spinsUntilFullRotation.unsafeCast<Int>(),
-                activePlayerCount = props.activePlayerCount.unsafeCast<Int>(),
-                medianSpinDuration = props.medianSpinDuration.unsafeCast<String>()
-        ))
-    }
-
 
     @Suppress("unused")
     @JsName("TribeStatistics")

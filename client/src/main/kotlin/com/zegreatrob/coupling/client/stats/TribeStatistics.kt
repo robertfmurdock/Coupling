@@ -28,7 +28,7 @@ object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatist
 val RBuilder.tribeStatistics get() = TribeStatistics.captor(this)
 
 interface TribeStatisticsBuilder : ComponentBuilder<TribeStatisticsProps>,
-        TribeCardRenderer, TeamStatisticsSyntax, ComposeStatisticsActionDispatcher,
+        TribeCardRenderer, ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
 
     override fun build() = styledComponent("stats/TribeStatistics")

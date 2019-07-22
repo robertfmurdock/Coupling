@@ -10,3 +10,6 @@ class BuilderCaptor<P : RProps>(val componentProvider: ComponentProvider<P>, val
         component(componentProvider.component, props, key, handler)
     }
 }
+
+operator fun BuilderCaptor<EmptyProps>.invoke(key: String? = null, handler: RHandler<EmptyProps> = {}) =
+        this(EmptyProps, key, handler)

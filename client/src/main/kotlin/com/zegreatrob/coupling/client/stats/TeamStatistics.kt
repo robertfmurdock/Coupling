@@ -1,22 +1,19 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentBuilder
-import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.styledComponent
 import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.dom.span
 
-interface TeamStatisticsSyntax {
-    companion object : TeamStatisticsBuilder {
-        val component = build()
-    }
+object TeamStatistics : ComponentProvider<TeamStatisticsProps>(), TeamStatisticsBuilder
 
-    fun RBuilder.teamStatistics(props: TeamStatisticsProps) = component(component, props)
-}
+val RBuilder.teamStatistics get() = TeamStatistics.captor(this)
 
-interface TeamStatisticsBuilder : ComponentBuilder<TeamStatisticsProps>, StatsHeaderSyntax, StatLabelSyntax {
+interface TeamStatisticsBuilder : ComponentBuilder<TeamStatisticsProps> {
 
     override fun build() = styledComponent("stats/TeamStatistics")
     { props: TeamStatisticsProps, styles: TeamStatisticsStyles ->

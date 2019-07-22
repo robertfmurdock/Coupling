@@ -19,7 +19,6 @@ import react.dom.div
 import react.dom.span
 import kotlin.js.Promise
 
-
 object History : ComponentProvider<HistoryProps>(), HistoryComponentBuilder
 
 val RBuilder.history get() = History.captor(this)

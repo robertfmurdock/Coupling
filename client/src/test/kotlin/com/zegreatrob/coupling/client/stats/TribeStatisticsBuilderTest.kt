@@ -139,7 +139,7 @@ class TribeStatisticsBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.findComponent(TeamStatisticsSyntax.component)
+        wrapper.findComponent(TeamStatistics)
                 .props()
                 .apply {
                     activePlayerCount
@@ -175,7 +175,7 @@ class TribeStatisticsBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.findComponent(TeamStatisticsSyntax.component)
+        wrapper.findComponent(TeamStatistics)
                 .props()
                 .medianSpinDuration
                 .assertIsEqualTo("2 days")

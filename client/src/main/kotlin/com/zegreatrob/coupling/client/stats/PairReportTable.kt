@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentBuilder
 import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.client.styledComponent
@@ -24,9 +25,7 @@ val RBuilder.pairReportTable get() = PairReportTable.captor(this)
 
 interface PairReportTableBuilder :
         ComponentBuilder<PairReportTableProps>,
-        PlayerCardRenderer,
-        StatsHeaderSyntax,
-        StatLabelSyntax {
+        PlayerCardRenderer {
 
     override fun build() = styledComponent("stats/PairReportTable")
     { props: PairReportTableProps, styles: PairReportTableStyles ->
