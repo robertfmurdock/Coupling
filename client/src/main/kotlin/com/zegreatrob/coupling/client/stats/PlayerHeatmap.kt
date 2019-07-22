@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.StyledComponentBuilder
 import com.zegreatrob.coupling.client.buildBy
+import com.zegreatrob.coupling.client.heatmap.HeatmapProps
+import com.zegreatrob.coupling.client.heatmap.heatmap
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.entity.player.Player
@@ -33,8 +35,7 @@ external interface PlayerHeatmapStyles {
     val heatmap: String
 }
 
-interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, PlayerHeatmapStyles>,
-        HeatmapSyntax {
+interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, PlayerHeatmapStyles>{
 
     override val componentPath get() = "stats/PlayerHeatmap"
 

@@ -1,8 +1,3 @@
-import * as React from "react";
-import {useLayoutEffect, useRef} from "react";
-import * as Styles from './styles.css'
-import * as classNames from 'classnames'
-import flatten from "ramda/es/flatten";
 import {select} from "d3-selection";
 import {rgb} from "d3-color";
 import {interpolateRgbBasis} from "d3-interpolate";
@@ -21,13 +16,14 @@ const colorSuggestions = [
 
 const colorInterpolator = interpolateRgbBasis(colorSuggestions);
 
-function renderD3Heatmap(element, data) {
+// noinspection JSUnusedGlobalSymbols
+export function renderD3Heatmap(element, data, cellClassName) {
     select(element)
         .selectAll("div")
         .data(data)
         .enter().append(function () {
         const cellElement = document.createElement('div');
-        cellElement.setAttribute('class', Styles.cell);
+        cellElement.setAttribute('class', cellClassName);
         return cellElement;
     })
         .style("background-color", function (dataNumber: number) {
@@ -37,25 +33,4 @@ function renderD3Heatmap(element, data) {
             const percentage = dataNumber / 10;
             return colorInterpolator(percentage);
         });
-}
-
-interface Props {
-    data,
-    className?: string
-}
-
-export default function ReactHeatmap(props: Props) {
-    const {data, className} = props;
-
-    const rowSize = data.length * 90;
-    const heatmapStyle = {
-        width: `${rowSize}px`,
-        height: `${rowSize}px`
-    };
-
-    const ref = useRef(null);
-
-    useLayoutEffect(() => renderD3Heatmap(ref.current, flatten(data)));
-
-    return <div ref={ref} className={classNames(Styles.heatmap, className)} style={heatmapStyle}/>
 }
