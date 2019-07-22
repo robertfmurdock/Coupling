@@ -11,7 +11,7 @@ val RBuilder.statsHeader get() = StatsHeader.captor(this)
 interface StatsHeaderBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
 
     override val componentPath: String get() = "stats/StatsHeader"
-    override fun build() = buildComponent {
+    override fun build() = buildBy {
         {
             div(classes = styles.className) { props.children() }
         }

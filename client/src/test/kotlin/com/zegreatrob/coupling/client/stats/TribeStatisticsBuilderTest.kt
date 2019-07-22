@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.tribe.TribeCardRenderer
+import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.common.entity.player.Player
@@ -22,7 +22,7 @@ class TribeStatisticsBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.findComponent(TribeCardRenderer.tribeCard)
+        wrapper.findComponent(TribeCard)
                 .props()
                 .tribe.assertIsEqualTo(tribe)
     }

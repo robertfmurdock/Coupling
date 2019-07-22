@@ -1,14 +1,18 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.reactFunctionComponent
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
-import loadStyles
 import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
+
+object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder
+
+val RBuilder.tribeList get() = TribeList.captor(this)
 
 data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) -> Unit) : RProps
 
@@ -17,20 +21,17 @@ interface TribeListCss {
     val newTribeButton: String
 }
 
-private val styles = loadStyles<TribeListCss>("tribe/TribeList")
+interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss> {
 
-interface TribeListRenderer {
+    override val componentPath: String get() = "tribe/TribeList"
 
-    fun RBuilder.tribeList(props: TribeListProps) = component(tribeList, props)
-
-    companion object : TribeCardRenderer {
-        private val tribeList = reactFunctionComponent { props: TribeListProps ->
-            val (tribes, pathSetter) = props
-
+    override fun build() = buildBy {
+        val (tribes, pathSetter) = props
+        {
             div(classes = styles.className) {
                 div {
                     tribes.forEach { tribe ->
-                        tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter), key = tribe.id.value)
+                        tribeCard(TribeCardProps(tribe, pathSetter = pathSetter), key = tribe.id.value)
                     }
                 }
                 div {
@@ -46,4 +47,3 @@ interface TribeListRenderer {
         }
     }
 }
-

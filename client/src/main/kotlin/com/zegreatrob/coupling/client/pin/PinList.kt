@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildComponent
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.InputType
@@ -24,7 +24,7 @@ interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
 
     override val componentPath: String get() = "pin/PinList"
 
-    override fun build() = buildComponent {
+    override fun build() = buildBy {
         val (tribe, pins) = props
         {
             div(classes = "pin-list-frame") {

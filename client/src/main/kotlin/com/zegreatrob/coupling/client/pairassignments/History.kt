@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
-import com.zegreatrob.coupling.client.tribe.TribeCardRenderer
+import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -42,12 +42,11 @@ data class HistoryProps(
 
 interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
         WindowFunctions,
-        TribeCardRenderer,
         ScopeProvider {
 
     override val componentPath: String get() = "pairassignments/History"
 
-    override fun build() = buildComponent {
+    override fun build() = buildBy {
         val (tribe, pathSetter) = props
         {
             div {

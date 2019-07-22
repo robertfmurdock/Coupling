@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildComponent
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
-import com.zegreatrob.coupling.client.tribe.TribeCardRenderer
+import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.client.useState
 import com.zegreatrob.coupling.common.ComposeStatisticsAction
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
@@ -28,12 +28,12 @@ object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatist
 val RBuilder.tribeStatistics get() = TribeStatistics.captor(this)
 
 interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, TribeStatisticsStyles>,
-        TribeCardRenderer, ComposeStatisticsActionDispatcher,
+        ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
 
     override val componentPath: String get() = "stats/TribeStatistics"
 
-    override fun build() = buildComponent {
+    override fun build() = buildBy {
         val (tribe, players, history) = props
 
         val (allStats) = useState { calculateStats(tribe, players, history) }

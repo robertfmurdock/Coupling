@@ -16,8 +16,8 @@ interface ScopedStyledComponentBuilder<P : RProps, S> : ComponentBuilder<P>, Sco
     val componentPath: String
 }
 
-inline fun <reified P : RProps, S> StyledComponentBuilder<P, S>.buildComponent(crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
+inline fun <reified P : RProps, S> StyledComponentBuilder<P, S>.buildBy(crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
         styledComponent(componentPath, builder)
 
-inline fun <reified P : RProps, S> ScopedStyledComponentBuilder<P, S>.buildComponent(crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
+inline fun <reified P : RProps, S> ScopedStyledComponentBuilder<P, S>.buildBy(crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
         styledComponent(componentPath, builder)

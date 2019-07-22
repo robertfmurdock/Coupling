@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildComponent
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
@@ -29,7 +29,7 @@ interface PairReportTableBuilder :
 
     override val componentPath: String get() = "stats/PairReportTable"
 
-    override fun build() = buildComponent {
+    override fun build() = buildBy {
         val (tribe, pairReports) = props
         {
             div(classes = styles.className) {
