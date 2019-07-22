@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.ComponentBuilder
 import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildStyledComponent
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
-import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
@@ -33,10 +33,12 @@ external interface PlayerHeatmapStyles {
     val heatmap: String
 }
 
-interface PlayerHeatmapBuilder : ComponentBuilder<PlayerHeatmapProps>, PlayerCardRenderer, HeatmapSyntax {
+interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, PlayerHeatmapStyles>,
+        PlayerCardRenderer, HeatmapSyntax {
 
-    override fun build() = styledComponent<PlayerHeatmapProps, PlayerHeatmapStyles>("stats/PlayerHeatmap")
-    {
+    override val componentPath get() = "stats/PlayerHeatmap"
+
+    override fun build() = buildStyledComponent {
         {
             val tribe = props.tribe
             div(classes = styles.rightSection) {
