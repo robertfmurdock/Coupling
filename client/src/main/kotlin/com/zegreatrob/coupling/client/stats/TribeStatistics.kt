@@ -31,30 +31,30 @@ interface TribeStatisticsBuilder : ComponentBuilder<TribeStatisticsProps>,
         TribeCardRenderer, ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
 
-    override fun build() = styledComponent("stats/TribeStatistics")
-    { props: TribeStatisticsProps, styles: TribeStatisticsStyles ->
+    override fun build() = styledComponent<TribeStatisticsProps, TribeStatisticsStyles>("stats/TribeStatistics") {
         val (tribe, players, history) = props
 
         val (allStats) = useState { calculateStats(tribe, players, history) }
 
         val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats.first
         val heatmapData = allStats.second
-
-        div(classes = styles.className) {
-            div {
-                tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
-                teamStatistics(TeamStatisticsProps(
-                        spinsUntilFullRotation = spinsUntilFullRotation,
-                        activePlayerCount = players.size,
-                        medianSpinDuration = distanceInWorks(0, medianSpinDuration?.millisecondsInt)
-                ))
-            }
-            div {
-                div(classes = styles.leftSection) {
-                    pairReportTable(PairReportTableProps(tribe, pairReports))
+        {
+            div(classes = styles.className) {
+                div {
+                    tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
+                    teamStatistics(TeamStatisticsProps(
+                            spinsUntilFullRotation = spinsUntilFullRotation,
+                            activePlayerCount = players.size,
+                            medianSpinDuration = distanceInWorks(0, medianSpinDuration?.millisecondsInt)
+                    ))
                 }
+                div {
+                    div(classes = styles.leftSection) {
+                        pairReportTable(PairReportTableProps(tribe, pairReports))
+                    }
 
-                playerHeatmap(PlayerHeatmapProps(tribe, players, heatmapData))
+                    playerHeatmap(PlayerHeatmapProps(tribe, players, heatmapData))
+                }
             }
         }
     }

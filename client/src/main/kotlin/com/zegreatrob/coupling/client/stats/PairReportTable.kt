@@ -27,12 +27,13 @@ interface PairReportTableBuilder :
         ComponentBuilder<PairReportTableProps>,
         PlayerCardRenderer {
 
-    override fun build() = styledComponent("stats/PairReportTable")
-    { props: PairReportTableProps, styles: PairReportTableStyles ->
-        val (tribe, pairReports) = props
-        div(classes = styles.className) {
-            pairReports.mapIndexed { index, pairReport ->
-                pairReport(styles, index, pairReport, tribe)
+    override fun build() = styledComponent<PairReportTableProps, PairReportTableStyles>("stats/PairReportTable") {
+        {
+            val (tribe, pairReports) = props
+            div(classes = styles.className) {
+                pairReports.mapIndexed { index, pairReport ->
+                    pairReport(styles, index, pairReport, tribe)
+                }
             }
         }
     }

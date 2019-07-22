@@ -15,21 +15,22 @@ val RBuilder.teamStatistics get() = TeamStatistics.captor(this)
 
 interface TeamStatisticsBuilder : ComponentBuilder<TeamStatisticsProps> {
 
-    override fun build() = styledComponent("stats/TeamStatistics")
-    { props: TeamStatisticsProps, styles: TeamStatisticsStyles ->
-        div(classes = styles.className) {
-            statsHeader { +"Team Stats" }
-            div {
-                statLabel { +"Spins Until Full Rotation:" }
-                span(classes = styles.rotationNumber) { +"${props.spinsUntilFullRotation}" }
-            }
-            div {
-                statLabel { +"Number of Active Players:" }
-                span(classes = styles.activePlayerCount) { +"${props.activePlayerCount}" }
-            }
-            div {
-                statLabel { +"Median Spin Duration:" }
-                span(classes = styles.medianSpinDuration) { +props.medianSpinDuration }
+    override fun build() = styledComponent<TeamStatisticsProps, TeamStatisticsStyles>("stats/TeamStatistics") {
+        {
+            div(classes = styles.className) {
+                statsHeader { +"Team Stats" }
+                div {
+                    statLabel { +"Spins Until Full Rotation:" }
+                    span(classes = styles.rotationNumber) { +"${props.spinsUntilFullRotation}" }
+                }
+                div {
+                    statLabel { +"Number of Active Players:" }
+                    span(classes = styles.activePlayerCount) { +"${props.activePlayerCount}" }
+                }
+                div {
+                    statLabel { +"Median Spin Duration:" }
+                    span(classes = styles.medianSpinDuration) { +props.medianSpinDuration }
+                }
             }
         }
     }

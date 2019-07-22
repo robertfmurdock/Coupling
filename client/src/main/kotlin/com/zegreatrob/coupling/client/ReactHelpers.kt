@@ -88,22 +88,20 @@ fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props:
 
 inline fun <reified P : RProps, S> styledComponent(
         styleName: String,
-        crossinline builder: PropsStylesBuilder<P, S>.(props: P, styles: S) -> ReactElement
+        crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 
     return reactFunctionComponent { props: P ->
-        PropsStylesBuilder(props, styles, this)
-                .handle(builder)
+        PropsStylesBuilder(props, styles)
+                .handle(builder)()
     }
 }
 
-class PropsStylesBuilder<P, S>(val props: P, val styles: S, val rBuilder: RBuilder) : RBuilder() {
-    inline fun handle(builder: PropsStylesBuilder<P, S>.(P, S) -> ReactElement) = builder(props, styles)
-            .also {
-                rBuilder.childList.addAll(this.childList)
-            }
-
+class PropsStylesBuilder<P, S>(
+        @Suppress("Error") val props: P,
+        @Suppress("Error") val styles: S) {
+    inline fun handle(builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) = builder()
 }
 
 inline fun <reified P : RProps, S> ScopeProvider.styledComponent(

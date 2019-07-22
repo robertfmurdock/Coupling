@@ -9,8 +9,10 @@ object StatLabel : ComponentProvider<EmptyProps>(), StatLabelBuilder
 val RBuilder.statLabel: BuilderCaptor<EmptyProps> get() = StatLabel.captor(this)
 
 interface StatLabelBuilder : ComponentBuilder<EmptyProps> {
-    override fun build(): ReactFunctionComponent<EmptyProps> = styledComponent("stats/StatLabel")
-    { props, styles: SimpleStyle ->
-        span(classes = styles.className) { props.children() }
+    override fun build(): ReactFunctionComponent<EmptyProps> = styledComponent<EmptyProps, SimpleStyle>("stats/StatLabel")
+    {
+        {
+            span(classes = styles.className) { props.children() }
+        }
     }
 }

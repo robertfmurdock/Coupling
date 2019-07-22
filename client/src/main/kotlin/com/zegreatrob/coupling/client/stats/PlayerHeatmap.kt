@@ -35,22 +35,24 @@ external interface PlayerHeatmapStyles {
 
 interface PlayerHeatmapBuilder : ComponentBuilder<PlayerHeatmapProps>, PlayerCardRenderer, HeatmapSyntax {
 
-    override fun build() = styledComponent("stats/PlayerHeatmap")
-    { props: PlayerHeatmapProps, styles: PlayerHeatmapStyles ->
-        val tribe = props.tribe
-        div(classes = styles.rightSection) {
-            div(classes = styles.heatmapPlayersTopRow) {
-                div(classes = styles.spacer) {}
-                props.players.map { player ->
-                    keyedPlayerCard(styles, player, tribe)
+    override fun build() = styledComponent<PlayerHeatmapProps, PlayerHeatmapStyles>("stats/PlayerHeatmap")
+    {
+        {
+            val tribe = props.tribe
+            div(classes = styles.rightSection) {
+                div(classes = styles.heatmapPlayersTopRow) {
+                    div(classes = styles.spacer) {}
+                    props.players.map { player ->
+                        keyedPlayerCard(styles, player, tribe)
+                    }
                 }
-            }
-            div(classes = styles.heatmapPlayersSideRow) {
-                props.players.map { player ->
-                    keyedPlayerCard(styles, player, tribe)
+                div(classes = styles.heatmapPlayersSideRow) {
+                    props.players.map { player ->
+                        keyedPlayerCard(styles, player, tribe)
+                    }
                 }
+                heatmap(HeatmapProps(props.heatmapData, styles.heatmap))
             }
-            heatmap(HeatmapProps(props.heatmapData, styles.heatmap))
         }
     }
 

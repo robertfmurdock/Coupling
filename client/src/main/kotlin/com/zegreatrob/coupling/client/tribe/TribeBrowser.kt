@@ -23,16 +23,18 @@ interface TribeBrowserRenderer {
 
     companion object : TribeCardRenderer {
 
-        private val tribeBrowser = styledComponent(
+        private val tribeBrowser = styledComponent<TribeBrowserProps, TribeBrowserCss>(
                 "tribe/TribeBrowser"
-        ) { props: TribeBrowserProps, styles: TribeBrowserCss ->
-            val (tribe, pathSetter) = props
-            div(classes = styles.className) {
-                span {
-                    tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
-                    h1 { +(tribe.name ?: "") }
+        ) {
+            {
+                val (tribe, pathSetter) = props
+                div(classes = styles.className) {
+                    span {
+                        tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))
+                        h1 { +(tribe.name ?: "") }
+                    }
+                    tribeControlButtons(tribe, styles)
                 }
-                tribeControlButtons(tribe, styles)
             }
         }
 

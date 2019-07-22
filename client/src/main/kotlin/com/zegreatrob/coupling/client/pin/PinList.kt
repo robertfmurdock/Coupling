@@ -22,15 +22,17 @@ data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
 
 interface PinListBuilder : ComponentBuilder<PinListProps> {
     override fun build() = styledComponent<PinListProps, PinListStyles>("pin/PinList")
-    { props, styles ->
+    {
         val (tribe, pins) = props
-        div(classes = "pin-list-frame") {
-            div {
-                attrs { id = "pin-listing" }
-                pins.map { pin(it) }
-            }
-            a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
-                +"Add a new pin."
+        {
+            div(classes = "pin-list-frame") {
+                div {
+                    attrs { id = "pin-listing" }
+                    pins.map { pin(it) }
+                }
+                a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
+                    +"Add a new pin."
+                }
             }
         }
     }
