@@ -40,23 +40,24 @@ data class HistoryProps(
         val reload: () -> Unit
 ) : RProps
 
-interface HistoryComponentBuilder : ComponentBuilder<HistoryProps>,
+interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
         WindowFunctions,
         TribeCardRenderer,
         ScopeProvider {
 
-    override fun build() = styledComponent<HistoryProps, HistoryStyles>(
-            "pairassignments/History"
-    ) { props, styles, scope ->
-        val (tribe, pathSetter) = props
+    override val componentPath: String get() = "pairassignments/History"
 
-        div {
-            div(classes = styles.tribeBrowser) {
-                tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
-            }
-            span(classes = styles.historyView) {
-                div(classes = styles.header) { +"History!" }
-                pairAssignmentList(props, scope, styles)
+    override fun build() = buildComponent {
+        val (tribe, pathSetter) = props
+        {
+            div {
+                div(classes = styles.tribeBrowser) {
+                    tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+                }
+                span(classes = styles.historyView) {
+                    div(classes = styles.header) { +"History!" }
+                    pairAssignmentList(props, scope, styles)
+                }
             }
         }
     }

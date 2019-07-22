@@ -99,14 +99,21 @@ inline fun <reified P : RProps, S> styledComponent(
 }
 
 class PropsStylesBuilder<P, S>(
-        @Suppress("Error") val props: P,
-        @Suppress("Error") val styles: S) {
+        val props: P,
+        val styles: S) {
     inline fun handle(builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) = builder()
+}
+
+class ScopedPropsStylesBuilder<P, S>(
+        val props: P,
+        val styles: S,
+        val scope: CoroutineScope) {
+    inline fun handle(builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) = builder()
 }
 
 inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
         styleName: String,
-        crossinline builder: RBuilder.(props: P, styles: S, scope: CoroutineScope) -> ReactElement
+        crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 
@@ -115,7 +122,8 @@ inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
         useEffectWithCleanup(arrayOf()) {
             { scope.cancel() }
         }
-        builder(props, styles, scope)
+        ScopedPropsStylesBuilder(props, styles, scope)
+                .handle(builder)()
     }
 }
 

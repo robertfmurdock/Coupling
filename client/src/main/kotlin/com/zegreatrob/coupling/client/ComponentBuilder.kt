@@ -9,10 +9,15 @@ interface ComponentBuilder<P : RProps> {
 }
 
 interface StyledComponentBuilder<P : RProps, S> : ComponentBuilder<P> {
-
     val componentPath: String
-
 }
 
-inline fun <reified P : RProps, S> StyledComponentBuilder<P, S>.buildStyledComponent(crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
+interface ScopedStyledComponentBuilder<P : RProps, S> : ComponentBuilder<P>, ScopeProvider {
+    val componentPath: String
+}
+
+inline fun <reified P : RProps, S> StyledComponentBuilder<P, S>.buildComponent(crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
+        styledComponent(componentPath, builder)
+
+inline fun <reified P : RProps, S> ScopedStyledComponentBuilder<P, S>.buildComponent(crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) =
         styledComponent(componentPath, builder)

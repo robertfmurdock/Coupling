@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ComponentProvider
 import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildStyledComponent
+import com.zegreatrob.coupling.client.buildComponent
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
 import com.zegreatrob.coupling.common.entity.player.Player
@@ -38,7 +38,7 @@ interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, Play
 
     override val componentPath get() = "stats/PlayerHeatmap"
 
-    override fun build() = buildStyledComponent {
+    override fun build() = buildComponent {
         {
             val tribe = props.tribe
             div(classes = styles.rightSection) {
