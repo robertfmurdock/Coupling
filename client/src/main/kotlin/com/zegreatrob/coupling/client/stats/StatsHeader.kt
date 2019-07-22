@@ -8,9 +8,10 @@ object StatsHeader : ComponentProvider<EmptyProps>(), StatsHeaderBuilder
 
 val RBuilder.statsHeader get() = StatsHeader.captor(this)
 
-interface StatsHeaderBuilder : ComponentBuilder<EmptyProps> {
-    override fun build(): ReactFunctionComponent<EmptyProps> = styledComponent<EmptyProps, SimpleStyle>("stats/StatsHeader")
-    {
+interface StatsHeaderBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
+
+    override val componentPath: String get() = "stats/StatsHeader"
+    override fun build() = buildComponent {
         {
             div(classes = styles.className) { props.children() }
         }

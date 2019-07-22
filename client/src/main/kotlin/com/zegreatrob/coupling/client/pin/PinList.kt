@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.ComponentBuilder
 import com.zegreatrob.coupling.client.ComponentProvider
-import com.zegreatrob.coupling.client.styledComponent
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildComponent
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.InputType
@@ -20,9 +20,11 @@ external interface PinListStyles
 
 data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
 
-interface PinListBuilder : ComponentBuilder<PinListProps> {
-    override fun build() = styledComponent<PinListProps, PinListStyles>("pin/PinList")
-    {
+interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
+
+    override val componentPath: String get() = "pin/PinList"
+
+    override fun build() = buildComponent {
         val (tribe, pins) = props
         {
             div(classes = "pin-list-frame") {

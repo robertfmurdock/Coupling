@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.ComponentBuilder
 import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildComponent
 import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerCardRenderer
-import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
@@ -24,12 +24,14 @@ object PairReportTable : ComponentProvider<PairReportTableProps>(), PairReportTa
 val RBuilder.pairReportTable get() = PairReportTable.captor(this)
 
 interface PairReportTableBuilder :
-        ComponentBuilder<PairReportTableProps>,
+        StyledComponentBuilder<PairReportTableProps, PairReportTableStyles>,
         PlayerCardRenderer {
 
-    override fun build() = styledComponent<PairReportTableProps, PairReportTableStyles>("stats/PairReportTable") {
+    override val componentPath: String get() = "stats/PairReportTable"
+
+    override fun build() = buildComponent {
+        val (tribe, pairReports) = props
         {
-            val (tribe, pairReports) = props
             div(classes = styles.className) {
                 pairReports.mapIndexed { index, pairReport ->
                     pairReport(styles, index, pairReport, tribe)

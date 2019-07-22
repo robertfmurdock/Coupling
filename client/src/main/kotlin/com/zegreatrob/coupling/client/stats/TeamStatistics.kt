@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.ComponentBuilder
 import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildComponent
 import com.zegreatrob.coupling.client.invoke
-import com.zegreatrob.coupling.client.styledComponent
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -13,9 +13,11 @@ object TeamStatistics : ComponentProvider<TeamStatisticsProps>(), TeamStatistics
 
 val RBuilder.teamStatistics get() = TeamStatistics.captor(this)
 
-interface TeamStatisticsBuilder : ComponentBuilder<TeamStatisticsProps> {
+interface TeamStatisticsBuilder : StyledComponentBuilder<TeamStatisticsProps, TeamStatisticsStyles> {
 
-    override fun build() = styledComponent<TeamStatisticsProps, TeamStatisticsStyles>("stats/TeamStatistics") {
+    override val componentPath: String get() = "stats/TeamStatistics"
+
+    override fun build() = buildComponent {
         {
             div(classes = styles.className) {
                 statsHeader { +"Team Stats" }
