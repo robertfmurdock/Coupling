@@ -13,7 +13,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import react.RProps
 import shallow
-import kotlin.js.Json
 import kotlin.test.Test
 
 class TribeStatisticsBuilderTest {
@@ -114,12 +113,9 @@ class TribeStatisticsBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.find(PlayerHeatmapSyntax.rClass)
+        wrapper.findComponent(PlayerHeatmapSyntax.component)
                 .props()
-                .unsafeCast<Json>()["heatmapData"]
-                .unsafeCast<Array<Array<Int?>>>()
-                .map { it.toList() }
-                .toList()
+                .heatmapData
                 .assertIsEqualTo(listOf(
                         listOf(null, 1, 0, 0),
                         listOf(1, null, 0, 0),

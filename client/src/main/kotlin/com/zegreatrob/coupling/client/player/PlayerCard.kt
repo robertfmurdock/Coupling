@@ -41,7 +41,7 @@ interface PlayerCardRenderer : ReactComponentRenderer {
     companion object {
         private val styles: PlayerCardStyles = loadStyles("player/PlayerCard")
 
-        private val playerCard = reactFunctionComponent { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
+        val playerCard = reactFunctionComponent { (tribeId, player, pathSetter, disabled, className, size, onClick): PlayerCardProps ->
             styledDiv {
                 attrs {
                     classes += setOf(styles.player, className).filterNotNull()

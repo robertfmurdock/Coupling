@@ -1,5 +1,5 @@
-import com.zegreatrob.coupling.client.component
 import com.zegreatrob.coupling.client.ComponentBuilder
+import com.zegreatrob.coupling.client.component
 import react.RBuilder
 import react.RClass
 import react.RProps
@@ -22,6 +22,8 @@ external interface ShallowWrapper<T> {
     fun text(): String
 
     fun simulate(eventName: String)
+
+    fun <O> map(mapper: (ShallowWrapper<T>) -> O): Array<O>
 }
 
 @JsModule("enzyme")

@@ -1,35 +1,26 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.element
+import com.zegreatrob.coupling.client.ComponentBuilder
+import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCardRenderer
+import com.zegreatrob.coupling.client.styledComponent
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.toJson
+import kotlinx.html.DIV
 import react.RBuilder
-import react.RClass
 import react.RProps
-import kotlin.js.json
-
-
-@JsModule("components/statistics/PlayersHeatmap")
-@JsNonModule
-private external val reactHeatmapModule: dynamic
+import react.ReactElement
+import react.dom.RDOMBuilder
+import react.dom.div
 
 interface PlayerHeatmapSyntax {
 
-    companion object {
-        val rClass = reactHeatmapModule.default.unsafeCast<RClass<RProps>>()
+    companion object : PlayerHeatmapBuilder {
+        val component = build()
     }
 
-    fun RBuilder.playerHeatmap(props: PlayerHeatmapProps) {
-        element(
-                rClass,
-                json(
-                        "tribe" to props.tribe.toJson(),
-                        "players" to props.players.map { it.toJson() }.toTypedArray(),
-                        "heatmapData" to props.heatmapData.map { it.toTypedArray() }.toTypedArray()
-                ).unsafeCast<RProps>()
-        )
-    }
+    fun RBuilder.playerHeatmap(props: PlayerHeatmapProps) = component(component, props)
 
 }
 
@@ -37,4 +28,43 @@ data class PlayerHeatmapProps(
         val tribe: KtTribe,
         val players: List<Player>,
         val heatmapData: List<List<Double?>>
-)
+) : RProps
+
+interface PlayerHeatmapBuilder : ComponentBuilder<PlayerHeatmapProps>, PlayerCardRenderer, HeatmapSyntax {
+
+    override fun build() = styledComponent("stats/PlayerHeatmap")
+    { props: PlayerHeatmapProps, styles: PlayerHeatmapStyles ->
+        val tribe = props.tribe
+        div(classes = styles.rightSection) {
+            div(classes = styles.heatmapPlayersTopRow) {
+                div(classes = styles.spacer) {}
+                props.players.map { player ->
+                    keyedPlayerCard(styles, player, tribe)
+                }
+            }
+            div(classes = styles.heatmapPlayersSideRow) {
+                props.players.map { player ->
+                    keyedPlayerCard(styles, player, tribe)
+                }
+            }
+            heatmap(HeatmapProps(props.heatmapData, styles.heatmap))
+        }
+    }
+
+    private fun RDOMBuilder<DIV>.keyedPlayerCard(styles: PlayerHeatmapStyles, player: Player, tribe: KtTribe): ReactElement {
+        return div(classes = styles.playerCard) {
+            attrs { key = player.id ?: "" }
+            playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
+        }
+    }
+
+}
+
+external interface PlayerHeatmapStyles {
+    val rightSection: String
+    val heatmapPlayersTopRow: String
+    val spacer: String
+    val playerCard: String
+    val heatmapPlayersSideRow: String
+    val heatmap: String
+}
