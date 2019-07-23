@@ -15,6 +15,8 @@ external interface ShallowWrapper<T> {
     fun <T2 : RProps> find(target: RClass<T2>): ShallowWrapper<T2>
     fun find(target: dynamic): ShallowWrapper<dynamic>
 
+    val length: Int
+
     fun props(): T
 
     fun update()
@@ -24,6 +26,7 @@ external interface ShallowWrapper<T> {
     fun text(): String
 
     fun simulate(eventName: String)
+    fun simulate(eventName: String, event: dynamic)
 
     fun <O> map(mapper: (ShallowWrapper<T>) -> O): Array<O>
 }

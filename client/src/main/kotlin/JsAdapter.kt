@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
@@ -102,6 +101,20 @@ object ReactComponents : RetiredPlayersRenderer,
                 size = props.size.unsafeCast<Int>(),
                 onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
                 disabled = props.disabled.unsafeCast<Boolean?>() ?: false
+        ))
+    }
+
+
+    @Suppress("unused")
+    @JsName("PlayerConfig")
+    val playerConfigJs = jsReactFunction { props: dynamic ->
+        playerConfig(PlayerConfigProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                player = props.player.unsafeCast<Json>().toPlayer(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                coupling = props.coupling,
+                reload = props.reload.unsafeCast<() -> Unit>()
         ))
     }
 

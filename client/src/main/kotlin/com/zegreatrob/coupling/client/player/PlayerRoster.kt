@@ -18,7 +18,7 @@ interface PlayerRosterStyles {
 }
 
 data class PlayerRosterProps(
-        val label: String?,
+        val label: String? = null,
         val players: List<Player>,
         val tribeId: TribeId,
         val pathSetter: (String) -> Unit,
