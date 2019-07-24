@@ -50,9 +50,6 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, coupling, {}))
     } verify { wrapper ->
-
-        console.log("DEBUG", wrapper.debug());
-
         wrapper.find("input[name='badge'][value='${Badge.Default.value}'][checked]")
                 .length
                 .assertIsEqualTo(1)
@@ -101,7 +98,6 @@ class PlayerConfigTest {
         } verifyAsync {
             saveSpy.spyReceivedValues
                     .map { it.first.toPlayer() to TribeId(it.second) }
-                    .toMutableList()
                     .assertContains(
                             player.copy(name = "nonsense") to tribe.id
                     )
@@ -136,7 +132,6 @@ class PlayerConfigTest {
         } verifyAsync {
             removeSpy.spyReceivedValues
                     .map { it.first.toPlayer() to TribeId(it.second) }
-                    .toMutableList()
                     .assertContains(
                             player to tribe.id
                     )
