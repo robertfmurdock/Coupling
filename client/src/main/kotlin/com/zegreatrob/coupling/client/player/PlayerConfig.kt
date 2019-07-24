@@ -12,13 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
-import kotlinx.html.ButtonType
-import kotlinx.html.InputType
-import kotlinx.html.id
+import kotlinx.html.*
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
-import kotlinx.html.tabIndex
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -55,17 +52,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
     override val componentPath: String get() = "player/PlayerConfig"
 
     override fun build() = buildBy {
-        val (tribe, _, players, pathSetter, coupling, reload) = props
-        val player = playerDefaults.add(props.player.toJson()).toPlayer()
-
-        val (values, handleChange) = useForm(
-                player.toJson()
-        )
-        val updatedPlayer = values.toPlayer()
-        val handleSubmitFunc = handleSubmitFunc(coupling, updatedPlayer, tribe, reload, scope)
-        val removePlayerFunc = removePlayerFunc(coupling, player, tribe, pathSetter)
-
-        val shouldShowPrompt = updatedPlayer != player
+        val (tribe, _, players, pathSetter) = props
 
         {
             div(classes = styles.className) {
@@ -73,16 +60,8 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                     div(classes = styles.tribeBrowser) {
                         tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                     }
-                    span(classes = styles.playerView) {
-                        span(classes = "player") {
-                            playerConfigForm(updatedPlayer, tribe, handleChange, handleSubmitFunc, removePlayerFunc)
-                            prompt(
-                                    `when` = shouldShowPrompt,
-                                    message = "You have unsaved data. Would you like to save before you leave?"
-                            )
-                        }
-                        playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
-                    }
+
+                    playerView(this)
                 }
                 playerRoster(PlayerRosterProps(
                         players = players,
@@ -94,62 +73,86 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
         }
     }
 
-    private fun handleSubmitFunc(
+    private fun ScopedPropsStylesBuilder<PlayerConfigProps, PlayerConfigStyles>.playerView(rBuilder: RBuilder) {
+        val (tribe, _, _, pathSetter, coupling, reload) = props
+        val player = props.player.withDefaults()
+
+        val (values, onChange) = useForm(player.toJson())
+        val updatedPlayer = values.toPlayer()
+        val onSubmitFunc = handleSubmitFunc { savePlayer(scope, coupling, updatedPlayer, tribe, reload) }
+        val removePlayerFunc = { removePlayer(coupling, player, tribe, pathSetter, scope) }
+
+        val shouldShowPrompt = updatedPlayer != player
+        rBuilder.run {
+            span(classes = styles.playerView) {
+                span(classes = "player") {
+                    playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc, removePlayerFunc)
+                    prompt(
+                            `when` = shouldShowPrompt,
+                            message = "You have unsaved data. Would you like to save before you leave?"
+                    )
+                }
+                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
+            }
+        }
+    }
+
+    private fun Player.withDefaults() = playerDefaults.add(toJson()).toPlayer()
+
+    private fun handleSubmitFunc(handler: () -> Job) = { event: Event ->
+        event.preventDefault()
+        handler()
+    }
+
+    private fun savePlayer(
+            scope: CoroutineScope,
             coupling: dynamic,
             updatedPlayer: Player,
             tribe: KtTribe,
-            reload: () -> Unit,
-            coroutineScope: CoroutineScope
-    ): (Event) -> Job {
-        fun savePlayer() = coroutineScope.launch {
-            coupling.savePlayer(updatedPlayer.toJson(), tribe.id.value)
-                    .unsafeCast<Promise<Unit>>()
-                    .await()
-            reload()
-        }
-
-        return { event: Event ->
-            event.preventDefault()
-            savePlayer()
-        }
+            reload: () -> Unit
+    ) = scope.launch {
+        coupling.savePlayer(updatedPlayer.toJson(), tribe.id.value)
+                .unsafeCast<Promise<Unit>>()
+                .await()
+        reload()
     }
 
-    private fun ScopedPropsStylesBuilder<PlayerConfigProps, PlayerConfigStyles>.removePlayerFunc(
+    private fun removePlayer(
             coupling: dynamic,
             player: Player,
             tribe: KtTribe,
-            pathSetter: (String) -> Unit
-    ): () -> Job = {
-        scope.launch {
-            if (window.confirm("Are you sure you want to delete this player?")) {
-                coupling.removePlayer(player.toJson(), tribe.id.value)
-                        .unsafeCast<Promise<Unit>>()
-                        .await()
-                pathSetter("/${tribe.id.value}/pairAssignments/current/")
-            }
+            pathSetter: (String) -> Unit,
+            scope: CoroutineScope
+    ) = scope.launch {
+        if (window.confirm("Are you sure you want to delete this player?")) {
+            coupling.removePlayer(player.toJson(), tribe.id.value)
+                    .unsafeCast<Promise<Unit>>()
+                    .await()
+            pathSetter("/${tribe.id.value}/pairAssignments/current/")
         }
     }
 
-    fun useForm(initialValues: Json): Pair<Json, (Event) -> Unit> {
-        val (values, setValues) = useStateWithSetterFunction(initialValues)
-
-        val handleChange = { event: Event ->
-            event.unsafeCast<dynamic>().persist()
-            setValues { previousValues ->
-                val target = event.target.unsafeCast<Json>()
-                val name = target["name"].unsafeCast<String>()
-                val value = target["value"].unsafeCast<String>()
-
-                json()
-                        .add(previousValues)
-                        .add(json(name to value))
+    private fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
+            .let { (values, setValues) ->
+                Pair(
+                        values,
+                        { event: Event ->
+                            event.unsafeCast<dynamic>().persist()
+                            setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
+                        }
+                )
             }
-        }
 
-        return Pair(
-                values,
-                handleChange
-        )
+    private fun Json.copyWithChangeFrom(event: Event) = json()
+            .add(this)
+            .add(event.toChangeJson())
+
+    private fun Event.toChangeJson(): Json {
+        val target = target.unsafeCast<Json>()
+        val name = target["name"].unsafeCast<String>()
+        val value = target["value"].unsafeCast<String>()
+
+        return json(name to value)
     }
 
     private fun RBuilder.playerConfigForm(
