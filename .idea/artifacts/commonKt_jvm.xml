@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="commonKt-jvm">
     <output-path>$PROJECT_DIR$/commonKt/build/libs</output-path>
-    <root id="archive" name="commonKt-jvm.jar">
-      <element id="module-output" name="commonKt_jvmMain" />
-    </root>
+    <root id="archive" name="commonKt-jvm.jar" />
   </artifact>
 </component>

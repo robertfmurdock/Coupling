@@ -3,6 +3,7 @@ import e2eHelp from "./e2e-help";
 import {browser, By, element} from "protractor";
 import * as monk from "monk";
 import setLocation from "./setLocation";
+import {PlayerConfigStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -11,7 +12,7 @@ const deletedPlayerPage = {
     playerNameTextField: element(By.id('player-name'))
 };
 
-let playerConfigPage = element(By.css('.react-player-config'));
+let playerConfigPage = element(By.className(PlayerConfigStyles.className));
 
 function waitForPlayerConfig() {
     return browser.wait(() => playerConfigPage.isPresent(), 2000);

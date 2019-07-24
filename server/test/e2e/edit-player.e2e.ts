@@ -8,7 +8,7 @@ import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
 import PlayerConfigPage from "./PlayerConfigPage";
 import TestLogin from "./TestLogin";
-import {PlayerCardStyles, PlayerRosterStyles, TribeCardStyles} from "./page-objects/Styles";
+import {PlayerCardStyles, PlayerConfigStyles, PlayerRosterStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -48,7 +48,10 @@ describe('The edit player page', function () {
         await browser.wait(() => savePlayerButton.isEnabled().then(value => value, () => false), 1000, 'wait for enable');
 
         await browser.wait(async () => {
-            let currentValue = await element.all(By.css(`.player-roster .${PlayerCardStyles.header}`)).first().getText();
+            let currentValue = await element.all(
+                By.css(`.${PlayerConfigStyles.playerRoster} .${PlayerCardStyles.header}`)
+            ).first().getText();
+            
             return currentValue === expectedName;
         }, 100);
     }

@@ -1,0 +1,97 @@
+:local(.className) {
+    /*! Do not remove */
+}
+
+:local(.tribeBrowser) {
+    white-space: normal;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 20px;
+    padding: 10px;
+    border: 11px outset darkorange;
+    background-color: lightgoldenrodyellow;
+    margin: 15px;
+}
+
+:local(.playerView) {
+    display: inline-block;
+}
+
+:local(.playerView) .player {
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 20px;
+    padding: 10px;
+    border-width: 11px;
+}
+
+:local(.playerView) .player .player-header {
+    background: darkcyan url(../../../../../../../../images/overlay.png) repeat-x;
+    margin-top: 0;
+    margin-bottom: 6px;
+    border-radius: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+:local(.playerView) .save-button {
+    float: left;
+    top: 15px;
+    left: -15px;
+}
+
+:local(.playerView) .delete-button {
+    float: right;
+    top: 20px;
+    left: 15px;
+}
+
+:local(.playerView) input[type=text] {
+    width: 215px;
+    font-size: large;
+    border-radius: 20px;
+    border-width: 4px;
+    padding: 4px;
+}
+
+:local(.playerView) form div label {
+    background: darkcyan url(../../../../../../../../images/overlay.png) repeat-x;
+    border-radius: 20px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    display: table;
+    text-align: left;
+    color: #ffffff;
+    padding: 2px 15px 2px 18px;
+    text-fill-color: initial;
+    text-stroke-width: 1.5px;
+    text-stroke-color: initial;
+}
+
+:local(.playerView) form div input {
+    text-fill-color: black;
+    text-stroke-width: 0;
+}
+
+:local(.playerView) .badge-config label {
+    display: inline-block;
+}
+
+:local(.playerRoster) {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px;
+    border: 11px outset tan;
+    background-color: wheat;
+}
+
+:local(.playerRoster) .player {
+    top: 0;
+    margin-bottom: 25px;
+}
+
+:local(.playerRoster) .player.disabled {
+    top: 30px;
+    background-color: darkred;
+    margin-bottom: 0;
+}

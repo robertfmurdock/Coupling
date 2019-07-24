@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="test-style-async-js">
-    <output-path>$PROJECT_DIR$/test-style-async/build/libs</output-path>
-    <root id="archive" name="test-style-async-js.jar" />
-  </artifact>
-</component>

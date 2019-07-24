@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="logging-js">
     <output-path>$PROJECT_DIR$/logging/build/libs</output-path>
-    <root id="archive" name="logging-js.jar">
-      <element id="module-output" name="logging_jsMain" />
-    </root>
+    <root id="archive" name="logging-js.jar" />
   </artifact>
 </component>

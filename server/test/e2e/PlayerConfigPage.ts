@@ -1,7 +1,8 @@
 import setLocation from "./setLocation";
 import {browser, By, element} from "protractor";
+import {PlayerConfigStyles} from "./page-objects/Styles";
 
-let playerConfigPage = element(By.css('.react-player-config'));
+let playerConfigPage = element(By.className(PlayerConfigStyles.className));
 
 export default {
 

@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPlayer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
@@ -39,7 +40,12 @@ data class PlayerConfigProps(
         val reload: () -> Unit
 ) : RProps
 
-external interface PlayerConfigStyles
+external interface PlayerConfigStyles {
+    val className: String
+    val tribeBrowser: String
+    val playerView: String
+    val playerRoster: String
+}
 
 val playerDefaults get() = json("badge" to Badge.Default.value)
 
@@ -56,22 +62,20 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                 player.toJson()
         )
         val updatedPlayer = values.toPlayer()
-        val handleSubmit = handleSubmitFunc(coupling, updatedPlayer, tribe, reload)
+        val handleSubmitFunc = handleSubmitFunc(coupling, updatedPlayer, tribe, reload, scope)
         val removePlayerFunc = removePlayerFunc(coupling, player, tribe, pathSetter)
 
         val shouldShowPrompt = updatedPlayer != player
 
         {
-            div(classes = "react-player-config") {
+            div(classes = styles.className) {
                 div {
-                    div {
-                        attrs { id = "tribe-browser" }
+                    div(classes = styles.tribeBrowser) {
                         tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                     }
-                    span {
-                        attrs { id = "player-view" }
+                    span(classes = styles.playerView) {
                         span(classes = "player") {
-                            playerConfigForm(updatedPlayer, tribe, handleChange, handleSubmit, removePlayerFunc)
+                            playerConfigForm(updatedPlayer, tribe, handleChange, handleSubmitFunc, removePlayerFunc)
                             prompt(
                                     `when` = shouldShowPrompt,
                                     message = "You have unsaved data. Would you like to save before you leave?"
@@ -84,19 +88,20 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                         players = players,
                         tribeId = tribe.id,
                         pathSetter = pathSetter,
-                        className = "player-roster"
+                        className = styles.playerRoster
                 ))
             }
         }
     }
 
-    private fun ScopedPropsStylesBuilder<PlayerConfigProps, PlayerConfigStyles>.handleSubmitFunc(
+    private fun handleSubmitFunc(
             coupling: dynamic,
             updatedPlayer: Player,
             tribe: KtTribe,
-            reload: () -> Unit
+            reload: () -> Unit,
+            coroutineScope: CoroutineScope
     ): (Event) -> Job {
-        fun savePlayer() = scope.launch {
+        fun savePlayer() = coroutineScope.launch {
             coupling.savePlayer(updatedPlayer.toJson(), tribe.id.value)
                     .unsafeCast<Promise<Unit>>()
                     .await()
