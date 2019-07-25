@@ -1,9 +1,11 @@
+// @ts-ignore
+import {components} from 'client'
+
 import * as React from "react";
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactTribeConfig from "./ReactTribeConfig";
 import {Coupling} from "../../services";
 
-const LoadedTribeConfig = reactDataLoadWrapper(ReactTribeConfig);
+const LoadedTribeConfig = reactDataLoadWrapper(components.TribeConfig);
 
 interface Props {
     tribeId: string
