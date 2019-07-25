@@ -1,9 +1,10 @@
+// @ts-ignore
+import {components} from 'client'
 import ReactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactTribeStatistics from "./ReactTribeStatistics";
 import * as React from "react";
 import {Coupling} from "../../services";
 
-const LoadedTribeStatistics = ReactDataLoadWrapper(ReactTribeStatistics);
+const LoadedTribeStatistics = ReactDataLoadWrapper(components.TribeStatistics);
 
 export default function (props: { tribeId: string, coupling: Coupling }) {
     const {tribeId, coupling} = props;

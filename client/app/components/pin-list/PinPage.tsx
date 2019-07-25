@@ -1,9 +1,11 @@
+// @ts-ignore
+import {components} from 'client'
+
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactPinList from "./ReactPinList";
 import {Coupling} from "../../services";
 import * as React from "react";
 
-const LoadedPairAssignments = reactDataLoadWrapper(ReactPinList);
+const LoadedPairAssignments = reactDataLoadWrapper(components.PinList);
 
 export default function (props: { tribeId: string, coupling: Coupling }) {
     const {tribeId, coupling} = props;

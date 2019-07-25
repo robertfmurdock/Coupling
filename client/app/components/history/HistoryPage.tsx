@@ -1,10 +1,12 @@
+// @ts-ignore
+import {components} from 'client'
+
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactHistory from "./ReactHistory";
 import * as React from "react";
 import {Coupling} from "../../services";
 import PathSetter from "../PathSetter";
 
-const LoadedPairAssignments = reactDataLoadWrapper(ReactHistory);
+const LoadedPairAssignments = reactDataLoadWrapper(components.History);
 
 interface Props {
     tribeId: string

@@ -1,9 +1,10 @@
+// @ts-ignore
+import {components} from 'client'
 import * as React from "react";
-import ReactTribeList from "../tribe-list/ReactTribeList";
 import {Coupling} from "../../services";
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
 
-const LoadedTribeList = reactDataLoadWrapper(ReactTribeList);
+const LoadedTribeList = reactDataLoadWrapper(components.TribeList);
 
 export default function (props: { pathSetter: (string) => void, coupling: Coupling }) {
     const {coupling} = props;

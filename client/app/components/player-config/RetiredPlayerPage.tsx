@@ -1,11 +1,13 @@
+// @ts-ignore
+import {components} from 'client'
+
 import * as React from "react";
 import find from 'ramda/es/find'
 import propEq from 'ramda/es/propEq'
 
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactPlayerConfig from "./ReactPlayerConfig";
 
-const LoadedPairAssignments = reactDataLoadWrapper(ReactPlayerConfig);
+const LoadedPairAssignments = reactDataLoadWrapper(components.PlayerConfig);
 
 
 export default function (props) {

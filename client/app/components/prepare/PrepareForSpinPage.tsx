@@ -1,9 +1,11 @@
+// @ts-ignore
+import {components} from 'client'
+
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactPrepareSpin from "./ReactPrepareSpin";
 import * as React from "react";
 import {Coupling} from "../../services";
 
-const LoadedPrepareSpin = reactDataLoadWrapper(ReactPrepareSpin);
+const LoadedPrepareSpin = reactDataLoadWrapper(components.PrepareSpin);
 
 interface Props {
     coupling: Coupling

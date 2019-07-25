@@ -1,17 +1,19 @@
+// @ts-ignore
+import {components} from 'client'
+// @ts-ignore
+import * as client from 'client'
+
 import * as React from "react";
 import find from 'ramda/es/find'
 import propEq from 'ramda/es/propEq'
 
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactPlayerConfig from "./ReactPlayerConfig";
 
-// @ts-ignore
-import * as client from 'client'
 import {Coupling} from "../../services";
 
 const commandDispatcher = client.commandDispatcher();
 
-const LoadedPairAssignments = reactDataLoadWrapper(ReactPlayerConfig);
+const LoadedPairAssignments = reactDataLoadWrapper(components.PlayerConfig);
 
 interface Props {
     coupling: Coupling

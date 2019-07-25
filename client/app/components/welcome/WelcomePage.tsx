@@ -1,8 +1,9 @@
+// @ts-ignore
+import {components} from 'client'
 import * as React from "react";
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactWelcomeView from "./ReactWelcomeView";
 
-const LoadedWelcomePage = reactDataLoadWrapper(ReactWelcomeView);
+const LoadedWelcomePage = reactDataLoadWrapper(components.Welcome);
 
 export default function (props) {
     return <LoadedWelcomePage

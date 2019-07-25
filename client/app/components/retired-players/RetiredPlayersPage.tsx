@@ -1,8 +1,9 @@
+// @ts-ignore
+import {components} from 'client'
 import * as React from "react";
 import reactDataLoadWrapper from "../ReactDataLoadWrapper/ReactDataLoadWrapper";
-import ReactRetiredPlayers from "./ReactRetiredPlayers";
 
-const LoadedRetiredPlayers = reactDataLoadWrapper(ReactRetiredPlayers);
+const LoadedRetiredPlayers = reactDataLoadWrapper(components.RetiredPlayers);
 
 export default function (props) {
 
