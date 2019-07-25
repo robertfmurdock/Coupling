@@ -13,13 +13,13 @@ external interface Enzyme {
 
 external interface ShallowWrapper<T> {
     fun <T2 : RProps> find(target: RClass<T2>): ShallowWrapper<T2>
-    fun find(target: dynamic): ShallowWrapper<dynamic>
+    fun <T2> find(target: dynamic): ShallowWrapper<T2>
 
     val length: Int
 
     fun props(): T
 
-    fun update()
+    fun update(): ShallowWrapper<T>
 
     fun debug(): String
 
@@ -29,6 +29,7 @@ external interface ShallowWrapper<T> {
     fun simulate(eventName: String, event: dynamic)
 
     fun <O> map(mapper: (ShallowWrapper<T>) -> O): Array<O>
+    fun hasClass(className: String): Boolean
 }
 
 @JsModule("enzyme")

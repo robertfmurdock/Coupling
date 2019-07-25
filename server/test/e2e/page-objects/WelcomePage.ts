@@ -1,5 +1,5 @@
 import {browser, By, element} from "protractor";
-import * as styles from '../../../../client/app/components/welcome/styles.css'
+import * as styles from '../../../../client/build/resources/main/com/zegreatrob/coupling/client/Welcome.css'
 
 const config = require("../../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;

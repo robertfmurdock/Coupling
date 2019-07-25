@@ -31,7 +31,7 @@ class PlayerHeatmapBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.find(".${styles.heatmapPlayersSideRow}")
+        wrapper.find<Any>(".${styles.heatmapPlayersSideRow}")
                 .findComponent(PlayerCard)
                 .map { it.props().player }
                 .toList()
@@ -54,7 +54,7 @@ class PlayerHeatmapBuilderTest {
     }) exercise {
         shallow(props)
     } verify { wrapper ->
-        wrapper.find(".${styles.heatmapPlayersTopRow}")
+        wrapper.find<Any>(".${styles.heatmapPlayersTopRow}")
                 .findComponent(PlayerCard)
                 .map { it.props().player }
                 .toList()

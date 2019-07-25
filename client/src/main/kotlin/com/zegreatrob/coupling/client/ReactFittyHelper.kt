@@ -7,10 +7,10 @@ import kotlin.js.json
 @JsNonModule
 private external val fitty: dynamic
 
-fun Node.fitHeaderNode(maxFontHeight: Double, minFontHeight: Double) {
+fun Node.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {
     fitty.default(this, json(
             "maxSize" to maxFontHeight,
             "minSize" to minFontHeight,
-            "multiLine" to true
+            "multiLine" to multiLine
     )).unsafeCast<Unit>()
 }

@@ -85,9 +85,10 @@ interface TribeCardBuilder : StyledComponentBuilder<TribeCardProps, TribeCardSty
         event.stopPropagation(); pathSetter("/${tribe.id.value}/edit/")
     }
 
-    private fun Node.fitTribeName(size: Int) = fitHeaderNode(
+    private fun Node.fitTribeName(size: Int) = fitty(
             maxFontHeight = (size * 0.3),
-            minFontHeight = (size * 0.16)
+            minFontHeight = (size * 0.16),
+            multiLine = true
     )
 
     private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: KtTribe, size: Int) = gravatarImage(

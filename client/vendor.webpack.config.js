@@ -9,6 +9,7 @@ const config = {
   entry: {
     vendor: [
       "axios",
+      "blueimp-md5",
       "core-js",
       "kotlin",
       "kotlin-extensions",

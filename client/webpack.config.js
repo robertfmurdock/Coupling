@@ -84,7 +84,9 @@ const config = {
     })
   ],
   performance: {
-    hints: isProductionMode() ? 'error' : false
+    hints: isProductionMode() ? 'error' : false,
+    maxAssetSize: 300000,
+    maxEntrypointSize: 300000
   }
 };
 

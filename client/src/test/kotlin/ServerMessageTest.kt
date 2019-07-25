@@ -50,7 +50,7 @@ class ServerMessageTest : ServerMessageRenderer {
         websocketProps.onMessage(expectedMessage)
         wrapper.update()
     } verify {
-        wrapper.find("span").text()
+        wrapper.find<Any>("span").text()
                 .assertIsEqualTo(
                         expectedMessage
                 )
@@ -69,7 +69,7 @@ class ServerMessageTest : ServerMessageRenderer {
         websocketProps.onClose()
         wrapper.update()
     } verify {
-        wrapper.find("span").text()
+        wrapper.find<Any>("span").text()
                 .assertIsEqualTo(
                         expectedMessage
                 )

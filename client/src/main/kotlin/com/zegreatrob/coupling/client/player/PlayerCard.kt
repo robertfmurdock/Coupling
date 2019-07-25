@@ -30,7 +30,7 @@ external interface PlayerCardStyles {
 data class PlayerCardProps(
         val tribeId: TribeId,
         val player: Player,
-        val pathSetter: (String) -> Unit,
+        val pathSetter: (String) -> Unit = {},
         val disabled: Boolean = false,
         val className: String? = null,
         val size: Int = 100,
@@ -138,7 +138,7 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
     private fun Node.fitPlayerName(size: Int) {
         val maxFontHeight = (size * 0.31)
         val minFontHeight = (size * 0.16)
-        fitHeaderNode(maxFontHeight, minFontHeight)
+        fitty(maxFontHeight, minFontHeight, true)
     }
 
 }

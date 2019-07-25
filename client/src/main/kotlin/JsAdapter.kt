@@ -73,7 +73,6 @@ interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapComm
 @JsName("components")
 object ReactComponents : RetiredPlayersRenderer,
         PlayerRosterRenderer,
-        LoginChooserRenderer,
         LogoutRenderer,
         PrepareSpinRenderer,
         ServerMessageRenderer,
@@ -218,8 +217,8 @@ object ReactComponents : RetiredPlayersRenderer,
     }
 
     @Suppress("unused")
-    @JsName("LoginChooser")
-    val loginChooserJs = { buildElements { loginChooser() } }
+    @JsName("Welcome")
+    val welcomeJs = { buildElements { welcome() } }
 
     @Suppress("unused")
     @JsName("googleCheckForSignedIn")

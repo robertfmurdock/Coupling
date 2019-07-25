@@ -50,7 +50,7 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, coupling, {}))
     } verify { wrapper ->
-        wrapper.find("input[name='badge'][value='${Badge.Default.value}'][checked]")
+        wrapper.find<Any>("input[name='badge'][value='${Badge.Default.value}'][checked]")
                 .length
                 .assertIsEqualTo(1)
     }
@@ -63,7 +63,7 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, coupling, {}))
     } verify { wrapper ->
-        wrapper.find("input[name='badge'][value='${Badge.Alternate.value}'][checked]")
+        wrapper.find<Any>("input[name='badge'][value='${Badge.Alternate.value}'][checked]")
                 .length
                 .assertIsEqualTo(1)
     }
@@ -84,7 +84,7 @@ class PlayerConfigTest {
             }) {
                 reloaderSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find("input[name='name']")
+                wrapper.find<Any>("input[name='name']")
                         .simulate(
                                 "change",
                                 json(
@@ -92,7 +92,7 @@ class PlayerConfigTest {
                                         "persist" to {}
                                 )
                         )
-                wrapper.find("form")
+                wrapper.find<Any>("form")
                         .simulate("submit", json("preventDefault" to {}))
             }
         } verifyAsync {
@@ -126,7 +126,7 @@ class PlayerConfigTest {
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find(".delete-button")
+                wrapper.find<Any>(".delete-button")
                         .simulate("click")
             }
         } verifyAsync {
@@ -161,7 +161,7 @@ class PlayerConfigTest {
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find(".delete-button")
+                wrapper.find<Any>(".delete-button")
                         .simulate("click")
             }
         } verifyAsync {
@@ -182,7 +182,7 @@ class PlayerConfigTest {
                 coupling
         ) {})
     }) exercise {
-        wrapper.find("input[name='name']")
+        wrapper.find<Any>("input[name='name']")
                 .simulate("change", json(
                         "target" to json("name" to "name", "value" to "differentName"), "persist" to {})
                 )

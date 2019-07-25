@@ -43,7 +43,7 @@ class HistoryComponentBuilderTest {
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
                 reloadSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find(".${styles.deleteButton}").simulate("click")
+                wrapper.find<Any>(".${styles.deleteButton}").simulate("click")
             }
         } verifyAsync {
             removeSpy.spyReceivedValues.isNotEmpty()
@@ -70,7 +70,7 @@ class HistoryComponentBuilderTest {
                         HistoryProps(tribe, {}, history, coupling, { reloadSpy.spyFunction(Unit) })
                 )
             }) exerciseAsync {
-                wrapper.find(".${styles.deleteButton}").simulate("click")
+                wrapper.find<Any>(".${styles.deleteButton}").simulate("click")
             }
         } verifyAsync {
             removeSpy.spyReceivedValues.isEmpty()
