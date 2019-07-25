@@ -166,6 +166,19 @@ tasks {
         })
     }
 
+    task<YarnTask>("testStats") {
+        dependsOn(yarn, vendorCompile)
+
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
+
+        args = listOf("-s", "webpack", "--json", "--profile", "--config", "test/webpack.config.js")
+
+        setExecOverrides(closureOf<ExecSpec> {
+            file("build/report").mkdirs()
+            standardOutput = FileOutputStream(file("build/report/test-stats.json"))
+        })
+    }
+
     task<YarnTask>("vendorStats") {
         dependsOn(yarn, runDceKotlinJs)
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))

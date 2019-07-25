@@ -19,8 +19,13 @@ function testResolve() {
   return resolve;
 }
 
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+
+const smp = new SpeedMeasurePlugin();
+
 const config = {
   module: webpackConfig.module,
+  entry: path.resolve(__dirname, 'tests.bundle.js'),
   resolve: testResolve(),
   externals: webpackConfig.externals,
   mode: "development",
@@ -34,6 +39,11 @@ const config = {
     }),
     new webpack.ProvidePlugin({'window.jQuery': 'jquery', $: 'jquery', 'jQuery': 'jquery'})
   ],
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
+  },
   devtool: 'inline-source-map'
 };
 
