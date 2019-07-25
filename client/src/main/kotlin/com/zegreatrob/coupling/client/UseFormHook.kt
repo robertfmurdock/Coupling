@@ -35,7 +35,7 @@ interface UseFormHook {
             json(name to target["checked"])
         } else {
             json(name to target["value"])
-        }.also { console.log("change event", this);console.log("change json", it) }
+        }
     }
 
     fun RBuilder.configInput(
