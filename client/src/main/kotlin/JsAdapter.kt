@@ -211,6 +211,16 @@ object ReactComponents : RetiredPlayersRenderer,
     }
 
     @Suppress("unused")
+    @JsName("TribeConfig")
+    val tribeConfigJs = jsReactFunction { props ->
+        tribeConfig(TribeConfigProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                coupling = props.coupling
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("Logout")
     val logoutJs = jsReactFunction { props ->
         logout(LogoutProps(props.coupling))

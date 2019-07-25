@@ -57,7 +57,7 @@ describe('The edit tribe page', function () {
             const tribeElements = element.all(By.className(TribeCardStyles.className));
             tribeElements.first().element(By.className(TribeCardStyles.header)).click();
 
-            expect(browser.getCurrentUrl()).toEqual(hostName + '/' + tribe.id + '/edit/');
+            expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/edit/`);
             await TribeConfigPage.waitForPage();
 
             expect(element(By.id('tribe-name')).getAttribute('value')).toEqual(tribe.name);

@@ -17,11 +17,9 @@ import styled.css
 import styled.styledDiv
 import styled.styledSpan
 
-
 object TribeCard : ComponentProvider<TribeCardProps>(), TribeCardBuilder
 
 val RBuilder.tribeCard get() = TribeCard.captor(this)
-
 
 data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 

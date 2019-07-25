@@ -39,13 +39,7 @@ fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
         id = stringValue("_id"),
-        badge = this["badge"]?.let {
-            when (it) {
-                is String -> it.toInt()
-                is Int -> it
-                else -> null
-            }
-        },
+        badge = this["badge"]?.toIntFromStringOrInt(),
         name = stringValue("name"),
         email = stringValue("email"),
         callSignAdjective = stringValue("callSignAdjective"),
@@ -53,11 +47,17 @@ fun Json.toPlayer(): Player = Player(
         imageURL = stringValue("imageURL")
 )
 
+private fun Any.toIntFromStringOrInt(): Int? = when (this) {
+    is String -> toInt()
+    is Int -> this
+    else -> null
+}
+
 fun Json.toTribe(): KtTribe = KtTribe(
         id = TribeId(stringValue("id")!!),
         name = stringValue("name"),
         email = stringValue("email"),
-        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
+        pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
         defaultBadgeName = stringValue("defaultBadgeName"),
         alternateBadgeName = stringValue("alternateBadgeName"),
         badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,

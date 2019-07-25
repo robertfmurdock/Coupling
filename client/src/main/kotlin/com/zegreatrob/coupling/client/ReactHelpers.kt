@@ -108,22 +108,24 @@ inline fun <reified P : RProps, S> styledComponent(
     }
 }
 
+typealias SingleElementBuilder = RBuilder.() -> ReactElement
+
 class PropsStylesBuilder<P, S>(
         val props: P,
         val styles: S) {
-    inline fun handle(builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) = builder()
+    inline fun handle(builder: PropsStylesBuilder<P, S>.() -> SingleElementBuilder) = builder()
 }
 
 class ScopedPropsStylesBuilder<P, S>(
         val props: P,
         val styles: S,
         val scope: CoroutineScope) {
-    inline fun handle(builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement) = builder()
+    inline fun handle(builder: ScopedPropsStylesBuilder<P, S>.() -> SingleElementBuilder) = builder()
 }
 
 inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
         styleName: String,
-        crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement
+        crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> SingleElementBuilder
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 

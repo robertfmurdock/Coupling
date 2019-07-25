@@ -19,6 +19,15 @@ export default function (props: Props) {
             {...props}
         />
     } else {
-        return <LoadedTribeConfig {...props} />
+
+        const tribe = {
+            id: '',
+            name: 'New Tribe',
+            pairingRule: 1,
+            defaultBadgeName: 'Default',
+            alternateBadgeName: 'Alternate',
+        };
+
+        return <LoadedTribeConfig {...props} tribe={tribe}/>
     }
 }

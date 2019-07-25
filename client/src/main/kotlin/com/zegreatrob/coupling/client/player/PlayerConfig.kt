@@ -12,15 +12,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
-import kotlinx.html.*
-import kotlinx.html.js.onChangeFunction
+import kotlinx.html.ButtonType
+import kotlinx.html.InputType
+import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
+import kotlinx.html.tabIndex
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.*
-import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
 
@@ -47,7 +48,7 @@ external interface PlayerConfigStyles {
 val playerDefaults get() = json("badge" to Badge.Default.value)
 
 interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
-        PlayerRosterRenderer, WindowFunctions {
+        PlayerRosterRenderer, WindowFunctions, UseFormHook {
 
     override val componentPath: String get() = "player/PlayerConfig"
 
@@ -132,29 +133,6 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
         }
     }
 
-    private fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
-            .let { (values, setValues) ->
-                Pair(
-                        values,
-                        { event: Event ->
-                            event.unsafeCast<dynamic>().persist()
-                            setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
-                        }
-                )
-            }
-
-    private fun Json.copyWithChangeFrom(event: Event) = json()
-            .add(this)
-            .add(event.toChangeJson())
-
-    private fun Event.toChangeJson(): Json {
-        val target = target.unsafeCast<Json>()
-        val name = target["name"].unsafeCast<String>()
-        val value = target["value"].unsafeCast<String>()
-
-        return json(name to value)
-    }
-
     private fun RBuilder.playerConfigForm(
             player: Player,
             tribe: KtTribe,
@@ -168,28 +146,24 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
             attrs { name = "playerForm"; onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) } }
 
             div {
-                label { attrs { htmlFor = "player-name" }; +"Name" }
-                input {
-                    attrs {
-                        name = "name"
-                        id = "player-name"
-                        type = InputType.text
-                        value = player.name ?: ""
-                        onChangeFunction = onChange
-                    }
-                }
+                configInput(
+                        labelText = "Name",
+                        id = "player-name",
+                        name = "name",
+                        value = player.name ?: "",
+                        type = InputType.text,
+                        onChange = onChange
+                )
             }
             div {
-                label { attrs { htmlFor = "player-email" }; +"Email" }
-                input {
-                    attrs {
-                        name = "email"
-                        id = "player-email"
-                        type = InputType.text
-                        value = player.email ?: ""
-                        onChangeFunction = onChange
-                    }
-                }
+                configInput(
+                        labelText = "Email",
+                        id = "player-email",
+                        name = "email",
+                        value = player.email ?: "",
+                        type = InputType.text,
+                        onChange = onChange
+                )
             }
             if (tribe.callSignsEnabled) {
                 callSignConfig(player, onChange)
@@ -220,31 +194,27 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
     private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
         div {
             div {
-                label { attrs { htmlFor = "adjective-input" }; +"Call-Sign Adjective" }
-                input {
-                    attrs {
-                        name = "callSignAdjective"
-                        id = "adjective-input"
-                        type = InputType.text
+                configInput(
+                        labelText = "Call-Sign Adjective",
+                        id = "adjective-input",
+                        name = "callSignAdjective",
+                        value = player.callSignAdjective ?: "",
+                        type = InputType.text,
+                        onChange = onChange,
                         list = "callSignAdjectiveOptions"
-                        value = player.callSignAdjective ?: ""
-                        onChangeFunction = onChange
-                    }
-                }
+                )
                 dataList { attrs { id = "callSignAdjectiveOptions" } }
             }
             div {
-                label { attrs { htmlFor = "noun-input" }; +"Call-Sign Noun" }
-                input {
-                    attrs {
-                        name = "callSignNoun"
-                        id = "noun-input"
-                        type = InputType.text
+                configInput(
+                        labelText = "Call-Sign Noun",
+                        id = "noun-input",
+                        name = "callSignNoun",
+                        value = player.callSignNoun ?: "",
+                        type = InputType.text,
+                        onChange = onChange,
                         list = "callSignNounOptions"
-                        value = player.callSignNoun ?: ""
-                        onChangeFunction = onChange
-                    }
-                }
+                )
                 dataList { attrs { id = "callSignNounOptions" } }
             }
         }
@@ -253,30 +223,26 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
     private fun RBuilder.badgeConfig(tribe: KtTribe, player: Player, onChange: (Event) -> Unit) {
         div(classes = "badge-config") {
             div {
-                label { attrs { htmlFor = "default-badge-radio" }; +(tribe.defaultBadgeName ?: "") }
-                input {
-                    attrs {
-                        name = "badge"
-                        id = "default-badge-radio"
-                        type = InputType.radio
-                        value = "${Badge.Default.value}"
+                configInput(
+                        labelText = tribe.defaultBadgeName ?: "",
+                        id = "default-badge-radio",
+                        name = "badge",
+                        value = "${Badge.Default.value}",
+                        type = InputType.radio,
+                        onChange = onChange,
                         checked = player.badge == Badge.Default.value
-                        onChangeFunction = onChange
-                    }
-                }
+                )
             }
             div {
-                label { attrs { htmlFor = "alt-badge-radio" }; +(tribe.alternateBadgeName ?: "") }
-                input {
-                    attrs {
-                        name = "badge"
-                        id = "alt-badge-radio"
-                        type = InputType.radio
-                        value = "${Badge.Alternate.value}"
+                configInput(
+                        labelText = tribe.alternateBadgeName ?: "",
+                        id = "alt-badge-radio",
+                        name = "badge",
+                        value = "${Badge.Alternate.value}",
+                        type = InputType.radio,
+                        onChange = onChange,
                         checked = player.badge == Badge.Alternate.value
-                        onChangeFunction = onChange
-                    }
-                }
+                )
             }
         }
     }

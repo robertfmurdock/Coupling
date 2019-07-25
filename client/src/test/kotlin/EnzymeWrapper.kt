@@ -30,6 +30,7 @@ external interface ShallowWrapper<T> {
 
     fun <O> map(mapper: (ShallowWrapper<T>) -> O): Array<O>
     fun hasClass(className: String): Boolean
+    fun prop(key: String): Any
 }
 
 @JsModule("enzyme")
