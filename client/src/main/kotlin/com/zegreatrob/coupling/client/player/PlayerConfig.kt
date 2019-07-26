@@ -48,7 +48,7 @@ external interface PlayerConfigStyles {
 val playerDefaults get() = json("badge" to Badge.Default.value)
 
 interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
-        PlayerRosterRenderer, WindowFunctions, UseFormHook {
+        WindowFunctions, UseFormHook {
 
     override val componentPath: String get() = "player/PlayerConfig"
 

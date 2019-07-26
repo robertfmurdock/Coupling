@@ -1,8 +1,5 @@
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.pairassignments.HistoryProps
-import com.zegreatrob.coupling.client.pairassignments.PrepareSpinProps
-import com.zegreatrob.coupling.client.pairassignments.PrepareSpinRenderer
-import com.zegreatrob.coupling.client.pairassignments.history
+import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.PinListProps
 import com.zegreatrob.coupling.client.pin.pinList
 import com.zegreatrob.coupling.client.player.*
@@ -72,10 +69,8 @@ interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapComm
 @Suppress("unused")
 @JsName("components")
 object ReactComponents : RetiredPlayersRenderer,
-        PlayerRosterRenderer,
         LogoutRenderer,
         PrepareSpinRenderer,
-        ServerMessageRenderer,
         GoogleSignIn {
 
     @Suppress("unused")
@@ -187,6 +182,18 @@ object ReactComponents : RetiredPlayersRenderer,
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 coupling = props.coupling,
                 reload = props.reload.unsafeCast<Function0<Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("PairAssignments")
+    val pairAssignmentsJs = jsReactFunction { props ->
+        pairAssignments(PairAssignmentsProps(
+                tribe = props.tribe.unsafeCast<Json>().toTribe(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                coupling = props.coupling,
+                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                pairAssignments = props.pairAssignments.unsafeCast<Json?>()?.toPairAssignmentDocument()
         ))
     }
 

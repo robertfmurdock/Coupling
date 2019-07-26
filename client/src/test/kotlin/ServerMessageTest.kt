@@ -1,5 +1,5 @@
+import com.zegreatrob.coupling.client.ServerMessageBuilder
 import com.zegreatrob.coupling.client.ServerMessageProps
-import com.zegreatrob.coupling.client.ServerMessageRenderer
 import com.zegreatrob.coupling.client.WebsocketProps
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -13,13 +13,13 @@ import kotlin.test.Test
 @JsNonModule
 external val websocket: RClass<WebsocketProps>
 
-class ServerMessageTest : ServerMessageRenderer {
+class ServerMessageTest : ServerMessageBuilder {
 
     @Test
     fun connectsToTheWebsocketUsingTribe(): Unit = setup(
             ServerMessageProps(tribeId = TribeId("bwahahahaha"), useSsl = false)
     ) exercise {
-        shallowRender { serverMessage(this@exercise) }
+        shallow(this@exercise)
     } verify { wrapper ->
         wrapper.find(websocket).props()
                 .url
@@ -31,7 +31,7 @@ class ServerMessageTest : ServerMessageRenderer {
     @Test
     fun whenSslIsOnWillUseHttps() = setup(ServerMessageProps(tribeId = TribeId("LOL"), useSsl = true)
     ) exercise {
-        shallowRender { serverMessage(this@exercise) }
+        shallow(this@exercise)
     } verify { wrapper ->
         wrapper.find(websocket).props()
                 .url
@@ -43,7 +43,7 @@ class ServerMessageTest : ServerMessageRenderer {
     @Test
     fun displaysServerMessage(): Unit = setup(object {
         val props = ServerMessageProps(tribeId = TribeId("bwahahahaha"), useSsl = false)
-        val wrapper = shallowRender { serverMessage(props) }
+        val wrapper = shallow(props)
         val websocketProps = wrapper.find(websocket).props()
         val expectedMessage = "Hi it me"
     }) exercise {
@@ -59,7 +59,7 @@ class ServerMessageTest : ServerMessageRenderer {
     @Test
     fun displaysNotConnectedMessageWhenSocketIsClosed(): Unit = setup(object {
         val props = ServerMessageProps(tribeId = TribeId("bwahahahaha"), useSsl = false)
-        val wrapper = shallowRender { serverMessage(props) }
+        val wrapper = shallow(props)
         val websocketProps = wrapper.find(websocket).props()
                 .unsafeCast<WebsocketProps>()
         val expectedMessage = "Not connected"

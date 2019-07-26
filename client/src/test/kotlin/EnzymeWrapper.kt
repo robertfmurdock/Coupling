@@ -29,8 +29,11 @@ external interface ShallowWrapper<T> {
     fun simulate(eventName: String, event: dynamic)
 
     fun <O> map(mapper: (ShallowWrapper<T>) -> O): Array<O>
+
+    fun <T> find(mapper: (ShallowWrapper<T>) -> Boolean): ShallowWrapper<T>
     fun hasClass(className: String): Boolean
     fun prop(key: String): Any
+    fun at(index: Int): ShallowWrapper<T>
 }
 
 @JsModule("enzyme")

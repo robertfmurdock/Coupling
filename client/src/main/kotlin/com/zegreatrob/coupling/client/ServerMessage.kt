@@ -20,29 +20,31 @@ external interface WebsocketProps : RProps {
 
 const val disconnectedMessage = "Not connected"
 
+
+object ServerMessage : ComponentProvider<ServerMessageProps>(), ServerMessageBuilder
+
+val RBuilder.serverMessage get() = ServerMessage.captor(this)
+
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-interface ServerMessageRenderer {
 
-    fun RBuilder.serverMessage(props: ServerMessageProps) = component(serverMessage, props)
+interface ServerMessageBuilder : ComponentBuilder<ServerMessageProps> {
 
-    companion object {
-        private val serverMessage = reactFunctionComponent<ServerMessageProps> { props ->
-            val (tribeId, useSsl) = props
-            val (message, setMessage) = useState(disconnectedMessage)
+    override fun build() = reactFunctionComponent<ServerMessageProps> { props ->
+        val (tribeId, useSsl) = props
+        val (message, setMessage) = useState(disconnectedMessage)
 
-            div {
-                websocket {
-                    attrs {
-                        url = buildSocketUrl(tribeId, useSsl)
-                        onMessage = { setMessage(it) }
-                        onClose = { setMessage(disconnectedMessage) }
-                    }
+        div {
+            websocket {
+                attrs {
+                    url = buildSocketUrl(tribeId, useSsl)
+                    onMessage = { setMessage(it) }
+                    onClose = { setMessage(disconnectedMessage) }
                 }
+            }
 
-                span {
-                    +message
-                }
+            span {
+                +message
             }
         }
     }

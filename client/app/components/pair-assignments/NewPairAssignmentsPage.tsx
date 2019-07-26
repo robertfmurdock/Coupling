@@ -15,7 +15,7 @@ interface Props {
 
 export default function (props: Props) {
     const {coupling, tribeId, search} = props;
-    const playerIds = new URLSearchParams(search).getAll('player')
+    const playerIds = new URLSearchParams(search).getAll('player');
     return <LoadedPairAssignments
         getDataAsync={async function () {
             const [tribe, players] = await Promise.all([

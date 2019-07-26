@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client
 
 import kotlinx.coroutines.*
 import loadStyles
+import org.w3c.dom.Node
 import react.*
 import kotlin.reflect.KClass
 
@@ -63,8 +64,15 @@ interface RFunction<P : RProps> : RClass<P>
 
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
-fun <P : RProps> RBuilder.element(clazz: RClass<P>, props: P, key: String? = null, handler: RHandler<P> = {}): ReactElement {
+fun <P : RProps> RBuilder.element(
+        clazz: RClass<P>,
+        props: P,
+        key: String? = null,
+        ref: RReadableRef<Node>? = null,
+        handler: RHandler<P> = {}
+): ReactElement {
     key?.let { props.key = it }
+    ref?.let { props.ref = ref }
     return child(
             type = clazz,
             props = props,
@@ -93,8 +101,14 @@ class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private v
 
 }
 
-fun <P : RProps> RBuilder.component(component: ReactFunctionComponent<P>, props: P, key: String? = null, handler: RHandler<P> = {}) =
-        element(component.rFunction, props, key, handler)
+fun <P : RProps> RBuilder.component(
+        component: ReactFunctionComponent<P>,
+        props: P,
+        key: String? = null,
+        ref: RReadableRef<Node>? = null,
+        handler: RHandler<P> = {}
+) =
+        element(component.rFunction, props, key, ref, handler)
 
 inline fun <reified P : RProps, S> styledComponent(
         styleName: String,

@@ -1,0 +1,14 @@
+:local(.className) {
+    display: inline-block;
+}
+
+:local(.playerCard).hoverzoom:hover {
+    transition: all ease-in 0.4s;
+    z-index: 1;
+    animation: 0.5s twitch;
+    animation-iteration-count: infinite;
+}
+
+:local(.playerCard).on-drag-hover {
+    background-color: orange;
+}

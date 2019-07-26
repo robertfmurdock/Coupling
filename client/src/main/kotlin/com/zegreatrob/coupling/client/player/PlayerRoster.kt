@@ -1,15 +1,20 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.reactFunctionComponent
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.html.classes
-import loadStyles
 import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
+
+
+object PlayerRoster : ComponentProvider<PlayerRosterProps>(), PlayerRosterBuilder
+
+val RBuilder.playerRoster get() = PlayerRoster.captor(this)
 
 interface PlayerRosterStyles {
     val className: String
@@ -22,18 +27,15 @@ data class PlayerRosterProps(
         val players: List<Player>,
         val tribeId: TribeId,
         val pathSetter: (String) -> Unit,
-        val className: String?
+        val className: String? = null
 ) : RProps
 
-interface PlayerRosterRenderer {
+interface PlayerRosterBuilder : StyledComponentBuilder<PlayerRosterProps, PlayerRosterStyles> {
 
-    fun RBuilder.playerRoster(props: PlayerRosterProps) = component(playerRoster, props)
-
-    companion object {
-        private val styles: PlayerRosterStyles = loadStyles("player/PlayerRoster")
-
-        private val playerRoster = reactFunctionComponent { props: PlayerRosterProps ->
-            with(props) {
+    override val componentPath: String get() = "player/PlayerRoster"
+    override fun build() = buildBy {
+        with(props) {
+            {
                 div(classes = className) {
                     attrs { classes += styles.className }
                     div {
@@ -49,14 +51,16 @@ interface PlayerRosterRenderer {
                 }
             }
         }
+    }
 
-        private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
-            players.forEach { player ->
-                playerCard(
-                        PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
-                        key = player.id
-                )
-            }
+    private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
+        players.forEach { player ->
+            playerCard(
+                    PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
+                    key = player.id
+            )
         }
     }
 }
+
+val RBuilder.pairAssignments get() = PlayerRoster.captor(this)

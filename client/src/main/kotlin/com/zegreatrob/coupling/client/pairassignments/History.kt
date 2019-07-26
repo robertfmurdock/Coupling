@@ -76,9 +76,6 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
         }
     }
 
-    private fun PairAssignmentDocument.dateText() =
-            "${date.format(DateFormat("MM/dd/YYYY"))} - ${date.format(DateFormat("HH:mm:ss"))}"
-
     private suspend fun HistoryProps.removeButtonOnClick(document: PairAssignmentDocument) {
         if (window.confirm("Are you sure you want to delete these pair assignments?")) {
             coupling.removeAssignments(document.toJson(), tribe.id.value)
@@ -107,3 +104,5 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
             }
 }
 
+fun PairAssignmentDocument.dateText() =
+        "${date.format(DateFormat("MM/dd/YYYY"))} - ${date.format(DateFormat("HH:mm:ss"))}"

@@ -41,3 +41,5 @@ data class PinnedCouplingPair(val players: List<PinnedPlayer>) {
         else -> CouplingPair.Empty
     }
 }
+
+fun List<CouplingPair>.withPins() = map { PinnedCouplingPair(it.asArray().map { player -> player.withPins() }) }

@@ -197,7 +197,7 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
                 attrs {
                     id = "pairing-rule"
                     name = "pairingRule"
-                    value = "${toValue(tribe.pairingRule)}"
+                    this["value"] = "${toValue(tribe.pairingRule)}"
                     onChangeFunction = onChange
                 }
                 pairingRuleDescriptions
