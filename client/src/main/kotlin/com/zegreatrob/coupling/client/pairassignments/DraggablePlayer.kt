@@ -59,9 +59,6 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
 
             drag(drop(draggablePlayerRef))
 
-            console.log("hoverzoom", pairAssignmentDocument.id == null)
-            console.log("isOver", isOver)
-
             div(classes = styles.className) {
                 attrs { ref = draggablePlayerRef }
                 playerCard(
