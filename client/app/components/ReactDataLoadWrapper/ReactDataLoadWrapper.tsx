@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useState} from "react";
 import * as classNames from 'classnames'
-import {AnimationContext} from "../../CouplingRouter";
+import AnimationContext from '../../AnimationContext'
 
 async function loadData(getDataAsync, setData) {
     const data = await getDataAsync();

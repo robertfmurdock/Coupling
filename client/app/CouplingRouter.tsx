@@ -17,13 +17,8 @@ import RetiredPlayersPage from "./components/retired-players/RetiredPlayersPage"
 import WelcomePage from "./components/welcome/WelcomePage";
 import CouplingRoute from "./CouplingRoute";
 import Logout from "./Logout";
-
-export const AnimationContext: any = React.createContext({
-    name: 'animationContext',
-});
-export const ServiceContext: any = React.createContext({
-    name: 'serviceContext',
-});
+import AnimationContext from './AnimationContext'
+import ServiceContext from './ServiceContext'
 
 export default function CouplingRouter(props: { isSignedIn: boolean, animationsDisabled: boolean }) {
     const {isSignedIn, animationsDisabled} = props;

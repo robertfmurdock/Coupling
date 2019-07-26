@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ServiceContext} from "./CouplingRouter";
+import ServiceContext from "./ServiceContext";
 import {Route} from "react-router-dom";
 
 export default function CouplingRoute(props: { path: string, component }) {
