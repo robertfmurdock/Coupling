@@ -144,4 +144,4 @@ class Coupling {
 
 }
 
-export {SelectablePlayer, Coupling, Randomizer}
+export {SelectablePlayer, Coupling}

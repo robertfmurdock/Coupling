@@ -3,7 +3,6 @@ import {components} from 'client'
 import * as React from "react";
 import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
-import Randomizer from "./Randomizer";
 import {Coupling} from "./services";
 import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import HistoryPage from "./components/history/HistoryPage";
@@ -15,7 +14,6 @@ import RetiredPlayerPage from "./components/player-config/RetiredPlayerPage";
 import StatisticsPage from "./components/statistics/StatisticsPage";
 import WelcomePage from "./components/welcome/WelcomePage";
 import CouplingRoute from "./CouplingRoute";
-import Logout from "./Logout";
 import AnimationContext from './AnimationContext'
 import ServiceContext from './ServiceContext'
 
@@ -25,7 +23,7 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
     return <Router>
         <AnimationContext.Provider value={animationsDisabled}>
             <Switch>
-                <Route path="/welcome" exact render={() => <WelcomePage randomizer={new Randomizer()}/>}/>
+                <Route path="/welcome" exact render={() => <WelcomePage/>}/>
                 {
                     isSignedIn
                         ? <AuthenticatedRoutes/>
@@ -48,7 +46,7 @@ function AuthenticatedRoutes() {
         <Switch>
             <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
             <CouplingRoute path={"/tribes/"} component={components.TribeListPage}/>
-            <CouplingRoute path={"/logout/"} component={Logout}/>
+            <CouplingRoute path={"/logout/"} component={components.Logout}/>
             <CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
             <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
                 <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
