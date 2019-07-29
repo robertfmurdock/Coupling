@@ -7,14 +7,11 @@ import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import react.RBuilder
 import react.RProps
 import react.dom.div
 
 
 object RetiredPlayers : ComponentProvider<RetiredPlayersProps>(), RetiredPlayersBuilder
-
-val RBuilder.retiredPlayers get() = RetiredPlayers.captor(this)
 
 data class RetiredPlayersProps(
         val tribe: KtTribe,

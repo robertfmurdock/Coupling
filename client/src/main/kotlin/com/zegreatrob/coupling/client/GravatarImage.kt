@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.external.blueimpMd5.md5
 import kotlinx.html.classes
-import md5
 import react.RBuilder
 import react.dom.img
 

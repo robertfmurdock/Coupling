@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import kotlinext.js.jsObject
 import kotlinx.coroutines.*
-import loadStyles
 import org.w3c.dom.Node
 import react.*
 import kotlin.reflect.KClass

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -12,7 +13,6 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinext.js.jsObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import loadStyles
 import org.w3c.dom.Window
 import shallow
 import kotlin.js.Promise

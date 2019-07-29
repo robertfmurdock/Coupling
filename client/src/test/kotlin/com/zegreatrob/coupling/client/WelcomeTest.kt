@@ -8,7 +8,6 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.withContext
-import loadStyles
 import shallow
 import kotlin.test.Test
 

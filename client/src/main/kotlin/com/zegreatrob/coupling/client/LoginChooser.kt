@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlinx.html.js.onClickFunction
-import loadStyles
 import react.RBuilder
 import react.RProps
 import react.buildElement

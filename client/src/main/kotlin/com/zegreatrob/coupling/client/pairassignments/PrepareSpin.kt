@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunctionComponent
@@ -13,7 +14,6 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import loadStyles
 import react.RBuilder
 import react.RProps
 import react.dom.RDOMBuilder

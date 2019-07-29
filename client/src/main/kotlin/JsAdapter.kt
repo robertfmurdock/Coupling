@@ -155,20 +155,10 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("RetiredPlayers")
-    val retiredPlayersJs = jsReactFunction { props ->
-        retiredPlayers(RetiredPlayersProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-        ))
-    }
-
-    @Suppress("unused")
     @JsName("RetiredPlayersPage")
     val retiredPlayersPageJs = jsReactFunction { props ->
         retiredPlayersPage(PageProps(
-                props.coupling,
+                props.coupling.unsafeCast<Coupling>(),
                 mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
