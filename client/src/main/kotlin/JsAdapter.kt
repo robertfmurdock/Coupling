@@ -153,15 +153,6 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("TribeList")
-    val tribeListJs = jsReactFunction { props ->
-        tribeList(TribeListProps(
-                tribes = props.tribes.unsafeCast<Array<Json>>().map { it.toTribe() },
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-        ))
-    }
-
-    @Suppress("unused")
     @JsName("PlayerRoster")
     val playerRosterJs = jsReactFunction { props ->
         playerRoster(

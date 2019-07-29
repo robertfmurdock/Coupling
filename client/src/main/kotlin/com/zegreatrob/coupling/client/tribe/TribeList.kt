@@ -5,14 +5,11 @@ import com.zegreatrob.coupling.client.StyledComponentBuilder
 import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
-import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
 
 object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder
-
-val RBuilder.tribeList get() = TribeList.captor(this)
 
 data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) -> Unit) : RProps
 
