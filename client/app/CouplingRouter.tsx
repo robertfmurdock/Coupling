@@ -1,3 +1,5 @@
+// @ts-ignore
+import {components} from 'client'
 import * as React from "react";
 import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
@@ -13,7 +15,6 @@ import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignm
 import PlayerPage from "./components/player-config/PlayerPage";
 import RetiredPlayerPage from "./components/player-config/RetiredPlayerPage";
 import StatisticsPage from "./components/statistics/StatisticsPage";
-import RetiredPlayersPage from "./components/retired-players/RetiredPlayersPage";
 import WelcomePage from "./components/welcome/WelcomePage";
 import CouplingRoute from "./CouplingRoute";
 import Logout from "./Logout";
@@ -64,7 +65,7 @@ function AuthenticatedRoutes() {
             <CouplingRoute path={"/:tribeId/player/:playerId/"} component={PlayerPage}/>
             <CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={RetiredPlayerPage}/>
             <CouplingRoute path={"/:tribeId/statistics"} component={StatisticsPage}/>
-            <CouplingRoute path={"/:tribeId/players/retired"} component={RetiredPlayersPage}/>
+            <CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
         </Switch>
     </ServiceContext.Provider>;
 }
