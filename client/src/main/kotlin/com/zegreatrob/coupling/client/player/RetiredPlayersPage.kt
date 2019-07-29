@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.common.toPlayer
-import com.zegreatrob.coupling.common.toTribe
+import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.await
 import react.RBuilder
-import react.RProps
-import kotlin.js.Json
 import kotlin.js.Promise
 
 
@@ -16,42 +15,28 @@ val RBuilder.loadedRetiredPlayers get() = dataLoadWrapper(retiredPlayers.compone
 
 val RBuilder.retiredPlayersPage get() = RetiredPlayersPage.captor(this)
 
-data class PageProps(
-        val coupling: dynamic,
-        val params: Map<String, List<String>>,
-        val pathSetter: (String) -> Unit
-) : RProps
-
 interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps> {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.params["tribeId"]?.first()
+        val tribeId = pageProps.pathParams["tribeId"]?.first()?.let(::TribeId)
 
         if (tribeId != null) {
             loadedRetiredPlayers(DataLoadProps { pageProps.toRetiredPlayersProps(tribeId) })
         } else throw Exception("WHAT")
     }
 
-    private suspend fun PageProps.toRetiredPlayersProps(tribeId: String): RetiredPlayersProps {
-        console.log("loading data")
-        val (tribe, retiredPlayers) = (getTribeAsync(tribeId) to getRetiredPlayersAsync(tribeId))
-                .await()
-        return RetiredPlayersProps(
-                tribe = tribe,
-                retiredPlayers = retiredPlayers,
-                pathSetter = pathSetter
-        )
-    }
+    private suspend fun PageProps.toRetiredPlayersProps(tribeId: TribeId) = coupling.getData(tribeId)
+            .let { (tribe, retiredPlayers) ->
+                RetiredPlayersProps(
+                        tribe = tribe,
+                        retiredPlayers = retiredPlayers,
+                        pathSetter = pathSetter
+                )
+            }
 
-    private suspend fun Pair<Promise<Json>, Promise<Array<Json>>>.await() =
-            first.await().toTribe() to
-                    second.await().map { it.toPlayer() }
+    private suspend fun Coupling.getData(tribeId: TribeId): Pair<KtTribe, List<Player>> =
+            (getTribeAsync(tribeId) to getRetiredPlayersAsync(tribeId))
+                    .await()
 
-    private fun PageProps.getTribeAsync(tribeId: String): Promise<Json> =
-            coupling.getTribe(tribeId)
-                    .unsafeCast<Promise<Json>>()
-
-    private fun PageProps.getRetiredPlayersAsync(tribeId: String): Promise<Array<Json>> =
-            coupling.getRetiredPlayers(tribeId)
-                    .unsafeCast<Promise<Array<Json>>>()
+    private suspend fun Pair<Promise<KtTribe>, Promise<List<Player>>>.await() = first.await() to second.await()
 }
