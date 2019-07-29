@@ -68,7 +68,7 @@ interface CommandDispatcher : FindCallSignActionDispatcher, CalculateHeatMapComm
 
 @Suppress("unused")
 @JsName("components")
-object ReactComponents : RetiredPlayersRenderer,
+object ReactComponents :
         LogoutRenderer,
         PrepareSpinRenderer,
         GoogleSignIn {
@@ -160,6 +160,16 @@ object ReactComponents : RetiredPlayersRenderer,
         retiredPlayers(RetiredPlayersProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
                 retiredPlayers = props.retiredPlayers.unsafeCast<Array<Json>>().map { it.toPlayer() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("RetiredPlayersPage")
+    val retiredPlayersPageJs = jsReactFunction { props ->
+        retiredPlayersPage(PageProps(
+                props.coupling,
+                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }

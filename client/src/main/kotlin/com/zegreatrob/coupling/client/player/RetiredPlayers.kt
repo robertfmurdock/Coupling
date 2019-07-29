@@ -1,16 +1,20 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.ReactComponentRenderer
-import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.reactFunctionComponent
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import loadStyles
 import react.RBuilder
 import react.RProps
 import react.dom.div
+
+
+object RetiredPlayers : ComponentProvider<RetiredPlayersProps>(), RetiredPlayersBuilder
+
+val RBuilder.retiredPlayers get() = RetiredPlayers.captor(this)
 
 data class RetiredPlayersProps(
         val tribe: KtTribe,
@@ -23,14 +27,13 @@ interface RetiredPlayersCss {
     val header: String
 }
 
-interface RetiredPlayersRenderer {
+interface RetiredPlayersBuilder : StyledComponentBuilder<RetiredPlayersProps, RetiredPlayersCss> {
 
-    fun RBuilder.retiredPlayers(props: RetiredPlayersProps) = component(retiredPlayers, props)
+    override val componentPath: String get() = "player/RetiredPlayers"
 
-    companion object : ReactComponentRenderer {
-        private val styles = loadStyles<RetiredPlayersCss>("player/RetiredPlayers")
-
-        private val retiredPlayers = reactFunctionComponent { (tribe, players, pathSetter): RetiredPlayersProps ->
+    override fun build() = buildBy {
+        val (tribe, players, pathSetter) = props
+        {
             div(classes = styles.className) {
                 tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                 div(classes = styles.header) { +"Retired Players" }
@@ -45,6 +48,7 @@ interface RetiredPlayersRenderer {
             }
         }
     }
+
 }
 
 

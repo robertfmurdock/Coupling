@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import kotlinext.js.jsObject
 import kotlinx.coroutines.*
 import loadStyles
 import org.w3c.dom.Node
@@ -59,6 +60,11 @@ fun <T> useState(default: () -> T): StateValueContent<T> {
             setter = stateArray[1].unsafeCast<(T) -> Unit>()
     )
 }
+
+fun RBuilder.componentWithFunctionChildren(type: Any, children: (Boolean) -> ReactElement) = child(
+        React.createElement(type, jsObject {}, children)
+                .unsafeCast<ReactElement>()
+)
 
 interface RFunction<P : RProps> : RClass<P>
 
