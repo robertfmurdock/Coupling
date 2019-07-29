@@ -74,6 +74,26 @@ object ReactComponents :
         GoogleSignIn {
 
     @Suppress("unused")
+    @JsName("RetiredPlayersPage")
+    val retiredPlayersPageJs = jsReactFunction { props ->
+        retiredPlayersPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("TribeConfigPage")
+    val tribeConfigPageJs = jsReactFunction { props ->
+        tribeConfigPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("PrepareSpin")
     val prepareSpinJs = jsReactFunction { props: dynamic ->
         prepareSpin(PrepareSpinProps(
@@ -150,16 +170,6 @@ object ReactComponents :
     val tribeBrowserJs = jsReactFunction { props ->
         tribeBrowser(TribeBrowserProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-        ))
-    }
-
-    @Suppress("unused")
-    @JsName("RetiredPlayersPage")
-    val retiredPlayersPageJs = jsReactFunction { props ->
-        retiredPlayersPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
-                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }

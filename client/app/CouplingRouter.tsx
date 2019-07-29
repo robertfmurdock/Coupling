@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "reac
 import Randomizer from "./Randomizer";
 import TribeListPage from "./components/tribe-list-page/TribeListPage";
 import {Coupling} from "./services";
-import TribeConfigPage from "./components/tribe-config/TribeConfigPage";
 import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import HistoryPage from "./components/history/HistoryPage";
 import PinPage from "./components/pin-list/PinPage";
@@ -51,12 +50,12 @@ function AuthenticatedRoutes() {
             <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
             <CouplingRoute path={"/tribes/"} component={TribeListPage}/>
             <CouplingRoute path={"/logout/"} component={Logout}/>
-            <CouplingRoute path={"/new-tribe/"} component={TribeConfigPage}/>
+            <CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
             <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
                 <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
             />
             <CouplingRoute path={"/:tribeId/prepare/"} component={PrepareForSpinPage}/>
-            <CouplingRoute path={"/:tribeId/edit/"} component={TribeConfigPage}/>
+            <CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
             <CouplingRoute path={"/:tribeId/history"} component={HistoryPage}/>
             <CouplingRoute path={"/:tribeId/pins"} component={PinPage}/>
             <CouplingRoute path={"/:tribeId/pairAssignments/current/"} component={CurrentPairAssignmentsPage}/>
