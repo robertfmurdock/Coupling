@@ -10,10 +10,10 @@ import kotlin.js.Promise
 
 
 object RetiredPlayersPage : ComponentProvider<PageProps>(), RetiredPlayersPageBuilder
-
-val RBuilder.loadedRetiredPlayers get() = dataLoadWrapper(retiredPlayers.componentProvider).captor(this)
-
 val RBuilder.retiredPlayersPage get() = RetiredPlayersPage.captor(this)
+
+private val LoadedRetiredPlayers = dataLoadWrapper(RetiredPlayers)
+private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.captor(this)
 
 interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps> {
 
