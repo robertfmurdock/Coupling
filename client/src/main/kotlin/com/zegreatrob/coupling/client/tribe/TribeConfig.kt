@@ -24,8 +24,6 @@ object TribeConfig : ComponentProvider<TribeConfigProps>(), TribeConfigBuilder
 
 data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit, val coupling: dynamic) : RProps
 
-val RBuilder.tribeConfig get() = TribeConfig.captor(this)
-
 external interface TribeConfigStyles {
     val editor: String
     val className: String

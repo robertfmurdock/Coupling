@@ -4,7 +4,6 @@ import * as React from "react";
 import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
 import Randomizer from "./Randomizer";
-import TribeListPage from "./components/tribe-list-page/TribeListPage";
 import {Coupling} from "./services";
 import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import HistoryPage from "./components/history/HistoryPage";
@@ -48,7 +47,7 @@ function AuthenticatedRoutes() {
     return <ServiceContext.Provider value={coupling}>
         <Switch>
             <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
-            <CouplingRoute path={"/tribes/"} component={TribeListPage}/>
+            <CouplingRoute path={"/tribes/"} component={components.TribeListPage}/>
             <CouplingRoute path={"/logout/"} component={Logout}/>
             <CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
             <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
