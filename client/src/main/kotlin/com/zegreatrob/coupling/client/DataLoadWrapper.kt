@@ -43,7 +43,7 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
                 }
             }
 
-            private fun (suspend () -> P).invokeOnScope(setData: (P) -> Unit) {
+            private fun (suspend (ReloadFunction) -> P).invokeOnScope(setData: (P?) -> Unit) {
                 val (scope) = useState { buildScope() + CoroutineName("Data Load") }
                 useEffectWithCleanup(arrayOf()) {
                     { scope.cancel() }
@@ -52,8 +52,11 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
                 val (loadingJob, setLoadingJob) = useState<Job?>(null)
 
                 if (loadingJob == null) {
+                    val reloadFunction = { setData(null); setLoadingJob(null) }
                     setLoadingJob(
-                            scope.launch { setData(this@invokeOnScope.invoke()) }
+                            scope.launch {
+                                setData(this@invokeOnScope.invoke(reloadFunction))
+                            }
                     )
                 }
             }
@@ -66,4 +69,6 @@ enum class AnimationState {
     Start, Stop
 }
 
-data class DataLoadProps<P : RProps>(val getDataAsync: suspend () -> P) : RProps
+typealias ReloadFunction = () -> Unit
+
+data class DataLoadProps<P : RProps>(val getDataAsync: suspend (ReloadFunction) -> P) : RProps

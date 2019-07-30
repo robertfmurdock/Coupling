@@ -115,6 +115,19 @@ object ReactComponents :
     }
 
     @Suppress("unused")
+    @JsName("PlayerPage")
+    val playerPageJs = jsReactFunction { props ->
+        playerPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf(
+                        "tribeId" to listOf(props.tribeId.unsafeCast<String>()),
+                        "playerId" to listOf(props.playerId.unsafeCast<String>())
+                ),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("PrepareSpin")
     val prepareSpinJs = jsReactFunction { props: dynamic ->
         prepareSpin(PrepareSpinProps(

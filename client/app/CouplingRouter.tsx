@@ -8,7 +8,6 @@ import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import HistoryPage from "./components/history/HistoryPage";
 import CurrentPairAssignmentsPage from "./components/pair-assignments/CurrentPairAssignmentsPage";
 import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignmentsPage";
-import PlayerPage from "./components/player-config/PlayerPage";
 import RetiredPlayerPage from "./components/player-config/RetiredPlayerPage";
 import StatisticsPage from "./components/statistics/StatisticsPage";
 import WelcomePage from "./components/welcome/WelcomePage";
@@ -56,8 +55,8 @@ function AuthenticatedRoutes() {
             <CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
             <CouplingRoute path={"/:tribeId/pairAssignments/current/"} component={CurrentPairAssignmentsPage}/>
             <CouplingRoute path={"/:tribeId/pairAssignments/new"} component={NewPairAssignmentsPage}/>
-            <CouplingRoute path={"/:tribeId/player/new/"} component={PlayerPage}/>
-            <CouplingRoute path={"/:tribeId/player/:playerId/"} component={PlayerPage}/>
+            <CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
+            <CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
             <CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={RetiredPlayerPage}/>
             <CouplingRoute path={"/:tribeId/statistics"} component={StatisticsPage}/>
             <CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
