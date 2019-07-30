@@ -29,5 +29,4 @@ interface TribeListPageBuilder : ComponentBuilder<PageProps> {
                         pathSetter = pathSetter
                 )
             }
-
 }

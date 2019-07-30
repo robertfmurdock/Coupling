@@ -2,6 +2,7 @@ import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.PinListProps
 import com.zegreatrob.coupling.client.pin.pinList
+import com.zegreatrob.coupling.client.pin.pinListPage
 import com.zegreatrob.coupling.client.player.*
 import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
 import com.zegreatrob.coupling.client.stats.tribeStatistics
@@ -74,6 +75,16 @@ object ReactComponents :
         GoogleSignIn {
 
     @Suppress("unused")
+    @JsName("TribeListPage")
+    val tribeListPageJs = jsReactFunction { props ->
+        tribeListPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("RetiredPlayersPage")
     val retiredPlayersPageJs = jsReactFunction { props ->
         retiredPlayersPage(PageProps(
@@ -94,11 +105,11 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("TribeListPage")
-    val tribeListPageJs = jsReactFunction { props ->
-        tribeListPage(PageProps(
+    @JsName("PinListPage")
+    val pinListPageJs = jsReactFunction { props ->
+        pinListPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(),
+                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }
@@ -216,6 +227,7 @@ object ReactComponents :
                 pins = props.pins.unsafeCast<Array<Json>>().toPins()
         ))
     }
+
 
     @Suppress("unused")
     @JsName("TribeStatistics")

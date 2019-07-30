@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "reac
 import {Coupling} from "./services";
 import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import HistoryPage from "./components/history/HistoryPage";
-import PinPage from "./components/pin-list/PinPage";
 import CurrentPairAssignmentsPage from "./components/pair-assignments/CurrentPairAssignmentsPage";
 import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignmentsPage";
 import PlayerPage from "./components/player-config/PlayerPage";
@@ -54,7 +53,7 @@ function AuthenticatedRoutes() {
             <CouplingRoute path={"/:tribeId/prepare/"} component={PrepareForSpinPage}/>
             <CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
             <CouplingRoute path={"/:tribeId/history"} component={HistoryPage}/>
-            <CouplingRoute path={"/:tribeId/pins"} component={PinPage}/>
+            <CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
             <CouplingRoute path={"/:tribeId/pairAssignments/current/"} component={CurrentPairAssignmentsPage}/>
             <CouplingRoute path={"/:tribeId/pairAssignments/new"} component={NewPairAssignmentsPage}/>
             <CouplingRoute path={"/:tribeId/player/new/"} component={PlayerPage}/>
