@@ -241,7 +241,6 @@ object ReactComponents :
         ))
     }
 
-
     @Suppress("unused")
     @JsName("TribeStatistics")
     val tribeStatisticsJs = jsReactFunction { props ->

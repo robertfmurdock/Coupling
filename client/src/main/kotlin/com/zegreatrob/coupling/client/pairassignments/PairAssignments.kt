@@ -218,7 +218,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
             attrs { key = "$index" }
             callSign(tribe, callSign)
             pair.players.map { pinnedPlayer ->
-                if (pairAssignmentDocument != null) {
+                if (pairAssignmentDocument != null && pairAssignmentDocument.id == null) {
                     draggablePlayer(DraggablePlayerProps(
                             pinnedPlayer,
                             tribe,

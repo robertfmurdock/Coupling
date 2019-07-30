@@ -25,7 +25,9 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, FindCallSignActionDis
         val playerId = pageProps.pathParams["playerId"]?.first()
 
         if (tribeId != null) {
-            loadedPlayer(DataLoadProps { reload -> pageProps.toPlayerProps(tribeId, playerId, reload) })
+            loadedPlayer(DataLoadProps { reload -> pageProps.toPlayerProps(tribeId, playerId, reload) }) {
+                playerId?.let { attrs { key = it } }
+            }
         } else throw Exception("WHAT")
     }
 
