@@ -1,22 +1,23 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
-import com.zegreatrob.coupling.client.pin.PinListProps
-import com.zegreatrob.coupling.client.pin.pinList
 import com.zegreatrob.coupling.client.pin.pinListPage
-import com.zegreatrob.coupling.client.player.*
+import com.zegreatrob.coupling.client.player.PageProps
+import com.zegreatrob.coupling.client.player.playerPage
+import com.zegreatrob.coupling.client.player.retiredPlayerPage
+import com.zegreatrob.coupling.client.player.retiredPlayersPage
 import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
 import com.zegreatrob.coupling.client.stats.tribeStatistics
-import com.zegreatrob.coupling.client.tribe.*
+import com.zegreatrob.coupling.client.tribe.tribeConfigPage
+import com.zegreatrob.coupling.client.tribe.tribeListPage
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
-import org.w3c.dom.events.Event
 import react.RBuilder
 import react.ReactElement
 import react.buildElements
@@ -152,74 +153,6 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("PlayerCard")
-    val playerCardJs = jsReactFunction { props: dynamic ->
-        playerCard(PlayerCardProps(
-                tribeId = TribeId(props.tribeId.unsafeCast<String>()),
-                player = props.player.unsafeCast<Json>().toPlayer(),
-                className = props.className.unsafeCast<String?>(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                size = props.size.unsafeCast<Int>(),
-                onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
-                disabled = props.disabled.unsafeCast<Boolean?>() ?: false
-        ))
-    }
-
-    @Suppress("unused")
-    @JsName("TribeCard")
-    val tribeCardJs = jsReactFunction { props ->
-        tribeCard(TribeCardProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                size = props.size.unsafeCast<Int?>() ?: 150
-        ))
-    }
-
-    @Suppress("unused")
-    @JsName("PlayerRoster")
-    val playerRosterJs = jsReactFunction { props ->
-        playerRoster(
-                PlayerRosterProps(
-                        tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
-                        players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                        label = props.label.unsafeCast<String?>(),
-                        className = props.className.unsafeCast<String?>(),
-                        pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-                )
-        )
-    }
-
-    @Suppress("unused")
-    @JsName("TribeBrowser")
-    val tribeBrowserJs = jsReactFunction { props ->
-        tribeBrowser(TribeBrowserProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
-        ))
-    }
-
-    @Suppress("unused")
-    @JsName("ServerMessage")
-    val serverMessageJs = jsReactFunction { props ->
-        serverMessage(ServerMessageProps(
-                tribeId = props.tribeId.unsafeCast<String>().let(::TribeId),
-                useSsl = props.useSsl.unsafeCast<Boolean>()
-        ))
-    }
-
-    @Suppress("unused")
-    @JsName("History")
-    val historyJs = jsReactFunction { props ->
-        history(HistoryProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() },
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                coupling = props.coupling,
-                reload = props.reload.unsafeCast<Function0<Unit>>()
-        ))
-    }
-
-    @Suppress("unused")
     @JsName("PairAssignments")
     val pairAssignmentsJs = jsReactFunction { props ->
         pairAssignments(PairAssignmentsProps(
@@ -232,11 +165,14 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("PinList")
-    val pinListJs = jsReactFunction { props ->
-        pinList(PinListProps(
+    @JsName("History")
+    val historyJs = jsReactFunction { props ->
+        history(HistoryProps(
                 tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                pins = props.pins.unsafeCast<Array<Json>>().toPins()
+                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() },
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                coupling = props.coupling,
+                reload = props.reload.unsafeCast<Function0<Unit>>()
         ))
     }
 

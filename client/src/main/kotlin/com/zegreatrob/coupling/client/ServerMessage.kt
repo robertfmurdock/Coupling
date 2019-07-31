@@ -27,7 +27,6 @@ val RBuilder.serverMessage get() = ServerMessage.captor(this)
 
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-
 interface ServerMessageBuilder : ComponentBuilder<ServerMessageProps> {
 
     override fun build() = reactFunctionComponent<ServerMessageProps> { props ->

@@ -10,8 +10,9 @@ function testResolve() {
   let resolve = clone(webpackConfig.resolve);
   resolve.modules = [
     path.resolve(__dirname, '../build/node_modules_imported'),
-    path.resolve(__dirname, '../build/kotlin-js-min/main'),
-    path.resolve(__dirname, '../build/kotlin-js-min/test'),
+    path.resolve(__dirname, '../build/classes/kotlin/main'),
+    path.resolve(__dirname, '../build/resources/main'),
+    path.resolve(__dirname, '../build/classes/kotlin/test'),
     path.resolve(__dirname, '../node_modules'),
     path.resolve(__dirname, '../app')
   ];
