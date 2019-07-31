@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
 import com.zegreatrob.coupling.client.stats.tribeStatistics
 import com.zegreatrob.coupling.client.tribe.tribeConfigPage
 import com.zegreatrob.coupling.client.tribe.tribeListPage
+import com.zegreatrob.coupling.client.welcome.welcome
+import com.zegreatrob.coupling.client.welcome.welcomePage
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -79,6 +81,16 @@ object ReactComponents :
     @JsName("TribeListPage")
     val tribeListPageJs = jsReactFunction { props ->
         tribeListPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("WelcomePage")
+    val welcomePageJs = jsReactFunction { props ->
+        welcomePage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()

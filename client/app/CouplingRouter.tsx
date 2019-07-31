@@ -9,7 +9,6 @@ import HistoryPage from "./components/history/HistoryPage";
 import CurrentPairAssignmentsPage from "./components/pair-assignments/CurrentPairAssignmentsPage";
 import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignmentsPage";
 import StatisticsPage from "./components/statistics/StatisticsPage";
-import WelcomePage from "./components/welcome/WelcomePage";
 import CouplingRoute from "./CouplingRoute";
 import AnimationContext from './AnimationContext'
 import ServiceContext from './ServiceContext'
@@ -20,7 +19,7 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
     return <Router>
         <AnimationContext.Provider value={animationsDisabled}>
             <Switch>
-                <Route path="/welcome" exact render={() => <WelcomePage/>}/>
+                <Route path="/welcome" exact render={() => <components.WelcomePage/>}/>
                 {
                     isSignedIn
                         ? <AuthenticatedRoutes/>
