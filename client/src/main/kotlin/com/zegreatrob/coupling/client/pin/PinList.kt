@@ -14,8 +14,6 @@ import react.dom.*
 
 object PinList : ComponentProvider<PinListProps>(), PinListBuilder
 
-val RBuilder.pinList get() = PinList.captor(this)
-
 external interface PinListStyles
 
 data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps

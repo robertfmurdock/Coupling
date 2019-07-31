@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.Coupling
 import react.RProps
 
 data class PageProps(

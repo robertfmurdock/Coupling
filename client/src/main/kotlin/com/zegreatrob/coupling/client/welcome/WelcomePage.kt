@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.player.PageProps
+import com.zegreatrob.coupling.client.PageProps
 import react.RBuilder
 
 

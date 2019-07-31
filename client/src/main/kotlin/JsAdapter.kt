@@ -2,7 +2,6 @@
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.pinListPage
-import com.zegreatrob.coupling.client.player.PageProps
 import com.zegreatrob.coupling.client.player.playerPage
 import com.zegreatrob.coupling.client.player.retiredPlayerPage
 import com.zegreatrob.coupling.client.player.retiredPlayersPage
@@ -10,7 +9,6 @@ import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
 import com.zegreatrob.coupling.client.stats.tribeStatistics
 import com.zegreatrob.coupling.client.tribe.tribeConfigPage
 import com.zegreatrob.coupling.client.tribe.tribeListPage
-import com.zegreatrob.coupling.client.welcome.welcome
 import com.zegreatrob.coupling.client.welcome.welcomePage
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
@@ -204,10 +202,6 @@ object ReactComponents :
     val logoutJs = jsReactFunction { props ->
         logout(LogoutProps(props.coupling))
     }
-
-    @Suppress("unused")
-    @JsName("Welcome")
-    val welcomeJs = { buildElements { welcome() } }
 
     @Suppress("unused")
     @JsName("googleCheckForSignedIn")

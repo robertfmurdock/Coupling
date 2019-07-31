@@ -19,8 +19,6 @@ import react.dom.span
 
 object Welcome : ComponentProvider<EmptyProps>(), WelcomeBuilder
 
-val RBuilder.welcome get() = Welcome.captor(this)
-
 external interface WelcomeStyles {
     val className: String
     val hidden: String
