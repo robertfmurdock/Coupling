@@ -128,6 +128,19 @@ object ReactComponents :
     }
 
     @Suppress("unused")
+    @JsName("RetiredPlayerPage")
+    val retiredPlayerPageJs = jsReactFunction { props ->
+        retiredPlayerPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf(
+                        "tribeId" to listOf(props.tribeId.unsafeCast<String>()),
+                        "playerId" to listOf(props.playerId.unsafeCast<String>())
+                ),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("PrepareSpin")
     val prepareSpinJs = jsReactFunction { props: dynamic ->
         prepareSpin(PrepareSpinProps(
@@ -149,20 +162,6 @@ object ReactComponents :
                 size = props.size.unsafeCast<Int>(),
                 onClick = props.onClick.unsafeCast<Function1<Event, Unit>>(),
                 disabled = props.disabled.unsafeCast<Boolean?>() ?: false
-        ))
-    }
-
-
-    @Suppress("unused")
-    @JsName("PlayerConfig")
-    val playerConfigJs = jsReactFunction { props: dynamic ->
-        playerConfig(PlayerConfigProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                player = props.player.unsafeCast<Json>().toPlayer(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                coupling = props.coupling,
-                reload = props.reload.unsafeCast<() -> Unit>()
         ))
     }
 

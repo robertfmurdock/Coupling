@@ -35,7 +35,7 @@ interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps> {
             }
 
     private suspend fun Coupling.getData(tribeId: TribeId): Pair<KtTribe, List<Player>> =
-            (getTribeAsync(tribeId) to getRetiredPlayersAsync(tribeId))
+            (getTribeAsync(tribeId) to getRetiredPlayerListAsync(tribeId))
                     .await()
 
     private suspend fun Pair<Promise<KtTribe>, Promise<List<Player>>>.await() = first.await() to second.await()

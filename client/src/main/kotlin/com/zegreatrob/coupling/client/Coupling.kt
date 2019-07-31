@@ -17,7 +17,7 @@ external interface Coupling {
 
 fun Coupling.getTribeAsync(tribeId: TribeId) = getTribe(tribeId.value).then { it.toTribe() }
 fun Coupling.getTribeListAsync() = getTribes().then { it.map { json -> json.toTribe() } }
-fun Coupling.getRetiredPlayersAsync(tribeId: TribeId) = getRetiredPlayers(tribeId.value)
+fun Coupling.getRetiredPlayerListAsync(tribeId: TribeId) = getRetiredPlayers(tribeId.value)
         .then { jsonArray -> jsonArray.map { it.toPlayer() } }
 fun Coupling.getPlayerListAsync(tribeId: TribeId) = getPlayers(tribeId.value)
         .then { jsonArray -> jsonArray.map { it.toPlayer() } }

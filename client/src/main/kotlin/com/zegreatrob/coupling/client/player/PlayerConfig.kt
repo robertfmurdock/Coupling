@@ -27,8 +27,6 @@ import kotlin.js.json
 
 object PlayerConfig : ComponentProvider<PlayerConfigProps>(), PlayerConfigBuilder
 
-val RBuilder.playerConfig get() = PlayerConfig.captor(this)
-
 data class PlayerConfigProps(
         val tribe: KtTribe,
         val player: Player,
