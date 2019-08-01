@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDisp
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import react.RBuilder
 import react.RProps
 import react.dom.div
 
@@ -24,8 +23,6 @@ import react.dom.div
 external val distanceInWorks: (Int, Int?) -> String
 
 object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatisticsBuilder
-
-val RBuilder.tribeStatistics get() = TribeStatistics.captor(this)
 
 interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, TribeStatisticsStyles>,
         ComposeStatisticsActionDispatcher,

@@ -1,12 +1,11 @@
+
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.pinListPage
 import com.zegreatrob.coupling.client.player.playerPage
 import com.zegreatrob.coupling.client.player.retiredPlayerPage
 import com.zegreatrob.coupling.client.player.retiredPlayersPage
-import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
 import com.zegreatrob.coupling.client.stats.statisticsPage
-import com.zegreatrob.coupling.client.stats.tribeStatistics
 import com.zegreatrob.coupling.client.tribe.tribeConfigPage
 import com.zegreatrob.coupling.client.tribe.tribeListPage
 import com.zegreatrob.coupling.client.welcome.welcomePage
@@ -205,17 +204,6 @@ object ReactComponents :
                 coupling = props.coupling,
                 players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
                 pairAssignments = props.pairAssignments.unsafeCast<Json?>()?.toPairAssignmentDocument()
-        ))
-    }
-
-    @Suppress("unused")
-    @JsName("TribeStatistics")
-    val tribeStatisticsJs = jsReactFunction { props ->
-        tribeStatistics(TribeStatisticsProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() },
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }
 
