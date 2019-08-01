@@ -221,18 +221,6 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("PairAssignments")
-    val pairAssignmentsJs = jsReactFunction { props ->
-        pairAssignments(PairAssignmentsProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                coupling = props.coupling,
-                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                pairAssignments = props.pairAssignments.unsafeCast<Json?>()?.toPairAssignmentDocument()
-        ))
-    }
-
-    @Suppress("unused")
     @JsName("Logout")
     val logoutJs = jsReactFunction { props ->
         logout(LogoutProps(props.coupling))

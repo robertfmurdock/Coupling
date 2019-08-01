@@ -34,8 +34,6 @@ import kotlin.js.Promise
 
 object PairAssignments : ComponentProvider<PairAssignmentsProps>(), PairAssignmentsBuilder
 
-val RBuilder.pairAssignments get() = PairAssignments.captor(this)
-
 data class PairAssignmentsProps(
         val tribe: KtTribe,
         val players: List<Player>,

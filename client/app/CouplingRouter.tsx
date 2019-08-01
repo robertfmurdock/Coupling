@@ -4,7 +4,6 @@ import * as React from "react";
 import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
 import {Coupling} from "./services";
-import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignmentsPage";
 import CouplingRoute from "./CouplingRoute";
 import AnimationContext from './AnimationContext'
 import ServiceContext from './ServiceContext'
