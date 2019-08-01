@@ -199,18 +199,6 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("History")
-    val historyJs = jsReactFunction { props ->
-        history(HistoryProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() },
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                coupling = props.coupling,
-                reload = props.reload.unsafeCast<Function0<Unit>>()
-        ))
-    }
-
-    @Suppress("unused")
     @JsName("TribeStatistics")
     val tribeStatisticsJs = jsReactFunction { props ->
         tribeStatistics(TribeStatisticsProps(

@@ -21,8 +21,6 @@ import kotlin.js.Promise
 
 object History : ComponentProvider<HistoryProps>(), HistoryComponentBuilder
 
-val RBuilder.history get() = History.captor(this)
-
 external interface HistoryStyles {
     val tribeBrowser: String
     val historyView: String
