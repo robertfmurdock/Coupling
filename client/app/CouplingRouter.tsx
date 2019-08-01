@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "reac
 import {Coupling} from "./services";
 import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignmentsPage";
-import StatisticsPage from "./components/statistics/StatisticsPage";
 import CouplingRoute from "./CouplingRoute";
 import AnimationContext from './AnimationContext'
 import ServiceContext from './ServiceContext'
@@ -55,7 +54,7 @@ function AuthenticatedRoutes() {
             <CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
             <CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
             <CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={components.RetiredPlayerPage}/>
-            <CouplingRoute path={"/:tribeId/statistics"} component={StatisticsPage}/>
+            <CouplingRoute path={"/:tribeId/statistics"} component={components.StatisticsPage}/>
             <CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
         </Switch>
     </ServiceContext.Provider>;

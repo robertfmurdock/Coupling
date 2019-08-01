@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.pinListPage
@@ -6,6 +5,7 @@ import com.zegreatrob.coupling.client.player.playerPage
 import com.zegreatrob.coupling.client.player.retiredPlayerPage
 import com.zegreatrob.coupling.client.player.retiredPlayersPage
 import com.zegreatrob.coupling.client.stats.TribeStatisticsProps
+import com.zegreatrob.coupling.client.stats.statisticsPage
 import com.zegreatrob.coupling.client.stats.tribeStatistics
 import com.zegreatrob.coupling.client.tribe.tribeConfigPage
 import com.zegreatrob.coupling.client.tribe.tribeListPage
@@ -99,6 +99,16 @@ object ReactComponents :
     @JsName("RetiredPlayersPage")
     val retiredPlayersPageJs = jsReactFunction { props ->
         retiredPlayersPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("StatisticsPage")
+    val statisticsPageJs = jsReactFunction { props ->
+        statisticsPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
