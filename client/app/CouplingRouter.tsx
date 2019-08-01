@@ -49,7 +49,7 @@ function AuthenticatedRoutes() {
             <CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
             <CouplingRoute path={"/:tribeId/pairAssignments/current/"}
                            component={components.CurrentPairAssignmentsPage}/>
-            <CouplingRoute path={"/:tribeId/pairAssignments/new"} component={NewPairAssignmentsPage}/>
+            <CouplingRoute path={"/:tribeId/pairAssignments/new"} component={components.NewPairAssignmentsPage}/>
             <CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
             <CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
             <CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={components.RetiredPlayerPage}/>

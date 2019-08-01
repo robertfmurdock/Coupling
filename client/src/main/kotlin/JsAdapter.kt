@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
+import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
 import react.ReactElement
 import react.buildElements
@@ -79,7 +80,8 @@ object ReactComponents :
         tribeListPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -89,7 +91,8 @@ object ReactComponents :
         welcomePage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf(),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -99,7 +102,8 @@ object ReactComponents :
         retiredPlayersPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -109,7 +113,8 @@ object ReactComponents :
         statisticsPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -119,7 +124,8 @@ object ReactComponents :
         tribeConfigPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -129,7 +135,8 @@ object ReactComponents :
         pinListPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
                 mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -142,7 +149,8 @@ object ReactComponents :
                         "tribeId" to listOf(props.tribeId.unsafeCast<String>()),
                         "playerId" to listOf(props.playerId.unsafeCast<String>())
                 ),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -155,7 +163,8 @@ object ReactComponents :
                         "tribeId" to listOf(props.tribeId.unsafeCast<String>()),
                         "playerId" to listOf(props.playerId.unsafeCast<String>())
                 ),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -167,7 +176,21 @@ object ReactComponents :
                 mapOf(
                         "tribeId" to listOf(props.tribeId.unsafeCast<String>())
                 ),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("NewPairAssignmentsPage")
+    val newPairAssignmentsPageJs = jsReactFunction { props ->
+        newPairAssignmentsPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf(
+                        "tribeId" to listOf(props.tribeId.unsafeCast<String>())
+                ),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -179,7 +202,8 @@ object ReactComponents :
                 mapOf(
                         "tribeId" to listOf(props.tribeId.unsafeCast<String>())
                 ),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
@@ -191,7 +215,8 @@ object ReactComponents :
                 mapOf(
                         "tribeId" to listOf(props.tribeId.unsafeCast<String>())
                 ),
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
         ))
     }
 
