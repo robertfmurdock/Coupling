@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.pinListPage
@@ -185,13 +184,14 @@ object ReactComponents :
     }
 
     @Suppress("unused")
-    @JsName("PrepareSpin")
+    @JsName("PrepareSpinPage")
     val prepareSpinJs = jsReactFunction { props: dynamic ->
-        prepareSpin(PrepareSpinProps(
-                tribe = props.tribe.unsafeCast<Json>().toTribe(),
-                players = props.players.unsafeCast<Array<Json>>().map { it.toPlayer() },
-                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
-                history = props.history.unsafeCast<Array<Json>>().map { it.toPairAssignmentDocument() }
+        prepareSpinPage(PageProps(
+                props.coupling.unsafeCast<Coupling>(),
+                mapOf(
+                        "tribeId" to listOf(props.tribeId.unsafeCast<String>())
+                ),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>()
         ))
     }
 

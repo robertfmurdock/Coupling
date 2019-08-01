@@ -4,7 +4,6 @@ import * as React from "react";
 import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
 import {Coupling} from "./services";
-import PrepareForSpinPage from "./components/prepare/PrepareForSpinPage";
 import NewPairAssignmentsPage from "./components/pair-assignments/NewPairAssignmentsPage";
 import CouplingRoute from "./CouplingRoute";
 import AnimationContext from './AnimationContext'
@@ -44,7 +43,7 @@ function AuthenticatedRoutes() {
             <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
                 <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
             />
-            <CouplingRoute path={"/:tribeId/prepare/"} component={PrepareForSpinPage}/>
+            <CouplingRoute path={"/:tribeId/prepare/"} component={components.PrepareSpinPage}/>
             <CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
             <CouplingRoute path={"/:tribeId/history"} component={components.HistoryPage}/>
             <CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>

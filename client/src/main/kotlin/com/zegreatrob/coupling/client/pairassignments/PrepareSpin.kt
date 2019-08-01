@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.component
-import com.zegreatrob.coupling.client.loadStyles
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.StyledComponentBuilder
+import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.reactFunctionComponent
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.useState
@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.RBuilder
 import react.RProps
 import react.dom.RDOMBuilder
 import react.dom.a
@@ -22,101 +21,100 @@ import react.dom.div
 
 external fun encodeURIComponent(input: String?)
 
-interface PrepareSpinRenderer {
+object PrepareSpin : ComponentProvider<PrepareSpinProps>(), PrepareSpinRenderer
 
-    fun RBuilder.prepareSpin(props: PrepareSpinProps) = component(prepareSpin, props)
+interface PrepareSpinRenderer : StyledComponentBuilder<PrepareSpinProps, PrepareSpinStyles> {
 
-    companion object {
+    override val componentPath: String get() = "PrepareSpin"
 
-        private val styles: PrepareSpinStyles = loadStyles("PrepareSpin")
-
-        private val prepareSpin = reactFunctionComponent { props: PrepareSpinProps ->
-            val (tribe, players, history, pathSetter) = props
-            val (playerSelections, setPlayerSelections) = useState(
-                    players.map { it to isInLastSetOfPairs(it, history) }
-            )
-
+    override fun build() = buildBy {
+        val (tribe, players, history, pathSetter) = props
+        val (playerSelections, setPlayerSelections) = useState(
+                players.map { it to isInLastSetOfPairs(it, history) }
+        )
+        return@buildBy {
             div(classes = styles.className) {
                 div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
                 div {
-                    div { spinButton(tribe, playerSelections, pathSetter) }
-                    selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections)
+                    div { spinButton(tribe, playerSelections, pathSetter, styles) }
+                    selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections, styles)
                 }
             }
-        }
-
-        private fun RDOMBuilder<DIV>.spinButton(
-                tribe: KtTribe,
-                playerSelections: List<Pair<Player, Boolean>>,
-                pathSetter: (String) -> Unit
-        ) = a(classes = "super pink button") {
-            attrs {
-                classes += styles.spinButton
-                onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections) }
-            }
-            +"Spin!"
-        }
-
-        private fun RDOMBuilder<DIV>.selectablePlayerCardList(
-                playerSelections: List<Pair<Player, Boolean>>,
-                tribe: KtTribe,
-                pathSetter: (String) -> Unit,
-                setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit
-        ) = playerSelections.map { (player, isSelected) ->
-            playerCard(tribe, player, pathSetter, isSelected, setPlayerSelections, playerSelections)
-        }
-
-        private fun RDOMBuilder<DIV>.playerCard(tribe: KtTribe, player: Player, pathSetter: (String) -> Unit, isSelected: Boolean, setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit, playerSelections: List<Pair<Player, Boolean>>) {
-            playerCard(PlayerCardProps(
-                    tribe.id,
-                    player,
-                    pathSetter,
-                    true,
-                    className = styles.playerCard + if (isSelected) "" else " disabled",
-                    onClick = {
-                        setPlayerSelections(
-                                flipSelectionForPlayer(player, isSelected, playerSelections)
-                        )
-                    }
-            ))
-        }
-
-        private fun flipSelectionForPlayer(
-                targetPlayer: Player,
-                targetIsSelected: Boolean,
-                playerSelections: List<Pair<Player, Boolean>>
-        ) = playerSelections.map { pair ->
-            if (pair.first == targetPlayer) {
-                Pair(targetPlayer, !targetIsSelected)
-            } else {
-                pair
-            }
-        }
-
-        private fun goToNewPairAssignments(
-                pathSetter: (String) -> Unit,
-                tribe: KtTribe,
-                playerSelections: List<Pair<Player, Boolean>>
-        ) = pathSetter(
-                "/${tribe.id.value}/pairAssignments/new?${playerSelections.buildQueryParameters()}"
-        )
-
-        private fun List<Pair<Player, Boolean>>.buildQueryParameters() = filter { (_, isSelected) -> isSelected }
-                .joinToString("&") { (player, _) ->
-                    "player=${encodeURIComponent(player.id)}"
-                }
-
-        private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty()) {
-            true
-        } else {
-            history.first()
-                    .pairs.map { it.players }
-                    .flatten()
-                    .map { it.player.id }
-                    .contains(player.id)
         }
     }
 
+    private fun RDOMBuilder<DIV>.spinButton(
+            tribe: KtTribe,
+            playerSelections: List<Pair<Player, Boolean>>,
+            pathSetter: (String) -> Unit,
+            styles: PrepareSpinStyles
+    ) = a(classes = "super pink button") {
+        attrs {
+            classes += styles.spinButton
+            onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections) }
+        }
+        +"Spin!"
+    }
+
+    private fun RDOMBuilder<DIV>.selectablePlayerCardList(
+            playerSelections: List<Pair<Player, Boolean>>,
+            tribe: KtTribe,
+            pathSetter: (String) -> Unit,
+            setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
+            styles: PrepareSpinStyles
+    ) = playerSelections.map { (player, isSelected) ->
+        playerCard(tribe, player, pathSetter, isSelected, setPlayerSelections, playerSelections, styles)
+    }
+
+    private fun RDOMBuilder<DIV>.playerCard(tribe: KtTribe, player: Player, pathSetter: (String) -> Unit, isSelected: Boolean, setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit, playerSelections: List<Pair<Player, Boolean>>, styles: PrepareSpinStyles) {
+        playerCard(PlayerCardProps(
+                tribe.id,
+                player,
+                pathSetter,
+                true,
+                className = styles.playerCard + if (isSelected) "" else " disabled",
+                onClick = {
+                    setPlayerSelections(
+                            flipSelectionForPlayer(player, isSelected, playerSelections)
+                    )
+                }
+        ))
+    }
+
+    private fun flipSelectionForPlayer(
+            targetPlayer: Player,
+            targetIsSelected: Boolean,
+            playerSelections: List<Pair<Player, Boolean>>
+    ) = playerSelections.map { pair ->
+        if (pair.first == targetPlayer) {
+            Pair(targetPlayer, !targetIsSelected)
+        } else {
+            pair
+        }
+    }
+
+    private fun goToNewPairAssignments(
+            pathSetter: (String) -> Unit,
+            tribe: KtTribe,
+            playerSelections: List<Pair<Player, Boolean>>
+    ) = pathSetter(
+            "/${tribe.id.value}/pairAssignments/new?${playerSelections.buildQueryParameters()}"
+    )
+
+    private fun List<Pair<Player, Boolean>>.buildQueryParameters() = filter { (_, isSelected) -> isSelected }
+            .joinToString("&") { (player, _) ->
+                "player=${encodeURIComponent(player.id)}"
+            }
+
+    private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty()) {
+        true
+    } else {
+        history.first()
+                .pairs.map { it.players }
+                .flatten()
+                .map { it.player.id }
+                .contains(player.id)
+    }
 }
 
 external interface PrepareSpinStyles {
