@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.*
 import react.RBuilder
 
-
 object PrepareSpinPage : ComponentProvider<PageProps>(), PrepareSpinPageBuilder
 
 val RBuilder.prepareSpinPage get() = PrepareSpinPage.captor(this)
@@ -27,5 +26,4 @@ interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQuer
             )
         } else throw Exception("WHAT")
     }
-
 }
