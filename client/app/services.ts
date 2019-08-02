@@ -6,7 +6,6 @@ import flatten from "ramda/es/flatten";
 import propEq from "ramda/es/propEq";
 import Player from "../../common/Player";
 import * as common from "../../common/index";
-import Randomizer from "./Randomizer";
 import axios from 'axios'
 import Tribe from "../../common/Tribe";
 import PairAssignmentSet from "../../common/PairAssignmentSet";
