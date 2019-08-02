@@ -60,8 +60,12 @@ fun <T> useState(default: () -> T): StateValueContent<T> {
     )
 }
 
-fun <T> RBuilder.componentWithFunctionChildren(type: Any, children: (T) -> ReactElement) = child(
-        React.createElement(type, jsObject {}, children)
+fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> ReactElement) = child(
+        React.createElement(type, jsObject {}) { value: T ->
+            buildElement {
+                children(value)
+            }
+        }
                 .unsafeCast<ReactElement>()
 )
 

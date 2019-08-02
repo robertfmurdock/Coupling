@@ -2,10 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.*
 import org.w3c.dom.url.URLSearchParams
-import react.RBuilder
-import react.RClass
-import react.RProps
-import react.ReactElement
+import react.*
 import react.router.dom.RouteResultProps
 import react.router.dom.route
 import kotlin.js.Json
@@ -27,10 +24,14 @@ private external val React: dynamic
 
 interface CouplingRouteBuilder : ComponentBuilder<CouplingRouteProps> {
 
-    private val serviceContextConsumer get() = serviceContextModule.default.Consumer.unsafeCast<Any>()
+    private val serviceContextConsumer: RConsumer<Coupling>
+        get() {
+            val serviceContext = serviceContextModule.default.unsafeCast<RContext<Coupling>>()
+            return serviceContext.Consumer
+        }
 
     override fun build() = reactFunctionComponent<CouplingRouteProps> { props ->
-        componentWithFunctionChildren(serviceContextConsumer) { coupling: Coupling ->
+        consumer(serviceContextConsumer) { coupling: Coupling ->
             route<RProps>(props.path, exact = true) { routeProps ->
                 React.createElement(props.component, pageProps(coupling, routeProps))
                         .unsafeCast<ReactElement>()

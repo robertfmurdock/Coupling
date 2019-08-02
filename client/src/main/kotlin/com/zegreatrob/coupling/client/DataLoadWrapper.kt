@@ -3,19 +3,20 @@ package com.zegreatrob.coupling.client
 import kotlinx.coroutines.*
 import kotlinx.html.classes
 import react.RBuilder
+import react.RContext
 import react.RProps
-import react.buildElement
 import react.dom.div
 
 
 @JsModule("AnimationContext")
 @JsNonModule
 private external val animationContextModule: dynamic
-
-val animationContextConsumer = animationContextModule.default.Consumer.unsafeCast<Any>()
+val animationContext = animationContextModule.default.unsafeCast<RContext<Boolean>>()
 
 inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =
+
         object : ComponentProvider<DataLoadProps<P>>(), ComponentBuilder<DataLoadProps<P>>, ScopeProvider {
+            private val animationContextConsumer = animationContext.Consumer
 
             override fun build() = reactFunctionComponent<DataLoadProps<P>> { props ->
                 val (data, setData) = useState<P?>(null)
@@ -25,21 +26,19 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
 
                 props.getDataAsync.invokeOnScope(setData)
 
-                componentWithFunctionChildren(animationContextConsumer) { animationsDisabled: Boolean ->
-                    buildElement {
-                        div {
-                            attrs {
-                                classes += "view-frame"
-                                if (shouldStartAnimation && !animationsDisabled) {
-                                    classes += "ng-enter"
-                                }
-                                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
+                consumer(animationContextConsumer) { animationsDisabled: Boolean ->
+                    div {
+                        attrs {
+                            classes += "view-frame"
+                            if (shouldStartAnimation && !animationsDisabled) {
+                                classes += "ng-enter"
                             }
-                            if (data != null) {
-                                wrappedComponent(data)
-                            }
+                            this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
                         }
-                    }!!
+                        if (data != null) {
+                            wrappedComponent(data)
+                        }
+                    }
                 }
             }
 
