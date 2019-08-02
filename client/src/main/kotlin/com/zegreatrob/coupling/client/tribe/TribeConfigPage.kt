@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import kotlinx.coroutines.await
 import react.RBuilder
 
 
@@ -14,28 +13,32 @@ val RBuilder.tribeConfigPage get() = TribeConfigPage.captor(this)
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
 
-interface TribeConfigPageBuilder : ComponentBuilder<PageProps> {
+interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
+        val tribeId = pageProps.tribeId
 
         loadedTribeConfig(
                 if (tribeId != null)
-                    DataLoadProps { pageProps.toTribeConfigProps(tribeId) }
+                    DataLoadProps { presentExistingTribe(pageProps, tribeId) }
                 else
-                    DataLoadProps { pageProps.toNewTribeConfigProps() }
+                    DataLoadProps { presentNewTribe(pageProps) }
         )
     }
 
-    private suspend fun PageProps.toTribeConfigProps(tribeId: TribeId) = coupling.getTribeAsync(tribeId)
-            .await()
-            .let { tribe ->
-                TribeConfigProps(
-                        tribe = tribe,
-                        pathSetter = pathSetter,
-                        coupling = coupling
-                )
-            }
+    private fun presentNewTribe(pageProps: PageProps) = pageProps.toNewTribeConfigProps()
+
+    private suspend fun presentExistingTribe(pageProps: PageProps, tribeId: TribeId) = pageProps
+            .performTribeQuery(tribeId)
+            .let { pageProps.toTribeConfigProps(it) }
+
+    private suspend fun PageProps.performTribeQuery(tribeId: TribeId) = TribeQuery(tribeId, coupling).perform()
+
+    private fun PageProps.toTribeConfigProps(tribe: KtTribe) = TribeConfigProps(
+            tribe = tribe,
+            pathSetter = pathSetter,
+            coupling = coupling
+    )
 
     private fun PageProps.toNewTribeConfigProps() = TribeConfigProps(
             tribe = KtTribe(
