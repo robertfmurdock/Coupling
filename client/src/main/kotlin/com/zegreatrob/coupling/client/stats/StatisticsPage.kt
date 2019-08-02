@@ -21,7 +21,7 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(
 interface StatisticsPageBuilder : ComponentBuilder<PageProps>, FindCallSignActionDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
+        val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
             loadedPairAssignments(DataLoadProps { pageProps.toPairAssignmentsProps(tribeId) })

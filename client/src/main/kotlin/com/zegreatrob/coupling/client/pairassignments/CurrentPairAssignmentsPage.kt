@@ -20,7 +20,7 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(
 interface CurrentPairAssignmentsPageBuilder : ComponentBuilder<PageProps> {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
+        val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
             loadedPairAssignments(DataLoadProps { pageProps.toPairAssignmentsProps(tribeId) })
