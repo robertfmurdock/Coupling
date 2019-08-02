@@ -4,28 +4,33 @@ import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import kotlinx.coroutines.await
 import react.RBuilder
-import kotlin.js.Promise
 
 
 object RetiredPlayersPage : ComponentProvider<PageProps>(), RetiredPlayersPageBuilder
+
 val RBuilder.retiredPlayersPage get() = RetiredPlayersPage.captor(this)
 
 private val LoadedRetiredPlayers = dataLoadWrapper(RetiredPlayers)
 private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.captor(this)
 
-interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps> {
+interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerListQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
+        val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedRetiredPlayers(DataLoadProps { pageProps.toRetiredPlayersProps(tribeId) })
+            loadedRetiredPlayers(dataLoadProps(
+                    query = { performQuery(tribeId, pageProps.coupling) },
+                    toProps = { _, data -> toRetiredPlayersProps(data, pageProps.pathSetter) }
+            ))
         } else throw Exception("WHAT")
     }
 
-    private suspend fun PageProps.toRetiredPlayersProps(tribeId: TribeId) = coupling.getData(tribeId)
+    private suspend fun performQuery(tribeId: TribeId, coupling: Coupling) = RetiredPlayerListQuery(tribeId, coupling)
+            .perform()
+
+    private fun toRetiredPlayersProps(result: Pair<KtTribe, List<Player>>, pathSetter: (String) -> Unit) = result
             .let { (tribe, retiredPlayers) ->
                 RetiredPlayersProps(
                         tribe = tribe,
@@ -34,9 +39,4 @@ interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps> {
                 )
             }
 
-    private suspend fun Coupling.getData(tribeId: TribeId): Pair<KtTribe, List<Player>> =
-            (getTribeAsync(tribeId) to getRetiredPlayerListAsync(tribeId))
-                    .await()
-
-    private suspend fun Pair<Promise<KtTribe>, Promise<List<Player>>>.await() = first.await() to second.await()
 }

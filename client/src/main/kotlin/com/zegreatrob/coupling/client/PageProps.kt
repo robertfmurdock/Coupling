@@ -11,4 +11,5 @@ data class PageProps(
         val search: URLSearchParams
 ) : RProps {
     val tribeId: TribeId? get() = pathParams["tribeId"]?.let(::TribeId)
+    val playerId: String? get() = pathParams["playerId"]
 }

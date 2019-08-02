@@ -71,3 +71,6 @@ enum class AnimationState {
 typealias ReloadFunction = () -> Unit
 
 data class DataLoadProps<P : RProps>(val getDataAsync: suspend (ReloadFunction) -> P) : RProps
+
+fun <D, P : RProps> dataLoadProps(query: suspend () -> D, toProps: (ReloadFunction, D) -> P) =
+        DataLoadProps { reload -> query().let { result -> toProps(reload, result) } }
