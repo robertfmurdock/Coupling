@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RProps
 import react.dom.div
 
-
 object RetiredPlayers : ComponentProvider<RetiredPlayersProps>(), RetiredPlayersBuilder
 
 data class RetiredPlayersProps(
@@ -47,5 +46,3 @@ interface RetiredPlayersBuilder : StyledComponentBuilder<RetiredPlayersProps, Re
     }
 
 }
-
-
