@@ -14,9 +14,7 @@ import kotlin.js.Promise
 data class HistoryQuery(val tribeId: TribeId, val coupling: Coupling) : Action
 
 interface HistoryQueryDispatcher : ActionLoggingSyntax {
-    suspend fun HistoryQuery.perform() = logAsync {
-        coupling.getData(tribeId)
-    }
+    suspend fun HistoryQuery.perform() = logAsync { coupling.getData(tribeId) }
 
     private suspend fun Coupling.getData(tribeId: TribeId) =
             Pair(getTribeAsync(tribeId), getHistoryAsync(tribeId))

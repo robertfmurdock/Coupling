@@ -1,13 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import kotlinx.coroutines.await
 import react.RBuilder
-import kotlin.js.Promise
 
 
 object CurrentPairAssignmentsPage : ComponentProvider<PageProps>(), CurrentPairAssignmentsPageBuilder
@@ -17,36 +12,20 @@ val RBuilder.currentPairAssignmentsPage get() = CurrentPairAssignmentsPage.capto
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 
-interface CurrentPairAssignmentsPageBuilder : ComponentBuilder<PageProps> {
+interface CurrentPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedPairAssignments(DataLoadProps { pageProps.toPairAssignmentsProps(tribeId) })
+            loadedPairAssignments(dataLoadProps(tribeId, pageProps))
         } else throw Exception("WHAT")
     }
 
-    private suspend fun PageProps.toPairAssignmentsProps(tribeId: TribeId) =
-            coupling.getData(tribeId)
-                    .let { (tribe, players, history) ->
-
-                        PairAssignmentsProps(
-                                tribe = tribe,
-                                players = players,
-                                pairAssignments = history.firstOrNull(),
-                                pathSetter = pathSetter,
-                                coupling = coupling
-                        )
-                    }
-
-    private suspend fun Coupling.getData(tribeId: TribeId) =
-            Triple(getTribeAsync(tribeId), getPlayerListAsync(tribeId), getHistoryAsync(tribeId))
-                    .await()
-
-    private suspend fun Triple<Promise<KtTribe>, Promise<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
-            Triple(
-                    first.await(),
-                    second.await(),
-                    third.await())
+    private fun dataLoadProps(tribeId: TribeId, pageProps: PageProps) = dataLoadProps(
+            query = { TribeDataSetQuery(tribeId, pageProps.coupling).perform() },
+            toProps = { _, (tribe, players, history) ->
+                PairAssignmentsProps(tribe, players, history.firstOrNull(), pageProps.pathSetter, pageProps.coupling)
+            }
+    )
 }
