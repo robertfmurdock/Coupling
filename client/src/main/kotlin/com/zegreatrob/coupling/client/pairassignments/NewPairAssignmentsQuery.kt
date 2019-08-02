@@ -12,10 +12,10 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.await
 import kotlin.js.Promise
 
-data class NewPairAssignmentsCommand(val tribeId: TribeId, val coupling: Coupling, val playerIds: List<String>) : Action
+data class NewPairAssignmentsQuery(val tribeId: TribeId, val coupling: Coupling, val playerIds: List<String>) : Action
 
-interface NewPairAssignmentsCommandDispatcher : ActionLoggingSyntax {
-    suspend fun NewPairAssignmentsCommand.perform() = logAsync {
+interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax {
+    suspend fun NewPairAssignmentsQuery.perform() = logAsync {
         coupling.getData(tribeId)
                 .let { (tribe, players) ->
                     Triple(
@@ -26,7 +26,7 @@ interface NewPairAssignmentsCommandDispatcher : ActionLoggingSyntax {
                 }
     }
 
-    private suspend fun NewPairAssignmentsCommand.performSpin(players: List<Player>, tribeId: TribeId) =
+    private suspend fun NewPairAssignmentsQuery.performSpin(players: List<Player>, tribeId: TribeId) =
             coupling.spinAsync(
                     players.filter { playerIds.contains(it.id) },
                     tribeId

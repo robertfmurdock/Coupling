@@ -37,7 +37,7 @@ class HistoryComponentBuilderTest {
 
                 val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList()))
                 val wrapper = shallow(
-                        HistoryProps(tribe, {}, history, coupling, { reloadSpy.spyFunction(Unit) })
+                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, coupling)
                 )
             }) {
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -67,7 +67,7 @@ class HistoryComponentBuilderTest {
 
                 val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList()))
                 val wrapper = shallow(
-                        HistoryProps(tribe, {}, history, coupling, { reloadSpy.spyFunction(Unit) })
+                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, coupling)
                 )
             }) exerciseAsync {
                 wrapper.find<Any>(".${styles.deleteButton}").simulate("click")

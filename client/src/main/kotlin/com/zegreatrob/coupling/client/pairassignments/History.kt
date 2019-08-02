@@ -32,10 +32,10 @@ external interface HistoryStyles {
 
 data class HistoryProps(
         val tribe: KtTribe,
-        val pathSetter: (String) -> Unit,
         val history: List<PairAssignmentDocument>,
-        val coupling: dynamic,
-        val reload: () -> Unit
+        val reload: () -> Unit,
+        val pathSetter: (String) -> Unit,
+        val coupling: dynamic
 ) : RProps
 
 interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
@@ -45,7 +45,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
     override val componentPath: String get() = "pairassignments/History"
 
     override fun build() = buildBy {
-        val (tribe, pathSetter) = props
+        val (tribe, history, reload, pathSetter) = props
         {
             div {
                 div(classes = styles.tribeBrowser) {

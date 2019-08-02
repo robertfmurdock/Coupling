@@ -11,7 +11,7 @@ val RBuilder.newPairAssignmentsPage get() = NewPairAssignmentsPage.captor(this)
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 
-interface NewPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, NewPairAssignmentsCommandDispatcher {
+interface NewPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, NewPairAssignmentsQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         val tribeId = pageProps.tribeId
@@ -25,7 +25,7 @@ interface NewPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, NewPairAs
 
     private fun dataLoadProps(tribeId: TribeId, pageProps: PageProps, playerIds: List<String>) =
             dataLoadProps(
-                    query = { NewPairAssignmentsCommand(tribeId, pageProps.coupling, playerIds).perform() },
+                    query = { NewPairAssignmentsQuery(tribeId, pageProps.coupling, playerIds).perform() },
                     toProps = { _, (tribe, players, pairAssignments) ->
                         PairAssignmentsProps(tribe, players, pairAssignments, pageProps.pathSetter, pageProps.coupling)
                     }
