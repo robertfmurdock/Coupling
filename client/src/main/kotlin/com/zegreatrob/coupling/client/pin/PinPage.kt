@@ -4,9 +4,7 @@ import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import kotlinx.coroutines.await
 import react.RBuilder
-import kotlin.js.Promise
 
 
 object PinListPage : ComponentProvider<PageProps>(), PinListPageBuilder
@@ -16,27 +14,26 @@ val RBuilder.pinListPage get() = PinListPage.captor(this)
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.captor(this)
 
-interface PinListPageBuilder : ComponentBuilder<PageProps> {
+interface PinListPageBuilder : ComponentBuilder<PageProps>, PinListQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
+        val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedPinList(DataLoadProps { pageProps.toPinListProps(tribeId) })
+            loadedPinList(DataLoadProps {
+                performPinListQuery(tribeId, pageProps.coupling)
+                        .toPinListProps()
+            })
         } else throw Exception("WHAT")
     }
 
-    private suspend fun PageProps.toPinListProps(tribeId: TribeId) = coupling.getData(tribeId)
-            .let { (tribe, retiredPlayers) ->
-                PinListProps(
-                        tribe = tribe,
-                        pins = retiredPlayers
-                )
-            }
+    private fun Pair<KtTribe, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
+        PinListProps(
+                tribe = tribe,
+                pins = retiredPlayers
+        )
+    }
 
-    private suspend fun Coupling.getData(tribeId: TribeId) =
-            (getTribeAsync(tribeId) to getPinListAsync(tribeId))
-                    .await()
-
-    private suspend fun Pair<Promise<KtTribe>, Promise<List<Pin>>>.await() = first.await() to second.await()
+    private suspend fun performPinListQuery(tribeId: TribeId, coupling: Coupling) = PinListQuery(tribeId, coupling)
+            .perform()
 }
