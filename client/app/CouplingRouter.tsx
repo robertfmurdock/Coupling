@@ -36,24 +36,24 @@ function AuthenticatedRoutes() {
     return <ServiceContext.Provider value={coupling}>
         <Switch>
             <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
-            <CouplingRoute path={"/tribes/"} component={components.TribeListPage}/>
-            <CouplingRoute path={"/logout/"} component={components.Logout}/>
-            <CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
+            <components.CouplingRoute path={"/tribes/"} component={components.TribeListPage}/>
+            <components.CouplingRoute path={"/logout/"} component={components.Logout}/>
+            <components.CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
             <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
                 <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
             />
-            <CouplingRoute path={"/:tribeId/prepare/"} component={components.PrepareSpinPage}/>
-            <CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
-            <CouplingRoute path={"/:tribeId/history"} component={components.HistoryPage}/>
-            <CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
-            <CouplingRoute path={"/:tribeId/pairAssignments/current/"}
+            <components.CouplingRoute path={"/:tribeId/prepare/"} component={components.PrepareSpinPage}/>
+            <components.CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
+            <components.CouplingRoute path={"/:tribeId/history"} component={components.HistoryPage}/>
+            <components.CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
+            <components.CouplingRoute path={"/:tribeId/pairAssignments/current/"}
                            component={components.CurrentPairAssignmentsPage}/>
-            <CouplingRoute path={"/:tribeId/pairAssignments/new"} component={components.NewPairAssignmentsPage}/>
-            <CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
-            <CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
-            <CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={components.RetiredPlayerPage}/>
-            <CouplingRoute path={"/:tribeId/statistics"} component={components.StatisticsPage}/>
-            <CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
+            <components.CouplingRoute path={"/:tribeId/pairAssignments/new"} component={components.NewPairAssignmentsPage}/>
+            <components.CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
+            <components.CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
+            <components.CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={components.RetiredPlayerPage}/>
+            <components.CouplingRoute path={"/:tribeId/statistics"} component={components.StatisticsPage}/>
+            <components.CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
         </Switch>
     </ServiceContext.Provider>;
 }

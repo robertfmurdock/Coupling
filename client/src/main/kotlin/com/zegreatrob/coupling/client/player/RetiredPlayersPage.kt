@@ -18,7 +18,7 @@ private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.captor(th
 interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps> {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.first()?.let(::TribeId)
+        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
 
         if (tribeId != null) {
             loadedRetiredPlayers(DataLoadProps { pageProps.toRetiredPlayersProps(tribeId) })

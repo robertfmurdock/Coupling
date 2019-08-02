@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.PageProps
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.await
@@ -18,7 +17,7 @@ private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
 interface TribeConfigPageBuilder : ComponentBuilder<PageProps> {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.first()?.let(::TribeId)
+        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
 
         loadedTribeConfig(
                 if (tribeId != null)

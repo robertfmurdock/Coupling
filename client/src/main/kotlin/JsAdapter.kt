@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.client.pin.pinListPage
 import com.zegreatrob.coupling.client.player.playerPage
 import com.zegreatrob.coupling.client.player.retiredPlayerPage
 import com.zegreatrob.coupling.client.player.retiredPlayersPage
+import com.zegreatrob.coupling.client.routing.CouplingRouteProps
+import com.zegreatrob.coupling.client.routing.couplingRoute
 import com.zegreatrob.coupling.client.stats.statisticsPage
 import com.zegreatrob.coupling.client.tribe.tribeConfigPage
 import com.zegreatrob.coupling.client.tribe.tribeListPage
@@ -79,7 +81,7 @@ object ReactComponents :
     val tribeListPageJs = jsReactFunction { props ->
         tribeListPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -90,7 +92,7 @@ object ReactComponents :
     val welcomePageJs = jsReactFunction { props ->
         welcomePage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -101,7 +103,7 @@ object ReactComponents :
     val retiredPlayersPageJs = jsReactFunction { props ->
         retiredPlayersPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -112,7 +114,7 @@ object ReactComponents :
     val statisticsPageJs = jsReactFunction { props ->
         statisticsPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -123,7 +125,7 @@ object ReactComponents :
     val tribeConfigPageJs = jsReactFunction { props ->
         tribeConfigPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -134,7 +136,7 @@ object ReactComponents :
     val pinListPageJs = jsReactFunction { props ->
         pinListPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf("tribeId" to listOf(props.tribeId.unsafeCast<String>())),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -145,10 +147,7 @@ object ReactComponents :
     val playerPageJs = jsReactFunction { props ->
         playerPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(
-                        "tribeId" to listOf(props.tribeId.unsafeCast<String>()),
-                        "playerId" to listOf(props.playerId.unsafeCast<String>())
-                ),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -159,10 +158,7 @@ object ReactComponents :
     val retiredPlayerPageJs = jsReactFunction { props ->
         retiredPlayerPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(
-                        "tribeId" to listOf(props.tribeId.unsafeCast<String>()),
-                        "playerId" to listOf(props.playerId.unsafeCast<String>())
-                ),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -173,9 +169,7 @@ object ReactComponents :
     val currentPairAssignmentsPageJs = jsReactFunction { props ->
         currentPairAssignmentsPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(
-                        "tribeId" to listOf(props.tribeId.unsafeCast<String>())
-                ),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -186,9 +180,7 @@ object ReactComponents :
     val newPairAssignmentsPageJs = jsReactFunction { props ->
         newPairAssignmentsPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(
-                        "tribeId" to listOf(props.tribeId.unsafeCast<String>())
-                ),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -199,9 +191,7 @@ object ReactComponents :
     val historyPageJs = jsReactFunction { props ->
         historyPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(
-                        "tribeId" to listOf(props.tribeId.unsafeCast<String>())
-                ),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
         ))
@@ -212,11 +202,18 @@ object ReactComponents :
     val prepareSpinJs = jsReactFunction { props: dynamic ->
         prepareSpinPage(PageProps(
                 props.coupling.unsafeCast<Coupling>(),
-                mapOf(
-                        "tribeId" to listOf(props.tribeId.unsafeCast<String>())
-                ),
+                props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
+        ))
+    }
+
+    @Suppress("unused")
+    @JsName("CouplingRoute")
+    val couplingRouteJs = jsReactFunction { props: dynamic ->
+        couplingRoute(CouplingRouteProps(
+                props.path,
+                props.component
         ))
     }
 

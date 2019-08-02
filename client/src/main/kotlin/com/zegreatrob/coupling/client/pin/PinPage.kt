@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.PageProps
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -20,7 +19,7 @@ private val RBuilder.loadedPinList get() = LoadedPinList.captor(this)
 interface PinListPageBuilder : ComponentBuilder<PageProps> {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.first()?.let(::TribeId)
+        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
 
         if (tribeId != null) {
             loadedPinList(DataLoadProps { pageProps.toPinListProps(tribeId) })

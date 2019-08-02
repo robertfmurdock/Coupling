@@ -20,8 +20,8 @@ private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.captor(this
 interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, FindCallSignActionDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.pathParams["tribeId"]?.first()?.let(::TribeId)
-        val playerId = pageProps.pathParams["playerId"]?.first()
+        val tribeId = pageProps.pathParams["tribeId"]?.let(::TribeId)
+        val playerId = pageProps.pathParams["playerId"]
 
         if (tribeId != null && playerId != null) {
             loadedRetiredPlayer(dataLoadProps(pageProps, tribeId, playerId)) {
