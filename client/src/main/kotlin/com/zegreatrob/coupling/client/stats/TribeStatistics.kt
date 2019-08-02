@@ -5,15 +5,8 @@ import com.zegreatrob.coupling.client.StyledComponentBuilder
 import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
-import com.zegreatrob.coupling.client.useState
-import com.zegreatrob.coupling.common.ComposeStatisticsAction
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
-import com.zegreatrob.coupling.common.StatisticsReport
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RProps
 import react.dom.div
 
@@ -24,6 +17,17 @@ external val distanceInWorks: (Int, Int?) -> String
 
 object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatisticsBuilder
 
+
+external interface TribeStatisticsStyles {
+    val className: String
+    val leftSection: String
+}
+
+data class TribeStatisticsProps(
+        val queryResults: StatisticQueryResults,
+        val pathSetter: (String) -> Unit
+) : RProps
+
 interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, TribeStatisticsStyles>,
         ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
@@ -31,12 +35,8 @@ interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, 
     override val componentPath: String get() = "stats/TribeStatistics"
 
     override fun build() = buildBy {
-        val (tribe, players, history) = props
-
-        val (allStats) = useState { calculateStats(tribe, players, history) }
-
-        val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats.first
-        val heatmapData = allStats.second
+        val (tribe, players, _, allStats, heatmapData) = props.queryResults
+        val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
         {
             div(classes = styles.className) {
                 div {
@@ -57,28 +57,4 @@ interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, 
             }
         }
     }
-
-    private fun calculateStats(
-            tribe: KtTribe,
-            players: List<Player>,
-            history: List<PairAssignmentDocument>
-    ): Pair<StatisticsReport, List<List<Double?>>> {
-        val stats = ComposeStatisticsAction(tribe, players, history).perform()
-        return stats to
-                CalculateHeatMapCommand(players, history, stats.spinsUntilFullRotation)
-                        .perform()
-    }
-
 }
-
-external interface TribeStatisticsStyles {
-    val className: String
-    val leftSection: String
-}
-
-data class TribeStatisticsProps(
-        val tribe: KtTribe,
-        val players: List<Player>,
-        val history: List<PairAssignmentDocument>,
-        val pathSetter: (String) -> Unit
-) : RProps

@@ -2,7 +2,11 @@ package com.zegreatrob.coupling.client.stats
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.tribe.TribeCard
+import com.zegreatrob.coupling.common.ComposeStatisticsAction
+import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.common.PairReport
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -13,12 +17,18 @@ import findComponent
 import shallow
 import kotlin.test.Test
 
-class TribeStatisticsBuilderTest {
+class TribeStatisticsTest : CalculateHeatMapCommandDispatcher, ComposeStatisticsActionDispatcher {
 
     @Test
     fun willShowTribeCard() = setup(object : TribeStatisticsBuilder {
         val tribe = KtTribe(TribeId("1"))
-        val props = TribeStatisticsProps(tribe, emptyList(), emptyList()) {}
+        val props = TribeStatisticsProps(StatisticQueryResults(
+                tribe = tribe,
+                players = emptyList(),
+                history = emptyList(),
+                heatmapData = CalculateHeatMapCommand(emptyList(), emptyList(), 0).perform(),
+                report = ComposeStatisticsAction(tribe, emptyList(), emptyList()).perform()
+        )) {}
     }) exercise {
         shallow(props)
     } verify { wrapper ->
@@ -28,25 +38,32 @@ class TribeStatisticsBuilderTest {
     }
 
     @Test
-    fun willShowPairings() = setup(object : TribeStatisticsBuilder {
+    fun willShowPairings() = setup(object : TribeStatisticsBuilder, ComposeStatisticsActionDispatcher {
         val players = listOf(
                 Player("harry", name = "Harry"),
                 Player("larry", name = "Larry"),
                 Player("curry", name = "Curly"),
                 Player("moe", name = "Moe")
         )
-        val props = TribeStatisticsProps(
-                tribe = KtTribe(TribeId("1"), name = "Mathematica"),
-                players = players,
-                history = listOf(
-                        PairAssignmentDocument(
-                                date = DateTime.now(),
-                                pairs = listOf<CouplingPair>(
-                                        CouplingPair.Double(players[0], players[1]),
-                                        CouplingPair.Double(players[2], players[3])
-                                ).withNoPins()
-                        )
+        val tribe = KtTribe(TribeId("1"), name = "Mathematica")
+        val history = listOf(
+                PairAssignmentDocument(
+                        date = DateTime.now(),
+                        pairs = listOf<CouplingPair>(
+                                CouplingPair.Double(players[0], players[1]),
+                                CouplingPair.Double(players[2], players[3])
+                        ).withNoPins()
                 )
+        )
+        val props = TribeStatisticsProps(
+                queryResults = StatisticQueryResults(
+                        tribe = tribe,
+                        players = players,
+                        history = history,
+                        heatmapData = emptyList(),
+                        report = ComposeStatisticsAction(tribe, players, history).perform()
+                )
+
         ) {}
     }) exercise {
         shallow(props)
@@ -94,18 +111,25 @@ class TribeStatisticsBuilderTest {
                 Player("curry", name = "Curly"),
                 Player("moe", name = "Moe")
         )
-        val props = TribeStatisticsProps(
-                tribe = KtTribe(TribeId("2"), name = "Mathematica"),
+        val history = listOf(
+                PairAssignmentDocument(
+                        date = DateTime.now(),
+                        pairs = listOf(
+                                pairOf(players[0], players[1]),
+                                pairOf(players[2], players[3])
+                        ).withNoPins()
+                )
+        )
+        val tribe = KtTribe(TribeId("2"), name = "Mathematica")
+
+        val report = ComposeStatisticsAction(tribe, players, history).perform()
+        val props = TribeStatisticsProps(StatisticQueryResults(
+                tribe = tribe,
                 players = players,
-                history = listOf(
-                        PairAssignmentDocument(
-                                date = DateTime.now(),
-                                pairs = listOf(
-                                        pairOf(players[0], players[1]),
-                                        pairOf(players[2], players[3])
-                                ).withNoPins()
-                        )
-                ),
+                history = history,
+                heatmapData = CalculateHeatMapCommand(players, history, report.spinsUntilFullRotation).perform(),
+                report = report
+        ),
                 pathSetter = {}
         )
     }) exercise {
@@ -123,17 +147,23 @@ class TribeStatisticsBuilderTest {
     }
 
     @Test
-    fun willShowBasicStatisticsOnSubComponent() = setup(object : TribeStatisticsBuilder {
+    fun willShowBasicStatisticsOnSubComponent() = setup(object : TribeStatisticsBuilder,
+            ComposeStatisticsActionDispatcher {
         val players = listOf(
                 Player("harry", name = "Harry"),
                 Player("larry", name = "Larry"),
                 Player("curry", name = "Curly"),
                 Player("moe", name = "Moe")
         )
+        val tribe = KtTribe(TribeId("2"), name = "Mathematica")
         val props = TribeStatisticsProps(
-                tribe = KtTribe(TribeId("2"), name = "Mathematica"),
-                players = players,
-                history = emptyList(),
+                StatisticQueryResults(
+                        tribe = tribe,
+                        players = players,
+                        history = emptyList(),
+                        heatmapData = emptyList(),
+                        report = ComposeStatisticsAction(tribe, players, emptyList()).perform()
+                ),
                 pathSetter = {}
         )
     }) exercise {
@@ -157,18 +187,24 @@ class TribeStatisticsBuilderTest {
                 Player("curry", name = "Curly"),
                 Player("moe", name = "Moe")
         )
+        val tribe = KtTribe(TribeId("2"), name = "Mathematica")
+        val history = listOf(
+                PairAssignmentDocument(
+                        pairs = listOf(pairOf(players[0], players[1]), pairOf(players[2], players[3])).withNoPins(),
+                        date = DateTime(2017, 3, 14)
+                ),
+                PairAssignmentDocument(
+                        pairs = listOf(pairOf(players[0], players[1]), pairOf(players[2], players[3])).withNoPins(),
+                        date = DateTime(2017, 3, 12)
+                )
+        )
         val props = TribeStatisticsProps(
-                tribe = KtTribe(TribeId("2"), name = "Mathematica"),
-                players = players,
-                history = listOf(
-                        PairAssignmentDocument(
-                                pairs = listOf(pairOf(players[0], players[1]), pairOf(players[2], players[3])).withNoPins(),
-                                date = DateTime(2017, 3, 14)
-                        ),
-                        PairAssignmentDocument(
-                                pairs = listOf(pairOf(players[0], players[1]), pairOf(players[2], players[3])).withNoPins(),
-                                date = DateTime(2017, 3, 12)
-                        )
+                StatisticQueryResults(
+                        tribe = tribe,
+                        players = players,
+                        history = history,
+                        heatmapData = emptyList(),
+                        report = ComposeStatisticsAction(tribe, players, history).perform()
                 ),
                 pathSetter = {}
         )

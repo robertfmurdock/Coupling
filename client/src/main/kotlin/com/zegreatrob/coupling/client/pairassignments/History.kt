@@ -45,7 +45,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
     override val componentPath: String get() = "pairassignments/History"
 
     override fun build() = buildBy {
-        val (tribe, history, reload, pathSetter) = props
+        val (tribe, _, _, pathSetter) = props
         {
             div {
                 div(classes = styles.tribeBrowser) {
