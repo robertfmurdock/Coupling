@@ -16,7 +16,7 @@ data class NewPairAssignmentsQuery(val tribeId: TribeId, val coupling: Coupling,
 
 interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax {
     suspend fun NewPairAssignmentsQuery.perform() = logAsync {
-        getData(tribeId)
+        tribeId.getData()
                 .let { (tribe, players) ->
                     Triple(
                             tribe,
@@ -32,8 +32,8 @@ interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSynta
                     tribeId
             ).await()
 
-    private suspend fun getData(tribeId: TribeId) =
-            Pair(tribeId.getTribeAsync(), getPlayerListAsync(tribeId))
+    private suspend fun TribeId.getData() =
+            Pair(getTribeAsync(), getPlayerListAsync())
                     .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =

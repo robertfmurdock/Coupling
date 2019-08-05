@@ -11,10 +11,10 @@ import kotlinx.coroutines.Deferred
 data class HistoryQuery(val tribeId: TribeId) : Action
 
 interface HistoryQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPairAssignmentListSyntax {
-    suspend fun HistoryQuery.perform() = logAsync { getData(tribeId) }
+    suspend fun HistoryQuery.perform() = logAsync { tribeId.getData() }
 
-    private suspend fun getData(tribeId: TribeId) =
-            Pair(tribeId.getTribeAsync(), getPairAssignmentListAsync(tribeId))
+    private suspend fun TribeId.getData() =
+            Pair(getTribeAsync(), getPairAssignmentListAsync())
                     .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<PairAssignmentDocument>>>.await() =

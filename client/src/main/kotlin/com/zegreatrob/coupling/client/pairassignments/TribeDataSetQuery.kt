@@ -14,15 +14,16 @@ data class TribeDataSetQuery(val tribeId: TribeId) : Action
 
 interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax, GetPairAssignmentListSyntax {
 
-    suspend fun TribeDataSetQuery.perform() = logAsync { getData(tribeId) }
+    suspend fun TribeDataSetQuery.perform() = logAsync { tribeId.getData() }
 
-    private suspend fun getData(tribeId: TribeId) =
-            Triple(tribeId.getTribeAsync(), getPlayerListAsync(tribeId), getPairAssignmentListAsync(tribeId))
+    private suspend fun TribeId.getData() =
+            Triple(getTribeAsync(), getPlayerListAsync(), getPairAssignmentListAsync())
                     .await()
 
     private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
             Triple(
                     first.await(),
                     second.await(),
-                    third.await())
+                    third.await()
+            )
 }

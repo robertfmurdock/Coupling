@@ -16,7 +16,7 @@ data class PlayerQuery(val tribeId: TribeId, val playerId: String?, val coupling
 interface PlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
         FindCallSignActionDispatcher {
     suspend fun PlayerQuery.perform() = logAsync {
-        getData(tribeId)
+        tribeId.getData()
                 .let { (tribe, players) ->
                     Triple(
                             tribe,
@@ -26,16 +26,16 @@ interface PlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayer
                 }
     }
 
-    private suspend fun getData(tribeId: TribeId) = (tribeId.getTribeAsync() to getPlayerListAsync(tribeId))
+    private suspend fun TribeId.getData() = (getTribeAsync() to getPlayerListAsync())
             .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =
             first.await() to second.await()
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
-            ?: defaultWithCallSign(this)
+            ?: defaultWithCallSign()
 
-    private fun defaultWithCallSign(players: List<Player>) = FindCallSignAction(players, "")
+    private fun List<Player>.defaultWithCallSign() = FindCallSignAction(this, "")
             .perform()
             .let { callSign ->
                 Player(

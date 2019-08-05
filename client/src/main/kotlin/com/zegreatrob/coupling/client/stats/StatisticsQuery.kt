@@ -29,18 +29,18 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPl
         CalculateHeatMapActionDispatcher {
 
     suspend fun StatisticsQuery.perform() = logAsync {
-        val (tribe, players, history) = getData(tribeId)
+        val (tribe, players, history) = tribeId.getData()
 
         val (report, heatmapData) = calculateStats(tribe, players, history)
 
         StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
-    private suspend fun getData(tribeId: TribeId) =
+    private suspend fun TribeId.getData() =
             Triple(
-                    tribeId.getTribeAsync(),
-                    getPlayerListAsync(tribeId),
-                    getPairAssignmentListAsync(tribeId)
+                    getTribeAsync(),
+                    getPlayerListAsync(),
+                    getPairAssignmentListAsync()
             ).await()
 
     private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
