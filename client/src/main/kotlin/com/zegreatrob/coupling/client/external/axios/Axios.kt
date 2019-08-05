@@ -8,7 +8,7 @@ import kotlin.js.Promise
 external val axios: Axios
 
 external interface Axios {
-    fun post(url: String, options: Json): Promise<Unit>
+    fun post(url: String, body: dynamic): Promise<dynamic>
     fun get(url: String): Promise<dynamic>
 }
 

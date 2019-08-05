@@ -48,9 +48,11 @@ interface GoogleSignIn {
         signOut().await()
     } else Unit
 
-    private suspend fun GoogleUser.createSession() = getAuthResponse()
-            .createSessionOnCoupling()
-            .await()
+    private suspend fun GoogleUser.createSession() {
+        getAuthResponse()
+                .createSessionOnCoupling()
+                .await()
+    }
 
     private fun AuthResponse.createSessionOnCoupling() = axios.post(
             "/auth/google-token",
