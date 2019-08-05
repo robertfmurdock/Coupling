@@ -266,11 +266,11 @@ describe('The new player page', function () {
     ];
 
     beforeAll(async function () {
-        await TestLogin.login();
-
         await tribeCollection.insert(tribe);
         await playersCollection.insert(players);
         await e2eHelp.authorizeUserForTribes([tribe.id]);
+
+        await TestLogin.login();
     });
 
     afterAll(async function () {
