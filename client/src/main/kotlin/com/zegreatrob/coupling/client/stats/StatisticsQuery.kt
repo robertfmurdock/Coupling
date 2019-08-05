@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.pairassignments.GetPairAssignmentListSynta
 import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.*
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapAction
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -26,7 +26,7 @@ data class StatisticQueryResults(
 interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
         GetPairAssignmentListSyntax,
         ComposeStatisticsActionDispatcher,
-        CalculateHeatMapCommandDispatcher {
+        CalculateHeatMapActionDispatcher {
 
     suspend fun StatisticsQuery.perform() = logAsync {
         val (tribe, players, history) = getData(tribeId)
@@ -55,7 +55,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPl
             players: List<Player>,
             history: List<PairAssignmentDocument>
     ) = ComposeStatisticsAction(tribe, players, history).perform() to
-            CalculateHeatMapCommand(players, history, ComposeStatisticsAction(tribe, players, history).perform().spinsUntilFullRotation)
+            CalculateHeatMapAction(players, history, ComposeStatisticsAction(tribe, players, history).perform().spinsUntilFullRotation)
                     .perform()
 }
 

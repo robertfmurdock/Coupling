@@ -1,20 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.ComposeStatisticsAction
-import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
-import com.zegreatrob.coupling.common.StatisticsReport
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import kotlinx.coroutines.await
 import react.RBuilder
-import kotlin.js.Promise
-
 
 object StatisticsPage : ComponentProvider<PageProps>(), StatisticsPageBuilder
 

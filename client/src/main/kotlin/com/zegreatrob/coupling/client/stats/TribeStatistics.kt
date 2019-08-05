@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.buildBy
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
 import react.RProps
 import react.dom.div
 
@@ -30,7 +30,7 @@ data class TribeStatisticsProps(
 
 interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, TribeStatisticsStyles>,
         ComposeStatisticsActionDispatcher,
-        CalculateHeatMapCommandDispatcher {
+        CalculateHeatMapActionDispatcher {
 
     override val componentPath: String get() = "stats/TribeStatistics"
 

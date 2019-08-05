@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.common.ComposeStatisticsAction
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.common.PairReport
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapAction
+import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -17,7 +17,7 @@ import findComponent
 import shallow
 import kotlin.test.Test
 
-class TribeStatisticsTest : CalculateHeatMapCommandDispatcher, ComposeStatisticsActionDispatcher {
+class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
 
     @Test
     fun willShowTribeCard() = setup(object : TribeStatisticsBuilder {
@@ -26,7 +26,7 @@ class TribeStatisticsTest : CalculateHeatMapCommandDispatcher, ComposeStatistics
                 tribe = tribe,
                 players = emptyList(),
                 history = emptyList(),
-                heatmapData = CalculateHeatMapCommand(emptyList(), emptyList(), 0).perform(),
+                heatmapData = CalculateHeatMapAction(emptyList(), emptyList(), 0).perform(),
                 report = ComposeStatisticsAction(tribe, emptyList(), emptyList()).perform()
         )) {}
     }) exercise {
@@ -127,7 +127,7 @@ class TribeStatisticsTest : CalculateHeatMapCommandDispatcher, ComposeStatistics
                 tribe = tribe,
                 players = players,
                 history = history,
-                heatmapData = CalculateHeatMapCommand(players, history, report.spinsUntilFullRotation).perform(),
+                heatmapData = CalculateHeatMapAction(players, history, report.spinsUntilFullRotation).perform(),
                 report = report
         ),
                 pathSetter = {}

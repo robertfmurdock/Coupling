@@ -6,16 +6,16 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
 
-data class CalculateHeatMapCommand(val players: List<Player>, val history: List<PairAssignmentDocument>, val rotationPeriod: Int) : Action
+data class CalculateHeatMapAction(val players: List<Player>, val history: List<PairAssignmentDocument>, val rotationPeriod: Int) : Action
 
-interface CalculateHeatMapCommandDispatcher : ActionLoggingSyntax, CalculatePairHeatActionDispatcher {
+interface CalculateHeatMapActionDispatcher : ActionLoggingSyntax, CalculatePairHeatActionDispatcher {
 
-    fun CalculateHeatMapCommand.perform() = log { players.map { player -> heatForEachPair(player) } }
+    fun CalculateHeatMapAction.perform() = log { players.map { player -> heatForEachPair(player) } }
 
-    private fun CalculateHeatMapCommand.heatForEachPair(player: Player) =
+    private fun CalculateHeatMapAction.heatForEachPair(player: Player) =
             players.map { partner -> calculatePairHeat(player, partner) }
 
-    private fun CalculateHeatMapCommand.calculatePairHeat(player: Player, alternatePlayer: Player) =
+    private fun CalculateHeatMapAction.calculatePairHeat(player: Player, alternatePlayer: Player) =
             if (player == alternatePlayer) {
                 null
             } else {
