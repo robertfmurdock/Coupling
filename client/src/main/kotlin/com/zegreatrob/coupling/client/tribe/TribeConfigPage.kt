@@ -32,7 +32,7 @@ interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispat
             .performTribeQuery(tribeId)
             .let { pageProps.toTribeConfigProps(it) }
 
-    private suspend fun PageProps.performTribeQuery(tribeId: TribeId) = TribeQuery(tribeId, coupling).perform()
+    private suspend fun PageProps.performTribeQuery(tribeId: TribeId) = TribeQuery(tribeId).perform()
 
     private fun PageProps.toTribeConfigProps(tribe: KtTribe) = TribeConfigProps(
             tribe = tribe,

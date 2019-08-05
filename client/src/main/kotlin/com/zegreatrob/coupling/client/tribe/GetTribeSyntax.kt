@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.external.axios.AxiosGetEntitySyntax
 import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -12,7 +11,7 @@ import kotlin.js.Json
 
 interface GetTribeSyntax : AxiosGetEntitySyntax {
 
-    fun Coupling.getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = axios.getEntityAsync("/api/tribes/${tribeId.value}")
+    fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = axios.getEntityAsync("/api/tribes/${tribeId.value}")
             .then(Json::toTribe)
             .asDeferred()
 

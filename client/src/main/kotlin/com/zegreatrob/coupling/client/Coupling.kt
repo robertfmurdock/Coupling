@@ -10,7 +10,6 @@ import kotlin.js.Json
 import kotlin.js.Promise
 
 external interface Coupling {
-    fun getTribe(tribeId: String): Promise<Json>
     fun getPins(tribeId: String): Promise<Array<Json>>
     fun getPlayers(tribeId: String): Promise<Array<Json>>
     fun getRetiredPlayers(tribeId: String): Promise<Array<Json>>
