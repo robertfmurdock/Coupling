@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.Coupling
-import com.zegreatrob.coupling.client.getHistoryAsync
+import com.zegreatrob.coupling.client.pairassignments.GetPairAssignmentListSyntax
 import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.*
@@ -12,8 +12,6 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.await
-import kotlin.js.Promise
 
 data class StatisticsQuery(val tribeId: TribeId, val coupling: Coupling) : Action
 
@@ -26,25 +24,26 @@ data class StatisticQueryResults(
 )
 
 interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
+        GetPairAssignmentListSyntax,
         ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
 
     suspend fun StatisticsQuery.perform() = logAsync {
-        val (tribe, players, history) = coupling.getData(tribeId)
+        val (tribe, players, history) = getData(tribeId)
 
         val (report, heatmapData) = calculateStats(tribe, players, history)
 
         StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
-    private suspend fun Coupling.getData(tribeId: TribeId) =
+    private suspend fun getData(tribeId: TribeId) =
             Triple(
                     getTribeAsync(tribeId),
                     getPlayerListAsync(tribeId),
-                    getHistoryAsync(tribeId)
+                    getPairAssignmentListAsync(tribeId)
             ).await()
 
-    private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
+    private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
             Triple(
                     first.await(),
                     second.await(),
@@ -55,10 +54,8 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPl
             tribe: KtTribe,
             players: List<Player>,
             history: List<PairAssignmentDocument>
-    ): Pair<StatisticsReport, List<List<Double?>>> {
-        return ComposeStatisticsAction(tribe, players, history).perform() to
-                CalculateHeatMapCommand(players, history, ComposeStatisticsAction(tribe, players, history).perform().spinsUntilFullRotation)
-                        .perform()
-    }
+    ) = ComposeStatisticsAction(tribe, players, history).perform() to
+            CalculateHeatMapCommand(players, history, ComposeStatisticsAction(tribe, players, history).perform().spinsUntilFullRotation)
+                    .perform()
 }
 

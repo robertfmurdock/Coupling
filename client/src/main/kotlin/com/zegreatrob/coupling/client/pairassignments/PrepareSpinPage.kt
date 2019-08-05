@@ -18,7 +18,7 @@ interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQuer
         if (tribeId != null) {
             loadedPairAssignments(
                     dataLoadProps(
-                            query = { TribeDataSetQuery(tribeId, pageProps.coupling).perform() },
+                            query = { TribeDataSetQuery(tribeId).perform() },
                             toProps = { _, (tribe, players, history) ->
                                 PrepareSpinProps(tribe, players, history, pageProps.pathSetter)
                             }

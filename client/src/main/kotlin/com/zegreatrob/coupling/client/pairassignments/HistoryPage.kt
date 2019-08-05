@@ -19,7 +19,7 @@ interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatch
         if (tribeId != null) {
             loadedPairAssignments(
                     dataLoadProps(
-                            query = { HistoryQuery(tribeId, pageProps.coupling).perform() },
+                            query = { HistoryQuery(tribeId).perform() },
                             toProps = { reload, (tribe, history) ->
                                 HistoryProps(tribe, history, reload, pageProps.pathSetter, pageProps.coupling)
                             }
