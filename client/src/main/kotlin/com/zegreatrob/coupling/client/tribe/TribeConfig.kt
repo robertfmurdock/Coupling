@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toTribe
-import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import kotlinx.html.InputType
 import kotlinx.html.id
@@ -18,11 +17,10 @@ import react.RBuilder
 import react.RProps
 import react.ReactElement
 import react.dom.*
-import kotlin.js.Promise
 
 object TribeConfig : ComponentProvider<TribeConfigProps>(), TribeConfigBuilder
 
-data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit, val coupling: dynamic) : RProps
+data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit, val coupling: Coupling) : RProps
 
 external interface TribeConfigStyles {
     val editor: String
@@ -70,16 +68,12 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
     }
 
     private fun TribeConfigRenderer.onClickDelete(updatedTribe: KtTribe) = scope.launch {
-        props.coupling.deleteTribe(updatedTribe.id.value)
-                .unsafeCast<Promise<Unit>>()
-                .await()
+        props.coupling.deleteTribe(updatedTribe.id)
         props.pathSetter("/tribes/")
     }
 
     private fun TribeConfigRenderer.onClickSave(updatedTribe: KtTribe) = scope.launch {
-        props.coupling.saveTribe(updatedTribe.toJson())
-                .unsafeCast<Promise<Unit>>()
-                .await()
+        props.coupling.saveTribe(updatedTribe)
         props.pathSetter("/tribes/")
     }
 

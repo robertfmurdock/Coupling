@@ -14,15 +14,13 @@ data class NewPairAssignmentsQuery(val tribeId: TribeId, val coupling: Coupling,
 
 interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax, RequestSpinActionDispatcher {
     suspend fun NewPairAssignmentsQuery.perform() = logAsync {
-        tribeId.getData()
-                .let { (tribe, players) ->
-                    val selectedPlayers = filterSelectedPlayers(players, playerIds)
-                    Triple(
-                            tribe,
-                            players,
-                            performSpin(tribeId, selectedPlayers)
-                    )
-                }
+        val (tribe, players) = tribeId.getData()
+        val selectedPlayers = filterSelectedPlayers(players, playerIds)
+        Triple(
+                tribe,
+                players,
+                performSpin(tribeId, selectedPlayers)
+        )
     }
 
     private suspend fun performSpin(tribeId: TribeId, players: List<Player>) = RequestSpinAction(tribeId, players)

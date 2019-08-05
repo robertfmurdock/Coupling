@@ -4,6 +4,7 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.ServerMessage
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
@@ -18,11 +19,12 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
 import findComponent
+import kotlinext.js.js
+import kotlinext.js.jsObject
 import kotlinx.coroutines.withContext
 import shallow
 import kotlin.js.Json
 import kotlin.js.Promise
-import kotlin.js.json
 import kotlin.test.Test
 
 class PairAssignmentsTest {
@@ -48,7 +50,7 @@ class PairAssignmentsTest {
                 ).withPins()
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, pairAssignments, {}, {}))
+        shallow(PairAssignmentsProps(tribe, players, pairAssignments, {}, jsObject { }))
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
                 .props()
@@ -72,7 +74,7 @@ class PairAssignmentsTest {
                 Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, null, {}, {}))
+        shallow(PairAssignmentsProps(tribe, players, null, {}, jsObject { }))
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
                 .props()
@@ -87,7 +89,8 @@ class PairAssignmentsTest {
                 override fun buildScope() = this@withContext
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val coupling = json("saveCurrentPairAssignments" to saveSpy::spyFunction)
+                val coupling: Coupling = js { this.saveCurrentPairAssignments = saveSpy::spyFunction }
+                        .unsafeCast<Coupling>()
                 val pairAssignments = PairAssignmentDocument(
                         date = DateTime.now(),
                         pairs = emptyList()
@@ -122,7 +125,7 @@ class PairAssignmentsTest {
                         pairOf(player3, player4)
                 ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}, {}))
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}, jsObject { }))
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
@@ -154,7 +157,7 @@ class PairAssignmentsTest {
                         pairOf(player3, player4)
                 ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}, {}))
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}, jsObject { }))
     }) exercise {
         player4.dragTo(player3, wrapper)
     } verify {
@@ -182,7 +185,7 @@ class PairAssignmentsTest {
     @Test
     fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsBuilder {
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, listOf(), null, {}, {}))
+        shallow(PairAssignmentsProps(tribe, listOf(), null, {}, jsObject { }))
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)
                 .props()

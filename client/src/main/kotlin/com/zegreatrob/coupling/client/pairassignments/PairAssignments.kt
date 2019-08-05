@@ -15,9 +15,6 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.common.toJson
-import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import kotlinx.html.DIV
 import kotlinx.html.id
@@ -30,7 +27,6 @@ import react.dom.a
 import react.dom.div
 import react.dom.span
 import kotlin.browser.window
-import kotlin.js.Promise
 
 object PairAssignments : ComponentProvider<PairAssignmentsProps>(), PairAssignmentsBuilder
 
@@ -39,7 +35,7 @@ data class PairAssignmentsProps(
         val players: List<Player>,
         val pairAssignments: PairAssignmentDocument?,
         val pathSetter: (String) -> Unit,
-        val coupling: dynamic
+        val coupling: Coupling
 ) : RProps
 
 external interface PairAssignmentsStyles {
@@ -145,7 +141,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                     onClickFunction = {
                         scope.launch {
                             val tribeId = props.tribe.id
-                            saveCurrentPairAssignments(pairAssignments, tribeId, props.coupling)
+                            props.coupling.saveCurrentPairAssignments(pairAssignments, tribeId)
                             props.pathSetter("/${tribeId.value}/pairAssignments/current/")
                         }
                     }
@@ -153,12 +149,6 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                 +"Save!"
             }
         }
-    }
-
-    private suspend fun saveCurrentPairAssignments(pairAssignments: PairAssignmentDocument, tribeId: TribeId, coupling: dynamic) {
-        coupling.saveCurrentPairAssignments(pairAssignments.toJson(), tribeId.value)
-                .unsafeCast<Promise<Unit>>()
-                .await()
     }
 
     private fun PairAssignmentDocument.swapPlayers(

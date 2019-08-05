@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
@@ -22,7 +21,6 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.*
-import kotlin.js.Promise
 import kotlin.js.json
 
 object PlayerConfig : ComponentProvider<PlayerConfigProps>(), PlayerConfigBuilder
@@ -32,7 +30,7 @@ data class PlayerConfigProps(
         val player: Player,
         val players: List<Player>,
         val pathSetter: (String) -> Unit,
-        val coupling: dynamic,
+        val coupling: Coupling,
         val reload: () -> Unit
 ) : RProps
 
@@ -105,28 +103,24 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
     private fun savePlayer(
             scope: CoroutineScope,
-            coupling: dynamic,
+            coupling: Coupling,
             updatedPlayer: Player,
             tribe: KtTribe,
             reload: () -> Unit
     ) = scope.launch {
-        coupling.savePlayer(updatedPlayer.toJson(), tribe.id.value)
-                .unsafeCast<Promise<Unit>>()
-                .await()
+        coupling.savePlayer(updatedPlayer, tribe)
         reload()
     }
 
     private fun removePlayer(
-            coupling: dynamic,
+            coupling: Coupling,
             player: Player,
             tribe: KtTribe,
             pathSetter: (String) -> Unit,
             scope: CoroutineScope
     ) = scope.launch {
         if (window.confirm("Are you sure you want to delete this player?")) {
-            coupling.removePlayer(player.toJson(), tribe.id.value)
-                    .unsafeCast<Promise<Unit>>()
-                    .await()
+            coupling.removePlayer(player, tribe)
             pathSetter("/${tribe.id.value}/pairAssignments/current/")
         }
     }
