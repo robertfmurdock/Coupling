@@ -29,8 +29,8 @@ dependencies {
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.80-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-css:1.0.0-pre.80-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-styled:1.0.0-pre.80-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react:16.6.0-pre.80-kotlin-1.3.41")
-    implementation("org.jetbrains:kotlin-react-dom:16.6.0-pre.80-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-react:16.8.6-pre.80-kotlin-1.3.41")
+    implementation("org.jetbrains:kotlin-react-dom:16.8.6-pre.80-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.80-kotlin-1.3.41")
 
 
