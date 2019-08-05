@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 
-
 object PinListPage : ComponentProvider<PageProps>(), PinListPageBuilder
 
 val RBuilder.pinListPage get() = PinListPage.captor(this)
@@ -21,7 +20,7 @@ interface PinListPageBuilder : ComponentBuilder<PageProps>, PinListQueryDispatch
 
         if (tribeId != null) {
             loadedPinList(DataLoadProps {
-                performPinListQuery(tribeId, pageProps.coupling)
+                tribeId.performPinListQuery()
                         .toPinListProps()
             })
         } else throw Exception("WHAT")
@@ -34,6 +33,6 @@ interface PinListPageBuilder : ComponentBuilder<PageProps>, PinListQueryDispatch
         )
     }
 
-    private suspend fun performPinListQuery(tribeId: TribeId, coupling: Coupling) = PinListQuery(tribeId, coupling)
+    private suspend fun TribeId.performPinListQuery() = PinListQuery(this)
             .perform()
 }
