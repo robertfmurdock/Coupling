@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.*
 import react.RBuilder
 
-
 object TribeListPage : ComponentProvider<PageProps>(), TribeListPageBuilder
 
 val RBuilder.tribeListPage get() = TribeListPage.captor(this)
@@ -16,7 +15,7 @@ interface TribeListPageBuilder : ComponentBuilder<PageProps>, TribeListQueryDisp
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         loadedTribeList(
                 DataLoadProps {
-                    val tribes = performTribeQuery(pageProps)
+                    val tribes = performTribeQuery()
                     TribeListProps(
                             tribes = tribes,
                             pathSetter = pageProps.pathSetter
@@ -25,6 +24,6 @@ interface TribeListPageBuilder : ComponentBuilder<PageProps>, TribeListQueryDisp
         )
     }
 
-    private suspend fun performTribeQuery(pageProps: PageProps) = TribeListQuery(pageProps.coupling).perform()
+    private suspend fun performTribeQuery() = TribeListQuery.perform()
 
 }
