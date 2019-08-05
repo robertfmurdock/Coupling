@@ -17,7 +17,7 @@ interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, Get
     suspend fun TribeDataSetQuery.perform() = logAsync { getData(tribeId) }
 
     private suspend fun getData(tribeId: TribeId) =
-            Triple(getTribeAsync(tribeId), getPlayerListAsync(tribeId), getPairAssignmentListAsync(tribeId))
+            Triple(tribeId.getTribeAsync(), getPlayerListAsync(tribeId), getPairAssignmentListAsync(tribeId))
                     .await()
 
     private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =

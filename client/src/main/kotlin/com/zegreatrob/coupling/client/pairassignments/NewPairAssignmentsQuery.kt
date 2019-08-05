@@ -33,7 +33,7 @@ interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSynta
             ).await()
 
     private suspend fun getData(tribeId: TribeId) =
-            Pair(getTribeAsync(tribeId), getPlayerListAsync(tribeId))
+            Pair(tribeId.getTribeAsync(), getPlayerListAsync(tribeId))
                     .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =

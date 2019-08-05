@@ -18,7 +18,7 @@ interface PinListQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax {
     suspend fun PinListQuery.perform() = logAsync { coupling.getData(tribeId) }
 
     private suspend fun Coupling.getData(tribeId: TribeId) =
-            (getTribeAsync(tribeId) to getPinListAsync(tribeId))
+            (tribeId.getTribeAsync() to getPinListAsync(tribeId))
                     .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Promise<List<Pin>>>.await() = first.await() to second.await()

@@ -11,7 +11,7 @@ import kotlin.js.Json
 
 interface GetTribeSyntax : AxiosGetEntitySyntax {
 
-    fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = axios.getEntityAsync("/api/tribes/${tribeId.value}")
+    fun TribeId.getTribeAsync(): Deferred<KtTribe> = axios.getEntityAsync("/api/tribes/$value")
             .then(Json::toTribe)
             .asDeferred()
 

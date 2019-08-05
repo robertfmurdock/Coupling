@@ -38,7 +38,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPl
 
     private suspend fun getData(tribeId: TribeId) =
             Triple(
-                    getTribeAsync(tribeId),
+                    tribeId.getTribeAsync(),
                     getPlayerListAsync(tribeId),
                     getPairAssignmentListAsync(tribeId)
             ).await()

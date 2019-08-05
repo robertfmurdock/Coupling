@@ -7,5 +7,5 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 data class TribeQuery(val tribeId: TribeId) : Action
 
 interface TribeQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax {
-    suspend fun TribeQuery.perform() = logAsync { getTribeAsync(tribeId).await() }
+    suspend fun TribeQuery.perform() = logAsync { tribeId.getTribeAsync().await() }
 }

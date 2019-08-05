@@ -27,7 +27,7 @@ interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps>, RetiredPlayer
         } else throw Exception("WHAT")
     }
 
-    private suspend fun performQuery(tribeId: TribeId, coupling: Coupling) = RetiredPlayerListQuery(tribeId, coupling)
+    private suspend fun performQuery(tribeId: TribeId, coupling: Coupling) = RetiredPlayerListQuery(tribeId)
             .perform()
 
     private fun toRetiredPlayersProps(result: Pair<KtTribe, List<Player>>, pathSetter: (String) -> Unit) = result

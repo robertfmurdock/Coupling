@@ -21,7 +21,7 @@ interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerQ
         if (tribeId != null && playerId != null) {
             loadedRetiredPlayer(
                     dataLoadProps(
-                            query = { performRetiredPlayerQuery(tribeId, playerId, pageProps.coupling) },
+                            query = { performRetiredPlayerQuery(tribeId, playerId) },
                             toProps = { reload, (tribe, players, player) ->
                                 PlayerConfigProps(
                                         tribe = tribe,
@@ -39,6 +39,6 @@ interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerQ
         } else throw Exception("WHAT")
     }
 
-    private suspend fun performRetiredPlayerQuery(tribeId: TribeId, playerId: String, coupling: Coupling) =
-            RetiredPlayerQuery(tribeId, playerId, coupling).perform()
+    private suspend fun performRetiredPlayerQuery(tribeId: TribeId, playerId: String) =
+            RetiredPlayerQuery(tribeId, playerId).perform()
 }

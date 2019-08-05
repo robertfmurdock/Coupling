@@ -26,7 +26,7 @@ interface PlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayer
                 }
     }
 
-    private suspend fun getData(tribeId: TribeId) = (getTribeAsync(tribeId) to getPlayerListAsync(tribeId))
+    private suspend fun getData(tribeId: TribeId) = (tribeId.getTribeAsync() to getPlayerListAsync(tribeId))
             .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =
