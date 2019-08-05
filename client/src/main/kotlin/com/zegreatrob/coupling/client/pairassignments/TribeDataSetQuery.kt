@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.getHistoryAsync
-import com.zegreatrob.coupling.client.getPlayerListAsync
+import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
@@ -16,7 +16,7 @@ import kotlin.js.Promise
 
 data class TribeDataSetQuery(val tribeId: TribeId, val coupling: Coupling) : Action
 
-interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax {
+interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax {
 
     suspend fun TribeDataSetQuery.perform() = logAsync { coupling.getData(tribeId) }
 
@@ -24,7 +24,7 @@ interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax {
             Triple(getTribeAsync(tribeId), getPlayerListAsync(tribeId), getHistoryAsync(tribeId))
                     .await()
 
-    private suspend fun Triple<Deferred<KtTribe>, Promise<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
+    private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
             Triple(
                     first.await(),
                     second.await(),

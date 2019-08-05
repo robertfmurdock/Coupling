@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.getHistoryAsync
-import com.zegreatrob.coupling.client.getPlayerListAsync
+import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
@@ -25,7 +25,8 @@ data class StatisticQueryResults(
         val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, ComposeStatisticsActionDispatcher,
+interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
+        ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
 
     suspend fun StatisticsQuery.perform() = logAsync {
@@ -43,7 +44,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, Compo
                     getHistoryAsync(tribeId)
             ).await()
 
-    private suspend fun Triple<Deferred<KtTribe>, Promise<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
+    private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
             Triple(
                     first.await(),
                     second.await(),

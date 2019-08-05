@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 
-
 object TribeConfigPage : ComponentProvider<PageProps>(), TribeConfigPageBuilder
 
 val RBuilder.tribeConfigPage get() = TribeConfigPage.captor(this)
@@ -28,11 +27,10 @@ interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispat
 
     private fun presentNewTribe(pageProps: PageProps) = pageProps.toNewTribeConfigProps()
 
-    private suspend fun presentExistingTribe(pageProps: PageProps, tribeId: TribeId) = pageProps
-            .performTribeQuery(tribeId)
+    private suspend fun presentExistingTribe(pageProps: PageProps, tribeId: TribeId) = performTribeQuery(tribeId)
             .let { pageProps.toTribeConfigProps(it) }
 
-    private suspend fun PageProps.performTribeQuery(tribeId: TribeId) = TribeQuery(tribeId).perform()
+    private suspend fun performTribeQuery(tribeId: TribeId) = TribeQuery(tribeId).perform()
 
     private fun PageProps.toTribeConfigProps(tribe: KtTribe) = TribeConfigProps(
             tribe = tribe,
