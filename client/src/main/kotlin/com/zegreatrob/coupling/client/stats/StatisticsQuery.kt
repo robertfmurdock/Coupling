@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.getHistoryAsync
 import com.zegreatrob.coupling.client.getPlayerListAsync
-import com.zegreatrob.coupling.client.getTribeAsync
+import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommand
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapCommandDispatcher
@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.await
 import kotlin.js.Promise
 
@@ -24,7 +25,7 @@ data class StatisticQueryResults(
         val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : ActionLoggingSyntax, ComposeStatisticsActionDispatcher,
+interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, ComposeStatisticsActionDispatcher,
         CalculateHeatMapCommandDispatcher {
 
     suspend fun StatisticsQuery.perform() = logAsync {
@@ -42,7 +43,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, ComposeStatisticsActi
                     getHistoryAsync(tribeId)
             ).await()
 
-    private suspend fun Triple<Promise<KtTribe>, Promise<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
+    private suspend fun Triple<Deferred<KtTribe>, Promise<List<Player>>, Promise<List<PairAssignmentDocument>>>.await() =
             Triple(
                     first.await(),
                     second.await(),

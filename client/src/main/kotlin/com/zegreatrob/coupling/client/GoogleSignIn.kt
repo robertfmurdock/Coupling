@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.external.axios.axios
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.await
