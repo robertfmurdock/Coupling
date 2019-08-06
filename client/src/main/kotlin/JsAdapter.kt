@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.*
 import com.zegreatrob.coupling.client.pin.pinListPage
@@ -34,7 +33,6 @@ fun ComposeStatisticsActionDispatcher.performComposeStatisticsAction(tribe: Json
 @Suppress("unused")
 @JsName("components")
 object ReactComponents :
-        LogoutRenderer,
         PrepareSpinRenderer,
         GoogleSignIn {
 
@@ -168,9 +166,22 @@ object ReactComponents :
     }
 
     @Suppress("unused")
+    @JsName("CouplingRouter")
+    val couplingRouterJs = jsReactFunction { props: dynamic ->
+        couplingRouter(CouplingRouterProps(
+                props.isSignedIn.unsafeCast<Boolean>(),
+                props.animationsDisabled.unsafeCast<Boolean>()
+        ))
+    }
+
+    @Suppress("unused")
     @JsName("Logout")
     val logoutJs = jsReactFunction { props ->
-        logout(LogoutProps(props.coupling))
+        logout(PageProps(
+                props.pathParams.unsafeCast<Map<String, String>>(),
+                pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
+                search = URLSearchParams(props.search)
+        ))
     }
 
     @Suppress("unused")

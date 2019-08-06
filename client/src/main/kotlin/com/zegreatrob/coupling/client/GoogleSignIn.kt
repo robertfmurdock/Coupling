@@ -17,7 +17,7 @@ interface GoogleSignIn {
             .createSession()
             .also { window.location.pathname = "/" }
 
-    suspend fun signOut(): Unit = getGoogleAuth()
+    suspend fun googleSignOut(): Unit = getGoogleAuth()
             .whenLoggedInSignOut()
 
     suspend fun checkForSignedIn() = coroutineScope {
