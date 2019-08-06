@@ -28,7 +28,6 @@ interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerQ
                                         player = player,
                                         players = players,
                                         pathSetter = pageProps.pathSetter,
-                                        coupling = pageProps.coupling,
                                         reload = reload
                                 )
                             }

@@ -68,7 +68,7 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
     }
 
     private fun TribeConfigRenderer.onClickDelete() = scope.launch {
-        props.tribe.id.delete().await()
+        props.tribe.id.deleteAsync().await()
         props.pathSetter("/tribes/")
     }
 

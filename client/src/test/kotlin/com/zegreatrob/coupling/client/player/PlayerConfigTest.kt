@@ -14,7 +14,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
-import kotlinext.js.jsObject
+import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.await
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
@@ -22,23 +22,9 @@ import shallow
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class PlayerConfigTest {
-
-    var coupling: dynamic = null
-    lateinit var removeSpy: Spy<Pair<Json, String>, Promise<Unit>>
-
-    @BeforeTest
-    fun before() {
-        removeSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
-        removeSpy.spyWillReturn(Promise.resolve(Unit))
-
-        coupling = jsObject<dynamic> {
-            removePlayer = { player: Json, tribeId: String -> removeSpy.spyFunction(player to tribeId) }
-        }
-    }
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigBuilder {
@@ -46,7 +32,7 @@ class PlayerConfigTest {
 
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigProps(tribe, player, listOf(player), {}, coupling, {}))
+        shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
         wrapper.find<Any>("input[name='badge'][value='${Badge.Default.value}'][checked]")
                 .length
@@ -59,7 +45,7 @@ class PlayerConfigTest {
 
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigProps(tribe, player, listOf(player), {}, coupling, {}))
+        shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
         wrapper.find<Any>("input[name='badge'][value='${Badge.Alternate.value}'][checked]")
                 .length
@@ -83,7 +69,7 @@ class PlayerConfigTest {
                 val player = Player(id = "blarg", badge = Badge.Default.value)
                 val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
 
-                val wrapper = shallow(PlayerConfigProps(tribe, player, listOf(player), {}, coupling, {
+                val wrapper = shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {
                     reloaderSpy.spyFunction(Unit)
                 }))
             }) {
@@ -116,6 +102,10 @@ class PlayerConfigTest {
         withContext(this.coroutineContext) {
             setupAsync(object : PlayerConfigBuilder {
                 override fun buildScope() = this@withContext
+                val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
+                override fun deleteAsync(tribeId: TribeId, playerId: String) =
+                        removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
+
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
@@ -126,20 +116,20 @@ class PlayerConfigTest {
                         tribe,
                         player,
                         listOf(player),
-                        pathSetterSpy::spyFunction,
-                        coupling
+                        pathSetterSpy::spyFunction
                 ) {})
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
+                removeSpy.spyWillReturn(Promise.resolve(Unit))
             } exerciseAsync {
                 wrapper.find<Any>(".delete-button")
                         .simulate("click")
             }
         } verifyAsync {
             removeSpy.spyReceivedValues
-                    .map { it.first.toPlayer() to TribeId(it.second) }
+                    .map { TribeId(it.first) to it.second }
                     .assertContains(
-                            player to tribe.id
+                            tribe.id to player.id
                     )
             pathSetterSpy.spyReceivedValues.contains(
                     "/${tribe.id.value}/pairAssignments/current/"
@@ -153,7 +143,9 @@ class PlayerConfigTest {
             setupAsync(object : PlayerConfigBuilder {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
-
+                val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
+                override fun deleteAsync(tribeId: TribeId, playerId: String) =
+                        removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val tribe = KtTribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
@@ -161,11 +153,11 @@ class PlayerConfigTest {
                         tribe,
                         player,
                         listOf(player),
-                        pathSetterSpy::spyFunction,
-                        coupling
+                        pathSetterSpy::spyFunction
                 ) {})
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
+                removeSpy.spyWillReturn(Promise.resolve(Unit))
             } exerciseAsync {
                 wrapper.find<Any>(".delete-button")
                         .simulate("click")
@@ -184,8 +176,7 @@ class PlayerConfigTest {
                 tribe,
                 player,
                 listOf(player),
-                {},
-                coupling
+                {}
         ) {})
     }) exercise {
         wrapper.find<Any>("input[name='name']")
@@ -207,8 +198,7 @@ class PlayerConfigTest {
                 tribe,
                 player,
                 listOf(player),
-                {},
-                coupling
+                {}
         ) {})
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`

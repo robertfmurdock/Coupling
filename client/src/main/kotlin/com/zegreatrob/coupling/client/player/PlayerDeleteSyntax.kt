@@ -1,13 +1,13 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
-interface TribeIdDeleteSyntax {
+interface PlayerDeleteSyntax {
 
-    fun TribeId.deleteAsync() = axios.delete("/api/tribes/$value")
+    fun deleteAsync(tribeId: TribeId, playerId: String) = axios.delete("/api/${tribeId.value}/players/$playerId")
             .unsafeCast<Promise<Unit>>()
             .asDeferred()
 

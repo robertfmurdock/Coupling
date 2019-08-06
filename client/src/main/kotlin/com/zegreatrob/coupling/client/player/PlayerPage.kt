@@ -39,7 +39,6 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher
                         player = player,
                         players = players,
                         pathSetter = pageProps.pathSetter,
-                        coupling = pageProps.coupling,
                         reload = reload
                 )
             }
