@@ -29,7 +29,7 @@ external interface TribeConfigStyles {
 
 typealias TribeConfigRenderer = ScopedPropsStylesBuilder<TribeConfigProps, TribeConfigStyles>
 
-interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook, TribeSaveSyntax {
+interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook, TribeSaveSyntax, TribeIdDeleteSyntax {
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
@@ -58,7 +58,7 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
                     }
                     if (!isNew) {
                         div(classes = "small red button delete-tribe-button") {
-                            attrs { onClickFunction = { onClickDelete(updatedTribe) } }
+                            attrs { onClickFunction = { onClickDelete() } }
                             +"Retire"
                         }
                     }
@@ -67,8 +67,8 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
         }
     }
 
-    private fun TribeConfigRenderer.onClickDelete(updatedTribe: KtTribe) = scope.launch {
-        props.coupling.deleteTribe(updatedTribe.id)
+    private fun TribeConfigRenderer.onClickDelete() = scope.launch {
+        props.tribe.id.delete().await()
         props.pathSetter("/tribes/")
     }
 
