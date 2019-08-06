@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.pairassignments.GetPairAssignmentListSyntax
 import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
@@ -13,7 +12,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
-data class StatisticsQuery(val tribeId: TribeId, val coupling: Coupling) : Action
+data class StatisticsQuery(val tribeId: TribeId) : Action
 
 data class StatisticQueryResults(
         val tribe: KtTribe,

@@ -42,7 +42,6 @@ object ReactComponents :
     @JsName("TribeListPage")
     val tribeListPageJs = jsReactFunction { props ->
         tribeListPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -53,7 +52,6 @@ object ReactComponents :
     @JsName("WelcomePage")
     val welcomePageJs = jsReactFunction { props ->
         welcomePage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -64,7 +62,6 @@ object ReactComponents :
     @JsName("RetiredPlayersPage")
     val retiredPlayersPageJs = jsReactFunction { props ->
         retiredPlayersPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -75,7 +72,6 @@ object ReactComponents :
     @JsName("StatisticsPage")
     val statisticsPageJs = jsReactFunction { props ->
         statisticsPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -86,7 +82,6 @@ object ReactComponents :
     @JsName("TribeConfigPage")
     val tribeConfigPageJs = jsReactFunction { props ->
         tribeConfigPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -97,7 +92,6 @@ object ReactComponents :
     @JsName("PinListPage")
     val pinListPageJs = jsReactFunction { props ->
         pinListPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -108,7 +102,6 @@ object ReactComponents :
     @JsName("PlayerPage")
     val playerPageJs = jsReactFunction { props ->
         playerPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -119,7 +112,6 @@ object ReactComponents :
     @JsName("RetiredPlayerPage")
     val retiredPlayerPageJs = jsReactFunction { props ->
         retiredPlayerPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -130,7 +122,6 @@ object ReactComponents :
     @JsName("CurrentPairAssignmentsPage")
     val currentPairAssignmentsPageJs = jsReactFunction { props ->
         currentPairAssignmentsPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -141,7 +132,6 @@ object ReactComponents :
     @JsName("NewPairAssignmentsPage")
     val newPairAssignmentsPageJs = jsReactFunction { props ->
         newPairAssignmentsPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -152,7 +142,6 @@ object ReactComponents :
     @JsName("HistoryPage")
     val historyPageJs = jsReactFunction { props ->
         historyPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)
@@ -163,7 +152,6 @@ object ReactComponents :
     @JsName("PrepareSpinPage")
     val prepareSpinJs = jsReactFunction { props: dynamic ->
         prepareSpinPage(PageProps(
-                props.coupling.unsafeCast<Coupling>(),
                 props.pathParams.unsafeCast<Map<String, String>>(),
                 pathSetter = props.pathSetter.unsafeCast<Function1<String, Unit>>(),
                 search = URLSearchParams(props.search)

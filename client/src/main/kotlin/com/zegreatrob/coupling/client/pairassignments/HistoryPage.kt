@@ -21,7 +21,7 @@ interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatch
                     dataLoadProps(
                             query = { HistoryQuery(tribeId).perform() },
                             toProps = { reload, (tribe, history) ->
-                                HistoryProps(tribe, history, reload, pageProps.pathSetter, pageProps.coupling)
+                                HistoryProps(tribe, history, reload, pageProps.pathSetter)
                             }
                     )
             )

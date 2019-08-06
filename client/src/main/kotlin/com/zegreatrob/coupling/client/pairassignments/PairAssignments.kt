@@ -34,8 +34,7 @@ data class PairAssignmentsProps(
         val tribe: KtTribe,
         val players: List<Player>,
         val pairAssignments: PairAssignmentDocument?,
-        val pathSetter: (String) -> Unit,
-        val coupling: Coupling
+        val pathSetter: (String) -> Unit
 ) : RProps
 
 external interface PairAssignmentsStyles {
@@ -46,7 +45,7 @@ const val dragItemType = "PLAYER"
 
 typealias PairAssignmentRenderer = ScopedPropsStylesBuilder<PairAssignmentsProps, PairAssignmentsStyles>
 
-interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles> {
+interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles>, PairAssignmentSaveSyntax {
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
@@ -141,7 +140,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                     onClickFunction = {
                         scope.launch {
                             val tribeId = props.tribe.id
-                            props.coupling.saveCurrentPairAssignments(pairAssignments, tribeId)
+                            saveAsync(tribeId, pairAssignments)
                             props.pathSetter("/${tribeId.value}/pairAssignments/current/")
                         }
                     }

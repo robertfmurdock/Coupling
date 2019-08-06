@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.toJson
+import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -17,7 +17,6 @@ import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.dom.span
-import kotlin.js.Promise
 
 object History : ComponentProvider<HistoryProps>(), HistoryComponentBuilder
 
@@ -34,11 +33,11 @@ data class HistoryProps(
         val tribe: KtTribe,
         val history: List<PairAssignmentDocument>,
         val reload: () -> Unit,
-        val pathSetter: (String) -> Unit,
-        val coupling: dynamic
+        val pathSetter: (String) -> Unit
 ) : RProps
 
 interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
+        PairAssignmentDocDeleteSyntax,
         WindowFunctions,
         ScopeProvider {
 
@@ -59,14 +58,18 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles): List<Any> = props.history.map {
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles) = props.history.forEach {
+        val pairAssignmentDocumentId = it.id ?: return@forEach
+
         div(classes = "pair-assignments") {
-            attrs { key = it.id?.value ?: "" }
+            attrs { key = pairAssignmentDocumentId.value }
             span(classes = "pair-assignments-header") { +it.dateText() }
             span(classes = "small red button") {
                 attrs {
                     classes += styles.deleteButton
-                    onClickFunction = { _ -> scope.launch { props.removeButtonOnClick(it) } }
+                    onClickFunction = { _ ->
+                        scope.launch { removeButtonOnClick(pairAssignmentDocumentId, props.tribe.id, props.reload) }
+                    }
                 }
                 +"DELETE"
             }
@@ -74,11 +77,9 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
         }
     }
 
-    private suspend fun HistoryProps.removeButtonOnClick(document: PairAssignmentDocument) {
+    private suspend fun removeButtonOnClick(pairAssignmentDocumentId: PairAssignmentDocumentId, tribeId: TribeId, reload: () -> Unit) {
         if (window.confirm("Are you sure you want to delete these pair assignments?")) {
-            coupling.removeAssignments(document.toJson(), tribe.id.value)
-                    .unsafeCast<Promise<Unit>>()
-                    .await()
+            deleteAsync(tribeId, pairAssignmentDocumentId).await()
             reload()
         }
     }

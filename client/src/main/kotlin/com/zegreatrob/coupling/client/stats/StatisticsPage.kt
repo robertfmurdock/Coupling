@@ -18,7 +18,7 @@ interface StatisticsPageBuilder : ComponentBuilder<PageProps>, StatisticsQueryDi
         if (tribeId != null) {
             loadedPairAssignments(
                     dataLoadProps(
-                            query = { StatisticsQuery(tribeId, pageProps.coupling).perform() },
+                            query = { StatisticsQuery(tribeId).perform() },
                             toProps = { _, queryResult -> TribeStatisticsProps(queryResult, pageProps.pathSetter) }
                     )
             )

@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 
 
@@ -23,7 +22,7 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher
         if (tribeId != null) {
             loadedPlayer(
                     dataLoadProps(
-                            query = { performPlayerQuery(tribeId, playerId, pageProps.coupling) },
+                            query = { PlayerQuery(tribeId, playerId).perform() },
                             toProps = toPropsFunc(pageProps)
                     )
             ) {
@@ -42,8 +41,4 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher
                         reload = reload
                 )
             }
-
-    private suspend fun performPlayerQuery(tribeId: TribeId, playerId: String?, coupling: Coupling) =
-            PlayerQuery(tribeId, playerId, coupling).perform()
-
 }

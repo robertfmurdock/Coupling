@@ -5,13 +5,14 @@ import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import kotlinext.js.jsObject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
 import shallow
@@ -21,7 +22,7 @@ import kotlin.test.Test
 
 class HistoryComponentBuilderTest {
 
-    val styles = loadStyles<HistoryStyles>("pairassignments/History")
+    private val styles = loadStyles<HistoryStyles>("pairassignments/History")
 
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = testAsync {
@@ -32,12 +33,16 @@ class HistoryComponentBuilderTest {
 
                 val tribe = KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
-                val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
-                val coupling = jsObject<dynamic> { removeAssignments = { removeSpy.spyFunction(Unit) } }
+                override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
+                        removeSpy.spyFunction(Unit).asDeferred()
 
-                val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList()))
+                val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
+
+                val history = listOf(
+                        PairAssignmentDocument(DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId"))
+                )
                 val wrapper = shallow(
-                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, coupling)
+                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
                 )
             }) {
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -62,12 +67,16 @@ class HistoryComponentBuilderTest {
 
                 val tribe = KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
-                val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
-                val coupling = jsObject<dynamic> { removeAssignments = { removeSpy.spyFunction(Unit) } }
+                override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
+                        removeSpy.spyFunction(Unit).asDeferred()
 
-                val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList()))
+                val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
+
+                val history = listOf(PairAssignmentDocument(
+                        DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId"))
+                )
                 val wrapper = shallow(
-                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, coupling)
+                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
                 )
             }) exerciseAsync {
                 wrapper.find<Any>(".${styles.deleteButton}").simulate("click")

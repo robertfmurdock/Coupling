@@ -1,16 +1,17 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.ComponentBuilder
+import com.zegreatrob.coupling.client.ComponentProvider
+import com.zegreatrob.coupling.client.PageProps
+import com.zegreatrob.coupling.client.reactFunctionComponent
 import org.w3c.dom.url.URLSearchParams
-import react.*
+import react.RBuilder
+import react.RClass
+import react.RProps
+import react.ReactElement
 import react.router.dom.RouteResultProps
 import react.router.dom.route
 import kotlin.js.Json
-
-@JsModule("ServiceContext")
-@JsNonModule
-private external val serviceContextModule: dynamic
-
 
 object CouplingRoute : ComponentProvider<CouplingRouteProps>(), CouplingRouteBuilder
 
@@ -24,23 +25,14 @@ private external val React: dynamic
 
 interface CouplingRouteBuilder : ComponentBuilder<CouplingRouteProps> {
 
-    private val serviceContextConsumer: RConsumer<Coupling>
-        get() {
-            val serviceContext = serviceContextModule.default.unsafeCast<RContext<Coupling>>()
-            return serviceContext.Consumer
-        }
-
     override fun build() = reactFunctionComponent<CouplingRouteProps> { props ->
-        consumer(serviceContextConsumer) { coupling: Coupling ->
-            route<RProps>(props.path, exact = true) { routeProps ->
-                React.createElement(props.component, pageProps(coupling, routeProps))
-                        .unsafeCast<ReactElement>()
-            }
+        route<RProps>(props.path, exact = true) { routeProps ->
+            React.createElement(props.component, pageProps(routeProps))
+                    .unsafeCast<ReactElement>()
         }
     }
 
-    private fun pageProps(coupling: Coupling, routeProps: RouteResultProps<RProps>) = PageProps(
-            coupling = coupling,
+    private fun pageProps(routeProps: RouteResultProps<RProps>) = PageProps(
             pathParams = routeProps.pathParams(),
             pathSetter = { path -> routeProps.history.push(path) },
             search = URLSearchParams(routeProps.location.search)

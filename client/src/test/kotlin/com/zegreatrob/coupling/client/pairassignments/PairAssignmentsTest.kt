@@ -4,7 +4,6 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.ServerMessage
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
@@ -13,14 +12,13 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
 import findComponent
-import kotlinext.js.js
-import kotlinext.js.jsObject
 import kotlinx.coroutines.withContext
 import shallow
 import kotlin.js.Json
@@ -50,7 +48,7 @@ class PairAssignmentsTest {
                 ).withPins()
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, pairAssignments, {}, jsObject { }))
+        shallow(PairAssignmentsProps(tribe, players, pairAssignments, {}))
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
                 .props()
@@ -74,7 +72,7 @@ class PairAssignmentsTest {
                 Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, null, {}, jsObject { }))
+        shallow(PairAssignmentsProps(tribe, players, null, {}))
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
                 .props()
@@ -88,14 +86,16 @@ class PairAssignmentsTest {
             setupAsync(object : PairAssignmentsBuilder {
                 override fun buildScope() = this@withContext
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
+                override suspend fun saveAsync(tribeId: TribeId, pairAssignmentDocument: PairAssignmentDocument) {
+                    saveSpy.spyFunction(pairAssignmentDocument.toJson())
+                }
+
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val coupling: Coupling = js { this.saveCurrentPairAssignments = saveSpy::spyFunction }
-                        .unsafeCast<Coupling>()
                 val pairAssignments = PairAssignmentDocument(
                         date = DateTime.now(),
                         pairs = emptyList()
                 )
-                val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, pathSetterSpy::spyFunction, coupling))
+                val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, pathSetterSpy::spyFunction))
             }) {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
@@ -125,7 +125,7 @@ class PairAssignmentsTest {
                         pairOf(player3, player4)
                 ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}, jsObject { }))
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}))
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
@@ -157,7 +157,7 @@ class PairAssignmentsTest {
                         pairOf(player3, player4)
                 ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}, jsObject { }))
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}))
     }) exercise {
         player4.dragTo(player3, wrapper)
     } verify {
@@ -185,7 +185,7 @@ class PairAssignmentsTest {
     @Test
     fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsBuilder {
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, listOf(), null, {}, jsObject { }))
+        shallow(PairAssignmentsProps(tribe, listOf(), null, {}))
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)
                 .props()

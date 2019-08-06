@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
@@ -11,7 +10,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
-data class PlayerQuery(val tribeId: TribeId, val playerId: String?, val coupling: Coupling) : Action
+data class PlayerQuery(val tribeId: TribeId, val playerId: String?) : Action
 
 interface PlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
         FindCallSignActionDispatcher {

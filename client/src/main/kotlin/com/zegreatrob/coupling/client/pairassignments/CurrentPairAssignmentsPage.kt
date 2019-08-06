@@ -25,7 +25,7 @@ interface CurrentPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, Tribe
     private fun dataLoadProps(tribeId: TribeId, pageProps: PageProps) = dataLoadProps(
             query = { TribeDataSetQuery(tribeId).perform() },
             toProps = { _, (tribe, players, history) ->
-                PairAssignmentsProps(tribe, players, history.firstOrNull(), pageProps.pathSetter, pageProps.coupling)
+                PairAssignmentsProps(tribe, players, history.firstOrNull(), pageProps.pathSetter)
             }
     )
 }

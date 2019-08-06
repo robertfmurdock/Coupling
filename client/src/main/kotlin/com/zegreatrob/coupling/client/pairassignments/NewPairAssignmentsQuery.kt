@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.Coupling
 import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
@@ -10,7 +9,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
-data class NewPairAssignmentsQuery(val tribeId: TribeId, val coupling: Coupling, val playerIds: List<String>) : Action
+data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>) : Action
 
 interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax, RequestSpinActionDispatcher {
     suspend fun NewPairAssignmentsQuery.perform() = logAsync {
