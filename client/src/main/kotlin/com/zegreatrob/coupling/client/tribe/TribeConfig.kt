@@ -29,7 +29,7 @@ external interface TribeConfigStyles {
 
 typealias TribeConfigRenderer = ScopedPropsStylesBuilder<TribeConfigProps, TribeConfigStyles>
 
-interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook {
+interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook, SaveTribeSyntax {
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
@@ -73,7 +73,7 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
     }
 
     private fun TribeConfigRenderer.onClickSave(updatedTribe: KtTribe) = scope.launch {
-        props.coupling.saveTribe(updatedTribe)
+        updatedTribe.saveAsync().await()
         props.pathSetter("/tribes/")
     }
 

@@ -14,7 +14,6 @@ external interface Coupling {
     fun savePlayer(json: Json, tribeId: String): Promise<Unit>
     fun removePlayer(json: Json, value: String): Promise<Unit>
     fun deleteTribe(tribeId: String): Promise<Unit>
-    fun saveTribe(json: Json): Promise<Unit>
 }
 
 suspend fun Coupling.saveCurrentPairAssignments(pairAssignments: PairAssignmentDocument, tribeId: TribeId) {
@@ -34,10 +33,5 @@ suspend fun Coupling.removePlayer(player: Player, tribe: KtTribe) {
 
 suspend fun Coupling.deleteTribe(tribeId: TribeId) {
     deleteTribe(tribeId.value)
-            .await()
-}
-
-suspend fun Coupling.saveTribe(updatedTribe: KtTribe) {
-    saveTribe(updatedTribe.toJson())
             .await()
 }
