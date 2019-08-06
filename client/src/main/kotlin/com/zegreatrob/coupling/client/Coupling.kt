@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.toJson
 import kotlinx.coroutines.await
@@ -21,13 +20,13 @@ suspend fun Coupling.saveCurrentPairAssignments(pairAssignments: PairAssignmentD
             .await()
 }
 
-suspend fun Coupling.savePlayer(updatedPlayer: Player, tribe: KtTribe) {
-    savePlayer(updatedPlayer.toJson(), tribe.id.value)
+suspend fun Coupling.savePlayer(updatedPlayer: Player, tribeId: TribeId) {
+    savePlayer(updatedPlayer.toJson(), tribeId.value)
             .await()
 }
 
-suspend fun Coupling.removePlayer(player: Player, tribe: KtTribe) {
-    removePlayer(player.toJson(), tribe.id.value)
+suspend fun Coupling.removePlayer(player: Player, tribeId: TribeId) {
+    removePlayer(player.toJson(), tribeId.value)
             .await()
 }
 

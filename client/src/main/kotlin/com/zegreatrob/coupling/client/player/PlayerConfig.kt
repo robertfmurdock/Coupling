@@ -108,7 +108,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
             tribe: KtTribe,
             reload: () -> Unit
     ) = scope.launch {
-        coupling.savePlayer(updatedPlayer, tribe)
+        coupling.savePlayer(updatedPlayer, tribe.id)
         reload()
     }
 
@@ -120,7 +120,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
             scope: CoroutineScope
     ) = scope.launch {
         if (window.confirm("Are you sure you want to delete this player?")) {
-            coupling.removePlayer(player, tribe)
+            coupling.removePlayer(player, tribe.id)
             pathSetter("/${tribe.id.value}/pairAssignments/current/")
         }
     }

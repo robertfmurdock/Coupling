@@ -29,7 +29,7 @@ external interface TribeConfigStyles {
 
 typealias TribeConfigRenderer = ScopedPropsStylesBuilder<TribeConfigProps, TribeConfigStyles>
 
-interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook, SaveTribeSyntax {
+interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook, TribeSaveSyntax {
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
