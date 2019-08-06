@@ -8,8 +8,6 @@ import react.RBuilder
 
 object RetiredPlayersPage : ComponentProvider<PageProps>(), RetiredPlayersPageBuilder
 
-val RBuilder.retiredPlayersPage get() = RetiredPlayersPage.captor(this)
-
 private val LoadedRetiredPlayers = dataLoadWrapper(RetiredPlayers)
 private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.captor(this)
 

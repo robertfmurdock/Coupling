@@ -16,8 +16,6 @@ async function bootstrapApp() {
     const isSignedIn = await GoogleSignIn.checkForSignedIn();
     const animationsDisabled = !!window.sessionStorage.getItem('animationDisabled');
 
-    console.log(components.CouplingRouter)
-
     ReactDOM.render(
         React.createElement(components.CouplingRouter, {isSignedIn, animationsDisabled}),
         document.getElementsByClassName('view-container')[0]

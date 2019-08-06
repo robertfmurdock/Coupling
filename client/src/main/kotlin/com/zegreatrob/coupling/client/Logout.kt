@@ -5,16 +5,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import react.RBuilder
-import react.RProps
 import react.dom.div
 import react.router.dom.redirect
 
 object Logout : ComponentProvider<PageProps>(), LogoutBuilder
-
-val RBuilder.logout get() = Logout.captor(this)
-
-data class LogoutProps(val coupling: dynamic) : RProps
 
 interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutActionDispatcher {
 

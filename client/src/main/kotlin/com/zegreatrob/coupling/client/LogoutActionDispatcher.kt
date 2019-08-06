@@ -6,7 +6,7 @@ import kotlinx.coroutines.await
 interface LogoutActionDispatcher {
 
     suspend fun logout() {
-        axios.get("/api/logout").await();
+        axios.get("/api/logout").await()
     }
 
 }

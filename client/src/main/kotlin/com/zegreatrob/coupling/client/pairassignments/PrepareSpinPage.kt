@@ -5,8 +5,6 @@ import react.RBuilder
 
 object PrepareSpinPage : ComponentProvider<PageProps>(), PrepareSpinPageBuilder
 
-val RBuilder.prepareSpinPage get() = PrepareSpinPage.captor(this)
-
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 

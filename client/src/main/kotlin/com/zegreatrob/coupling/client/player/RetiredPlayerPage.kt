@@ -7,8 +7,6 @@ import react.RBuilder
 
 object RetiredPlayerPage : ComponentProvider<PageProps>(), RetiredPlayerPageBuilder
 
-val RBuilder.retiredPlayerPage get() = RetiredPlayerPage.captor(this)
-
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.captor(this)
 

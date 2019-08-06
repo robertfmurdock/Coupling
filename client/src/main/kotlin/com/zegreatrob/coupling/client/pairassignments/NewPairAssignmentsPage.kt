@@ -6,8 +6,6 @@ import react.RBuilder
 
 object NewPairAssignmentsPage : ComponentProvider<PageProps>(), NewPairAssignmentsPageBuilder
 
-val RBuilder.newPairAssignmentsPage get() = NewPairAssignmentsPage.captor(this)
-
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 

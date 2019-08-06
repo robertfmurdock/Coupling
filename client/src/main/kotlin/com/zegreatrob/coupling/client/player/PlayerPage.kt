@@ -8,8 +8,6 @@ import react.RBuilder
 
 object PlayerPage : ComponentProvider<PageProps>(), PlayerPageBuilder
 
-val RBuilder.playerPage get() = PlayerPage.captor(this)
-
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.captor(this)
 

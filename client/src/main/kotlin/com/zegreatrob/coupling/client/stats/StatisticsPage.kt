@@ -5,8 +5,6 @@ import react.RBuilder
 
 object StatisticsPage : ComponentProvider<PageProps>(), StatisticsPageBuilder
 
-val RBuilder.statisticsPage get() = StatisticsPage.captor(this)
-
 private val LoadedPairAssignments = dataLoadWrapper(TribeStatistics)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 

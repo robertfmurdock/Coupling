@@ -6,8 +6,6 @@ import react.RBuilder
 
 object HistoryPage : ComponentProvider<PageProps>(), HistoryPageBuilder
 
-val RBuilder.historyPage get() = HistoryPage.captor(this)
-
 private val LoadedPairAssignments = dataLoadWrapper(History)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 

@@ -8,8 +8,6 @@ import react.RBuilder
 
 object PinListPage : ComponentProvider<PageProps>(), PinListPageBuilder
 
-val RBuilder.pinListPage get() = PinListPage.captor(this)
-
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.captor(this)
 

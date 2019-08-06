@@ -7,8 +7,6 @@ import react.RBuilder
 
 object TribeConfigPage : ComponentProvider<PageProps>(), TribeConfigPageBuilder
 
-val RBuilder.tribeConfigPage get() = TribeConfigPage.captor(this)
-
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
 
