@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -14,6 +15,7 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
 import kotlinext.js.jsObject
+import kotlinx.coroutines.await
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
 import shallow
@@ -26,18 +28,14 @@ import kotlin.test.Test
 class PlayerConfigTest {
 
     var coupling: dynamic = null
-    lateinit var saveSpy: Spy<Pair<Json, String>, Promise<Unit>>
     lateinit var removeSpy: Spy<Pair<Json, String>, Promise<Unit>>
 
     @BeforeTest
     fun before() {
-        saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
-        saveSpy.spyWillReturn(Promise.resolve(Unit))
         removeSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
         removeSpy.spyWillReturn(Promise.resolve(Unit))
 
         coupling = jsObject<dynamic> {
-            savePlayer = { player: Json, tribeId: String -> saveSpy.spyFunction(player to tribeId) }
             removePlayer = { player: Json, tribeId: String -> removeSpy.spyFunction(player to tribeId) }
         }
     }
@@ -72,7 +70,14 @@ class PlayerConfigTest {
     fun submitWillSaveAndReload() = testAsync {
         withContext(this.coroutineContext) {
             setupAsync(object : PlayerConfigBuilder {
+
                 override fun buildScope() = this@withContext
+
+                val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
+                override suspend fun saveAsync(tribeId: TribeId, player: Player) = saveSpy.spyFunction(
+                        player.toJson() to tribeId.value
+                )
+                        .await()
 
                 val tribe = KtTribe(TribeId("party"))
                 val player = Player(id = "blarg", badge = Badge.Default.value)
@@ -82,6 +87,7 @@ class PlayerConfigTest {
                     reloaderSpy.spyFunction(Unit)
                 }))
             }) {
+                saveSpy.spyWillReturn(Promise.resolve(Unit))
                 reloaderSpy.spyWillReturn(Unit)
             } exerciseAsync {
                 wrapper.find<Any>("input[name='name']")

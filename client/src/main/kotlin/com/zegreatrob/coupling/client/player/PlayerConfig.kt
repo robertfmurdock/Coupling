@@ -44,7 +44,7 @@ external interface PlayerConfigStyles {
 val playerDefaults get() = json("badge" to Badge.Default.value)
 
 interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
-        WindowFunctions, UseFormHook {
+        WindowFunctions, UseFormHook, PlayerSaveSyntax {
 
     override val componentPath: String get() = "player/PlayerConfig"
 
@@ -76,7 +76,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
         val (values, onChange) = useForm(player.toJson())
         val updatedPlayer = values.toPlayer()
-        val onSubmitFunc = handleSubmitFunc { savePlayer(scope, coupling, updatedPlayer, tribe, reload) }
+        val onSubmitFunc = handleSubmitFunc { savePlayer(scope, updatedPlayer, tribe, reload) }
         val removePlayerFunc = { removePlayer(coupling, player, tribe, pathSetter, scope) }
 
         val shouldShowPrompt = updatedPlayer != player
@@ -103,12 +103,11 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
     private fun savePlayer(
             scope: CoroutineScope,
-            coupling: Coupling,
             updatedPlayer: Player,
             tribe: KtTribe,
             reload: () -> Unit
     ) = scope.launch {
-        coupling.savePlayer(updatedPlayer, tribe.id)
+        saveAsync(tribe.id, updatedPlayer)
         reload()
     }
 

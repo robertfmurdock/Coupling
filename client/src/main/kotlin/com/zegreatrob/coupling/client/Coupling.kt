@@ -10,18 +10,12 @@ import kotlin.js.Promise
 
 external interface Coupling {
     fun saveCurrentPairAssignments(json: Json, tribeId: String): Promise<Unit>
-    fun savePlayer(json: Json, tribeId: String): Promise<Unit>
     fun removePlayer(json: Json, value: String): Promise<Unit>
     fun deleteTribe(tribeId: String): Promise<Unit>
 }
 
 suspend fun Coupling.saveCurrentPairAssignments(pairAssignments: PairAssignmentDocument, tribeId: TribeId) {
     saveCurrentPairAssignments(pairAssignments.toJson(), tribeId.value)
-            .await()
-}
-
-suspend fun Coupling.savePlayer(updatedPlayer: Player, tribeId: TribeId) {
-    savePlayer(updatedPlayer.toJson(), tribeId.value)
             .await()
 }
 
