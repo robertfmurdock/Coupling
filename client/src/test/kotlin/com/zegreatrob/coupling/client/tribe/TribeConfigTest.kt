@@ -14,7 +14,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
-import kotlinext.js.jsObject
 import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.withContext
 import shallow
@@ -29,7 +28,7 @@ class TribeConfigTest {
         val tribe = KtTribe(TribeId("1"), name = "1")
 
     }) exercise {
-        shallow(TribeConfigProps(tribe, {}, jsObject {}))
+        shallow(TribeConfigProps(tribe, {}))
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
                 .assertHasDefaultBadgeName()
@@ -76,7 +75,7 @@ class TribeConfigTest {
                 )
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val wrapper = shallow(TribeConfigProps(tribe, pathSetterSpy::spyFunction, jsObject {}))
+                val wrapper = shallow(TribeConfigProps(tribe, pathSetterSpy::spyFunction))
             }) {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)

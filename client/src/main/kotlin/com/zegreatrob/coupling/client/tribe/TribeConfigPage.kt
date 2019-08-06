@@ -15,37 +15,28 @@ private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
 interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.tribeId
-
         loadedTribeConfig(
-                if (tribeId != null)
-                    DataLoadProps { presentExistingTribe(pageProps, tribeId) }
-                else
-                    DataLoadProps { presentNewTribe(pageProps) }
+                dataLoadProps(
+                        query = { performCorrectQuery(pageProps.tribeId) },
+                        toProps = { _, data -> tribeConfigProps(data, pageProps.pathSetter) }
+                )
         )
     }
 
-    private fun presentNewTribe(pageProps: PageProps) = pageProps.toNewTribeConfigProps()
+    private suspend fun performCorrectQuery(tribeId: TribeId?) = if (tribeId != null)
+        TribeQuery(tribeId).perform()
+    else
+        newTribe()
 
-    private suspend fun presentExistingTribe(pageProps: PageProps, tribeId: TribeId) = performTribeQuery(tribeId)
-            .let { pageProps.toTribeConfigProps(it) }
-
-    private suspend fun performTribeQuery(tribeId: TribeId) = TribeQuery(tribeId).perform()
-
-    private fun PageProps.toTribeConfigProps(tribe: KtTribe) = TribeConfigProps(
-            tribe = tribe,
-            pathSetter = pathSetter,
-            coupling = coupling
+    private fun newTribe() = KtTribe(
+            id = TribeId(""),
+            name = "New Tribe",
+            defaultBadgeName = "Default",
+            alternateBadgeName = "Alternate"
     )
 
-    private fun PageProps.toNewTribeConfigProps() = TribeConfigProps(
-            tribe = KtTribe(
-                    id = TribeId(""),
-                    name = "New Tribe",
-                    defaultBadgeName = "Default",
-                    alternateBadgeName = "Alternate"
-            ),
-            coupling = coupling,
+    private fun tribeConfigProps(tribe: KtTribe, pathSetter: (String) -> Unit) = TribeConfigProps(
+            tribe = tribe,
             pathSetter = pathSetter
     )
 }

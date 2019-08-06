@@ -20,7 +20,7 @@ import react.dom.*
 
 object TribeConfig : ComponentProvider<TribeConfigProps>(), TribeConfigBuilder
 
-data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit, val coupling: Coupling) : RProps
+data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
 
 external interface TribeConfigStyles {
     val editor: String
