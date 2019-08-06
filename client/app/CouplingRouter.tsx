@@ -1,11 +1,8 @@
 // @ts-ignore
 import {components} from 'client'
 import * as React from "react";
-import {useRef} from "react";
 import {BrowserRouter as Router, Route, Redirect, Switch, withRouter} from "react-router-dom";
-import {Coupling} from "./services";
 import AnimationContext from './AnimationContext'
-import ServiceContext from './ServiceContext'
 
 export default function CouplingRouter(props: { isSignedIn: boolean, animationsDisabled: boolean }) {
     const {isSignedIn, animationsDisabled} = props;
@@ -31,28 +28,26 @@ export default function CouplingRouter(props: { isSignedIn: boolean, animationsD
 }
 
 function AuthenticatedRoutes() {
-    let {current: coupling} = useRef(new Coupling());
-    return <ServiceContext.Provider value={coupling}>
-        <Switch>
-            <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
-            <components.CouplingRoute path={"/tribes/"} component={components.TribeListPage}/>
-            <components.CouplingRoute path={"/logout/"} component={components.Logout}/>
-            <components.CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
-            <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
-                <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
-            />
-            <components.CouplingRoute path={"/:tribeId/prepare/"} component={components.PrepareSpinPage}/>
-            <components.CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
-            <components.CouplingRoute path={"/:tribeId/history"} component={components.HistoryPage}/>
-            <components.CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
-            <components.CouplingRoute path={"/:tribeId/pairAssignments/current/"}
-                           component={components.CurrentPairAssignmentsPage}/>
-            <components.CouplingRoute path={"/:tribeId/pairAssignments/new"} component={components.NewPairAssignmentsPage}/>
-            <components.CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
-            <components.CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
-            <components.CouplingRoute path={"/:tribeId/retired-player/:playerId/"} component={components.RetiredPlayerPage}/>
-            <components.CouplingRoute path={"/:tribeId/statistics"} component={components.StatisticsPage}/>
-            <components.CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
-        </Switch>
-    </ServiceContext.Provider>;
+    return <Switch>
+        <Route path="/" exact render={() => <Redirect to={'/tribes/'}/>}/>
+        <components.CouplingRoute path={"/tribes/"} component={components.TribeListPage}/>
+        <components.CouplingRoute path={"/logout/"} component={components.Logout}/>
+        <components.CouplingRoute path={"/new-tribe/"} component={components.TribeConfigPage}/>
+        <Route path="/:tribeId/" exact render={({match: {params: tribeId}}) =>
+            <Redirect to={`/${tribeId}/pairAssignments/current/`}/>}
+        />
+        <components.CouplingRoute path={"/:tribeId/prepare/"} component={components.PrepareSpinPage}/>
+        <components.CouplingRoute path={"/:tribeId/edit/"} component={components.TribeConfigPage}/>
+        <components.CouplingRoute path={"/:tribeId/history"} component={components.HistoryPage}/>
+        <components.CouplingRoute path={"/:tribeId/pins"} component={components.PinListPage}/>
+        <components.CouplingRoute path={"/:tribeId/pairAssignments/current/"}
+                                  component={components.CurrentPairAssignmentsPage}/>
+        <components.CouplingRoute path={"/:tribeId/pairAssignments/new"} component={components.NewPairAssignmentsPage}/>
+        <components.CouplingRoute path={"/:tribeId/player/new/"} component={components.PlayerPage}/>
+        <components.CouplingRoute path={"/:tribeId/player/:playerId/"} component={components.PlayerPage}/>
+        <components.CouplingRoute path={"/:tribeId/retired-player/:playerId/"}
+                                  component={components.RetiredPlayerPage}/>
+        <components.CouplingRoute path={"/:tribeId/statistics"} component={components.StatisticsPage}/>
+        <components.CouplingRoute path={"/:tribeId/players/retired"} component={components.RetiredPlayersPage}/>
+    </Switch>;
 }
