@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.ComponentProvider
-import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildBy
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
-import com.zegreatrob.coupling.client.useState
+import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.external.react
 
 import org.w3c.dom.Node
 import react.RBuilder

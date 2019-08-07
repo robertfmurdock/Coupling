@@ -1,8 +1,13 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.user
 
-
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import com.zegreatrob.coupling.client.external.react.ComponentBuilder
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.GoogleSignIn
+import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
+import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
+import com.zegreatrob.coupling.client.external.react.useState
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import react.dom.div
@@ -17,7 +22,7 @@ interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutActio
         val (logoutPromise, setLogout) = useState<Any?>(null)
         if (logoutPromise == null) {
             setLogout(
-                    GlobalScope.async { waitForLogout(setIsLoggedOut) }
+                    MainScope().launch { waitForLogout(setIsLoggedOut) }
             )
         }
 
@@ -29,7 +34,7 @@ interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutActio
     }
 
     private suspend fun waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
-        launch { logout() }
+        launch { LogoutCommand.perform() }
         launch { googleSignOut() }
     }.run { setIsLoggedOut(true) }
 

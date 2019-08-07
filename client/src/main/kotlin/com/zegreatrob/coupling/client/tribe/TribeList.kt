@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.ComponentProvider
-import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildBy
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RProps

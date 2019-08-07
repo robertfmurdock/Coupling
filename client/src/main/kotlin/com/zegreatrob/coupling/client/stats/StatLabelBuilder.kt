@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.*
 import react.RBuilder
 import react.dom.span
 

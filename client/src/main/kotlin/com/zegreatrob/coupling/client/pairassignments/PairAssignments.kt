@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.user.ServerMessageProps
+import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedPlayer

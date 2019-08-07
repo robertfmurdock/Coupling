@@ -1,6 +1,6 @@
-import com.zegreatrob.coupling.client.ServerMessageBuilder
-import com.zegreatrob.coupling.client.ServerMessageProps
-import com.zegreatrob.coupling.client.WebsocketProps
+import com.zegreatrob.coupling.client.user.ServerMessageBuilder
+import com.zegreatrob.coupling.client.user.ServerMessageProps
+import com.zegreatrob.coupling.client.user.WebsocketProps
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup

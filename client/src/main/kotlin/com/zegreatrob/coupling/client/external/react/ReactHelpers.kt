@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.external.react
 
+import com.zegreatrob.coupling.client.loadStyles
 import kotlinext.js.jsObject
 import kotlinx.coroutines.*
 import org.w3c.dom.Node
@@ -7,7 +8,6 @@ import react.*
 import kotlin.reflect.KClass
 
 @JsModule("react")
-
 private external val React: dynamic
 
 @JsModule("core-js/features/object/assign")

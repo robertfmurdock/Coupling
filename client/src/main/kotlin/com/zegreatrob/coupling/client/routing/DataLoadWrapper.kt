@@ -1,15 +1,12 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.client.external.react.*
 import kotlinx.coroutines.*
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.dom.div
-
-
-@JsModule("AnimationContext")
-
-private external val animationContextModule: dynamic
 
 inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =
 

@@ -1,7 +1,7 @@
-import com.zegreatrob.coupling.client.ComponentBuilder
-import com.zegreatrob.coupling.client.ComponentProvider
-import com.zegreatrob.coupling.client.ReactFunctionComponent
-import com.zegreatrob.coupling.client.component
+import com.zegreatrob.coupling.client.external.react.ComponentBuilder
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
+import com.zegreatrob.coupling.client.external.react.component
 import react.RBuilder
 import react.RClass
 import react.RProps

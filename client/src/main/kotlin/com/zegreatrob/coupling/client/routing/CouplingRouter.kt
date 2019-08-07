@@ -1,5 +1,9 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.client.external.react.ComponentBuilder
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
@@ -8,11 +12,10 @@ import com.zegreatrob.coupling.client.pin.PinListPage
 import com.zegreatrob.coupling.client.player.PlayerPage
 import com.zegreatrob.coupling.client.player.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.RetiredPlayersPage
-import com.zegreatrob.coupling.client.routing.CouplingRouteProps
-import com.zegreatrob.coupling.client.routing.couplingRoute
 import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.tribe.TribeConfigPage
 import com.zegreatrob.coupling.client.tribe.TribeListPage
+import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import react.RBuilder
 import react.RProps

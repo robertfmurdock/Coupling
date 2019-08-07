@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import org.w3c.dom.url.URLSearchParams

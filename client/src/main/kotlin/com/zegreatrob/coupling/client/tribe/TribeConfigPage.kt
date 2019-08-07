@@ -1,6 +1,11 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.ComponentBuilder
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
+import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.client.routing.dataLoadProps
+import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder

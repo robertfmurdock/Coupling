@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.external.react
 
 import kotlinx.html.InputType
 import kotlinx.html.id

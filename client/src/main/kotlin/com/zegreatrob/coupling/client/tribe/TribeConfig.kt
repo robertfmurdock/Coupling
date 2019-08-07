@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue

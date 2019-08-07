@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.heatmap
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.*
 import kotlinx.css.height
 import kotlinx.css.px
 import kotlinx.css.width

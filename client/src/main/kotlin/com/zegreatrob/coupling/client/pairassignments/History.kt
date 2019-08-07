@@ -1,7 +1,11 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateFormat
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.ScopeProvider
+import com.zegreatrob.coupling.client.external.react.ScopedStyledComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument

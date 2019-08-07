@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.gravatar
 
 import com.zegreatrob.coupling.client.external.blueimpMd5.md5
 import kotlinx.html.classes

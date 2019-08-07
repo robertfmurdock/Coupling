@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.routing.CouplingRouter
+import com.zegreatrob.coupling.client.routing.CouplingRouterProps
 import com.zegreatrob.coupling.logging.initializeJasmineLogging
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

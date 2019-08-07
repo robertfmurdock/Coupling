@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.fitty.fitty
+import com.zegreatrob.coupling.client.gravatar.GravatarOptions
+import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.css.*

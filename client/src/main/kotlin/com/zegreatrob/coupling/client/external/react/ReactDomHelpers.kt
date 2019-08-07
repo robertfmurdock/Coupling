@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.external.react
 
 import kotlinx.html.IMG
 import react.dom.RDOMBuilder

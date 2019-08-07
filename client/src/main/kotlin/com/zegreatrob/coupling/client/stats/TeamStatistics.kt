@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.ComponentProvider
-import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildBy
-import com.zegreatrob.coupling.client.invoke
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.invoke
 import react.RBuilder
 import react.RProps
 import react.dom.div

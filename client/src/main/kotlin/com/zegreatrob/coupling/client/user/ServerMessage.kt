@@ -1,5 +1,9 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.user
 
+import com.zegreatrob.coupling.client.external.react.ComponentBuilder
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
+import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 import react.RClass
@@ -9,7 +13,6 @@ import react.dom.span
 import kotlin.browser.window
 
 @JsModule("react-websocket")
-
 private external val websocket: RClass<WebsocketProps>
 
 external interface WebsocketProps : RProps {
@@ -19,7 +22,6 @@ external interface WebsocketProps : RProps {
 }
 
 const val disconnectedMessage = "Not connected"
-
 
 object ServerMessage : ComponentProvider<ServerMessageProps>(), ServerMessageBuilder
 

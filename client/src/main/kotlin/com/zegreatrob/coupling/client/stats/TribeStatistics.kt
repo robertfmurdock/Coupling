@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.ComponentProvider
-import com.zegreatrob.coupling.client.StyledComponentBuilder
-import com.zegreatrob.coupling.client.buildBy
+import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher

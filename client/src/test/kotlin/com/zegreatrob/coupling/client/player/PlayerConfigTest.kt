@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.client.Badge
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
