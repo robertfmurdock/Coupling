@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
+import com.zegreatrob.coupling.client.sdk.GetPinListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.pin.Pin

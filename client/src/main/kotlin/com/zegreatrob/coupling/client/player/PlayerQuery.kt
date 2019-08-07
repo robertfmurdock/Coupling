@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
+import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.player.Player

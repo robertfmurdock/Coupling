@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface AxiosRequestSpin {
+interface ServerRequestSpin {
     fun requestSpinAsync(tribeId: TribeId, players: List<Player>) =
             axios.post("/api/${tribeId.value}/spin", players.map { it.toJson() }.toTypedArray())
                     .then<PairAssignmentDocument> { it.data.unsafeCast<Json>().toPairAssignmentDocument() }

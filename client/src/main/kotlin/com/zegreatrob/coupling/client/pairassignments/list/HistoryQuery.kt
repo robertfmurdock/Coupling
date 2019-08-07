@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
-import com.zegreatrob.coupling.client.pairassignments.GetPairAssignmentListSyntax
-import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
+import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument

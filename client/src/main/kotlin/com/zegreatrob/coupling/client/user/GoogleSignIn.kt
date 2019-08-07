@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.GoogleAuth
 import com.zegreatrob.coupling.client.GoogleAuth2
 import com.zegreatrob.coupling.client.GoogleUser
 import com.zegreatrob.coupling.client.gapi
-import com.zegreatrob.coupling.client.sdk.AxiosCreateGoogleSession
+import com.zegreatrob.coupling.client.sdk.ServerCreateGoogleSession
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.await
@@ -13,7 +13,7 @@ import kotlinx.coroutines.yield
 import org.w3c.dom.get
 import kotlin.browser.window
 
-interface GoogleSignIn : AxiosCreateGoogleSession {
+interface GoogleSignIn : ServerCreateGoogleSession {
 
     suspend fun signIn() = getGoogleAuth()
             .performSignIn()

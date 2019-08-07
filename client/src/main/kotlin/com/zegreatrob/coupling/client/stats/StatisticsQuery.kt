@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.pairassignments.GetPairAssignmentListSyntax
-import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
-import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
+import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
+import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
