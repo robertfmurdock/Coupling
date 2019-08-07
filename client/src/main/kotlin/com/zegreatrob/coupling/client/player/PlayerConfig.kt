@@ -47,13 +47,12 @@ val playerDefaults get() = json("badge" to Badge.Default.value)
 typealias PlayerConfigContext = ScopedPropsStylesBuilder<PlayerConfigProps, PlayerConfigStyles>
 
 interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
-        WindowFunctions, UseFormHook, PlayerSaveSyntax, PlayerDeleteSyntax {
+        WindowFunctions, UseFormHook, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
 
     override val componentPath: String get() = "player/PlayerConfig"
 
     override fun build() = buildBy {
         val (tribe, _, players, pathSetter) = props
-
         {
             div(classes = styles.className) {
                 div {
@@ -109,7 +108,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
             tribe: KtTribe,
             reload: () -> Unit
     ) = scope.launch {
-        saveAsync(tribe.id, updatedPlayer)
+        SavePlayerCommand(tribe.id, updatedPlayer).perform()
         reload()
     }
 
@@ -120,7 +119,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
             playerId: String
     ) = scope.launch {
         if (window.confirm("Are you sure you want to delete this player?")) {
-            deleteAsync(tribe.id, playerId).await()
+            DeletePlayerCommand(tribe.id, playerId).perform()
             pathSetter("/${tribe.id.value}/pairAssignments/current/")
         }
     }
