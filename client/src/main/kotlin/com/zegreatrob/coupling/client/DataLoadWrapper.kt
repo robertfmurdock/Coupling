@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client
 import kotlinx.coroutines.*
 import kotlinx.html.classes
 import react.RBuilder
-import react.RContext
 import react.RProps
 import react.dom.div
 
@@ -11,12 +10,11 @@ import react.dom.div
 @JsModule("AnimationContext")
 @JsNonModule
 private external val animationContextModule: dynamic
-val animationContext = animationContextModule.default.unsafeCast<RContext<Boolean>>()
 
 inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =
 
         object : ComponentProvider<DataLoadProps<P>>(), ComponentBuilder<DataLoadProps<P>>, ScopeProvider {
-            private val animationContextConsumer = animationContext.Consumer
+            private val animationContextConsumer = animationsDisabledContext.Consumer
 
             override fun build() = reactFunctionComponent<DataLoadProps<P>> { props ->
                 val (data, setData) = useState<P?>(null)

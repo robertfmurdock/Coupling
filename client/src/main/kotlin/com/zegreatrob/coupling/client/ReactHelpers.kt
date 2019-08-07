@@ -133,6 +133,12 @@ inline fun <reified P : RProps, S> styledComponent(
 
 typealias SingleElementBuilder = RBuilder.() -> ReactElement
 
+class PropsBuilder<P>(
+        val props: P
+) {
+    inline fun handle(builder: PropsBuilder<P>.() -> SingleElementBuilder) = builder()
+}
+
 class PropsStylesBuilder<P, S>(
         val props: P,
         val styles: S) {

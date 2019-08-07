@@ -28,22 +28,24 @@ val RBuilder.couplingRouter get() = CouplingRouter.captor(this)
 
 interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
 
-    override fun build() = reactFunctionComponent<CouplingRouterProps> { props ->
-        browserRouter {
-            animationContext.Provider(value = props.animationsDisable) {
-                switch {
-                    couplingRoute(CouplingRouteProps(path = "/welcome/", component = WelcomePage.component.rFunction))
+    override fun build() = buildByPls {
+        {
+            browserRouter {
+                animationsDisabledContext.Provider(value = props.animationsDisable) {
+                    switch {
+                        couplingRoute(CouplingRouteProps(path = "/welcome/", component = WelcomePage.component.rFunction))
 
-                    if (props.isSignedIn) {
-                        authenticatedRoutes()
-                    } else {
-                        console.warn("not signed in!!!!", window.location.pathname)
-                        redirect(from = "", to = "/welcome")
+                        if (props.isSignedIn) {
+                            authenticatedRoutes()
+                        } else {
+                            console.warn("not signed in!!!!", window.location.pathname)
+                            redirect(from = "", to = "/welcome")
+                        }
+
+                        route<RProps>(path = "", render = { props ->
+                            div { +"Hmm, you seem to be lost. At ${props.location.pathname}" }
+                        })
                     }
-
-                    route<RProps>(path = "", render = { props ->
-                        div { +"Hmm, you seem to be lost. At ${props.location.pathname}" }
-                    })
                 }
             }
         }
