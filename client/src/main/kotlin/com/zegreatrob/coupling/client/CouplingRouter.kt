@@ -22,16 +22,14 @@ import kotlin.browser.window
 
 object CouplingRouter : ComponentProvider<CouplingRouterProps>(), CouplingRouterBuilder
 
-data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisable: Boolean) : RProps
-
-val RBuilder.couplingRouter get() = CouplingRouter.captor(this)
+data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
 interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
 
     override fun build() = buildByPls {
         {
             browserRouter {
-                animationsDisabledContext.Provider(value = props.animationsDisable) {
+                animationsDisabledContext.Provider(value = props.animationsDisabled) {
                     switch {
                         couplingRoute(CouplingRouteProps(path = "/welcome/", component = WelcomePage.component.rFunction))
 
