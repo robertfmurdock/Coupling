@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.GoogleSignIn
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent

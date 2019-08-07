@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.sdk
 
 import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe

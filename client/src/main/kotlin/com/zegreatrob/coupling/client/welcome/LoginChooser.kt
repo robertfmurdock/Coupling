@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.GoogleSignIn
+import com.zegreatrob.coupling.client.user.GoogleSignIn
 import com.zegreatrob.coupling.client.external.react.ReactComponentRenderer
 import com.zegreatrob.coupling.client.external.react.RFunction
 import com.zegreatrob.coupling.client.loadStyles

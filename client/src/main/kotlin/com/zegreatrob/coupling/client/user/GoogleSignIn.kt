@@ -1,6 +1,10 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.axios.axios
+import com.zegreatrob.coupling.client.GoogleAuth
+import com.zegreatrob.coupling.client.GoogleAuth2
+import com.zegreatrob.coupling.client.GoogleUser
+import com.zegreatrob.coupling.client.gapi
+import com.zegreatrob.coupling.client.sdk.AxiosCreateGoogleSession
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.await
@@ -8,9 +12,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.yield
 import org.w3c.dom.get
 import kotlin.browser.window
-import kotlin.js.json
 
-interface GoogleSignIn {
+interface GoogleSignIn : AxiosCreateGoogleSession {
 
     suspend fun signIn() = getGoogleAuth()
             .performSignIn()
@@ -22,7 +25,6 @@ interface GoogleSignIn {
 
     suspend fun checkForSignedIn() = coroutineScope {
         waitForIsAuthenticatedToLoad()
-
         if (window["isAuthenticated"] == true) {
             true
         } else {
@@ -35,7 +37,6 @@ interface GoogleSignIn {
             }
             isSignedIn
         }
-
     }
 
     private suspend fun waitForIsAuthenticatedToLoad() {
@@ -49,15 +50,9 @@ interface GoogleSignIn {
     } else Unit
 
     private suspend fun GoogleUser.createSession() {
-        getAuthResponse()
-                .createSessionOnCoupling()
+        createSessionOnCoupling(getAuthResponse().id_token)
                 .await()
     }
-
-    private fun AuthResponse.createSessionOnCoupling() = axios.post(
-            "/auth/google-token",
-            json("idToken" to id_token)
-    )
 
     private suspend fun getGoogleAuth() = loadGoogleAuth2()
             .init(jsObject { client_id = window["googleClientId"] })
@@ -83,5 +78,4 @@ interface GoogleSignIn {
                 redirect_uri = window.location.origin
             }
     )
-
 }

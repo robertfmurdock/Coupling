@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
 import react.RProps
-import react.ReactElement
+import react.createElement
 import react.router.dom.RouteResultProps
 import react.router.dom.route
 import kotlin.js.Json
@@ -17,15 +17,13 @@ val RBuilder.couplingRoute get() = CouplingRoute.captor(this)
 
 data class CouplingRouteProps(val path: String, val componentProvider: ComponentProvider<PageProps>) : RProps
 
-@JsModule("react")
-private external val React: dynamic
 interface CouplingRouteBuilder : ComponentBuilder<CouplingRouteProps> {
 
     override fun build() = reactFunctionComponent<CouplingRouteProps> { props ->
         route<RProps>(props.path, exact = true) { routeProps ->
-            React.createElement(
+            createElement(
                     props.componentProvider.component.rFunction, pageProps(routeProps)
-            ).unsafeCast<ReactElement>()
+            )
         }
     }
 
