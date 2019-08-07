@@ -36,7 +36,7 @@ const config = {
     }),
     new webpack.DllReferencePlugin({
       context: '.',
-      manifest: require('../build/lib/vendor/vendor-manifest.json')
+      manifest: require('../build/lib/test-vendor/testVendor-manifest.json')
     }),
     new webpack.ProvidePlugin({'window.jQuery': 'jquery', $: 'jquery', 'jQuery': 'jquery'})
   ],

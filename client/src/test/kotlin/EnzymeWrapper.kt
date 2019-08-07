@@ -37,7 +37,6 @@ external interface ShallowWrapper<T> {
 }
 
 @JsModule("enzyme")
-
 external val enzyme: Enzyme
 
 fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(function))

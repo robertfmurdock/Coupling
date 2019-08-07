@@ -99,6 +99,19 @@ tasks {
         args = listOf("webpack", "--config", "vendor.webpack.config.js")
     }
 
+  val testVendorCompile by creating(YarnTask::class) {
+        dependsOn(yarn, runDceKotlinJs)
+        mustRunAfter("clean")
+
+        inputs.files(runDceKotlinJs.outputs)
+        inputs.dir("node_modules")
+        inputs.file(file("package.json"))
+        inputs.file(file("test/vendor.webpack.config.js"))
+        outputs.dir("build/lib/test-vendor")
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
+        args = listOf("webpack", "--config", "test/vendor.webpack.config.js")
+    }
+
     task<YarnTask>("compile") {
         dependsOn(yarn, vendorCompile, runDceKotlinJs, processResources)
         inputs.dir("node_modules")
@@ -123,6 +136,7 @@ tasks {
         dependsOn(
                 yarn,
                 vendorCompile,
+                testVendorCompile,
                 ":commonKt:jsTest",
                 compileTestKotlin2Js,
                 runDceTestKotlinJs,
@@ -159,7 +173,7 @@ tasks {
     }
 
     task<YarnTask>("testStats") {
-        dependsOn(yarn, vendorCompile)
+        dependsOn(yarn, testVendorCompile)
 
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
 
