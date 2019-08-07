@@ -8,7 +8,7 @@ import react.dom.div
 
 
 @JsModule("AnimationContext")
-@JsNonModule
+
 private external val animationContextModule: dynamic
 
 inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =

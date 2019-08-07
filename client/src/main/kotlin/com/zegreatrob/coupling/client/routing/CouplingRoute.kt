@@ -20,7 +20,7 @@ val RBuilder.couplingRoute get() = CouplingRoute.captor(this)
 data class CouplingRouteProps(val path: String, val component: RClass<PageProps>) : RProps
 
 @JsModule("react")
-@JsNonModule
+
 private external val React: dynamic
 
 interface CouplingRouteBuilder : ComponentBuilder<CouplingRouteProps> {

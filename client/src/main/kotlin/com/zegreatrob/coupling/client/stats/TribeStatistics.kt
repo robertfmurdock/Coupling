@@ -12,7 +12,7 @@ import react.dom.div
 
 
 @JsModule("date-fns/distance_in_words")
-@JsNonModule
+
 external val distanceInWorks: (Int, Int?) -> String
 
 object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatisticsBuilder

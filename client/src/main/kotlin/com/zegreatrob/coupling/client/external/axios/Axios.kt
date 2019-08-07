@@ -4,7 +4,6 @@ import kotlin.js.Json
 import kotlin.js.Promise
 
 @JsModule("axios")
-@JsNonModule
 external val axios: Axios
 
 external interface Axios {

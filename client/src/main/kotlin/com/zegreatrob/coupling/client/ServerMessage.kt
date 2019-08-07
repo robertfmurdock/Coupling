@@ -9,7 +9,7 @@ import react.dom.span
 import kotlin.browser.window
 
 @JsModule("react-websocket")
-@JsNonModule
+
 private external val websocket: RClass<WebsocketProps>
 
 external interface WebsocketProps : RProps {

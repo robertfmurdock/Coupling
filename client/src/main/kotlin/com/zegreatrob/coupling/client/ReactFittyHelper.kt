@@ -4,7 +4,7 @@ import org.w3c.dom.Node
 import kotlin.js.json
 
 @JsModule("fitty")
-@JsNonModule
+
 private external val fitty: dynamic
 
 fun Node.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {

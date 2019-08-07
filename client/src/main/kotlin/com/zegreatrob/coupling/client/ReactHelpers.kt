@@ -7,11 +7,11 @@ import react.*
 import kotlin.reflect.KClass
 
 @JsModule("react")
-@JsNonModule
+
 private external val React: dynamic
 
 @JsModule("core-js/features/object/assign")
-@JsNonModule
+
 external fun <T, R : T> objectAssign(dest: R, vararg src: T): R
 
 fun <T> useRef(default: T?) = React.useRef(default).unsafeCast<RReadableRef<T>>()

@@ -10,7 +10,7 @@ import kotlin.test.Test
 
 
 @JsModule("react-websocket")
-@JsNonModule
+
 external val websocket: RClass<WebsocketProps>
 
 class ServerMessageTest : ServerMessageBuilder {
