@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.heatmap
+package com.zegreatrob.coupling.client.stats.heatmap
 
 import com.zegreatrob.coupling.client.external.react.*
 import kotlinx.css.height
@@ -13,7 +13,6 @@ import styled.css
 import styled.styledDiv
 
 @JsModule("components/heatmap/D3Heatmap")
-
 external val d3Heatmap: dynamic
 
 object Heatmap : ComponentProvider<HeatmapProps>(), HeatmapBuilder
@@ -29,15 +28,13 @@ external interface HeatmapStyles {
 
 interface HeatmapBuilder : StyledComponentBuilder<HeatmapProps, HeatmapStyles> {
 
-    override val componentPath: String get() = "heatmap/Heatmap"
+    override val componentPath: String get() = "stats/heatmap/Heatmap"
 
     override fun build() = buildBy {
         val rowSize = props.data.size * 90
         {
             val rootRef: RReadableRef<Node> = useRef(null)
-
             useLayoutEffect { rootRef.current?.renderD3Heatmap(props.data.flatten(), styles) }
-
             styledDiv {
                 attrs { ref = rootRef; classes += styles.className; classes += props.className }
                 css {

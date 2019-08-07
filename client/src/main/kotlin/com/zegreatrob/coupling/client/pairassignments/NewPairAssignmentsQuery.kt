@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
+import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.client.player.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
+import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -47,7 +48,8 @@ const val dragItemType = "PLAYER"
 
 typealias PairAssignmentRenderer = ScopedPropsStylesBuilder<PairAssignmentsProps, PairAssignmentsStyles>
 
-interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles>, PairAssignmentSaveSyntax {
+interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles>,
+        SavePairAssignmentsCommandDispatcher {
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
@@ -134,21 +136,19 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         }
     }
 
-    private fun PairAssignmentRenderer.saveButton(pairAssignments: PairAssignmentDocument): RBuilder.() -> ReactElement {
-        return {
-            a(classes = "super green button") {
-                attrs {
-                    id = "save-button"
-                    onClickFunction = {
-                        scope.launch {
-                            val tribeId = props.tribe.id
-                            saveAsync(tribeId, pairAssignments)
-                            props.pathSetter("/${tribeId.value}/pairAssignments/current/")
-                        }
+    private fun PairAssignmentRenderer.saveButton(pairAssignments: PairAssignmentDocument): RBuilder.() -> ReactElement = {
+        a(classes = "super green button") {
+            attrs {
+                id = "save-button"
+                onClickFunction = {
+                    scope.launch {
+                        SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
+
+                        props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
                     }
                 }
-                +"Save!"
             }
+            +"Save!"
         }
     }
 

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RBuilder
-
 
 object RetiredPlayersPage : ComponentProvider<PageProps>(), RetiredPlayersPageBuilder
 
@@ -37,5 +36,4 @@ interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps>, RetiredPlayer
                         pathSetter = pathSetter
                 )
             }
-
 }

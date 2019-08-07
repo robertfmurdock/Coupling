@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.common.Action
+import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 
 data class DeleteTribeCommand(val tribeId: TribeId) : Action
 
-interface DeleteTribeCommandDispatcher : TribeIdDeleteSyntax {
+interface DeleteTribeCommandDispatcher : ActionLoggingSyntax, TribeIdDeleteSyntax {
 
-    suspend fun DeleteTribeCommand.perform() = tribeId.deleteAsync().await()
+    suspend fun DeleteTribeCommand.perform() = logAsync { tribeId.deleteAsync().await() }
 
 }

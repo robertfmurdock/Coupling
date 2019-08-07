@@ -5,8 +5,6 @@ import kotlinx.coroutines.await
 
 object LogoutCommand
 
-interface LogoutActionDispatcher {
-
+interface LogoutCommandDispatcher {
     suspend fun LogoutCommand.perform() = axios.get("/api/logout").await().unsafeCast<Unit>()
-
 }

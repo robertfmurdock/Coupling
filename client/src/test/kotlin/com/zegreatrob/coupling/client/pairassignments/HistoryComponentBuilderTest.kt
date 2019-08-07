@@ -4,6 +4,9 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.loadStyles
+import com.zegreatrob.coupling.client.pairassignments.list.HistoryComponentBuilder
+import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
+import com.zegreatrob.coupling.client.pairassignments.list.HistoryStyles
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe

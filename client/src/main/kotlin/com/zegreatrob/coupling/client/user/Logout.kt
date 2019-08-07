@@ -15,7 +15,7 @@ import react.router.dom.redirect
 
 object Logout : ComponentProvider<PageProps>(), LogoutBuilder
 
-interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutActionDispatcher {
+interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
 
     override fun build(): ReactFunctionComponent<PageProps> = reactFunctionComponent {
         val (isLoggedOut, setIsLoggedOut) = useState(false)

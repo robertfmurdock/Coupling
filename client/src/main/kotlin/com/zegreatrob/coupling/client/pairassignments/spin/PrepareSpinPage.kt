@@ -1,20 +1,21 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
+import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQuery
+import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
+object PrepareSpinPage : ComponentProvider<PageProps>(), PrepareSpinPageBuilder
 
-object HistoryPage : ComponentProvider<PageProps>(), HistoryPageBuilder
-
-private val LoadedPairAssignments = dataLoadWrapper(History)
+private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 
-interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatcher {
+interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         val tribeId = pageProps.tribeId
@@ -22,9 +23,9 @@ interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatch
         if (tribeId != null) {
             loadedPairAssignments(
                     dataLoadProps(
-                            query = { HistoryQuery(tribeId).perform() },
-                            toProps = { reload, (tribe, history) ->
-                                HistoryProps(tribe, history, reload, pageProps.pathSetter)
+                            query = { TribeDataSetQuery(tribeId).perform() },
+                            toProps = { _, (tribe, players, history) ->
+                                PrepareSpinProps(tribe, players, history, pageProps.pathSetter)
                             }
                     )
             )

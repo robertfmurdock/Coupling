@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.client.external.axios.getList

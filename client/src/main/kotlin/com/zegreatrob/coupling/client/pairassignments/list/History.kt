@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
@@ -41,7 +41,7 @@ data class HistoryProps(
 ) : RProps
 
 interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
-        PairAssignmentDocDeleteSyntax,
+        DeletePairAssignmentsCommandDispatcher,
         WindowFunctions,
         ScopeProvider {
 
@@ -83,7 +83,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
 
     private suspend fun removeButtonOnClick(pairAssignmentDocumentId: PairAssignmentDocumentId, tribeId: TribeId, reload: () -> Unit) {
         if (window.confirm("Are you sure you want to delete these pair assignments?")) {
-            deleteAsync(tribeId, pairAssignmentDocumentId).await()
+            DeletePairAssignmentsCommand(tribeId, pairAssignmentDocumentId).perform()
             reload()
         }
     }

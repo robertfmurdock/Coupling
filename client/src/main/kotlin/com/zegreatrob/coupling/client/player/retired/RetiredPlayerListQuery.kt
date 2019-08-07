@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.tribe.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action

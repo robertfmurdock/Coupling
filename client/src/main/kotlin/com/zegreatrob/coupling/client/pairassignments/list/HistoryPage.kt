@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
@@ -8,12 +8,13 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
-object PrepareSpinPage : ComponentProvider<PageProps>(), PrepareSpinPageBuilder
 
-private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
+object HistoryPage : ComponentProvider<PageProps>(), HistoryPageBuilder
+
+private val LoadedPairAssignments = dataLoadWrapper(History)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 
-interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQueryDispatcher {
+interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         val tribeId = pageProps.tribeId
@@ -21,9 +22,9 @@ interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQuer
         if (tribeId != null) {
             loadedPairAssignments(
                     dataLoadProps(
-                            query = { TribeDataSetQuery(tribeId).perform() },
-                            toProps = { _, (tribe, players, history) ->
-                                PrepareSpinProps(tribe, players, history, pageProps.pathSetter)
+                            query = { HistoryQuery(tribeId).perform() },
+                            toProps = { reload, (tribe, history) ->
+                                HistoryProps(tribe, history, reload, pageProps.pathSetter)
                             }
                     )
             )

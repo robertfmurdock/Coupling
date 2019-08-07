@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.heatmap.HeatmapProps
-import com.zegreatrob.coupling.client.heatmap.heatmap
+import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
+import com.zegreatrob.coupling.client.stats.heatmap.heatmap
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.entity.player.Player

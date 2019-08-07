@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.client.pairassignments.spin
 
 
 import com.zegreatrob.coupling.client.external.axios.axios
