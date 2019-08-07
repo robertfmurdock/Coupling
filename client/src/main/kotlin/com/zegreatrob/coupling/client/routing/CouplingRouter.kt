@@ -20,7 +20,10 @@ import com.zegreatrob.coupling.client.welcome.WelcomePage
 import react.RBuilder
 import react.RProps
 import react.dom.div
-import react.router.dom.*
+import react.router.dom.browserRouter
+import react.router.dom.redirect
+import react.router.dom.route
+import react.router.dom.switch
 import kotlin.browser.window
 
 object CouplingRouter : ComponentProvider<CouplingRouterProps>(), CouplingRouterBuilder
@@ -34,7 +37,7 @@ interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
             browserRouter {
                 animationsDisabledContext.Provider(value = props.animationsDisabled) {
                     switch {
-                        couplingRoute(CouplingRouteProps(path = "/welcome/", component = WelcomePage.component.rFunction))
+                        couplingRoute(CouplingRouteProps(path = "/welcome/", componentProvider = WelcomePage))
 
                         if (props.isSignedIn) {
                             authenticatedRoutes()
@@ -54,23 +57,23 @@ interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
 
     private fun RBuilder.authenticatedRoutes() = switch {
         route(path = "/", exact = true, render = { redirect(from = "", to = "/tribes/") })
-        couplingRoute(CouplingRouteProps(path = "/tribes/", component = TribeListPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/logout/", component = Logout.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/new-tribe/", component = TribeConfigPage.component.rFunction))
-        route(path = "/:tribeId", exact = true, render = { thing: RouteResultProps<RProps> ->
-            redirect(from = "", to = "/${thing.match.params.asDynamic().tribeId}/pairAssignments/current/")
+        couplingRoute(CouplingRouteProps(path = "/tribes/", componentProvider = TribeListPage))
+        couplingRoute(CouplingRouteProps(path = "/logout/", componentProvider = Logout))
+        couplingRoute(CouplingRouteProps(path = "/new-tribe/", componentProvider = TribeConfigPage))
+        route<RProps>(path = "/:tribeId", exact = true, render = { props ->
+            redirect(from = "", to = "/${props.match.params.asDynamic().tribeId}/pairAssignments/current/")
         })
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/prepare/", component = PrepareSpinPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/edit/", component = TribeConfigPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/history", component = HistoryPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/pins", component = PinListPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/current/", component = CurrentPairAssignmentsPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/new", component = NewPairAssignmentsPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/player/new", component = PlayerPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/player/:playerId/", component = PlayerPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/retired-player/:playerId/", component = RetiredPlayerPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/statistics", component = StatisticsPage.component.rFunction))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/players/retired", component = RetiredPlayersPage.component.rFunction))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/prepare/", componentProvider = PrepareSpinPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/edit/", componentProvider = TribeConfigPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/history", componentProvider = HistoryPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/pins", componentProvider = PinListPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/current/", componentProvider = CurrentPairAssignmentsPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/new", componentProvider = NewPairAssignmentsPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/player/new", componentProvider = PlayerPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/player/:playerId/", componentProvider = PlayerPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/retired-player/:playerId/", componentProvider = RetiredPlayerPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/statistics", componentProvider = StatisticsPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/players/retired", componentProvider = RetiredPlayersPage))
     }
 
 }

@@ -29,7 +29,8 @@ external interface TribeConfigStyles {
 
 typealias TribeConfigRenderer = ScopedPropsStylesBuilder<TribeConfigProps, TribeConfigStyles>
 
-interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>, UseFormHook, TribeSaveSyntax, TribeIdDeleteSyntax {
+interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>,
+        UseFormHook, SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
@@ -68,12 +69,12 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
     }
 
     private fun TribeConfigRenderer.onClickDelete() = scope.launch {
-        props.tribe.id.deleteAsync().await()
+        DeleteTribeCommand(props.tribe.id).perform()
         props.pathSetter("/tribes/")
     }
 
     private fun TribeConfigRenderer.onClickSave(updatedTribe: KtTribe) = scope.launch {
-        updatedTribe.saveAsync().await()
+        SaveTribeCommand(updatedTribe).perform()
         props.pathSetter("/tribes/")
     }
 
@@ -81,15 +82,14 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
             tribe: KtTribe,
             isNew: Boolean,
             onChange: (Event) -> Unit
-    ): RBuilder.() -> ReactElement =
-            {
-                div {
-                    span {
-                        this@tribeForm.configInputList(this, tribe, onChange, isNew)
-                    }
-                    tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
-                }
+    ): RBuilder.() -> ReactElement = {
+        div {
+            span {
+                this@tribeForm.configInputList(this, tribe, onChange, isNew)
             }
+            tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
+        }
+    }
 
     private fun TribeConfigRenderer.configInputList(
             rBuilder: RBuilder,
@@ -206,7 +206,6 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
             span { +"Advanced users only: This rule affects how players are assigned." }
         }
     }
-
 }
 
 val pairingRuleDescriptions = mapOf(

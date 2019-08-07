@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
-import react.RClass
 import react.RProps
 import react.ReactElement
 import react.router.dom.RouteResultProps
@@ -16,18 +15,17 @@ object CouplingRoute : ComponentProvider<CouplingRouteProps>(), CouplingRouteBui
 
 val RBuilder.couplingRoute get() = CouplingRoute.captor(this)
 
-data class CouplingRouteProps(val path: String, val component: RClass<PageProps>) : RProps
+data class CouplingRouteProps(val path: String, val componentProvider: ComponentProvider<PageProps>) : RProps
 
 @JsModule("react")
-
 private external val React: dynamic
-
 interface CouplingRouteBuilder : ComponentBuilder<CouplingRouteProps> {
 
     override fun build() = reactFunctionComponent<CouplingRouteProps> { props ->
         route<RProps>(props.path, exact = true) { routeProps ->
-            React.createElement(props.component, pageProps(routeProps))
-                    .unsafeCast<ReactElement>()
+            React.createElement(
+                    props.componentProvider.component.rFunction, pageProps(routeProps)
+            ).unsafeCast<ReactElement>()
         }
     }
 
