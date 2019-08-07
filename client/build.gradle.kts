@@ -78,14 +78,6 @@ tasks {
     }
 
     val runDceKotlinJs by getting(KotlinJsDce::class) {
-        keep(
-                "commonKt.historyFromArray",
-                "commonKt.com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher",
-                "logging.com.zegreatrob.coupling.logging.initializeJasmineLogging",
-                "client.performComposeStatisticsAction",
-                "client.commandDispatcher",
-                "client.components"
-        )
     }
 
     val runDceTestKotlinJs by getting(KotlinJsDce::class) {
