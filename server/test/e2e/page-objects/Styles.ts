@@ -1,3 +1,4 @@
+export const SaveButtonStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/SaveButton.css`);
 export const TribeCardStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/tribe/TribeCard.css`);
 export const TribeListStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/tribe/TribeList.css`);
 export const TribeConfigStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/tribe/TribeConfig.css`);

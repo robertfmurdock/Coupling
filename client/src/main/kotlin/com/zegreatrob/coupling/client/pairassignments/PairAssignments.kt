@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.SaveButtonProps
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
@@ -8,6 +9,7 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.player.playerRoster
+import com.zegreatrob.coupling.client.saveButton
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessageProps
@@ -20,7 +22,7 @@ import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.coroutines.launch
 import kotlinx.html.id
-import kotlinx.html.js.onClickFunction
+import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.ReactElement
@@ -121,7 +123,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                 div {
                     pairAssignments?.let {
                         if (it.id == null) {
-                            saveButton(pairAssignments)()
+                            saveButton(SaveButtonProps(onClickFunction = onClickSave(pairAssignments)))
                         }
                     }
                 }
@@ -144,22 +146,17 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         }
     }
 
-    private fun PairAssignmentRenderer.saveButton(pairAssignments: PairAssignmentDocument): RBuilder.() -> ReactElement =
-        {
-            a(classes = "super green button") {
-                attrs {
-                    id = "save-button"
-                    onClickFunction = {
-                        scope.launch {
-                            SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
+    private fun PairAssignmentRenderer.onClickSave(
+        pairAssignments: PairAssignmentDocument
+    ): (Event) -> Unit {
+        return {
+            scope.launch {
+                SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
 
-                            props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
-                        }
-                    }
-                }
-                +"Save!"
+                props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
             }
         }
+    }
 
     private fun PairAssignmentDocument.swapPlayers(
         droppedPlayerId: String,

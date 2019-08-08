@@ -4,6 +4,7 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.SaveButton
 import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
@@ -21,6 +22,7 @@ import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
 import findComponent
 import kotlinx.coroutines.withContext
+import org.w3c.dom.events.Event
 import shallow
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -29,7 +31,6 @@ import kotlin.test.Test
 class PairAssignmentsTest {
 
     val tribe = KtTribe(TribeId("Party"))
-
     private val styles = loadStyles<PairAssignmentsStyles>("pairassignments/PairAssignments")
 
     @Test
@@ -104,8 +105,9 @@ class PairAssignmentsTest {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find<Any>("#save-button")
-                    .simulate("click")
+                wrapper.findComponent(SaveButton)
+                    .props()
+                    .onClickFunction(Event("click"))
             }
         } verifyAsync {
             saveSpy.spyReceivedValues.size

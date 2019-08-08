@@ -4,7 +4,13 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
-import {PairAssignmentsStyles, PlayerCardStyles, PlayerRosterStyles, PrepareSpinStyles} from "./page-objects/Styles";
+import {
+    PairAssignmentsStyles,
+    PlayerCardStyles,
+    PlayerRosterStyles,
+    PrepareSpinStyles,
+    SaveButtonStyles
+} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -100,7 +106,7 @@ describe('The prepare to spin page', function () {
             const players = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
             expect(players.count()).toEqual(3);
 
-            const saveButton = element(By.id('save-button'));
+            const saveButton = element(By.className(SaveButtonStyles.className));
             saveButton.click();
             waitForCurrentPairAssignmentPage();
 
