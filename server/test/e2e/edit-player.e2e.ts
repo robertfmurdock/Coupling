@@ -21,7 +21,7 @@ const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
 const tribeCardElement = element(By.className(TribeCardStyles.className));
 const deleteButton = element(By.className('delete-button'));
-const savePlayerButton = element(By.id('save-player-button'));
+const savePlayerButton = element(By.className(PlayerConfigStyles.saveButton));
 
 describe('The edit player page', function () {
 
@@ -51,7 +51,7 @@ describe('The edit player page', function () {
             let currentValue = await element.all(
                 By.css(`.${PlayerConfigStyles.playerRoster} .${PlayerCardStyles.header}`)
             ).first().getText();
-            
+
             return currentValue === expectedName;
         }, 100);
     }

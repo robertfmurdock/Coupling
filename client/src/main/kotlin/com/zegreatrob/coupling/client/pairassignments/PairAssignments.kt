@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.SaveButtonProps
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
@@ -9,7 +8,6 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.player.playerRoster
-import com.zegreatrob.coupling.client.saveButton
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessageProps
@@ -21,7 +19,9 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.coroutines.launch
+import kotlinx.html.classes
 import kotlinx.html.id
+import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -49,6 +49,7 @@ external interface PairAssignmentsStyles {
     val callSign: String
     val noPairsNotice: String
     val pair: String
+    val saveButton: String
 }
 
 const val dragItemType = "PLAYER"
@@ -121,9 +122,13 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                     }
                 }
                 div {
-                    pairAssignments?.let {
-                        if (it.id == null) {
-                            saveButton(SaveButtonProps(onClickFunction = onClickSave(pairAssignments)))
+                    if (pairAssignments != null && pairAssignments.id == null) {
+                        a(classes = "super green button") {
+                            attrs {
+                                classes += styles.saveButton
+                                onClickFunction = onClickSave(pairAssignments)
+                            }
+                            +"Save!"
                         }
                     }
                 }

@@ -8,8 +8,7 @@ import {
     PairAssignmentsStyles,
     PlayerCardStyles,
     PlayerRosterStyles,
-    PrepareSpinStyles,
-    SaveButtonStyles
+    PrepareSpinStyles
 } from "./page-objects/Styles";
 
 const config = require("../../config/config");
@@ -106,7 +105,7 @@ describe('The prepare to spin page', function () {
             const players = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
             expect(players.count()).toEqual(3);
 
-            const saveButton = element(By.className(SaveButtonStyles.className));
+            const saveButton = element(By.className(PairAssignmentsStyles.saveButton));
             saveButton.click();
             waitForCurrentPairAssignmentPage();
 

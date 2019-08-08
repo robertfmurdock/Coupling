@@ -6,7 +6,7 @@ import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
 import TribeConfigPage from "./page-objects/TribeConfigPage";
 import TribeListPage from "./page-objects/TribeListPage";
-import {TribeCardStyles} from "./page-objects/Styles";
+import {TribeCardStyles, TribeConfigStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -74,7 +74,7 @@ describe('The edit tribe page', function () {
             const differentBadgesOption = element(By.css('#pairing-rule option[label="Prefer Different Badges (Beta)"]'));
             differentBadgesOption.click();
 
-            element(By.id('save-tribe-button')).click();
+            element(By.className(TribeConfigStyles.saveButton)).click();
             await browser.wait(async () => `${hostName}/tribes/` === await browser.getCurrentUrl(), 1000);
 
             await TribeConfigPage.goTo(tribe.id);

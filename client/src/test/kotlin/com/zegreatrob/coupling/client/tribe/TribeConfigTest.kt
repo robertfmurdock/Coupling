@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import ShallowWrapper
 import Spy
 import SpyData
+import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
@@ -22,6 +23,8 @@ import kotlin.js.Promise
 import kotlin.test.Test
 
 class TribeConfigTest {
+
+    private val styles = loadStyles<TribeConfigStyles>("tribe/TribeConfig")
 
     @Test
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object : TribeConfigBuilder {
@@ -70,7 +73,7 @@ class TribeConfigTest {
                         name = "1",
                         alternateBadgeName = "alt",
                         defaultBadgeName = "def",
-                        email = "emai",
+                        email = "email-y",
                         pairingRule = PairingRule.PreferDifferentBadge
                 )
 
@@ -80,7 +83,7 @@ class TribeConfigTest {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find<Any>("#save-tribe-button").simulate("click")
+                wrapper.find<Any>(".${styles.saveButton}").simulate("click")
             }
         } verifyAsync {
             saveSpy.spyReceivedValues.map { it.toTribe() }.assertContains(tribe)

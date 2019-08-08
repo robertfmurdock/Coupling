@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toTribe
 import kotlinx.coroutines.launch
 import kotlinx.html.InputType
+import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
@@ -23,6 +24,7 @@ object TribeConfig : ComponentProvider<TribeConfigProps>(), TribeConfigBuilder
 data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
 
 external interface TribeConfigStyles {
+    val saveButton: String
     val editor: String
     val className: String
 }
@@ -49,9 +51,9 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
                 tribeForm(updatedTribe, isNew, onChange)()
 
                 div {
-                    input(InputType.button, classes = "super blue button save-button") {
+                    input(InputType.button, classes = "super blue button") {
                         attrs {
-                            id = "save-tribe-button"
+                            classes += styles.saveButton
                             tabIndex = "0"
                             value = "Save"
                             onClickFunction = { onClickSave(updatedTribe) }

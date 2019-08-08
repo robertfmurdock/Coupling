@@ -34,7 +34,7 @@
     font-weight: bold;
 }
 
-:local(.playerView) .save-button {
+:local(.saveButton) {
     float: left;
     top: 15px;
     left: -15px;

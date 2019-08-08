@@ -128,3 +128,7 @@
 :local(.editor) input[type="button"] {
 
 }
+
+:local(.saveButton) {
+    /*! Do not remove */
+}

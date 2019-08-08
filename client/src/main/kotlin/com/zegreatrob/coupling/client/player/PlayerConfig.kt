@@ -12,12 +12,9 @@ import com.zegreatrob.coupling.common.toPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.html.ButtonType
-import kotlinx.html.InputType
-import kotlinx.html.id
+import kotlinx.html.*
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
-import kotlinx.html.tabIndex
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -37,6 +34,7 @@ data class PlayerConfigProps(
 
 external interface PlayerConfigStyles {
     val className: String
+    val saveButton: String
     val tribeBrowser: String
     val playerView: String
     val playerRoster: String
@@ -163,9 +161,9 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                 if (tribe.badgesEnabled) {
                     badgeConfig(tribe, player, onChange)
                 }
-                button(classes = "large blue button save-button") {
+                button(classes = "large blue button") {
                     attrs {
-                        id = "save-player-button"
+                        classes += styles.saveButton
                         type = ButtonType.submit
                         tabIndex = "0"
                         value = "Save"
