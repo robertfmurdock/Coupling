@@ -24,7 +24,6 @@ const pairAssignmentsPage = element(By.className(PairAssignmentsStyles.pairAssig
 
 function waitForCurrentPairAssignmentPage() {
     browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
-
 }
 
 describe('The prepare to spin page', function () {

@@ -42,6 +42,7 @@ external interface PairAssignmentsStyles {
     val className: String
     val pairAssignments: String
     val pairAssignmentsHeader: String
+    val pairAssignmentsContent: String
 }
 
 const val dragItemType = "PLAYER"
@@ -108,8 +109,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         return {
             div(classes = styles.pairAssignments) {
                 pairAssignmentsHeader(this, pairAssignments)
-                div {
-                    attrs { id = "pair-assignments-content" }
+                div(classes = styles.pairAssignmentsContent) {
                     pairAssignments?.pairs?.mapIndexed { index, pair ->
                         assignedPair(index, pair, props, swapCallback, pairAssignments)
                     }
@@ -204,7 +204,6 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
         pairAssignmentDocument: PairAssignmentDocument?
     ) {
-
         val (tribe) = props
         val callSign = findCallSign(pair)
 
@@ -252,7 +251,6 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         } else {
             null
         }
-
     }
 
     private fun PairAssignmentRenderer.pairAssignmentsHeader(
