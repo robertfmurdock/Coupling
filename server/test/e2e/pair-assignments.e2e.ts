@@ -5,7 +5,13 @@ import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
-import {PlayerCardStyles, PlayerRosterStyles, TribeBrowserStyles, TribeCardStyles} from "./page-objects/Styles";
+import {
+    PairAssignmentsStyles,
+    PlayerCardStyles,
+    PlayerRosterStyles,
+    TribeBrowserStyles,
+    TribeCardStyles
+} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -17,7 +23,7 @@ const historyCollection = database.get('history');
 const pluck = require('ramda/src/pluck');
 
 const tribeCardHeaderElement = element(By.className(TribeCardStyles.header));
-const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
+const pairAssignmentsPage = element(By.css(`.current.${PairAssignmentsStyles.pairAssignments}`));
 
 const unpairedPlayerElements = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
 

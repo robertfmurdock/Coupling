@@ -6,7 +6,7 @@ import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
-import {HistoryStyles} from "./page-objects/Styles";
+import {HistoryStyles, PairAssignmentsStyles} from "./page-objects/Styles";
 
 const config = require('../../config/config');
 const database = monk.default(config.tempMongoUrl);
@@ -64,13 +64,13 @@ describe('The history page', function () {
         });
 
         it('shows recent pairings', async function () {
-            const pairAssignmentSetElements = element.all(by.className('pair-assignments'));
+            const pairAssignmentSetElements = element.all(by.className(HistoryStyles.pairAssignments));
             expect(pairAssignmentSetElements.count()).toBe(2);
         });
 
 
         it('can be deleted', async function () {
-            const pairAssignmentSetElements = element.all(by.className('pair-assignments'));
+            const pairAssignmentSetElements = element.all(by.className(HistoryStyles.pairAssignments));
             const deleteButton = pairAssignmentSetElements.get(0).element(By.className(HistoryStyles.deleteButton));
 
             deleteButton.click();

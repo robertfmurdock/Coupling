@@ -4,7 +4,7 @@ import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
-import {PlayerCardStyles, PlayerRosterStyles, PrepareSpinStyles} from "./page-objects/Styles";
+import {PairAssignmentsStyles, PlayerCardStyles, PlayerRosterStyles, PrepareSpinStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = 'http://' + config.publicHost + ':' + config.port;
@@ -20,7 +20,7 @@ async function goToPrepare(tribe) {
     await browser.wait(() => prepareToSpinPage.isPresent(), 2000)
 }
 
-const pairAssignmentsPage = element(By.css('.current.pair-assignments'));
+const pairAssignmentsPage = element(By.css(`.current.${PairAssignmentsStyles.pairAssignments}`));
 
 function waitForCurrentPairAssignmentPage() {
     browser.wait(() => pairAssignmentsPage.isPresent(), 1000);

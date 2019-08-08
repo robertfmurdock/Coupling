@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.coroutines.launch
 import kotlinx.html.DIV
+import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
@@ -42,6 +43,7 @@ data class PairAssignmentsProps(
 
 external interface PairAssignmentsStyles {
     val className: String
+    val pairAssignments: String
 }
 
 const val dragItemType = "PLAYER"
@@ -106,7 +108,8 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         val tribe = props.tribe
 
         return {
-            div(classes = "current pair-assignments") {
+            div(classes = "current") {
+                attrs { classes += styles.pairAssignments }
                 pairAssignmentsHeader(pairAssignments)
                 div {
                     attrs { id = "pair-assignments-content" }

@@ -57,3 +57,11 @@
 :local(.deleteButton) {
     /*! Do not remove */
 }
+
+:local(.pairAssignments) {
+    border-radius: 20px;
+    padding: 5px;
+    margin: 5px 0;
+    background-color: hsla(146, 17%, 80%, 1);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}

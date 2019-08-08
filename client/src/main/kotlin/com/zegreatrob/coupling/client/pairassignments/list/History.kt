@@ -31,6 +31,7 @@ external interface HistoryStyles {
     val player: String
     val playerHeader: String
     val deleteButton: String
+    val pairAssignments: String
 }
 
 data class HistoryProps(
@@ -66,7 +67,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
         props.history.forEach {
             val pairAssignmentDocumentId = it.id ?: return@forEach
 
-            div(classes = "pair-assignments") {
+            div(classes = styles.pairAssignments) {
                 attrs { key = pairAssignmentDocumentId.value }
                 span(classes = "pair-assignments-header") { +it.dateText() }
                 span(classes = "small red button") {

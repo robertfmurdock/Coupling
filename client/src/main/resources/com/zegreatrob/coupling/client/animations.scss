@@ -12,35 +12,6 @@
   }
 }
 
-.pair-assignments {
-  .on-drag-hover {
-    animation: .25s wiggle;
-    animation-iteration-count: infinite;
-  }
-  &.ng-hide-add, &.ng-hide-remove {
-    display: inline-block !important;
-    transition: all ease-in .2s;
-  }
-}
-
-.current.pair-assignments {
-  &.ng-hide, &.ng-hide-add {
-    animation: none;
-    transition: none;
-  }
-}
-
-.pair-assignments {
-  .ng-hide {
-    display: inline-block;
-    animation: none;
-    opacity: 0;
-  }
-  .ng-leave {
-    animation: none;
-  }
-}
-
 @keyframes twitch {
   0% {
     transform: rotate(.5deg);

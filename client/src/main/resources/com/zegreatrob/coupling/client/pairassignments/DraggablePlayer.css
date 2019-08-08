@@ -11,4 +11,6 @@
 
 :local(.playerCard).on-drag-hover {
     background-color: orange;
+    animation: .25s wiggle;
+    animation-iteration-count: infinite;
 }

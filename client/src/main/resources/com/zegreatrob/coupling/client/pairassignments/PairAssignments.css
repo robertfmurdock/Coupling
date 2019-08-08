@@ -31,7 +31,7 @@
     display: inline-block;
 }
 
-.pair-assignments {
+:local(.pairAssignments) {
     border-radius: 20px;
     padding: 5px;
     margin: 5px 0;
@@ -39,7 +39,7 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-.pair-assignments :local(.playerCard) {
+:local(.pairAssignments) :local(.playerCard) {
     display: inline-block;
     overflow: hidden;
 }
