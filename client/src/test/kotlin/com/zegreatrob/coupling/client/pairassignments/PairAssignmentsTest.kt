@@ -4,8 +4,9 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.user.ServerMessage
+import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.client.player.PlayerRoster
+import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.withPins
@@ -29,6 +30,8 @@ class PairAssignmentsTest {
 
     val tribe = KtTribe(TribeId("Party"))
 
+    private val styles = loadStyles<PairAssignmentsStyles>("pairassignments/PairAssignments")
+
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsBuilder {
         val fellow = Player(id = "3", name = "fellow")
@@ -41,43 +44,43 @@ class PairAssignmentsTest {
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
         val pairAssignments = PairAssignmentDocument(
-                date = DateTime.now(),
-                pairs = listOf(
-                        pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),
-                        pairOf(fellow, guy)
-                ).withPins()
+            date = DateTime.now(),
+            pairs = listOf(
+                pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),
+                pairOf(fellow, guy)
+            ).withPins()
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, pairAssignments, {}))
+        shallow(PairAssignmentsProps(tribe, players, pairAssignments) {})
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
-                .props()
-                .players
-                .assertIsEqualTo(
-                        listOf(
-                                rigby,
-                                nerd,
-                                pantsmaster
-                        )
+            .props()
+            .players
+            .assertIsEqualTo(
+                listOf(
+                    rigby,
+                    nerd,
+                    pantsmaster
                 )
+            )
     }
 
     @Test
     fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = setup(object : PairAssignmentsBuilder {
         val players = listOf(
-                Player(id = "1", name = "rigby"),
-                Player(id = "2", name = "Guy"),
-                Player(id = "3", name = "fellow"),
-                Player(id = "4", name = "nerd"),
-                Player(id = "5", name = "pantsmaster")
+            Player(id = "1", name = "rigby"),
+            Player(id = "2", name = "Guy"),
+            Player(id = "3", name = "fellow"),
+            Player(id = "4", name = "nerd"),
+            Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
         shallow(PairAssignmentsProps(tribe, players, null, {}))
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
-                .props()
-                .players
-                .assertIsEqualTo(players)
+            .props()
+            .players
+            .assertIsEqualTo(players)
     }
 
     @Test
@@ -92,22 +95,23 @@ class PairAssignmentsTest {
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val pairAssignments = PairAssignmentDocument(
-                        date = DateTime.now(),
-                        pairs = emptyList()
+                    date = DateTime.now(),
+                    pairs = emptyList()
                 )
-                val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, pathSetterSpy::spyFunction))
+                val wrapper =
+                    shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, pathSetterSpy::spyFunction))
             }) {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
                 wrapper.find<Any>("#save-button")
-                        .simulate("click")
+                    .simulate("click")
             }
         } verifyAsync {
             saveSpy.spyReceivedValues.size
-                    .assertIsEqualTo(1)
+                .assertIsEqualTo(1)
             pathSetterSpy.spyReceivedValues
-                    .assertContains("/${tribe.id.value}/pairAssignments/current/")
+                .assertContains("/${tribe.id.value}/pairAssignments/current/")
         }
     }
 
@@ -119,11 +123,11 @@ class PairAssignmentsTest {
         val player4 = Player("4", name = "4")
 
         val pairAssignments = PairAssignmentDocument(
-                date = DateTime.now(),
-                pairs = listOf(
-                        pairOf(player1, player2),
-                        pairOf(player3, player4)
-                ).withPins()
+            date = DateTime.now(),
+            pairs = listOf(
+                pairOf(player1, player2),
+                pairOf(player3, player4)
+            ).withPins()
         )
         val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}))
     }) exercise {
@@ -131,15 +135,15 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.find<Any>(".pair")
+        val pairs = wrapper.find<Any>(".${styles.pair}")
         pairs.at(0).findComponent(DraggablePlayer)
-                .map { it.props().pinnedPlayer.player }
-                .toList()
-                .assertIsEqualTo(listOf(player1, player3))
+            .map { it.props().pinnedPlayer.player }
+            .toList()
+            .assertIsEqualTo(listOf(player1, player3))
         pairs.at(1).findComponent(DraggablePlayer)
-                .map { it.props().pinnedPlayer.player }
-                .toList()
-                .assertIsEqualTo(listOf(player2, player4))
+            .map { it.props().pinnedPlayer.player }
+            .toList()
+            .assertIsEqualTo(listOf(player2, player4))
     }
 
 
@@ -151,11 +155,11 @@ class PairAssignmentsTest {
         val player4 = Player("4", name = "4")
 
         val pairAssignments = PairAssignmentDocument(
-                date = DateTime.now(),
-                pairs = listOf(
-                        pairOf(player1, player2),
-                        pairOf(player3, player4)
-                ).withPins()
+            date = DateTime.now(),
+            pairs = listOf(
+                pairOf(player1, player2),
+                pairOf(player3, player4)
+            ).withPins()
         )
         val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}))
     }) exercise {
@@ -163,22 +167,22 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.find<Any>(".pair")
+        val pairs = wrapper.find<Any>(".${styles.pair}")
         pairs.at(0).findComponent(DraggablePlayer)
-                .map { it.props().pinnedPlayer.player }
-                .toList()
-                .assertIsEqualTo(listOf(player1, player2))
+            .map { it.props().pinnedPlayer.player }
+            .toList()
+            .assertIsEqualTo(listOf(player1, player2))
         pairs.at(1).findComponent(DraggablePlayer)
-                .map { it.props().pinnedPlayer.player }
-                .toList()
-                .assertIsEqualTo(listOf(player3, player4))
+            .map { it.props().pinnedPlayer.player }
+            .toList()
+            .assertIsEqualTo(listOf(player3, player4))
     }
 
     private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignmentsBuilder>) {
         val allDraggablePlayerProps = wrapper.findComponent(DraggablePlayer)
-                .map { it.props() }
+            .map { it.props() }
         val targetDraggableProps = allDraggablePlayerProps
-                .find { props -> props.pinnedPlayer.player == target }
+            .find { props -> props.pinnedPlayer.player == target }
         targetDraggableProps?.onPlayerDrop?.invoke(id!!)
     }
 
@@ -188,9 +192,9 @@ class PairAssignmentsTest {
         shallow(PairAssignmentsProps(tribe, listOf(), null, {}))
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)
-                .props()
-                .tribeId
-                .assertIsEqualTo(tribe.id)
+            .props()
+            .tribeId
+            .assertIsEqualTo(tribe.id)
     }
 
 }

@@ -26,6 +26,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.a
 import react.dom.div
+import react.dom.key
 import react.dom.span
 import kotlin.browser.window
 
@@ -43,6 +44,9 @@ external interface PairAssignmentsStyles {
     val pairAssignments: String
     val pairAssignmentsHeader: String
     val pairAssignmentsContent: String
+    val callSign: String
+    val noPairsNotice: String
+    val pair: String
 }
 
 const val dragItemType = "PLAYER"
@@ -108,10 +112,10 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
 
         return {
             div(classes = styles.pairAssignments) {
-                pairAssignmentsHeader(this, pairAssignments)
+                pairAssignmentsHeader(pairAssignments, styles)
                 div(classes = styles.pairAssignmentsContent) {
                     pairAssignments?.pairs?.mapIndexed { index, pair ->
-                        assignedPair(index, pair, props, swapCallback, pairAssignments)
+                        assignedPair(index, pair, props, swapCallback, pairAssignments, styles)
                     }
                 }
                 div {
@@ -202,14 +206,15 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         pair: PinnedCouplingPair,
         props: PairAssignmentsProps,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pairAssignmentDocument: PairAssignmentDocument?
+        pairAssignmentDocument: PairAssignmentDocument?,
+        styles: PairAssignmentsStyles
     ) {
         val (tribe) = props
         val callSign = findCallSign(pair)
 
-        span(classes = "pair") {
+        span(classes = styles.pair) {
             attrs { key = "$index" }
-            callSign(tribe, callSign)
+            callSign(tribe, callSign, styles)
             pair.players.map { pinnedPlayer ->
                 if (pairAssignmentDocument != null && pairAssignmentDocument.id == null) {
                     draggablePlayer(DraggablePlayerProps(
@@ -232,9 +237,13 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         }
     }
 
-    private fun RBuilder.callSign(tribe: KtTribe, callSign: CallSign?) = div {
+    private fun RBuilder.callSign(
+        tribe: KtTribe,
+        callSign: CallSign?,
+        pairAssignmentsStyles: PairAssignmentsStyles
+    ) = div {
         if (tribe.callSignsEnabled && callSign != null) {
-            span(classes = "call-sign") {
+            span(classes = pairAssignmentsStyles.callSign) {
                 +"${callSign.adjective} ${callSign.noun}"
             }
         }
@@ -253,20 +262,20 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         }
     }
 
-    private fun PairAssignmentRenderer.pairAssignmentsHeader(
-        rBuilder: RBuilder,
-        pairAssignments: PairAssignmentDocument?
+    private fun RBuilder.pairAssignmentsHeader(
+        pairAssignments: PairAssignmentDocument?,
+        styles: PairAssignmentsStyles
     ) {
         if (pairAssignments != null) {
-            rBuilder.div {
-                this.div {
-                    this.div(classes = styles.pairAssignmentsHeader) {
+            div {
+                div {
+                    div(classes = styles.pairAssignmentsHeader) {
                         +"Couples for ${pairAssignments.dateText()}"
                     }
                 }
             }
         } else {
-            rBuilder.div(classes = "no-pairs-notice") {
+            div(classes = styles.noPairsNotice) {
                 +"No pair assignments yet!"
             }
         }

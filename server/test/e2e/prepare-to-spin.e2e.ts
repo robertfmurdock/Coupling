@@ -7,7 +7,7 @@ import setLocation from "./setLocation";
 import {PairAssignmentsStyles, PlayerCardStyles, PlayerRosterStyles, PrepareSpinStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
-const hostName = 'http://' + config.publicHost + ':' + config.port;
+const hostName = `http://${config.publicHost}:${config.port}`;
 const database = monk.default(config.tempMongoUrl);
 const tribeCollection = database.get('tribes');
 const playersCollection = database.get('players');
@@ -79,7 +79,7 @@ describe('The prepare to spin page', function () {
             spinButton.click();
             waitForCurrentPairAssignmentPage();
 
-            const pairs = element.all(By.css('.pair'));
+            const pairs = element.all(By.className(PairAssignmentsStyles.pair));
             expect(pairs.count()).toEqual(3);
         });
 
@@ -94,7 +94,7 @@ describe('The prepare to spin page', function () {
             spinButton.click();
             waitForCurrentPairAssignmentPage();
 
-            const pairs = element.all(By.css('.pair'));
+            const pairs = element.all(By.className(PairAssignmentsStyles.pair));
             expect(pairs.count()).toEqual(1);
 
             const players = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));

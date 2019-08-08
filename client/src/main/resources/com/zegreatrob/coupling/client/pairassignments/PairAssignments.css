@@ -40,7 +40,7 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-:local(.className) .call-sign {
+:local(.callSign) {
     position: relative;
     font-size: large;
     padding: 8px;
@@ -51,4 +51,26 @@
     border-color: black;
     font-weight: bold;
     z-index: 10;
+}
+
+:local(.noPairsNotice) {
+    border: 8px outset dimgray;
+    background-color: aliceblue;
+    display: inline-block;
+    border-radius: 40px;
+    font-size: xx-large;
+    font-weight: bold;
+    width: 500px;
+    height: 150px;
+    padding: 100px 5px 5px;
+    margin: 0 2px 5px;
+}
+
+:local(.pair) {
+    border: 3px double dimgray;
+    background-color: aliceblue;
+    padding: 5px;
+    display: inline-block;
+    border-radius: 40px;
+    margin: 0 2px 0 2px;
 }
