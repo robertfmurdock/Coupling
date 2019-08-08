@@ -105,6 +105,7 @@ tasks {
 
         inputs.files(runDceKotlinJs.outputs)
         inputs.dir("node_modules")
+        inputs.dir("build/node_modules_imported")
         inputs.file(file("package.json"))
         inputs.file(file("test/vendor.webpack.config.js"))
         outputs.dir("build/lib/test-vendor")
@@ -126,8 +127,7 @@ tasks {
         inputs.dir("./stylesheets")
         inputs.dir("build/lib/vendor")
         inputs.dir("build/resources")
-        outputs.file("build/lib/main.js")
-        outputs.file("build/lib/styles.css")
+        outputs.dir("build/lib/main")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "webpack.config.js")
     }

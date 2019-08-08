@@ -9,7 +9,7 @@ const config = {
   entry: path.resolve(jsPath, './app.ts'),
   mode: process.env.NODE_ENV,
   output: {
-    path: path.resolve(__dirname, 'build/lib'),
+    path: path.resolve(__dirname, 'build/lib/main'),
     filename: 'main.js'
   },
   devtool: 'inline-source-map',
