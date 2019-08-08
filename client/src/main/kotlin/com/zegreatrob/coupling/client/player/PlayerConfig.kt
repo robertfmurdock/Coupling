@@ -28,11 +28,11 @@ import kotlin.js.json
 object PlayerConfig : ComponentProvider<PlayerConfigProps>(), PlayerConfigBuilder
 
 data class PlayerConfigProps(
-        val tribe: KtTribe,
-        val player: Player,
-        val players: List<Player>,
-        val pathSetter: (String) -> Unit,
-        val reload: () -> Unit
+    val tribe: KtTribe,
+    val player: Player,
+    val players: List<Player>,
+    val pathSetter: (String) -> Unit,
+    val reload: () -> Unit
 ) : RProps
 
 external interface PlayerConfigStyles {
@@ -47,7 +47,7 @@ val playerDefaults get() = json("badge" to Badge.Default.value)
 typealias PlayerConfigContext = ScopedPropsStylesBuilder<PlayerConfigProps, PlayerConfigStyles>
 
 interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
-        WindowFunctions, UseFormHook, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
+    WindowFunctions, UseFormHook, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
 
     override val componentPath: String get() = "player/PlayerConfig"
 
@@ -62,12 +62,14 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
                     playerView(this)
                 }
-                playerRoster(PlayerRosterProps(
+                playerRoster(
+                    PlayerRosterProps(
                         players = players,
                         tribeId = tribe.id,
                         pathSetter = pathSetter,
                         className = styles.playerRoster
-                ))
+                    )
+                )
             }
         }
     }
@@ -86,8 +88,8 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                 span(classes = "player") {
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()
                     prompt(
-                            `when` = shouldShowPrompt,
-                            message = "You have unsaved data. Would you like to save before you leave?"
+                        `when` = shouldShowPrompt,
+                        message = "You have unsaved data. Would you like to save before you leave?"
                     )
                 }
                 playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
@@ -103,20 +105,20 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
     }
 
     private fun savePlayer(
-            scope: CoroutineScope,
-            updatedPlayer: Player,
-            tribe: KtTribe,
-            reload: () -> Unit
+        scope: CoroutineScope,
+        updatedPlayer: Player,
+        tribe: KtTribe,
+        reload: () -> Unit
     ) = scope.launch {
         SavePlayerCommand(tribe.id, updatedPlayer).perform()
         reload()
     }
 
     private fun removePlayer(
-            tribe: KtTribe,
-            pathSetter: (String) -> Unit,
-            scope: CoroutineScope,
-            playerId: String
+        tribe: KtTribe,
+        pathSetter: (String) -> Unit,
+        scope: CoroutineScope,
+        playerId: String
     ) = scope.launch {
         if (window.confirm("Are you sure you want to delete this player?")) {
             DeletePlayerCommand(tribe.id, playerId).perform()
@@ -125,10 +127,10 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
     }
 
     private fun PlayerConfigContext.playerConfigForm(
-            player: Player,
-            tribe: KtTribe,
-            onChange: (Event) -> Unit,
-            onSubmit: (Event) -> Job
+        player: Player,
+        tribe: KtTribe,
+        onChange: (Event) -> Unit,
+        onSubmit: (Event) -> Job
     ): RBuilder.() -> ReactElement {
         val (isSaving, setIsSaving) = useState(false)
         return {
@@ -137,22 +139,22 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
                 div {
                     configInput(
-                            labelText = "Name",
-                            id = "player-name",
-                            name = "name",
-                            value = player.name ?: "",
-                            type = InputType.text,
-                            onChange = onChange
+                        labelText = "Name",
+                        id = "player-name",
+                        name = "name",
+                        value = player.name ?: "",
+                        type = InputType.text,
+                        onChange = onChange
                     )
                 }
                 div {
                     configInput(
-                            labelText = "Email",
-                            id = "player-email",
-                            name = "email",
-                            value = player.email ?: "",
-                            type = InputType.text,
-                            onChange = onChange
+                        labelText = "Email",
+                        id = "player-email",
+                        name = "email",
+                        value = player.email ?: "",
+                        type = InputType.text,
+                        onChange = onChange
                     )
                 }
                 if (tribe.callSignsEnabled) {
@@ -186,25 +188,25 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
         div {
             div {
                 configInput(
-                        labelText = "Call-Sign Adjective",
-                        id = "adjective-input",
-                        name = "callSignAdjective",
-                        value = player.callSignAdjective ?: "",
-                        type = InputType.text,
-                        onChange = onChange,
-                        list = "callSignAdjectiveOptions"
+                    labelText = "Call-Sign Adjective",
+                    id = "adjective-input",
+                    name = "callSignAdjective",
+                    value = player.callSignAdjective ?: "",
+                    type = InputType.text,
+                    onChange = onChange,
+                    list = "callSignAdjectiveOptions"
                 )
                 dataList { attrs { id = "callSignAdjectiveOptions" } }
             }
             div {
                 configInput(
-                        labelText = "Call-Sign Noun",
-                        id = "noun-input",
-                        name = "callSignNoun",
-                        value = player.callSignNoun ?: "",
-                        type = InputType.text,
-                        onChange = onChange,
-                        list = "callSignNounOptions"
+                    labelText = "Call-Sign Noun",
+                    id = "noun-input",
+                    name = "callSignNoun",
+                    value = player.callSignNoun ?: "",
+                    type = InputType.text,
+                    onChange = onChange,
+                    list = "callSignNounOptions"
                 )
                 dataList { attrs { id = "callSignNounOptions" } }
             }
@@ -215,24 +217,24 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
         div(classes = "badge-config") {
             div {
                 configInput(
-                        labelText = tribe.defaultBadgeName ?: "",
-                        id = "default-badge-radio",
-                        name = "badge",
-                        value = "${Badge.Default.value}",
-                        type = InputType.radio,
-                        onChange = onChange,
-                        checked = player.badge == Badge.Default.value
+                    labelText = tribe.defaultBadgeName ?: "",
+                    id = "default-badge-radio",
+                    name = "badge",
+                    value = "${Badge.Default.value}",
+                    type = InputType.radio,
+                    onChange = onChange,
+                    checked = player.badge == Badge.Default.value
                 )
             }
             div {
                 configInput(
-                        labelText = tribe.alternateBadgeName ?: "",
-                        id = "alt-badge-radio",
-                        name = "badge",
-                        value = "${Badge.Alternate.value}",
-                        type = InputType.radio,
-                        onChange = onChange,
-                        checked = player.badge == Badge.Alternate.value
+                    labelText = tribe.alternateBadgeName ?: "",
+                    id = "alt-badge-radio",
+                    name = "badge",
+                    value = "${Badge.Alternate.value}",
+                    type = InputType.radio,
+                    onChange = onChange,
+                    checked = player.badge == Badge.Alternate.value
                 )
             }
         }

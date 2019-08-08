@@ -14,33 +14,33 @@ import kotlinx.coroutines.Deferred
 data class PlayerQuery(val tribeId: TribeId, val playerId: String?) : Action
 
 interface PlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
-        FindCallSignActionDispatcher {
+    FindCallSignActionDispatcher {
     suspend fun PlayerQuery.perform() = logAsync {
         tribeId.getData()
-                .let { (tribe, players) ->
-                    Triple(
-                            tribe,
-                            players,
-                            players.findOrDefaultNew(playerId)
-                    )
-                }
+            .let { (tribe, players) ->
+                Triple(
+                    tribe,
+                    players,
+                    players.findOrDefaultNew(playerId)
+                )
+            }
     }
 
     private suspend fun TribeId.getData() = (getTribeAsync() to getPlayerListAsync())
-            .await()
+        .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =
-            first.await() to second.await()
+        first.await() to second.await()
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
-            ?: defaultWithCallSign()
+        ?: defaultWithCallSign()
 
     private fun List<Player>.defaultWithCallSign() = FindCallSignAction(this, "")
-            .perform()
-            .let { callSign ->
-                Player(
-                        callSignAdjective = callSign.adjective,
-                        callSignNoun = callSign.noun
-                )
-            }
+        .perform()
+        .let { callSign ->
+            Player(
+                callSignAdjective = callSign.adjective,
+                callSignNoun = callSign.noun
+            )
+        }
 }

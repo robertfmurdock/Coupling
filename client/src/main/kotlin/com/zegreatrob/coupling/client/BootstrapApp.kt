@@ -21,8 +21,8 @@ object App : GoogleSignIn {
             val animationsDisabled = window.sessionStorage.getItem("animationDisabled") == "true"
 
             render(
-                    createElement(CouplingRouter.component.rFunction, CouplingRouterProps(isSignedIn, animationsDisabled)),
-                    document.getElementsByClassName("view-container")[0]
+                createElement(CouplingRouter.component.rFunction, CouplingRouterProps(isSignedIn, animationsDisabled)),
+                document.getElementsByClassName("view-container")[0]
             )
         }
     }

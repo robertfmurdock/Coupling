@@ -27,7 +27,7 @@
     text-stroke-width: 1.5px;
     text-stroke-color: darkred;
     font-size: xx-large;
-    background: steelblue url(../../../../../../../../images/overlay.png) repeat-x;
+    background: steelblue url(../overlay.png) repeat-x;
 }
 
 :local(.player) {
@@ -36,7 +36,7 @@
     display: inline-block;
     overflow: hidden;
     border: 3px outset gold;
-    background: darkseagreen url(../../../../../../../../images/overlay.png) repeat-x;
+    background: darkseagreen url(../overlay.png) repeat-x;
     padding: 6px;
     text-align: center;
     text-decoration: none;
@@ -47,7 +47,7 @@
 }
 
 :local(.player) :local(.playerHeader) {
-    background: darkcyan url(../../../../../../../../images/overlay.png) repeat-x;
+    background: darkcyan url(../overlay.png) repeat-x;
     margin-before: 6px;
     margin-after: 6px;
     border-radius: 15px;

@@ -19,10 +19,10 @@ interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispat
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         loadedTribeConfig(
-                dataLoadProps(
-                        query = { performCorrectQuery(pageProps.tribeId) },
-                        toProps = { _, data -> tribeConfigProps(data, pageProps.pathSetter) }
-                )
+            dataLoadProps(
+                query = { performCorrectQuery(pageProps.tribeId) },
+                toProps = { _, data -> tribeConfigProps(data, pageProps.pathSetter) }
+            )
         )
     }
 
@@ -32,14 +32,14 @@ interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispat
         newTribe()
 
     private fun newTribe() = KtTribe(
-            id = TribeId(""),
-            name = "New Tribe",
-            defaultBadgeName = "Default",
-            alternateBadgeName = "Alternate"
+        id = TribeId(""),
+        name = "New Tribe",
+        defaultBadgeName = "Default",
+        alternateBadgeName = "Alternate"
     )
 
     private fun tribeConfigProps(tribe: KtTribe, pathSetter: (String) -> Unit) = TribeConfigProps(
-            tribe = tribe,
-            pathSetter = pathSetter
+        tribe = tribe,
+        pathSetter = pathSetter
     )
 }

@@ -25,10 +25,10 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher
 
         if (tribeId != null) {
             loadedPlayer(
-                    dataLoadProps(
-                            query = { PlayerQuery(tribeId, playerId).perform() },
-                            toProps = toPropsFunc(pageProps)
-                    )
+                dataLoadProps(
+                    query = { PlayerQuery(tribeId, playerId).perform() },
+                    toProps = toPropsFunc(pageProps)
+                )
             ) {
                 playerId?.let { attrs { key = it } }
             }
@@ -36,13 +36,13 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher
     }
 
     private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<KtTribe, List<Player>, Player>) -> PlayerConfigProps =
-            { reload, (tribe, players, player) ->
-                PlayerConfigProps(
-                        tribe = tribe,
-                        player = player,
-                        players = players,
-                        pathSetter = pageProps.pathSetter,
-                        reload = reload
-                )
-            }
+        { reload, (tribe, players, player) ->
+            PlayerConfigProps(
+                tribe = tribe,
+                player = player,
+                players = players,
+                pathSetter = pageProps.pathSetter,
+                reload = reload
+            )
+        }
 }

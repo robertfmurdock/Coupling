@@ -19,7 +19,7 @@ interface WelcomePageBuilder : ComponentBuilder<PageProps> {
 
     override fun build() = reactFunctionComponent<PageProps> {
         loadedWelcome(
-                DataLoadProps { EmptyProps }
+            DataLoadProps { EmptyProps }
         )
     }
 }

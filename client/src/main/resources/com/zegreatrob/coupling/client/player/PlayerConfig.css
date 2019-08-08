@@ -26,7 +26,7 @@
 }
 
 :local(.playerView) .player .player-header {
-    background: darkcyan url(../../../../../../../../images/overlay.png) repeat-x;
+    background: darkcyan url(../overlay.png) repeat-x;
     margin-top: 0;
     margin-bottom: 6px;
     border-radius: 20px;
@@ -55,7 +55,7 @@
 }
 
 :local(.playerView) form div label {
-    background: darkcyan url(../../../../../../../../images/overlay.png) repeat-x;
+    background: darkcyan url(../overlay.png) repeat-x;
     border-radius: 20px;
     margin-top: 6px;
     margin-bottom: 6px;

@@ -24,18 +24,18 @@ interface PinListPageBuilder : ComponentBuilder<PageProps>, PinListQueryDispatch
         if (tribeId != null) {
             loadedPinList(DataLoadProps {
                 tribeId.performPinListQuery()
-                        .toPinListProps()
+                    .toPinListProps()
             })
         } else throw Exception("WHAT")
     }
 
     private fun Pair<KtTribe, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
         PinListProps(
-                tribe = tribe,
-                pins = retiredPlayers
+            tribe = tribe,
+            pins = retiredPlayers
         )
     }
 
     private suspend fun TribeId.performPinListQuery() = PinListQuery(this)
-            .perform()
+        .perform()
 }

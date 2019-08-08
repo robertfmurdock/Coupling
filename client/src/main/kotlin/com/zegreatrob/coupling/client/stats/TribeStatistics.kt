@@ -24,13 +24,13 @@ external interface TribeStatisticsStyles {
 }
 
 data class TribeStatisticsProps(
-        val queryResults: StatisticQueryResults,
-        val pathSetter: (String) -> Unit
+    val queryResults: StatisticQueryResults,
+    val pathSetter: (String) -> Unit
 ) : RProps
 
 interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, TribeStatisticsStyles>,
-        ComposeStatisticsActionDispatcher,
-        CalculateHeatMapActionDispatcher {
+    ComposeStatisticsActionDispatcher,
+    CalculateHeatMapActionDispatcher {
 
     override val componentPath: String get() = "stats/TribeStatistics"
 
@@ -41,11 +41,13 @@ interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, 
             div(classes = styles.className) {
                 div {
                     tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
-                    teamStatistics(TeamStatisticsProps(
+                    teamStatistics(
+                        TeamStatisticsProps(
                             spinsUntilFullRotation = spinsUntilFullRotation,
                             activePlayerCount = players.size,
                             medianSpinDuration = distanceInWorks(0, medianSpinDuration?.millisecondsInt)
-                    ))
+                        )
+                    )
                 }
                 div {
                     div(classes = styles.leftSection) {

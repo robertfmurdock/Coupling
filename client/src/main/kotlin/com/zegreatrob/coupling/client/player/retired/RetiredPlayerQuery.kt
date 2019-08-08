@@ -14,15 +14,15 @@ data class RetiredPlayerQuery(val tribeId: TribeId, val playerId: String) : Acti
 interface RetiredPlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetRetiredPlayerListSyntax {
     suspend fun RetiredPlayerQuery.perform() = logAsync {
         tribeId.getData()
-                .let { (tribe, players) ->
-                    Triple(tribe, players, players.first { it.id == playerId })
-                }
+            .let { (tribe, players) ->
+                Triple(tribe, players, players.first { it.id == playerId })
+            }
     }
 
     private suspend fun TribeId.getData() =
-            (getTribeAsync() to getRetiredPlayerListAsync())
-                    .await()
+        (getTribeAsync() to getRetiredPlayerListAsync())
+            .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =
-            first.await() to second.await()
+        first.await() to second.await()
 }

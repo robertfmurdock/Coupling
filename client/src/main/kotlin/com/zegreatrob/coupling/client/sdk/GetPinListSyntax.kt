@@ -11,7 +11,7 @@ import kotlinx.coroutines.asDeferred
 interface GetPinListSyntax {
 
     fun TribeId.getPinListAsync(): Deferred<List<Pin>> = axios.getList("/api/$value/pins")
-            .then { it.toPins() }
-            .asDeferred()
+        .then { it.toPins() }
+        .asDeferred()
 
 }

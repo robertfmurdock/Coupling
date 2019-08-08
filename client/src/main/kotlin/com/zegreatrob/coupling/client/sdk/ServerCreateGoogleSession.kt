@@ -5,7 +5,7 @@ import kotlin.js.json
 
 interface ServerCreateGoogleSession {
     fun createSessionOnCoupling(idToken: String) = axios.post(
-            "/auth/google-token",
-            json("idToken" to idToken)
+        "/auth/google-token",
+        json("idToken" to idToken)
     )
 }

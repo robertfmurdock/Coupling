@@ -16,14 +16,14 @@ interface GravatarOptions {
 }
 
 fun RBuilder.gravatarImage(
-        email: String?,
-        fallback: String? = null,
-        className: String? = null,
-        alt: String?,
-        options: GravatarOptions
+    email: String?,
+    fallback: String? = null,
+    className: String? = null,
+    alt: String?,
+    options: GravatarOptions
 ) = img(
-        src = myGravatarUrl(options, email, fallback),
-        alt = alt
+    src = myGravatarUrl(options, email, fallback),
+    alt = alt
 ) {
     attrs {
         width = options.size.toString()
@@ -35,8 +35,8 @@ fun RBuilder.gravatarImage(
 }
 
 private fun myGravatarUrl(options: GravatarOptions, email: String?, fallback: String?) =
-        if (email == null && fallback != null) {
-            fallback
-        } else {
-            gravatarUrl(email ?: "", options)
-        }
+    if (email == null && fallback != null) {
+        fallback
+    } else {
+        gravatarUrl(email ?: "", options)
+    }

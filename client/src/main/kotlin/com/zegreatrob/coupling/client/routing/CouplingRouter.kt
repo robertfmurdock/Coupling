@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPage
-import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
+import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinPage
 import com.zegreatrob.coupling.client.pin.PinListPage
 import com.zegreatrob.coupling.client.player.PlayerPage
@@ -67,11 +67,26 @@ interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
         couplingRoute(CouplingRouteProps(path = "/:tribeId/edit/", componentProvider = TribeConfigPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/history", componentProvider = HistoryPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pins", componentProvider = PinListPage))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/current/", componentProvider = CurrentPairAssignmentsPage))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/new", componentProvider = NewPairAssignmentsPage))
+        couplingRoute(
+            CouplingRouteProps(
+                path = "/:tribeId/pairAssignments/current/",
+                componentProvider = CurrentPairAssignmentsPage
+            )
+        )
+        couplingRoute(
+            CouplingRouteProps(
+                path = "/:tribeId/pairAssignments/new",
+                componentProvider = NewPairAssignmentsPage
+            )
+        )
         couplingRoute(CouplingRouteProps(path = "/:tribeId/player/new", componentProvider = PlayerPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/player/:playerId/", componentProvider = PlayerPage))
-        couplingRoute(CouplingRouteProps(path = "/:tribeId/retired-player/:playerId/", componentProvider = RetiredPlayerPage))
+        couplingRoute(
+            CouplingRouteProps(
+                path = "/:tribeId/retired-player/:playerId/",
+                componentProvider = RetiredPlayerPage
+            )
+        )
         couplingRoute(CouplingRouteProps(path = "/:tribeId/statistics", componentProvider = StatisticsPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/players/retired", componentProvider = RetiredPlayersPage))
     }

@@ -46,7 +46,7 @@ external interface TeamStatisticsStyles {
 }
 
 data class TeamStatisticsProps(
-        val spinsUntilFullRotation: Int,
-        val activePlayerCount: Int,
-        val medianSpinDuration: String
+    val spinsUntilFullRotation: Int,
+    val activePlayerCount: Int,
+    val medianSpinDuration: String
 ) : RProps

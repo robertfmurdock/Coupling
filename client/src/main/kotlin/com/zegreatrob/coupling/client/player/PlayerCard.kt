@@ -31,13 +31,13 @@ external interface PlayerCardStyles {
 }
 
 data class PlayerCardProps(
-        val tribeId: TribeId,
-        val player: Player,
-        val pathSetter: (String) -> Unit = {},
-        val disabled: Boolean = false,
-        val className: String? = null,
-        val size: Int = 100,
-        val onClick: ((Event) -> Unit) = {}
+    val tribeId: TribeId,
+    val player: Player,
+    val pathSetter: (String) -> Unit = {},
+    val disabled: Boolean = false,
+    val className: String? = null,
+    val size: Int = 100,
+    val onClick: ((Event) -> Unit) = {}
 ) : RProps
 
 interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCardStyles> {
@@ -55,12 +55,12 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
                 }
                 playerGravatarImage(player, size, styles)
                 playerCardHeader(
-                        tribeId = tribeId,
-                        player = player,
-                        size = size,
-                        disabled = disabled,
-                        pathSetter = pathSetter,
-                        styles = styles
+                    tribeId = tribeId,
+                    player = player,
+                    size = size,
+                    disabled = disabled,
+                    pathSetter = pathSetter,
+                    styles = styles
                 )
             }
         }
@@ -76,9 +76,9 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
     }
 
     private fun RBuilder.playerGravatarImage(
-            player: Player,
-            size: Int,
-            styles: PlayerCardStyles
+        player: Player,
+        size: Int,
+        styles: PlayerCardStyles
     ) = if (player.imageURL != null) {
         img(src = player.imageURL, classes = styles.playerIcon, alt = "icon") {
             attrs {
@@ -89,23 +89,23 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
     } else {
         val email = player.email ?: player.name ?: ""
         gravatarImage(
-                email = email,
-                className = styles.playerIcon,
-                alt = "icon",
-                options = object : GravatarOptions {
-                    override val size = size
-                    override val default = "retro"
-                }
+            email = email,
+            className = styles.playerIcon,
+            alt = "icon",
+            options = object : GravatarOptions {
+                override val size = size
+                override val default = "retro"
+            }
         )
     }
 
     private fun RBuilder.playerCardHeader(
-            tribeId: TribeId,
-            player: Player,
-            size: Int,
-            disabled: Boolean,
-            pathSetter: (String) -> Unit,
-            styles: PlayerCardStyles
+        tribeId: TribeId,
+        player: Player,
+        size: Int,
+        disabled: Boolean,
+        pathSetter: (String) -> Unit,
+        styles: PlayerCardStyles
     ) {
         val playerNameRef = useRef<Node>(null)
         useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
@@ -127,10 +127,11 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
     }
 
     private fun handleNameClick(
-            tribeId: TribeId,
-            player: Player,
-            disabled: Boolean,
-            pathSetter: (String) -> Unit) = { event: Event ->
+        tribeId: TribeId,
+        player: Player,
+        disabled: Boolean,
+        pathSetter: (String) -> Unit
+    ) = { event: Event ->
         if (!disabled) {
             event.stopPropagation()
 

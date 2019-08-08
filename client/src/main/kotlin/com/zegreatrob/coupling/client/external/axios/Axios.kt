@@ -13,4 +13,4 @@ external interface Axios {
 }
 
 fun Axios.getList(url: String): Promise<Array<Json>> = get(url)
-        .then<dynamic> { result -> result.data.unsafeCast<Array<Json>>() }
+    .then<dynamic> { result -> result.data.unsafeCast<Array<Json>>() }

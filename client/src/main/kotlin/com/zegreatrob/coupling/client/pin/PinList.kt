@@ -41,12 +41,12 @@ interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
         i {
             attrs {
                 classes = setOf(
-                        "pin-icon",
-                        "fa",
-                        "fa-fw",
-                        "fa-d2",
-                        "fa-2x",
-                        pin.icon ?: ""
+                    "pin-icon",
+                    "fa",
+                    "fa-fw",
+                    "fa-d2",
+                    "fa-2x",
+                    pin.icon ?: ""
                 )
             }
         }

@@ -16,12 +16,12 @@ import kotlin.browser.window
 interface GoogleSignIn : ServerCreateGoogleSession {
 
     suspend fun signIn() = getGoogleAuth()
-            .performSignIn()
-            .createSession()
-            .also { window.location.pathname = "/" }
+        .performSignIn()
+        .createSession()
+        .also { window.location.pathname = "/" }
 
     suspend fun googleSignOut(): Unit = getGoogleAuth()
-            .whenLoggedInSignOut()
+        .whenLoggedInSignOut()
 
     suspend fun checkForSignedIn() = coroutineScope {
         waitForIsAuthenticatedToLoad()
@@ -33,7 +33,7 @@ interface GoogleSignIn : ServerCreateGoogleSession {
 
             if (isSignedIn) {
                 googleAuth.currentUser.get()
-                        .createSession()
+                    .createSession()
             }
             isSignedIn
         }
@@ -51,18 +51,18 @@ interface GoogleSignIn : ServerCreateGoogleSession {
 
     private suspend fun GoogleUser.createSession() {
         createSessionOnCoupling(getAuthResponse().id_token)
-                .await()
+            .await()
     }
 
     private suspend fun getGoogleAuth() = loadGoogleAuth2()
-            .init(jsObject { client_id = window["googleClientId"] })
-            .await()
+        .init(jsObject { client_id = window["googleClientId"] })
+        .await()
 
     private suspend fun loadGoogleAuth2() = CompletableDeferred<GoogleAuth2>()
-            .apply {
-                gapi.load("auth2") { complete(gapi.auth2) }
-            }
-            .await()
+        .apply {
+            gapi.load("auth2") { complete(gapi.auth2) }
+        }
+        .await()
 
     private suspend fun GoogleAuth.performSignIn() = if (isSignedIn.get()) {
         currentUser.get()
@@ -71,11 +71,11 @@ interface GoogleSignIn : ServerCreateGoogleSession {
     }
 
     private fun GoogleAuth.signIn() = signIn(
-            jsObject {
-                scope = "profile email"
-                prompt = "consent"
-                ux_mode = "redirect"
-                redirect_uri = window.location.origin
-            }
+        jsObject {
+            scope = "profile email"
+            prompt = "consent"
+            ux_mode = "redirect"
+            redirect_uri = window.location.origin
+        }
     )
 }

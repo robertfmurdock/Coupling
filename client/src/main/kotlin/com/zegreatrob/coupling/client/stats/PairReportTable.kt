@@ -24,7 +24,7 @@ object PairReportTable : ComponentProvider<PairReportTableProps>(), PairReportTa
 val RBuilder.pairReportTable get() = PairReportTable.captor(this)
 
 interface PairReportTableBuilder :
-        StyledComponentBuilder<PairReportTableProps, PairReportTableStyles> {
+    StyledComponentBuilder<PairReportTableProps, PairReportTableStyles> {
 
     override val componentPath: String get() = "stats/PairReportTable"
 
@@ -40,10 +40,10 @@ interface PairReportTableBuilder :
     }
 
     private fun RBuilder.pairReport(
-            styles: PairReportTableStyles,
-            index: Int,
-            pairReport: PairReport,
-            tribe: KtTribe
+        styles: PairReportTableStyles,
+        index: Int,
+        pairReport: PairReport,
+        tribe: KtTribe
     ) = div(classes = styles.pairReport) {
         attrs { key = "$index"; classes += "react-pair-report" }
         pairReport.pair.asArray().map { player -> reportPlayerCard(styles, player, tribe) }
@@ -64,10 +64,10 @@ interface PairReportTableBuilder :
     }
 
     private fun RDOMBuilder<DIV>.reportPlayerCard(styles: PairReportTableStyles, player: Player, tribe: KtTribe) =
-            div(classes = styles.playerCard) {
-                attrs { key = player.id ?: "" }
-                playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
-            }
+        div(classes = styles.playerCard) {
+            attrs { key = player.id ?: "" }
+            playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
+        }
 }
 
 external interface PairReportTableStyles {

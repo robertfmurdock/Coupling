@@ -10,7 +10,7 @@ import kotlin.js.Json
 interface GetRetiredPlayerListSyntax {
 
     fun TribeId.getRetiredPlayerListAsync() = axios.getList("/api/$value/players/retired")
-            .then { it.map(Json::toPlayer) }
-            .asDeferred()
+        .then { it.map(Json::toPlayer) }
+        .asDeferred()
 
 }

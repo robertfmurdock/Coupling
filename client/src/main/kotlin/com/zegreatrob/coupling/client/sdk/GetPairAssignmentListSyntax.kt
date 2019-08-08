@@ -11,7 +11,8 @@ import kotlin.js.Json
 
 interface GetPairAssignmentListSyntax {
 
-    fun TribeId.getPairAssignmentListAsync(): Deferred<List<PairAssignmentDocument>> = axios.getList("/api/$value/history")
+    fun TribeId.getPairAssignmentListAsync(): Deferred<List<PairAssignmentDocument>> =
+        axios.getList("/api/$value/history")
             .then { it.map(Json::toPairAssignmentDocument) }
             .asDeferred()
 

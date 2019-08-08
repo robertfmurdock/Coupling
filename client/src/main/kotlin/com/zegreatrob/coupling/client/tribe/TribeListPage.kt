@@ -17,13 +17,13 @@ interface TribeListPageBuilder : ComponentBuilder<PageProps>, TribeListQueryDisp
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
         loadedTribeList(
-                DataLoadProps {
-                    val tribes = performTribeQuery()
-                    TribeListProps(
-                            tribes = tribes,
-                            pathSetter = pageProps.pathSetter
-                    )
-                }
+            DataLoadProps {
+                val tribes = performTribeQuery()
+                TribeListProps(
+                    tribes = tribes,
+                    pathSetter = pageProps.pathSetter
+                )
+            }
         )
     }
 

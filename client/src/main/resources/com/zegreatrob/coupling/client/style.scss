@@ -61,7 +61,7 @@ a {
 
 .player {
   .player-header {
-    background: darkcyan url(../../../../../../../images/overlay.png) repeat-x;
+    background: darkcyan url(./overlay.png) repeat-x;
     margin-before: 6px;
     margin-after: 6px;
     border-radius: 15px;
@@ -78,7 +78,7 @@ a {
   display: inline-block;
   overflow: hidden;
   border: 3px outset gold;
-  background: darkseagreen url(../../../../../../../images/overlay.png) repeat-x;
+  background: darkseagreen url(./overlay.png) repeat-x;
   padding: 6px;
   text-align: center;
   text-decoration: none;
@@ -147,7 +147,7 @@ input.button {
 }
 
 .button {
-  background: #222222 url(../../../../../../../images/overlay.png) repeat-x;
+  background: #222222 url(./overlay.png) repeat-x;
   display: inline-block;
   padding: 5px 10px 6px;
   color: #fff;
@@ -163,7 +163,7 @@ input.button {
   text-stroke-color: initial;
   margin: 2px;
   &:visited {
-    background: #222222 url(../../../../../../../images/overlay.png) repeat-x;
+    background: #222222 url(./overlay.png) repeat-x;
     display: inline-block;
     padding: 5px 10px 6px;
     color: #fff;

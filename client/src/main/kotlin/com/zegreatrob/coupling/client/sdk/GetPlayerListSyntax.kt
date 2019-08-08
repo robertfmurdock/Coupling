@@ -12,7 +12,7 @@ import kotlin.js.Json
 interface GetPlayerListSyntax {
 
     fun TribeId.getPlayerListAsync(): Deferred<List<Player>> = axios.getList("/api/$value/players")
-            .then { it.map(Json::toPlayer) }
-            .asDeferred()
+        .then { it.map(Json::toPlayer) }
+        .asDeferred()
 
 }

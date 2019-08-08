@@ -24,10 +24,11 @@ interface CurrentPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, Tribe
         } else throw Exception("WHAT")
     }
 
-    private fun dataLoadProps(tribeId: TribeId, pageProps: PageProps) = com.zegreatrob.coupling.client.routing.dataLoadProps(
+    private fun dataLoadProps(tribeId: TribeId, pageProps: PageProps) =
+        com.zegreatrob.coupling.client.routing.dataLoadProps(
             query = { TribeDataSetQuery(tribeId).perform() },
             toProps = { _, (tribe, players, history) ->
                 PairAssignmentsProps(tribe, players, history.firstOrNull(), pageProps.pathSetter)
             }
-    )
+        )
 }

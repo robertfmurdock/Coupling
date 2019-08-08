@@ -13,19 +13,19 @@ import kotlin.js.json
 interface UseFormHook {
 
     fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
-            .let { (values, setValues) ->
-                Pair(
-                        values,
-                        { event: Event ->
-                            event.unsafeCast<dynamic>().persist()
-                            setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
-                        }
-                )
-            }
+        .let { (values, setValues) ->
+            Pair(
+                values,
+                { event: Event ->
+                    event.unsafeCast<dynamic>().persist()
+                    setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
+                }
+            )
+        }
 
     private fun Json.copyWithChangeFrom(event: Event) = json()
-            .add(this)
-            .add(event.toChangeJson())
+        .add(this)
+        .add(event.toChangeJson())
 
     private fun Event.toChangeJson(): Json {
         val target = target.unsafeCast<Json>()
@@ -39,15 +39,15 @@ interface UseFormHook {
     }
 
     fun RBuilder.configInput(
-            labelText: String,
-            id: String,
-            name: String,
-            value: String,
-            type: InputType,
-            onChange: (Event) -> Unit,
-            placeholder: String = "",
-            list: String = "",
-            checked: Boolean = false
+        labelText: String,
+        id: String,
+        name: String,
+        value: String,
+        type: InputType,
+        onChange: (Event) -> Unit,
+        placeholder: String = "",
+        list: String = "",
+        checked: Boolean = false
     ) {
         label { attrs { htmlFor = id }; +labelText }
         input {

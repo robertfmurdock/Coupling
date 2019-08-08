@@ -34,16 +34,16 @@ external interface HistoryStyles {
 }
 
 data class HistoryProps(
-        val tribe: KtTribe,
-        val history: List<PairAssignmentDocument>,
-        val reload: () -> Unit,
-        val pathSetter: (String) -> Unit
+    val tribe: KtTribe,
+    val history: List<PairAssignmentDocument>,
+    val reload: () -> Unit,
+    val pathSetter: (String) -> Unit
 ) : RProps
 
 interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
-        DeletePairAssignmentsCommandDispatcher,
-        WindowFunctions,
-        ScopeProvider {
+    DeletePairAssignmentsCommandDispatcher,
+    WindowFunctions,
+    ScopeProvider {
 
     override val componentPath: String get() = "pairassignments/History"
 
@@ -62,26 +62,31 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles) = props.history.forEach {
-        val pairAssignmentDocumentId = it.id ?: return@forEach
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles) =
+        props.history.forEach {
+            val pairAssignmentDocumentId = it.id ?: return@forEach
 
-        div(classes = "pair-assignments") {
-            attrs { key = pairAssignmentDocumentId.value }
-            span(classes = "pair-assignments-header") { +it.dateText() }
-            span(classes = "small red button") {
-                attrs {
-                    classes += styles.deleteButton
-                    onClickFunction = { _ ->
-                        scope.launch { removeButtonOnClick(pairAssignmentDocumentId, props.tribe.id, props.reload) }
+            div(classes = "pair-assignments") {
+                attrs { key = pairAssignmentDocumentId.value }
+                span(classes = "pair-assignments-header") { +it.dateText() }
+                span(classes = "small red button") {
+                    attrs {
+                        classes += styles.deleteButton
+                        onClickFunction = { _ ->
+                            scope.launch { removeButtonOnClick(pairAssignmentDocumentId, props.tribe.id, props.reload) }
+                        }
                     }
+                    +"DELETE"
                 }
-                +"DELETE"
+                div { showPairs(it, styles) }
             }
-            div { showPairs(it, styles) }
         }
-    }
 
-    private suspend fun removeButtonOnClick(pairAssignmentDocumentId: PairAssignmentDocumentId, tribeId: TribeId, reload: () -> Unit) {
+    private suspend fun removeButtonOnClick(
+        pairAssignmentDocumentId: PairAssignmentDocumentId,
+        tribeId: TribeId,
+        reload: () -> Unit
+    ) {
         if (window.confirm("Are you sure you want to delete these pair assignments?")) {
             DeletePairAssignmentsCommand(tribeId, pairAssignmentDocumentId).perform()
             reload()
@@ -89,23 +94,23 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
     }
 
     private fun RBuilder.showPairs(document: PairAssignmentDocument, styles: HistoryStyles) =
-            document.pairs.mapIndexed { index, pair ->
-                span(classes = "pair") {
-                    attrs { key = "$index" }
-                    pair.players.map { pinnedPlayer: PinnedPlayer ->
-                        showPlayer(styles, pinnedPlayer)
-                    }
+        document.pairs.mapIndexed { index, pair ->
+            span(classes = "pair") {
+                attrs { key = "$index" }
+                pair.players.map { pinnedPlayer: PinnedPlayer ->
+                    showPlayer(styles, pinnedPlayer)
                 }
             }
+        }
 
     private fun RBuilder.showPlayer(styles: HistoryStyles, pinnedPlayer: PinnedPlayer) =
-            span(classes = styles.player) {
-                attrs { key = "${pinnedPlayer.player.id}" }
-                div(classes = styles.playerHeader) {
-                    +(pinnedPlayer.player.name ?: "Unknown")
-                }
+        span(classes = styles.player) {
+            attrs { key = "${pinnedPlayer.player.id}" }
+            div(classes = styles.playerHeader) {
+                +(pinnedPlayer.player.name ?: "Unknown")
             }
+        }
 }
 
 fun PairAssignmentDocument.dateText() =
-        "${date.format(DateFormat("MM/dd/YYYY"))} - ${date.format(DateFormat("HH:mm:ss"))}"
+    "${date.format(DateFormat("MM/dd/YYYY"))} - ${date.format(DateFormat("HH:mm:ss"))}"

@@ -8,7 +8,7 @@ import kotlin.js.Promise
 interface TribeIdDeleteSyntax {
 
     fun TribeId.deleteAsync() = axios.delete("/api/tribes/$value")
-            .unsafeCast<Promise<Unit>>()
-            .asDeferred()
+        .unsafeCast<Promise<Unit>>()
+        .asDeferred()
 
 }

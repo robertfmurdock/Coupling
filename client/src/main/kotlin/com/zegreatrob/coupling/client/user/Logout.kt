@@ -21,7 +21,7 @@ interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutComma
         val (logoutPromise, setLogout) = useState<Any?>(null)
         if (logoutPromise == null) {
             setLogout(
-                    MainScope().launch { waitForLogout(setIsLoggedOut) }
+                MainScope().launch { waitForLogout(setIsLoggedOut) }
             )
         }
 

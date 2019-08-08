@@ -37,16 +37,16 @@ fun useEffectWithCleanup(dependencies: Array<Any>? = null, callback: () -> () ->
 fun <T> useState(default: T): StateValueContent<T> {
     val stateArray = React.useState(default)
     return StateValueContent(
-            value = stateArray[0].unsafeCast<T>(),
-            setter = stateArray[1].unsafeCast<(T) -> Unit>()
+        value = stateArray[0].unsafeCast<T>(),
+        setter = stateArray[1].unsafeCast<(T) -> Unit>()
     )
 }
 
 fun <T> useStateWithSetterFunction(default: T): StateValueContentWithSetterFunction<T> {
     val stateArray = React.useState(default)
     return StateValueContentWithSetterFunction(
-            value = stateArray[0].unsafeCast<T>(),
-            setter = stateArray[1].unsafeCast<((T) -> T) -> Unit>()
+        value = stateArray[0].unsafeCast<T>(),
+        setter = stateArray[1].unsafeCast<((T) -> T) -> Unit>()
     )
 }
 
@@ -55,18 +55,18 @@ data class StateValueContentWithSetterFunction<T>(val value: T, val setter: ((T)
 fun <T> useState(default: () -> T): StateValueContent<T> {
     val stateArray = React.useState(default)
     return StateValueContent(
-            value = stateArray[0].unsafeCast<T>(),
-            setter = stateArray[1].unsafeCast<(T) -> Unit>()
+        value = stateArray[0].unsafeCast<T>(),
+        setter = stateArray[1].unsafeCast<(T) -> Unit>()
     )
 }
 
 fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> ReactElement) = child(
-        React.createElement(type, jsObject {}) { value: T ->
-            buildElement {
-                children(value)
-            }
+    React.createElement(type, jsObject {}) { value: T ->
+        buildElement {
+            children(value)
         }
-                .unsafeCast<ReactElement>()
+    }
+        .unsafeCast<ReactElement>()
 )
 
 interface RFunction<P : RProps> : RClass<P>
@@ -74,36 +74,41 @@ interface RFunction<P : RProps> : RClass<P>
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
 fun <P : RProps> RBuilder.element(
-        clazz: RClass<P>,
-        props: P,
-        key: String? = null,
-        ref: RReadableRef<Node>? = null,
-        handler: RHandler<P> = {}
+    clazz: RClass<P>,
+    props: P,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<P> = {}
 ): ReactElement {
     key?.let { props.key = it }
     ref?.let { props.ref = ref }
     return child(
-            type = clazz,
-            props = props,
-            handler = handler
+        type = clazz,
+        props = props,
+        handler = handler
     )
 }
 
 inline fun <reified P : RProps> reactFunctionComponent(noinline builder: RBuilder.(props: P) -> ReactElement) =
-        ReactFunctionComponent(P::class, builder)
+    ReactFunctionComponent(P::class, builder)
 
-class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private val builder: RBuilder.(props: P) -> ReactElement) {
+class ReactFunctionComponent<P : RProps>(
+    private val clazz: KClass<P>,
+    private val builder: RBuilder.(props: P) -> ReactElement
+) {
     val rFunction by kotlin.lazy {
         { props: P ->
             buildElement {
                 @Suppress("UNUSED_VARIABLE") val jsClass = clazz.js.unsafeCast<P>()
-                builder(if (props::class.js == jsClass) {
-                    props
-                } else {
-                    val newProps = js("new jsClass()")
-                    objectAssign(newProps, props)
-                    newProps.unsafeCast<P>()
-                })
+                builder(
+                    if (props::class.js == jsClass) {
+                        props
+                    } else {
+                        val newProps = js("new jsClass()")
+                        objectAssign(newProps, props)
+                        newProps.unsafeCast<P>()
+                    }
+                )
             }
         }.unsafeCast<RFunction<P>>()
     }
@@ -111,50 +116,52 @@ class ReactFunctionComponent<P : RProps>(private val clazz: KClass<P>, private v
 }
 
 fun <P : RProps> RBuilder.component(
-        component: ReactFunctionComponent<P>,
-        props: P,
-        key: String? = null,
-        ref: RReadableRef<Node>? = null,
-        handler: RHandler<P> = {}
+    component: ReactFunctionComponent<P>,
+    props: P,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<P> = {}
 ) =
-        element(component.rFunction, props, key, ref, handler)
+    element(component.rFunction, props, key, ref, handler)
 
 inline fun <reified P : RProps, S> styledComponent(
-        styleName: String,
-        crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement
+    styleName: String,
+    crossinline builder: PropsStylesBuilder<P, S>.() -> RBuilder.() -> ReactElement
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 
     return reactFunctionComponent { props: P ->
         PropsStylesBuilder(props, styles)
-                .handle(builder)()
+            .handle(builder)()
     }
 }
 
 typealias SingleElementBuilder = RBuilder.() -> ReactElement
 
 class PropsBuilder<P>(
-        val props: P
+    val props: P
 ) {
     inline fun handle(builder: PropsBuilder<P>.() -> SingleElementBuilder) = builder()
 }
 
 class PropsStylesBuilder<P, S>(
-        val props: P,
-        val styles: S) {
+    val props: P,
+    val styles: S
+) {
     inline fun handle(builder: PropsStylesBuilder<P, S>.() -> SingleElementBuilder) = builder()
 }
 
 class ScopedPropsStylesBuilder<P, S>(
-        val props: P,
-        val styles: S,
-        val scope: CoroutineScope) {
+    val props: P,
+    val styles: S,
+    val scope: CoroutineScope
+) {
     inline fun handle(builder: ScopedPropsStylesBuilder<P, S>.() -> SingleElementBuilder) = builder()
 }
 
 inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
-        styleName: String,
-        crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> SingleElementBuilder
+    styleName: String,
+    crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> SingleElementBuilder
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 
@@ -164,7 +171,7 @@ inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
             { scope.cancel() }
         }
         ScopedPropsStylesBuilder(props, styles, scope)
-                .handle(builder)()
+            .handle(builder)()
     }
 }
 

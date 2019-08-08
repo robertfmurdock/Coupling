@@ -13,18 +13,19 @@ import kotlinx.coroutines.Deferred
 
 data class TribeDataSetQuery(val tribeId: TribeId) : Action
 
-interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax, GetPairAssignmentListSyntax {
+interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
+    GetPairAssignmentListSyntax {
 
     suspend fun TribeDataSetQuery.perform() = logAsync { tribeId.getData() }
 
     private suspend fun TribeId.getData() =
-            Triple(getTribeAsync(), getPlayerListAsync(), getPairAssignmentListAsync())
-                    .await()
+        Triple(getTribeAsync(), getPlayerListAsync(), getPairAssignmentListAsync())
+            .await()
 
     private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
-            Triple(
-                    first.await(),
-                    second.await(),
-                    third.await()
-            )
+        Triple(
+            first.await(),
+            second.await(),
+            third.await()
+        )
 }

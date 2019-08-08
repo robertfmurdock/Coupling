@@ -21,10 +21,10 @@ object DraggablePlayer : ComponentProvider<DraggablePlayerProps>(), DraggablePla
 val RBuilder.draggablePlayer get() = DraggablePlayer.captor(this)
 
 data class DraggablePlayerProps(
-        val pinnedPlayer: PinnedPlayer,
-        val tribe: KtTribe,
-        val pairAssignmentDocument: PairAssignmentDocument,
-        val onPlayerDrop: (String) -> Unit
+    val pinnedPlayer: PinnedPlayer,
+    val tribe: KtTribe,
+    val pairAssignmentDocument: PairAssignmentDocument,
+    val onPlayerDrop: (String) -> Unit
 ) : RProps
 
 external interface DraggablePlayerStyles {
@@ -42,19 +42,19 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
             val draggablePlayerRef = useRef<Node>(null)
 
             val (_, drag) = useDrag(
-                    itemType = dragItemType,
-                    itemId = pinnedPlayer.player.id!!,
-                    collect = { }
+                itemType = dragItemType,
+                itemId = pinnedPlayer.player.id!!,
+                collect = { }
             )
 
             val (isOver, drop) = useDrop(
-                    acceptItemType = dragItemType,
-                    drop = { item ->
-                        swapCallback(item["id"].unsafeCast<String>())
-                    },
-                    collect = { monitor ->
-                        monitor.isOver()
-                    }
+                acceptItemType = dragItemType,
+                drop = { item ->
+                    swapCallback(item["id"].unsafeCast<String>())
+                },
+                collect = { monitor ->
+                    monitor.isOver()
+                }
             )
 
             drag(drop(draggablePlayerRef))
@@ -62,21 +62,21 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
             div(classes = styles.className) {
                 attrs { ref = draggablePlayerRef }
                 playerCard(
-                        PlayerCardProps(
-                                tribeId = tribe.id,
-                                player = pinnedPlayer.player,
-                                pathSetter = {},
-                                disabled = false,
-                                className = mapOf(
-                                        "hoverzoom" to (pairAssignmentDocument.id == null),
-                                        "on-drag-hover" to isOver
-                                )
-                                        .filterValues { it }
-                                        .keys
-                                        .plus(styles.playerCard)
-                                        .joinToString(" ")
-                        ),
-                        key = pinnedPlayer.player.id
+                    PlayerCardProps(
+                        tribeId = tribe.id,
+                        player = pinnedPlayer.player,
+                        pathSetter = {},
+                        disabled = false,
+                        className = mapOf(
+                            "hoverzoom" to (pairAssignmentDocument.id == null),
+                            "on-drag-hover" to isOver
+                        )
+                            .filterValues { it }
+                            .keys
+                            .plus(styles.playerCard)
+                            .joinToString(" ")
+                    ),
+                    key = pinnedPlayer.player.id
                 )
             }
 

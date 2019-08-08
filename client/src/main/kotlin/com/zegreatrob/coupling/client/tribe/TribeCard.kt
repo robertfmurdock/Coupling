@@ -87,19 +87,19 @@ interface TribeCardBuilder : StyledComponentBuilder<TribeCardProps, TribeCardSty
     }
 
     private fun Node.fitTribeName(size: Int) = fitty(
-            maxFontHeight = (size * 0.3),
-            minFontHeight = (size * 0.16),
-            multiLine = true
+        maxFontHeight = (size * 0.3),
+        minFontHeight = (size * 0.16),
+        multiLine = true
     )
 
     private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: KtTribe, size: Int) = gravatarImage(
-            email = tribe.email,
-            alt = "tribe-img",
-            fallback = "/images/icons/tribes/no-tribe.png",
-            options = object : GravatarOptions {
-                override val size = size
-                override val default = "identicon"
-            }
+        email = tribe.email,
+        alt = "tribe-img",
+        fallback = "/images/icons/tribes/no-tribe.png",
+        options = object : GravatarOptions {
+            override val size = size
+            override val default = "identicon"
+        }
     )
 
 }

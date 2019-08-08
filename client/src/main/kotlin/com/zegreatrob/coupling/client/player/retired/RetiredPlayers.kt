@@ -15,9 +15,9 @@ import react.dom.div
 object RetiredPlayers : ComponentProvider<RetiredPlayersProps>(), RetiredPlayersBuilder
 
 data class RetiredPlayersProps(
-        val tribe: KtTribe,
-        val retiredPlayers: List<Player>,
-        val pathSetter: (String) -> Unit
+    val tribe: KtTribe,
+    val retiredPlayers: List<Player>,
+    val pathSetter: (String) -> Unit
 ) : RProps
 
 interface RetiredPlayersCss {
@@ -38,8 +38,8 @@ interface RetiredPlayersBuilder : StyledComponentBuilder<RetiredPlayersProps, Re
                 div {
                     players.forEach { player ->
                         playerCard(
-                                PlayerCardProps(tribe.id, player, pathSetter, true, className = "disabled"),
-                                key = player.id
+                            PlayerCardProps(tribe.id, player, pathSetter, true, className = "disabled"),
+                            key = player.id
                         )
                     }
                 }

@@ -8,9 +8,11 @@ import kotlin.js.json
 private external val fitty: dynamic
 
 fun Node.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {
-    fitty.default(this, json(
+    fitty.default(
+        this, json(
             "maxSize" to maxFontHeight,
             "minSize" to minFontHeight,
             "multiLine" to multiLine
-    )).unsafeCast<Unit>()
+        )
+    ).unsafeCast<Unit>()
 }

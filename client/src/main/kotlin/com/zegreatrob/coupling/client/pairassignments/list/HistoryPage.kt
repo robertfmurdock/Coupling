@@ -21,12 +21,12 @@ interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatch
 
         if (tribeId != null) {
             loadedPairAssignments(
-                    dataLoadProps(
-                            query = { HistoryQuery(tribeId).perform() },
-                            toProps = { reload, (tribe, history) ->
-                                HistoryProps(tribe, history, reload, pageProps.pathSetter)
-                            }
-                    )
+                dataLoadProps(
+                    query = { HistoryQuery(tribeId).perform() },
+                    toProps = { reload, (tribe, history) ->
+                        HistoryProps(tribe, history, reload, pageProps.pathSetter)
+                    }
+                )
             )
         } else throw Exception("WHAT")
     }

@@ -23,11 +23,11 @@ interface PlayerRosterStyles {
 }
 
 data class PlayerRosterProps(
-        val label: String? = null,
-        val players: List<Player>,
-        val tribeId: TribeId,
-        val pathSetter: (String) -> Unit,
-        val className: String? = null
+    val label: String? = null,
+    val players: List<Player>,
+    val tribeId: TribeId,
+    val pathSetter: (String) -> Unit,
+    val className: String? = null
 ) : RProps
 
 interface PlayerRosterBuilder : StyledComponentBuilder<PlayerRosterProps, PlayerRosterStyles> {
@@ -56,8 +56,8 @@ interface PlayerRosterBuilder : StyledComponentBuilder<PlayerRosterProps, Player
     private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
         players.forEach { player ->
             playerCard(
-                    PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
-                    key = player.id
+                PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
+                key = player.id
             )
         }
     }

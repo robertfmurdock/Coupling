@@ -13,31 +13,32 @@ import kotlinx.coroutines.Deferred
 
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>) : Action
 
-interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax, RequestSpinActionDispatcher {
+interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
+    RequestSpinActionDispatcher {
     suspend fun NewPairAssignmentsQuery.perform() = logAsync {
         val (tribe, players) = tribeId.getData()
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         Triple(
-                tribe,
-                players,
-                performSpin(tribeId, selectedPlayers)
+            tribe,
+            players,
+            performSpin(tribeId, selectedPlayers)
         )
     }
 
     private suspend fun performSpin(tribeId: TribeId, players: List<Player>) = RequestSpinAction(tribeId, players)
-            .perform()
+        .perform()
 
     private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {
         playerIds.contains(it.id)
     }
 
     private suspend fun TribeId.getData() =
-            Pair(getTribeAsync(), getPlayerListAsync())
-                    .await()
+        Pair(getTribeAsync(), getPlayerListAsync())
+            .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =
-            Pair(
-                    first.await(),
-                    second.await()
-            )
+        Pair(
+            first.await(),
+            second.await()
+        )
 }

@@ -4,7 +4,7 @@
     display: inline-block;
     overflow: hidden;
     border: 3px outset gold;
-    background: darkseagreen url(../../../../../../../../images/overlay.png) repeat-x;
+    background: darkseagreen url(../overlay.png) repeat-x;
     text-align: center;
     text-decoration: none;
     border-radius: 6px;
@@ -19,7 +19,7 @@
 }
 
 :local(.header) {
-    background: rgba(255, 255, 255, 0.4) url(../../../../../../../../images/overlay.png) repeat-x;
+    background: rgba(255, 255, 255, 0.4) url(../overlay.png) repeat-x;
     border-radius: 15px;
     font-weight: bold;
 }
@@ -37,7 +37,7 @@
 :local(.player):not([disabled="true"]) :local(.header):hover {
     transition: all ease-out 0.4s;
     z-index: 1;
-    background: lightyellow url(../../../../../../../../images/overlay.png) repeat-x;
+    background: lightyellow url(../overlay.png) repeat-x;
 }
 
 :local(.playerIcon) {

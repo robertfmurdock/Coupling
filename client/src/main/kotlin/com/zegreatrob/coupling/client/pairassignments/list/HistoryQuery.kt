@@ -15,12 +15,12 @@ interface HistoryQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPairA
     suspend fun HistoryQuery.perform() = logAsync { tribeId.getData() }
 
     private suspend fun TribeId.getData() =
-            Pair(getTribeAsync(), getPairAssignmentListAsync())
-                    .await()
+        Pair(getTribeAsync(), getPairAssignmentListAsync())
+            .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<PairAssignmentDocument>>>.await() =
-            Pair(
-                    first.await(),
-                    second.await()
-            )
+        Pair(
+            first.await(),
+            second.await()
+        )
 }

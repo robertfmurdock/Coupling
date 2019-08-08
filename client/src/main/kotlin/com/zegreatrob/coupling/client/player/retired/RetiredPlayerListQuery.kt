@@ -15,8 +15,8 @@ interface RetiredPlayerListQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax
     suspend fun RetiredPlayerListQuery.perform() = logAsync { getData(tribeId) }
 
     private suspend fun getData(tribeId: TribeId) =
-            (tribeId.getTribeAsync() to tribeId.getRetiredPlayerListAsync())
-                    .await()
+        (tribeId.getTribeAsync() to tribeId.getRetiredPlayerListAsync())
+            .await()
 
     private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() = first.await() to second.await()
 }

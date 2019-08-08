@@ -11,8 +11,8 @@ import kotlin.js.Json
 
 interface ServerRequestSpin {
     fun requestSpinAsync(tribeId: TribeId, players: List<Player>) =
-            axios.post("/api/${tribeId.value}/spin", players.map { it.toJson() }.toTypedArray())
-                    .then<PairAssignmentDocument> { it.data.unsafeCast<Json>().toPairAssignmentDocument() }
-                    .asDeferred()
+        axios.post("/api/${tribeId.value}/spin", players.map { it.toJson() }.toTypedArray())
+            .then<PairAssignmentDocument> { it.data.unsafeCast<Json>().toPairAssignmentDocument() }
+            .asDeferred()
 
 }

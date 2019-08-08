@@ -9,7 +9,7 @@ import kotlin.js.Promise
 interface TribeSaveSyntax {
 
     fun KtTribe.saveAsync() = axios.post("/api/tribes/", toJson())
-            .unsafeCast<Promise<Unit>>()
-            .asDeferred()
+        .unsafeCast<Promise<Unit>>()
+        .asDeferred()
 
 }

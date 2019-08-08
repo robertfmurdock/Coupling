@@ -30,7 +30,7 @@ external interface TribeConfigStyles {
 typealias TribeConfigRenderer = ScopedPropsStylesBuilder<TribeConfigProps, TribeConfigStyles>
 
 interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>,
-        UseFormHook, SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
+    UseFormHook, SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
@@ -79,9 +79,9 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
     }
 
     private fun TribeConfigRenderer.tribeForm(
-            tribe: KtTribe,
-            isNew: Boolean,
-            onChange: (Event) -> Unit
+        tribe: KtTribe,
+        isNew: Boolean,
+        onChange: (Event) -> Unit
     ): RBuilder.() -> ReactElement = {
         div {
             span {
@@ -92,32 +92,32 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
     }
 
     private fun TribeConfigRenderer.configInputList(
-            rBuilder: RBuilder,
-            tribe: KtTribe,
-            onChange: (Event) -> Unit,
-            isNew: Boolean
+        rBuilder: RBuilder,
+        tribe: KtTribe,
+        onChange: (Event) -> Unit,
+        isNew: Boolean
     ) = rBuilder.ul(classes = styles.editor) {
         li {
             configInput(
-                    labelText = "Name",
-                    id = "tribe-name",
-                    name = "name",
-                    value = tribe.name ?: "",
-                    type = InputType.text,
-                    onChange = onChange,
-                    placeholder = "Enter the tribe name here"
+                labelText = "Name",
+                id = "tribe-name",
+                name = "name",
+                value = tribe.name ?: "",
+                type = InputType.text,
+                onChange = onChange,
+                placeholder = "Enter the tribe name here"
             )
             span { +"The full tribe name!" }
         }
         li {
             configInput(
-                    labelText = "Email",
-                    id = "tribe-email",
-                    name = "email",
-                    value = tribe.email ?: "",
-                    type = InputType.text,
-                    onChange = onChange,
-                    placeholder = "Enter the tribe email here"
+                labelText = "Email",
+                id = "tribe-email",
+                name = "email",
+                value = tribe.email ?: "",
+                type = InputType.text,
+                onChange = onChange,
+                placeholder = "Enter the tribe email here"
             )
             span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
         }
@@ -125,58 +125,58 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
         if (isNew) {
             li {
                 configInput(
-                        labelText = "Unique Id",
-                        id = "tribe-id",
-                        name = "id",
-                        value = tribe.id.value,
-                        type = InputType.text,
-                        onChange = onChange
+                    labelText = "Unique Id",
+                    id = "tribe-id",
+                    name = "id",
+                    value = tribe.id.value,
+                    type = InputType.text,
+                    onChange = onChange
                 )
             }
         }
         li {
             configInput(
-                    labelText = "Enable Call Signs",
-                    id = "call-sign-checkbox",
-                    name = "callSignsEnabled",
-                    value = tribe.id.value,
-                    type = InputType.checkBox,
-                    onChange = onChange,
-                    checked = tribe.callSignsEnabled
+                labelText = "Enable Call Signs",
+                id = "call-sign-checkbox",
+                name = "callSignsEnabled",
+                value = tribe.id.value,
+                type = InputType.checkBox,
+                onChange = onChange,
+                checked = tribe.callSignsEnabled
             )
             span { +"Every Couple needs a Call Sign. Makes things more fun!" }
         }
         li {
             configInput(
-                    labelText = "Enable Badges",
-                    id = "badge-checkbox",
-                    name = "badgesEnabled",
-                    value = tribe.id.value,
-                    type = InputType.checkBox,
-                    onChange = onChange,
-                    checked = tribe.badgesEnabled
+                labelText = "Enable Badges",
+                id = "badge-checkbox",
+                name = "badgesEnabled",
+                value = tribe.id.value,
+                type = InputType.checkBox,
+                onChange = onChange,
+                checked = tribe.badgesEnabled
             )
             span { +"Advanced users only: this lets you divide your tribe into two groups." }
         }
         li {
             configInput(
-                    labelText = "Default Badge Name",
-                    id = "default-badge-name",
-                    name = "defaultBadgeName",
-                    value = tribe.defaultBadgeName ?: "",
-                    type = InputType.text,
-                    onChange = onChange
+                labelText = "Default Badge Name",
+                id = "default-badge-name",
+                name = "defaultBadgeName",
+                value = tribe.defaultBadgeName ?: "",
+                type = InputType.text,
+                onChange = onChange
             )
             span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
         }
         li {
             configInput(
-                    labelText = "Alt Badge Name",
-                    id = "alt-badge-name",
-                    name = "alternateBadgeName",
-                    value = tribe.alternateBadgeName ?: "",
-                    type = InputType.text,
-                    onChange = onChange
+                labelText = "Alt Badge Name",
+                id = "alt-badge-name",
+                name = "alternateBadgeName",
+                value = tribe.alternateBadgeName ?: "",
+                type = InputType.text,
+                onChange = onChange
             )
             span { +"The other badge a player can be given. A player can only have one badge at a time." }
         }
@@ -193,15 +193,15 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
                     onChangeFunction = onChange
                 }
                 pairingRuleDescriptions
-                        .map { (rule, description) ->
-                            option {
-                                attrs {
-                                    key = "${toValue(rule)}"
-                                    value = "${toValue(rule)}"
-                                    label = description
-                                }
+                    .map { (rule, description) ->
+                        option {
+                            attrs {
+                                key = "${toValue(rule)}"
+                                value = "${toValue(rule)}"
+                                label = description
                             }
                         }
+                    }
             }
             span { +"Advanced users only: This rule affects how players are assigned." }
         }
@@ -209,6 +209,6 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
 }
 
 val pairingRuleDescriptions = mapOf(
-        PairingRule.LongestTime to "Prefer Longest Time",
-        PairingRule.PreferDifferentBadge to "Prefer Different Badges (Beta)"
+    PairingRule.LongestTime to "Prefer Longest Time",
+    PairingRule.PreferDifferentBadge to "Prefer Different Badges (Beta)"
 )

@@ -22,18 +22,18 @@ interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps>, RetiredPlayer
 
         if (tribeId != null) {
             loadedRetiredPlayers(dataLoadProps(
-                    query = { RetiredPlayerListQuery(tribeId).perform() },
-                    toProps = { _, data -> toRetiredPlayersProps(data, pageProps.pathSetter) }
+                query = { RetiredPlayerListQuery(tribeId).perform() },
+                toProps = { _, data -> toRetiredPlayersProps(data, pageProps.pathSetter) }
             ))
         } else throw Exception("WHAT")
     }
 
     private fun toRetiredPlayersProps(result: Pair<KtTribe, List<Player>>, pathSetter: (String) -> Unit) = result
-            .let { (tribe, retiredPlayers) ->
-                RetiredPlayersProps(
-                        tribe = tribe,
-                        retiredPlayers = retiredPlayers,
-                        pathSetter = pathSetter
-                )
-            }
+        .let { (tribe, retiredPlayers) ->
+            RetiredPlayersProps(
+                tribe = tribe,
+                retiredPlayers = retiredPlayers,
+                pathSetter = pathSetter
+            )
+        }
 }

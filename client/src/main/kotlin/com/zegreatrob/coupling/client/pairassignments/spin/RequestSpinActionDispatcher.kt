@@ -10,7 +10,7 @@ data class RequestSpinAction(val tribeId: TribeId, val players: List<Player>)
 interface RequestSpinActionDispatcher : ServerRequestSpin {
 
     suspend fun RequestSpinAction.perform(): PairAssignmentDocument =
-            requestSpinAsync(tribeId, players)
-                    .await()
+        requestSpinAsync(tribeId, players)
+            .await()
 
 }

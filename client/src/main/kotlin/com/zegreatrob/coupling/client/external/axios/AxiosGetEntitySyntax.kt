@@ -5,5 +5,5 @@ import kotlin.js.Promise
 
 interface AxiosGetEntitySyntax {
     fun Axios.getEntityAsync(url: String): Promise<Json> = get(url)
-            .then<dynamic> { result -> result.data.unsafeCast<Json>() }
+        .then<dynamic> { result -> result.data.unsafeCast<Json>() }
 }

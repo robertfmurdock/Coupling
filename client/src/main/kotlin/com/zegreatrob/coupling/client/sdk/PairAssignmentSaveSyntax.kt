@@ -10,9 +10,9 @@ import kotlin.js.Promise
 interface PairAssignmentSaveSyntax {
 
     suspend fun saveAsync(tribeId: TribeId, pairAssignmentDocument: PairAssignmentDocument) =
-            axios.post("/api/${tribeId.value}/history", pairAssignmentDocument.toJson())
-                    .unsafeCast<Promise<Unit>>()
-                    .asDeferred()
-                    .await()
+        axios.post("/api/${tribeId.value}/history", pairAssignmentDocument.toJson())
+            .unsafeCast<Promise<Unit>>()
+            .asDeferred()
+            .await()
 
 }

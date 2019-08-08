@@ -11,7 +11,7 @@ import kotlin.js.Json
 interface GetTribeListSyntax {
 
     fun getTribeListAsync(): Deferred<List<KtTribe>> = axios.getList("/api/tribes")
-            .then { it.map(Json::toTribe) }
-            .asDeferred()
+        .then { it.map(Json::toTribe) }
+        .asDeferred()
 
 }

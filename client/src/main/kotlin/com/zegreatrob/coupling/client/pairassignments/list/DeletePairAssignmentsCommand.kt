@@ -6,7 +6,8 @@ import com.zegreatrob.coupling.common.ActionLoggingSyntax
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 
-data class DeletePairAssignmentsCommand(val tribeId: TribeId, val pairAssignmentDocumentId: PairAssignmentDocumentId) : Action
+data class DeletePairAssignmentsCommand(val tribeId: TribeId, val pairAssignmentDocumentId: PairAssignmentDocumentId) :
+    Action
 
 interface DeletePairAssignmentsCommandDispatcher : ActionLoggingSyntax, PairAssignmentDocDeleteSyntax {
     suspend fun DeletePairAssignmentsCommand.perform() = logAsync {

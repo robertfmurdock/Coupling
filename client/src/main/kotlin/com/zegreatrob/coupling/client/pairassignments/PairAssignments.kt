@@ -34,10 +34,10 @@ import kotlin.browser.window
 object PairAssignments : ComponentProvider<PairAssignmentsProps>(), PairAssignmentsBuilder
 
 data class PairAssignmentsProps(
-        val tribe: KtTribe,
-        val players: List<Player>,
-        val pairAssignments: PairAssignmentDocument?,
-        val pathSetter: (String) -> Unit
+    val tribe: KtTribe,
+    val players: List<Player>,
+    val pairAssignments: PairAssignmentDocument?,
+    val pathSetter: (String) -> Unit
 ) : RProps
 
 external interface PairAssignmentsStyles {
@@ -49,7 +49,7 @@ const val dragItemType = "PLAYER"
 typealias PairAssignmentRenderer = ScopedPropsStylesBuilder<PairAssignmentsProps, PairAssignmentsStyles>
 
 interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles>,
-        SavePairAssignmentsCommandDispatcher {
+    SavePairAssignmentsCommandDispatcher {
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
@@ -70,34 +70,38 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                         tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                         currentPairAssignments(pairAssignments, swapCallback)()
                     }
-                    playerRoster(PlayerRosterProps(
+                    playerRoster(
+                        PlayerRosterProps(
                             label = "Unpaired players",
                             players = players.filterNotPaired(pairAssignments),
                             tribeId = tribe.id,
                             pathSetter = pathSetter
-                    ))
-                    serverMessage(ServerMessageProps(
+                        )
+                    )
+                    serverMessage(
+                        ServerMessageProps(
                             tribeId = tribe.id,
                             useSsl = "https:" == window.location.protocol
-                    ))
+                        )
+                    )
                 }
             }
         }
     }
 
     private fun List<Player>.filterNotPaired(pairAssignments: PairAssignmentDocument?) =
-            if (pairAssignments == null) {
-                this
-            } else {
-                val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
-                filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
-            }
+        if (pairAssignments == null) {
+            this
+        } else {
+            val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
+            filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
+        }
 
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
     private fun PairAssignmentRenderer.currentPairAssignments(
-            pairAssignments: PairAssignmentDocument?,
-            swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+        pairAssignments: PairAssignmentDocument?,
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
     ): RBuilder.() -> ReactElement {
         val tribe = props.tribe
 
@@ -136,26 +140,27 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         }
     }
 
-    private fun PairAssignmentRenderer.saveButton(pairAssignments: PairAssignmentDocument): RBuilder.() -> ReactElement = {
-        a(classes = "super green button") {
-            attrs {
-                id = "save-button"
-                onClickFunction = {
-                    scope.launch {
-                        SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
+    private fun PairAssignmentRenderer.saveButton(pairAssignments: PairAssignmentDocument): RBuilder.() -> ReactElement =
+        {
+            a(classes = "super green button") {
+                attrs {
+                    id = "save-button"
+                    onClickFunction = {
+                        scope.launch {
+                            SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
 
-                        props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
+                            props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
+                        }
                     }
                 }
+                +"Save!"
             }
-            +"Save!"
         }
-    }
 
     private fun PairAssignmentDocument.swapPlayers(
-            droppedPlayerId: String,
-            targetPlayer: PinnedPlayer,
-            targetPair: PinnedCouplingPair
+        droppedPlayerId: String,
+        targetPlayer: PinnedPlayer,
+        targetPair: PinnedCouplingPair
     ): PairAssignmentDocument {
         val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
         val droppedPlayer = sourcePair?.players?.firstOrNull { it.player.id == droppedPlayerId }
@@ -165,20 +170,20 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         }
 
         return copy(
-                pairs = pairs.map { pair ->
-                    when (pair) {
-                        targetPair -> replacePlayer(pair, targetPlayer, droppedPlayer)
-                        sourcePair -> replacePlayer(pair, droppedPlayer, targetPlayer)
-                        else -> pair
-                    }
+            pairs = pairs.map { pair ->
+                when (pair) {
+                    targetPair -> replacePlayer(pair, targetPlayer, droppedPlayer)
+                    sourcePair -> replacePlayer(pair, droppedPlayer, targetPlayer)
+                    else -> pair
                 }
+            }
         )
     }
 
     private fun replacePlayer(
-            pair: PinnedCouplingPair,
-            playerToReplace: PinnedPlayer,
-            replacement: PinnedPlayer
+        pair: PinnedCouplingPair,
+        playerToReplace: PinnedPlayer,
+        replacement: PinnedPlayer
     ) = PinnedCouplingPair(pair.players.map { pinnedPlayer ->
         if (pinnedPlayer == playerToReplace) {
             replacement
@@ -188,16 +193,16 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
     })
 
     private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) =
-            firstOrNull { pair ->
-                pair.players.any { player -> player.player.id == droppedPlayerId }
-            }
+        firstOrNull { pair ->
+            pair.players.any { player -> player.player.id == droppedPlayerId }
+        }
 
     private fun RBuilder.assignedPair(
-            index: Int,
-            pair: PinnedCouplingPair,
-            props: PairAssignmentsProps,
-            swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-            pairAssignmentDocument: PairAssignmentDocument?
+        index: Int,
+        pair: PinnedCouplingPair,
+        props: PairAssignmentsProps,
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        pairAssignmentDocument: PairAssignmentDocument?
     ) {
 
         val (tribe) = props
@@ -209,18 +214,20 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
             pair.players.map { pinnedPlayer ->
                 if (pairAssignmentDocument != null && pairAssignmentDocument.id == null) {
                     draggablePlayer(DraggablePlayerProps(
-                            pinnedPlayer,
-                            tribe,
-                            pairAssignmentDocument
+                        pinnedPlayer,
+                        tribe,
+                        pairAssignmentDocument
                     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
                 } else {
                     val player = pinnedPlayer.player
-                    playerCard(PlayerCardProps(
+                    playerCard(
+                        PlayerCardProps(
                             tribe.id,
                             player,
                             props.pathSetter,
                             false
-                    ), key = player.id)
+                        ), key = player.id
+                    )
                 }
             }
         }

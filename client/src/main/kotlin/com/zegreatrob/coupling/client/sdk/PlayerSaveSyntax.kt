@@ -9,7 +9,8 @@ import kotlin.js.Promise
 
 interface PlayerSaveSyntax {
 
-    suspend fun saveAsync(tribeId: TribeId, player: Player) = axios.post("/api/${tribeId.value}/players/", player.toJson())
+    suspend fun saveAsync(tribeId: TribeId, player: Player) =
+        axios.post("/api/${tribeId.value}/players/", player.toJson())
             .unsafeCast<Promise<Unit>>()
             .asDeferred()
             .await()

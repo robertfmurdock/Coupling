@@ -35,21 +35,21 @@ external interface WelcomeStyles {
 val welcomeTribeId = TribeId("welcome")
 
 private val candidates = listOf(
-        WelcomeCardSet(
-                left = Card(name = "Frodo", imagePath = "frodo-icon.png"),
-                right = Card(name = "Sam", imagePath = "samwise-icon.png"),
-                proverb = "Together, climb mountains."
-        ),
-        WelcomeCardSet(
-                left = Card(name = "Batman", imagePath = "grayson-icon.png"),
-                right = Card(name = "Robin", imagePath = "wayne-icon.png"),
-                proverb = "Clean up the city, together."
-        ),
-        WelcomeCardSet(
-                left = Card(name = "Rosie", imagePath = "rosie-icon.png"),
-                right = Card(name = "Wendy", imagePath = "wendy-icon.png"),
-                proverb = "Team up. Get things done."
-        )
+    WelcomeCardSet(
+        left = Card(name = "Frodo", imagePath = "frodo-icon.png"),
+        right = Card(name = "Sam", imagePath = "samwise-icon.png"),
+        proverb = "Together, climb mountains."
+    ),
+    WelcomeCardSet(
+        left = Card(name = "Batman", imagePath = "grayson-icon.png"),
+        right = Card(name = "Robin", imagePath = "wayne-icon.png"),
+        proverb = "Clean up the city, together."
+    ),
+    WelcomeCardSet(
+        left = Card(name = "Rosie", imagePath = "rosie-icon.png"),
+        right = Card(name = "Wendy", imagePath = "wendy-icon.png"),
+        proverb = "Team up. Get things done."
+    )
 )
 
 private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: String)
@@ -58,7 +58,8 @@ private data class Card(val name: String, val imagePath: String)
 
 typealias WelcomeRenderer = ScopedPropsStylesBuilder<EmptyProps, WelcomeStyles>
 
-interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyles>, RandomProvider, LoginChooserRenderer {
+interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyles>, RandomProvider,
+    LoginChooserRenderer {
 
     override val componentPath: String get() = "Welcome"
 
@@ -127,22 +128,22 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
     private fun WelcomeRenderer.welcomePair(pair: CouplingPair.Double): RBuilder.() -> ReactElement = {
         div(classes = styles.welcomePair) {
             playerCard(
-                    PlayerCardProps(
-                            tribeId = welcomeTribeId,
-                            player = pair.player1,
-                            className = "left ${styles.playerCard}",
-                            size = 100,
-                            disabled = true
-                    )
+                PlayerCardProps(
+                    tribeId = welcomeTribeId,
+                    player = pair.player1,
+                    className = "left ${styles.playerCard}",
+                    size = 100,
+                    disabled = true
+                )
             )
             playerCard(
-                    PlayerCardProps(
-                            tribeId = welcomeTribeId,
-                            player = pair.player2,
-                            className = "right ${styles.playerCard}",
-                            size = 100,
-                            disabled = true
-                    )
+                PlayerCardProps(
+                    tribeId = welcomeTribeId,
+                    player = pair.player2,
+                    className = "right ${styles.playerCard}",
+                    size = 100,
+                    disabled = true
+                )
             )
         }
     }

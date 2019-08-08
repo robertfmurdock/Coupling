@@ -9,8 +9,8 @@ import kotlin.js.Promise
 interface PairAssignmentDocDeleteSyntax {
 
     fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
-            axios.delete("/api/${tribeId.value}/history/${pairAssignmentDocId.value}")
-                    .unsafeCast<Promise<Unit>>()
-                    .asDeferred()
+        axios.delete("/api/${tribeId.value}/history/${pairAssignmentDocId.value}")
+            .unsafeCast<Promise<Unit>>()
+            .asDeferred()
 
 }

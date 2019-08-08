@@ -21,9 +21,9 @@ object PlayerHeatmap : ComponentProvider<PlayerHeatmapProps>(), PlayerHeatmapBui
 val RBuilder.playerHeatmap get() = PlayerHeatmap.captor(this)
 
 data class PlayerHeatmapProps(
-        val tribe: KtTribe,
-        val players: List<Player>,
-        val heatmapData: List<List<Double?>>
+    val tribe: KtTribe,
+    val players: List<Player>,
+    val heatmapData: List<List<Double?>>
 ) : RProps
 
 external interface PlayerHeatmapStyles {
@@ -59,7 +59,11 @@ interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, Play
         }
     }
 
-    private fun RDOMBuilder<DIV>.keyedPlayerCard(styles: PlayerHeatmapStyles, player: Player, tribe: KtTribe): ReactElement {
+    private fun RDOMBuilder<DIV>.keyedPlayerCard(
+        styles: PlayerHeatmapStyles,
+        player: Player,
+        tribe: KtTribe
+    ): ReactElement {
         return div(classes = styles.playerCard) {
             attrs { key = player.id ?: "" }
             playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
