@@ -33,7 +33,6 @@ dependencies {
     implementation("org.jetbrains:kotlin-react-dom:16.8.6-pre.80-kotlin-1.3.41")
     implementation("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.80-kotlin-1.3.41")
 
-
     testImplementation(project(":test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
@@ -41,6 +40,12 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:standard:+")
     testImplementation("com.zegreatrob.testmints:async-js:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
+}
+
+sourceSets {
+    val main by getting {
+        resources { srcDir("src/main/javascript") }
+    }
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
@@ -99,7 +104,7 @@ tasks {
         args = listOf("webpack", "--config", "vendor.webpack.config.js")
     }
 
-  val testVendorCompile by creating(YarnTask::class) {
+    val testVendorCompile by creating(YarnTask::class) {
         dependsOn(yarn, runDceKotlinJs)
         mustRunAfter("clean")
 

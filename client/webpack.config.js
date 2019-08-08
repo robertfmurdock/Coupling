@@ -3,10 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const jsPath = path.resolve(__dirname, './app');
+const jsPath = path.resolve(__dirname, './build/resources/main');
 
 const config = {
-  entry: path.resolve(jsPath, './app.ts'),
+  entry: path.resolve(jsPath, './com/zegreatrob/coupling/client/app.ts'),
   mode: process.env.NODE_ENV,
   output: {
     path: path.resolve(__dirname, 'build/lib/main'),
@@ -16,7 +16,6 @@ const config = {
   resolve: {
     modules: [
       path.resolve(__dirname, 'build/kotlin-js-min/main'),
-      path.resolve(__dirname, 'build/resources/main'),
       path.resolve(__dirname, 'node_modules'),
       jsPath
     ],

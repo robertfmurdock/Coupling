@@ -12,7 +12,7 @@ import react.RReadableRef
 import styled.css
 import styled.styledDiv
 
-@JsModule("components/heatmap/D3Heatmap")
+@JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic
 
 object Heatmap : ComponentProvider<HeatmapProps>(), HeatmapBuilder
