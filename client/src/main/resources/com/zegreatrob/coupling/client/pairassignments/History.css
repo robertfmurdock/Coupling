@@ -65,3 +65,13 @@
     background-color: hsla(146, 17%, 80%, 1);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
+
+:local(.pairAssignmentsHeader) {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 15px;
+    padding-left: 40px;
+    padding-right: 5px;
+    padding-bottom: 6px;
+}

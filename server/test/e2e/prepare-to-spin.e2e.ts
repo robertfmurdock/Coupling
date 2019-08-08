@@ -20,7 +20,7 @@ async function goToPrepare(tribe) {
     await browser.wait(() => prepareToSpinPage.isPresent(), 2000)
 }
 
-const pairAssignmentsPage = element(By.css(`.current.${PairAssignmentsStyles.pairAssignments}`));
+const pairAssignmentsPage = element(By.className(PairAssignmentsStyles.pairAssignments));
 
 function waitForCurrentPairAssignmentPage() {
     browser.wait(() => pairAssignmentsPage.isPresent(), 1000);

@@ -20,6 +20,7 @@ import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.dom.div
+import react.dom.key
 import react.dom.span
 
 object History : ComponentProvider<HistoryProps>(), HistoryComponentBuilder
@@ -32,6 +33,7 @@ external interface HistoryStyles {
     val playerHeader: String
     val deleteButton: String
     val pairAssignments: String
+    val pairAssignmentsHeader: String
 }
 
 data class HistoryProps(
@@ -57,31 +59,40 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
                 }
                 span(classes = styles.historyView) {
                     div(classes = styles.header) { +"History!" }
-                    pairAssignmentList(props, scope, styles)
+                    this.pairAssignmentList(props, scope, styles)
                 }
             }
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles) =
-        props.history.forEach {
-            val pairAssignmentDocumentId = it.id ?: return@forEach
+    private fun RBuilder.pairAssignmentList(
+        props: HistoryProps,
+        scope: CoroutineScope,
+        styles: HistoryStyles
+    ) = props.history.forEach {
+        val pairAssignmentDocumentId = it.id ?: return@forEach
 
-            div(classes = styles.pairAssignments) {
-                attrs { key = pairAssignmentDocumentId.value }
-                span(classes = "pair-assignments-header") { +it.dateText() }
-                span(classes = "small red button") {
-                    attrs {
-                        classes += styles.deleteButton
-                        onClickFunction = { _ ->
-                            scope.launch { removeButtonOnClick(pairAssignmentDocumentId, props.tribe.id, props.reload) }
+        div(classes = styles.pairAssignments) {
+            attrs { key = pairAssignmentDocumentId.value }
+            span(classes = styles.pairAssignmentsHeader) { +it.dateText() }
+            span(classes = "small red button") {
+                attrs {
+                    classes += styles.deleteButton
+                    onClickFunction = { _ ->
+                        scope.launch {
+                            removeButtonOnClick(
+                                pairAssignmentDocumentId,
+                                props.tribe.id,
+                                props.reload
+                            )
                         }
                     }
-                    +"DELETE"
                 }
-                div { showPairs(it, styles) }
+                +"DELETE"
             }
+            div { showPairs(it, styles) }
         }
+    }
 
     private suspend fun removeButtonOnClick(
         pairAssignmentDocumentId: PairAssignmentDocumentId,

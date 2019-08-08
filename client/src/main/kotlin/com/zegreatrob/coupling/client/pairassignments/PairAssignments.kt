@@ -19,14 +19,11 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.coroutines.launch
-import kotlinx.html.DIV
-import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.ReactElement
-import react.dom.RDOMBuilder
 import react.dom.a
 import react.dom.div
 import react.dom.span
@@ -44,6 +41,7 @@ data class PairAssignmentsProps(
 external interface PairAssignmentsStyles {
     val className: String
     val pairAssignments: String
+    val pairAssignmentsHeader: String
 }
 
 const val dragItemType = "PLAYER"
@@ -108,9 +106,8 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         val tribe = props.tribe
 
         return {
-            div(classes = "current") {
-                attrs { classes += styles.pairAssignments }
-                pairAssignmentsHeader(pairAssignments)
+            div(classes = styles.pairAssignments) {
+                pairAssignmentsHeader(this, pairAssignments)
                 div {
                     attrs { id = "pair-assignments-content" }
                     pairAssignments?.pairs?.mapIndexed { index, pair ->
@@ -258,17 +255,20 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
 
     }
 
-    private fun RDOMBuilder<DIV>.pairAssignmentsHeader(pairAssignments: PairAssignmentDocument?) {
+    private fun PairAssignmentRenderer.pairAssignmentsHeader(
+        rBuilder: RBuilder,
+        pairAssignments: PairAssignmentDocument?
+    ) {
         if (pairAssignments != null) {
-            div {
-                div {
-                    div(classes = "pair-assignments-header") {
+            rBuilder.div {
+                this.div {
+                    this.div(classes = styles.pairAssignmentsHeader) {
                         +"Couples for ${pairAssignments.dateText()}"
                     }
                 }
             }
         } else {
-            div(classes = "no-pairs-notice") {
+            rBuilder.div(classes = "no-pairs-notice") {
                 +"No pair assignments yet!"
             }
         }

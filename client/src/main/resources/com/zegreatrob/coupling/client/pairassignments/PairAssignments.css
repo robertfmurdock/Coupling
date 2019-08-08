@@ -9,7 +9,7 @@
     border-radius: 82px;
 }
 
-.pair-assignments-header {
+:local(.pairAssignmentsHeader) {
     display: inline-block;
     font-size: 28px;
     font-weight: bold;

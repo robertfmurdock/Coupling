@@ -23,7 +23,7 @@ const historyCollection = database.get('history');
 const pluck = require('ramda/src/pluck');
 
 const tribeCardHeaderElement = element(By.className(TribeCardStyles.header));
-const pairAssignmentsPage = element(By.css(`.current.${PairAssignmentsStyles.pairAssignments}`));
+const pairAssignmentsPage = element(By.className(PairAssignmentsStyles.pairAssignments));
 
 const unpairedPlayerElements = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
 
