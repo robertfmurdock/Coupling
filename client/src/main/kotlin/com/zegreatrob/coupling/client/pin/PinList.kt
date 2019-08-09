@@ -15,6 +15,8 @@ object PinList : ComponentProvider<PinListProps>(), PinListBuilder
 
 external interface PinListStyles {
     val pinListing: String
+    val pin: String
+    val pinIcon: String
 }
 
 data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
@@ -27,7 +29,7 @@ interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
         val (tribe, pins) = props
         {
             div {
-                div(classes = styles.pinListing) { pins.map { pin(it) } }
+                div(classes = styles.pinListing) { pins.map { pin(it, styles) } }
                 a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
                     +"Add a new pin."
                 }
@@ -35,11 +37,10 @@ interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
         }
     }
 
-    private fun RBuilder.pin(pin: Pin) = span(classes = "pin") {
-        i {
+    private fun RBuilder.pin(pin: Pin, styles: PinListStyles) = span(classes = styles.pin) {
+        i(classes = styles.pinIcon) {
             attrs {
-                classes = setOf(
-                    "pin-icon",
+                classes += setOf(
                     "fa",
                     "fa-fw",
                     "fa-d2",
