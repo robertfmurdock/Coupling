@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.useRef
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.external.react.useRef
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -30,6 +30,8 @@ data class DraggablePlayerProps(
 external interface DraggablePlayerStyles {
     val className: String
     val playerCard: String
+    val hoverZoom: String
+    val onDragHover: String
 }
 
 interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, DraggablePlayerStyles> {
@@ -68,8 +70,8 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
                         pathSetter = {},
                         disabled = false,
                         className = mapOf(
-                            "hoverzoom" to (pairAssignmentDocument.id == null),
-                            "on-drag-hover" to isOver
+                            styles.hoverZoom to (pairAssignmentDocument.id == null),
+                            styles.onDragHover to isOver
                         )
                             .filterValues { it }
                             .keys
@@ -79,9 +81,7 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
                     key = pinnedPlayer.player.id
                 )
             }
-
         }
     }
-
 }
 
