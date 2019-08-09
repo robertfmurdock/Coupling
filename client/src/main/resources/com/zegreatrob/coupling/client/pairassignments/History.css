@@ -66,6 +66,15 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
+:local(.pair) {
+    border: 3px double dimgray;
+    background-color: aliceblue;
+    padding: 5px;
+    display: inline-block;
+    border-radius: 40px;
+    margin: 0 2px 0 2px;
+}
+
 :local(.pairAssignmentsHeader) {
     display: inline-block;
     font-size: 28px;

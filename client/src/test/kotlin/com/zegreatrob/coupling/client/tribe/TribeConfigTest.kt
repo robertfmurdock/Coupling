@@ -59,7 +59,6 @@ class TribeConfigTest {
                 .assertIsEqualTo("Default")
     }
 
-
     @Test
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = testAsync {
         withContext(coroutineContext) {

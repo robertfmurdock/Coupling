@@ -26,6 +26,7 @@ import react.dom.span
 object History : ComponentProvider<HistoryProps>(), HistoryComponentBuilder
 
 external interface HistoryStyles {
+    val pair: String
     val tribeBrowser: String
     val historyView: String
     val header: String
@@ -107,7 +108,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
 
     private fun RBuilder.showPairs(document: PairAssignmentDocument, styles: HistoryStyles) =
         document.pairs.mapIndexed { index, pair ->
-            span(classes = "pair") {
+            span(classes = styles.pair) {
                 attrs { key = "$index" }
                 pair.players.map { pinnedPlayer: PinnedPlayer ->
                     showPlayer(styles, pinnedPlayer)
