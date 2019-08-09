@@ -78,3 +78,7 @@
 :local(.saveButton) {
     margin: 4px;
 }
+
+:local(.newPairsButton) {
+    /*! Do not remove */
+}

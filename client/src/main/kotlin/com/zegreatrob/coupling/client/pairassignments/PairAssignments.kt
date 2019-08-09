@@ -50,6 +50,7 @@ external interface PairAssignmentsStyles {
     val noPairsNotice: String
     val pair: String
     val saveButton: String
+    val newPairsButton: String
 }
 
 const val dragItemType = "PLAYER"
@@ -134,7 +135,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                 }
 
                 a(href = "/${tribe.id.value}/prepare/", classes = "large pink button") {
-                    attrs { id = "new-pairs-button" }
+                    attrs { classes += styles.newPairsButton }
                     +"Prepare to spin!"
                 }
 

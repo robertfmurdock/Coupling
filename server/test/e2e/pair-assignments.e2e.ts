@@ -133,7 +133,7 @@ describe('The current pair assignments', function () {
     it('will let you prepare new pairs', async function () {
         await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
-        element(By.id('new-pairs-button')).click();
+        element(By.className(PairAssignmentsStyles.newPairsButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/prepare/`);
     });
 
