@@ -7,14 +7,15 @@ import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.InputType
 import kotlinx.html.classes
-import kotlinx.html.id
 import react.RBuilder
 import react.RProps
 import react.dom.*
 
 object PinList : ComponentProvider<PinListProps>(), PinListBuilder
 
-external interface PinListStyles
+external interface PinListStyles {
+    val pinListing: String
+}
 
 data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
 
@@ -25,11 +26,8 @@ interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
     override fun build() = buildBy {
         val (tribe, pins) = props
         {
-            div(classes = "pin-list-frame") {
-                div {
-                    attrs { id = "pin-listing" }
-                    pins.map { pin(it) }
-                }
+            div {
+                div(classes = styles.pinListing) { pins.map { pin(it) } }
                 a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
                     +"Add a new pin."
                 }
