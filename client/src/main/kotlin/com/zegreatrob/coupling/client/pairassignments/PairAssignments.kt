@@ -20,7 +20,6 @@ import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
-import kotlinx.html.id
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
@@ -51,6 +50,8 @@ external interface PairAssignmentsStyles {
     val pair: String
     val saveButton: String
     val newPairsButton: String
+    val viewHistoryButton: String
+    val retiredPlayersButton: String
 }
 
 const val dragItemType = "PLAYER"
@@ -140,12 +141,12 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                 }
 
                 a(href = "/${tribe.id.value}/history/", classes = "large blue button") {
-                    attrs { id = "view-history-button" }
+                    attrs { classes += styles.viewHistoryButton }
                     +"View history!"
                 }
 
                 a(href = "/${tribe.id.value}/players/retired", classes = "large yellow button") {
-                    attrs { id = "retired-players-button" }
+                    attrs { classes += styles.retiredPlayersButton }
                     +"View retirees!"
                 }
             }

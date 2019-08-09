@@ -124,9 +124,9 @@ describe('The current pair assignments', function () {
     });
 
     it('will let you view history', async function () {
-        await setLocation('/' + tribe.id + '/pairAssignments/current/');
+        await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
-        element(By.id('view-history-button')).click();
+        element(By.className(PairAssignmentsStyles.viewHistoryButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/history/`);
     });
 
@@ -147,7 +147,7 @@ describe('The current pair assignments', function () {
     it('will let you see retired players', async function () {
         await setLocation('/' + tribe.id + '/pairAssignments/current/');
         waitForCurrentPairAssignmentPage();
-        element(By.id('retired-players-button')).click();
+        element(By.className(PairAssignmentsStyles.retiredPlayersButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/players/retired`);
     });
 
