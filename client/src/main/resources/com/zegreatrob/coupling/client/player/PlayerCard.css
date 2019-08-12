@@ -30,6 +30,12 @@
     margin-bottom: 0;
 }
 
+:local(.player):local(.deselected) {
+    top: 30px;
+    background-color: #ca6363;
+    margin-bottom: 0;
+}
+
 :local(.header) {
     transition: all ease-out 0.4s;
 }

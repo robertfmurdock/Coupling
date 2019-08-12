@@ -38,7 +38,7 @@ interface RetiredPlayersBuilder : StyledComponentBuilder<RetiredPlayersProps, Re
                 div {
                     players.forEach { player ->
                         playerCard(
-                            PlayerCardProps(tribe.id, player, pathSetter, true, className = "disabled"),
+                            PlayerCardProps(tribe.id, player, pathSetter, true, deselected = true),
                             key = player.id
                         )
                     }

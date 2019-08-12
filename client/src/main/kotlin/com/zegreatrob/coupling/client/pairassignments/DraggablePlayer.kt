@@ -68,7 +68,7 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
                         tribeId = tribe.id,
                         player = pinnedPlayer.player,
                         pathSetter = {},
-                        disabled = false,
+                        headerDisabled = false,
                         className = mapOf(
                             styles.hoverZoom to (pairAssignmentDocument.id == null),
                             styles.onDragHover to isOver

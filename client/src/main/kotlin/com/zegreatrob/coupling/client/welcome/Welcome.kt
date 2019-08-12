@@ -133,7 +133,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
                     player = pair.player1,
                     className = "left ${styles.playerCard}",
                     size = 100,
-                    disabled = true
+                    headerDisabled = true
                 )
             )
             playerCard(
@@ -142,7 +142,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
                     player = pair.player2,
                     className = "right ${styles.playerCard}",
                     size = 100,
-                    disabled = true
+                    headerDisabled = true
                 )
             )
         }

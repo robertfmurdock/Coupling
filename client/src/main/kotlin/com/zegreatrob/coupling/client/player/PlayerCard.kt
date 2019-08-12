@@ -28,16 +28,18 @@ external interface PlayerCardStyles {
     val player: String
     val header: String
     val playerIcon: String
+    val deselected: String
 }
 
 data class PlayerCardProps(
     val tribeId: TribeId,
     val player: Player,
     val pathSetter: (String) -> Unit = {},
-    val disabled: Boolean = false,
+    val headerDisabled: Boolean = false,
     val className: String? = null,
     val size: Int = 100,
-    val onClick: ((Event) -> Unit) = {}
+    val onClick: ((Event) -> Unit) = {},
+    val deselected: Boolean = false
 ) : RProps
 
 interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCardStyles> {
@@ -50,6 +52,9 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
             styledDiv {
                 attrs {
                     classes += setOf(styles.player, className).filterNotNull()
+                    if (props.deselected) {
+                        classes += styles.deselected
+                    }
                     playerCardStyle(size)
                     onClickFunction = onClick
                 }
