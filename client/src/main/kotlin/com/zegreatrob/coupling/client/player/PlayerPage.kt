@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.ReloadFunction
@@ -24,13 +25,15 @@ interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher
         val playerId = pageProps.playerId
 
         if (tribeId != null) {
-            loadedPlayer(
-                dataLoadProps(
-                    query = { PlayerQuery(tribeId, playerId).perform() },
-                    toProps = toPropsFunc(pageProps)
-                )
-            ) {
-                playerId?.let { attrs { key = it } }
+            reactElement {
+                loadedPlayer(
+                    dataLoadProps(
+                        query = { PlayerQuery(tribeId, playerId).perform() },
+                        toProps = toPropsFunc(pageProps)
+                    )
+                ) {
+                    playerId?.let { attrs { key = it } }
+                }
             }
         } else throw Exception("WHAT")
     }

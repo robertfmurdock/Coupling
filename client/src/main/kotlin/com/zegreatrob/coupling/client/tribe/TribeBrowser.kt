@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RBuilder
@@ -29,7 +30,7 @@ interface TribeBrowserBuilder : StyledComponentBuilder<TribeBrowserProps, TribeB
     override fun build() = buildBy {
         val (tribe, pathSetter) = props
 
-        {
+        reactElement {
             div(classes = styles.className) {
                 span {
                     tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))

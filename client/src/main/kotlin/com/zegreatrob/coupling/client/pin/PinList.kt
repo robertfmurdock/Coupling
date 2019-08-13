@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.InputType
@@ -27,7 +28,7 @@ interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
 
     override fun build() = buildBy {
         val (tribe, pins) = props
-        {
+        reactElement {
             div {
                 div(classes = styles.pinListing) { pins.map { pin(it, styles) } }
                 a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {

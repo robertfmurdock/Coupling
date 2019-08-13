@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -20,14 +21,16 @@ interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatch
         val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedPairAssignments(
-                dataLoadProps(
-                    query = { HistoryQuery(tribeId).perform() },
-                    toProps = { reload, (tribe, history) ->
-                        HistoryProps(tribe, history, reload, pageProps.pathSetter)
-                    }
+            reactElement {
+                loadedPairAssignments(
+                    dataLoadProps(
+                        query = { HistoryQuery(tribeId).perform() },
+                        toProps = { reload, (tribe, history) ->
+                            HistoryProps(tribe, history, reload, pageProps.pathSetter)
+                        }
+                    )
                 )
-            )
+            }
         } else throw Exception("WHAT")
     }
 }

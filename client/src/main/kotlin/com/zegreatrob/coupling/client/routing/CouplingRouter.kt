@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -33,7 +34,7 @@ data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: 
 interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
 
     override fun build() = buildByPls {
-        {
+        reactElement {
             browserRouter {
                 animationsDisabledContext.Provider(value = props.animationsDisabled) {
                     switch {

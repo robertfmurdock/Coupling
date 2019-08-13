@@ -42,7 +42,7 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
         val (values, onChange) = useForm(props.tribe.toJson())
         val updatedTribe = values.toTribe()
 
-        return@buildBy {
+        reactElement {
             div(classes = styles.className) {
                 div {
                     h1 { +"Tribe Configuration" }

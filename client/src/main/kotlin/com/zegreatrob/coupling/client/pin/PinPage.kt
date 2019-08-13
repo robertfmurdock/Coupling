@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.DataLoadProps
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -22,10 +23,12 @@ interface PinListPageBuilder : ComponentBuilder<PageProps>, PinListQueryDispatch
         val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedPinList(DataLoadProps {
-                tribeId.performPinListQuery()
-                    .toPinListProps()
-            })
+            reactElement {
+                loadedPinList(DataLoadProps {
+                    tribeId.performPinListQuery()
+                        .toPinListProps()
+                })
+            }
         } else throw Exception("WHAT")
     }
 

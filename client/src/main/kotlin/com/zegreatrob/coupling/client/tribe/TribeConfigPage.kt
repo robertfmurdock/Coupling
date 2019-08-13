@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -18,12 +19,14 @@ private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
 interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispatcher {
 
     override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        loadedTribeConfig(
-            dataLoadProps(
-                query = { performCorrectQuery(pageProps.tribeId) },
-                toProps = { _, data -> tribeConfigProps(data, pageProps.pathSetter) }
+        reactElement {
+            loadedTribeConfig(
+                dataLoadProps(
+                    query = { performCorrectQuery(pageProps.tribeId) },
+                    toProps = { _, data -> tribeConfigProps(data, pageProps.pathSetter) }
+                )
             )
-        )
+        }
     }
 
     private suspend fun performCorrectQuery(tribeId: TribeId?) = if (tribeId != null)

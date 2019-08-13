@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.html.classes
@@ -34,20 +35,18 @@ interface PlayerRosterBuilder : StyledComponentBuilder<PlayerRosterProps, Player
 
     override val componentPath: String get() = "player/PlayerRoster"
     override fun build() = buildBy {
-        with(props) {
-            {
-                div(classes = className) {
-                    attrs { classes += styles.className }
-                    div {
-                        div(classes = styles.header) {
-                            +(label ?: "Players")
-                        }
-                        renderPlayers(props)
+        reactElement {
+            div(classes = props.className) {
+                attrs { classes += styles.className }
+                div {
+                    div(classes = styles.header) {
+                        +(props.label ?: "Players")
                     }
-                    a(href = "/${tribeId.value}/player/new/", classes = "large orange button") {
-                        attrs { classes += styles.addPlayerButton }
-                        +"Add a new player!"
-                    }
+                    renderPlayers(props)
+                }
+                a(href = "/${props.tribeId.value}/player/new/", classes = "large orange button") {
+                    attrs { classes += styles.addPlayerButton }
+                    +"Add a new player!"
                 }
             }
         }

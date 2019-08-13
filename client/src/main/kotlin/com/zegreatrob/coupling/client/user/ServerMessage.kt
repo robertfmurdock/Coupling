@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
-import com.zegreatrob.coupling.client.external.react.useState
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 import react.RClass
@@ -35,17 +32,19 @@ interface ServerMessageBuilder : ComponentBuilder<ServerMessageProps> {
         val (tribeId, useSsl) = props
         val (message, setMessage) = useState(disconnectedMessage)
 
-        div {
-            websocket {
-                attrs {
-                    url = buildSocketUrl(tribeId, useSsl)
-                    onMessage = { setMessage(it) }
-                    onClose = { setMessage(disconnectedMessage) }
+        reactElement {
+            div {
+                websocket {
+                    attrs {
+                        url = buildSocketUrl(tribeId, useSsl)
+                        onMessage = { setMessage(it) }
+                        onClose = { setMessage(disconnectedMessage) }
+                    }
                 }
-            }
 
-            span {
-                +message
+                span {
+                    +message
+                }
             }
         }
     }

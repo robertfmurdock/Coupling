@@ -39,7 +39,7 @@ interface TribeCardBuilder : StyledComponentBuilder<TribeCardProps, TribeCardSty
     override fun build() = buildBy {
         val (tribe, size) = props
 
-        {
+        reactElement {
             styledSpan {
                 attrs {
                     classes = setOf(styles.className)

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RProps
@@ -24,7 +25,7 @@ interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss
 
     override fun build() = buildBy {
         val (tribes, pathSetter) = props
-        {
+        reactElement {
             div(classes = styles.className) {
                 div {
                     tribes.forEach { tribe ->

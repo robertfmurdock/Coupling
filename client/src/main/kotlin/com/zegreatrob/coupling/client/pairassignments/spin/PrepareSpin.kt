@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.useState
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
@@ -32,7 +29,7 @@ interface PrepareSpinRenderer : StyledComponentBuilder<PrepareSpinProps, Prepare
         val (playerSelections, setPlayerSelections) = useState(
             players.map { it to isInLastSetOfPairs(it, history) }
         )
-        return@buildBy {
+        reactElement {
             div(classes = styles.className) {
                 div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
                 div {

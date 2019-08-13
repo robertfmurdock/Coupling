@@ -72,7 +72,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         val tribe = props.tribe
         val players = props.players
         val pathSetter = props.pathSetter
-        {
+        reactElement {
             DndProvider {
                 attrs { backend = HTML5Backend }
                 div(classes = styles.className) {

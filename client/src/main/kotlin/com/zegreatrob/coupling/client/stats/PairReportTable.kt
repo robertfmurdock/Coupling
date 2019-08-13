@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.invoke
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.PairReport
@@ -30,7 +27,7 @@ interface PairReportTableBuilder :
 
     override fun build() = buildBy {
         val (tribe, pairReports) = props
-        {
+        reactElement {
             div(classes = styles.className) {
                 pairReports.mapIndexed { index, pairReport ->
                     pairReport(styles, index, pairReport, tribe)

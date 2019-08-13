@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
@@ -37,7 +38,7 @@ interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, 
     override fun build() = buildBy {
         val (tribe, players, _, allStats, heatmapData) = props.queryResults
         val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
-        {
+        reactElement {
             div(classes = styles.className) {
                 div {
                     tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))

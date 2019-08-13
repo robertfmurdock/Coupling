@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.player.retired
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
@@ -31,7 +32,7 @@ interface RetiredPlayersBuilder : StyledComponentBuilder<RetiredPlayersProps, Re
 
     override fun build() = buildBy {
         val (tribe, players, pathSetter) = props
-        {
+        reactElement {
             div(classes = styles.className) {
                 tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                 div(classes = styles.header) { +"Retired Players" }

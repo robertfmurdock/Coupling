@@ -54,7 +54,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
     override fun build() = buildBy {
         val (tribe, _, players, pathSetter) = props
-        {
+        reactElement {
             div(classes = styles.className) {
                 div {
                     div(classes = styles.tribeBrowser) {

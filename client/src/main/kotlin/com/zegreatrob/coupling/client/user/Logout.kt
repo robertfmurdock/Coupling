@@ -1,11 +1,7 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
-import com.zegreatrob.coupling.client.external.react.useState
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -24,11 +20,12 @@ interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutComma
                 MainScope().launch { waitForLogout(setIsLoggedOut) }
             )
         }
-
-        if (isLoggedOut) {
-            redirect(to = "/welcome", from = "")
-        } else {
-            div { }
+        reactElement {
+            if (isLoggedOut) {
+                redirect(to = "/welcome", from = "")
+            } else {
+                div { }
+            }
         }
     }
 

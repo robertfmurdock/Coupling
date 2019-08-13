@@ -71,7 +71,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
         }
 
         val hiddenTag = if (show) "" else styles.hidden
-        {
+        reactElement {
             div(classes = styles.className) {
                 attrs { classes += hiddenTag }
                 div {

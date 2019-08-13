@@ -21,17 +21,19 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
 
             props.getDataAsync.invokeOnScope(setData)
 
-            consumer(animationContextConsumer) { animationsDisabled: Boolean ->
-                div {
-                    attrs {
-                        classes += "view-frame"
-                        if (shouldStartAnimation && !animationsDisabled) {
-                            classes += "ng-enter"
+            reactElement {
+                consumer(animationContextConsumer) { animationsDisabled: Boolean ->
+                    div {
+                        attrs {
+                            classes += "view-frame"
+                            if (shouldStartAnimation && !animationsDisabled) {
+                                classes += "ng-enter"
+                            }
+                            this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
                         }
-                        this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
-                    }
-                    if (data != null) {
-                        wrappedComponent(data)
+                        if (data != null) {
+                            wrappedComponent(data)
+                        }
                     }
                 }
             }

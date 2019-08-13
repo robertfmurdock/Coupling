@@ -48,7 +48,7 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
 
     override fun build() = buildBy {
         val (tribeId, player, pathSetter, disabled, className, size, onClick) = props
-        {
+        reactElement {
             styledDiv {
                 attrs {
                     classes += setOf(styles.player, className).filterNotNull()

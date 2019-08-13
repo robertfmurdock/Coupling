@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -21,10 +22,12 @@ interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps>, RetiredPlayer
         val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedRetiredPlayers(dataLoadProps(
-                query = { RetiredPlayerListQuery(tribeId).perform() },
-                toProps = { _, data -> toRetiredPlayersProps(data, pageProps.pathSetter) }
-            ))
+            reactElement {
+                loadedRetiredPlayers(dataLoadProps(
+                    query = { RetiredPlayerListQuery(tribeId).perform() },
+                    toProps = { _, data -> toRetiredPlayersProps(data, pageProps.pathSetter) }
+                ))
+            }
         } else throw Exception("WHAT")
     }
 

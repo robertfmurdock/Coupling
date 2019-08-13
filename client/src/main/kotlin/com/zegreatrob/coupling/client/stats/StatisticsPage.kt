@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -19,12 +20,14 @@ interface StatisticsPageBuilder : ComponentBuilder<PageProps>, StatisticsQueryDi
         val tribeId = pageProps.tribeId
 
         if (tribeId != null) {
-            loadedPairAssignments(
-                dataLoadProps(
-                    query = { StatisticsQuery(tribeId).perform() },
-                    toProps = { _, queryResult -> TribeStatisticsProps(queryResult, pageProps.pathSetter) }
+            reactElement {
+                loadedPairAssignments(
+                    dataLoadProps(
+                        query = { StatisticsQuery(tribeId).perform() },
+                        toProps = { _, queryResult -> TribeStatisticsProps(queryResult, pageProps.pathSetter) }
+                    )
                 )
-            )
+            }
         } else throw Exception("WHAT")
     }
 }

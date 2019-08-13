@@ -3,10 +3,11 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
 import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
 import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
-import com.zegreatrob.coupling.client.stats.heatmap.heatmap
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
+import com.zegreatrob.coupling.client.stats.heatmap.heatmap
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
@@ -40,8 +41,8 @@ interface PlayerHeatmapBuilder : StyledComponentBuilder<PlayerHeatmapProps, Play
     override val componentPath get() = "stats/PlayerHeatmap"
 
     override fun build() = buildBy {
-        {
-            val tribe = props.tribe
+        val tribe = props.tribe
+        reactElement {
             div(classes = styles.rightSection) {
                 div(classes = styles.heatmapPlayersTopRow) {
                     div(classes = styles.spacer) {}

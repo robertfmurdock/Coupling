@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -21,7 +22,7 @@ interface NewPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, NewPairAs
         if (tribeId != null) {
             val playerIds = pageProps.search.getAll("player").toList()
 
-            loadedPairAssignments(dataLoadProps(tribeId, pageProps, playerIds))
+            reactElement { loadedPairAssignments(dataLoadProps(tribeId, pageProps, playerIds)) }
         } else throw Exception("WHAT")
     }
 

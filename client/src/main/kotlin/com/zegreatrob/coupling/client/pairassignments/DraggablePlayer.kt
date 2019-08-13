@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.useRef
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -40,27 +37,24 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
 
     override fun build() = buildBy {
         val (pinnedPlayer, tribe, pairAssignmentDocument, swapCallback) = props
-        {
-            val draggablePlayerRef = useRef<Node>(null)
+        val draggablePlayerRef = useRef<Node>(null)
+        val (_, drag) = useDrag(
+            itemType = dragItemType,
+            itemId = pinnedPlayer.player.id!!,
+            collect = { }
+        )
+        val (isOver, drop) = useDrop(
+            acceptItemType = dragItemType,
+            drop = { item ->
+                swapCallback(item["id"].unsafeCast<String>())
+            },
+            collect = { monitor ->
+                monitor.isOver()
+            }
+        )
+        drag(drop(draggablePlayerRef))
 
-            val (_, drag) = useDrag(
-                itemType = dragItemType,
-                itemId = pinnedPlayer.player.id!!,
-                collect = { }
-            )
-
-            val (isOver, drop) = useDrop(
-                acceptItemType = dragItemType,
-                drop = { item ->
-                    swapCallback(item["id"].unsafeCast<String>())
-                },
-                collect = { monitor ->
-                    monitor.isOver()
-                }
-            )
-
-            drag(drop(draggablePlayerRef))
-
+        reactElement {
             div(classes = styles.className) {
                 attrs { ref = draggablePlayerRef }
                 playerCard(

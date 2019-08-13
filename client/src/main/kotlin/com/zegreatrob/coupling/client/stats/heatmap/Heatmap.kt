@@ -32,9 +32,10 @@ interface HeatmapBuilder : StyledComponentBuilder<HeatmapProps, HeatmapStyles> {
 
     override fun build() = buildBy {
         val rowSize = props.data.size * 90
-        {
-            val rootRef: RReadableRef<Node> = useRef(null)
-            useLayoutEffect { rootRef.current?.renderD3Heatmap(props.data.flatten(), styles) }
+        val rootRef: RReadableRef<Node> = useRef(null)
+        useLayoutEffect { rootRef.current?.renderD3Heatmap(props.data.flatten(), styles) }
+
+        reactElement {
             styledDiv {
                 attrs { ref = rootRef; classes += styles.className; classes += props.className }
                 css {
