@@ -14,11 +14,6 @@
     transition-property: top, background-color, margin-bottom;
 }
 
-:local(.playerCard).disabled,
-:local(.playerCard).ng-enter {
-    transition: all 0.25s ease-out;
-}
-
 :local(.playerCard).ng-leave {
     transition: none;
     animation: none;

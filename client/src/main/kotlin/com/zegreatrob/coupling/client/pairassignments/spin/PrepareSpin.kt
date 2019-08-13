@@ -80,7 +80,8 @@ interface PrepareSpinRenderer : StyledComponentBuilder<PrepareSpinProps, Prepare
             player,
             pathSetter,
             true,
-            className = styles.playerCard + if (isSelected) "" else " disabled",
+            className = styles.playerCard,
+            deselected = !isSelected,
             onClick = {
                 setPlayerSelections(
                     flipSelectionForPlayer(player, isSelected, playerSelections)

@@ -24,12 +24,6 @@
     font-weight: bold;
 }
 
-:local(.player).disabled {
-    top: 30px;
-    background-color: #ca6363;
-    margin-bottom: 0;
-}
-
 :local(.player):local(.deselected) {
     top: 30px;
     background-color: #ca6363;
