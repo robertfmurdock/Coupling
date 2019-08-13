@@ -12,7 +12,7 @@ object Logout : ComponentProvider<PageProps>(), LogoutBuilder
 
 interface LogoutBuilder : ComponentBuilder<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
 
-    override fun build(): ReactFunctionComponent<PageProps> = reactFunctionComponent {
+    override fun build(): ReactFunctionComponent<PageProps> = buildByPls {
         val (isLoggedOut, setIsLoggedOut) = useState(false)
         val (logoutPromise, setLogout) = useState<Any?>(null)
         if (logoutPromise == null) {

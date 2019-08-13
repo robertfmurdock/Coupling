@@ -13,7 +13,7 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
     object : ComponentProvider<DataLoadProps<P>>(), ComponentBuilder<DataLoadProps<P>>, ScopeProvider {
         private val animationContextConsumer = animationsDisabledContext.Consumer
 
-        override fun build() = reactFunctionComponent<DataLoadProps<P>> { props ->
+        override fun build() = buildByPls {
             val (data, setData) = useState<P?>(null)
 
             val (animationState, setAnimationState) = useState(AnimationState.Start)

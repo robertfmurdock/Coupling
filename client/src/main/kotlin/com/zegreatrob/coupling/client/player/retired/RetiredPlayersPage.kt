@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.external.react.reactElement
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -18,14 +18,14 @@ private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.captor(th
 
 interface RetiredPlayersPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerListQueryDispatcher {
 
-    override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.tribeId
+    override fun build() = buildByPls {
+        val tribeId = props.tribeId
 
         if (tribeId != null) {
             reactElement {
                 loadedRetiredPlayers(dataLoadProps(
                     query = { RetiredPlayerListQuery(tribeId).perform() },
-                    toProps = { _, data -> toRetiredPlayersProps(data, pageProps.pathSetter) }
+                    toProps = { _, data -> toRetiredPlayersProps(data, props.pathSetter) }
                 ))
             }
         } else throw Exception("WHAT")

@@ -14,7 +14,7 @@ private val RBuilder.loadedWelcome get() = LoadedWelcome.captor(this)
 
 interface WelcomePageBuilder : ComponentBuilder<PageProps> {
 
-    override fun build() = reactFunctionComponent<PageProps> {
+    override fun build() = buildByPls {
         reactElement {
             loadedWelcome(
                 DataLoadProps { EmptyProps }

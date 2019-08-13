@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.external.react.reactElement
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -17,8 +17,8 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(
 
 interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatcher {
 
-    override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.tribeId
+    override fun build() =  buildByPls {
+        val tribeId = props.tribeId
 
         if (tribeId != null) {
             reactElement {
@@ -26,7 +26,7 @@ interface HistoryPageBuilder : ComponentBuilder<PageProps>, HistoryQueryDispatch
                     dataLoadProps(
                         query = { HistoryQuery(tribeId).perform() },
                         toProps = { reload, (tribe, history) ->
-                            HistoryProps(tribe, history, reload, pageProps.pathSetter)
+                            HistoryProps(tribe, history, reload, props.pathSetter)
                         }
                     )
                 )

@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.external.react.reactElement
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQuery
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -18,8 +18,8 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(
 
 interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQueryDispatcher {
 
-    override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.tribeId
+    override fun build() = buildByPls {
+        val tribeId = props.tribeId
 
         if (tribeId != null) {
             reactElement {
@@ -27,7 +27,7 @@ interface PrepareSpinPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQuer
                     dataLoadProps(
                         query = { TribeDataSetQuery(tribeId).perform() },
                         toProps = { _, (tribe, players, history) ->
-                            PrepareSpinProps(tribe, players, history, pageProps.pathSetter)
+                            PrepareSpinProps(tribe, players, history, props.pathSetter)
                         }
                     )
                 )

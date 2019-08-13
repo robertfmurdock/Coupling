@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.external.react.reactElement
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -17,11 +17,11 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(
 
 interface CurrentPairAssignmentsPageBuilder : ComponentBuilder<PageProps>, TribeDataSetQueryDispatcher {
 
-    override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.tribeId
+    override fun build() = buildByPls {
+        val tribeId = props.tribeId
 
         if (tribeId != null) {
-            reactElement { loadedPairAssignments(dataLoadProps(tribeId, pageProps)) }
+            reactElement { loadedPairAssignments(dataLoadProps(tribeId, props)) }
         } else throw Exception("WHAT")
     }
 

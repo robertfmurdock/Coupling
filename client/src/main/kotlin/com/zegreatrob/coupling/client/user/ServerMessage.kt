@@ -28,7 +28,7 @@ data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProp
 
 interface ServerMessageBuilder : ComponentBuilder<ServerMessageProps> {
 
-    override fun build() = reactFunctionComponent<ServerMessageProps> { props ->
+    override fun build() = buildByPls {
         val (tribeId, useSsl) = props
         val (message, setMessage) = useState(disconnectedMessage)
 

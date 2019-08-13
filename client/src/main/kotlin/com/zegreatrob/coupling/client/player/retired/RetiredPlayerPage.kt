@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.buildByPls
 import com.zegreatrob.coupling.client.external.react.reactElement
-import com.zegreatrob.coupling.client.external.react.reactFunctionComponent
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -19,9 +19,9 @@ private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.captor(this
 
 interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerQueryDispatcher {
 
-    override fun build() = reactFunctionComponent<PageProps> { pageProps ->
-        val tribeId = pageProps.tribeId
-        val playerId = pageProps.playerId
+    override fun build() = buildByPls {
+        val tribeId = props.tribeId
+        val playerId = props.playerId
 
         if (tribeId != null && playerId != null) {
             reactElement {
@@ -33,7 +33,7 @@ interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerQ
                                 tribe = tribe,
                                 player = player,
                                 players = players,
-                                pathSetter = pageProps.pathSetter,
+                                pathSetter = props.pathSetter,
                                 reload = reload
                             )
                         }
