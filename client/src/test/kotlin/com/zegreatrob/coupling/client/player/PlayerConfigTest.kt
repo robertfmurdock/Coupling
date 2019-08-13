@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.player
 import Spy
 import SpyData
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
+import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
@@ -25,6 +26,8 @@ import kotlin.test.Test
 
 class PlayerConfigTest {
 
+    val styles = loadStyles<PlayerConfigStyles>("player/PlayerConfig")
+
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigBuilder {
         val tribe = KtTribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
@@ -34,8 +37,8 @@ class PlayerConfigTest {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
         wrapper.find<Any>("input[name='badge'][value='${Badge.Default.value}'][checked]")
-                .length
-                .assertIsEqualTo(1)
+            .length
+            .assertIsEqualTo(1)
     }
 
     @Test
@@ -47,8 +50,8 @@ class PlayerConfigTest {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
         wrapper.find<Any>("input[name='badge'][value='${Badge.Alternate.value}'][checked]")
-                .length
-                .assertIsEqualTo(1)
+            .length
+            .assertIsEqualTo(1)
     }
 
     @Test
@@ -60,9 +63,9 @@ class PlayerConfigTest {
 
                 val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
                 override suspend fun saveAsync(tribeId: TribeId, player: Player) = saveSpy.spyFunction(
-                        player.toJson() to tribeId.value
+                    player.toJson() to tribeId.value
                 )
-                        .await()
+                    .await()
 
                 val tribe = KtTribe(TribeId("party"))
                 val player = Player(id = "blarg", badge = Badge.Default.value)
@@ -76,22 +79,22 @@ class PlayerConfigTest {
                 reloaderSpy.spyWillReturn(Unit)
             } exerciseAsync {
                 wrapper.find<Any>("input[name='name']")
-                        .simulate(
-                                "change",
-                                json(
-                                        "target" to json("name" to "name", "value" to "nonsense"),
-                                        "persist" to {}
-                                )
+                    .simulate(
+                        "change",
+                        json(
+                            "target" to json("name" to "name", "value" to "nonsense"),
+                            "persist" to {}
                         )
+                    )
                 wrapper.find<Any>("form")
-                        .simulate("submit", json("preventDefault" to {}))
+                    .simulate("submit", json("preventDefault" to {}))
             }
         } verifyAsync {
             saveSpy.spyReceivedValues
-                    .map { it.first.toPlayer() to TribeId(it.second) }
-                    .assertContains(
-                            player.copy(name = "nonsense") to tribe.id
-                    )
+                .map { it.first.toPlayer() to TribeId(it.second) }
+                .assertContains(
+                    player.copy(name = "nonsense") to tribe.id
+                )
             reloaderSpy.spyReceivedValues.size.assertIsEqualTo(1)
         }
     }
@@ -103,7 +106,7 @@ class PlayerConfigTest {
                 override fun buildScope() = this@withContext
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, playerId: String) =
-                        removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
+                    removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
 
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
@@ -112,26 +115,26 @@ class PlayerConfigTest {
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
                 val wrapper = shallow(PlayerConfigProps(
-                        tribe,
-                        player,
-                        listOf(player),
-                        pathSetterSpy::spyFunction
+                    tribe,
+                    player,
+                    listOf(player),
+                    pathSetterSpy::spyFunction
                 ) {})
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
             } exerciseAsync {
-                wrapper.find<Any>(".delete-button")
-                        .simulate("click")
+                wrapper.find<Any>(".${styles.deleteButton}")
+                    .simulate("click")
             }
         } verifyAsync {
             removeSpy.spyReceivedValues
-                    .map { TribeId(it.first) to it.second }
-                    .assertContains(
-                            tribe.id to player.id
-                    )
+                .map { TribeId(it.first) to it.second }
+                .assertContains(
+                    tribe.id to player.id
+                )
             pathSetterSpy.spyReceivedValues.contains(
-                    "/${tribe.id.value}/pairAssignments/current/"
+                "/${tribe.id.value}/pairAssignments/current/"
             )
         }
     }
@@ -144,22 +147,23 @@ class PlayerConfigTest {
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, playerId: String) =
-                        removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
+                    removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
+
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val tribe = KtTribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
                 val wrapper = shallow(PlayerConfigProps(
-                        tribe,
-                        player,
-                        listOf(player),
-                        pathSetterSpy::spyFunction
+                    tribe,
+                    player,
+                    listOf(player),
+                    pathSetterSpy::spyFunction
                 ) {})
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
             } exerciseAsync {
-                wrapper.find<Any>(".delete-button")
-                        .simulate("click")
+                wrapper.find<Any>(".${styles.deleteButton}")
+                    .simulate("click")
             }
         } verifyAsync {
             removeSpy.spyReceivedValues.isEmpty().assertIsEqualTo(true)
@@ -172,20 +176,21 @@ class PlayerConfigTest {
         val tribe = KtTribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper = shallow(PlayerConfigProps(
-                tribe,
-                player,
-                listOf(player),
-                {}
+            tribe,
+            player,
+            listOf(player),
+            {}
         ) {})
     }) exercise {
         wrapper.find<Any>("input[name='name']")
-                .simulate("change", json(
-                        "target" to json("name" to "name", "value" to "differentName"), "persist" to {})
-                )
+            .simulate(
+                "change", json(
+                    "target" to json("name" to "name", "value" to "differentName"), "persist" to {})
+            )
         wrapper.update()
     } verify {
         wrapper.find(PromptComponent).props().`when`
-                .assertIsEqualTo(true)
+            .assertIsEqualTo(true)
     }
 
     @Test
@@ -194,14 +199,14 @@ class PlayerConfigTest {
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
         shallow(PlayerConfigProps(
-                tribe,
-                player,
-                listOf(player),
-                {}
+            tribe,
+            player,
+            listOf(player),
+            {}
         ) {})
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`
-                .assertIsEqualTo(false)
+            .assertIsEqualTo(false)
     }
 
 }

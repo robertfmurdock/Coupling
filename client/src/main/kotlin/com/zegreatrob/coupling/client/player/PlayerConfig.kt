@@ -39,6 +39,8 @@ external interface PlayerConfigStyles {
     val playerView: String
     val playerRoster: String
     val player: String
+    val deleteButton: String
+    val badgeConfig: String
 }
 
 val playerDefaults get() = json("badge" to Badge.Default.value)
@@ -58,7 +60,6 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                     div(classes = styles.tribeBrowser) {
                         tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                     }
-
                     playerView(this)
                 }
                 playerRoster(
@@ -166,7 +167,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                     callSignConfig(player, onChange)
                 }
                 if (tribe.badgesEnabled) {
-                    badgeConfig(tribe, player, onChange)
+                    badgeConfig(tribe, player, onChange, styles)
                 }
                 button(classes = "large blue button") {
                     attrs {
@@ -180,8 +181,11 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
                 }
                 val playerId = player.id
                 if (playerId != null) {
-                    div(classes = "small red button delete-button") {
-                        attrs { onClickFunction = { removePlayer(tribe, props.pathSetter, scope, playerId) } }
+                    div(classes = "small red button") {
+                        attrs {
+                            classes += styles.deleteButton
+                            onClickFunction = { removePlayer(tribe, props.pathSetter, scope, playerId) }
+                        }
                         +"Retire"
                     }
                 }
@@ -218,8 +222,13 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
         }
     }
 
-    private fun RBuilder.badgeConfig(tribe: KtTribe, player: Player, onChange: (Event) -> Unit) {
-        div(classes = "badge-config") {
+    private fun RBuilder.badgeConfig(
+        tribe: KtTribe,
+        player: Player,
+        onChange: (Event) -> Unit,
+        styles: PlayerConfigStyles
+    ) {
+        div(classes = styles.badgeConfig) {
             div {
                 configInput(
                     labelText = tribe.defaultBadgeName ?: "",

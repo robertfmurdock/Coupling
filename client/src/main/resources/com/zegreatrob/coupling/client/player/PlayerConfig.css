@@ -25,22 +25,13 @@
     border-width: 11px;
 }
 
-:local(.playerView) :local(.player) .player-header {
-    background: darkcyan url(../overlay.png) repeat-x;
-    margin-top: 0;
-    margin-bottom: 6px;
-    border-radius: 20px;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
 :local(.saveButton) {
     float: left;
     top: 15px;
     left: -15px;
 }
 
-:local(.playerView) .delete-button {
+:local(.deleteButton) {
     float: right;
     top: 20px;
     left: 15px;
@@ -73,7 +64,7 @@
     text-stroke-width: 0;
 }
 
-:local(.playerView) .badge-config label {
+:local(.playerView) :local(.badgeConfig) label {
     display: inline-block;
 }
 

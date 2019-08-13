@@ -20,7 +20,7 @@ const altBadgeRadio = element(By.css('#alt-badge-radio'));
 
 
 const tribeCardElement = element(By.className(TribeCardStyles.className));
-const deleteButton = element(By.className('delete-button'));
+const deleteButton = element(By.className(PlayerConfigStyles.deleteButton));
 const savePlayerButton = element(By.className(PlayerConfigStyles.saveButton));
 
 describe('The edit player page', function () {
