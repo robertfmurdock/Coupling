@@ -1,16 +1,16 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RProps
+import react.ReactElement
 import react.dom.a
 import react.dom.div
 
-object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder
+object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder {
+    override fun build() = functionFromRender()
+}
 
 data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) -> Unit) : RProps
 
@@ -19,13 +19,14 @@ interface TribeListCss {
     val newTribeButton: String
 }
 
-interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss> {
+interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss>,
+    StyledComponentRenderer<TribeListProps, TribeListCss> {
 
     override val componentPath: String get() = "tribe/TribeList"
 
-    override fun build() = buildBy {
+    override fun PropsStylesBuilder<TribeListProps, TribeListCss>.render(): ReactElement {
         val (tribes, pathSetter) = props
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 div {
                     tribes.forEach { tribe ->
@@ -44,4 +45,5 @@ interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss
             }
         }
     }
+
 }

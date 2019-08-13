@@ -8,13 +8,13 @@ import react.RBuilder
 
 
 object WelcomePage : ComponentProvider<PageProps>(), WelcomePageBuilder {
-    override fun build() = buildByRender()
+    override fun build() = functionFromRender()
 }
 
 private val LoadedWelcome = dataLoadWrapper(Welcome)
 private val RBuilder.loadedWelcome get() = LoadedWelcome.captor(this)
 
-interface WelcomePageBuilder : SimpleComponentBuilder<PageProps>, ComponentRenderer<PageProps> {
+interface WelcomePageBuilder : SimpleComponentBuilder<PageProps>, SimpleComponentRenderer<PageProps> {
 
     override fun PropsBuilder<PageProps>.render() = reactElement {
         loadedWelcome(
