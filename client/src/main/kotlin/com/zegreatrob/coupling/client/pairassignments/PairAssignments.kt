@@ -63,7 +63,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (pairAssignments, setPairAssignments) = useState(props.pairAssignments)
 
         val swapCallback = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->

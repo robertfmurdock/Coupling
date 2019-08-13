@@ -63,7 +63,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
 
     override val componentPath: String get() = "Welcome"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (show, setShow) = useState(false)
 
         if (!show) {

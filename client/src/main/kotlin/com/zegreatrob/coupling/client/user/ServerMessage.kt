@@ -26,9 +26,9 @@ val RBuilder.serverMessage get() = ServerMessage.captor(this)
 
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-interface ServerMessageBuilder : ComponentBuilder<ServerMessageProps> {
+interface ServerMessageBuilder : SimpleComponentBuilder<ServerMessageProps> {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         val (tribeId, useSsl) = props
         val (message, setMessage) = useState(disconnectedMessage)
 

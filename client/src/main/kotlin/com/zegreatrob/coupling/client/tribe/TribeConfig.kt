@@ -36,7 +36,7 @@ interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, Tr
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val isNew = props.tribe.id.value == ""
 
         val (values, onChange) = useForm(props.tribe.toJson())

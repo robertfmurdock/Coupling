@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
@@ -18,9 +18,9 @@ val RBuilder.couplingRoute get() = CouplingRoute.captor(this)
 
 data class CouplingRouteProps(val path: String, val componentProvider: ComponentProvider<PageProps>) : RProps
 
-interface CouplingRouteBuilder : ComponentBuilder<CouplingRouteProps> {
+interface CouplingRouteBuilder : SimpleComponentBuilder<CouplingRouteProps> {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         reactElement {
             route<RProps>(props.path, exact = true) { routeProps ->
                 createElement(

@@ -52,7 +52,7 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
 
     override val componentPath: String get() = "player/PlayerConfig"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (tribe, _, players, pathSetter) = props
         reactElement {
             div(classes = styles.className) {

@@ -12,7 +12,7 @@ interface StatLabelBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
 
     override val componentPath: String get() = "stats/StatLabel"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         reactElement {
             span(classes = styles.className) { props.children() }
         }

@@ -46,7 +46,7 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
 
     override val componentPath: String get() = "player/PlayerCard"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (tribeId, player, pathSetter, disabled, className, size, onClick) = props
         reactElement {
             styledDiv {

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
@@ -31,9 +31,9 @@ object CouplingRouter : ComponentProvider<CouplingRouterProps>(), CouplingRouter
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
-interface CouplingRouterBuilder : ComponentBuilder<CouplingRouterProps> {
+interface CouplingRouterBuilder : SimpleComponentBuilder<CouplingRouterProps> {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         reactElement {
             browserRouter {
                 animationsDisabledContext.Provider(value = props.animationsDisabled) {

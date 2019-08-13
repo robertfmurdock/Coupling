@@ -36,7 +36,7 @@ interface TribeCardBuilder : StyledComponentBuilder<TribeCardProps, TribeCardSty
 
     override val componentPath: String get() = "tribe/TribeCard"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (tribe, size) = props
 
         reactElement {

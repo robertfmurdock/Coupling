@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -14,9 +14,9 @@ object StatisticsPage : ComponentProvider<PageProps>(), StatisticsPageBuilder
 private val LoadedPairAssignments = dataLoadWrapper(TribeStatistics)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
 
-interface StatisticsPageBuilder : ComponentBuilder<PageProps>, StatisticsQueryDispatcher {
+interface StatisticsPageBuilder : SimpleComponentBuilder<PageProps>, StatisticsQueryDispatcher {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         val tribeId = props.tribeId
 
         if (tribeId != null) {

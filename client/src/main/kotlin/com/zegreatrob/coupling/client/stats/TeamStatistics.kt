@@ -14,7 +14,7 @@ interface TeamStatisticsBuilder : StyledComponentBuilder<TeamStatisticsProps, Te
 
     override val componentPath: String get() = "stats/TeamStatistics"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         reactElement {
             div(classes = styles.className) {
                 statsHeader { +"Team Stats" }

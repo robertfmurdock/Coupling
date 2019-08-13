@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -16,9 +16,9 @@ object TribeConfigPage : ComponentProvider<PageProps>(), TribeConfigPageBuilder
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
 
-interface TribeConfigPageBuilder : ComponentBuilder<PageProps>, TribeQueryDispatcher {
+interface TribeConfigPageBuilder : SimpleComponentBuilder<PageProps>, TribeQueryDispatcher {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         reactElement {
             loadedTribeConfig(
                 dataLoadProps(

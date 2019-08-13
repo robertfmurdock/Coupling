@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.routing.DataLoadProps
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -17,9 +17,9 @@ object PinListPage : ComponentProvider<PageProps>(), PinListPageBuilder
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.captor(this)
 
-interface PinListPageBuilder : ComponentBuilder<PageProps>, PinListQueryDispatcher {
+interface PinListPageBuilder : SimpleComponentBuilder<PageProps>, PinListQueryDispatcher {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         val tribeId = props.tribeId
 
         if (tribeId != null) {

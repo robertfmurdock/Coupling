@@ -30,7 +30,7 @@ interface HeatmapBuilder : StyledComponentBuilder<HeatmapProps, HeatmapStyles> {
 
     override val componentPath: String get() = "stats/heatmap/Heatmap"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val rowSize = props.data.size * 90
         val rootRef: RReadableRef<Node> = useRef(null)
         useLayoutEffect { rootRef.current?.renderD3Heatmap(props.data.flatten(), styles) }

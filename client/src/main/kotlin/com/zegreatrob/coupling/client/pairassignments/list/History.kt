@@ -48,7 +48,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
 
     override val componentPath: String get() = "pairassignments/History"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (tribe, _, _, pathSetter) = props
         reactElement {
             div {
@@ -57,7 +57,7 @@ interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, H
                 }
                 span(classes = styles.historyView) {
                     div(classes = styles.header) { +"History!" }
-                    this.pairAssignmentList(props, scope, styles)
+                    pairAssignmentList(props, scope, styles)
                 }
             }
         }

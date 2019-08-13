@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
@@ -17,9 +17,9 @@ object RetiredPlayerPage : ComponentProvider<PageProps>(), RetiredPlayerPageBuil
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.captor(this)
 
-interface RetiredPlayerPageBuilder : ComponentBuilder<PageProps>, RetiredPlayerQueryDispatcher {
+interface RetiredPlayerPageBuilder : SimpleComponentBuilder<PageProps>, RetiredPlayerQueryDispatcher {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         val tribeId = props.tribeId
         val playerId = props.playerId
 

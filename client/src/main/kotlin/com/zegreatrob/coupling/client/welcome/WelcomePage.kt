@@ -12,9 +12,9 @@ object WelcomePage : ComponentProvider<PageProps>(), WelcomePageBuilder
 private val LoadedWelcome = dataLoadWrapper(Welcome)
 private val RBuilder.loadedWelcome get() = LoadedWelcome.captor(this)
 
-interface WelcomePageBuilder : ComponentBuilder<PageProps> {
+interface WelcomePageBuilder : SimpleComponentBuilder<PageProps> {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         reactElement {
             loadedWelcome(
                 DataLoadProps { EmptyProps }

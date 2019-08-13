@@ -25,7 +25,7 @@ interface PairReportTableBuilder :
 
     override val componentPath: String get() = "stats/PairReportTable"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (tribe, pairReports) = props
         reactElement {
             div(classes = styles.className) {

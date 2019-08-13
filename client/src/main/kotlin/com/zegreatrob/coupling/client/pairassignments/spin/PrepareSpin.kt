@@ -24,7 +24,7 @@ interface PrepareSpinRenderer : StyledComponentBuilder<PrepareSpinProps, Prepare
 
     override val componentPath: String get() = "PrepareSpin"
 
-    override fun build() = buildBy {
+    override fun build() = this.buildBy {
         val (tribe, players, history, pathSetter) = props
         val (playerSelections, setPlayerSelections) = useState(
             players.map { it to isInLastSetOfPairs(it, history) }

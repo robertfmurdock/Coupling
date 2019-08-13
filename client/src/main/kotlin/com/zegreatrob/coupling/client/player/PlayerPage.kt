@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.buildByPls
+import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
+import com.zegreatrob.coupling.client.external.react.buildBy
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.ReloadFunction
@@ -18,9 +18,9 @@ object PlayerPage : ComponentProvider<PageProps>(), PlayerPageBuilder
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.captor(this)
 
-interface PlayerPageBuilder : ComponentBuilder<PageProps>, PlayerQueryDispatcher {
+interface PlayerPageBuilder : SimpleComponentBuilder<PageProps>, PlayerQueryDispatcher {
 
-    override fun build() = buildByPls {
+    override fun build() = buildBy {
         val tribeId = props.tribeId
         val playerId = props.playerId
 
