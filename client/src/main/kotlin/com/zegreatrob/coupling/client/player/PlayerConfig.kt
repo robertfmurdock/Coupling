@@ -38,6 +38,7 @@ external interface PlayerConfigStyles {
     val tribeBrowser: String
     val playerView: String
     val playerRoster: String
+    val player: String
 }
 
 val playerDefaults get() = json("badge" to Badge.Default.value)
@@ -83,14 +84,20 @@ interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, 
         val shouldShowPrompt = updatedPlayer != player
         rBuilder.run {
             span(classes = styles.playerView) {
-                span(classes = "player") {
+                span(classes = styles.player) {
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()
                     prompt(
                         `when` = shouldShowPrompt,
                         message = "You have unsaved data. Would you like to save before you leave?"
                     )
                 }
-                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
+                playerCard(
+                    PlayerCardProps(
+                        tribe.id,
+                        updatedPlayer,
+                        size = 250,
+                        pathSetter = {})
+                )
             }
         }
     }

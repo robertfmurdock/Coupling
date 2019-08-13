@@ -76,7 +76,8 @@ interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCard
             width = size.px
             height = (size * 1.4).px
             padding(all = (size * 0.06).px)
-            borderWidth = (size * 0.01).px
+            borderWidth = (size * 0.04).px
+            borderRadius = (size * 0.08).px
         }
     }
 

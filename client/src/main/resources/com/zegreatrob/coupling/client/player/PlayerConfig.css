@@ -17,7 +17,7 @@
     display: inline-block;
 }
 
-:local(.playerView) .player {
+:local(.playerView) :local(.player) {
     display: inline-block;
     vertical-align: top;
     border-radius: 20px;
@@ -25,7 +25,7 @@
     border-width: 11px;
 }
 
-:local(.playerView) .player .player-header {
+:local(.playerView) :local(.player) .player-header {
     background: darkcyan url(../overlay.png) repeat-x;
     margin-top: 0;
     margin-bottom: 6px;
@@ -85,7 +85,23 @@
     background-color: wheat;
 }
 
-:local(.playerRoster) .player {
+:local(.playerRoster) :local(.player) {
     top: 0;
     margin-bottom: 25px;
+}
+
+:local(.player) {
+    position: relative;
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    border: 3px outset gold;
+    background: darkseagreen url(../overlay.png) repeat-x;
+    padding: 6px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    color: black;
+    margin: 0 2px 0 2px;
 }
