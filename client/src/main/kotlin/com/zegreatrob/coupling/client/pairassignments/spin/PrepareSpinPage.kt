@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQuery
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -11,7 +8,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
-object PrepareSpinPage : ComponentProvider<PageProps>(), PrepareSpinPageBuilder
+object PrepareSpinPage : ComponentProvider<PageProps>(provider()), PrepareSpinPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)

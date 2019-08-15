@@ -10,7 +10,7 @@ import react.dom.div
 
 inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =
 
-    object : ComponentProvider<DataLoadProps<P>>(), SimpleComponentBuilder<DataLoadProps<P>>, ScopeProvider {
+    object : ComponentProvider<DataLoadProps<P>>(provider()), SimpleComponentBuilder<DataLoadProps<P>>, ScopeProvider {
         private val animationContextConsumer = animationsDisabledContext.Consumer
 
         override fun build() = buildBy {

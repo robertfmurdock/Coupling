@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -11,7 +8,7 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RBuilder
 
-object RetiredPlayersPage : ComponentProvider<PageProps>(), RetiredPlayersPageBuilder
+object RetiredPlayersPage : ComponentProvider<PageProps>(provider()), RetiredPlayersPageBuilder
 
 private val LoadedRetiredPlayers = dataLoadWrapper(RetiredPlayers)
 private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.captor(this)

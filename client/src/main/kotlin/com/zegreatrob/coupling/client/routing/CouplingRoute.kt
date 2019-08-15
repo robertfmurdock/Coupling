@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
 import react.RProps
@@ -12,7 +9,7 @@ import react.router.dom.RouteResultProps
 import react.router.dom.route
 import kotlin.js.Json
 
-object CouplingRoute : ComponentProvider<CouplingRouteProps>(), CouplingRouteBuilder
+object CouplingRoute : ComponentProvider<CouplingRouteProps>(provider()), CouplingRouteBuilder
 
 val RBuilder.couplingRoute get() = CouplingRoute.captor(this)
 

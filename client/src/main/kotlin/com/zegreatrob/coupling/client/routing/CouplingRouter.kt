@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -27,7 +24,7 @@ import react.router.dom.route
 import react.router.dom.switch
 import kotlin.browser.window
 
-object CouplingRouter : ComponentProvider<CouplingRouterProps>(), CouplingRouterBuilder
+object CouplingRouter : ComponentProvider<CouplingRouterProps>(provider()), CouplingRouterBuilder
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 

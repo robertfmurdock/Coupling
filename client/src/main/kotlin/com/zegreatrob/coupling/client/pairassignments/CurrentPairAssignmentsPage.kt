@@ -1,16 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 
 
-object CurrentPairAssignmentsPage : ComponentProvider<PageProps>(), CurrentPairAssignmentsPageBuilder
+object CurrentPairAssignmentsPage : ComponentProvider<PageProps>(provider()), CurrentPairAssignmentsPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)

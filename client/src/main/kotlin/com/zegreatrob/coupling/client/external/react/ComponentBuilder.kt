@@ -9,12 +9,14 @@ interface ComponentBuilder<P : RProps> {
 
 interface SimpleComponentBuilder<P : RProps> : ComponentBuilder<P>
 
-interface SimpleComponentRenderer<P : RProps> : SimpleComponentBuilder<P> {
+interface SimpleComponentRenderer<P : RProps> : SimpleComponentBuilder<P>, PropsClassProvider<P> {
     fun PropsBuilder<P>.render(): ReactElement
+
+    override fun build() = functionFromRender()
 }
 
-inline fun <reified P : RProps, B : SimpleComponentRenderer<P>> B.functionFromRender() =
-    reactFunctionComponent { props: P ->
+fun <P : RProps, B> B.functionFromRender() where B : SimpleComponentRenderer<P>, B : PropsClassProvider<P> =
+    ReactFunctionComponent(kClass) { props: P ->
         PropsBuilder(props)
             .run { render() }
     }

@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
@@ -17,7 +14,7 @@ import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.div
 
-object PlayerHeatmap : ComponentProvider<PlayerHeatmapProps>(), PlayerHeatmapBuilder
+object PlayerHeatmap : ComponentProvider<PlayerHeatmapProps>(provider()), PlayerHeatmapBuilder
 
 val RBuilder.playerHeatmap get() = PlayerHeatmap.captor(this)
 

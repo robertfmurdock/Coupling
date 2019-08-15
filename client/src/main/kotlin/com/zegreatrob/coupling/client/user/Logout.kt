@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import react.dom.div
 import react.router.dom.redirect
 
-object Logout : ComponentProvider<PageProps>(), LogoutBuilder
+object Logout : ComponentProvider<PageProps>(provider()), LogoutBuilder
 
 interface LogoutBuilder : SimpleComponentBuilder<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
 

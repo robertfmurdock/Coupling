@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlinx.html.classes
@@ -13,7 +10,7 @@ import react.dom.a
 import react.dom.div
 
 
-object PlayerRoster : ComponentProvider<PlayerRosterProps>(), PlayerRosterBuilder
+object PlayerRoster : ComponentProvider<PlayerRosterProps>(provider()), PlayerRosterBuilder
 
 val RBuilder.playerRoster get() = PlayerRoster.captor(this)
 

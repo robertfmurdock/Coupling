@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import react.RBuilder
 import react.dom.span
 
-object StatLabel : ComponentProvider<EmptyProps>(), StatLabelBuilder
+object StatLabel : ComponentProvider<EmptyProps>(provider()), StatLabelBuilder
 
 val RBuilder.statLabel: BuilderCaptor<EmptyProps> get() = StatLabel.captor(this)
 

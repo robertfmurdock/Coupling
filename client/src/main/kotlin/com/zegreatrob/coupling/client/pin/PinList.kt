@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.InputType
@@ -12,7 +9,7 @@ import react.RBuilder
 import react.RProps
 import react.dom.*
 
-object PinList : ComponentProvider<PinListProps>(), PinListBuilder
+object PinList : ComponentProvider<PinListProps>(provider()), PinListBuilder
 
 external interface PinListStyles {
     val pinListing: String

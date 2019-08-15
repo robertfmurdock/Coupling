@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.ReloadFunction
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -13,7 +10,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RBuilder
 
 
-object PlayerPage : ComponentProvider<PageProps>(), PlayerPageBuilder
+object PlayerPage : ComponentProvider<PageProps>(provider()), PlayerPageBuilder
 
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.captor(this)

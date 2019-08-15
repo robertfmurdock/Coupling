@@ -8,7 +8,7 @@ import react.ReactElement
 import react.dom.a
 import react.dom.div
 
-object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder
+object TribeList : ComponentProvider<TribeListProps>(provider()), TribeListBuilder
 
 data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) -> Unit) : RProps
 

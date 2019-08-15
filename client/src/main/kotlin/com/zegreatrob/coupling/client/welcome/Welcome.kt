@@ -18,7 +18,7 @@ import react.dom.a
 import react.dom.div
 import react.dom.span
 
-object Welcome : ComponentProvider<EmptyProps>(), WelcomeBuilder
+object Welcome : ComponentProvider<EmptyProps>(provider()), WelcomeBuilder
 
 external interface WelcomeStyles {
     val className: String

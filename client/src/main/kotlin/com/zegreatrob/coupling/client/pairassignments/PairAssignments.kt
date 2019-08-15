@@ -31,7 +31,7 @@ import react.dom.key
 import react.dom.span
 import kotlin.browser.window
 
-object PairAssignments : ComponentProvider<PairAssignmentsProps>(), PairAssignmentsBuilder
+object PairAssignments : ComponentProvider<PairAssignmentsProps>(provider()), PairAssignmentsBuilder
 
 data class PairAssignmentsProps(
     val tribe: KtTribe,

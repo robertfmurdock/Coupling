@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import react.RBuilder
 import react.dom.div
 
-object StatsHeader : ComponentProvider<EmptyProps>(), StatsHeaderBuilder
+object StatsHeader : ComponentProvider<EmptyProps>(provider()), StatsHeaderBuilder
 
 val RBuilder.statsHeader get() = StatsHeader.captor(this)
 

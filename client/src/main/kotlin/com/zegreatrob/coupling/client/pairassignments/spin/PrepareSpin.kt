@@ -18,7 +18,7 @@ import react.dom.div
 
 external fun encodeURIComponent(input: String?)
 
-object PrepareSpin : ComponentProvider<PrepareSpinProps>(), PrepareSpinRenderer
+object PrepareSpin : ComponentProvider<PrepareSpinProps>(provider()), PrepareSpinRenderer
 
 interface PrepareSpinRenderer : StyledComponentBuilder<PrepareSpinProps, PrepareSpinStyles> {
 

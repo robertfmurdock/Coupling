@@ -1,16 +1,13 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.dom.*
 
-object TribeBrowser : ComponentProvider<TribeBrowserProps>(), TribeBrowserBuilder
+object TribeBrowser : ComponentProvider<TribeBrowserProps>(provider()), TribeBrowserBuilder
 
 val RBuilder.tribeBrowser get() = TribeBrowser.captor(this)
 

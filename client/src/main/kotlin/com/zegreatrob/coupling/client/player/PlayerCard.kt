@@ -20,7 +20,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-object PlayerCard : ComponentProvider<PlayerCardProps>(), PlayerCardBuilder
+object PlayerCard : ComponentProvider<PlayerCardProps>(provider()), PlayerCardBuilder
 
 val RBuilder.playerCard get() = PlayerCard.captor(this)
 

@@ -6,7 +6,7 @@ import react.RProps
 import react.dom.div
 import react.dom.span
 
-object TeamStatistics : ComponentProvider<TeamStatisticsProps>(), TeamStatisticsBuilder
+object TeamStatistics : ComponentProvider<TeamStatisticsProps>(provider()), TeamStatisticsBuilder
 
 val RBuilder.teamStatistics get() = TeamStatistics.captor(this)
 

@@ -1,16 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.SimpleComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
 
-object HistoryPage : ComponentProvider<PageProps>(), HistoryPageBuilder
+object HistoryPage : ComponentProvider<PageProps>(provider()), HistoryPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(History)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)

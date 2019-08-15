@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
-import com.zegreatrob.coupling.client.external.react.StyledComponentBuilder
-import com.zegreatrob.coupling.client.external.react.buildBy
-import com.zegreatrob.coupling.client.external.react.reactElement
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
@@ -16,7 +13,7 @@ import react.dom.div
 
 external val distanceInWorks: (Int, Int?) -> String
 
-object TribeStatistics : ComponentProvider<TribeStatisticsProps>(), TribeStatisticsBuilder
+object TribeStatistics : ComponentProvider<TribeStatisticsProps>(provider()), TribeStatisticsBuilder
 
 
 external interface TribeStatisticsStyles {

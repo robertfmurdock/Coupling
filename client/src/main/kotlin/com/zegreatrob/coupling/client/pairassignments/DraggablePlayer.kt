@@ -13,7 +13,7 @@ import react.RBuilder
 import react.RProps
 import react.dom.div
 
-object DraggablePlayer : ComponentProvider<DraggablePlayerProps>(), DraggablePlayerBuilder
+object DraggablePlayer : ComponentProvider<DraggablePlayerProps>(provider()), DraggablePlayerBuilder
 
 val RBuilder.draggablePlayer get() = DraggablePlayer.captor(this)
 
