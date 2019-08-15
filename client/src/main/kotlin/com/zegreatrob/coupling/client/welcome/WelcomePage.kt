@@ -7,20 +7,19 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
 
-object WelcomePage : ComponentProvider<PageProps>(), WelcomePageBuilder {
-    override fun build() = functionFromRender()
-}
+object WelcomePage : ComponentProvider<PageProps>(), WelcomePageRenderer
 
 private val LoadedWelcome = dataLoadWrapper(Welcome)
 private val RBuilder.loadedWelcome get() = LoadedWelcome.captor(this)
 
-interface WelcomePageBuilder : SimpleComponentBuilder<PageProps>, SimpleComponentRenderer<PageProps> {
+interface WelcomePageRenderer : SimpleComponentRenderer<PageProps> {
+
+    override fun build() = functionFromRender()
 
     override fun PropsBuilder<PageProps>.render() = reactElement {
         loadedWelcome(
             DataLoadProps { EmptyProps }
         )
     }
-
 
 }

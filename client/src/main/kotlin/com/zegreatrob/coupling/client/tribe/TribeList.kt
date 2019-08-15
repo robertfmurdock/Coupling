@@ -8,9 +8,7 @@ import react.ReactElement
 import react.dom.a
 import react.dom.div
 
-object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder {
-    override fun build() = functionFromRender()
-}
+object TribeList : ComponentProvider<TribeListProps>(), TribeListBuilder
 
 data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) -> Unit) : RProps
 
@@ -21,6 +19,8 @@ interface TribeListCss {
 
 interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss>,
     StyledComponentRenderer<TribeListProps, TribeListCss> {
+
+    override fun build() = functionFromRender()
 
     override val componentPath: String get() = "tribe/TribeList"
 
