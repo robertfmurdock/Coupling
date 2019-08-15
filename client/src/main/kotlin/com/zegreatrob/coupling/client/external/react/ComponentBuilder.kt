@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.external.react
 
-import com.zegreatrob.coupling.client.loadStyles
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.plus
@@ -47,6 +46,3 @@ interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, Sc
             .handle { render() }
     }
 }
-
-inline fun <reified P : RProps, S> ScopedStyledComponentRenderer<P, S>.buildBy(crossinline builder: ScopedStyledRContext<P, S>.() -> ReactElement) =
-    styledComponent(componentPath, builder)

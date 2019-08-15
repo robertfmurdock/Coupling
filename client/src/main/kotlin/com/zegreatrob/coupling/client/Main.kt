@@ -1,4 +1,4 @@
-import com.zegreatrob.coupling.client.App
+package com.zegreatrob.coupling.client
 
 fun main() {
     App.bootstrapApp()

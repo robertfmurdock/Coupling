@@ -1,3 +1,7 @@
+package com.zegreatrob.coupling.server.entity.pairassignmentdocument
+
+import Spy
+import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
@@ -8,7 +12,6 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test

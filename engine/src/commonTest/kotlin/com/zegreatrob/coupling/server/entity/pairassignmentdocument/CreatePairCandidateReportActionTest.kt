@@ -1,22 +1,19 @@
+package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.CreatePairCandidateReportAction
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.CreatePairCandidateReportActionDispatcher
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 import kotlin.test.assertTrue
-
 
 class CreatePairCandidateReportActionTest {
 
     companion object : CreatePairCandidateReportActionDispatcher {
         fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) = PairAssignmentDocument(DateTime.now(), pairs)
         fun pinnedPair(player1: Player, player2: Player) =
-                PinnedCouplingPair(listOf(player1.withPins(emptyList()), player2.withPins(emptyList())))
+            PinnedCouplingPair(listOf(player1.withPins(emptyList()), player2.withPins(emptyList())))
     }
 
     @Test
@@ -25,7 +22,7 @@ class CreatePairCandidateReportActionTest {
         val history: List<PairAssignmentDocument> = emptyList()
     }) exercise {
         CreatePairCandidateReportAction(Player(id = "player"), history, players)
-                .perform()
+            .perform()
     } verify {
         assertTrue(it.partners.isEmpty())
     }
@@ -39,8 +36,11 @@ class CreatePairCandidateReportActionTest {
             val selena = Player(id = "Catwoman")
             val availableOtherPlayers = listOf(selena, talia, jezebel)
 
-            private fun createPairCandidateReportAction(history: List<PairAssignmentDocument>, availablePlayers: List<Player>) =
-                    CreatePairCandidateReportAction(bruce, history, availablePlayers)
+            private fun createPairCandidateReportAction(
+                history: List<PairAssignmentDocument>,
+                availablePlayers: List<Player>
+            ) =
+                CreatePairCandidateReportAction(bruce, history, availablePlayers)
         }
 
         class WhoHasNeverPaired {
@@ -49,7 +49,7 @@ class CreatePairCandidateReportActionTest {
                 val history = emptyList<PairAssignmentDocument>()
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)
-                        .perform()
+                    .perform()
             } verify {
                 it.assertIsEqualTo(PairCandidateReport(bruce, availableOtherPlayers, NeverPaired))
             }
@@ -59,7 +59,7 @@ class CreatePairCandidateReportActionTest {
                 val history = listOf(pairAssignmentDocument(emptyList()))
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)
-                        .perform()
+                    .perform()
             } verify {
                 it.assertIsEqualTo(PairCandidateReport(bruce, availableOtherPlayers, NeverPaired))
             }
@@ -67,24 +67,28 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun withPlentyOfHistory() = setup(object {
                 val history = listOf(
-                        pairAssignmentDocument(listOf(pinnedPair(bruce, Player(id = "Batgirl")))),
-                        pairAssignmentDocument(listOf(pinnedPair(bruce, Player(id = "Robin"))))
+                    pairAssignmentDocument(listOf(pinnedPair(bruce, Player(id = "Batgirl")))),
+                    pairAssignmentDocument(listOf(pinnedPair(bruce, Player(id = "Robin"))))
                 )
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)
-                        .perform()
+                    .perform()
             } verify {
                 it.assertIsEqualTo(PairCandidateReport(bruce, availableOtherPlayers, NeverPaired))
             }
 
             @Test
             fun onlyThePersonYouWereWithLastTime() = setup(object {
-                val history = listOf(pairAssignmentDocument(listOf(
-                        pinnedPair(bruce, selena)
-                )))
+                val history = listOf(
+                    pairAssignmentDocument(
+                        listOf(
+                            pinnedPair(bruce, selena)
+                        )
+                    )
+                )
             }) exercise {
                 CreatePairCandidateReportAction(bruce, history, listOf(selena))
-                        .perform()
+                    .perform()
             } verify {
                 it.assertIsEqualTo(PairCandidateReport(bruce, listOf(selena), TimeResultValue(0)))
             }
@@ -95,13 +99,13 @@ class CreatePairCandidateReportActionTest {
             fun whenThereIsClearlySomeoneWhoHasBeenTheLongest() = setup(object {
                 val expectedPartner = jezebel
                 val history = listOf(
-                        pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
-                        pairAssignmentDocument(listOf(pinnedPair(bruce, talia))),
-                        pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce)))
+                    pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
+                    pairAssignmentDocument(listOf(pinnedPair(bruce, talia))),
+                    pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce)))
                 )
             }) exercise {
                 CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
-                        .perform()
+                    .perform()
             } verify {
                 it.assertIsEqualTo(PairCandidateReport(bruce, listOf(expectedPartner), TimeResultValue(2)))
             }
@@ -109,11 +113,11 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun whenThereIsOnePersonWhoHasPairedButNoOneElse() = setup(object {
                 val history = listOf(
-                        pairAssignmentDocument(listOf(pinnedPair(bruce, selena)))
+                    pairAssignmentDocument(listOf(pinnedPair(bruce, selena)))
                 )
             }) exercise {
                 CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
-                        .perform()
+                    .perform()
             } verify {
                 it.assertIsEqualTo(PairCandidateReport(bruce, listOf(talia, jezebel), NeverPaired))
             }

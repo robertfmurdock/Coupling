@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.external.react
 
-import com.zegreatrob.coupling.client.loadStyles
 import kotlinext.js.jsObject
 import kotlinx.coroutines.*
 import org.w3c.dom.Node

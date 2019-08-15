@@ -10,7 +10,6 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlin.test.Test
-import kotlin.test.fail
 
 class PlayersQueryTest {
 

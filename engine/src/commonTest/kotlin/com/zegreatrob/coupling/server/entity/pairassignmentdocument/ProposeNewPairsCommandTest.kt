@@ -1,3 +1,7 @@
+package com.zegreatrob.coupling.server.entity.pairassignmentdocument
+
+import Spy
+import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pin.Pin
@@ -6,7 +10,6 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.pin.PinRepository
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync

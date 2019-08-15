@@ -6,7 +6,7 @@ import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.provider
-import com.zegreatrob.coupling.client.loadStyles
+import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument

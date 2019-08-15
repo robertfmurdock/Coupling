@@ -1,4 +1,6 @@
-
+package com.zegreatrob.coupling.server.entity.player
+import Spy
+import SpyData
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.common.entity.player.Player

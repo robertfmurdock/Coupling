@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.welcome
 import com.zegreatrob.coupling.client.user.GoogleSignIn
 import com.zegreatrob.coupling.client.external.react.ReactComponentRenderer
 import com.zegreatrob.coupling.client.external.react.RFunction
-import com.zegreatrob.coupling.client.loadStyles
+import com.zegreatrob.coupling.client.external.react.loadStyles
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlinx.html.js.onClickFunction

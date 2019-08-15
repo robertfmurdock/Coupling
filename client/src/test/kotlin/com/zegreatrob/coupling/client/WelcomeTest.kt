@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client
 import ShallowWrapper
 import com.zegreatrob.coupling.client.external.react.EmptyProps
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
+import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.welcome.WelcomeRenderer
