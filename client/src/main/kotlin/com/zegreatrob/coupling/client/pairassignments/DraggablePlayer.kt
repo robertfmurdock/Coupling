@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.div
 
 object DraggablePlayer : ComponentProvider<DraggablePlayerProps>(provider()), DraggablePlayerBuilder
@@ -31,11 +32,11 @@ external interface DraggablePlayerStyles {
     val onDragHover: String
 }
 
-interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, DraggablePlayerStyles> {
+interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps, DraggablePlayerStyles> {
 
     override val componentPath: String get() = "pairassignments/DraggablePlayer"
 
-    override fun build() = buildBy {
+    override fun StyledRContext<DraggablePlayerProps, DraggablePlayerStyles>.render(): ReactElement {
         val (pinnedPlayer, tribe, pairAssignmentDocument, swapCallback) = props
         val draggablePlayerRef = useRef<Node>(null)
         val (_, drag) = useDrag(
@@ -54,7 +55,7 @@ interface DraggablePlayerBuilder : StyledComponentBuilder<DraggablePlayerProps, 
         )
         drag(drop(draggablePlayerRef))
 
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 attrs { ref = draggablePlayerRef }
                 playerCard(

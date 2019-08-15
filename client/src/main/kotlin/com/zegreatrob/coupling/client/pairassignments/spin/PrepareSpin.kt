@@ -12,6 +12,7 @@ import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RProps
+import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.a
 import react.dom.div
@@ -20,16 +21,16 @@ external fun encodeURIComponent(input: String?)
 
 object PrepareSpin : ComponentProvider<PrepareSpinProps>(provider()), PrepareSpinRenderer
 
-interface PrepareSpinRenderer : StyledComponentBuilder<PrepareSpinProps, PrepareSpinStyles> {
+interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, PrepareSpinStyles> {
 
     override val componentPath: String get() = "PrepareSpin"
 
-    override fun build() = this.buildBy {
+    override fun StyledRContext<PrepareSpinProps, PrepareSpinStyles>.render(): ReactElement {
         val (tribe, players, history, pathSetter) = props
         val (playerSelections, setPlayerSelections) = useState(
             players.map { it to isInLastSetOfPairs(it, history) }
         )
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
                 div {

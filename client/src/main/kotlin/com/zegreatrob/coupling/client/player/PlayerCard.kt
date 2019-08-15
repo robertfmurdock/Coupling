@@ -14,6 +14,7 @@ import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.div
 import react.dom.img
 import styled.StyledDOMBuilder
@@ -42,13 +43,13 @@ data class PlayerCardProps(
     val deselected: Boolean = false
 ) : RProps
 
-interface PlayerCardBuilder : StyledComponentBuilder<PlayerCardProps, PlayerCardStyles> {
+interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCardStyles> {
 
     override val componentPath: String get() = "player/PlayerCard"
 
-    override fun build() = this.buildBy {
+    override fun StyledRContext<PlayerCardProps, PlayerCardStyles>.render(): ReactElement {
         val (tribeId, player, pathSetter, disabled, className, size, onClick) = props
-        reactElement {
+        return reactElement {
             styledDiv {
                 attrs {
                     classes += setOf(styles.player, className).filterNotNull()

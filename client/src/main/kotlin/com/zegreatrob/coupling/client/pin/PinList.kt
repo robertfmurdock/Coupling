@@ -7,6 +7,7 @@ import kotlinx.html.InputType
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.*
 
 object PinList : ComponentProvider<PinListProps>(provider()), PinListBuilder
@@ -19,13 +20,13 @@ external interface PinListStyles {
 
 data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
 
-interface PinListBuilder : StyledComponentBuilder<PinListProps, PinListStyles> {
+interface PinListBuilder : StyledComponentRenderer<PinListProps, PinListStyles> {
 
     override val componentPath: String get() = "pin/PinList"
 
-    override fun build() = buildBy {
+    override fun StyledRContext<PinListProps, PinListStyles>.render(): ReactElement {
         val (tribe, pins) = props
-        reactElement {
+        return reactElement {
             div {
                 div(classes = styles.pinListing) { pins.map { pin(it, styles) } }
                 a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
