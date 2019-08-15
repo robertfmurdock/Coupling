@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.*
 
 object TribeBrowser : ComponentProvider<TribeBrowserProps>(provider()), TribeBrowserBuilder
@@ -20,14 +21,14 @@ interface TribeBrowserCss {
     val logoutButton: String
 }
 
-interface TribeBrowserBuilder : StyledComponentBuilder<TribeBrowserProps, TribeBrowserCss> {
+interface TribeBrowserBuilder : StyledComponentRenderer<TribeBrowserProps, TribeBrowserCss> {
 
     override val componentPath: String get() = "tribe/TribeBrowser"
 
-    override fun build() = buildBy {
+    override fun StyledRContext<TribeBrowserProps, TribeBrowserCss>.render(): ReactElement {
         val (tribe, pathSetter) = props
 
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 span {
                     tribeCard(TribeCardProps(tribe = tribe, pathSetter = pathSetter, size = 50))

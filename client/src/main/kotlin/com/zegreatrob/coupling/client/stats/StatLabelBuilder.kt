@@ -8,13 +8,11 @@ object StatLabel : ComponentProvider<EmptyProps>(provider()), StatLabelBuilder
 
 val RBuilder.statLabel: RenderToBuilder<EmptyProps> get() = StatLabel.render(this)
 
-interface StatLabelBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
+interface StatLabelBuilder : StyledComponentRenderer<EmptyProps, SimpleStyle> {
 
     override val componentPath: String get() = "stats/StatLabel"
 
-    override fun build() = this.buildBy {
-        reactElement {
-            span(classes = styles.className) { props.children() }
-        }
+    override fun StyledRContext<EmptyProps, SimpleStyle>.render() = reactElement {
+        span(classes = styles.className) { props.children() }
     }
 }

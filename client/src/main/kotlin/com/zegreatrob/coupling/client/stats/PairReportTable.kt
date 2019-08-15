@@ -12,6 +12,7 @@ import kotlinx.html.DIV
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.div
 import react.dom.span
@@ -20,14 +21,13 @@ object PairReportTable : ComponentProvider<PairReportTableProps>(provider()), Pa
 
 val RBuilder.pairReportTable get() = PairReportTable.render(this)
 
-interface PairReportTableBuilder :
-    StyledComponentBuilder<PairReportTableProps, PairReportTableStyles> {
+interface PairReportTableBuilder : StyledComponentRenderer<PairReportTableProps, PairReportTableStyles> {
 
     override val componentPath: String get() = "stats/PairReportTable"
 
-    override fun build() = this.buildBy {
+    override fun StyledRContext<PairReportTableProps, PairReportTableStyles>.render(): ReactElement {
         val (tribe, pairReports) = props
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 pairReports.mapIndexed { index, pairReport ->
                     pairReport(styles, index, pairReport, tribe)

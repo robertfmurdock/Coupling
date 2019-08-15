@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RProps
+import react.ReactElement
 import react.dom.div
 
 object RetiredPlayers : ComponentProvider<RetiredPlayersProps>(provider()), RetiredPlayersBuilder
@@ -23,13 +24,13 @@ interface RetiredPlayersCss {
     val header: String
 }
 
-interface RetiredPlayersBuilder : StyledComponentBuilder<RetiredPlayersProps, RetiredPlayersCss> {
+interface RetiredPlayersBuilder : StyledComponentRenderer<RetiredPlayersProps, RetiredPlayersCss> {
 
     override val componentPath: String get() = "player/RetiredPlayers"
 
-    override fun build() = buildBy {
+    override fun StyledRContext<RetiredPlayersProps, RetiredPlayersCss>.render(): ReactElement {
         val (tribe, players, pathSetter) = props
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                 div(classes = styles.header) { +"Retired Players" }

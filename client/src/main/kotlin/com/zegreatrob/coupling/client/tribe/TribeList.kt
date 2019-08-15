@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RProps
-import react.ReactElement
 import react.dom.a
 import react.dom.div
 
@@ -17,16 +16,14 @@ interface TribeListCss {
     val newTribeButton: String
 }
 
-interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss>,
-    StyledComponentRenderer<TribeListProps, TribeListCss> {
+interface TribeListBuilder : StyledComponentRenderer<TribeListProps, TribeListCss> {
 
     override fun build() = functionFromRender()
 
     override val componentPath: String get() = "tribe/TribeList"
 
-    override fun StyledRContext<TribeListProps, TribeListCss>.render(): ReactElement {
-        val (tribes, pathSetter) = props
-        return reactElement {
+    override fun StyledRContext<TribeListProps, TribeListCss>.render() = with(props) {
+        reactElement {
             div(classes = styles.className) {
                 div {
                     tribes.forEach { tribe ->

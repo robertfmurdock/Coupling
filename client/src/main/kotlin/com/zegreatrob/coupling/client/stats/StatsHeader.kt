@@ -8,13 +8,12 @@ object StatsHeader : ComponentProvider<EmptyProps>(provider()), StatsHeaderBuild
 
 val RBuilder.statsHeader get() = StatsHeader.render(this)
 
-interface StatsHeaderBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
+interface StatsHeaderBuilder : StyledComponentRenderer<EmptyProps, SimpleStyle> {
 
     override val componentPath: String get() = "stats/StatsHeader"
-    override fun build() = this.buildBy {
-        reactElement {
-            div(classes = styles.className) { props.children() }
-        }
+
+    override fun StyledRContext<EmptyProps, SimpleStyle>.render() = reactElement {
+        div(classes = styles.className) { props.children() }
     }
 }
 

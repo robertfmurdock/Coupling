@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
 import react.RProps
+import react.ReactElement
 import react.dom.div
 
 
@@ -14,7 +15,6 @@ import react.dom.div
 external val distanceInWorks: (Int, Int?) -> String
 
 object TribeStatistics : ComponentProvider<TribeStatisticsProps>(provider()), TribeStatisticsBuilder
-
 
 external interface TribeStatisticsStyles {
     val className: String
@@ -26,16 +26,16 @@ data class TribeStatisticsProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-interface TribeStatisticsBuilder : StyledComponentBuilder<TribeStatisticsProps, TribeStatisticsStyles>,
+interface TribeStatisticsBuilder : StyledComponentRenderer<TribeStatisticsProps, TribeStatisticsStyles>,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher {
 
     override val componentPath: String get() = "stats/TribeStatistics"
 
-    override fun build() = buildBy {
+    override fun StyledRContext<TribeStatisticsProps, TribeStatisticsStyles>.render(): ReactElement {
         val (tribe, players, _, allStats, heatmapData) = props.queryResults
         val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 div {
                     tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))

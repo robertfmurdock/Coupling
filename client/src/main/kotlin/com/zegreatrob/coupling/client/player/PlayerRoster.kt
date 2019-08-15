@@ -28,23 +28,22 @@ data class PlayerRosterProps(
     val className: String? = null
 ) : RProps
 
-interface PlayerRosterBuilder : StyledComponentBuilder<PlayerRosterProps, PlayerRosterStyles> {
+interface PlayerRosterBuilder : StyledComponentRenderer<PlayerRosterProps, PlayerRosterStyles> {
 
     override val componentPath: String get() = "player/PlayerRoster"
-    override fun build() = buildBy {
-        reactElement {
-            div(classes = props.className) {
-                attrs { classes += styles.className }
-                div {
-                    div(classes = styles.header) {
-                        +(props.label ?: "Players")
-                    }
-                    renderPlayers(props)
+
+    override fun StyledRContext<PlayerRosterProps, PlayerRosterStyles>.render() = reactElement {
+        div(classes = props.className) {
+            attrs { classes += styles.className }
+            div {
+                div(classes = styles.header) {
+                    +(props.label ?: "Players")
                 }
-                a(href = "/${props.tribeId.value}/player/new/", classes = "large orange button") {
-                    attrs { classes += styles.addPlayerButton }
-                    +"Add a new player!"
-                }
+                renderPlayers(props)
+            }
+            a(href = "/${props.tribeId.value}/player/new/", classes = "large orange button") {
+                attrs { classes += styles.addPlayerButton }
+                +"Add a new player!"
             }
         }
     }

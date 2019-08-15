@@ -14,6 +14,7 @@ import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.div
 import styled.StyledDOMBuilder
 import styled.css
@@ -32,14 +33,14 @@ external interface TribeCardStyles {
 
 }
 
-interface TribeCardBuilder : StyledComponentBuilder<TribeCardProps, TribeCardStyles> {
+interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardStyles> {
 
     override val componentPath: String get() = "tribe/TribeCard"
 
-    override fun build() = this.buildBy {
+    override fun StyledRContext<TribeCardProps, TribeCardStyles>.render(): ReactElement {
         val (tribe, size) = props
 
-        reactElement {
+        return reactElement {
             styledSpan {
                 attrs {
                     classes = setOf(styles.className)

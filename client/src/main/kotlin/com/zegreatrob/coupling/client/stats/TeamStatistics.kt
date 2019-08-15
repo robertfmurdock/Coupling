@@ -10,29 +10,28 @@ object TeamStatistics : ComponentProvider<TeamStatisticsProps>(provider()), Team
 
 val RBuilder.teamStatistics get() = TeamStatistics.render(this)
 
-interface TeamStatisticsBuilder : StyledComponentBuilder<TeamStatisticsProps, TeamStatisticsStyles> {
+interface TeamStatisticsBuilder : StyledComponentRenderer<TeamStatisticsProps, TeamStatisticsStyles> {
 
     override val componentPath: String get() = "stats/TeamStatistics"
 
-    override fun build() = this.buildBy {
-        reactElement {
-            div(classes = styles.className) {
-                statsHeader { +"Team Stats" }
-                div {
-                    statLabel { +"Spins Until Full Rotation:" }
-                    span(classes = styles.rotationNumber) { +"${props.spinsUntilFullRotation}" }
-                }
-                div {
-                    statLabel { +"Number of Active Players:" }
-                    span(classes = styles.activePlayerCount) { +"${props.activePlayerCount}" }
-                }
-                div {
-                    statLabel { +"Median Spin Duration:" }
-                    span(classes = styles.medianSpinDuration) { +props.medianSpinDuration }
-                }
+    override fun StyledRContext<TeamStatisticsProps, TeamStatisticsStyles>.render() = reactElement {
+        div(classes = styles.className) {
+            statsHeader { +"Team Stats" }
+            div {
+                statLabel { +"Spins Until Full Rotation:" }
+                span(classes = styles.rotationNumber) { +"${props.spinsUntilFullRotation}" }
+            }
+            div {
+                statLabel { +"Number of Active Players:" }
+                span(classes = styles.activePlayerCount) { +"${props.activePlayerCount}" }
+            }
+            div {
+                statLabel { +"Median Spin Duration:" }
+                span(classes = styles.medianSpinDuration) { +props.medianSpinDuration }
             }
         }
     }
+
 }
 
 external interface TeamStatisticsStyles {
