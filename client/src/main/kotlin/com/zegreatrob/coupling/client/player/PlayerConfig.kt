@@ -22,7 +22,7 @@ import react.ReactElement
 import react.dom.*
 import kotlin.js.json
 
-object PlayerConfig : ComponentProvider<PlayerConfigProps>(provider()), PlayerConfigBuilder
+object PlayerConfig : ComponentProvider<PlayerConfigProps>(provider()), PlayerConfigRenderer
 
 data class PlayerConfigProps(
     val tribe: KtTribe,
@@ -47,13 +47,12 @@ val playerDefaults get() = json("badge" to Badge.Default.value)
 
 typealias PlayerConfigContext = ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>
 
-interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
+interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps, PlayerConfigStyles>,
     WindowFunctions, UseFormHook, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
 
     override val componentPath: String get() = "player/PlayerConfig"
 
-    override fun build() = this.buildBy {
-        val (tribe, _, players, pathSetter) = props
+    override fun ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>.render() = with(props) {
         reactElement {
             div(classes = styles.className) {
                 div {

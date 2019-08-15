@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.client.player
 
 import Spy
 import SpyData
+import com.zegreatrob.coupling.client.external.react.PropsClassProvider
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.common.entity.player.Player
@@ -29,7 +31,8 @@ class PlayerConfigTest {
     val styles = loadStyles<PlayerConfigStyles>("player/PlayerConfig")
 
     @Test
-    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigBuilder {
+    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigRenderer,
+        PropsClassProvider<PlayerConfigProps> by provider() {
         val tribe = KtTribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
 
         val player = Player(id = "blarg")
@@ -42,7 +45,8 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : PlayerConfigBuilder {
+    fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : PlayerConfigRenderer,
+        PropsClassProvider<PlayerConfigProps> by provider() {
         val tribe = KtTribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
 
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
@@ -57,7 +61,8 @@ class PlayerConfigTest {
     @Test
     fun submitWillSaveAndReload() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : PlayerConfigBuilder {
+            setupAsync(object : PlayerConfigRenderer,
+                PropsClassProvider<PlayerConfigProps> by provider() {
 
                 override fun buildScope() = this@withContext
 
@@ -102,7 +107,8 @@ class PlayerConfigTest {
     @Test
     fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : PlayerConfigBuilder {
+            setupAsync(object : PlayerConfigRenderer,
+                PropsClassProvider<PlayerConfigProps> by provider() {
                 override fun buildScope() = this@withContext
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, playerId: String) =
@@ -142,7 +148,8 @@ class PlayerConfigTest {
     @Test
     fun clickingDeleteWhenNotConfirmedWillDoNothing() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : PlayerConfigBuilder {
+            setupAsync(object : PlayerConfigRenderer,
+                PropsClassProvider<PlayerConfigProps> by provider() {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
@@ -172,7 +179,8 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object : PlayerConfigBuilder {
+    fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
+        PropsClassProvider<PlayerConfigProps> by provider() {
         val tribe = KtTribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper = shallow(PlayerConfigProps(
@@ -194,7 +202,8 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object : PlayerConfigBuilder {
+    fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
+        PropsClassProvider<PlayerConfigProps> by provider() {
         val tribe = KtTribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {

@@ -4,6 +4,8 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.external.react.PropsClassProvider
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
@@ -32,7 +34,8 @@ class PairAssignmentsTest {
     private val styles = loadStyles<PairAssignmentsStyles>("pairassignments/PairAssignments")
 
     @Test
-    fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsBuilder {
+    fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
         val fellow = Player(id = "3", name = "fellow")
         val guy = Player(id = "2", name = "Guy")
 
@@ -65,7 +68,8 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = setup(object : PairAssignmentsBuilder {
+    fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
         val players = listOf(
             Player(id = "1", name = "rigby"),
             Player(id = "2", name = "Guy"),
@@ -85,7 +89,8 @@ class PairAssignmentsTest {
     @Test
     fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = testAsync {
         withContext(coroutineContext) {
-            setupAsync(object : PairAssignmentsBuilder {
+            setupAsync(object : PairAssignmentsRenderer,
+                PropsClassProvider<PairAssignmentsProps> by provider() {
                 override fun buildScope() = this@withContext
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
                 override suspend fun saveAsync(tribeId: TribeId, pairAssignmentDocument: PairAssignmentDocument) {
@@ -115,7 +120,8 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object : PairAssignmentsBuilder {
+    fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -147,7 +153,8 @@ class PairAssignmentsTest {
 
 
     @Test
-    fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object : PairAssignmentsBuilder {
+    fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -177,7 +184,7 @@ class PairAssignmentsTest {
             .assertIsEqualTo(listOf(player3, player4))
     }
 
-    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignmentsBuilder>) {
+    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
         val allDraggablePlayerProps = wrapper.findComponent(DraggablePlayer)
             .map { it.props() }
         val targetDraggableProps = allDraggablePlayerProps
@@ -186,7 +193,8 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsBuilder {
+    fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
     }) exercise {
         shallow(PairAssignmentsProps(tribe, listOf(), null, {}))
     } verify { wrapper ->

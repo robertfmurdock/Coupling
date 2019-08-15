@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.client.tribe
 import ShallowWrapper
 import Spy
 import SpyData
+import com.zegreatrob.coupling.client.external.react.PropsClassProvider
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.loadStyles
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
@@ -27,7 +29,8 @@ class TribeConfigTest {
     private val styles = loadStyles<TribeConfigStyles>("tribe/TribeConfig")
 
     @Test
-    fun willDefaultTribeThatIsMissingData(): Unit = setup(object : TribeConfigBuilder {
+    fun willDefaultTribeThatIsMissingData(): Unit = setup(object : TribeConfigBuilder,
+        PropsClassProvider<TribeConfigProps> by provider() {
         val tribe = KtTribe(TribeId("1"), name = "1")
 
     }) exercise {
@@ -62,7 +65,8 @@ class TribeConfigTest {
     @Test
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = testAsync {
         withContext(coroutineContext) {
-            setupAsync(object : TribeConfigBuilder {
+            setupAsync(object : TribeConfigBuilder,
+                PropsClassProvider<TribeConfigProps> by provider() {
                 override fun buildScope() = this@withContext
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
                 override fun KtTribe.saveAsync() = saveSpy.spyFunction(toJson()).asDeferred()

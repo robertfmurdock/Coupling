@@ -31,7 +31,7 @@ import react.dom.key
 import react.dom.span
 import kotlin.browser.window
 
-object PairAssignments : ComponentProvider<PairAssignmentsProps>(provider()), PairAssignmentsBuilder
+object PairAssignments : ComponentProvider<PairAssignmentsProps>(provider()), PairAssignmentsRenderer
 
 data class PairAssignmentsProps(
     val tribe: KtTribe,
@@ -58,12 +58,12 @@ const val dragItemType = "PLAYER"
 
 typealias PairAssignmentRenderer = ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>
 
-interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles>,
+interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignmentsProps, PairAssignmentsStyles>,
     SavePairAssignmentsCommandDispatcher {
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
-    override fun build() = this.buildBy {
+    override fun ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>.render(): ReactElement {
         val (pairAssignments, setPairAssignments) = useState(props.pairAssignments)
 
         val swapCallback = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
@@ -72,7 +72,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
         val tribe = props.tribe
         val players = props.players
         val pathSetter = props.pathSetter
-        reactElement {
+        return reactElement {
             DndProvider {
                 attrs { backend = HTML5Backend }
                 div(classes = styles.className) {
@@ -97,6 +97,7 @@ interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsP
                 }
             }
         }
+
     }
 
     private fun List<Player>.filterNotPaired(pairAssignments: PairAssignmentDocument?) =

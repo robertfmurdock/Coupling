@@ -18,7 +18,7 @@ import react.dom.a
 import react.dom.div
 import react.dom.span
 
-object Welcome : ComponentProvider<EmptyProps>(provider()), WelcomeBuilder
+object Welcome : ComponentProvider<EmptyProps>(provider()), WelcomeRenderer
 
 external interface WelcomeStyles {
     val className: String
@@ -56,14 +56,14 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 
 private data class Card(val name: String, val imagePath: String)
 
-typealias WelcomeRenderer = ScopedStyledRContext<EmptyProps, WelcomeStyles>
+typealias WelcomeContext = ScopedStyledRContext<EmptyProps, WelcomeStyles>
 
-interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyles>, RandomProvider,
+interface WelcomeRenderer : ScopedStyledComponentRenderer<EmptyProps, WelcomeStyles>, RandomProvider,
     LoginChooserRenderer {
 
     override val componentPath: String get() = "Welcome"
 
-    override fun build() = this.buildBy {
+    override fun WelcomeContext.render(): ReactElement {
         val (show, setShow) = useState(false)
 
         if (!show) {
@@ -71,7 +71,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
         }
 
         val hiddenTag = if (show) "" else styles.hidden
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 attrs { classes += hiddenTag }
                 div {
@@ -84,7 +84,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
         }
     }
 
-    private fun WelcomeRenderer.welcomeSplash(hiddenTag: String): RBuilder.() -> ReactElement {
+    private fun WelcomeContext.welcomeSplash(hiddenTag: String): RBuilder.() -> ReactElement {
         val (pairAndProverb) = useState { choosePairAndProverb() }
 
         val (pair, proverb) = pairAndProverb
@@ -111,7 +111,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
 
     private fun Card.toPlayer() = Player(id = name, name = name, imageURL = "/images/icons/players/$imagePath")
 
-    private fun WelcomeRenderer.welcomeTitle(): RBuilder.() -> ReactElement {
+    private fun WelcomeContext.welcomeTitle(): RBuilder.() -> ReactElement {
         val welcomeTitleRef = useRef<Node>(null)
 
         useLayoutEffect {
@@ -125,7 +125,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
         }
     }
 
-    private fun WelcomeRenderer.welcomePair(pair: CouplingPair.Double): RBuilder.() -> ReactElement = {
+    private fun WelcomeContext.welcomePair(pair: CouplingPair.Double): RBuilder.() -> ReactElement = {
         div(classes = styles.welcomePair) {
             playerCard(
                 PlayerCardProps(
@@ -148,7 +148,7 @@ interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyle
         }
     }
 
-    private fun WelcomeRenderer.comeOnIn(hiddenTag: String): RBuilder.() -> ReactElement {
+    private fun WelcomeContext.comeOnIn(hiddenTag: String): RBuilder.() -> ReactElement {
         val (showLoginChooser, setShowLoginChooser) = useState(false)
 
         return {

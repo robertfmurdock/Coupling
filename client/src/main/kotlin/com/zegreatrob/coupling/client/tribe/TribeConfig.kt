@@ -31,18 +31,18 @@ external interface TribeConfigStyles {
 
 typealias TribeConfigRenderer = ScopedStyledRContext<TribeConfigProps, TribeConfigStyles>
 
-interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>,
+interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, TribeConfigStyles>,
     UseFormHook, SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
-    override fun build() = this.buildBy {
+    override fun ScopedStyledRContext<TribeConfigProps, TribeConfigStyles>.render(): ReactElement {
         val isNew = props.tribe.id.value == ""
 
         val (values, onChange) = useForm(props.tribe.toJson())
         val updatedTribe = values.toTribe()
 
-        reactElement {
+        return reactElement {
             div(classes = styles.className) {
                 div {
                     h1 { +"Tribe Configuration" }

@@ -20,7 +20,7 @@ import react.dom.div
 import react.dom.key
 import react.dom.span
 
-object History : ComponentProvider<HistoryProps>(provider()), HistoryComponentBuilder
+object History : ComponentProvider<HistoryProps>(provider()), HistoryRenderer
 
 external interface HistoryStyles {
     val pair: String
@@ -41,15 +41,14 @@ data class HistoryProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-interface HistoryComponentBuilder : ScopedStyledComponentBuilder<HistoryProps, HistoryStyles>,
+interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryStyles>,
     DeletePairAssignmentsCommandDispatcher,
     WindowFunctions,
     ScopeProvider {
 
     override val componentPath: String get() = "pairassignments/History"
 
-    override fun build() = this.buildBy {
-        val (tribe, _, _, pathSetter) = props
+    override fun ScopedStyledRContext<HistoryProps, HistoryStyles>.render() = with(props) {
         reactElement {
             div {
                 div(classes = styles.tribeBrowser) {

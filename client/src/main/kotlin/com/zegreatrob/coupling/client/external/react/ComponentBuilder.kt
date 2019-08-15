@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.client.loadStyles
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.plus
 import react.RProps
 import react.ReactElement
 
@@ -20,16 +23,30 @@ interface SimpleComponentRenderer<P : RProps> : ComponentBuilder<P>, PropsClassP
 interface StyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, PropsClassProvider<P> {
     val componentPath: String
     fun StyledRContext<P, S>.render(): ReactElement
-    override fun build() = functionFromRender(loadStyles(componentPath))
-    private fun functionFromRender(styles: S) = ReactFunctionComponent(kClass) { props: P ->
-        StyledRContext(props, styles)
+    override fun build() = loadStyles<S>(componentPath).toFunctionComponent()
+
+    private fun S.toFunctionComponent() = ReactFunctionComponent(kClass) { props: P ->
+        StyledRContext(props, this)
             .run { render() }
     }
 }
 
-interface ScopedStyledComponentBuilder<P : RProps, S> : ComponentBuilder<P>, ScopeProvider {
+interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, ScopeProvider, PropsClassProvider<P> {
     val componentPath: String
+
+    fun ScopedStyledRContext<P, S>.render(): ReactElement
+
+    override fun build() = loadStyles<S>(componentPath).toFunctionComponent()
+
+    private fun S.toFunctionComponent() = ReactFunctionComponent(kClass) { props: P ->
+        val (scope) = useState { buildScope() + CoroutineName(componentPath) }
+        useEffectWithCleanup(arrayOf()) {
+            { scope.cancel() }
+        }
+        ScopedStyledRContext(props, this, scope)
+            .handle { render() }
+    }
 }
 
-inline fun <reified P : RProps, S> ScopedStyledComponentBuilder<P, S>.buildBy(crossinline builder: ScopedStyledRContext<P, S>.() -> ReactElement) =
+inline fun <reified P : RProps, S> ScopedStyledComponentRenderer<P, S>.buildBy(crossinline builder: ScopedStyledRContext<P, S>.() -> ReactElement) =
     styledComponent(componentPath, builder)

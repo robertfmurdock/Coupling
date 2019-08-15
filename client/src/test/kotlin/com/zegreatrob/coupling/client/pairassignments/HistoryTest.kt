@@ -3,9 +3,11 @@ package com.zegreatrob.coupling.client.pairassignments
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.external.react.PropsClassProvider
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.loadStyles
-import com.zegreatrob.coupling.client.pairassignments.list.HistoryComponentBuilder
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
+import com.zegreatrob.coupling.client.pairassignments.list.HistoryRenderer
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryStyles
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
@@ -23,29 +25,29 @@ import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.test.Test
 
-class HistoryComponentBuilderTest {
+class HistoryTest {
 
     private val styles = loadStyles<HistoryStyles>("pairassignments/History")
 
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
-            setupAsync(object : HistoryComponentBuilder {
+            setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val tribe = KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
-                        removeSpy.spyFunction(Unit).asDeferred()
+                    removeSpy.spyFunction(Unit).asDeferred()
 
                 val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
 
                 val history = listOf(
-                        PairAssignmentDocument(DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId"))
+                    PairAssignmentDocument(DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId"))
                 )
                 val wrapper = shallow(
-                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
+                    HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
                 )
             }) {
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -55,40 +57,42 @@ class HistoryComponentBuilderTest {
             }
         } verifyAsync {
             removeSpy.spyReceivedValues.isNotEmpty()
-                    .assertIsEqualTo(true)
+                .assertIsEqualTo(true)
             reloadSpy.spyReceivedValues.isNotEmpty()
-                    .assertIsEqualTo(true)
+                .assertIsEqualTo(true)
         }
     }
 
     @Test
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
-            setupAsync(object : HistoryComponentBuilder {
+            setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
 
                 val tribe = KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
-                        removeSpy.spyFunction(Unit).asDeferred()
+                    removeSpy.spyFunction(Unit).asDeferred()
 
                 val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
 
-                val history = listOf(PairAssignmentDocument(
-                        DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId"))
+                val history = listOf(
+                    PairAssignmentDocument(
+                        DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId")
+                    )
                 )
                 val wrapper = shallow(
-                        HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
+                    HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
                 )
             }) exerciseAsync {
                 wrapper.find<Any>(".${styles.deleteButton}").simulate("click")
             }
         } verifyAsync {
             removeSpy.spyReceivedValues.isEmpty()
-                    .assertIsEqualTo(true)
+                .assertIsEqualTo(true)
             reloadSpy.spyReceivedValues.isEmpty()
-                    .assertIsEqualTo(true)
+                .assertIsEqualTo(true)
         }
     }
 }
