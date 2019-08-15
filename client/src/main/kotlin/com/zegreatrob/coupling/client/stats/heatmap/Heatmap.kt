@@ -8,7 +8,7 @@ import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
-import react.RReadableRef
+import react.ReactElement
 import styled.css
 import styled.styledDiv
 
@@ -26,16 +26,16 @@ external interface HeatmapStyles {
     val cell: String
 }
 
-interface HeatmapBuilder : StyledComponentBuilder<HeatmapProps, HeatmapStyles> {
+interface HeatmapBuilder : StyledComponentRenderer<HeatmapProps, HeatmapStyles> {
 
     override val componentPath: String get() = "stats/heatmap/Heatmap"
 
-    override fun build() = this.buildBy {
+    override fun StyledRContext<HeatmapProps, HeatmapStyles>.render(): ReactElement {
         val rowSize = props.data.size * 90
-        val rootRef: RReadableRef<Node> = useRef(null)
+        val rootRef = useRef<Node>(null)
         useLayoutEffect { rootRef.current?.renderD3Heatmap(props.data.flatten(), styles) }
 
-        reactElement {
+        return reactElement {
             styledDiv {
                 attrs { ref = rootRef; classes += styles.className; classes += props.className }
                 css {
