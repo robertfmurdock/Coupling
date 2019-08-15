@@ -18,8 +18,6 @@ interface TribeListCss {
 
 interface TribeListBuilder : StyledComponentRenderer<TribeListProps, TribeListCss> {
 
-    override fun build() = functionFromRender()
-
     override val componentPath: String get() = "tribe/TribeList"
 
     override fun StyledRContext<TribeListProps, TribeListCss>.render() = with(props) {
