@@ -1,5 +1,7 @@
-import com.zegreatrob.coupling.client.user.ServerMessageBuilder
+import com.zegreatrob.coupling.client.external.react.PropsClassProvider
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.user.ServerMessageProps
+import com.zegreatrob.coupling.client.user.ServerMessageRenderer
 import com.zegreatrob.coupling.client.user.WebsocketProps
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -13,31 +15,32 @@ import kotlin.test.Test
 
 external val websocket: RClass<WebsocketProps>
 
-class ServerMessageTest : ServerMessageBuilder {
+class ServerMessageTest : ServerMessageRenderer, PropsClassProvider<ServerMessageProps> by provider() {
 
     @Test
     fun connectsToTheWebsocketUsingTribe(): Unit = setup(
-            ServerMessageProps(tribeId = TribeId("bwahahahaha"), useSsl = false)
+        ServerMessageProps(tribeId = TribeId("bwahahahaha"), useSsl = false)
     ) exercise {
         shallow(this@exercise)
     } verify { wrapper ->
         wrapper.find(websocket).props()
-                .url
-                .assertIsEqualTo(
-                        "ws://${window.location.host}/api/${tribeId.value}/pairAssignments/current"
-                )
+            .url
+            .assertIsEqualTo(
+                "ws://${window.location.host}/api/${tribeId.value}/pairAssignments/current"
+            )
     }
 
     @Test
-    fun whenSslIsOnWillUseHttps() = setup(ServerMessageProps(tribeId = TribeId("LOL"), useSsl = true)
+    fun whenSslIsOnWillUseHttps() = setup(
+        ServerMessageProps(tribeId = TribeId("LOL"), useSsl = true)
     ) exercise {
         shallow(this@exercise)
     } verify { wrapper ->
         wrapper.find(websocket).props()
-                .url
-                .assertIsEqualTo(
-                        "wss://${window.location.host}/api/LOL/pairAssignments/current"
-                )
+            .url
+            .assertIsEqualTo(
+                "wss://${window.location.host}/api/LOL/pairAssignments/current"
+            )
     }
 
     @Test
@@ -51,9 +54,9 @@ class ServerMessageTest : ServerMessageBuilder {
         wrapper.update()
     } verify {
         wrapper.find<Any>("span").text()
-                .assertIsEqualTo(
-                        expectedMessage
-                )
+            .assertIsEqualTo(
+                expectedMessage
+            )
     }
 
     @Test
@@ -61,7 +64,7 @@ class ServerMessageTest : ServerMessageBuilder {
         val props = ServerMessageProps(tribeId = TribeId("bwahahahaha"), useSsl = false)
         val wrapper = shallow(props)
         val websocketProps = wrapper.find(websocket).props()
-                .unsafeCast<WebsocketProps>()
+            .unsafeCast<WebsocketProps>()
         val expectedMessage = "Not connected"
     }) exercise {
         websocketProps.onMessage("lol")
@@ -70,9 +73,9 @@ class ServerMessageTest : ServerMessageBuilder {
         wrapper.update()
     } verify {
         wrapper.find<Any>("span").text()
-                .assertIsEqualTo(
-                        expectedMessage
-                )
+            .assertIsEqualTo(
+                expectedMessage
+            )
     }
 
 }

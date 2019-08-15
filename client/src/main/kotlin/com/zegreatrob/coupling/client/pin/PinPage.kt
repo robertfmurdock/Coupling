@@ -8,18 +8,19 @@ import com.zegreatrob.coupling.common.entity.pin.Pin
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
+import react.ReactElement
 
 object PinListPage : ComponentProvider<PageProps>(provider()), PinListPageBuilder
 
 private val LoadedPinList = dataLoadWrapper(PinList)
-private val RBuilder.loadedPinList get() = LoadedPinList.captor(this)
+private val RBuilder.loadedPinList get() = LoadedPinList.render(this)
 
-interface PinListPageBuilder : SimpleComponentBuilder<PageProps>, PinListQueryDispatcher {
+interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, PinListQueryDispatcher {
 
-    override fun build() = buildBy {
+    override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
 
-        if (tribeId != null) {
+        return if (tribeId != null) {
             reactElement {
                 loadedPinList(DataLoadProps {
                     tribeId.performPinListQuery()

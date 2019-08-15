@@ -6,14 +6,15 @@ import kotlinx.coroutines.*
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
+import react.ReactElement
 import react.dom.div
 
 inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =
 
-    object : ComponentProvider<DataLoadProps<P>>(provider()), SimpleComponentBuilder<DataLoadProps<P>>, ScopeProvider {
+    object : ComponentProvider<DataLoadProps<P>>(provider()), SimpleComponentRenderer<DataLoadProps<P>>, ScopeProvider {
         private val animationContextConsumer = animationsDisabledContext.Consumer
 
-        override fun build() = buildBy {
+        override fun RContext<DataLoadProps<P>>.render(): ReactElement {
             val (data, setData) = useState<P?>(null)
 
             val (animationState, setAnimationState) = useState(AnimationState.Start)
@@ -21,7 +22,7 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
 
             props.getDataAsync.invokeOnScope(setData)
 
-            reactElement {
+            return reactElement {
                 consumer(animationContextConsumer) { animationsDisabled: Boolean ->
                     div {
                         attrs {
@@ -57,7 +58,7 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
             }
         }
 
-        private fun RBuilder.wrappedComponent(props: P) = wrappedComponentProvider.captor(this)(props)
+        private fun RBuilder.wrappedComponent(props: P) = wrappedComponentProvider.render(this)(props)
 
     }
 

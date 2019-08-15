@@ -10,20 +10,20 @@ interface ComponentBuilder<P : RProps> {
 interface SimpleComponentBuilder<P : RProps> : ComponentBuilder<P>
 
 interface SimpleComponentRenderer<P : RProps> : SimpleComponentBuilder<P>, PropsClassProvider<P> {
-    fun PropsBuilder<P>.render(): ReactElement
+    fun RContext<P>.render(): ReactElement
 
     override fun build() = functionFromRender()
 }
 
 fun <P : RProps, B> B.functionFromRender() where B : SimpleComponentRenderer<P>, B : PropsClassProvider<P> =
     ReactFunctionComponent(kClass) { props: P ->
-        PropsBuilder(props)
+        RContext(props)
             .run { render() }
     }
 
-inline fun <reified P : RProps> SimpleComponentBuilder<P>.buildBy(crossinline builder: PropsBuilder<P>.() -> ReactElement) =
+inline fun <reified P : RProps> SimpleComponentBuilder<P>.buildBy(crossinline builder: RContext<P>.() -> ReactElement) =
     reactFunctionComponent { props: P ->
-        PropsBuilder(props)
+        RContext(props)
             .handle(builder)
     }
 
@@ -31,11 +31,11 @@ interface StyledComponentBuilder<P : RProps, S> : ComponentBuilder<P> {
     val componentPath: String
 }
 
-inline fun <reified P : RProps, S> StyledComponentBuilder<P, S>.buildBy(crossinline builder: PropsStylesBuilder<P, S>.() -> ReactElement) =
+inline fun <reified P : RProps, S> StyledComponentBuilder<P, S>.buildBy(crossinline builder: StyledRContext<P, S>.() -> ReactElement) =
     styledComponent(componentPath, builder)
 
 interface StyledComponentRenderer<P : RProps, S> {
-    fun PropsStylesBuilder<P, S>.render(): ReactElement
+    fun StyledRContext<P, S>.render(): ReactElement
 }
 
 inline fun <reified P : RProps, S, B> B.functionFromRender()
@@ -45,5 +45,5 @@ interface ScopedStyledComponentBuilder<P : RProps, S> : ComponentBuilder<P>, Sco
     val componentPath: String
 }
 
-inline fun <reified P : RProps, S> ScopedStyledComponentBuilder<P, S>.buildBy(crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> ReactElement) =
+inline fun <reified P : RProps, S> ScopedStyledComponentBuilder<P, S>.buildBy(crossinline builder: ScopedStyledRContext<P, S>.() -> ReactElement) =
     styledComponent(componentPath, builder)

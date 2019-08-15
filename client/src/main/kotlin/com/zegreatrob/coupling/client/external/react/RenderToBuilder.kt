@@ -6,7 +6,7 @@ import react.RHandler
 import react.RProps
 import react.RReadableRef
 
-class BuilderCaptor<P : RProps>(private val componentProvider: ComponentProvider<P>, private val rBuilder: RBuilder) {
+class RenderToBuilder<P : RProps>(private val componentProvider: ComponentProvider<P>, private val rBuilder: RBuilder) {
 
     operator fun invoke(props: P, key: String? = null, ref: RReadableRef<Node>? = null, handler: RHandler<P> = {}) =
         with(rBuilder) {
@@ -14,7 +14,7 @@ class BuilderCaptor<P : RProps>(private val componentProvider: ComponentProvider
         }
 }
 
-operator fun BuilderCaptor<EmptyProps>.invoke(
+operator fun RenderToBuilder<EmptyProps>.invoke(
     key: String? = null,
     ref: RReadableRef<Node>? = null,
     handler: RHandler<EmptyProps> = {}

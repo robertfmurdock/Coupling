@@ -7,18 +7,19 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
+import react.ReactElement
 
 object PrepareSpinPage : ComponentProvider<PageProps>(provider()), PrepareSpinPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
+private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
-interface PrepareSpinPageBuilder : SimpleComponentBuilder<PageProps>, TribeDataSetQueryDispatcher {
+interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher {
 
-    override fun build() = buildBy {
+    override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
 
-        if (tribeId != null) {
+        return if (tribeId != null) {
             reactElement {
                 loadedPairAssignments(
                     dataLoadProps(

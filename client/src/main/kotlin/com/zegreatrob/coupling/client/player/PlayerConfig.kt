@@ -45,7 +45,7 @@ external interface PlayerConfigStyles {
 
 val playerDefaults get() = json("badge" to Badge.Default.value)
 
-typealias PlayerConfigContext = ScopedPropsStylesBuilder<PlayerConfigProps, PlayerConfigStyles>
+typealias PlayerConfigContext = ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>
 
 interface PlayerConfigBuilder : ScopedStyledComponentBuilder<PlayerConfigProps, PlayerConfigStyles>,
     WindowFunctions, UseFormHook, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {

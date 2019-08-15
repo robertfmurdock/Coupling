@@ -5,19 +5,19 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
-
+import react.ReactElement
 
 object HistoryPage : ComponentProvider<PageProps>(provider()), HistoryPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(History)
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
+private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
-interface HistoryPageBuilder : SimpleComponentBuilder<PageProps>, HistoryQueryDispatcher {
+interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryDispatcher {
 
-    override fun build() = buildBy {
+    override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
 
-        if (tribeId != null) {
+        return if (tribeId != null) {
             reactElement {
                 loadedPairAssignments(
                     dataLoadProps(

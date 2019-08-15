@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 import react.RClass
 import react.RProps
+import react.ReactElement
 import react.dom.div
 import react.dom.span
 import kotlin.browser.window
@@ -20,19 +21,19 @@ external interface WebsocketProps : RProps {
 
 const val disconnectedMessage = "Not connected"
 
-object ServerMessage : ComponentProvider<ServerMessageProps>(provider()), ServerMessageBuilder
+object ServerMessage : ComponentProvider<ServerMessageProps>(provider()), ServerMessageRenderer
 
-val RBuilder.serverMessage get() = ServerMessage.captor(this)
+val RBuilder.serverMessage get() = ServerMessage.render(this)
 
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-interface ServerMessageBuilder : SimpleComponentBuilder<ServerMessageProps> {
+interface ServerMessageRenderer : SimpleComponentRenderer<ServerMessageProps> {
 
-    override fun build() = buildBy {
+    override fun RContext<ServerMessageProps>.render(): ReactElement {
         val (tribeId, useSsl) = props
         val (message, setMessage) = useState(disconnectedMessage)
 
-        reactElement {
+        return reactElement {
             div {
                 websocket {
                     attrs {

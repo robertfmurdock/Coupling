@@ -5,14 +5,15 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import react.ReactElement
 import react.dom.div
 import react.router.dom.redirect
 
 object Logout : ComponentProvider<PageProps>(provider()), LogoutBuilder
 
-interface LogoutBuilder : SimpleComponentBuilder<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
+interface LogoutBuilder : SimpleComponentRenderer<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
 
-    override fun build(): ReactFunctionComponent<PageProps> = buildBy {
+    override fun RContext<PageProps>.render(): ReactElement {
         val (isLoggedOut, setIsLoggedOut) = useState(false)
         val (logoutPromise, setLogout) = useState<Any?>(null)
         if (logoutPromise == null) {
@@ -20,7 +21,7 @@ interface LogoutBuilder : SimpleComponentBuilder<PageProps>, GoogleSignIn, Logou
                 MainScope().launch { waitForLogout(setIsLoggedOut) }
             )
         }
-        reactElement {
+        return reactElement {
             if (isLoggedOut) {
                 redirect(to = "/welcome", from = "")
             } else {

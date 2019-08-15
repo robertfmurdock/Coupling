@@ -9,7 +9,7 @@ import react.dom.*
 
 object TribeBrowser : ComponentProvider<TribeBrowserProps>(provider()), TribeBrowserBuilder
 
-val RBuilder.tribeBrowser get() = TribeBrowser.captor(this)
+val RBuilder.tribeBrowser get() = TribeBrowser.render(this)
 
 data class TribeBrowserProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
 

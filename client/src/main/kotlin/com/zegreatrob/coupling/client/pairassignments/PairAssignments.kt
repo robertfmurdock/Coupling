@@ -56,7 +56,7 @@ external interface PairAssignmentsStyles {
 
 const val dragItemType = "PLAYER"
 
-typealias PairAssignmentRenderer = ScopedPropsStylesBuilder<PairAssignmentsProps, PairAssignmentsStyles>
+typealias PairAssignmentRenderer = ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>
 
 interface PairAssignmentsBuilder : ScopedStyledComponentBuilder<PairAssignmentsProps, PairAssignmentsStyles>,
     SavePairAssignmentsCommandDispatcher {

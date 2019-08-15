@@ -24,7 +24,7 @@ interface TribeListBuilder : StyledComponentBuilder<TribeListProps, TribeListCss
 
     override val componentPath: String get() = "tribe/TribeList"
 
-    override fun PropsStylesBuilder<TribeListProps, TribeListCss>.render(): ReactElement {
+    override fun StyledRContext<TribeListProps, TribeListCss>.render(): ReactElement {
         val (tribes, pathSetter) = props
         return reactElement {
             div(classes = styles.className) {

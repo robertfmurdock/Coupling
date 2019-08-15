@@ -8,8 +8,8 @@ abstract class ComponentProvider<P : RProps>(private val provider: PropsClassPro
     PropsClassProvider<P> by provider {
 
     val component: ReactFunctionComponent<P> by lazy { build() }
-    val captor by lazy {
-        { rBuilder: RBuilder -> BuilderCaptor(this, rBuilder) }
+    val render by lazy {
+        { rBuilder: RBuilder -> RenderToBuilder(this, rBuilder) }
     }
 }
 

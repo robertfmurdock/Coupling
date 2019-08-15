@@ -16,7 +16,7 @@ import react.dom.div
 
 object PlayerHeatmap : ComponentProvider<PlayerHeatmapProps>(provider()), PlayerHeatmapBuilder
 
-val RBuilder.playerHeatmap get() = PlayerHeatmap.captor(this)
+val RBuilder.playerHeatmap get() = PlayerHeatmap.render(this)
 
 data class PlayerHeatmapProps(
     val tribe: KtTribe,

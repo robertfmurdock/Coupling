@@ -5,18 +5,19 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
+import react.ReactElement
 
 object NewPairAssignmentsPage : ComponentProvider<PageProps>(provider()), NewPairAssignmentsPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.captor(this)
+private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
-interface NewPairAssignmentsPageBuilder : SimpleComponentBuilder<PageProps>, NewPairAssignmentsQueryDispatcher {
+interface NewPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, NewPairAssignmentsQueryDispatcher {
 
-    override fun build() = buildBy {
+    override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
 
-        if (tribeId != null) {
+        return if (tribeId != null) {
             val playerIds = props.search.getAll("player").toList()
 
             reactElement { loadedPairAssignments(dataLoadProps(tribeId, props, playerIds)) }

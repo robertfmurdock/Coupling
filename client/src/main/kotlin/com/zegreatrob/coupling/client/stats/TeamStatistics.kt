@@ -8,7 +8,7 @@ import react.dom.span
 
 object TeamStatistics : ComponentProvider<TeamStatisticsProps>(provider()), TeamStatisticsBuilder
 
-val RBuilder.teamStatistics get() = TeamStatistics.captor(this)
+val RBuilder.teamStatistics get() = TeamStatistics.render(this)
 
 interface TeamStatisticsBuilder : StyledComponentBuilder<TeamStatisticsProps, TeamStatisticsStyles> {
 

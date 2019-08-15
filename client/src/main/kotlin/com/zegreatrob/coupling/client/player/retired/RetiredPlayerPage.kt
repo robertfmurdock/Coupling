@@ -8,19 +8,20 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
+import react.ReactElement
 
 object RetiredPlayerPage : ComponentProvider<PageProps>(provider()), RetiredPlayerPageBuilder
 
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
-private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.captor(this)
+private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.render(this)
 
-interface RetiredPlayerPageBuilder : SimpleComponentBuilder<PageProps>, RetiredPlayerQueryDispatcher {
+interface RetiredPlayerPageBuilder : SimpleComponentRenderer<PageProps>, RetiredPlayerQueryDispatcher {
 
-    override fun build() = buildBy {
+    override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
         val playerId = props.playerId
 
-        if (tribeId != null && playerId != null) {
+        return if (tribeId != null && playerId != null) {
             reactElement {
                 loadedRetiredPlayer(
                     dataLoadProps(

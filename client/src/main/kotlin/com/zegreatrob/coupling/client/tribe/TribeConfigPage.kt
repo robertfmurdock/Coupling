@@ -11,19 +11,17 @@ import react.RBuilder
 object TribeConfigPage : ComponentProvider<PageProps>(provider()), TribeConfigPageBuilder
 
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
-private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.captor(this)
+private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)
 
-interface TribeConfigPageBuilder : SimpleComponentBuilder<PageProps>, TribeQueryDispatcher {
+interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQueryDispatcher {
 
-    override fun build() = buildBy {
-        reactElement {
-            loadedTribeConfig(
-                dataLoadProps(
-                    query = { performCorrectQuery(props.tribeId) },
-                    toProps = { _, data -> tribeConfigProps(data, props.pathSetter) }
-                )
+    override fun RContext<PageProps>.render() = reactElement {
+        loadedTribeConfig(
+            dataLoadProps(
+                query = { performCorrectQuery(props.tribeId) },
+                toProps = { _, data -> tribeConfigProps(data, props.pathSetter) }
             )
-        }
+        )
     }
 
     private suspend fun performCorrectQuery(tribeId: TribeId?) = if (tribeId != null)

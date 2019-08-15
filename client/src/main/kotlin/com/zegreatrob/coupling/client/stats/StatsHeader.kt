@@ -6,7 +6,7 @@ import react.dom.div
 
 object StatsHeader : ComponentProvider<EmptyProps>(provider()), StatsHeaderBuilder
 
-val RBuilder.statsHeader get() = StatsHeader.captor(this)
+val RBuilder.statsHeader get() = StatsHeader.render(this)
 
 interface StatsHeaderBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
 

@@ -9,22 +9,20 @@ import react.RBuilder
 object TribeListPage : ComponentProvider<PageProps>(provider()), TribeListPageBuilder
 
 private val LoadedTribeList = dataLoadWrapper(TribeList)
-private val RBuilder.loadedTribeList get() = LoadedTribeList.captor(this)
+private val RBuilder.loadedTribeList get() = LoadedTribeList.render(this)
 
-interface TribeListPageBuilder : SimpleComponentBuilder<PageProps>, TribeListQueryDispatcher {
+interface TribeListPageBuilder : SimpleComponentRenderer<PageProps>, TribeListQueryDispatcher {
 
-    override fun build() = buildBy {
-        reactElement {
-            loadedTribeList(
-                DataLoadProps {
-                    val tribes = performTribeQuery()
-                    TribeListProps(
-                        tribes = tribes,
-                        pathSetter = props.pathSetter
-                    )
-                }
-            )
-        }
+    override fun RContext<PageProps>.render() = reactElement {
+        loadedTribeList(
+            DataLoadProps {
+                val tribes = performTribeQuery()
+                TribeListProps(
+                    tribes = tribes,
+                    pathSetter = props.pathSetter
+                )
+            }
+        )
     }
 
     private suspend fun performTribeQuery() = TribeListQuery.perform()

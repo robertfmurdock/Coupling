@@ -18,7 +18,7 @@ import react.dom.span
 
 object PairReportTable : ComponentProvider<PairReportTableProps>(provider()), PairReportTableBuilder
 
-val RBuilder.pairReportTable get() = PairReportTable.captor(this)
+val RBuilder.pairReportTable get() = PairReportTable.render(this)
 
 interface PairReportTableBuilder :
     StyledComponentBuilder<PairReportTableProps, PairReportTableStyles> {

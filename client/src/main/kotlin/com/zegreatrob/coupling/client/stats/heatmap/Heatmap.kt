@@ -17,7 +17,7 @@ external val d3Heatmap: dynamic
 
 object Heatmap : ComponentProvider<HeatmapProps>(provider()), HeatmapBuilder
 
-val RBuilder.heatmap get() = Heatmap.captor(this)
+val RBuilder.heatmap get() = Heatmap.render(this)
 
 data class HeatmapProps(val data: List<List<Double?>>, val className: String) : RProps
 

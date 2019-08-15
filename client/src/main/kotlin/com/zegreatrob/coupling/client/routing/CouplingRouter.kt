@@ -28,26 +28,24 @@ object CouplingRouter : ComponentProvider<CouplingRouterProps>(provider()), Coup
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
-interface CouplingRouterBuilder : SimpleComponentBuilder<CouplingRouterProps> {
+interface CouplingRouterBuilder : SimpleComponentRenderer<CouplingRouterProps> {
 
-    override fun build() = buildBy {
-        reactElement {
-            browserRouter {
-                animationsDisabledContext.Provider(value = props.animationsDisabled) {
-                    switch {
-                        couplingRoute(CouplingRouteProps(path = "/welcome/", componentProvider = WelcomePage))
+    override fun RContext<CouplingRouterProps>.render() = reactElement {
+        browserRouter {
+            animationsDisabledContext.Provider(value = props.animationsDisabled) {
+                switch {
+                    couplingRoute(CouplingRouteProps(path = "/welcome/", componentProvider = WelcomePage))
 
-                        if (props.isSignedIn) {
-                            authenticatedRoutes()
-                        } else {
-                            console.warn("not signed in!!!!", window.location.pathname)
-                            redirect(from = "", to = "/welcome")
-                        }
-
-                        route<RProps>(path = "", render = { props ->
-                            div { +"Hmm, you seem to be lost. At ${props.location.pathname}" }
-                        })
+                    if (props.isSignedIn) {
+                        authenticatedRoutes()
+                    } else {
+                        console.warn("not signed in!!!!", window.location.pathname)
+                        redirect(from = "", to = "/welcome")
                     }
+
+                    route<RProps>(path = "", render = { props ->
+                        div { +"Hmm, you seem to be lost. At ${props.location.pathname}" }
+                    })
                 }
             }
         }

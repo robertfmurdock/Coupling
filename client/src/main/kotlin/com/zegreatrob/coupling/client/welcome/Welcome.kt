@@ -56,7 +56,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 
 private data class Card(val name: String, val imagePath: String)
 
-typealias WelcomeRenderer = ScopedPropsStylesBuilder<EmptyProps, WelcomeStyles>
+typealias WelcomeRenderer = ScopedStyledRContext<EmptyProps, WelcomeStyles>
 
 interface WelcomeBuilder : ScopedStyledComponentBuilder<EmptyProps, WelcomeStyles>, RandomProvider,
     LoginChooserRenderer {

@@ -15,7 +15,7 @@ import react.dom.div
 
 object DraggablePlayer : ComponentProvider<DraggablePlayerProps>(provider()), DraggablePlayerBuilder
 
-val RBuilder.draggablePlayer get() = DraggablePlayer.captor(this)
+val RBuilder.draggablePlayer get() = DraggablePlayer.render(this)
 
 data class DraggablePlayerProps(
     val pinnedPlayer: PinnedPlayer,

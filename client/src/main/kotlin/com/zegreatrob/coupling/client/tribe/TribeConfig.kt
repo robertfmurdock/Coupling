@@ -29,7 +29,7 @@ external interface TribeConfigStyles {
     val className: String
 }
 
-typealias TribeConfigRenderer = ScopedPropsStylesBuilder<TribeConfigProps, TribeConfigStyles>
+typealias TribeConfigRenderer = ScopedStyledRContext<TribeConfigProps, TribeConfigStyles>
 
 interface TribeConfigBuilder : ScopedStyledComponentBuilder<TribeConfigProps, TribeConfigStyles>,
     UseFormHook, SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {

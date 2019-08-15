@@ -12,7 +12,7 @@ import react.dom.div
 
 object PlayerRoster : ComponentProvider<PlayerRosterProps>(provider()), PlayerRosterBuilder
 
-val RBuilder.playerRoster get() = PlayerRoster.captor(this)
+val RBuilder.playerRoster get() = PlayerRoster.render(this)
 
 interface PlayerRosterStyles {
     val className: String
@@ -59,4 +59,4 @@ interface PlayerRosterBuilder : StyledComponentBuilder<PlayerRosterProps, Player
     }
 }
 
-val RBuilder.pairAssignments get() = PlayerRoster.captor(this)
+val RBuilder.pairAssignments get() = PlayerRoster.render(this)

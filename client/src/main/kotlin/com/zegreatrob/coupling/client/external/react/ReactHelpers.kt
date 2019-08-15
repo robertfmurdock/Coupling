@@ -126,40 +126,40 @@ fun <P : RProps> RBuilder.component(
 
 inline fun <reified P : RProps, S> styledComponent(
     styleName: String,
-    crossinline builder: PropsStylesBuilder<P, S>.() -> ReactElement
+    crossinline builder: StyledRContext<P, S>.() -> ReactElement
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 
     return reactFunctionComponent { props: P ->
-        PropsStylesBuilder(props, styles)
+        StyledRContext(props, styles)
             .handle(builder)
     }
 }
 
-class PropsBuilder<P>(
+class RContext<P>(
     val props: P
 ) {
-    inline fun handle(builder: PropsBuilder<P>.() -> ReactElement) = builder()
+    inline fun handle(builder: RContext<P>.() -> ReactElement) = builder()
 }
 
-class PropsStylesBuilder<P, S>(
+class StyledRContext<P, S>(
     val props: P,
     val styles: S
 ) {
-    inline fun handle(builder: PropsStylesBuilder<P, S>.() -> ReactElement) = builder()
+    inline fun handle(builder: StyledRContext<P, S>.() -> ReactElement) = builder()
 }
 
-class ScopedPropsStylesBuilder<P, S>(
+class ScopedStyledRContext<P, S>(
     val props: P,
     val styles: S,
     val scope: CoroutineScope
 ) {
-    inline fun handle(builder: ScopedPropsStylesBuilder<P, S>.() -> ReactElement) = builder()
+    inline fun handle(builder: ScopedStyledRContext<P, S>.() -> ReactElement) = builder()
 }
 
 inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
     styleName: String,
-    crossinline builder: ScopedPropsStylesBuilder<P, S>.() -> ReactElement
+    crossinline builder: ScopedStyledRContext<P, S>.() -> ReactElement
 ): ReactFunctionComponent<P> {
     val styles = loadStyles<S>(styleName)
 
@@ -168,7 +168,7 @@ inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
         useEffectWithCleanup(arrayOf()) {
             { scope.cancel() }
         }
-        ScopedPropsStylesBuilder(props, styles, scope)
+        ScopedStyledRContext(props, styles, scope)
             .handle(builder)
     }
 }

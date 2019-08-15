@@ -9,11 +9,11 @@ import react.RBuilder
 object WelcomePage : ComponentProvider<PageProps>(provider()), WelcomePageRenderer
 
 private val LoadedWelcome = dataLoadWrapper(Welcome)
-private val RBuilder.loadedWelcome get() = LoadedWelcome.captor(this)
+private val RBuilder.loadedWelcome get() = LoadedWelcome.render(this)
 
 interface WelcomePageRenderer : SimpleComponentRenderer<PageProps> {
 
-    override fun PropsBuilder<PageProps>.render() = reactElement {
+    override fun RContext<PageProps>.render() = reactElement {
         loadedWelcome(
             DataLoadProps { EmptyProps }
         )

@@ -22,7 +22,7 @@ import styled.styledDiv
 
 object PlayerCard : ComponentProvider<PlayerCardProps>(provider()), PlayerCardBuilder
 
-val RBuilder.playerCard get() = PlayerCard.captor(this)
+val RBuilder.playerCard get() = PlayerCard.render(this)
 
 external interface PlayerCardStyles {
     val player: String

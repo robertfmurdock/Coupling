@@ -22,7 +22,7 @@ import styled.styledSpan
 
 object TribeCard : ComponentProvider<TribeCardProps>(provider()), TribeCardBuilder
 
-val RBuilder.tribeCard get() = TribeCard.captor(this)
+val RBuilder.tribeCard get() = TribeCard.render(this)
 
 data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 

@@ -6,7 +6,7 @@ import react.dom.span
 
 object StatLabel : ComponentProvider<EmptyProps>(provider()), StatLabelBuilder
 
-val RBuilder.statLabel: BuilderCaptor<EmptyProps> get() = StatLabel.captor(this)
+val RBuilder.statLabel: RenderToBuilder<EmptyProps> get() = StatLabel.render(this)
 
 interface StatLabelBuilder : StyledComponentBuilder<EmptyProps, SimpleStyle> {
 
