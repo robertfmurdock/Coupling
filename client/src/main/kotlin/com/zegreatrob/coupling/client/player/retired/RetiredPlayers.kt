@@ -11,7 +11,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.div
 
-object RetiredPlayers : ComponentProvider<RetiredPlayersProps>(provider()), RetiredPlayersBuilder
+object RetiredPlayers : RComponent<RetiredPlayersProps>(provider()), RetiredPlayersBuilder
 
 data class RetiredPlayersProps(
     val tribe: KtTribe,

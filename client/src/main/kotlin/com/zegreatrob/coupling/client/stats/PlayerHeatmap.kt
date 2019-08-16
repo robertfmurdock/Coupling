@@ -14,7 +14,7 @@ import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.div
 
-object PlayerHeatmap : ComponentProvider<PlayerHeatmapProps>(provider()), PlayerHeatmapBuilder
+object PlayerHeatmap : RComponent<PlayerHeatmapProps>(provider()), PlayerHeatmapBuilder
 
 val RBuilder.playerHeatmap get() = PlayerHeatmap.render(this)
 

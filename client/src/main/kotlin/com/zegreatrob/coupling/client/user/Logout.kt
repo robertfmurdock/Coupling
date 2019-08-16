@@ -9,7 +9,7 @@ import react.ReactElement
 import react.dom.div
 import react.router.dom.redirect
 
-object Logout : ComponentProvider<PageProps>(provider()), LogoutBuilder
+object Logout : RComponent<PageProps>(provider()), LogoutBuilder
 
 interface LogoutBuilder : SimpleComponentRenderer<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
 

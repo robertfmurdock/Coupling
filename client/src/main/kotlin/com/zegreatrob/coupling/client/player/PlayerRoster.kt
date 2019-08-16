@@ -10,7 +10,7 @@ import react.dom.a
 import react.dom.div
 
 
-object PlayerRoster : ComponentProvider<PlayerRosterProps>(provider()), PlayerRosterBuilder
+object PlayerRoster : RComponent<PlayerRosterProps>(provider()), PlayerRosterBuilder
 
 val RBuilder.playerRoster get() = PlayerRoster.render(this)
 

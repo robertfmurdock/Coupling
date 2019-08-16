@@ -14,7 +14,7 @@ import react.dom.div
 
 external val distanceInWorks: (Int, Int?) -> String
 
-object TribeStatistics : ComponentProvider<TribeStatisticsProps>(provider()), TribeStatisticsBuilder
+object TribeStatistics : RComponent<TribeStatisticsProps>(provider()), TribeStatisticsBuilder
 
 external interface TribeStatisticsStyles {
     val className: String

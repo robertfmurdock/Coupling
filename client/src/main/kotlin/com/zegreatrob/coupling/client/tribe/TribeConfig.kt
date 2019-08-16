@@ -19,7 +19,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.*
 
-object TribeConfig : ComponentProvider<TribeConfigProps>(provider()), TribeConfigBuilder
+object TribeConfig : RComponent<TribeConfigProps>(provider()), TribeConfigBuilder
 
 data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
 

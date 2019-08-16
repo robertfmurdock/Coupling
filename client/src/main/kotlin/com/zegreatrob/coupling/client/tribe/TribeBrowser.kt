@@ -8,7 +8,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.*
 
-object TribeBrowser : ComponentProvider<TribeBrowserProps>(provider()), TribeBrowserBuilder
+object TribeBrowser : RComponent<TribeBrowserProps>(provider()), TribeBrowserBuilder
 
 val RBuilder.tribeBrowser get() = TribeBrowser.render(this)
 

@@ -21,7 +21,7 @@ import styled.css
 import styled.styledDiv
 import styled.styledSpan
 
-object TribeCard : ComponentProvider<TribeCardProps>(provider()), TribeCardBuilder
+object TribeCard : RComponent<TribeCardProps>(provider()), TribeCardBuilder
 
 val RBuilder.tribeCard get() = TribeCard.render(this)
 

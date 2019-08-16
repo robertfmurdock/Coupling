@@ -1,0 +1,10 @@
+:local(.viewFrame).ng-enter.ng-leave {
+}
+
+:local(.viewFrame).ng-enter {
+    animation: 1s spin-in;
+    z-index: 100;
+}
+
+:local(.viewFrame).ng-leave.ng-leave-active {
+}

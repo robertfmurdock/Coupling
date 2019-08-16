@@ -22,7 +22,7 @@ import react.ReactElement
 import react.dom.*
 import kotlin.js.json
 
-object PlayerConfig : ComponentProvider<PlayerConfigProps>(provider()), PlayerConfigRenderer
+object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRenderer
 
 data class PlayerConfigProps(
     val tribe: KtTribe,

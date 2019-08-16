@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
-object TribeListPage : ComponentProvider<PageProps>(provider()), TribeListPageBuilder
+object TribeListPage : RComponent<PageProps>(provider()), TribeListPageBuilder
 
 private val LoadedTribeList = dataLoadWrapper(TribeList)
 private val RBuilder.loadedTribeList get() = LoadedTribeList.render(this)

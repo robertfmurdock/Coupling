@@ -21,7 +21,7 @@ external interface WebsocketProps : RProps {
 
 const val disconnectedMessage = "Not connected"
 
-object ServerMessage : ComponentProvider<ServerMessageProps>(provider()), ServerMessageRenderer
+object ServerMessage : RComponent<ServerMessageProps>(provider()), ServerMessageRenderer
 
 val RBuilder.serverMessage get() = ServerMessage.render(this)
 

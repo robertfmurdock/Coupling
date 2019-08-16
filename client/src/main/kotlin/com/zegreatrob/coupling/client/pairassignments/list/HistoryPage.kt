@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 import react.ReactElement
 
-object HistoryPage : ComponentProvider<PageProps>(provider()), HistoryPageBuilder
+object HistoryPage : RComponent<PageProps>(provider()), HistoryPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(History)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)

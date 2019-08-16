@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 
-object NewPairAssignmentsPage : ComponentProvider<PageProps>(provider()), NewPairAssignmentsPageBuilder
+object NewPairAssignmentsPage : RComponent<PageProps>(provider()), NewPairAssignmentsPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)

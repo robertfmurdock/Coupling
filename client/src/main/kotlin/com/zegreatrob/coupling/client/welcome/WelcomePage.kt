@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 
-object WelcomePage : ComponentProvider<PageProps>(provider()), WelcomePageRenderer
+object WelcomePage : RComponent<PageProps>(provider()), WelcomePageRenderer
 
 private val LoadedWelcome = dataLoadWrapper(Welcome)
 private val RBuilder.loadedWelcome get() = LoadedWelcome.render(this)

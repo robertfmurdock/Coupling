@@ -21,7 +21,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-object PlayerCard : ComponentProvider<PlayerCardProps>(provider()), PlayerCardBuilder
+object PlayerCard : RComponent<PlayerCardProps>(provider()), PlayerCardBuilder
 
 val RBuilder.playerCard get() = PlayerCard.render(this)
 

@@ -17,7 +17,7 @@ import react.dom.RDOMBuilder
 import react.dom.div
 import react.dom.span
 
-object PairReportTable : ComponentProvider<PairReportTableProps>(provider()), PairReportTableBuilder
+object PairReportTable : RComponent<PairReportTableProps>(provider()), PairReportTableBuilder
 
 val RBuilder.pairReportTable get() = PairReportTable.render(this)
 

@@ -1,5 +1,5 @@
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
-import com.zegreatrob.coupling.client.external.react.ComponentProvider
+import com.zegreatrob.coupling.client.external.react.RComponent
 import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
 import com.zegreatrob.coupling.client.external.react.component
 import react.RBuilder
@@ -48,5 +48,5 @@ fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
 ): ShallowWrapper<P> = find(reactFunctionComponent.rFunction)
 
 fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
-        componentProvider: ComponentProvider<P>
-): ShallowWrapper<P> = find(componentProvider.component.rFunction)
+    RComponent: RComponent<P>
+): ShallowWrapper<P> = find(RComponent.component.rFunction)

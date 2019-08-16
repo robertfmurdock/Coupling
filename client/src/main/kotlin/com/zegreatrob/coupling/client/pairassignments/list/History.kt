@@ -20,7 +20,7 @@ import react.dom.div
 import react.dom.key
 import react.dom.span
 
-object History : ComponentProvider<HistoryProps>(provider()), HistoryRenderer
+object History : RComponent<HistoryProps>(provider()), HistoryRenderer
 
 external interface HistoryStyles {
     val pair: String

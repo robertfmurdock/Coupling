@@ -4,7 +4,7 @@ import react.RBuilder
 import react.RProps
 import kotlin.reflect.KClass
 
-abstract class ComponentProvider<P : RProps>(private val provider: PropsClassProvider<P>) : ComponentBuilder<P>,
+abstract class RComponent<P : RProps>(private val provider: PropsClassProvider<P>) : ComponentBuilder<P>,
     PropsClassProvider<P> by provider {
 
     val component: ReactFunctionComponent<P> by lazy { build() }

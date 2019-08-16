@@ -8,7 +8,7 @@ import react.RBuilder
 import react.ReactElement
 
 
-object CurrentPairAssignmentsPage : ComponentProvider<PageProps>(provider()), CurrentPairAssignmentsPageBuilder
+object CurrentPairsPage : RComponent<PageProps>(provider()), CurrentPairAssignmentsPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)

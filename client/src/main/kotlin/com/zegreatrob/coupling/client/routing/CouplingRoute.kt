@@ -9,18 +9,18 @@ import react.router.dom.RouteResultProps
 import react.router.dom.route
 import kotlin.js.Json
 
-object CouplingRoute : ComponentProvider<CouplingRouteProps>(provider()), CouplingRouteBuilder
+object CouplingRoute : RComponent<CouplingRouteProps>(provider()), CouplingRouteBuilder
 
 val RBuilder.couplingRoute get() = CouplingRoute.render(this)
 
-data class CouplingRouteProps(val path: String, val componentProvider: ComponentProvider<PageProps>) : RProps
+data class CouplingRouteProps(val path: String, val RComponent: RComponent<PageProps>) : RProps
 
 interface CouplingRouteBuilder : SimpleComponentRenderer<CouplingRouteProps> {
 
     override fun RContext<CouplingRouteProps>.render() = reactElement {
         route<RProps>(props.path, exact = true) { routeProps ->
             createElement(
-                props.componentProvider.component.rFunction, pageProps(routeProps)
+                props.RComponent.component.rFunction, pageProps(routeProps)
             )
         }
     }

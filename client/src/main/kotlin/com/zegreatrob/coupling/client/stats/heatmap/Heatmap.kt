@@ -15,7 +15,7 @@ import styled.styledDiv
 @JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic
 
-object Heatmap : ComponentProvider<HeatmapProps>(provider()), HeatmapBuilder
+object Heatmap : RComponent<HeatmapProps>(provider()), HeatmapBuilder
 
 val RBuilder.heatmap get() = Heatmap.render(this)
 

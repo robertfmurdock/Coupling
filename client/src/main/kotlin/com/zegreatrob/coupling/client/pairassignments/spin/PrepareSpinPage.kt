@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 import react.ReactElement
 
-object PrepareSpinPage : ComponentProvider<PageProps>(provider()), PrepareSpinPageBuilder
+object PrepareSpinPage : RComponent<PageProps>(provider()), PrepareSpinPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)

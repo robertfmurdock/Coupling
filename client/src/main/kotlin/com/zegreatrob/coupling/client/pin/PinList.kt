@@ -10,7 +10,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.*
 
-object PinList : ComponentProvider<PinListProps>(provider()), PinListBuilder
+object PinList : RComponent<PinListProps>(provider()), PinListBuilder
 
 external interface PinListStyles {
     val pinListing: String

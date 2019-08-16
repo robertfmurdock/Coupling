@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import react.RBuilder
 import react.ReactElement
 
-object StatisticsPage : ComponentProvider<PageProps>(provider()), StatisticsPageBuilder
+object StatisticsPage : RComponent<PageProps>(provider()), StatisticsPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(TribeStatistics)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)

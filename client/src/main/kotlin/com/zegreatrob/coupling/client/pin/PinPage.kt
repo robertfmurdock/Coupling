@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 
-object PinListPage : ComponentProvider<PageProps>(provider()), PinListPageBuilder
+object PinListPage : RComponent<PageProps>(provider()), PinListPageBuilder
 
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.render(this)

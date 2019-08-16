@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 
-object RetiredPlayerPage : ComponentProvider<PageProps>(provider()), RetiredPlayerPageBuilder
+object RetiredPlayerPage : RComponent<PageProps>(provider()), RetiredPlayerPageBuilder
 
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.render(this)

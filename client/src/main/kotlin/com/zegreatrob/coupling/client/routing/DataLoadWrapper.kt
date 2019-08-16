@@ -9,12 +9,19 @@ import react.RProps
 import react.ReactElement
 import react.dom.div
 
-inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: ComponentProvider<P>): ComponentProvider<DataLoadProps<P>> =
+interface DataLoadStyles {
+    val viewFrame: String
+}
 
-    object : ComponentProvider<DataLoadProps<P>>(provider()), SimpleComponentRenderer<DataLoadProps<P>>, ScopeProvider {
+inline fun <reified P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>): RComponent<DataLoadProps<P>> =
+
+    object : RComponent<DataLoadProps<P>>(provider()), StyledComponentRenderer<DataLoadProps<P>, DataLoadStyles>,
+        ScopeProvider {
         private val animationContextConsumer = animationsDisabledContext.Consumer
 
-        override fun RContext<DataLoadProps<P>>.render(): ReactElement {
+        override val componentPath: String get() = "routing/DataLoadWrapper"
+
+        override fun StyledRContext<DataLoadProps<P>, DataLoadStyles>.render(): ReactElement {
             val (data, setData) = useState<P?>(null)
 
             val (animationState, setAnimationState) = useState(AnimationState.Start)
@@ -26,7 +33,7 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
                 consumer(animationContextConsumer) { animationsDisabled: Boolean ->
                     div {
                         attrs {
-                            classes += "view-frame"
+                            classes += styles.viewFrame
                             if (shouldStartAnimation && !animationsDisabled) {
                                 classes += "ng-enter"
                             }
@@ -58,7 +65,7 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedComponentProvider: Compon
             }
         }
 
-        private fun RBuilder.wrappedComponent(props: P) = wrappedComponentProvider.render(this)(props)
+        private fun RBuilder.wrappedComponent(props: P) = wrappedRComponent.render(this)(props)
 
     }
 

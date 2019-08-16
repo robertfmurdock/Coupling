@@ -11,7 +11,7 @@ import react.RBuilder
 import react.ReactElement
 
 
-object PlayerPage : ComponentProvider<PageProps>(provider()), PlayerPageBuilder
+object PlayerPage : RComponent<PageProps>(provider()), PlayerPageBuilder
 
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.render(this)

@@ -1,17 +1,6 @@
 .view-container {
 }
 
-.view-frame {
-  &.ng-enter, &.ng-leave {
-  }
-  &.ng-enter {
-    animation: 1s spin-in;
-    z-index: 100;
-  }
-  &.ng-leave.ng-leave-active {
-  }
-}
-
 @keyframes twitch {
   0% {
     transform: rotate(.5deg);

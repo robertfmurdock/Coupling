@@ -14,7 +14,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.div
 
-object DraggablePlayer : ComponentProvider<DraggablePlayerProps>(provider()), DraggablePlayerBuilder
+object DraggablePlayer : RComponent<DraggablePlayerProps>(provider()), DraggablePlayerBuilder
 
 val RBuilder.draggablePlayer get() = DraggablePlayer.render(this)
 

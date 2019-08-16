@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import react.RBuilder
 
-object TribeConfigPage : ComponentProvider<PageProps>(provider()), TribeConfigPageBuilder
+object TribeConfigPage : RComponent<PageProps>(provider()), TribeConfigPageBuilder
 
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)

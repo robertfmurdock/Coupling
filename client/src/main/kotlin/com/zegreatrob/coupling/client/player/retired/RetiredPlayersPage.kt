@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import react.RBuilder
 import react.ReactElement
 
-object RetiredPlayersPage : ComponentProvider<PageProps>(provider()), RetiredPlayersPageBuilder
+object RetiredPlayersPage : RComponent<PageProps>(provider()), RetiredPlayersPageBuilder
 
 private val LoadedRetiredPlayers = dataLoadWrapper(RetiredPlayers)
 private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.render(this)
