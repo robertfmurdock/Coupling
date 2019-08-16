@@ -35,11 +35,11 @@ fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) ->
 
     logger.info {
         mapOf(
-                "method" to request.method,
-                "url" to url,
-                "statusCode" to "${response.statusCode}",
-                "contentLength" to response["content-length"]?.toString(),
-                "duration" to "$duration"
+            "method" to request.method,
+            "url" to url,
+            "statusCode" to "${response.statusCode}",
+            "contentLength" to response["content-length"]?.toString(),
+            "duration" to "$duration"
         )
     }
 }

@@ -12,10 +12,11 @@ interface MongoPinRepository : PinRepository {
     val jsRepository: dynamic
 
     override fun getPinsAsync(tribeId: TribeId) = requestPins(tribeId)
-            .then { it.toPins() }
-            .asDeferred()
+        .then { it.toPins() }
+        .asDeferred()
 
-    private fun requestPins(tribeId: TribeId) = jsRepository.requestPins(tribeId.value).unsafeCast<Promise<Array<Json>>>()
+    private fun requestPins(tribeId: TribeId) =
+        jsRepository.requestPins(tribeId.value).unsafeCast<Promise<Array<Json>>>()
 
 }
 

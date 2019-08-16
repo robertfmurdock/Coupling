@@ -9,9 +9,9 @@ import kotlin.js.Promise
 interface DbRecordSaveSyntax : DbRecordInfoSyntax {
 
     suspend fun Json.save(collection: dynamic) = addRecordInfo()
-            .run {
-                collection.insert(this).unsafeCast<Promise<Unit>>().await()
-            }
+        .run {
+            collection.insert(this).unsafeCast<Promise<Unit>>().await()
+        }
 }
 
 interface DbRecordInfoSyntax : UserEmailSyntax {

@@ -18,50 +18,50 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
     val jsRepository: dynamic
 
     override suspend fun save(tribe: KtTribe) = tribe.toDbJson()
-            .let {
-                it.save(jsRepository.tribesCollection)
-            }
+        .let {
+            it.save(jsRepository.tribesCollection)
+        }
 
     override suspend fun delete(tribeId: TribeId) = deleteEntity(
-            id = tribeId.value,
-            collection = jsRepository.tribesCollection,
-            entityName = "Tribe",
-            toDomain = { toTribe() },
-            toDbJson = { toDbJson() },
-            usesRawId = false
+        id = tribeId.value,
+        collection = jsRepository.tribesCollection,
+        entityName = "Tribe",
+        toDomain = { toTribe() },
+        toDbJson = { toDbJson() },
+        usesRawId = false
     )
 
     override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = GlobalScope.async {
         findByQuery(json("id" to tribeId.value), jsRepository.tribesCollection)
-                .firstOrNull()
-                ?.toTribe()
+            .firstOrNull()
+            ?.toTribe()
     }
 
     override fun getTribesAsync(): Deferred<List<KtTribe>> = GlobalScope.async {
         findByQuery(json(), jsRepository.tribesCollection)
-                .map { it.toTribe() }
+            .map { it.toTribe() }
     }
 
     private fun KtTribe.toDbJson() = json(
-            "id" to id.value,
-            "pairingRule" to toValue(pairingRule),
-            "name" to name,
-            "email" to email,
-            "defaultBadgeName" to defaultBadgeName,
-            "alternateBadgeName" to alternateBadgeName,
-            "badgesEnabled" to badgesEnabled,
-            "callSignsEnabled" to callSignsEnabled
+        "id" to id.value,
+        "pairingRule" to toValue(pairingRule),
+        "name" to name,
+        "email" to email,
+        "defaultBadgeName" to defaultBadgeName,
+        "alternateBadgeName" to alternateBadgeName,
+        "badgesEnabled" to badgesEnabled,
+        "callSignsEnabled" to callSignsEnabled
     )
 
     private fun Json.toTribe(): KtTribe = KtTribe(
-            id = TribeId(this["id"].toString()),
-            pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
-            name = this["name"]?.toString(),
-            email = this["email"]?.toString(),
-            defaultBadgeName = this["defaultBadgeName"]?.toString(),
-            alternateBadgeName = this["alternateBadgeName"]?.toString(),
-            badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-            callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
+        id = TribeId(this["id"].toString()),
+        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
+        name = this["name"]?.toString(),
+        email = this["email"]?.toString(),
+        defaultBadgeName = this["defaultBadgeName"]?.toString(),
+        alternateBadgeName = this["alternateBadgeName"]?.toString(),
+        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
+        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
     )
 
 }

@@ -26,18 +26,18 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
-        PlayersQueryDispatcher,
-        RetiredPlayersQueryDispatcher,
-        SavePlayerCommandDispatcher,
-        DeletePlayerCommandDispatcher,
-        PinsQueryDispatcher,
-        SavePairAssignmentDocumentCommandDispatcher,
-        PairAssignmentDocumentListQueryDispatcher,
-        DeletePairAssignmentDocumentCommandDispatcher,
-        TribeListQueryDispatcher,
-        TribeQueryDispatcher,
-        SaveTribeCommandDispatcher,
-        DeleteTribeCommandDispatcher {
+    PlayersQueryDispatcher,
+    RetiredPlayersQueryDispatcher,
+    SavePlayerCommandDispatcher,
+    DeletePlayerCommandDispatcher,
+    PinsQueryDispatcher,
+    SavePairAssignmentDocumentCommandDispatcher,
+    PairAssignmentDocumentListQueryDispatcher,
+    DeletePairAssignmentDocumentCommandDispatcher,
+    TribeListQueryDispatcher,
+    TribeQueryDispatcher,
+    SaveTribeCommandDispatcher,
+    DeleteTribeCommandDispatcher {
     override val playerRepository: PlayerRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
@@ -51,12 +51,12 @@ interface RepositoryCatalog {
 }
 
 private fun repositoryCatalog(jsRepository: dynamic, userCollection: dynamic, user: User) = object : RepositoryCatalog,
-        MongoTribeRepository,
-        MongoPlayerRepository,
-        MongoPairAssignmentDocumentRepository,
-        MongoPinRepository,
-        MongoUserRepository,
-        AuthenticatedUserEmailSyntax {
+    MongoTribeRepository,
+    MongoPlayerRepository,
+    MongoPairAssignmentDocumentRepository,
+    MongoPinRepository,
+    MongoUserRepository,
+    AuthenticatedUserEmailSyntax {
     override val userCollection: dynamic = userCollection
     override val jsRepository: dynamic = jsRepository
     override val user = user
@@ -70,7 +70,7 @@ private fun repositoryCatalog(jsRepository: dynamic, userCollection: dynamic, us
 @Suppress("unused")
 @JsName("authActionDispatcher")
 fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCreateUserActionDispatcher = object :
-        FindOrCreateUserActionDispatcher, FindUserActionDispatcher, MongoUserRepository {
+    FindOrCreateUserActionDispatcher, FindUserActionDispatcher, MongoUserRepository {
     override val userEmail: String get() = userEmail
     override val userCollection: dynamic = userCollection
     override val userRepository: UserRepository = this
@@ -78,35 +78,40 @@ fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCrea
     @JsName("performFindUserAction")
     fun performFindUserAction() = GlobalScope.promise {
         FindUserAction.perform()
-                ?.toJson()
+            ?.toJson()
     }
 
     @JsName("performFindOrCreateUserAction")
     fun performFindOrCreateUserAction() = GlobalScope.promise {
         FindOrCreateUserAction.perform()
-                .toJson()
+            .toJson()
     }
 
     private fun User.toJson() = json(
-            "email" to email,
-            "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
+        "email" to email,
+        "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
     )
 }
 
 @Suppress("unused")
 @JsName("commandDispatcher")
-fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail: String, tribeIds: Array<String>): CommandDispatcher {
+fun commandDispatcher(
+    jsRepository: dynamic,
+    userCollection: dynamic,
+    userEmail: String,
+    tribeIds: Array<String>
+): CommandDispatcher {
     val user = User(userEmail, tribeIds.map(::TribeId).toSet())
     return object : CommandDispatcher,
-            RunGameActionDispatcher,
-            FindNewPairsActionDispatcher,
-            NextPlayerActionDispatcher,
-            CreatePairCandidateReportsActionDispatcher,
-            CreatePairCandidateReportActionDispatcher,
-            Wheel,
-            AuthenticatedUserEmailSyntax,
-            UserIsAuthorizedActionDispatcher,
-            RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
+        RunGameActionDispatcher,
+        FindNewPairsActionDispatcher,
+        NextPlayerActionDispatcher,
+        CreatePairCandidateReportsActionDispatcher,
+        CreatePairCandidateReportActionDispatcher,
+        Wheel,
+        AuthenticatedUserEmailSyntax,
+        UserIsAuthorizedActionDispatcher,
+        RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
         override val user = user
         override val actionDispatcher = this
         override val wheel: Wheel = this
@@ -114,100 +119,106 @@ fun commandDispatcher(jsRepository: dynamic, userCollection: dynamic, userEmail:
         @JsName("performTribeListQuery")
         fun performTribeListQuery() = GlobalScope.promise {
             TribeListQuery
-                    .perform()
-                    .map { it.toJson() }
-                    .toTypedArray()
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
         }
 
         @JsName("performTribeQuery")
         fun performTribeQuery(tribeId: String) = GlobalScope.promise {
             TribeQuery(TribeId(tribeId))
-                    .perform()
-                    ?.toJson()
+                .perform()
+                ?.toJson()
         }
 
         @JsName("performSaveTribeCommand")
         fun performSaveTribeCommand(tribe: Json) = GlobalScope.promise {
             SaveTribeCommand(tribe.toTribe())
-                    .perform()
+                .perform()
         }
 
         @JsName("performDeleteTribeCommand")
         fun performDeleteTribeCommand(tribeId: String) = GlobalScope.promise {
             DeleteTribeCommand(TribeId(tribeId))
-                    .perform()
+                .perform()
         }
 
         @JsName("performSavePlayerCommand")
         fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {
             SavePlayerCommand(TribeIdPlayer(TribeId(tribeId), player.toPlayer()))
-                    .perform()
-                    .let { it.toJson() }
+                .perform()
+                .let { it.toJson() }
         }
 
         @JsName("performDeletePlayerCommand")
         fun performDeletePlayerCommand(playerId: String) = GlobalScope.promise {
             DeletePlayerCommand(playerId)
-                    .perform()
+                .perform()
         }
 
         @JsName("performPlayersQuery")
         fun performPlayersQuery(tribeId: String) = GlobalScope.promise {
             PlayersQuery(TribeId(tribeId))
-                    .perform()
-                    .map { it.toJson() }
-                    .toTypedArray()
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
         }
 
         @JsName("performRetiredPlayersQuery")
         fun performRetiredPlayersQuery(tribeId: String) = GlobalScope.promise {
             RetiredPlayersQuery(TribeId(tribeId))
-                    .perform()
-                    .map { it.toJson() }
-                    .toTypedArray()
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
         }
 
         @JsName("performPinsQuery")
         fun performPinsQuery(tribeId: String) = GlobalScope.promise {
             PinsQuery(TribeId(tribeId))
-                    .perform()
-                    .map { it.toJson() }
-                    .toTypedArray()
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
         }
 
         @JsName("performProposeNewPairsCommand")
         fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = GlobalScope.promise {
             ProposeNewPairsCommand(TribeId(tribeId), players.map(Json::toPlayer))
-                    .perform()
-                    .let { it.toJson() }
+                .perform()
+                .let { it.toJson() }
         }
 
         @JsName("performSavePairAssignmentDocumentCommand")
-        fun performSavePairAssignmentDocumentCommand(tribeId: String, pairAssignmentDocument: Json) = GlobalScope.promise {
-            SavePairAssignmentDocumentCommand(TribeIdPairAssignmentDocument(TribeId(tribeId), pairAssignmentDocument.toPairAssignmentDocument()))
+        fun performSavePairAssignmentDocumentCommand(tribeId: String, pairAssignmentDocument: Json) =
+            GlobalScope.promise {
+                SavePairAssignmentDocumentCommand(
+                    TribeIdPairAssignmentDocument(
+                        TribeId(tribeId),
+                        pairAssignmentDocument.toPairAssignmentDocument()
+                    )
+                )
                     .perform()
                     .document
                     .toJson()
-        }
+            }
 
         @JsName("performDeletePairAssignmentDocumentCommand")
         fun performDeletePairAssignmentDocumentCommand(id: String) = GlobalScope.promise {
             DeletePairAssignmentDocumentCommand(id.let(::PairAssignmentDocumentId))
-                    .perform()
+                .perform()
         }
 
         @JsName("performPairAssignmentDocumentListQuery")
         fun performPairAssignmentDocumentListQuery(tribeId: String) = GlobalScope.promise {
             PairAssignmentDocumentListQuery(TribeId(tribeId))
-                    .perform()
-                    .map { it.toJson() }
-                    .toTypedArray()
+                .perform()
+                .map { it.toJson() }
+                .toTypedArray()
         }
 
         @JsName("performUserIsAuthorizedAction")
         fun performUserIsAuthorizedAction(tribeId: String) = GlobalScope.promise {
             UserIsAuthorizedAction(TribeId(tribeId))
-                    .perform()
+                .perform()
         }
     }
 }

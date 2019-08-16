@@ -12,22 +12,22 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
 
     override suspend fun save(user: User) {
         user.toDbJson()
-                .save(userCollection)
+            .save(userCollection)
     }
 
     override suspend fun getUser() = findByQuery(json("email" to userEmail), userCollection, "email")
-            .firstOrNull()
-            ?.fromDbToUser()
+        .firstOrNull()
+        ?.fromDbToUser()
 
 
     private fun User.toDbJson() = json(
-            "email" to email,
-            "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
+        "email" to email,
+        "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
     )
 
     private fun Json.fromDbToUser() = User(
-            email = this["email"].toString(),
-            authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map { TribeId(it) }?.toSet() ?: emptySet()
+        email = this["email"].toString(),
+        authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map { TribeId(it) }?.toSet() ?: emptySet()
     )
 
 }
