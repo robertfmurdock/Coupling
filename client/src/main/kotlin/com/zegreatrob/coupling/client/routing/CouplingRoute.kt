@@ -13,14 +13,14 @@ object CouplingRoute : RComponent<CouplingRouteProps>(provider()), CouplingRoute
 
 val RBuilder.couplingRoute get() = CouplingRoute.render(this)
 
-data class CouplingRouteProps(val path: String, val RComponent: RComponent<PageProps>) : RProps
+data class CouplingRouteProps(val path: String, val rComponent: RComponent<PageProps>) : RProps
 
 interface CouplingRouteBuilder : SimpleComponentRenderer<CouplingRouteProps> {
 
     override fun RContext<CouplingRouteProps>.render() = reactElement {
         route<RProps>(props.path, exact = true) { routeProps ->
             createElement(
-                props.RComponent.component.rFunction, pageProps(routeProps)
+                props.rComponent.component.rFunction, pageProps(routeProps)
             )
         }
     }

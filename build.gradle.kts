@@ -1,3 +1,4 @@
+
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
@@ -6,6 +7,7 @@ plugins {
     id("com.github.node-gradle.node") apply false
     id("com.bmuschko.docker-remote-api") version "4.10.0"
     id("com.github.ben-manes.versions") version "0.21.0"
+    id("net.rdrei.android.buildtimetracker") version "0.11.0"
 }
 
 allprojects {
@@ -72,13 +74,13 @@ tasks {
 
     val copyTestResultsForCircle by creating {
         dependsOn(
-                copyClientTestResults,
-                copyServerTestResults,
-                copyEndpointTestResults,
-                copyCommonKtTestResults,
-                copyEngineTestResults,
-                copyEndToEndResults,
-                copyEndToEndScreenshotResults
+            copyClientTestResults,
+            copyServerTestResults,
+            copyEndpointTestResults,
+            copyCommonKtTestResults,
+            copyEngineTestResults,
+            copyEndToEndResults,
+            copyEndToEndScreenshotResults
         )
     }
 
@@ -129,5 +131,31 @@ fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
 
         block()
         testTask?.finalizedBy(this)
+    }
+}
+
+buildtimetracker {
+    reporters {
+        register("csv") {
+            options.run {
+                put("output", "build/times.csv")
+                put("append", "true")
+                put("header", "false")
+            }
+        }
+
+        register("summary") {
+            options.run {
+                put("ordered", "false")
+                put("threshold", "50")
+                put("header", "false")
+            }
+        }
+
+        register("csvSummary") {
+            options.run {
+                put("csv", "build/times.csv")
+            }
+        }
     }
 }
