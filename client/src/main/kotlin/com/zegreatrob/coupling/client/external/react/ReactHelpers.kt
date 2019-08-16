@@ -123,30 +123,14 @@ fun <P : RProps> RBuilder.component(
 ) =
     element(component.rFunction, props, key, ref, handler)
 
-inline fun <reified P : RProps, S> styledComponent(
-    styleName: String,
-    crossinline builder: StyledRContext<P, S>.() -> ReactElement
-): ReactFunctionComponent<P> {
-    val styles = loadStyles<S>(styleName)
-
-    return reactFunctionComponent { props: P ->
-        StyledRContext(props, styles)
-            .handle(builder)
-    }
-}
-
 class RContext<P>(
     val props: P
-) {
-    inline fun handle(builder: RContext<P>.() -> ReactElement) = builder()
-}
+)
 
 class StyledRContext<P, S>(
     val props: P,
     val styles: S
-) {
-    inline fun handle(builder: StyledRContext<P, S>.() -> ReactElement) = builder()
-}
+)
 
 class ScopedStyledRContext<P, S>(
     val props: P,

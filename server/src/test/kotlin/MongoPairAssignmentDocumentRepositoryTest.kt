@@ -131,7 +131,6 @@ class MongoPairAssignmentDocumentRepositoryTest {
     @Test
     fun deleteWhenRecordDoesNotExistWillReturnFalse() = testAsync {
         setupAsync(object {
-            val tribeId = TribeId("tribe-id-99")
             private val pair = stubSimplePairAssignmentDocument()
             val id = pair.first
         }) exerciseAsync {

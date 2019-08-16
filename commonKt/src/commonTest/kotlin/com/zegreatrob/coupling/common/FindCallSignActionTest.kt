@@ -11,7 +11,7 @@ import kotlin.test.Test
 class FindCallSignActionTest {
 
     companion object : FindCallSignActionDispatcher {
-        val email = "robert.f.murdock@accenture.com"
+        const val email = "robert.f.murdock@accenture.com"
         val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeast")
     }
 

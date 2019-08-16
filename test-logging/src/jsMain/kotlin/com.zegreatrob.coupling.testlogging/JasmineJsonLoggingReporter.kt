@@ -38,7 +38,7 @@ class JasmineJsonLoggingReporter {
                     "test" to testName,
                     "status" to status,
                     "duration" to "$duration",
-                    "failures" to failed.map { "message: ${it.message} \nstack: ${it.stack}" }.joinToString("\n", "\n")
+                    "failures" to failed.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
             )
         }
                 .also { lastStart = null }

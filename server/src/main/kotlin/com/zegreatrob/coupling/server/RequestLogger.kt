@@ -20,6 +20,7 @@ external interface Response {
 
 private val logger by lazy { KotlinLogging.logger("RequestLogger") }
 
+@Suppress("unused")
 @JsName("logRequestAsync")
 fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) -> Unit) = GlobalScope.async {
     val duration = measureTime {

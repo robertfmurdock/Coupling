@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.server.entity.user
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.user.User
-import com.zegreatrob.coupling.server.entity.user.UserRepository
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax
 import kotlin.js.Json

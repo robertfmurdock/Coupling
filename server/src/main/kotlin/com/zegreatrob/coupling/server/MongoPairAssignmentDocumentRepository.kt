@@ -60,10 +60,6 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     private fun Pin.toDbJson() = json("id" to _id, "tribe" to tribe, "name" to name)
 
-    private fun historyFromArray(history: Array<Json>) = history.map {
-        it.toPairAssignmentDocument()
-    }
-
     private fun Json.toPairAssignmentDocument() = TribeIdPairAssignmentDocument(
             TribeId(this["tribe"].unsafeCast<String>()),
             PairAssignmentDocument(

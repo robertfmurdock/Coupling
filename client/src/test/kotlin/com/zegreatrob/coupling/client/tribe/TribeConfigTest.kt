@@ -4,8 +4,8 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.loadStyles
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
@@ -34,7 +34,7 @@ class TribeConfigTest {
         val tribe = KtTribe(TribeId("1"), name = "1")
 
     }) exercise {
-        shallow(TribeConfigProps(tribe, {}))
+        shallow(TribeConfigProps(tribe) {})
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
                 .assertHasDefaultBadgeName()

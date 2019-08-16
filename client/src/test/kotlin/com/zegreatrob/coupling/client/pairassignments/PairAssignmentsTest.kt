@@ -5,8 +5,8 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.loadStyles
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
@@ -78,7 +78,7 @@ class PairAssignmentsTest {
             Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, null, {}))
+        shallow(PairAssignmentsProps(tribe, players, null) {})
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
             .props()
@@ -134,7 +134,7 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}))
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
@@ -167,7 +167,7 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, {}))
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
     }) exercise {
         player4.dragTo(player3, wrapper)
     } verify {
@@ -196,7 +196,7 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, listOf(), null, {}))
+        shallow(PairAssignmentsProps(tribe, listOf(), null) {})
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)
             .props()
