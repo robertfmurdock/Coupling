@@ -10,5 +10,6 @@ export const PrepareSpinStyles = require(`${"../../../../client/build/resources/
 export const HistoryStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/pairassignments/History.css`);
 export const TeamStatisticsStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/stats/TeamStatistics.css`);
 export const TribeStatisticsStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/stats/TribeStatistics.css`);
+export const PairReportTableStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/stats/PairReportTable.css`);
 export const PairAssignmentsStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/pairassignments/PairAssignments.css`);
 export const DataLoadWrapperStyles = require(`${"../../../../client/build/resources/main/com/zegreatrob/coupling/client"}/routing/DataLoadWrapper.css`);

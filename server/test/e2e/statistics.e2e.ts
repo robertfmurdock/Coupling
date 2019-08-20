@@ -4,7 +4,7 @@ import * as monk from "monk";
 import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
 import StatisticsPage from "./page-objects/StatisticsPage";
-import {TeamStatisticsStyles, TribeCardStyles} from "./page-objects/Styles";
+import {PairReportTableStyles, TeamStatisticsStyles, TribeCardStyles} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const database = monk.default(config.tempMongoUrl);
@@ -56,7 +56,7 @@ describe('The statistics page', function () {
     });
 
     it('has the pair reports', function () {
-        const pairReports = element.all(By.className('react-pair-report'));
+        const pairReports = element.all(By.className(PairReportTableStyles.pairReport));
         expect(pairReports.count()).toBe(15);
     });
 

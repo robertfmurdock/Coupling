@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultVa
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import kotlinx.html.DIV
-import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.ReactElement
@@ -43,7 +42,7 @@ interface PairReportTableRenderer : StyledComponentRenderer<PairReportTableProps
         pairReport: PairReport,
         tribe: KtTribe
     ) = div(classes = styles.pairReport) {
-        attrs { key = "$index"; classes += "react-pair-report" }
+        attrs { key = "$index" }
         pairReport.pair.asArray().map { player -> reportPlayerCard(styles, player, tribe) }
 
         div(classes = styles.pairStatistics) {
