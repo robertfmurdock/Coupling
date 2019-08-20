@@ -5,8 +5,8 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 plugins {
     id("com.github.node-gradle.node") apply false
-    id("com.bmuschko.docker-remote-api") version "4.10.0"
-    id("com.github.ben-manes.versions") version "0.21.0"
+    id("com.bmuschko.docker-remote-api") version "5.0.0"
+    id("com.github.ben-manes.versions") version "0.22.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
 }
 

@@ -80,6 +80,14 @@ fun <P : RProps> RBuilder.child(
     handler: RHandler<P> = {}
 ) = child(rComponent.component, props, key, ref, handler)
 
+
+fun RBuilder.child(
+    rComponent: RComponent<EmptyProps>,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<EmptyProps> = {}
+): ReactElement = child(rComponent.component, EmptyProps, key, ref, handler)
+
 fun <P : RProps> RBuilder.child(
     component: ReactFunctionComponent<P>,
     props: P,

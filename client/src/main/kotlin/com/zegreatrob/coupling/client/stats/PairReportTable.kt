@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
@@ -17,11 +18,11 @@ import react.dom.RDOMBuilder
 import react.dom.div
 import react.dom.span
 
-object PairReportTable : RComponent<PairReportTableProps>(provider()), PairReportTableBuilder
+object PairReportTable : RComponent<PairReportTableProps>(provider()), PairReportTableRenderer
 
 val RBuilder.pairReportTable get() = PairReportTable.render(this)
 
-interface PairReportTableBuilder : StyledComponentRenderer<PairReportTableProps, PairReportTableStyles> {
+interface PairReportTableRenderer : StyledComponentRenderer<PairReportTableProps, PairReportTableStyles> {
 
     override val componentPath: String get() = "stats/PairReportTable"
 
@@ -49,15 +50,14 @@ interface PairReportTableBuilder : StyledComponentRenderer<PairReportTableProps,
             statsHeader { +"Stats" }
             statLabel { +"Spins since last paired:" }
             span(classes = "time-since-last-pairing") {
-                +pairReport.timeSinceLastPair.let {
-                    when (it) {
-                        is TimeResultValue ->
-                            "${it.time}"
-                        NeverPaired -> "Never Paired"
-                    }
-                }
+                +pairReport.timeSinceLastPair.presentationString()
             }
         }
+    }
+
+    private fun TimeResult.presentationString() = when (this) {
+        is TimeResultValue -> "$time"
+        NeverPaired -> "Never Paired"
     }
 
     private fun RDOMBuilder<DIV>.reportPlayerCard(styles: PairReportTableStyles, player: Player, tribe: KtTribe) =

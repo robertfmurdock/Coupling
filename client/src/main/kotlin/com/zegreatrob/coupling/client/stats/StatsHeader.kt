@@ -16,4 +16,3 @@ interface StatsHeaderBuilder : StyledComponentRenderer<EmptyProps, SimpleStyle> 
         div(classes = styles.className) { props.children() }
     }
 }
-
