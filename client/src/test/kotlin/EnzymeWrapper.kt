@@ -1,7 +1,7 @@
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.RComponent
 import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
-import com.zegreatrob.coupling.client.external.react.component
+import com.zegreatrob.coupling.client.external.react.child
 import react.RBuilder
 import react.RClass
 import react.RProps
@@ -41,7 +41,7 @@ external val enzyme: Enzyme
 
 fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(function))
 
-fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { component(build(), props) }
+fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { child(build(), props) }
 
 fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
         reactFunctionComponent: ReactFunctionComponent<P>

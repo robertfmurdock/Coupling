@@ -72,7 +72,23 @@ interface RFunction<P : RProps> : RClass<P>
 
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
-fun <P : RProps> RBuilder.element(
+fun <P : RProps> RBuilder.child(
+    rComponent: RComponent<P>,
+    props: P,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<P> = {}
+) = child(rComponent.component, props, key, ref, handler)
+
+fun <P : RProps> RBuilder.child(
+    component: ReactFunctionComponent<P>,
+    props: P,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<P> = {}
+) = child(component.rFunction, props, key, ref, handler)
+
+fun <P : RProps> RBuilder.child(
     clazz: RClass<P>,
     props: P,
     key: String? = null,
@@ -113,15 +129,6 @@ class ReactFunctionComponent<P : RProps>(
 }
 
 fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)!!
-
-fun <P : RProps> RBuilder.component(
-    component: ReactFunctionComponent<P>,
-    props: P,
-    key: String? = null,
-    ref: RReadableRef<Node>? = null,
-    handler: RHandler<P> = {}
-) =
-    element(component.rFunction, props, key, ref, handler)
 
 class RContext<P>(
     val props: P

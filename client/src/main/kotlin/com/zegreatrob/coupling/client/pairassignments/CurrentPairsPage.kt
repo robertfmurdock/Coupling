@@ -11,7 +11,6 @@ import react.ReactElement
 object CurrentPairsPage : RComponent<PageProps>(provider()), CurrentPairAssignmentsPageBuilder
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
 interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher {
 
@@ -19,15 +18,21 @@ interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>
         val tribeId = props.tribeId
 
         return if (tribeId != null) {
-            reactElement { loadedPairAssignments(dataLoadProps(tribeId, props)) }
+            reactElement { pairAssignments(tribeId, props.pathSetter) }
         } else throw Exception("WHAT")
     }
 
-    private fun dataLoadProps(tribeId: TribeId, pageProps: PageProps) =
+    private fun RBuilder.pairAssignments(tribeId: TribeId, pathSetter: (String) -> Unit) =
+        child(LoadedPairAssignments, dataLoadProps(tribeId, pathSetter))
+
+    private fun dataLoadProps(
+        tribeId: TribeId,
+        pathSetter: (String) -> Unit
+    ) =
         com.zegreatrob.coupling.client.routing.dataLoadProps(
             query = { TribeDataSetQuery(tribeId).perform() },
             toProps = { _, (tribe, players, history) ->
-                PairAssignmentsProps(tribe, players, history.firstOrNull(), pageProps.pathSetter)
+                PairAssignmentsProps(tribe, players, history.firstOrNull(), pathSetter)
             }
         )
 }

@@ -6,11 +6,11 @@ import react.RHandler
 import react.RProps
 import react.RReadableRef
 
-class RenderToBuilder<P : RProps>(private val RComponent: RComponent<P>, private val rBuilder: RBuilder) {
+class RenderToBuilder<P : RProps>(private val rComponent: RComponent<P>, private val rBuilder: RBuilder) {
 
     operator fun invoke(props: P, key: String? = null, ref: RReadableRef<Node>? = null, handler: RHandler<P> = {}) =
         with(rBuilder) {
-            component(RComponent.component, props, key, ref, handler)
+            child(rComponent, props, key, ref, handler)
         }
 }
 
