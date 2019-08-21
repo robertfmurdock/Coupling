@@ -19,6 +19,7 @@ interface TribeBrowserCss {
     val statisticsButton: String
     val tribeSelectButton: String
     val logoutButton: String
+    val iconButtonText: String
 }
 
 interface TribeBrowserBuilder : StyledComponentRenderer<TribeBrowserProps, TribeBrowserCss> {
@@ -44,19 +45,19 @@ interface TribeBrowserBuilder : StyledComponentRenderer<TribeBrowserProps, Tribe
             span {
                 a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
                     attrs { classes += styles.statisticsButton }
-                    span(classes = "icon-button-text") { +"Statistics" }
+                    span(classes = styles.iconButtonText) { +"Statistics" }
                 }
                 a(href = "/tribes/", classes = "large gray button") {
                     attrs { classes += styles.tribeSelectButton }
                     i(classes = "fa fa-arrow-circle-up") {}
-                    span(classes = "icon-button-text") { +"Tribe select" }
+                    span(classes = styles.iconButtonText) { +"Tribe select" }
                 }
             }
             span {
                 a(href = "/logout", classes = "large red button") {
                     attrs { classes += styles.logoutButton }
                     i(classes = "fa fa-sign-out") {}
-                    span(classes = "icon-button-text") { +"Sign Out" }
+                    span(classes = styles.iconButtonText) { +"Sign Out" }
                 }
             }
         }
