@@ -14,6 +14,11 @@ let tribesCollection = database.get('tribes');
 let playersCollection = database.get('players');
 let usersCollection = monk.default(config.mongoUrl).get('users');
 
+async function getAuthenticatedCookie(username: any) {
+    const response = await agent.get(`/test-login?username=${username}&password=pw`).expect(302);
+    return {cookie: response.headers['set-cookie']};
+}
+
 describe('Current connections websocket', function () {
 
     function setupErrorHandler(websocket: WebSocket, reject) {
@@ -34,9 +39,9 @@ describe('Current connections websocket', function () {
         _id: undefined
     };
 
-    async function authorizeUserForTribes(authorizedTribes) {
-        await usersCollection.remove({email: userEmail + "._temp"});
-        await usersCollection.insert({email: userEmail + "._temp", tribes: authorizedTribes, timestamp: new Date()});
+    async function authorizeUserForTribes(authorizedTribes, email: any) {
+        await usersCollection.remove({email: email + "._temp"});
+        await usersCollection.insert({email: email + "._temp", tribes: authorizedTribes, timestamp: new Date()});
     }
 
     const tribeA = {id: 'Tribe A', name: 'AAAAA'};
@@ -44,24 +49,21 @@ describe('Current connections websocket', function () {
     const tribeC = {id: 'Tribe C', name: 'CCCCC'};
     const tribes = [tribeA, tribeB, tribeC];
 
-    beforeAll(function (done) {
-        agent.get('/test-login?username=' + userEmail + '&password=pw')
-            .expect(302)
-            .then(response => this.authenticatedHeaders = {cookie: response.headers['set-cookie']})
-            .then(() => Bluebird.all([
-                playersCollection.drop(),
-                tribesCollection.drop()
-            ]))
-            .then(() => tribesCollection.insert([tribe, unauthorizedTribe, ...tribes]))
-            .then(() => authorizeUserForTribes([tribe.id, tribeA.id, tribeB.id, tribeC.id]))
-            .then(done, done.fail);
+    beforeAll(async function () {
+        this.authenticatedHeaders = await getAuthenticatedCookie(userEmail);
 
-        this.promiseWebsocket = function (tribeId = tribe.id) {
+        await Bluebird.all([
+            playersCollection.drop(),
+            tribesCollection.drop()
+        ]);
+        await tribesCollection.insert([tribe, unauthorizedTribe, ...tribes]);
+        await authorizeUserForTribes([tribe.id, tribeA.id, tribeB.id, tribeC.id], userEmail);
+
+        this.promiseWebsocket = function (tribeId = tribe.id, authenticatedHeaders = this.authenticatedHeaders) {
             return new Bluebird((resolve, reject) => {
-                const options = {headers: this.authenticatedHeaders};
+                const options = {headers: authenticatedHeaders};
                 const websocket = new WebSocket(`ws://${server}/api/${tribeId}/pairAssignments/current`, options);
                 const messages = [];
-
 
                 websocket.on('message', message => {
                     messages.push(message);
@@ -110,34 +112,29 @@ describe('Current connections websocket', function () {
             .then(done, done.fail);
     });
 
-    it('when there are multiple connections, gives you the total connection count for the current tribe', function (done) {
-        Bluebird.all([
+    it('when there are multiple connections, gives you the total connection count for the current tribe', async function () {
+        const bundles1 = await Bluebird.all([
             this.promiseWebsocket(tribeA.id),
             this.promiseWebsocket(tribeB.id),
-        ])
-            .then(bundles => Bluebird.all(bundles.concat([
-                this.promiseWebsocket(tribeA.id),
-                this.promiseWebsocket(tribeB.id),
-                this.promiseWebsocket(tribeB.id),
-            ])))
-            .then(bundles => Bluebird.all(bundles.concat([
-                this.promiseWebsocket(tribeC.id),
-                this.promiseWebsocket(tribeB.id),
-            ])))
-            .then(bundles => {
-                const lastTribeAConnection = bundles[2];
-                expect(lastTribeAConnection.messages).toEqual([makeConnectionMessage(2)]);
+        ]);
+        const bundles2 = await Bluebird.all(bundles1.concat([
+            this.promiseWebsocket(tribeA.id),
+            this.promiseWebsocket(tribeB.id),
+            this.promiseWebsocket(tribeB.id),
+        ]));
+        const bundles3 = await Bluebird.all(bundles2.concat([
+            this.promiseWebsocket(tribeC.id),
+            this.promiseWebsocket(tribeB.id),
+        ]));
+        const lastTribeAConnection = bundles3[2];
+        expect(lastTribeAConnection.messages).toEqual([makeConnectionMessage(2)]);
 
-                const lastTribeBConnection = bundles[bundles.length - 1];
-                expect(lastTribeBConnection.messages).toEqual([makeConnectionMessage(4)]);
+        const lastTribeBConnection = bundles3[bundles3.length - 1];
+        expect(lastTribeBConnection.messages).toEqual([makeConnectionMessage(4)]);
 
-                const lastTribeCConnection = bundles[5];
-                expect(lastTribeCConnection.messages).toEqual([makeConnectionMessage(1)]);
-
-                return bundles;
-            })
-            .then(closeAllSockets())
-            .then(done, done.fail);
+        const lastTribeCConnection = bundles3[5];
+        expect(lastTribeCConnection.messages).toEqual([makeConnectionMessage(1)]);
+        await closeAllSockets();
     });
 
     function makeConnectionMessage(count: number) {
@@ -260,4 +257,5 @@ describe('Current connections websocket', function () {
             .then(done, done.fail)
     });
 
-});
+})
+;
