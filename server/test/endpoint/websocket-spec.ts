@@ -141,7 +141,7 @@ describe('Current connections websocket', function () {
     });
 
     function makeConnectionMessage(count: number) {
-        return 'Users viewing this page: ' + count;
+        return JSON.stringify({type: "LivePlayers", text: 'Users viewing this page: ' + count})
     }
 
     let promiseWebsocketClose = function (bundle) {

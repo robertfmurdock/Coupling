@@ -38,7 +38,7 @@ interface ServerMessageRenderer : SimpleComponentRenderer<ServerMessageProps> {
                 websocket {
                     attrs {
                         url = buildSocketUrl(tribeId, useSsl)
-                        onMessage = { setMessage(it) }
+                        onMessage = { setMessage(JSON.parse<WebsocketMessage>(it).text) }
                         onClose = { setMessage(disconnectedMessage) }
                     }
                 }
@@ -49,6 +49,10 @@ interface ServerMessageRenderer : SimpleComponentRenderer<ServerMessageProps> {
             }
         }
     }
+}
+
+interface WebsocketMessage {
+    val text: String
 }
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean): String {

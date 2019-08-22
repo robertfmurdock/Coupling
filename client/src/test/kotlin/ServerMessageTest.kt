@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.user.WebsocketProps
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import kotlinext.js.js
 import react.RClass
 import kotlin.browser.window
 import kotlin.test.Test
@@ -50,7 +51,7 @@ class ServerMessageTest : ServerMessageRenderer, PropsClassProvider<ServerMessag
         val websocketProps = wrapper.find(websocket).props()
         val expectedMessage = "Hi it me"
     }) exercise {
-        websocketProps.onMessage(expectedMessage)
+        websocketProps.onMessage(socketMessage(expectedMessage))
         wrapper.update()
     } verify {
         wrapper.find<Any>("span").text()
@@ -58,6 +59,9 @@ class ServerMessageTest : ServerMessageRenderer, PropsClassProvider<ServerMessag
                 expectedMessage
             )
     }
+
+    private fun socketMessage(expectedMessage: String) =
+        JSON.stringify(js { type = "LivePlayers"; text = expectedMessage }.unsafeCast<Any>())
 
     @Test
     fun displaysNotConnectedMessageWhenSocketIsClosed(): Unit = setup(object {
@@ -67,7 +71,7 @@ class ServerMessageTest : ServerMessageRenderer, PropsClassProvider<ServerMessag
             .unsafeCast<WebsocketProps>()
         val expectedMessage = "Not connected"
     }) exercise {
-        websocketProps.onMessage("lol")
+        websocketProps.onMessage(socketMessage("lol"))
         wrapper.update()
         websocketProps.onClose()
         wrapper.update()

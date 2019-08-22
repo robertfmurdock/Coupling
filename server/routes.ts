@@ -44,6 +44,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
                 if (isAuthorized) {
                     const tribeId = request.params.tribeId;
                     connection.tribeId = tribeId;
+                    connection.user = request.user;
                     broadcastConnectionCountForTribe(tribeId);
 
                     connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
@@ -71,7 +72,12 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
             }
         });
 
-        broadcast('Users viewing this page: ' + matchingConnections.length, matchingConnections);
+        broadcast(JSON.stringify(
+            {
+                type: "LivePlayers",
+                text: 'Users viewing this page: ' + matchingConnections.length
+            }
+        ), matchingConnections);
     };
 
     app.ws('*', (ws) => {
