@@ -6,9 +6,10 @@ import com.zegreatrob.coupling.client.user.WebsocketProps
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import kotlinext.js.js
 import react.RClass
 import kotlin.browser.window
+import kotlin.js.Json
+import kotlin.js.json
 import kotlin.test.Test
 
 
@@ -61,7 +62,7 @@ class ServerMessageTest : ServerMessageRenderer, PropsClassProvider<ServerMessag
     }
 
     private fun socketMessage(expectedMessage: String) =
-        JSON.stringify(js { type = "LivePlayers"; text = expectedMessage }.unsafeCast<Any>())
+        JSON.stringify(json("type" to "LivePlayers", "text" to expectedMessage, "players" to emptyArray<Json>()))
 
     @Test
     fun displaysNotConnectedMessageWhenSocketIsClosed(): Unit = setup(object {
