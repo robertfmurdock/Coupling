@@ -10,58 +10,8 @@ a {
   color: #00B7FF;
 }
 
-.icon-button-text {
-  margin-left: 5px;
-}
-
-.title {
-  font-size: 2em;
-  font-weight: bold;
-}
-
-.background-element {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  #welcome {
-    width: 366px;
-    height: 334px;
-  }
-}
-
-#top-section {
-  white-space: nowrap;
-}
-
-#top-section, .minimized {
-  height: 400px;
-}
-
 .view-container {
   text-align: center;
-}
-
-.player {
-  img {
-    display: block;
-  }
-}
-
-.player {
-  position: relative;
-  clear: both;
-  display: inline-block;
-  overflow: hidden;
-  border: 3px outset gold;
-  background: darkseagreen url(./overlay.png) repeat-x;
-  padding: 6px;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  color: black;
-  margin: 0 2px 0 2px;
 }
 
 input.button {
