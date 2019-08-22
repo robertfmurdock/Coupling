@@ -6,8 +6,8 @@ import Tribe from "../../../common/Tribe";
 
 let config = require('../../config/config');
 let server = 'localhost:' + config.port;
-let agent = supertest.agent(server);
 let userEmail = 'test@test.tes';
+let userEmailTemp = 'test@test.tes._temp';
 
 let database = monk.default(config.tempMongoUrl);
 let tribesCollection = database.get('tribes');
@@ -15,7 +15,7 @@ let playersCollection = database.get('players');
 let usersCollection = monk.default(config.mongoUrl).get('users');
 
 async function getAuthenticatedCookie(username: any) {
-    const response = await agent.get(`/test-login?username=${username}&password=pw`).expect(302);
+    const response = await supertest.agent(server).get(`/test-login?username=${username}&password=pw`).expect(302);
     return {cookie: response.headers['set-cookie']};
 }
 
@@ -97,7 +97,7 @@ describe('Current connections websocket', function () {
         })
             .timeout(1000)
             .then((message) => {
-                expect(message).toEqual(makeConnectionMessage(1));
+                expect(message).toEqual(makeConnectionMessage(1, [userEmailTemp]));
             })
     });
 
@@ -105,7 +105,7 @@ describe('Current connections websocket', function () {
         Bluebird.all([this.promiseWebsocket(), this.promiseWebsocket()])
             .then(bundles => Bluebird.all(bundles.concat(this.promiseWebsocket())))
             .then(bundles => {
-                expect(bundles[2].messages).toEqual([makeConnectionMessage(3)]);
+                expect(bundles[2].messages).toEqual([makeConnectionMessage(3, [userEmailTemp])]);
                 return bundles;
             })
             .then(closeAllSockets())
@@ -113,32 +113,40 @@ describe('Current connections websocket', function () {
     });
 
     it('when there are multiple connections, gives you the total connection count for the current tribe', async function () {
-        const bundles1 = await Bluebird.all([
+        const altEmail = "alt-email@email.edu";
+        const altAuthenticatedHeaders = await getAuthenticatedCookie(altEmail);
+        await authorizeUserForTribes([tribeB.id], altEmail);
+
+        let messages = await Bluebird.all([
             this.promiseWebsocket(tribeA.id),
             this.promiseWebsocket(tribeB.id),
         ]);
-        const bundles2 = await Bluebird.all(bundles1.concat([
+        messages = messages.concat(await Bluebird.all([
             this.promiseWebsocket(tribeA.id),
-            this.promiseWebsocket(tribeB.id),
+            this.promiseWebsocket(tribeB.id, altAuthenticatedHeaders),
             this.promiseWebsocket(tribeB.id),
         ]));
-        const bundles3 = await Bluebird.all(bundles2.concat([
+        messages = messages.concat(await Bluebird.all([
             this.promiseWebsocket(tribeC.id),
             this.promiseWebsocket(tribeB.id),
         ]));
-        const lastTribeAConnection = bundles3[2];
-        expect(lastTribeAConnection.messages).toEqual([makeConnectionMessage(2)]);
+        const lastTribeAConnection = messages[2];
+        expect(lastTribeAConnection.messages).toEqual([makeConnectionMessage(2, [userEmailTemp])]);
 
-        const lastTribeBConnection = bundles3[bundles3.length - 1];
-        expect(lastTribeBConnection.messages).toEqual([makeConnectionMessage(4)]);
+        const lastTribeBConnection = messages[messages.length - 1];
+        expect(lastTribeBConnection.messages).toEqual([makeConnectionMessage(4, [userEmailTemp, altEmail + '._temp'])]);
 
-        const lastTribeCConnection = bundles3[5];
-        expect(lastTribeCConnection.messages).toEqual([makeConnectionMessage(1)]);
+        const lastTribeCConnection = messages[5];
+        expect(lastTribeCConnection.messages).toEqual([makeConnectionMessage(1, [userEmailTemp])]);
         await closeAllSockets();
     });
 
-    function makeConnectionMessage(count: number) {
-        return JSON.stringify({type: "LivePlayers", text: 'Users viewing this page: ' + count})
+    function makeConnectionMessage(count: number, userEmails: string[]) {
+        return JSON.stringify({
+            type: "LivePlayers",
+            text: 'Users viewing this page: ' + count,
+            players: userEmails.map(it => ({email: it}))
+        })
     }
 
     let promiseWebsocketClose = function (bundle) {
@@ -165,7 +173,7 @@ describe('Current connections websocket', function () {
                     });
             })
             .then(bundles => {
-                expect(bundles[1].messages).toEqual([makeConnectionMessage(2)]);
+                expect(bundles[1].messages).toEqual([makeConnectionMessage(2, [userEmailTemp])]);
                 return bundles;
             })
             .then(closeAllSockets())
@@ -176,7 +184,7 @@ describe('Current connections websocket', function () {
         this.promiseWebsocket()
             .then(bundle => Bluebird.all([bundle, this.promiseWebsocket()]))
             .then(bundles => {
-                expect(bundles[0].messages).toEqual([makeConnectionMessage(1), makeConnectionMessage(2)]);
+                expect(bundles[0].messages).toEqual([makeConnectionMessage(1, [userEmailTemp]), makeConnectionMessage(2, [userEmailTemp])]);
                 return bundles;
             })
             .then(closeAllSockets())
@@ -198,7 +206,7 @@ describe('Current connections websocket', function () {
                     .then(() => openBundle);
             })
             .then(bundle => {
-                expect(bundle.messages).toEqual([makeConnectionMessage(2), makeConnectionMessage(1)]);
+                expect(bundle.messages).toEqual([makeConnectionMessage(2, [userEmailTemp]), makeConnectionMessage(1, [userEmailTemp])]);
                 return [bundle];
             })
             .then(closeAllSockets())
@@ -253,7 +261,7 @@ describe('Current connections websocket', function () {
             websocket.on('open', () => websocket.close());
             websocket.on('close', resolve);
         }).timeout(100)
-            .then(() => agent.get('/test-login?username=' + userEmail + '&password=pw').expect(302))
+            .then(() => supertest.agent(server).get('/test-login?username=' + userEmail + '&password=pw').expect(302))
             .then(done, done.fail)
     });
 

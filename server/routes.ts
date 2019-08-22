@@ -75,7 +75,8 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
         broadcast(JSON.stringify(
             {
                 type: "LivePlayers",
-                text: 'Users viewing this page: ' + matchingConnections.length
+                text: 'Users viewing this page: ' + matchingConnections.length,
+                players: [... new Set(matchingConnections.map(it => (it.user.email)))].map(it=> ({email: it}))
             }
         ), matchingConnections);
     };
