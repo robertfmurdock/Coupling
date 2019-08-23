@@ -1,5 +1,4 @@
 "use strict";
-const commonKt = require("commonKt");
 const logging = require("logging");
 const server = require("server");
 const compression = require('compression');
@@ -69,14 +68,12 @@ function googleAuthTransferStrategy(userDataService) {
   }
 
   return new Strategy(function (request, done) {
-
     verify(request.body.idToken)
       .then(payload => {
         userDataService.findOrCreate(payload.email, function (err, user) {
           done(err, user);
         });
       }, err => done(err))
-
   });
 }
 
@@ -112,9 +109,7 @@ module.exports = function (app, userDataService) {
     secret: config.secret,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({
-      url: config.mongoUrl
-    })
+    store: new MongoStore({url: config.mongoUrl})
   }));
   app.use(passport.initialize());
   app.use(passport.session());
@@ -149,6 +144,4 @@ module.exports = function (app, userDataService) {
       });
     }));
   }
-
-
 };

@@ -7,12 +7,13 @@ import * as WebSocket from "ws";
 
 function toUserPlayerList(matchingConnections, players) {
     const uniqueEmails = [...new Set(matchingConnections.map(it => (it.user.email)))];
-    return uniqueEmails.map(email => {
+    return uniqueEmails.map((email: string) => {
         const existingPlayer = players.find(it => it.email === email);
         if (existingPlayer) {
             return existingPlayer
         } else {
-            return {email: email};
+            const atIndex = email.indexOf('@');
+            return {_id: '-1', name: email.substring(0, atIndex), email: email};
         }
     });
 }
