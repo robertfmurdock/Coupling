@@ -4,7 +4,18 @@ import * as routes from "./routes/index";
 import tribeRoute from "./routes/tribeRoute";
 import tribeListRoute from "./routes/tribeListRoute";
 import * as WebSocket from "ws";
-import * as AuthorizedTribeFetcher from "./lib/AuthorizedTribesFetcher";
+
+function toUserPlayerList(matchingConnections, players) {
+    const uniqueEmails = [...new Set(matchingConnections.map(it => (it.user.email)))];
+    return uniqueEmails.map(email => {
+        const existingPlayer = players.find(it => it.email === email);
+        if (existingPlayer) {
+            return existingPlayer
+        } else {
+            return {email: email};
+        }
+    });
+}
 
 module.exports = function (wsInstance, userDataService, couplingDataService) {
     const app = wsInstance.app;
@@ -35,24 +46,21 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 
-    app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
-
+    app.ws('/api/:tribeId/pairAssignments/current', async (connection, request) => {
         console.log('Websocket connection count: ' + wsInstance.getWss().clients.size);
 
-        AuthorizedTribeFetcher.promiseTribeAndAuthorization(request)
-            .then(({isAuthorized}) => {
-                if (isAuthorized) {
-                    const tribeId = request.params.tribeId;
-                    connection.tribeId = tribeId;
-                    connection.user = request.user;
-                    broadcastConnectionCountForTribe(tribeId);
+        const result = await request.commandDispatcher.performUserIsAuthorizedWithDataAction(request.params.tribeId);
+        if (result != null) {
+            const tribeId = request.params.tribeId;
+            connection.tribeId = tribeId;
+            connection.user = request.user;
+            broadcastConnectionCountForTribe(tribeId, result.players);
 
-                    connection.on('close', () => broadcastConnectionCountForTribe(tribeId));
-                    connection.on('error', console.log);
-                } else {
-                    connection.close();
-                }
-            });
+            connection.on('close', () => broadcastConnectionCountForTribe(tribeId, result.players));
+            connection.on('error', console.log);
+        } else {
+            connection.close();
+        }
     });
 
     function broadcast(message: string, clients: WebSocket[]) {
@@ -63,7 +71,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
         return client.readyState === WebSocket.OPEN && client.tribeId === tribeId;
     };
 
-    let broadcastConnectionCountForTribe = function (tribeId) {
+    let broadcastConnectionCountForTribe = function (tribeId, players) {
         const clients = wsInstance.getWss().clients;
         const matchingConnections = [];
         clients.forEach(client => {
@@ -76,7 +84,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
             {
                 type: "LivePlayers",
                 text: 'Users viewing this page: ' + matchingConnections.length,
-                players: [... new Set(matchingConnections.map(it => (it.user.email)))].map(it=> ({email: it}))
+                players: toUserPlayerList(matchingConnections, players)
             }
         ), matchingConnections);
     };

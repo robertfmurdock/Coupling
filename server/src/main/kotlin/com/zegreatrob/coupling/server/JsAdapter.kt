@@ -5,16 +5,16 @@ import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.user.User
-import com.zegreatrob.coupling.server.entity.user.UserRepository
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.coupling.common.toTribe
-import com.zegreatrob.coupling.server.entity.pin.PinRepository
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
+import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
+import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.server.entity.pin.PinRepository
 import com.zegreatrob.coupling.server.entity.pin.PinsQuery
 import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.entity.player.*
@@ -111,6 +111,7 @@ fun commandDispatcher(
         Wheel,
         AuthenticatedUserEmailSyntax,
         UserIsAuthorizedActionDispatcher,
+        UserIsAuthorizedWithDataActionDispatcher,
         RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
         override val user = user
         override val actionDispatcher = this
@@ -219,6 +220,15 @@ fun commandDispatcher(
         fun performUserIsAuthorizedAction(tribeId: String) = GlobalScope.promise {
             UserIsAuthorizedAction(TribeId(tribeId))
                 .perform()
+        }
+
+        @JsName("performUserIsAuthorizedWithDataAction")
+        fun performUserIsAuthorizedWithDataAction(tribeId: String) = GlobalScope.promise {
+            UserIsAuthorizedWithDataAction(TribeId(tribeId))
+                .perform()
+                ?.let { (tribe, players) ->
+                    json("tribe" to tribe.toJson(), "players" to players.map { it.toJson() }.toTypedArray())
+                }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.external.react
 
+import com.zegreatrob.coupling.common.ScopeProvider
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.plus

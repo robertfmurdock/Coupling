@@ -97,7 +97,7 @@ describe('Current connections websocket', function () {
         })
             .timeout(1000)
             .then((message) => {
-                expect(message).toEqual(makeConnectionMessage(1, [userEmailTemp]));
+                expect(message).toEqual(makeConnectionMessage(1, [userEmailTemp].map(it => ({email: it}))));
             })
     });
 
@@ -105,7 +105,7 @@ describe('Current connections websocket', function () {
         Bluebird.all([this.promiseWebsocket(), this.promiseWebsocket()])
             .then(bundles => Bluebird.all(bundles.concat(this.promiseWebsocket())))
             .then(bundles => {
-                expect(bundles[2].messages).toEqual([makeConnectionMessage(3, [userEmailTemp])]);
+                expect(bundles[2].messages).toEqual([(makeConnectionMessage(3, [userEmailTemp].map(it => ({email: it}))))]);
                 return bundles;
             })
             .then(closeAllSockets())
@@ -116,6 +116,13 @@ describe('Current connections websocket', function () {
         const altEmail = "alt-email@email.edu";
         const altAuthenticatedHeaders = await getAuthenticatedCookie(altEmail);
         await authorizeUserForTribes([tribeB.id], altEmail);
+        const altUserPlayerId = monk.id();
+        await playersCollection.insert({
+            _id: altUserPlayerId,
+            tribe: tribeB.id,
+            name: "excellentPlayer",
+            email: altEmail + "._temp"
+        });
 
         let messages = await Bluebird.all([
             this.promiseWebsocket(tribeA.id),
@@ -131,21 +138,28 @@ describe('Current connections websocket', function () {
             this.promiseWebsocket(tribeB.id),
         ]));
         const lastTribeAConnection = messages[2];
-        expect(lastTribeAConnection.messages).toEqual([makeConnectionMessage(2, [userEmailTemp])]);
+        expect(lastTribeAConnection.messages)
+            .toEqual([(makeConnectionMessage(2, [userEmailTemp].map(it => ({email: it}))))]);
 
         const lastTribeBConnection = messages[messages.length - 1];
-        expect(lastTribeBConnection.messages).toEqual([makeConnectionMessage(4, [userEmailTemp, altEmail + '._temp'])]);
+        expect(lastTribeBConnection.messages)
+            .toEqual([makeConnectionMessage(4, [{email: userEmailTemp}, {
+                _id: altUserPlayerId,
+                name: "excellentPlayer",
+                email: altEmail+"._temp"
+            }])]);
 
         const lastTribeCConnection = messages[5];
-        expect(lastTribeCConnection.messages).toEqual([makeConnectionMessage(1, [userEmailTemp])]);
+        expect(lastTribeCConnection.messages)
+            .toEqual([(makeConnectionMessage(1, [userEmailTemp].map(it => ({email: it}))))]);
         await closeAllSockets();
     });
 
-    function makeConnectionMessage(count: number, userEmails: string[]) {
+    function makeConnectionMessage(count: number, players: any) {
         return JSON.stringify({
             type: "LivePlayers",
             text: 'Users viewing this page: ' + count,
-            players: userEmails.map(it => ({email: it}))
+            players: players
         })
     }
 
@@ -173,7 +187,7 @@ describe('Current connections websocket', function () {
                     });
             })
             .then(bundles => {
-                expect(bundles[1].messages).toEqual([makeConnectionMessage(2, [userEmailTemp])]);
+                expect(bundles[1].messages).toEqual([(makeConnectionMessage(2, [userEmailTemp].map(it => ({email: it}))))]);
                 return bundles;
             })
             .then(closeAllSockets())
@@ -184,7 +198,9 @@ describe('Current connections websocket', function () {
         this.promiseWebsocket()
             .then(bundle => Bluebird.all([bundle, this.promiseWebsocket()]))
             .then(bundles => {
-                expect(bundles[0].messages).toEqual([makeConnectionMessage(1, [userEmailTemp]), makeConnectionMessage(2, [userEmailTemp])]);
+                expect(bundles[0].messages)
+                    .toEqual([(makeConnectionMessage(1, [userEmailTemp].map(it => ({email: it})))),
+                        (makeConnectionMessage(2, [userEmailTemp].map(it => ({email: it}))))]);
                 return bundles;
             })
             .then(closeAllSockets())
@@ -206,7 +222,9 @@ describe('Current connections websocket', function () {
                     .then(() => openBundle);
             })
             .then(bundle => {
-                expect(bundle.messages).toEqual([makeConnectionMessage(2, [userEmailTemp]), makeConnectionMessage(1, [userEmailTemp])]);
+                expect(bundle.messages)
+                    .toEqual([(makeConnectionMessage(2, [userEmailTemp].map(it => ({email: it})))),
+                        (makeConnectionMessage(1, [userEmailTemp].map(it => ({email: it}))))]);
                 return [bundle];
             })
             .then(closeAllSockets())

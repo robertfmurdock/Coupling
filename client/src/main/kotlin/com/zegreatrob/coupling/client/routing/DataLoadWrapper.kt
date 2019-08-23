@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.common.ScopeProvider
 import kotlinx.coroutines.*
 import kotlinx.html.classes
 import react.RBuilder

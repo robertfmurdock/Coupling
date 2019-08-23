@@ -1,7 +1,11 @@
 package com.zegreatrob.coupling.client.external.react
 
+import com.zegreatrob.coupling.common.ScopeProvider
 import kotlinext.js.jsObject
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.plus
 import org.w3c.dom.Node
 import react.*
 import kotlin.reflect.KClass
@@ -177,6 +181,3 @@ external interface SimpleStyle {
     val className: String
 }
 
-interface ScopeProvider {
-    fun buildScope(): CoroutineScope = MainScope()
-}
