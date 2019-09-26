@@ -30,7 +30,7 @@ const config = {
       "logging",
       "kotlin-css-js",
       "kotlinx-html-js",
-      "kotlinx-serialization-runtime-js",
+      "kotlinx-serialization-kotlinx-serialization-runtime",
       "kotlinx-coroutines-core"
     ]
   },
