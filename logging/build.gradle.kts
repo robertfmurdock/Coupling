@@ -18,14 +18,14 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.6")
                 implementation("com.soywiz:klock:1.1.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.10.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.13.0")
             }
         }
 
         getByName("jsMain") {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging-js:1.7.6")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.10.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.13.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
         }
