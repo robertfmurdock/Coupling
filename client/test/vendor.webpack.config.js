@@ -15,7 +15,7 @@ const config = {
       "d3-color",
       "d3-interpolate",
       "d3-selection",
-      "date-fns",
+      "date-fns/formatDistance",
       "react-websocket",
       "react-dnd",
       "react-dnd-html5-backend",

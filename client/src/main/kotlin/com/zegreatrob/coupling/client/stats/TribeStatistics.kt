@@ -10,9 +10,10 @@ import react.ReactElement
 import react.dom.div
 
 
-@JsModule("date-fns/distance_in_words")
+@JsModule("date-fns/formatDistance")
+external val formatDistanceModule: dynamic
 
-external val distanceInWorks: (Int, Int?) -> String
+val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> String>()
 
 object TribeStatistics : RComponent<TribeStatisticsProps>(provider()), TribeStatisticsBuilder
 
@@ -43,7 +44,7 @@ interface TribeStatisticsBuilder : StyledComponentRenderer<TribeStatisticsProps,
                         TeamStatisticsProps(
                             spinsUntilFullRotation = spinsUntilFullRotation,
                             activePlayerCount = players.size,
-                            medianSpinDuration = distanceInWorks(0, medianSpinDuration?.millisecondsInt)
+                            medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
                         )
                     )
                 }
