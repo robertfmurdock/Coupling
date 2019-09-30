@@ -2,7 +2,7 @@
 import {browser, By, element} from "protractor";
 import {playersCollection, tribeCollection} from "./database";
 import e2eHelp from "./e2e-help";
-import Tribe from "../../../common/Tribe";
+import Tribe from "../../../server/lib/common/Tribe";
 import * as monk from "monk";
 import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";

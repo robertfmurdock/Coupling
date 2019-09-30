@@ -1,6 +1,6 @@
 import * as BluebirdPromise from "bluebird";
 import * as monk from "monk";
-import Tribe from "../../common/Tribe";
+import Tribe from "./common/Tribe";
 
 const handleMongoError = function (error) {
     return {message: 'Could not read from MongoDB.', error: Error(error)};

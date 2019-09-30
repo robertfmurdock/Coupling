@@ -1,4 +1,4 @@
-import Tribe from "../../common/Tribe";
+import Tribe from "../../server/lib/common/Tribe";
 import * as Promise from "bluebird";
 import * as __ from "ramda/src/__";
 import * as filter from "ramda/src/filter";

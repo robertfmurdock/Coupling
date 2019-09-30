@@ -2,7 +2,7 @@ import * as WebSocket from "ws";
 import * as Bluebird from "bluebird";
 import * as supertest from "supertest";
 import * as monk from "monk";
-import Tribe from "../../../common/Tribe";
+import Tribe from "../../lib/common/Tribe";
 
 let config = require('../../config/config');
 let server = 'localhost:' + config.port;

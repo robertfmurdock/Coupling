@@ -1,5 +1,5 @@
 "use strict";
-import Comparators from "../../../common/Comparators";
+import Comparators from "../../lib/common/Comparators";
 import * as supertest from "supertest";
 import * as monk from "monk";
 

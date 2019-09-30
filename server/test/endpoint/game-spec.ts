@@ -1,11 +1,11 @@
 "use strict";
 import * as monk from "monk";
 import * as supertest from "supertest";
-import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
-import Badge from "../../../common/Badge";
-import Tribe from "../../../common/Tribe";
-import PairingRule from "../../../common/PairingRule";
-import Comparators from "../../../common/Comparators";
+import PairAssignmentDocument from "../../lib/common/PairAssignmentDocument";
+import Badge from "../../lib/common/Badge";
+import Tribe from "../../lib/common/Tribe";
+import PairingRule from "../../lib/common/PairingRule";
+import Comparators from "../../lib/common/Comparators";
 import ApiGuy from "../e2e/apiGuy";
 
 let config = require('../../config/config');

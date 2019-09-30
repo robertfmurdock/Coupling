@@ -1,5 +1,5 @@
-import Comparators from "../../../common/Comparators";
-import Pair from "../../../common/Pair";
+import Comparators from "../../lib/common/Comparators";
+import Pair from "../../lib/common/Pair";
 
 const ObjectID = require('mongodb').ObjectID;
 

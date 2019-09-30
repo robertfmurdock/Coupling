@@ -1,6 +1,6 @@
 "use strict";
 import {browser, By, by, element} from "protractor";
-import PairAssignmentDocument from "../../../common/PairAssignmentDocument";
+import PairAssignmentDocument from "../../../server/lib/common/PairAssignmentDocument";
 import * as monk from "monk";
 import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
