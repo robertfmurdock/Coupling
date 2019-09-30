@@ -57,7 +57,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-24-{{ .Branch }}
-      - run: "npm -g npm-check-updates"
+      - run: "npm install -g npm-check-updates"
       - run: "cd client; ncu -a"
       - run: "./gradlew build check"
       - store_artifacts:
