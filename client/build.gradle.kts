@@ -153,6 +153,12 @@ tasks {
         args = listOf("run", "test", "--silent")
     }
 
+    val updateDependencies by creating(YarnTask::class) {
+        dependsOn(yarn)
+
+        args = listOf("run", "ncu", "-u")
+    }
+
     val test by getting {
         dependsOn(karma)
     }

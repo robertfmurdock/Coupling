@@ -57,7 +57,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-24-{{ .Branch }}
-      - run: "./gradlew :client:yarn_ncu"
+      - run: "./gradlew :client:updateDependencies"
       - run: "./gradlew build check"
       - store_artifacts:
           path: build/test-output
