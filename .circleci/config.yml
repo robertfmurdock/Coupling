@@ -64,7 +64,7 @@ jobs:
       - store_test_results:
           path: build/test-output
       - run: "git add ."
-      - run: "git commit -m 'Automatic client dependency update.' --author=robert.f.murdock@gmail.com"
+      - run: "git commit -m 'Automatic client dependency update.' --author=\"Circleci in a RoB Suit <robert.f.murdock@gmail.com>\""
       - run: "git push"
 workflows:
   version: 2
