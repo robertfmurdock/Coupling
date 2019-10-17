@@ -115,45 +115,4 @@ describe('CouplingDataService', function () {
             .then(done, done.fail);
     });
 
-    describe('will filter based on the tribe name', function () {
-        const tribeId = 'Blackrock';
-        const ogrim = {tribe: tribeId, name: 'Orgrim'};
-        const garrosh = {tribe: tribeId, name: 'Garrosh'};
-        const blackrockPlayers = [
-            ogrim,
-            garrosh
-        ];
-
-        const blackrockPins = [
-            {name: "Chief", tribe: tribeId},
-            {name: "Warrior", tribe: tribeId}
-        ];
-
-        const blackrockPairAssignments = {
-            tribe: tribeId,
-            pairs: [
-                [garrosh, ogrim]
-            ]
-        };
-
-        beforeEach(function (done) {
-            playersCollection.insert(blackrockPlayers)
-                .then(function () {
-                    return pinCollection.insert(blackrockPins);
-                })
-                .then(function () {
-                    return historyCollection.insert(blackrockPairAssignments);
-                })
-                .then(done, done.fail);
-        });
-
-        it('get the correct pins', function (done) {
-            couplingDataService.requestPins(tribeId)
-                .then(function (pins) {
-                    expect(pins).toEqual(blackrockPins);
-                })
-                .then(done, done.fail);
-        });
-
-    });
 });

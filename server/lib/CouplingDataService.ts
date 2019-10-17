@@ -35,14 +35,6 @@ export default class CouplingDataService {
             .catch(handleMongoError);
     };
 
-    requestPins(tribeId): BluebirdPromise<any[]> {
-        return makeDocumentPromise(this.pinCollection, {}, {tribe: tribeId, isDeleted: null});
-    };
-
-    savePin(pin, callback) {
-        this.pinCollection.insert(pin, callback);
-    };
-
     removePin(pinId, callback) {
         this.pinCollection.update(pinId, {$set: {isDeleted: true}},
             this.makeUpdateByIdCallback('Failed to remove the pin because it did not exist.', callback));
