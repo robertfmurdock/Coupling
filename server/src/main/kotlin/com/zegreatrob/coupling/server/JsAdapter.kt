@@ -16,7 +16,8 @@ import com.zegreatrob.coupling.server.entity.pin.*
 import com.zegreatrob.coupling.server.entity.player.*
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.json
@@ -72,15 +73,16 @@ fun authActionDispatcher(userCollection: dynamic, userEmail: String): FindOrCrea
     override val userEmail: String get() = userEmail
     override val userCollection: dynamic = userCollection
     override val userRepository: UserRepository = this
+    val scope: CoroutineScope = MainScope()
 
     @JsName("performFindUserAction")
-    fun performFindUserAction() = GlobalScope.promise {
+    fun performFindUserAction() = scope.promise {
         FindUserAction.perform()
             ?.toJson()
     }
 
     @JsName("performFindOrCreateUserAction")
-    fun performFindOrCreateUserAction() = GlobalScope.promise {
+    fun performFindOrCreateUserAction() = scope.promise {
         FindOrCreateUserAction.perform()
             .toJson()
     }
@@ -116,8 +118,10 @@ fun commandDispatcher(
         override val actionDispatcher = this
         override val wheel: Wheel = this
 
+        val scope = MainScope()
+
         @JsName("performTribeListQuery")
-        fun performTribeListQuery() = GlobalScope.promise {
+        fun performTribeListQuery() = scope.promise {
             TribeListQuery
                 .perform()
                 .map { it.toJson() }
@@ -125,46 +129,46 @@ fun commandDispatcher(
         }
 
         @JsName("performTribeQuery")
-        fun performTribeQuery(tribeId: String) = GlobalScope.promise {
+        fun performTribeQuery(tribeId: String) = scope.promise {
             TribeQuery(TribeId(tribeId))
                 .perform()
                 ?.toJson()
         }
 
         @JsName("performSaveTribeCommand")
-        fun performSaveTribeCommand(tribe: Json) = GlobalScope.promise {
+        fun performSaveTribeCommand(tribe: Json) = scope.promise {
             SaveTribeCommand(tribe.toTribe())
                 .perform()
         }
 
         @JsName("performDeleteTribeCommand")
-        fun performDeleteTribeCommand(tribeId: String) = GlobalScope.promise {
+        fun performDeleteTribeCommand(tribeId: String) = scope.promise {
             DeleteTribeCommand(TribeId(tribeId))
                 .perform()
         }
 
         @JsName("performSavePlayerCommand")
-        fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {
+        fun performSavePlayerCommand(player: Json, tribeId: String) = scope.promise {
             SavePlayerCommand(TribeIdPlayer(TribeId(tribeId), player.toPlayer()))
                 .perform()
                 .let { it.toJson() }
         }
 
         @JsName("performSavePinCommand")
-        fun performSavePinCommand(pin: Json, tribeId: String) = GlobalScope.promise {
+        fun performSavePinCommand(pin: Json, tribeId: String) = scope.promise {
             SavePinCommand(TribeIdPin(TribeId(tribeId), pin.toPin()))
                 .perform()
                 .let { it.toJson() }
         }
 
         @JsName("performDeletePlayerCommand")
-        fun performDeletePlayerCommand(playerId: String) = GlobalScope.promise {
+        fun performDeletePlayerCommand(playerId: String) = scope.promise {
             DeletePlayerCommand(playerId)
                 .perform()
         }
 
         @JsName("performPlayersQuery")
-        fun performPlayersQuery(tribeId: String) = GlobalScope.promise {
+        fun performPlayersQuery(tribeId: String) = scope.promise {
             PlayersQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
@@ -172,7 +176,7 @@ fun commandDispatcher(
         }
 
         @JsName("performRetiredPlayersQuery")
-        fun performRetiredPlayersQuery(tribeId: String) = GlobalScope.promise {
+        fun performRetiredPlayersQuery(tribeId: String) = scope.promise {
             RetiredPlayersQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
@@ -180,7 +184,7 @@ fun commandDispatcher(
         }
 
         @JsName("performPinsQuery")
-        fun performPinsQuery(tribeId: String) = GlobalScope.promise {
+        fun performPinsQuery(tribeId: String) = scope.promise {
             PinsQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
@@ -188,13 +192,13 @@ fun commandDispatcher(
         }
 
         @JsName("performDeletePinCommand")
-        fun performDeletePinCommand(pinId: String) = GlobalScope.promise {
+        fun performDeletePinCommand(pinId: String) = scope.promise {
             DeletePinCommand(pinId)
                 .perform()
         }
 
         @JsName("performProposeNewPairsCommand")
-        fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = GlobalScope.promise {
+        fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = scope.promise {
             ProposeNewPairsCommand(TribeId(tribeId), players.map(Json::toPlayer))
                 .perform()
                 .let { it.toJson() }
@@ -202,7 +206,7 @@ fun commandDispatcher(
 
         @JsName("performSavePairAssignmentDocumentCommand")
         fun performSavePairAssignmentDocumentCommand(tribeId: String, pairAssignmentDocument: Json) =
-            GlobalScope.promise {
+            scope.promise {
                 SavePairAssignmentDocumentCommand(
                     TribeIdPairAssignmentDocument(
                         TribeId(tribeId),
@@ -215,13 +219,13 @@ fun commandDispatcher(
             }
 
         @JsName("performDeletePairAssignmentDocumentCommand")
-        fun performDeletePairAssignmentDocumentCommand(id: String) = GlobalScope.promise {
+        fun performDeletePairAssignmentDocumentCommand(id: String) = scope.promise {
             DeletePairAssignmentDocumentCommand(id.let(::PairAssignmentDocumentId))
                 .perform()
         }
 
         @JsName("performPairAssignmentDocumentListQuery")
-        fun performPairAssignmentDocumentListQuery(tribeId: String) = GlobalScope.promise {
+        fun performPairAssignmentDocumentListQuery(tribeId: String) = scope.promise {
             PairAssignmentDocumentListQuery(TribeId(tribeId))
                 .perform()
                 .map { it.toJson() }
@@ -229,13 +233,13 @@ fun commandDispatcher(
         }
 
         @JsName("performUserIsAuthorizedAction")
-        fun performUserIsAuthorizedAction(tribeId: String) = GlobalScope.promise {
+        fun performUserIsAuthorizedAction(tribeId: String) = scope.promise {
             UserIsAuthorizedAction(TribeId(tribeId))
                 .perform()
         }
 
         @JsName("performUserIsAuthorizedWithDataAction")
-        fun performUserIsAuthorizedWithDataAction(tribeId: String) = GlobalScope.promise {
+        fun performUserIsAuthorizedWithDataAction(tribeId: String) = scope.promise {
             UserIsAuthorizedWithDataAction(TribeId(tribeId))
                 .perform()
                 ?.let { (tribe, players) ->
