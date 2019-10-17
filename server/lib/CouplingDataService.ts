@@ -1,14 +1,4 @@
-import * as BluebirdPromise from "bluebird";
 import * as monk from "monk";
-import Tribe from "./common/Tribe";
-
-const handleMongoError = function (error) {
-    return {message: 'Could not read from MongoDB.', error: Error(error)};
-};
-
-const makeDocumentPromise = function (collection, options, filter) {
-    return collection.find(filter, options).catch(handleMongoError, "Wrapping error");
-};
 
 export default class CouplingDataService {
 
@@ -24,29 +14,6 @@ export default class CouplingDataService {
         this.historyCollection = this.database.get('history');
         this.tribesCollection = this.database.get('tribes');
         this.pinCollection = this.database.get('pins');
-    }
-
-    requestTribes(): BluebirdPromise<Tribe[]> {
-        return makeDocumentPromise(this.tribesCollection, undefined, undefined);
-    };
-
-    requestTribe(tribeId) {
-        return this.tribesCollection.findOne({id: tribeId})
-            .catch(handleMongoError);
-    };
-
-    removePin(pinId, callback) {
-        this.pinCollection.update(pinId, {$set: {isDeleted: true}},
-            this.makeUpdateByIdCallback('Failed to remove the pin because it did not exist.', callback));
-    };
-
-    private makeUpdateByIdCallback(failureToUpdateMessage, done) {
-        return function (error, result) {
-            if (result.nModified == 0 && error == null) {
-                error = {message: failureToUpdateMessage};
-            }
-            done(error);
-        };
     }
 
 }
