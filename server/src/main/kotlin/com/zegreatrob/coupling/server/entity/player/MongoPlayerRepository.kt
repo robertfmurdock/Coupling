@@ -29,7 +29,7 @@ interface MongoPlayerRepository : PlayerRepository,
 
     private suspend fun Json.savePlayerJson() = this.save(playersCollection)
 
-    override suspend fun delete(playerId: String) = deleteEntity(
+    override suspend fun deletePlayer(playerId: String) = deleteEntity(
         playerId,
         playersCollection,
         "Player",

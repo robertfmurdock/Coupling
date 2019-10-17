@@ -12,16 +12,17 @@ class PinRoutes {
         (commandDispatcher, request) => commandDispatcher.performSavePinCommand(request.body, request.params.tribeId),
         (response, data) => response.send(data)
     );
-    removePin(request, response) {
-        request.dataService.removePin(request.params.pinId, function (error) {
-            if (error) {
+    removePin = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performDeletePinCommand(request.params.pinId),
+        (response, data) => {
+            if (data)
+                response.send(data);
+            else {
                 response.statusCode = 404;
-                response.send(error);
-            } else {
-                response.send({});
+                response.send({message: 'Failed to remove the pin because it did not exist.'})
             }
-        });
-    };
+        }
+    );
 }
 
 const pins = new PinRoutes();

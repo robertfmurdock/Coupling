@@ -26,6 +26,7 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
     RetiredPlayersQueryDispatcher,
     SavePlayerCommandDispatcher,
     DeletePlayerCommandDispatcher,
+    DeletePinCommandDispatcher,
     PinsQueryDispatcher,
     SavePairAssignmentDocumentCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
@@ -35,6 +36,7 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
     SaveTribeCommandDispatcher,
     DeleteTribeCommandDispatcher {
     override val playerRepository: PlayerRepository
+    override val pinRepository: PinRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
@@ -183,6 +185,12 @@ fun commandDispatcher(
                 .perform()
                 .map { it.toJson() }
                 .toTypedArray()
+        }
+
+        @JsName("performDeletePinCommand")
+        fun performDeletePinCommand(pinId: String) = GlobalScope.promise {
+            DeletePinCommand(pinId)
+                .perform()
         }
 
         @JsName("performProposeNewPairsCommand")

@@ -1,6 +1,4 @@
 "use strict";
-import CouplingDataService from "../../lib/CouplingDataService";
-import * as Bluebird from 'bluebird'
 import * as monk from 'monk'
 import * as supertest from "supertest";
 
@@ -8,7 +6,6 @@ let config = require('../../config/config');
 
 let server = 'http://localhost:' + config.port;
 let agent = supertest.agent(server);
-let dataService = new CouplingDataService(config.tempMongoUrl);
 let tribeId = 'endpointTest';
 let path = '/api/' + tribeId + '/pins';
 let badTribePath = '/api/does-not-exist/pins';
@@ -118,8 +115,8 @@ describe(path, function () {
         it('will no longer display the deleted pin', async function () {
             const deleteResponse = await agent.delete(path + "/" + resultPins[1]._id)
                 .expect('Content-Type', /json/)
-                .expect(200)
-            expect(deleteResponse.body).toEqual({});
+                .expect(200);
+            expect(deleteResponse.body).toEqual(true);
 
             const getResponse = await agent.get(path)
                 .expect(200)

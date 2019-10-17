@@ -144,7 +144,7 @@ class MongoPlayerRepositoryTest {
             )
         }) exerciseAsync {
             save(TribeIdPlayer(tribe, player))
-            delete(playerId)
+            deletePlayer(playerId)
         } verifyAsync {
             getPlayersAsync(tribe).await().assertIsEqualTo(emptyList())
         }
@@ -167,7 +167,7 @@ class MongoPlayerRepositoryTest {
         }) {
             dropPlayers()
             save(TribeIdPlayer(tribeId, player))
-            delete(playerId)
+            deletePlayer(playerId)
         } exerciseAsync {
             getDeletedAsync(tribeId).await()
         } verifyAsync { result ->
@@ -192,9 +192,9 @@ class MongoPlayerRepositoryTest {
         }) {
             dropPlayers()
             save(player with tribeId)
-            delete(playerId)
+            deletePlayer(playerId)
             save(player with tribeId)
-            delete(playerId)
+            deletePlayer(playerId)
         } exerciseAsync {
             getDeletedAsync(tribeId).await()
         } verifyAsync { result ->
@@ -226,7 +226,7 @@ class MongoPlayerRepositoryTest {
                 save(TribeIdPlayer(tribeId, player))
             }
         } exerciseAsync {
-            delete(playerId)
+            deletePlayer(playerId)
         } verifyAsync {
             getDbPlayers(tribeId)
                     .toList()
@@ -271,7 +271,7 @@ class MongoPlayerRepositoryTest {
         @Test
         fun canDeletePlayersThatLookHistorical() = testAsync {
             setupLegacyPlayer() exerciseAsync {
-                delete(playerId)
+                deletePlayer(playerId)
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(emptyList())
@@ -343,7 +343,7 @@ class MongoPlayerRepositoryTest {
         setupAsync(object {
             val playerId = id()
         }) exerciseAsync {
-            delete(playerId)
+            deletePlayer(playerId)
         } verifyAsync { result -> result.assertIsEqualTo(false) }
     }
 

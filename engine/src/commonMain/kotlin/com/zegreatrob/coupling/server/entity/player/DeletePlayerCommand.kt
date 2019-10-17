@@ -11,5 +11,5 @@ interface DeletePlayerCommandDispatcher : ActionLoggingSyntax, PlayerIdDeleteSyn
 
 interface PlayerIdDeleteSyntax {
     val playerRepository: PlayerDeleter
-    suspend fun String.deletePlayer() = playerRepository.delete(this)
+    suspend fun String.deletePlayer() = playerRepository.deletePlayer(this)
 }

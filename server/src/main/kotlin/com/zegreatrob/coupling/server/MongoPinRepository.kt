@@ -10,14 +10,18 @@ import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
-interface MongoPinRepository : PinRepository, PinToDbSyntax, DbRecordSaveSyntax, DbRecordLoadSyntax {
+interface MongoPinRepository : PinRepository,
+    PinToDbSyntax,
+    DbRecordSaveSyntax,
+    DbRecordLoadSyntax,
+    DbRecordDeleteSyntax {
 
     val jsRepository: dynamic
     val pinCollection: dynamic get() = jsRepository.pinCollection
 
     override fun getPinsAsync(tribeId: TribeId): Deferred<List<Pin>> = GlobalScope.async {
         findByQuery(json("tribe" to tribeId.value), pinCollection)
-            .map { it.toDbPin() }
+            .map { it.fromDbToPin() }
     }
 
     override suspend fun save(tribeIdPin: TribeIdPin) = tribeIdPin.toDbJson()
@@ -28,6 +32,18 @@ interface MongoPinRepository : PinRepository, PinToDbSyntax, DbRecordSaveSyntax,
 
     private suspend fun Json.savePinJson() = this.save(pinCollection)
 
+    override suspend fun deletePin(pinId: String) = deleteEntity(
+        pinId,
+        pinCollection,
+        "Pin",
+        { toTribeIdPin() },
+        { toDbJson() }
+    )
+
+    private fun Json.toTribeIdPin() = TribeIdPin(
+        tribeId = TribeId(this["tribe"].unsafeCast<String>()),
+        pin = applyIdCorrection().fromDbToPin()
+    )
 
 }
 

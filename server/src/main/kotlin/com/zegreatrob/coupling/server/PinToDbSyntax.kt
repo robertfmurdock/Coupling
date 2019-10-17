@@ -6,14 +6,15 @@ import kotlin.js.json
 
 interface PinToDbSyntax {
 
-    fun Array<Json>.toDbPins() = map { it.toDbPin() }
+    fun Array<Json>.toDbPins() = map { it.fromDbToPin() }
 
-    fun Json.toDbPin() = Pin(
-        _id = this["_id"]?.toString(),
+    fun Json.fromDbToPin() = Pin(
+        _id = stringValue("id") ?: stringValue("_id"),
         name = this["name"]?.toString(),
         tribe = this["tribe"]?.toString()
     )
 
-    fun Pin.toDbJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
+    fun Pin.toDbJson() = json("id" to _id, "tribe" to tribe, "name" to name)
 
+    private fun Json.stringValue(key: String) = this[key]?.toString()
 }

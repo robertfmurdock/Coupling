@@ -23,6 +23,6 @@ class DeletePlayerCommandTest {
     }
 
     class PlayerRepositorySpy : PlayerDeleter, Spy<String, Boolean> by SpyData() {
-        override suspend fun delete(playerId: String): Boolean = spyFunction(playerId)
+        override suspend fun deletePlayer(playerId: String): Boolean = spyFunction(playerId)
     }
 }
