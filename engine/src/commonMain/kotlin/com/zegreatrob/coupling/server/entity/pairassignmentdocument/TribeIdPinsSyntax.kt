@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.pin.PinRepository
+import com.zegreatrob.coupling.server.entity.pin.PinGetter
 
 interface TribeIdPinsSyntax {
-    val pinRepository: PinRepository
-
+    val pinRepository: PinGetter
     fun TribeId.getPinsAsync() = pinRepository.getPinsAsync(this)
 }

@@ -81,20 +81,16 @@ describe(path, function () {
 
     describe("POST", function () {
 
-        it('will add player to tribe', function (done) {
+        it('will add player to tribe', async function () {
             let newPlayer = clean({_id: monk.id(), name: "Awesome-O", callSignAdjective: 'Super', callSignNoun: 'Hot'});
-            let httpPost = couplingServer.post(path);
-            httpPost.send(newPlayer)
-                .expect(200, newPlayer)
-                .then(function () {
-                    return couplingServer.get(path)
-                        .expect('Content-Type', /json/)
-                        .expect(200)
-                })
-                .then(function (response) {
-                    expect(response.body).toEqual([newPlayer]);
-                })
-                .then(done, done.fail);
+            await couplingServer.post(path)
+                .send(newPlayer)
+                .expect(200, newPlayer);
+            const response = await couplingServer.get(path)
+                .expect('Content-Type', /json/)
+                .expect(200);
+
+            await expect(response.body).toEqual([newPlayer]);
         });
 
         it('is not allowed for users without access', async function () {

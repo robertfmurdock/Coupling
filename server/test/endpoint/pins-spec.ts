@@ -66,9 +66,9 @@ describe(path, function () {
 
     describe("POST", function () {
         let resultPins = [
-            {_id: monk.id(), tribe: tribeId},
-            {_id: monk.id(), tribe: tribeId},
-            {_id: monk.id(), tribe: tribeId}
+            {_id: monk.id().toString(), tribe: tribeId, name: '1'},
+            {_id: monk.id().toString(), tribe: tribeId, name: '2'},
+            {_id: monk.id().toString(), tribe: tribeId, name: '3'}
         ];
 
         beforeEach(function (done) {
@@ -84,25 +84,18 @@ describe(path, function () {
                 .then(done, done.fail);
         });
 
-        it("will add pin to tribe", function (done) {
-            let newPin = {_id: monk.id(), tribe: tribeId};
-            let httpPost = agent.post(path);
-            httpPost.send(newPin)
+        it("will add pin to tribe", async function () {
+            const newPin = {_id: monk.id().toString(), tribe: tribeId, name: 'lol'};
+            const httpPost = agent.post(path);
+            const response = await httpPost.send(newPin)
                 .expect('Content-Type', /json/)
-                .expect(200)
-                .then(function (response) {
-                    let expectedPins = resultPins.concat(newPin);
-                    expect(clean(response.body)).toEqual(clean(newPin));
+                .expect(200);
 
-                    return Bluebird.props({
-                        expectedPins: expectedPins,
-                        results: dataService.requestPins(tribeId)
-                    });
-                })
-                .then(function (props: any) {
-                    expect(props.results).toEqual(props.expectedPins);
-                })
-                .then(done, done.fail);
+            const expectedPins = resultPins.concat(newPin);
+            expect(clean(response.body)).toEqual(clean(newPin));
+
+            const result = await agent.get(path);
+            expect(clean(result.body)).toEqual(clean(expectedPins));
         });
     });
     describe("DELETE", function () {
@@ -122,22 +115,16 @@ describe(path, function () {
                 .then(done, done.fail);
         });
 
-        it('will no longer display the deleted pin', function (done) {
-            let httpDelete = agent.delete(path + "/" + resultPins[1]._id);
-            httpDelete
+        it('will no longer display the deleted pin', async function () {
+            const deleteResponse = await agent.delete(path + "/" + resultPins[1]._id)
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .then(function (response) {
-                    expect(response.body).toEqual({});
+            expect(deleteResponse.body).toEqual({});
 
-                    return agent.get(path)
-                        .expect(200)
-                        .expect('Content-Type', /json/)
-                })
-                .then(function (response) {
-                    expect(clean(response.body)).toEqual(clean([resultPins[0], resultPins[2]]));
-                })
-                .then(done, done.fail);
+            const getResponse = await agent.get(path)
+                .expect(200)
+                .expect('Content-Type', /json/);
+            expect(clean(getResponse.body)).toEqual(clean([resultPins[0], resultPins[2]]));
         });
 
         it('will fail when pin does not exist', function (done) {

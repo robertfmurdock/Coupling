@@ -11,14 +11,14 @@ import com.zegreatrob.coupling.common.entity.tribe.TribeId
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
-        .plusIfNotNull("_id", id)
-        .plusIfNotNull("name", name)
-        .plusIfNotNull("email", email)
-        .plusIfNotNull("badge", badge)
-        .plusIfNotNull("callSignAdjective", callSignAdjective)
-        .plusIfNotNull("callSignNoun", callSignNoun)
-        .plusIfNotNull("imageURL", imageURL)
-        .pairsToJson()
+    .plusIfNotNull("_id", id)
+    .plusIfNotNull("name", name)
+    .plusIfNotNull("email", email)
+    .plusIfNotNull("badge", badge)
+    .plusIfNotNull("callSignAdjective", callSignAdjective)
+    .plusIfNotNull("callSignNoun", callSignNoun)
+    .plusIfNotNull("imageURL", imageURL)
+    .pairsToJson()
 
 fun PinnedPlayer.toJson(): Json = player.toJson().apply { this["pins"] = pins.toJson() }
 
@@ -32,19 +32,19 @@ fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pai
 }
 
 private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
-        .toTypedArray()
+    .toTypedArray()
 
 fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
 
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
-        id = stringValue("_id"),
-        badge = this["badge"]?.toIntFromStringOrInt(),
-        name = stringValue("name"),
-        email = stringValue("email"),
-        callSignAdjective = stringValue("callSignAdjective"),
-        callSignNoun = stringValue("callSignNoun"),
-        imageURL = stringValue("imageURL")
+    id = stringValue("_id"),
+    badge = this["badge"]?.toIntFromStringOrInt(),
+    name = stringValue("name"),
+    email = stringValue("email"),
+    callSignAdjective = stringValue("callSignAdjective"),
+    callSignNoun = stringValue("callSignNoun"),
+    imageURL = stringValue("imageURL")
 )
 
 private fun Any.toIntFromStringOrInt(): Int? = when (this) {
@@ -54,48 +54,48 @@ private fun Any.toIntFromStringOrInt(): Int? = when (this) {
 }
 
 fun Json.toTribe(): KtTribe = KtTribe(
-        id = TribeId(stringValue("id")!!),
-        name = stringValue("name"),
-        email = stringValue("email"),
-        pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
-        defaultBadgeName = stringValue("defaultBadgeName"),
-        alternateBadgeName = stringValue("alternateBadgeName"),
-        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
+    id = TribeId(stringValue("id")!!),
+    name = stringValue("name"),
+    email = stringValue("email"),
+    pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
+    defaultBadgeName = stringValue("defaultBadgeName"),
+    alternateBadgeName = stringValue("alternateBadgeName"),
+    badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
+    callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
 )
 
 fun KtTribe.toJson() = json(
-        "id" to id.value,
-        "pairingRule" to PairingRule.toValue(pairingRule),
-        "name" to name,
-        "email" to email,
-        "defaultBadgeName" to defaultBadgeName,
-        "alternateBadgeName" to alternateBadgeName,
-        "badgesEnabled" to badgesEnabled,
-        "callSignsEnabled" to callSignsEnabled
+    "id" to id.value,
+    "pairingRule" to PairingRule.toValue(pairingRule),
+    "name" to name,
+    "email" to email,
+    "defaultBadgeName" to defaultBadgeName,
+    "alternateBadgeName" to alternateBadgeName,
+    "badgesEnabled" to badgesEnabled,
+    "callSignsEnabled" to callSignsEnabled
 )
 
 private fun Json.stringValue(key: String) = this[key]?.toString()
 
-fun Array<Json>.toPins() = map {
-    Pin(
-            _id = it["_id"]?.toString(),
-            name = it["name"]?.toString(),
-            tribe = it["tribe"]?.toString()
-    )
-}
+fun Array<Json>.toPins() = map { it.toPin() }
+
+fun Json.toPin() = Pin(
+    _id = this["_id"]?.toString(),
+    name = this["name"]?.toString(),
+    tribe = this["tribe"]?.toString()
+)
 
 @Suppress("unused")
 @JsName("historyFromArray")
 fun historyFromArray(history: Array<Json>) =
-        history.map {
-            it.toPairAssignmentDocument()
-        }
+    history.map {
+        it.toPairAssignmentDocument()
+    }
 
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
-        pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-        id = this["_id"].unsafeCast<String?>()?.let { PairAssignmentDocumentId(it) }
+    date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
+    pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
+    id = this["_id"].unsafeCast<String?>()?.let { PairAssignmentDocumentId(it) }
 )
 
 @JsName("pairFromArray")
@@ -106,28 +106,28 @@ fun pairFromArray(array: Array<Json>) = array.map {
 private fun List<PinnedPlayer>.toPairs() = PinnedCouplingPair(this)
 
 fun StatisticsReport.toJson() = json(
-        "spinsUntilFullRotation" to spinsUntilFullRotation,
-        "pairReports" to pairReports.map { it.toJson() }.toTypedArray(),
-        "medianSpinDuration" to medianSpinDuration?.millisecondsInt
+    "spinsUntilFullRotation" to spinsUntilFullRotation,
+    "pairReports" to pairReports.map { it.toJson() }.toTypedArray(),
+    "medianSpinDuration" to medianSpinDuration?.millisecondsInt
 )
 
 fun PairReport.toJson() = json(
-        "pair" to pair.asArray().map { it.toJson() }.toTypedArray(),
-        "timeSinceLastPaired" to when (timeSinceLastPair) {
-            is TimeResultValue -> timeSinceLastPair.time
-            NeverPaired -> "NeverPaired"
-        }
+    "pair" to pair.asArray().map { it.toJson() }.toTypedArray(),
+    "timeSinceLastPaired" to when (timeSinceLastPair) {
+        is TimeResultValue -> timeSinceLastPair.time
+        NeverPaired -> "NeverPaired"
+    }
 )
 
 fun PairAssignmentDocument.toJson() = json(
-        "_id" to id?.value,
-        "date" to date.toDate(),
-        "pairs" to toJsPairs()
+    "_id" to id?.value,
+    "date" to date.toDate(),
+    "pairs" to toJsPairs()
 )
 
 private fun PairAssignmentDocument.toJsPairs() = pairs.map {
     it.players
-            .map { player -> player.toJson() }
-            .toTypedArray()
-}
+        .map { player -> player.toJson() }
         .toTypedArray()
+}
+    .toTypedArray()

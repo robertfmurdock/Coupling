@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.common.entity.player.Player
 import com.zegreatrob.coupling.common.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.entity.tribe.PairingRule
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.pin.PinRepository
+import com.zegreatrob.coupling.server.entity.pin.PinGetter
 import com.zegreatrob.coupling.server.entity.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -23,7 +23,7 @@ class ProposeNewPairsCommandTest {
 
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
-        setupAsync(object : ProposeNewPairsCommandDispatcher, PinRepository, TribeGet, PairAssignmentDocumentGetter {
+        setupAsync(object : ProposeNewPairsCommandDispatcher, PinGetter, TribeGet, PairAssignmentDocumentGetter {
             override val pairAssignmentDocumentRepository = this
             override val tribeRepository = this
             val players = listOf(Player(name = "John"))
@@ -39,7 +39,7 @@ class ProposeNewPairsCommandTest {
             override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = CompletableDeferred(tribe)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override val pinRepository: PinRepository = this
+            override val pinRepository: PinGetter = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
 
             val expectedPairAssignmentDocument = PairAssignmentDocument(DateTime.now(), listOf(), null)

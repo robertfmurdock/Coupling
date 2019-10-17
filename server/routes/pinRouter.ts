@@ -8,14 +8,10 @@ class PinRoutes {
         (commandDispatcher, request) => commandDispatcher.performPinsQuery(request.params.tribeId),
         (response, data) => response.send(data)
     );
-
-    savePin(request, response) {
-        var pin = request.body;
-        request.dataService.savePin(pin, function () {
-            response.send(pin);
-        });
-    };
-
+    savePin = handleRequest(
+        (commandDispatcher, request) => commandDispatcher.performSavePinCommand(request.body, request.params.tribeId),
+        (response, data) => response.send(data)
+    );
     removePin(request, response) {
         request.dataService.removePin(request.params.pinId, function (error) {
             if (error) {

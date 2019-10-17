@@ -1,22 +1,18 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
+import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.common.entity.pin.TribeIdPin
 import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.common.entity.tribe.TribeId
-import com.zegreatrob.coupling.common.toJson
-import com.zegreatrob.coupling.common.toPairAssignmentDocument
-import com.zegreatrob.coupling.common.toPlayer
-import com.zegreatrob.coupling.common.toTribe
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.server.entity.pin.PinRepository
-import com.zegreatrob.coupling.server.entity.pin.PinsQuery
-import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcher
+import com.zegreatrob.coupling.server.entity.pin.*
 import com.zegreatrob.coupling.server.entity.player.*
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
@@ -106,6 +102,7 @@ fun commandDispatcher(
         RunGameActionDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
+        SavePinCommandDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         Wheel,
@@ -147,6 +144,13 @@ fun commandDispatcher(
         @JsName("performSavePlayerCommand")
         fun performSavePlayerCommand(player: Json, tribeId: String) = GlobalScope.promise {
             SavePlayerCommand(TribeIdPlayer(TribeId(tribeId), player.toPlayer()))
+                .perform()
+                .let { it.toJson() }
+        }
+
+        @JsName("performSavePinCommand")
+        fun performSavePinCommand(pin: Json, tribeId: String) = GlobalScope.promise {
+            SavePinCommand(TribeIdPin(TribeId(tribeId), pin.toPin()))
                 .perform()
                 .let { it.toJson() }
         }
