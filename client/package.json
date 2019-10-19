@@ -41,7 +41,7 @@
     "jasmine-core": "^3.5.0",
     "jasmine-reporters": "^2.3.2",
     "jquery": "^3.4.1",
-    "karma": "^4.4.0",
+    "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.2.0",
     "karma-jasmine": "^2.0.1",
@@ -82,7 +82,7 @@
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.9",
     "webpack-node-externals": "^1.7.2",
-    "es-abstract": "^1.15.0"
+    "es-abstract": "^1.16.0"
   },
   "scripts": {
     "webpack": "webpack",
