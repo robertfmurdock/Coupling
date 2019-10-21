@@ -155,7 +155,6 @@ tasks {
 
     val updateDependencies by creating(YarnTask::class) {
         dependsOn(yarn)
-
         args = listOf("run", "ncu", "-u")
     }
 

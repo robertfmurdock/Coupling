@@ -164,6 +164,11 @@ tasks {
         args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
+    val updateDependencies by creating(YarnTask::class) {
+        dependsOn(yarn)
+        args = listOf("run", "ncu", "-u")
+    }
+
     val test by getting {
         dependsOn(serverTest)
     }
