@@ -104,7 +104,7 @@ workflows:
       - notify-aws:
           requires:
             - deploy-prod
-  update:
+  update-client:
     triggers:
       - schedule:
           cron: "0 16 * * *"
@@ -114,4 +114,13 @@ workflows:
                 - master
     jobs:
       - update-client
+update-server:
+    triggers:
+      - schedule:
+          cron: "0 15 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
       - update-server
