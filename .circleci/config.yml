@@ -114,7 +114,7 @@ workflows:
                 - master
     jobs:
       - update-client
-update-server:
+  update-server:
     triggers:
       - schedule:
           cron: "0 15 * * *"
