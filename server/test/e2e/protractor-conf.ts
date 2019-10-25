@@ -9,7 +9,7 @@ export let config: Config = {
     allScriptsTimeout: 11000,
 
     capabilities: {
-        'browserName': 'chrome',
+        'browserName': 'firefox',
         'loggingPrefs': {
             'browser': 'WARNING'
         },

@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: openjdk:8-jdk
       - image: mongo:latest
-      - image: selenium/standalone-chrome
+      - image: selenium/standalone-firefox
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
     steps:
