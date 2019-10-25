@@ -3,7 +3,7 @@ const url = require('url');
 
 const chooseBrowsers = function () {
   if (process.env.SELENIUM_ADDRESS) {
-    return ['remote-chrome'];
+    return ['remote-firefox'];
   } else {
     return ['Chrome', 'Firefox'];
   }
@@ -54,6 +54,11 @@ module.exports = function (config) {
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'chrome',
+      },
+      'remote-firefox': {
+        base: 'WebDriver',
+        config: webdriverConfig,
+        browserName: 'firefox',
       }
     },
 
