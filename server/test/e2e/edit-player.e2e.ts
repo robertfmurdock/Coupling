@@ -223,7 +223,6 @@ describe('The edit player page', function () {
 
         const playerNameTextField = element(By.id('player-name'));
         playerNameTextField.clear();
-        playerNameTextField.sendKeys(' \b');
 
         await savePlayerButton.click();
 
