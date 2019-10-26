@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentDocDeleteSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 
 data class DeletePairAssignmentsCommand(val tribeId: TribeId, val pairAssignmentDocumentId: PairAssignmentDocumentId) :
     Action

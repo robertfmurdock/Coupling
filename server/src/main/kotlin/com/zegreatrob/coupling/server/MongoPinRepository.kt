@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.common.entity.pin.Pin
-import com.zegreatrob.coupling.common.entity.pin.TribeIdPin
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.pin.PinRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope

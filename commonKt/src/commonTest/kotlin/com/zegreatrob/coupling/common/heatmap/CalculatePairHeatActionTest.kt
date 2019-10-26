@@ -1,12 +1,14 @@
-package com.zegreatrob.coupling.common.entity.heatmap
+package com.zegreatrob.coupling.common.heatmap
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinAssignmentSyntax
-import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinAssignmentSyntax
+import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.coupling.common.entity.heatmap.CalculatePairHeatAction
+import com.zegreatrob.coupling.common.entity.heatmap.CalculatePairHeatActionDispatcher
 import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
@@ -24,7 +26,8 @@ class CalculatePairHeatActionTest {
         val pair = CouplingPair.Double(Player(id = "bob"), Player(id = "fred"))
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 60
-        val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+        val action =
+            CalculatePairHeatAction(pair, history, rotationPeriod)
     }) exercise {
         action.perform()
     } verify { result ->
@@ -40,7 +43,8 @@ class CalculatePairHeatActionTest {
                 listOf(CouplingPair.Double(player2, player1)).pairAssignmentDocument()
         )
         val rotationPeriod = 60
-        val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+        val action =
+            CalculatePairHeatAction(pair, history, rotationPeriod)
     }) exercise {
         action.perform()
     } verify { result ->
@@ -124,7 +128,8 @@ class CalculatePairHeatActionTest {
                     alternatePairing2
             )
                     .map { it.pairAssignmentDocument() }
-            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action =
+                CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             action.perform()
         } verify { result ->
@@ -140,7 +145,8 @@ class CalculatePairHeatActionTest {
                     .buildHistoryByRepeating(intervalsUntilCooling)
                     .plus(expectedPairing.pairAssignmentDocument())
 
-            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action =
+                CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             action.perform()
         } verify { result ->
@@ -157,7 +163,8 @@ class CalculatePairHeatActionTest {
                     .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
                     .plus(expectedPairing)
 
-            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action =
+                CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             action.perform()
         } verify { result ->
@@ -189,7 +196,8 @@ class CalculatePairHeatActionTest {
                     .buildHistoryByRepeating(intervalsUntilCooling - 1)
                     .plus(expectedPairing)
 
-            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action =
+                CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             action.perform()
         } verify { result ->
@@ -209,7 +217,8 @@ class CalculatePairHeatActionTest {
 
             val history = goodRotation + absenteeRotation + goodRotation + goodRotation + goodRotation
 
-            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action =
+                CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             action.perform()
         } verify { result ->
@@ -229,7 +238,8 @@ class CalculatePairHeatActionTest {
 
             val history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
 
-            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action =
+                CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             action.perform()
         } verify { result ->

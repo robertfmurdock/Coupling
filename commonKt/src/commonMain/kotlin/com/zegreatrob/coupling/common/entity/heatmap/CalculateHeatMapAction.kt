@@ -2,13 +2,14 @@ package com.zegreatrob.coupling.common.entity.heatmap
 
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.player.Player
 
 data class CalculateHeatMapAction(val players: List<Player>, val history: List<PairAssignmentDocument>, val rotationPeriod: Int) : Action
 
-interface CalculateHeatMapActionDispatcher : ActionLoggingSyntax, CalculatePairHeatActionDispatcher {
+interface CalculateHeatMapActionDispatcher : ActionLoggingSyntax,
+    CalculatePairHeatActionDispatcher {
 
     fun CalculateHeatMapAction.perform() = log { players.map { player -> heatForEachPair(player) } }
 
@@ -19,7 +20,11 @@ interface CalculateHeatMapActionDispatcher : ActionLoggingSyntax, CalculatePairH
             if (player == alternatePlayer) {
                 null
             } else {
-                CalculatePairHeatAction(CouplingPair.Double(player, alternatePlayer), history, rotationPeriod)
+                CalculatePairHeatAction(
+                    CouplingPair.Double(player, alternatePlayer),
+                    history,
+                    rotationPeriod
+                )
                         .perform()
             }
 }

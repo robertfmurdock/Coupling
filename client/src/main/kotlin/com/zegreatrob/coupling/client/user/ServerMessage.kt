@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.user
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.toPlayer
 import react.RBuilder
 import react.RClass

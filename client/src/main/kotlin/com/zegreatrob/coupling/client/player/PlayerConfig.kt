@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPlayer
 import kotlinx.coroutines.CoroutineScope

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps

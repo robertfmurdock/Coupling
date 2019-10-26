@@ -1,9 +1,9 @@
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.internal.toDateTime
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.server.MonkToolkit
 import com.zegreatrob.minassert.assertIsEqualTo

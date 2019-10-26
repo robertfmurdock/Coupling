@@ -9,10 +9,10 @@ import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findComponent
@@ -30,7 +30,11 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 tribe = tribe,
                 players = emptyList(),
                 history = emptyList(),
-                heatmapData = CalculateHeatMapAction(emptyList(), emptyList(), 0).perform(),
+                heatmapData = CalculateHeatMapAction(
+                    emptyList(),
+                    emptyList(),
+                    0
+                ).perform(),
                 report = ComposeStatisticsAction(tribe, emptyList(), emptyList()).perform()
             )
         ) {}
@@ -134,7 +138,11 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             tribe = tribe,
             players = players,
             history = history,
-            heatmapData = CalculateHeatMapAction(players, history, report.spinsUntilFullRotation).perform(),
+            heatmapData = CalculateHeatMapAction(
+                players,
+                history,
+                report.spinsUntilFullRotation
+            ).perform(),
             report = report
         ),
             pathSetter = {}

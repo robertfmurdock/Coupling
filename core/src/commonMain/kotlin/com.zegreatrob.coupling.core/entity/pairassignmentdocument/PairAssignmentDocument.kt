@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.common.entity.pairassignmentdocument
+package com.zegreatrob.coupling.core.entity.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 
 data class PairAssignmentDocument(
         val date: DateTime,

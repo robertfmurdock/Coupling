@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.common
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(

@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toPlayer
 import com.zegreatrob.minassert.assertContains

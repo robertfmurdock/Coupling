@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.common.entity.player.callsign
+package com.zegreatrob.coupling.core.entity.player.callsign
 
 interface PredictableWordPicker {
 

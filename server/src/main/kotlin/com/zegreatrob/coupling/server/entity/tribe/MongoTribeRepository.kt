@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax

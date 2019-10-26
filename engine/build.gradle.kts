@@ -16,6 +16,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
+                api(project(":core"))
                 api(project(":commonKt"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")

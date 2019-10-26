@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.with
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.with
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync

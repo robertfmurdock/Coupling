@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.entity.player
 
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
-import com.zegreatrob.coupling.common.entity.player.with
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.core.entity.player.with
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax

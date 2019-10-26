@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 import Spy
 import SpyData
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test

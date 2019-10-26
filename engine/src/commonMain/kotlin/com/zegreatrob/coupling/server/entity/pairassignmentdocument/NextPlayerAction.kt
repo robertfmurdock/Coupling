@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResultValue
 
 data class NextPlayerAction(val gameSpin: GameSpin)
 

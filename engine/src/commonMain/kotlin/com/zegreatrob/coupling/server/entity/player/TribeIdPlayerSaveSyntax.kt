@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.player
 
-import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
 
 interface TribeIdPlayerSaveSyntax {
 

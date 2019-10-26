@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.common.entity.player.callsign.CallSignOptions
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignOptionsAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignOptionsActionDispatcher
 import com.zegreatrob.coupling.common.entity.player.callsign.defaultCallSignOptions
-import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -33,9 +33,11 @@ class FindCallSignOptionsActionTest {
     }) exercise {
         action.perform()
     } verify { result ->
-        result.assertIsEqualTo(CallSignOptions(
+        result.assertIsEqualTo(
+            CallSignOptions(
                 adjectives = defaultCallSignOptions.adjectives - setOf("Modest", "Intense"),
                 nouns = defaultCallSignOptions.nouns - setOf("Tiger", "Mongoose")
-        ))
+        )
+        )
     }
 }

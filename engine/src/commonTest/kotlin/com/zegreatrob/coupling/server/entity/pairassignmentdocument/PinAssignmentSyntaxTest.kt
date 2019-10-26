@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.common.entity.pin.Pin
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinAssignmentSyntax
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinAssignmentSyntax
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test

@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.UserAuthorizedTribeIdsSyntax
 import com.zegreatrob.coupling.UserEmailSyntax
-import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 
 interface UserAuthenticatedTribeIdSyntax : UserEmailSyntax, UserAuthorizedTribeIdsSyntax {
 

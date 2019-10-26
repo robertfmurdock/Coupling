@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.common.PairReport
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.NeverPaired
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResult
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResult
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import kotlinx.html.DIV
 import react.RBuilder
 import react.RProps

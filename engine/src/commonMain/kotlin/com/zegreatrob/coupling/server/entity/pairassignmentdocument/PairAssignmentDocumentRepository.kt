@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
 interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter, PairAssignmentDocumentDeleter

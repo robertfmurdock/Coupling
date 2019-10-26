@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.server.entity.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
-import com.zegreatrob.coupling.common.entity.player.with
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.core.entity.player.with
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync

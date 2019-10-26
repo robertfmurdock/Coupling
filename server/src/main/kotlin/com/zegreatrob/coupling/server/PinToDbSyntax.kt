@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.common.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.pin.Pin
 import kotlin.js.Json
 import kotlin.js.json
 

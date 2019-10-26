@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction

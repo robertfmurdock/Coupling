@@ -1,15 +1,14 @@
-package com.zegreatrob.coupling.common.entity.pairassignmentdocument
+package com.zegreatrob.coupling.core.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.common.entity.pin.Pin
-import com.zegreatrob.coupling.common.entity.player.Player
-import kotlin.js.JsName
+import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.player.Player
 
 
 fun pairOf(player1: Player) = CouplingPair.Single(player1)
 fun pairOf(player1: Player, player2: Player) = CouplingPair.Double(player1, player2)
 
 sealed class CouplingPair {
-    @JsName("asArray")
+
     abstract fun asArray(): Array<Player>
 
     object Empty : CouplingPair() {

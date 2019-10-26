@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.common.entity.heatmap
 
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.CouplingPair.Companion.equivalent
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair.Companion.equivalent
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
 import kotlin.math.min
 
 const val rotationHeatWindow = 5

@@ -21,6 +21,7 @@ node {
 
 dependencies {
     implementation(kotlin("stdlib-js"))
+    api(project(":core"))
     implementation(project(":commonKt"))
     implementation(project(":logging"))
     implementation("com.soywiz:klock:1.1.1")

@@ -16,6 +16,7 @@ rootProject.name = "Coupling"
 include("client")
 include("server")
 include("engine")
+include("core")
 include("commonKt")
 include("logging")
 include("test-logging")

@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.common.entity.pairassignmentdocument
+package com.zegreatrob.coupling.core.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.common.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.pin.Pin
 
 interface PinAssignmentSyntax {
     fun List<CouplingPair>.assign(pins: List<Pin>) =

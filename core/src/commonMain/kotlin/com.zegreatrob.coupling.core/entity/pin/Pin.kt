@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.common.entity.pin
+package com.zegreatrob.coupling.core.entity.pin
 
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 
 data class Pin(val _id: String? = null, val name: String? = null, val tribe: String? = null, val icon: String? = null)
 

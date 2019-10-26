@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 

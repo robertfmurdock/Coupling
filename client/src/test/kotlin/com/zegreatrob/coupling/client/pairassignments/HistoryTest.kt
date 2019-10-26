@@ -9,10 +9,10 @@ import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryRenderer
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryStyles
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync

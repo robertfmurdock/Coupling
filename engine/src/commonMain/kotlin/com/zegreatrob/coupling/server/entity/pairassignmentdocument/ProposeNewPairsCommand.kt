@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.tribe.TribeIdGetSyntax
 
 data class ProposeNewPairsCommand(val tribeId: TribeId, val players: List<Player>) : Action

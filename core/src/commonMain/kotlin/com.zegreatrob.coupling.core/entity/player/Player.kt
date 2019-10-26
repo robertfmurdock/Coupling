@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.common.entity.player
+package com.zegreatrob.coupling.core.entity.player
 
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 
 data class Player(
         val id: String? = null,

@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
 import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
 data class HistoryQuery(val tribeId: TribeId) : Action

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.common.entity.pin.Pin
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import kotlinx.html.InputType
 import kotlinx.html.classes
 import react.RBuilder

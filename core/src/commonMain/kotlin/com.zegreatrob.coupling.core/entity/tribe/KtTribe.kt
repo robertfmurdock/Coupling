@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.common.entity.tribe;
+package com.zegreatrob.coupling.core.entity.tribe;
 
 data class KtTribe(
         val id: TribeId,

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.common.toJson
 import com.zegreatrob.coupling.common.toTribe
 import kotlinx.coroutines.launch

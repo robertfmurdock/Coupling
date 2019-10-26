@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.common
 
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.player.callsign.CallSign
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo

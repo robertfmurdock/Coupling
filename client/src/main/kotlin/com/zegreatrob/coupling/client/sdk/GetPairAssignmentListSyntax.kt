@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.sdk
 
 import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.client.external.axios.getList
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.common.toPairAssignmentDocument
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred

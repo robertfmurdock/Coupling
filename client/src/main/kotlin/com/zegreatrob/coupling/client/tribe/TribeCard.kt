@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes

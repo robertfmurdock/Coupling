@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.common
 
 import com.soywiz.klock.internal.toDate
 import com.soywiz.klock.internal.toDateTime
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.common.entity.pin.Pin
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
+import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import org.w3c.dom.url.URLSearchParams
 import react.RProps
 

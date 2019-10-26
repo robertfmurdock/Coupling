@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.PairingRule
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.PairingRule
 
 interface PlayerCandidatesFinder {
 

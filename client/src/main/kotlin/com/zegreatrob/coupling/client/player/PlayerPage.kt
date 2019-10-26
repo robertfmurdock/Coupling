@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.ReloadFunction
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import react.RBuilder
 import react.ReactElement
 

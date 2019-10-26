@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.entity.pin
 
-import com.zegreatrob.coupling.common.entity.pin.Pin
-import com.zegreatrob.coupling.common.entity.pin.TribeIdPin
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
 interface PinRepository : PinSaver, PinGetter, PinDeleter

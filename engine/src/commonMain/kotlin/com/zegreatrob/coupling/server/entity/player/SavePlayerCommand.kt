@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
 
 data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) : Action
 

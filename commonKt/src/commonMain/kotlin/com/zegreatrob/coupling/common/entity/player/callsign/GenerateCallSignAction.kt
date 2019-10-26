@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.common.entity.player.callsign
 
-import com.zegreatrob.coupling.common.entity.player.Player
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.player.callsign.CallSign
+import com.zegreatrob.coupling.core.entity.player.callsign.PredictableWordPicker
 import kotlin.random.Random
 
 data class GenerateCallSignAction(

@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.common.*
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.common.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.common.entity.pin.TribeIdPin
-import com.zegreatrob.coupling.common.entity.player.TribeIdPlayer
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
+import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction

@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
 import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.common.entity.player.Player
-import com.zegreatrob.coupling.common.entity.tribe.KtTribe
-import com.zegreatrob.coupling.common.entity.tribe.TribeId
+import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>) : Action
