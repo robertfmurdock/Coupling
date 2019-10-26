@@ -120,6 +120,7 @@ tasks {
     val clientYarn = getByPath(":client:yarn")
     serverYarn.mustRunAfter(clientYarn)
     val commonYarn = getByPath(":commonKt:yarn")
+    commonYarn.mustRunAfter(getByPath(":core:yarn"))
     clientYarn.mustRunAfter(commonYarn)
     val engineYarn = getByPath(":engine:yarn")
     commonYarn.mustRunAfter(engineYarn)
