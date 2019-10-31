@@ -18,6 +18,7 @@ kotlin {
             dependencies {
                 api(project(":core"))
                 api(project(":commonKt"))
+                api(project(":engine"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.2")
