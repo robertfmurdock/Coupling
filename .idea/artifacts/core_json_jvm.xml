@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="core-json-jvm">
+    <output-path>$PROJECT_DIR$/core-json/build/libs</output-path>
+    <root id="archive" name="core-json-jvm.jar">
+      <element id="module-output" name="Coupling.core-json.jvmMain" />
+    </root>
+  </artifact>
+</component>

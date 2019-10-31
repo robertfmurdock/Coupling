@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.client.external.axios.getList
 import com.zegreatrob.coupling.core.entity.pin.Pin
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.common.toPins
+import com.zegreatrob.coupling.core.json.toPins
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
 

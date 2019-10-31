@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.common.toPlayer
+import com.zegreatrob.coupling.core.json.toPlayer
 import react.RBuilder
 import react.RClass
 import react.RProps

@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/commonKt" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-json" />
             <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/server" />
