@@ -8,8 +8,8 @@ class PlaceholderTest {
     @Test
     fun thing() = setup(object {
     }) exercise {
-        
-    } verify { result ->
+
+    } verify { _ ->
 
     }
 

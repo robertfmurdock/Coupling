@@ -14,7 +14,7 @@ fun StatisticsReport.toJson() = json(
 fun PairReport.toJson() = json(
     "pair" to pair.asArray().map { it.toJson() }.toTypedArray(),
     "timeSinceLastPaired" to when (timeSinceLastPair) {
-        is TimeResultValue -> timeSinceLastPair.time
+        is TimeResultValue -> (timeSinceLastPair as TimeResultValue).time
         NeverPaired -> "NeverPaired"
     }
 )
