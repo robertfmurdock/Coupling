@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.player
+package com.zegreatrob.coupling.coremongo.player
 
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax
-import com.zegreatrob.coupling.server.PlayerToDbSyntax
 import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.json

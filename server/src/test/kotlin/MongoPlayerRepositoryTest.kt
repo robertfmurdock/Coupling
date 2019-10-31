@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.core.entity.player.with
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.MonkToolkit
-import com.zegreatrob.coupling.server.entity.player.MongoPlayerRepository
+import com.zegreatrob.coupling.coremongo.player.MongoPlayerRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
-import com.zegreatrob.coupling.common.*
 import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
@@ -14,7 +13,7 @@ import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.pin.*
-import com.zegreatrob.coupling.server.entity.player.*
+import com.zegreatrob.coupling.coremongo.player.*
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
 import kotlinx.coroutines.CoroutineScope

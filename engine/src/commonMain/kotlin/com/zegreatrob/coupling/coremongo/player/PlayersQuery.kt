@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.player
+package com.zegreatrob.coupling.coremongo.player
 
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax

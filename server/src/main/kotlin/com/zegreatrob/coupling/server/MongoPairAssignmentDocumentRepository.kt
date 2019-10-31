@@ -5,6 +5,7 @@ import com.soywiz.klock.internal.toDateTime
 import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.core.entity.pin.Pin
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.coremongo.player.PlayerToDbSyntax
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope

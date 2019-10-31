@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.coremongo.player
 
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.json.pairsToJson
