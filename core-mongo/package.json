@@ -1,0 +1,14 @@
+{
+  "name": "engine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^3.3.1",
+    "jasmine-reporters": "^2.3.2",
+    "source-map-support": "^0.5.10"
+  },
+  "dependencies": {
+    "fs-extra": "^7.0.1"
+  }
+}

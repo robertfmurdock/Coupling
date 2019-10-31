@@ -53,10 +53,6 @@ sourceSets {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
-    val yarn by getting {
-        mustRunAfter(":commonKt:yarn")
-    }
-
     val clean by getting {
         doLast {
             delete(file("build"))

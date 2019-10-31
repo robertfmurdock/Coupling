@@ -120,14 +120,15 @@ tasks {
     val clientYarn = getByPath(":client:yarn")
     serverYarn.mustRunAfter(clientYarn)
     val commonYarn = getByPath(":commonKt:yarn")
-    clientYarn.mustRunAfter(commonYarn)
+    commonYarn.mustRunAfter(serverYarn)
     val coreYarn = getByPath(":core:yarn")
-    commonYarn.mustRunAfter(coreYarn)
+    coreYarn.mustRunAfter(commonYarn)
     val engineYarn = getByPath(":engine:yarn")
-    commonYarn.mustRunAfter(engineYarn)
+    engineYarn.mustRunAfter(coreYarn)
     val coreJsonYarn = getByPath(":core-json:yarn")
-    commonYarn.mustRunAfter(coreJsonYarn)
-
+    coreJsonYarn.mustRunAfter(engineYarn)
+    val coreMongoYarn = getByPath(":core-mongo:yarn")
+    coreMongoYarn.mustRunAfter(coreJsonYarn)
 }
 
 fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
