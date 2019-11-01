@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataActionDispa
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.pin.*
 import com.zegreatrob.coupling.coremongo.player.*
+import com.zegreatrob.coupling.coremongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
 import kotlinx.coroutines.CoroutineScope

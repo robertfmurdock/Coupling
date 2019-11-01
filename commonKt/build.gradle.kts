@@ -92,6 +92,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
+        dependsOn(":core-json:assemble")
         dependsOn(":test-logging:assemble")
     }
 

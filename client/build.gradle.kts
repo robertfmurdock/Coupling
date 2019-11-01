@@ -72,7 +72,14 @@ tasks {
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         inputs.files(compileKotlin2Js.inputs.files)
-        dependsOn(":engine:assemble", ":test-logging:assemble")
+        dependsOn(
+            ":core:assemble",
+            ":core-json:assemble",
+            ":commonKt:assemble",
+            ":logging:assemble",
+            ":engine:assemble",
+            ":test-logging:assemble"
+        )
 
         forEachJsTarget(project).let { (main, test) ->
             customCompileConfiguration = main
@@ -85,7 +92,7 @@ tasks {
 
     val runDceTestKotlinJs by getting(KotlinJsDce::class) {
         keep(
-                "client_test.setLogLevel"
+            "client_test.setLogLevel"
         )
     }
 
@@ -94,9 +101,9 @@ tasks {
         mustRunAfter("clean")
 
         inputs.files(runDceKotlinJs.outputs)
-        inputs.dir("node_modules")
+        inputs.files("node_modules")
         inputs.file(file("package.json"))
-        inputs.dir("build/node_modules_imported")
+        inputs.files("build/node_modules_imported")
         inputs.file(file("vendor.webpack.config.js"))
         outputs.dir("build/lib/vendor")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
@@ -108,9 +115,9 @@ tasks {
         mustRunAfter("clean")
 
         inputs.files(runDceKotlinJs.outputs)
-        inputs.dir("node_modules")
+        inputs.files("node_modules")
         inputs.file(file("package.json"))
-        inputs.dir("build/node_modules_imported")
+        inputs.files("build/node_modules_imported")
         inputs.file(file("test/vendor.webpack.config.js"))
         outputs.dir("build/lib/test-vendor")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
@@ -119,13 +126,13 @@ tasks {
 
     task<YarnTask>("compile") {
         dependsOn(yarn, vendorCompile, runDceKotlinJs, processResources)
-        inputs.dir("node_modules")
+        inputs.dir("node_modules").skipWhenEmpty()
         inputs.file(file("package.json"))
         inputs.files(runDceKotlinJs.outputs)
         inputs.file(file("webpack.config.js"))
         inputs.file(file("tsconfig.json"))
-        inputs.dir("build/lib/vendor")
-        inputs.dir("build/resources")
+        inputs.files("build/lib/vendor")
+        inputs.files("build/resources")
         outputs.dir("build/lib/main")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "webpack.config.js")
@@ -133,13 +140,13 @@ tasks {
 
     val karma by creating(YarnTask::class) {
         dependsOn(
-                yarn,
-                vendorCompile,
-                testVendorCompile,
-                ":commonKt:jsTest",
-                compileTestKotlin2Js,
-                runDceTestKotlinJs,
-                unpackJsGradleDependencies
+            yarn,
+            vendorCompile,
+            testVendorCompile,
+            ":commonKt:jsTest",
+            compileTestKotlin2Js,
+            runDceTestKotlinJs,
+            unpackJsGradleDependencies
         )
         inputs.file(file("package.json"))
         inputs.files(vendorCompile.inputs.files)

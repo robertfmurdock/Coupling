@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.tribe
+package com.zegreatrob.coupling.coremongo.tribe
 
 import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.core.entity.tribe.PairingRule
@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.server.DbRecordLoadSyntax
 import com.zegreatrob.coupling.server.DbRecordSaveSyntax
+import com.zegreatrob.coupling.server.entity.tribe.TribeRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -18,9 +19,7 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
     val jsRepository: dynamic
 
     override suspend fun save(tribe: KtTribe) = tribe.toDbJson()
-        .let {
-            it.save(jsRepository.tribesCollection)
-        }
+        .save(jsRepository.tribesCollection)
 
     override suspend fun delete(tribeId: TribeId) = deleteEntity(
         id = tribeId.value,

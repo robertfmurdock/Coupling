@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.server.entity.tribe
+package com.zegreatrob.coupling.coremongo
 
 import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.core.entity.tribe.PairingRule
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.MonkToolkit
+import com.zegreatrob.coupling.coremongo.tribe.MongoTribeRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
