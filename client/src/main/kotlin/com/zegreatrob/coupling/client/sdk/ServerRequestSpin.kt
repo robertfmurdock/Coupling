@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.core.json.toJson
-import com.zegreatrob.coupling.core.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 

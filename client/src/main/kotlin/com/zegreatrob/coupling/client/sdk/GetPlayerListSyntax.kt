@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.axios.axios
 import com.zegreatrob.coupling.client.external.axios.getList
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.core.json.toPlayer
+import com.zegreatrob.coupling.json.toPlayer
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json

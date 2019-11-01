@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.core.json
+package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.internal.toDate
 import com.soywiz.klock.internal.toDateTime

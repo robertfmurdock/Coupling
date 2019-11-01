@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.core.json
+package com.zegreatrob.coupling.json
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup

@@ -20,7 +20,7 @@ node {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":core-json"))
+    implementation(project(":json"))
     implementation(project(":core-mongo"))
     implementation(project(":engine"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2")
@@ -81,7 +81,7 @@ tasks {
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         inputs.files(compileKotlin2Js.inputs.files)
-        dependsOn(":engine:assemble", ":core-json:assemble", ":test-logging:assemble")
+        dependsOn(":engine:assemble", ":json:assemble", ":test-logging:assemble")
 
         forEachJsTarget(project).let { (main, test) ->
             customCompileConfiguration = main

@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.core.entity.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.core.json.toJson
+import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync

@@ -30,7 +30,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                implementation(project(":core-json"))
+                implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:+")
@@ -69,7 +69,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation(project(":core-json"))
+                implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
@@ -92,7 +92,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":core-json:assemble")
+        dependsOn(":json:assemble")
         dependsOn(":test-logging:assemble")
     }
 

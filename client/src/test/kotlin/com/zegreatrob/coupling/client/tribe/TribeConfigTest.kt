@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.core.entity.tribe.PairingRule
 import com.zegreatrob.coupling.core.entity.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.core.json.toJson
-import com.zegreatrob.coupling.core.json.toTribe
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync

@@ -22,7 +22,7 @@ node {
 dependencies {
     implementation(kotlin("stdlib-js"))
     api(project(":core"))
-    api(project(":core-json"))
+    api(project(":json"))
     implementation(project(":commonKt"))
     implementation(project(":logging"))
     implementation("com.soywiz:klock:1.1.1")
@@ -74,7 +74,7 @@ tasks {
         inputs.files(compileKotlin2Js.inputs.files)
         dependsOn(
             ":core:assemble",
-            ":core-json:assemble",
+            ":json:assemble",
             ":commonKt:assemble",
             ":logging:assemble",
             ":engine:assemble",

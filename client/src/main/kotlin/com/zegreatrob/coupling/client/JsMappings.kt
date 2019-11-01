@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.common
 
 import com.zegreatrob.coupling.core.entity.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.core.json.toJson
+import com.zegreatrob.coupling.json.toJson
 import kotlin.js.json
 
 fun StatisticsReport.toJson() = json(

@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.json.toJson
-import com.zegreatrob.coupling.core.json.toPlayer
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

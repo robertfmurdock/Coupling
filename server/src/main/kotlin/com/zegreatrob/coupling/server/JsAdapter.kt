@@ -6,18 +6,18 @@ import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAss
 import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
 import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.core.json.*
 import com.zegreatrob.coupling.coremongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.coremongo.pin.MongoPinRepository
+import com.zegreatrob.coupling.coremongo.player.*
+import com.zegreatrob.coupling.coremongo.tribe.MongoTribeRepository
+import com.zegreatrob.coupling.coremongo.user.MongoUserRepository
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.pin.*
-import com.zegreatrob.coupling.coremongo.player.*
-import com.zegreatrob.coupling.coremongo.tribe.MongoTribeRepository
-import com.zegreatrob.coupling.coremongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
 import kotlinx.coroutines.CoroutineScope
@@ -155,14 +155,14 @@ fun commandDispatcher(
         fun performSavePlayerCommand(player: Json, tribeId: String) = scope.promise {
             SavePlayerCommand(TribeIdPlayer(TribeId(tribeId), player.toPlayer()))
                 .perform()
-                .let { it.toJson() }
+                .toJson()
         }
 
         @JsName("performSavePinCommand")
         fun performSavePinCommand(pin: Json, tribeId: String) = scope.promise {
             SavePinCommand(TribeIdPin(TribeId(tribeId), pin.toPin()))
                 .perform()
-                .let { it.toJson() }
+                .toJson()
         }
 
         @JsName("performDeletePlayerCommand")
@@ -205,7 +205,7 @@ fun commandDispatcher(
         fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = scope.promise {
             ProposeNewPairsCommand(TribeId(tribeId), players.map(Json::toPlayer))
                 .perform()
-                .let { it.toJson() }
+                .toJson()
         }
 
         @JsName("performSavePairAssignmentDocumentCommand")
