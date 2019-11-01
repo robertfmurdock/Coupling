@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
-import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
-import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
+import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import react.RProps
 import react.ReactElement
 import react.dom.div

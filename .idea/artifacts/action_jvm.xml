@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="action-jvm">
+    <output-path>$PROJECT_DIR$/action/build/libs</output-path>
+    <root id="archive" name="action-jvm.jar">
+      <element id="module-output" name="Coupling.action.jvmMain" />
+    </root>
+  </artifact>
+</component>

@@ -20,7 +20,7 @@ const config = {
       "react-dnd",
       "react-dnd-html5-backend",
       "font-awesome/css/font-awesome.css",
-      "commonKt",
+      "action",
       "kotlin",
       "kotlin-styled",
       "kotlin-react",

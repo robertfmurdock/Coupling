@@ -12,9 +12,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/action" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
-            <option value="$PROJECT_DIR$/commonKt" />
             <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/json" />
             <option value="$PROJECT_DIR$/logging" />

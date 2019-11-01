@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pin
 
-import com.zegreatrob.coupling.common.Action
-import com.zegreatrob.coupling.common.ActionLoggingSyntax
+import com.zegreatrob.coupling.action.Action
+import com.zegreatrob.coupling.action.ActionLoggingSyntax
 
 data class DeletePinCommand(val pinId: String) : Action
 

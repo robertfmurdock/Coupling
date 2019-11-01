@@ -23,7 +23,7 @@ dependencies {
     implementation(kotlin("stdlib-js"))
     api(project(":model"))
     api(project(":json"))
-    implementation(project(":commonKt"))
+    implementation(project(":action"))
     implementation(project(":logging"))
     implementation("com.soywiz:klock:1.1.1")
     implementation("io.github.microutils:kotlin-logging-js:1.7.6")
@@ -75,7 +75,7 @@ tasks {
         dependsOn(
             ":model:assemble",
             ":json:assemble",
-            ":commonKt:assemble",
+            ":action:assemble",
             ":logging:assemble",
             ":engine:assemble",
             ":test-logging:assemble"
@@ -143,7 +143,7 @@ tasks {
             yarn,
             vendorCompile,
             testVendorCompile,
-            ":commonKt:jsTest",
+            ":action:jsTest",
             compileTestKotlin2Js,
             runDceTestKotlinJs,
             unpackJsGradleDependencies

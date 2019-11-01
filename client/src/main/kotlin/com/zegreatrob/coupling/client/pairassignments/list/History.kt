@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
-import com.zegreatrob.coupling.common.ScopeProvider
+import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.AuthenticatedUserSyntax
-import com.zegreatrob.coupling.common.Action
-import com.zegreatrob.coupling.common.ActionLoggingSyntax
+import com.zegreatrob.coupling.action.Action
+import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId

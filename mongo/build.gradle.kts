@@ -61,7 +61,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":commonKt:assemble")
+        dependsOn(":action:assemble")
     }
 
 }

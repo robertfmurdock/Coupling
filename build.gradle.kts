@@ -43,9 +43,9 @@ tasks {
         into("build/test-output/client")
     })
 
-    val copyCommonKtTestResults by creating(Copy::class, copyForTask(findByPath(":commonKt:jsTest")) {
-        from("commonKt/build/test-results/jsTest")
-        into("build/test-output/commonKt")
+    val copyActionTestResults by creating(Copy::class, copyForTask(findByPath(":action:jsTest")) {
+        from("action/build/test-results/jsTest")
+        into("build/test-output/action")
     })
 
     val copyServerTestResults by creating(Copy::class, copyForTask(findByPath(":server:serverTest")) {
@@ -78,7 +78,7 @@ tasks {
             copyClientTestResults,
             copyServerTestResults,
             copyEndpointTestResults,
-            copyCommonKtTestResults,
+            copyActionTestResults,
             copyEngineTestResults,
             copyEndToEndResults,
             copyEndToEndScreenshotResults
@@ -119,7 +119,7 @@ tasks {
     val serverYarn = getByPath(":server:yarn")
     val clientYarn = getByPath(":client:yarn")
     serverYarn.mustRunAfter(clientYarn)
-    val commonYarn = getByPath(":commonKt:yarn")
+    val commonYarn = getByPath(":action:yarn")
     commonYarn.mustRunAfter(serverYarn)
     val coreYarn = getByPath(":model:yarn")
     coreYarn.mustRunAfter(commonYarn)

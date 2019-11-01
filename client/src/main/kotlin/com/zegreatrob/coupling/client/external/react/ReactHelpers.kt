@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.external.react
 
-import com.zegreatrob.coupling.common.ScopeProvider
+import com.zegreatrob.coupling.action.ScopeProvider
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope

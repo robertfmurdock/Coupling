@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.common
+package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue

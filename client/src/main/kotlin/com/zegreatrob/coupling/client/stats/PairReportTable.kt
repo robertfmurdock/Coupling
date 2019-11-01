@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.common.PairReport
+import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue

@@ -17,7 +17,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 api(project(":model"))
-                api(project(":commonKt"))
+                api(project(":action"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.2")
@@ -61,7 +61,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":commonKt:assemble")
+        dependsOn(":action:assemble")
     }
 
 }

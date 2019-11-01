@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.entity.user
 
 import com.zegreatrob.coupling.UserEmailSyntax
-import com.zegreatrob.coupling.common.Action
-import com.zegreatrob.coupling.common.ActionLoggingSyntax
+import com.zegreatrob.coupling.action.Action
+import com.zegreatrob.coupling.action.ActionLoggingSyntax
 
 object FindOrCreateUserAction : Action
 
