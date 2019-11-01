@@ -15,12 +15,12 @@
             <option value="$PROJECT_DIR$/action" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
-            <option value="$PROJECT_DIR$/engine" />
             <option value="$PROJECT_DIR$/json" />
             <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/mongo" />
             <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/server/engine" />
             <option value="$PROJECT_DIR$/test-logging" />
           </set>
         </option>

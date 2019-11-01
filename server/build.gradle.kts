@@ -22,7 +22,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
     implementation(project(":mongo"))
-    implementation(project(":engine"))
+    implementation(project("engine"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2")
     implementation("com.soywiz:klock:1.1.1")
     implementation("io.github.microutils:kotlin-logging-js:1.7.6")
@@ -81,7 +81,7 @@ tasks {
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         inputs.files(compileKotlin2Js.inputs.files)
-        dependsOn(":engine:assemble", ":json:assemble", ":test-logging:assemble")
+        dependsOn(":server:engine:assemble", ":json:assemble", ":test-logging:assemble")
 
         forEachJsTarget(project).let { (main, test) ->
             customCompileConfiguration = main
