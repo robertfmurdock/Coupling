@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentGetter
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdHistorySyntax {

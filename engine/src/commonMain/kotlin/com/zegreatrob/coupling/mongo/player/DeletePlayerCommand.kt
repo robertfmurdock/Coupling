@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.player.PlayerDeleter
 
 data class DeletePlayerCommand(val playerId: String) : Action
 

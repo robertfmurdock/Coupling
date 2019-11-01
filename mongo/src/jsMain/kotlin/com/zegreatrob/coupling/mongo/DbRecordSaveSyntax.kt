@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo
 
-import com.zegreatrob.coupling.UserEmailSyntax
+import com.zegreatrob.coupling.action.UserEmailSyntax
 import kotlinx.coroutines.await
 import kotlin.js.Date
 import kotlin.js.Json

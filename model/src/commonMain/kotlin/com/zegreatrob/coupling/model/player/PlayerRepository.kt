@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.mongo.player
+package com.zegreatrob.coupling.model.player
 
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.Deferred
 

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.mongo.player
 
+import com.zegreatrob.coupling.model.player.PlayerGetDeleted
+import com.zegreatrob.coupling.model.player.PlayerGetter
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdPlayersSyntax {

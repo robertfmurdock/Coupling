@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async

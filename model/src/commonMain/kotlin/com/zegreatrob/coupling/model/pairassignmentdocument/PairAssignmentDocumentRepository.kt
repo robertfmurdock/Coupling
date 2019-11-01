@@ -1,12 +1,10 @@
-package com.zegreatrob.coupling.server.entity.pairassignmentdocument
+package com.zegreatrob.coupling.model.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
-interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter, PairAssignmentDocumentDeleter
+interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAssignmentDocumentGetter,
+    PairAssignmentDocumentDeleter
 
 interface PairAssignmentDocumentDeleter {
     suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId) : Boolean

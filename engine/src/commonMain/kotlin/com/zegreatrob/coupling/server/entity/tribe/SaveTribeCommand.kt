@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
-import com.zegreatrob.coupling.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.action.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.user.User
+import com.zegreatrob.coupling.model.User
 import com.zegreatrob.coupling.server.entity.user.UserSaveSyntax
 
 data class SaveTribeCommand(val tribe: KtTribe) : Action

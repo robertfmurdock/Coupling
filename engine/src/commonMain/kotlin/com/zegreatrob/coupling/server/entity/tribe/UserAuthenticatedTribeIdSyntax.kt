@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
-import com.zegreatrob.coupling.UserAuthorizedTribeIdsSyntax
-import com.zegreatrob.coupling.UserEmailSyntax
+import com.zegreatrob.coupling.action.UserAuthorizedTribeIdsSyntax
+import com.zegreatrob.coupling.action.UserEmailSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.user
+package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 

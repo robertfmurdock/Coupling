@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.server.entity.tribe
+package com.zegreatrob.coupling.model.tribe
 
-import com.zegreatrob.coupling.model.tribe.KtTribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.Deferred
 
 interface TribeRepository : TribeGet, TribeListGet, TribeSave, TribeDelete

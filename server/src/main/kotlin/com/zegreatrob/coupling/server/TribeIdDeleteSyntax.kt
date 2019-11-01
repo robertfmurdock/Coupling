@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.entity.tribe.TribeDelete
+import com.zegreatrob.coupling.model.tribe.TribeDelete
 
 interface TribeIdDeleteSyntax {
 

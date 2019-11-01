@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.server.entity.pin
+package com.zegreatrob.coupling.model.pin
 
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.Deferred
 

@@ -77,7 +77,6 @@ tasks {
             ":json:assemble",
             ":action:assemble",
             ":logging:assemble",
-            ":engine:assemble",
             ":test-logging:assemble"
         )
 

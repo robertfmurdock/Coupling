@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
+import com.zegreatrob.coupling.action.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.TribeIdPin
@@ -12,6 +12,12 @@ import com.zegreatrob.coupling.mongo.player.*
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.model.User
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.model.pin.PinRepository
+import com.zegreatrob.coupling.model.player.PlayerRepository
+import com.zegreatrob.coupling.model.tribe.TribeRepository
+import com.zegreatrob.coupling.model.user.UserRepository
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
