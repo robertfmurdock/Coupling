@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.entity
 import com.zegreatrob.coupling.core.entity.player.Player
 import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.coremongo.player.TribeIdPlayersSyntax
+import com.zegreatrob.coupling.mongo.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.server.entity.tribe.UserAuthenticatedTribeIdSyntax
 import com.zegreatrob.coupling.server.entity.tribe.UserPlayersSyntax

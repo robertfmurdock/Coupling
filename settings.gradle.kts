@@ -15,7 +15,7 @@ pluginManagement {
 rootProject.name = "Coupling"
 include("core")
 include("json")
-include("core-mongo")
+include("mongo")
 include("client")
 include("server")
 include("engine")

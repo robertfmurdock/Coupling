@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAss
 import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
 import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.coremongo.pairassignments.MongoPairAssignmentDocumentRepository
-import com.zegreatrob.coupling.coremongo.pin.MongoPinRepository
-import com.zegreatrob.coupling.coremongo.player.*
-import com.zegreatrob.coupling.coremongo.tribe.MongoTribeRepository
-import com.zegreatrob.coupling.coremongo.user.MongoUserRepository
+import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
+import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
+import com.zegreatrob.coupling.mongo.player.*
+import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
+import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher

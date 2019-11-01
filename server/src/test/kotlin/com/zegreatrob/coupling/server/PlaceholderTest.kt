@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.coremongo
+package com.zegreatrob.coupling.mongo
 
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test

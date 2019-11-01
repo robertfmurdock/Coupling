@@ -27,12 +27,10 @@ fun PinnedPlayer.toJson(): Json = player.toJson().apply { this["pins"] = pins.to
 
 fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
 
-fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pair<String, Any?>> {
-    return if (value != null)
-        plus(Pair(key, value))
-    else
-        this
-}
+fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?) = if (value != null)
+    plus(Pair(key, value))
+else
+    this
 
 private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
     .toTypedArray()

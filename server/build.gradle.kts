@@ -21,7 +21,7 @@ node {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
-    implementation(project(":core-mongo"))
+    implementation(project(":mongo"))
     implementation(project(":engine"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2")
     implementation("com.soywiz:klock:1.1.1")

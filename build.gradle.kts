@@ -127,7 +127,7 @@ tasks {
     engineYarn.mustRunAfter(coreYarn)
     val coreJsonYarn = getByPath(":json:yarn")
     coreJsonYarn.mustRunAfter(engineYarn)
-    val coreMongoYarn = getByPath(":core-mongo:yarn")
+    val coreMongoYarn = getByPath(":mongo:yarn")
     coreMongoYarn.mustRunAfter(coreJsonYarn)
 }
 
