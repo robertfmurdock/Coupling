@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.common.ScopeProvider
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.html.classes

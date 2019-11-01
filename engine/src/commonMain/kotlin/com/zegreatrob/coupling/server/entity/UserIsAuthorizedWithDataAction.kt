@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.entity
 
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.server.entity.tribe.UserAuthenticatedTribeIdSyntax

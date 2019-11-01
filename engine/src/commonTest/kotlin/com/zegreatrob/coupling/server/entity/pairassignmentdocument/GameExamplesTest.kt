@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -27,7 +27,10 @@ class GameExamplesTest {
     class WithUniformBadgesAndLongestTimeRule {
 
         companion object {
-            val tribe = KtTribe(id = TribeId("JLA"), pairingRule = PairingRule.LongestTime)
+            val tribe = KtTribe(
+                id = TribeId("JLA"),
+                pairingRule = PairingRule.LongestTime
+            )
 
             val bruce = Player(id = "1", name = "Batman", badge = 0)
             val hal = Player(id = "2", name = "Green Lantern", badge = 0)
@@ -49,7 +52,10 @@ class GameExamplesTest {
         @Test
         fun worksWithNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val tribe = KtTribe(TribeId("Best tribe ever"), PairingRule.LongestTime)
+            val tribe = KtTribe(
+                TribeId("Best tribe ever"),
+                PairingRule.LongestTime
+            )
         }) exercise {
             RunGameAction(allPlayers, emptyList(), history, tribe)
                     .perform()
@@ -63,7 +69,10 @@ class GameExamplesTest {
         @Test
         fun worksWithAnOddNumberOfPlayersAndNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val tribe = KtTribe(TribeId("Best tribe ever"), PairingRule.LongestTime)
+            val tribe = KtTribe(
+                TribeId("Best tribe ever"),
+                PairingRule.LongestTime
+            )
         }) exercise {
             RunGameAction(listOf(clark, bruce, diana), emptyList(), history, tribe)
                     .perform()
@@ -75,22 +84,42 @@ class GameExamplesTest {
         @Test
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
             val history = listOf(
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 10),
-                            listOf(CouplingPair.Double(bruce, clark)).withNoPins()
-                    ),
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 9),
-                            listOf(CouplingPair.Double(bruce, diana)).withNoPins()
-                    ),
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 8),
-                            listOf(CouplingPair.Double(bruce, hal)).withNoPins()
-                    ),
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 7),
-                            listOf(CouplingPair.Double(bruce, barry)).withNoPins()
-                    )
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 10),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            clark
+                        )
+                    ).withNoPins()
+                ),
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 9),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            diana
+                        )
+                    ).withNoPins()
+                ),
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 8),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            hal
+                        )
+                    ).withNoPins()
+                ),
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 7),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            barry
+                        )
+                    ).withNoPins()
+                )
             )
         }) exercise {
             RunGameAction(allPlayers, emptyList(), history, tribe)
@@ -102,7 +131,10 @@ class GameExamplesTest {
 
     class WithDifferentBadgesAndLongestPairRule {
         companion object {
-            val tribe = KtTribe(id = TribeId("JLA"), pairingRule = PairingRule.LongestTime)
+            val tribe = KtTribe(
+                id = TribeId("JLA"),
+                pairingRule = PairingRule.LongestTime
+            )
 
             val bruce = Player(id = "1", name = "Batman", badge = 0)
             val hal = Player(id = "2", name = "Green Lantern", badge = 1)
@@ -117,22 +149,42 @@ class GameExamplesTest {
         @Test
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
             val history = listOf(
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 10),
-                            listOf(CouplingPair.Double(bruce, clark)).withNoPins()
-                    ),
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 9),
-                            listOf(CouplingPair.Double(bruce, diana)).withNoPins()
-                    ),
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 8),
-                            listOf(CouplingPair.Double(bruce, hal)).withNoPins()
-                    ),
-                    PairAssignmentDocument(
-                            DateTime(2014, 1, 7),
-                            listOf(CouplingPair.Double(bruce, barry)).withNoPins()
-                    )
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 10),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            clark
+                        )
+                    ).withNoPins()
+                ),
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 9),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            diana
+                        )
+                    ).withNoPins()
+                ),
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 8),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            hal
+                        )
+                    ).withNoPins()
+                ),
+                PairAssignmentDocument(
+                    DateTime(2014, 1, 7),
+                    listOf(
+                        CouplingPair.Double(
+                            bruce,
+                            barry
+                        )
+                    ).withNoPins()
+                )
             )
         }) exercise {
             RunGameAction(allPlayers, emptyList(), history, tribe)
@@ -145,7 +197,10 @@ class GameExamplesTest {
 
     @Test
     fun willNotGetStuckWhenPairingPeopleWithDifferentBadges() = setup(object {
-        val tribe = KtTribe(TribeId("Avengers"), PairingRule.PreferDifferentBadge)
+        val tribe = KtTribe(
+            TribeId("Avengers"),
+            PairingRule.PreferDifferentBadge
+        )
         val kamala = Player(name = "Ms. Marvel", badge = 0)
         val logan = Player(name = "Wolverine", badge = 1)
         val steve = Player(name = "Captain America", badge = 1)
@@ -153,18 +208,33 @@ class GameExamplesTest {
         val allPlayers = listOf(kamala, logan, steve, thor)
 
         val history = listOf(
-                PairAssignmentDocument(
-                        DateTime(2014, 1, 10),
-                        listOf(CouplingPair.Double(kamala, thor)).withNoPins()
-                ),
-                PairAssignmentDocument(
-                        DateTime(2014, 1, 9),
-                        listOf(CouplingPair.Double(kamala, steve)).withNoPins()
-                ),
-                PairAssignmentDocument(
-                        DateTime(2014, 1, 8),
-                        listOf(CouplingPair.Double(kamala, logan)).withNoPins()
-                )
+            PairAssignmentDocument(
+                DateTime(2014, 1, 10),
+                listOf(
+                    CouplingPair.Double(
+                        kamala,
+                        thor
+                    )
+                ).withNoPins()
+            ),
+            PairAssignmentDocument(
+                DateTime(2014, 1, 9),
+                listOf(
+                    CouplingPair.Double(
+                        kamala,
+                        steve
+                    )
+                ).withNoPins()
+            ),
+            PairAssignmentDocument(
+                DateTime(2014, 1, 8),
+                listOf(
+                    CouplingPair.Double(
+                        kamala,
+                        logan
+                    )
+                ).withNoPins()
+            )
         )
     }) exercise {
         RunGameAction(allPlayers, emptyList(), history, tribe)
@@ -176,6 +246,7 @@ class GameExamplesTest {
 
 private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
 
-private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
+private fun CouplingPair.toPinnedPair() =
+    PinnedCouplingPair(toPinnedPlayers())
 
 private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }

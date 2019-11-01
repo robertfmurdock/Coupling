@@ -9,10 +9,10 @@ import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryRenderer
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryStyles
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -36,7 +36,8 @@ class HistoryTest {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
-                val tribe = KtTribe(TribeId("me"))
+                val tribe =
+                    KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
                     removeSpy.spyFunction(Unit).asDeferred()
@@ -44,7 +45,11 @@ class HistoryTest {
                 val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
 
                 val history = listOf(
-                    PairAssignmentDocument(DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId"))
+                    PairAssignmentDocument(
+                        DateTime.now(),
+                        emptyList(),
+                        PairAssignmentDocumentId("RealId")
+                    )
                 )
                 val wrapper = shallow(
                     HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {})
@@ -70,7 +75,8 @@ class HistoryTest {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
 
-                val tribe = KtTribe(TribeId("me"))
+                val tribe =
+                    KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
                     removeSpy.spyFunction(Unit).asDeferred()
@@ -79,7 +85,9 @@ class HistoryTest {
 
                 val history = listOf(
                     PairAssignmentDocument(
-                        DateTime.now(), emptyList(), PairAssignmentDocumentId("RealId")
+                        DateTime.now(),
+                        emptyList(),
+                        PairAssignmentDocumentId("RealId")
                     )
                 )
                 val wrapper = shallow(

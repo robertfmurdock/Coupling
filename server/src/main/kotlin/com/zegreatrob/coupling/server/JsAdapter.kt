@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.AuthenticatedUserEmailSyntax
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
-import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.mongo.player.*
@@ -153,14 +153,26 @@ fun commandDispatcher(
 
         @JsName("performSavePlayerCommand")
         fun performSavePlayerCommand(player: Json, tribeId: String) = scope.promise {
-            SavePlayerCommand(TribeIdPlayer(TribeId(tribeId), player.toPlayer()))
+            SavePlayerCommand(
+                TribeIdPlayer(
+                    TribeId(
+                        tribeId
+                    ), player.toPlayer()
+                )
+            )
                 .perform()
                 .toJson()
         }
 
         @JsName("performSavePinCommand")
         fun performSavePinCommand(pin: Json, tribeId: String) = scope.promise {
-            SavePinCommand(TribeIdPin(TribeId(tribeId), pin.toPin()))
+            SavePinCommand(
+                TribeIdPin(
+                    TribeId(
+                        tribeId
+                    ), pin.toPin()
+                )
+            )
                 .perform()
                 .toJson()
         }

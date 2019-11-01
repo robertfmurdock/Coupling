@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps

@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction

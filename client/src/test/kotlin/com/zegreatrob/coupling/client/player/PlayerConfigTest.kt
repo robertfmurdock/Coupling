@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.minassert.assertContains
@@ -33,7 +33,11 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
-        val tribe = KtTribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
+        val tribe = KtTribe(
+            id = TribeId("party"),
+            name = "Party tribe",
+            badgesEnabled = true
+        )
 
         val player = Player(id = "blarg")
     }) exercise {
@@ -47,7 +51,11 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
-        val tribe = KtTribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
+        val tribe = KtTribe(
+            id = TribeId("party"),
+            name = "Party tribe",
+            badgesEnabled = true
+        )
 
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
@@ -72,7 +80,8 @@ class PlayerConfigTest {
                 )
                     .await()
 
-                val tribe = KtTribe(TribeId("party"))
+                val tribe =
+                    KtTribe(TribeId("party"))
                 val player = Player(id = "blarg", badge = Badge.Default.value)
                 val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
 
@@ -117,7 +126,8 @@ class PlayerConfigTest {
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val tribe = KtTribe(TribeId("party"))
+                val tribe =
+                    KtTribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
                 val wrapper = shallow(PlayerConfigProps(
@@ -157,7 +167,8 @@ class PlayerConfigTest {
                     removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val tribe = KtTribe(TribeId("party"))
+                val tribe =
+                    KtTribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
                 val wrapper = shallow(PlayerConfigProps(
                     tribe,

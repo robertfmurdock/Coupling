@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.sdk.TribeSaveSyntax
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.KtTribe
 
 data class SaveTribeCommand(val tribe: KtTribe) : Action
 

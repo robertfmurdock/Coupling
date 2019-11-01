@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.mongo.tribe
 
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule.Companion.toValue
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
@@ -52,16 +52,17 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         "callSignsEnabled" to callSignsEnabled
     )
 
-    private fun Json.toTribe(): KtTribe = KtTribe(
-        id = TribeId(this["id"].toString()),
-        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
-        name = this["name"]?.toString(),
-        email = this["email"]?.toString(),
-        defaultBadgeName = this["defaultBadgeName"]?.toString(),
-        alternateBadgeName = this["alternateBadgeName"]?.toString(),
-        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
-    )
+    private fun Json.toTribe(): KtTribe =
+        KtTribe(
+            id = TribeId(this["id"].toString()),
+            pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
+            name = this["name"]?.toString(),
+            email = this["email"]?.toString(),
+            defaultBadgeName = this["defaultBadgeName"]?.toString(),
+            alternateBadgeName = this["alternateBadgeName"]?.toString(),
+            badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
+            callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
+        )
 
 }
 

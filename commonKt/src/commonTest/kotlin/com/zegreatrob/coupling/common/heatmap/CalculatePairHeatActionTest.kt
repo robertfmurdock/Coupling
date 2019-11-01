@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.common.heatmap
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinAssignmentSyntax
-import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinAssignmentSyntax
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.coupling.common.entity.heatmap.CalculatePairHeatAction
@@ -13,17 +13,25 @@ import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
 
-    companion object : CalculatePairHeatActionDispatcher, PinAssignmentSyntax {
+    companion object : CalculatePairHeatActionDispatcher,
+        PinAssignmentSyntax {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
                 .map { pairAssignmentDocument() }
 
         fun List<CouplingPair>.pairAssignmentDocument() =
-                PairAssignmentDocument(DateTime(2016, 3, 1), assign(emptyList()))
+            PairAssignmentDocument(
+                DateTime(2016, 3, 1),
+                assign(emptyList())
+            )
     }
 
     @Test
     fun willReturnZeroWhenPairHasNeverOccurred() = setup(object {
-        val pair = CouplingPair.Double(Player(id = "bob"), Player(id = "fred"))
+        val pair = CouplingPair.Double(
+            Player(
+                id = "bob"
+            ), Player(id = "fred")
+        )
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 60
         val action =
@@ -54,7 +62,11 @@ class CalculatePairHeatActionTest {
     class WhenThereIsOnlyOnePossiblePair {
 
         private fun makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs: Int): CalculatePairHeatAction {
-            val pair = CouplingPair.Double(Player(id = "bob"), Player(id = "fred"))
+            val pair = CouplingPair.Double(
+                Player(
+                    id = "bob"
+                ), Player(id = "fred")
+            )
             val rotationPeriod = 1
             val history = listOf(pair).buildHistoryByRepeating(numberOfHistoryDocs)
             return CalculatePairHeatAction(pair, history, rotationPeriod)

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo.player
 
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdPlayersSyntax {
     val playerRepository: PlayerGetter

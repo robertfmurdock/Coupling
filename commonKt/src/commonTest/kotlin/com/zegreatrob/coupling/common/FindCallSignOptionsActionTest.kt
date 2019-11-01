@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.common.entity.player.callsign.CallSignOptions
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignOptionsAction
 import com.zegreatrob.coupling.common.entity.player.callsign.FindCallSignOptionsActionDispatcher
 import com.zegreatrob.coupling.common.entity.player.callsign.defaultCallSignOptions
-import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -15,7 +15,10 @@ class FindCallSignOptionsActionTest {
 
     @Test
     fun willIncludeAllPredefinedAdjectivesAndNounsWhenNoPlayersHaveCallSigns() = setup(object {
-        val players = listOf(Player(), Player())
+        val players = listOf(
+            Player(),
+            Player()
+        )
         val action = FindCallSignOptionsAction(players)
     }) exercise {
         action.perform()
@@ -26,8 +29,8 @@ class FindCallSignOptionsActionTest {
     @Test
     fun willExcludeAnyOptionsUsedByThePlayers() = setup(object {
         val players = listOf(
-                Player(callSignAdjective = "Modest", callSignNoun = "Tiger"),
-                Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
+            Player(callSignAdjective = "Modest", callSignNoun = "Tiger"),
+            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
         )
         val action = FindCallSignOptionsAction(players)
     }) exercise {

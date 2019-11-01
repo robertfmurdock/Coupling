@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.common.entity.heatmap
 
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair.Companion.equivalent
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Companion.equivalent
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import kotlin.math.min
 
 const val rotationHeatWindow = 5
 val heatIncrements = listOf(0.0, 1.0, 2.5, 4.5, 7.0, 10.0)
 
 data class CalculatePairHeatAction(
-        val pair: CouplingPair,
-        val history: List<PairAssignmentDocument>,
-        val rotationPeriod: Int
+    val pair: CouplingPair,
+    val history: List<PairAssignmentDocument>,
+    val rotationPeriod: Int
 )
 
 interface CalculatePairHeatActionDispatcher {
@@ -29,7 +29,8 @@ interface CalculatePairHeatActionDispatcher {
 
     private val CalculatePairHeatAction.lastRelevantRotation get() = rotationPeriod * rotationHeatWindow
 
-    private fun List<PairAssignmentDocument>.flattenedPairings() = map(PairAssignmentDocument::pairs)
+    private fun List<PairAssignmentDocument>.flattenedPairings() = map(
+        PairAssignmentDocument::pairs)
             .flatten()
             .map(PinnedCouplingPair::toPair)
 

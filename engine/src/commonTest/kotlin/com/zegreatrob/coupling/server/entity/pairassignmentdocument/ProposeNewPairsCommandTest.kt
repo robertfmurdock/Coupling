@@ -3,12 +3,12 @@ package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pin.Pin
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.entity.pin.PinGetter
 import com.zegreatrob.coupling.server.entity.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -28,8 +28,18 @@ class ProposeNewPairsCommandTest {
             override val tribeRepository = this
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
-            val history = listOf(PairAssignmentDocument(DateTime.now(), emptyList(), null))
-            val tribe = KtTribe(TribeId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
+            val history = listOf(
+                PairAssignmentDocument(
+                    DateTime.now(),
+                    emptyList(),
+                    null
+                )
+            )
+            val tribe = KtTribe(
+                TribeId(
+                    "Tribe Id! ${Random.nextInt(300)}"
+                ), PairingRule.PreferDifferentBadge
+            )
             override fun getPinsAsync(tribeId: TribeId) = CompletableDeferred(pins)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
@@ -42,7 +52,12 @@ class ProposeNewPairsCommandTest {
             override val pinRepository: PinGetter = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
 
-            val expectedPairAssignmentDocument = PairAssignmentDocument(DateTime.now(), listOf(), null)
+            val expectedPairAssignmentDocument =
+                PairAssignmentDocument(
+                    DateTime.now(),
+                    listOf(),
+                    null
+                )
 
             init {
                 actionDispatcher.spyReturnValues.add(expectedPairAssignmentDocument)

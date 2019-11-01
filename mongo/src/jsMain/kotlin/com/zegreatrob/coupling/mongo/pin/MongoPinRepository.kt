@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.mongo.pin
 
-import com.zegreatrob.coupling.core.entity.pin.Pin
-import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax

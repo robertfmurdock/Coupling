@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.welcome.WelcomeRenderer
 import com.zegreatrob.coupling.client.welcome.WelcomeStyles
-import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync

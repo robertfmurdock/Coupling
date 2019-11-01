@@ -3,7 +3,7 @@ import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.client.user.ServerMessageRenderer
 import com.zegreatrob.coupling.client.user.WebsocketProps
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import react.RClass

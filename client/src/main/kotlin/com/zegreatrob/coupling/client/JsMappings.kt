@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.common
 
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.NeverPaired
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.json.toJson
 import kotlin.js.json
 

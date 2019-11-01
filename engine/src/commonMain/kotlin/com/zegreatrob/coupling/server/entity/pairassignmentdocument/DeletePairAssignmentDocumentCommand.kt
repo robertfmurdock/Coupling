@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 
 data class DeletePairAssignmentDocumentCommand(val id: PairAssignmentDocumentId) : Action
 

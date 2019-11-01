@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.PairingRule
 
 data class Game(val history: List<PairAssignmentDocument>, val players: List<Player>, val rule: PairingRule)
 

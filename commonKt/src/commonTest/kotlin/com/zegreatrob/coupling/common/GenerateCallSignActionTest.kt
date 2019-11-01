@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.common
 
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.player.callsign.CallSign
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.common.entity.player.callsign.GenerateCallSignActionDispatcher
 import com.zegreatrob.coupling.common.entity.player.callsign.GenerateCallSignAction
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -85,9 +85,9 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val players = listOf(
-                Player(callSignAdjective = "Red", callSignNoun = "Lion"),
-                Player(callSignAdjective = "Green", callSignNoun = "Tiger"),
-                Player(callSignAdjective = "Blue", callSignNoun = "Bear")
+            Player(callSignAdjective = "Red", callSignNoun = "Lion"),
+            Player(callSignAdjective = "Green", callSignNoun = "Tiger"),
+            Player(callSignAdjective = "Blue", callSignNoun = "Bear")
         )
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)

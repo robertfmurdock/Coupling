@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo.user
 
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.server.entity.user.User
@@ -29,7 +29,11 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
 
     private fun Json.fromDbToUser() = User(
         email = this["email"].toString(),
-        authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map { TribeId(it) }?.toSet() ?: emptySet()
+        authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map {
+            TribeId(
+                it
+            )
+        }?.toSet() ?: emptySet()
     )
 
 }

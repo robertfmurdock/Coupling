@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo.player
 
-import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
 
 interface TribeIdPlayerSaveSyntax {
 

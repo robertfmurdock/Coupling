@@ -9,12 +9,12 @@ import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -48,7 +48,12 @@ class PairAssignmentsTest {
         val pairAssignments = PairAssignmentDocument(
             date = DateTime.now(),
             pairs = listOf(
-                pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),
+                pairOf(
+                    Player(
+                        id = "0",
+                        name = "Tom"
+                    ), Player(id = "z", name = "Jerry")
+                ),
                 pairOf(fellow, guy)
             ).withPins()
         )

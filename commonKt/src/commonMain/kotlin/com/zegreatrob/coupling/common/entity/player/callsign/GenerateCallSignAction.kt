@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.common.entity.player.callsign
 
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.player.callsign.CallSign
-import com.zegreatrob.coupling.core.entity.player.callsign.PredictableWordPicker
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.callsign.CallSign
+import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker
 import kotlin.random.Random
 
 data class GenerateCallSignAction(
@@ -15,8 +15,8 @@ data class GenerateCallSignAction(
 interface GenerateCallSignActionDispatcher : PredictableWordPicker {
 
     fun GenerateCallSignAction.perform() = CallSign(
-            pickAdjective(),
-            pickNoun()
+        pickAdjective(),
+        pickNoun()
     )
 
     private fun GenerateCallSignAction.pickAdjective() =

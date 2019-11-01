@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.common.heatmap
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinAssignmentSyntax
-import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinAssignmentSyntax
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapAction
@@ -13,12 +13,18 @@ import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {
 
-    companion object : CalculateHeatMapActionDispatcher, PinAssignmentSyntax {
+    companion object : CalculateHeatMapActionDispatcher,
+        PinAssignmentSyntax {
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
-                PairAssignmentDocument(
-                        date = DateTime.now(),
-                        pairs = listOf(CouplingPair.Double(player1, player2)).assign(emptyList())
-                )
+            PairAssignmentDocument(
+                date = DateTime.now(),
+                pairs = listOf(
+                    CouplingPair.Double(
+                        player1,
+                        player2
+                    )
+                ).assign(emptyList())
+            )
     }
 
     @Test
@@ -54,9 +60,9 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withThreePlayersAndNoHistoryProducesThreeRows() = setup(object {
         val players = listOf(
-                Player(id = "0"),
-                Player(id = "1"),
-                Player(id = "2")
+            Player(id = "0"),
+            Player(id = "1"),
+            Player(id = "2")
         )
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 3
@@ -77,8 +83,8 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = setup(object {
         val players = listOf(
-                Player(id = "0"),
-                Player(id = "1")
+            Player(id = "0"),
+            Player(id = "1")
         )
         val history = listOf(pairAssignmentDocument(players[0], players[1]))
         val rotationPeriod = 1
@@ -98,8 +104,8 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = setup(object {
         val players = listOf(
-                Player(id = "0"),
-                Player(id = "1")
+            Player(id = "0"),
+            Player(id = "1")
         )
         val history = listOf(
                 pairAssignmentDocument(players[0], players[1]),
@@ -125,9 +131,9 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withThreePlayersAndInterestingHistoryProducesThreeRowsWithHeatValues() = setup(object {
         val players = listOf(
-                Player(id = "0"),
-                Player(id = "1"),
-                Player(id = "2")
+            Player(id = "0"),
+            Player(id = "1"),
+            Player(id = "2")
         )
         val history = listOf(
                 pairAssignmentDocument(players[0], players[1]),

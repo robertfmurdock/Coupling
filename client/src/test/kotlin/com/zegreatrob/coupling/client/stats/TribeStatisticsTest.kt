@@ -9,10 +9,10 @@ import com.zegreatrob.coupling.common.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.common.PairReport
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.common.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findComponent
@@ -55,7 +55,10 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = KtTribe(TribeId("1"), name = "Mathematica")
+        val tribe = KtTribe(
+            TribeId("1"),
+            name = "Mathematica"
+        )
         val history = listOf(
             PairAssignmentDocument(
                 date = DateTime.now(),
@@ -131,7 +134,10 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val tribe = KtTribe(TribeId("2"), name = "Mathematica")
+        val tribe = KtTribe(
+            TribeId("2"),
+            name = "Mathematica"
+        )
 
         val report = ComposeStatisticsAction(tribe, players, history).perform()
         val props = TribeStatisticsProps(StatisticQueryResults(
@@ -173,7 +179,10 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = KtTribe(TribeId("2"), name = "Mathematica")
+        val tribe = KtTribe(
+            TribeId("2"),
+            name = "Mathematica"
+        )
         val props = TribeStatisticsProps(
             StatisticQueryResults(
                 tribe = tribe,
@@ -206,14 +215,23 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = KtTribe(TribeId("2"), name = "Mathematica")
+        val tribe = KtTribe(
+            TribeId("2"),
+            name = "Mathematica"
+        )
         val history = listOf(
             PairAssignmentDocument(
-                pairs = listOf(pairOf(players[0], players[1]), pairOf(players[2], players[3])).withNoPins(),
+                pairs = listOf(
+                    pairOf(players[0], players[1]),
+                    pairOf(players[2], players[3])
+                ).withNoPins(),
                 date = DateTime(2017, 3, 14)
             ),
             PairAssignmentDocument(
-                pairs = listOf(pairOf(players[0], players[1]), pairOf(players[2], players[3])).withNoPins(),
+                pairs = listOf(
+                    pairOf(players[0], players[1]),
+                    pairOf(players[2], players[3])
+                ).withNoPins(),
                 date = DateTime(2017, 3, 12)
             )
         )
@@ -240,7 +258,8 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
 
 private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
 
-private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
+private fun CouplingPair.toPinnedPair() =
+    PinnedCouplingPair(toPinnedPlayers())
 
 private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
 

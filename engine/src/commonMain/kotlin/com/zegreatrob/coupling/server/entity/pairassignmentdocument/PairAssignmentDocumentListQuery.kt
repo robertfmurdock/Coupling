@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.zegreatrob.coupling.common.Action
 import com.zegreatrob.coupling.common.ActionLoggingSyntax
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class PairAssignmentDocumentListQuery(val tribeId: TribeId) : Action
 

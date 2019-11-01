@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pin
 
-import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.TribeIdPin
 
 interface TribeIdPinSaveSyntax {
 

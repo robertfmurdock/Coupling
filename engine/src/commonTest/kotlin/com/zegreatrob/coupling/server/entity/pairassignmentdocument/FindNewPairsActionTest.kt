@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 import Spy
 import SpyData
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -33,7 +33,9 @@ class FindNewPairsActionTest {
 
         init {
             wheel.spyReturnValues.add(bill)
-            actionDispatcher.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
+            actionDispatcher.spyReturnValues.add(PairCandidateReport(ted, listOf(bill),
+                TimeResultValue(0)
+            ))
         }
     }) exercise {
         FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime))
@@ -51,12 +53,17 @@ class FindNewPairsActionTest {
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill")
         val ted: Player = Player(id = "Ted")
-        val mozart: Player = Player(id = "Mozart")
+        val mozart: Player =
+            Player(id = "Mozart")
         val players = listOf(bill, ted, mozart)
 
         val pairCandidateReports = listOf(
-                PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
-                PairCandidateReport(ted, emptyList(), TimeResultValue(0))
+                PairCandidateReport(mozart, listOf(bill, ted),
+                    TimeResultValue(0)
+                ),
+                PairCandidateReport(ted, emptyList(),
+                    TimeResultValue(0)
+                )
         )
         val history: List<PairAssignmentDocument> = emptyList()
 

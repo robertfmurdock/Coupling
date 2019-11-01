@@ -21,7 +21,7 @@ node {
 
 dependencies {
     implementation(kotlin("stdlib-js"))
-    api(project(":core"))
+    api(project(":model"))
     api(project(":json"))
     implementation(project(":commonKt"))
     implementation(project(":logging"))
@@ -73,7 +73,7 @@ tasks {
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
         inputs.files(compileKotlin2Js.inputs.files)
         dependsOn(
-            ":core:assemble",
+            ":model:assemble",
             ":json:assemble",
             ":commonKt:assemble",
             ":logging:assemble",

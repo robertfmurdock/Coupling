@@ -6,10 +6,10 @@ import SpyData
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule.Companion.toValue
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.minassert.assertContains
@@ -31,7 +31,8 @@ class TribeConfigTest {
     @Test
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object : TribeConfigBuilder,
         PropsClassProvider<TribeConfigProps> by provider() {
-        val tribe = KtTribe(TribeId("1"), name = "1")
+        val tribe =
+            KtTribe(TribeId("1"), name = "1")
 
     }) exercise {
         shallow(TribeConfigProps(tribe) {})
@@ -72,12 +73,12 @@ class TribeConfigTest {
                 override fun KtTribe.saveAsync() = saveSpy.spyFunction(toJson()).asDeferred()
 
                 val tribe = KtTribe(
-                        TribeId("1"),
-                        name = "1",
-                        alternateBadgeName = "alt",
-                        defaultBadgeName = "def",
-                        email = "email-y",
-                        pairingRule = PairingRule.PreferDifferentBadge
+                    TribeId("1"),
+                    name = "1",
+                    alternateBadgeName = "alt",
+                    defaultBadgeName = "def",
+                    email = "email-y",
+                    pairingRule = PairingRule.PreferDifferentBadge
                 )
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}

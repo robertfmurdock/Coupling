@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -105,11 +105,18 @@ interface WelcomeRenderer : ScopedStyledComponentRenderer<EmptyProps, WelcomeSty
 
     private fun choosePairAndProverb() = chooseWelcomeCardSet().toPairAndProverb()
 
-    private fun WelcomeCardSet.toPairAndProverb() = pairOf(left.toPlayer(), right.toPlayer()) to proverb
+    private fun WelcomeCardSet.toPairAndProverb() = pairOf(
+        left.toPlayer(),
+        right.toPlayer()
+    ) to proverb
 
     private fun chooseWelcomeCardSet() = candidates.random()
 
-    private fun Card.toPlayer() = Player(id = name, name = name, imageURL = "/images/icons/players/$imagePath")
+    private fun Card.toPlayer() = Player(
+        id = name,
+        name = name,
+        imageURL = "/images/icons/players/$imagePath"
+    )
 
     private fun WelcomeContext.welcomeTitle(): RBuilder.() -> ReactElement {
         val welcomeTitleRef = useRef<Node>(null)

@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="Coupling.core-json.jvmMain" target="1.6" />
       <module name="Coupling.core-json.jvmTest" target="1.6" />
+      <module name="Coupling.core.jvmMain" target="1.6" />
+      <module name="Coupling.core.jvmTest" target="1.6" />
       <module name="Coupling.webJson.jvmMain" target="1.6" />
       <module name="Coupling.webJson.jvmTest" target="1.6" />
     </bytecodeTargetLevel>

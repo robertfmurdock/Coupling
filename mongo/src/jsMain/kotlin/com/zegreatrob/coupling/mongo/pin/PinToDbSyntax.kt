@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo.pin
 
-import com.zegreatrob.coupling.core.entity.pin.Pin
+import com.zegreatrob.coupling.model.pin.Pin
 import kotlin.js.Json
 import kotlin.js.json
 

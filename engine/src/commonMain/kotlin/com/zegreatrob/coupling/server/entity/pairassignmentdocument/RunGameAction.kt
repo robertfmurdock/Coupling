@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinAssignmentSyntax
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.core.entity.pin.Pin
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinAssignmentSyntax
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
 
 data class RunGameAction(
-        val players: List<Player>,
-        val pins: List<Pin>,
-        val history: List<PairAssignmentDocument>,
-        val tribe: KtTribe
+    val players: List<Player>,
+    val pins: List<Pin>,
+    val history: List<PairAssignmentDocument>,
+    val tribe: KtTribe
 )
 
 interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
@@ -35,10 +35,10 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
     ))
 
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) =
-            PairAssignmentDocument(
-                    currentDate(),
-                    pairAssignments
-            )
+        PairAssignmentDocument(
+            currentDate(),
+            pairAssignments
+        )
 }
 
 interface Clock {

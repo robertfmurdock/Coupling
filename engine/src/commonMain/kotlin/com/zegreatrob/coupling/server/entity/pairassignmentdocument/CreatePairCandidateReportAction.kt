@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.core.entity.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
 
 data class CreatePairCandidateReportAction(val player: Player, val history: List<PairAssignmentDocument>, val allPlayers: List<Player>)
 
-interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
+interface CreatePairCandidateReportActionDispatcher :
+    PairingTimeCalculationSyntax {
 
     fun CreatePairCandidateReportAction.perform() = pairTimeMap()
             .candidateReport()
@@ -29,7 +30,9 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
 
     private fun PairTimeMap.longestTimeReport() = timeToPartners.findPartnersWithLongestTime()
             ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
-            ?: PairCandidateReport(player, emptyList(), NeverPaired)
+            ?: PairCandidateReport(player, emptyList(),
+                NeverPaired
+            )
 
     private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
             maxBy { (key, _) -> if (key is TimeResultValue) key.time else -1 }

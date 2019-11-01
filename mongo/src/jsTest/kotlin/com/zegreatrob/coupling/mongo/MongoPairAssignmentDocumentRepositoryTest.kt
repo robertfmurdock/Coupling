@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.mongo
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.internal.toDateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -42,23 +42,29 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
         private fun stubPairAssignmentDoc(
                 date: DateTime = DateTime.now(),
-                id: PairAssignmentDocumentId? = PairAssignmentDocumentId(id())
-        ) =
-                PairAssignmentDocument(
-                        date = date,
-                        pairs = listOf(
-                                PinnedCouplingPair(listOf(Player(
-                                        id = "zeId",
-                                        badge = 1,
-                                        email = "whoop whoop",
-                                        name = "Johnny",
-                                        imageURL = "publicDomain.png",
-                                        callSignNoun = "Wily",
-                                        callSignAdjective = "Rural Wolf"
-                                ).withPins()))
-                        ),
-                        id = id
+                id: PairAssignmentDocumentId? = PairAssignmentDocumentId(
+                    id()
                 )
+        ) =
+            PairAssignmentDocument(
+                date = date,
+                pairs = listOf(
+                    PinnedCouplingPair(
+                        listOf(
+                            Player(
+                                id = "zeId",
+                                badge = 1,
+                                email = "whoop whoop",
+                                name = "Johnny",
+                                imageURL = "publicDomain.png",
+                                callSignNoun = "Wily",
+                                callSignAdjective = "Rural Wolf"
+                            ).withPins()
+                        )
+                    )
+                ),
+                id = id
+            )
     }
 
     @Test

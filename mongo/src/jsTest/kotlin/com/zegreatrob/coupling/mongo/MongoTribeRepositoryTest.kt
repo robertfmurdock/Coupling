@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.mongo
 
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -31,11 +31,11 @@ class MongoTribeRepositoryTest {
     fun canSaveAndLoadTribe() = testAsync {
         setupAsync(object {
             val tribe = KtTribe(
-                    id = TribeId(id()),
-                    pairingRule = PairingRule.PreferDifferentBadge,
-                    email = "safety@dance.edu",
-                    badgesEnabled = true,
-                    callSignsEnabled = true
+                id = TribeId(id()),
+                pairingRule = PairingRule.PreferDifferentBadge,
+                email = "safety@dance.edu",
+                badgesEnabled = true,
+                callSignsEnabled = true
             )
         }) {
             dropPlayers()
@@ -51,11 +51,11 @@ class MongoTribeRepositoryTest {
     fun canLoadTribeFromOldSchema() = testAsync {
         setupAsync(object {
             val expectedTribe = KtTribe(
-                    id = TribeId("safety"),
-                    pairingRule = PairingRule.LongestTime,
-                    defaultBadgeName = "Default",
-                    alternateBadgeName = "Alternate",
-                    name = "Safety Dance"
+                id = TribeId("safety"),
+                pairingRule = PairingRule.LongestTime,
+                defaultBadgeName = "Default",
+                alternateBadgeName = "Alternate",
+                name = "Safety Dance"
             )
         }) {
             tribeCollection.insert(json(
@@ -77,9 +77,21 @@ class MongoTribeRepositoryTest {
     fun willLoadAllTribes() = testAsync {
         setupAsync(object {
             val tribes = listOf(
-                    KtTribe(id = TribeId(id()), pairingRule = PairingRule.PreferDifferentBadge, name = "1"),
-                    KtTribe(id = TribeId(id()), pairingRule = PairingRule.LongestTime, name = "2"),
-                    KtTribe(id = TribeId(id()), pairingRule = PairingRule.LongestTime, name = "3")
+                KtTribe(
+                    id = TribeId(id()),
+                    pairingRule = PairingRule.PreferDifferentBadge,
+                    name = "1"
+                ),
+                KtTribe(
+                    id = TribeId(id()),
+                    pairingRule = PairingRule.LongestTime,
+                    name = "2"
+                ),
+                KtTribe(
+                    id = TribeId(id()),
+                    pairingRule = PairingRule.LongestTime,
+                    name = "3"
+                )
             )
         }) {
             dropPlayers()

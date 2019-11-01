@@ -13,7 +13,7 @@ pluginManagement {
 }
 
 rootProject.name = "Coupling"
-include("core")
+include("model")
 include("json")
 include("mongo")
 include("client")

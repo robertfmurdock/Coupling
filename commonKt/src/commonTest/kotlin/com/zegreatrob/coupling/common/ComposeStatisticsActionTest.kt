@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.common
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -16,7 +16,10 @@ import kotlin.test.Test
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
-        val tribe = KtTribe(TribeId("LOL"), PairingRule.LongestTime)
+        val tribe = KtTribe(
+            TribeId("LOL"),
+            PairingRule.LongestTime
+        )
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
                 .map { number -> makePlayer("$number") }
@@ -140,7 +143,10 @@ class ComposeStatisticsActionTest {
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
                         listOf(
-                                PairReport(CouplingPair.Double(players[0], players[1]), NeverPaired)
+                                PairReport(
+                                    CouplingPair.Double(players[0], players[1]),
+                                    NeverPaired
+                                )
                         )
                 )
             }
@@ -180,29 +186,53 @@ class ComposeStatisticsActionTest {
             val stubDate = DateTime.now()
             val history = listOf(
                     pairAssignmentDocument(listOf(
-                            PinnedCouplingPair(listOf(player1.withPins(emptyList()), player3.withPins(emptyList()))),
-                            PinnedCouplingPair(listOf(player2.withPins(emptyList()), player4.withPins(emptyList())))
+                        PinnedCouplingPair(
+                            listOf(
+                                player1.withPins(
+                                    emptyList()
+                                ), player3.withPins(emptyList())
+                            )
+                        ),
+                        PinnedCouplingPair(
+                            listOf(
+                                player2.withPins(
+                                    emptyList()
+                                ), player4.withPins(emptyList())
+                            )
+                        )
                     )),
                     pairAssignmentDocument(listOf(
-                            PinnedCouplingPair(listOf(player1.withPins(emptyList()), player2.withPins(emptyList()))),
-                            PinnedCouplingPair(listOf(player3.withPins(emptyList()), player4.withPins(emptyList())))
+                        PinnedCouplingPair(
+                            listOf(
+                                player1.withPins(
+                                    emptyList()
+                                ), player2.withPins(emptyList())
+                            )
+                        ),
+                        PinnedCouplingPair(
+                            listOf(
+                                player3.withPins(
+                                    emptyList()
+                                ), player4.withPins(emptyList())
+                            )
+                        )
                     ))
             )
 
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
-                    PairAssignmentDocument(stubDate, pairs)
+                PairAssignmentDocument(stubDate, pairs)
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
                     .perform()
         } verify { (_, pairReports) ->
             pairReports.map { it.timeSinceLastPair }
                     .assertIsEqualTo(listOf(
-                            NeverPaired,
-                            NeverPaired,
-                            TimeResultValue(1),
-                            TimeResultValue(1),
-                            TimeResultValue(0),
-                            TimeResultValue(0)
+                        NeverPaired,
+                        NeverPaired,
+                        TimeResultValue(1),
+                        TimeResultValue(1),
+                        TimeResultValue(0),
+                        TimeResultValue(0)
                     ))
             pairReports.map { it.pair }
                     .assertMatch(listOf(
@@ -231,10 +261,11 @@ class ComposeStatisticsActionTest {
     class WillCalculateTheMedianSpinTime {
 
         companion object {
-            private fun pairAssignmentDocument(dateTime: DateTime) = PairAssignmentDocument(
+            private fun pairAssignmentDocument(dateTime: DateTime) =
+                PairAssignmentDocument(
                     dateTime,
                     emptyList()
-            )
+                )
         }
 
         @Test
@@ -307,7 +338,10 @@ class ComposeStatisticsActionTest {
         fun withOneHistoryEntryWillReturnNull() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    PairAssignmentDocument(DateTime(2017, 2, 17), emptyList())
+                PairAssignmentDocument(
+                    DateTime(2017, 2, 17),
+                    emptyList()
+                )
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)

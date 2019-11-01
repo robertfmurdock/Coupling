@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -18,9 +18,17 @@ class PlayersQueryTest {
         setupAsync(object : PlayersQueryDispatcher {
             val tribeId = TribeId("Excellent Tribe")
             val players = listOf(
-                    Player(id = "1", callSignAdjective = "Red", callSignNoun = "Horner"),
-                    Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
-                    Player(id = "3", callSignAdjective = "Green", callSignNoun = "Tacos")
+                Player(
+                    id = "1",
+                    callSignAdjective = "Red",
+                    callSignNoun = "Horner"
+                ),
+                Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
+                Player(
+                    id = "3",
+                    callSignAdjective = "Green",
+                    callSignNoun = "Tacos"
+                )
             )
             override val playerRepository = PlayerRepositorySpy()
                     .apply { whenever(tribeId, CompletableDeferred(players)) }
@@ -37,9 +45,9 @@ class PlayersQueryTest {
         setupAsync(object : PlayersQueryDispatcher {
             val tribeId = TribeId("Excellent Tribe")
             val players = listOf(
-                    Player(id = "1"),
-                    Player(id = "2"),
-                    Player(id = "3")
+                Player(id = "1"),
+                Player(id = "2"),
+                Player(id = "3")
             )
             override val playerRepository = PlayerRepositorySpy()
                     .apply { whenever(tribeId, CompletableDeferred(players)) }

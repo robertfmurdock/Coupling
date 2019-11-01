@@ -2,18 +2,19 @@ package com.zegreatrob.coupling.common
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(
-        val tribe: KtTribe,
-        val players: List<Player>,
-        val history: List<PairAssignmentDocument>
+    val tribe: KtTribe,
+    val players: List<Player>,
+    val history: List<PairAssignmentDocument>
 ) : Action
 
-interface ComposeStatisticsActionDispatcher : ActionLoggingSyntax, PairingTimeCalculationSyntax {
+interface ComposeStatisticsActionDispatcher : ActionLoggingSyntax,
+    PairingTimeCalculationSyntax {
 
     fun ComposeStatisticsAction.perform() = log {
         StatisticsReport(

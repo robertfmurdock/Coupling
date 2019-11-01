@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.internal.toDate
 import com.soywiz.klock.internal.toDateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.core.entity.pin.Pin
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
@@ -96,15 +96,23 @@ fun historyFromArray(history: Array<Json>) =
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
     date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
     pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-    id = this["_id"].unsafeCast<String?>()?.let { PairAssignmentDocumentId(it) }
+    id = this["_id"].unsafeCast<String?>()?.let {
+        PairAssignmentDocumentId(
+            it
+        )
+    }
 )
 
 @JsName("pairFromArray")
 fun pairFromArray(array: Array<Json>) = array.map {
-    PinnedPlayer(it.toPlayer(), it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList())
+    PinnedPlayer(
+        it.toPlayer(),
+        it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList()
+    )
 }.toPairs()
 
-private fun List<PinnedPlayer>.toPairs() = PinnedCouplingPair(this)
+private fun List<PinnedPlayer>.toPairs() =
+    PinnedCouplingPair(this)
 
 fun PairAssignmentDocument.toJson() = json(
     "_id" to id?.value,

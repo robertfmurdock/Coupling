@@ -3,15 +3,15 @@ package com.zegreatrob.coupling.server.entity.pairassignmentdocument
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.core.entity.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.core.entity.pin.Pin
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.tribe.KtTribe
-import com.zegreatrob.coupling.core.entity.tribe.PairingRule
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -23,7 +23,10 @@ class RunGameActionTest {
         override val actionDispatcher = SpyFindNewPairsActionDispatcher()
         val expectedDate = DateTime.now()
         override fun currentDate() = expectedDate
-        val tribe = KtTribe(TribeId("1"), PairingRule.LongestTime)
+        val tribe = KtTribe(
+            TribeId("1"),
+            PairingRule.LongestTime
+        )
         val players = emptyList<Player>()
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
@@ -39,10 +42,10 @@ class RunGameActionTest {
         RunGameAction(players, pins, history, tribe).perform()
     } verify { result ->
         result.assertIsEqualTo(PairAssignmentDocument(
-                expectedDate,
-                expectedPairingAssignments.map {
-                    PinnedCouplingPair(it.asArray().map { player -> player.withPins() })
-                }
+            expectedDate,
+            expectedPairingAssignments.map {
+                PinnedCouplingPair(it.asArray().map { player -> player.withPins() })
+            }
         ))
     }
 }

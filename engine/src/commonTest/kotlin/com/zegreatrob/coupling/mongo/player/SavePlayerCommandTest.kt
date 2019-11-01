@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
-import com.zegreatrob.coupling.core.entity.player.with
-import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.with
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -18,13 +18,13 @@ class SavePlayerCommandTest {
         setupAsync(object : SavePlayerCommandDispatcher {
             val tribe = TribeId("woo")
             val player = Player(
-                    id = "1",
-                    badge = 1,
-                    name = "Tim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "tim@tim.meat",
-                    imageURL = "italian.jpg"
+                id = "1",
+                badge = 1,
+                name = "Tim",
+                callSignAdjective = "Spicy",
+                callSignNoun = "Meatball",
+                email = "tim@tim.meat",
+                imageURL = "italian.jpg"
             )
             override val playerRepository = PlayerSaverSpy().apply { whenever(player with tribe, Unit) }
         }) exerciseAsync {
