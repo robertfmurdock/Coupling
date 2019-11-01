@@ -22,10 +22,10 @@ import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataActionDispatcher
-import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
-import com.zegreatrob.coupling.server.entity.pin.*
-import com.zegreatrob.coupling.server.entity.tribe.*
-import com.zegreatrob.coupling.server.entity.user.*
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
+import com.zegreatrob.coupling.server.action.pin.*
+import com.zegreatrob.coupling.server.action.tribe.*
+import com.zegreatrob.coupling.server.action.user.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise

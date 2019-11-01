@@ -1,0 +1,14 @@
+package com.zegreatrob.coupling.server.action.user
+
+import com.zegreatrob.coupling.model.User
+import com.zegreatrob.coupling.model.user.UserRepository
+
+interface UserSaveSyntax {
+
+    val userRepository: UserRepository
+
+    suspend fun User.save() {
+        userRepository.save(this)
+    }
+
+}
