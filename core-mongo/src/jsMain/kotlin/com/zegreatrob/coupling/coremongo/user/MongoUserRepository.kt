@@ -1,8 +1,10 @@
-package com.zegreatrob.coupling.server.entity.user
+package com.zegreatrob.coupling.coremongo.user
 
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.DbRecordLoadSyntax
-import com.zegreatrob.coupling.server.DbRecordSaveSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordLoadSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.server.entity.user.User
+import com.zegreatrob.coupling.server.entity.user.UserRepository
 import kotlin.js.Json
 import kotlin.js.json
 

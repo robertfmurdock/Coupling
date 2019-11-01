@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.coremongo
 
 import kotlin.js.Json
 

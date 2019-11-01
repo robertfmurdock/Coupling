@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.core.entity.tribe.KtTribe
 import com.zegreatrob.coupling.core.entity.tribe.PairingRule
 import com.zegreatrob.coupling.core.entity.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
-import com.zegreatrob.coupling.server.DbRecordDeleteSyntax
-import com.zegreatrob.coupling.server.DbRecordLoadSyntax
-import com.zegreatrob.coupling.server.DbRecordSaveSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordDeleteSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordLoadSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope

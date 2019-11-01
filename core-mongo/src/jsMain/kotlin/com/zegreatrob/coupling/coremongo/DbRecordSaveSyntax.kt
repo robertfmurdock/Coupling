@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.coremongo
 
 import com.zegreatrob.coupling.UserEmailSyntax
 import kotlinx.coroutines.await

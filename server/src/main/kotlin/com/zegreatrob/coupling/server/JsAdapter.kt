@@ -7,6 +7,8 @@ import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
 import com.zegreatrob.coupling.core.entity.player.TribeIdPlayer
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
 import com.zegreatrob.coupling.core.json.*
+import com.zegreatrob.coupling.coremongo.pairassignments.MongoPairAssignmentDocumentRepository
+import com.zegreatrob.coupling.coremongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.UserIsAuthorizedWithDataAction
@@ -15,6 +17,7 @@ import com.zegreatrob.coupling.server.entity.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.entity.pin.*
 import com.zegreatrob.coupling.coremongo.player.*
 import com.zegreatrob.coupling.coremongo.tribe.MongoTribeRepository
+import com.zegreatrob.coupling.coremongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.entity.tribe.*
 import com.zegreatrob.coupling.server.entity.user.*
 import kotlinx.coroutines.CoroutineScope

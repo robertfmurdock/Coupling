@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.coremongo.pin
 
 import com.zegreatrob.coupling.core.entity.pin.Pin
 import kotlin.js.Json

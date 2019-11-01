@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.coremongo
 
 import com.soywiz.klock.internal.toDateTime
 import com.zegreatrob.coupling.core.entity.tribe.TribeId

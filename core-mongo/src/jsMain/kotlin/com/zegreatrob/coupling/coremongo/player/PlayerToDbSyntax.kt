@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.coremongo.player
 
 import com.zegreatrob.coupling.core.entity.player.Player
-import com.zegreatrob.coupling.core.json.pairsToJson
-import com.zegreatrob.coupling.core.json.plusIfNotNull
 import kotlin.js.Json
+import kotlin.js.json
 
 interface PlayerToDbSyntax {
 
@@ -29,4 +28,15 @@ interface PlayerToDbSyntax {
     )
 
     private fun Json.stringValue(key: String) = this[key]?.toString()
+
+    fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pair<String, Any?>> {
+        return if (value != null)
+            plus(Pair(key, value))
+        else
+            this
+    }
+
+    fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
+
 }
+

@@ -1,8 +1,11 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.coremongo.pin
 
 import com.zegreatrob.coupling.core.entity.pin.Pin
 import com.zegreatrob.coupling.core.entity.pin.TribeIdPin
 import com.zegreatrob.coupling.core.entity.tribe.TribeId
+import com.zegreatrob.coupling.coremongo.DbRecordDeleteSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordLoadSyntax
+import com.zegreatrob.coupling.coremongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.server.entity.pin.PinRepository
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
