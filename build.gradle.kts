@@ -58,7 +58,7 @@ tasks {
         into("build/test-output/endpoint")
     })
 
-    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":server:engine:jsTest")) {
+    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":server:action:jsTest")) {
         from("engine/build/test-results/jsTest")
         into("build/test-output/engine")
     })
@@ -123,7 +123,7 @@ tasks {
     commonYarn.mustRunAfter(serverYarn)
     val coreYarn = getByPath(":model:yarn")
     coreYarn.mustRunAfter(commonYarn)
-    val engineYarn = getByPath(":server:engine:yarn")
+    val engineYarn = getByPath(":server:action:yarn")
     engineYarn.mustRunAfter(coreYarn)
     val coreJsonYarn = getByPath(":json:yarn")
     coreJsonYarn.mustRunAfter(engineYarn)
