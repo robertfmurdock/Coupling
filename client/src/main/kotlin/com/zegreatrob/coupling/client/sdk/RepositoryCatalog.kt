@@ -7,7 +7,7 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: AxiosPairAssignmentsRepository
 }
 
-interface AxiosTribeRepository : AxiosGetTribe, AxiosTribeListGet
+interface AxiosTribeRepository : AxiosGetTribe, AxiosTribeListGet, AxiosTribeSave
 interface AxiosPlayerRepository : AxiosPlayerGetter, AxiosPlayerGetDeleted
 interface AxiosPinRepository : AxiosPinGetter
 interface AxiosPairAssignmentsRepository : AxiosPairAssignmentDocumentGetter, AxiosPairAssignmentDocumentSaver

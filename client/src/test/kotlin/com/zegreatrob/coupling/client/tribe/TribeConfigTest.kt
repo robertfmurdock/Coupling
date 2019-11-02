@@ -6,18 +6,17 @@ import SpyData
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
-import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.withContext
 import shallow
 import kotlin.js.Json
@@ -31,6 +30,7 @@ class TribeConfigTest {
     @Test
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object : TribeConfigBuilder,
         PropsClassProvider<TribeConfigProps> by provider() {
+        override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
         val tribe =
             KtTribe(TribeId("1"), name = "1")
 
@@ -38,29 +38,29 @@ class TribeConfigTest {
         shallow(TribeConfigProps(tribe) {})
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
-                .assertHasDefaultBadgeName()
-                .assertHasAlternateBadgeName()
+            .assertHasDefaultBadgeName()
+            .assertHasAlternateBadgeName()
     }
 
     private fun ShallowWrapper<dynamic>.assertHasAlternateBadgeName() = also {
         find<Any>("#alt-badge-name")
-                .prop("value")
-                .assertIsEqualTo("Alternate")
+            .prop("value")
+            .assertIsEqualTo("Alternate")
     }
 
     private fun ShallowWrapper<dynamic>.assertHasStandardPairingRule() = also {
         console.log(debug())
         find<Any>("#pairing-rule")
-                .prop("value")
-                .unsafeCast<Array<String>>()
-                .joinToString("")
-                .assertIsEqualTo("${toValue(PairingRule.LongestTime)}")
+            .prop("value")
+            .unsafeCast<Array<String>>()
+            .joinToString("")
+            .assertIsEqualTo("${toValue(PairingRule.LongestTime)}")
     }
 
     private fun ShallowWrapper<dynamic>.assertHasDefaultBadgeName() = also {
         find<Any>("#default-badge-name")
-                .prop("value")
-                .assertIsEqualTo("Default")
+            .prop("value")
+            .assertIsEqualTo("Default")
     }
 
     @Test
@@ -69,8 +69,12 @@ class TribeConfigTest {
             setupAsync(object : TribeConfigBuilder,
                 PropsClassProvider<TribeConfigProps> by provider() {
                 override fun buildScope() = this@withContext
+                override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
-                override fun KtTribe.saveAsync() = saveSpy.spyFunction(toJson()).asDeferred()
+
+                override suspend fun KtTribe.save() {
+                    saveSpy.spyFunction(toJson())
+                }
 
                 val tribe = KtTribe(
                     TribeId("1"),

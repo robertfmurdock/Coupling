@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toTribe
 import kotlinx.coroutines.launch
 import kotlinx.html.InputType
 import kotlinx.html.classes
@@ -19,7 +21,8 @@ import react.RProps
 import react.ReactElement
 import react.dom.*
 
-object TribeConfig : RComponent<TribeConfigProps>(provider()), TribeConfigBuilder
+object TribeConfig : RComponent<TribeConfigProps>(provider()), TribeConfigBuilder,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
 
