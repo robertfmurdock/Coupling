@@ -3,12 +3,14 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -22,7 +24,8 @@ import react.ReactElement
 import react.dom.*
 import kotlin.js.json
 
-object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRenderer
+object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRenderer,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 data class PlayerConfigProps(
     val tribe: KtTribe,

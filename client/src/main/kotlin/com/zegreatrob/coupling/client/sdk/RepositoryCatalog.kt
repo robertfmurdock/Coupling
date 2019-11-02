@@ -8,7 +8,7 @@ interface RepositoryCatalog {
 }
 
 interface AxiosTribeRepository : AxiosGetTribe, AxiosTribeListGet, AxiosTribeSave
-interface AxiosPlayerRepository : AxiosPlayerGetter, AxiosPlayerGetDeleted
+interface AxiosPlayerRepository : AxiosPlayerGetter, AxiosPlayerGetDeleted, AxiosPlayerSaver
 interface AxiosPinRepository : AxiosPinGetter
 interface AxiosPairAssignmentsRepository : AxiosPairAssignmentDocumentGetter, AxiosPairAssignmentDocumentSaver
 

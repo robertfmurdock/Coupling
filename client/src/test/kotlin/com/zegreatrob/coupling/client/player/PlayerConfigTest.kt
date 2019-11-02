@@ -6,11 +6,12 @@ import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -33,6 +34,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
+        override val playerRepository get() = throw NotImplementedError("stubbed")
         val tribe = KtTribe(
             id = TribeId("party"),
             name = "Party tribe",
@@ -51,6 +53,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
+        override val playerRepository get() = throw NotImplementedError("stubbed")
         val tribe = KtTribe(
             id = TribeId("party"),
             name = "Party tribe",
@@ -71,14 +74,14 @@ class PlayerConfigTest {
         withContext(this.coroutineContext) {
             setupAsync(object : PlayerConfigRenderer,
                 PropsClassProvider<PlayerConfigProps> by provider() {
-
+                override val playerRepository get() = throw NotImplementedError("stubbed")
                 override fun buildScope() = this@withContext
 
                 val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
-                override suspend fun saveAsync(tribeId: TribeId, player: Player) = saveSpy.spyFunction(
-                    player.toJson() to tribeId.value
-                )
-                    .await()
+
+                override suspend fun TribeIdPlayer.save() {
+                    saveSpy.spyFunction(player.toJson() to tribeId.value).await()
+                }
 
                 val tribe =
                     KtTribe(TribeId("party"))
@@ -118,6 +121,7 @@ class PlayerConfigTest {
         withContext(this.coroutineContext) {
             setupAsync(object : PlayerConfigRenderer,
                 PropsClassProvider<PlayerConfigProps> by provider() {
+                override val playerRepository get() = throw NotImplementedError("stubbed")
                 override fun buildScope() = this@withContext
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
                 override fun deleteAsync(tribeId: TribeId, playerId: String) =
@@ -160,6 +164,7 @@ class PlayerConfigTest {
         withContext(this.coroutineContext) {
             setupAsync(object : PlayerConfigRenderer,
                 PropsClassProvider<PlayerConfigProps> by provider() {
+                override val playerRepository get() = throw NotImplementedError("stubbed")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
@@ -192,6 +197,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
+        override val playerRepository get() = throw NotImplementedError("stubbed")
         val tribe = KtTribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper = shallow(PlayerConfigProps(
@@ -215,6 +221,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
+        override val playerRepository get() = throw NotImplementedError("stubbed")
         val tribe = KtTribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
