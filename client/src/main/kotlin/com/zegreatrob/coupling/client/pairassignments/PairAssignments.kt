@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.player.playerRoster
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessageProps
@@ -31,7 +33,8 @@ import react.dom.key
 import react.dom.span
 import kotlin.browser.window
 
-object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer
+object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 data class PairAssignmentsProps(
     val tribe: KtTribe,

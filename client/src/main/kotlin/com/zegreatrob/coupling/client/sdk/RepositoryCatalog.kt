@@ -10,7 +10,7 @@ interface RepositoryCatalog {
 interface AxiosTribeRepository : AxiosGetTribe, AxiosTribeListGet
 interface AxiosPlayerRepository : AxiosPlayerGetter, AxiosPlayerGetDeleted
 interface AxiosPinRepository : AxiosPinGetter
-interface AxiosPairAssignmentsRepository : AxiosPairAssignmentDocumentGetter
+interface AxiosPairAssignmentsRepository : AxiosPairAssignmentDocumentGetter, AxiosPairAssignmentDocumentSaver
 
 object AxiosRepositoryCatalog : RepositoryCatalog, AxiosTribeRepository, AxiosPlayerRepository,
     AxiosPairAssignmentsRepository, AxiosPinRepository {

@@ -9,13 +9,14 @@ import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
+import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -36,6 +37,7 @@ class PairAssignmentsTest {
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
         val fellow = Player(id = "3", name = "fellow")
         val guy = Player(id = "2", name = "Guy")
 
@@ -75,6 +77,7 @@ class PairAssignmentsTest {
     @Test
     fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
         val players = listOf(
             Player(id = "1", name = "rigby"),
             Player(id = "2", name = "Guy"),
@@ -96,10 +99,12 @@ class PairAssignmentsTest {
         withContext(coroutineContext) {
             setupAsync(object : PairAssignmentsRenderer,
                 PropsClassProvider<PairAssignmentsProps> by provider() {
+                override val pairAssignmentDocumentRepository get() = TODO("not implemented")
                 override fun buildScope() = this@withContext
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
-                override suspend fun saveAsync(tribeId: TribeId, pairAssignmentDocument: PairAssignmentDocument) {
-                    saveSpy.spyFunction(pairAssignmentDocument.toJson())
+
+                override suspend fun TribeIdPairAssignmentDocument.save() {
+                    saveSpy.spyFunction(document.toJson())
                 }
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
@@ -127,6 +132,7 @@ class PairAssignmentsTest {
     @Test
     fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -160,6 +166,8 @@ class PairAssignmentsTest {
     @Test
     fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -200,6 +208,7 @@ class PairAssignmentsTest {
     @Test
     fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
     }) exercise {
         shallow(PairAssignmentsProps(tribe, listOf(), null) {})
     } verify { wrapper ->
