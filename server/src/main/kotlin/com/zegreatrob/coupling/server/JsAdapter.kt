@@ -1,27 +1,23 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.PinRepository
 import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.player.PlayerRepository
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeRepository
+import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
+import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserRepository
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
-import com.zegreatrob.coupling.mongo.player.*
+import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
-import com.zegreatrob.coupling.json.*
-import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.model.pin.PinRepository
-import com.zegreatrob.coupling.model.player.PlayerRepository
-import com.zegreatrob.coupling.model.tribe.TribeRepository
-import com.zegreatrob.coupling.model.user.UserRepository
-import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
-import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
-import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
-import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.pin.*
 import com.zegreatrob.coupling.server.action.player.*
@@ -186,7 +182,7 @@ fun commandDispatcher(
 
         @JsName("performDeletePlayerCommand")
         fun performDeletePlayerCommand(playerId: String) = scope.promise {
-            DeletePlayerCommand(playerId)
+            DeletePlayerCommand(TribeId(""), playerId)
                 .perform()
         }
 

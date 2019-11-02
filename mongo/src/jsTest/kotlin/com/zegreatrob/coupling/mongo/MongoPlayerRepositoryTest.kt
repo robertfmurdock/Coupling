@@ -31,7 +31,7 @@ class MongoPlayerRepositoryTest {
         }
 
         suspend fun getDbPlayers(tribeId: TribeId) =
-                playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
+            playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
     }
 
     @Test
@@ -77,8 +77,8 @@ class MongoPlayerRepositoryTest {
             result.size.assertIsEqualTo(1)
             result.first().apply {
                 get("timestamp").unsafeCast<Date>().toDateTime()
-                        .isCloseToNow()
-                        .assertIsEqualTo(true)
+                    .isCloseToNow()
+                    .assertIsEqualTo(true)
                 get("modifiedByUsername").assertIsEqualTo(userEmail)
             }
         }
@@ -110,8 +110,8 @@ class MongoPlayerRepositoryTest {
                 getDbPlayers(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
-                        .map { it["name"] }
-                        .assertIsEqualTo(listOf("Timmy", "Tim"))
+                    .map { it["name"] }
+                    .assertIsEqualTo(listOf("Timmy", "Tim"))
             }
         }
 
@@ -145,7 +145,7 @@ class MongoPlayerRepositoryTest {
             )
         }) exerciseAsync {
             save(TribeIdPlayer(tribe, player))
-            deletePlayer(playerId)
+            deletePlayer(tribe, playerId)
         } verifyAsync {
             getPlayersAsync(tribe).await().assertIsEqualTo(emptyList())
         }
@@ -168,7 +168,7 @@ class MongoPlayerRepositoryTest {
         }) {
             dropPlayers()
             save(TribeIdPlayer(tribeId, player))
-            deletePlayer(playerId)
+            deletePlayer(tribeId, playerId)
         } exerciseAsync {
             getDeletedAsync(tribeId).await()
         } verifyAsync { result ->
@@ -193,9 +193,9 @@ class MongoPlayerRepositoryTest {
         }) {
             dropPlayers()
             save(player with tribeId)
-            deletePlayer(playerId)
+            deletePlayer(tribeId, playerId)
             save(player with tribeId)
-            deletePlayer(playerId)
+            deletePlayer(tribeId, playerId)
         } exerciseAsync {
             getDeletedAsync(tribeId).await()
         } verifyAsync { result ->
@@ -227,16 +227,18 @@ class MongoPlayerRepositoryTest {
                 save(TribeIdPlayer(tribeId, player))
             }
         } exerciseAsync {
-            deletePlayer(playerId)
+            deletePlayer(tribeId, playerId)
         } verifyAsync {
             getDbPlayers(tribeId)
-                    .toList()
-                    .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
-                    .map { it["modifiedByUsername"].unsafeCast<String>() }
-                    .assertIsEqualTo(listOf(
-                            userEmail,
-                            userWhoSaved
-                    ))
+                .toList()
+                .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
+                .map { it["modifiedByUsername"].unsafeCast<String>() }
+                .assertIsEqualTo(
+                    listOf(
+                        userEmail,
+                        userWhoSaved
+                    )
+                )
         }
     }
 
@@ -247,9 +249,9 @@ class MongoPlayerRepositoryTest {
                 val playerId = id()
                 val tribeId = TribeId("woo")
                 val playerDbJson = json(
-                        "_id" to playerId,
-                        "tribe" to tribeId.value,
-                        "name" to "The Foul Monster"
+                    "_id" to playerId,
+                    "tribe" to tribeId.value,
+                    "name" to "The Foul Monster"
                 )
             }) {
                 dropPlayers()
@@ -262,19 +264,21 @@ class MongoPlayerRepositoryTest {
             setupLegacyPlayer() exerciseAsync {
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(
-                    Player(
-                        id = playerId,
-                        name = playerDbJson["name"].toString()
+                result.assertIsEqualTo(
+                    listOf(
+                        Player(
+                            id = playerId,
+                            name = playerDbJson["name"].toString()
+                        )
                     )
-                ))
+                )
             }
         }
 
         @Test
         fun canDeletePlayersThatLookHistorical() = testAsync {
             setupLegacyPlayer() exerciseAsync {
-                deletePlayer(playerId)
+                deletePlayer(tribeId, playerId)
                 getPlayersAsync(tribeId).await()
             } verifyAsync { result ->
                 result.assertIsEqualTo(emptyList())
@@ -287,9 +291,9 @@ class MongoPlayerRepositoryTest {
                 val playerId = id()
                 val tribeId = TribeId("woo")
                 val playerDbJson = json(
-                        "_id" to playerId,
-                        "tribe" to tribeId.value,
-                        "name" to "The Foul Monster"
+                    "_id" to playerId,
+                    "tribe" to tribeId.value,
+                    "name" to "The Foul Monster"
                 )
 
                 val updatedPlayer = Player(
@@ -313,14 +317,14 @@ class MongoPlayerRepositoryTest {
         setupAsync(object {
             val tribeId = TribeId("nah")
             val playerDbJson = json(
-                    "_id" to "5c59ca700e6e5e3cce737c6e",
-                    "tribe" to tribeId.value,
-                    "name" to "Guy guy",
-                    "email" to "duder",
-                    "pins" to emptyArray<Json>(),
-                    "badge" to 1,
-                    "id" to null,
-                    "timestamp" to Date(Date.parse("2019-02-05T17:40:00.058Z"))
+                "_id" to "5c59ca700e6e5e3cce737c6e",
+                "tribe" to tribeId.value,
+                "name" to "Guy guy",
+                "email" to "duder",
+                "pins" to emptyArray<Json>(),
+                "badge" to 1,
+                "id" to null,
+                "timestamp" to Date(Date.parse("2019-02-05T17:40:00.058Z"))
             )
         }) {
             dropPlayers()
@@ -346,7 +350,7 @@ class MongoPlayerRepositoryTest {
         setupAsync(object {
             val playerId = id()
         }) exerciseAsync {
-            deletePlayer(playerId)
+            deletePlayer(TribeId(""), playerId)
         } verifyAsync { result -> result.assertIsEqualTo(false) }
     }
 

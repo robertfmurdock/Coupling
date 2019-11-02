@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.mongo.player
 import Spy
 import SpyData
 import com.zegreatrob.coupling.model.player.PlayerDeleter
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -17,7 +18,7 @@ class DeletePlayerCommandTest {
             val playerId = "ThatGuyGetHim"
             override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
         }) exerciseAsync {
-            DeletePlayerCommand(playerId)
+            DeletePlayerCommand(TribeId(""), playerId)
                     .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(true)
@@ -26,6 +27,6 @@ class DeletePlayerCommandTest {
     }
 
     class PlayerRepositorySpy : PlayerDeleter, Spy<String, Boolean> by SpyData() {
-        override suspend fun deletePlayer(playerId: String): Boolean = spyFunction(playerId)
+        override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean = spyFunction(playerId)
     }
 }

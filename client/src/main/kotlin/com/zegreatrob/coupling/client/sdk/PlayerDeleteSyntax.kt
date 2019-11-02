@@ -6,9 +6,7 @@ import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
 interface PlayerDeleteSyntax {
-
     fun deleteAsync(tribeId: TribeId, playerId: String) = axios.delete("/api/${tribeId.value}/players/$playerId")
         .unsafeCast<Promise<Unit>>()
         .asDeferred()
-
 }
