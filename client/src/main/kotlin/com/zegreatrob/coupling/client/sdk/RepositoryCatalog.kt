@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerGetter
 import com.zegreatrob.coupling.model.tribe.TribeGet
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeListGet
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
@@ -24,13 +25,19 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: AxiosPairAssignmentsRepository
 }
 
+interface AxiosTribeListGet : TribeListGet {
+    override fun getTribesAsync() = axios.getList("/api/tribes")
+        .then { it.map(Json::toTribe) }
+        .asDeferred()
+}
+
 interface AxiosGetTribe : AxiosGetEntitySyntax, TribeGet {
     override fun getTribeAsync(tribeId: TribeId) = axios.getEntityAsync("/api/tribes/${tribeId.value}")
         .then(Json::toTribe)
         .asDeferred()
 }
 
-interface AxiosTribeRepository : AxiosGetTribe
+interface AxiosTribeRepository : AxiosGetTribe, AxiosTribeListGet
 interface AxiosPlayerRepository : AxiosPlayerGetter
 interface AxiosPinRepository : AxiosPinGetter
 interface AxiosPairAssignmentsRepository : AxiosPairAssignmentDocumentGetter
