@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.sdk
 
+import com.zegreatrob.coupling.model.player.*
+
 interface RepositoryCatalog {
     val tribeRepository: AxiosTribeRepository
     val playerRepository: AxiosPlayerRepository
@@ -8,9 +10,11 @@ interface RepositoryCatalog {
 }
 
 interface AxiosTribeRepository : AxiosGetTribe, AxiosTribeListGet, AxiosTribeSave
-interface AxiosPlayerRepository : AxiosPlayerGetter, AxiosPlayerGetDeleted, AxiosPlayerSaver
+interface AxiosPlayerRepository : AxiosPlayerGetter, AxiosPlayerGetDeleted, AxiosPlayerSaver, AxiosPlayerDeleter, PlayerRepository
 interface AxiosPinRepository : AxiosPinGetter
 interface AxiosPairAssignmentsRepository : AxiosPairAssignmentDocumentGetter, AxiosPairAssignmentDocumentSaver
+
+interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted
 
 object AxiosRepositoryCatalog : RepositoryCatalog, AxiosTribeRepository, AxiosPlayerRepository,
     AxiosPairAssignmentsRepository, AxiosPinRepository {

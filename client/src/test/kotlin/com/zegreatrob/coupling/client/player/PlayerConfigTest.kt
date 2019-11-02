@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.TribeIdPlayerId
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
@@ -124,8 +125,11 @@ class PlayerConfigTest {
                 override val playerRepository get() = throw NotImplementedError("stubbed")
                 override fun buildScope() = this@withContext
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
-                override fun deleteAsync(tribeId: TribeId, playerId: String) =
-                    removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
+
+                override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
+                    removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
+                    return true
+                }
 
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
@@ -168,8 +172,11 @@ class PlayerConfigTest {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
-                override fun deleteAsync(tribeId: TribeId, playerId: String) =
-                    removeSpy.spyFunction(tribeId.value to playerId).asDeferred()
+
+                override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
+                    removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
+                    return true
+                }
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val tribe =
