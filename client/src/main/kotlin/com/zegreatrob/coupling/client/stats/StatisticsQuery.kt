@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.KtTribe
@@ -25,7 +25,7 @@ data class StatisticQueryResults(
 )
 
 interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdPlayersSyntax,
-    GetPairAssignmentListSyntax,
+    TribeIdHistorySyntax,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher {
 
@@ -41,7 +41,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Tri
         Triple(
             loadAsync(),
             GlobalScope.async { loadPlayers() },
-            getPairAssignmentListAsync()
+            getHistoryAsync()
         ).await()
 
     private suspend fun Triple<Deferred<KtTribe?>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
