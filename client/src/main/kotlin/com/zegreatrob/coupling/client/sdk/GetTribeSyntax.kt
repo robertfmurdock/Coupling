@@ -10,12 +10,28 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface GetTribeSyntax : AxiosGetTribe {
-    fun TribeId.getTribeAsync(): Deferred<KtTribe> = getTribeAsync(this)
+interface GetTribeSyntax {
+
+    val tribeRepository: TribeGet
+
+    fun TribeId.getTribeAsync(): Deferred<KtTribe?> = tribeRepository.getTribeAsync(this)
 }
 
 interface AxiosGetTribe : AxiosGetEntitySyntax, TribeGet {
     override fun getTribeAsync(tribeId: TribeId) = axios.getEntityAsync("/api/tribes/${tribeId.value}")
         .then(Json::toTribe)
         .asDeferred()
+}
+
+interface AxiosTribeRepository : AxiosGetTribe
+
+
+interface RepositoryCatalog {
+    val tribeRepository: AxiosTribeRepository
+}
+
+object AxiosRepositoryCatalog : RepositoryCatalog, AxiosTribeRepository {
+
+    override val tribeRepository: AxiosTribeRepository get() = this
+
 }

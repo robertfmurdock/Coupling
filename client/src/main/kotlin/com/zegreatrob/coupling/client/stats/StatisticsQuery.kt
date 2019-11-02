@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
-import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
-import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
+import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
@@ -42,9 +42,9 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPl
             getPairAssignmentListAsync()
         ).await()
 
-    private suspend fun Triple<Deferred<KtTribe>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
+    private suspend fun Triple<Deferred<KtTribe?>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
         Triple(
-            first.await(),
+            first.await()!!,
             second.await(),
             third.await()
         )

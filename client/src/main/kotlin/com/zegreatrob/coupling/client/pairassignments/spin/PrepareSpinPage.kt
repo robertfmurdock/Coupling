@@ -6,10 +6,13 @@ import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatche
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import react.RBuilder
 import react.ReactElement
 
-object PrepareSpinPage : RComponent<PageProps>(provider()), PrepareSpinPageBuilder
+object PrepareSpinPage : RComponent<PageProps>(provider()), PrepareSpinPageBuilder,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
@@ -25,7 +28,7 @@ interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeData
                     dataLoadProps(
                         query = { TribeDataSetQuery(tribeId).perform() },
                         toProps = { _, (tribe, players, history) ->
-                            PrepareSpinProps(tribe, players, history, props.pathSetter)
+                            PrepareSpinProps(tribe!!, players, history, props.pathSetter)
                         }
                     )
                 )

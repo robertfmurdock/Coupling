@@ -6,11 +6,14 @@ import com.zegreatrob.coupling.client.player.PlayerConfigProps
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 
-object RetiredPlayerPage : RComponent<PageProps>(provider()), RetiredPlayerPageBuilder
+object RetiredPlayerPage : RComponent<PageProps>(provider()), RetiredPlayerPageBuilder,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.render(this)
@@ -28,7 +31,7 @@ interface RetiredPlayerPageBuilder : SimpleComponentRenderer<PageProps>, Retired
                         query = { performRetiredPlayerQuery(tribeId, playerId) },
                         toProps = { reload, (tribe, players, player) ->
                             PlayerConfigProps(
-                                tribe = tribe,
+                                tribe = tribe!!,
                                 player = player,
                                 players = players,
                                 pathSetter = props.pathSetter,

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
-import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
-import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -18,7 +18,7 @@ interface HistoryQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPairA
         Pair(getTribeAsync(), getPairAssignmentListAsync())
             .await()
 
-    private suspend fun Pair<Deferred<KtTribe>, Deferred<List<PairAssignmentDocument>>>.await() =
+    private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<PairAssignmentDocument>>>.await() =
         Pair(
             first.await(),
             second.await()

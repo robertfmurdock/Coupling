@@ -5,13 +5,15 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.ReloadFunction
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import react.RBuilder
 import react.ReactElement
 
-
-object PlayerPage : RComponent<PageProps>(provider()), PlayerPageBuilder
+object PlayerPage : RComponent<PageProps>(provider()), PlayerPageBuilder,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.render(this)
@@ -36,10 +38,10 @@ interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, PlayerQueryDis
         } else throw Exception("WHAT")
     }
 
-    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<KtTribe, List<Player>, Player>) -> PlayerConfigProps =
+    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<KtTribe?, List<Player>, Player>) -> PlayerConfigProps =
         { reload, (tribe, players, player) ->
             PlayerConfigProps(
-                tribe = tribe,
+                tribe = tribe!!,
                 player = player,
                 players = players,
                 pathSetter = pageProps.pathSetter,

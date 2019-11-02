@@ -4,10 +4,13 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import react.RBuilder
 import react.ReactElement
 
-object HistoryPage : RComponent<PageProps>(provider()), HistoryPageBuilder
+object HistoryPage : RComponent<PageProps>(provider()), HistoryPageBuilder,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 private val LoadedPairAssignments = dataLoadWrapper(History)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
@@ -23,7 +26,7 @@ interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryD
                     dataLoadProps(
                         query = { HistoryQuery(tribeId).perform() },
                         toProps = { reload, (tribe, history) ->
-                            HistoryProps(tribe, history, reload, props.pathSetter)
+                            HistoryProps(tribe!!, history, reload, props.pathSetter)
                         }
                     )
                 )

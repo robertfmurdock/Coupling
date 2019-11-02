@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
-import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
+import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
+import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -29,7 +29,7 @@ interface PlayerQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayer
     private suspend fun TribeId.getData() = (getTribeAsync() to getPlayerListAsync())
         .await()
 
-    private suspend fun Pair<Deferred<KtTribe>, Deferred<List<Player>>>.await() =
+    private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Player>>>.await() =
         first.await() to second.await()
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }

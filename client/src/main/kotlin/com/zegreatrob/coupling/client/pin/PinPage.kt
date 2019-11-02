@@ -4,13 +4,16 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.DataLoadProps
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 
-object PinListPage : RComponent<PageProps>(provider()), PinListPageBuilder
+object PinListPage : RComponent<PageProps>(provider()), PinListPageBuilder,
+    RepositoryCatalog by AxiosRepositoryCatalog
 
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.render(this)
@@ -30,9 +33,9 @@ interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, PinListQueryD
         } else throw Exception("WHAT")
     }
 
-    private fun Pair<KtTribe, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
+    private fun Pair<KtTribe?, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
         PinListProps(
-            tribe = tribe,
+            tribe = tribe!!,
             pins = retiredPlayers
         )
     }
