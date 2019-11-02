@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.mongo.player
+package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.model.player.PlayerGetDeleted
 import com.zegreatrob.coupling.model.player.PlayerGetter

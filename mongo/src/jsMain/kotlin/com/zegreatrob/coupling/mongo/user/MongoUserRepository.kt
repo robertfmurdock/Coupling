@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.mongo.user
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import com.zegreatrob.coupling.model.User
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserRepository
 import kotlin.js.Json
 import kotlin.js.json

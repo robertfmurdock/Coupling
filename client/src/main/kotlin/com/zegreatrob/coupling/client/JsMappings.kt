@@ -1,8 +1,10 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.action.PairReport
+import com.zegreatrob.coupling.action.StatisticsReport
+import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.json.toJson
 import kotlin.js.json
 
 fun StatisticsReport.toJson() = json(

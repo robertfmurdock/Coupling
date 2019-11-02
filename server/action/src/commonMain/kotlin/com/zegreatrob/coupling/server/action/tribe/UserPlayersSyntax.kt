@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.action.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.model.player.PlayerRepository
 
 interface UserPlayersSyntax : UserEmailSyntax {

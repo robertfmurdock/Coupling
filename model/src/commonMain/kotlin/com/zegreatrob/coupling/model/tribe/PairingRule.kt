@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.model.tribe;
+package com.zegreatrob.coupling.model.tribe
 
 enum class PairingRule {
     LongestTime, PreferDifferentBadge;

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.mongo
+package com.zegreatrob.coupling.server
 
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -8,9 +8,7 @@ class PlaceholderTest {
     @Test
     fun thing() = setup(object {
     }) exercise {
-
-    } verify { _ ->
-
+    } verify {
     }
 
 }

@@ -5,11 +5,10 @@ import com.soywiz.klock.internal.toDateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -26,7 +25,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) =
         tribeIdPairAssignmentDocument
             .toDbJson()
-            .let { it.save(jsRepository.historyCollection) }
+            .save(jsRepository.historyCollection)
 
     override suspend fun delete(pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
         return deleteEntity(

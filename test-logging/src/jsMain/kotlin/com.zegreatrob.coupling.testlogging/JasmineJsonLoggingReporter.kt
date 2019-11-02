@@ -1,6 +1,7 @@
+package com.zegreatrob.coupling.testlogging
+
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.logging.initializeJasmineLogging
-import com.zegreatrob.coupling.testlogging.JsonLoggingTestMintsReporter
 import mu.KotlinLogging
 
 @JsName("JasmineJsonLoggingReporter")

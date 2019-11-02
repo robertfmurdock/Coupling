@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.mongo.player
 import Spy
 import SpyData
 import com.zegreatrob.coupling.model.player.PlayerDeleter
+import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
+import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync

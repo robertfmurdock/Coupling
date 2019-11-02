@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity
+package com.zegreatrob.coupling.server.action.user
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedTribeIdSyntax

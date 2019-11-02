@@ -1,3 +1,4 @@
+import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import mu.KotlinLogging
 import mu.KotlinLoggingConfiguration.LOG_LEVEL
 import mu.KotlinLoggingLevel
