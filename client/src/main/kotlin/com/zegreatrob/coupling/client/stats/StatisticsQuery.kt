@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
 import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
-import com.zegreatrob.coupling.client.sdk.GetTribeSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.Deferred
 
 data class StatisticsQuery(val tribeId: TribeId) : Action
@@ -22,7 +22,7 @@ data class StatisticQueryResults(
     val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPlayerListSyntax,
+interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, GetPlayerListSyntax,
     GetPairAssignmentListSyntax,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher {
@@ -37,7 +37,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, GetTribeSyntax, GetPl
 
     private suspend fun TribeId.getData() =
         Triple(
-            getTribeAsync(),
+            loadAsync(),
             getPlayerListAsync(),
             getPairAssignmentListAsync()
         ).await()

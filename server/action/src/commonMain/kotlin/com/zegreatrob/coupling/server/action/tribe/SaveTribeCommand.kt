@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 
