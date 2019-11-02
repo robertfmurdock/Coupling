@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
-interface AxiosPlayerDeleter : PlayerDeleter {
+interface SdkPlayerDeleter : PlayerDeleter {
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean {
         axios.delete("/api/${tribeId.value}/players/$playerId")

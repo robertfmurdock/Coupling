@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
-interface AxiosPlayerSaver : PlayerSaver {
+interface SdkPlayerSaver : PlayerSaver {
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
         val (tribeId, player) = tribeIdPlayer
         axios.post("/api/${tribeId.value}/players/", player.toJson())

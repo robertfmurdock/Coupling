@@ -4,14 +4,14 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.SdkRepositoryCatalog
 import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 
 object TribeConfigPage : RComponent<PageProps>(provider()), TribeConfigPageBuilder,
-    RepositoryCatalog by AxiosRepositoryCatalog
+    RepositoryCatalog by SdkRepositoryCatalog
 
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)

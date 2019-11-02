@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pin.PinGetter
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 
-interface AxiosPinGetter : PinGetter {
+interface SdkPinGetter : PinGetter {
     override fun getPinsAsync(tribeId: TribeId) = axios.getList("/api/${tribeId.value}/pins")
         .then { it.toPins() }
         .asDeferred()

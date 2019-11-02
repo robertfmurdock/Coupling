@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.tribe.TribeSave
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
-interface AxiosTribeSave : TribeSave {
+interface SdkTribeSave : TribeSave {
     override suspend fun save(tribe: KtTribe) {
         axios.post("/api/tribes/", tribe.toJson())
             .unsafeCast<Promise<Unit>>()

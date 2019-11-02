@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface AxiosPlayerGetDeleted : PlayerGetDeleted {
+interface SdkPlayerGetDeleted : PlayerGetDeleted {
     override fun getDeletedAsync(tribeId: TribeId) = axios.getList("/api/${tribeId.value}/players/retired")
         .then { it.map(Json::toPlayer) }
         .asDeferred()

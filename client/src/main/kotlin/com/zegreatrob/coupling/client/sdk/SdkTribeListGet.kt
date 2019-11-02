@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.tribe.TribeListGet
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface AxiosTribeListGet : TribeListGet {
+interface SdkTribeListGet : TribeListGet {
     override fun getTribesAsync() = axios.getList("/api/tribes")
         .then { it.map(Json::toTribe) }
         .asDeferred()

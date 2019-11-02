@@ -10,7 +10,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface AxiosPlayerGetter : PlayerGetter {
+interface SdkPlayerGetter : PlayerGetter {
     override fun getPlayersAsync(tribeId: TribeId): Deferred<List<Player>> =
         axios.getList("/api/${tribeId.value}/players")
             .then { it.map(Json::toPlayer) }

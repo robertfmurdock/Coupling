@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.SdkRepositoryCatalog
 import com.zegreatrob.coupling.client.sdk.PlayerRepository
 import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -26,7 +26,7 @@ import react.dom.*
 import kotlin.js.json
 
 object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRenderer,
-    RepositoryCatalog by AxiosRepositoryCatalog
+    RepositoryCatalog by SdkRepositoryCatalog
 
 data class PlayerConfigProps(
     val tribe: KtTribe,

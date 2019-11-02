@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface AxiosGetTribe : AxiosGetEntitySyntax,
+interface SdkGetTribe : AxiosGetEntitySyntax,
     TribeGet {
     override fun getTribeAsync(tribeId: TribeId) = axios.getEntityAsync("/api/tribes/${tribeId.value}")
         .then(Json::toTribe)

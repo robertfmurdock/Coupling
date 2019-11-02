@@ -3,14 +3,14 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.client.sdk.AxiosRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.SdkRepositoryCatalog
 import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
 
 object NewPairAssignmentsPage : RComponent<PageProps>(provider()), NewPairAssignmentsPageBuilder,
-    RepositoryCatalog by AxiosRepositoryCatalog
+    RepositoryCatalog by SdkRepositoryCatalog
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)

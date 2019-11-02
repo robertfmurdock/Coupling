@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 
-interface AxiosPairAssignmentDocumentGetter :
+interface SdkPairAssignmentDocumentGetter :
     PairAssignmentDocumentGetter {
     override fun getPairAssignmentsAsync(tribeId: TribeId) = axios.getList("/api/${tribeId.value}/history")
         .then { it.map(Json::toPairAssignmentDocument) }
