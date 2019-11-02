@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.TribeId
 

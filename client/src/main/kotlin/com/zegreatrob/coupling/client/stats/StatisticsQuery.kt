@@ -4,13 +4,15 @@ import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.client.sdk.GetPairAssignmentListSyntax
-import com.zegreatrob.coupling.client.sdk.GetPlayerListSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 data class StatisticsQuery(val tribeId: TribeId) : Action
 
@@ -22,7 +24,7 @@ data class StatisticQueryResults(
     val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, GetPlayerListSyntax,
+interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdPlayersSyntax,
     GetPairAssignmentListSyntax,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher {
@@ -38,7 +40,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Get
     private suspend fun TribeId.getData() =
         Triple(
             loadAsync(),
-            getPlayerListAsync(),
+            GlobalScope.async { loadPlayers() },
             getPairAssignmentListAsync()
         ).await()
 

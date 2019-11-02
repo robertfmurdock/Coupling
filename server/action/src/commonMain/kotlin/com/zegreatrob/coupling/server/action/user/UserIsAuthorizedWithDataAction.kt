@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.user
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.action.player.TribeIdPlayersSyntax
+import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedTribeIdSyntax
 import com.zegreatrob.coupling.server.action.tribe.UserPlayersSyntax
