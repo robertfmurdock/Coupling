@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.sdk.ServerLogout
+import com.zegreatrob.coupling.client.sdk.SdkSyntax
 
 object LogoutCommand
 
-interface LogoutCommandDispatcher : ServerLogout {
-    suspend fun LogoutCommand.perform() = logout()
+interface LogoutCommandDispatcher : SdkSyntax {
+    suspend fun LogoutCommand.perform() = with(sdk) { logout() }
 }
 

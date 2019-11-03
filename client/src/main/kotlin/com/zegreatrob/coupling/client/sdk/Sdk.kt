@@ -19,8 +19,8 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter, SdkPai
 
 interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted
 
-interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository,
-    SdkPairAssignmentsRepository, SdkPinRepository, SdkSpin, SdkSyntax
+interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
+    SdkPinRepository, SdkSpin, SdkSyntax, SdkCreateGoogleSession, SdkLogout
 
 object SdkSingleton : Sdk {
     override val sdk: Sdk get() = this

@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.user.GoogleSignIn
-import com.zegreatrob.coupling.client.external.react.ReactComponentRenderer
 import com.zegreatrob.coupling.client.external.react.RFunction
+import com.zegreatrob.coupling.client.external.react.ReactComponentRenderer
 import com.zegreatrob.coupling.client.external.react.loadStyles
+import com.zegreatrob.coupling.client.sdk.Sdk
+import com.zegreatrob.coupling.client.sdk.SdkSingleton
+import com.zegreatrob.coupling.client.user.GoogleSignIn
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlinx.html.js.onClickFunction
@@ -21,7 +23,7 @@ interface LoginChooserRenderer {
 
     fun RBuilder.loginChooser() = element(loginChooser, object : RProps {})
 
-    companion object : ReactComponentRenderer, GoogleSignIn {
+    companion object : ReactComponentRenderer, GoogleSignIn, Sdk by SdkSingleton {
         private val styles = loadStyles<LoginChooserCss>("LoginChooser")
 
         private val loginChooser = {

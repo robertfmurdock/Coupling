@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.client.sdk.Sdk
+import com.zegreatrob.coupling.client.sdk.SdkSingleton
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -9,7 +11,7 @@ import react.ReactElement
 import react.dom.div
 import react.router.dom.redirect
 
-object Logout : RComponent<PageProps>(provider()), LogoutBuilder
+object Logout : RComponent<PageProps>(provider()), LogoutBuilder, Sdk by SdkSingleton
 
 interface LogoutBuilder : SimpleComponentRenderer<PageProps>, GoogleSignIn, LogoutCommandDispatcher {
 

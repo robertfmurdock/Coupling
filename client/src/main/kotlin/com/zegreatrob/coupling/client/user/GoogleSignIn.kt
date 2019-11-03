@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.sdk.ServerCreateGoogleSession
+import com.zegreatrob.coupling.client.sdk.SdkSyntax
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.await
@@ -9,7 +9,7 @@ import kotlinx.coroutines.yield
 import org.w3c.dom.get
 import kotlin.browser.window
 
-interface GoogleSignIn : ServerCreateGoogleSession {
+interface GoogleSignIn : SdkSyntax {
 
     suspend fun signIn() = getGoogleAuth()
         .performSignIn()
@@ -45,9 +45,10 @@ interface GoogleSignIn : ServerCreateGoogleSession {
         signOut().await()
     } else Unit
 
-    private suspend fun GoogleUser.createSession() {
+    private suspend fun GoogleUser.createSession(): Unit = with(sdk) {
         createSessionOnCoupling(getAuthResponse().id_token)
             .await()
+        Unit
     }
 
     private suspend fun getGoogleAuth() = loadGoogleAuth2()
