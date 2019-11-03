@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.sdk.SdkRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.SdkSingleton
 import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
@@ -22,7 +22,7 @@ import react.ReactElement
 import react.dom.*
 
 object TribeConfig : RComponent<TribeConfigProps>(provider()), TribeConfigBuilder,
-    RepositoryCatalog by SdkRepositoryCatalog
+    RepositoryCatalog by SdkSingleton
 
 data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
 

@@ -19,10 +19,17 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter, SdkPai
 
 interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted
 
-object SdkRepositoryCatalog : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository,
-    SdkPairAssignmentsRepository, SdkPinRepository {
+interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository,
+    SdkPairAssignmentsRepository, SdkPinRepository, SdkSpin, SdkSyntax
+
+object SdkSingleton : Sdk {
+    override val sdk: Sdk get() = this
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
     override val tribeRepository get() = this
+}
+
+interface SdkSyntax {
+    val sdk: Sdk
 }

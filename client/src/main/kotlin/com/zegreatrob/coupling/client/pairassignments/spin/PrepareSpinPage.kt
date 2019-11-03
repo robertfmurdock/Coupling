@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatche
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.client.sdk.SdkRepositoryCatalog
+import com.zegreatrob.coupling.client.sdk.SdkSingleton
 import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
 import react.RBuilder
 import react.ReactElement
 
 object PrepareSpinPage : RComponent<PageProps>(provider()), PrepareSpinPageBuilder,
-    RepositoryCatalog by SdkRepositoryCatalog
+    RepositoryCatalog by SdkSingleton
 
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
