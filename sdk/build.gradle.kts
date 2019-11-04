@@ -57,12 +57,14 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.benasher44:uuid-js:0.0.5")
             }
         }
 
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation("com.benasher44:uuid-js:0.0.5")
             }
         }
     }

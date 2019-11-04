@@ -14,7 +14,14 @@ const fork = childProcess.fork(__dirname + '/test-run', testFilePath, {
   env: process.env
 });
 
+let allLines = "";
+
 fork.on('exit', function (exit) {
+  if (exit !== 0) {
+    console.log('exit code', exit)
+    console.log(allLines)
+  }
+
   process.exit(exit);
 });
 
@@ -26,6 +33,7 @@ const rl = readline.createInterface({
 });
 
 rl.on('line', function (line) {
+  allLines += line + "\n";
   try {
     const json = JSON.parse(line);
 
