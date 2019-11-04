@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.client.sdk
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.client.sdk.axios.axios.AxiosGetEntitySyntax
-import com.zegreatrob.coupling.client.sdk.axios.axios.axios
+import com.zegreatrob.coupling.sdk.external.axios.AxiosGetEntitySyntax
+import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.TribeGet
 import com.zegreatrob.coupling.model.tribe.TribeId

@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.sdk.SdkSingleton
-import com.zegreatrob.coupling.client.sdk.PlayerRepository
-import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.PlayerRepository
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson

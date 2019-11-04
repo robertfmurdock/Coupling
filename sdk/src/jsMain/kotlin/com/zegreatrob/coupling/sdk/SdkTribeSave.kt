@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.client.sdk
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.client.sdk.axios.axios.axios
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeSave
+import com.zegreatrob.coupling.sdk.external.axios.axios
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 

@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.client.sdk.Sdk
-import com.zegreatrob.coupling.client.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 import react.ReactElement

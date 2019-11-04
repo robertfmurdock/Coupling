@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.sdk.Sdk
-import com.zegreatrob.coupling.client.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch

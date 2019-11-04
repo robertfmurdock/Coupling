@@ -12,7 +12,6 @@ plugins {
 kotlin {
 
     targets {
-        jvm()
         add(presets["js"].createTarget("js"))
     }
 
@@ -39,26 +38,6 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("io.github.microutils:kotlin-logging:1.7.6")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.10.0")
-            }
-        }
-
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.slf4j:slf4j-simple:1.7.5")
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-                implementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
-            }
-        }
-
         val jsMain by getting {
             dependencies {
                 implementation(project(":json"))
@@ -70,7 +49,6 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
@@ -95,12 +73,6 @@ tasks {
     val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
         dependsOn(":json:assemble")
         dependsOn(":test-logging:assemble")
-    }
-
-    val jvmTest by getting(Test::class) {
-        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
-        
-        useJUnitPlatform()
     }
 
 }

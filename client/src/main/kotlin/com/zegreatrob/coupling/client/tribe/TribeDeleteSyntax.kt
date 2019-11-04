@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.sdk.axios.axios.axios
+import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise

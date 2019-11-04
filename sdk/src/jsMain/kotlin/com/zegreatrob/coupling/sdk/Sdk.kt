@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.sdk
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.player.PlayerDeleter
 import com.zegreatrob.coupling.model.player.PlayerGetDeleted
@@ -12,15 +12,22 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: SdkPairAssignmentsRepository
 }
 
-interface SdkTribeRepository : SdkGetTribe, SdkTribeListGet, SdkTribeSave
-interface SdkPlayerRepository : SdkPlayerGetter, SdkPlayerGetDeleted, SdkPlayerSaver, SdkPlayerDeleter, PlayerRepository
+interface SdkTribeRepository : SdkGetTribe, SdkTribeListGet,
+    SdkTribeSave
+interface SdkPlayerRepository : SdkPlayerGetter,
+    SdkPlayerGetDeleted, SdkPlayerSaver,
+    SdkPlayerDeleter, PlayerRepository
 interface SdkPinRepository : SdkPinGetter
-interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter, SdkPairAssignmentDocumentSaver
+interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter,
+    SdkPairAssignmentDocumentSaver
 
 interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted
 
-interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
-    SdkPinRepository, SdkSpin, SdkSyntax, SdkCreateGoogleSession, SdkLogout
+interface Sdk : RepositoryCatalog, SdkTribeRepository,
+    SdkPlayerRepository, SdkPairAssignmentsRepository,
+    SdkPinRepository, SdkSpin,
+    SdkSyntax, SdkCreateGoogleSession,
+    SdkLogout
 
 object SdkSingleton : Sdk {
     override val sdk: Sdk get() = this

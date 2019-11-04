@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.sdk.SdkSingleton
-import com.zegreatrob.coupling.client.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.KtTribe

@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.welcome
 import com.zegreatrob.coupling.client.external.react.RFunction
 import com.zegreatrob.coupling.client.external.react.ReactComponentRenderer
 import com.zegreatrob.coupling.client.external.react.loadStyles
-import com.zegreatrob.coupling.client.sdk.Sdk
-import com.zegreatrob.coupling.client.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.client.user.GoogleSignIn
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
