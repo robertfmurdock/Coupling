@@ -1,6 +1,14 @@
 const childProcess = require('child_process');
+const fs = require('fs');
 
-const fork = childProcess.fork(__dirname + '/test-run', process.argv.slice(2), {
+const testFilePath = process.argv.slice(2);
+
+if (!fs.existsSync(`${testFilePath}`)) {
+  console.log(`No test file at '${testFilePath}' - skipping.`);
+  return
+}
+
+const fork = childProcess.fork(__dirname + '/test-run', testFilePath, {
   // silent: true,
   stdio: 'pipe',
   env: process.env

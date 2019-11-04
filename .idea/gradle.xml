@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/mongo" />
+            <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server/action" />
             <option value="$PROJECT_DIR$/test-logging" />

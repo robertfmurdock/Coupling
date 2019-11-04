@@ -64,7 +64,7 @@ class SmolJsPlugin : Plugin<Project> {
                         compileKotlinJsTasks.map { it.outputFile.parent } +
                         processResources.map { it.destinationDir.path }
 
-                inputs.file(kotlinCompileTestTask.outputFile)
+                inputs.files(kotlinCompileTestTask.outputFile)
 
                 relevantPaths.forEach { if (java.io.File(it).isDirectory) inputs.dir(it) }
 
