@@ -2,6 +2,7 @@
   <artifact type="jar" name="sdk-js">
     <output-path>$PROJECT_DIR$/sdk/build/libs</output-path>
     <root id="archive" name="sdk-js.jar">
+      <element id="module-output" name="Coupling.sdk.jsEndpointTest" />
       <element id="module-output" name="Coupling.sdk.jsMain" />
     </root>
   </artifact>
