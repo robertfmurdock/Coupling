@@ -23,6 +23,7 @@ dependencies {
     implementation(kotlin("stdlib-js"))
     api(project(":model"))
     api(project(":json"))
+    implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
     implementation("com.soywiz:klock:1.1.1")

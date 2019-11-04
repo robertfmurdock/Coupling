@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.sdk
 
-import com.zegreatrob.coupling.client.external.axios.axios
-import com.zegreatrob.coupling.client.external.axios.getList
+import com.zegreatrob.coupling.client.sdk.axios.axios.axios
+import com.zegreatrob.coupling.client.sdk.axios.axios.getList
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.PlayerGetter

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.sdk
 
-import com.zegreatrob.coupling.client.external.axios.axios
+import com.zegreatrob.coupling.client.sdk.axios.axios.axios
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentSaver
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument

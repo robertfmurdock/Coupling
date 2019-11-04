@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.axios
+package com.zegreatrob.coupling.client.sdk.axios.axios
 
 import kotlin.js.Json
 import kotlin.js.Promise
