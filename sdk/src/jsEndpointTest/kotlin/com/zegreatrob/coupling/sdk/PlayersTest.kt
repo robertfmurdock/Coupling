@@ -6,74 +6,37 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.Axios
-import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
-
-external val process: dynamic
-
-@JsModule("axios-cookiejar-support")
-external val axiosCookiejarSupport: dynamic
-
-@JsModule("tough-cookie")
-external val toughCookie: dynamic
-
-@Suppress("unused")
 class PlayersTest {
 
     companion object {
-        private val configPort = process.env.PORT
-        private val host = "http://localhost:${configPort}"
-        private const val userEmail = "test@test.tes"
-
-        private suspend fun authorizedAxios(): Axios {
-            axiosCookiejarSupport.default(axios.default)
-            @Suppress("UNUSED_VARIABLE") val jarType = toughCookie.CookieJar
-            val cookieJar = js("new jarType")
-            val hostAxios = axios.create(
-                json(
-                    "baseURL" to host,
-                    "jar" to cookieJar,
-                    "withCredentials" to true
-                )
-            )
-
-            hostAxios.get(
-                "/test-login?username=$userEmail&password=pw",
-                json("maxRedirects" to 0, "validateStatus" to { true })
-            )
-                .await()
-                .status
-                .assertIsEqualTo(302)
-
-            return hostAxios
-        }
-
-        private inline fun catchError(function: () -> List<Player>) = try {
+        private inline fun catchError(function: () -> Any) = try {
             function()
             json()
         } catch (error: dynamic) {
             error.response.unsafeCast<Json>()
         }
-
     }
 
-    class GET {
+    class GivenUsersWithoutAccess {
+        companion object {
+            val tribeId = TribeId("somebodyElsesTribe")
+        }
+
         @Test
-        fun isNotAllowedForUsersWithoutAccess() = testAsync {
+        fun getIsNotAllowed() = testAsync {
             val hostAxios = authorizedAxios()
             setupAsync(object : SdkPlayerGetter {
                 override val axios: Axios get() = hostAxios
             }) exerciseAsync {
                 catchError {
-                    getPlayersAsync(TribeId("somebodyElsesTribe"))
-                        .await()
+                    getPlayersAsync(tribeId).await()
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)
@@ -81,39 +44,111 @@ class PlayersTest {
         }
 
         @Test
-        fun willReturnAllAvailablePlayersOnTeam() = testAsync {
+        fun postIsNotAllowed() = testAsync {
             val hostAxios = authorizedAxios()
-            setupAsync(object : SdkPlayerGetter, SdkPlayerSaver, SdkTribeSave {
+            setupAsync(object : SdkPlayerSaver {
                 override val axios: Axios get() = hostAxios
-                val tribe = KtTribe(
-                    id = TribeId("et-${uuid4()}")
+                val player = Player(
+                    id = "${uuid4()}",
+                    name = "Awesome-O",
+                    callSignAdjective = "Awesome",
+                    callSignNoun = "Sauce"
                 )
-
-                val playersToSave = listOf(
-                    Player(
-                        id = "${uuid4()}",
-                        name = "Awesome-O",
-                        callSignAdjective = "Awesome",
-                        callSignNoun = "Sauce"
-                    ),
-                    Player(
-                        id = "${uuid4()}",
-                        name = "Awesome-O-2",
-                        callSignAdjective = "Very",
-                        callSignNoun = "Ok"
-                    )
-                )
-            }) {
-                save(tribe)
-                playersToSave
-                    .map { TribeIdPlayer(tribe.id, it) }
-                    .forEach { save(it) }
-            } exerciseAsync {
-                getPlayersAsync(tribe.id)
-                    .await()
+            }) exerciseAsync {
+                catchError {
+                    save(TribeIdPlayer(tribeId, player))
+                }
             } verifyAsync { result ->
-                result.assertIsEqualTo(playersToSave)
+                result["status"].assertIsEqualTo(404)
             }
+        }
+
+        @Test
+        fun deleteIsNotAllowed() = testAsync {
+            val hostAxios = authorizedAxios()
+            setupAsync(object : SdkPlayerDeleter {
+                override val axios: Axios get() = hostAxios
+            }) exerciseAsync {
+                catchError {
+                    deletePlayer(tribeId, "player id")
+                }
+            } verifyAsync { result ->
+                result["status"].assertIsEqualTo(404)
+            }
+        }
+    }
+
+    @Test
+    fun postPlayersThenGetWillReturnAllAvailablePlayersOnTeam() = testAsync {
+        val hostAxios = authorizedAxios()
+        setupAsync(object : SdkPlayerGetter, SdkPlayerSaver, SdkTribeSave {
+            override val axios: Axios get() = hostAxios
+            val tribe = KtTribe(id = TribeId("et-${uuid4()}"))
+
+            val playersToSave = listOf(
+                Player(
+                    id = "${uuid4()}",
+                    name = "Awesome-O",
+                    callSignAdjective = "Awesome",
+                    callSignNoun = "Sauce"
+                ),
+                Player(
+                    id = "${uuid4()}",
+                    name = "Awesome-O-2",
+                    callSignAdjective = "Very",
+                    callSignNoun = "Ok"
+                )
+            )
+        }) {
+            save(tribe)
+            playersToSave
+                .map { TribeIdPlayer(tribe.id, it) }
+                .forEach { save(it) }
+        } exerciseAsync {
+            getPlayersAsync(tribe.id)
+                .await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(playersToSave)
+        }
+    }
+
+    @Test
+    fun deleteWillRemoveAGivenPlayer() = testAsync {
+        val hostAxios = authorizedAxios()
+        setupAsync(object : SdkPlayerGetter, SdkPlayerSaver, SdkTribeSave, SdkPlayerDeleter {
+            override val axios get() = hostAxios
+            val tribe = KtTribe(id = TribeId(uuid4().toString()))
+            val player = Player(
+                id = "${monk.id()}",
+                name = "Awesome-O"
+            )
+        }) {
+            save(tribe)
+            save(TribeIdPlayer(tribe.id, player))
+        } exerciseAsync {
+            deletePlayer(tribe.id, player.id!!)
+            getPlayersAsync(tribe.id).await()
+        } verifyAsync { result ->
+            result.contains(player).assertIsEqualTo(false)
+        }
+    }
+
+    @Test
+    fun deleteWillReturnErrorWhenPlayerDoesNotExist() = testAsync {
+        val hostAxios = authorizedAxios()
+        setupAsync(object : SdkTribeSave, SdkPlayerDeleter {
+            override val axios get() = hostAxios
+            val tribe = KtTribe(id = TribeId(uuid4().toString()))
+        }) {
+            save(tribe)
+        } exerciseAsync {
+            catchError {
+                deletePlayer(tribe.id, monk.id().toString())
+            }
+        } verifyAsync { result ->
+            result["status"].assertIsEqualTo(404)
+            result["data"].unsafeCast<Json>()["message"]
+                .assertIsEqualTo("Player could not be deleted because they do not exist.")
         }
     }
 
