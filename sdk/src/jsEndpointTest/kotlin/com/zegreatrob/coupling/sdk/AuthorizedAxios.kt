@@ -21,7 +21,7 @@ private val configPort = process.env.PORT
 private val host = "http://localhost:${configPort}"
 private const val userEmail = "test@test.tes"
 
-suspend fun authorizedAxios(): Axios {
+suspend fun authorizedAxios(username: String = userEmail): Axios {
     axiosCookiejarSupport.default(axios.default)
     @Suppress("UNUSED_VARIABLE") val jarType = toughCookie.CookieJar
     val cookieJar = js("new jarType")
@@ -34,7 +34,7 @@ suspend fun authorizedAxios(): Axios {
     )
 
     hostAxios.get(
-        "/test-login?username=${userEmail}&password=pw",
+        "/test-login?username=${username}&password=pw",
         json("maxRedirects" to 0, "validateStatus" to { true })
     )
         .await()
@@ -44,7 +44,7 @@ suspend fun authorizedAxios(): Axios {
     return hostAxios
 }
 
-suspend fun authorizedSdk() = AuthorizedSdk(authorizedAxios())
+suspend fun authorizedSdk(username: String = userEmail) = AuthorizedSdk(authorizedAxios(username))
 
 class AuthorizedSdk(override val axios: Axios) : Sdk {
     override val tribeRepository get() = this

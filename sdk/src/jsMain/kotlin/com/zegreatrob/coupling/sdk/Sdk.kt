@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.player.PlayerDeleter
 import com.zegreatrob.coupling.model.player.PlayerGetDeleted
 import com.zegreatrob.coupling.model.player.PlayerGetter
 import com.zegreatrob.coupling.model.player.PlayerSaver
+import com.zegreatrob.coupling.model.tribe.TribeRepository
 
 interface RepositoryCatalog {
     val tribeRepository: SdkTribeRepository
@@ -13,10 +14,12 @@ interface RepositoryCatalog {
 }
 
 interface SdkTribeRepository : SdkGetTribe, SdkTribeListGet,
-    SdkTribeSave
+    SdkTribeSave, SdkTribeDelete, TribeRepository
+
 interface SdkPlayerRepository : SdkPlayerGetter,
     SdkPlayerGetDeleted, SdkPlayerSaver,
     SdkPlayerDeleter, PlayerRepository
+
 interface SdkPinRepository : SdkPinGetter
 interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter,
     SdkPairAssignmentDocumentSaver

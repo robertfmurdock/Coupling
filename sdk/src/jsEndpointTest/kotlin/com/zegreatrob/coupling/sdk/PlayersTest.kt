@@ -15,7 +15,7 @@ import kotlin.test.Test
 class PlayersTest {
 
     companion object {
-        private inline fun catchError(function: () -> Any) = try {
+        inline fun catchError(function: () -> Any) = try {
             function()
             json()
         } catch (error: dynamic) {

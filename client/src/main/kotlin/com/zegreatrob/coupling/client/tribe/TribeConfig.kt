@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.model.tribe.TribeRepository
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
 import kotlinx.html.InputType
 import kotlinx.html.classes
@@ -36,6 +37,7 @@ typealias TribeConfigRenderer = ScopedStyledRContext<TribeConfigProps, TribeConf
 
 interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, TribeConfigStyles>,
     UseFormHook, SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
+    override val tribeRepository: TribeRepository
 
     override val componentPath: String get() = "tribe/TribeConfig"
 
