@@ -43,3 +43,13 @@ suspend fun authorizedAxios(): Axios {
 
     return hostAxios
 }
+
+suspend fun authorizedSdk() = AuthorizedSdk(authorizedAxios())
+
+class AuthorizedSdk(override val axios: Axios) : Sdk {
+    override val tribeRepository get() = this
+    override val playerRepository get() = this
+    override val pinRepository get() = this
+    override val pairAssignmentDocumentRepository get() = this
+    override val sdk get() = this
+}

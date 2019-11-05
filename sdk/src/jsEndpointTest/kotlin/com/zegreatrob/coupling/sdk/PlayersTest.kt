@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -31,12 +30,10 @@ class PlayersTest {
 
         @Test
         fun getIsNotAllowed() = testAsync {
-            val hostAxios = authorizedAxios()
-            setupAsync(object : SdkPlayerGetter {
-                override val axios: Axios get() = hostAxios
-            }) exerciseAsync {
+            val sdk = authorizedSdk()
+            setupAsync(object {}) exerciseAsync {
                 catchError {
-                    getPlayersAsync(tribeId).await()
+                    sdk.getPlayersAsync(tribeId).await()
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)
@@ -45,9 +42,8 @@ class PlayersTest {
 
         @Test
         fun postIsNotAllowed() = testAsync {
-            val hostAxios = authorizedAxios()
-            setupAsync(object : SdkPlayerSaver {
-                override val axios: Axios get() = hostAxios
+            val sdk = authorizedSdk()
+            setupAsync(object : Sdk by sdk {
                 val player = Player(
                     id = "${uuid4()}",
                     name = "Awesome-O",
@@ -65,12 +61,11 @@ class PlayersTest {
 
         @Test
         fun deleteIsNotAllowed() = testAsync {
-            val hostAxios = authorizedAxios()
-            setupAsync(object : SdkPlayerDeleter {
-                override val axios: Axios get() = hostAxios
+            val sdk = authorizedSdk()
+            setupAsync(object {
             }) exerciseAsync {
                 catchError {
-                    deletePlayer(tribeId, "player id")
+                    sdk.deletePlayer(tribeId, "player id")
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)
@@ -80,11 +75,9 @@ class PlayersTest {
 
     @Test
     fun postPlayersThenGetWillReturnAllAvailablePlayersOnTeam() = testAsync {
-        val hostAxios = authorizedAxios()
-        setupAsync(object : SdkPlayerGetter, SdkPlayerSaver, SdkTribeSave {
-            override val axios: Axios get() = hostAxios
+        val sdk = authorizedSdk()
+        setupAsync(object {
             val tribe = KtTribe(id = TribeId("et-${uuid4()}"))
-
             val playersToSave = listOf(
                 Player(
                     id = "${uuid4()}",
@@ -100,12 +93,12 @@ class PlayersTest {
                 )
             )
         }) {
-            save(tribe)
+            sdk.save(tribe)
             playersToSave
                 .map { TribeIdPlayer(tribe.id, it) }
-                .forEach { save(it) }
+                .forEach { sdk.save(it) }
         } exerciseAsync {
-            getPlayersAsync(tribe.id)
+            sdk.getPlayersAsync(tribe.id)
                 .await()
         } verifyAsync { result ->
             result.assertIsEqualTo(playersToSave)
@@ -114,20 +107,19 @@ class PlayersTest {
 
     @Test
     fun deleteWillRemoveAGivenPlayer() = testAsync {
-        val hostAxios = authorizedAxios()
-        setupAsync(object : SdkPlayerGetter, SdkPlayerSaver, SdkTribeSave, SdkPlayerDeleter {
-            override val axios get() = hostAxios
+        val sdk = authorizedSdk()
+        setupAsync(object {
             val tribe = KtTribe(id = TribeId(uuid4().toString()))
             val player = Player(
                 id = "${monk.id()}",
                 name = "Awesome-O"
             )
         }) {
-            save(tribe)
-            save(TribeIdPlayer(tribe.id, player))
+            sdk.save(tribe)
+            sdk.save(TribeIdPlayer(tribe.id, player))
         } exerciseAsync {
-            deletePlayer(tribe.id, player.id!!)
-            getPlayersAsync(tribe.id).await()
+            sdk.deletePlayer(tribe.id, player.id!!)
+            sdk.getPlayersAsync(tribe.id).await()
         } verifyAsync { result ->
             result.contains(player).assertIsEqualTo(false)
         }
@@ -135,15 +127,14 @@ class PlayersTest {
 
     @Test
     fun deleteWillReturnErrorWhenPlayerDoesNotExist() = testAsync {
-        val hostAxios = authorizedAxios()
-        setupAsync(object : SdkTribeSave, SdkPlayerDeleter {
-            override val axios get() = hostAxios
+        val sdk = authorizedSdk()
+        setupAsync(object {
             val tribe = KtTribe(id = TribeId(uuid4().toString()))
         }) {
-            save(tribe)
+            sdk.save(tribe)
         } exerciseAsync {
             catchError {
-                deletePlayer(tribe.id, monk.id().toString())
+                sdk.deletePlayer(tribe.id, monk.id().toString())
             }
         } verifyAsync { result ->
             result["status"].assertIsEqualTo(404)
@@ -151,6 +142,4 @@ class PlayersTest {
                 .assertIsEqualTo("Player could not be deleted because they do not exist.")
         }
     }
-
-
 }
