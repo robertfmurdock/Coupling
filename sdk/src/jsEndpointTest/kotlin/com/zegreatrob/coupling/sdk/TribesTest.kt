@@ -12,6 +12,7 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 class TribesTest {
+
     @Test
     fun postsThenGetWillReturnSavedTribes() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")

@@ -127,7 +127,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
             dropHistory()
             save(document)
         } exerciseAsync {
-            delete(id)
+            delete(tribeId, id)
         } verifyAsync { result ->
             result.assertIsEqualTo(true)
             getPairAssignmentsAsync(tribeId).await()
@@ -141,7 +141,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
             private val pair = stubSimplePairAssignmentDocument()
             val id = pair.first
         }) exerciseAsync {
-            delete(id)
+            delete(TribeId("sldkjf"), id)
         } verifyAsync { result ->
             result.assertIsEqualTo(false)
         }

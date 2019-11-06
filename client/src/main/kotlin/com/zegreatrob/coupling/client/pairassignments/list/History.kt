@@ -1,16 +1,18 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
+import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
-import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
@@ -21,7 +23,7 @@ import react.dom.div
 import react.dom.key
 import react.dom.span
 
-object History : RComponent<HistoryProps>(provider()), HistoryRenderer
+object History : RComponent<HistoryProps>(provider()), HistoryRenderer, Sdk by SdkSingleton
 
 external interface HistoryStyles {
     val pair: String

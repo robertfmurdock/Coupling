@@ -239,7 +239,7 @@ fun commandDispatcher(
 
         @JsName("performDeletePairAssignmentDocumentCommand")
         fun performDeletePairAssignmentDocumentCommand(id: String) = scope.promise {
-            DeletePairAssignmentDocumentCommand(id.let(::PairAssignmentDocumentId))
+            DeletePairAssignmentDocumentCommand(TribeId(""), id.let(::PairAssignmentDocumentId))
                 .perform()
         }
 

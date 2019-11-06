@@ -4,20 +4,20 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.loadStyles
+import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryRenderer
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
 import shallow
@@ -33,14 +33,16 @@ class HistoryTest {
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
+                override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val tribe =
                     KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
-                override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
-                    removeSpy.spyFunction(Unit).asDeferred()
+
+                override suspend fun TribeIdPairAssignmentDocumentId.delete() =
+                    removeSpy.spyFunction(Unit).let { true }
 
                 val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
 
@@ -72,14 +74,15 @@ class HistoryTest {
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
+                override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
 
                 val tribe =
                     KtTribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
-                override fun deleteAsync(tribeId: TribeId, pairAssignmentDocId: PairAssignmentDocumentId) =
-                    removeSpy.spyFunction(Unit).asDeferred()
+                override suspend fun TribeIdPairAssignmentDocumentId.delete() =
+                    removeSpy.spyFunction(Unit).let { true }
 
                 val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
 

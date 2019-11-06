@@ -1,0 +1,111 @@
+package com.zegreatrob.coupling.sdk
+
+import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
+import kotlin.js.Json
+import kotlin.test.Test
+
+class HistoryTest {
+
+    @Test
+    fun postsThenGetWillReturnSavedPairs() = testAsync {
+        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+        setupAsync(object {
+            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+            val pairAssignments = PairAssignmentDocument(
+                id = PairAssignmentDocumentId(uuid4().toString()),
+                date = DateTime.now(),
+                pairs = listOf(
+                    pairOf(Player(name = "Shaggy"), Player(name = "Scooby"))
+                ).withPins()
+            )
+        }) {
+            sdk.save(tribe)
+            sdk.save(pairAssignments.with(tribe.id))
+        } exerciseAsync {
+            sdk.getPairAssignmentsAsync(tribe.id).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(pairAssignments))
+        }
+    }
+
+    @Test
+    fun postsThenDeleteThenGetWillNotReturnSavedAssignments() = testAsync {
+        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+        setupAsync(object {
+            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+            val pairAssignments = PairAssignmentDocument(
+                id = PairAssignmentDocumentId(monk.id().toString()),
+                date = DateTime.now(),
+                pairs = listOf(
+                    pairOf(Player(name = "Shaggy"), Player(name = "Scooby"))
+                ).withPins()
+            )
+        }) {
+            sdk.save(tribe)
+            sdk.save(pairAssignments.with(tribe.id))
+            sdk.delete(tribe.id, pairAssignments.id!!)
+        } exerciseAsync {
+            sdk.getPairAssignmentsAsync(tribe.id).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun deleteAssignmentsThatDontExistWillError() = testAsync {
+        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+        setupAsync(object {
+            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+        }) {
+            sdk.save(tribe)
+        } exerciseAsync {
+            catchError {
+                sdk.delete(
+                    tribe.id, PairAssignmentDocumentId(
+                        monk.id().toString()
+                    )
+                )
+            }
+        } verifyAsync { result ->
+            result["status"].assertIsEqualTo(404)
+            result["data"].unsafeCast<Json>()["message"]
+                .assertIsEqualTo("Pair Assignments could not be deleted because they do not exist.")
+        }
+    }
+
+    @Test
+    fun whenNoHistoryGetWillReturnEmptyList() = testAsync {
+        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+        setupAsync(object {
+            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+        }) {
+            sdk.save(tribe)
+        } exerciseAsync {
+            sdk.getPairAssignmentsAsync(tribe.id).await()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun givenNoAuthGetIsNotAllowed() = testAsync {
+        val sdk = authorizedSdk()
+        setupAsync(object {}) exerciseAsync {
+            catchError {
+                sdk.getPairAssignmentsAsync(TribeId("someoneElseTribe")).await()
+            }
+        } verifyAsync { result ->
+            result["status"].assertIsEqualTo(404)
+        }
+    }
+
+}

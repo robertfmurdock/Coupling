@@ -2,19 +2,18 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentDeleter
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentIdDeleteSyntax
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
+import com.zegreatrob.coupling.model.tribe.TribeId
 
-data class DeletePairAssignmentDocumentCommand(val id: PairAssignmentDocumentId) : Action
+data class DeletePairAssignmentDocumentCommand(val tribeId: TribeId, val id: PairAssignmentDocumentId) : Action
 
 interface DeletePairAssignmentDocumentCommandDispatcher : ActionLoggingSyntax, PairAssignmentDocumentIdDeleteSyntax {
 
-    suspend fun DeletePairAssignmentDocumentCommand.perform() = logAsync { id.delete() }
+    suspend fun DeletePairAssignmentDocumentCommand.perform() = logAsync {
+        TribeIdPairAssignmentDocumentId(tribeId, id).delete()
+    }
 
 }
 
-interface PairAssignmentDocumentIdDeleteSyntax {
-    val pairAssignmentDocumentRepository: PairAssignmentDocumentDeleter
-
-    suspend fun PairAssignmentDocumentId.delete() = pairAssignmentDocumentRepository.delete(this)
-}
