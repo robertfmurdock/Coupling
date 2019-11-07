@@ -14,5 +14,5 @@ interface PinSaver {
 }
 
 interface PinDeleter {
-    suspend fun deletePin(pinId: String): Boolean
+    suspend fun deletePin(tribeId: TribeId, pinId: String): Boolean
 }

@@ -35,7 +35,7 @@ interface MongoPinRepository : PinRepository,
 
     private suspend fun Json.savePinJson() = this.save(pinCollection)
 
-    override suspend fun deletePin(pinId: String) = deleteEntity(
+    override suspend fun deletePin(tribeId: TribeId, pinId: String) = deleteEntity(
         pinId,
         pinCollection,
         "Pin",

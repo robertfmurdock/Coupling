@@ -212,7 +212,7 @@ fun commandDispatcher(
 
         @JsName("performDeletePinCommand")
         fun performDeletePinCommand(pinId: String) = scope.promise {
-            DeletePinCommand(pinId)
+            DeletePinCommand(TribeId(""), pinId)
                 .perform()
         }
 

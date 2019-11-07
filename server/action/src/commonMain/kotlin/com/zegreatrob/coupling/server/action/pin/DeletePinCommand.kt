@@ -3,14 +3,16 @@ package com.zegreatrob.coupling.server.action.pin
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.pin.PinDeleter
+import com.zegreatrob.coupling.model.tribe.TribeId
 
-data class DeletePinCommand(val pinId: String) : Action
+data class DeletePinCommand(val tribeId: TribeId, val pinId: String) : Action
 
 interface DeletePinCommandDispatcher : ActionLoggingSyntax, PinIdDeleteSyntax {
-    suspend fun DeletePinCommand.perform() = logAsync { pinId.run { deletePin() } }
+    suspend fun DeletePinCommand.perform() = logAsync { TribeIdPinId(tribeId, pinId).deletePin() }
 }
 
 interface PinIdDeleteSyntax {
     val pinRepository: PinDeleter
-    suspend fun String.deletePin() = pinRepository.deletePin(this)
+    suspend fun TribeIdPinId.deletePin() = pinRepository.deletePin(tribeId, pinId)
 }
+
