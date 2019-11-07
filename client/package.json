@@ -7,7 +7,7 @@
     "test": "test"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.0",
+    "@babel/core": "^7.7.2",
     "@babel/preset-react": "^7.7.0",
     "@types/blueimp-md5": "^2.7.0",
     "@types/d3": "^5.7.2",
@@ -23,10 +23,10 @@
     "bluebird": "^3.7.1",
     "blueimp-md5": "^2.12.0",
     "classnames": "^2.2.6",
-    "core-js": "^3.3.6",
+    "core-js": "^3.4.0",
     "css-loader": "^3.2.0",
     "d3": "^5.12.0",
-    "date-fns": "^2.6.0",
+    "date-fns": "^2.7.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "expect.js": "^0.3.1",
