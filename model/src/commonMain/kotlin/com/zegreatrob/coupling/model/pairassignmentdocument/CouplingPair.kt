@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.player.Player
 
 fun pairOf(player1: Player) =
     CouplingPair.Single(player1)
+
 fun pairOf(player1: Player, player2: Player) =
     CouplingPair.Double(player1, player2)
 
@@ -47,7 +48,7 @@ data class PinnedCouplingPair(val players: List<PinnedPlayer>) {
     }
 }
 
-fun List<CouplingPair>.withPins() = map {
-    PinnedCouplingPair(
-        it.asArray().map { player -> player.withPins() })
-}
+fun List<CouplingPair>.withPins() = map { it.withPins() }
+
+fun CouplingPair.withPins() = PinnedCouplingPair(
+    asArray().map { player -> player.withPins() })
