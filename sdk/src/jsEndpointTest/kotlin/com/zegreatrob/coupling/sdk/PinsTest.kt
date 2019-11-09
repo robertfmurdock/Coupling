@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.js.Json
 import kotlin.test.Test
 
@@ -45,8 +47,10 @@ class PinsTest {
                 Pin(monk.id().toString(), "3", tribe.id.value)
             )
         }) {
-            sdk.save(tribe)
-            pins.forEach { sdk.save(TribeIdPin(tribe.id, it)) }
+            coroutineScope {
+                sdk.save(tribe)
+                pins.forEach { launch { sdk.save(TribeIdPin(tribe.id, it)) } }
+            }
         } exerciseAsync {
             sdk.deletePin(tribe.id, pins[1]._id!!)
             sdk.getPinsAsync(tribe.id).await()

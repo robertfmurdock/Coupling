@@ -1,4 +1,3 @@
-
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
@@ -129,6 +128,8 @@ tasks {
     coreJsonYarn.mustRunAfter(engineYarn)
     val coreMongoYarn = getByPath(":mongo:yarn")
     coreMongoYarn.mustRunAfter(coreJsonYarn)
+    val sdkYarn = getByPath(":sdk:yarn")
+    sdkYarn.mustRunAfter(coreMongoYarn)
 }
 
 fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
