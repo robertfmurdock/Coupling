@@ -97,7 +97,7 @@ tasks {
     }
 
     val vendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlinJs)
+        dependsOn(yarn, runDceKotlinJs, unpackJsGradleDependencies)
         mustRunAfter("clean")
 
         inputs.files(runDceKotlinJs.outputs)
