@@ -14,6 +14,7 @@ external interface Axios {
     fun create(config: dynamic): Axios
 
     val default: Axios
+    val defaults: dynamic
 }
 
 external interface Result {

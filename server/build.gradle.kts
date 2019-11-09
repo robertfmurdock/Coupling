@@ -131,19 +131,6 @@ tasks {
         args = listOf("run", "serverTest", "--silent")
     }
 
-    val endpointTest by creating(YarnTask::class) {
-        dependsOn(yarn, assemble)
-        mustRunAfter(serverTest)
-        inputs.files(serverTest.inputs.files)
-        inputs.files(serverCompile.outputs.files)
-        inputs.file(file("package.json"))
-        inputs.dir("test/endpoint")
-        outputs.dir("../test-output/endpoint")
-
-        setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
-        args = listOf("run", "endpointTest", "--silent")
-    }
-
     val updateWebdriver by creating(YarnTask::class) {
         dependsOn(yarn)
         inputs.file("package.json")
@@ -153,7 +140,7 @@ tasks {
 
     val endToEndTest by creating(YarnTask::class) {
         dependsOn(assemble, updateWebdriver)
-        mustRunAfter(serverTest, ":client:test", endpointTest)
+        mustRunAfter(serverTest, ":client:test", ":sdk:endpointTest")
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:compile")?.outputs?.files)
         inputs.files(serverTest.inputs.files)
@@ -173,10 +160,6 @@ tasks {
 
     val test by getting {
         dependsOn(serverTest)
-    }
-
-    val check by getting {
-        dependsOn(endpointTest)
     }
 
     val start by creating(YarnTask::class) {

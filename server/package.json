@@ -68,7 +68,6 @@
   "scripts": {
     "start-built-app": "NODE_PATH='build/node_modules_imported' node ./startup.js",
     "webpack": "webpack",
-    "endpointTest": "node test/endpoint/run.js",
     "serverTest": "node test/unit/run.js",
     "update-webdriver": "webdriver-manager update",
     "protractor": "node test/e2e/run.js",

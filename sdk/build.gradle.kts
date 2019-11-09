@@ -99,7 +99,6 @@ tasks {
 
     val endpointTest by creating(NodeTask::class) {
         dependsOn("yarn", unpackJsGradleDependencies, compileEndpointTestKotlinJs, ":server:build")
-        mustRunAfter(":server:endToEndTest")
         val script = projectDir.path + "/endpoint-wrapper.js"
         inputs.file(script)
         inputs.file(file("package.json"))

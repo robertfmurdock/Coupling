@@ -52,8 +52,8 @@ tasks {
         into("build/test-output/server")
     })
 
-    val copyEndpointTestResults by creating(Copy::class, copyForTask(findByPath(":server:endpointTest")) {
-        from("server/build/test-results/endpoint")
+    val copyEndpointTestResults by creating(Copy::class, copyForTask(findByPath(":sdk:endpointTest")) {
+        from("sdk/build/test-results/jsTest")
         into("build/test-output/endpoint")
     })
 
@@ -89,7 +89,7 @@ tasks {
     }
 
     val check by creating {
-        dependsOn(test, ":server:endpointTest", ":server:endToEndTest")
+        dependsOn(test, ":sdk:endpointTest", ":server:endToEndTest")
     }
 
     val build by creating {
