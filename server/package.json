@@ -48,7 +48,7 @@
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "jasmine-reporters": "^2.3.2",
-    "npm-check-updates": "^3.2.0",
+    "npm-check-updates": "^3.2.1",
     "protractor": "^5.4.2",
     "protractor-jasmine2-screenshot-reporter": "^0.5.0",
     "protractor-screenshot-reporter": "0.0.5",
