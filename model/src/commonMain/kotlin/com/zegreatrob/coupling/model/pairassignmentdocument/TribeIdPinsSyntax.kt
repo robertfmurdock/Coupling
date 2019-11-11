@@ -5,5 +5,5 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdPinsSyntax {
     val pinRepository: PinGetter
-    fun TribeId.getPinsAsync() = pinRepository.getPinsAsync(this)
+    suspend fun TribeId.getPins() = pinRepository.getPins(this)
 }

@@ -33,10 +33,12 @@ interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyn
             )
         }
 
-    private fun ProposeNewPairsCommand.dataDeferred() = Triple(
-        tribeId.getHistoryAsync(),
-        tribeId.getPinsAsync(),
-        GlobalScope.async { tribeId.load() }
-    )
+    private fun ProposeNewPairsCommand.dataDeferred() = with(GlobalScope) {
+        Triple(
+            tribeId.getHistoryAsync(),
+            async { tribeId.getPins() },
+            async { tribeId.load() }
+        )
+    }
 
 }

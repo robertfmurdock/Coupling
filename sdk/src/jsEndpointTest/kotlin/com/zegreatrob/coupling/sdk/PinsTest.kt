@@ -30,7 +30,7 @@ class PinsTest {
             sdk.save(tribe)
             pins.forEach { sdk.save(TribeIdPin(tribe.id, it)) }
         } exerciseAsync {
-            sdk.getPinsAsync(tribe.id).await()
+            sdk.getPins(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(pins)
         }
@@ -53,7 +53,7 @@ class PinsTest {
             }
         } exerciseAsync {
             sdk.deletePin(tribe.id, pins[1]._id!!)
-            sdk.getPinsAsync(tribe.id).await()
+            sdk.getPins(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(pins[0], pins[2]))
         }
@@ -82,11 +82,10 @@ class PinsTest {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
             catchError {
-                sdk.getPinsAsync(TribeId("someoneElseTribe")).await()
+                sdk.getPins(TribeId("someoneElseTribe"))
             }
         } verifyAsync { result ->
             result["status"].assertIsEqualTo(404)
         }
     }
-
 }

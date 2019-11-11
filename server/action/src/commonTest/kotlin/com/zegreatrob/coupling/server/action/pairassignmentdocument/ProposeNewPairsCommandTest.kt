@@ -41,7 +41,7 @@ class ProposeNewPairsCommandTest {
                 ), PairingRule.PreferDifferentBadge
             )
 
-            override fun getPinsAsync(tribeId: TribeId) = CompletableDeferred(pins)
+            override suspend fun getPins(tribeId: TribeId): List<Pin> = pins
                 .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override fun getPairAssignmentsAsync(tribeId: TribeId) = CompletableDeferred(history)

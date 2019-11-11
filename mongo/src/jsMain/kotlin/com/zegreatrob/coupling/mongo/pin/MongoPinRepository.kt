@@ -1,15 +1,12 @@
 package com.zegreatrob.coupling.mongo.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinRepository
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import com.zegreatrob.coupling.model.pin.PinRepository
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -22,10 +19,9 @@ interface MongoPinRepository : PinRepository,
     val jsRepository: dynamic
     val pinCollection: dynamic get() = jsRepository.pinCollection
 
-    override fun getPinsAsync(tribeId: TribeId): Deferred<List<Pin>> = GlobalScope.async {
+    override suspend fun getPins(tribeId: TribeId): List<Pin> =
         findByQuery(json("tribe" to tribeId.value), pinCollection)
             .map { it.fromDbToPin() }
-    }
 
     override suspend fun save(tribeIdPin: TribeIdPin) = tribeIdPin.toDbJson()
         .savePinJson()

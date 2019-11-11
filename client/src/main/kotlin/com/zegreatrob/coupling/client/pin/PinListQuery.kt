@@ -16,9 +16,10 @@ data class PinListQuery(val tribeId: TribeId) : Action
 interface PinListQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdPinsSyntax {
     suspend fun PinListQuery.perform() = logAsync { tribeId.getData() }
 
-    private suspend fun TribeId.getData() =
-        (GlobalScope.async { load() } to getPinsAsync())
+    private suspend fun TribeId.getData() = with(GlobalScope) {
+        (async { load() } to async { getPins() })
             .await()
+    }
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Pin>>>.await() = first.await() to second.await()
 
