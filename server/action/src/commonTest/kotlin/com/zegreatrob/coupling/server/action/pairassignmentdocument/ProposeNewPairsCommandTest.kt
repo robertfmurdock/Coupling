@@ -6,16 +6,17 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentGetter
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinGetter
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.pin.PinGetter
 import com.zegreatrob.coupling.model.tribe.TribeGet
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlin.random.Random
 import kotlin.test.Test
@@ -47,7 +48,7 @@ class ProposeNewPairsCommandTest {
             override fun getPairAssignmentsAsync(tribeId: TribeId) = CompletableDeferred(history)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = CompletableDeferred(tribe)
+            override fun CoroutineScope.getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = CompletableDeferred(tribe)
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override val pinRepository: PinGetter = this

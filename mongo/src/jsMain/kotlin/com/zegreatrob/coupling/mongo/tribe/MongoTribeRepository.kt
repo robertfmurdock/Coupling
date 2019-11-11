@@ -4,10 +4,11 @@ import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeRepository
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import com.zegreatrob.coupling.model.tribe.TribeRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -30,7 +31,7 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         usesRawId = false
     )
 
-    override fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = GlobalScope.async {
+    override fun CoroutineScope.getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = async {
         findByQuery(json("id" to tribeId.value), jsRepository.tribesCollection)
             .firstOrNull()
             ?.toTribe()

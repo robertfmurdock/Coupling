@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.model.tribe
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 
 interface TribeRepository : TribeGet, TribeListGet, TribeSave, TribeDelete
@@ -13,7 +14,7 @@ interface TribeDelete {
 }
 
 interface TribeGet {
-    fun getTribeAsync(tribeId: TribeId): Deferred<KtTribe?>
+    fun CoroutineScope.getTribeAsync(tribeId: TribeId): Deferred<KtTribe?>
 }
 
 interface TribeListGet {

@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.sdk.external.axios
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.asDeferred
 import kotlin.js.Json
 import kotlin.js.Promise
 
@@ -18,8 +16,6 @@ external interface Axios {
     val default: Axios
     val defaults: dynamic
 }
-
-
 
 external interface Result {
     val status: Int

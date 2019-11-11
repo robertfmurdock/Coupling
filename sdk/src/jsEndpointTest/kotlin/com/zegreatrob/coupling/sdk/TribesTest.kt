@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import kotlinx.coroutines.GlobalScope
 import kotlin.test.Test
 
 class TribesTest {
@@ -105,7 +106,7 @@ class TribesTest {
             sdk.delete(tribe.id)
             Pair(
                 sdk.getTribesAsync().await(),
-                catchError { sdk.getTribeAsync(tribe.id).await() }
+                catchError { with(sdk) { GlobalScope.getTribeAsync(tribe.id).await() } }
             )
         } verifyAsync { (result, error) ->
             result.assertIsEqualTo(emptyList())
