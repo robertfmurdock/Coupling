@@ -50,7 +50,7 @@ class MongoPlayerRepositoryTest {
             )
         }) exerciseAsync {
             save(TribeIdPlayer(tribeId, player))
-            getPlayersAsync(tribeId).await()
+            getPlayers(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
         }
@@ -119,7 +119,7 @@ class MongoPlayerRepositoryTest {
         fun getWillOnlyReturnTheUpdatedPlayer() = testAsync {
             setupSavedPlayer() exerciseAsync {
                 save(TribeIdPlayer(tribeId, updatedPlayer))
-                getPlayersAsync(tribeId).await()
+                getPlayers(tribeId)
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
             }
@@ -147,7 +147,7 @@ class MongoPlayerRepositoryTest {
             save(TribeIdPlayer(tribe, player))
             deletePlayer(tribe, playerId)
         } verifyAsync {
-            getPlayersAsync(tribe).await().assertIsEqualTo(emptyList())
+            getPlayers(tribe).assertIsEqualTo(emptyList())
         }
     }
 
@@ -262,7 +262,7 @@ class MongoPlayerRepositoryTest {
         @Test
         fun canGetPlayersThatLookHistorical() = testAsync {
             setupLegacyPlayer() exerciseAsync {
-                getPlayersAsync(tribeId).await()
+                getPlayers(tribeId)
             } verifyAsync { result ->
                 result.assertIsEqualTo(
                     listOf(
@@ -279,7 +279,7 @@ class MongoPlayerRepositoryTest {
         fun canDeletePlayersThatLookHistorical() = testAsync {
             setupLegacyPlayer() exerciseAsync {
                 deletePlayer(tribeId, playerId)
-                getPlayersAsync(tribeId).await()
+                getPlayers(tribeId)
             } verifyAsync { result ->
                 result.assertIsEqualTo(emptyList())
             }
@@ -305,7 +305,7 @@ class MongoPlayerRepositoryTest {
                 playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             } exerciseAsync {
                 save(TribeIdPlayer(tribeId, updatedPlayer))
-                getPlayersAsync(tribeId).await()
+                getPlayers(tribeId)
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedPlayer))
             }
@@ -339,7 +339,7 @@ class MongoPlayerRepositoryTest {
 
             playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         } exerciseAsync {
-            getPlayersAsync(tribeId).await()
+            getPlayers(tribeId)
         } verifyAsync { result ->
             result[0].badge.assertIsEqualTo(2)
         }

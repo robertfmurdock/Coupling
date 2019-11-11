@@ -14,7 +14,7 @@ interface PlayerSaver {
 }
 
 interface PlayerGetter {
-    fun getPlayersAsync(tribeId: TribeId): Deferred<List<Player>>
+    suspend fun getPlayers(tribeId: TribeId): List<Player>
 }
 
 interface PlayerGetDeleted {

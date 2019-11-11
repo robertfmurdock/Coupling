@@ -37,10 +37,9 @@ interface MongoPlayerRepository : PlayerRepository,
         { toDbJson() }
     )
 
-    override fun getPlayersAsync(tribeId: TribeId) = GlobalScope.async {
+    override suspend fun getPlayers(tribeId: TribeId): List<Player> =
         findByQuery(json("tribe" to tribeId.value), playersCollection)
             .map { it.fromDbToPlayer() }
-    }
 
     override fun getPlayersByEmailAsync(email: String) = GlobalScope.async {
         getLatestRecordsRelatedToAsync(json("email" to email), playersCollection).await()

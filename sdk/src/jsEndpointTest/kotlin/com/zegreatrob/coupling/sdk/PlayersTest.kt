@@ -33,7 +33,7 @@ class PlayersTest {
             val sdk = authorizedSdk()
             setupAsync(object {}) exerciseAsync {
                 catchError {
-                    sdk.getPlayersAsync(tribeId).await()
+                    sdk.getPlayers(tribeId)
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)
@@ -98,8 +98,7 @@ class PlayersTest {
                 .map { TribeIdPlayer(tribe.id, it) }
                 .forEach { sdk.save(it) }
         } exerciseAsync {
-            sdk.getPlayersAsync(tribe.id)
-                .await()
+            sdk.getPlayers(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(playersToSave)
         }
@@ -119,7 +118,7 @@ class PlayersTest {
             sdk.save(TribeIdPlayer(tribe.id, player))
         } exerciseAsync {
             sdk.deletePlayer(tribe.id, player.id!!)
-            sdk.getPlayersAsync(tribe.id).await()
+            sdk.getPlayers(tribe.id)
         } verifyAsync { result ->
             result.contains(player).assertIsEqualTo(false)
         }

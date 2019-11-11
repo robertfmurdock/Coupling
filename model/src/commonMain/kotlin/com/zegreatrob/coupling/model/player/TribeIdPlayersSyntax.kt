@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdPlayersSyntax {
     val playerRepository: PlayerGetter
-    suspend fun TribeId.loadPlayers() = playerRepository.getPlayersAsync(this).await()
+    suspend fun TribeId.loadPlayers() = playerRepository.getPlayers(this)
 }

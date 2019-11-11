@@ -10,8 +10,6 @@ import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
 import kotlin.test.Test
 
 class PlayersQueryTest {
@@ -34,10 +32,10 @@ class PlayersQueryTest {
                 )
             )
             override val playerRepository = PlayerRepositorySpy()
-                    .apply { whenever(tribeId, CompletableDeferred(players)) }
+                .apply { whenever(tribeId, players) }
         }) exerciseAsync {
             PlayersQuery(tribeId)
-                    .perform()
+                .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(players)
         }
@@ -53,23 +51,22 @@ class PlayersQueryTest {
                 Player(id = "3")
             )
             override val playerRepository = PlayerRepositorySpy()
-                    .apply { whenever(tribeId, CompletableDeferred(players)) }
+                .apply { whenever(tribeId, players) }
         }) exerciseAsync {
             PlayersQuery(tribeId)
-                    .perform()
+                .perform()
         } verifyAsync { result ->
             result.map(Player::id)
-                    .assertIsEqualTo(players.map(Player::id))
+                .assertIsEqualTo(players.map(Player::id))
             result.mapNotNull(Player::callSignAdjective).size
-                    .assertIsEqualTo(players.size)
+                .assertIsEqualTo(players.size)
             result.mapNotNull(Player::callSignNoun).size
-                    .assertIsEqualTo(players.size)
+                .assertIsEqualTo(players.size)
         }
     }
 
 
-
-    class PlayerRepositorySpy : PlayerGetter, Spy<TribeId, Deferred<List<Player>>> by SpyData() {
-        override fun getPlayersAsync(tribeId: TribeId) = spyFunction(tribeId)
+    class PlayerRepositorySpy : PlayerGetter, Spy<TribeId, List<Player>> by SpyData() {
+        override suspend fun getPlayers(tribeId: TribeId): List<Player> = spyFunction(tribeId)
     }
 }
