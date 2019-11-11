@@ -8,7 +8,10 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -60,10 +63,8 @@ interface MongoPlayerRepository : PlayerRepository,
             .mapNotNull { it.await() }
     }
 
-    override fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>> = GlobalScope.async {
-        findDeletedByQuery(tribeId, playersCollection)
-            .map { it.fromDbToPlayer() }
-    }
+    override suspend fun getDeleted(tribeId: TribeId): List<Player> = findDeletedByQuery(tribeId, playersCollection)
+        .map { it.fromDbToPlayer() }
 
     private fun Json.toTribeIdPlayer() = TribeIdPlayer(
         tribeId = TribeId(this["tribe"].unsafeCast<String>()),

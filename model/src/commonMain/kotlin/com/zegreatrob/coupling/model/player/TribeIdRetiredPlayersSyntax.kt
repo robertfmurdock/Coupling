@@ -1,9 +1,8 @@
-package com.zegreatrob.coupling.server.action.player
+package com.zegreatrob.coupling.model.player
 
-import com.zegreatrob.coupling.model.player.PlayerGetDeleted
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdRetiredPlayersSyntax {
     val playerRepository: PlayerGetDeleted
-    suspend fun TribeId.loadRetiredPlayers() = playerRepository.getDeletedAsync(this).await()
+    suspend fun TribeId.loadRetiredPlayers() = playerRepository.getDeleted(this)
 }

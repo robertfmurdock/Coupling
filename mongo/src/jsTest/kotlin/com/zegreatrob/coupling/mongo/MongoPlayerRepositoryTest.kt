@@ -170,7 +170,7 @@ class MongoPlayerRepositoryTest {
             save(TribeIdPlayer(tribeId, player))
             deletePlayer(tribeId, playerId)
         } exerciseAsync {
-            getDeletedAsync(tribeId).await()
+            getDeleted(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
         }
@@ -197,7 +197,7 @@ class MongoPlayerRepositoryTest {
             save(player with tribeId)
             deletePlayer(tribeId, playerId)
         } exerciseAsync {
-            getDeletedAsync(tribeId).await()
+            getDeleted(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(player))
         }

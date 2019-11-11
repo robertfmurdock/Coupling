@@ -27,7 +27,7 @@ class RetiredPlayersTest {
                 sdk.save(TribeIdPlayer(tribe.id, player))
                 sdk.deletePlayer(tribe.id, player.id!!)
             } exerciseAsync {
-                sdk.getDeletedAsync(tribe.id).await()
+                sdk.getDeleted(tribe.id)
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(player))
             }

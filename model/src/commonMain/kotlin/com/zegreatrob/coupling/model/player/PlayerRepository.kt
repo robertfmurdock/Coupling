@@ -18,7 +18,7 @@ interface PlayerGetter {
 }
 
 interface PlayerGetDeleted {
-    fun getDeletedAsync(tribeId: TribeId): Deferred<List<Player>>
+    suspend fun getDeleted(tribeId: TribeId): List<Player>
 }
 
 interface PlayerGetByEmail {
