@@ -76,7 +76,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
             dropHistory()
         } exerciseAsync {
             save(document.with(tribeId))
-            getPairAssignmentsAsync(tribeId).await()
+            getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(document))
         }
@@ -93,7 +93,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
             dropHistory()
             listOf(middle, oldest, newest).forEach { save(it.with(tribeId)) }
         } exerciseAsync {
-            getPairAssignmentsAsync(tribeId).await()
+            getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(newest, middle, oldest))
         }
@@ -108,7 +108,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
             dropHistory()
         } exerciseAsync {
             save(tribeIdDocument)
-            getPairAssignmentsAsync(tribeId).await()
+            getPairAssignments(tribeId)
         } verifyAsync { result ->
             val resultId = result.getOrNull(0)?.id
             assertNotNull(resultId)
@@ -130,7 +130,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
             delete(tribeId, id)
         } verifyAsync { result ->
             result.assertIsEqualTo(true)
-            getPairAssignmentsAsync(tribeId).await()
+            getPairAssignments(tribeId)
                     .assertIsEqualTo(emptyList())
         }
     }
@@ -179,7 +179,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
         fun getWillOnlyReturnTheUpdatedDocument() = testAsync {
             setupSavedDocument() exerciseAsync {
                 save(updatedDocument.with(tribeId))
-                getPairAssignmentsAsync(tribeId).await()
+                getPairAssignments(tribeId)
             } verifyAsync { result ->
                 result.assertIsEqualTo(listOf(updatedDocument))
             }

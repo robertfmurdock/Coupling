@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CompletableDeferred
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -44,7 +43,7 @@ class ProposeNewPairsCommandTest {
             override suspend fun getPins(tribeId: TribeId): List<Pin> = pins
                 .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun getPairAssignmentsAsync(tribeId: TribeId) = CompletableDeferred(history)
+            override suspend fun getPairAssignments(tribeId: TribeId): List<PairAssignmentDocument> = history
                 .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override suspend fun getTribe(tribeId: TribeId): KtTribe? = tribe

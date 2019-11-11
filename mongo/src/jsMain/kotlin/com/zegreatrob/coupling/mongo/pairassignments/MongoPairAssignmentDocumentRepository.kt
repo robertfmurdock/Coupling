@@ -9,9 +9,6 @@ import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlin.js.*
 
 interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentRepository,
@@ -27,24 +24,18 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             .toDbJson()
             .save(jsRepository.historyCollection)
 
-    override suspend fun delete(
-        tribeId: TribeId,
-        pairAssignmentDocumentId: PairAssignmentDocumentId
-    ): Boolean {
-        return deleteEntity(
-            id = pairAssignmentDocumentId.value,
-            collection = jsRepository.historyCollection,
-            entityName = "Pair Assignments",
-            toDomain = { toPairAssignmentDocument() },
-            toDbJson = { toDbJson() }
-        )
-    }
+    override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) = deleteEntity(
+        id = pairAssignmentDocumentId.value,
+        collection = jsRepository.historyCollection,
+        entityName = "Pair Assignments",
+        toDomain = { toPairAssignmentDocument() },
+        toDbJson = { toDbJson() }
+    )
 
-    override fun getPairAssignmentsAsync(tribeId: TribeId): Deferred<List<PairAssignmentDocument>> = GlobalScope.async {
+    override suspend fun getPairAssignments(tribeId: TribeId): List<PairAssignmentDocument> =
         findByQuery(json("tribe" to tribeId.value), jsRepository.historyCollection)
             .map { json -> json.toPairAssignmentDocument().document }
             .sortedByDescending { it.date }
-    }
 
     private fun TribeIdPairAssignmentDocument.toDbJson() = json(
         "id" to document.id?.value,

@@ -16,9 +16,10 @@ data class HistoryQuery(val tribeId: TribeId) : Action
 interface HistoryQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdHistorySyntax {
     suspend fun HistoryQuery.perform() = logAsync { tribeId.getData() }
 
-    private suspend fun TribeId.getData() =
-        Pair(GlobalScope.async { load() }, getHistoryAsync())
+    private suspend fun TribeId.getData() = with(GlobalScope) {
+        Pair(async { load() }, async { getHistory() })
             .await()
+    }
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<PairAssignmentDocument>>>.await() =
         Pair(

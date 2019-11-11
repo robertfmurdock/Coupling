@@ -31,7 +31,7 @@ class HistoryTest {
             sdk.save(tribe)
             sdk.save(pairAssignments.with(tribe.id))
         } exerciseAsync {
-            sdk.getPairAssignmentsAsync(tribe.id).await()
+            sdk.getPairAssignments(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(pairAssignments))
         }
@@ -54,7 +54,7 @@ class HistoryTest {
             sdk.save(pairAssignments.with(tribe.id))
             sdk.delete(tribe.id, pairAssignments.id!!)
         } exerciseAsync {
-            sdk.getPairAssignmentsAsync(tribe.id).await()
+            sdk.getPairAssignments(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }
@@ -90,7 +90,7 @@ class HistoryTest {
         }) {
             sdk.save(tribe)
         } exerciseAsync {
-            sdk.getPairAssignmentsAsync(tribe.id).await()
+            sdk.getPairAssignments(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }
@@ -101,7 +101,7 @@ class HistoryTest {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
             catchError {
-                sdk.getPairAssignmentsAsync(TribeId("someoneElseTribe")).await()
+                sdk.getPairAssignments(TribeId("someoneElseTribe"))
             }
         } verifyAsync { result ->
             result["status"].assertIsEqualTo(404)

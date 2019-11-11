@@ -41,7 +41,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Tri
         Triple(
             async { load() },
             async { loadPlayers() },
-            getHistoryAsync()
+            async { getHistory() }
         ).await()
     }
 
