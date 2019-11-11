@@ -37,8 +37,9 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
             Pair(tribeDeferred.await(), playerDeferred.await())
         }
 
-    private fun SaveTribeCommand.getTribeAndPlayersDeferred() =
-        GlobalScope.async { tribe.id.load() } to getUserPlayersAsync()
+    private fun SaveTribeCommand.getTribeAndPlayersDeferred() = with(GlobalScope) {
+        async { tribe.id.load() } to async { getUserPlayersAsync() }
+    }
 
     private fun shouldSave(tribeId: TribeId, loadedTribe: KtTribe?, playerList: List<TribeIdPlayer>) =
         tribeIsNew(loadedTribe)

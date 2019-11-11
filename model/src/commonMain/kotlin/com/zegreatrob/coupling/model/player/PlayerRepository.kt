@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.model.player
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.coroutines.Deferred
 
 interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted, PlayerGetByEmail
 
@@ -22,5 +21,5 @@ interface PlayerGetDeleted {
 }
 
 interface PlayerGetByEmail {
-    fun getPlayersByEmailAsync(email: String): Deferred<List<TribeIdPlayer>>
+    suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer>
 }

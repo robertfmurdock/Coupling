@@ -368,7 +368,7 @@ class MongoPlayerRepositoryTest {
             save(redHerring with tribeId)
             save(updatedPlayer with tribeId)
         } exerciseAsync {
-            getPlayersByEmailAsync(email).await()
+            getPlayersByEmail(email)
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(updatedPlayer with tribeId))
         }
@@ -386,7 +386,7 @@ class MongoPlayerRepositoryTest {
             save(player with tribeId)
             save(updatedPlayer with tribeId)
         } exerciseAsync {
-            getPlayersByEmailAsync(email).await()
+            getPlayersByEmail(email)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }

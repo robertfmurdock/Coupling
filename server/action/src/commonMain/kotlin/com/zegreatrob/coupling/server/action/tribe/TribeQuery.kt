@@ -21,8 +21,9 @@ interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSy
             Pair(tribeDeferred.await(), playerDeferred.await())
         }
 
-    private fun TribeQuery.getTribeAndPlayersDeferred() =
-        GlobalScope.async { tribeId.load() } to getUserPlayersAsync()
+    private fun TribeQuery.getTribeAndPlayersDeferred() = with(GlobalScope) {
+        async { tribeId.load() } to async { getUserPlayersAsync() }
+    }
 
     private fun Pair<KtTribe?, List<TribeIdPlayer>>.onlyAuthenticatedTribes() = let { (tribe, players) ->
         tribe?.takeIf(players.authenticatedFilter())

@@ -16,7 +16,7 @@ interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyn
     TribeIdGetSyntax, TribeIdPlayersSyntax {
 
     suspend fun UserIsAuthorizedWithDataAction.perform(): Pair<KtTribe, List<Player>>? {
-        val contains = getUserPlayersAsync().await()
+        val contains = getUserPlayersAsync()
             .authenticatedTribeIds()
             .contains(tribeId)
 

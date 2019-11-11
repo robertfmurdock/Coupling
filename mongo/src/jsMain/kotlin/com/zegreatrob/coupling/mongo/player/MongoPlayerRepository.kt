@@ -8,9 +8,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
@@ -44,24 +41,17 @@ interface MongoPlayerRepository : PlayerRepository,
         findByQuery(json("tribe" to tribeId.value), playersCollection)
             .map { it.fromDbToPlayer() }
 
-    override fun getPlayersByEmailAsync(email: String) = GlobalScope.async {
-        getLatestRecordsRelatedToAsync(json("email" to email), playersCollection).await()
+    override suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer> =
+        getLatestRecordsRelatedToAsync(json("email" to email), playersCollection)
             .map { it.fromDbToPlayer() with TribeId(it["tribe"].toString()) }
             .filter { it.player.email == email }
-    }
 
-    private fun CoroutineScope.getLatestRecordsRelatedToAsync(query: Json, collection: dynamic) = async {
+    private suspend fun getLatestRecordsRelatedToAsync(query: Json, collection: dynamic) =
         rawFindBy(query, collection).await()
             .map { it.applyIdCorrection() }
             .map { it["_id"].toString() }
             .distinct()
-            .map {
-                async {
-                    getLatestRecordWithId(it, collection)
-                }
-            }
-            .mapNotNull { it.await() }
-    }
+            .mapNotNull { getLatestRecordWithId(it, collection) }
 
     override suspend fun getDeleted(tribeId: TribeId): List<Player> = findDeletedByQuery(tribeId, playersCollection)
         .map { it.fromDbToPlayer() }
