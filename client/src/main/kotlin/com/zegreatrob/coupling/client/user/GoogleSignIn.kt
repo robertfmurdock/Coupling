@@ -45,11 +45,8 @@ interface GoogleSignIn : SdkSyntax {
         signOut().await()
     } else Unit
 
-    private suspend fun GoogleUser.createSession(): Unit = with(sdk) {
-        createSessionOnCoupling(getAuthResponse().id_token)
-            .await()
-        Unit
-    }
+    private suspend fun GoogleUser.createSession(): Unit = sdk.createSessionOnCouplingAsync(getAuthResponse().id_token)
+        .await()
 
     private suspend fun getGoogleAuth() = loadGoogleAuth2()
         .init(jsObject { client_id = window["googleClientId"] })

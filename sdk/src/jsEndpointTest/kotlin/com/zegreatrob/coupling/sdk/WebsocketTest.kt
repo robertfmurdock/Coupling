@@ -14,6 +14,7 @@ import kotlin.js.json
 import kotlin.test.Test
 
 
+@Suppress("UNUSED_PARAMETER")
 fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(url, options)")
 
 external interface WS {

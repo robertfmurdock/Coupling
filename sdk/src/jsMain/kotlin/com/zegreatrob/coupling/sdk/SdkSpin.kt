@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.external.axios.postAsync
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlin.js.Json
