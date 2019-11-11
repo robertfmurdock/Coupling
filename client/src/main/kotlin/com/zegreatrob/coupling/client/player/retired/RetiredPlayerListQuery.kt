@@ -14,11 +14,13 @@ import kotlinx.coroutines.async
 data class RetiredPlayerListQuery(val tribeId: TribeId) : Action
 
 interface RetiredPlayerListQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdRetiredPlayersSyntax {
+
     suspend fun RetiredPlayerListQuery.perform() = logAsync { getData(tribeId) }
 
-    private suspend fun getData(tribeId: TribeId) =
-        (tribeId.loadAsync() to GlobalScope.async { tribeId.loadRetiredPlayers() })
+    private suspend fun getData(tribeId: TribeId) = with(GlobalScope) {
+        (async { tribeId.load() } to async { tribeId.loadRetiredPlayers() })
             .await()
+    }
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Player>>>.await() = first.await() to second.await()
 }

@@ -7,6 +7,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 data class ProposeNewPairsCommand(val tribeId: TribeId, val players: List<Player>) : Action
 interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyntax, TribeIdGetSyntax,
@@ -16,25 +18,25 @@ interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyn
 
     suspend fun ProposeNewPairsCommand.perform() = logAsync {
         loadData()
-                .let { (history, pins, tribe) -> RunGameAction(players, pins, history, tribe!!) }
-                .performThis()
+            .let { (history, pins, tribe) -> RunGameAction(players, pins, history, tribe!!) }
+            .performThis()
     }
 
     private fun RunGameAction.performThis() = with(actionDispatcher) { perform() }
 
     private suspend fun ProposeNewPairsCommand.loadData() = dataDeferred()
-            .let { (historyDeferred, pinsDeferred, tribeDeferred) ->
-                Triple(
-                        historyDeferred.await(),
-                        pinsDeferred.await(),
-                        tribeDeferred.await()
-                )
-            }
+        .let { (historyDeferred, pinsDeferred, tribeDeferred) ->
+            Triple(
+                historyDeferred.await(),
+                pinsDeferred.await(),
+                tribeDeferred.await()
+            )
+        }
 
     private fun ProposeNewPairsCommand.dataDeferred() = Triple(
-            tribeId.getHistoryAsync(),
-            tribeId.getPinsAsync(),
-            tribeId.loadAsync()
+        tribeId.getHistoryAsync(),
+        tribeId.getPinsAsync(),
+        GlobalScope.async { tribeId.load() }
     )
 
 }

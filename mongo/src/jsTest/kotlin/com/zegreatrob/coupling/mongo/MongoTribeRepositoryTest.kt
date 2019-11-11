@@ -41,7 +41,7 @@ class MongoTribeRepositoryTest {
             dropPlayers()
         } exerciseAsync {
             save(tribe)
-            getTribeAsync(tribe.id).await()
+            getTribe(tribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(tribe)
         }
@@ -67,7 +67,7 @@ class MongoTribeRepositoryTest {
             )).unsafeCast<Promise<Unit>>().await()
             Unit
         } exerciseAsync {
-            getTribeAsync(expectedTribe.id).await()
+            getTribe(expectedTribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(expectedTribe)
         }

@@ -7,6 +7,8 @@ import com.zegreatrob.coupling.model.tribe.*
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 data class SaveTribeCommand(val tribe: KtTribe) : Action
 
@@ -36,7 +38,7 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
         }
 
     private fun SaveTribeCommand.getTribeAndPlayersDeferred() =
-        tribe.id.loadAsync() to getUserPlayersAsync()
+        GlobalScope.async { tribe.id.load() } to getUserPlayersAsync()
 
     private fun shouldSave(tribeId: TribeId, loadedTribe: KtTribe?, playerList: List<TribeIdPlayer>) =
         tribeIsNew(loadedTribe)

@@ -16,8 +16,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -42,14 +40,15 @@ class ProposeNewPairsCommandTest {
                     "Tribe Id! ${Random.nextInt(300)}"
                 ), PairingRule.PreferDifferentBadge
             )
+
             override fun getPinsAsync(tribeId: TribeId) = CompletableDeferred(pins)
-                    .also { tribeId.assertIsEqualTo(tribe.id) }
+                .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override fun getPairAssignmentsAsync(tribeId: TribeId) = CompletableDeferred(history)
-                    .also { tribeId.assertIsEqualTo(tribe.id) }
+                .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override fun CoroutineScope.getTribeAsync(tribeId: TribeId): Deferred<KtTribe> = CompletableDeferred(tribe)
-                    .also { tribeId.assertIsEqualTo(tribe.id) }
+            override suspend fun getTribe(tribeId: TribeId): KtTribe? = tribe
+                .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override val pinRepository: PinGetter = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
@@ -66,7 +65,7 @@ class ProposeNewPairsCommandTest {
             }
         }) exerciseAsync {
             ProposeNewPairsCommand(tribe.id, players)
-                    .perform()
+                .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(expectedPairAssignmentDocument)
             actionDispatcher.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))

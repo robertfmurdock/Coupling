@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 data class PinListQuery(val tribeId: TribeId) : Action
 
@@ -15,7 +17,7 @@ interface PinListQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeI
     suspend fun PinListQuery.perform() = logAsync { tribeId.getData() }
 
     private suspend fun TribeId.getData() =
-        (loadAsync() to getPinsAsync())
+        (GlobalScope.async { load() } to getPinsAsync())
             .await()
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Pin>>>.await() = first.await() to second.await()

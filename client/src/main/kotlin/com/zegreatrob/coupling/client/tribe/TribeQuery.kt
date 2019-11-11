@@ -8,5 +8,5 @@ import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 data class TribeQuery(val tribeId: TribeId) : Action
 
 interface TribeQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax {
-    suspend fun TribeQuery.perform() = logAsync { tribeId.loadAsync().await() }
+    suspend fun TribeQuery.perform() = logAsync { tribeId.load() }
 }

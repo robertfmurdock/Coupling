@@ -28,8 +28,10 @@ interface PlayerQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeId
             }
     }
 
-    private suspend fun TribeId.getData() = (loadAsync() to GlobalScope.async { loadPlayers() })
-        .await()
+    private suspend fun TribeId.getData() = with(GlobalScope) {
+        (async { load() } to async { loadPlayers() })
+            .await()
+    }
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Player>>>.await() =
         first.await() to second.await()

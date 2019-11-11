@@ -37,12 +37,13 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Tri
         StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
-    private suspend fun TribeId.getData() =
+    private suspend fun TribeId.getData() = with(GlobalScope) {
         Triple(
-            loadAsync(),
-            GlobalScope.async { loadPlayers() },
+            async { load() },
+            async { loadPlayers() },
             getHistoryAsync()
         ).await()
+    }
 
     private suspend fun Triple<Deferred<KtTribe?>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
         Triple(

@@ -21,9 +21,10 @@ interface RetiredPlayerQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, 
             }
     }
 
-    private suspend fun TribeId.getData() =
-        (loadAsync() to GlobalScope.async { loadRetiredPlayers() })
+    private suspend fun TribeId.getData() = with(GlobalScope) {
+        (async { load() } to async { loadRetiredPlayers() })
             .await()
+    }
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Player>>>.await() =
         first.await() to second.await()

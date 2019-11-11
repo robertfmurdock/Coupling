@@ -34,7 +34,7 @@ interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyn
         playerIds.contains(it.id)
     }
 
-    private suspend fun TribeId.getData() = Pair(loadAsync(), GlobalScope.async { loadPlayers() })
+    private suspend fun TribeId.getData() = Pair(GlobalScope.async { load() }, GlobalScope.async { loadPlayers() })
         .await()
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Player>>>.await() =

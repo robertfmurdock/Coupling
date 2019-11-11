@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 data class HistoryQuery(val tribeId: TribeId) : Action
 
@@ -15,7 +17,7 @@ interface HistoryQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeI
     suspend fun HistoryQuery.perform() = logAsync { tribeId.getData() }
 
     private suspend fun TribeId.getData() =
-        Pair(loadAsync(), getHistoryAsync())
+        Pair(GlobalScope.async { load() }, getHistoryAsync())
             .await()
 
     private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<PairAssignmentDocument>>>.await() =

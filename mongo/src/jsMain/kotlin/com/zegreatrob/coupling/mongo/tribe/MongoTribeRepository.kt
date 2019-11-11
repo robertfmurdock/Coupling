@@ -8,9 +8,6 @@ import com.zegreatrob.coupling.model.tribe.TribeRepository
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -30,11 +27,12 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         usesRawId = false
     )
 
-    override fun CoroutineScope.getTribeAsync(tribeId: TribeId): Deferred<KtTribe?> = async {
-        findByQuery(json("id" to tribeId.value), jsRepository.tribesCollection)
-            .firstOrNull()
-            ?.toTribe()
-    }
+    override suspend fun getTribe(tribeId: TribeId): KtTribe? = findByQuery(
+        json("id" to tribeId.value),
+        jsRepository.tribesCollection
+    )
+        .firstOrNull()
+        ?.toTribe()
 
     override suspend fun getTribes(): List<KtTribe> = findByQuery(json(), jsRepository.tribesCollection)
         .map { it.toTribe() }
