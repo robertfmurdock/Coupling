@@ -7,5 +7,5 @@ import com.zegreatrob.coupling.model.tribe.TribeListSyntax
 object TribeListQuery : Action
 
 interface TribeListQueryDispatcher : ActionLoggingSyntax, TribeListSyntax {
-    suspend fun TribeListQuery.perform() = logAsync { getTribesAsync().await() }
+    suspend fun TribeListQuery.perform() = logAsync { getTribes() }
 }

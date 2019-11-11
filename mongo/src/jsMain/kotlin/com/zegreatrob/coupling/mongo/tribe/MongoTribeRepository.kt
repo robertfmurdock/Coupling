@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
@@ -37,10 +36,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             ?.toTribe()
     }
 
-    override fun getTribesAsync(): Deferred<List<KtTribe>> = GlobalScope.async {
-        findByQuery(json(), jsRepository.tribesCollection)
-            .map { it.toTribe() }
-    }
+    override suspend fun getTribes(): List<KtTribe> = findByQuery(json(), jsRepository.tribesCollection)
+        .map { it.toTribe() }
 
     private fun KtTribe.toDbJson() = json(
         "id" to id.value,

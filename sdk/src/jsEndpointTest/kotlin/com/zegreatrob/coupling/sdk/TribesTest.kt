@@ -26,7 +26,7 @@ class TribesTest {
         }) {
             tribes.forEach { sdk.save(it) }
         } exerciseAsync {
-            sdk.getTribesAsync().await()
+            sdk.getTribes()
         } verifyAsync { result ->
             result.assertIsEqualTo(tribes)
         }
@@ -48,7 +48,7 @@ class TribesTest {
             otherSdk.save(tribe)
             otherSdk.save(TribeIdPlayer(tribe.id, player))
         } exerciseAsync {
-            sdk.getTribesAsync().await()
+            sdk.getTribes()
         } verifyAsync { result ->
             result.assertIsEqualTo(listOf(tribe))
         }
@@ -71,7 +71,7 @@ class TribesTest {
             otherSdk.save(TribeIdPlayer(tribe.id, player))
             otherSdk.save(TribeIdPlayer(tribe.id, player.copy(email = "something else")))
         } exerciseAsync {
-            sdk.getTribesAsync().await()
+            sdk.getTribes()
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }
@@ -105,7 +105,7 @@ class TribesTest {
         } exerciseAsync {
             sdk.delete(tribe.id)
             Pair(
-                sdk.getTribesAsync().await(),
+                sdk.getTribes(),
                 catchError { with(sdk) { GlobalScope.getTribeAsync(tribe.id).await() } }
             )
         } verifyAsync { (result, error) ->

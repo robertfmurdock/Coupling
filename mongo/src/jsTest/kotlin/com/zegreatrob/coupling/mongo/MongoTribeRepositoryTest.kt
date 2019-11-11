@@ -97,7 +97,7 @@ class MongoTribeRepositoryTest {
             dropPlayers()
             tribes.forEach { save(it) }
         } exerciseAsync {
-            getTribesAsync().await()
+            getTribes()
         } verifyAsync { result ->
             result.assertIsEqualTo(tribes)
         }

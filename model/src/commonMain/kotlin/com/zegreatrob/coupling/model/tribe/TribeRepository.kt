@@ -18,5 +18,5 @@ interface TribeGet {
 }
 
 interface TribeListGet {
-    fun getTribesAsync(): Deferred<List<KtTribe>>
+    suspend fun getTribes(): List<KtTribe>
 }
