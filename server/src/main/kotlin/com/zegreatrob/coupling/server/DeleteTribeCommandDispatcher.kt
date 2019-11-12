@@ -8,7 +8,5 @@ import com.zegreatrob.coupling.model.tribe.TribeIdDeleteSyntax
 data class DeleteTribeCommand(val tribeId: TribeId) : Action
 
 interface DeleteTribeCommandDispatcher : ActionLoggingSyntax, TribeIdDeleteSyntax {
-
     suspend fun DeleteTribeCommand.perform() = logAsync { tribeId.delete() }
-
 }

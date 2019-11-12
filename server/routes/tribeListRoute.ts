@@ -9,7 +9,7 @@ class TribeRoutes {
     );
 
     public get = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performTribeQuery(request.params.tribeId),
+        (commandDispatcher, request) => commandDispatcher.performTribeQuery(request),
         (response, tribe) => {
             if (tribe !== null) {
                 response.send(tribe);
@@ -21,7 +21,7 @@ class TribeRoutes {
     );
 
     public save = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performSaveTribeCommand(request.body),
+        (commandDispatcher, request) => commandDispatcher.performSaveTribeCommand(request),
         (response, isSuccessful, request) => {
             if (isSuccessful) {
                 response.send(request.body)
@@ -32,7 +32,7 @@ class TribeRoutes {
     );
 
     public delete = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performDeleteTribeCommand(request.params.tribeId),
+        (commandDispatcher, request) => commandDispatcher.performDeleteTribeCommand(request),
         (response, tribe) => {
             if (tribe !== null) {
                 response.send(tribe);

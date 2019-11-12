@@ -1,22 +1,12 @@
 package com.zegreatrob.coupling.server
 
 import com.soywiz.klock.measureTime
+import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
-
-external interface Request {
-    val method: String
-    val originalUrl: String?
-    val url: String
-}
-
-external interface Response {
-    val statusCode: Int
-
-    operator fun get(key: String): Any?
-}
 
 private val logger by lazy { KotlinLogging.logger("RequestLogger") }
 

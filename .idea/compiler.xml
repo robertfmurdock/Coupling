@@ -10,6 +10,7 @@
       <module name="Coupling.core.jvmTest" target="1.6" />
       <module name="Coupling.sdk.jvmMain" target="1.6" />
       <module name="Coupling.sdk.jvmTest" target="1.6" />
+      <module name="Coupling.server.test" target="1.8" />
       <module name="Coupling.webJson.jvmMain" target="1.6" />
       <module name="Coupling.webJson.jvmTest" target="1.6" />
     </bytecodeTargetLevel>

@@ -1,17 +1,20 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.tribe.TribeQuery
 import com.zegreatrob.coupling.server.action.tribe.TribeQueryDispatcher
+import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise
 
-interface TribeQueryDispatcherJs : TribeQueryDispatcher, ScopeSyntax {
+interface TribeQueryDispatcherJs : TribeQueryDispatcher, ScopeSyntax, RequestTribeIdSyntax {
 
     @JsName("performTribeQuery")
-    fun performTribeQuery(tribeId: String) = scope.promise { performTribeQueryJs(tribeId) }
+    fun performTribeQuery(request: Request) = scope.promise {
+        TribeQuery(request.tribeId())
+            .perform()
+            ?.toJson()
+    }
 
-    private suspend fun performTribeQueryJs(tribeId: String) = TribeQuery(TribeId(tribeId))
-        .perform()
-        ?.toJson()
+
 }
+
