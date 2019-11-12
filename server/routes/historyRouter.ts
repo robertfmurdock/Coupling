@@ -4,8 +4,9 @@ import {handleRequest} from "./route-helper";
 class HistoryRoutes {
 
     list = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performPairAssignmentDocumentListQuery(request.params.tribeId),
-        (response, data) => response.send(data)
+        (commandDispatcher, request, response) => commandDispatcher.performPairAssignmentDocumentListQuery(request, response),
+        () => {
+        }
     );
 
     savePairs = handleRequest(
@@ -29,14 +30,8 @@ class HistoryRoutes {
     );
 
     deleteMember = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performDeletePairAssignmentDocumentCommand(request.params.id),
-        (response, data) => {
-            if (data) {
-                response.send({message: 'SUCCESS'});
-            } else {
-                response.statusCode = 404;
-                response.send({message: 'Pair Assignments could not be deleted because they do not exist.'})
-            }
+        (commandDispatcher, request, response) => commandDispatcher.performDeletePairAssignmentDocumentCommand(request, response),
+        () => {
         }
     );
 
