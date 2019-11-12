@@ -3,20 +3,23 @@ package com.zegreatrob.coupling.server.entity.pin
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
+import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
+import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.promise
-import kotlin.js.Json
 
-interface SavePinCommandDispatcherJs : SavePinCommandDispatcher, ScopeSyntax {
+interface SavePinCommandDispatcherJs : SavePinCommandDispatcher, ScopeSyntax, RequestTribeIdSyntax, JsonSendToResponseSyntax {
     @JsName("performSavePinCommand")
-    fun performSavePinCommand(pin: Json, tribeId: String) = scope.promise {
+    fun performSavePinCommand(request: Request, response: Response) = scope.promise {
         SavePinCommand(
-            TribeIdPin(TribeId(tribeId), pin.toPin())
+            TribeIdPin(request.tribeId(), request.body.toPin())
         )
             .perform()
             .toJson()
+            .sendTo(response)
     }
 }

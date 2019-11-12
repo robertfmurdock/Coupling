@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.server.JsonSendAsResponseSyntax
+import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
 import com.zegreatrob.coupling.server.action.tribe.TribeQuery
 import com.zegreatrob.coupling.server.action.tribe.TribeQueryDispatcher
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.promise
 
-interface TribeQueryDispatcherJs : TribeQueryDispatcher, ScopeSyntax, RequestTribeIdSyntax, JsonSendAsResponseSyntax,
+interface TribeQueryDispatcherJs : TribeQueryDispatcher, ScopeSyntax, RequestTribeIdSyntax, JsonSendToResponseSyntax,
     ResponseSendTribeNotFoundSyntax {
 
     @JsName("performTribeQuery")

@@ -9,4 +9,6 @@ external interface Response {
 
     fun send(body: Json?)
     fun send(body: Array<*>)
+
+    fun sendStatus(statusCode: Int)
 }
