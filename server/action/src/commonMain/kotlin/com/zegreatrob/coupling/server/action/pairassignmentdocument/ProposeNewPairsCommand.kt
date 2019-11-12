@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.model.player.Player
@@ -18,26 +19,17 @@ interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyn
 
     suspend fun ProposeNewPairsCommand.perform() = logAsync {
         loadData()
-            .let { (history, pins, tribe) -> RunGameAction(players, pins, history, tribe!!) }
+            .let { (history, pins, tribe) -> RunGameAction(players, pins, history, tribe) }
             .performThis()
     }
 
     private fun RunGameAction.performThis() = with(actionDispatcher) { perform() }
 
-    private suspend fun ProposeNewPairsCommand.loadData() = dataDeferred()
-        .let { (historyDeferred, pinsDeferred, tribeDeferred) ->
-            Triple(
-                historyDeferred.await(),
-                pinsDeferred.await(),
-                tribeDeferred.await()
-            )
-        }
-
-    private fun ProposeNewPairsCommand.dataDeferred() = with(GlobalScope) {
-        Triple(
+    private suspend fun ProposeNewPairsCommand.loadData() = with(GlobalScope) {
+        await(
             async { tribeId.getHistory() },
             async { tribeId.getPins() },
-            async { tribeId.load() }
+            async { tribeId.load()!! }
         )
     }
 

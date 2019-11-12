@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.tribe
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.*
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
@@ -32,13 +33,8 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
     private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndPlayers()
         .let { (loadedTribe, players) -> shouldSave(tribe.id, loadedTribe, players) }
 
-    private suspend fun SaveTribeCommand.getTribeAndPlayers() = getTribeAndPlayersDeferred()
-        .let { (tribeDeferred, playerDeferred) ->
-            Pair(tribeDeferred.await(), playerDeferred.await())
-        }
-
-    private fun SaveTribeCommand.getTribeAndPlayersDeferred() = with(GlobalScope) {
-        async { tribe.id.load() } to async { getUserPlayersAsync() }
+    private suspend fun SaveTribeCommand.getTribeAndPlayers() = with(GlobalScope) {
+        await(async { tribe.id.load() }, async { getUserPlayers() })
     }
 
     private fun shouldSave(tribeId: TribeId, loadedTribe: KtTribe?, playerList: List<TribeIdPlayer>) =

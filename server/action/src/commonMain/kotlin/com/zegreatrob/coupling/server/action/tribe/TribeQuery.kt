@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.tribe
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -16,13 +17,11 @@ interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSy
 
     suspend fun TribeQuery.perform() = logAsync { getTribeAndPlayers().onlyAuthenticatedTribes() }
 
-    private suspend fun TribeQuery.getTribeAndPlayers() = getTribeAndPlayersDeferred()
-        .let { (tribeDeferred, playerDeferred) ->
-            Pair(tribeDeferred.await(), playerDeferred.await())
-        }
-
-    private fun TribeQuery.getTribeAndPlayersDeferred() = with(GlobalScope) {
-        async { tribeId.load() } to async { getUserPlayersAsync() }
+    private suspend fun TribeQuery.getTribeAndPlayers() = with(GlobalScope) {
+        await(
+            async { tribeId.load() },
+            async { getUserPlayers() }
+        )
     }
 
     private fun Pair<KtTribe?, List<TribeIdPlayer>>.onlyAuthenticatedTribes() = let { (tribe, players) ->

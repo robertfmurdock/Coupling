@@ -2,28 +2,23 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdHistorySyntax
-import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 data class HistoryQuery(val tribeId: TribeId) : Action
 
 interface HistoryQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdHistorySyntax {
     suspend fun HistoryQuery.perform() = logAsync { tribeId.getData() }
 
-    private suspend fun TribeId.getData() = with(GlobalScope) {
-        Pair(async { load() }, async { getHistory() })
-            .await()
-    }
-
-    private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<PairAssignmentDocument>>>.await() =
-        Pair(
-            first.await(),
-            second.await()
+    private suspend fun TribeId.getData() = withContext(Dispatchers.Default) {
+        await(
+            async { load() },
+            async { getHistory() }
         )
+    }
 }

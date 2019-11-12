@@ -4,12 +4,11 @@ import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
+import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
-import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
@@ -29,12 +28,8 @@ interface PlayerQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeId
     }
 
     private suspend fun TribeId.getData() = with(GlobalScope) {
-        (async { load() } to async { loadPlayers() })
-            .await()
+        await(async { load() }, async { loadPlayers() })
     }
-
-    private suspend fun Pair<Deferred<KtTribe?>, Deferred<List<Player>>>.await() =
-        first.await() to second.await()
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
         ?: defaultWithCallSign()

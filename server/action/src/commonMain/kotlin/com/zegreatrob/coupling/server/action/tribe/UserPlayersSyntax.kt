@@ -5,5 +5,5 @@ import com.zegreatrob.coupling.model.user.UserEmailSyntax
 
 interface UserPlayersSyntax : UserEmailSyntax {
     val playerRepository: PlayerRepository
-    suspend fun getUserPlayersAsync() = playerRepository.getPlayersByEmail(userEmail)
+    suspend fun getUserPlayers() = playerRepository.getPlayersByEmail(userEmail)
 }

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.model.player.Player
@@ -10,7 +11,6 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
@@ -38,19 +38,12 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Tri
     }
 
     private suspend fun TribeId.getData() = with(GlobalScope) {
-        Triple(
-            async { load() },
+        await(
+            async { load()!! },
             async { loadPlayers() },
             async { getHistory() }
-        ).await()
-    }
-
-    private suspend fun Triple<Deferred<KtTribe?>, Deferred<List<Player>>, Deferred<List<PairAssignmentDocument>>>.await() =
-        Triple(
-            first.await()!!,
-            second.await(),
-            third.await()
         )
+    }
 
     private fun calculateStats(
         tribe: KtTribe,
