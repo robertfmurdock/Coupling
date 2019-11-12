@@ -2,13 +2,11 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
-import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.PinRepository
-import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.PlayerRepository
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeRepository
@@ -21,8 +19,8 @@ import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
-import com.zegreatrob.coupling.server.action.pin.*
 import com.zegreatrob.coupling.server.action.user.*
+import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import kotlinx.coroutines.*
@@ -30,12 +28,9 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
-    DeletePinCommandDispatcher,
-    PinsQueryDispatcher,
     SavePairAssignmentDocumentCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher {
-    override val pinRepository: PinRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
@@ -105,7 +100,6 @@ fun commandDispatcher(
         RunGameActionDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
-        SavePinCommandDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         Wheel,
@@ -114,35 +108,13 @@ fun commandDispatcher(
         UserIsAuthorizedWithDataActionDispatcher,
         TribeDispatcherJs,
         PlayerDispatcherJs,
+        PinDispatcherJs,
         RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
         override val user = user
         override val actionDispatcher = this
         override val wheel: Wheel = this
 
         override val scope = MainScope() + CoroutineName(path)
-
-        @JsName("performSavePinCommand")
-        fun performSavePinCommand(pin: Json, tribeId: String) = scope.promise {
-            SavePinCommand(
-                TribeIdPin(TribeId(tribeId), pin.toPin())
-            )
-                .perform()
-                .toJson()
-        }
-
-        @JsName("performPinsQuery")
-        fun performPinsQuery(tribeId: String) = scope.promise {
-            PinsQuery(TribeId(tribeId))
-                .perform()
-                .map { it.toJson() }
-                .toTypedArray()
-        }
-
-        @JsName("performDeletePinCommand")
-        fun performDeletePinCommand(pinId: String) = scope.promise {
-            DeletePinCommand(TribeId(""), pinId)
-                .perform()
-        }
 
         @JsName("performProposeNewPairsCommand")
         fun performProposeNewPairsCommand(tribeId: String, players: Array<Json>) = scope.promise {
