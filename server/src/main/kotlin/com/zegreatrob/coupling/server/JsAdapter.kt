@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.json.toPin
+import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
@@ -21,8 +24,12 @@ import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.pin.*
 import com.zegreatrob.coupling.server.action.player.*
-import com.zegreatrob.coupling.server.action.tribe.*
+import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.*
+import com.zegreatrob.coupling.server.entity.tribe.DeleteTribeCommandDispatcherJs
+import com.zegreatrob.coupling.server.entity.tribe.SaveTribeCommandDispatcherJs
+import com.zegreatrob.coupling.server.entity.tribe.TribeListQueryDispatcherJs
+import com.zegreatrob.coupling.server.entity.tribe.TribeQueryDispatcherJs
 import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.json
@@ -37,8 +44,6 @@ interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
     SavePairAssignmentDocumentCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
-    TribeListQueryDispatcher,
-    TribeQueryDispatcher,
     SaveTribeCommandDispatcher,
     DeleteTribeCommandDispatcher {
     override val playerRepository: PlayerRepository
@@ -119,39 +124,16 @@ fun commandDispatcher(
         AuthenticatedUserEmailSyntax,
         UserIsAuthorizedActionDispatcher,
         UserIsAuthorizedWithDataActionDispatcher,
+        SaveTribeCommandDispatcherJs,
+        TribeListQueryDispatcherJs,
+        TribeQueryDispatcherJs,
+        DeleteTribeCommandDispatcherJs,
         RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
         override val user = user
         override val actionDispatcher = this
         override val wheel: Wheel = this
 
-        val scope = MainScope() + CoroutineName(path)
-
-        @JsName("performTribeListQuery")
-        fun performTribeListQuery() = scope.promise {
-            TribeListQuery
-                .perform()
-                .map { it.toJson() }
-                .toTypedArray()
-        }
-
-        @JsName("performTribeQuery")
-        fun performTribeQuery(tribeId: String) = scope.promise {
-            TribeQuery(TribeId(tribeId))
-                .perform()
-                ?.toJson()
-        }
-
-        @JsName("performSaveTribeCommand")
-        fun performSaveTribeCommand(tribe: Json) = scope.promise {
-            SaveTribeCommand(tribe.toTribe())
-                .perform()
-        }
-
-        @JsName("performDeleteTribeCommand")
-        fun performDeleteTribeCommand(tribeId: String) = scope.promise {
-            DeleteTribeCommand(TribeId(tribeId))
-                .perform()
-        }
+        override val scope = MainScope() + CoroutineName(path)
 
         @JsName("performSavePlayerCommand")
         fun performSavePlayerCommand(player: Json, tribeId: String) = scope.promise {

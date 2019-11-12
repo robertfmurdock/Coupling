@@ -18,7 +18,6 @@ export default function (userDataService, couplingDataService) {
                 response.sendStatus(401);
             }
         } else {
-            request.userDataService = userDataService;
             let email = request.user.email;
             const tempSuffixIndex = email.indexOf('._temp');
             let dataService: CouplingDataService;
@@ -30,10 +29,10 @@ export default function (userDataService, couplingDataService) {
 
             request.commandDispatcher = commandDispatcher(
                 dataService,
-                request.userDataService.usersCollection,
+                userDataService.usersCollection,
                 email,
                 request.user.tribes,
-                request.method + " " + request.path
+                `${request.method} ${request.path}`
             );
 
             next();
