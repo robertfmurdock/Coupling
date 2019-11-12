@@ -1,7 +1,11 @@
 package com.zegreatrob.coupling.server.external.express
 
+import kotlin.js.Json
+
 external interface Response {
-    val statusCode: Int
+    var statusCode: Int
 
     operator fun get(key: String): Any?
+
+    fun send(body: Json?)
 }

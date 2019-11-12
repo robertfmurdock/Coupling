@@ -9,14 +9,8 @@ class TribeRoutes {
     );
 
     public get = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performTribeQuery(request),
-        (response, tribe) => {
-            if (tribe !== null) {
-                response.send(tribe);
-            } else {
-                response.statusCode = 404;
-                response.send({message: 'Tribe not found.'});
-            }
+        (commandDispatcher, request, response) => commandDispatcher.performTribeQuery(request, response),
+        () => {
         }
     );
 
