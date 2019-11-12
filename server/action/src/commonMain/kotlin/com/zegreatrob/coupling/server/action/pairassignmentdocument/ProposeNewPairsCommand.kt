@@ -27,7 +27,7 @@ interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyn
 
     private suspend fun ProposeNewPairsCommand.loadData() = coroutineScope {
         await(
-            async { tribeId.getHistory() },
+            async { tribeId.loadHistory() },
             async { tribeId.getPins() },
             async { tribeId.load()!! }
         )

@@ -18,7 +18,7 @@ interface HistoryQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeI
     private suspend fun TribeId.getData() = withContext(Dispatchers.Default) {
         await(
             async { load() },
-            async { getHistory() }
+            async { loadHistory() }
         )
     }
 }
