@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server
 import com.soywiz.klock.measureTime
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import mu.KotlinLogging
 
 external interface Request {
@@ -22,7 +22,7 @@ private val logger by lazy { KotlinLogging.logger("RequestLogger") }
 
 @Suppress("unused")
 @JsName("logRequestAsync")
-fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) -> Unit) = GlobalScope.async {
+fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) -> Unit) = GlobalScope.launch {
     val duration = measureTime {
         val deferred = CompletableDeferred<Unit>()
 

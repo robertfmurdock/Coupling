@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.action.ScopeProvider
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.plus
 import react.RProps
@@ -31,7 +32,7 @@ interface StyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, PropsCla
     }
 }
 
-interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, ScopeProvider, PropsClassProvider<P> {
+interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, ReactScopeProvider, PropsClassProvider<P> {
     val componentPath: String
 
     fun ScopedStyledRContext<P, S>.render(): ReactElement
@@ -39,11 +40,18 @@ interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, Sc
     override fun build() = loadStyles<S>(componentPath).toFunctionComponent()
 
     private fun S.toFunctionComponent() = ReactFunctionComponent(kClass) { props: P ->
-        val (scope) = useState { buildScope() + CoroutineName(componentPath) }
+        val scope = useScope(componentPath)
+        ScopedStyledRContext(props, this, scope)
+            .handle { render() }
+    }
+}
+
+interface ReactScopeProvider : ScopeProvider {
+    fun useScope(coroutineName: String): CoroutineScope {
+        val (scope) = useState { buildScope() + CoroutineName(coroutineName) }
         useEffectWithCleanup(arrayOf()) {
             { scope.cancel() }
         }
-        ScopedStyledRContext(props, this, scope)
-            .handle { render() }
+        return scope
     }
 }
