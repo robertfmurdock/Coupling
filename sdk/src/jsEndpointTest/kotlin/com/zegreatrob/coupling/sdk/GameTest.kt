@@ -32,7 +32,7 @@ class GameTest {
         }) {
             sdk.save(tribe)
         } exerciseAsync {
-            sdk.requestSpinAsync(tribe.id, players).await()
+            sdk.requestSpin(tribe.id, players)
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
@@ -62,7 +62,7 @@ class GameTest {
         }) {
             setupScenario(sdk, tribe, players, history)
         } exerciseAsync {
-            sdk.requestSpinAsync(tribe.id, players).await()
+            sdk.requestSpin(tribe.id, players)
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(
@@ -95,7 +95,7 @@ class GameTest {
         }) {
             setupScenario(sdk, tribe, players, history)
         } exerciseAsync {
-            sdk.requestSpinAsync(tribe.id, players).await()
+            sdk.requestSpin(tribe.id, players)
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(
@@ -118,7 +118,7 @@ class GameTest {
         }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exerciseAsync {
-            sdk.requestSpinAsync(tribe.id, players).await()
+            sdk.requestSpin(tribe.id, players)
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins(listOf(pin)))))

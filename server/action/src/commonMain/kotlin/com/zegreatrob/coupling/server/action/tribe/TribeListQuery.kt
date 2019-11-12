@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeListSyntax
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 object TribeListQuery : Action
 
@@ -18,7 +18,7 @@ interface TribeListQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribe
     private suspend fun getTribesAndPlayers() = getTribesAndPlayersDeferred()
         .let { (tribeDeferred, playerDeferred) -> tribeDeferred.await() to playerDeferred.await() }
 
-    private fun getTribesAndPlayersDeferred() = with(GlobalScope) {
+    private suspend fun getTribesAndPlayersDeferred() = coroutineScope {
         async { getTribes() } to async { getUserPlayers() }
     }
 

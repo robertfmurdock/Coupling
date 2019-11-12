@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 data class TribeQuery(val tribeId: TribeId) : Action
 
@@ -17,7 +17,7 @@ interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSy
 
     suspend fun TribeQuery.perform() = logAsync { getTribeAndPlayers().onlyAuthenticatedTribes() }
 
-    private suspend fun TribeQuery.getTribeAndPlayers() = with(GlobalScope) {
+    private suspend fun TribeQuery.getTribeAndPlayers() = coroutineScope {
         await(
             async { tribeId.load() },
             async { getUserPlayers() }

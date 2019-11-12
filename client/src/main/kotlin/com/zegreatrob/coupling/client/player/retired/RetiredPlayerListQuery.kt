@@ -6,14 +6,14 @@ import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.player.TribeIdRetiredPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 data class RetiredPlayerListQuery(val tribeId: TribeId) : Action
 
 interface RetiredPlayerListQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdRetiredPlayersSyntax {
     suspend fun RetiredPlayerListQuery.perform() = logAsync { getData(tribeId) }
-    private suspend fun getData(tribeId: TribeId) = with(GlobalScope) {
+    private suspend fun getData(tribeId: TribeId) = coroutineScope {
         await(async { tribeId.load() }, async { tribeId.loadRetiredPlayers() })
     }
 }

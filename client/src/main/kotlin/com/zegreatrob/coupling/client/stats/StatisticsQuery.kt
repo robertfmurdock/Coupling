@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 data class StatisticsQuery(val tribeId: TribeId) : Action
 
@@ -37,7 +37,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Tri
         StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
-    private suspend fun TribeId.getData() = with(GlobalScope) {
+    private suspend fun TribeId.getData() = coroutineScope {
         await(
             async { load()!! },
             async { loadPlayers() },

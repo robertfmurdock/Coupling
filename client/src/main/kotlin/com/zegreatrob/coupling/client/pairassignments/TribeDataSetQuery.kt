@@ -7,9 +7,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.coroutineScope
 
 data class TribeDataSetQuery(val tribeId: TribeId) : Action
 
@@ -18,7 +17,7 @@ interface TribeDataSetQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, T
 
     suspend fun TribeDataSetQuery.perform() = logAsync { tribeId.getData() }
 
-    private suspend fun TribeId.getData() = withContext(Dispatchers.Default) {
+    private suspend fun TribeId.getData() = coroutineScope {
         await(
             async { load() },
             async { loadPlayers() },

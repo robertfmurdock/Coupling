@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.model.tribe.*
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 data class SaveTribeCommand(val tribe: KtTribe) : Action
 
@@ -33,7 +33,7 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
     private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndPlayers()
         .let { (loadedTribe, players) -> shouldSave(tribe.id, loadedTribe, players) }
 
-    private suspend fun SaveTribeCommand.getTribeAndPlayers() = with(GlobalScope) {
+    private suspend fun SaveTribeCommand.getTribeAndPlayers() = coroutineScope {
         await(async { tribe.id.load() }, async { getUserPlayers() })
     }
 
