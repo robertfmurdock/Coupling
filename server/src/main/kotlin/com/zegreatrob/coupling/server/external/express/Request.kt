@@ -4,8 +4,11 @@ import kotlin.js.Json
 
 external interface Request {
     val params: Json
-    val body: Json
+    val body: dynamic
     val method: String
     val originalUrl: String?
     val url: String
 }
+
+fun Request.jsonBody() = body.unsafeCast<Json>()
+fun Request.jsonArrayBody() = body.unsafeCast<Array<Json>>()

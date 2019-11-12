@@ -10,13 +10,14 @@ import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.coupling.server.external.express.jsonBody
 import kotlinx.coroutines.promise
 
 interface SavePinCommandDispatcherJs : SavePinCommandDispatcher, ScopeSyntax, RequestTribeIdSyntax, JsonSendToResponseSyntax {
     @JsName("performSavePinCommand")
     fun performSavePinCommand(request: Request, response: Response) = scope.promise {
         SavePinCommand(
-            TribeIdPin(request.tribeId(), request.body.toPin())
+            TribeIdPin(request.tribeId(), request.jsonBody().toPin())
         )
             .perform()
             .toJson()

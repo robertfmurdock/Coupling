@@ -6,16 +6,17 @@ import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommand
 import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.coupling.server.external.express.jsonBody
 import kotlinx.coroutines.promise
 
 interface SaveTribeCommandDispatcherJs : ScopeSyntax, SaveTribeCommandDispatcher, JsonSendToResponseSyntax {
     @JsName("performSaveTribeCommand")
     fun performSaveTribeCommand(request: Request, response: Response) = scope.promise {
-        val successful = SaveTribeCommand(request.body.toTribe())
+        val successful = SaveTribeCommand(request.jsonBody().toTribe())
             .perform()
 
         if (successful)
-            request.body.sendTo(response)
+            request.jsonBody().sendTo(response)
         else
             response.sendStatus(400)
     }
