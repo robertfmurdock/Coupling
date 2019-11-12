@@ -4,29 +4,26 @@ import {handleRequest} from "./route-helper";
 class PlayerRoutes {
 
     listPlayers = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performPlayersQuery(request.params.tribeId),
-        (response, data) => response.send(data)
+        (commandDispatcher, request, response) => commandDispatcher.performPlayersQuery(request, response),
+        () => {
+        }
     );
 
     listRetiredMembers = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performRetiredPlayersQuery(request.params.tribeId),
-        (response, data) => response.send(data)
+        (commandDispatcher, request, response) => commandDispatcher.performRetiredPlayersQuery(request, response),
+        () => {
+        }
     );
 
     savePlayer = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performSavePlayerCommand(request.body, request.params.tribeId),
-        (response, data) => response.send(data)
+        (commandDispatcher, request, response) => commandDispatcher.performSavePlayerCommand(request, response),
+        () => {
+        }
     );
 
     removePlayer = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performDeletePlayerCommand(request.params.playerId),
-        (response, data) => {
-            if (data)
-                response.send(data);
-            else {
-                response.statusCode = 404;
-                response.send({message: 'Player could not be deleted because they do not exist.'})
-            }
+        (commandDispatcher, request, response) => commandDispatcher.performDeletePlayerCommand(request, response),
+        () => {
         }
     );
 
