@@ -4,21 +4,15 @@ import {handleRequest} from "./route-helper";
 class HistoryRoutes {
 
     list = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performPairAssignmentDocumentListQuery(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performPairAssignmentDocumentListQuery(request, response)
     );
 
     savePairs = handleRequest(
-        async (commandDispatcher, request, response) => commandDispatcher.performSavePairAssignmentDocumentCommand(request, response),
-        () => {
-        }
+        async (commandDispatcher, request, response) => commandDispatcher.performSavePairAssignmentDocumentCommand(request, response)
     );
 
     deleteMember = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeletePairAssignmentDocumentCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performDeletePairAssignmentDocumentCommand(request, response)
     );
 
 }

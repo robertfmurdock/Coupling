@@ -4,27 +4,19 @@ import {handleRequest} from "./route-helper";
 class TribeRoutes {
 
     public list = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performTribeListQuery(response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performTribeListQuery(response)
     );
 
     public get = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performTribeQuery(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performTribeQuery(request, response)
     );
 
     public save = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performSaveTribeCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performSaveTribeCommand(request, response)
     );
 
     public delete = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeleteTribeCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performDeleteTribeCommand(request, response)
     );
 }
 

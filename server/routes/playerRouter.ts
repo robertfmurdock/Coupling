@@ -4,27 +4,19 @@ import {handleRequest} from "./route-helper";
 class PlayerRoutes {
 
     listPlayers = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performPlayersQuery(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performPlayersQuery(request, response)
     );
 
     listRetiredMembers = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performRetiredPlayersQuery(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performRetiredPlayersQuery(request, response)
     );
 
     savePlayer = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performSavePlayerCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performSavePlayerCommand(request, response)
     );
 
     removePlayer = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeletePlayerCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performDeletePlayerCommand(request, response)
     );
 
 }

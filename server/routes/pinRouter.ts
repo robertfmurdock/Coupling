@@ -5,19 +5,13 @@ import {handleRequest} from "./route-helper";
 class PinRoutes {
 
     list = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performPinsQuery(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performPinsQuery(request, response)
     );
     savePin = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performSavePinCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performSavePinCommand(request, response)
     );
     removePin = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeletePinCommand(request, response),
-        () => {
-        }
+        (commandDispatcher, request, response) => commandDispatcher.performDeletePinCommand(request, response)
     );
 }
 
