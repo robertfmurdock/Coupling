@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmen
 import com.zegreatrob.coupling.model.pin.PinRepository
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.PlayerRepository
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeRepository
 import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
@@ -23,30 +22,19 @@ import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.pin.*
-import com.zegreatrob.coupling.server.action.player.*
-import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.*
-import com.zegreatrob.coupling.server.entity.tribe.DeleteTribeCommandDispatcherJs
-import com.zegreatrob.coupling.server.entity.tribe.SaveTribeCommandDispatcherJs
-import com.zegreatrob.coupling.server.entity.tribe.TribeListQueryDispatcherJs
-import com.zegreatrob.coupling.server.entity.tribe.TribeQueryDispatcherJs
+import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
+import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.json
 
 interface CommandDispatcher : ProposeNewPairsCommandDispatcher,
-    PlayersQueryDispatcher,
-    RetiredPlayersQueryDispatcher,
-    SavePlayerCommandDispatcher,
-    DeletePlayerCommandDispatcher,
     DeletePinCommandDispatcher,
     PinsQueryDispatcher,
     SavePairAssignmentDocumentCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
-    DeletePairAssignmentDocumentCommandDispatcher,
-    SaveTribeCommandDispatcher,
-    DeleteTribeCommandDispatcher {
-    override val playerRepository: PlayerRepository
+    DeletePairAssignmentDocumentCommandDispatcher {
     override val pinRepository: PinRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
@@ -124,10 +112,8 @@ fun commandDispatcher(
         AuthenticatedUserEmailSyntax,
         UserIsAuthorizedActionDispatcher,
         UserIsAuthorizedWithDataActionDispatcher,
-        SaveTribeCommandDispatcherJs,
-        TribeListQueryDispatcherJs,
-        TribeQueryDispatcherJs,
-        DeleteTribeCommandDispatcherJs,
+        TribeDispatcherJs,
+        PlayerDispatcherJs,
         RepositoryCatalog by repositoryCatalog(jsRepository, userCollection, user) {
         override val user = user
         override val actionDispatcher = this
@@ -135,52 +121,13 @@ fun commandDispatcher(
 
         override val scope = MainScope() + CoroutineName(path)
 
-        @JsName("performSavePlayerCommand")
-        fun performSavePlayerCommand(player: Json, tribeId: String) = scope.promise {
-            SavePlayerCommand(
-                TribeIdPlayer(
-                    TribeId(
-                        tribeId
-                    ), player.toPlayer()
-                )
-            )
-                .perform()
-                .toJson()
-        }
-
         @JsName("performSavePinCommand")
         fun performSavePinCommand(pin: Json, tribeId: String) = scope.promise {
             SavePinCommand(
-                TribeIdPin(
-                    TribeId(
-                        tribeId
-                    ), pin.toPin()
-                )
+                TribeIdPin(TribeId(tribeId), pin.toPin())
             )
                 .perform()
                 .toJson()
-        }
-
-        @JsName("performDeletePlayerCommand")
-        fun performDeletePlayerCommand(playerId: String) = scope.promise {
-            DeletePlayerCommand(TribeId(""), playerId)
-                .perform()
-        }
-
-        @JsName("performPlayersQuery")
-        fun performPlayersQuery(tribeId: String) = scope.promise {
-            PlayersQuery(TribeId(tribeId))
-                .perform()
-                .map { it.toJson() }
-                .toTypedArray()
-        }
-
-        @JsName("performRetiredPlayersQuery")
-        fun performRetiredPlayersQuery(tribeId: String) = scope.promise {
-            RetiredPlayersQuery(TribeId(tribeId))
-                .perform()
-                .map { it.toJson() }
-                .toTypedArray()
         }
 
         @JsName("performPinsQuery")
