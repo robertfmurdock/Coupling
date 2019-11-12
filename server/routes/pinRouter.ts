@@ -6,21 +6,17 @@ class PinRoutes {
 
     list = handleRequest(
         (commandDispatcher, request, response) => commandDispatcher.performPinsQuery(request, response),
-        () => {}
+        () => {
+        }
     );
     savePin = handleRequest(
         (commandDispatcher, request, response) => commandDispatcher.performSavePinCommand(request, response),
-        () => {}
+        () => {
+        }
     );
     removePin = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performDeletePinCommand(request.params.pinId),
-        (response, data) => {
-            if (data)
-                response.send(data);
-            else {
-                response.statusCode = 404;
-                response.send({message: 'Failed to remove the pin because it did not exist.'})
-            }
+        (commandDispatcher, request, response) => commandDispatcher.performDeletePinCommand(request, response),
+        () => {
         }
     );
 }
