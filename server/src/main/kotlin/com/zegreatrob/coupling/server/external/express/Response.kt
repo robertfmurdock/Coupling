@@ -8,4 +8,5 @@ external interface Response {
     operator fun get(key: String): Any?
 
     fun send(body: Json?)
+    fun send(body: Array<*>)
 }

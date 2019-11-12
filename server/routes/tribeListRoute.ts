@@ -4,8 +4,9 @@ import {handleRequest} from "./route-helper";
 class TribeRoutes {
 
     public list = handleRequest(
-        commandDispatcher => commandDispatcher.performTribeListQuery(),
-        (response, authorizedTribes) => response.send(authorizedTribes)
+        (commandDispatcher, request, response) => commandDispatcher.performTribeListQuery(response),
+        () => {
+        }
     );
 
     public get = handleRequest(
@@ -15,25 +16,14 @@ class TribeRoutes {
     );
 
     public save = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performSaveTribeCommand(request),
-        (response, isSuccessful, request) => {
-            if (isSuccessful) {
-                response.send(request.body)
-            } else {
-                response.sendStatus(400);
-            }
+        (commandDispatcher, request, response) => commandDispatcher.performSaveTribeCommand(request, response),
+        () => {
         }
     );
 
     public delete = handleRequest(
-        (commandDispatcher, request) => commandDispatcher.performDeleteTribeCommand(request),
-        (response, tribe) => {
-            if (tribe !== null) {
-                response.send(tribe);
-            } else {
-                response.statusCode = 404;
-                response.send({message: 'Tribe not found.'});
-            }
+        (commandDispatcher, request, response) => commandDispatcher.performDeleteTribeCommand(request, response),
+        () => {
         }
     );
 }
