@@ -21,17 +21,19 @@ export default function (userDataService, couplingDataService) {
             request.userDataService = userDataService;
             let email = request.user.email;
             const tempSuffixIndex = email.indexOf('._temp');
+            let dataService: CouplingDataService;
             if (tempSuffixIndex != -1) {
-                request.dataService = tempDataService;
+                dataService = tempDataService;
             } else {
-                request.dataService = couplingDataService;
+                dataService = couplingDataService;
             }
 
             request.commandDispatcher = commandDispatcher(
-                request.dataService,
+                dataService,
                 request.userDataService.usersCollection,
                 email,
-                request.user.tribes
+                request.user.tribes,
+                request.method + " " + request.path
             );
 
             next();

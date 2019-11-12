@@ -23,9 +23,7 @@ import com.zegreatrob.coupling.server.action.pin.*
 import com.zegreatrob.coupling.server.action.player.*
 import com.zegreatrob.coupling.server.action.tribe.*
 import com.zegreatrob.coupling.server.action.user.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.promise
+import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -106,7 +104,8 @@ fun commandDispatcher(
     jsRepository: dynamic,
     userCollection: dynamic,
     userEmail: String,
-    tribeIds: Array<String>
+    tribeIds: Array<String>,
+    path: String
 ): CommandDispatcher {
     val user = User(userEmail, tribeIds.map(::TribeId).toSet())
     return object : CommandDispatcher,
@@ -125,7 +124,7 @@ fun commandDispatcher(
         override val actionDispatcher = this
         override val wheel: Wheel = this
 
-        val scope = MainScope()
+        val scope = MainScope() + CoroutineName(path)
 
         @JsName("performTribeListQuery")
         fun performTribeListQuery() = scope.promise {

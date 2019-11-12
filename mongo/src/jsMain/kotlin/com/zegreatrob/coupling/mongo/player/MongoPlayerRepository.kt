@@ -27,7 +27,7 @@ interface MongoPlayerRepository : PlayerRepository,
     private fun TribeIdPlayer.toDbJson() = player.toDbJson()
         .apply { this["tribe"] = tribeId.value }
 
-    private suspend fun Json.savePlayerJson() = this.save(playersCollection)
+    private suspend fun Json.savePlayerJson() = save(playersCollection)
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = deleteEntity(
         playerId,
