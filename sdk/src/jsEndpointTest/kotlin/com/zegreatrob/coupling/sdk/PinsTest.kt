@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.KtTribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -55,7 +56,10 @@ class PinsTest {
             sdk.deletePin(tribe.id, pins[1]._id!!)
             sdk.getPins(tribe.id)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(pins[0], pins[2]))
+            result.assertContains(pins[0])
+                .assertContains(pins[2])
+                .size
+                .assertIsEqualTo(2)
         }
     }
 

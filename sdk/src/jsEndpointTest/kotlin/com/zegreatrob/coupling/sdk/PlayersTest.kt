@@ -138,7 +138,7 @@ class PlayersTest {
         } verifyAsync { result ->
             result["status"].assertIsEqualTo(404)
             result["data"].unsafeCast<Json>()["message"]
-                .assertIsEqualTo("Player could not be deleted because they do not exist.")
+                .assertIsEqualTo("Player could not be deleted.")
         }
     }
 }
