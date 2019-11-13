@@ -1,24 +1,21 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
+import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
-import com.zegreatrob.coupling.server.PerformJsonHandlingSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlin.js.json
 
 interface DeletePairAssignmentDocumentCommandDispatcherJs : DeletePairAssignmentDocumentCommandDispatcher,
-    RequestTribeIdSyntax, RequestPairAssignmentDocumentIdSyntax, JsonSendToResponseSyntax, PerformJsonHandlingSyntax {
+    RequestTribeIdSyntax, RequestPairAssignmentDocumentIdSyntax, JsonSendToResponseSyntax, EndpointHandlerSyntax {
     @JsName("performDeletePairAssignmentDocumentCommand")
-    fun performDeletePairAssignmentDocumentCommand(request: Request, response: Response) =
-        performJsonHandling(
-            request,
-            response,
-            sendSuccess("Pair Assignments"),
-            ::handleDeletePairAssignmentDocumentCommand
-        )
+    val performDeletePairAssignmentDocumentCommand
+        get() = endpointHandler(sendSuccess("Pair Assignments")) {
+            DeletePairAssignmentDocumentCommand(tribeId(), pairAssignmentDocumentId())
+                .perform()
+        }
 
     private fun sendSuccess(entityName: String): Response.(Boolean) -> Unit = { result: Boolean ->
         if (result) {
@@ -31,9 +28,5 @@ interface DeletePairAssignmentDocumentCommandDispatcherJs : DeletePairAssignment
                 .sendTo(this, 404)
         }
     }
-
-    private suspend fun handleDeletePairAssignmentDocumentCommand(request: Request) =
-        DeletePairAssignmentDocumentCommand(request.tribeId(), request.pairAssignmentDocumentId())
-            .perform()
 
 }

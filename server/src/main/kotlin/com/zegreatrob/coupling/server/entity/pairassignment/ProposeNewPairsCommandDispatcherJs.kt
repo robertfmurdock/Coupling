@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
-import com.zegreatrob.coupling.server.PerformJsonHandlingSyntax
+import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommandDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
@@ -13,10 +13,10 @@ import com.zegreatrob.coupling.server.external.express.sendSuccessful
 import kotlin.js.Json
 
 interface ProposeNewPairsCommandDispatcherJs : ProposeNewPairsCommandDispatcher, RequestTribeIdSyntax,
-    PerformJsonHandlingSyntax {
+    EndpointHandlerSyntax {
     @JsName("performProposeNewPairsCommand")
-    fun performProposeNewPairsCommand(request: Request, response: Response) =
-        performJsonHandling(request, response, Response::sendSuccessful, ::handleProposeNewPairsCommand)
+    val performProposeNewPairsCommand
+        get() = endpointHandler(Response::sendSuccessful, ::handleProposeNewPairsCommand)
 
     private suspend fun handleProposeNewPairsCommand(request: Request) = request.proposeNewPairsCommand()
         .perform()
