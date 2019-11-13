@@ -73,7 +73,7 @@ class PinsTest {
         } verifyAsync { result ->
             result["status"].assertIsEqualTo(404)
             result["data"].unsafeCast<Json>()["message"]
-                .assertIsEqualTo("Failed to remove the pin because it did not exist.")
+                .assertIsEqualTo("Pin could not be deleted.")
         }
     }
 

@@ -78,7 +78,7 @@ class HistoryTest {
         } verifyAsync { result ->
             result["status"].assertIsEqualTo(404)
             result["data"].unsafeCast<Json>()["message"]
-                .assertIsEqualTo("Pair Assignments could not be deleted because they do not exist.")
+                .assertIsEqualTo("Pair Assignments could not be deleted.")
         }
     }
 
