@@ -19,7 +19,7 @@ interface SavePinCommandDispatcherJs : SavePinCommandDispatcher, ScopeSyntax, Re
     PerformJsonHandlingSyntax {
     @JsName("performSavePinCommand")
     fun performSavePinCommand(request: Request, response: Response) =
-        performJsonHandling(request, response::sendSuccessful, ::handleSavePinCommand)
+        performJsonHandling(request, response, Response::sendSuccessful, ::handleSavePinCommand)
 
     private suspend fun handleSavePinCommand(request: Request) = request.savePinCommand()
         .perform()

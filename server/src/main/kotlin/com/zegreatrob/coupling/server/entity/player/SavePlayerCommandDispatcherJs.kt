@@ -17,7 +17,7 @@ interface SavePlayerCommandDispatcherJs : SavePlayerCommandDispatcher, RequestTr
 
     @JsName("performSavePlayerCommand")
     fun performSavePlayerCommand(request: Request, response: Response) =
-        performJsonHandling(request, response::sendSuccessful, ::handleSavePlayerCommand)
+        performJsonHandling(request, response, Response::sendSuccessful, ::handleSavePlayerCommand)
 
     private suspend fun handleSavePlayerCommand(request: Request) = request.savePlayerCommand()
         .perform()

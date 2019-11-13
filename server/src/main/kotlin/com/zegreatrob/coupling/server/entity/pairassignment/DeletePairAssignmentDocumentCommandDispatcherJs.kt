@@ -13,15 +13,22 @@ interface DeletePairAssignmentDocumentCommandDispatcherJs : DeletePairAssignment
     RequestTribeIdSyntax, RequestPairAssignmentDocumentIdSyntax, JsonSendToResponseSyntax, PerformJsonHandlingSyntax {
     @JsName("performDeletePairAssignmentDocumentCommand")
     fun performDeletePairAssignmentDocumentCommand(request: Request, response: Response) =
-        performJsonHandling(request, sendSuccess(response), ::handleDeletePairAssignmentDocumentCommand)
+        performJsonHandling(
+            request,
+            response,
+            sendSuccess("Pair Assignments"),
+            ::handleDeletePairAssignmentDocumentCommand
+        )
 
-    private fun sendSuccess(response: Response) = { result: Boolean ->
+    private fun sendSuccess(entityName: String): Response.(Boolean) -> Unit = { result: Boolean ->
         if (result) {
             json("message" to "SUCCESS")
-                .sendTo(response)
+                .sendTo(this)
         } else {
-            json("message" to "Pair Assignments could not be deleted because they do not exist.")
-                .sendTo(response, 404)
+            json(
+                "message" to "$entityName could not be deleted because they do not exist."
+            )
+                .sendTo(this, 404)
         }
     }
 

@@ -16,7 +16,7 @@ interface ProposeNewPairsCommandDispatcherJs : ProposeNewPairsCommandDispatcher,
     PerformJsonHandlingSyntax {
     @JsName("performProposeNewPairsCommand")
     fun performProposeNewPairsCommand(request: Request, response: Response) =
-        performJsonHandling(request, response::sendSuccessful, ::handleProposeNewPairsCommand)
+        performJsonHandling(request, response, Response::sendSuccessful, ::handleProposeNewPairsCommand)
 
     private suspend fun handleProposeNewPairsCommand(request: Request) = request.proposeNewPairsCommand()
         .perform()

@@ -17,7 +17,7 @@ interface SavePairAssignmentDocumentCommandDispatcherJs : SavePairAssignmentDocu
 
     @JsName("performSavePairAssignmentDocumentCommand")
     fun performSavePairAssignmentDocumentCommand(request: Request, response: Response) =
-        performJsonHandling(request, response::sendSuccessful, ::handleSavePairAssignmentDocumentCommand)
+        performJsonHandling(request, response, Response::sendSuccessful, ::handleSavePairAssignmentDocumentCommand)
 
     private suspend fun handleSavePairAssignmentDocumentCommand(request: Request) =
         request.savePairAssignmentDocumentCommand()
