@@ -3,30 +3,32 @@ package com.zegreatrob.coupling.server.entity.pairassignment
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
+import com.zegreatrob.coupling.server.PerformJsonHandlingSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.jsonBody
-import kotlinx.coroutines.promise
+import com.zegreatrob.coupling.server.external.express.sendSuccessful
 
-interface SavePairAssignmentDocumentCommandDispatcherJs : SavePairAssignmentDocumentCommandDispatcher, ScopeSyntax,
-    RequestTribeIdSyntax, JsonSendToResponseSyntax {
+interface SavePairAssignmentDocumentCommandDispatcherJs : SavePairAssignmentDocumentCommandDispatcher,
+    RequestTribeIdSyntax, PerformJsonHandlingSyntax {
 
     @JsName("performSavePairAssignmentDocumentCommand")
-    fun performSavePairAssignmentDocumentCommand(request: Request, response: Response) = scope.promise {
-        SavePairAssignmentDocumentCommand(
-            TribeIdPairAssignmentDocument(
-                request.tribeId(),
-                request.jsonBody().toPairAssignmentDocument()
-            )
-        )
+    fun performSavePairAssignmentDocumentCommand(request: Request, response: Response) =
+        performJsonHandling(request, response::sendSuccessful, ::handleSavePairAssignmentDocumentCommand)
+
+    private suspend fun handleSavePairAssignmentDocumentCommand(request: Request) =
+        request.savePairAssignmentDocumentCommand()
             .perform()
             .document
             .toJson()
-            .sendTo(response)
-    }
+
+    private fun Request.savePairAssignmentDocumentCommand() = SavePairAssignmentDocumentCommand(
+        TribeIdPairAssignmentDocument(
+            tribeId(),
+            jsonBody().toPairAssignmentDocument()
+        )
+    )
 }

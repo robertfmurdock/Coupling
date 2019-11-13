@@ -12,3 +12,8 @@ external interface Response {
 
     fun sendStatus(statusCode: Int)
 }
+
+fun Response.sendSuccessful(body: Json?) {
+    this.statusCode = 200
+    send(body)
+}
