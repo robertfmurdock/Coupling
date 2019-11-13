@@ -1,23 +1,19 @@
 package com.zegreatrob.coupling.server.entity.player
 
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
+import com.zegreatrob.coupling.json.toJsonArray
+import com.zegreatrob.coupling.server.EndpointHandlerSyntax
+import com.zegreatrob.coupling.server.ResponseHelpers.sendQueryResults
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
-import kotlinx.coroutines.promise
 
-interface PlayersQueryDispatcherJs : PlayersQueryDispatcher, ScopeSyntax, RequestTribeIdSyntax,
-    JsonSendToResponseSyntax {
+interface PlayersQueryDispatcherJs : PlayersQueryDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax {
     @JsName("performPlayersQuery")
-    fun performPlayersQuery(request: Request, response: Response) = scope.promise {
-        PlayersQuery(request.tribeId())
-            .perform()
-            .map { it.toJson() }
-            .toTypedArray()
-            .sendTo(response)
-    }
+    val performPlayersQuery
+        get() = endpointHandler(sendQueryResults("player")) {
+            PlayersQuery(tribeId())
+                .perform()
+                .toJsonArray()
+        }
+
 }

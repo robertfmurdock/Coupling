@@ -23,6 +23,9 @@ fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
     .plusIfNotNull("imageURL", imageURL)
     .pairsToJson()
 
+fun List<Player>.toJsonArray() = map { it.toJson() }
+    .toTypedArray()
+
 fun PinnedPlayer.toJson(): Json = player.toJson().apply { this["pins"] = pins.toJson() }
 
 fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
@@ -36,6 +39,9 @@ private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
     .toTypedArray()
 
 fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
+
+fun List<Pin>.toJsonArray() = map { it.toJson() }
+    .toTypedArray()
 
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(

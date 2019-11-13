@@ -15,4 +15,14 @@ object ResponseHelpers : JsonSendToResponseSyntax {
                 .sendTo(this, 404)
         }
     }
+
+    fun <T> sendQueryResults(entityName: String): Response.(T?) -> Unit = { result ->
+        if (result != null) {
+            send(result)
+        } else {
+            json("message" to "$entityName not found")
+                .sendTo(this, 404)
+        }
+    }
+
 }
