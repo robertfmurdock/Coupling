@@ -9,11 +9,12 @@ external interface Response {
 
     fun send(body: Json?)
     fun send(body: Array<*>)
+    fun send(body: Any?)
 
     fun sendStatus(statusCode: Int)
 }
 
-fun Response.sendSuccessful(body: Json?) {
+fun Response.sendSuccessful(body: Any?) {
     this.statusCode = 200
     send(body)
 }
