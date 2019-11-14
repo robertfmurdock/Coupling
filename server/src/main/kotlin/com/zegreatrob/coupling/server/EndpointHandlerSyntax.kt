@@ -9,11 +9,18 @@ import kotlin.js.Promise
 interface EndpointHandlerSyntax : ScopeSyntax {
     fun <T> endpointHandler(responder: Response.(T) -> Unit, handler: suspend Request.() -> T): EndpointHandler =
         { request: Request, response: Response ->
-            scope.promise {
-                val result = handler(request)
-                response.responder(result)
-            }
+            handleRequestAndRespond(request, response, handler, responder)
         }
+
+    private fun <T> handleRequestAndRespond(
+        request: Request,
+        response: Response,
+        handler: suspend Request.() -> T,
+        responder: Response.(T) -> Unit
+    ) = scope.promise {
+        val result = request.handler()
+        response.responder(result)
+    }
 }
 
 typealias EndpointHandler = (Request, Response) -> Promise<Unit>

@@ -15,7 +15,8 @@ import kotlin.js.Json
 interface ProposeNewPairsCommandDispatcherJs : ProposeNewPairsCommandDispatcher, RequestTribeIdSyntax,
     EndpointHandlerSyntax {
     @JsName("performProposeNewPairsCommand")
-    val performProposeNewPairsCommand get() = endpointHandler(Response::sendSuccessful, ::handleProposeNewPairsCommand)
+    val performProposeNewPairsCommand
+        get() = endpointHandler(Response::sendSuccessful, ::handleProposeNewPairsCommand)
 
     private suspend fun handleProposeNewPairsCommand(request: Request) = request.proposeNewPairsCommand()
         .perform()

@@ -1,23 +1,21 @@
 package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQueryDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
-import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
-import kotlinx.coroutines.promise
+import com.zegreatrob.coupling.server.external.express.sendSuccessful
 
-interface RetiredPlayersQueryDispatcherJs : RetiredPlayersQueryDispatcher, ScopeSyntax, RequestTribeIdSyntax,
-    JsonSendToResponseSyntax {
+interface RetiredPlayersQueryDispatcherJs : RetiredPlayersQueryDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax {
     @JsName("performRetiredPlayersQuery")
-    fun performRetiredPlayersQuery(request: Request, response: Response) = scope.promise {
-        RetiredPlayersQuery(request.tribeId())
-            .perform()
-            .map { it.toJson() }
-            .toTypedArray()
-            .sendTo(response)
-    }
+    val performRetiredPlayersQuery
+        get() = endpointHandler(Response::sendSuccessful) {
+            RetiredPlayersQuery(tribeId())
+                .perform()
+                .map(Player::toJson)
+                .toTypedArray()
+        }
 }

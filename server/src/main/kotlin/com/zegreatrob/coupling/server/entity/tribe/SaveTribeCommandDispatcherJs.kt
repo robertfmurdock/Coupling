@@ -1,24 +1,28 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.json.toTribe
-import com.zegreatrob.coupling.server.JsonSendToResponseSyntax
+import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommand
 import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommandDispatcher
-import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.jsonBody
-import kotlinx.coroutines.promise
+import com.zegreatrob.coupling.server.external.express.sendSuccessful
+import kotlin.js.Json
 
-interface SaveTribeCommandDispatcherJs : ScopeSyntax, SaveTribeCommandDispatcher, JsonSendToResponseSyntax {
+interface SaveTribeCommandDispatcherJs : SaveTribeCommandDispatcher, EndpointHandlerSyntax {
     @JsName("performSaveTribeCommand")
-    fun performSaveTribeCommand(request: Request, response: Response) = scope.promise {
-        val successful = SaveTribeCommand(request.jsonBody().toTribe())
-            .perform()
+    val performSaveTribeCommand
+        get() = endpointHandler({ (successful, body) -> returnErrorOnFailure(successful, body) }) {
+            SaveTribeCommand(jsonBody().toTribe())
+                .perform() to jsonBody()
+        }
 
-        if (successful)
-            request.jsonBody().sendTo(response)
-        else
-            response.sendStatus(400)
+    companion object {
+        private fun Response.returnErrorOnFailure(successful: Boolean, body: Json) {
+            if (successful)
+                sendSuccessful(body)
+            else
+                sendStatus(400)
+        }
     }
-
 }

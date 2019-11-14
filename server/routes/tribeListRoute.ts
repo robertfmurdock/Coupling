@@ -4,7 +4,7 @@ import {handleRequest} from "./route-helper";
 class TribeRoutes {
 
     public list = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performTribeListQuery(response)
+        (commandDispatcher, request, response) => commandDispatcher.performTribeListQuery(request, response)
     );
 
     public get = handleRequest(
