@@ -3,13 +3,10 @@ package com.zegreatrob.coupling.action
 import com.soywiz.klock.PerformanceCounter
 import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.microseconds
-import mu.KotlinLogging
 
 interface Action
 
-private val logger by lazy { KotlinLogging.logger("ActionLogger") }
-
-interface ActionLoggingSyntax {
+interface ActionLoggingSyntax : LoggingSyntax {
 
     fun <I : Action, O> I.log(block: (I) -> O) = logBlock { block(this) }
 
@@ -39,10 +36,10 @@ interface ActionLoggingSyntax {
     private fun logStart(className: String?) = logger.info { mapOf("action" to className, "type" to "Start") }
 
     private fun logEnd(className: String?, duration: TimeSpan) =
-            logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
+        logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
 
     private fun logException(exception: Exception, className: String?) =
-            logger.info(exception) { mapOf("action" to className, "type" to "End") }
+        logger.info(exception) { mapOf("action" to className, "type" to "End") }
 
 }
 

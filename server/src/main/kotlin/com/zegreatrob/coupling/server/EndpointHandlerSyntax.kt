@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.action.LoggingSyntax
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
-import kotlinx.coroutines.promise
-import kotlin.js.Promise
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-interface EndpointHandlerSyntax : ScopeSyntax {
+interface EndpointHandlerSyntax : ScopeSyntax, LoggingSyntax {
     fun <T> endpointHandler(responder: Response.(T) -> Unit, handler: suspend Request.() -> T): EndpointHandler =
         { request: Request, response: Response ->
             handleRequestAndRespond(request, response, handler, responder)
@@ -17,10 +18,15 @@ interface EndpointHandlerSyntax : ScopeSyntax {
         response: Response,
         handler: suspend Request.() -> T,
         responder: Response.(T) -> Unit
-    ) = scope.promise {
-        val result = request.handler()
-        response.responder(result)
+    ) = scope.launch {
+        runCatching {
+            val result = request.handler()
+            response.responder(result)
+        }.getOrElse { error ->
+            logger.error(error) { "EXCEPTION!" }
+            response.sendStatus(500)
+        }
     }
 }
 
-typealias EndpointHandler = (Request, Response) -> Promise<Unit>
+typealias EndpointHandler = (Request, Response) -> Job
