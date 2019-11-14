@@ -3573,10 +3573,10 @@ mongodb@^3.1.0, mongodb@^3.2.3:
     mongodb-core "3.2.7"
     safe-buffer "^5.1.2"
 
-mongodb@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.3.3.tgz#509cad2225a1c56c65a331ed73a0d5d4ed5cbe67"
-  integrity sha512-MdRnoOjstmnrKJsK8PY0PjP6fyF/SBS4R8coxmhsfEU7tQ46/J6j+aSHF2n4c2/H8B+Hc/Klbfp8vggZfI0mmA==
+mongodb@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.3.4.tgz#f52eec4a04005101e63715d4d1f67bf784fa0aef"
+  integrity sha512-6fmHu3FJTpeZxacJcfjUGIP3BSteG0l2cxLkSrf1nnnS1OrlnVGiP9P/wAC4aB6dM6H4vQ2io8YDjkuPkje7AA==
   dependencies:
     bson "^1.1.1"
     require_optional "^1.0.1"
@@ -4159,10 +4159,10 @@ pascalcase@^0.1.1:
   resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
   integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
-passport-azure-ad@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/passport-azure-ad/-/passport-azure-ad-4.1.0.tgz#ddcd1b52f3ddffdaf1dc2f1f656517fd69c41f5c"
-  integrity sha512-MFzC753ziIDLr3zE6W5zK/DbfdjGlqIuY942hP1B1EsfcaK3L62/g1l+G5F4fOcKLAToWo2U4zFo5fLOGnfATw==
+passport-azure-ad@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/passport-azure-ad/-/passport-azure-ad-4.2.0.tgz#19656321fd07186ebc079677b401f39565c159cf"
+  integrity sha512-KLJ6AJfTOAoVQ+CJ4OIePGiJ3W1vEmfxb+A0lRa/JJ6/C5ZTVT3goOB3UwFEj3JwyZxu0C6w3KcwMrq+xNFhWA==
   dependencies:
     async "^1.5.2"
     base64url "^3.0.0"
