@@ -1,8 +1,9 @@
+// @ts-ignore
+import * as server from "server";
 import * as express from "express";
-import historyRouter from "./historyRouter";
-import pinsRouter from "./pinRouter";
-import playerRouter from "./playerRouter";
 import spin from "./spin";
+
+const {historyRouter, pinRouter, playerRouter} = server.com.zegreatrob.coupling.server.route;
 
 let router = express.Router({mergeParams: true});
 
@@ -19,5 +20,5 @@ router.all('/*', async function (request, response, next) {
 router.post('/spin', spin);
 router.use('/history', historyRouter);
 router.use('/players', playerRouter);
-router.use('/pins', pinsRouter);
+router.use('/pins', pinRouter);
 export default router

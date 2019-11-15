@@ -2,10 +2,9 @@ package com.zegreatrob.coupling.server.route
 
 import com.zegreatrob.coupling.server.external.express.Router
 
-
 @Suppress("unused")
-@JsName("tribeRouter")
-val tribeRouter = Router(routerParams()).apply {
+@JsName("tribeListRouter")
+val tribeListRouter = Router(routerParams()).apply {
     route("/")
         .get(handleRequest { performTribeListQuery })
         .post(handleRequest { performSaveTribeCommand })
