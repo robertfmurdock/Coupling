@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.model.player.PlayerGetter
 import com.zegreatrob.coupling.model.player.PlayerSaver
 import com.zegreatrob.coupling.model.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDeleter
+import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGetter
+import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSaver
 
 interface RepositoryCatalog {
     val tribeRepository: SdkTribeRepository

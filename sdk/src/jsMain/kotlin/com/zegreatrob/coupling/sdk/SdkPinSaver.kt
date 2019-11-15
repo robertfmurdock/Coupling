@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 interface SdkPinSaver : PinSaver, AxiosSyntax {
     override suspend fun save(tribeIdPin: TribeIdPin) {
         val (tribeId, pin) = tribeIdPin
-        axios.postAsync<Unit>("/api/${tribeId.value}/pins/", pin.toJson())
+        axios.postAsync<Unit>("/api/tribes/${tribeId.value}/pins/", pin.toJson())
             .await()
     }
 }

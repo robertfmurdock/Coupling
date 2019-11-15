@@ -10,7 +10,7 @@ import kotlin.js.Json
 
 interface SdkPlayerGetDeleted : PlayerGetDeleted, AxiosSyntax {
     override suspend fun getDeleted(tribeId: TribeId): List<Player> =
-        axios.getList("/api/${tribeId.value}/players/retired")
+        axios.getList("/api/tribes/${tribeId.value}/players/retired")
             .then { it.map(Json::toPlayer) }
             .await()
 }

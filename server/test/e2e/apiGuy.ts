@@ -28,7 +28,7 @@ export default class ApiGuy {
     };
 
     async postPairAssignmentSet(tribeId, pairAssignmentSet) {
-        await agent.post('/api/' + tribeId + '/history')
+        await agent.post('/api/tribes/' + tribeId + '/history')
             .send(pairAssignmentSet)
             .expect(200);
         return this;

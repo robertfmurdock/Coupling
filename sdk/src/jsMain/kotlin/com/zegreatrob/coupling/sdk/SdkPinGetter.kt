@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.sdk.external.axios.getList
 import kotlinx.coroutines.await
 
 interface SdkPinGetter : PinGetter, AxiosSyntax {
-    override suspend fun getPins(tribeId: TribeId): List<Pin> = axios.getList("/api/${tribeId.value}/pins")
+    override suspend fun getPins(tribeId: TribeId): List<Pin> = axios.getList("/api/tribes/${tribeId.value}/pins")
         .then { it.toPins() }
         .await()
 }

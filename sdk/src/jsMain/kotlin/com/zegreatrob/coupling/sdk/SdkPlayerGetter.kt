@@ -10,7 +10,7 @@ import kotlin.js.Json
 
 interface SdkPlayerGetter : PlayerGetter, AxiosSyntax {
     override suspend fun getPlayers(tribeId: TribeId): List<Player> =
-        axios.getList("/api/${tribeId.value}/players")
+        axios.getList("/api/tribes/${tribeId.value}/players")
             .then { it.map(Json::toPlayer) }
             .await()
 }

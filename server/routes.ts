@@ -1,9 +1,10 @@
 import apiGuard from "./routes/api-guard";
 import * as passport from "passport";
 import * as routes from "./routes/index";
-import tribeRoute from "./routes/tribeRoute";
-import tribeListRoute from "./routes/tribeListRoute";
 import * as WebSocket from "ws";
+// @ts-ignore
+import * as server from "server";
+const {tribeListRouter} = server.com.zegreatrob.coupling.server.route;
 
 function toUserPlayerList(matchingConnections, players) {
     const uniqueEmails = [...new Set(matchingConnections.map(it => (it.user.email)))];
@@ -40,8 +41,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     const indexRoute = routes.index(expressEnv);
     app.get('/', indexRoute);
     app.all('/api/*', apiGuard(userDataService, couplingDataService));
-    app.use('/api/tribes', tribeListRoute);
-    app.use('/api/:tribeId', tribeRoute);
+    app.use('/api/tribes', tribeListRouter);
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 

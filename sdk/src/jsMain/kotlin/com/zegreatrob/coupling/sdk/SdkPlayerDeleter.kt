@@ -8,7 +8,7 @@ import kotlin.js.Promise
 interface SdkPlayerDeleter : PlayerDeleter, AxiosSyntax {
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean {
-        axios.delete("/api/${tribeId.value}/players/$playerId")
+        axios.delete("/api/tribes/${tribeId.value}/players/$playerId")
             .unsafeCast<Promise<Unit>>()
             .asDeferred()
             .await()
