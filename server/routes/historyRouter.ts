@@ -2,19 +2,9 @@ import * as express from "express";
 import {handleRequest} from "./route-helper";
 
 class HistoryRoutes {
-
-    list = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performPairAssignmentDocumentListQuery(request, response)
-    );
-
-    savePairs = handleRequest(
-        async (commandDispatcher, request, response) => commandDispatcher.performSavePairAssignmentDocumentCommand(request, response)
-    );
-
-    deleteMember = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeletePairAssignmentDocumentCommand(request, response)
-    );
-
+    list = handleRequest('performPairAssignmentDocumentListQuery');
+    savePairs = handleRequest('performSavePairAssignmentDocumentCommand');
+    deleteMember = handleRequest('performDeletePairAssignmentDocumentCommand');
 }
 
 const history = new HistoryRoutes();

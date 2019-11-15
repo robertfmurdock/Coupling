@@ -11,16 +11,6 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.plus
 
-class CommandDispatcher(override val user: User, jsRepository: dynamic, userCollection: dynamic, path: String) :
-    TribeDispatcherJs,
-    PlayerDispatcherJs,
-    PinDispatcherJs,
-    PairAssignmentDispatcherJs,
-    UserDispatcherJs,
-    RepositoryCatalog by MongoRepositoryCatalog(userCollection, jsRepository, user) {
-    override val scope = MainScope() + CoroutineName(path)
-}
-
 @Suppress("unused")
 @JsName("commandDispatcher")
 fun commandDispatcher(
@@ -32,4 +22,14 @@ fun commandDispatcher(
 ): Any {
     val user = User(userEmail, tribeIds.map(::TribeId).toSet())
     return CommandDispatcher(user, jsRepository, userCollection, path)
+}
+
+private class CommandDispatcher(override val user: User, jsRepository: dynamic, userCollection: dynamic, path: String) :
+    TribeDispatcherJs,
+    PlayerDispatcherJs,
+    PinDispatcherJs,
+    PairAssignmentDispatcherJs,
+    UserDispatcherJs,
+    RepositoryCatalog by MongoRepositoryCatalog(userCollection, jsRepository, user) {
+    override val scope = MainScope() + CoroutineName(path)
 }

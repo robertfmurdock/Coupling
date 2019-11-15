@@ -2,22 +2,10 @@ import * as express from "express";
 import {handleRequest} from "./route-helper";
 
 class TribeRoutes {
-
-    public list = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performTribeListQuery(request, response)
-    );
-
-    public get = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performTribeQuery(request, response)
-    );
-
-    public save = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performSaveTribeCommand(request, response)
-    );
-
-    public delete = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeleteTribeCommand(request, response)
-    );
+    public list = handleRequest('performTribeListQuery');
+    public get = handleRequest('performTribeQuery');
+    public save = handleRequest('performSaveTribeCommand');
+    public delete = handleRequest('performDeleteTribeCommand');
 }
 
 const tribes = new TribeRoutes();

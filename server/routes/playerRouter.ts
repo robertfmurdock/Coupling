@@ -2,23 +2,10 @@ import * as express from "express";
 import {handleRequest} from "./route-helper";
 
 class PlayerRoutes {
-
-    listPlayers = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performPlayersQuery(request, response)
-    );
-
-    listRetiredMembers = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performRetiredPlayersQuery(request, response)
-    );
-
-    savePlayer = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performSavePlayerCommand(request, response)
-    );
-
-    removePlayer = handleRequest(
-        (commandDispatcher, request, response) => commandDispatcher.performDeletePlayerCommand(request, response)
-    );
-
+    listPlayers = handleRequest('performPlayersQuery');
+    listRetiredMembers = handleRequest('performRetiredPlayersQuery');
+    savePlayer = handleRequest('performSavePlayerCommand');
+    removePlayer = handleRequest('performDeletePlayerCommand');
 }
 
 const players = new PlayerRoutes();
