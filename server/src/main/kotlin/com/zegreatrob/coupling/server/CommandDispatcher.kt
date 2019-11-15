@@ -24,7 +24,7 @@ fun commandDispatcher(
     return CommandDispatcher(user, jsRepository, userCollection, path)
 }
 
-private class CommandDispatcher(override val user: User, jsRepository: dynamic, userCollection: dynamic, path: String) :
+class CommandDispatcher(override val user: User, jsRepository: dynamic, userCollection: dynamic, path: String) :
     TribeDispatcherJs,
     PlayerDispatcherJs,
     PinDispatcherJs,

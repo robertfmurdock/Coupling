@@ -8,6 +8,7 @@ external interface Request {
     val method: String
     val originalUrl: String?
     val url: String
+    val commandDispatcher: dynamic
 }
 
 fun Request.jsonBody() = body.unsafeCast<Json>()
