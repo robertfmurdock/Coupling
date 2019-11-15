@@ -8,8 +8,6 @@ import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 
 interface DeletePinCommandDispatcherJs : DeletePinCommandDispatcher, RequestTribeIdSyntax, RequestPinIdSyntax,
     EndpointHandlerSyntax {
-
-    @JsName("performDeletePinCommand")
     val performDeletePinCommand
         get() = endpointHandler(sendDeleteResults("Pin")) {
             DeletePinCommand(tribeId(), pinId())

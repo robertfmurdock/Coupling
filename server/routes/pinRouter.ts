@@ -1,18 +1,5 @@
-"use strict";
-import * as express from 'express'
-import {handleRequest} from "./route-helper";
+// @ts-ignore
+import * as server from "server";
 
-class PinRoutes {
-    list = handleRequest('performPinsQuery');
-    savePin = handleRequest('performSavePinCommand');
-    removePin = handleRequest('performDeletePinCommand');
-}
-
-const pins = new PinRoutes();
-const router = express.Router({mergeParams: true});
-router.route('/')
-    .get(pins.list)
-    .post(pins.savePin);
-router.delete('/:pinId', pins.removePin);
-
-export default router
+const {pinRouter} = server.com.zegreatrob.coupling.server.route;
+export default pinRouter

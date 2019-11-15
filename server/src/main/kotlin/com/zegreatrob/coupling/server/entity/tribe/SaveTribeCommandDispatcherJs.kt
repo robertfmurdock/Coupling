@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.server.external.express.sendSuccessful
 import kotlin.js.Json
 
 interface SaveTribeCommandDispatcherJs : SaveTribeCommandDispatcher, EndpointHandlerSyntax {
-    @JsName("performSaveTribeCommand")
     val performSaveTribeCommand
         get() = endpointHandler({ (successful, body) -> returnErrorOnFailure(successful, body) }) {
             SaveTribeCommand(jsonBody().toTribe())

@@ -7,8 +7,6 @@ import com.zegreatrob.coupling.server.action.tribe.TribeQuery
 import com.zegreatrob.coupling.server.action.tribe.TribeQueryDispatcher
 
 interface TribeQueryDispatcherJs : TribeQueryDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax {
-
-    @JsName("performTribeQuery")
     val performTribeQuery
         get() = endpointHandler(sendQueryResults("tribe")) {
             TribeQuery(tribeId())

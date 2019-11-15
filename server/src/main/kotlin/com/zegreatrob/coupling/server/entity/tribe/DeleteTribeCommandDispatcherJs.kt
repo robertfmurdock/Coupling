@@ -6,8 +6,6 @@ import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.ResponseHelpers.sendDeleteResults
 
 interface DeleteTribeCommandDispatcherJs : DeleteTribeCommandDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax {
-
-    @JsName("performDeleteTribeCommand")
     val performDeleteTribeCommand
         get() = endpointHandler(sendDeleteResults("Tribe")) {
             DeleteTribeCommand(tribeId())

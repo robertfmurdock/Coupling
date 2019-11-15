@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.sendSuccessful
 
 interface TribeListQueryDispatcherJs : TribeListQueryDispatcher, EndpointHandlerSyntax {
-    @JsName("performTribeListQuery")
     val performTribeListQuery
         get() = endpointHandler(Response::sendSuccessful) {
             TribeListQuery

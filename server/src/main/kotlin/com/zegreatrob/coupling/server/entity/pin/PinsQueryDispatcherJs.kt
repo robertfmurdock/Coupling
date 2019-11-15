@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 
 interface PinsQueryDispatcherJs : PinsQueryDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax {
-    @JsName("performPinsQuery")
     val performPinsQuery
         get() = endpointHandler(sendQueryResults("pin")) {
             PinsQuery(tribeId())
