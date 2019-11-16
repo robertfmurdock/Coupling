@@ -10,7 +10,7 @@ plugins {
 
 kotlin {
     targets {
-        add(presets["js"].createTarget("js"))
+        js()
     }
 
     sourceSets {
