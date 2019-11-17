@@ -20,7 +20,8 @@ class SmolJsPlugin : Plugin<Project> {
         }
 
         target.tasks.run {
-            val unpackJsGradleDependencies = create("unpackJsGradleDependencies", UnpackGradleDependenciesTask::class.java)
+            val unpackJsGradleDependencies =
+                create("unpackJsGradleDependencies", UnpackGradleDependenciesTask::class.java)
 
             create("jasmine", NodeTask::class.java) {
                 it.dependsOn("yarn", unpackJsGradleDependencies)
@@ -40,22 +41,22 @@ class SmolJsPlugin : Plugin<Project> {
             val forEachJsTarget = forEachJsTarget(target)
 
             target.tasks.filterIsInstance(UnpackGradleDependenciesTask::class.java)
-                    .forEach { unpackTask ->
-                        forEachJsTarget.let { (main, test) ->
-                            unpackTask.customCompileConfiguration = main
-                            unpackTask.customTestCompileConfiguration = test
-                        }
+                .forEach { unpackTask ->
+                    forEachJsTarget.let { (main, test) ->
+                        unpackTask.customCompileConfiguration = main
+                        unpackTask.customTestCompileConfiguration = test
                     }
+                }
 
             val compileKotlinJsTasks = target.tasks.filterIsInstance(Kotlin2JsCompile::class.java)
 
             val kotlinCompileTestTask = compileKotlinJsTasks.find { it.name == "compileTestKotlinJs" }
-                    ?: compileKotlinJsTasks.find { it.name == "compileTestKotlin2Js" }
-                    ?: throw Exception("Could not find kotlin test task.")
+                ?: compileKotlinJsTasks.find { it.name == "compileTestKotlin2Js" }
+                ?: throw Exception("Could not find kotlin test task.")
 
             val processResources = target.tasks.filterIsInstance(ProcessResources::class.java)
             val jasmine = target.tasks.filterIsInstance(NodeTask::class.java).find { it.name == "jasmine" }
-                    ?: throw Exception("Could not find Jasmine test task.")
+                ?: throw Exception("Could not find Jasmine test task.")
             jasmine.run {
                 dependsOn(compileKotlinJsTasks)
                 dependsOn(processResources)
@@ -74,11 +75,11 @@ class SmolJsPlugin : Plugin<Project> {
             }
 
             val test = target.tasks.findByName("test")
-                    ?: target.tasks.create("test")
+                ?: target.tasks.create("test")
 
 
             val jsTest = target.tasks.findByName("jsTest")
-                    ?: target.tasks.create("jsTest")
+                ?: target.tasks.create("jsTest")
             jsTest.run {
                 dependsOn(jasmine)
                 test.dependsOn(this)
