@@ -8,7 +8,7 @@ plugins {
 kotlin {
     targets {
         jvm()
-        add(presets["js"].createTarget("js"))
+        js()
     }
 
     sourceSets {
@@ -17,14 +17,14 @@ kotlin {
                 implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging-common:1.7.6")
+                implementation("io.github.microutils:kotlin-logging-common:1.7.7")
                 implementation("com.soywiz:klock:1.1.1")
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging:1.7.6")
+                implementation("io.github.microutils:kotlin-logging:1.7.7")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
                 implementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
@@ -35,7 +35,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging-js:1.7.6")
+                implementation("io.github.microutils:kotlin-logging-js:1.7.7")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
         }

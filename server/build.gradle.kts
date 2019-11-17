@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     id("kotlin2js")
     id("com.github.node-gradle.node")
-    id("kotlinx-serialization") version "1.3.50"
+    id("kotlinx-serialization") version "1.3.60"
 }
 
 node {
@@ -25,7 +25,7 @@ dependencies {
     implementation(project("action"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2")
     implementation("com.soywiz:klock:1.1.1")
-    implementation("io.github.microutils:kotlin-logging-js:1.7.6")
+    implementation("io.github.microutils:kotlin-logging-js:1.7.7")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.13.0")
 
     testImplementation(kotlin("test-js"))

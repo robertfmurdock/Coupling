@@ -5,7 +5,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("com.github.node-gradle.node") apply false
-    id("com.bmuschko.docker-remote-api") version "5.3.0"
+    id("com.bmuschko.docker-remote-api") version "6.0.0"
     id("com.github.ben-manes.versions") version "0.27.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
 }
@@ -97,8 +97,7 @@ tasks {
     }
 
     val pullProductionImage by creating(DockerPullImage::class) {
-        repository.set("zegreatrob/coupling")
-        tag.set("latest")
+        image.set("zegreatrob/coupling:latest")
     }
 
     val buildProductionImage by creating(DockerBuildImage::class) {
@@ -106,13 +105,12 @@ tasks {
         inputDir.set(file("./"))
         dockerFile.set(file("Dockerfile.prod"))
         remove.set(false)
-        tags.add("zegreatrob/coupling")
+        images.add("zegreatrob/coupling:latest")
     }
 
     val pushProductionImage by creating(DockerPushImage::class) {
         mustRunAfter("buildProductionImage")
-        imageName.set("zegreatrob/coupling")
-        tag.set("latest")
+        images.add("zegreatrob/coupling:latest")
     }
 
     val serverYarn = getByPath(":server:yarn")
