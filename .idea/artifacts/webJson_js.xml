@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="webJson-js">
-    <output-path>$PROJECT_DIR$/webJson/build/libs</output-path>
-    <root id="archive" name="webJson-js.jar">
-      <element id="module-output" name="Coupling.webJson.jsMain" />
-    </root>
-  </artifact>
-</component>

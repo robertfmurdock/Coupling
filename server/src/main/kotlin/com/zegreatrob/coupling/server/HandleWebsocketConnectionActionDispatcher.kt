@@ -15,27 +15,35 @@ import com.zegreatrob.coupling.server.route.WebSocketServer
 import kotlinx.coroutines.launch
 import kotlin.js.json
 
-interface WebsocketHandlerJs : ScopeSyntax, UserIsAuthorizedWithDataActionDispatcher, RequestTribeIdSyntax,
-    LoggingSyntax {
+data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
 
-    fun thing(
-        websocket: WS,
-        request: Request,
-        wss: WebSocketServer
-    ) = scope.launch {
+interface HandleWebsocketConnectionActionDispatcher : ScopeSyntax, UserIsAuthorizedWithDataActionDispatcher,
+    RequestTribeIdSyntax, LoggingSyntax {
+
+    fun HandleWebsocketConnectionAction.perform() = scope.launch {
         val tribeId = request.tribeId()
-        val result = UserIsAuthorizedWithDataAction(tribeId).perform()
+        val result = tribeId.getAuthorizationData()
         if (result != null) {
-            websocket.tribeId = tribeId.value
-            websocket.user = request.user
-            websocket.on("close") { broadcastConnectionCountForTribe(tribeId, result.second, wss) }
-            websocket.on("error") { logger.error { it } }
-
-            broadcastConnectionCountForTribe(tribeId, result.second, wss)
+            registerConnection(tribeId, result)
         } else {
             websocket.close()
         }
     }
+
+    private fun HandleWebsocketConnectionAction.registerConnection(
+        tribeId: TribeId,
+        result: Pair<Any, List<Player>>
+    ) {
+        websocket.tribeId = tribeId.value
+        websocket.user = request.user
+        websocket.on("close") { broadcastConnectionCountForTribe(tribeId, result.second, wss) }
+        websocket.on("error") { logger.error { it } }
+
+        broadcastConnectionCountForTribe(tribeId, result.second, wss)
+    }
+
+    private suspend fun TribeId.getAuthorizationData(): Pair<Any, List<Player>>? = UserIsAuthorizedWithDataAction(this)
+        .perform()
 
     private fun broadcastConnectionCountForTribe(
         tribeId: TribeId,
@@ -57,9 +65,10 @@ interface WebsocketHandlerJs : ScopeSyntax, UserIsAuthorizedWithDataActionDispat
         )
     }
 
-    private fun toUserPlayerList(matchingConnection: List<WS>, players: List<Player>): List<Player> {
-        val uniqueEmails = matchingConnection.map { it.user.email.unsafeCast<String>() }.toSet()
-        return uniqueEmails.map { email ->
+    private fun toUserPlayerList(matchingConnection: List<WS>, players: List<Player>) = matchingConnection
+        .map { it.user.email.unsafeCast<String>() }
+        .toSet()
+        .map { email ->
             val existingPlayer = players.find { it.email == email }
 
             if (existingPlayer != null) {
@@ -69,7 +78,6 @@ interface WebsocketHandlerJs : ScopeSyntax, UserIsAuthorizedWithDataActionDispat
                 Player("-1", name = email.substring(0, atIndex), email = email)
             }
         }
-    }
 
     fun List<WS>.broadcast(content: String) = forEach { it.send(content) }
 

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="sdk-jvm">
+    <output-path>$PROJECT_DIR$/sdk/build/libs</output-path>
+    <root id="archive" name="sdk-jvm.jar">
+      <element id="module-output" name="Coupling.sdk.jvmMain" />
+    </root>
+  </artifact>
+</component>

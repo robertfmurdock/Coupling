@@ -1,14 +1,17 @@
 package com.zegreatrob.coupling.server.route
 
 import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.HandleWebsocketConnectionAction
 import com.zegreatrob.coupling.server.external.express.Request
 
 @Suppress("unused")
 @JsName("websocketRoute")
-val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) {
-    val commandDispatcher = request.commandDispatcher.unsafeCast<CommandDispatcher>()
-    commandDispatcher.thing(websocket, request, wss)
+val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) = with(request.commandDispatcher()) {
+    HandleWebsocketConnectionAction(websocket, request, wss)
+        .perform()
 }
+
+private fun Request.commandDispatcher() = commandDispatcher.unsafeCast<CommandDispatcher>()
 
 external interface WebSocketServer {
     val clients: JsSet
