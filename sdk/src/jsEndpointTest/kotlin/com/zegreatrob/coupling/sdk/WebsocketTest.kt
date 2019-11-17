@@ -18,9 +18,7 @@ import kotlin.test.Test
 fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(url, options)")
 
 external interface WS {
-
     fun on(event: String, callback: (String) -> Unit)
-
     fun close()
 }
 

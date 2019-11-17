@@ -30,6 +30,7 @@ class CommandDispatcher(override val user: User, jsRepository: dynamic, userColl
     PinDispatcherJs,
     PairAssignmentDispatcherJs,
     UserDispatcherJs,
+    WebsocketHandlerJs,
     RepositoryCatalog by MongoRepositoryCatalog(userCollection, jsRepository, user) {
     override val scope = MainScope() + CoroutineName(path)
 }

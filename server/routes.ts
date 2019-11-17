@@ -1,23 +1,10 @@
 import apiGuard from "./routes/api-guard";
 import * as passport from "passport";
 import * as routes from "./routes/index";
-import * as WebSocket from "ws";
 // @ts-ignore
 import * as server from "server";
-const {tribeListRouter} = server.com.zegreatrob.coupling.server.route;
 
-function toUserPlayerList(matchingConnections, players) {
-    const uniqueEmails = [...new Set(matchingConnections.map(it => (it.user.email)))];
-    return uniqueEmails.map((email: string) => {
-        const existingPlayer = players.find(it => it.email === email);
-        if (existingPlayer) {
-            return existingPlayer
-        } else {
-            const atIndex = email.indexOf('@');
-            return {_id: '-1', name: email.substring(0, atIndex), email: email};
-        }
-    });
-}
+const {tribeListRouter, websocketRoute} = server.com.zegreatrob.coupling.server.route;
 
 module.exports = function (wsInstance, userDataService, couplingDataService) {
     const app = wsInstance.app;
@@ -45,48 +32,9 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 
-    app.ws('/api/:tribeId/pairAssignments/current', async (connection, request) => {
-        console.log('Websocket connection count: ' + wsInstance.getWss().clients.size);
-
-        const result = await request.commandDispatcher.performUserIsAuthorizedWithDataAction(request.params.tribeId);
-        if (result != null) {
-            const tribeId = request.params.tribeId;
-            connection.tribeId = tribeId;
-            connection.user = request.user;
-            broadcastConnectionCountForTribe(tribeId, result.players);
-
-            connection.on('close', () => broadcastConnectionCountForTribe(tribeId, result.players));
-            connection.on('error', console.log);
-        } else {
-            connection.close();
-        }
+    app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
+        websocketRoute(connection, request, wsInstance.getWss())
     });
-
-    function broadcast(message: string, clients: WebSocket[]) {
-        clients.forEach((client: WebSocket) => client.send(message));
-    }
-
-    let connectionIsOpenAndForSameTribe = function (client, tribeId) {
-        return client.readyState === WebSocket.OPEN && client.tribeId === tribeId;
-    };
-
-    let broadcastConnectionCountForTribe = function (tribeId, players) {
-        const clients = wsInstance.getWss().clients;
-        const matchingConnections = [];
-        clients.forEach(client => {
-            if (connectionIsOpenAndForSameTribe(client, tribeId)) {
-                matchingConnections.push(client);
-            }
-        });
-
-        broadcast(JSON.stringify(
-            {
-                type: "LivePlayers",
-                text: 'Users viewing this page: ' + matchingConnections.length,
-                players: toUserPlayerList(matchingConnections, players)
-            }
-        ), matchingConnections);
-    };
 
     app.ws('*', (ws) => {
         ws.close();
