@@ -11,7 +11,7 @@ val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) 
         .perform()
 }
 
-private fun Request.commandDispatcher() = commandDispatcher.unsafeCast<CommandDispatcher>()
+fun Request.commandDispatcher() = commandDispatcher.unsafeCast<CommandDispatcher>()
 
 external interface WebSocketServer {
     val clients: JsSet

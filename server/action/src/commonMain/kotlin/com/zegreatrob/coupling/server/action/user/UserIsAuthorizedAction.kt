@@ -9,7 +9,7 @@ data class UserIsAuthorizedAction(val tribeId: TribeId)
 interface UserIsAuthorizedActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayersSyntax {
 
     suspend fun UserIsAuthorizedAction.perform(): Boolean = getUserPlayers()
-            .authenticatedTribeIds()
-            .contains(tribeId)
+        .authenticatedTribeIds()
+        .contains(tribeId)
 
 }
