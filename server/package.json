@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/es6-shim": "^0.31.39",
-    "@types/jasmine": "^3.4.6",
+    "@types/jasmine": "^3.5.0",
     "@types/jasminewd2": "^2.0.8",
     "@types/passport": "^1.0.2",
     "@types/ws": "6.0.3",
