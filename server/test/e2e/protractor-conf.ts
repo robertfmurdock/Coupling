@@ -13,7 +13,10 @@ export let config: Config = {
         'loggingPrefs': {
             'browser': 'WARNING'
         },
-        'seleniumAddress': process.env.SELENIUM_ADDRESS
+        'seleniumAddress': process.env.SELENIUM_ADDRESS,
+        'moz:firefoxOptions': {
+            binary: process.env.FIREFOX_BIN
+        }
     },
 
     specs: [__dirname + '/test.js'],
@@ -24,7 +27,6 @@ export let config: Config = {
         showColors: true,
         defaultTimeoutInterval: 10000
     },
-
     onPrepare: async function () {
         await browser.waitForAngularEnabled(false);
 
