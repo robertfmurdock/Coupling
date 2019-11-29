@@ -23,7 +23,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2-1.3.60")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.2-1.3.60")
                 implementation("com.soywiz:klock:1.1.1")
-                implementation("io.github.microutils:kotlin-logging-common:1.7.7")
+                implementation("io.github.microutils:kotlin-logging-common:1.7.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.13.0")
             }
         }
@@ -41,7 +41,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("io.github.microutils:kotlin-logging:1.7.7")
+                implementation("io.github.microutils:kotlin-logging:1.7.8")
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.10.1")
             }
         }
@@ -62,7 +62,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2-1.3.60")
-                implementation("io.github.microutils:kotlin-logging-js:1.7.7")
+                implementation("io.github.microutils:kotlin-logging-js:1.7.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.13.0")
             }
         }
