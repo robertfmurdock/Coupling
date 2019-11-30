@@ -34,7 +34,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2-1.3.60")
     implementation("com.soywiz:klock:1.1.1")
     implementation("io.github.microutils:kotlin-logging-js:1.7.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.13.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.14.0-1.3.60-eap-76")
 
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-logging"))
