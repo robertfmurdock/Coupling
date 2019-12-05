@@ -15,7 +15,6 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url = uri("https://dl.bintray.com/robertfmurdock/zegreatrob") }
-        maven { url = uri("https://dl.bintray.com/soywiz/soywiz") }
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("http://dl.bintray.com/kotlin/kotlin-js-wrappers") }
     }

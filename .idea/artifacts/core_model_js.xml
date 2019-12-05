@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="core-model-js">
-    <output-path>$PROJECT_DIR$/core-model/build/libs</output-path>
-    <root id="archive" name="core-model-js.jar">
-      <element id="module-output" name="Coupling.core-model.jsMain" />
-    </root>
-  </artifact>
-</component>

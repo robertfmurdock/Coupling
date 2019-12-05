@@ -21,7 +21,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2-1.3.60")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.2-1.3.60")
-                implementation("com.soywiz:klock:1.1.1")
+                implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
         getByName("commonTest") {

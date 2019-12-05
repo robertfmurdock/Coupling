@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.mongo.pairassignments
 
-import com.soywiz.klock.internal.toDate
-import com.soywiz.klock.internal.toDateTime
+import com.soywiz.klock.js.toDate
+import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId

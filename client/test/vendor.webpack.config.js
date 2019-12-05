@@ -26,7 +26,7 @@ const config = {
       "kotlin-react",
       "kotlin-react-dom",
       "kotlin-react-router-dom",
-      "klock",
+      "klock-root-klock",
       "logging",
       "kotlin-css-js",
       "kotlinx-html-js",

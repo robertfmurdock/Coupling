@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo
 
-import com.soywiz.klock.internal.toDateTime
+import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.await
 import kotlin.js.*

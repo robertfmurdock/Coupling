@@ -18,7 +18,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.8")
-                implementation("com.soywiz:klock:1.1.1")
+                implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
 

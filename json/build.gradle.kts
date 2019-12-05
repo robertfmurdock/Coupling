@@ -20,7 +20,7 @@ kotlin {
                 implementation(project(":model"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("com.soywiz:klock:1.1.1")
+                implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
         getByName("commonTest") {

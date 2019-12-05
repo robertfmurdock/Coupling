@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.internal.toDate
-import com.soywiz.klock.internal.toDateTime
+import com.soywiz.klock.js.toDate
+import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair

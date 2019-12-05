@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.mongo
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.internal.toDateTime
+import com.soywiz.klock.js.toDateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
