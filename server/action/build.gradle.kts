@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("com.github.node-gradle.node")
 }
 
 kotlin {

@@ -4,8 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("com.github.node-gradle.node")
-//    id("smol-js")
 }
 
 kotlin {
@@ -76,9 +74,4 @@ tasks {
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
-
-//    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-//        dependsOn(":test-logging:assemble", ":model:assemble")
-//    }
-
 }
