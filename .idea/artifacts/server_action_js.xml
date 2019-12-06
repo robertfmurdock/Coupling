@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="server_action-js">
+    <output-path>$PROJECT_DIR$/server/server_action/build/libs</output-path>
+    <root id="archive" name="server_action-js.jar" />
+  </artifact>
+</component>

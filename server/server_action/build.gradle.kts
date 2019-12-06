@@ -48,13 +48,11 @@ kotlin {
 
 tasks {
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.outputFile = File(destinationDir, "server-action.js").path
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
     val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.outputFile = File(destinationDir, "server-action-test.js").path
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"

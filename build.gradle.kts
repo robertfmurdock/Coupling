@@ -51,7 +51,7 @@ tasks {
         into("build/test-output/endpoint")
     })
 
-    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":server:action:jsTest")) {
+    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":server:server_action:jsTest")) {
         from("engine/build/test-results/jsTest")
         into("build/test-output/engine")
     })
