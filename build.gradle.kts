@@ -106,13 +106,6 @@ tasks {
         dependsOn(":server:test", ":client:test")
     }
 
-    val clean by getting {
-        doLast {
-            delete(file("build"))
-            delete(file("test-output"))
-        }
-    }
-
     val check by getting {
         dependsOn(test, ":sdk:endpointTest", ":server:endToEndTest")
     }
