@@ -23,25 +23,25 @@ class JasmineJsonLoggingReporter {
     @Suppress("unused")
     @JsName("specDone")
     fun specDone(result: dynamic) = endTest(
-            result.fullName.unsafeCast<String>(),
-            result.status.unsafeCast<String>(),
-            result.failedExpectations.unsafeCast<Array<dynamic>>()
+        result.fullName.unsafeCast<String>(),
+        result.status.unsafeCast<String>(),
+        result.failedExpectations.unsafeCast<Array<dynamic>>()
     )
 
     private fun startTest(testName: String) = logger.info { mapOf("type" to "TestStart", "test" to testName) }
-            .also { lastStart = DateTime.now() }
+        .also { lastStart = DateTime.now() }
 
     private fun endTest(testName: String, status: String, failed: Array<dynamic>) {
         val duration = lastStart?.let { DateTime.now() - it }
         logger.info {
             mapOf(
-                    "type" to "TestEnd",
-                    "test" to testName,
-                    "status" to status,
-                    "duration" to "$duration",
-                    "failures" to failed.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
+                "type" to "TestEnd",
+                "test" to testName,
+                "status" to status,
+                "duration" to "$duration",
+                "failures" to failed.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
             )
         }
-                .also { lastStart = null }
+            .also { lastStart = null }
     }
 }
