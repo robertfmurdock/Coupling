@@ -1,18 +1,16 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("kotlinx-serialization") version "1.3.61"
-    id("smol-js")
 }
 
 kotlin {
 
     targets {
+        js { nodejs() }
         jvm()
-        js()
     }
 
     sourceSets {
@@ -90,14 +88,14 @@ tasks {
         kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
-    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":json:assemble")
-        dependsOn(":test-logging:assemble")
-    }
+//    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
+//        dependsOn(":json:assemble")
+//        dependsOn(":test-logging:assemble")
+//    }
 
     val jvmTest by getting(Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
-        
+
         useJUnitPlatform()
     }
 

@@ -29,12 +29,7 @@ docker {
 }
 
 tasks {
-    val clean by creating {
-        doLast {
-            delete(file("build"))
-            delete(file("test-output"))
-        }
-    }
+
 
     val copyClientTestResults by creating(Copy::class, copyForTask(findByPath(":client:test")) {
         from("client/build/test-results")
@@ -83,17 +78,6 @@ tasks {
         )
     }
 
-    val test by creating {
-        dependsOn(":server:test", ":client:test")
-    }
-
-    val check by creating {
-        dependsOn(test, ":sdk:endpointTest", ":server:endToEndTest")
-    }
-
-    val build by creating {
-        dependsOn(test, ":client:compile", ":server:build")
-    }
 
     val pullProductionImage by creating(DockerPullImage::class) {
         image.set("zegreatrob/coupling:latest")
@@ -115,18 +99,31 @@ tasks {
     val serverYarn = getByPath(":server:yarn")
     val clientYarn = getByPath(":client:yarn")
     serverYarn.mustRunAfter(clientYarn)
-    val commonYarn = getByPath(":action:yarn")
-    commonYarn.mustRunAfter(serverYarn)
-    val coreYarn = getByPath(":model:yarn")
-    coreYarn.mustRunAfter(commonYarn)
     val engineYarn = getByPath(":server:action:yarn")
-    engineYarn.mustRunAfter(coreYarn)
-    val coreJsonYarn = getByPath(":json:yarn")
-    coreJsonYarn.mustRunAfter(engineYarn)
+    engineYarn.mustRunAfter(serverYarn)
     val coreMongoYarn = getByPath(":mongo:yarn")
-    coreMongoYarn.mustRunAfter(coreJsonYarn)
+    coreMongoYarn.mustRunAfter(engineYarn)
     val sdkYarn = getByPath(":sdk:yarn")
     sdkYarn.mustRunAfter(coreMongoYarn)
+
+    val test by creating {
+        dependsOn(":server:test", ":client:test")
+    }
+
+    val clean by getting {
+        doLast {
+            delete(file("build"))
+            delete(file("test-output"))
+        }
+    }
+
+    val check by getting {
+        dependsOn(test, ":sdk:endpointTest", ":server:endToEndTest")
+    }
+
+    val build by getting {
+        dependsOn(test, ":client:compile", ":server:build")
+    }
 }
 
 fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {

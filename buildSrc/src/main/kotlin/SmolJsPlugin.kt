@@ -85,6 +85,5 @@ class SmolJsPlugin : Plugin<Project> {
                 test.dependsOn(this)
             }
         }
-
     }
 }

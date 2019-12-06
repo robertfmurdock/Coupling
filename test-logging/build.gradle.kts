@@ -8,7 +8,7 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js()
+        js { nodejs() }
     }
 
     sourceSets {
