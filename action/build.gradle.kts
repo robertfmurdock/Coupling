@@ -88,11 +88,6 @@ tasks {
         kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
-//    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-//        dependsOn(":json:assemble")
-//        dependsOn(":test-logging:assemble")
-//    }
-
     val jvmTest by getting(Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
 

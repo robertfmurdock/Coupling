@@ -8,6 +8,8 @@ const config = {
   mode: process.env.NODE_ENV,
   entry: {
     vendor: [
+      "Coupling-action",
+      "Coupling-logging",
       "axios",
       "blueimp-md5",
       "fitty",
@@ -20,14 +22,12 @@ const config = {
       "react-dnd",
       "react-dnd-html5-backend",
       "font-awesome/css/font-awesome.css",
-      "action",
       "kotlin",
       "kotlin-styled",
       "kotlin-react",
       "kotlin-react-dom",
       "kotlin-react-router-dom",
       "klock-root-klock",
-      "logging",
       "kotlin-css-js",
       "kotlinx-html-js",
       "kotlinx-serialization-kotlinx-serialization-runtime",

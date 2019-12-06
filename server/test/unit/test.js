@@ -1,5 +1,5 @@
 // noinspection NpmUsedModulesInstalled
-const logging = require('logging');
+const logging = require('Coupling-logging');
 // noinspection JSUnresolvedVariable, JSUnresolvedFunction
 logging.com.zegreatrob.coupling.logging.initializeJasmineLogging(false);
 

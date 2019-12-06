@@ -2,7 +2,7 @@ let Jasmine = require('jasmine');
 let reporters = require('jasmine-reporters');
 const fs = require('fs-extra');
 // noinspection NpmUsedModulesInstalled
-const testLogging = require('test-logging');
+const testLogging = require('Coupling-test-logging');
 
 function startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix) {
   console.log('Starting tests:');

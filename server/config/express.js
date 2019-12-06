@@ -1,5 +1,5 @@
 "use strict";
-const logging = require("logging");
+const logging = require("Coupling-logging");
 const server = require("server");
 const compression = require('compression');
 const path = require('path');

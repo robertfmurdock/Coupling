@@ -1,16 +1,15 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.github.node-gradle.node")
-    id("smol-js")
 }
 
 kotlin {
     targets {
-        js()
+        js { nodejs() }
     }
 
     sourceSets {
@@ -60,10 +59,6 @@ tasks {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
-    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":action:assemble")
     }
 
 }

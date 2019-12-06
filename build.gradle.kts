@@ -101,10 +101,8 @@ tasks {
     serverYarn.mustRunAfter(clientYarn)
     val engineYarn = getByPath(":server:action:yarn")
     engineYarn.mustRunAfter(serverYarn)
-    val coreMongoYarn = getByPath(":mongo:yarn")
-    coreMongoYarn.mustRunAfter(engineYarn)
     val sdkYarn = getByPath(":sdk:yarn")
-    sdkYarn.mustRunAfter(coreMongoYarn)
+    sdkYarn.mustRunAfter(engineYarn)
 
     val test by creating {
         dependsOn(":server:test", ":client:test")

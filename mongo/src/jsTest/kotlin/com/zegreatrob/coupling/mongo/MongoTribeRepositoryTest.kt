@@ -11,25 +11,38 @@ import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.random.Random
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 
 class MongoTribeRepositoryTest {
 
-    companion object : MongoTribeRepository, MonkToolkit {
-        override val userEmail: String = "user-${Random.nextInt(200)}"
-        override val jsRepository: dynamic = jsRepository(mongoUrl)
-        private val tribeCollection by lazy<dynamic> { getCollection("tribes", mongoUrl) }
+    lateinit var repository: MongoTribeRepository
+    lateinit var toolkit: MonkToolkit
+    private var tribeCollection: dynamic = null
+    private var db: dynamic = null
 
-        suspend fun dropPlayers() {
-            tribeCollection.drop().unsafeCast<Promise<Unit>>().await()
+    @BeforeTest
+    fun setup() {
+        val thing = object : MongoTribeRepository, MonkToolkit {
+            val db = getDb(mongoUrl)
+            override val userEmail: String = "user-${Random.nextInt(200)}"
+            override val jsRepository: dynamic = jsRepository(db)
         }
+        db = thing.db
+        repository = thing
+        toolkit = thing
+        tribeCollection = with(thing) { getCollection("tribes", db) }
+    }
+
+    private suspend fun dropPlayers() {
+        tribeCollection.drop().unsafeCast<Promise<Unit>>().await()
     }
 
     @Test
     fun canSaveAndLoadTribe() = testAsync {
-        setupAsync(object {
+        setupAsync(object : MongoTribeRepository by repository, MonkToolkit by toolkit {
             val tribe = KtTribe(
                 id = TribeId(id()),
                 pairingRule = PairingRule.PreferDifferentBadge,
@@ -45,11 +58,12 @@ class MongoTribeRepositoryTest {
         } verifyAsync { result ->
             result.assertIsEqualTo(tribe)
         }
+        db.close()
     }
 
     @Test
     fun canLoadTribeFromOldSchema() = testAsync {
-        setupAsync(object {
+        setupAsync(object : MongoTribeRepository by repository, MonkToolkit by toolkit {
             val expectedTribe = KtTribe(
                 id = TribeId("safety"),
                 pairingRule = PairingRule.LongestTime,
@@ -58,24 +72,27 @@ class MongoTribeRepositoryTest {
                 name = "Safety Dance"
             )
         }) {
-            tribeCollection.insert(json(
+            tribeCollection.insert(
+                json(
                     "pairingRule" to 1,
                     "defaultBadgeName" to "Default",
                     "alternateBadgeName" to "Alternate",
                     "name" to "Safety Dance",
                     "id" to "safety"
-            )).unsafeCast<Promise<Unit>>().await()
+                )
+            ).unsafeCast<Promise<Unit>>().await()
             Unit
         } exerciseAsync {
             getTribe(expectedTribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(expectedTribe)
         }
+        db.close()
     }
 
     @Test
     fun willLoadAllTribes() = testAsync {
-        setupAsync(object {
+        setupAsync(object : MongoTribeRepository by repository, MonkToolkit by toolkit {
             val tribes = listOf(
                 KtTribe(
                     id = TribeId(id()),
@@ -101,5 +118,6 @@ class MongoTribeRepositoryTest {
         } verifyAsync { result ->
             result.assertIsEqualTo(tribes)
         }
+        db.close()
     }
 }
