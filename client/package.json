@@ -7,7 +7,7 @@
     "test": "test"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
+    "@babel/core": "^7.7.5",
     "@babel/preset-react": "^7.7.4",
     "@types/blueimp-md5": "^2.7.0",
     "@types/d3": "^5.7.2",
