@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 import java.io.FileOutputStream
 
 plugins {
-    id("kotlin2js")
+    kotlin("js")
     id("kotlin-dce-js")
     id("com.github.node-gradle.node")
 }
@@ -17,6 +17,22 @@ node {
     npmVersion = BuildConstants.npmVersion
     yarnVersion = BuildConstants.yarnVersion
     download = true
+}
+
+kotlin {
+    target {
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
+    }
+
+    sourceSets {
+        val main by getting {
+            resources.srcDir("src/main/javascript")
+        }
+    }
 }
 
 dependencies {
@@ -45,11 +61,6 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:minassert:+")
 }
 
-sourceSets {
-    val main by getting {
-        resources { srcDir("src/main/javascript") }
-    }
-}
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
@@ -60,19 +71,19 @@ tasks {
         }
     }
 
-    val compileKotlin2Js by getting(Kotlin2JsCompile::class) {
+    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
-    val compileTestKotlin2Js by getting(Kotlin2JsCompile::class) {
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        inputs.files(compileKotlin2Js.inputs.files)
+        inputs.files(compileKotlinJs.inputs.files)
         dependsOn(
             ":model:assemble",
             ":json:assemble",
@@ -87,20 +98,20 @@ tasks {
         }
     }
 
-    val runDceKotlinJs by getting(KotlinJsDce::class) {
+    val runDceKotlin by getting(KotlinJsDce::class) {
     }
 
-    val runDceTestKotlinJs by getting(KotlinJsDce::class) {
+    val runDceTestKotlin by getting(KotlinJsDce::class) {
         keep(
             "client_test.setLogLevel"
         )
     }
 
     val vendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlinJs, unpackJsGradleDependencies)
+        dependsOn(yarn, runDceKotlin, unpackJsGradleDependencies)
         mustRunAfter("clean")
 
-        inputs.files(runDceKotlinJs.outputs)
+        inputs.files(runDceKotlin.outputs)
         inputs.files("node_modules")
         inputs.file(file("package.json"))
         inputs.files("build/node_modules_imported")
@@ -111,10 +122,10 @@ tasks {
     }
 
     val testVendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlinJs, unpackJsGradleDependencies)
+        dependsOn(yarn, runDceKotlin, unpackJsGradleDependencies)
         mustRunAfter("clean")
 
-        inputs.files(runDceKotlinJs.outputs)
+        inputs.files(runDceKotlin.outputs)
         inputs.files("node_modules")
         inputs.file(file("package.json"))
         inputs.files("build/node_modules_imported")
@@ -125,14 +136,14 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn(yarn, vendorCompile, runDceKotlinJs, processResources)
+        dependsOn(yarn, vendorCompile, runDceKotlin, processResources)
         inputs.dir("node_modules").skipWhenEmpty()
         inputs.file(file("package.json"))
-        inputs.files(runDceKotlinJs.outputs)
+        inputs.files(runDceKotlin.outputs)
         inputs.file(file("webpack.config.js"))
         inputs.file(file("tsconfig.json"))
         inputs.files("build/lib/vendor")
-        inputs.files("build/resources")
+        inputs.files("build/processedResources")
         outputs.dir("build/lib/main")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("webpack", "--config", "webpack.config.js")
@@ -144,8 +155,8 @@ tasks {
             vendorCompile,
             testVendorCompile,
             ":action:jsTest",
-            compileTestKotlin2Js,
-            runDceTestKotlinJs,
+            compileTestKotlinJs,
+            runDceTestKotlin,
             unpackJsGradleDependencies
         )
         inputs.file(file("package.json"))
@@ -163,9 +174,9 @@ tasks {
         args = listOf("run", "ncu", "-u")
     }
 
-    val test by getting {
-        dependsOn(karma)
-    }
+//    val test by getting {
+//        dependsOn(karma)
+//    }
 
     task<YarnTask>("testWatch") {
         args = listOf("run", "testWatch")
@@ -197,7 +208,7 @@ tasks {
     }
 
     task<YarnTask>("vendorStats") {
-        dependsOn(yarn, runDceKotlinJs)
+        dependsOn(yarn, runDceKotlin)
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 

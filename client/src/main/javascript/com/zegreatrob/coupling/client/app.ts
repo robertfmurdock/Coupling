@@ -3,4 +3,4 @@ import "./style.scss";
 import "./animations.scss";
 
 // @ts-ignore
-import 'client'
+import 'Coupling-client'

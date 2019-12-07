@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const jsPath = path.resolve(__dirname, './build/resources/main');
+const jsPath = path.resolve(__dirname, './build/processedResources/Js/main');
 
 const config = {
   entry: path.resolve(jsPath, './com/zegreatrob/coupling/client/app.ts'),

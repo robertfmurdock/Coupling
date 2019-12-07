@@ -12,6 +12,12 @@ plugins {
 kotlin {
 
     js {
+        nodejs {
+            testTask {
+                enabled = false
+            }
+        }
+
         compilations {
             val endpointTest by compilations.creating
         }
