@@ -65,6 +65,11 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
+
+    val browserWebpack by getting {
+        enabled = false
+    }
+
     val clean by getting {
         doLast {
             delete(file("build"))
