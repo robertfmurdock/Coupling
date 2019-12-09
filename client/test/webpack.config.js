@@ -9,7 +9,7 @@ webpackConfig.externals.jquery = 'jQuery';
 function testResolve() {
   let resolve = clone(webpackConfig.resolve);
   resolve.modules = [
-    path.resolve(__dirname, '../build/node_modules_imported'),
+    path.resolve(__dirname, '../../build/js/node_modules'),
     path.resolve(__dirname, '../build/classes/kotlin/main'),
     path.resolve(__dirname, '../build/processedResources/Js/main'),
     path.resolve(__dirname, '../build/classes/kotlin/test'),

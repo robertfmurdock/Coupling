@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("kotlin2js")
+    kotlin("js")
     id("com.github.node-gradle.node")
     id("kotlinx-serialization") version "1.3.61"
 }
@@ -20,6 +20,11 @@ node {
 
 kotlin {
     target {
+        nodejs {
+            testTask {
+                enabled = false
+            }
+        }
         compilations {
             val endToEndTest by compilations.creating
         }
@@ -55,13 +60,13 @@ tasks {
         }
     }
 
-    val compileKotlin2Js by getting(Kotlin2JsCompile::class) {
+    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
-    val compileTestKotlin2Js by getting(Kotlin2JsCompile::class) {
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
@@ -88,7 +93,7 @@ tasks {
     }
 
     val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        inputs.files(compileKotlin2Js.inputs.files)
+        inputs.files(compileKotlinJs.inputs.files)
         dependsOn(":server:server_action:assemble", ":json:assemble", ":test-logging:assemble")
 
         forEachJsTarget(project).let { (main, test) ->
@@ -98,10 +103,9 @@ tasks {
     }
 
     val serverCompile by creating(YarnTask::class) {
-        dependsOn(yarn, copyServerResources, unpackJsGradleDependencies, compileKotlin2Js)
+        dependsOn(yarn, copyServerResources, unpackJsGradleDependencies, compileKotlinJs)
         mustRunAfter(clean)
-        inputs.dir("build/classes")
-        inputs.dir("build/node_modules_imported")
+        inputs.file(compileKotlinJs.outputFile)
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("tsconfig.json"))
@@ -126,17 +130,18 @@ tasks {
         dependsOn(
             yarn,
             unpackJsGradleDependencies,
-            compileKotlin2Js,
-            compileTestKotlin2Js,
+            compileKotlinJs,
+            compileTestKotlinJs,
             copyClient
         )
         inputs.file(file("package.json"))
         inputs.files(serverCompile.inputs.files)
+        inputs.files(serverCompile.outputs.files)
         inputs.dir("test/unit")
         outputs.dir("build/test-results/server.unit")
 
-        setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
-        args = listOf("run", "serverTest", "--silent")
+        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules"))
+        args = listOf("run", "serverTest")
     }
 
     val updateWebdriver by creating(YarnTask::class) {
@@ -157,7 +162,7 @@ tasks {
         inputs.dir("test/e2e")
         outputs.dir("../test-output/e2e")
 
-        setEnvironment(mapOf("NODE_PATH" to "build/node_modules_imported"))
+        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules"))
         args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 

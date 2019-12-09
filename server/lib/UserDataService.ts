@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as server from "server";
+import * as server from "Coupling-server";
 
 const authActionDispatcher = server.com.zegreatrob.coupling.server.authActionDispatcher;
 

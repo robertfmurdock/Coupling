@@ -1,6 +1,6 @@
 "use strict";
 const logging = require("Coupling-logging");
-const server = require("server");
+const server = require("Coupling-server");
 const compression = require('compression');
 const path = require('path');
 const favicon = require('serve-favicon');

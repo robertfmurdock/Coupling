@@ -179,9 +179,9 @@ tasks {
         args = listOf("run", "ncu", "-u")
     }
 
-//    val test by getting {
-//        dependsOn(karma)
-//    }
+    val test by getting {
+        dependsOn(karma)
+    }
 
     task<YarnTask>("testWatch") {
         args = listOf("run", "testWatch")

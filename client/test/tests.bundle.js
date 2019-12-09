@@ -1,4 +1,4 @@
-const clientTest = require('client_test');
+const clientTest = require('Coupling-client-test');
 
 clientTest.setLogLevel();
 

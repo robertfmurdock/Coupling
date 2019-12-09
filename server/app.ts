@@ -5,7 +5,7 @@ import * as express from "express";
 import * as expressWs from "express-ws";
 
 const config = require('./config/config');
-const serverKt = require("server");
+const serverKt = require("Coupling-server");
 
 export function start() {
     const wsInstance = expressWs(express());

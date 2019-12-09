@@ -2,7 +2,7 @@ import apiGuard from "./routes/api-guard";
 import * as passport from "passport";
 import * as routes from "./routes/index";
 // @ts-ignore
-import * as server from "server";
+import * as server from "Coupling-server";
 
 const {tribeListRouter, websocketRoute} = server.com.zegreatrob.coupling.server.route;
 

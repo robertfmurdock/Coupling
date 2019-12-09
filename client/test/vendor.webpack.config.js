@@ -66,7 +66,7 @@ const config = {
   },
   resolve: {
     modules: [
-      path.resolve(__dirname, '../build/node_modules_imported'),
+      path.resolve(__dirname, '../../build/js/node_modules'),
       path.resolve(__dirname, '../node_modules')
     ]
   },

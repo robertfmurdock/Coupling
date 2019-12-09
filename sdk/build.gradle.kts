@@ -59,6 +59,7 @@ kotlin {
         val jsEndpointTest by getting {
             dependsOn(jsMain)
             dependencies {
+                implementation(project(":server"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
@@ -126,8 +127,7 @@ tasks {
 
             val relevantPaths = listOf(
                 "node_modules",
-                "build/node_modules_imported",
-                "../server/build/node_modules_imported"
+                "../build/js/node_modules"
             ) + compileKotlinJsTasks.map { it.outputFile.parent } + processResources.map { it.destinationDir.path }
 
             inputs.files(compileEndpointTestKotlinJs.outputFile)

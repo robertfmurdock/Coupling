@@ -1,6 +1,6 @@
 import CouplingDataService from "../lib/CouplingDataService";
 // @ts-ignore
-import * as server from "server";
+import * as server from "Coupling-server";
 
 const commandDispatcher = server.com.zegreatrob.coupling.server.commandDispatcher;
 
