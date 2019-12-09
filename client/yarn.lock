@@ -578,10 +578,18 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
-"@types/react@*", "@types/react@^16.9.15":
+"@types/react@*":
   version "16.9.15"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.15.tgz#aeabb7a50f96c9e31a16079ada20ede9ed602977"
   integrity sha512-WsmM1b6xQn1tG3X2Hx4F3bZwc2E82pJXt5OPs2YJgg71IzvUoKOSSSYOvLXYCg1ttipM+UuA4Lj3sfvqjVxyZw==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.9.16":
+  version "16.9.16"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.16.tgz#4f12515707148b1f53a8eaa4341dae5dfefb066d"
+  integrity sha512-dQ3wlehuBbYlfvRXfF5G+5TbZF3xqgkikK7DWAsQXe2KnzV+kjD4W2ea+ThCrKASZn9h98bjjPzoTYzfRqyBkw==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -2425,10 +2433,10 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.10.tgz#8a5b8391f8cc7013da703411ce5b585706300d7f"
   integrity sha512-I39t74+4t+zau64EN1fE5v2W31Adtc/REhzWN+gWRRXg6WH5qAsZm62DHpQ1+Yhe4047T55jvzz7MUqF/dBBlA==
 
-core-js@^3.4.7:
-  version "3.4.7"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.7.tgz#57c35937da80fe494fbc3adcf9cf3dc00eb86b34"
-  integrity sha512-qaPVGw30J1wQ0GR3GvoPqlGf9GZfKKF4kFC7kiHlcsPTqH3txrs9crCp3ZiMAXuSenhz89Jnl4GZs/67S5VOSg==
+core-js@^3.4.8:
+  version "3.4.8"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.8.tgz#e0fc0c61f2ef90cbc10c531dbffaa46dfb7152dd"
+  integrity sha512-b+BBmCZmVgho8KnBUOXpvlqEMguko+0P+kXCwD4vIprsXC6ht1qgPxtb1OK6XgSlrySF71wkwBQ0Hv695bk9gQ==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
