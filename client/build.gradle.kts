@@ -1,7 +1,6 @@
+
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
-import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 import java.io.FileOutputStream
@@ -87,22 +86,6 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
-    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        inputs.files(compileKotlinJs.inputs.files)
-        dependsOn(
-            ":model:assemble",
-            ":json:assemble",
-            ":action:assemble",
-            ":logging:assemble",
-            ":test-logging:assemble"
-        )
-
-        forEachJsTarget(project).let { (main, test) ->
-            customCompileConfiguration = main
-            customTestCompileConfiguration = test
-        }
-    }
-
     val runDceKotlin by getting(KotlinJsDce::class) {
     }
 
@@ -113,13 +96,13 @@ tasks {
     }
 
     val vendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlin, unpackJsGradleDependencies)
+        dependsOn(yarn, runDceKotlin, compileKotlinJs)
         mustRunAfter("clean")
 
         inputs.files(runDceKotlin.outputs)
         inputs.files("node_modules")
         inputs.file(file("package.json"))
-        inputs.files("build/node_modules_imported")
+        inputs.files("${rootProject.buildDir.path}/js/node_modules")
         inputs.file(file("vendor.webpack.config.js"))
         outputs.dir("build/lib/vendor")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
@@ -127,13 +110,13 @@ tasks {
     }
 
     val testVendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlin, unpackJsGradleDependencies)
+        dependsOn(yarn, runDceKotlin, compileKotlinJs, compileTestKotlinJs)
         mustRunAfter("clean")
 
         inputs.files(runDceKotlin.outputs)
         inputs.files("node_modules")
         inputs.file(file("package.json"))
-        inputs.files("build/node_modules_imported")
+        inputs.files("${rootProject.buildDir.path}/js/node_modules")
         inputs.file(file("test/vendor.webpack.config.js"))
         outputs.dir("build/lib/test-vendor")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
@@ -161,8 +144,7 @@ tasks {
             testVendorCompile,
             ":action:jsTest",
             compileTestKotlinJs,
-            runDceTestKotlin,
-            unpackJsGradleDependencies
+            runDceTestKotlin
         )
         inputs.file(file("package.json"))
         inputs.files(vendorCompile.inputs.files)

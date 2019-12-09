@@ -20,11 +20,8 @@ class SmolJsPlugin : Plugin<Project> {
         }
 
         target.tasks.run {
-            val unpackJsGradleDependencies =
-                create("unpackJsGradleDependencies", UnpackGradleDependenciesTask::class.java)
-
             create("jasmine", NodeTask::class.java) {
-                it.dependsOn("yarn", unpackJsGradleDependencies)
+                it.dependsOn("yarn", target.tasks.findByName("assemble"))
                 val script = target.rootDir.path + "/buildSrc/test-wrapper.js"
                 it.inputs.file(script)
                 it.inputs.file(target.file("package.json"))
@@ -35,19 +32,6 @@ class SmolJsPlugin : Plugin<Project> {
         }
 
         target.afterEvaluate {
-            val assemble = target.tasks.findByName("assemble")
-            assemble?.dependsOn("unpackJsGradleDependencies")
-
-            val forEachJsTarget = forEachJsTarget(target)
-
-            target.tasks.filterIsInstance(UnpackGradleDependenciesTask::class.java)
-                .forEach { unpackTask ->
-                    forEachJsTarget.let { (main, test) ->
-                        unpackTask.customCompileConfiguration = main
-                        unpackTask.customTestCompileConfiguration = test
-                    }
-                }
-
             val compileKotlinJsTasks = target.tasks.filterIsInstance(Kotlin2JsCompile::class.java)
 
             val kotlinCompileTestTask = compileKotlinJsTasks.find { it.name == "compileTestKotlinJs" }
@@ -61,7 +45,7 @@ class SmolJsPlugin : Plugin<Project> {
                 dependsOn(compileKotlinJsTasks)
                 dependsOn(processResources)
 
-                val relevantPaths = listOf("node_modules", "build/node_modules_imported") +
+                val relevantPaths = listOf("node_modules", "${target.rootProject.buildDir.path}/js/node_modules") +
                         compileKotlinJsTasks.map { it.outputFile.parent } +
                         processResources.map { it.destinationDir.path }
 

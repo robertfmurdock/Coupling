@@ -1,6 +1,5 @@
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -99,13 +98,8 @@ tasks {
         kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
-    val unpackJsGradleDependencies by getting(UnpackGradleDependenciesTask::class) {
-        dependsOn(":json:assemble")
-        dependsOn(":test-logging:assemble")
-    }
-
     val endpointTest by creating(NodeTask::class) {
-        dependsOn("yarn", unpackJsGradleDependencies, compileEndpointTestKotlinJs, ":server:build")
+        dependsOn("yarn", "assemble", compileEndpointTestKotlinJs, ":server:build")
         val script = projectDir.path + "/endpoint-wrapper.js"
         inputs.file(script)
         inputs.file(file("package.json"))

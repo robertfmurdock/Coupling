@@ -1,8 +1,6 @@
 import com.moowork.gradle.node.task.NodeTask
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.UnpackGradleDependenciesTask
-import com.zegreatrob.coupling.build.forEachJsTarget
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -92,18 +90,8 @@ tasks {
         into("build/executable/public/app/build")
     }
 
-    val unpackJsGradleDependencies by creating(UnpackGradleDependenciesTask::class) {
-        inputs.files(compileKotlinJs.inputs.files)
-        dependsOn(":server:server_action:assemble", ":json:assemble", ":test-logging:assemble")
-
-        forEachJsTarget(project).let { (main, test) ->
-            customCompileConfiguration = main
-            customTestCompileConfiguration = test
-        }
-    }
-
     val serverCompile by creating(YarnTask::class) {
-        dependsOn(yarn, copyServerResources, unpackJsGradleDependencies, compileKotlinJs)
+        dependsOn(yarn, copyServerResources, compileKotlinJs)
         mustRunAfter(clean)
         inputs.file(compileKotlinJs.outputFile)
         inputs.dir("node_modules")
@@ -129,7 +117,6 @@ tasks {
     val serverTest by creating(YarnTask::class) {
         dependsOn(
             yarn,
-            unpackJsGradleDependencies,
             compileKotlinJs,
             compileTestKotlinJs,
             copyClient
