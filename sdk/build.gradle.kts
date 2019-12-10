@@ -99,7 +99,14 @@ tasks {
     }
 
     val endpointTest by creating(NodeTask::class) {
-        dependsOn("yarn", "assemble", compileEndpointTestKotlinJs, ":server:build")
+        dependsOn(
+            "yarn",
+            "assemble",
+            compileKotlinJs,
+            compileTestKotlinJs,
+            compileEndpointTestKotlinJs,
+            ":server:build"
+        )
         val script = projectDir.path + "/endpoint-wrapper.js"
         inputs.file(script)
         inputs.file(file("package.json"))
@@ -112,17 +119,15 @@ tasks {
     }
 
     afterEvaluate {
-        val compileKotlinJsTasks = tasks.filterIsInstance(Kotlin2JsCompile::class.java)
         val processResources = tasks.filterIsInstance(ProcessResources::class.java)
 
         with(endpointTest) {
-            dependsOn(compileKotlinJsTasks)
             dependsOn(processResources)
 
             val relevantPaths = listOf(
                 "node_modules",
                 "../build/js/node_modules"
-            ) + compileKotlinJsTasks.map { it.outputFile.parent } + processResources.map { it.destinationDir.path }
+            ) + processResources.map { it.destinationDir.path }
 
             inputs.files(compileEndpointTestKotlinJs.outputFile)
 
