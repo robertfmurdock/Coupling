@@ -12,7 +12,6 @@ kotlin {
 
     js {
         nodejs {}
-
         compilations {
             val endpointTest by compilations.creating
         }
