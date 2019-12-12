@@ -48,6 +48,12 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(project(":json"))
+                implementation(npm("axios", "^0.19.0"))
+                implementation(npm("axios-cookiejar-support", "^0.5.0"))
+                implementation(npm("fs-extra", "^8.1.0"))
+                implementation(npm("monk", "^7.1.1"))
+                implementation(npm("tough-cookie", "^3.0.1"))
+                implementation(npm("ws", "^7.2.0"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2-1.3.60")
                 implementation("io.github.microutils:kotlin-logging-js:1.7.8")
