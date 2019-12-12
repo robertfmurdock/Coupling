@@ -17,7 +17,7 @@ allprojects {
         jcenter()
         maven { url = uri("https://dl.bintray.com/robertfmurdock/zegreatrob") }
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
-        maven { url = uri("http://dl.bintray.com/kotlin/kotlin-js-wrappers") }
+        maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
     }
 }
 
@@ -30,8 +30,6 @@ docker {
 }
 
 tasks {
-
-
     val copyClientTestResults by creating(Copy::class, copyForTask(findByPath(":client:test")) {
         from("client/build/test-results")
         into("build/test-output/client")

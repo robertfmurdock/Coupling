@@ -1,6 +1,6 @@
 pluginManagement {
     repositories {
-        maven(url = "http://dl.bintray.com/kotlin/kotlin-eap")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
         gradlePluginPortal()
     }
     resolutionStrategy {
@@ -23,5 +23,3 @@ include("server:server_action")
 include("action")
 include("logging")
 include("test-logging")
-
-enableFeaturePreview("GRADLE_METADATA")
