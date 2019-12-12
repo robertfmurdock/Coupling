@@ -8,6 +8,13 @@ plugins {
     id("com.github.node-gradle.node")
 }
 
+node {
+    version = BuildConstants.nodeVersion
+    npmVersion = BuildConstants.npmVersion
+    yarnVersion = BuildConstants.yarnVersion
+    download = true
+}
+
 kotlin {
 
     js {
