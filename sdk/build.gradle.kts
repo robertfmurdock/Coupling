@@ -82,6 +82,10 @@ kotlin {
 
 tasks {
 
+    val yarn by getting {
+        enabled = false
+    }
+
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
