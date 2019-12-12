@@ -100,8 +100,6 @@ tasks {
     val serverYarn = getByPath(":server:yarn")
     val clientYarn = getByPath(":client:yarn")
     serverYarn.mustRunAfter(clientYarn)
-    val sdkYarn = getByPath(":sdk:yarn")
-    sdkYarn.mustRunAfter(serverYarn)
 
     val test by creating {
         dependsOn(":server:test", ":client:test")

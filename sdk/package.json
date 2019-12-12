@@ -1,12 +1,9 @@
 {
-  "name": "action",
+  "name": "sdk",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "",
   "license": "MIT",
   "devDependencies": {
-    "jasmine": "^3.5.0",
-    "jasmine-reporters": "^2.3.2",
-    "source-map-support": "^0.5.13"
   },
   "dependencies": {
   }

@@ -11,11 +11,7 @@ plugins {
 kotlin {
 
     js {
-        nodejs {
-            testTask {
-                enabled = false
-            }
-        }
+        nodejs {}
 
         compilations {
             val endpointTest by compilations.creating
@@ -49,10 +45,6 @@ kotlin {
             dependencies {
                 implementation(project(":json"))
                 implementation(npm("axios", "^0.19.0"))
-                implementation(npm("axios-cookiejar-support", "^0.5.0"))
-                implementation(npm("fs-extra", "^8.1.0"))
-                implementation(npm("monk", "^7.1.1"))
-                implementation(npm("tough-cookie", "^3.0.1"))
                 implementation(npm("ws", "^7.2.0"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2-1.3.60")
@@ -65,6 +57,13 @@ kotlin {
             dependsOn(jsMain)
             dependencies {
                 implementation(project(":server"))
+                implementation(npm("axios-cookiejar-support", "^0.5.0"))
+                implementation(npm("fs-extra", "^8.1.0"))
+                implementation(npm("monk", "^7.1.1"))
+                implementation(npm("tough-cookie", "^3.0.1"))
+                implementation(npm("jasmine", "^3.5.0"))
+                implementation(npm("jasmine-reporters", "^2.3.2"))
+                implementation(npm("source-map-support", "^0.5.13"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
@@ -106,7 +105,6 @@ tasks {
 
     val endpointTest by creating(NodeTask::class) {
         dependsOn(
-            "yarn",
             "assemble",
             compileKotlinJs,
             compileTestKotlinJs,
@@ -115,7 +113,6 @@ tasks {
         )
         val script = projectDir.path + "/endpoint-wrapper.js"
         inputs.file(script)
-        inputs.file(file("package.json"))
 
         setScript(File(script))
         outputs.dir("build/test-results/jsTest")
