@@ -116,30 +116,25 @@ tasks {
 
         setScript(File(script))
         outputs.dir("build/test-results/jsTest")
+
+        val processResources = withType(ProcessResources::class.java)
+
+        dependsOn(processResources)
+
+        val relevantPaths = listOf(
+            "../build/js/node_modules"
+        ) + processResources.map { it.destinationDir.path }
+
+        inputs.files(compileEndpointTestKotlinJs.outputFile)
+
+        relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
+
+        setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
+
+        setArgs(listOf("${compileEndpointTestKotlinJs.outputFile}"))
     }
     val check by getting {
         dependsOn(endpointTest)
-    }
-
-    afterEvaluate {
-        val processResources = tasks.filterIsInstance(ProcessResources::class.java)
-
-        with(endpointTest) {
-            dependsOn(processResources)
-
-            val relevantPaths = listOf(
-                "node_modules",
-                "../build/js/node_modules"
-            ) + processResources.map { it.destinationDir.path }
-
-            inputs.files(compileEndpointTestKotlinJs.outputFile)
-
-            relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
-
-            setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
-
-            setArgs(listOf("${compileEndpointTestKotlinJs.outputFile}"))
-        }
     }
 
 }
