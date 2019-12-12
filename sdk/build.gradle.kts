@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization") version "1.3.61"
-    id("smol-js")
+    id("com.github.node-gradle.node")
 }
 
 kotlin {
