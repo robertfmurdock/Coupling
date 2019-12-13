@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker
 import kotlin.random.Random
 
 data class GenerateCallSignAction(
-        val adjectives: Set<String>,
-        val nouns: Set<String>,
-        val email: String,
-        val players: List<Player>
+    val adjectives: Set<String>,
+    val nouns: Set<String>,
+    val email: String,
+    val players: List<Player>
 )
 
 interface GenerateCallSignActionDispatcher : PredictableWordPicker {
@@ -20,7 +20,7 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker {
     )
 
     private fun GenerateCallSignAction.pickAdjective() =
-            rollForUnusedTerm(shuffledAdjectives(), players.adjectives(), email)
+        rollForUnusedTerm(shuffledAdjectives(), players.adjectives(), email)
 
     private fun List<Player>.adjectives() = mapNotNull { it.callSignAdjective }
 
@@ -31,16 +31,17 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker {
     private fun GenerateCallSignAction.pickNoun(): String {
         return rollForUnusedTerm(shuffledNouns(), players.nouns(), email)
     }
+
     private fun GenerateCallSignAction.shuffledNouns() = nouns.shuffled(nounRandom)
     private val nounRandom get() = Random(1)
 
     private fun rollForUnusedTerm(
-            termList: List<String>,
-            usedTerms: List<String>,
-            email: String,
-            offset: Int? = null
+        termList: List<String>,
+        usedTerms: List<String>,
+        email: String,
+        offset: Int? = null
     ): String {
-        if(usedTerms.containsAll(termList)) {
+        if (usedTerms.containsAll(termList)) {
             return "Blank"
         }
 

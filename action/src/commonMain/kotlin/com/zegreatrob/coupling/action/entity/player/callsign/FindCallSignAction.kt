@@ -7,12 +7,12 @@ data class FindCallSignAction(val players: List<Player>, val email: String)
 interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher {
 
     fun FindCallSignAction.perform() = defaultCallSignOptions
-            .let { (adjectives, nouns) ->
-                generateCallSign(adjectives, nouns)
-            }
+        .let { (adjectives, nouns) ->
+            generateCallSign(adjectives, nouns)
+        }
 
     private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
-            GenerateCallSignAction(adjectives, nouns, email, players)
-                    .perform()
+        GenerateCallSignAction(adjectives, nouns, email, players)
+            .perform()
 
 }

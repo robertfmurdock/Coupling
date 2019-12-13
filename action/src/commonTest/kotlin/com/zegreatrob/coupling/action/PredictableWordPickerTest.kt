@@ -18,8 +18,8 @@ class PredictableWordPickerTest {
             val givenString = "emailjones@email.edu"
         }) exercise {
             Pair(
-                    options.pickForGiven(givenString),
-                    options.pickForGiven(givenString)
+                options.pickForGiven(givenString),
+                options.pickForGiven(givenString)
             )
         } verify { (result1, result2) ->
             result1.assertIsEqualTo(result2)
@@ -58,16 +58,16 @@ class PredictableWordPickerTest {
         @Test
         fun evenIfValueIsNonNumeric() = setup(object {
             val options = listOf(
-                    "option0",
-                    "option1",
-                    "option2",
-                    "option3",
-                    "option4",
-                    "option5",
-                    "option6",
-                    "option7",
-                    "option8",
-                    "option9"
+                "option0",
+                "option1",
+                "option2",
+                "option3",
+                "option4",
+                "option5",
+                "option6",
+                "option7",
+                "option8",
+                "option9"
             )
             val givenStrings = listOf("a", "b", "c")
         }) exercise {

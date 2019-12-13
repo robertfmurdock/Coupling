@@ -22,19 +22,19 @@ class ComposeStatisticsActionTest {
         )
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
-                .map { number -> makePlayer("$number") }
+            .map { number -> makePlayer("$number") }
 
         private fun makePlayer(id: String) = Player(id = id)
 
         private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(
-                    expected,
-                    "------WE EXPECT\n${expected.describe()}\n------RESULTS\n${this.describe()}\n-----END\n"
+                expected,
+                "------WE EXPECT\n${expected.describe()}\n------RESULTS\n${this.describe()}\n-----END\n"
             )
         }
 
         private fun List<CouplingPair>.describe() = map { it.asArray().map { player -> player.id } }
-                .joinToString(", ").let { "[ $it ]" }
+            .joinToString(", ").let { "[ $it ]" }
     }
 
     class WillIncludeTheFullRotationNumber {
@@ -43,7 +43,7 @@ class ComposeStatisticsActionTest {
             private val history = emptyList<PairAssignmentDocument>()
 
             fun composeStatisticsAction(players: List<Player>) =
-                    ComposeStatisticsAction(tribe, players, history)
+                ComposeStatisticsAction(tribe, players, history)
         }
 
         @Test
@@ -51,7 +51,7 @@ class ComposeStatisticsActionTest {
             val players = makePlayers(1)
         }) exercise {
             composeStatisticsAction(players)
-                    .perform()
+                .perform()
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(1)
         }
@@ -61,7 +61,7 @@ class ComposeStatisticsActionTest {
             val players = makePlayers(2)
         }) exercise {
             composeStatisticsAction(players)
-                    .perform()
+                .perform()
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(1)
         }
@@ -71,7 +71,7 @@ class ComposeStatisticsActionTest {
             val players = makePlayers(3)
         }) exercise {
             composeStatisticsAction(players)
-                    .perform()
+                .perform()
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(3)
         }
@@ -81,7 +81,7 @@ class ComposeStatisticsActionTest {
             val players = makePlayers(4)
         }) exercise {
             composeStatisticsAction(players)
-                    .perform()
+                .perform()
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(3)
         }
@@ -91,7 +91,7 @@ class ComposeStatisticsActionTest {
             val players = makePlayers(7)
         }) exercise {
             composeStatisticsAction(players)
-                    .perform()
+                .perform()
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(7)
         }
@@ -101,7 +101,7 @@ class ComposeStatisticsActionTest {
             val players = makePlayers(8)
         }) exercise {
             composeStatisticsAction(players)
-                    .perform()
+                .perform()
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(7)
         }
@@ -119,7 +119,7 @@ class ComposeStatisticsActionTest {
                 val players = makePlayers(0)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
-                        .perform()
+                    .perform()
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(emptyList())
             }
@@ -129,7 +129,7 @@ class ComposeStatisticsActionTest {
                 val players = makePlayers(1)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
-                        .perform()
+                    .perform()
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(emptyList())
             }
@@ -139,15 +139,15 @@ class ComposeStatisticsActionTest {
                 val players = makePlayers(2)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
-                        .perform()
+                    .perform()
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
-                        listOf(
-                                PairReport(
-                                    CouplingPair.Double(players[0], players[1]),
-                                    NeverPaired
-                                )
+                    listOf(
+                        PairReport(
+                            CouplingPair.Double(players[0], players[1]),
+                            NeverPaired
                         )
+                    )
                 )
             }
 
@@ -156,23 +156,25 @@ class ComposeStatisticsActionTest {
                 val players = makePlayers(5)
             }) exercise {
                 ComposeStatisticsAction(tribe, players, history)
-                        .perform()
+                    .perform()
             } verify { (_, pairReports) ->
                 val (player1, player2, player3, player4, player5) = players
                 pairReports.map { it.pair }
-                        .assertMatch(listOf(
-                                CouplingPair.Double(player1, player2),
-                                CouplingPair.Double(player1, player3),
-                                CouplingPair.Double(player1, player4),
-                                CouplingPair.Double(player1, player5),
+                    .assertMatch(
+                        listOf(
+                            CouplingPair.Double(player1, player2),
+                            CouplingPair.Double(player1, player3),
+                            CouplingPair.Double(player1, player4),
+                            CouplingPair.Double(player1, player5),
 
-                                CouplingPair.Double(player2, player3),
-                                CouplingPair.Double(player2, player4),
-                                CouplingPair.Double(player2, player5),
-                                CouplingPair.Double(player3, player4),
-                                CouplingPair.Double(player3, player5),
-                                CouplingPair.Double(player4, player5)
-                        ))
+                            CouplingPair.Double(player2, player3),
+                            CouplingPair.Double(player2, player4),
+                            CouplingPair.Double(player2, player5),
+                            CouplingPair.Double(player3, player4),
+                            CouplingPair.Double(player3, player5),
+                            CouplingPair.Double(player4, player5)
+                        )
+                    )
             }
         }
 
@@ -185,7 +187,8 @@ class ComposeStatisticsActionTest {
             val player4 = players[3]
             val stubDate = DateTime.now()
             val history = listOf(
-                    pairAssignmentDocument(listOf(
+                pairAssignmentDocument(
+                    listOf(
                         PinnedCouplingPair(
                             listOf(
                                 player1.withPins(
@@ -200,8 +203,10 @@ class ComposeStatisticsActionTest {
                                 ), player4.withPins(emptyList())
                             )
                         )
-                    )),
-                    pairAssignmentDocument(listOf(
+                    )
+                ),
+                pairAssignmentDocument(
+                    listOf(
                         PinnedCouplingPair(
                             listOf(
                                 player1.withPins(
@@ -216,45 +221,51 @@ class ComposeStatisticsActionTest {
                                 ), player4.withPins(emptyList())
                             )
                         )
-                    ))
+                    )
+                )
             )
 
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
                 PairAssignmentDocument(stubDate, pairs)
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { (_, pairReports) ->
             pairReports.map { it.timeSinceLastPair }
-                    .assertIsEqualTo(listOf(
+                .assertIsEqualTo(
+                    listOf(
                         NeverPaired,
                         NeverPaired,
                         TimeResultValue(1),
                         TimeResultValue(1),
                         TimeResultValue(0),
                         TimeResultValue(0)
-                    ))
+                    )
+                )
             pairReports.map { it.pair }
-                    .assertMatch(listOf(
-                            CouplingPair.Double(player1, player4),
-                            CouplingPair.Double(player2, player3),
-                            CouplingPair.Double(player1, player2),
-                            CouplingPair.Double(player3, player4),
-                            CouplingPair.Double(player1, player3),
-                            CouplingPair.Double(player2, player4)
-                    ))
+                .assertMatch(
+                    listOf(
+                        CouplingPair.Double(player1, player4),
+                        CouplingPair.Double(player2, player3),
+                        CouplingPair.Double(player1, player2),
+                        CouplingPair.Double(player3, player4),
+                        CouplingPair.Double(player1, player3),
+                        CouplingPair.Double(player2, player4)
+                    )
+                )
         }
 
         @Test
-        fun stillSortsCorrectlyWithLargeRealisticHistory() = setup(loadJsonTribeSetup("realistic-sort-test-data/inputs.json")) exercise {
-            ComposeStatisticsAction(tribe, players, history)
+        fun stillSortsCorrectlyWithLargeRealisticHistory() =
+            setup(loadJsonTribeSetup("realistic-sort-test-data/inputs.json")) exercise {
+                ComposeStatisticsAction(tribe, players, history)
                     .perform()
-        } verify { result ->
-            val expectedTimesResults = loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
+            } verify { result ->
+                val expectedTimesResults = loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
                     .map { TimeResultValue(it) }
-            result.pairReports.map { it.timeSinceLastPair }
+                result.pairReports.map { it.timeSinceLastPair }
                     .assertIsEqualTo(expectedTimesResults)
-        }
+            }
 
     }
 
@@ -274,7 +285,7 @@ class ComposeStatisticsActionTest {
             val players = emptyList<Player>()
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(null)
         }
@@ -283,16 +294,16 @@ class ComposeStatisticsActionTest {
         fun whenThereAreDailySpinsWillReturn1Day() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    pairAssignmentDocument(DateTime(2017, 2, 17)),
-                    pairAssignmentDocument(DateTime(2017, 2, 16)),
-                    pairAssignmentDocument(DateTime(2017, 2, 15)),
-                    pairAssignmentDocument(DateTime(2017, 2, 14)),
-                    pairAssignmentDocument(DateTime(2017, 2, 13)),
-                    pairAssignmentDocument(DateTime(2017, 2, 12))
+                pairAssignmentDocument(DateTime(2017, 2, 17)),
+                pairAssignmentDocument(DateTime(2017, 2, 16)),
+                pairAssignmentDocument(DateTime(2017, 2, 15)),
+                pairAssignmentDocument(DateTime(2017, 2, 14)),
+                pairAssignmentDocument(DateTime(2017, 2, 13)),
+                pairAssignmentDocument(DateTime(2017, 2, 12))
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(1.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -301,17 +312,17 @@ class ComposeStatisticsActionTest {
         fun whenTwoDaySpinsWithOutliersWillReturn2Days() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    pairAssignmentDocument(DateTime(2017, 2, 17)),
-                    pairAssignmentDocument(DateTime(2017, 2, 12)),
-                    pairAssignmentDocument(DateTime(2017, 2, 10)),
-                    pairAssignmentDocument(DateTime(2017, 2, 8)),
-                    pairAssignmentDocument(DateTime(2017, 2, 6)),
-                    pairAssignmentDocument(DateTime(2017, 2, 4)),
-                    pairAssignmentDocument(DateTime(2017, 2, 3))
+                pairAssignmentDocument(DateTime(2017, 2, 17)),
+                pairAssignmentDocument(DateTime(2017, 2, 12)),
+                pairAssignmentDocument(DateTime(2017, 2, 10)),
+                pairAssignmentDocument(DateTime(2017, 2, 8)),
+                pairAssignmentDocument(DateTime(2017, 2, 6)),
+                pairAssignmentDocument(DateTime(2017, 2, 4)),
+                pairAssignmentDocument(DateTime(2017, 2, 3))
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -320,16 +331,16 @@ class ComposeStatisticsActionTest {
         fun whenOneInstanceOfMedianAndVariablePatternWillFindMedianCorrectly() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    pairAssignmentDocument(DateTime(2017, 2, 20)),
-                    pairAssignmentDocument(DateTime(2017, 2, 17)),
-                    pairAssignmentDocument(DateTime(2017, 2, 15)),
-                    pairAssignmentDocument(DateTime(2017, 2, 14)),
-                    pairAssignmentDocument(DateTime(2017, 2, 13)),
-                    pairAssignmentDocument(DateTime(2017, 2, 10))
+                pairAssignmentDocument(DateTime(2017, 2, 20)),
+                pairAssignmentDocument(DateTime(2017, 2, 17)),
+                pairAssignmentDocument(DateTime(2017, 2, 15)),
+                pairAssignmentDocument(DateTime(2017, 2, 14)),
+                pairAssignmentDocument(DateTime(2017, 2, 13)),
+                pairAssignmentDocument(DateTime(2017, 2, 10))
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -345,7 +356,7 @@ class ComposeStatisticsActionTest {
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(null)
         }
@@ -354,16 +365,16 @@ class ComposeStatisticsActionTest {
         fun worksWithHourDifferencesAsWell() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 21)),
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 19)),
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 18)),
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 13)),
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 12)),
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 9))
+                pairAssignmentDocument(DateTime(2017, 2, 20, 21)),
+                pairAssignmentDocument(DateTime(2017, 2, 20, 19)),
+                pairAssignmentDocument(DateTime(2017, 2, 20, 18)),
+                pairAssignmentDocument(DateTime(2017, 2, 20, 13)),
+                pairAssignmentDocument(DateTime(2017, 2, 20, 12)),
+                pairAssignmentDocument(DateTime(2017, 2, 20, 9))
             )
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.hours, "Got ${result.medianSpinDuration?.hours} hours")
         }
@@ -372,17 +383,17 @@ class ComposeStatisticsActionTest {
         fun whenMedianIsInBetweenUnitsWillStillBeAccurate() = setup(object {
             val players = emptyList<Player>()
             val history = listOf(
-                    pairAssignmentDocument(DateTime(2017, 2, 20, 21)),
-                    pairAssignmentDocument(DateTime(2017, 2, 17, 19)),
-                    pairAssignmentDocument(DateTime(2017, 2, 15, 7)),
-                    pairAssignmentDocument(DateTime(2017, 2, 14, 13)),
-                    pairAssignmentDocument(DateTime(2017, 2, 13, 12)),
-                    pairAssignmentDocument(DateTime(2017, 2, 10, 9))
+                pairAssignmentDocument(DateTime(2017, 2, 20, 21)),
+                pairAssignmentDocument(DateTime(2017, 2, 17, 19)),
+                pairAssignmentDocument(DateTime(2017, 2, 15, 7)),
+                pairAssignmentDocument(DateTime(2017, 2, 14, 13)),
+                pairAssignmentDocument(DateTime(2017, 2, 13, 12)),
+                pairAssignmentDocument(DateTime(2017, 2, 10, 9))
             )
 
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
-                    .perform()
+                .perform()
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.5.days, "Got ${result.medianSpinDuration?.days} days")
         }

@@ -32,7 +32,7 @@ class SavePlayerCommandTest {
             override val playerRepository = PlayerSaverSpy().apply { whenever(player with tribe, Unit) }
         }) exerciseAsync {
             SavePlayerCommand(player with tribe)
-                    .perform()
+                .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(player)
         }

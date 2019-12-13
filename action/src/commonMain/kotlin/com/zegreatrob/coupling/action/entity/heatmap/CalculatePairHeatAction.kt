@@ -17,22 +17,23 @@ data class CalculatePairHeatAction(
 
 interface CalculatePairHeatActionDispatcher {
     fun CalculatePairHeatAction.perform() = timesPaired()
-            .toHeatIncrement()
+        .toHeatIncrement()
 
     private fun CalculatePairHeatAction.timesPaired() = historyInHeatWindow()
-            .flattenedPairings()
-            .count { equivalent(it, pair) }
+        .flattenedPairings()
+        .count { equivalent(it, pair) }
 
     private fun CalculatePairHeatAction.historyInHeatWindow() = history.slice(
-            0 until min(lastRelevantRotation, history.size)
+        0 until min(lastRelevantRotation, history.size)
     )
 
     private val CalculatePairHeatAction.lastRelevantRotation get() = rotationPeriod * rotationHeatWindow
 
     private fun List<PairAssignmentDocument>.flattenedPairings() = map(
-        PairAssignmentDocument::pairs)
-            .flatten()
-            .map(PinnedCouplingPair::toPair)
+        PairAssignmentDocument::pairs
+    )
+        .flatten()
+        .map(PinnedCouplingPair::toPair)
 
     private fun Int.toHeatIncrement() = heatIncrements[incrementIndex(this)]
 

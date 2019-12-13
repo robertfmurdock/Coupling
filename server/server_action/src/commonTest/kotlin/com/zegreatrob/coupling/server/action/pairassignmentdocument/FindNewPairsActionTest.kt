@@ -1,4 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
+
 import Spy
 import SpyData
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -20,7 +21,7 @@ class FindNewPairsActionTest {
         override val wheel = this
     }) exercise {
         FindNewPairsAction(Game(listOf(), listOf(), PairingRule.LongestTime))
-                .perform()
+            .perform()
     } verify { assertEquals(it, listOf()) }
 
     @Test
@@ -33,17 +34,20 @@ class FindNewPairsActionTest {
 
         init {
             wheel.spyReturnValues.add(bill)
-            actionDispatcher.spyReturnValues.add(PairCandidateReport(ted, listOf(bill),
-                TimeResultValue(0)
-            ))
+            actionDispatcher.spyReturnValues.add(
+                PairCandidateReport(
+                    ted, listOf(bill),
+                    TimeResultValue(0)
+                )
+            )
         }
     }) exercise {
         FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime))
-                .perform()
+            .perform()
     } verify { result ->
         result.assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
         actionDispatcher.spyReceivedValues.getOrNull(0)
-                .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
+            .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
         wheel.spyReceivedValues.assertContains(listOf(bill))
     }
 
@@ -58,12 +62,14 @@ class FindNewPairsActionTest {
         val players = listOf(bill, ted, mozart)
 
         val pairCandidateReports = listOf(
-                PairCandidateReport(mozart, listOf(bill, ted),
-                    TimeResultValue(0)
-                ),
-                PairCandidateReport(ted, emptyList(),
-                    TimeResultValue(0)
-                )
+            PairCandidateReport(
+                mozart, listOf(bill, ted),
+                TimeResultValue(0)
+            ),
+            PairCandidateReport(
+                ted, emptyList(),
+                TimeResultValue(0)
+            )
         )
         val history: List<PairAssignmentDocument> = emptyList()
 
@@ -73,18 +79,20 @@ class FindNewPairsActionTest {
         }
     }) exercise {
         FindNewPairsAction(Game(history, players, PairingRule.LongestTime))
-                .perform()
+            .perform()
     } verify { result ->
         result.assertIsEqualTo(
-                listOf(CouplingPair.Double(mozart, bill), CouplingPair.Single(ted))
+            listOf(CouplingPair.Double(mozart, bill), CouplingPair.Single(ted))
         )
         actionDispatcher.spyReceivedValues
-                .assertIsEqualTo(listOf(
-                        NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
-                        NextPlayerAction(GameSpin(history, listOf(ted), PairingRule.LongestTime))
-                ))
+            .assertIsEqualTo(
+                listOf(
+                    NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
+                    NextPlayerAction(GameSpin(history, listOf(ted), PairingRule.LongestTime))
+                )
+            )
         wheel.spyReceivedValues
-                .assertContains(listOf(bill, ted))
+            .assertContains(listOf(bill, ted))
     }
 
 }
@@ -94,7 +102,7 @@ class StubWheel : Wheel, Spy<List<Player>, Player> by SpyData() {
 }
 
 class StubNextPlayerActionDispatcher : NextPlayerActionDispatcher,
-        Spy<NextPlayerAction, PairCandidateReport> by SpyData() {
+    Spy<NextPlayerAction, PairCandidateReport> by SpyData() {
     override val actionDispatcher get() = throw NotImplementedError()
     override fun NextPlayerAction.perform() = spyFunction(this)
 }

@@ -18,30 +18,30 @@ interface ComposeStatisticsActionDispatcher : ActionLoggingSyntax,
 
     fun ComposeStatisticsAction.perform() = log {
         StatisticsReport(
-                spinsUntilFullRotation = calculateFullRotation(),
-                pairReports = pairReports(),
-                medianSpinDuration = history.medianSpinDuration()
+            spinsUntilFullRotation = calculateFullRotation(),
+            pairReports = pairReports(),
+            medianSpinDuration = history.medianSpinDuration()
         )
     }
 
     private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
-            .map {
-                PairReport(
-                        it,
-                        calculateTimeSinceLastPartnership(it, history)
-                )
-            }
-            .sortedWith(PairReportComparator)
+        .map {
+            PairReport(
+                it,
+                calculateTimeSinceLastPartnership(it, history)
+            )
+        }
+        .sortedWith(PairReportComparator)
 
 
     private fun ComposeStatisticsAction.allPairCombinations() =
-            players.mapIndexed { index, player -> players.sliceFrom(index + 1).toPairsWith(player) }
-                    .flatten()
+        players.mapIndexed { index, player -> players.sliceFrom(index + 1).toPairsWith(player) }
+            .flatten()
 
     private fun List<Player>.sliceFrom(startIndex: Int) = slice(startIndex..lastIndex)
 
     private fun List<Player>.toPairsWith(player: Player) =
-            map { otherPlayer -> CouplingPair.Double(player, otherPlayer) }
+        map { otherPlayer -> CouplingPair.Double(player, otherPlayer) }
 
     private fun ComposeStatisticsAction.calculateFullRotation() = players.size.ifEvenSubtractOne()
 
@@ -52,19 +52,19 @@ interface ComposeStatisticsActionDispatcher : ActionLoggingSyntax,
     }
 
     private fun List<PairAssignmentDocument>.medianSpinDuration() = asDateTimes()
-            .toDeltas()
-            .sorted()
-            .halfwayValue()
+        .toDeltas()
+        .sorted()
+        .halfwayValue()
 
     private fun List<TimeSpan>.halfwayValue() = safeGet(indexOfMedian())
 
     fun List<TimeSpan>.safeGet(indexOfMedian: Int) = indexOfMedian
-            .let {
-                when {
-                    it < size -> this[it]
-                    else -> null
-                }
+        .let {
+            when {
+                it < size -> this[it]
+                else -> null
             }
+        }
 
     private fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()
 
@@ -77,7 +77,7 @@ interface ComposeStatisticsActionDispatcher : ActionLoggingSyntax,
 object PairReportComparator : Comparator<PairReport> {
 
     override fun compare(a: PairReport, b: PairReport) =
-            a.timeSinceLastPair.compareTo(b.timeSinceLastPair)
+        a.timeSinceLastPair.compareTo(b.timeSinceLastPair)
 
     private fun TimeResult.compareTo(other: TimeResult) = TimeResultComparator.compare(this, other)
 }
@@ -94,9 +94,9 @@ object TimeResultComparator : Comparator<TimeResult> {
 }
 
 data class StatisticsReport(
-        val spinsUntilFullRotation: Int,
-        val pairReports: List<PairReport>,
-        val medianSpinDuration: TimeSpan?
+    val spinsUntilFullRotation: Int,
+    val pairReports: List<PairReport>,
+    val medianSpinDuration: TimeSpan?
 )
 
 data class PairReport(val pair: CouplingPair, val timeSinceLastPair: TimeResult)

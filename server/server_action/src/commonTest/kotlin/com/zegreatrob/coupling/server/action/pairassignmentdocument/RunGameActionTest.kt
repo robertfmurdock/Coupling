@@ -31,8 +31,8 @@ class RunGameActionTest {
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = listOf(
-                CouplingPair.Single(Player()),
-                CouplingPair.Single(Player())
+            CouplingPair.Single(Player()),
+            CouplingPair.Single(Player())
         )
 
         init {
@@ -50,7 +50,8 @@ class RunGameActionTest {
     }
 }
 
-class SpyFindNewPairsActionDispatcher : FindNewPairsActionDispatcher, Spy<FindNewPairsAction, List<CouplingPair>> by SpyData() {
+class SpyFindNewPairsActionDispatcher : FindNewPairsActionDispatcher,
+    Spy<FindNewPairsAction, List<CouplingPair>> by SpyData() {
     override val actionDispatcher: NextPlayerActionDispatcher get() = cancel()
     override val wheel: Wheel get() = cancel()
     override fun FindNewPairsAction.perform(): List<CouplingPair> = spyFunction(this)

@@ -1,4 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
+
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -20,13 +21,15 @@ class PinAssignmentSyntaxTest {
     }) exercise {
         players.assign(pins)
     } verify { result: List<PinnedCouplingPair> ->
-        result.assertIsEqualTo(listOf(
-            PinnedCouplingPair(
-                listOf(
-                    pete.withPins(pins)
+        result.assertIsEqualTo(
+            listOf(
+                PinnedCouplingPair(
+                    listOf(
+                        pete.withPins(pins)
+                    )
                 )
             )
-        ))
+        )
     }
 
     @Test

@@ -1,4 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
+
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -15,11 +16,11 @@ import kotlin.test.Test
 class GameExamplesTest {
 
     companion object : RunGameActionDispatcher,
-            FindNewPairsActionDispatcher,
-            NextPlayerActionDispatcher,
-            CreatePairCandidateReportActionDispatcher,
-            CreatePairCandidateReportsActionDispatcher,
-            Wheel {
+        FindNewPairsActionDispatcher,
+        NextPlayerActionDispatcher,
+        CreatePairCandidateReportActionDispatcher,
+        CreatePairCandidateReportsActionDispatcher,
+        Wheel {
         override val wheel = this
         override val actionDispatcher = this
     }
@@ -40,12 +41,12 @@ class GameExamplesTest {
             val diana = Player(id = "6", name = "Wonder Woman", badge = 0)
 
             val allPlayers = listOf(
-                    clark,
-                    bruce,
-                    diana,
-                    hal,
-                    barry,
-                    john
+                clark,
+                bruce,
+                diana,
+                hal,
+                barry,
+                john
             )
         }
 
@@ -58,12 +59,12 @@ class GameExamplesTest {
             )
         }) exercise {
             RunGameAction(allPlayers, emptyList(), history, tribe)
-                    .perform()
+                .perform()
         } verify { result ->
             result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.players }
-                    .flatten()
-                    .size
-                    .assertIsEqualTo(allPlayers.size)
+                .flatten()
+                .size
+                .assertIsEqualTo(allPlayers.size)
         }
 
         @Test
@@ -75,7 +76,7 @@ class GameExamplesTest {
             )
         }) exercise {
             RunGameAction(listOf(clark, bruce, diana), emptyList(), history, tribe)
-                    .perform()
+                .perform()
         } verify { result ->
             result.pairs.size.assertIsEqualTo(2)
         }
@@ -123,7 +124,7 @@ class GameExamplesTest {
             )
         }) exercise {
             RunGameAction(allPlayers, emptyList(), history, tribe)
-                    .perform()
+                .perform()
         } verify { result ->
             result.pairs.contains(CouplingPair.Double(bruce, john).toPinnedPair())
         }
@@ -188,7 +189,7 @@ class GameExamplesTest {
             )
         }) exercise {
             RunGameAction(allPlayers, emptyList(), history, tribe)
-                    .perform()
+                .perform()
         } verify { result ->
             result.pairs.contains(CouplingPair.Double(bruce, john).toPinnedPair())
         }
@@ -238,7 +239,7 @@ class GameExamplesTest {
         )
     }) exercise {
         RunGameAction(allPlayers, emptyList(), history, tribe)
-                .perform()
+            .perform()
     } verify { result ->
         result.pairs.contains(CouplingPair.Double(kamala, logan).toPinnedPair())
     }

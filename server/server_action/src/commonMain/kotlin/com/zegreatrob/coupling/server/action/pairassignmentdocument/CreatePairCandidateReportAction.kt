@@ -3,13 +3,17 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 
-data class CreatePairCandidateReportAction(val player: Player, val history: List<PairAssignmentDocument>, val allPlayers: List<Player>)
+data class CreatePairCandidateReportAction(
+    val player: Player,
+    val history: List<PairAssignmentDocument>,
+    val allPlayers: List<Player>
+)
 
 interface CreatePairCandidateReportActionDispatcher :
     PairingTimeCalculationSyntax {
 
     fun CreatePairCandidateReportAction.perform() = pairTimeMap()
-            .candidateReport()
+        .candidateReport()
 
     private fun CreatePairCandidateReportAction.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
 
@@ -20,7 +24,7 @@ interface CreatePairCandidateReportActionDispatcher :
     }
 
     private fun CreatePairCandidateReportAction.pair(availablePartner: Player) =
-            CouplingPair.Double(player, availablePartner)
+        CouplingPair.Double(player, availablePartner)
 
     private fun PairTimeMap.candidateReport() = neverPairedReport() ?: longestTimeReport()
 
@@ -29,13 +33,14 @@ interface CreatePairCandidateReportActionDispatcher :
     }
 
     private fun PairTimeMap.longestTimeReport() = timeToPartners.findPartnersWithLongestTime()
-            ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
-            ?: PairCandidateReport(player, emptyList(),
-                NeverPaired
-            )
+        ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
+        ?: PairCandidateReport(
+            player, emptyList(),
+            NeverPaired
+        )
 
     private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
-            maxBy { (key, _) -> if (key is TimeResultValue) key.time else -1 }
+        maxBy { (key, _) -> if (key is TimeResultValue) key.time else -1 }
 }
 
 data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult)

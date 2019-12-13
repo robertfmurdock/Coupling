@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmen
 data class SavePairAssignmentDocumentCommand(val tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) : Action
 
 interface SavePairAssignmentDocumentCommandDispatcher : ActionLoggingSyntax, TribeIdPairAssignmentDocumentSaveSyntax {
-    suspend fun SavePairAssignmentDocumentCommand.perform() = logAsync { tribeIdPairAssignmentDocument.apply { save() } }
+    suspend fun SavePairAssignmentDocumentCommand.perform() =
+        logAsync { tribeIdPairAssignmentDocument.apply { save() } }
 }
 

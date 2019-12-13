@@ -28,7 +28,7 @@ interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeData
                     dataLoadProps(
                         query = { TribeDataSetQuery(tribeId).perform() },
                         toProps = { _, (tribe, players, history) ->
-                            PrepareSpinProps(tribe!!, players, history, props.pathSetter)
+                            PrepareSpinProps(tribe, players, history, props.pathSetter)
                         }
                     )
                 )

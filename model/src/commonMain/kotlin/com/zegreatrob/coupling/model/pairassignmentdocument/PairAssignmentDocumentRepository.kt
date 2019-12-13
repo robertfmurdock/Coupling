@@ -6,7 +6,7 @@ interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver, PairAs
     PairAssignmentDocumentDeleter
 
 interface PairAssignmentDocumentDeleter {
-    suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) : Boolean
+    suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
 }
 
 interface PairAssignmentDocumentGetter {

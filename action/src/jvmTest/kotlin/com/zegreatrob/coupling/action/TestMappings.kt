@@ -24,25 +24,25 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
     val tribeJson = fileJson["tribe"]
 
     return TribeSetup(
-            tribe = KtTribe(
-                name = tribeJson["name"].textValue(),
-                pairingRule = tribeJson["pairingRule"].intValue().let {
-                    PairingRule.fromValue(
-                        it
-                    )
-                },
-                defaultBadgeName = tribeJson["defaultBadgeName"].textValue(),
-                alternateBadgeName = tribeJson["alternateBadgeName"].textValue(),
-                id = tribeJson["id"].textValue().let(::TribeId)
-            ),
-            players = fileJson["players"].map { it.toPlayer() },
-            history = fileJson["history"].map {
-                PairAssignmentDocument(
-                    id = it["_id"].textValue().let(::PairAssignmentDocumentId),
-                    date = it["date"].textValue().let { text -> dateFormat.parse(text).local },
-                    pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }
+        tribe = KtTribe(
+            name = tribeJson["name"].textValue(),
+            pairingRule = tribeJson["pairingRule"].intValue().let {
+                PairingRule.fromValue(
+                    it
                 )
-            }
+            },
+            defaultBadgeName = tribeJson["defaultBadgeName"].textValue(),
+            alternateBadgeName = tribeJson["alternateBadgeName"].textValue(),
+            id = tribeJson["id"].textValue().let(::TribeId)
+        ),
+        players = fileJson["players"].map { it.toPlayer() },
+        history = fileJson["history"].map {
+            PairAssignmentDocument(
+                id = it["_id"].textValue().let(::PairAssignmentDocumentId),
+                date = it["date"].textValue().let { text -> dateFormat.parse(text).local },
+                pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }
+            )
+        }
     )
 }
 

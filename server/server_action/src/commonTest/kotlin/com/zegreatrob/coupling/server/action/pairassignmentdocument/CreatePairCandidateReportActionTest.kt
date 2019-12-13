@@ -13,6 +13,7 @@ class CreatePairCandidateReportActionTest {
     companion object : CreatePairCandidateReportActionDispatcher {
         fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
             PairAssignmentDocument(DateTime.now(), pairs)
+
         fun pinnedPair(player1: Player, player2: Player) =
             PinnedCouplingPair(
                 listOf(
@@ -57,9 +58,12 @@ class CreatePairCandidateReportActionTest {
                 createPairCandidateReportAction(history, availableOtherPlayers)
                     .perform()
             } verify {
-                it.assertIsEqualTo(PairCandidateReport(bruce, availableOtherPlayers,
-                    NeverPaired
-                ))
+                it.assertIsEqualTo(
+                    PairCandidateReport(
+                        bruce, availableOtherPlayers,
+                        NeverPaired
+                    )
+                )
             }
 
             @Test
@@ -69,28 +73,44 @@ class CreatePairCandidateReportActionTest {
                 createPairCandidateReportAction(history, availableOtherPlayers)
                     .perform()
             } verify {
-                it.assertIsEqualTo(PairCandidateReport(bruce, availableOtherPlayers,
-                    NeverPaired
-                ))
+                it.assertIsEqualTo(
+                    PairCandidateReport(
+                        bruce, availableOtherPlayers,
+                        NeverPaired
+                    )
+                )
             }
 
             @Test
             fun withPlentyOfHistory() = setup(object {
                 val history = listOf(
-                    pairAssignmentDocument(listOf(pinnedPair(bruce,
-                        Player(id = "Batgirl")
-                    ))),
-                    pairAssignmentDocument(listOf(pinnedPair(bruce,
-                        Player(id = "Robin")
-                    )))
+                    pairAssignmentDocument(
+                        listOf(
+                            pinnedPair(
+                                bruce,
+                                Player(id = "Batgirl")
+                            )
+                        )
+                    ),
+                    pairAssignmentDocument(
+                        listOf(
+                            pinnedPair(
+                                bruce,
+                                Player(id = "Robin")
+                            )
+                        )
+                    )
                 )
             }) exercise {
                 createPairCandidateReportAction(history, availableOtherPlayers)
                     .perform()
             } verify {
-                it.assertIsEqualTo(PairCandidateReport(bruce, availableOtherPlayers,
-                    NeverPaired
-                ))
+                it.assertIsEqualTo(
+                    PairCandidateReport(
+                        bruce, availableOtherPlayers,
+                        NeverPaired
+                    )
+                )
             }
 
             @Test
@@ -106,9 +126,12 @@ class CreatePairCandidateReportActionTest {
                 CreatePairCandidateReportAction(bruce, history, listOf(selena))
                     .perform()
             } verify {
-                it.assertIsEqualTo(PairCandidateReport(bruce, listOf(selena),
-                    TimeResultValue(0)
-                ))
+                it.assertIsEqualTo(
+                    PairCandidateReport(
+                        bruce, listOf(selena),
+                        TimeResultValue(0)
+                    )
+                )
             }
         }
 
@@ -125,9 +148,12 @@ class CreatePairCandidateReportActionTest {
                 CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
                     .perform()
             } verify {
-                it.assertIsEqualTo(PairCandidateReport(bruce, listOf(expectedPartner),
-                    TimeResultValue(2)
-                ))
+                it.assertIsEqualTo(
+                    PairCandidateReport(
+                        bruce, listOf(expectedPartner),
+                        TimeResultValue(2)
+                    )
+                )
             }
 
             @Test
@@ -139,9 +165,12 @@ class CreatePairCandidateReportActionTest {
                 CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
                     .perform()
             } verify {
-                it.assertIsEqualTo(PairCandidateReport(bruce, listOf(talia, jezebel),
-                    NeverPaired
-                ))
+                it.assertIsEqualTo(
+                    PairCandidateReport(
+                        bruce, listOf(talia, jezebel),
+                        NeverPaired
+                    )
+                )
             }
         }
     }

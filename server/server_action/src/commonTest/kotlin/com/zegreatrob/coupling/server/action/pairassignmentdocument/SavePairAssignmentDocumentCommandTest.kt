@@ -1,4 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
+
 import Spy
 import SpyData
 import com.soywiz.klock.DateTime
@@ -23,10 +24,10 @@ class SavePairAssignmentDocumentCommandTest {
             ).with(TribeId("tribe-239"))
 
             override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
-                    .apply { whenever(pairAssignmentDocument, Unit) }
+                .apply { whenever(pairAssignmentDocument, Unit) }
         }) exerciseAsync {
             SavePairAssignmentDocumentCommand(pairAssignmentDocument)
-                    .perform()
+                .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(pairAssignmentDocument)
             pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
@@ -35,6 +36,7 @@ class SavePairAssignmentDocumentCommandTest {
 }
 
 class SpyPairAssignmentDocumentRepository : PairAssignmentDocumentSaver,
-        Spy<TribeIdPairAssignmentDocument, Unit> by SpyData() {
-    override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = spyFunction(tribeIdPairAssignmentDocument)
+    Spy<TribeIdPairAssignmentDocument, Unit> by SpyData() {
+    override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) =
+        spyFunction(tribeIdPairAssignmentDocument)
 }

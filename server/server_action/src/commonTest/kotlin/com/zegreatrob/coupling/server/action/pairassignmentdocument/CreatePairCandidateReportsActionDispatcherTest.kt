@@ -1,4 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
+
 import Spy
 import SpyData
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
@@ -24,16 +25,20 @@ class CreatePairCandidateReportsActionDispatcherTest {
 
             val players = listOf(bill, ted, amadeus, shorty)
 
-            val billReport = PairCandidateReport(bill, emptyList(),
+            val billReport = PairCandidateReport(
+                bill, emptyList(),
                 TimeResultValue(1)
             )
-            val tedReport = PairCandidateReport(ted, emptyList(),
+            val tedReport = PairCandidateReport(
+                ted, emptyList(),
                 TimeResultValue(1)
             )
-            val amadeusReport = PairCandidateReport(amadeus, emptyList(),
+            val amadeusReport = PairCandidateReport(
+                amadeus, emptyList(),
                 TimeResultValue(1)
             )
-            val shortyReport = PairCandidateReport(shorty, emptyList(),
+            val shortyReport = PairCandidateReport(
+                shorty, emptyList(),
                 TimeResultValue(1)
             )
             val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
@@ -48,7 +53,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
 
         }) exercise {
             CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
-                    .perform()
+                .perform()
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
@@ -62,16 +67,20 @@ class CreatePairCandidateReportsActionDispatcherTest {
             val altShorty = Player(id = "Napoleon", badge = 2)
             val players = listOf(bill, ted, altAmadeus, altShorty)
 
-            val billReport = PairCandidateReport(bill, emptyList(),
+            val billReport = PairCandidateReport(
+                bill, emptyList(),
                 TimeResultValue(1)
             )
-            val tedReport = PairCandidateReport(ted, emptyList(),
+            val tedReport = PairCandidateReport(
+                ted, emptyList(),
                 TimeResultValue(1)
             )
-            val amadeusReport = PairCandidateReport(altAmadeus, emptyList(),
+            val amadeusReport = PairCandidateReport(
+                altAmadeus, emptyList(),
                 TimeResultValue(1)
             )
-            val shortyReport = PairCandidateReport(altShorty, emptyList(),
+            val shortyReport = PairCandidateReport(
+                altShorty, emptyList(),
                 TimeResultValue(1)
             )
             val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
@@ -86,7 +95,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
             }
         }) exercise {
             CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
-                    .perform()
+                .perform()
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
@@ -96,7 +105,8 @@ class CreatePairCandidateReportsActionDispatcherTest {
             val history = emptyList<PairAssignmentDocument>()
             val bill = Player(id = "Bill", badge = 1)
             val players = listOf(bill)
-            val billReport = PairCandidateReport(bill, emptyList(),
+            val billReport = PairCandidateReport(
+                bill, emptyList(),
                 TimeResultValue(1)
             )
 
@@ -106,7 +116,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
 
         }) exercise {
             CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.PreferDifferentBadge))
-                    .perform()
+                .perform()
         } verify {
             it.assertIsEqualTo(listOf(billReport))
         }
@@ -123,16 +133,20 @@ class CreatePairCandidateReportsActionDispatcherTest {
         val altShorty = Player(id = "Napoleon", badge = 2)
         val players = listOf(bill, ted, altAmadeus, altShorty)
 
-        val billReport = PairCandidateReport(bill, emptyList(),
+        val billReport = PairCandidateReport(
+            bill, emptyList(),
             NeverPaired
         )
-        val tedReport = PairCandidateReport(ted, emptyList(),
+        val tedReport = PairCandidateReport(
+            ted, emptyList(),
             NeverPaired
         )
-        val amadeusReport = PairCandidateReport(altAmadeus, emptyList(),
+        val amadeusReport = PairCandidateReport(
+            altAmadeus, emptyList(),
             NeverPaired
         )
-        val shortyReport = PairCandidateReport(altShorty, emptyList(),
+        val shortyReport = PairCandidateReport(
+            altShorty, emptyList(),
             NeverPaired
         )
         val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
@@ -147,7 +161,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
         }
     }) exercise {
         CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime))
-                .perform()
+            .perform()
     } verify {
         it.assertIsEqualTo(expectedReports)
     }
@@ -159,16 +173,16 @@ class CreatePairCandidateReportsActionDispatcherTest {
             players: List<Player>,
             history: List<PairAssignmentDocument>
         ) = whenever(
-                receive = expectedAction(pairCandidateReport.player, history, players),
-                returnValue = pairCandidateReport
+            receive = expectedAction(pairCandidateReport.player, history, players),
+            returnValue = pairCandidateReport
         )
 
         private fun expectedAction(player: Player, history: List<PairAssignmentDocument>, players: List<Player>) =
-                CreatePairCandidateReportAction(
-                        player,
-                        history,
-                        players
-                )
+            CreatePairCandidateReportAction(
+                player,
+                history,
+                players
+            )
 
         private fun List<Player>.without(player: Player) = filterNot { it == player }
     }
@@ -176,7 +190,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
 }
 
 class StubCreatePairCandidateReportActionDispatcher :
-        CreatePairCandidateReportActionDispatcher, Spy<CreatePairCandidateReportAction, PairCandidateReport>
+    CreatePairCandidateReportActionDispatcher, Spy<CreatePairCandidateReportAction, PairCandidateReport>
 by SpyData() {
     override fun CreatePairCandidateReportAction.perform() = spyFunction(this)
 }

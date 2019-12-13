@@ -12,7 +12,8 @@ import react.router.dom.redirect
 
 object Logout : RComponent<PageProps>(provider()), LogoutBuilder, Sdk by SdkSingleton
 
-interface LogoutBuilder : SimpleComponentRenderer<PageProps>, GoogleSignIn, LogoutCommandDispatcher, ReactScopeProvider {
+interface LogoutBuilder : SimpleComponentRenderer<PageProps>, GoogleSignIn, LogoutCommandDispatcher,
+    ReactScopeProvider {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val scope = useScope("Logout")

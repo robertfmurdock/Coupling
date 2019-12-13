@@ -16,17 +16,21 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 
+private external interface Database {
+    fun close()
+}
+
 class MongoTribeRepositoryTest {
 
     lateinit var repository: MongoTribeRepository
     lateinit var toolkit: MonkToolkit
     private var tribeCollection: dynamic = null
-    private var db: dynamic = null
+    private lateinit var db: Database
 
     @BeforeTest
     fun setup() {
         val thing = object : MongoTribeRepository, MonkToolkit {
-            val db = getDb(mongoUrl)
+            val db = getDb(mongoUrl).unsafeCast<Database>()
             override val userEmail: String = "user-${Random.nextInt(200)}"
             override val jsRepository: dynamic = jsRepository(db)
         }

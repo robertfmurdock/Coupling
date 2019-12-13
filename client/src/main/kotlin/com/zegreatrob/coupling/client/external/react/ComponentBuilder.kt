@@ -32,7 +32,8 @@ interface StyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, PropsCla
     }
 }
 
-interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, ReactScopeProvider, PropsClassProvider<P> {
+interface ScopedStyledComponentRenderer<P : RProps, S> : ComponentBuilder<P>, ReactScopeProvider,
+    PropsClassProvider<P> {
     val componentPath: String
 
     fun ScopedStyledRContext<P, S>.render(): ReactElement

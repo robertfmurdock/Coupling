@@ -22,17 +22,19 @@ interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
     private fun FindNewPairsAction.performThis() = with(actionDispatcher) { perform() }
 
     fun RunGameAction.perform() = findNewPairs()
-            .assign(pins)
-            .let { pairAssignments -> pairAssignmentDocument(pairAssignments) }
+        .assign(pins)
+        .let { pairAssignments -> pairAssignmentDocument(pairAssignments) }
 
     private fun RunGameAction.findNewPairs() = findNewPairsAction()
-            .performThis()
+        .performThis()
 
-    private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(
+    private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(
+        Game(
             history,
             players,
             tribe.pairingRule
-    ))
+        )
+    )
 
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) =
         PairAssignmentDocument(

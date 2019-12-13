@@ -16,7 +16,7 @@ class CalculatePairHeatActionTest {
     companion object : CalculatePairHeatActionDispatcher,
         PinAssignmentSyntax {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
-                .map { pairAssignmentDocument() }
+            .map { pairAssignmentDocument() }
 
         fun List<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
@@ -48,7 +48,7 @@ class CalculatePairHeatActionTest {
         private val player2 = Player(id = "fred")
         val pair = CouplingPair.Double(player1, player2)
         val history = listOf(
-                listOf(CouplingPair.Double(player2, player1)).pairAssignmentDocument()
+            listOf(CouplingPair.Double(player2, player1)).pairAssignmentDocument()
         )
         val rotationPeriod = 60
         val action =
@@ -135,11 +135,11 @@ class CalculatePairHeatActionTest {
             val alternatePairing2 = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
 
             val history = listOf(
-                    alternatePairing1,
-                    expectedPairing,
-                    alternatePairing2
+                alternatePairing1,
+                expectedPairing,
+                alternatePairing2
             )
-                    .map { it.pairAssignmentDocument() }
+                .map { it.pairAssignmentDocument() }
             val action =
                 CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
@@ -154,8 +154,8 @@ class CalculatePairHeatActionTest {
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
             val expectedPairing = listOf(pair, CouplingPair.Single(player3))
             val history = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
-                    .buildHistoryByRepeating(intervalsUntilCooling)
-                    .plus(expectedPairing.pairAssignmentDocument())
+                .buildHistoryByRepeating(intervalsUntilCooling)
+                .plus(expectedPairing.pairAssignmentDocument())
 
             val action =
                 CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -170,10 +170,10 @@ class CalculatePairHeatActionTest {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
             val expectedPairing = listOf(pair, CouplingPair.Single(player3))
-                    .buildHistoryByRepeating(rotationHeatWindow + 1)
+                .buildHistoryByRepeating(rotationHeatWindow + 1)
             val history = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
-                    .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
-                    .plus(expectedPairing)
+                .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
+                .plus(expectedPairing)
 
             val action =
                 CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -201,12 +201,12 @@ class CalculatePairHeatActionTest {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
             val history = listOf(
-                    CouplingPair.Double(player2, player3),
-                    CouplingPair.Double(player1, player4),
-                    CouplingPair.Single(player5)
+                CouplingPair.Double(player2, player3),
+                CouplingPair.Double(player1, player4),
+                CouplingPair.Single(player5)
             )
-                    .buildHistoryByRepeating(intervalsUntilCooling - 1)
-                    .plus(expectedPairing)
+                .buildHistoryByRepeating(intervalsUntilCooling - 1)
+                .plus(expectedPairing)
 
             val action =
                 CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -220,7 +220,7 @@ class CalculatePairHeatActionTest {
         fun willReturn7WhenSkippingOneRotationOutOfFive() = setup(object {
             val intervalWithIntendedPair = listOf(pair, CouplingPair.Double(player3, player4)).pairAssignmentDocument()
             val assignmentsWithoutIntendedPair = listOf(
-                    CouplingPair.Double(player1, player3), CouplingPair.Double(player3, player4)
+                CouplingPair.Double(player1, player3), CouplingPair.Double(player3, player4)
             )
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
 
@@ -241,7 +241,7 @@ class CalculatePairHeatActionTest {
         fun willReturnTwoAndHalfWhenSkippingThreeRotationOutOfFive() = setup(object {
             val intervalWithIntendedPair = listOf(pair, CouplingPair.Double(player3, player4)).pairAssignmentDocument()
             val assignmentsWithoutIntendedPair = listOf(
-                    CouplingPair.Double(player1, player3), CouplingPair.Double(player3, player4)
+                CouplingPair.Double(player1, player3), CouplingPair.Double(player3, player4)
             )
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
 

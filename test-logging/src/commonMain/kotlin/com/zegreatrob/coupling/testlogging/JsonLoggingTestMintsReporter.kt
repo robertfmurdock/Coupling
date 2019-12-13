@@ -9,16 +9,16 @@ class JsonLoggingTestMintsReporter private constructor() : MintReporter {
     private val logger by lazy { KotlinLogging.logger("testmints") }
     override fun exerciseStart(context: Any) = logger.info {
         mapOf(
-                "message" to "exerciseStart",
-                "context" to context.toString()
+            "message" to "exerciseStart",
+            "context" to context.toString()
         )
     }
 
     override fun exerciseFinish() = logger.info { "exerciseFinish" }
     override fun verifyStart(payload: Any?) = logger.info {
         mapOf(
-                "message" to "verifyStart",
-                "payload" to payload.toString()
+            "message" to "verifyStart",
+            "payload" to payload.toString()
         )
     }
 
