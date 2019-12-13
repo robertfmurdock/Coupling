@@ -36,8 +36,8 @@ kotlin {
 
 dependencies {
     implementation(kotlin("stdlib-js"))
-    api(project(":model"))
-    api(project(":json"))
+    implementation(project(":model"))
+    implementation(project(":json"))
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
@@ -59,7 +59,6 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async-js:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
 }
-
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
