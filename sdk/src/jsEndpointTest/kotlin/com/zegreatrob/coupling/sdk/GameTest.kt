@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -24,7 +24,7 @@ class GameTest {
     fun willTakeThePlayersGivenAndUseThoseForPairing() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId(uuid4().toString()), name = "test", pairingRule = PairingRule.LongestTime)
+            val tribe = Tribe(id = TribeId(uuid4().toString()), name = "test", pairingRule = PairingRule.LongestTime)
             val players = listOf(
                 Player(name = "dude1"),
                 Player(name = "dude2")
@@ -44,7 +44,7 @@ class GameTest {
     fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
+            val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
@@ -77,7 +77,7 @@ class GameTest {
     fun givenTheLongestPairRuleItWillIgnoreBadges() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
+            val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
@@ -110,7 +110,7 @@ class GameTest {
     fun whenAPinExistsWillAssignOnePinToPlayer() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
+            val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
             val players = listOf(
                 Player(id = monk.id().toString(), name = "One", badge = Badge.Default.value)
             )
@@ -135,7 +135,7 @@ class GameTest {
 
     private suspend fun setupScenario(
         sdk: AuthorizedSdk,
-        tribe: KtTribe,
+        tribe: Tribe,
         players: List<Player> = emptyList(),
         history: List<PairAssignmentDocument> = emptyList(),
         pins: List<Pin> = emptyList()

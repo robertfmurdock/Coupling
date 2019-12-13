@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
 import react.ReactElement
 
@@ -32,7 +32,7 @@ interface RetiredPlayersPageBuilder : SimpleComponentRenderer<PageProps>, Retire
         } else throw Exception("WHAT")
     }
 
-    private fun toRetiredPlayersProps(result: Pair<KtTribe?, List<Player>>, pathSetter: (String) -> Unit) = result
+    private fun toRetiredPlayersProps(result: Pair<Tribe?, List<Player>>, pathSetter: (String) -> Unit) = result
         .let { (tribe, retiredPlayers) ->
             RetiredPlayersProps(
                 tribe = tribe!!,

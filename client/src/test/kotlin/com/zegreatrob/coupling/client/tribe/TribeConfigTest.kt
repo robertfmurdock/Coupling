@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -32,7 +32,7 @@ class TribeConfigTest {
         PropsClassProvider<TribeConfigProps> by provider() {
         override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
         val tribe =
-            KtTribe(TribeId("1"), name = "1")
+            Tribe(TribeId("1"), name = "1")
 
     }) exercise {
         shallow(TribeConfigProps(tribe) {})
@@ -72,11 +72,11 @@ class TribeConfigTest {
                 override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
 
-                override suspend fun KtTribe.save() {
+                override suspend fun Tribe.save() {
                     saveSpy.spyFunction(toJson())
                 }
 
-                val tribe = KtTribe(
+                val tribe = Tribe(
                     TribeId("1"),
                     name = "1",
                     alternateBadgeName = "alt",

@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -24,7 +24,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     @Test
     fun willShowTribeCard() = setup(object : TribeStatisticsBuilder,
         PropsClassProvider<TribeStatisticsProps> by provider() {
-        val tribe = KtTribe(TribeId("1"))
+        val tribe = Tribe(TribeId("1"))
         val props = TribeStatisticsProps(
             StatisticQueryResults(
                 tribe = tribe,
@@ -55,7 +55,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("1"),
             name = "Mathematica"
         )
@@ -134,7 +134,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("2"),
             name = "Mathematica"
         )
@@ -179,7 +179,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("2"),
             name = "Mathematica"
         )
@@ -215,7 +215,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("2"),
             name = "Mathematica"
         )

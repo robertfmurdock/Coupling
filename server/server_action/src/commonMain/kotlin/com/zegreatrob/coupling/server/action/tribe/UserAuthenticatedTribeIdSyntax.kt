@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.tribe
 import com.zegreatrob.coupling.model.user.UserAuthorizedTribeIdsSyntax
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface UserAuthenticatedTribeIdSyntax : UserEmailSyntax, UserAuthorizedTribeIdsSyntax {
@@ -12,5 +12,5 @@ interface UserAuthenticatedTribeIdSyntax : UserEmailSyntax, UserAuthorizedTribeI
 
     fun List<TribeIdPlayer>.authenticatedTribeIds() = map { it.tribeId } + userAuthorizedTribeIds()
 
-    private fun List<TribeId>.authenticatedFilter(): (KtTribe) -> Boolean = { contains(it.id) }
+    private fun List<TribeId>.authenticatedFilter(): (Tribe) -> Boolean = { contains(it.id) }
 }

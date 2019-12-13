@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -23,7 +23,7 @@ class RunGameActionTest {
         override val actionDispatcher = SpyFindNewPairsActionDispatcher()
         val expectedDate = DateTime.now()
         override fun currentDate() = expectedDate
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("1"),
             PairingRule.LongestTime
         )

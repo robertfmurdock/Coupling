@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -28,7 +28,7 @@ class GameExamplesTest {
     class WithUniformBadgesAndLongestTimeRule {
 
         companion object {
-            val tribe = KtTribe(
+            val tribe = Tribe(
                 id = TribeId("JLA"),
                 pairingRule = PairingRule.LongestTime
             )
@@ -53,7 +53,7 @@ class GameExamplesTest {
         @Test
         fun worksWithNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val tribe = KtTribe(
+            val tribe = Tribe(
                 TribeId("Best tribe ever"),
                 PairingRule.LongestTime
             )
@@ -70,7 +70,7 @@ class GameExamplesTest {
         @Test
         fun worksWithAnOddNumberOfPlayersAndNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val tribe = KtTribe(
+            val tribe = Tribe(
                 TribeId("Best tribe ever"),
                 PairingRule.LongestTime
             )
@@ -132,7 +132,7 @@ class GameExamplesTest {
 
     class WithDifferentBadgesAndLongestPairRule {
         companion object {
-            val tribe = KtTribe(
+            val tribe = Tribe(
                 id = TribeId("JLA"),
                 pairingRule = PairingRule.LongestTime
             )
@@ -198,7 +198,7 @@ class GameExamplesTest {
 
     @Test
     fun willNotGetStuckWhenPairingPeopleWithDifferentBadges() = setup(object {
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("Avengers"),
             PairingRule.PreferDifferentBadge
         )

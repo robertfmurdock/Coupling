@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.classes
 import react.RProps
 import react.dom.a
@@ -9,7 +9,7 @@ import react.dom.div
 
 object TribeList : RComponent<TribeListProps>(provider()), TribeListBuilder
 
-data class TribeListProps(val tribes: List<KtTribe>, val pathSetter: (String) -> Unit) : RProps
+data class TribeListProps(val tribes: List<Tribe>, val pathSetter: (String) -> Unit) : RProps
 
 interface TribeListCss {
     val className: String

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -18,9 +18,9 @@ class TribesTest {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
             val tribes = listOf(
-                KtTribe(TribeId(uuid4().toString()), name = "one", badgesEnabled = true),
-                KtTribe(TribeId(uuid4().toString()), name = "two", callSignsEnabled = true),
-                KtTribe(TribeId(uuid4().toString()), name = "three")
+                Tribe(TribeId(uuid4().toString()), name = "one", badgesEnabled = true),
+                Tribe(TribeId(uuid4().toString()), name = "two", callSignsEnabled = true),
+                Tribe(TribeId(uuid4().toString()), name = "three")
             )
         }) {
             tribes.forEach { sdk.save(it) }
@@ -37,7 +37,7 @@ class TribesTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
             val player = Player(
                 id = monk.id().toString(),
                 name = "delete-me",
@@ -59,7 +59,7 @@ class TribesTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
             val player = Player(
                 id = monk.id().toString(),
                 name = "delete-me",
@@ -82,7 +82,7 @@ class TribesTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
         }) {
             otherSdk.save(tribe)
         } exerciseAsync {
@@ -98,7 +98,7 @@ class TribesTest {
     fun deleteWillRemoveTribeFromRegularCommunications() = testAsync {
         val sdk = authorizedSdk("eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
         }) {
             sdk.save(tribe)
         } exerciseAsync {

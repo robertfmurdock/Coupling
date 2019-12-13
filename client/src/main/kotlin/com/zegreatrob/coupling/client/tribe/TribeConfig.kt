@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.TribeRepository
@@ -25,7 +25,7 @@ import react.dom.*
 object TribeConfig : RComponent<TribeConfigProps>(provider()), TribeConfigBuilder,
     RepositoryCatalog by SdkSingleton
 
-data class TribeConfigProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
+data class TribeConfigProps(val tribe: Tribe, val pathSetter: (String) -> Unit) : RProps
 
 external interface TribeConfigStyles {
     val saveButton: String
@@ -80,13 +80,13 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
         props.pathSetter("/tribes/")
     }
 
-    private fun TribeConfigRenderer.onClickSave(updatedTribe: KtTribe) = scope.launch {
+    private fun TribeConfigRenderer.onClickSave(updatedTribe: Tribe) = scope.launch {
         SaveTribeCommand(updatedTribe).perform()
         props.pathSetter("/tribes/")
     }
 
     private fun TribeConfigRenderer.tribeForm(
-        tribe: KtTribe,
+        tribe: Tribe,
         isNew: Boolean,
         onChange: (Event) -> Unit
     ): RBuilder.() -> ReactElement = {
@@ -100,7 +100,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
 
     private fun TribeConfigRenderer.configInputList(
         rBuilder: RBuilder,
-        tribe: KtTribe,
+        tribe: Tribe,
         onChange: (Event) -> Unit,
         isNew: Boolean
     ) = rBuilder.ul(classes = styles.editor) {

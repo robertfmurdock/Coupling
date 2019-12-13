@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo.tribe
 
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -15,7 +15,7 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
 
     val jsRepository: dynamic
 
-    override suspend fun save(tribe: KtTribe) = tribe.toDbJson()
+    override suspend fun save(tribe: Tribe) = tribe.toDbJson()
         .save(jsRepository.tribesCollection)
 
     override suspend fun delete(tribeId: TribeId) = deleteEntity(
@@ -27,17 +27,17 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         usesRawId = false
     )
 
-    override suspend fun getTribe(tribeId: TribeId): KtTribe? = findByQuery(
+    override suspend fun getTribe(tribeId: TribeId): Tribe? = findByQuery(
         json("id" to tribeId.value),
         jsRepository.tribesCollection
     )
         .firstOrNull()
         ?.toTribe()
 
-    override suspend fun getTribes(): List<KtTribe> = findByQuery(json(), jsRepository.tribesCollection)
+    override suspend fun getTribes(): List<Tribe> = findByQuery(json(), jsRepository.tribesCollection)
         .map { it.toTribe() }
 
-    private fun KtTribe.toDbJson() = json(
+    private fun Tribe.toDbJson() = json(
         "id" to id.value,
         "pairingRule" to toValue(pairingRule),
         "name" to name,
@@ -48,8 +48,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         "callSignsEnabled" to callSignsEnabled
     )
 
-    private fun Json.toTribe(): KtTribe =
-        KtTribe(
+    private fun Json.toTribe(): Tribe =
+        Tribe(
             id = TribeId(this["id"].toString()),
             pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
             name = this["name"]?.toString(),

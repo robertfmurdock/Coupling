@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.async
@@ -24,7 +24,7 @@ interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSy
         )
     }
 
-    private fun Pair<KtTribe?, List<TribeIdPlayer>>.onlyAuthenticatedTribes() = let { (tribe, players) ->
+    private fun Pair<Tribe?, List<TribeIdPlayer>>.onlyAuthenticatedTribes() = let { (tribe, players) ->
         tribe?.takeIf(players.authenticatedFilter())
     }
 

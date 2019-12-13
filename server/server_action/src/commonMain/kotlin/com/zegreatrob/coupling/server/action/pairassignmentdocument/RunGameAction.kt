@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinAssignmentSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 
 data class RunGameAction(
     val players: List<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-    val tribe: KtTribe
+    val tribe: Tribe
 )
 
 interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {

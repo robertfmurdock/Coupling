@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -77,7 +77,7 @@ class PlayersTest {
     fun postPlayersThenGetWillReturnAllAvailablePlayersOnTeam() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId("et-${uuid4()}"))
+            val tribe = Tribe(id = TribeId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(
                     id = "${uuid4()}",
@@ -108,7 +108,7 @@ class PlayersTest {
     fun deleteWillRemoveAGivenPlayer() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId(uuid4().toString()))
+            val tribe = Tribe(id = TribeId(uuid4().toString()))
             val player = Player(
                 id = "${monk.id()}",
                 name = "Awesome-O"
@@ -128,7 +128,7 @@ class PlayersTest {
     fun deleteWillReturnErrorWhenPlayerDoesNotExist() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {
-            val tribe = KtTribe(id = TribeId(uuid4().toString()))
+            val tribe = Tribe(id = TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {

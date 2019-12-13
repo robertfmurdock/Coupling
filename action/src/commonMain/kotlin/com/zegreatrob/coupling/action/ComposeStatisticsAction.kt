@@ -4,11 +4,11 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>
 ) : Action

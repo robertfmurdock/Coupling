@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -27,7 +27,7 @@ class PlayerHeatmapBuilderTest {
             Player("moe")
         )
         val props = PlayerHeatmapProps(
-            tribe = KtTribe(TribeId("2")),
+            tribe = Tribe(TribeId("2")),
             players = players,
             heatmapData = emptyList()
         )
@@ -51,7 +51,7 @@ class PlayerHeatmapBuilderTest {
             Player("moe")
         )
         val props = PlayerHeatmapProps(
-            tribe = KtTribe(TribeId("2")),
+            tribe = Tribe(TribeId("2")),
             players = players,
             heatmapData = emptyList()
         )

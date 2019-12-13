@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 
@@ -24,7 +24,7 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
     val tribeJson = fileJson["tribe"]
 
     return TribeSetup(
-        tribe = KtTribe(
+        tribe = Tribe(
             name = tribeJson["name"].textValue(),
             pairingRule = tribeJson["pairingRule"].intValue().let {
                 PairingRule.fromValue(

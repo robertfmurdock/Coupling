@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 
@@ -32,14 +32,14 @@ interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQuer
     else
         newTribe()
 
-    private fun newTribe() = KtTribe(
+    private fun newTribe() = Tribe(
         id = TribeId(""),
         name = "New Tribe",
         defaultBadgeName = "Default",
         alternateBadgeName = "Alternate"
     )
 
-    private fun tribeConfigProps(tribe: KtTribe?, pathSetter: (String) -> Unit) = TribeConfigProps(
+    private fun tribeConfigProps(tribe: Tribe?, pathSetter: (String) -> Unit) = TribeConfigProps(
         tribe = tribe!!,
         pathSetter = pathSetter
     )

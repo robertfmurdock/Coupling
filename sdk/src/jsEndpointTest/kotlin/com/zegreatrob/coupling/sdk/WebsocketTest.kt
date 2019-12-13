@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -29,7 +29,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -58,7 +58,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -85,7 +85,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -108,7 +108,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -192,7 +192,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -214,7 +214,7 @@ class WebsocketTest {
 
     private fun openSocket(
         sdk: Sdk,
-        tribe: KtTribe,
+        tribe: Tribe,
         parent: Job? = null
     ): CompletableDeferred<Pair<MutableList<String>, WS>> {
         val socket = connectToSocket(sdk, tribe.id)

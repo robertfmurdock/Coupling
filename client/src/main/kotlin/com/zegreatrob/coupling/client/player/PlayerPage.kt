@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
 import react.ReactElement
 
@@ -38,7 +38,7 @@ interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, PlayerQueryDis
         } else throw Exception("WHAT")
     }
 
-    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<KtTribe?, List<Player>, Player>) -> PlayerConfigProps =
+    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<Tribe?, List<Player>, Player>) -> PlayerConfigProps =
         { reload, (tribe, players, player) ->
             PlayerConfigProps(
                 tribe = tribe!!,

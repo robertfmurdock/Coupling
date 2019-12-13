@@ -5,7 +5,7 @@ import com.soywiz.klock.days
 import com.soywiz.klock.hours
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -16,7 +16,7 @@ import kotlin.test.Test
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
-        val tribe = KtTribe(
+        val tribe = Tribe(
             TribeId("LOL"),
             PairingRule.LongestTime
         )
@@ -405,4 +405,4 @@ class ComposeStatisticsActionTest {
 expect fun loadJsonTribeSetup(fileResource: String): TribeSetup
 expect inline fun <reified T> loadResource(fileResource: String): T
 
-data class TribeSetup(val tribe: KtTribe, val players: List<Player>, val history: List<PairAssignmentDocument>)
+data class TribeSetup(val tribe: Tribe, val players: List<Player>, val history: List<PairAssignmentDocument>)

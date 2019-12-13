@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
 import com.zegreatrob.coupling.client.stats.heatmap.heatmap
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.DIV
 import react.RBuilder
 import react.RProps
@@ -19,7 +19,7 @@ object PlayerHeatmap : RComponent<PlayerHeatmapProps>(provider()), PlayerHeatmap
 val RBuilder.playerHeatmap get() = PlayerHeatmap.render(this)
 
 data class PlayerHeatmapProps(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val players: List<Player>,
     val heatmapData: List<List<Double?>>
 ) : RProps
@@ -57,7 +57,7 @@ interface PlayerHeatmapBuilder : StyledComponentRenderer<PlayerHeatmapProps, Pla
     private fun RDOMBuilder<DIV>.keyedPlayerCard(
         styles: PlayerHeatmapStyles,
         player: Player,
-        tribe: KtTribe
+        tribe: Tribe
     ): ReactElement {
         return div(classes = styles.playerCard) {
             attrs { key = player.id ?: "" }

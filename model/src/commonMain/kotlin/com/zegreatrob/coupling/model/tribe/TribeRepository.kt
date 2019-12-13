@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.model.tribe
 interface TribeRepository : TribeGet, TribeListGet, TribeSave, TribeDelete
 
 interface TribeSave {
-    suspend fun save(tribe: KtTribe)
+    suspend fun save(tribe: Tribe)
 }
 
 interface TribeDelete {
@@ -11,9 +11,9 @@ interface TribeDelete {
 }
 
 interface TribeGet {
-    suspend fun getTribe(tribeId: TribeId): KtTribe?
+    suspend fun getTribe(tribeId: TribeId): Tribe?
 }
 
 interface TribeListGet {
-    suspend fun getTribes(): List<KtTribe>
+    suspend fun getTribes(): List<Tribe>
 }

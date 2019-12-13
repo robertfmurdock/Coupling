@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.InputType
 import kotlinx.html.classes
 import react.RBuilder
@@ -18,7 +18,7 @@ external interface PinListStyles {
     val pinIcon: String
 }
 
-data class PinListProps(val tribe: KtTribe, val pins: List<Pin>) : RProps
+data class PinListProps(val tribe: Tribe, val pins: List<Pin>) : RProps
 
 interface PinListBuilder : StyledComponentRenderer<PinListProps, PinListStyles> {
 

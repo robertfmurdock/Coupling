@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.tribe
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeListSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -22,7 +22,7 @@ interface TribeListQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribe
         async { getTribes() } to async { getUserPlayers() }
     }
 
-    private fun Pair<List<KtTribe>, List<TribeIdPlayer>>.onlyAuthenticatedTribes() = let { (tribes, players) ->
+    private fun Pair<List<Tribe>, List<TribeIdPlayer>>.onlyAuthenticatedTribes() = let { (tribes, players) ->
         tribes.filter(players.authenticatedFilter())
     }
 

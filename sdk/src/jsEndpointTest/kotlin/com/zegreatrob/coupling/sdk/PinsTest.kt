@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
 import com.zegreatrob.minassert.assertContains
@@ -21,7 +21,7 @@ class PinsTest {
     fun postThenGetWillShowAllPins() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
             val pins = listOf(
                 Pin(uuid4().toString(), "1", tribe.id.value),
                 Pin(uuid4().toString(), "2", tribe.id.value),
@@ -41,7 +41,7 @@ class PinsTest {
     fun postThenDeleteWillNotShowThatPin() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
             val pins = listOf(
                 Pin(monk.id().toString(), "1", tribe.id.value),
                 Pin(monk.id().toString(), "2", tribe.id.value),
@@ -67,7 +67,7 @@ class PinsTest {
     fun deleteWillFailWhenPinDoesNotExist() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()))
+            val tribe = Tribe(TribeId(uuid4().toString()))
         }) {
             sdk.save(tribe)
         } exerciseAsync {

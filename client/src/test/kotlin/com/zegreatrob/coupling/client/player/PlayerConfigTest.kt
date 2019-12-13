@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.TribeIdPlayerId
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -37,7 +37,7 @@ class PlayerConfigTest {
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
         override val playerRepository get() = throw NotImplementedError("stubbed")
-        val tribe = KtTribe(
+        val tribe = Tribe(
             id = TribeId("party"),
             name = "Party tribe",
             badgesEnabled = true
@@ -56,7 +56,7 @@ class PlayerConfigTest {
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
         override val playerRepository get() = throw NotImplementedError("stubbed")
-        val tribe = KtTribe(
+        val tribe = Tribe(
             id = TribeId("party"),
             name = "Party tribe",
             badgesEnabled = true
@@ -86,7 +86,7 @@ class PlayerConfigTest {
                 }
 
                 val tribe =
-                    KtTribe(TribeId("party"))
+                    Tribe(TribeId("party"))
                 val player = Player(id = "blarg", badge = Badge.Default.value)
                 val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
 
@@ -136,7 +136,7 @@ class PlayerConfigTest {
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val tribe =
-                    KtTribe(TribeId("party"))
+                    Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
                 val wrapper = shallow(PlayerConfigProps(
@@ -181,7 +181,7 @@ class PlayerConfigTest {
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val tribe =
-                    KtTribe(TribeId("party"))
+                    Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
                 val wrapper = shallow(PlayerConfigProps(
                     tribe,
@@ -206,7 +206,7 @@ class PlayerConfigTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
         override val playerRepository get() = throw NotImplementedError("stubbed")
-        val tribe = KtTribe(TribeId("party"))
+        val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper = shallow(PlayerConfigProps(
             tribe,
@@ -230,7 +230,7 @@ class PlayerConfigTest {
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
         PropsClassProvider<PlayerConfigProps> by provider() {
         override val playerRepository get() = throw NotImplementedError("stubbed")
-        val tribe = KtTribe(TribeId("party"))
+        val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
         shallow(PlayerConfigProps(

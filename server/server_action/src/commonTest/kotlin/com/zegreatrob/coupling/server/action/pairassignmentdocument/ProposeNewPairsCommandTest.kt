@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinGetter
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeGet
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -34,7 +34,7 @@ class ProposeNewPairsCommandTest {
                     null
                 )
             )
-            val tribe = KtTribe(
+            val tribe = Tribe(
                 TribeId(
                     "Tribe Id! ${Random.nextInt(300)}"
                 ), PairingRule.PreferDifferentBadge
@@ -46,7 +46,7 @@ class ProposeNewPairsCommandTest {
             override suspend fun getPairAssignments(tribeId: TribeId): List<PairAssignmentDocument> = history
                 .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override suspend fun getTribe(tribeId: TribeId): KtTribe? = tribe
+            override suspend fun getTribe(tribeId: TribeId): Tribe? = tribe
                 .also { tribeId.assertIsEqualTo(tribe.id) }
 
             override val pinRepository: PinGetter = this

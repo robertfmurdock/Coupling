@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -42,7 +42,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Prepar
     }
 
     private fun RDOMBuilder<DIV>.spinButton(
-        tribe: KtTribe,
+        tribe: Tribe,
         playerSelections: List<Pair<Player, Boolean>>,
         pathSetter: (String) -> Unit,
         styles: PrepareSpinStyles
@@ -56,7 +56,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Prepar
 
     private fun RDOMBuilder<DIV>.selectablePlayerCardList(
         playerSelections: List<Pair<Player, Boolean>>,
-        tribe: KtTribe,
+        tribe: Tribe,
         pathSetter: (String) -> Unit,
         setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
         styles: PrepareSpinStyles
@@ -65,7 +65,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Prepar
     }
 
     private fun RDOMBuilder<DIV>.playerCard(
-        tribe: KtTribe,
+        tribe: Tribe,
         player: Player,
         pathSetter: (String) -> Unit,
         isSelected: Boolean,
@@ -102,7 +102,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Prepar
 
     private fun goToNewPairAssignments(
         pathSetter: (String) -> Unit,
-        tribe: KtTribe,
+        tribe: Tribe,
         playerSelections: List<Pair<Player, Boolean>>
     ) = pathSetter(
         "/${tribe.id.value}/pairAssignments/new?${playerSelections.buildQueryParameters()}"
@@ -131,7 +131,7 @@ external interface PrepareSpinStyles {
 }
 
 data class PrepareSpinProps(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val pathSetter: (String) -> Unit

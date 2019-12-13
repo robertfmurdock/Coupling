@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
@@ -25,7 +25,7 @@ object TribeCard : RComponent<TribeCardProps>(provider()), TribeCardBuilder
 
 val RBuilder.tribeCard get() = TribeCard.render(this)
 
-data class TribeCardProps(val tribe: KtTribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
+data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
 external interface TribeCardStyles {
     val className: String
@@ -93,7 +93,7 @@ interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardSt
         multiLine = true
     )
 
-    private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: KtTribe, size: Int) = gravatarImage(
+    private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
         email = tribe.email,
         alt = "tribe-img",
         fallback = "/images/icons/tribes/no-tribe.png",

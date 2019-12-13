@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -37,7 +37,7 @@ object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssig
     RepositoryCatalog by SdkSingleton
 
 data class PairAssignmentsProps(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val pathSetter: (String) -> Unit
@@ -246,7 +246,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     }
 
     private fun RBuilder.callSign(
-        tribe: KtTribe,
+        tribe: Tribe,
         callSign: CallSign?,
         pairAssignmentsStyles: PairAssignmentsStyles
     ) = div {

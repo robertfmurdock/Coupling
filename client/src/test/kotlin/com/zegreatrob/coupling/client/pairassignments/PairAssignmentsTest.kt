@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmen
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -31,7 +31,7 @@ import kotlin.test.Test
 
 class PairAssignmentsTest {
 
-    val tribe = KtTribe(TribeId("Party"))
+    val tribe = Tribe(TribeId("Party"))
     private val styles = loadStyles<PairAssignmentsStyles>("pairassignments/PairAssignments")
 
     @Test

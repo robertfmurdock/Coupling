@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class StatisticsQuery(val tribeId: TribeId) : Action
 
 data class StatisticQueryResults(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val report: StatisticsReport,
@@ -32,7 +32,7 @@ interface StatisticsQueryDispatcher : ActionLoggingSyntax,
     }
 
     private fun calculateStats(
-        tribe: KtTribe,
+        tribe: Tribe,
         players: List<Player>,
         history: List<PairAssignmentDocument>
     ) = ComposeStatisticsAction(tribe, players, history).perform() to

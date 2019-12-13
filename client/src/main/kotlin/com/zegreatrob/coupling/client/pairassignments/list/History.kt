@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
@@ -38,7 +38,7 @@ external interface HistoryStyles {
 }
 
 data class HistoryProps(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val history: List<PairAssignmentDocument>,
     val reload: () -> Unit,
     val pathSetter: (String) -> Unit

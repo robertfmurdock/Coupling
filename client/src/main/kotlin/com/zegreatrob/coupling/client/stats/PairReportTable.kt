@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.DIV
 import react.RBuilder
 import react.RProps
@@ -40,7 +40,7 @@ interface PairReportTableRenderer : StyledComponentRenderer<PairReportTableProps
         styles: PairReportTableStyles,
         index: Int,
         pairReport: PairReport,
-        tribe: KtTribe
+        tribe: Tribe
     ) = div(classes = styles.pairReport) {
         attrs { key = "$index" }
         pairReport.pair.asArray().map { player -> reportPlayerCard(styles, player, tribe) }
@@ -59,7 +59,7 @@ interface PairReportTableRenderer : StyledComponentRenderer<PairReportTableProps
         NeverPaired -> "Never Paired"
     }
 
-    private fun RDOMBuilder<DIV>.reportPlayerCard(styles: PairReportTableStyles, player: Player, tribe: KtTribe) =
+    private fun RDOMBuilder<DIV>.reportPlayerCard(styles: PairReportTableStyles, player: Player, tribe: Tribe) =
         div(classes = styles.playerCard) {
             attrs { key = player.id ?: "" }
             playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
@@ -73,4 +73,4 @@ external interface PairReportTableStyles {
     val pairStatistics: String
 }
 
-data class PairReportTableProps(val tribe: KtTribe, val pairReports: List<PairReport>) : RProps
+data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : RProps

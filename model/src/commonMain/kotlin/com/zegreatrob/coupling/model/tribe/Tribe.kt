@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model.tribe
 
-data class KtTribe(
+data class Tribe(
     val id: TribeId,
     val pairingRule: PairingRule = PairingRule.LongestTime,
     val badgesEnabled: Boolean = false,

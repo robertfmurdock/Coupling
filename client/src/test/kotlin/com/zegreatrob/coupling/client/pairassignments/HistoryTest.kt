@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.HistoryStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -38,7 +38,7 @@ class HistoryTest {
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val tribe =
-                    KtTribe(TribeId("me"))
+                    Tribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
 
                 override suspend fun TribeIdPairAssignmentDocumentId.delete() =
@@ -79,7 +79,7 @@ class HistoryTest {
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
 
                 val tribe =
-                    KtTribe(TribeId("me"))
+                    Tribe(TribeId("me"))
                 val removeSpy = object : Spy<Unit, Promise<Unit>> by SpyData() {}
                 override suspend fun TribeIdPairAssignmentDocumentId.delete() =
                     removeSpy.spyFunction(Unit).let { true }

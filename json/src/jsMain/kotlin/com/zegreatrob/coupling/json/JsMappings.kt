@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.*
@@ -60,7 +60,7 @@ private fun Any.toIntFromStringOrInt(): Int? = when (this) {
     else -> null
 }
 
-fun Json.toTribe(): KtTribe = KtTribe(
+fun Json.toTribe(): Tribe = Tribe(
     id = TribeId(stringValue("id")!!),
     name = stringValue("name"),
     email = stringValue("email"),
@@ -71,7 +71,7 @@ fun Json.toTribe(): KtTribe = KtTribe(
     callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
 )
 
-fun KtTribe.toJson() = json(
+fun Tribe.toJson() = json(
     "id" to id.value,
     "pairingRule" to PairingRule.toValue(pairingRule),
     "name" to name,

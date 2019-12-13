@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class SaveTribeCommand(val tribe: KtTribe) : Action
+data class SaveTribeCommand(val tribe: Tribe) : Action
 
 interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax,
     TribeSaveSyntax, UserPlayersSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
@@ -37,11 +37,11 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
         await(async { tribe.id.load() }, async { getUserPlayers() })
     }
 
-    private fun shouldSave(tribeId: TribeId, loadedTribe: KtTribe?, playerList: List<TribeIdPlayer>) =
+    private fun shouldSave(tribeId: TribeId, loadedTribe: Tribe?, playerList: List<TribeIdPlayer>) =
         tribeIsNew(loadedTribe)
                 || playerList.authenticatedTribeIds().contains(tribeId)
 
-    private fun tribeIsNew(existingTribe: KtTribe?) = existingTribe == null
+    private fun tribeIsNew(existingTribe: Tribe?) = existingTribe == null
 
     private suspend fun Boolean.whenTrue(block: suspend () -> Unit) = also {
         if (it) {

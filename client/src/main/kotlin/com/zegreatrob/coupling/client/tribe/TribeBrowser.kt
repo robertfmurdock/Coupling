@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -12,7 +12,7 @@ object TribeBrowser : RComponent<TribeBrowserProps>(provider()), TribeBrowserBui
 
 val RBuilder.tribeBrowser get() = TribeBrowser.render(this)
 
-data class TribeBrowserProps(val tribe: KtTribe, val pathSetter: (String) -> Unit) : RProps
+data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit) : RProps
 
 interface TribeBrowserCss {
     val className: String
@@ -40,7 +40,7 @@ interface TribeBrowserBuilder : StyledComponentRenderer<TribeBrowserProps, Tribe
         }
     }
 
-    private fun RBuilder.tribeControlButtons(tribe: KtTribe, styles: TribeBrowserCss) {
+    private fun RBuilder.tribeControlButtons(tribe: Tribe, styles: TribeBrowserCss) {
         span {
             span {
                 a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {

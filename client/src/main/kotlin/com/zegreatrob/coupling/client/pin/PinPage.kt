@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 import react.ReactElement
@@ -33,7 +33,7 @@ interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, PinListQueryD
         } else throw Exception("WHAT")
     }
 
-    private fun Pair<KtTribe?, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
+    private fun Pair<Tribe?, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
         PinListProps(
             tribe = tribe!!,
             pins = retiredPlayers

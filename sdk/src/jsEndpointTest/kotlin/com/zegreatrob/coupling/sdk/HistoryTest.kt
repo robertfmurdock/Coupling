@@ -4,7 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -19,7 +19,7 @@ class HistoryTest {
     fun postsThenGetWillReturnSavedPairs() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "one")
             val pairAssignments = PairAssignmentDocument(
                 id = PairAssignmentDocumentId(uuid4().toString()),
                 date = DateTime.now(),
@@ -41,7 +41,7 @@ class HistoryTest {
     fun postsThenDeleteThenGetWillNotReturnSavedAssignments() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "one")
             val pairAssignments = PairAssignmentDocument(
                 id = PairAssignmentDocumentId(monk.id().toString()),
                 date = DateTime.now(),
@@ -64,7 +64,7 @@ class HistoryTest {
     fun deleteAssignmentsThatDontExistWillError() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "one")
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -86,7 +86,7 @@ class HistoryTest {
     fun whenNoHistoryGetWillReturnEmptyList() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribe = KtTribe(TribeId(uuid4().toString()), name = "one")
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "one")
         }) {
             sdk.save(tribe)
         } exerciseAsync {

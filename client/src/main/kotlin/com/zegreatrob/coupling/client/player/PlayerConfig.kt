@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRen
     RepositoryCatalog by SdkSingleton
 
 data class PlayerConfigProps(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val player: Player,
     val players: List<Player>,
     val pathSetter: (String) -> Unit,
@@ -119,7 +119,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
     private fun savePlayer(
         scope: CoroutineScope,
         updatedPlayer: Player,
-        tribe: KtTribe,
+        tribe: Tribe,
         reload: () -> Unit
     ) = scope.launch {
         SavePlayerCommand(tribe.id, updatedPlayer).perform()
@@ -127,7 +127,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
     }
 
     private fun removePlayer(
-        tribe: KtTribe,
+        tribe: Tribe,
         pathSetter: (String) -> Unit,
         scope: CoroutineScope,
         playerId: String
@@ -140,7 +140,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
 
     private fun PlayerConfigContext.playerConfigForm(
         player: Player,
-        tribe: KtTribe,
+        tribe: Tribe,
         onChange: (Event) -> Unit,
         onSubmit: (Event) -> Job
     ): RBuilder.() -> ReactElement {
@@ -229,7 +229,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
     }
 
     private fun RBuilder.badgeConfig(
-        tribe: KtTribe,
+        tribe: Tribe,
         player: Player,
         onChange: (Event) -> Unit,
         styles: PlayerConfigStyles

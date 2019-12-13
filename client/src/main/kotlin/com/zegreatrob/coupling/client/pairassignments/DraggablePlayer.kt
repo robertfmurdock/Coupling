@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
@@ -20,7 +20,7 @@ val RBuilder.draggablePlayer get() = DraggablePlayer.render(this)
 
 data class DraggablePlayerProps(
     val pinnedPlayer: PinnedPlayer,
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val pairAssignmentDocument: PairAssignmentDocument,
     val onPlayerDrop: (String) -> Unit
 ) : RProps

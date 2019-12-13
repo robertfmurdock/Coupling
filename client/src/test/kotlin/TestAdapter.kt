@@ -16,5 +16,3 @@ fun setLogLevel() {
 
     js("jasmine.getEnv().addReporter(reporter)")
 }
-
-

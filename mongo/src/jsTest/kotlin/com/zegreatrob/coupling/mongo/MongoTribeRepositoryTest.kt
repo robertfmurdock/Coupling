@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo
 
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
@@ -47,7 +47,7 @@ class MongoTribeRepositoryTest {
     @Test
     fun canSaveAndLoadTribe() = testAsync {
         setupAsync(object : MongoTribeRepository by repository, MonkToolkit by toolkit {
-            val tribe = KtTribe(
+            val tribe = Tribe(
                 id = TribeId(id()),
                 pairingRule = PairingRule.PreferDifferentBadge,
                 email = "safety@dance.edu",
@@ -68,7 +68,7 @@ class MongoTribeRepositoryTest {
     @Test
     fun canLoadTribeFromOldSchema() = testAsync {
         setupAsync(object : MongoTribeRepository by repository, MonkToolkit by toolkit {
-            val expectedTribe = KtTribe(
+            val expectedTribe = Tribe(
                 id = TribeId("safety"),
                 pairingRule = PairingRule.LongestTime,
                 defaultBadgeName = "Default",
@@ -98,17 +98,17 @@ class MongoTribeRepositoryTest {
     fun willLoadAllTribes() = testAsync {
         setupAsync(object : MongoTribeRepository by repository, MonkToolkit by toolkit {
             val tribes = listOf(
-                KtTribe(
+                Tribe(
                     id = TribeId(id()),
                     pairingRule = PairingRule.PreferDifferentBadge,
                     name = "1"
                 ),
-                KtTribe(
+                Tribe(
                     id = TribeId(id()),
                     pairingRule = PairingRule.LongestTime,
                     name = "2"
                 ),
-                KtTribe(
+                Tribe(
                     id = TribeId(id()),
                     pairingRule = PairingRule.LongestTime,
                     name = "3"

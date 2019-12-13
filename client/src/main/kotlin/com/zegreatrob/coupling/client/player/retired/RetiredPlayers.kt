@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.KtTribe
+import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RProps
 import react.ReactElement
 import react.dom.div
@@ -14,7 +14,7 @@ import react.dom.div
 object RetiredPlayers : RComponent<RetiredPlayersProps>(provider()), RetiredPlayersBuilder
 
 data class RetiredPlayersProps(
-    val tribe: KtTribe,
+    val tribe: Tribe,
     val retiredPlayers: List<Player>,
     val pathSetter: (String) -> Unit
 ) : RProps
