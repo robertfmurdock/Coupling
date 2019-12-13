@@ -48,14 +48,11 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
     override val componentPath: String get() = "player/PlayerCard"
 
     override fun StyledRContext<PlayerCardProps, PlayerCardStyles>.render(): ReactElement {
-        val (tribeId, player, pathSetter, disabled, className, size, onClick) = props
+        val (tribeId, player, pathSetter, disabled, _, size, onClick) = props
         return reactElement {
             styledDiv {
                 attrs {
-                    classes += setOf(styles.player, className).filterNotNull()
-                    if (props.deselected) {
-                        classes += styles.deselected
-                    }
+                    classes += additionalClasses()
                     playerCardStyle(size)
                     onClickFunction = onClick
                 }
@@ -71,6 +68,16 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
             }
         }
     }
+
+    private fun StyledRContext<PlayerCardProps, PlayerCardStyles>.additionalClasses() =
+        setOf(styles.player, props.className)
+            .filterNotNull()
+            .let {
+                when {
+                    props.deselected -> it + styles.deselected
+                    else -> it
+                }
+            }
 
     private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
         css {
