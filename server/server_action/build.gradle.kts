@@ -17,8 +17,8 @@ kotlin {
                 api(project(":model"))
                 api(project(":action"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2-1.3.60")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.2-1.3.60")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
                 implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
@@ -35,7 +35,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.2-1.3.60")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
             }
         }
         val jsTest by getting {

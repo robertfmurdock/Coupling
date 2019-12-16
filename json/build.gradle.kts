@@ -16,20 +16,20 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":model"))
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
+                implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
         getByName("commonTest") {
             dependencies {
+                implementation(project(":test-logging"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation(project(":test-logging"))
             }
         }
 
@@ -52,7 +52,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                implementation(kotlin("stdlib-js", BuildConstants.kotlinVersion))
             }
         }
         val jsTest by getting {
