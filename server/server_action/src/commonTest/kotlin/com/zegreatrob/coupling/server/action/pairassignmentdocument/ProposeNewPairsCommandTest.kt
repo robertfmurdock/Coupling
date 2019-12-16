@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.repository.pin.PinGetter
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.TribeGet
+import com.zegreatrob.coupling.repository.tribe.TribeGet
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -22,7 +22,8 @@ class ProposeNewPairsCommandTest {
 
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
-        setupAsync(object : ProposeNewPairsCommandDispatcher, PinGetter, TribeGet, PairAssignmentDocumentGetter {
+        setupAsync(object : ProposeNewPairsCommandDispatcher, PinGetter,
+            TribeGet, PairAssignmentDocumentGetter {
             override val pairAssignmentDocumentRepository = this
             override val tribeRepository = this
             val players = listOf(Player(name = "John"))

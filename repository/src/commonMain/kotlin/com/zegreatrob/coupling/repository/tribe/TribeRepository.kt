@@ -1,6 +1,12 @@
-package com.zegreatrob.coupling.model.tribe
+package com.zegreatrob.coupling.repository.tribe
 
-interface TribeRepository : TribeGet, TribeListGet, TribeSave, TribeDelete
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
+
+interface TribeRepository : TribeGet,
+    TribeListGet,
+    TribeSave,
+    TribeDelete
 
 interface TribeSave {
     suspend fun save(tribe: Tribe)

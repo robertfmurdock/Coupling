@@ -8,13 +8,14 @@ import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>) : Action
 
-interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax,
+interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax,
+    TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     RequestSpinActionDispatcher {
     suspend fun NewPairAssignmentsQuery.perform() = logAsync {

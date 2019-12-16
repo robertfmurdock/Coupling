@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.repository.player.PlayerDeleter
 import com.zegreatrob.coupling.repository.player.PlayerGetDeleted
 import com.zegreatrob.coupling.repository.player.PlayerGetter
 import com.zegreatrob.coupling.repository.player.PlayerSaver
-import com.zegreatrob.coupling.model.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDeleter
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGetter
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSaver

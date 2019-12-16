@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeListSyntax
+import com.zegreatrob.coupling.repository.tribe.TribeListSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 

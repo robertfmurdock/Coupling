@@ -5,13 +5,14 @@ import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class PinListQuery(val tribeId: TribeId) : Action
 
-interface PinListQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, TribeIdPinsSyntax {
+interface PinListQueryDispatcher : ActionLoggingSyntax,
+    TribeIdGetSyntax, TribeIdPinsSyntax {
     suspend fun PinListQuery.perform() = logAsync { tribeId.getData() }
     private suspend fun TribeId.getData() = coroutineScope {
         await(

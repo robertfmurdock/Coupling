@@ -1,4 +1,6 @@
-package com.zegreatrob.coupling.model.tribe
+package com.zegreatrob.coupling.repository.tribe
+
+import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdGetSyntax {
     val tribeRepository: TribeGet

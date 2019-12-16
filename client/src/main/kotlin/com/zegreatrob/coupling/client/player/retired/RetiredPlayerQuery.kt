@@ -5,13 +5,14 @@ import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.await
 import com.zegreatrob.coupling.repository.player.TribeIdRetiredPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class RetiredPlayerQuery(val tribeId: TribeId, val playerId: String) : Action
 
-interface RetiredPlayerQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax,
+interface RetiredPlayerQueryDispatcher : ActionLoggingSyntax,
+    TribeIdGetSyntax,
     TribeIdRetiredPlayersSyntax {
     suspend fun RetiredPlayerQuery.perform() = logAsync {
         tribeId.getData()

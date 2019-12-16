@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.model.tribe
+package com.zegreatrob.coupling.repository.tribe
 
 interface TribeListSyntax {
     val tribeRepository: TribeListGet

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
-import com.zegreatrob.coupling.model.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch

@@ -7,12 +7,13 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistoryS
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class ProposeNewPairsCommand(val tribeId: TribeId, val players: List<Player>) : Action
-interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyntax, TribeIdGetSyntax,
+interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyntax,
+    TribeIdGetSyntax,
     TribeIdHistorySyntax {
 
     val actionDispatcher: RunGameActionDispatcher

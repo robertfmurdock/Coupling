@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toTribe
-import com.zegreatrob.coupling.model.tribe.TribeListGet
+import com.zegreatrob.coupling.repository.tribe.TribeListGet
 import com.zegreatrob.coupling.sdk.external.axios.getList
 import kotlinx.coroutines.await
 import kotlin.js.Json
