@@ -9,11 +9,14 @@ export let config: Config = {
     allScriptsTimeout: 11000,
 
     capabilities: {
-        'browserName': 'firefox',
+        'browserName': 'chrome',
         'loggingPrefs': {
             'browser': 'WARNING'
         },
         'seleniumAddress': process.env.SELENIUM_ADDRESS,
+        'chromeOptions': {
+            'args': ['headless', 'show-fps-counter=true']
+        },
         'moz:firefoxOptions': {
             binary: process.env.FIREFOX_BIN
         }

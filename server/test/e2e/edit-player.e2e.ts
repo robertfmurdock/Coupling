@@ -222,7 +222,8 @@ describe('The edit player page', function () {
         await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
         const playerNameTextField = element(By.id('player-name'));
-        playerNameTextField.clear();
+        await playerNameTextField.clear();
+        await playerNameTextField.sendKeys(' \b');
 
         await savePlayerButton.click();
 

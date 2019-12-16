@@ -3,7 +3,7 @@ const url = require('url');
 
 const chooseBrowsers = function () {
   if (process.env.SELENIUM_ADDRESS) {
-    return ['remote-firefox'];
+    return ['remote-chrome'];
   } else {
     return ['Chrome', 'Firefox'];
   }

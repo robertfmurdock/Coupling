@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -13,7 +12,7 @@ kotlin {
     }
 
     sourceSets {
-        getByName("commonMain") {
+        val commonMain by getting {
             dependencies {
                 implementation(project(":model"))
                 implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
@@ -21,7 +20,7 @@ kotlin {
                 implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
-        getByName("commonTest") {
+        val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation("com.zegreatrob.testmints:standard:+")
