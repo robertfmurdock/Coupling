@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -13,37 +12,27 @@ kotlin {
     }
 
     sourceSets {
-        getByName("commonMain") {
+        val commonMain by getting {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
-        getByName("commonTest") {
+        val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
+                implementation(kotlin("test", BuildConstants.kotlinVersion))
+                implementation(kotlin("test-common", BuildConstants.kotlinVersion))
+                implementation(kotlin("test-annotations-common", BuildConstants.kotlinVersion))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                api(kotlin("reflect", BuildConstants.kotlinVersion))
             }
         }
 
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
+                implementation(kotlin("test-junit5", BuildConstants.kotlinVersion))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
             }
@@ -56,7 +45,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation(kotlin("test-js", BuildConstants.kotlinVersion))
             }
         }
     }
