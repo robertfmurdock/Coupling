@@ -14,10 +14,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":model"))
-                implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
-                implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                implementation("com.soywiz.korlibs.klock:klock:1.8.1")
+                api(project(":model"))
+                api(kotlin("stdlib", BuildConstants.kotlinVersion))
+                api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
+                api("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
         val commonTest by getting {
