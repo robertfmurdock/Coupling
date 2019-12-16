@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlin.js.*
 
 interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentRepository,

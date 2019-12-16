@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.mongo.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.PinRepository
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlin.js.Json
 import kotlin.js.json
 

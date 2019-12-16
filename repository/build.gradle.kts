@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -8,40 +7,55 @@ plugins {
 
 kotlin {
     targets {
+        jvm()
         js { nodejs() }
     }
 
     sourceSets {
-        getByName("commonMain") {
+        val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api(project(":repository"))
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
-                implementation("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
-        getByName("commonTest") {
+        val commonTest by getting {
             dependencies {
+                implementation(project(":test-logging"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
 
+        val jvmMain by getting {
+            dependencies {
+                api(kotlin("reflect", BuildConstants.kotlinVersion))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation("org.jetbrains.kotlin:kotlin-test")
+                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+                implementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+            }
+        }
+
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
             }
         }
         val jsTest by getting {
             dependencies {
-                api(project(":logging"))
-                implementation(npm("monk", "7.1.1"))
+                implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
     }

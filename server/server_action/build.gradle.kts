@@ -16,6 +16,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":action"))
+                api(project(":repository"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")

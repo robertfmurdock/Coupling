@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.model.pin.PinSaver
+import com.zegreatrob.coupling.repository.pin.PinSaver
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 
 interface SdkPinSaver : PinSaver, AxiosSyntax {

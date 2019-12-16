@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.action.pin
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 
 data class PinsQuery(val tribeId: TribeId) : Action
 

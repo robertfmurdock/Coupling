@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 
 interface PairAssignmentDispatcherJs : ProposeNewPairsCommandDispatcherJs,

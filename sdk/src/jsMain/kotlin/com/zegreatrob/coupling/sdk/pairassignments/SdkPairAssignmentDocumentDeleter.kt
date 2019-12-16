@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk.pairassignments
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentDeleter
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDeleter
 import com.zegreatrob.coupling.sdk.AxiosSyntax
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise

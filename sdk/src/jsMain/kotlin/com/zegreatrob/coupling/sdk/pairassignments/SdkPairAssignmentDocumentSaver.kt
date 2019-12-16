@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk.pairassignments
 
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentSaver
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSaver
 import com.zegreatrob.coupling.sdk.AxiosSyntax
 
 interface SdkPairAssignmentDocumentSaver : PairAssignmentDocumentSaver, AxiosSyntax {

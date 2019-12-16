@@ -4,9 +4,9 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentGetter
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetter
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.PinGetter
+import com.zegreatrob.coupling.repository.pin.PinGetter
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule

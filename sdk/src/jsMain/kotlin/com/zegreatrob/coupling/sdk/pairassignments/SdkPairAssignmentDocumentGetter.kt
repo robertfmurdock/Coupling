@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk.pairassignments
 
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentGetter
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetter
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.AxiosSyntax
 import com.zegreatrob.coupling.sdk.external.axios.getList

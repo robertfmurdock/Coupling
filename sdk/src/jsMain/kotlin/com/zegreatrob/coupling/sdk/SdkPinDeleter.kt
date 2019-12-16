@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.pin.PinDeleter
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.pin.PinDeleter
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
