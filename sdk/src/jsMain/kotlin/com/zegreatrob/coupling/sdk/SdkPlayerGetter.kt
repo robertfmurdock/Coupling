@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.PlayerGetter
+import com.zegreatrob.coupling.repository.player.PlayerGetter
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.getList
 import kotlinx.coroutines.await

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.model.player.PlayerDeleter
+import com.zegreatrob.coupling.repository.player.PlayerDeleter
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher

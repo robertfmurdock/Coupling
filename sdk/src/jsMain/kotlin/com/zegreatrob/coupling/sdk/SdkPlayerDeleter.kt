@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.player.PlayerDeleter
+import com.zegreatrob.coupling.repository.player.PlayerDeleter
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise

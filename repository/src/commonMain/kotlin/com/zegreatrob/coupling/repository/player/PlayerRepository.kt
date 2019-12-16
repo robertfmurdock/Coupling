@@ -1,8 +1,14 @@
-package com.zegreatrob.coupling.model.player
+package com.zegreatrob.coupling.repository.player
 
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted, PlayerGetByEmail
+interface PlayerRepository : PlayerGetter,
+    PlayerSaver,
+    PlayerDeleter,
+    PlayerGetDeleted,
+    PlayerGetByEmail
 
 interface PlayerDeleter {
     suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean

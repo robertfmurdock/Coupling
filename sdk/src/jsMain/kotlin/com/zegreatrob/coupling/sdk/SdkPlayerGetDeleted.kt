@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.PlayerGetDeleted
+import com.zegreatrob.coupling.repository.player.PlayerGetDeleted
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.getList
 import kotlinx.coroutines.await

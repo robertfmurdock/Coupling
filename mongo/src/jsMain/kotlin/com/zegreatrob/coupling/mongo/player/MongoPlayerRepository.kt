@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.PlayerRepository
+import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
