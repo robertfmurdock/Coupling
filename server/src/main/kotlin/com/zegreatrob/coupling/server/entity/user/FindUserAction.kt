@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserRepository
+import com.zegreatrob.coupling.repository.user.UserRepository
 
 object FindUserAction : Action
 

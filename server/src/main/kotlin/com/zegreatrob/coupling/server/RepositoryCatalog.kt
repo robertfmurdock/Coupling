@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.model.user.UserRepository
+import com.zegreatrob.coupling.repository.user.UserRepository
 
 interface RepositoryCatalog {
     val tribeRepository: TribeRepository

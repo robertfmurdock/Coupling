@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.model
+package com.zegreatrob.coupling.repository
 
 import kotlinx.coroutines.Deferred
 

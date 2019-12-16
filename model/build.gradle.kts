@@ -15,10 +15,8 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
+                api(kotlin("stdlib", BuildConstants.kotlinVersion))
+                api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:1.8.1")
             }
         }
@@ -37,7 +35,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
             }
         }
 
@@ -54,8 +51,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                api(kotlin("stdlib-js", BuildConstants.kotlinVersion))
             }
         }
         val jsTest by getting {

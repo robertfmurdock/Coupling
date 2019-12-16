@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.user
 
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserRepository
+import com.zegreatrob.coupling.repository.user.UserRepository
 
 interface UserSaveSyntax {
 

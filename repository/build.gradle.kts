@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
             }
         }
         val commonTest by getting {
@@ -32,7 +33,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
             }
         }
 

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.user
 
-import com.zegreatrob.coupling.model.await
+import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.model.tribe.Tribe
