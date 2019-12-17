@@ -8,9 +8,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.*
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
@@ -54,35 +51,13 @@ fun Json.toPlayer(): Player = Player(
     imageURL = stringValue("imageURL")
 )
 
-private fun Any.toIntFromStringOrInt(): Int? = when (this) {
+fun Any.toIntFromStringOrInt(): Int? = when (this) {
     is String -> toInt()
     is Int -> this
     else -> null
 }
 
-fun Json.toTribe(): Tribe = Tribe(
-    id = TribeId(stringValue("id")!!),
-    name = stringValue("name"),
-    email = stringValue("email"),
-    pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
-    defaultBadgeName = stringValue("defaultBadgeName"),
-    alternateBadgeName = stringValue("alternateBadgeName"),
-    badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-    callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
-)
-
-fun Tribe.toJson() = json(
-    "id" to id.value,
-    "pairingRule" to PairingRule.toValue(pairingRule),
-    "name" to name,
-    "email" to email,
-    "defaultBadgeName" to defaultBadgeName,
-    "alternateBadgeName" to alternateBadgeName,
-    "badgesEnabled" to badgesEnabled,
-    "callSignsEnabled" to callSignsEnabled
-)
-
-private fun Json.stringValue(key: String) = this[key]?.toString()
+fun Json.stringValue(key: String) = this[key]?.toString()
 
 fun Array<Json>.toPins() = map { it.toPin() }
 

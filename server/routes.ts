@@ -3,6 +3,8 @@ import * as passport from "passport";
 import * as routes from "./routes/index";
 // @ts-ignore
 import * as server from "Coupling-server";
+import graphqlHTTP = require("express-graphql");
+import CouplingSchema from "./graphqlSchema"
 
 const {tribeListRouter, websocketRoute} = server.com.zegreatrob.coupling.server.route;
 
@@ -29,6 +31,15 @@ module.exports = function (wsInstance, userDataService, couplingDataService) {
     app.get('/', indexRoute);
     app.all('/api/*', apiGuard(userDataService, couplingDataService));
     app.use('/api/tribes', tribeListRouter);
+
+    app.use(
+        '/api/graphql',
+        graphqlHTTP({
+            schema: CouplingSchema,
+            graphiql: true,
+        }),
+    );
+
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 
