@@ -1,12 +1,18 @@
-// @ts-ignore
-import * as server from "Coupling-server";
-
 import {
   graphql,
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean,
 } from 'graphql';
+
+const PinType = new GraphQLObjectType({
+  name: 'Pin',
+  description: 'Something to put on your shirt!!',
+  fields: () => ({
+    _id: {type: GraphQLString},
+    name: {type: GraphQLString},
+  }),
+});
 
 const TribeType = new GraphQLObjectType({
   name: 'Tribe',
@@ -20,6 +26,7 @@ const TribeType = new GraphQLObjectType({
     alternateBadgeName: {type: GraphQLString},
     badgesEnabled: {type: GraphQLBoolean},
     callSignsEnabled: {type: GraphQLBoolean},
+    pins: {type: GraphQLList(PinType)}
   }),
 });
 

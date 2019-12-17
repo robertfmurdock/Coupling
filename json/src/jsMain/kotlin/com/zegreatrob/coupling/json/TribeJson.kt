@@ -40,6 +40,3 @@ fun Tribe.toJson() = json(
 val tribeJsonKeys = Tribe(TribeId(""))
     .toJson()
     .getKeys()
-
-private fun Json.getKeys() = js("Object").keys(this).unsafeCast<Array<String>>()
-

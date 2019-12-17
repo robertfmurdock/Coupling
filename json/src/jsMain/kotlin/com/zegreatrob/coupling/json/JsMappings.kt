@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import kotlin.js.*
 
@@ -32,14 +31,6 @@ fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?) = if (valu
 else
     this
 
-private fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
-    .toTypedArray()
-
-fun Pin.toJson() = json("_id" to _id, "tribe" to tribe, "name" to name)
-
-fun List<Pin>.toJsonArray() = map { it.toJson() }
-    .toTypedArray()
-
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
     id = stringValue("_id"),
@@ -58,14 +49,6 @@ fun Any.toIntFromStringOrInt(): Int? = when (this) {
 }
 
 fun Json.stringValue(key: String) = this[key]?.toString()
-
-fun Array<Json>.toPins() = map { it.toPin() }
-
-fun Json.toPin() = Pin(
-    _id = this["_id"]?.toString(),
-    name = this["name"]?.toString(),
-    tribe = this["tribe"]?.toString()
-)
 
 @Suppress("unused")
 @JsName("historyFromArray")
