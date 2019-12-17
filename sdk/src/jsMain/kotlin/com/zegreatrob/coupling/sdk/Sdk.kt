@@ -16,7 +16,7 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: SdkPairAssignmentsRepository
 }
 
-interface SdkTribeRepository : SdkGetTribe, SdkTribeListGet,
+interface SdkTribeRepository : SdkTribeGet, SdkTribeListGet,
     SdkTribeSave, SdkTribeDelete, TribeRepository
 
 interface SdkPlayerRepository : SdkPlayerGetter,

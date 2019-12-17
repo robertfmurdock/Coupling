@@ -15,7 +15,7 @@ import kotlin.test.Test
 class PlayersTest {
 
     companion object {
-        inline fun catchError(function: () -> Any?) = try {
+        inline fun catchAxiosError(function: () -> Any?) = try {
             function()
             json()
         } catch (error: dynamic) {
@@ -32,7 +32,7 @@ class PlayersTest {
         fun getIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
             setupAsync(object {}) exerciseAsync {
-                catchError {
+                catchAxiosError {
                     sdk.getPlayers(tribeId)
                 }
             } verifyAsync { result ->
@@ -51,7 +51,7 @@ class PlayersTest {
                     callSignNoun = "Sauce"
                 )
             }) exerciseAsync {
-                catchError {
+                catchAxiosError {
                     save(TribeIdPlayer(tribeId, player))
                 }
             } verifyAsync { result ->
@@ -64,7 +64,7 @@ class PlayersTest {
             val sdk = authorizedSdk()
             setupAsync(object {
             }) exerciseAsync {
-                catchError {
+                catchAxiosError {
                     sdk.deletePlayer(tribeId, "player id")
                 }
             } verifyAsync { result ->
@@ -132,7 +132,7 @@ class PlayersTest {
         }) {
             sdk.save(tribe)
         } exerciseAsync {
-            catchError {
+            catchAxiosError {
                 sdk.deletePlayer(tribe.id, monk.id().toString())
             }
         } verifyAsync { result ->

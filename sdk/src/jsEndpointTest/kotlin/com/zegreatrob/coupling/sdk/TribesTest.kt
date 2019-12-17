@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
+import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -86,7 +86,7 @@ class TribesTest {
         }) {
             otherSdk.save(tribe)
         } exerciseAsync {
-            catchError {
+            catchAxiosError {
                 sdk.save(tribe)
             }
         } verifyAsync { result ->
@@ -105,11 +105,18 @@ class TribesTest {
             sdk.delete(tribe.id)
             Pair(
                 sdk.getTribes(),
-                catchError { sdk.getTribe(tribe.id) }
+                catchException { sdk.getTribe(tribe.id) }
             )
         } verifyAsync { (result, error) ->
             result.assertIsEqualTo(emptyList())
-            error["status"].assertIsEqualTo(404)
+            error?.message.assertIsEqualTo("Tribe not found.")
         }
+    }
+
+    private inline fun catchException(function: () -> Tribe): Exception? = try {
+        function()
+        null
+    } catch (result: Exception) {
+        result
     }
 }

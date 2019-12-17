@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
+import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -71,7 +71,7 @@ class PinsTest {
         }) {
             sdk.save(tribe)
         } exerciseAsync {
-            catchError {
+            catchAxiosError {
                 sdk.deletePin(tribe.id, monk.id().toString())
             }
         } verifyAsync { result ->
@@ -85,7 +85,7 @@ class PinsTest {
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
-            catchError {
+            catchAxiosError {
                 sdk.getPins(TribeId("someoneElseTribe"))
             }
         } verifyAsync { result ->

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchError
+import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -68,7 +68,7 @@ class HistoryTest {
         }) {
             sdk.save(tribe)
         } exerciseAsync {
-            catchError {
+            catchAxiosError {
                 sdk.delete(
                     tribe.id, PairAssignmentDocumentId(
                         monk.id().toString()
@@ -100,7 +100,7 @@ class HistoryTest {
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
-            catchError {
+            catchAxiosError {
                 sdk.getPairAssignments(TribeId("someoneElseTribe"))
             }
         } verifyAsync { result ->
