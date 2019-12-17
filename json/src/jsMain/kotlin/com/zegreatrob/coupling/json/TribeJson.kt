@@ -14,9 +14,17 @@ fun Json.toTribe(): Tribe =
         pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
         defaultBadgeName = stringValue("defaultBadgeName"),
         alternateBadgeName = stringValue("alternateBadgeName"),
-        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
+        badgesEnabled = this["badgesEnabled"]?.toBoolean() ?: false,
+        callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: false
     )
+
+private fun Any.toBoolean() = when (this) {
+    is String -> isTruthyString()
+    is Boolean -> this
+    else -> false
+}
+
+private fun Any.isTruthyString() = this == "on" || this == "true"
 
 fun Tribe.toJson() = json(
     "id" to id.value,
