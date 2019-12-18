@@ -57,7 +57,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun List<Pin>.toDbJson(): Array<Json> = map { it.toDbJson() }
         .toTypedArray()
 
-    private fun Pin.toDbJson() = json("id" to _id, "tribe" to tribe, "name" to name)
+    private fun Pin.toDbJson() = json("id" to _id, "name" to name)
 
     private fun Json.toPairAssignmentDocument() =
         TribeIdPairAssignmentDocument(
@@ -83,8 +83,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun Array<Json>.toPins() = map {
         Pin(
             _id = it["id"]?.toString() ?: it["_id"]?.toString(),
-            name = it["name"]?.toString(),
-            tribe = it["tribe"]?.toString()
+            name = it["name"]?.toString()
         )
     }
 

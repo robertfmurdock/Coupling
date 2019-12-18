@@ -112,11 +112,4 @@ class TribesTest {
             error?.message.assertIsEqualTo("Tribe not found.")
         }
     }
-
-    private inline fun catchException(function: () -> Tribe): Exception? = try {
-        function()
-        null
-    } catch (result: Exception) {
-        result
-    }
 }

@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -114,7 +114,7 @@ class GameTest {
             val players = listOf(
                 Player(id = monk.id().toString(), name = "One", badge = Badge.Default.value)
             )
-            val pin = Pin(_id = monk.id().toString(), name = "super test pin", tribe = tribe.id.value)
+            val pin = Pin(_id = monk.id().toString(), name = "super test pin")
         }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exerciseAsync {

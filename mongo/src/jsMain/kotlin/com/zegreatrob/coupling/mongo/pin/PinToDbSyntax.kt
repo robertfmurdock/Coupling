@@ -10,11 +10,10 @@ interface PinToDbSyntax {
 
     fun Json.fromDbToPin() = Pin(
         _id = stringValue("id") ?: stringValue("_id"),
-        name = this["name"]?.toString(),
-        tribe = this["tribe"]?.toString()
+        name = this["name"]?.toString()
     )
 
-    fun Pin.toDbJson() = json("id" to _id, "tribe" to tribe, "name" to name)
+    fun Pin.toDbJson() = json("id" to _id, "name" to name)
 
     private fun Json.stringValue(key: String) = this[key]?.toString()
 }

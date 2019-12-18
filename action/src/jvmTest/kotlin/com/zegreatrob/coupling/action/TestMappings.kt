@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 val mapper = ObjectMapper()
@@ -57,8 +57,7 @@ private fun JsonNode.toPinnedCouplingPair() = PinnedCouplingPair(
 
 private fun JsonNode.toPin() = Pin(
     _id = this["_id"].textValue(),
-    name = this["name"].textValue(),
-    tribe = "no, this should not exist here"
+    name = this["name"].textValue()
 )
 
 private fun JsonNode.toPlayer() = Player(

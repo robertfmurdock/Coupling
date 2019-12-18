@@ -23,9 +23,9 @@ class PinsTest {
         setupAsync(object {
             val tribe = Tribe(TribeId(uuid4().toString()))
             val pins = listOf(
-                Pin(uuid4().toString(), "1", tribe.id.value),
-                Pin(uuid4().toString(), "2", tribe.id.value),
-                Pin(uuid4().toString(), "3", tribe.id.value)
+                Pin(uuid4().toString(), "1"),
+                Pin(uuid4().toString(), "2"),
+                Pin(uuid4().toString(), "3")
             )
         }) {
             sdk.save(tribe)
@@ -43,9 +43,9 @@ class PinsTest {
         setupAsync(object {
             val tribe = Tribe(TribeId(uuid4().toString()))
             val pins = listOf(
-                Pin(monk.id().toString(), "1", tribe.id.value),
-                Pin(monk.id().toString(), "2", tribe.id.value),
-                Pin(monk.id().toString(), "3", tribe.id.value)
+                Pin(monk.id().toString(), "1"),
+                Pin(monk.id().toString(), "2"),
+                Pin(monk.id().toString(), "3")
             )
         }) {
             coroutineScope {
@@ -82,14 +82,28 @@ class PinsTest {
     }
 
     @Test
+    fun givenNoPinsWillReturnEmptyList() = testAsync {
+        val sdk = authorizedSdk()
+        setupAsync(object {
+            val tribe = Tribe(TribeId(uuid4().toString()))
+        }) {
+            sdk.save(tribe)
+        } exerciseAsync {
+            sdk.getPins(tribe.id)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
-            catchAxiosError {
+            catchException {
                 sdk.getPins(TribeId("someoneElseTribe"))
             }
-        } verifyAsync { result ->
-            result["status"].assertIsEqualTo(404)
+        } verifyAsync { exception ->
+            exception?.message.assertIsEqualTo("Tribe not found.")
         }
     }
 }

@@ -10,6 +10,7 @@ const PinType = new GraphQLObjectType({
   description: 'Something to put on your shirt!!',
   fields: () => ({
     _id: {type: GraphQLString},
+    icon: {type: GraphQLString},
     name: {type: GraphQLString},
   }),
 });
@@ -26,7 +27,6 @@ const TribeType = new GraphQLObjectType({
     alternateBadgeName: {type: GraphQLString},
     badgesEnabled: {type: GraphQLBoolean},
     callSignsEnabled: {type: GraphQLBoolean},
-    pins: {type: GraphQLList(PinType)}
   }),
 });
 
@@ -42,11 +42,18 @@ const CouplingSchema = new GraphQLSchema({
       },
       tribe: {
         type: TribeType,
-        args: {
-          id: {type: GraphQLString},
-        },
-        resolve: (root, args, request) => request.commandDispatcher.performTribeQueryGQL(args.id)
+        args: {id: {type: GraphQLString},},
+        resolve: function (root, args, request) {
+          return request.commandDispatcher.performTribeQueryGQL(args.id);
+        }
       },
+      pinList: {
+        type: new GraphQLList(PinType),
+        args: {tribeId: {type: GraphQLString},},
+        resolve(root, args, request) {
+          return request.commandDispatcher.performPinListQueryGQL(args.tribeId);
+        },
+      }
     },
   }),
 });
