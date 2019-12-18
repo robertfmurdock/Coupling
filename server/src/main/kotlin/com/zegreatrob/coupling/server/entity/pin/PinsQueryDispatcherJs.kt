@@ -15,21 +15,16 @@ interface PinsQueryDispatcherJs : PinsQueryDispatcher, RequestTribeIdSyntax, End
     UserIsAuthorizedActionDispatcher {
     val performPinsQuery
         get() = endpointHandler(sendQueryResults("pin")) {
-            PinsQuery(tribeId())
+            PinsQuery
                 .perform()
-                .toJsonArray()
+                ?.toJsonArray()
         }
 
     @JsName("performPinListQueryGQL")
-    fun performPinListQueryGQL(id: String) = scope.promise {
-        val tribeId = TribeId(id)
-        if (userIsAuthorized(tribeId)) {
-            PinsQuery(tribeId)
-                .perform()
-                .toJsonArray()
-        } else {
-            null
-        }
+    fun performPinListQueryGQL() = scope.promise {
+        PinsQuery
+            .perform()
+            ?.toJsonArray()
     }
 
     private suspend fun userIsAuthorized(tribeId: TribeId) = UserIsAuthorizedAction(tribeId).perform()

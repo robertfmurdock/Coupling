@@ -50,8 +50,9 @@ const CouplingSchema = new GraphQLSchema({
       pinList: {
         type: new GraphQLList(PinType),
         args: {tribeId: {type: GraphQLString},},
-        resolve(root, args, request) {
-          return request.commandDispatcher.performPinListQueryGQL(args.tribeId);
+        async resolve(root, args, request) {
+          const dispatcher = await request.commandDispatcher.authorizedDispatcher(args.tribeId);
+          return await dispatcher.performPinListQueryGQL();
         },
       }
     },

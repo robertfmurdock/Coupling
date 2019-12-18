@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.server.action.pin
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
+import com.zegreatrob.coupling.server.action.AuthorizedTribeIdSyntax
 
-data class PinsQuery(val tribeId: TribeId) : Action
+object PinsQuery : Action
 
-interface PinsQueryDispatcher : ActionLoggingSyntax, TribeIdPinsSyntax {
+interface PinsQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax, TribeIdPinsSyntax {
 
-    suspend fun PinsQuery.perform() = logAsync { tribeId.getPins() }
+    suspend fun PinsQuery.perform() = logAsync { authorizedTribeId?.getPins() }
 
 }
