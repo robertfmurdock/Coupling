@@ -1,6 +1,6 @@
-import apiGuard from "./routes/api-guard";
+import apiGuard from "./api-guard";
 import * as passport from "passport";
-import * as routes from "./routes/index";
+import * as routes from "./index";
 // @ts-ignore
 import * as server from "Coupling-server";
 import graphqlHTTP = require("express-graphql");

@@ -2,14 +2,14 @@ import {
   graphql,
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean,
+  GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean, GraphQLNonNull,
 } from 'graphql';
 
 const PinType = new GraphQLObjectType({
   name: 'Pin',
   description: 'Something to put on your shirt!!',
   fields: () => ({
-    _id: {type: GraphQLString},
+    _id: {type: GraphQLNonNull(GraphQLString)},
     icon: {type: GraphQLString},
     name: {type: GraphQLString},
   }),
@@ -19,7 +19,7 @@ const TribeType = new GraphQLObjectType({
   name: 'Tribe',
   description: 'The people you couple with!',
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLNonNull(GraphQLString)},
     name: {type: GraphQLString},
     email: {type: GraphQLString},
     pairingRule: {type: GraphQLInt},
@@ -27,6 +27,14 @@ const TribeType = new GraphQLObjectType({
     alternateBadgeName: {type: GraphQLString},
     badgesEnabled: {type: GraphQLBoolean},
     callSignsEnabled: {type: GraphQLBoolean},
+    nonsense: {type: GraphQLBoolean},
+    pinList: {
+      type: new GraphQLList(PinType),
+      resolve: async function (tribe, args, request) {
+        const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
+        return await dispatcher.performPinListQueryGQL();
+      }
+    }
   }),
 });
 
@@ -46,14 +54,6 @@ const CouplingSchema = new GraphQLSchema({
         resolve: function (root, args, request) {
           return request.commandDispatcher.performTribeQueryGQL(args.id);
         }
-      },
-      pinList: {
-        type: new GraphQLList(PinType),
-        args: {tribeId: {type: GraphQLString},},
-        async resolve(root, args, request) {
-          const dispatcher = await request.commandDispatcher.authorizedDispatcher(args.tribeId);
-          return await dispatcher.performPinListQueryGQL();
-        },
       }
     },
   }),

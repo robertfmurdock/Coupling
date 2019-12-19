@@ -12,13 +12,11 @@ import kotlin.js.json
 interface SdkPinGetter : PinGetter, AxiosSyntax {
     override suspend fun getPins(tribeId: TribeId): List<Pin> = axios.post(
         "/api/graphql", json(
-            "query" to "{ pinList(tribeId: \"${tribeId.value}\") {${pinJsonKeys.joinToString(",")}} }"
+            "query" to "{ tribe(id: \"${tribeId.value}\") { pinList {${pinJsonKeys.joinToString(",")}} } }"
         )
     )
         .then<List<Pin>?> {
-            it.data.unsafeCast<Json>()["data"]
-                .unsafeCast<Json>()["pinList"]
-                .unsafeCast<Array<Json>?>()
+            it.data.data.tribe?.pinList.unsafeCast<Array<Json>?>()
                 ?.toPins()
         }
         .await()

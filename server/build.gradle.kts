@@ -104,7 +104,6 @@ tasks {
         inputs.dir("routes")
         inputs.dir("views")
         inputs.file("app.ts")
-        inputs.file("routes.ts")
         outputs.dir(file("build/executable"))
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("webpack", "--config", "webpack.config.js")

@@ -14,7 +14,7 @@ export function start() {
     const userDataService = new UserDataService(couplingDataService.database);
 
     require('./config/express')(app, userDataService);
-    require('./routes')(wsInstance, userDataService, couplingDataService);
+    require('./routes/routes')(wsInstance, userDataService, couplingDataService);
 
     return new Promise(function (resolve) {
         const server = app.listen(app.get('port'), function () {
