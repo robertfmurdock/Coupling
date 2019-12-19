@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-26-{{ .Branch }}
+          key: coupling-cache-27-{{ .Branch }}
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-cache-26-{{ .Branch }}
+          key: coupling-cache-27-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
@@ -36,7 +36,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-26-{{ .Branch }}
+          key: coupling-cache-27-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -56,7 +56,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-26-{{ .Branch }}
+          key: coupling-cache-27-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
       - run: "./gradlew build check"
       - store_artifacts:
@@ -78,7 +78,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-26-{{ .Branch }}
+          key: coupling-cache-27-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
       - run: "./gradlew build check"
       - store_artifacts:
