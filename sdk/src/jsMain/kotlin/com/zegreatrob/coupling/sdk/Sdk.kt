@@ -35,15 +35,15 @@ interface Sdk : RepositoryCatalog, SdkTribeRepository,
     SdkPlayerRepository, SdkPairAssignmentsRepository,
     SdkPinRepository, SdkSpin,
     SdkSyntax, SdkCreateGoogleSession,
-    SdkLogout
-
-object SdkSingleton : Sdk {
+    SdkLogout {
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
     override val tribeRepository get() = this
 }
+
+object SdkSingleton : Sdk
 
 interface SdkSyntax {
     val sdk: Sdk
