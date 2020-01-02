@@ -6,41 +6,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.player.Player
 import kotlin.js.*
-
-fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
-    .plusIfNotNull("_id", id)
-    .plusIfNotNull("name", name)
-    .plusIfNotNull("email", email)
-    .plusIfNotNull("badge", badge)
-    .plusIfNotNull("callSignAdjective", callSignAdjective)
-    .plusIfNotNull("callSignNoun", callSignNoun)
-    .plusIfNotNull("imageURL", imageURL)
-    .pairsToJson()
-
-fun List<Player>.toJsonArray() = map { it.toJson() }
-    .toTypedArray()
 
 fun PinnedPlayer.toJson(): Json = player.toJson().apply { this["pins"] = pins.toJson() }
 
 fun Array<Pair<String, Any?>>.pairsToJson() = json(*this)
-
-fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?) = if (value != null)
-    plus(Pair(key, value))
-else
-    this
-
-@Suppress("UNCHECKED_CAST")
-fun Json.toPlayer(): Player = Player(
-    id = stringValue("_id"),
-    badge = this["badge"]?.toIntFromStringOrInt(),
-    name = stringValue("name"),
-    email = stringValue("email"),
-    callSignAdjective = stringValue("callSignAdjective"),
-    callSignNoun = stringValue("callSignNoun"),
-    imageURL = stringValue("imageURL")
-)
 
 fun Any.toIntFromStringOrInt(): Int? = when (this) {
     is String -> toInt()

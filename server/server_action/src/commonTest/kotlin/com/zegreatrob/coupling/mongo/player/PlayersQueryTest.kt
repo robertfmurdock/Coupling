@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.mongo.player
 import Spy
 import SpyData
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.player.PlayerGetter
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.player.PlayerGetter
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -17,7 +17,7 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepository() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
-            val tribeId = TribeId("Excellent Tribe")
+            override val authorizedTribeId = TribeId("Excellent Tribe")
             val players = listOf(
                 Player(
                     id = "1",
@@ -32,9 +32,9 @@ class PlayersQueryTest {
                 )
             )
             override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(tribeId, players) }
+                .apply { whenever(authorizedTribeId, players) }
         }) exerciseAsync {
-            PlayersQuery(tribeId)
+            PlayersQuery
                 .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(players)
@@ -44,16 +44,16 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
-            val tribeId = TribeId("Excellent Tribe")
+            override val authorizedTribeId = TribeId("Excellent Tribe")
             val players = listOf(
                 Player(id = "1"),
                 Player(id = "2"),
                 Player(id = "3")
             )
             override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(tribeId, players) }
+                .apply { whenever(authorizedTribeId, players) }
         }) exerciseAsync {
-            PlayersQuery(tribeId)
+            PlayersQuery
                 .perform()
         } verifyAsync { result ->
             result.map(Player::id)

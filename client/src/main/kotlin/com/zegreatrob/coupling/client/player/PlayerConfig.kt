@@ -3,9 +3,6 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.PlayerRepository
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson
@@ -13,6 +10,9 @@ import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.sdk.PlayerRepository
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -24,7 +24,6 @@ import react.RBuilder
 import react.RProps
 import react.ReactElement
 import react.dom.*
-import kotlin.js.json
 
 object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRenderer,
     RepositoryCatalog by SdkSingleton
@@ -47,8 +46,6 @@ external interface PlayerConfigStyles {
     val deleteButton: String
     val badgeConfig: String
 }
-
-val playerDefaults get() = json("badge" to Badge.Default.value)
 
 typealias PlayerConfigContext = ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>
 
@@ -82,7 +79,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
 
     private fun PlayerConfigContext.playerView(rBuilder: RBuilder) {
         val (tribe, _, _, _, reload) = props
-        val player = props.player.withDefaults()
+        val player = props.player
 
         val (values, onChange) = useForm(player.toJson())
         val updatedPlayer = values.toPlayer()
@@ -108,8 +105,6 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
             }
         }
     }
-
-    private fun Player.withDefaults() = playerDefaults.add(toJson()).toPlayer()
 
     private fun handleSubmitFunc(handler: () -> Job) = { event: Event ->
         event.preventDefault()
@@ -243,7 +238,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
                     value = "${Badge.Default.value}",
                     type = InputType.radio,
                     onChange = onChange,
-                    checked = player.badge == Badge.Default.value
+                    checked = player.badge.let { it == Badge.Default.value || it == null }
                 )
             }
             div {

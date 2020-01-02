@@ -32,11 +32,11 @@ class PlayersTest {
         fun getIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
             setupAsync(object {}) exerciseAsync {
-                catchAxiosError {
+                catchException {
                     sdk.getPlayers(tribeId)
                 }
-            } verifyAsync { result ->
-                result["status"].assertIsEqualTo(404)
+            } verifyAsync { exception ->
+                exception?.message.assertIsEqualTo("Tribe not found.")
             }
         }
 

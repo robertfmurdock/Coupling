@@ -15,6 +15,20 @@ const PinType = new GraphQLObjectType({
   }),
 });
 
+const PlayerType = new GraphQLObjectType({
+  name: 'Player',
+  description: 'Weirdos who want to couple',
+  fields: () => ({
+    _id: {type: GraphQLNonNull(GraphQLString)},
+    name: {type: GraphQLString},
+    email: {type: GraphQLString},
+    badge: {type: GraphQLString},
+    callSignAdjective: {type: GraphQLString},
+    callSignNoun: {type: GraphQLString},
+    imageURL: {type: GraphQLString},
+  }),
+});
+
 const TribeType = new GraphQLObjectType({
   name: 'Tribe',
   description: 'The people you couple with!',
@@ -33,6 +47,13 @@ const TribeType = new GraphQLObjectType({
       resolve: async function (tribe, args, request) {
         const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
         return await dispatcher.performPinListQueryGQL();
+      }
+    },
+    playerList: {
+      type: new GraphQLList(PlayerType),
+      resolve: async function (tribe, args, request) {
+        const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
+        return await dispatcher.performPlayerListQueryGQL();
       }
     }
   }),

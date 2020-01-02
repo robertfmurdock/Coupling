@@ -47,6 +47,7 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
+        console.log("player config", wrapper.debug())
         wrapper.find<Any>("input[name='badge'][value='${Badge.Default.value}'][checked]")
             .length
             .assertIsEqualTo(1)

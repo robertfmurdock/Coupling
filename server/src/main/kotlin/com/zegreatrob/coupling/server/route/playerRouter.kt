@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.server.external.express.Router
 
 val playerRouter = Router(routerParams(mergeParams = true)).apply {
     route("/")
-        .get(handleRequest { performPlayersQuery })
         .post(handleRequest { performSavePlayerCommand })
     route("/:playerId")
         .delete(handleRequest { performDeletePlayerCommand })

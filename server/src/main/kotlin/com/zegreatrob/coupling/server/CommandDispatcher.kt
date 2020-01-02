@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispat
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
+import com.zegreatrob.coupling.server.entity.player.PlayersQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
@@ -69,4 +70,5 @@ class AuthorizedTribeIdDispatcher(
     ScopeSyntax by commandDispatcher,
     AuthenticatedUserSyntax by commandDispatcher,
     UserEmailSyntax by commandDispatcher,
-    PinsQueryDispatcherJs
+    PinsQueryDispatcherJs,
+    PlayersQueryDispatcherJs
