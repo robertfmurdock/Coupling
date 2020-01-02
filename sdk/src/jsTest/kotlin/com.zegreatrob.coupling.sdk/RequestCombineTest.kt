@@ -11,22 +11,19 @@ import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class RequestCombineTest {
 
     @Test
-    @Ignore
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = testAsync {
-        setupAsync(object : Sdk {
-            val allPostCalls = mutableListOf<Pair<String, dynamic>>()
-            override val axios: Axios
-                get() = json("post" to fun(url: String, body: dynamic): Promise<dynamic> {
-                    allPostCalls.add(url to body)
-                    return promise { stubResponseData() }
-                }).unsafeCast<Axios>()
-
+        val allPostCalls = mutableListOf<Pair<String, dynamic>>()
+        val mockAxios = json("post" to fun(url: String, body: dynamic): Promise<dynamic> {
+            allPostCalls.add(url to body)
+            return promise { stubResponseData() }
+        }).unsafeCast<Axios>()
+        setupAsync(object : Sdk, TribeGQLSyntax by BatchingTribeGQLSyntax(mockAxios) {
+            override val axios: Axios get() = mockAxios
             val tribeId = TribeId("Random")
         }) exerciseAsync {
             coroutineScope {

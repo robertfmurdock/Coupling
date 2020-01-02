@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.repository.player.PlayerGetDeleted
 import com.zegreatrob.coupling.repository.player.PlayerGetter
 import com.zegreatrob.coupling.repository.player.PlayerSaver
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDeleter
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGetter
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSaver
@@ -43,7 +44,7 @@ interface Sdk : RepositoryCatalog, SdkTribeRepository,
     override val tribeRepository get() = this
 }
 
-object SdkSingleton : Sdk
+object SdkSingleton : Sdk, TribeGQLSyntax by BatchingTribeGQLSyntax(axios)
 
 interface SdkSyntax {
     val sdk: Sdk

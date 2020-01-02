@@ -46,10 +46,4 @@ suspend fun authorizedAxios(username: String = userEmail): Axios {
 
 suspend fun authorizedSdk(username: String = userEmail) = AuthorizedSdk(authorizedAxios(username))
 
-class AuthorizedSdk(override val axios: Axios) : Sdk {
-    override val tribeRepository get() = this
-    override val playerRepository get() = this
-    override val pinRepository get() = this
-    override val pairAssignmentDocumentRepository get() = this
-    override val sdk get() = this
-}
+class AuthorizedSdk(override val axios: Axios) : Sdk, TribeGQLSyntax by BatchingTribeGQLSyntax(axios)
