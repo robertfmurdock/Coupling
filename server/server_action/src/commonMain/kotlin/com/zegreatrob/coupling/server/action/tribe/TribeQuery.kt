@@ -20,7 +20,7 @@ interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSy
 
     private suspend fun TribeQuery.getTribeAndPlayers() = coroutineScope {
         await(
-            async { tribeId.load() },
+            async { tribeId.get() },
             async { getUserPlayers() }
         )
     }

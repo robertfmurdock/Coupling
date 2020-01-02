@@ -30,7 +30,7 @@ interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyn
         await(
             async { tribeId.loadHistory() },
             async { tribeId.getPins() },
-            async { tribeId.load()!! }
+            async { tribeId.get()!! }
         )
     }
 

@@ -17,7 +17,7 @@ interface RetiredPlayerListQueryDispatcher : ActionLoggingSyntax,
     suspend fun RetiredPlayerListQuery.perform() = logAsync { getData(tribeId) }
     private suspend fun getData(tribeId: TribeId) = coroutineScope {
         await(
-            async { tribeId.load() },
+            async { tribeId.get() },
             async { tribeId.loadRetiredPlayers() })
     }
 }

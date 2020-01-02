@@ -12,8 +12,8 @@ interface TribeIdLoadAllSyntax : TribeIdGetSyntax,
     TribeIdPlayersSyntax, TribeIdHistorySyntax {
     suspend fun TribeId.loadAll() = coroutineScope {
         await(
-            async { load()!! },
-            async { loadPlayers() },
+            async { get()!! },
+            async { getPlayerList() },
             async { loadHistory() }
         )
     }

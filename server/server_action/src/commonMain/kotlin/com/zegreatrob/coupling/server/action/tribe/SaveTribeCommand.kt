@@ -39,7 +39,7 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
 
     private suspend fun SaveTribeCommand.getTribeAndPlayers() = coroutineScope {
         await(
-            async { tribe.id.load() },
+            async { tribe.id.get() },
             async { getUserPlayers() })
     }
 

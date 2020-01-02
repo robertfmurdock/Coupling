@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.DataLoadProps
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 import react.ReactElement
 
@@ -18,7 +18,7 @@ object PinListPage : RComponent<PageProps>(provider()), PinListPageBuilder,
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.render(this)
 
-interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, PinListQueryDispatcher {
+interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, TribePinListQueryDispatcher {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
@@ -40,6 +40,6 @@ interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, PinListQueryD
         )
     }
 
-    private suspend fun TribeId.performPinListQuery() = PinListQuery(this)
+    private suspend fun TribeId.performPinListQuery() = TribePinListQuery(this)
         .perform()
 }

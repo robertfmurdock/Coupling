@@ -34,8 +34,8 @@ interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyn
 
     private suspend fun UserIsAuthorizedWithDataAction.loadTribeAndPlayers() = coroutineScope {
         await(
-            async { tribeId.load() },
-            async { tribeId.loadPlayers() }
+            async { tribeId.get() },
+            async { tribeId.getPlayerList() }
         )
     }
 

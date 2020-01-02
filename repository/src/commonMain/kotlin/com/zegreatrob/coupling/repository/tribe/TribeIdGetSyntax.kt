@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdGetSyntax {
     val tribeRepository: TribeGet
-    suspend fun TribeId.load() = tribeRepository.getTribe(this@load)
+    suspend fun TribeId.get() = tribeRepository.getTribe(this@get)
 }

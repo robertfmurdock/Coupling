@@ -18,7 +18,7 @@ object PlayerPage : RComponent<PageProps>(provider()), PlayerPageBuilder,
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.render(this)
 
-interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, PlayerQueryDispatcher {
+interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, TribePlayerQueryDispatcher {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
@@ -28,7 +28,7 @@ interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, PlayerQueryDis
             reactElement {
                 loadedPlayer(
                     dataLoadProps(
-                        query = { PlayerQuery(tribeId, playerId).perform() },
+                        query = { TribePlayerQuery(tribeId, playerId).perform() },
                         toProps = toPropsFunc(props)
                     )
                 ) {

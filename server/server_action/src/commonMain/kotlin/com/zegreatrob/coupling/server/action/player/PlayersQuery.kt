@@ -14,7 +14,7 @@ object PlayersQuery : Action
 interface PlayersQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax, TribeIdPlayersSyntax,
     FindCallSignActionDispatcher {
     suspend fun PlayersQuery.perform() = logAsync {
-        val players = authorizedTribeId?.loadPlayers() ?: emptyList()
+        val players = authorizedTribeId?.getPlayerList() ?: emptyList()
 
         var updatedPlayers = emptyList<Player>()
         players

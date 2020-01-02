@@ -37,8 +37,8 @@ interface NewPairAssignmentsQueryDispatcher : ActionLoggingSyntax,
 
     private suspend fun TribeId.getData() = coroutineScope {
         await(
-            async { load() },
-            async { loadPlayers() }
+            async { get() },
+            async { getPlayerList() }
         )
     }
 
