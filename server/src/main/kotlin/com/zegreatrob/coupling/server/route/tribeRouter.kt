@@ -29,7 +29,6 @@ val tribeListRouter = Router(routerParams()).apply {
     route("/")
         .post(handleRequest { performSaveTribeCommand })
     route("/:tribeId")
-        .get(handleRequest { performTribeQuery })
         .post(handleRequest { performSaveTribeCommand })
         .delete(handleRequest { performDeleteTribeCommand })
     use("/:tribeId", tribeRouter)
