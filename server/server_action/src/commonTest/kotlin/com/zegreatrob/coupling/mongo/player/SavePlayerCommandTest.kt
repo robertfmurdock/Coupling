@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.mongo.player
 import Spy
 import SpyData
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.player.PlayerSaver
+import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -38,7 +38,7 @@ class SavePlayerCommandTest {
         }
     }
 
-    class PlayerSaverSpy : PlayerSaver, Spy<TribeIdPlayer, Unit> by SpyData() {
+    class PlayerSaverSpy : PlayerSave, Spy<TribeIdPlayer, Unit> by SpyData() {
         override suspend fun save(tribeIdPlayer: TribeIdPlayer) = spyFunction(tribeIdPlayer)
     }
 }

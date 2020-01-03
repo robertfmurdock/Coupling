@@ -4,7 +4,7 @@ import Spy
 import SpyData
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.repository.player.PlayerGetter
+import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -66,7 +66,7 @@ class PlayersQueryTest {
     }
 
 
-    class PlayerRepositorySpy : PlayerGetter, Spy<TribeId, List<Player>> by SpyData() {
+    class PlayerRepositorySpy : PlayerListGet, Spy<TribeId, List<Player>> by SpyData() {
         override suspend fun getPlayers(tribeId: TribeId): List<Player> = spyFunction(tribeId)
     }
 }

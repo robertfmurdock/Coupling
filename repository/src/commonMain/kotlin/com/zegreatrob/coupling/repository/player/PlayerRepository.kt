@@ -4,28 +4,28 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-interface PlayerRepository : PlayerGetter,
-    PlayerSaver,
-    PlayerDeleter,
-    PlayerGetDeleted,
-    PlayerGetByEmail
+interface PlayerRepository : PlayerListGet,
+    PlayerSave,
+    PlayerDelete,
+    PlayerListGetDeleted,
+    PlayerListGetByEmail
 
-interface PlayerDeleter {
+interface PlayerDelete {
     suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean
 }
 
-interface PlayerSaver {
+interface PlayerSave {
     suspend fun save(tribeIdPlayer: TribeIdPlayer)
 }
 
-interface PlayerGetter {
+interface PlayerListGet {
     suspend fun getPlayers(tribeId: TribeId): List<Player>
 }
 
-interface PlayerGetDeleted {
+interface PlayerListGetDeleted {
     suspend fun getDeleted(tribeId: TribeId): List<Player>
 }
 
-interface PlayerGetByEmail {
+interface PlayerListGetByEmail {
     suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer>
 }

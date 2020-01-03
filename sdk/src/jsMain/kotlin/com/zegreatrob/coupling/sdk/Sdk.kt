@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.repository.player.PlayerDeleter
-import com.zegreatrob.coupling.repository.player.PlayerGetDeleted
-import com.zegreatrob.coupling.repository.player.PlayerGetter
-import com.zegreatrob.coupling.repository.player.PlayerSaver
+import com.zegreatrob.coupling.repository.player.PlayerDelete
+import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
+import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDeleter
@@ -20,7 +20,7 @@ interface RepositoryCatalog {
 interface SdkTribeRepository : SdkTribeGet, SdkTribeListGet,
     SdkTribeSave, SdkTribeDelete, TribeRepository
 
-interface SdkPlayerRepository : SdkPlayerGetter,
+interface SdkPlayerRepository : SdkPlayerListGet,
     SdkPlayerGetDeleted, SdkPlayerSaver,
     SdkPlayerDeleter, PlayerRepository
 
@@ -30,7 +30,7 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter,
     SdkPairAssignmentDocumentSaver,
     SdkPairAssignmentDocumentDeleter
 
-interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted
+interface PlayerRepository : PlayerListGet, PlayerSave, PlayerDelete, PlayerListGetDeleted
 
 interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
     SdkPinRepository, SdkSpin, SdkSyntax, SdkCreateGoogleSession, SdkLogout {

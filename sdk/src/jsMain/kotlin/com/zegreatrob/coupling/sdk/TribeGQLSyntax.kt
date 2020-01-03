@@ -43,11 +43,11 @@ interface TribeGQLSyntax : AxiosSyntax {
 
 class BatchingTribeGQLSyntax(override val axios: Axios) : TribeGQLSyntax {
 
-    val batchScope = MainScope() + CoroutineName("batch")
+    private val batchScope = MainScope() + CoroutineName("batch")
+
+    private var pending: Deferred<Map<TribeGQLComponent, dynamic>>? = null
 
     var pendingComponents = emptyList<TribeGQLComponent>()
-
-    var pending: Deferred<Map<TribeGQLComponent, dynamic>>? = null
 
     override suspend fun performTribeGQLQuery(
         tribeId: TribeId,

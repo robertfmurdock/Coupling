@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.repository.player.PlayerDeleter
+import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
@@ -26,7 +26,7 @@ class DeletePlayerCommandTest {
         }
     }
 
-    class PlayerRepositorySpy : PlayerDeleter, Spy<String, Boolean> by SpyData() {
+    class PlayerRepositorySpy : PlayerDelete, Spy<String, Boolean> by SpyData() {
         override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean = spyFunction(playerId)
     }
 }
