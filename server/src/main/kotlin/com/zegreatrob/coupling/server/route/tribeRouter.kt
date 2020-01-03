@@ -27,7 +27,6 @@ val tribeRouter = Router(routerParams(mergeParams = true)).apply {
 @JsName("tribeListRouter")
 val tribeListRouter = Router(routerParams()).apply {
     route("/")
-        .get(handleRequest { performTribeListQuery })
         .post(handleRequest { performSaveTribeCommand })
     route("/:tribeId")
         .get(handleRequest { performTribeQuery })

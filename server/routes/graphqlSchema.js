@@ -96,9 +96,7 @@ const CouplingSchema = new GraphQLSchema({
     fields: {
       tribeList: {
         type: new GraphQLList(TribeType),
-        resolve(root, args, request) {
-          return request.commandDispatcher.performTribeListQueryGQL();
-        },
+        resolve: Resolvers.tribeList,
       },
       tribe: {
         type: TribeType,

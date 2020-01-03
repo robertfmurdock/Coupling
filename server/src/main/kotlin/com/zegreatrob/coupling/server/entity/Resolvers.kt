@@ -23,6 +23,11 @@ object Resolvers {
     val tribe = buildResolver { _, args ->
         performTribeQueryGQL(args["id"].toString())
     }
+
+    @JsName("tribeList")
+    val tribeList = buildResolver { _, _ ->
+        performTribeListQueryGQL()
+    }
 }
 
 private fun buildResolver(func: suspend CommandDispatcher.(Json, Json) -> Any?): (Json, Json, Request) -> Promise<Any?> =
