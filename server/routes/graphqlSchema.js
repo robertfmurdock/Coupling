@@ -61,6 +61,7 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
   }),
 });
 
+// noinspection JSUnresolvedVariable
 const {Resolvers} = server.com.zegreatrob.coupling.server.entity;
 
 const TribeType = new GraphQLObjectType({
