@@ -44,8 +44,12 @@ class CommandDispatcher(override val user: User, jsRepository: dynamic, userColl
     @Suppress("unused")
     @JsName("authorizedDispatcher")
     fun authorizedDispatcher(tribeId: String) = scope.promise {
+        authorizedTribeIdDispatcher(tribeId)
+    }
+
+    suspend fun authorizedTribeIdDispatcher(tribeId: String): AuthorizedTribeIdDispatcher {
         val preexistingJob = authorizedTribeIdDispatcherJob
-        if (preexistingJob == null) {
+        return if (preexistingJob == null) {
             val async = scope.async {
                 AuthorizedTribeIdDispatcher(
                     TribeId(tribeId).validateAuthorized(), this@CommandDispatcher

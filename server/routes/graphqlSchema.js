@@ -1,9 +1,15 @@
 import {
-  graphql,
-  GraphQLSchema,
+  GraphQLBoolean,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString, GraphQLList, GraphQLInt, GraphQLBoolean, GraphQLNonNull,
+  GraphQLSchema,
+  GraphQLString,
 } from 'graphql';
+import * as server from "Coupling-server";
+
+const {pinListResolver} = server.com.zegreatrob.coupling.server.entity.pin;
 
 const PinType = new GraphQLObjectType({
   name: 'Pin',
@@ -69,13 +75,9 @@ const TribeType = new GraphQLObjectType({
     alternateBadgeName: {type: GraphQLString},
     badgesEnabled: {type: GraphQLBoolean},
     callSignsEnabled: {type: GraphQLBoolean},
-    nonsense: {type: GraphQLBoolean},
     pinList: {
       type: new GraphQLList(PinType),
-      resolve: async function (tribe, args, request) {
-        const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
-        return await dispatcher.performPinListQueryGQL();
-      }
+      resolve: pinListResolver
     },
     playerList: {
       type: new GraphQLList(PlayerType),
@@ -88,9 +90,7 @@ const TribeType = new GraphQLObjectType({
       type: new GraphQLList(PairAssignmentDocumentType),
       resolve: async function (tribe, args, request) {
         const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
-        let newVar = await dispatcher.performPairAssignmentDocumentListQueryGQL();
-        console.log('server pairs yo', JSON.stringify(newVar))
-        return newVar;
+        return await dispatcher.performPairAssignmentDocumentListQueryGQL();
       }
     }
   }),

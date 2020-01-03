@@ -1,31 +1,39 @@
 package com.zegreatrob.coupling.server.entity.pin
 
 import com.zegreatrob.coupling.json.toJsonArray
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.EndpointHandlerSyntax
-import com.zegreatrob.coupling.server.ResponseHelpers.sendQueryResults
+import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
-import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
+import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
+import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise
+import kotlin.js.Json
+import kotlin.js.Promise
 
-interface PinsQueryDispatcherJs : PinsQueryDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax,
-    UserIsAuthorizedActionDispatcher {
-    val performPinsQuery
-        get() = endpointHandler(sendQueryResults("pin")) {
-            PinsQuery
-                .perform()
-                ?.toJsonArray()
-        }
+interface PinsQueryDispatcherJs : PinsQueryDispatcher, ScopeSyntax, UserIsAuthorizedActionDispatcher {
 
-    @JsName("performPinListQueryGQL")
-    fun performPinListQueryGQL() = scope.promise {
-        PinsQuery
-            .perform()
-            ?.toJsonArray()
+    suspend fun performPinListQueryGQL() = PinsQuery
+        .perform()
+        ?.toJsonArray()
+
+}
+
+@Suppress("unused")
+@JsName("pinListResolver")
+val pinListResolver: GraphQLResolver
+    get() = buildResolver { commandDispatcher, entity, _ ->
+        val authorizedDispatcher = commandDispatcher
+            .authorizedTribeIdDispatcher(entity["id"].toString())
+        authorizedDispatcher.performPinListQueryGQL()
     }
 
-    private suspend fun userIsAuthorized(tribeId: TribeId) = UserIsAuthorizedAction(tribeId).perform()
-}
+private fun buildResolver(func: suspend (CommandDispatcher, Json, Json) -> Array<Json>?): (Json, Json, Request) -> Promise<Array<Json>?> =
+    { entity, args, request ->
+        val commandDispatcher = request.commandDispatcher.unsafeCast<CommandDispatcher>()
+        commandDispatcher.scope.promise {
+            func(commandDispatcher, entity, args)
+        }
+    }
+
+typealias GraphQLResolver = (Json, Json, Request) -> Promise<Any?>
