@@ -32,11 +32,8 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter,
 
 interface PlayerRepository : PlayerGetter, PlayerSaver, PlayerDeleter, PlayerGetDeleted
 
-interface Sdk : RepositoryCatalog, SdkTribeRepository,
-    SdkPlayerRepository, SdkPairAssignmentsRepository,
-    SdkPinRepository, SdkSpin,
-    SdkSyntax, SdkCreateGoogleSession,
-    SdkLogout {
+interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
+    SdkPinRepository, SdkSpin, SdkSyntax, SdkCreateGoogleSession, SdkLogout {
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this

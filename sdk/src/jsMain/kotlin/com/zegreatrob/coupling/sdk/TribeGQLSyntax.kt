@@ -31,9 +31,13 @@ interface TribeGQLSyntax : AxiosSyntax {
 
     private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>): dynamic = axios.post(
         "/api/graphql", json(
-            "query" to "{ tribe(id: \"${tribeId.value}\") { ${components.joinToString(",") { it.value }} } }".also { println("query!!@#!@! $it") }
+            "query" to "{ ${tribeId.tribeQueryArgs()} { ${components.tribeComponentString()} } }"
         )
     ).await()
+
+    private fun TribeId.tribeQueryArgs() = "tribe(id: \"$value\")"
+
+    private fun List<TribeGQLComponent>.tribeComponentString() = joinToString(",") { it.value }
 
 }
 
