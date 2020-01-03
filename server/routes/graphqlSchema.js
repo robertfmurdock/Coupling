@@ -9,8 +9,6 @@ import {
 } from 'graphql';
 import * as server from "Coupling-server";
 
-const {pinListResolver} = server.com.zegreatrob.coupling.server.entity.pin;
-
 const PinType = new GraphQLObjectType({
   name: 'Pin',
   description: 'Something to put on your shirt!!',
@@ -63,6 +61,8 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
   }),
 });
 
+const {Resolvers} = server.com.zegreatrob.coupling.server.entity;
+
 const TribeType = new GraphQLObjectType({
   name: 'Tribe',
   description: 'The people you couple with!',
@@ -77,21 +77,15 @@ const TribeType = new GraphQLObjectType({
     callSignsEnabled: {type: GraphQLBoolean},
     pinList: {
       type: new GraphQLList(PinType),
-      resolve: pinListResolver
+      resolve: Resolvers.pinList
     },
     playerList: {
       type: new GraphQLList(PlayerType),
-      resolve: async function (tribe, args, request) {
-        const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
-        return await dispatcher.performPlayerListQueryGQL();
-      }
+      resolve: Resolvers.playerList
     },
     pairAssignmentDocumentList: {
       type: new GraphQLList(PairAssignmentDocumentType),
-      resolve: async function (tribe, args, request) {
-        const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
-        return await dispatcher.performPairAssignmentDocumentListQueryGQL();
-      }
+      resolve: Resolvers.pairAssignmentDocumentList
     }
   }),
 });
