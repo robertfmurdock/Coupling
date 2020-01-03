@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.sdk.pairassignments
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDeleter
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.AxiosSyntax
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
-interface SdkPairAssignmentDocumentDeleter : PairAssignmentDocumentDeleter, AxiosSyntax {
+interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, AxiosSyntax {
     override suspend fun delete(
         tribeId: TribeId,
         pairAssignmentDocumentId: PairAssignmentDocumentId

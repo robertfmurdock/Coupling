@@ -1,21 +1,19 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.external.express.Response
-import com.zegreatrob.coupling.server.external.express.sendSuccessful
+import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
+import kotlinx.coroutines.promise
 
-interface PairAssignmentDocumentListQueryDispatcherJs : PairAssignmentDocumentListQueryDispatcher, RequestTribeIdSyntax,
-    EndpointHandlerSyntax {
-    @JsName("performPairAssignmentDocumentListQuery")
-    val performPairAssignmentDocumentListQuery
-        get() = endpointHandler(Response::sendSuccessful) {
-            PairAssignmentDocumentListQuery(tribeId())
-                .perform()
-                .map { it.toJson() }
-                .toTypedArray()
-        }
+interface PairAssignmentDocumentListQueryDispatcherJs : PairAssignmentDocumentListQueryDispatcher, ScopeSyntax {
+
+    @Suppress("unused")
+    @JsName("performPairAssignmentDocumentListQueryGQL")
+    fun performPairAssignmentDocumentListQueryGQL() = scope.promise {
+        PairAssignmentDocumentListQuery
+            .perform()
+            .map { it.toJson() }
+            .toTypedArray()
+    }
 }

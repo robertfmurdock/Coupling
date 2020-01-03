@@ -4,7 +4,7 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetter
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PinGetter
 import com.zegreatrob.coupling.model.player.Player
@@ -23,7 +23,7 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
         setupAsync(object : ProposeNewPairsCommandDispatcher, PinGetter,
-            TribeGet, PairAssignmentDocumentGetter {
+            TribeGet, PairAssignmentDocumentGet {
             override val pairAssignmentDocumentRepository = this
             override val tribeRepository = this
             val players = listOf(Player(name = "John"))

@@ -22,7 +22,7 @@ class RequestCombineTest {
             allPostCalls.add(url to body)
             return promise { stubResponseData() }
         }).unsafeCast<Axios>()
-        setupAsync(object : Sdk, TribeGQLSyntax by BatchingTribeGQLSyntax(mockAxios) {
+        setupAsync(object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(mockAxios) {
             override val axios: Axios get() = mockAxios
             val tribeId = TribeId("Random")
         }) exerciseAsync {

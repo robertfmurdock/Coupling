@@ -29,6 +29,34 @@ const PlayerType = new GraphQLObjectType({
   }),
 });
 
+const PinnedPlayerType = new GraphQLObjectType({
+  name: 'PinnedPlayer',
+  description: '',
+  fields: () => ({
+    _id: {type: GraphQLString},
+    name: {type: GraphQLString},
+    email: {type: GraphQLString},
+    badge: {type: GraphQLString},
+    callSignAdjective: {type: GraphQLString},
+    callSignNoun: {type: GraphQLString},
+    imageURL: {type: GraphQLString},
+    pins: {type: new GraphQLList(PinType)}
+  }),
+});
+
+const PairAssignmentDocumentType = new GraphQLObjectType({
+  name: 'PairAssignmentDocument',
+  description: 'Assignments!',
+  fields: () => ({
+    _id: {type: GraphQLNonNull(GraphQLString)},
+    date: {
+      type: GraphQLNonNull(GraphQLString),
+      resolve: async content => content.date.toISOString()
+    },
+    pairs: {type: new GraphQLList(new GraphQLList(PinnedPlayerType))},
+  }),
+});
+
 const TribeType = new GraphQLObjectType({
   name: 'Tribe',
   description: 'The people you couple with!',
@@ -54,6 +82,15 @@ const TribeType = new GraphQLObjectType({
       resolve: async function (tribe, args, request) {
         const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
         return await dispatcher.performPlayerListQueryGQL();
+      }
+    },
+    pairAssignmentDocumentList: {
+      type: new GraphQLList(PairAssignmentDocumentType),
+      resolve: async function (tribe, args, request) {
+        const dispatcher = await request.commandDispatcher.authorizedDispatcher(tribe.id);
+        let newVar = await dispatcher.performPairAssignmentDocumentListQueryGQL();
+        console.log('server pairs yo', JSON.stringify(newVar))
+        return newVar;
       }
     }
   }),

@@ -100,11 +100,11 @@ class HistoryTest {
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
-            catchAxiosError {
+            catchException {
                 sdk.getPairAssignments(TribeId("someoneElseTribe"))
             }
-        } verifyAsync { result ->
-            result["status"].assertIsEqualTo(404)
+        } verifyAsync { exception ->
+            exception?.message.assertIsEqualTo("Tribe not found.")
         }
     }
 

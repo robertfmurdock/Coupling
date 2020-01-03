@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcherJs
+import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
@@ -71,4 +72,5 @@ class AuthorizedTribeIdDispatcher(
     AuthenticatedUserSyntax by commandDispatcher,
     UserEmailSyntax by commandDispatcher,
     PinsQueryDispatcherJs,
-    PlayersQueryDispatcherJs
+    PlayersQueryDispatcherJs,
+    PairAssignmentDocumentListQueryDispatcherJs

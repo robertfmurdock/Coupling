@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.json
 
-interface TribeGQLSyntax : AxiosSyntax {
+interface TribeGQLPerformer : AxiosSyntax {
 
     suspend fun performTribeGQLQuery(
         tribeId: TribeId,
@@ -41,7 +41,7 @@ interface TribeGQLSyntax : AxiosSyntax {
 
 }
 
-class BatchingTribeGQLSyntax(override val axios: Axios) : TribeGQLSyntax {
+class BatchingTribeGQLPerformer(override val axios: Axios) : TribeGQLPerformer {
 
     private val batchScope = MainScope() + CoroutineName("batch")
 

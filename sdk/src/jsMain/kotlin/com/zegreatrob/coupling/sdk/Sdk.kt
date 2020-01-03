@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.external.axios.axios
-import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDeleter
-import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGetter
-import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSaver
+import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
+import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
+import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 
 interface RepositoryCatalog {
     val tribeRepository: SdkTribeRepository
@@ -26,9 +26,9 @@ interface SdkPlayerRepository : SdkPlayerListGet,
 
 interface SdkPinRepository : SdkPinGetter, SdkPinSaver, SdkPinDeleter
 
-interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGetter,
-    SdkPairAssignmentDocumentSaver,
-    SdkPairAssignmentDocumentDeleter
+interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
+    SdkPairAssignmentDocumentSave,
+    SdkPairAssignmentDocumentDelete
 
 interface PlayerRepository : PlayerListGet, PlayerSave, PlayerDelete, PlayerListGetDeleted
 
@@ -41,7 +41,7 @@ interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkP
     override val tribeRepository get() = this
 }
 
-object SdkSingleton : Sdk, TribeGQLSyntax by BatchingTribeGQLSyntax(axios)
+object SdkSingleton : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(axios)
 
 interface SdkSyntax {
     val sdk: Sdk

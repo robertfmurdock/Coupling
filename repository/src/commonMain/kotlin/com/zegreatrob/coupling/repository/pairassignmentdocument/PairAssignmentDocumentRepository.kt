@@ -5,18 +5,18 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-interface PairAssignmentDocumentRepository : PairAssignmentDocumentSaver,
-    PairAssignmentDocumentGetter,
-    PairAssignmentDocumentDeleter
+interface PairAssignmentDocumentRepository : PairAssignmentDocumentSave,
+    PairAssignmentDocumentGet,
+    PairAssignmentDocumentDelete
 
-interface PairAssignmentDocumentDeleter {
+interface PairAssignmentDocumentDelete {
     suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
 }
 
-interface PairAssignmentDocumentGetter {
+interface PairAssignmentDocumentGet {
     suspend fun getPairAssignments(tribeId: TribeId): List<PairAssignmentDocument>
 }
 
-interface PairAssignmentDocumentSaver {
+interface PairAssignmentDocumentSave {
     suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument)
 }

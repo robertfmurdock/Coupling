@@ -18,8 +18,6 @@ fun Any.toIntFromStringOrInt(): Int? = when (this) {
     else -> null
 }
 
-fun Json.stringValue(key: String) = this[key]?.toString()
-
 @Suppress("unused")
 @JsName("historyFromArray")
 fun historyFromArray(history: Array<Json>) =

@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 
 interface PairAssignmentDispatcherJs : ProposeNewPairsCommandDispatcherJs,
     SavePairAssignmentDocumentCommandDispatcherJs,
-    DeletePairAssignmentDocumentCommandDispatcherJs, PairAssignmentDocumentListQueryDispatcherJs,
+    DeletePairAssignmentDocumentCommandDispatcherJs,
     RunGameActionDispatcher,
     FindNewPairsActionDispatcher,
     NextPlayerActionDispatcher,
