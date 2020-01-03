@@ -103,9 +103,7 @@ const CouplingSchema = new GraphQLSchema({
       tribe: {
         type: TribeType,
         args: {id: {type: GraphQLString},},
-        resolve: function (root, args, request) {
-          return request.commandDispatcher.performTribeQueryGQL(args.id);
-        }
+        resolve: Resolvers.tribe
       }
     },
   }),

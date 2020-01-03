@@ -18,9 +18,14 @@ object Resolvers {
 
     @JsName("pairAssignmentDocumentList")
     val pairAssignmentDocumentList = buildAuthorizedResolver { performPairAssignmentDocumentListQueryGQL() }
+
+    @JsName("tribe")
+    val tribe = buildResolver { _, args ->
+        performTribeQueryGQL(args["id"].toString())
+    }
 }
 
-private fun buildResolver(func: suspend (CommandDispatcher, Json, Json) -> Array<Json>?): (Json, Json, Request) -> Promise<Array<Json>?> =
+private fun buildResolver(func: suspend CommandDispatcher.(Json, Json) -> Any?): (Json, Json, Request) -> Promise<Any?> =
     { entity, args, request ->
         val commandDispatcher = request.commandDispatcher.unsafeCast<CommandDispatcher>()
         commandDispatcher.scope.promise {
@@ -28,12 +33,10 @@ private fun buildResolver(func: suspend (CommandDispatcher, Json, Json) -> Array
         }
     }
 
-private fun buildAuthorizedResolver(func: suspend AuthorizedTribeIdDispatcher.() -> Array<Json>?): (Json, Json, Request) -> Promise<Array<Json>?> {
-    return buildResolver { commandDispatcher, entity, _ ->
-        val authorizedDispatcher = commandDispatcher
-            .authorizedTribeIdDispatcher(entity["id"].toString())
+private fun buildAuthorizedResolver(func: suspend AuthorizedTribeIdDispatcher.() -> Any?) =
+    buildResolver { entity, _ ->
+        val authorizedDispatcher = authorizedTribeIdDispatcher(entity["id"].toString())
         authorizedDispatcher.func()
     }
-}
 
 typealias GraphQLResolver = (Json, Json, Request) -> Promise<Any?>
