@@ -31,6 +31,7 @@ module.exports = function (config) {
 
     files: [
       'node_modules/jquery/dist/jquery.min.js',
+      'build/lib/vendor/vendor.js',
       'build/lib/test-vendor/testVendor.js',
       'test/tests.bundle.js',
     ],
