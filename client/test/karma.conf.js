@@ -5,7 +5,7 @@ const chooseBrowsers = function () {
   if (process.env.SELENIUM_ADDRESS) {
     return ['remote-chrome'];
   } else {
-    return ['Chrome', 'Firefox'];
+    return ['ChromeHeadless', 'FirefoxHeadless'];
   }
 };
 
