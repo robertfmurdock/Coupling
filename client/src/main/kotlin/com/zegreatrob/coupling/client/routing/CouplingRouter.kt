@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinPage
 import com.zegreatrob.coupling.client.pin.PinListPage
+import com.zegreatrob.coupling.client.pin.PinPage
 import com.zegreatrob.coupling.client.player.PlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
@@ -63,6 +64,7 @@ interface CouplingRouterBuilder : SimpleComponentRenderer<CouplingRouterProps> {
         couplingRoute(CouplingRouteProps(path = "/:tribeId/edit/", rComponent = TribeConfigPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/history", rComponent = HistoryPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pins", rComponent = PinListPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/pin/new", rComponent = PinPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/current/", rComponent = CurrentPairsPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/new", rComponent = NewPairAssignmentsPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/player/new", rComponent = PlayerPage))

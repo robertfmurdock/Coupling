@@ -22,7 +22,7 @@ data class PinListProps(val tribe: Tribe, val pins: List<Pin>) : RProps
 
 interface PinListBuilder : StyledComponentRenderer<PinListProps, PinListStyles> {
 
-    override val componentPath: String get() = "pin/PinList"
+    override val componentPath get() = "pin/PinList"
 
     override fun StyledRContext<PinListProps, PinListStyles>.render(): ReactElement {
         val (tribe, pins) = props

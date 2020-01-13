@@ -1,6 +1,6 @@
-import setLocation from "./setLocation";
+import setLocation from "../setLocation";
 import {browser, By, element} from "protractor";
-import {PlayerConfigStyles} from "./page-objects/Styles";
+import {PlayerConfigStyles} from "./Styles";
 
 let playerConfigPage = element(By.className(PlayerConfigStyles.className));
 

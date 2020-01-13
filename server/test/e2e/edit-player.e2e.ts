@@ -6,7 +6,7 @@ import Tribe from "../../../server/lib/common/Tribe";
 import * as monk from "monk";
 import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
-import PlayerConfigPage from "./PlayerConfigPage";
+import PlayerConfigPage from "./page-objects/PlayerConfigPage";
 import TestLogin from "./TestLogin";
 import {PlayerCardStyles, PlayerConfigStyles, PlayerRosterStyles, TribeCardStyles} from "./page-objects/Styles";
 

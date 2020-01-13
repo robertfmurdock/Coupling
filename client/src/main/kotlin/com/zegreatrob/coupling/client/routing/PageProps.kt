@@ -11,4 +11,5 @@ data class PageProps(
 ) : RProps {
     val tribeId: TribeId? get() = pathParams["tribeId"]?.let(::TribeId)
     val playerId: String? get() = pathParams["playerId"]
+    val pinId: String? get() = pathParams["pinId"]
 }

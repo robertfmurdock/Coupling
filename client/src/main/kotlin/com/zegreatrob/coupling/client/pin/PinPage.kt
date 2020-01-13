@@ -1,45 +1,51 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.routing.DataLoadProps
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.client.routing.ReloadFunction
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 import react.ReactElement
 
-object PinListPage : RComponent<PageProps>(provider()), PinListPageBuilder,
+object PinPage : RComponent<PageProps>(provider()), PinPageBuilder,
     RepositoryCatalog by SdkSingleton
 
-private val LoadedPinList = dataLoadWrapper(PinList)
-private val RBuilder.loadedPinList get() = LoadedPinList.render(this)
+private val LoadedPin = dataLoadWrapper(PinConfig)
+private val RBuilder.loadedPin get() = LoadedPin.render(this)
 
-interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, TribePinListQueryDispatcher {
+interface PinPageBuilder : SimpleComponentRenderer<PageProps>, TribePinQueryDispatcher {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId
+        val pinId = props.pinId
 
         return if (tribeId != null) {
             reactElement {
-                loadedPinList(DataLoadProps {
-                    tribeId.performPinListQuery()
-                        .toPinListProps()
-                })
+                loadedPin(
+                    dataLoadProps(
+                        query = { TribePinQuery(tribeId, pinId).perform() },
+                        toProps = toPropsFunc(props)
+                    )
+                ) {
+                    pinId?.let { attrs { key = it } }
+                }
             }
         } else throw Exception("WHAT")
     }
 
-    private fun Pair<Tribe?, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
-        PinListProps(
-            tribe = tribe!!,
-            pins = retiredPlayers
-        )
-    }
-
-    private suspend fun TribeId.performPinListQuery() = TribePinListQuery(this)
-        .perform()
+    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<Tribe?, List<Pin>, Pin>) -> PinConfigProps =
+        { reload, (tribe, pins, pin) ->
+            PinConfigProps(
+                tribe = tribe!!,
+                pin = pin,
+                pins = pins,
+                pathSetter = pageProps.pathSetter,
+                reload = reload
+            )
+        }
 }

@@ -61,7 +61,7 @@ typealias WelcomeContext = ScopedStyledRContext<EmptyProps, WelcomeStyles>
 interface WelcomeRenderer : ScopedStyledComponentRenderer<EmptyProps, WelcomeStyles>, RandomProvider,
     LoginChooserRenderer {
 
-    override val componentPath: String get() = "Welcome"
+    override val componentPath get() = "Welcome"
 
     override fun WelcomeContext.render(): ReactElement {
         val (show, setShow) = useState(false)
@@ -71,6 +71,7 @@ interface WelcomeRenderer : ScopedStyledComponentRenderer<EmptyProps, WelcomeSty
         }
 
         val hiddenTag = if (show) "" else styles.hidden
+
         return reactElement {
             div(classes = styles.className) {
                 attrs { classes += hiddenTag }

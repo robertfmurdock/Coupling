@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.repository.player.PlayerListGet
@@ -24,7 +25,7 @@ interface SdkPlayerRepository : SdkPlayerListGet,
     SdkPlayerGetDeleted, SdkPlayerSaver,
     SdkPlayerDeleter, PlayerRepository
 
-interface SdkPinRepository : SdkPinGetter, SdkPinSaver, SdkPinDeleter
+interface SdkPinRepository : PinRepository, SdkPinGetter, SdkPinSaver, SdkPinDeleter
 
 interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
