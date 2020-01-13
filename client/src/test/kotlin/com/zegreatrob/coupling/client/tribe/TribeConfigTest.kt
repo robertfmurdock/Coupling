@@ -49,7 +49,6 @@ class TribeConfigTest {
     }
 
     private fun ShallowWrapper<dynamic>.assertHasStandardPairingRule() = also {
-        console.log(debug())
         find<Any>("#pairing-rule")
             .prop("value")
             .unsafeCast<Array<String>>()

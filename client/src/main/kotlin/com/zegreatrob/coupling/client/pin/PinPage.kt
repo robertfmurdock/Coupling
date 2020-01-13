@@ -43,7 +43,6 @@ interface PinPageBuilder : SimpleComponentRenderer<PageProps>, TribePinQueryDisp
             PinConfigProps(
                 tribe = tribe!!,
                 pin = pin,
-                pins = pins,
                 pathSetter = pageProps.pathSetter,
                 reload = reload
             )

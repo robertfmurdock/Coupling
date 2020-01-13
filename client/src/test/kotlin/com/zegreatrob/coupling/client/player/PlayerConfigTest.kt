@@ -24,6 +24,7 @@ import kotlinx.coroutines.await
 import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
 import shallow
+import simulateInputChange
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
@@ -47,7 +48,6 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
-        console.log("player config", wrapper.debug())
         wrapper.find<Any>("input[name='badge'][value='${Badge.Default.value}'][checked]")
             .length
             .assertIsEqualTo(1)
@@ -98,14 +98,7 @@ class PlayerConfigTest {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 reloaderSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find<Any>("input[name='name']")
-                    .simulate(
-                        "change",
-                        json(
-                            "target" to json("name" to "name", "value" to "nonsense"),
-                            "persist" to {}
-                        )
-                    )
+                wrapper.simulateInputChange("name", "nonsense")
                 wrapper.find<Any>("form")
                     .simulate("submit", json("preventDefault" to {}))
             }
@@ -216,11 +209,7 @@ class PlayerConfigTest {
             {}
         ) {})
     }) exercise {
-        wrapper.find<Any>("input[name='name']")
-            .simulate(
-                "change", json(
-                    "target" to json("name" to "name", "value" to "differentName"), "persist" to {})
-            )
+        wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
     } verify {
         wrapper.find(PromptComponent).props().`when`

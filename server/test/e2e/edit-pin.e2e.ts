@@ -28,12 +28,17 @@ describe('Pin', function () {
 
     describe('when the pin is new', function () {
 
-        beforeEach(async function() {
+        beforeEach(async function () {
             await PinConfigPage.goToNewPinConfig(tribe.id)
         });
 
-        xit('will add a new pin when the add button is pressed.', async function () {
+        xit('and the add button is pressed, the pin is saved.', async function () {
+            await PinConfigPage.nameTextField.clear();
+            await PinConfigPage.nameTextField.sendKeys('Excellent pin name');
+            await PinConfigPage.saveButton.click();
+            await PinConfigPage.wait();
 
+            expect(PinConfigPage.deleteButton.isPresent()).toEqual(true)
         })
 
     })

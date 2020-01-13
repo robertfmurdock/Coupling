@@ -30,7 +30,6 @@ object PinConfig : RComponent<PinConfigProps>(provider()), PinConfigRenderer,
 data class PinConfigProps(
     val tribe: Tribe,
     val pin: Pin,
-    val pins: List<Pin>,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit
 ) : RProps
@@ -68,7 +67,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     }
 
     private fun PinConfigContext.pinView(rBuilder: RBuilder) {
-        val (tribe, _, _, _, reload) = props
+        val (tribe, _, _, reload) = props
         val pin = props.pin
 
         val (values, onChange) = useForm(pin.toJson())

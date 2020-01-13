@@ -6,6 +6,7 @@ import react.RBuilder
 import react.RClass
 import react.RProps
 import react.buildElement
+import kotlin.js.json
 
 external interface Enzyme {
     fun shallow(element: dynamic): ShallowWrapper<dynamic>
@@ -35,6 +36,20 @@ external interface ShallowWrapper<T> {
     fun prop(key: String): Any
     fun at(index: Int): ShallowWrapper<T>
 }
+
+fun <T> ShallowWrapper<T>.simulateInputChange(fieldName: String, fieldValue: String) {
+    return findInputByName(fieldName)
+        .simulate(
+            "change",
+            json(
+                "target" to json("name" to fieldName, "value" to fieldValue),
+                "persist" to {}
+            )
+        )
+}
+
+fun <T> ShallowWrapper<T>.findByClass(className: String) = find<T>(".${className}")
+fun <T> ShallowWrapper<T>.findInputByName(inputName: String) = find<T>("input[name='${inputName}']")
 
 @JsModule("enzyme")
 external val enzyme: Enzyme
