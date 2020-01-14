@@ -43,7 +43,7 @@ class PlayersTest {
         @Test
         fun postIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
-            setupAsync(object : Sdk by sdk {
+            setupAsync(object {
                 val player = Player(
                     id = "${uuid4()}",
                     name = "Awesome-O",
@@ -52,7 +52,7 @@ class PlayersTest {
                 )
             }) exerciseAsync {
                 catchAxiosError {
-                    save(TribeIdPlayer(tribeId, player))
+                    sdk.save(TribeIdPlayer(tribeId, player))
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)
