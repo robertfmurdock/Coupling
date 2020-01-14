@@ -67,7 +67,7 @@ class PinConfigTest {
 
                 val savePinSpy = object : Spy<SavePinCommand, Unit> by SpyData() {}.apply { spyWillReturn(Unit) }
 
-                override fun SavePinCommand.perform() = savePinSpy.spyFunction(this)
+                override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this)
 
                 init {
                     wrapper.simulateInputChange("name", newName)

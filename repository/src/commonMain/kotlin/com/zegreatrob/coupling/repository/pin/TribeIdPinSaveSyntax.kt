@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.server.action.pin
+package com.zegreatrob.coupling.repository.pin
 
-import com.zegreatrob.coupling.repository.pin.PinSaver
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 
 interface TribeIdPinSaveSyntax {
