@@ -43,12 +43,14 @@ data class PlayerCardProps(
     val deselected: Boolean = false
 ) : RProps
 
+typealias PlayerCardContext = StyledRContext<PlayerCardProps, PlayerCardStyles>
+
 interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCardStyles> {
 
     override val componentPath: String get() = "player/PlayerCard"
 
-    override fun StyledRContext<PlayerCardProps, PlayerCardStyles>.render(): ReactElement {
-        val (tribeId, player, pathSetter, disabled, _, size, onClick) = props
+    override fun PlayerCardContext.render(): ReactElement {
+        val (_, player, _, _, _, size, onClick) = props
         return reactElement {
             styledDiv {
                 attrs {
@@ -57,27 +59,19 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
                     onClickFunction = onClick
                 }
                 playerGravatarImage(player, size, styles)
-                playerCardHeader(
-                    tribeId = tribeId,
-                    player = player,
-                    size = size,
-                    disabled = disabled,
-                    pathSetter = pathSetter,
-                    styles = styles
-                )
+                child(playerCardHeaderElement())
             }
         }
     }
 
-    private fun StyledRContext<PlayerCardProps, PlayerCardStyles>.additionalClasses() =
-        setOf(styles.player, props.className)
-            .filterNotNull()
-            .let {
-                when {
-                    props.deselected -> it + styles.deselected
-                    else -> it
-                }
+    private fun PlayerCardContext.additionalClasses() = setOf(styles.player, props.className)
+        .filterNotNull()
+        .let {
+            when {
+                props.deselected -> it + styles.deselected
+                else -> it
             }
+        }
 
     private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
         css {
@@ -113,14 +107,8 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
         )
     }
 
-    private fun RBuilder.playerCardHeader(
-        tribeId: TribeId,
-        player: Player,
-        size: Int,
-        disabled: Boolean,
-        pathSetter: (String) -> Unit,
-        styles: PlayerCardStyles
-    ) {
+    private fun PlayerCardContext.playerCardHeaderElement() = reactElement {
+        val (tribeId, player, pathSetter, disabled, _, size, _) = props
         val playerNameRef = useRef<Node>(null)
         useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
 

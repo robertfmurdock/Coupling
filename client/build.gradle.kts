@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -98,10 +97,12 @@ tasks {
         dependsOn(yarn, runDceKotlin, compileKotlinJs)
         mustRunAfter("clean")
 
-        inputs.files(runDceKotlin.outputs)
-        inputs.files("node_modules")
+        inputs.files(fileTree("build/kotlin-js-min/main").matching {
+            exclude("Coupling-*")
+        })
         inputs.file(file("package.json"))
-        inputs.files("${rootProject.buildDir.path}/js/node_modules")
+        inputs.file(file("yarn.lock"))
+        inputs.files("${rootProject.buildDir.path}/js/packages_imported")
         inputs.file(file("vendor.webpack.config.js"))
         outputs.dir("build/lib/vendor")
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
@@ -124,7 +125,6 @@ tasks {
 
     task<YarnTask>("compile") {
         dependsOn(yarn, vendorCompile, runDceKotlin, processResources)
-        inputs.dir("node_modules").skipWhenEmpty()
         inputs.file(file("package.json"))
         inputs.files(runDceKotlin.outputs)
         inputs.file(file("webpack.config.js"))

@@ -8,8 +8,6 @@ const config = {
   mode: process.env.NODE_ENV,
   entry: {
     vendor: [
-      "Coupling-action",
-      "Coupling-logging",
       "axios",
       "blueimp-md5",
       "fitty",
@@ -21,17 +19,18 @@ const config = {
       "react-websocket",
       "react-dnd",
       "react-dnd-html5-backend",
-      "font-awesome/css/font-awesome.css",
+      "@fortawesome/fontawesome-free/css/all.css",
       "kotlin",
       "kotlin-styled",
       "kotlin-react",
       "kotlin-react-dom",
       "kotlin-react-router-dom",
-      "klock-root-klock",
       "kotlin-css-js",
       "kotlinx-html-js",
       "kotlinx-serialization-kotlinx-serialization-runtime",
-      "kotlinx-coroutines-core"
+      "kotlinx-coroutines-core",
+      "klock-root-klock",
+      "kotlin-logging"
     ]
   },
   output: {

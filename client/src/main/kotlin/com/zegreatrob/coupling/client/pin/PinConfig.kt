@@ -41,6 +41,8 @@ external interface PinConfigStyles {
     val tribeBrowser: String
     val pinView: String
     val pin: String
+    val pinCard: String
+    val pinCardIcon: String
     val deleteButton: String
     val pinBag: String
 }
@@ -69,8 +71,12 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     fun PinConfigContext.pinBag() = reactElement {
         div(styles.pinBag) {
             props.pinList.map { pin ->
-                div {
+                div(styles.pinCard) {
                     attrs { key = pin._id.toString() }
+
+                    div(styles.pinCardIcon) {
+                        i("fa fa-3x") { attrs { classes += pin.icon ?: "fa-skull" } }
+                    }
                     div(classes = "pin-name") {
                         +(pin.name ?: "Unnamed pin")
                     }
