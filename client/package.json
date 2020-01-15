@@ -16,7 +16,7 @@
     "@types/jasminewd2": "^2.0.8",
     "@types/passport": "^1.0.2",
     "@types/react": "^16.9.17",
-    "@types/ws": "6.0.4",
+    "@types/ws": "7.2.0",
     "axios": "^0.19.1",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
@@ -82,7 +82,7 @@
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.10",
     "webpack-node-externals": "^1.7.2",
-    "es-abstract": "^1.17.0"
+    "es-abstract": "^1.17.1"
   },
   "scripts": {
     "webpack": "webpack",
