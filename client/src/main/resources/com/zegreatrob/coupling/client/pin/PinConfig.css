@@ -2,6 +2,10 @@
     /*! Do not remove */
 }
 
+:local(.pinBag) {
+    /*! Do not remove */
+}
+
 :local(.tribeBrowser) {
     white-space: normal;
     display: inline-block;

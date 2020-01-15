@@ -6,7 +6,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.repository.pin.PinGetter
+import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -22,7 +22,7 @@ class ProposeNewPairsCommandTest {
 
     @Test
     fun willUseRepositoryToGetThingsAsync() = testAsync {
-        setupAsync(object : ProposeNewPairsCommandDispatcher, PinGetter,
+        setupAsync(object : ProposeNewPairsCommandDispatcher, PinGet,
             TribeGet, PairAssignmentDocumentGet {
             override val pairAssignmentDocumentRepository = this
             override val tribeRepository = this
@@ -50,7 +50,7 @@ class ProposeNewPairsCommandTest {
             override suspend fun getTribe(tribeId: TribeId): Tribe? = tribe
                 .also { tribeId.assertIsEqualTo(tribe.id) }
 
-            override val pinRepository: PinGetter = this
+            override val pinRepository: PinGet = this
             override val actionDispatcher = SpyRunGameActionDispatcher()
 
             val expectedPairAssignmentDocument =

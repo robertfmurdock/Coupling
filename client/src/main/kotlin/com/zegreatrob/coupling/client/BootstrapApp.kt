@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.coupling.client.routing.CouplingRouterProps
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.client.user.GoogleSignIn
 import com.zegreatrob.coupling.logging.initializeJasmineLogging
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.get
@@ -29,4 +29,3 @@ object App : GoogleSignIn, Sdk by SdkSingleton {
         }
     }
 }
-

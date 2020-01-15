@@ -30,6 +30,7 @@ object PinConfig : RComponent<PinConfigProps>(provider()), PinConfigRenderer,
 data class PinConfigProps(
     val tribe: Tribe,
     val pin: Pin,
+    val pinList: List<Pin>,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit
 ) : RProps
@@ -39,9 +40,9 @@ external interface PinConfigStyles {
     val saveButton: String
     val tribeBrowser: String
     val pinView: String
-    val pinRoster: String
     val pin: String
     val deleteButton: String
+    val pinBag: String
 }
 
 typealias PinConfigContext = ScopedStyledRContext<PinConfigProps, PinConfigStyles>
@@ -50,24 +51,36 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     WindowFunctions, UseFormHook, SavePinCommandDispatcher, DeletePinCommandDispatcher {
 
     override val pinRepository: PinRepository
-
     override val componentPath: String get() = "pin/PinConfig"
 
-    override fun ScopedStyledRContext<PinConfigProps, PinConfigStyles>.render() = with(props) {
-        reactElement {
-            div(classes = styles.className) {
+    override fun PinConfigContext.render() = reactElement {
+        val (tribe, _, _, pathSetter) = props
+        div(classes = styles.className) {
+            div {
+                div(classes = styles.tribeBrowser) {
+                    tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+                }
+                child(pinViewElement())
+                child(pinBag())
+            }
+        }
+    }
+
+    fun PinConfigContext.pinBag() = reactElement {
+        div(styles.pinBag) {
+            props.pinList.map { pin ->
                 div {
-                    div(classes = styles.tribeBrowser) {
-                        tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+                    attrs { key = pin._id.toString() }
+                    div(classes = "pin-name") {
+                        +(pin.name ?: "Unnamed pin")
                     }
-                    pinView(this)
                 }
             }
         }
     }
 
-    private fun PinConfigContext.pinView(rBuilder: RBuilder) {
-        val (tribe, _, _, reload) = props
+    private fun PinConfigContext.pinViewElement(): ReactElement {
+        val (tribe, _, _, _, reload) = props
         val pin = props.pin
 
         val (values, onChange) = useForm(pin.toJson())
@@ -75,7 +88,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         val onSubmitFunc = handleSubmitFunc { savePin(scope, updatedPin, tribe, reload) }
 
         val shouldShowPrompt = updatedPin != pin
-        rBuilder.run {
+        return reactElement {
             span(classes = styles.pinView) {
                 span(classes = styles.pin) {
                     pinConfigForm(updatedPin, tribe, onChange, onSubmitFunc)()
@@ -124,51 +137,79 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         val (isSaving, setIsSaving) = useState(false)
         return {
             form {
-                attrs { name = "pinForm"; onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) } }
+                attrs { name = "pinForm"; onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit) }
 
-                div {
-                    configInput(
-                        labelText = "Name",
-                        id = "pin-name",
-                        name = "name",
-                        value = pin.name ?: "",
-                        type = InputType.text,
-                        onChange = onChange
-                    )
-                }
-                div {
-                    configInput(
-                        labelText = "Icon",
-                        id = "pin-icon",
-                        name = "icon",
-                        value = pin.icon ?: "",
-                        type = InputType.text,
-                        onChange = onChange
-                    )
-                }
+                div { nameInput(pin, onChange) }
+                div { iconInput(pin, onChange) }
 
-                button(classes = "large blue button") {
-                    attrs {
-                        classes += styles.saveButton
-                        type = ButtonType.submit
-                        tabIndex = "0"
-                        value = "Save"
-                        disabled = isSaving
-                    }
-                    +"Save"
-                }
+                saveButton(isSaving, styles.saveButton)
                 val pinId = pin._id
                 if (pinId != null) {
-                    div(classes = "small red button") {
-                        attrs {
-                            classes += styles.deleteButton
-                            onClickFunction = { removePin(tribe, props.pathSetter, scope, pinId) }
-                        }
-                        +"Retire"
-                    }
+                    child(retireButtonElement(tribe, pinId))
                 }
             }
         }
+    }
+
+    private fun PinConfigContext.retireButtonElement(tribe: Tribe, pinId: String) = reactElement {
+        div(classes = "small red button") {
+            attrs {
+                classes += styles.deleteButton
+                onClickFunction =
+                    {
+                        removePin(
+                            tribe,
+                            props.pathSetter,
+                            scope,
+                            pinId
+                        )
+                    }
+            }
+            +"Retire"
+        }
+    }
+
+    private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Job): (Event) -> Unit =
+        { event -> setIsSaving(true); onSubmit(event) }
+
+    private fun RDOMBuilder<FORM>.saveButton(isSaving: Boolean, className: String) =
+        button(classes = "large blue button") {
+            attrs {
+                classes += className
+                type = ButtonType.submit
+                tabIndex = "0"
+                value = "Save"
+                disabled = isSaving
+            }
+            +"Save"
+        }
+
+    private fun RDOMBuilder<DIV>.iconInput(
+        pin: Pin,
+        onChange: (Event) -> Unit
+    ) {
+        configInput(
+            labelText = "Icon",
+            id = "pin-icon",
+            name = "icon",
+            value = pin.icon ?: "",
+            type = InputType.text,
+            onChange = onChange
+        )
+    }
+
+    private fun RDOMBuilder<DIV>.nameInput(
+        pin: Pin,
+        onChange: (Event) -> Unit
+    ) {
+        configInput(
+            labelText = "Name",
+            id = "pin-name",
+            name = "name",
+            value = pin.name ?: "",
+            type = InputType.text,
+            onChange = onChange
+        )
     }
 
 }

@@ -129,8 +129,7 @@ class PlayerConfigTest {
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val tribe =
-                    Tribe(TribeId("party"))
+                val tribe = Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
                 val wrapper = shallow(PlayerConfigProps(

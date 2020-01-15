@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.repository.pin.PinGetter
+import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.sdk.TribeGQLComponent.PinList
 import kotlin.js.Json
 
-interface SdkPinGetter : PinGetter, GqlQueryComponent {
+interface SdkPinGet : PinGet, GqlQueryComponent {
     override suspend fun getPins(tribeId: TribeId) = performQueryGetComponent(
         tribeId,
         PinList,

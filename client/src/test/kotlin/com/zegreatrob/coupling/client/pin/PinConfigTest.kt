@@ -35,7 +35,7 @@ class PinConfigTest {
         val pin = Pin(_id = null)
 
     }) exercise {
-        shallow(PinConfigProps(tribe, pin, {}, {}))
+        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
     } verify { wrapper ->
         wrapper.findByClass(styles.deleteButton)
             .length
@@ -48,7 +48,7 @@ class PinConfigTest {
         val pin = Pin(_id = "excellent id")
 
     }) exercise {
-        shallow(PinConfigProps(tribe, pin, {}, {}))
+        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
     } verify { wrapper ->
         wrapper.findByClass(styles.deleteButton)
             .length
@@ -62,7 +62,7 @@ class PinConfigTest {
                 override fun buildScope() = this@withContext
                 val tribe = Tribe(TribeId("dumb tribe"))
                 val pin = Pin(_id = null, name = null)
-                val wrapper = shallow(PinConfigProps(tribe, pin, {}, {}))
+                val wrapper = shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
                 val newName = "pin new name"
 
                 val savePinSpy = object : Spy<SavePinCommand, Unit> by SpyData() {}.apply { spyWillReturn(Unit) }

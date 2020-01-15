@@ -9,8 +9,6 @@ data class SavePinCommand(val id: TribeId, val updatedPin: Pin)
 
 interface SavePinCommandDispatcher : TribeIdPinSaveSyntax {
 
-    suspend fun SavePinCommand.perform() {
-        TribeIdPin(id, updatedPin)
-            .save()
-    }
+    suspend fun SavePinCommand.perform() = TribeIdPin(id, updatedPin)
+        .save()
 }

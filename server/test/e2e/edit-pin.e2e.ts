@@ -3,6 +3,7 @@ import TestLogin from "./TestLogin";
 import {tribeCollection} from "./database";
 import e2eHelp from "./e2e-help";
 import * as monk from "monk";
+import {browser, By} from "protractor";
 
 const config = require("../../config/config");
 
@@ -32,13 +33,23 @@ describe('Pin', function () {
             await PinConfigPage.goToNewPinConfig(tribe.id)
         });
 
-        xit('and the add button is pressed, the pin is saved.', async function () {
+        it('and the add button is pressed, the pin is saved.', async function () {
             await PinConfigPage.nameTextField.clear();
-            await PinConfigPage.nameTextField.sendKeys('Excellent pin name');
+
+            const newPinName = `Excellent pin name${monk.id()}`;
+            await PinConfigPage.nameTextField.sendKeys(newPinName);
             await PinConfigPage.saveButton.click();
             await PinConfigPage.wait();
 
-            expect(PinConfigPage.deleteButton.isPresent()).toEqual(true)
+            await browser.wait(() => PinConfigPage.pinBag.isPresent());
+
+            const pinNameElements = await PinConfigPage.pinBag.all(By.className("pin-name"));
+
+            const pinNames = await Promise.all(
+                // @ts-ignore
+                pinNameElements.map(async it => await it.getText())
+            );
+            expect(pinNames).toContain(newPinName);
         })
 
     })

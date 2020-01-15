@@ -5,6 +5,7 @@ import {PinConfigStyles, PlayerConfigStyles} from "../page-objects/Styles";
 const pinConfigPage = element(By.className(PinConfigStyles.className));
 const saveButton = element(By.className(PinConfigStyles.saveButton));
 const deleteButton = element(By.className(PinConfigStyles.deleteButton));
+const pinBag = element(By.className(PinConfigStyles.pinBag));
 const nameTextField = element(By.id('pin-name'));
 
 export default {
@@ -21,7 +22,9 @@ export default {
     async wait() {
         await browser.wait(() => pinConfigPage.isPresent(), 2000);
     },
-    saveButton: saveButton,
-    nameTextField: nameTextField,
-    deleteButton
+    saveButton,
+    nameTextField,
+    deleteButton,
+    pinBag
+
 }

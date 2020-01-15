@@ -65,6 +65,7 @@ interface CouplingRouterBuilder : SimpleComponentRenderer<CouplingRouterProps> {
         couplingRoute(CouplingRouteProps(path = "/:tribeId/history", rComponent = HistoryPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pins", rComponent = PinListPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pin/new", rComponent = PinPage))
+        couplingRoute(CouplingRouteProps(path = "/:tribeId/pin/:pinId/", rComponent = PinPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/current/", rComponent = CurrentPairsPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/pairAssignments/new", rComponent = NewPairAssignmentsPage))
         couplingRoute(CouplingRouteProps(path = "/:tribeId/player/new", rComponent = PlayerPage))

@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerDelete
-import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.external.axios.axios
@@ -25,7 +25,7 @@ interface SdkPlayerRepository : SdkPlayerListGet,
     SdkPlayerGetDeleted, SdkPlayerSaver,
     SdkPlayerDeleter, PlayerRepository
 
-interface SdkPinRepository : PinRepository, SdkPinGetter, SdkPinSaver, SdkPinDeleter
+interface SdkPinRepository : PinRepository, SdkPinGet, SdkPinSave, SdkPinDelete
 
 interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
