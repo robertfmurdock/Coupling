@@ -23,9 +23,9 @@ class PinsTest {
         setupAsync(object {
             val tribe = Tribe(TribeId(uuid4().toString()))
             val pins = listOf(
-                Pin(uuid4().toString(), "1"),
-                Pin(uuid4().toString(), "2"),
-                Pin(uuid4().toString(), "3")
+                Pin(uuid4().toString(), "1", "icon1"),
+                Pin(uuid4().toString(), "2", "icon2"),
+                Pin(uuid4().toString(), "3", "icon3")
             )
         }) {
             sdk.save(tribe)

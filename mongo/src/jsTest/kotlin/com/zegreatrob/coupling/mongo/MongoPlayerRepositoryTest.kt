@@ -28,14 +28,12 @@ class MongoPlayerRepositoryTest {
             override val jsRepository: dynamic = jsRepository(db)
             override val userEmail: String = "user-${Random.nextInt(200)}"
 
-            val playerCollection: dynamic by lazy<dynamic> { getCollection("players", db) }
-
             suspend fun dropPlayers() {
-                playerCollection.drop().unsafeCast<Promise<Unit>>().await()
+                playersCollection.drop().unsafeCast<Promise<Unit>>().await()
             }
 
             suspend fun getDbPlayers(tribeId: TribeId) =
-                playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
+                playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
         private inline fun withRepository(block: MongoPlayerRepositoryTestAnchor.() -> Unit) {
@@ -282,7 +280,7 @@ class MongoPlayerRepositoryTest {
                 )
             }) {
                 dropPlayers()
-                playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
+                playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             }
         }
 
@@ -334,7 +332,7 @@ class MongoPlayerRepositoryTest {
                     )
                 }) {
                     dropPlayers()
-                    playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
+                    playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
                 } exerciseAsync {
                     save(TribeIdPlayer(tribeId, updatedPlayer))
                     getPlayers(tribeId)
@@ -362,7 +360,7 @@ class MongoPlayerRepositoryTest {
                 )
             }) {
                 dropPlayers()
-                playerCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
+                playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
                 val tribeIdPlayer = Player(
                     id = "5c59ca700e6e5e3cce737c6e",
                     name = "Guy guy",
@@ -371,7 +369,7 @@ class MongoPlayerRepositoryTest {
                 )
                 save(TribeIdPlayer(tribeId, tribeIdPlayer))
 
-                playerCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
+                playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
             } exerciseAsync {
                 getPlayers(tribeId)
             } verifyAsync { result ->

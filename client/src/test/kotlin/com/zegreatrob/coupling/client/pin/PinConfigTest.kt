@@ -64,16 +64,17 @@ class PinConfigTest {
                 val pin = Pin(_id = null, name = null)
                 val wrapper = shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
                 val newName = "pin new name"
+                val newIcon = "pin new icon"
 
                 val savePinSpy = object : Spy<SavePinCommand, Unit> by SpyData() {}.apply { spyWillReturn(Unit) }
 
                 override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this)
 
-                init {
-                    wrapper.simulateInputChange("name", newName)
-                    wrapper.update()
-                }
-            }) exerciseAsync {
+            }) {
+                wrapper.simulateInputChange("name", newName)
+                wrapper.simulateInputChange("icon", newIcon)
+                wrapper.update()
+            } exerciseAsync {
                 wrapper.find<Any>("form")
                     .simulate("submit", json("preventDefault" to {}))
             }
@@ -81,7 +82,7 @@ class PinConfigTest {
             savePinSpy.spyReceivedValues
                 .assertIsEqualTo(
                     listOf(
-                        SavePinCommand(tribe.id, Pin(name = newName))
+                        SavePinCommand(tribe.id, Pin(name = newName, icon = newIcon))
                     )
                 )
         }
