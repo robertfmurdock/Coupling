@@ -96,30 +96,6 @@
     margin-bottom: 25px;
 }
 
-:local(.pinCard) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    overflow: hidden;
-    border: 3px outset gold;
-    background: darkseagreen url(../overlay.png) repeat-x;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 6px;
-    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.6);
-    color: black;
-    margin: 0 2px 0 2px;
-    top: 0
-}
-
-:local(.pinCardIcon) {
-    display: inline-block;
-    background-color: white;
-    padding: 10px;
-    border-radius: 35px;
-    border: thick double black;
-}
-
 :local(.pin) {
     position: relative;
     clear: both;

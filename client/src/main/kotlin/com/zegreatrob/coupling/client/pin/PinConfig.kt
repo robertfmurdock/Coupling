@@ -42,8 +42,6 @@ external interface PinConfigStyles {
     val tribeBrowser: String
     val pinView: String
     val pin: String
-    val pinCard: String
-    val pinCardIcon: String
     val deleteButton: String
     val pinBag: String
 }
@@ -72,16 +70,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     fun PinConfigContext.pinBagElement() = reactElement {
         div(styles.pinBag) {
             props.pinList.map { pin ->
-                div(styles.pinCard) {
-                    attrs { key = pin._id.toString() }
-
-                    div(styles.pinCardIcon) {
-                        i("fa fa-3x") { attrs { classes += pin.icon ?: "fa-skull" } }
-                    }
-                    div(classes = "pin-name") {
-                        +(pin.name ?: "Unnamed pin")
-                    }
-                }
+                child(PinCard(PinCardProps(pin), key = pin._id))
             }
         }
     }
@@ -127,12 +116,12 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
 
     private fun PinConfigContext.pinLargeElementz(pin: Pin): ReactElement {
         var targetIcon = pin.icon ?: "fa-skull"
-        if(!targetIcon.startsWith("fa")) {
+        if (!targetIcon.startsWith("fa")) {
             targetIcon = "fa-$targetIcon"
         }
         var fontAwesomeStyle = "fa"
         val split = targetIcon.split(" ")
-        if(split.size > 1) {
+        if (split.size > 1) {
             fontAwesomeStyle = ""
         }
 
@@ -201,44 +190,35 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Job): (Event) -> Unit =
         { event -> setIsSaving(true); onSubmit(event) }
 
-    private fun RDOMBuilder<FORM>.saveButton(isSaving: Boolean, className: String) =
-        button(classes = "large blue button") {
-            attrs {
-                classes += className
-                type = ButtonType.submit
-                tabIndex = "0"
-                value = "Save"
-                disabled = isSaving
-            }
-            +"Save"
+    private fun RDOMBuilder<FORM>.saveButton(isSaving: Boolean, className: String) = button(
+        classes = "large blue button"
+    ) {
+        attrs {
+            classes += className
+            type = ButtonType.submit
+            tabIndex = "0"
+            value = "Save"
+            disabled = isSaving
         }
-
-    private fun RDOMBuilder<DIV>.iconInput(
-        pin: Pin,
-        onChange: (Event) -> Unit
-    ) {
-        configInput(
-            labelText = "Icon",
-            id = "pin-icon",
-            name = "icon",
-            value = pin.icon ?: "",
-            type = InputType.text,
-            onChange = onChange
-        )
+        +"Save"
     }
 
-    private fun RDOMBuilder<DIV>.nameInput(
-        pin: Pin,
-        onChange: (Event) -> Unit
-    ) {
-        configInput(
-            labelText = "Name",
-            id = "pin-name",
-            name = "name",
-            value = pin.name ?: "",
-            type = InputType.text,
-            onChange = onChange
-        )
-    }
+    private fun RDOMBuilder<DIV>.iconInput(pin: Pin, onChange: (Event) -> Unit) = configInput(
+        labelText = "Icon",
+        id = "pin-icon",
+        name = "icon",
+        value = pin.icon ?: "",
+        type = InputType.text,
+        onChange = onChange
+    )
+
+    private fun RDOMBuilder<DIV>.nameInput(pin: Pin, onChange: (Event) -> Unit) = configInput(
+        labelText = "Name",
+        id = "pin-name",
+        name = "name",
+        value = pin.name ?: "",
+        type = InputType.text,
+        onChange = onChange
+    )
 
 }

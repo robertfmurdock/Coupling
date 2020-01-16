@@ -181,3 +181,4 @@ external interface SimpleStyle {
     val className: String
 }
 
+fun <T> useStyles(path: String): T = loadStyles(path)
