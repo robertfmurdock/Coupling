@@ -1,46 +1,45 @@
 package com.zegreatrob.coupling.client.pin
 
+import PinButton
+import PinButtonProps
+import PinButtonStyles
 import ShallowWrapper
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import findByClass
 import shallow
 import kotlin.test.Test
 
-class PinCardTest {
+class PinButtonTest {
 
-    private val styles = loadStyles<PinCardStyles>("pin/PinCard")
+    private val styles = loadStyles<PinButtonStyles>("pin/PinCard")
 
     @Test
     fun whenGivenPinWithSimpleIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "angry")
     }) exercise {
-        shallow(PinCard, PinCardProps(pin))
+        shallow(PinButton, PinButtonProps(pin))
     } verify { wrapper ->
-        wrapper.findByClass(styles.icon)
-            .assertIconHasClasses("fa", "fa-angry")
+        wrapper.assertIconHasClasses("fa", "fa-angry")
     }
 
     @Test
     fun whenGivenPinWithAlreadyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "fa-angry")
     }) exercise {
-        shallow(PinCard, PinCardProps(pin))
+        shallow(PinButton, PinButtonProps(pin))
     } verify { wrapper ->
-        wrapper.findByClass(styles.icon)
-            .assertIconHasClasses("fa", "fa-angry")
+        wrapper.assertIconHasClasses("fa", "fa-angry")
     }
 
     @Test
     fun whenGivenPinWithFullyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "far fa-angry")
     }) exercise {
-        shallow(PinCard, PinCardProps(pin))
+        shallow(PinButton, PinButtonProps(pin))
     } verify { wrapper ->
-        wrapper.findByClass(styles.icon)
-            .assertIconHasClasses("far", "fa-angry")
+        wrapper.assertIconHasClasses("far", "fa-angry")
             .hasClass("fa").assertIsEqualTo(false, "should not have fa")
     }
 

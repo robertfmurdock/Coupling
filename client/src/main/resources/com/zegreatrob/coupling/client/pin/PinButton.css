@@ -1,0 +1,5 @@
+:local(.className) {
+    display: inline-block;
+    background-color: white;
+    border: double black;
+}

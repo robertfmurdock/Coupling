@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
+import PinButton
+import PinButtonProps
+import PinButtonScale
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -93,8 +96,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                         message = "You have unsaved data. Would you like to save before you leave?"
                     )
                 }
-
-                child(pinLargeElementz(updatedPin))
+                child(PinButton(PinButtonProps(pin, PinButtonScale.Large)))
             }
         }
     }
@@ -112,26 +114,6 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     ) = scope.launch {
         SavePinCommand(tribe.id, updatedPin).perform()
         reload()
-    }
-
-    private fun PinConfigContext.pinLargeElementz(pin: Pin): ReactElement {
-        var targetIcon = pin.icon ?: "fa-skull"
-        if (!targetIcon.startsWith("fa")) {
-            targetIcon = "fa-$targetIcon"
-        }
-        var fontAwesomeStyle = "fa"
-        val split = targetIcon.split(" ")
-        if (split.size > 1) {
-            fontAwesomeStyle = ""
-        }
-
-        targetIcon = "$fontAwesomeStyle $targetIcon"
-
-        return reactElement {
-            div(styles.icon) {
-                i("fa-10x") { attrs { classes += targetIcon } }
-            }
-        }
     }
 
     private fun removePin(
