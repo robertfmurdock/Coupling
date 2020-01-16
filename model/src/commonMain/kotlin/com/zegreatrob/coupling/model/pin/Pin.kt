@@ -2,7 +2,12 @@ package com.zegreatrob.coupling.model.pin
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-data class Pin(val _id: String? = null, val name: String? = null, val icon: String? = null)
+data class Pin(
+    val _id: String? = null,
+    val name: String? = null,
+    val icon: String? = null,
+    val target: PinTarget = PinTarget.Pair
+)
 
 fun Pin.with(tribeId: TribeId) = TribeIdPin(tribeId, this)
 
