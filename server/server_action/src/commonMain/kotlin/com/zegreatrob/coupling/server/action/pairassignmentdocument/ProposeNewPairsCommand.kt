@@ -2,21 +2,20 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class ProposeNewPairsCommand(val tribeId: TribeId, val players: List<Player>) : Action
 interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyntax,
+    RunGameActionDispatcher,
     TribeIdGetSyntax,
     TribeIdHistorySyntax {
-
-    val actionDispatcher: RunGameActionDispatcher
 
     suspend fun ProposeNewPairsCommand.perform() = logAsync {
         loadData()
@@ -24,7 +23,7 @@ interface ProposeNewPairsCommandDispatcher : ActionLoggingSyntax, TribeIdPinsSyn
             .performThis()
     }
 
-    private fun RunGameAction.performThis() = with(actionDispatcher) { perform() }
+    private fun RunGameAction.performThis() = perform()
 
     private suspend fun ProposeNewPairsCommand.loadData() = coroutineScope {
         await(

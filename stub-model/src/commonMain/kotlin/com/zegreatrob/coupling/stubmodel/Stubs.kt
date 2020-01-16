@@ -18,7 +18,6 @@ fun stubPlayer() = Player(
     imageURL = "italian.jpg"
 ).also { playerCounter++ }
 
-
 var pinCounter = 1
 fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time").also { pinCounter++ }
 
@@ -32,15 +31,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     pairs = listOf(
         PinnedCouplingPair(
             listOf(
-                Player(
-                    id = "zeId",
-                    badge = 1,
-                    email = "whoop whoop",
-                    name = "Johnny",
-                    imageURL = "publicDomain.png",
-                    callSignNoun = "Wily",
-                    callSignAdjective = "Rural Wolf"
-                ).withPins()
+                stubPlayer().withPins()
             )
         )
     ),
