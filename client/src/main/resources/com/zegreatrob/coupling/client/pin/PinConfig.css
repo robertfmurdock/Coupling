@@ -3,11 +3,6 @@
 }
 
 :local(.icon) {
-    display: inline-block;
-    background-color: white;
-    padding: 32px;
-    border-radius: 120px;
-    border: 20px double black;
     margin-left: 15px;
     margin-bottom: 15px;
 }

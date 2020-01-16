@@ -96,7 +96,9 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                         message = "You have unsaved data. Would you like to save before you leave?"
                     )
                 }
-                child(PinButton(PinButtonProps(pin, PinButtonScale.Large)))
+                span(classes = styles.icon) {
+                    child(PinButton(PinButtonProps(pin, PinButtonScale.Large)))
+                }
             }
         }
     }
