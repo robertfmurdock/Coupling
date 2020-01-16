@@ -24,6 +24,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
+                api(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async-js:+")
@@ -42,6 +43,7 @@ kotlin {
             dependencies {
                 api(project(":logging"))
                 implementation(npm("monk", "7.1.1"))
+                implementation(npm("mongodb", "3.5.0"))
             }
         }
     }

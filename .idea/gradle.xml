@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server/server_action" />
+            <option value="$PROJECT_DIR$/stub-model" />
             <option value="$PROJECT_DIR$/test-logging" />
           </set>
         </option>

@@ -3,14 +3,15 @@ package com.zegreatrob.coupling.mongo
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.js.toDateTime
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
+import stubPairAssignmentDoc
+import stubSimplePairAssignmentDocument
 import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -39,44 +40,15 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
             suspend fun getDbHistory(tribeId: TribeId) =
                 historyCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
-
-            fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) =
-                PairAssignmentDocumentId(id())
-                    .let { id ->
-                        id to stubPairAssignmentDoc(date, id)
-                    }
-
-            fun stubPairAssignmentDoc(
-                date: DateTime = DateTime.now(),
-                id: PairAssignmentDocumentId? = PairAssignmentDocumentId(
-                    id()
-                )
-            ) =
-                PairAssignmentDocument(
-                    date = date,
-                    pairs = listOf(
-                        PinnedCouplingPair(
-                            listOf(
-                                Player(
-                                    id = "zeId",
-                                    badge = 1,
-                                    email = "whoop whoop",
-                                    name = "Johnny",
-                                    imageURL = "publicDomain.png",
-                                    callSignNoun = "Wily",
-                                    callSignAdjective = "Rural Wolf"
-                                ).withPins()
-                            )
-                        )
-                    ),
-                    id = id
-                )
         }
 
-        private inline fun withRepository(block: MongoPairAssignmentDocumentRepositoryTestAnchor.() -> Unit) {
+        private suspend inline fun withRepository(block: MongoPairAssignmentDocumentRepositoryTestAnchor.() -> Unit) {
             val repositoryWithDb = repositoryWithDb()
-            with(repositoryWithDb, block)
-            repositoryWithDb.db.close()
+            try {
+                with(repositoryWithDb, block)
+            } finally {
+                repositoryWithDb.db.close().unsafeCast<Promise<Unit>>().await()
+            }
         }
     }
 

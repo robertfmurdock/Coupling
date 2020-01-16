@@ -37,7 +37,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.14.0-1.3.60-eap-76")
             }
         }
-        getByName("commonTest") {
+        val commonTest by getting {
             dependencies {
                 implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
@@ -45,6 +45,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation(project(":test-logging"))
+                implementation("com.benasher44:uuid:0.0.7")
             }
         }
 
@@ -62,6 +63,8 @@ kotlin {
 
         val jsEndpointTest by getting {
             dependsOn(jsMain)
+            dependsOn(commonTest)
+
             dependencies {
                 implementation(project(":server"))
                 implementation(npm("axios-cookiejar-support", "^0.5.0"))
@@ -75,14 +78,12 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async-js:+")
-                implementation("com.benasher44:uuid-js:0.0.5")
             }
         }
 
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.benasher44:uuid-js:0.0.5")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async-js:+")

@@ -96,7 +96,7 @@ describe('The edit player page', function () {
 
         await browser.wait(async function () {
             return await browser.getCurrentUrl() === `${hostName}/${tribe.id}/pairAssignments/current/`
-        }, 100);
+        }, 200);
     });
 
     describe('when the tribe does not have badging enabled', function () {
