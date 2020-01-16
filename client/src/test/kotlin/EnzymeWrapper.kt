@@ -58,6 +58,8 @@ fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(f
 
 fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { child(build(), props) }
 
+fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallowRender { child(component, props) }
+
 fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
     reactFunctionComponent: ReactFunctionComponent<P>
 ): ShallowWrapper<P> = find(reactFunctionComponent.rFunction)

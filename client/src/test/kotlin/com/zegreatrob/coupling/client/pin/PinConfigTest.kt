@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pin
 
-import ShallowWrapper
 import Spy
 import SpyData
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
@@ -53,46 +52,6 @@ class PinConfigTest {
             .length
             .assertIsEqualTo(1)
     }
-
-    @Test
-    fun whenGivenPinWithSimpleIconWillUseStandardFontAwesomeTag() = setup(object : RendererWithStub() {
-        val tribe = Tribe(TribeId(""))
-        val pin = Pin(icon = "angry")
-    }) exercise {
-        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
-    } verify { wrapper ->
-        wrapper.findByClass(styles.icon)
-            .assertIconHasClasses("fa", "fa-angry")
-    }
-
-    @Test
-    fun whenGivenPinWithAlreadyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object : RendererWithStub() {
-        val tribe = Tribe(TribeId(""))
-        val pin = Pin(icon = "fa-angry")
-    }) exercise {
-        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
-    } verify { wrapper ->
-        wrapper.findByClass(styles.icon)
-            .assertIconHasClasses("fa", "fa-angry")
-    }
-
-    @Test
-    fun whenGivenPinWithFullyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object : RendererWithStub() {
-        val tribe = Tribe(TribeId(""))
-        val pin = Pin(icon = "far fa-angry")
-    }) exercise {
-        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
-    } verify { wrapper ->
-        wrapper.findByClass(styles.icon)
-            .assertIconHasClasses("far", "fa-angry")
-            .hasClass("fa").assertIsEqualTo(false, "should not have fa")
-    }
-
-    private fun ShallowWrapper<dynamic>.assertIconHasClasses(prefixClass: String, iconClass: String) = find<String>("i")
-        .apply {
-            hasClass(prefixClass).assertIsEqualTo(true, "Did not have class $prefixClass")
-            hasClass(iconClass).assertIsEqualTo(true, "Did not have class $iconClass")
-        }
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = testAsync {

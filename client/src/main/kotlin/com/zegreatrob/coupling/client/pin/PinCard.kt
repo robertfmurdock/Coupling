@@ -26,11 +26,26 @@ object PinCard : FRComponent<PinCardProps>(provider()) {
 
         div(styles.className) {
             div(styles.icon) {
-                i("fa fa-3x") { attrs { classes += pin.icon ?: "fa-skull" } }
+                i("fa-3x") { attrs { classes += targetIcon(pin) } }
             }
             div(classes = "pin-name") {
                 +(pin.name ?: "Unnamed pin")
             }
         }
+    }
+
+    private fun targetIcon(pin: Pin): String {
+        var targetIcon = if (pin.icon.isNullOrEmpty()) "fa-skull" else pin.icon!!
+        if (!targetIcon.startsWith("fa")) {
+            targetIcon = "fa-$targetIcon"
+        }
+        var fontAwesomeStyle = "fa"
+        val split = targetIcon.split(" ")
+        if (split.size > 1) {
+            fontAwesomeStyle = ""
+        }
+
+        targetIcon = "$fontAwesomeStyle $targetIcon"
+        return targetIcon
     }
 }
