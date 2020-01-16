@@ -37,6 +37,7 @@ data class PinConfigProps(
 
 external interface PinConfigStyles {
     val className: String
+    val icon: String
     val saveButton: String
     val tribeBrowser: String
     val pinView: String
@@ -63,12 +64,12 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                 }
                 child(pinViewElement())
-                child(pinBag())
+                child(pinBagElement())
             }
         }
     }
 
-    fun PinConfigContext.pinBag() = reactElement {
+    fun PinConfigContext.pinBagElement() = reactElement {
         div(styles.pinBag) {
             props.pinList.map { pin ->
                 div(styles.pinCard) {
@@ -103,6 +104,8 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                         message = "You have unsaved data. Would you like to save before you leave?"
                     )
                 }
+
+                child(pinLargeElementz(updatedPin))
             }
         }
     }
@@ -120,6 +123,26 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     ) = scope.launch {
         SavePinCommand(tribe.id, updatedPin).perform()
         reload()
+    }
+
+    private fun PinConfigContext.pinLargeElementz(pin: Pin): ReactElement {
+        var targetIcon = pin.icon ?: "fa-skull"
+        if(!targetIcon.startsWith("fa")) {
+            targetIcon = "fa-$targetIcon"
+        }
+        var fontAwesomeStyle = "fa"
+        val split = targetIcon.split(" ")
+        if(split.size > 1) {
+            fontAwesomeStyle = ""
+        }
+
+        targetIcon = "$fontAwesomeStyle $targetIcon"
+
+        return reactElement {
+            div(styles.icon) {
+                i("fa-10x") { attrs { classes += targetIcon } }
+            }
+        }
     }
 
     private fun removePin(

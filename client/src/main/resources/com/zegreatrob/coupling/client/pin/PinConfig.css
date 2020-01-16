@@ -1,5 +1,15 @@
 :local(.className) {
-    /*! Do not remove */
+    margin: 15px;
+}
+
+:local(.icon) {
+    display: inline-block;
+    background-color: white;
+    padding: 32px;
+    border-radius: 120px;
+    border: 20px double black;
+    margin-left: 15px;
+    margin-bottom: 15px;
 }
 
 :local(.pinBag) {
@@ -14,7 +24,8 @@
     padding: 10px;
     border: 11px outset darkorange;
     background-color: lightgoldenrodyellow;
-    margin: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }
 
 :local(.pinView) {

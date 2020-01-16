@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pin
 
+import ShallowWrapper
 import Spy
 import SpyData
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
-import com.zegreatrob.coupling.client.player.PlayerConfigStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -23,7 +23,7 @@ import kotlin.test.Test
 
 class PinConfigTest {
 
-    private val styles = loadStyles<PlayerConfigStyles>("pin/PinConfig")
+    private val styles = loadStyles<PinConfigStyles>("pin/PinConfig")
 
     abstract class RendererWithStub : PinConfigRenderer, PropsClassProvider<PinConfigProps> by provider() {
         override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
@@ -46,7 +46,6 @@ class PinConfigTest {
     fun whenGivenPinHasIdWillShowDeleteButton() = setup(object : RendererWithStub() {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
-
     }) exercise {
         shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
     } verify { wrapper ->
@@ -54,6 +53,46 @@ class PinConfigTest {
             .length
             .assertIsEqualTo(1)
     }
+
+    @Test
+    fun whenGivenPinWithSimpleIconWillUseStandardFontAwesomeTag() = setup(object : RendererWithStub() {
+        val tribe = Tribe(TribeId(""))
+        val pin = Pin(icon = "angry")
+    }) exercise {
+        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
+    } verify { wrapper ->
+        wrapper.findByClass(styles.icon)
+            .assertIconHasClasses("fa", "fa-angry")
+    }
+
+    @Test
+    fun whenGivenPinWithAlreadyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object : RendererWithStub() {
+        val tribe = Tribe(TribeId(""))
+        val pin = Pin(icon = "fa-angry")
+    }) exercise {
+        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
+    } verify { wrapper ->
+        wrapper.findByClass(styles.icon)
+            .assertIconHasClasses("fa", "fa-angry")
+    }
+
+    @Test
+    fun whenGivenPinWithFullyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object : RendererWithStub() {
+        val tribe = Tribe(TribeId(""))
+        val pin = Pin(icon = "far fa-angry")
+    }) exercise {
+        shallow(PinConfigProps(tribe, pin, emptyList(), {}, {}))
+    } verify { wrapper ->
+        wrapper.findByClass(styles.icon)
+            .assertIconHasClasses("far", "fa-angry")
+            .hasClass("fa").assertIsEqualTo(false, "should not have fa")
+    }
+
+    private fun ShallowWrapper<dynamic>.assertIconHasClasses(prefixClass: String, iconClass: String) = find<String>("i")
+        .apply {
+            hasClass(prefixClass).assertIsEqualTo(true, "Did not have class $prefixClass")
+            hasClass(iconClass).assertIsEqualTo(true, "Did not have class $iconClass")
+        }
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = testAsync {
