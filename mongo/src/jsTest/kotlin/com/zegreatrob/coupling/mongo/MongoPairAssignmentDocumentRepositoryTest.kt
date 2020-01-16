@@ -93,7 +93,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
         withRepository {
             setupAsync(object {
                 val tribeId = TribeId("tribe-id-99")
-                val tribeIdDocument = stubPairAssignmentDoc(id = null).with(tribeId)
+                val tribeIdDocument = stubPairAssignmentDoc().copy(id = null).with(tribeId)
             }) {
                 dropHistory()
             } exerciseAsync {

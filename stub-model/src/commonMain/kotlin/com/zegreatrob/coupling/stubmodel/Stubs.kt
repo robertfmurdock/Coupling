@@ -4,36 +4,47 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 
-fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) =
-    PairAssignmentDocumentId(uuid4().toString())
-        .let { id ->
-            id to stubPairAssignmentDoc(date, id)
-        }
+var playerCounter = 1
+fun stubPlayer() = Player(
+    id = uuidString(),
+    badge = 1,
+    name = "Tim $playerCounter",
+    callSignAdjective = "Spicy",
+    callSignNoun = "Meatball",
+    email = "tim@tim.meat",
+    imageURL = "italian.jpg"
+).also { playerCounter++ }
 
-fun stubPairAssignmentDoc(
-    date: DateTime = DateTime.now(),
-    id: PairAssignmentDocumentId? = PairAssignmentDocumentId(
-        uuid4().toString()
-    )
-) =
-    PairAssignmentDocument(
-        date = date,
-        pairs = listOf(
-            PinnedCouplingPair(
-                listOf(
-                    Player(
-                        id = "zeId",
-                        badge = 1,
-                        email = "whoop whoop",
-                        name = "Johnny",
-                        imageURL = "publicDomain.png",
-                        callSignNoun = "Wily",
-                        callSignAdjective = "Rural Wolf"
-                    ).withPins()
-                )
+
+var pinCounter = 1
+fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time").also { pinCounter++ }
+
+fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) = PairAssignmentDocumentId(uuidString())
+    .let { id ->
+        id to stubPairAssignmentDoc().copy(date = date, id = id)
+    }
+
+fun stubPairAssignmentDoc() = PairAssignmentDocument(
+    date = DateTime.now(),
+    pairs = listOf(
+        PinnedCouplingPair(
+            listOf(
+                Player(
+                    id = "zeId",
+                    badge = 1,
+                    email = "whoop whoop",
+                    name = "Johnny",
+                    imageURL = "publicDomain.png",
+                    callSignNoun = "Wily",
+                    callSignAdjective = "Rural Wolf"
+                ).withPins()
             )
-        ),
-        id = id
-    )
+        )
+    ),
+    id = PairAssignmentDocumentId(uuidString())
+)
+
+private fun uuidString() = uuid4().toString()

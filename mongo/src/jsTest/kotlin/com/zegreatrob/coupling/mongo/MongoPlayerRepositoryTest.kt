@@ -12,6 +12,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
+import stubPlayer
 import kotlin.js.*
 import kotlin.random.Random
 import kotlin.test.Test
@@ -38,8 +39,11 @@ class MongoPlayerRepositoryTest {
 
         private inline fun withRepository(block: MongoPlayerRepositoryTestAnchor.() -> Unit) {
             val repositoryWithDb = repositoryWithDb()
-            with(repositoryWithDb, block)
-            repositoryWithDb.db.close()
+            try {
+                with(repositoryWithDb, block)
+            } finally {
+                repositoryWithDb.db.close()
+            }
         }
     }
 
@@ -49,15 +53,7 @@ class MongoPlayerRepositoryTest {
             dropPlayers()
             setupAsync(object {
                 val tribeId = TribeId("woo")
-                val player = Player(
-                    id = id(),
-                    badge = 1,
-                    name = "Tim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "tim@tim.meat",
-                    imageURL = "italian.jpg"
-                )
+                val player = stubPlayer()
             }) exerciseAsync {
                 save(TribeIdPlayer(tribeId, player))
                 getPlayers(tribeId)
@@ -73,15 +69,7 @@ class MongoPlayerRepositoryTest {
             dropPlayers()
             setupAsync(object {
                 val tribeId = TribeId("woo")
-                val player = Player(
-                    id = id(),
-                    badge = 1,
-                    name = "Tim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "tim@tim.meat",
-                    imageURL = "italian.jpg"
-                )
+                val player = stubPlayer()
             }) exerciseAsync {
                 save(TribeIdPlayer(tribeId, player))
                 getDbPlayers(tribeId)
@@ -101,15 +89,7 @@ class MongoPlayerRepositoryTest {
 
         private suspend fun MongoPlayerRepositoryTestAnchor.setupSavedPlayer() = setupAsync(object {
             val tribeId = TribeId("boo")
-            val player = Player(
-                id = id(),
-                badge = 1,
-                name = "Tim",
-                callSignAdjective = "Spicy",
-                callSignNoun = "Meatball",
-                email = "tim@tim.meat",
-                imageURL = "italian.jpg"
-            )
+            val player = stubPlayer()
             val updatedPlayer = player.copy(name = "Timmy")
         }) {
             dropPlayers()
@@ -125,7 +105,7 @@ class MongoPlayerRepositoryTest {
                 } verifyAsync { result ->
                     result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
                         .map { it["name"] }
-                        .assertIsEqualTo(listOf("Timmy", "Tim"))
+                        .assertIsEqualTo(listOf("Timmy", player.name))
                 }
             }
         }
@@ -176,15 +156,7 @@ class MongoPlayerRepositoryTest {
             setupAsync(object {
                 val tribeId = TribeId("hoo")
                 val playerId = id()
-                val player = Player(
-                    id = playerId,
-                    badge = 0,
-                    name = "Jim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "jim@jim.meat",
-                    imageURL = "italian.jpg"
-                )
+                val player = stubPlayer().copy(id = playerId)
             }) {
                 dropPlayers()
                 save(TribeIdPlayer(tribeId, player))
@@ -203,15 +175,7 @@ class MongoPlayerRepositoryTest {
             setupAsync(object {
                 val tribeId = TribeId("hoo")
                 val playerId = id()
-                val player = Player(
-                    id = playerId,
-                    badge = 0,
-                    name = "Jim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "jim@jim.meat",
-                    imageURL = "italian.jpg"
-                )
+                val player = stubPlayer().copy(id = playerId)
             }) {
                 dropPlayers()
                 save(player with tribeId)
@@ -233,15 +197,7 @@ class MongoPlayerRepositoryTest {
             setupAsync(object {
                 val tribeId = TribeId("hoo")
                 val playerId = id()
-                val player = Player(
-                    id = playerId,
-                    badge = 0,
-                    name = "Jim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "jim@jim.meat",
-                    imageURL = "italian.jpg"
-                )
+                val player = stubPlayer().copy(id = playerId)
                 val userWhoSaved = "user that saved"
             }) {
                 with(object : MongoPlayerRepository {
