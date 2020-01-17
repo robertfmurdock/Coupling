@@ -48,6 +48,14 @@ const PinnedPlayerType = new GraphQLObjectType({
   }),
 });
 
+const PinnedPairType = new GraphQLObjectType({
+  name: "PinnedPair",
+  fields: {
+    players: {type: new GraphQLList(PinnedPlayerType)},
+    pins: {type: new GraphQLList(PinType)}
+  }
+});
+
 const PairAssignmentDocumentType = new GraphQLObjectType({
   name: 'PairAssignmentDocument',
   description: 'Assignments!',
@@ -57,7 +65,9 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
       type: GraphQLNonNull(GraphQLString),
       resolve: async content => content.date.toISOString()
     },
-    pairs: {type: new GraphQLList(new GraphQLList(PinnedPlayerType))},
+    pairs: {
+      type: new GraphQLList(PinnedPairType)
+    },
   }),
 });
 

@@ -5,8 +5,8 @@ import com.soywiz.klock.days
 import com.soywiz.klock.hours
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -194,14 +194,16 @@ class ComposeStatisticsActionTest {
                                 player1.withPins(
                                     emptyList()
                                 ), player3.withPins(emptyList())
-                            )
+                            ),
+                            emptyList()
                         ),
                         PinnedCouplingPair(
                             listOf(
                                 player2.withPins(
                                     emptyList()
                                 ), player4.withPins(emptyList())
-                            )
+                            ),
+                            emptyList()
                         )
                     )
                 ),
@@ -212,14 +214,16 @@ class ComposeStatisticsActionTest {
                                 player1.withPins(
                                     emptyList()
                                 ), player2.withPins(emptyList())
-                            )
+                            ),
+                            emptyList()
                         ),
                         PinnedCouplingPair(
                             listOf(
                                 player3.withPins(
                                     emptyList()
                                 ), player4.withPins(emptyList())
-                            )
+                            ),
+                            emptyList()
                         )
                     )
                 )

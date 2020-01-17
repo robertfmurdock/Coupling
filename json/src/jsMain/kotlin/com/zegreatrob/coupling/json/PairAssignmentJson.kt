@@ -27,24 +27,26 @@ fun historyFromArray(history: Array<Json>) =
 
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
     date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
-    pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-    id = this["_id"].unsafeCast<String?>()?.let {
-        PairAssignmentDocumentId(
-            it
-        )
-    }
+    pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map(::pairFromJson) ?: emptyList(),
+    id = this["_id"].unsafeCast<String?>()?.let { PairAssignmentDocumentId(it) }
 )
 
-@JsName("pairFromArray")
-fun pairFromArray(array: Array<Json>) = array.map {
-    PinnedPlayer(
-        it.toPlayer(),
-        it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList()
+fun pairFromJson(json: Any) = if (json is Array<*>) {
+    PinnedCouplingPair(
+        json.unsafeCast<Array<Json>>().map { toPinnedPlayer(it) },
+        emptyList()
     )
-}.toPairs()
+} else {
+    val objectNode = json.unsafeCast<Json>()
+    val pins = objectNode["pins"].unsafeCast<Array<Json>?>()?.toPins()
+    val pinnedPlayer = objectNode["players"].unsafeCast<Array<Json>>().map { toPinnedPlayer(it) }
+    PinnedCouplingPair(pinnedPlayer, pins ?: emptyList())
+}
 
-private fun List<PinnedPlayer>.toPairs() =
-    PinnedCouplingPair(this)
+private fun toPinnedPlayer(it: Json) = PinnedPlayer(
+    it.toPlayer(),
+    it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList()
+)
 
 fun PairAssignmentDocument.toJson() = json(
     "_id" to id?.value,
@@ -53,8 +55,11 @@ fun PairAssignmentDocument.toJson() = json(
 )
 
 private fun PairAssignmentDocument.toJsPairs() = pairs.map {
-    it.players
-        .map { player -> player.toJson() }
-        .toTypedArray()
+    json(
+        "players" to it.players
+            .map { player -> player.toJson() }
+            .toTypedArray(),
+        "pins" to it.pins.toJson()
+    )
 }
     .toTypedArray()

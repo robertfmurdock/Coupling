@@ -8,12 +8,16 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.mongo.pin.PinToDbSyntax
 import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import kotlin.js.*
+import kotlin.js.Date
+import kotlin.js.Json
+import kotlin.js.json
 
 interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentRepository,
     PlayerToDbSyntax,
+    PinToDbSyntax,
     DbRecordSaveSyntax,
     DbRecordLoadSyntax,
     DbRecordDeleteSyntax {
@@ -46,9 +50,10 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     )
 
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
-        it.players
-            .map { player -> player.toJson() }
-            .toTypedArray()
+        json(
+            "pins" to it.pins.map { pin -> pin.toDbJson() }.toTypedArray(),
+            "players" to it.players.map { player -> player.toJson() }.toTypedArray()
+        )
     }
         .toTypedArray()
 
@@ -57,28 +62,37 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun List<Pin>.toDbJson(): Array<Json> = map { it.toDbJson() }
         .toTypedArray()
 
-    private fun Pin.toDbJson() = json("id" to _id, "name" to name)
-
-    private fun Json.toPairAssignmentDocument() =
-        TribeIdPairAssignmentDocument(
-            TribeId(this["tribe"].unsafeCast<String>()),
-            PairAssignmentDocument(
-                date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
-                pairs = this["pairs"].unsafeCast<Array<Array<Json>>?>()?.map(::pairFromArray) ?: listOf(),
-                id = idStringValue()
-                    .let(::PairAssignmentDocumentId)
-            )
+    private fun Json.toPairAssignmentDocument() = TribeIdPairAssignmentDocument(
+        TribeId(this["tribe"].unsafeCast<String>()),
+        PairAssignmentDocument(
+            date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
+            pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map { pairFromRaw(it) } ?: listOf(),
+            id = idStringValue()
+                .let(::PairAssignmentDocumentId)
         )
+    )
 
     private fun Json.idStringValue() = let { this["id"].unsafeCast<Json?>() ?: this["_id"] }.toString()
 
-    @JsName("pairFromArray")
-    fun pairFromArray(array: Array<Json>) = array.map {
-        PinnedPlayer(
-            it.fromDbToPlayer(),
-            it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList()
-        )
-    }.toPairs()
+    private fun pairFromRaw(pair: Any): PinnedCouplingPair {
+        return if (pair is Array<*>) {
+            pair.unsafeCast<Array<Json>>().map {
+                PinnedPlayer(
+                    it.fromDbToPlayer(),
+                    it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList()
+                )
+            }.toPairs()
+        } else {
+            val pairObject = pair.unsafeCast<Json>()
+            val pins = pairObject["pins"].unsafeCast<Array<Json>>().toDbPins()
+            pairObject["players"].unsafeCast<Array<Json>>().map {
+                PinnedPlayer(
+                    it.fromDbToPlayer(),
+                    it["pins"].unsafeCast<Array<Json>?>()?.toPins() ?: emptyList()
+                )
+            }.toPairs().copy(pins = pins)
+        }
+    }
 
     private fun Array<Json>.toPins() = map {
         Pin(

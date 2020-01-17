@@ -152,12 +152,12 @@ describe('The current pair assignments', function () {
     });
 
     describe('when there is no current set of pairs', function () {
-        beforeAll(function (done) {
-            historyCollection.drop()
-                .then(done, done.fail);
+        beforeAll(async function () {
+            await historyCollection.drop()
         });
+
         it('will display all the existing players in the player roster', async function () {
-            await setLocation('/' + tribe.id + '/pairAssignments/current/');
+            await setLocation(`/${tribe.id}/pairAssignments/current/`);
             waitForCurrentPairAssignmentPage();
 
             expect(unpairedPlayerElements.getText()).toEqual(pluck('name', players));
@@ -167,7 +167,7 @@ describe('The current pair assignments', function () {
     describe('when there is a current set of pairs', function () {
         const pairAssignmentDocument = new PairAssignmentDocument(
             new Date(2015, 5, 30),
-            [[player1, player3], [player5]]
+            [{players: [player1, player3], pins: []}, {players: [player5], pins: []}]
         );
 
         beforeAll(async function () {

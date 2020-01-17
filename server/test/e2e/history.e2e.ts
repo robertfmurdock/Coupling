@@ -6,7 +6,7 @@ import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
 import TestLogin from "./TestLogin";
-import {HistoryStyles, PairAssignmentsStyles} from "./page-objects/Styles";
+import {HistoryStyles} from "./page-objects/Styles";
 
 const config = require('../../config/config');
 const database = monk.default(config.tempMongoUrl);
@@ -36,20 +36,28 @@ describe('The history page', function () {
     describe('with two assignments', function () {
 
         beforeAll(async function () {
-            const pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [[
+            const pairAssignmentSet1 = new PairAssignmentDocument(new Date().toISOString(), [
                 {
-                    name: 'Ollie',
-                    _id: monk.id()
-                },
-                {
-                    name: 'Speedy',
-                    _id: monk.id()
+                    players: [
+                        {
+                            name: 'Ollie',
+                            _id: monk.id()
+                        },
+                        {
+                            name: 'Speedy',
+                            _id: monk.id()
+                        }
+                    ],
+                    pins: []
                 }
-            ]]);
-            const pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [[
-                {name: 'Arthur', _id: monk.id()},
-                {name: 'Garth', _id: monk.id()}
-            ]]);
+            ]);
+            const pairAssignmentSet2 = new PairAssignmentDocument(new Date().toISOString(), [{
+                players: [
+                    {name: 'Arthur', _id: monk.id()},
+                    {name: 'Garth', _id: monk.id()}
+                ],
+                pins: []
+            }]);
 
             const apiGuy = await ApiGuy.new();
             await apiGuy.postTribe(tribe);

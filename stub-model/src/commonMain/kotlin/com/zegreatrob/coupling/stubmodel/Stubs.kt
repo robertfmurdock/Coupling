@@ -22,7 +22,6 @@ fun stubPlayer() = Player(
 var pinCounter = 1
 fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget()).also { pinCounter++ }
 
-
 var pinTargetCounter = 1
 fun stubPinTarget(): PinTarget {
     val index = pinTargetCounter % PinTarget.values().size
@@ -41,6 +40,9 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
         PinnedCouplingPair(
             listOf(
                 stubPlayer().withPins()
+            ),
+            listOf(
+                stubPin()
             )
         )
     ),

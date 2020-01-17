@@ -107,7 +107,7 @@ class GameTest {
     }
 
     @Test
-    fun whenAPinExistsWillAssignOnePinToPlayer() = testAsync {
+    fun whenAPinExistsWillAssignOnePinToPair() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
             val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
@@ -121,7 +121,7 @@ class GameTest {
             sdk.requestSpin(tribe.id, players)
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(listOf(players[0].withPins(listOf(pin)))))
+                listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
             )
         }
     }

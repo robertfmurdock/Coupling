@@ -46,14 +46,19 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
     )
 }
 
-private fun JsonNode.toPinnedCouplingPair() = PinnedCouplingPair(
-    players = map { playerNode ->
+private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
+    val playerArray = if (isArray) this else this["players"]
+
+    val players = playerArray.map { playerNode ->
         playerNode.toPlayer()
             .withPins(playerNode["pins"].map { pinNode ->
                 pinNode.toPin()
             })
     }
-)
+    return PinnedCouplingPair(
+        players = players
+    )
+}
 
 private fun JsonNode.toPin() = Pin(
     _id = this["_id"].textValue(),

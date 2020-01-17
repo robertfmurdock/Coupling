@@ -1,5 +1,5 @@
 import Player from "./Player";
 
-type Pair = [Player, Player] | [Player]
+type Pair = { players: [Player, Player] | [Player], pins: [any] }
 
 export default Pair;

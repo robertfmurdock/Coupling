@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import kotlin.js.Json
 import kotlin.js.json
 
-interface PinToDbSyntax {
+interface PinToDbSyntax : JsonStringValueSyntax {
 
     fun Array<Json>.toDbPins() = map { it.fromDbToPin() }
 
@@ -16,5 +16,4 @@ interface PinToDbSyntax {
 
     fun Pin.toDbJson() = json("id" to _id, "name" to name, "icon" to icon)
 
-    private fun Json.stringValue(key: String) = this[key]?.toString()
 }

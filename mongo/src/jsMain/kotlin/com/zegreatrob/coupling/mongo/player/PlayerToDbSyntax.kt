@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.mongo.pin.JsonStringValueSyntax
 import kotlin.js.Json
 import kotlin.js.json
 
-interface PlayerToDbSyntax {
+interface PlayerToDbSyntax : JsonStringValueSyntax {
 
     fun Player.toDbJson(): Json = emptyArray<Pair<String, Any?>>()
         .plusIfNotNull("id", id)
@@ -27,8 +28,6 @@ interface PlayerToDbSyntax {
             callSignNoun = stringValue("callSignNoun"),
             imageURL = stringValue("imageURL")
         )
-
-    private fun Json.stringValue(key: String) = this[key]?.toString()
 
     fun Array<Pair<String, Any?>>.plusIfNotNull(key: String, value: Any?): Array<Pair<String, Any?>> {
         return if (value != null)
