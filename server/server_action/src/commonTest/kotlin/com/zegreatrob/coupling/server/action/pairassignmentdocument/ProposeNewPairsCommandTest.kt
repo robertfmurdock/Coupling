@@ -20,31 +20,33 @@ import kotlin.test.Test
 class ProposeNewPairsCommandTest {
 
     @Test
-    fun willUseRepositoryToGetThingsAsync() = testAsync {
-        setupAsync(object : ProposeNewPairsCommandDispatcher, PinGet, TribeGet, PairAssignmentDocumentGet {
+    fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = testAsync {
+        setupAsync(object : ProposeNewPairsCommandDispatcher {
             override val actionDispatcher get() = throw NotImplementedError("Do not use")
-            override val pairAssignmentDocumentRepository = this
-            override val tribeRepository = this
-            override val pinRepository = this
+            override val wheel: Wheel get() = throw NotImplementedError("Do not use")
+            override val pairAssignmentDocumentRepository get() = stubRepository
+            override val tribeRepository get() = stubRepository
+            override val pinRepository get() = stubRepository
+
+            val stubRepository = object : PinGet, TribeGet, PairAssignmentDocumentGet {
+                override suspend fun getTribe(tribeId: TribeId) = tribe.also { tribeId.assertIsEqualTo(tribe.id) }
+                override suspend fun getPins(tribeId: TribeId) = pins.also { tribeId.assertIsEqualTo(tribe.id) }
+                override suspend fun getPairAssignments(tribeId: TribeId) =
+                    history.also { tribeId.assertIsEqualTo(tribe.id) }
+            }
 
             val players = listOf(Player(name = "John"))
             val pins = listOf(Pin(name = "Bobby"))
             val history = listOf(stubPairAssignmentDoc())
             val tribe = Tribe(TribeId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
-
-            override suspend fun getPins(tribeId: TribeId) = pins.also { tribeId.assertIsEqualTo(tribe.id) }
-            override suspend fun getPairAssignments(tribeId: TribeId) =
-                history.also { tribeId.assertIsEqualTo(tribe.id) }
-
-            override suspend fun getTribe(tribeId: TribeId) = tribe.also { tribeId.assertIsEqualTo(tribe.id) }
+            val expectedPairAssignmentDocument = stubPairAssignmentDoc()
 
             val spy = SpyData<RunGameAction, PairAssignmentDocument>()
+                .apply { spyReturnValues.add(expectedPairAssignmentDocument) }
+
             override fun RunGameAction.perform() = spy.spyFunction(this)
 
-            val expectedPairAssignmentDocument = stubPairAssignmentDoc()
-        }) {
-            spy.spyReturnValues.add(expectedPairAssignmentDocument)
-        } exerciseAsync {
+        }) exerciseAsync {
             ProposeNewPairsCommand(tribe.id, players)
                 .perform()
         } verifyAsync { result ->

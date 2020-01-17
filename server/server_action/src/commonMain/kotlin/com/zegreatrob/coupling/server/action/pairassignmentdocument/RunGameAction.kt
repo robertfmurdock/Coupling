@@ -15,18 +15,14 @@ data class RunGameAction(
     val tribe: Tribe
 )
 
-interface RunGameActionDispatcher : Clock, PinAssignmentSyntax {
-
-    val actionDispatcher: FindNewPairsActionDispatcher
-
-    private fun FindNewPairsAction.performThis() = with(actionDispatcher) { perform() }
+interface RunGameActionDispatcher : Clock, FindNewPairsActionDispatcher, PinAssignmentSyntax {
 
     fun RunGameAction.perform() = findNewPairs()
         .assign(pins)
         .let { pairAssignments -> pairAssignmentDocument(pairAssignments) }
 
     private fun RunGameAction.findNewPairs() = findNewPairsAction()
-        .performThis()
+        .perform()
 
     private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(
         Game(
