@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.Player
 
 var playerCounter = 1
@@ -19,7 +20,15 @@ fun stubPlayer() = Player(
 ).also { playerCounter++ }
 
 var pinCounter = 1
-fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time").also { pinCounter++ }
+fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget()).also { pinCounter++ }
+
+
+var pinTargetCounter = 1
+fun stubPinTarget(): PinTarget {
+    val index = pinTargetCounter % PinTarget.values().size
+    return PinTarget.values()[index]
+        .also { pinTargetCounter++ }
+}
 
 fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) = PairAssignmentDocumentId(uuidString())
     .let { id ->
