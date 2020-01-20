@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import stubPairAssignmentDoc
 import stubPin
 import stubPlayer
 import kotlin.test.Test
@@ -20,7 +21,7 @@ class AssignPinsActionTest {
         val alternatePair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair, alternatePair)
     }) exercise {
-        AssignPinsAction(pairs, listOf(pin)).perform()
+        AssignPinsAction(pairs, listOf(pin), emptyList()).perform()
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -31,11 +32,36 @@ class AssignPinsActionTest {
     }
 
     @Test
+    fun givenOnePinForAssigningToPairThatHasBeenUsedOnMemberOfFirstPairWillAssignToSecondPair() = setup(object {
+        val pin = stubPin().copy(target = PinTarget.Pair)
+        val player1 = stubPlayer()
+        val player2 = stubPlayer()
+        val alternatePair = pairOf(player1, player2)
+        val player3 = stubPlayer()
+        val player4 = stubPlayer()
+        val expectedPair = pairOf(player3, player4)
+        val pairs = listOf(alternatePair, expectedPair)
+
+        val history = listOf(
+            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(listOf(pin))))
+        )
+    }) exercise {
+        AssignPinsAction(pairs, listOf(pin), history).perform()
+    } verify { result ->
+        result.assertIsEqualTo(
+            listOf(
+                alternatePair.withPins(),
+                expectedPair.withPins(listOf(pin))
+            )
+        )
+    }
+
+    @Test
     fun willAssignNoPinsWhenThereAreNoPlayers() = setup(object {
         val pins = listOf(Pin(name = "Lucky"))
         val players = emptyList<CouplingPair>()
     }) exercise {
-        AssignPinsAction(players, pins).perform()
+        AssignPinsAction(players, pins, emptyList()).perform()
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }

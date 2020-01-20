@@ -18,7 +18,7 @@ class CalculateHeatMapCommandTest {
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
                 date = DateTime.now(),
-                pairs = AssignPinsAction(listOf(pairOf(player1, player2)), emptyList()).perform()
+                pairs = AssignPinsAction(listOf(pairOf(player1, player2)), emptyList(), emptyList()).perform()
             )
     }
 
