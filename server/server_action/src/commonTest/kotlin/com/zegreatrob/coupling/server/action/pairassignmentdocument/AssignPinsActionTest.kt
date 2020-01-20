@@ -53,6 +53,25 @@ class AssignPinsActionTest {
     }
 
     @Test
+    fun givenTwoPinsAndOnlyOnePairWillAssignBothToThatPair() = setup(object {
+        val pins = listOf(
+            stubPin().copy(target = PinTarget.Pair),
+            stubPin().copy(target = PinTarget.Pair)
+        )
+
+        val expectedPair = pairOf(stubPlayer(), stubPlayer())
+        val pairs = listOf(expectedPair)
+    }) exercise {
+        AssignPinsAction(pairs, pins, emptyList()).perform()
+    } verify { result ->
+        result.assertIsEqualTo(
+            listOf(
+                expectedPair.withPins(listOf(pins[0], pins[1]))
+            )
+        )
+    }
+
+    @Test
     fun givenOnePinForAssigningToPairThatHasBeenUsedOnMemberOfFirstPairWillAssignToSecondPair() = setup(object {
         val pin = stubPin().copy(target = PinTarget.Pair)
         val player1 = stubPlayer()

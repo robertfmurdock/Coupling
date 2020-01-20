@@ -22,7 +22,7 @@ interface AssignPinsActionDispatcher {
 
                 pinnedPairs = pinnedPairs.map { pair ->
                     if (candidatePairs.contains(pair) && pinIterator.hasNext()) {
-                        pair.copy(pins = listOf(pinIterator.next()))
+                        pair.copy(pins = pair.pins + pinIterator.next())
                     } else {
                         pair
                     }
