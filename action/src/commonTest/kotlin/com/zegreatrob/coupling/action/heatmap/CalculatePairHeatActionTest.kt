@@ -1,27 +1,28 @@
 package com.zegreatrob.coupling.action.heatmap
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
+import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
+import com.zegreatrob.coupling.model.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.model.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinAssignmentSyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
-import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
 import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
 
     companion object : CalculatePairHeatActionDispatcher,
-        PinAssignmentSyntax {
+        AssignPinsActionDispatcher {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument() }
 
         fun List<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
                 DateTime(2016, 3, 1),
-                assign(emptyList())
+                AssignPinsAction(this, emptyList()).perform()
             )
     }
 

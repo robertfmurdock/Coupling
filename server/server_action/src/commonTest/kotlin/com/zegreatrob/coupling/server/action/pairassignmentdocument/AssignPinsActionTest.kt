@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinAssignmentSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -12,9 +9,9 @@ import stubPin
 import stubPlayer
 import kotlin.test.Test
 
-class PinAssignmentSyntaxTest {
+class AssignPinsActionTest {
 
-    companion object : PinAssignmentSyntax;
+    companion object : AssignPinsActionDispatcher;
 
     @Test
     fun givenOnePinForAssigningToPairHasNeverBeenUsedWillAssignToFirstPair() = setup(object {
@@ -23,7 +20,7 @@ class PinAssignmentSyntaxTest {
         val alternatePair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair, alternatePair)
     }) exercise {
-        pairs.assign(listOf(pin))
+        AssignPinsAction(pairs, listOf(pin)).perform()
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -38,7 +35,7 @@ class PinAssignmentSyntaxTest {
         val pins = listOf(Pin(name = "Lucky"))
         val players = emptyList<CouplingPair>()
     }) exercise {
-        players.assign(pins)
+        AssignPinsAction(players, pins).perform()
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
