@@ -38,7 +38,7 @@ interface AssignPinsActionDispatcher {
         history: List<PairAssignmentDocument>
     ): List<PinnedCouplingPair> {
         val groupByLastTime = pinnedPairs.groupBy { pair ->
-            val players = pair.getPlayers()
+            val players = pair.asPlayers()
 
             val lastTimePlayerInPairHadPin = history.indexOfFirst { pairAssignmentDocument ->
                 val pairWithPinPlayers = pairWithPinPlayers(pairAssignmentDocument, pin)
@@ -51,8 +51,9 @@ interface AssignPinsActionDispatcher {
         }
 
         val neverPinnedGroup = groupByLastTime[-1]
-        if (neverPinnedGroup?.isNotEmpty() == true) {
-            return neverPinnedGroup
+        if (neverPinnedGroup != null && neverPinnedGroup.isNotEmpty()) {
+            val groupByCurrentlyAssignedPins = neverPinnedGroup.groupBy { it.pins.count() }
+            return groupByCurrentlyAssignedPins[groupByCurrentlyAssignedPins.keys.min()]!!
         }
 
         val smallestKey = groupByLastTime.keys.min()
@@ -64,9 +65,9 @@ interface AssignPinsActionDispatcher {
         ?: emptyList()
 
     private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
-        ?.getPlayers()
+        ?.asPlayers()
 
-    private fun PinnedCouplingPair.getPlayers() = players.map(PinnedPlayer::player)
+    private fun PinnedCouplingPair.asPlayers() = players.map(PinnedPlayer::player)
 
     private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) =
         pairAssignmentDocument.pairs.find { docPair -> docPair.pins.contains(pin) }

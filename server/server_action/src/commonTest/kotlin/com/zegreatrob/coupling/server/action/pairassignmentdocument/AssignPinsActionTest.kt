@@ -32,6 +32,27 @@ class AssignPinsActionTest {
     }
 
     @Test
+    fun givenTwoPinsForAssigningToPairHasNeverBeenUsedWillAssignToEachPair() = setup(object {
+        val pins = listOf(
+            stubPin().copy(target = PinTarget.Pair),
+            stubPin().copy(target = PinTarget.Pair)
+        )
+
+        val expectedPair = pairOf(stubPlayer(), stubPlayer())
+        val alternatePair = pairOf(stubPlayer(), stubPlayer())
+        val pairs = listOf(expectedPair, alternatePair)
+    }) exercise {
+        AssignPinsAction(pairs, pins, emptyList()).perform()
+    } verify { result ->
+        result.assertIsEqualTo(
+            listOf(
+                expectedPair.withPins(listOf(pins[0])),
+                alternatePair.withPins(listOf(pins[1]))
+            )
+        )
+    }
+
+    @Test
     fun givenOnePinForAssigningToPairThatHasBeenUsedOnMemberOfFirstPairWillAssignToSecondPair() = setup(object {
         val pin = stubPin().copy(target = PinTarget.Pair)
         val player1 = stubPlayer()
@@ -52,6 +73,31 @@ class AssignPinsActionTest {
             listOf(
                 alternatePair.withPins(),
                 expectedPair.withPins(listOf(pin))
+            )
+        )
+    }
+
+    @Test
+    fun givenOnePinForAssigningToPairThatHasBeenUsedOnMembersOfBothPairsWillAssignToFirstPair() = setup(object {
+        val pin = stubPin().copy(target = PinTarget.Pair)
+        val player1 = stubPlayer()
+        val player2 = stubPlayer()
+        val expectedPair = pairOf(player1, player2)
+        val player3 = stubPlayer()
+        val player4 = stubPlayer()
+        val alternatePair = pairOf(player3, player4)
+        val pairs = listOf(expectedPair, alternatePair)
+
+        val history = listOf(
+            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(listOf(pin))))
+        )
+    }) exercise {
+        AssignPinsAction(pairs, listOf(pin), history).perform()
+    } verify { result ->
+        result.assertIsEqualTo(
+            listOf(
+                expectedPair.withPins(listOf(pin)),
+                alternatePair.withPins()
             )
         )
     }
