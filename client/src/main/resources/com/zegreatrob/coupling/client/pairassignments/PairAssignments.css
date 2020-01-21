@@ -73,6 +73,13 @@
     display: inline-block;
     border-radius: 40px;
     margin: 0 2px 0 2px;
+    position: relative;
+}
+
+:local(.pinSection) {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
 }
 
 :local(.saveButton) {

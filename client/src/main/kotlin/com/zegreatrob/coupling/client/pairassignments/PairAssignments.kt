@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import PinButton
+import PinButtonProps
+import PinButtonScale
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
@@ -21,14 +24,20 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
-import kotlinx.html.DIV
+import kotlinx.css.marginLeft
+import kotlinx.css.px
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.ReactElement
-import react.dom.*
+import react.dom.a
+import react.dom.div
+import react.dom.key
+import react.dom.span
+import styled.css
+import styled.styledDiv
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -49,6 +58,7 @@ external interface PairAssignmentsStyles {
     val callSign: String
     val noPairsNotice: String
     val pair: String
+    val pinSection: String
     val saveButton: String
     val newPairsButton: String
     val viewHistoryButton: String
@@ -69,6 +79,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
         val swapCallback = makeSwapCallback(pairAssignments, setPairAssignments)
         val tribe = props.tribe
+        val players = props.players
         val pathSetter = props.pathSetter
         return reactElement {
             DndProvider {
@@ -78,7 +89,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                         tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                         child(currentPairAssignmentsElement(pairAssignments, swapCallback))
                     }
-                    unpairedPlayers(tribe, props.players.filterNotPaired(pairAssignments), pathSetter)
+                    unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
                     serverMessage(ServerMessageProps(tribeId = tribe.id, useSsl = "https:" == window.location.protocol))
                 }
             }
@@ -86,7 +97,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
     }
 
-    private fun RDOMBuilder<DIV>.unpairedPlayers(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
+    private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
         playerRoster(
             PlayerRosterProps(
                 label = "Unpaired players",
@@ -103,12 +114,13 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         setPairAssignments(pairAssignments?.swapPlayers(droppedPlayerId, targetPlayer, targetPair))
     }
 
-    private fun List<Player>.filterNotPaired(pairAssignments: PairAssignmentDocument?) = if (pairAssignments == null) {
-        this
-    } else {
-        val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
-        filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
-    }
+    private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
+        if (pairAssignments == null) {
+            players
+        } else {
+            val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
+            players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
+        }
 
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
@@ -250,6 +262,19 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             pair.players.map { pinnedPlayer ->
                 pairedPlayerCard(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback, pathSetter)
             }
+            pinSection(styles, pair)
+        }
+    }
+
+    private fun RBuilder.pinSection(styles: PairAssignmentsStyles, pair: PinnedCouplingPair) = styledDiv {
+        attrs {
+            classes += styles.pinSection
+            css {
+                marginLeft = -(pair.pins.size * 12).px
+            }
+        }
+        pair.pins.map { pin ->
+            child(PinButton(PinButtonProps(pin, PinButtonScale.Small)))
         }
     }
 

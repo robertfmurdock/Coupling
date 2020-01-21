@@ -1,9 +1,11 @@
+
 import com.zegreatrob.coupling.client.external.react.FRComponent
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
+import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
 import react.RProps
 import react.dom.i
@@ -11,7 +13,7 @@ import styled.css
 import styled.styledDiv
 
 enum class PinButtonScale(val faTag: String, val factor: Int) {
-    Normal("fa-3x", 3), Large("fa-10x", 10)
+    Normal("fa-3x", 3), Large("fa-10x", 10), Small("fa-1x", 1)
 }
 
 data class PinButtonProps(val pin: Pin, val scale: PinButtonScale = PinButtonScale.Normal) : RProps
@@ -40,6 +42,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
         padding((3.2 * scale.factor).px)
         borderWidth = (2 * scale.factor).px
         borderRadius = (12 * scale.factor).px
+        lineHeight = LineHeight((4.6 * scale.factor).px.value)
     }
 
     private fun targetIcon(pin: Pin): String {
