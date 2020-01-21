@@ -21,16 +21,14 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
+import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.ReactElement
-import react.dom.a
-import react.dom.div
-import react.dom.key
-import react.dom.span
+import react.dom.*
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -69,11 +67,8 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     override fun ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>.render(): ReactElement {
         val (pairAssignments, setPairAssignments) = useState(props.pairAssignments)
 
-        val swapCallback = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
-            setPairAssignments(pairAssignments?.swapPlayers(droppedPlayerId, targetPlayer, targetPair))
-        }
+        val swapCallback = makeSwapCallback(pairAssignments, setPairAssignments)
         val tribe = props.tribe
-        val players = props.players
         val pathSetter = props.pathSetter
         return reactElement {
             DndProvider {
@@ -83,19 +78,29 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                         tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                         child(currentPairAssignmentsElement(pairAssignments, swapCallback))
                     }
-                    playerRoster(
-                        PlayerRosterProps(
-                            label = "Unpaired players",
-                            players = players.filterNotPaired(pairAssignments),
-                            tribeId = tribe.id,
-                            pathSetter = pathSetter
-                        )
-                    )
+                    unpairedPlayers(tribe, props.players.filterNotPaired(pairAssignments), pathSetter)
                     serverMessage(ServerMessageProps(tribeId = tribe.id, useSsl = "https:" == window.location.protocol))
                 }
             }
         }
 
+    }
+
+    private fun RDOMBuilder<DIV>.unpairedPlayers(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
+        playerRoster(
+            PlayerRosterProps(
+                label = "Unpaired players",
+                players = players,
+                tribeId = tribe.id,
+                pathSetter = pathSetter
+            )
+        )
+
+    private fun makeSwapCallback(
+        pairAssignments: PairAssignmentDocument?,
+        setPairAssignments: (PairAssignmentDocument?) -> Unit
+    ) = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
+        setPairAssignments(pairAssignments?.swapPlayers(droppedPlayerId, targetPlayer, targetPair))
     }
 
     private fun List<Player>.filterNotPaired(pairAssignments: PairAssignmentDocument?) = if (pairAssignments == null) {
@@ -129,12 +134,13 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         div(classes = styles.pairAssignmentsContent) {
             pairAssignments?.pairs?.mapIndexed { index, pair ->
                 assignedPair(
+                    props.tribe,
                     index,
                     pair,
-                    props,
                     swapCallback,
                     pairAssignments,
-                    styles
+                    styles,
+                    props.pathSetter
                 )
             }
         }
@@ -228,40 +234,59 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     }
 
     private fun RBuilder.assignedPair(
+        tribe: Tribe,
         index: Int,
         pair: PinnedCouplingPair,
-        props: PairAssignmentsProps,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
         pairAssignmentDocument: PairAssignmentDocument?,
-        styles: PairAssignmentsStyles
+        styles: PairAssignmentsStyles,
+        pathSetter: (String) -> Unit
     ) {
-        val (tribe) = props
         val callSign = findCallSign(pair)
 
         span(classes = styles.pair) {
             attrs { key = "$index" }
             callSign(tribe, callSign, styles)
             pair.players.map { pinnedPlayer ->
-                if (pairAssignmentDocument != null && pairAssignmentDocument.id == null) {
-                    draggablePlayer(DraggablePlayerProps(
-                        pinnedPlayer,
-                        tribe,
-                        pairAssignmentDocument
-                    ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
-                } else {
-                    val player = pinnedPlayer.player
-                    playerCard(
-                        PlayerCardProps(
-                            tribe.id,
-                            player,
-                            props.pathSetter,
-                            false
-                        ), key = player.id
-                    )
-                }
+                pairedPlayerCard(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback, pathSetter)
             }
         }
     }
+
+    private fun RBuilder.pairedPlayerCard(
+        tribe: Tribe,
+        pinnedPlayer: PinnedPlayer,
+        pair: PinnedCouplingPair,
+        pairAssignmentDocument: PairAssignmentDocument?,
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        pathSetter: (String) -> Unit
+    ) = if (pairAssignmentDocument != null && pairAssignmentDocument.id == null) {
+        swappablePlayer(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback)
+    } else {
+        notSwappablePlayer(tribe, pinnedPlayer, pathSetter)
+    }
+
+    private fun RBuilder.notSwappablePlayer(tribe: Tribe, pinnedPlayer: PinnedPlayer, pathSetter: (String) -> Unit) =
+        playerCard(
+            PlayerCardProps(
+                tribe.id,
+                pinnedPlayer.player,
+                pathSetter,
+                false
+            ), key = pinnedPlayer.player.id
+        )
+
+    private fun RBuilder.swappablePlayer(
+        tribe: Tribe,
+        pinnedPlayer: PinnedPlayer,
+        pair: PinnedCouplingPair,
+        pairAssignmentDocument: PairAssignmentDocument,
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+    ) = draggablePlayer(DraggablePlayerProps(
+        pinnedPlayer,
+        tribe,
+        pairAssignmentDocument
+    ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
     private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, pairAssignmentsStyles: PairAssignmentsStyles) =
         div {
