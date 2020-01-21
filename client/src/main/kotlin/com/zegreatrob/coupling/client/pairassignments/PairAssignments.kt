@@ -8,8 +8,6 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.player.playerRoster
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessageProps
@@ -20,6 +18,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -81,7 +81,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                 div(classes = styles.className) {
                     div {
                         tribeBrowser(TribeBrowserProps(tribe, pathSetter))
-                        currentPairAssignments(pairAssignments, swapCallback)()
+                        child(currentPairAssignmentsElement(pairAssignments, swapCallback))
                     }
                     playerRoster(
                         PlayerRosterProps(
@@ -91,81 +91,103 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                             pathSetter = pathSetter
                         )
                     )
-                    serverMessage(
-                        ServerMessageProps(
-                            tribeId = tribe.id,
-                            useSsl = "https:" == window.location.protocol
-                        )
-                    )
+                    serverMessage(ServerMessageProps(tribeId = tribe.id, useSsl = "https:" == window.location.protocol))
                 }
             }
         }
 
     }
 
-    private fun List<Player>.filterNotPaired(pairAssignments: PairAssignmentDocument?) =
-        if (pairAssignments == null) {
-            this
-        } else {
-            val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
-            filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
-        }
+    private fun List<Player>.filterNotPaired(pairAssignments: PairAssignmentDocument?) = if (pairAssignments == null) {
+        this
+    } else {
+        val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
+        filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
+    }
 
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-    private fun PairAssignmentRenderer.currentPairAssignments(
+    private fun PairAssignmentRenderer.currentPairAssignmentsElement(
         pairAssignments: PairAssignmentDocument?,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
-    ): RBuilder.() -> ReactElement {
-        val tribe = props.tribe
+    ) = reactElement {
+        div(classes = styles.pairAssignments) {
+            pairAssignmentsHeader(pairAssignments, styles)
+            child(pairAssignmentListingElement(pairAssignments, swapCallback))
+            child(saveButtonSectionElement(pairAssignments))
 
-        return {
-            div(classes = styles.pairAssignments) {
-                pairAssignmentsHeader(pairAssignments, styles)
-                div(classes = styles.pairAssignmentsContent) {
-                    pairAssignments?.pairs?.mapIndexed { index, pair ->
-                        assignedPair(index, pair, props, swapCallback, pairAssignments, styles)
-                    }
-                }
-                div {
-                    if (pairAssignments != null && pairAssignments.id == null) {
-                        a(classes = "super green button") {
-                            attrs {
-                                classes += styles.saveButton
-                                onClickFunction = onClickSave(pairAssignments)
-                            }
-                            +"Save!"
-                        }
-                    }
-                }
+            prepareToSpinButton(props.tribe, styles.newPairsButton)
+            viewHistoryButton(props.tribe, styles.viewHistoryButton)
+            viewRetireesButton(props.tribe, styles.retiredPlayersButton)
+        }
+    }
 
-                a(href = "/${tribe.id.value}/prepare/", classes = "large pink button") {
-                    attrs { classes += styles.newPairsButton }
-                    +"Prepare to spin!"
-                }
-
-                a(href = "/${tribe.id.value}/history/", classes = "large blue button") {
-                    attrs { classes += styles.viewHistoryButton }
-                    +"View history!"
-                }
-
-                a(href = "/${tribe.id.value}/players/retired", classes = "large yellow button") {
-                    attrs { classes += styles.retiredPlayersButton }
-                    +"View retirees!"
-                }
+    private fun PairAssignmentRenderer.pairAssignmentListingElement(
+        pairAssignments: PairAssignmentDocument?,
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+    ) = reactElement {
+        div(classes = styles.pairAssignmentsContent) {
+            pairAssignments?.pairs?.mapIndexed { index, pair ->
+                assignedPair(
+                    index,
+                    pair,
+                    props,
+                    swapCallback,
+                    pairAssignments,
+                    styles
+                )
             }
         }
     }
 
-    private fun PairAssignmentRenderer.onClickSave(
-        pairAssignments: PairAssignmentDocument
-    ): (Event) -> Unit {
-        return {
-            scope.launch {
-                SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
-
-                props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
+    private fun PairAssignmentRenderer.saveButtonSectionElement(pairAssignments: PairAssignmentDocument?) =
+        reactElement {
+            div {
+                if (pairAssignments != null && pairAssignments.id == null) {
+                    child(saveButtonElement(pairAssignments))
+                }
             }
+        }
+
+    private fun PairAssignmentRenderer.saveButtonElement(pairAssignments: PairAssignmentDocument) = reactElement {
+        a(classes = "super green button") {
+            attrs {
+                classes += styles.saveButton
+                onClickFunction = onClickSave(pairAssignments)
+            }
+            +"Save!"
+        }
+    }
+
+    private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) = a(
+        href = "/${tribe.id.value}/players/retired",
+        classes = "large yellow button"
+    ) {
+        attrs { classes += className }
+        +"View retirees!"
+    }
+
+    private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) = a(
+        href = "/${tribe.id.value}/history/",
+        classes = "large blue button"
+    ) {
+        attrs { classes += className }
+        +"View history!"
+    }
+
+    private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) = a(
+        href = "/${tribe.id.value}/prepare/",
+        classes = "large pink button"
+    ) {
+        attrs { classes += className }
+        +"Prepare to spin!"
+    }
+
+    private fun PairAssignmentRenderer.onClickSave(pairAssignments: PairAssignmentDocument): (Event) -> Unit = {
+        scope.launch {
+            SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
+
+            props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
         }
     }
 
@@ -192,22 +214,18 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         )
     }
 
-    private fun replacePlayer(
-        pair: PinnedCouplingPair,
-        playerToReplace: PinnedPlayer,
-        replacement: PinnedPlayer
-    ) = PinnedCouplingPair(pair.players.map { pinnedPlayer ->
-        if (pinnedPlayer == playerToReplace) {
-            replacement
-        } else {
-            pinnedPlayer
-        }
-    })
+    private fun replacePlayer(pair: PinnedCouplingPair, playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
+        PinnedCouplingPair(pair.players.map { pinnedPlayer ->
+            if (pinnedPlayer == playerToReplace) {
+                replacement
+            } else {
+                pinnedPlayer
+            }
+        })
 
-    private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) =
-        firstOrNull { pair ->
-            pair.players.any { player -> player.player.id == droppedPlayerId }
-        }
+    private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
+        pair.players.any { player -> player.player.id == droppedPlayerId }
+    }
 
     private fun RBuilder.assignedPair(
         index: Int,
@@ -245,17 +263,14 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
-    private fun RBuilder.callSign(
-        tribe: Tribe,
-        callSign: CallSign?,
-        pairAssignmentsStyles: PairAssignmentsStyles
-    ) = div {
-        if (tribe.callSignsEnabled && callSign != null) {
-            span(classes = pairAssignmentsStyles.callSign) {
-                +"${callSign.adjective} ${callSign.noun}"
+    private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, pairAssignmentsStyles: PairAssignmentsStyles) =
+        div {
+            if (tribe.callSignsEnabled && callSign != null) {
+                span(classes = pairAssignmentsStyles.callSign) {
+                    +"${callSign.adjective} ${callSign.noun}"
+                }
             }
         }
-    }
 
     private fun findCallSign(pair: PinnedCouplingPair): CallSign? {
         val nounPlayer = pair.toPair().asArray().getOrNull(0)
