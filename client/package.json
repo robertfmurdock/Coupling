@@ -15,7 +15,7 @@
     "@types/jasmine": "^3.5.1",
     "@types/jasminewd2": "^2.0.8",
     "@types/passport": "^1.0.2",
-    "@types/react": "^16.9.17",
+    "@types/react": "^16.9.18",
     "@types/ws": "7.2.0",
     "axios": "^0.19.1",
     "babel-loader": "^8.0.6",
