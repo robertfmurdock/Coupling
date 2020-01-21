@@ -27,8 +27,8 @@ kotlin {
                 implementation("io.github.microutils:kotlin-logging:1.7.8")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
-                implementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
                 implementation("org.slf4j:slf4j-simple:1.7.5")
             }
         }
