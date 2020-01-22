@@ -4,6 +4,8 @@ import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pin.PinButtonScale
+import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -35,6 +37,7 @@ external interface HistoryStyles {
     val deleteButton: String
     val pairAssignments: String
     val pairAssignmentsHeader: String
+    val pinSection: String
 }
 
 data class HistoryProps(
@@ -65,32 +68,34 @@ interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryS
         }
     }
 
-    private fun RBuilder.pairAssignmentList(
-        props: HistoryProps,
-        scope: CoroutineScope,
-        styles: HistoryStyles
-    ) = props.history.forEach {
-        val pairAssignmentDocumentId = it.id ?: return@forEach
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles) =
+        props.history.forEach {
+            val pairAssignmentDocumentId = it.id ?: return@forEach
 
-        div(classes = styles.pairAssignments) {
-            attrs { key = pairAssignmentDocumentId.value }
-            span(classes = styles.pairAssignmentsHeader) { +it.dateText() }
-            span(classes = "small red button") {
-                attrs {
-                    classes += styles.deleteButton
-                    onClickFunction = { _ ->
-                        scope.launch {
-                            removeButtonOnClick(
-                                pairAssignmentDocumentId,
-                                props.tribe.id,
-                                props.reload
-                            )
-                        }
+            div(classes = styles.pairAssignments) {
+                attrs { key = pairAssignmentDocumentId.value }
+                span(classes = styles.pairAssignmentsHeader) { +it.dateText() }
+                deleteButton(styles, scope, pairAssignmentDocumentId, props)
+                div { showPairs(it, styles) }
+            }
+        }
+
+    private fun RBuilder.deleteButton(
+        styles: HistoryStyles,
+        scope: CoroutineScope,
+        pairAssignmentDocumentId: PairAssignmentDocumentId,
+        props: HistoryProps
+    ) {
+        span(classes = "small red button") {
+            attrs {
+                classes += styles.deleteButton
+                onClickFunction = { _ ->
+                    scope.launch {
+                        removeButtonOnClick(pairAssignmentDocumentId, props.tribe.id, props.reload)
                     }
                 }
-                +"DELETE"
             }
-            div { showPairs(it, styles) }
+            +"DELETE"
         }
     }
 
@@ -112,6 +117,7 @@ interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryS
                 pair.players.map { pinnedPlayer: PinnedPlayer ->
                     showPlayer(styles, pinnedPlayer)
                 }
+                pinSection(pair, PinButtonScale.ExtraSmall, styles.pinSection)
             }
         }
 

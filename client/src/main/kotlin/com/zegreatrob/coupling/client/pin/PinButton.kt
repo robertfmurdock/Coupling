@@ -1,3 +1,4 @@
+package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.FRComponent
 import com.zegreatrob.coupling.client.external.react.provider
@@ -7,22 +8,30 @@ import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
+import react.RBuilder
 import react.RProps
 import react.dom.i
 import styled.css
 import styled.styledDiv
 
-enum class PinButtonScale(val faTag: String, val factor: Int) {
-    Normal("fa-3x", 3), Large("fa-10x", 10), Small("fa-1x", 1)
+enum class PinButtonScale(val faTag: String, val factor: Double) {
+    Normal("fa-3x", 3.0), Large("fa-10x", 10.0), Small("fa-1x", 1.0), ExtraSmall("fa-xs", 0.75)
 }
 
-data class PinButtonProps(val pin: Pin, val scale: PinButtonScale = PinButtonScale.Normal) : RProps
+data class PinButtonProps(
+    val pin: Pin,
+    val scale: PinButtonScale = PinButtonScale.Normal
+) : RProps
 
 external class PinButtonStyles {
     val className: String
 }
 
 object PinButton : FRComponent<PinButtonProps>(provider()) {
+
+    fun RBuilder.pinButton(pin: Pin, scale: PinButtonScale = PinButtonScale.Small) = child(
+        PinButton(PinButtonProps(pin, scale))
+    )
 
     override fun render(props: PinButtonProps) = reactElement {
         val (pin, scale) = props

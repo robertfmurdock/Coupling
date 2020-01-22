@@ -1,12 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import PinButton
-import PinButtonProps
-import PinButtonScale
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.dateText
+import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -24,8 +22,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
-import kotlinx.css.marginLeft
-import kotlinx.css.px
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
@@ -36,8 +32,6 @@ import react.dom.a
 import react.dom.div
 import react.dom.key
 import react.dom.span
-import styled.css
-import styled.styledDiv
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -58,7 +52,6 @@ external interface PairAssignmentsStyles {
     val callSign: String
     val noPairsNotice: String
     val pair: String
-    val pinSection: String
     val saveButton: String
     val newPairsButton: String
     val viewHistoryButton: String
@@ -261,19 +254,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             pair.players.map { pinnedPlayer ->
                 pairedPlayerCard(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback, pathSetter)
             }
-            pinSection(styles, pair)
-        }
-    }
-
-    private fun RBuilder.pinSection(styles: PairAssignmentsStyles, pair: PinnedCouplingPair) = styledDiv {
-        attrs {
-            classes += styles.pinSection
-            css {
-                marginLeft = -(pair.pins.size * 12).px
-            }
-        }
-        pair.pins.map { pin ->
-            child(PinButton(PinButtonProps(pin, PinButtonScale.Small)))
+            pinSection(pair)
         }
     }
 
@@ -352,5 +333,4 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             }
         }
     }
-
 }

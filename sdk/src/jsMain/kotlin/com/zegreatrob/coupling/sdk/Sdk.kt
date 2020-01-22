@@ -25,7 +25,7 @@ interface SdkPlayerRepository : SdkPlayerListGet,
     SdkPlayerGetDeleted, SdkPlayerSaver,
     SdkPlayerDeleter, PlayerRepository
 
-interface SdkPinRepository : PinRepository, SdkPinGet, SdkPinSave, SdkPinDelete
+interface SdkPinRepository : SdkPinGet, SdkPinSave, SdkPinDelete, PinRepository
 
 interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,

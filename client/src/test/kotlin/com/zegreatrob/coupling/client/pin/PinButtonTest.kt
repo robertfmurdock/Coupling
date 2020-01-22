@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.pin
 
-import PinButton
-import PinButtonProps
 import ShallowWrapper
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo

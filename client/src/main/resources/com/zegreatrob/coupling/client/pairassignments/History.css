@@ -73,6 +73,7 @@
     display: inline-block;
     border-radius: 40px;
     margin: 0 2px 0 2px;
+    position: relative;
 }
 
 :local(.pairAssignmentsHeader) {
@@ -83,4 +84,8 @@
     padding-left: 40px;
     padding-right: 5px;
     padding-bottom: 6px;
+}
+
+:local(.pinSection) {
+    bottom: 2px;
 }

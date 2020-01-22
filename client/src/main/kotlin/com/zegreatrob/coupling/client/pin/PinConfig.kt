@@ -1,11 +1,9 @@
 package com.zegreatrob.coupling.client.pin
 
-import PinButton
-import PinButtonProps
-import PinButtonScale
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson
@@ -99,7 +97,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     )
                 }
                 span(classes = styles.icon) {
-                    child(PinButton(PinButtonProps(updatedPin, PinButtonScale.Large)))
+                    pinButton(updatedPin, PinButtonScale.Large)
                 }
             }
         }

@@ -76,12 +76,6 @@
     position: relative;
 }
 
-:local(.pinSection) {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-}
-
 :local(.saveButton) {
     margin: 4px;
 }

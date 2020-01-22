@@ -1,12 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-
-import PinButton
-import PinButtonProps
 import com.zegreatrob.coupling.client.external.react.FRComponent
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
@@ -33,7 +31,7 @@ object PinCard : FRComponent<PinCardProps>(provider()) {
 
         optionalLink(shouldLink, tribeId, pin) {
             div(styles.className) {
-                child(PinButton(PinButtonProps(pin)))
+                pinButton(pin)
                 div(classes = "pin-name") {
                     +(pin.name ?: "Unnamed pin")
                 }
