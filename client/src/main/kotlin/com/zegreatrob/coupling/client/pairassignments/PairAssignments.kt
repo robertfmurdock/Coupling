@@ -90,11 +90,10 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                         child(currentPairAssignmentsElement(pairAssignments, swapCallback))
                     }
                     unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
-                    serverMessage(ServerMessageProps(tribeId = tribe.id, useSsl = "https:" == window.location.protocol))
+                    serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
                 }
             }
         }
-
     }
 
     private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =

@@ -27,8 +27,16 @@ export default class ApiGuy {
         return this;
     };
 
+
+    async postPin(tribeId, pin) {
+        await agent.post(`/api/tribes/${tribeId}/pins/`)
+            .send(pin)
+            .expect(200);
+        return this;
+    };
+
     async postPairAssignmentSet(tribeId, pairAssignmentSet) {
-        await agent.post('/api/tribes/' + tribeId + '/history')
+        await agent.post(`/api/tribes/${tribeId}/history`)
             .send(pairAssignmentSet)
             .expect(200);
         return this;

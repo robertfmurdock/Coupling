@@ -4,8 +4,8 @@ import {tribeCollection} from "./database";
 import e2eHelp from "./e2e-help";
 import * as monk from "monk";
 import {browser, By} from "protractor";
-
-const config = require("../../config/config");
+import ApiGuy from "./apiGuy";
+import {IObjectID} from "monk";
 
 describe('Pin', function () {
 
@@ -50,6 +50,26 @@ describe('Pin', function () {
                 pinNameElements.map(async it => await it.getText())
             );
             expect(pinNames).toContain(newPinName);
+        })
+
+    });
+
+    describe('when the pin exists', function () {
+
+        let pin: { icon: string; name: string; _id: IObjectID };
+
+        beforeEach(async function () {
+            pin = {_id: monk.id(), icon: "smile", name: "happy test pin"};
+            const apiGuy = await ApiGuy.new(e2eHelp.userEmail);
+            await apiGuy.postPin(tribe.id, pin);
+            await PinConfigPage.goToPinConfig(tribe.id, pin._id)
+        });
+
+        it('will see all the pin attributes', async function () {
+            expect(PinConfigPage.nameTextField.getAttribute('value'))
+                .toBe(pin.name);
+            expect(PinConfigPage.iconTextField.getAttribute('value'))
+                .toBe(pin.icon);
         })
 
     })

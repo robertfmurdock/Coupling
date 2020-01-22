@@ -7,6 +7,7 @@ const saveButton = element(By.className(PinConfigStyles.saveButton));
 const deleteButton = element(By.className(PinConfigStyles.deleteButton));
 const pinBag = element(By.className(PinConfigStyles.pinBag));
 const nameTextField = element(By.id('pin-name'));
+const iconTextField = element(By.id('pin-icon'));
 
 export default {
 
@@ -24,6 +25,7 @@ export default {
     },
     saveButton,
     nameTextField,
+    iconTextField,
     deleteButton,
     pinBag
 

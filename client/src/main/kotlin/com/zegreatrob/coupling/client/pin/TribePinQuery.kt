@@ -29,4 +29,4 @@ interface TribePinQueryDispatcher : ActionLoggingSyntax, TribeIdGetSyntax, Tribe
     }
 }
 
-private fun List<Pin>.findOrDefaultNew(pinId: String?) = Pin()
+private fun List<Pin>.findOrDefaultNew(pinId: String?) = find { it._id == pinId } ?: Pin()
