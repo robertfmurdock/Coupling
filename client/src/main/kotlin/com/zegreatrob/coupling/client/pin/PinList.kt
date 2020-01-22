@@ -3,12 +3,10 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
-import kotlinx.html.InputType
-import kotlinx.html.classes
-import react.RBuilder
 import react.RProps
 import react.ReactElement
-import react.dom.*
+import react.dom.a
+import react.dom.div
 
 object PinList : RComponent<PinListProps>(provider()), PinListBuilder
 
@@ -28,28 +26,14 @@ interface PinListBuilder : StyledComponentRenderer<PinListProps, PinListStyles> 
         val (tribe, pins) = props
         return reactElement {
             div {
-                div(classes = styles.pinListing) { pins.map { pin(it, styles) } }
-                a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
-                    +"Add a new pin."
+                div(classes = styles.pinListing) {
+                    pins.map { child(PinCard(PinCardProps(tribe.id, it, true), key = it._id)) }
+                    a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
+                        +"Add a new pin."
+                    }
                 }
             }
         }
-    }
-
-    private fun RBuilder.pin(pin: Pin, styles: PinListStyles) = span(classes = styles.pin) {
-        i(classes = styles.pinIcon) {
-            attrs {
-                classes += setOf(
-                    "fa",
-                    "fa-fw",
-                    "fa-d2",
-                    "fa-2x",
-                    pin.icon ?: ""
-                )
-            }
-        }
-        input(type = InputType.text) { attrs { value = pin.name ?: "" } }
-        input(type = InputType.text) { attrs { value = pin.icon ?: "" } }
     }
 }
 

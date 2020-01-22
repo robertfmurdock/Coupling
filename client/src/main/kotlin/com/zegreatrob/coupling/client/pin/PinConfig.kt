@@ -70,23 +70,25 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         }
     }
 
-    fun PinConfigContext.pinBagElement() = reactElement {
-        div(styles.pinBag) {
-            props.pinList.map { pin ->
-                child(PinCard(PinCardProps(pin), key = pin._id))
+    fun PinConfigContext.pinBagElement(): ReactElement {
+        val tribeId = props.tribe.id
+        return reactElement {
+            div(styles.pinBag) {
+                props.pinList.map { pin ->
+                    child(PinCard(PinCardProps(tribeId, pin), key = pin._id))
+                }
             }
         }
     }
 
     private fun PinConfigContext.pinViewElement(): ReactElement {
         val (tribe, _, _, _, reload) = props
-        val pin = props.pin
 
-        val (values, onChange) = useForm(pin.toJson())
+        val (values, onChange) = useForm(props.pin.toJson())
         val updatedPin = values.toPin()
         val onSubmitFunc = handleSubmitFunc { savePin(scope, updatedPin, tribe, reload) }
 
-        val shouldShowPrompt = updatedPin != pin
+        val shouldShowPrompt = updatedPin != props.pin
         return reactElement {
             span(classes = styles.pinView) {
                 span(classes = styles.pin) {
@@ -97,7 +99,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     )
                 }
                 span(classes = styles.icon) {
-                    child(PinButton(PinButtonProps(pin, PinButtonScale.Large)))
+                    child(PinButton(PinButtonProps(updatedPin, PinButtonScale.Large)))
                 }
             }
         }
