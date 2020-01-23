@@ -3,8 +3,8 @@
     clear: both;
     display: inline-block;
     overflow: hidden;
-    border: 3px outset gold;
-    background: darkseagreen url(../overlay.png) repeat-x;
+    border: 3px outset black;
+    background: hsl(43, 18%, 85%) url(../overlay.png) repeat-x;
     text-align: center;
     text-decoration: none;
     border-radius: 6px;

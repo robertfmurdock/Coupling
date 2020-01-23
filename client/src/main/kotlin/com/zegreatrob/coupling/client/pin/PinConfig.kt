@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -16,9 +17,12 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.html.*
+import kotlinx.html.ButtonType
+import kotlinx.html.InputType
+import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
+import kotlinx.html.tabIndex
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -45,6 +49,7 @@ external interface PinConfigStyles {
     val pin: String
     val deleteButton: String
     val pinBag: String
+    val editor: String
 }
 
 typealias PinConfigContext = ScopedStyledRContext<PinConfigProps, PinConfigStyles>
@@ -89,6 +94,10 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         val shouldShowPrompt = updatedPin != props.pin
         return reactElement {
             span(classes = styles.pinView) {
+                div {
+                    h1 { +"Pin Configuration" }
+                }
+
                 span(classes = styles.pin) {
                     pinConfigForm(updatedPin, tribe, onChange, onSubmitFunc)()
                     prompt(
@@ -108,27 +117,18 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         handler()
     }
 
-    private fun savePin(
-        scope: CoroutineScope,
-        updatedPin: Pin,
-        tribe: Tribe,
-        reload: () -> Unit
-    ) = scope.launch {
+    private fun savePin(scope: CoroutineScope, updatedPin: Pin, tribe: Tribe, reload: () -> Unit) = scope.launch {
         SavePinCommand(tribe.id, updatedPin).perform()
         reload()
     }
 
-    private fun removePin(
-        tribe: Tribe,
-        pathSetter: (String) -> Unit,
-        scope: CoroutineScope,
-        pinId: String
-    ) = scope.launch {
-        if (window.confirm("Are you sure you want to delete this pin?")) {
-            DeletePinCommand(tribe.id, pinId).perform()
-            pathSetter("/${tribe.id.value}/pairAssignments/current/")
+    private fun removePin(tribe: Tribe, pathSetter: (String) -> Unit, scope: CoroutineScope, pinId: String) =
+        scope.launch {
+            if (window.confirm("Are you sure you want to delete this pin?")) {
+                DeletePinCommand(tribe.id, pinId).perform()
+                pathSetter("/${tribe.id.value}/pairAssignments/current/")
+            }
         }
-    }
 
     private fun PinConfigContext.pinConfigForm(
         pin: Pin,
@@ -141,9 +141,12 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
             form {
                 attrs { name = "pinForm"; onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit) }
 
-                div { nameInput(pin, onChange) }
-                div { iconInput(pin, onChange) }
-
+                div {
+                    editor {
+                        li { nameInput(pin, onChange) }
+                        li { iconInput(pin, onChange) }
+                    }
+                }
                 saveButton(isSaving, styles.saveButton)
                 val pinId = pin._id
                 if (pinId != null) {
@@ -174,8 +177,8 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Job): (Event) -> Unit =
         { event -> setIsSaving(true); onSubmit(event) }
 
-    private fun RDOMBuilder<FORM>.saveButton(isSaving: Boolean, className: String) = button(
-        classes = "large blue button"
+    private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(
+        classes = "super blue button"
     ) {
         attrs {
             classes += className
@@ -187,22 +190,31 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         +"Save"
     }
 
-    private fun RDOMBuilder<DIV>.iconInput(pin: Pin, onChange: (Event) -> Unit) = configInput(
-        labelText = "Icon",
-        id = "pin-icon",
-        name = "icon",
-        value = pin.icon ?: "",
-        type = InputType.text,
-        onChange = onChange
-    )
+    private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {
+        configInput(
+            labelText = "Icon",
+            id = "pin-icon",
+            name = "icon",
+            value = pin.icon ?: "",
+            type = InputType.text,
+            placeholder = "Font-awesome icon codes, without the size class",
+            onChange = onChange
+        )
+        span { +"This is the icon for the pin. This will be its primary identifier, so choose wisely." }
+    }
 
-    private fun RDOMBuilder<DIV>.nameInput(pin: Pin, onChange: (Event) -> Unit) = configInput(
-        labelText = "Name",
-        id = "pin-name",
-        name = "name",
-        value = pin.name ?: "",
-        type = InputType.text,
-        onChange = onChange
-    )
+    private fun RBuilder.nameInput(pin: Pin, onChange: (Event) -> Unit) {
+        configInput(
+            labelText = "Name",
+            id = "pin-name",
+            name = "name",
+            value = pin.name ?: "",
+            type = InputType.text,
+            onChange = onChange,
+            placeholder = "The name of the pin."
+        )
+        span { +"This is what you call the pin. You won't see this much." }
+    }
 
 }
+

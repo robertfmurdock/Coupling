@@ -1,5 +1,14 @@
 :local(.className) {
     margin: 15px;
+    display: inline-block;
+    background: hsla(45, 80%, 96%, 1);
+    padding: 0 25px 25px 25px;
+    min-height: 100vh;
+    border: 12px solid black;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+    text-align: left;
 }
 
 :local(.icon) {
@@ -8,6 +17,14 @@
 }
 
 :local(.pinBag) {
+    /*! Do not remove */
+}
+
+:local(.saveButton) {
+    /*! Do not remove */
+}
+
+:local(.deleteButton) {
     /*! Do not remove */
 }
 
@@ -35,49 +52,6 @@
     border-width: 11px;
 }
 
-:local(.saveButton) {
-    float: left;
-    top: 15px;
-    left: -15px;
-}
-
-:local(.deleteButton) {
-    float: right;
-    top: 20px;
-    left: 15px;
-}
-
-:local(.pinView) input[type=text] {
-    width: 215px;
-    font-size: large;
-    border-radius: 20px;
-    border-width: 4px;
-    padding: 4px;
-}
-
-:local(.pinView) form div label {
-    background: darkcyan url(../overlay.png) repeat-x;
-    border-radius: 20px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    display: table;
-    text-align: left;
-    color: #ffffff;
-    padding: 2px 15px 2px 18px;
-    text-fill-color: initial;
-    text-stroke-width: 1.5px;
-    text-stroke-color: initial;
-}
-
-:local(.pinView) form div input {
-    text-fill-color: black;
-    text-stroke-width: 0;
-}
-
-:local(.pinView) :local(.badgeConfig) label {
-    display: inline-block;
-}
-
 :local(.pinRoster) {
     display: inline-block;
     border-radius: 20px;
@@ -95,14 +69,7 @@
     position: relative;
     clear: both;
     display: inline-block;
-    overflow: hidden;
-    border: 3px outset gold;
-    background: darkseagreen url(../overlay.png) repeat-x;
-    padding: 6px;
     text-align: center;
     text-decoration: none;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     color: black;
-    margin: 0 2px 0 2px;
 }
