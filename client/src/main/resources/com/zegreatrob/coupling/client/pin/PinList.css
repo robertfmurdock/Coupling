@@ -1,41 +1,25 @@
-:local(.pinListing) input[type="text"] {
-    width: 215px;
-    font-size: large;
-    border-radius: 20px;
-    border-width: 4px;
-    vertical-align: super;
-    padding: 4px;
-    text-fill-color: black;
-    text-stroke-width: 0;
-}
-
-:local(.pinListing) .pin-icon {
-    width: 50px;
-    height: 50px;
-    padding: 5px;
-}
-
-:local(.pin) {
+:local(.className) {
+    margin: 15px;
     display: inline-block;
+    background: hsla(45, 80%, 96%, 1);
+    padding: 25px 25px 25px 25px;
+    min-height: 100vh;
+    border: 12px solid black;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+    text-align: left;
+}
+
+:local(.tribeBrowser) {
+    white-space: normal;
+    float: left;
+    display: inline-block;
+    vertical-align: top;
     border-radius: 20px;
     padding: 10px;
-    border: 11px outset #f5f5f5;
-    background-color: lightsteelblue;
-    text-align: center;
-    text-decoration: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    color: black;
-    text-fill-color: white;
-    text-stroke-width: 1.5px;
-    text-stroke-color: black;
-    font-size: x-large;
-    margin: 0 2px 4px 2px;
-}
-
-:local(.pin) img {
-    -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
-}
-
-:local(.pinIcon):before {
-    content: "\f128";
+    border: 11px outset darkorange;
+    background-color: lightgoldenrodyellow;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }

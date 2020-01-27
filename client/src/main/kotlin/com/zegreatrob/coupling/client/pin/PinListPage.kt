@@ -27,16 +27,17 @@ interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, TribePinListQ
             reactElement {
                 loadedPinList(DataLoadProps {
                     tribeId.performPinListQuery()
-                        .toPinListProps()
+                        .toPinListProps(props.pathSetter)
                 })
             }
         } else throw Exception("WHAT")
     }
 
-    private fun Pair<Tribe?, List<Pin>>.toPinListProps() = let { (tribe, retiredPlayers) ->
+    private fun Pair<Tribe?, List<Pin>>.toPinListProps(pathSetter: (String) -> Unit) = let { (tribe, retiredPlayers) ->
         PinListProps(
             tribe = tribe!!,
-            pins = retiredPlayers
+            pins = retiredPlayers,
+            pathSetter = pathSetter
         )
     }
 

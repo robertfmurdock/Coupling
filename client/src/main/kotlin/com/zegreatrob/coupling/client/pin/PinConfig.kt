@@ -49,7 +49,6 @@ external interface PinConfigStyles {
     val pin: String
     val deleteButton: String
     val pinBag: String
-    val editor: String
 }
 
 typealias PinConfigContext = ScopedStyledRContext<PinConfigProps, PinConfigStyles>
