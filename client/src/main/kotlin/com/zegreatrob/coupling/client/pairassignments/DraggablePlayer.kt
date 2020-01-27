@@ -38,14 +38,19 @@ interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps,
 
     override fun StyledRContext<DraggablePlayerProps, DraggablePlayerStyles>.render(): ReactElement {
         val (pinnedPlayer, tribe, pairAssignmentDocument, swapCallback) = props
-        val draggablePlayerRef = useRef<Node>(null)
+        val handler = handler(tribe, pinnedPlayer, pairAssignmentDocument, styles)
+        val itemType = playerDragItemType
+        val itemId = pinnedPlayer.player.id!!
+
+        val draggableRef = useRef<Node>(null)
+
         val (_, drag) = useDrag(
-            itemType = dragItemType,
-            itemId = pinnedPlayer.player.id!!,
+            itemType = itemType,
+            itemId = itemId,
             collect = { }
         )
         val (isOver, drop) = useDrop(
-            acceptItemType = dragItemType,
+            acceptItemType = itemType,
             drop = { item ->
                 swapCallback(item["id"].unsafeCast<String>())
             },
@@ -53,30 +58,38 @@ interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps,
                 monitor.isOver()
             }
         )
-        drag(drop(draggablePlayerRef))
+        drag(drop(draggableRef))
 
         return reactElement {
             div(classes = styles.className) {
-                attrs { ref = draggablePlayerRef }
-                playerCard(
-                    PlayerCardProps(
-                        tribeId = tribe.id,
-                        player = pinnedPlayer.player,
-                        pathSetter = {},
-                        headerDisabled = false,
-                        className = mapOf(
-                            styles.hoverZoom to (pairAssignmentDocument.id == null),
-                            styles.onDragHover to isOver
-                        )
-                            .filterValues { it }
-                            .keys
-                            .plus(styles.playerCard)
-                            .joinToString(" ")
-                    ),
-                    key = pinnedPlayer.player.id
-                )
+                attrs { ref = draggableRef }
+                handler(isOver)
             }
         }
+    }
+
+    private fun handler(
+        tribe: Tribe,
+        pinnedPlayer: PinnedPlayer,
+        pairAssignmentDocument: PairAssignmentDocument,
+        styles: DraggablePlayerStyles
+    ): RBuilder.(Boolean) -> Unit = { isOver: Boolean ->
+        val playerCardProps = PlayerCardProps(
+            tribeId = tribe.id,
+            player = pinnedPlayer.player,
+            pathSetter = {},
+            headerDisabled = false,
+            className = mapOf(
+                styles.hoverZoom to (pairAssignmentDocument.id == null),
+                styles.onDragHover to isOver
+            )
+                .filterValues { it }
+                .keys
+                .plus(styles.playerCard)
+                .joinToString(" ")
+        )
+
+        playerCard(playerCardProps, key = pinnedPlayer.player.id)
     }
 }
 

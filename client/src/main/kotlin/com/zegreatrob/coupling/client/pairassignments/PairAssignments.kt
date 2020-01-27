@@ -58,7 +58,7 @@ external interface PairAssignmentsStyles {
     val retiredPlayersButton: String
 }
 
-const val dragItemType = "PLAYER"
+const val playerDragItemType = "PLAYER"
 
 typealias PairAssignmentRenderer = ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>
 
@@ -122,7 +122,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     ) = reactElement {
         div(classes = styles.pairAssignments) {
             pairAssignmentsHeader(pairAssignments, styles)
-            child(pairAssignmentListingElement(pairAssignments, swapCallback))
+            child(pairAssignmentListyElement(pairAssignments, swapCallback))
             child(saveButtonSectionElement(pairAssignments))
 
             prepareToSpinButton(props.tribe, styles.newPairsButton)
@@ -131,7 +131,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
-    private fun PairAssignmentRenderer.pairAssignmentListingElement(
+    private fun PairAssignmentRenderer.pairAssignmentListyElement(
         pairAssignments: PairAssignmentDocument?,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
     ) = reactElement {
@@ -318,19 +318,17 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     private fun RBuilder.pairAssignmentsHeader(
         pairAssignments: PairAssignmentDocument?,
         styles: PairAssignmentsStyles
-    ) {
-        if (pairAssignments != null) {
+    ) = if (pairAssignments != null) {
+        div {
             div {
-                div {
-                    div(classes = styles.pairAssignmentsHeader) {
-                        +"Couples for ${pairAssignments.dateText()}"
-                    }
+                div(classes = styles.pairAssignmentsHeader) {
+                    +"Couples for ${pairAssignments.dateText()}"
                 }
             }
-        } else {
-            div(classes = styles.noPairsNotice) {
-                +"No pair assignments yet!"
-            }
+        }
+    } else {
+        div(classes = styles.noPairsNotice) {
+            +"No pair assignments yet!"
         }
     }
 }
