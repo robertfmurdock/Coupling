@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
@@ -17,12 +18,10 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.html.ButtonType
-import kotlinx.html.InputType
-import kotlinx.html.classes
+import kotlinx.html.*
+import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
-import kotlinx.html.tabIndex
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -144,6 +143,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     editor {
                         li { nameInput(pin, onChange) }
                         li { iconInput(pin, onChange) }
+                        li { targetInput(pin, onChange) }
                     }
                 }
                 saveButton(isSaving, styles.saveButton)
@@ -215,5 +215,32 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         span { +"This is what you call the pin. You won't see this much." }
     }
 
+    private fun RBuilder.targetInput(pin: Pin, onChange: (Event) -> Unit) {
+        label { attrs { htmlFor = "pinTarget" }; +"Target" }
+        select {
+            attrs {
+                id = "pinTarget"
+                name = "target"
+                this["value"] = ""
+                onChangeFunction = onChange
+            }
+            mapOf(
+                PinTarget.Pair to "Pair"
+            ).map { (rule, description) ->
+                option {
+                    attrs {
+                        key = "0"
+                        value = rule.toValue()
+                        label = description
+                    }
+                }
+            }
+        }
+        span { +"This is where the pin is assigned." }
+    }
+
 }
+
+@Suppress("unused")
+private fun PinTarget.toValue(): String = ""
 
