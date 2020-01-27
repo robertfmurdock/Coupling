@@ -6,6 +6,8 @@ import * as monk from "monk";
 import {browser, By} from "protractor";
 import ApiGuy from "./apiGuy";
 import {IObjectID} from "monk";
+import PlayerConfigPage from "./page-objects/PlayerConfigPage";
+import PinListPage from "./page-objects/PinListPage";
 
 describe('Pin', function () {
 
@@ -59,7 +61,8 @@ describe('Pin', function () {
         let pin: { icon: string; name: string; _id: IObjectID };
 
         beforeEach(async function () {
-            pin = {_id: monk.id(), icon: "smile", name: "happy test pin"};
+            const id = monk.id();
+            pin = {_id: id, icon: "smile", name: "happy test pin " + id};
             const apiGuy = await ApiGuy.new(e2eHelp.userEmail);
             await apiGuy.postPin(tribe.id, pin);
             await PinConfigPage.goToPinConfig(tribe.id, pin._id)
@@ -70,7 +73,24 @@ describe('Pin', function () {
                 .toBe(pin.name);
             expect(PinConfigPage.iconTextField.getAttribute('value'))
                 .toBe(pin.icon);
-        })
+        });
+
+        it('and is retired, no longer shows up in pin list', async function () {
+            await PinConfigPage.deleteButton.click();
+
+            const alert = await browser.switchTo().alert();
+            await alert.accept();
+
+            await PinListPage.wait();
+
+            const pinNameElements = await PinListPage.pinConfigPage.all(By.className("pin-name"));
+
+            const pinNames = await Promise.all(
+                // @ts-ignore
+                pinNameElements.map(async it => await it.getText())
+            );
+            expect(pinNames).not.toContain(pin.name);
+        });
 
     })
 

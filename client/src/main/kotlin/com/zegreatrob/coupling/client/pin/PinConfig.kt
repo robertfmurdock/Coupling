@@ -125,7 +125,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         scope.launch {
             if (window.confirm("Are you sure you want to delete this pin?")) {
                 DeletePinCommand(tribe.id, pinId).perform()
-                pathSetter("/${tribe.id.value}/pairAssignments/current/")
+                pathSetter("/${tribe.id.value}/pins")
             }
         }
 
