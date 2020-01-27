@@ -20,7 +20,8 @@ enum class PinButtonScale(val faTag: String, val factor: Double) {
 
 data class PinButtonProps(
     val pin: Pin,
-    val scale: PinButtonScale = PinButtonScale.Normal
+    val scale: PinButtonScale = PinButtonScale.Normal,
+    val className: String = ""
 ) : RProps
 
 external class PinButtonStyles {
@@ -29,8 +30,8 @@ external class PinButtonStyles {
 
 object PinButton : FRComponent<PinButtonProps>(provider()) {
 
-    fun RBuilder.pinButton(pin: Pin, scale: PinButtonScale = PinButtonScale.Small) = child(
-        PinButton(PinButtonProps(pin, scale))
+    fun RBuilder.pinButton(pin: Pin, scale: PinButtonScale = PinButtonScale.Small, className: String = "") = child(
+        PinButton(PinButtonProps(pin, scale, className))
     )
 
     override fun render(props: PinButtonProps) = reactElement {
@@ -39,7 +40,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
 
         styledDiv {
             attrs {
-                classes += styles.className
+                classes += listOf(props.className, styles.className)
                 css { scaledStyles(scale) }
             }
 

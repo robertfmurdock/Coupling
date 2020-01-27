@@ -35,6 +35,7 @@ external interface ShallowWrapper<T> {
     fun hasClass(className: String): Boolean
     fun prop(key: String): Any
     fun at(index: Int): ShallowWrapper<T>
+    fun  shallow(): ShallowWrapper<T>
 }
 
 fun <T> ShallowWrapper<T>.simulateInputChange(fieldName: String, fieldValue: String) {
@@ -60,10 +61,10 @@ fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { child(b
 
 fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallowRender { child(component, props) }
 
-fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
+fun <P : RProps, T> ShallowWrapper<T>.findComponent(
     reactFunctionComponent: ReactFunctionComponent<P>
 ): ShallowWrapper<P> = find(reactFunctionComponent.rFunction)
 
-fun <P : RProps> ShallowWrapper<dynamic>.findComponent(
+fun <P : RProps, T> ShallowWrapper<T>.findComponent(
     RComponent: RComponent<P>
 ): ShallowWrapper<P> = find(RComponent.component.rFunction)

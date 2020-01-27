@@ -76,6 +76,16 @@
     position: relative;
 }
 
+:local(.pair):local(.pairPinOver) {
+    border: 3px double dimgray;
+    background-color: #cff8ff;
+    padding: 5px;
+    display: inline-block;
+    border-radius: 40px;
+    margin: 0 2px 0 2px;
+    position: relative;
+}
+
 :local(.saveButton) {
     margin: 4px;
 }

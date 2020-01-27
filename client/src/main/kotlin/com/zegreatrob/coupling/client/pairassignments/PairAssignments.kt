@@ -2,9 +2,11 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
+import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.client.pin.PinSection.pinSection
+import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -16,6 +18,7 @@ import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -24,13 +27,12 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
+import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
-import react.ReactElement
 import react.dom.a
 import react.dom.div
-import react.dom.key
 import react.dom.span
 import kotlin.browser.window
 
@@ -52,13 +54,12 @@ external interface PairAssignmentsStyles {
     val callSign: String
     val noPairsNotice: String
     val pair: String
+    val pairPinOver: String
     val saveButton: String
     val newPairsButton: String
     val viewHistoryButton: String
     val retiredPlayersButton: String
 }
-
-const val playerDragItemType = "PLAYER"
 
 typealias PairAssignmentRenderer = ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>
 
@@ -67,25 +68,33 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
-    override fun ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>.render(): ReactElement {
-        val (pairAssignments, setPairAssignments) = useState(props.pairAssignments)
+    override fun ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>.render() = with(props) {
+        val (pairAssignments, setPairAssignments) = useState(pairAssignments)
 
         val swapCallback = makeSwapCallback(pairAssignments, setPairAssignments)
-        val tribe = props.tribe
-        val players = props.players
-        val pathSetter = props.pathSetter
-        return reactElement {
+        val pinDropCallback = makePinCallback(pairAssignments, setPairAssignments)
+        reactElement {
             DndProvider {
                 attrs { backend = HTML5Backend }
                 div(classes = styles.className) {
                     div {
                         tribeBrowser(TribeBrowserProps(tribe, pathSetter))
-                        child(currentPairAssignmentsElement(pairAssignments, swapCallback))
+                        child(currentPairAssignmentsElement(pairAssignments, swapCallback, pinDropCallback))
                     }
                     unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
                     serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
                 }
             }
+        }
+    }
+
+    private fun makePinCallback(
+        pairAssignments: PairAssignmentDocument?,
+        setPairAssignments: (PairAssignmentDocument?) -> Unit
+    ): (Pin, PinnedCouplingPair) -> Unit {
+        return { pin, pinnedCouplingPair ->
+            console.log("pin drop")
+
         }
     }
 
@@ -118,11 +127,12 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
     private fun PairAssignmentRenderer.currentPairAssignmentsElement(
         pairAssignments: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit
     ) = reactElement {
         div(classes = styles.pairAssignments) {
             pairAssignmentsHeader(pairAssignments, styles)
-            child(pairAssignmentListyElement(pairAssignments, swapCallback))
+            child(pairAssignmentListyElement(pairAssignments, swapCallback, pinDropCallback))
             child(saveButtonSectionElement(pairAssignments))
 
             prepareToSpinButton(props.tribe, styles.newPairsButton)
@@ -131,9 +141,27 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
+    private fun RBuilder.pairAssignmentsHeader(
+        pairAssignments: PairAssignmentDocument?,
+        styles: PairAssignmentsStyles
+    ) = if (pairAssignments != null) {
+        div {
+            div {
+                div(classes = styles.pairAssignmentsHeader) {
+                    +"Couples for ${pairAssignments.dateText()}"
+                }
+            }
+        }
+    } else {
+        div(classes = styles.noPairsNotice) {
+            +"No pair assignments yet!"
+        }
+    }
+
     private fun PairAssignmentRenderer.pairAssignmentListyElement(
         pairAssignments: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit
     ) = reactElement {
         div(classes = styles.pairAssignmentsContent) {
             pairAssignments?.pairs?.mapIndexed { index, pair ->
@@ -142,6 +170,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                     index,
                     pair,
                     swapCallback,
+                    pinDropCallback,
                     pairAssignments,
                     styles,
                     props.pathSetter
@@ -216,16 +245,16 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         return copy(
             pairs = pairs.map { pair ->
                 when (pair) {
-                    targetPair -> replacePlayer(pair, targetPlayer, droppedPlayer)
-                    sourcePair -> replacePlayer(pair, droppedPlayer, targetPlayer)
+                    targetPair -> pair.replacePlayer(targetPlayer, droppedPlayer)
+                    sourcePair -> pair.replacePlayer(droppedPlayer, targetPlayer)
                     else -> pair
                 }
             }
         )
     }
 
-    private fun replacePlayer(pair: PinnedCouplingPair, playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
-        pair.copy(players = pair.players.map { pinnedPlayer ->
+    private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
+        copy(players = players.map { pinnedPlayer ->
             if (pinnedPlayer == playerToReplace) {
                 replacement
             } else {
@@ -242,19 +271,88 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         index: Int,
         pair: PinnedCouplingPair,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
         pairAssignmentDocument: PairAssignmentDocument?,
         styles: PairAssignmentsStyles,
         pathSetter: (String) -> Unit
     ) {
+        child(
+            AssignedPair.component.rFunction, AssignedPairProps(
+                tribe,
+                pair,
+                swapCallback,
+                pinMoveCallback,
+                pairAssignmentDocument,
+                styles,
+                pathSetter
+            ), key = "$index"
+        )
+    }
+
+}
+
+object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
+
+    override fun render(props: AssignedPairProps) = with(props) {
         val callSign = findCallSign(pair)
         val canDrag = pairAssignmentDocument != null && pairAssignmentDocument.id == null
-        span(classes = styles.pair) {
-            attrs { key = "$index" }
-            callSign(tribe, callSign, styles)
-            pair.players.map { pinnedPlayer ->
-                pairedPlayerCard(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback, pathSetter, canDrag)
+
+        val (isOver, drop) = useDrop(
+            acceptItemType = pinDragItemType,
+            drop = { item ->
+                val pin = pairAssignmentDocument?.pairs?.map { it.pins }?.flatten()
+                    ?.find { it._id == item["id"].unsafeCast<String>() }
+                if (pin != null)
+                    pinMoveCallback(pin, pair)
+            },
+            collect = { monitor -> monitor.isOver() }
+        )
+        val pinDroppableRef = useRef<Node>(null)
+        drop(pinDroppableRef)
+
+        reactElement {
+            span(classes = styles.pair) {
+                attrs {
+                    ref = pinDroppableRef
+                    if (isOver) classes += styles.pairPinOver
+                }
+                callSign(tribe, callSign, styles)
+                pair.players.map { pinnedPlayer ->
+                    pairedPlayerCard(
+                        tribe,
+                        pinnedPlayer,
+                        pair,
+                        pairAssignmentDocument,
+                        swapCallback,
+                        pathSetter,
+                        canDrag
+                    )
+                }
+                pinSection(pair, canDrag = canDrag)
             }
-            pinSection(pair, canDrag = canDrag)
+
+        }
+    }
+
+    private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, pairAssignmentsStyles: PairAssignmentsStyles) =
+        div {
+            if (tribe.callSignsEnabled && callSign != null) {
+                span(classes = pairAssignmentsStyles.callSign) {
+                    +"${callSign.adjective} ${callSign.noun}"
+                }
+            }
+        }
+
+    private fun findCallSign(pair: PinnedCouplingPair): CallSign? {
+        val nounPlayer = pair.toPair().asArray().getOrNull(0)
+        val adjectivePlayer = pair.toPair().asArray().getOrNull(1) ?: nounPlayer
+
+        val adjective = adjectivePlayer?.callSignAdjective
+        val noun = nounPlayer?.callSignNoun
+        return if (adjective != null && noun != null) {
+            CallSign(adjective, noun)
+        } else {
+            null
         }
     }
 
@@ -294,42 +392,14 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         pairAssignmentDocument
     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
-    private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, pairAssignmentsStyles: PairAssignmentsStyles) =
-        div {
-            if (tribe.callSignsEnabled && callSign != null) {
-                span(classes = pairAssignmentsStyles.callSign) {
-                    +"${callSign.adjective} ${callSign.noun}"
-                }
-            }
-        }
-
-    private fun findCallSign(pair: PinnedCouplingPair): CallSign? {
-        val nounPlayer = pair.toPair().asArray().getOrNull(0)
-        val adjectivePlayer = pair.toPair().asArray().getOrNull(1) ?: nounPlayer
-
-        val adjective = adjectivePlayer?.callSignAdjective
-        val noun = nounPlayer?.callSignNoun
-        return if (adjective != null && noun != null) {
-            CallSign(adjective, noun)
-        } else {
-            null
-        }
-    }
-
-    private fun RBuilder.pairAssignmentsHeader(
-        pairAssignments: PairAssignmentDocument?,
-        styles: PairAssignmentsStyles
-    ) = if (pairAssignments != null) {
-        div {
-            div {
-                div(classes = styles.pairAssignmentsHeader) {
-                    +"Couples for ${pairAssignments.dateText()}"
-                }
-            }
-        }
-    } else {
-        div(classes = styles.noPairsNotice) {
-            +"No pair assignments yet!"
-        }
-    }
 }
+
+data class AssignedPairProps(
+    val tribe: Tribe,
+    val pair: PinnedCouplingPair,
+    val swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    val pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
+    val pairAssignmentDocument: PairAssignmentDocument?,
+    val styles: PairAssignmentsStyles,
+    val pathSetter: (String) -> Unit
+) : RProps

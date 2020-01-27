@@ -1,3 +1,9 @@
 :local(.className) {
-    /*! Do not remove */
+    display: inline-block;
+}
+
+:local(.hoverZoom):hover {
+    transition: all ease-in 0.4s;
+    animation: 0.25s pulsate;
+    animation-iteration-count: infinite;
 }

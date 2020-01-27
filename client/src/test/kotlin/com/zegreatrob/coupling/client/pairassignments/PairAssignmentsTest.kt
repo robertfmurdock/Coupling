@@ -7,7 +7,6 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
-import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.json.toJson
@@ -20,6 +19,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
@@ -153,14 +153,10 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.find<Any>(".${styles.pair}")
-        pairs.at(0).findComponent(DraggablePlayer)
-            .map { it.props().pinnedPlayer.player }
-            .toList()
+        val pairs = wrapper.findComponent(AssignedPair)
+        pairs.at(0).props().pair.toPair().asArray().toList()
             .assertIsEqualTo(listOf(player1, player3))
-        pairs.at(1).findComponent(DraggablePlayer)
-            .map { it.props().pinnedPlayer.player }
-            .toList()
+        pairs.at(1).props().pair.toPair().asArray().toList()
             .assertIsEqualTo(listOf(player2, player4))
     }
 
@@ -190,10 +186,10 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.find<Any>(".${styles.pair}")
-        pairs.at(0).find(PinSection.component.rFunction).props().pair.pins
+        val pairs = wrapper.findComponent(AssignedPair)
+        pairs.at(0).props().pair.pins
             .assertIsEqualTo(listOf(pin1))
-        pairs.at(1).find(PinSection.component.rFunction).props().pair.pins
+        pairs.at(1).props().pair.pins
             .assertIsEqualTo(listOf(pin2))
     }
 
@@ -220,23 +216,23 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.find<Any>(".${styles.pair}")
-        pairs.at(0).findComponent(DraggablePlayer)
-            .map { it.props().pinnedPlayer.player }
-            .toList()
+        val pairs = wrapper.findComponent(AssignedPair)
+        pairs.at(0).props().pair.toPair().asArray().toList()
             .assertIsEqualTo(listOf(player1, player2))
-        pairs.at(1).findComponent(DraggablePlayer)
-            .map { it.props().pinnedPlayer.player }
-            .toList()
+        pairs.at(1).props().pair.toPair().asArray().toList()
             .assertIsEqualTo(listOf(player3, player4))
     }
 
     private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
-        val allDraggablePlayerProps = wrapper.findComponent(DraggablePlayer)
-            .map { it.props() }
-        val targetDraggableProps = allDraggablePlayerProps
-            .find { props -> props.pinnedPlayer.player == target }
-        targetDraggableProps?.onPlayerDrop?.invoke(id!!)
+        val allAssignedPairProps = wrapper.findComponent(AssignedPair).map { it.props() }
+
+        val targetProps = allAssignedPairProps.find { it.pair.toPair().asArray().contains(target) }
+
+        targetProps.assertIsNotEqualTo(null)
+
+        targetProps?.run {
+            swapCallback(id!!, pair.players.first { it.player == target }, pair)
+        }
     }
 
     @Test

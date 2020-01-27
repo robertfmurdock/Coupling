@@ -28,6 +28,8 @@ external interface DraggablePlayerStyles {
     val onDragHover: String
 }
 
+const val playerDragItemType = "PLAYER"
+
 interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps, DraggablePlayerStyles> {
 
     override val componentPath: String get() = "pairassignments/DraggablePlayer"
