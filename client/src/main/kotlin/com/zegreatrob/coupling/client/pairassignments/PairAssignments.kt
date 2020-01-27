@@ -247,14 +247,14 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         pathSetter: (String) -> Unit
     ) {
         val callSign = findCallSign(pair)
-
+        val canDrag = pairAssignmentDocument != null && pairAssignmentDocument.id == null
         span(classes = styles.pair) {
             attrs { key = "$index" }
             callSign(tribe, callSign, styles)
             pair.players.map { pinnedPlayer ->
-                pairedPlayerCard(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback, pathSetter)
+                pairedPlayerCard(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback, pathSetter, canDrag)
             }
-            pinSection(pair)
+            pinSection(pair, canDrag = canDrag)
         }
     }
 
@@ -264,9 +264,10 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         pair: PinnedCouplingPair,
         pairAssignmentDocument: PairAssignmentDocument?,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pathSetter: (String) -> Unit
-    ) = if (pairAssignmentDocument != null && pairAssignmentDocument.id == null) {
-        swappablePlayer(tribe, pinnedPlayer, pair, pairAssignmentDocument, swapCallback)
+        pathSetter: (String) -> Unit,
+        canDrag: Boolean
+    ) = if (canDrag) {
+        swappablePlayer(tribe, pinnedPlayer, pair, pairAssignmentDocument!!, swapCallback)
     } else {
         notSwappablePlayer(tribe, pinnedPlayer, pathSetter)
     }
