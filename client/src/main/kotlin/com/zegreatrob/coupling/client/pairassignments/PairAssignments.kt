@@ -79,15 +79,28 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
-    private fun makePinCallback(
-        pairAssignments: PairAssignmentDocument?,
-        setPairAssignments: (PairAssignmentDocument?) -> Unit
-    ): (Pin, PinnedCouplingPair) -> Unit {
-        return { pin, pinnedCouplingPair ->
-            console.log("pin drop")
+    private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) = pA
+        ?.let { pairAssignments -> pairAssignments.dropThePin(setPairAssignments) }
+        ?: { _, _ -> }
 
+    private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
+        { pin: Pin, droppedPair: PinnedCouplingPair ->
+            pairs.movePinTo(pin, droppedPair)
+                .let { updatedPairs -> copy(pairs = updatedPairs) }
+                .let { setPairAssignments(it) }
+        }
+
+    private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
+        when {
+            pair == droppedPair -> pair.addPin(pin)
+            pair.pins.contains(pin) -> pair.removePin(pin)
+            else -> pair
         }
     }
+
+    private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
+
+    private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
 
     private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
         playerRoster(

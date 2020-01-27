@@ -10,10 +10,8 @@ import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -160,6 +158,33 @@ class PairAssignmentsTest {
             .assertIsEqualTo(listOf(player2, player4))
     }
 
+    @Test
+    fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+        val pin1 = stubPin()
+        val pin2 = stubPin()
+        val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(listOf(pin1))
+        val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(listOf(pin2))
+        val pairAssignments = PairAssignmentDocument(
+            date = DateTime.now(),
+            pairs = listOf(
+                pair1,
+                pair2
+            )
+        )
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
+    }) exercise {
+        pin1.dragTo(pair2, wrapper)
+    } verify {
+        wrapper.update()
+
+        val pairs = wrapper.findComponent(AssignedPair)
+        pairs.at(0).props().pair
+            .assertIsEqualTo(pair1.copy(pins = emptyList()))
+        pairs.at(1).props().pair
+            .assertIsEqualTo(pair2.copy(pins = listOf(pin2, pin1)))
+    }
 
     @Test
     fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object : PairAssignmentsRenderer,
@@ -233,6 +258,12 @@ class PairAssignmentsTest {
         targetProps?.run {
             swapCallback(id!!, pair.players.first { it.player == target }, pair)
         }
+    }
+
+    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
+        val allAssignedPairProps = wrapper.findComponent(AssignedPair).map { it.props() }
+        val targetPairProps = allAssignedPairProps.first { it.pair == targetPair }
+        targetPairProps.pinMoveCallback(this, targetPair)
     }
 
     @Test
