@@ -58,7 +58,6 @@ class AssignPinsActionTest {
             stubPin().copy(target = PinTarget.Pair),
             stubPin().copy(target = PinTarget.Pair)
         )
-
         val expectedPair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair)
     }) exercise {
@@ -117,6 +116,30 @@ class AssignPinsActionTest {
             listOf(
                 expectedPair.withPins(listOf(pin)),
                 alternatePair.withPins()
+            )
+        )
+    }
+
+    @Test
+    fun givenTwoPinsWillPreferToDistributePins() = setup(object {
+        val pin1 = stubPin().copy(target = PinTarget.Pair)
+        val pin2 = stubPin().copy(target = PinTarget.Pair)
+        val player1 = stubPlayer()
+        val player2 = stubPlayer()
+        val expectedPair = pairOf(player1, player2)
+        val player3 = stubPlayer()
+        val player4 = stubPlayer()
+        val alternatePair = pairOf(player3, player4)
+        val pairs = listOf(expectedPair, alternatePair)
+
+        val history = emptyList<PairAssignmentDocument>()
+    }) exercise {
+        AssignPinsAction(pairs, listOf(pin1, pin2), history).perform()
+    } verify { result ->
+        result.assertIsEqualTo(
+            listOf(
+                expectedPair.withPins(listOf(pin1)),
+                alternatePair.withPins(listOf(pin2))
             )
         )
     }

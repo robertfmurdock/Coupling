@@ -56,9 +56,14 @@ interface AssignPinsActionDispatcher {
             return groupByCurrentlyAssignedPins[groupByCurrentlyAssignedPins.keys.min()]!!
         }
 
-        val smallestKey = groupByLastTime.keys.min()
+        val lastTimePairs = groupByLastTime[groupByLastTime.keys.min()]
+            ?: return emptyList()
 
-        return groupByLastTime[smallestKey] ?: emptyList()
+        val numberOfPinsGroup = lastTimePairs.groupBy { it.pins.count() }
+        val leastPinnedOptions = numberOfPinsGroup[numberOfPinsGroup.keys.min()]
+
+        println("least pinned options $leastPinnedOptions")
+        return leastPinnedOptions ?: emptyList()
     }
 
     private fun pairWithPinPlayers(doc: PairAssignmentDocument, pin: Pin) = playersWithPin(doc, pin)

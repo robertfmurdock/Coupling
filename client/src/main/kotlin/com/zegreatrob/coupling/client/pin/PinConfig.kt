@@ -199,7 +199,12 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
             placeholder = "Font-awesome icon codes, without the size class",
             onChange = onChange
         )
-        span { +"This is the icon for the pin. This will be its primary identifier, so choose wisely." }
+        span {
+            +"This is the icon for the pin. This will be its primary identifier, so "
+            a("https://fontawesome.com/icons?d=gallery&m=free") {
+                +"choose wisely."
+            }
+        }
     }
 
     private fun RBuilder.nameInput(pin: Pin, onChange: (Event) -> Unit) {
