@@ -225,7 +225,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     }
 
     private fun replacePlayer(pair: PinnedCouplingPair, playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
-        PinnedCouplingPair(pair.players.map { pinnedPlayer ->
+        pair.copy(players = pair.players.map { pinnedPlayer ->
             if (pinnedPlayer == playerToReplace) {
                 replacement
             } else {

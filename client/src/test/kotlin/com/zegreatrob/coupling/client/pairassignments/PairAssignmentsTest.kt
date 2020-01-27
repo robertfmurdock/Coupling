@@ -7,6 +7,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.json.toJson
@@ -25,6 +26,7 @@ import com.zegreatrob.testmints.setup
 import findComponent
 import kotlinx.coroutines.withContext
 import shallow
+import stubPin
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.test.Test
@@ -162,6 +164,38 @@ class PairAssignmentsTest {
             .assertIsEqualTo(listOf(player2, player4))
     }
 
+
+    @Test
+    fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object : PairAssignmentsRenderer,
+        PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+        val player1 = Player("1", name = "1")
+        val player2 = Player("2", name = "2")
+        val player3 = Player("3", name = "3")
+        val player4 = Player("4", name = "4")
+
+        val pin1 = stubPin()
+        val pin2 = stubPin()
+
+        val pairAssignments = PairAssignmentDocument(
+            date = DateTime.now(),
+            pairs = listOf(
+                pairOf(player1, player2).withPins(listOf(pin1)),
+                pairOf(player3, player4).withPins(listOf(pin2))
+            )
+        )
+        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
+    }) exercise {
+        player2.dragTo(player3, wrapper)
+    } verify {
+        wrapper.update()
+
+        val pairs = wrapper.find<Any>(".${styles.pair}")
+        pairs.at(0).find(PinSection.component.rFunction).props().pair.pins
+            .assertIsEqualTo(listOf(pin1))
+        pairs.at(1).find(PinSection.component.rFunction).props().pair.pins
+            .assertIsEqualTo(listOf(pin2))
+    }
 
     @Test
     fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object : PairAssignmentsRenderer,
