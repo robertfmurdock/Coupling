@@ -30,7 +30,6 @@ data class TribeConfigProps(val tribe: Tribe, val pathSetter: (String) -> Unit) 
 
 external interface TribeConfigStyles {
     val saveButton: String
-    val editor: String
     val className: String
 }
 
