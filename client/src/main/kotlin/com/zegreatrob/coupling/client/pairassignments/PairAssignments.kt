@@ -2,14 +2,10 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
-import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
+import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.list.dateText
-import com.zegreatrob.coupling.client.pin.PinSection.pinSection
-import com.zegreatrob.coupling.client.pin.pinDragItemType
-import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
@@ -20,20 +16,17 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
-import react.dom.span
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -51,10 +44,8 @@ external interface PairAssignmentsStyles {
     val pairAssignments: String
     val pairAssignmentsHeader: String
     val pairAssignmentsContent: String
-    val callSign: String
     val noPairsNotice: String
     val pair: String
-    val pairPinOver: String
     val saveButton: String
     val newPairsButton: String
     val viewHistoryButton: String
@@ -167,13 +158,12 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             pairAssignments?.pairs?.mapIndexed { index, pair ->
                 assignedPair(
                     props.tribe,
-                    index,
                     pair,
                     swapCallback,
                     pinDropCallback,
                     pairAssignments,
-                    styles,
-                    props.pathSetter
+                    props.pathSetter,
+                    key = "$index"
                 )
             }
         }
@@ -266,140 +256,4 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         pair.players.any { player -> player.player.id == droppedPlayerId }
     }
 
-    private fun RBuilder.assignedPair(
-        tribe: Tribe,
-        index: Int,
-        pair: PinnedCouplingPair,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
-        pairAssignmentDocument: PairAssignmentDocument?,
-        styles: PairAssignmentsStyles,
-        pathSetter: (String) -> Unit
-    ) {
-        child(
-            AssignedPair.component.rFunction, AssignedPairProps(
-                tribe,
-                pair,
-                swapCallback,
-                pinMoveCallback,
-                pairAssignmentDocument,
-                styles,
-                pathSetter
-            ), key = "$index"
-        )
-    }
-
 }
-
-object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
-
-    override fun render(props: AssignedPairProps) = with(props) {
-        val callSign = findCallSign(pair)
-        val canDrag = pairAssignmentDocument != null && pairAssignmentDocument.id == null
-
-        val (isOver, drop) = useDrop(
-            acceptItemType = pinDragItemType,
-            drop = { item ->
-                val pin = pairAssignmentDocument?.pairs?.map { it.pins }?.flatten()
-                    ?.find { it._id == item["id"].unsafeCast<String>() }
-                if (pin != null)
-                    pinMoveCallback(pin, pair)
-            },
-            collect = { monitor -> monitor.isOver() }
-        )
-        val pinDroppableRef = useRef<Node>(null)
-        drop(pinDroppableRef)
-
-        reactElement {
-            span(classes = styles.pair) {
-                attrs {
-                    ref = pinDroppableRef
-                    if (isOver) classes += styles.pairPinOver
-                }
-                callSign(tribe, callSign, styles)
-                pair.players.map { pinnedPlayer ->
-                    pairedPlayerCard(
-                        tribe,
-                        pinnedPlayer,
-                        pair,
-                        pairAssignmentDocument,
-                        swapCallback,
-                        pathSetter,
-                        canDrag
-                    )
-                }
-                pinSection(pair, canDrag = canDrag)
-            }
-
-        }
-    }
-
-    private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, pairAssignmentsStyles: PairAssignmentsStyles) =
-        div {
-            if (tribe.callSignsEnabled && callSign != null) {
-                span(classes = pairAssignmentsStyles.callSign) {
-                    +"${callSign.adjective} ${callSign.noun}"
-                }
-            }
-        }
-
-    private fun findCallSign(pair: PinnedCouplingPair): CallSign? {
-        val nounPlayer = pair.toPair().asArray().getOrNull(0)
-        val adjectivePlayer = pair.toPair().asArray().getOrNull(1) ?: nounPlayer
-
-        val adjective = adjectivePlayer?.callSignAdjective
-        val noun = nounPlayer?.callSignNoun
-        return if (adjective != null && noun != null) {
-            CallSign(adjective, noun)
-        } else {
-            null
-        }
-    }
-
-    private fun RBuilder.pairedPlayerCard(
-        tribe: Tribe,
-        pinnedPlayer: PinnedPlayer,
-        pair: PinnedCouplingPair,
-        pairAssignmentDocument: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pathSetter: (String) -> Unit,
-        canDrag: Boolean
-    ) = if (canDrag) {
-        swappablePlayer(tribe, pinnedPlayer, pair, pairAssignmentDocument!!, swapCallback)
-    } else {
-        notSwappablePlayer(tribe, pinnedPlayer, pathSetter)
-    }
-
-    private fun RBuilder.notSwappablePlayer(tribe: Tribe, pinnedPlayer: PinnedPlayer, pathSetter: (String) -> Unit) =
-        playerCard(
-            PlayerCardProps(
-                tribe.id,
-                pinnedPlayer.player,
-                pathSetter,
-                false
-            ), key = pinnedPlayer.player.id
-        )
-
-    private fun RBuilder.swappablePlayer(
-        tribe: Tribe,
-        pinnedPlayer: PinnedPlayer,
-        pair: PinnedCouplingPair,
-        pairAssignmentDocument: PairAssignmentDocument,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
-    ) = draggablePlayer(DraggablePlayerProps(
-        pinnedPlayer,
-        tribe,
-        pairAssignmentDocument
-    ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
-
-}
-
-data class AssignedPairProps(
-    val tribe: Tribe,
-    val pair: PinnedCouplingPair,
-    val swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    val pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
-    val pairAssignmentDocument: PairAssignmentDocument?,
-    val styles: PairAssignmentsStyles,
-    val pathSetter: (String) -> Unit
-) : RProps

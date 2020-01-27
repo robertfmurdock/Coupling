@@ -6,6 +6,7 @@ import e2eHelp from "./e2e-help";
 import ApiGuy from "./apiGuy";
 import setLocation from "./setLocation";
 import {
+    AssignedPairStyles,
     PairAssignmentsStyles,
     PlayerCardStyles,
     PlayerRosterStyles,
@@ -181,7 +182,7 @@ describe('The current pair assignments', function () {
         });
 
         it('the most recent pairs are shown', function () {
-            const pairElements = element.all(By.className(PairAssignmentsStyles.pair));
+            const pairElements = element.all(By.className(AssignedPairStyles.className));
             const firstPair = pairElements.get(0).all(By.className(PlayerCardStyles.player));
             expect(firstPair.getText()).toEqual(pluck('name', [player1, player3]));
             const secondPair = pairElements.get(1).all(By.className(PlayerCardStyles.player));
@@ -205,7 +206,7 @@ describe('The current pair assignments', function () {
                 waitForCurrentPairAssignmentPage();
                 await browser.refresh();
 
-                const callSigns = element.all(By.className(PairAssignmentsStyles.callSign));
+                const callSigns = element.all(By.className(AssignedPairStyles.callSign));
                 expect(await callSigns.count()).toBe(0)
             });
 
@@ -225,10 +226,10 @@ describe('The current pair assignments', function () {
                 await browser.refresh();
                 waitForCurrentPairAssignmentPage();
 
-                const pairElements = element.all(By.className(PairAssignmentsStyles.pair));
+                const pairElements = element.all(By.className(AssignedPairStyles.className));
 
                 await pairElements.each(async function (elementFinder) {
-                    const callSign = elementFinder.element(By.className(PairAssignmentsStyles.callSign));
+                    const callSign = elementFinder.element(By.className(AssignedPairStyles.callSign));
 
                     expect(await callSign.isDisplayed()).toBe(true);
                     const callSignText = await callSign.getText();

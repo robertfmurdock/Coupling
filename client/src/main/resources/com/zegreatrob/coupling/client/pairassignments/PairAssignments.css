@@ -40,19 +40,6 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-:local(.callSign) {
-    position: relative;
-    font-size: large;
-    padding: 8px;
-    background: #c9d6bab8 url(../overlay.png) repeat-x;
-    border-radius: 15px;
-    border-width: 1px;
-    border-style: dotted;
-    border-color: black;
-    font-weight: bold;
-    z-index: 10;
-}
-
 :local(.noPairsNotice) {
     border: 8px outset dimgray;
     background-color: aliceblue;
@@ -64,26 +51,6 @@
     height: 150px;
     padding: 100px 5px 5px;
     margin: 0 2px 5px;
-}
-
-:local(.pair) {
-    border: 3px double dimgray;
-    background-color: aliceblue;
-    padding: 5px;
-    display: inline-block;
-    border-radius: 40px;
-    margin: 0 2px 0 2px;
-    position: relative;
-}
-
-:local(.pair):local(.pairPinOver) {
-    border: 3px double dimgray;
-    background-color: #cff8ff;
-    padding: 5px;
-    display: inline-block;
-    border-radius: 40px;
-    margin: 0 2px 0 2px;
-    position: relative;
 }
 
 :local(.saveButton) {
