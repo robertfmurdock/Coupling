@@ -64,7 +64,7 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
         }
     }
 
-    private fun PlayerCardContext.additionalClasses() = setOf(styles.player, props.className)
+    private fun PlayerCardContext.additionalClasses() = setOf(props.className, styles.player)
         .filterNotNull()
         .let {
             when {

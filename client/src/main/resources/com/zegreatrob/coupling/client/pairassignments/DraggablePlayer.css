@@ -1,5 +1,5 @@
 :local(.className) {
-    display: inline-block;
+    /*! Do not remove */
 }
 
 :local(.hoverZoom):hover {
@@ -9,7 +9,7 @@
     animation-iteration-count: infinite;
 }
 
-:local(.className) :local(.onDragHover) {
+:local(.className):local(.onDragHover) {
     background-color: orange;
     animation: .25s wiggle;
     animation-iteration-count: infinite;
