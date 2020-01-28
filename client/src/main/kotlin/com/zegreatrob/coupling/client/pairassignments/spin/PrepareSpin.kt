@@ -83,21 +83,24 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
         setPinSelections: (List<String?>) -> Unit,
         pins: List<Pin>
     ) = reactElement {
-        flipper(flipKey = pinSelections.generateFlipKey()) {
-            div(classes = styles["pinSelector"]) {
-                div(classes = styles["selectedPins"]) {
-                    pins.selectByIds(pinSelections)
-                        .map { pin ->
-                            flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
+        flipper(flipKey = pinSelections.generateFlipKey(), classes = styles["pinSelector"]) {
+            div(classes = styles["selectedPins"]) {
+                pins.selectByIds(pinSelections)
+                    .map { pin ->
+                        flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
+                    }
+            }
+//            flipped(flipId = "deselectedPinSection") {
+            div(classes = styles["deselectedPins"]) {
+                pins.removeByIds(pinSelections)
+                    .map { pin ->
+                        flippedPinButton(pin) {
+                            setPinSelections(pinSelections + pin._id)
                         }
-                }
-                div(classes = styles["deselectedPins"]) {
-                    pins.removeByIds(pinSelections)
-                        .map { pin -> flippedPinButton(pin) { setPinSelections(pinSelections + pin._id) } }
-                }
+                    }
+//                }
             }
         }
-
     }
 
     private inline fun List<Pin>.selectByIds(pinSelections: List<String?>) =
@@ -106,13 +109,14 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
     private inline fun List<Pin>.removeByIds(pinSelections: List<String?>) =
         filterNot { pinSelections.contains(it._id) }
 
-    private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flipped(pin._id) {
-        styledDiv {
-            attrs { key = pin._id ?: "" }
-            css { display = Display.inlineBlock }
-            pinButton(pin, onClick = onClick)
+    private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) =
+        flipped(pin._id) {
+            styledDiv {
+                attrs { key = pin._id ?: "" }
+                css { display = Display.inlineBlock }
+                pinButton(pin, onClick = onClick)
+            }
         }
-    }
 
     private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 

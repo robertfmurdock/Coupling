@@ -62,6 +62,8 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
         borderWidth = (2 * scale.factor).px
         borderRadius = (12 * scale.factor).px
         lineHeight = LineHeight((4.6 * scale.factor).px.value)
+        height = (14 * scale.factor).px
+        width = (14 * scale.factor).px
     }
 
     private fun targetIcon(pin: Pin): String {

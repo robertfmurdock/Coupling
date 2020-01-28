@@ -30,9 +30,13 @@
 }
 
 :local(.selectedPins) {
-    /*! do not remove */
+    margin: 5px
 }
 
 :local(.deselectedPins) {
-    /*! do not remove */
+    margin: 2px;
+    background: #de8286;
+    display: inline-block;
+    padding: 4px;
+    border-radius: 15px;
 }
