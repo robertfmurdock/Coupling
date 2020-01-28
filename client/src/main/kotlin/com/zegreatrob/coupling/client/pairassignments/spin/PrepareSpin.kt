@@ -90,15 +90,11 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
                         flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
                     }
             }
-//            flipped(flipId = "deselectedPinSection") {
             div(classes = styles["deselectedPins"]) {
                 pins.removeByIds(pinSelections)
                     .map { pin ->
-                        flippedPinButton(pin) {
-                            setPinSelections(pinSelections + pin._id)
-                        }
+                        flippedPinButton(pin) { setPinSelections(pinSelections + pin._id) }
                     }
-//                }
             }
         }
     }

@@ -100,12 +100,12 @@ input.button {
 }
 
 .green.button {
-  background-color: #91bd09;
+  background-color: #42805e;
   &:visited {
-    background-color: #91bd09;
+    background-color: #42805e;
   }
   &:hover {
-    background-color: #749a02;
+    background-color: #29533d;
   }
 }
 
@@ -136,6 +136,18 @@ input.button {
   }
   &:hover {
     background-color: #2575cf;
+  }
+}
+
+.white.button {
+  background-color: #f3ffff;
+  color: #3e474c;
+  text-shadow: none;
+  &:visited {
+    background-color: #f3ffff;
+  }
+  &:hover {
+    background-color: #dde9e9;
   }
 }
 

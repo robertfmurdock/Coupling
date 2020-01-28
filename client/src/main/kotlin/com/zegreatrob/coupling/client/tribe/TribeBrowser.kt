@@ -16,7 +16,6 @@ data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit)
 
 interface TribeBrowserCss {
     val className: String
-    val statisticsButton: String
     val tribeSelectButton: String
     val logoutButton: String
     val iconButtonText: String
@@ -43,10 +42,6 @@ interface TribeBrowserBuilder : StyledComponentRenderer<TribeBrowserProps, Tribe
     private fun RBuilder.tribeControlButtons(tribe: Tribe, styles: TribeBrowserCss) {
         span {
             span {
-                a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
-                    attrs { classes += styles.statisticsButton }
-                    span(classes = styles.iconButtonText) { +"Statistics" }
-                }
                 a(href = "/tribes/", classes = "large gray button") {
                     attrs { classes += styles.tribeSelectButton }
                     i(classes = "fa fa-arrow-circle-up") {}
@@ -62,5 +57,6 @@ interface TribeBrowserBuilder : StyledComponentRenderer<TribeBrowserProps, Tribe
             }
         }
     }
+
 }
 

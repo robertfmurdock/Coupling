@@ -132,16 +132,16 @@ describe('The current pair assignments', function () {
     });
 
     it('will let you prepare new pairs', async function () {
-        await setLocation('/' + tribe.id + '/pairAssignments/current/');
+        await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
         element(By.className(PairAssignmentsStyles.newPairsButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/prepare/`);
     });
 
     it('will let you go to the stats page', async function () {
-        await setLocation('/' + tribe.id + '/pairAssignments/current/');
+        await setLocation(`/${tribe.id}/pairAssignments/current/`);
         waitForCurrentPairAssignmentPage();
-        element(By.className(TribeBrowserStyles.statisticsButton)).click();
+        element(By.className(PairAssignmentsStyles.statisticsButton)).click();
         expect(browser.getCurrentUrl()).toEqual(`${hostName}/${tribe.id}/statistics`);
     });
 

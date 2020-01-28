@@ -27,6 +27,7 @@ import react.RBuilder
 import react.RProps
 import react.dom.a
 import react.dom.div
+import react.dom.i
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -48,8 +49,11 @@ external interface PairAssignmentsStyles {
     val pair: String
     val saveButton: String
     val newPairsButton: String
+    val pinListButton: String
+    val statisticsButton: String
     val viewHistoryButton: String
     val retiredPlayersButton: String
+    val controlPanel: String
 }
 
 typealias PairAssignmentRenderer = ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>
@@ -71,6 +75,15 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                     div {
                         tribeBrowser(TribeBrowserProps(tribe, pathSetter))
                         child(currentPairAssignmentsElement(pairAssignments, swapCallback, pinDropCallback))
+                    }
+                    div(classes = styles.controlPanel) {
+                        div {
+                            prepareToSpinButton(props.tribe, styles.newPairsButton)
+                        }
+                        viewHistoryButton(props.tribe, styles.viewHistoryButton)
+                        pinListButton(props.tribe, styles.pinListButton)
+                        statisticsButton(tribe, styles.statisticsButton)
+                        viewRetireesButton(props.tribe, styles.retiredPlayersButton)
                     }
                     unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
                     serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
@@ -138,10 +151,6 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             pairAssignmentsHeader(pairAssignments, styles)
             child(pairAssignmentListyElement(pairAssignments, swapCallback, pinDropCallback))
             child(saveButtonSectionElement(pairAssignments))
-
-            prepareToSpinButton(props.tribe, styles.newPairsButton)
-            viewHistoryButton(props.tribe, styles.viewHistoryButton)
-            viewRetireesButton(props.tribe, styles.retiredPlayersButton)
         }
     }
 
@@ -201,28 +210,40 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
+    private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
+        a(href = "/${tribe.id.value}/prepare/", classes = "super pink button") {
+            attrs { classes += className }
+            +"Prepare to spin!"
+        }
+
+    private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
+        a(href = "/${tribe.id.value}/history/", classes = "large green button") {
+            attrs { classes += className }
+            i(classes = "fa fa-history") {}
+            +" History!"
+        }
+
+    private inline fun RBuilder.pinListButton(tribe: Tribe, className: String) =
+        a(href = "/${tribe.id.value}/pins/", classes = "large white button") {
+            attrs { classes += className }
+            i(classes = "fa fa-peace") {}
+            +" Pin Bag!"
+        }
+
+    private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
+        a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
+            attrs { this.classes += className }
+            i(classes = "fa fa-database") {}
+            +" Statistics!"
+        }
+
     private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) = a(
         href = "/${tribe.id.value}/players/retired",
         classes = "large yellow button"
     ) {
         attrs { classes += className }
-        +"View retirees!"
-    }
-
-    private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) = a(
-        href = "/${tribe.id.value}/history/",
-        classes = "large blue button"
-    ) {
-        attrs { classes += className }
-        +"View history!"
-    }
-
-    private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) = a(
-        href = "/${tribe.id.value}/prepare/",
-        classes = "large pink button"
-    ) {
-        attrs { classes += className }
-        +"Prepare to spin!"
+        i(classes = "fa fa-user-slash") {}
+        +" Retirees!"
     }
 
     private fun PairAssignmentRenderer.onClickSave(pairAssignments: PairAssignmentDocument): (Event) -> Unit = {

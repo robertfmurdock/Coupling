@@ -10,6 +10,7 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
+import stubTribe
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -29,7 +30,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
+            val tribe = stubTribe()
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -58,7 +59,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
+            val tribe = stubTribe()
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -85,7 +86,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
+            val tribe = stubTribe()
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -108,7 +109,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
+            val tribe = stubTribe()
         }) {
             sdk.save(tribe)
         } exerciseAsync {
@@ -157,12 +158,12 @@ class WebsocketTest {
         val sdk = authorizedSdk()
         setupAsync(object {
         }) exerciseAsync {
-            val socket = connectToSocket(sdk, TribeId("thisIsNonsense"))
+            val socket = connectToSocket(sdk, stubTribe().id)
             CompletableDeferred<Unit>().also { deferred ->
                 socket.on("close") { deferred.complete(Unit) }
             }
         } verifyAsync { deferred ->
-            withTimeout(100) {
+            withTimeout(200) {
                 deferred.await()
             }
         }
@@ -192,7 +193,7 @@ class WebsocketTest {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
+            val tribe = stubTribe()
         }) {
             sdk.save(tribe)
         } exerciseAsync {
