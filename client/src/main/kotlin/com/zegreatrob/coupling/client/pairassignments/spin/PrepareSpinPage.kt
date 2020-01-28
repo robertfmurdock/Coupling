@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatche
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 import react.ReactElement
 
@@ -27,8 +27,8 @@ interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeData
                 loadedPairAssignments(
                     dataLoadProps(
                         query = { TribeDataSetQuery(tribeId).perform() },
-                        toProps = { _, (tribe, players, history) ->
-                            PrepareSpinProps(tribe, players, history, props.pathSetter)
+                        toProps = { _, (tribe, players, history, pins) ->
+                            PrepareSpinProps(tribe, players, history, pins, props.pathSetter)
                         }
                     )
                 )

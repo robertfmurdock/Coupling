@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
+import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.dom.i
@@ -21,7 +22,8 @@ enum class PinButtonScale(val faTag: String, val factor: Double) {
 data class PinButtonProps(
     val pin: Pin,
     val scale: PinButtonScale = PinButtonScale.Normal,
-    val className: String = ""
+    val className: String = "",
+    val onClick: () -> Unit = {}
 ) : RProps
 
 external class PinButtonStyles {
@@ -30,8 +32,14 @@ external class PinButtonStyles {
 
 object PinButton : FRComponent<PinButtonProps>(provider()) {
 
-    fun RBuilder.pinButton(pin: Pin, scale: PinButtonScale = PinButtonScale.Small, className: String = "") = child(
-        PinButton(PinButtonProps(pin, scale, className))
+    fun RBuilder.pinButton(
+        pin: Pin,
+        scale: PinButtonScale = PinButtonScale.Small,
+        className: String = "",
+        onClick: () -> Unit = {},
+        key: String? = null
+    ) = child(
+        PinButton(PinButtonProps(pin, scale, className, onClick), key = key)
     )
 
     override fun render(props: PinButtonProps) = reactElement {
@@ -42,6 +50,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
             attrs {
                 classes += listOf(props.className, styles.className)
                 css { scaledStyles(scale) }
+                onClickFunction = { props.onClick() }
             }
 
             i(scale.faTag) { attrs { classes += targetIcon(pin) } }

@@ -117,7 +117,7 @@ interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryS
                 pair.players.map { pinnedPlayer: PinnedPlayer ->
                     showPlayer(styles, pinnedPlayer)
                 }
-                pinSection(pair, PinButtonScale.ExtraSmall, styles.pinSection)
+                pinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles.pinSection)
             }
         }
 

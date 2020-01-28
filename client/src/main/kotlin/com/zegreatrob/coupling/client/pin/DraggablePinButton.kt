@@ -31,7 +31,7 @@ object DraggablePinButton : FRComponent<DraggablePinButtonProps>(provider()) {
                     ref = draggableRef
                     classes += listOf(styles.className, styles.hoverZoom)
                 }
-                pinButton(pin, scale)
+                pinButton(pin, scale, key = null)
             }
         }
     }

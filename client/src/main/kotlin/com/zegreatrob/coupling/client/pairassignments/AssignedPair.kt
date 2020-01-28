@@ -76,7 +76,7 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
                 }
                 callSign(tribe, callSign, styles["callSign"])
                 pair.players.map { player -> playerCard(player) }
-                pinSection(pair, canDrag = canDrag)
+                pinSection(pinList = pair.pins, canDrag = canDrag)
             }
         }
     }

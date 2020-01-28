@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pin.DraggablePinButton.draggablePinButton
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.marginLeft
 import kotlinx.css.px
 import kotlinx.html.classes
@@ -16,10 +16,10 @@ import styled.css
 import styled.styledDiv
 
 data class PinSectionProps(
-    val pair: PinnedCouplingPair,
+    val pinList: List<Pin>,
     val scale: PinButtonScale = PinButtonScale.Small,
-    val className: String,
-    val canDrag: Boolean
+    val canDrag: Boolean,
+    val className: String
 ) : RProps
 
 external class PinSectionStyles {
@@ -29,11 +29,11 @@ external class PinSectionStyles {
 object PinSection : FRComponent<PinSectionProps>(provider()) {
 
     fun RBuilder.pinSection(
-        pair: PinnedCouplingPair,
+        pinList: List<Pin>,
         scale: PinButtonScale = PinButtonScale.Small,
-        className: String = "",
-        canDrag: Boolean = false
-    ) = child(PinSection(PinSectionProps(pair, scale, className, canDrag)))
+        canDrag: Boolean = false,
+        className: String = ""
+    ) = child(PinSection(PinSectionProps(pinList, scale, canDrag, className)))
 
     override fun render(props: PinSectionProps) = with(props) {
         val styles = useStyles<PinSectionStyles>("pin/PinSection")
@@ -42,13 +42,13 @@ object PinSection : FRComponent<PinSectionProps>(provider()) {
             styledDiv {
                 attrs {
                     classes += styles.className
-                    css { marginLeft = -(pair.pins.size * 12 * scale.factor).px }
+                    css { marginLeft = -(pinList.size * 12 * scale.factor).px }
                 }
-                pair.pins.map { pin ->
+                pinList.map { pin ->
                     if (canDrag)
                         draggablePinButton(pin, scale)
                     else
-                        pinButton(pin, scale)
+                        pinButton(pin, scale, key = null)
                 }
             }
         }

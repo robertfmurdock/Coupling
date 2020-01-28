@@ -7,6 +7,22 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
+
+var tribeCounter = 1
+
+fun stubTribe() = Tribe(
+    id = TribeId(uuidString()),
+    name = "Stub Tribe $tribeCounter",
+    alternateBadgeName = "Badgely",
+    badgesEnabled = true,
+    callSignsEnabled = true,
+    defaultBadgeName = "Badgerton",
+    email = "stuby@stub.edu",
+    pairingRule = PairingRule.LongestTime
+)
 
 var playerCounter = 1
 fun stubPlayer() = Player(

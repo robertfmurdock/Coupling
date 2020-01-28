@@ -28,3 +28,11 @@
 :local(.spinButton).button {
     margin-bottom: 10px;
 }
+
+:local(.selectedPins) {
+    /*! do not remove */
+}
+
+:local(.deselectedPins) {
+    /*! do not remove */
+}

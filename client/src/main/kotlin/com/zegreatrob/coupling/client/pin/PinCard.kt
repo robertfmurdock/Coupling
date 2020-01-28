@@ -31,7 +31,7 @@ object PinCard : FRComponent<PinCardProps>(provider()) {
 
         optionalLink(shouldLink, tribeId, pin) {
             div(styles.className) {
-                pinButton(pin)
+                pinButton(pin, key = null)
                 div(classes = "pin-name") {
                     +(pin.name ?: "Unnamed pin")
                 }

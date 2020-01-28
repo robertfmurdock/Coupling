@@ -28,8 +28,7 @@ import react.RProps
 import react.ReactElement
 import react.dom.*
 
-object PinConfig : RComponent<PinConfigProps>(provider()), PinConfigRenderer,
-    RepositoryCatalog by SdkSingleton
+object PinConfig : RComponent<PinConfigProps>(provider()), PinConfigRenderer, RepositoryCatalog by SdkSingleton
 
 data class PinConfigProps(
     val tribe: Tribe,
@@ -104,7 +103,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     )
                 }
                 span(classes = styles.icon) {
-                    pinButton(updatedPin, PinButtonScale.Large)
+                    pinButton(updatedPin, PinButtonScale.Large, key = null)
                 }
             }
         }
