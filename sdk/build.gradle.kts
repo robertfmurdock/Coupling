@@ -45,6 +45,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation(project(":test-logging"))
+                implementation(project(":stub-model"))
                 implementation("com.benasher44:uuid:0.0.7")
             }
         }

@@ -6,11 +6,12 @@ import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
 import {
     AssignedPairStyles,
-    PairAssignmentsStyles,
+    PairAssignmentsStyles, PinButtonStyles,
     PlayerCardStyles,
     PlayerRosterStyles,
     PrepareSpinStyles
 } from "./page-objects/Styles";
+import ApiGuy from "./apiGuy";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -36,16 +37,13 @@ describe('The prepare to spin page', function () {
 
     const spinButton = element(By.className(PrepareSpinStyles.spinButton));
 
-    const tribe = {
-        id: 'delete_me_prepare',
-        name: 'Funkytown'
-    };
+    const tribe = {id: monk.id(), name: 'Funkytown'};
 
-    const player1 = {_id: monk.id(), tribe: tribe.id, name: "player1"};
-    const player2 = {_id: monk.id(), tribe: tribe.id, name: "player2"};
-    const player3 = {_id: monk.id(), tribe: tribe.id, name: "player3"};
-    const player4 = {_id: monk.id(), tribe: tribe.id, name: "player4"};
-    const player5 = {_id: monk.id(), tribe: tribe.id, name: "player5"};
+    const player1 = {_id: monk.id(), name: "player1"};
+    const player2 = {_id: monk.id(), name: "player2"};
+    const player3 = {_id: monk.id(), name: "player3"};
+    const player4 = {_id: monk.id(), name: "player4"};
+    const player5 = {_id: monk.id(), name: "player5"};
     const players = [
         player1,
         player2,
@@ -54,12 +52,19 @@ describe('The prepare to spin page', function () {
         player5
     ];
 
+    const pin = {_id: monk.id(), name: 'e2e-pin'};
+
     beforeAll(async function () {
-        await historyCollection.drop();
-        await tribeCollection.insert(tribe);
-        await e2eHelp.authorizeUserForTribes([tribe.id]);
-        await playersCollection.drop();
-        await playersCollection.insert(players);
+        const apiGuy = await ApiGuy.new(e2eHelp.userEmail);
+        await apiGuy.postTribe(tribe);
+        // await e2eHelp.authorizeUserForTribes([tribe.id]);
+
+        await apiGuy.postPin(tribe.id, pin);
+
+        for (const it of players) {
+            await apiGuy.postPlayer(tribe.id, it)
+        }
+
         await browser.get(hostName + '/test-login?username=' + e2eHelp.userEmail + '&password="pw"');
     });
 
@@ -123,6 +128,35 @@ describe('The prepare to spin page', function () {
 
             expect(pairs.count()).toEqual(1);
             expect(players.count()).toEqual(3);
+        });
+
+        it('spinning with pin enabled will include that pin in assignment', async function () {
+            const selectedPinElements = element(By.className(PrepareSpinStyles.selectedPins))
+                .all(By.className(PinButtonStyles.className));
+            expect(selectedPinElements.count()).toEqual(1);
+
+            spinButton.click();
+
+            waitForCurrentPairAssignmentPage();
+
+            const assignedPins = element.all(By.className(PinButtonStyles.className));
+
+            expect(assignedPins.count()).toEqual(1);
+        });
+
+        it('spinning with pin disabled will exclude that pin from assignment', async function () {
+            const selectedPinElements = element(By.className(PrepareSpinStyles.selectedPins))
+                .all(By.className(PinButtonStyles.className));
+            expect(selectedPinElements.count()).toEqual(1);
+
+            selectedPinElements.click();
+            spinButton.click();
+
+            waitForCurrentPairAssignmentPage();
+
+            const assignedPins = element.all(By.className(PinButtonStyles.className));
+
+            expect(assignedPins.count()).toEqual(0);
         });
     });
 });

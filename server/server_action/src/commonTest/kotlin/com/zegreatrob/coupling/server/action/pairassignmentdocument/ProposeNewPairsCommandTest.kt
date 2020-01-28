@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
-import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -26,11 +25,9 @@ class ProposeNewPairsCommandTest {
             override val wheel: Wheel get() = throw NotImplementedError("Do not use")
             override val pairAssignmentDocumentRepository get() = stubRepository
             override val tribeRepository get() = stubRepository
-            override val pinRepository get() = stubRepository
 
-            val stubRepository = object : PinGet, TribeGet, PairAssignmentDocumentGet {
+            val stubRepository = object : TribeGet, PairAssignmentDocumentGet {
                 override suspend fun getTribe(tribeId: TribeId) = tribe.also { tribeId.assertIsEqualTo(tribe.id) }
-                override suspend fun getPins(tribeId: TribeId) = pins.also { tribeId.assertIsEqualTo(tribe.id) }
                 override suspend fun getPairAssignments(tribeId: TribeId) =
                     history.also { tribeId.assertIsEqualTo(tribe.id) }
             }
@@ -47,7 +44,7 @@ class ProposeNewPairsCommandTest {
             override fun RunGameAction.perform() = spy.spyFunction(this)
 
         }) exerciseAsync {
-            ProposeNewPairsCommand(tribe.id, players)
+            ProposeNewPairsCommand(tribe.id, players, pins)
                 .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(expectedPairAssignmentDocument)

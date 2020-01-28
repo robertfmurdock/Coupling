@@ -35,6 +35,13 @@ export default class ApiGuy {
         return this;
     };
 
+    async postPlayer(tribeId, player) {
+        await agent.post(`/api/tribes/${tribeId}/players/`)
+            .send(player)
+            .expect(200);
+        return this;
+    };
+
     async postPairAssignmentSet(tribeId, pairAssignmentSet) {
         await agent.post(`/api/tribes/${tribeId}/history`)
             .send(pairAssignmentSet)

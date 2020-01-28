@@ -22,7 +22,7 @@ interface SdkTribeRepository : SdkTribeGet, SdkTribeListGet,
     SdkTribeSave, SdkTribeDelete, TribeRepository
 
 interface SdkPlayerRepository : SdkPlayerListGet,
-    SdkPlayerGetDeleted, SdkPlayerSaver,
+    SdkPlayerGetDeleted, SdkPlayerSave,
     SdkPlayerDeleter, PlayerRepository
 
 interface SdkPinRepository : SdkPinGet, SdkPinSave, SdkPinDelete, PinRepository

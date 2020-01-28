@@ -16,9 +16,12 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import stubPin
+import stubPlayer
+import stubTribe
 import kotlin.test.Test
 
-class GameTest {
+class SpinTest {
 
     @Test
     fun willTakeThePlayersGivenAndUseThoseForPairing() = testAsync {
@@ -32,7 +35,7 @@ class GameTest {
         }) {
             sdk.save(tribe)
         } exerciseAsync {
-            sdk.requestSpin(tribe.id, players)
+            sdk.requestSpin(tribe.id, players, emptyList())
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
@@ -62,7 +65,7 @@ class GameTest {
         }) {
             setupScenario(sdk, tribe, players, history)
         } exerciseAsync {
-            sdk.requestSpin(tribe.id, players)
+            sdk.requestSpin(tribe.id, players, emptyList())
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(
@@ -95,7 +98,7 @@ class GameTest {
         }) {
             setupScenario(sdk, tribe, players, history)
         } exerciseAsync {
-            sdk.requestSpin(tribe.id, players)
+            sdk.requestSpin(tribe.id, players, emptyList())
         } verifyAsync { result ->
             result.pairs.assertIsEqualTo(
                 listOf(
@@ -106,23 +109,41 @@ class GameTest {
         }
     }
 
-    @Test
-    fun whenAPinExistsWillAssignOnePinToPair() = testAsync {
-        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
-            val players = listOf(
-                Player(id = monk.id().toString(), name = "One", badge = Badge.Default.value)
-            )
-            val pin = Pin(_id = monk.id().toString(), name = "super test pin")
-        }) {
-            setupScenario(sdk, tribe, players, pins = listOf(pin))
-        } exerciseAsync {
-            sdk.requestSpin(tribe.id, players)
-        } verifyAsync { result ->
-            result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
-            )
+    class WhenPinExists {
+
+        private val pinExistsSetup
+            get() = object {
+                val tribe = stubTribe()
+                val players = listOf(stubPlayer())
+                val pin = stubPin()
+            }
+
+        @Test
+        fun whenAPinExistsWillAssignOnePinToPair() = testAsync {
+            val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+            setupAsync(pinExistsSetup) {
+                setupScenario(sdk, tribe, players, pins = listOf(pin))
+            } exerciseAsync {
+                sdk.requestSpin(tribe.id, players, listOf(pin))
+            } verifyAsync { result ->
+                result.pairs.assertIsEqualTo(
+                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
+                )
+            }
+        }
+
+        @Test
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = testAsync {
+            val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+            setupAsync(pinExistsSetup) {
+                setupScenario(sdk, tribe, players, pins = listOf(pin))
+            } exerciseAsync {
+                sdk.requestSpin(tribe.id, players, emptyList())
+            } verifyAsync { result ->
+                result.pairs.assertIsEqualTo(
+                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
+                )
+            }
         }
     }
 
@@ -133,17 +154,20 @@ class GameTest {
         Player(id = monk.id().toString(), name = "Four", badge = Badge.Alternate.value)
     )
 
-    private suspend fun setupScenario(
-        sdk: AuthorizedSdk,
-        tribe: Tribe,
-        players: List<Player> = emptyList(),
-        history: List<PairAssignmentDocument> = emptyList(),
-        pins: List<Pin> = emptyList()
-    ) = coroutineScope {
-        sdk.save(tribe)
-        players.forEach { launch { sdk.save(TribeIdPlayer(tribe.id, it)) } }
-        history.forEach { launch { sdk.save(TribeIdPairAssignmentDocument(tribe.id, it)) } }
-        pins.forEach { launch { sdk.save(TribeIdPin(tribe.id, it)) } }
+    companion object {
+        private suspend fun setupScenario(
+            sdk: AuthorizedSdk,
+            tribe: Tribe,
+            players: List<Player> = emptyList(),
+            history: List<PairAssignmentDocument> = emptyList(),
+            pins: List<Pin> = emptyList()
+        ) = coroutineScope {
+            sdk.save(tribe)
+            players.forEach { launch { sdk.save(TribeIdPlayer(tribe.id, it)) } }
+            history.forEach { launch { sdk.save(TribeIdPairAssignmentDocument(tribe.id, it)) } }
+            pins.forEach { launch { sdk.save(TribeIdPin(tribe.id, it)) } }
+        }
+
     }
 
 }

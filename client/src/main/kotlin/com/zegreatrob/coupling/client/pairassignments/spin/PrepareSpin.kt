@@ -44,7 +44,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
             div(classes = styles.className) {
                 div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
                 div {
-                    div { spinButton(tribe, playerSelections, pathSetter, styles["spinButton"]) }
+                    div { spinButton(tribe, playerSelections, pinSelections, pathSetter, styles["spinButton"]) }
                     optionalPinSelector(pins, pinSelections, setPinSelections, styles)
                     selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections, styles)
                 }
@@ -59,16 +59,25 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
         styles: SimpleStyle
     ) {
         if (pins.isNotEmpty()) {
-            div(classes = styles["pinSelector"]) {
-                div(classes = styles["selectedPins"]) {
-                    selectedPins.map { pin ->
-                        pinButton(pin, onClick = { setPinSelections(selectedPins - pin) }, key = pin._id)
-                    }
+            child(pinSelector(styles, selectedPins, setPinSelections, pins))
+        }
+    }
+
+    private fun pinSelector(
+        styles: SimpleStyle,
+        selectedPins: List<Pin>,
+        setPinSelections: (List<Pin>) -> Unit,
+        pins: List<Pin>
+    ) = reactElement {
+        div(classes = styles["pinSelector"]) {
+            div(classes = styles["selectedPins"]) {
+                selectedPins.map { pin ->
+                    pinButton(pin, onClick = { setPinSelections(selectedPins - pin) }, key = pin._id)
                 }
-                div(classes = styles["deselectedPins"]) {
-                    (pins - selectedPins)
-                        .map { pin -> pinButton(pin, key = pin._id) }
-                }
+            }
+            div(classes = styles["deselectedPins"]) {
+                (pins - selectedPins)
+                    .map { pin -> pinButton(pin, key = pin._id) }
             }
         }
     }
@@ -76,12 +85,13 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
     private fun RBuilder.spinButton(
         tribe: Tribe,
         playerSelections: List<Pair<Player, Boolean>>,
+        pinSelections: List<Pin>,
         pathSetter: (String) -> Unit,
         className: String
     ) = a(classes = "super pink button") {
         attrs {
             classes += className
-            onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections) }
+            onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections, pinSelections) }
         }
         +"Spin!"
     }
@@ -135,15 +145,27 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
     private fun goToNewPairAssignments(
         pathSetter: (String) -> Unit,
         tribe: Tribe,
-        playerSelections: List<Pair<Player, Boolean>>
+        playerSelections: List<Pair<Player, Boolean>>,
+        pinSelections: List<Pin>
     ) = pathSetter(
-        "/${tribe.id.value}/pairAssignments/new?${playerSelections.buildQueryParameters()}"
+        "/${tribe.id.value}/pairAssignments/new?${buildQueryString(playerSelections, pinSelections)}"
     )
 
+    private fun buildQueryString(playerSelections: List<Pair<Player, Boolean>>, pinSelections: List<Pin>) =
+        (playerSelections.buildQueryParameters() + pinSelections.buildQueryParameters())
+            .toQueryString()
+
     private fun List<Pair<Player, Boolean>>.buildQueryParameters() = filter { (_, isSelected) -> isSelected }
-        .joinToString("&") { (player, _) ->
-            "player=${encodeURIComponent(player.id)}"
-        }
+        .map { it.first.id }.toProperty("player")
+
+
+    private fun List<Pin>.buildQueryParameters() = map { it._id }.toProperty("pin")
+
+    private fun List<Pair<String, String?>>.toQueryString() = toList().joinToString("&") { (propName, id) ->
+        "$propName=${encodeURIComponent(id)}"
+    }
+
+    private fun List<String?>.toProperty(propName: String) = map { propName to it }
 
     private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty()) {
         true
