@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -10,6 +12,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import kotlinx.css.Display
+import kotlinx.css.display
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
@@ -17,6 +21,8 @@ import react.RProps
 import react.ReactElement
 import react.dom.a
 import react.dom.div
+import styled.css
+import styled.styledDiv
 
 external fun encodeURIComponent(input: String?)
 
@@ -39,12 +45,20 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
         val (playerSelections, setPlayerSelections) = useState(
             players.map { it to isInLastSetOfPairs(it, history) }
         )
-        val (pinSelections, setPinSelections) = useState(pins)
+        val (pinSelections, setPinSelections) = useState(pins.map { it._id })
         return reactElement {
             div(classes = styles.className) {
                 div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
                 div {
-                    div { spinButton(tribe, playerSelections, pinSelections, pathSetter, styles["spinButton"]) }
+                    div {
+                        spinButton(
+                            tribe,
+                            playerSelections,
+                            pins.selectByIds(pinSelections),
+                            pathSetter,
+                            styles["spinButton"]
+                        )
+                    }
                     optionalPinSelector(pins, pinSelections, setPinSelections, styles)
                     selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections, styles)
                 }
@@ -54,8 +68,8 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
 
     private fun RBuilder.optionalPinSelector(
         pins: List<Pin>,
-        selectedPins: List<Pin>,
-        setPinSelections: (List<Pin>) -> Unit,
+        selectedPins: List<String?>,
+        setPinSelections: (List<String?>) -> Unit,
         styles: SimpleStyle
     ) {
         if (pins.isNotEmpty()) {
@@ -65,33 +79,53 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
 
     private fun pinSelector(
         styles: SimpleStyle,
-        selectedPins: List<Pin>,
-        setPinSelections: (List<Pin>) -> Unit,
+        pinSelections: List<String?>,
+        setPinSelections: (List<String?>) -> Unit,
         pins: List<Pin>
     ) = reactElement {
-        div(classes = styles["pinSelector"]) {
-            div(classes = styles["selectedPins"]) {
-                selectedPins.map { pin ->
-                    pinButton(pin, onClick = { setPinSelections(selectedPins - pin) }, key = pin._id)
+        flipper(flipKey = pinSelections.generateFlipKey()) {
+            div(classes = styles["pinSelector"]) {
+                div(classes = styles["selectedPins"]) {
+                    pins.selectByIds(pinSelections)
+                        .map { pin ->
+                            flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
+                        }
+                }
+                div(classes = styles["deselectedPins"]) {
+                    pins.removeByIds(pinSelections)
+                        .map { pin -> flippedPinButton(pin) { setPinSelections(pinSelections + pin._id) } }
                 }
             }
-            div(classes = styles["deselectedPins"]) {
-                (pins - selectedPins)
-                    .map { pin -> pinButton(pin, key = pin._id) }
-            }
+        }
+
+    }
+
+    private inline fun List<Pin>.selectByIds(pinSelections: List<String?>) =
+        filter { pinSelections.contains(it._id) }
+
+    private inline fun List<Pin>.removeByIds(pinSelections: List<String?>) =
+        filterNot { pinSelections.contains(it._id) }
+
+    private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flipped(pin._id) {
+        styledDiv {
+            attrs { key = pin._id ?: "" }
+            css { display = Display.inlineBlock }
+            pinButton(pin, onClick = onClick)
         }
     }
+
+    private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
     private fun RBuilder.spinButton(
         tribe: Tribe,
         playerSelections: List<Pair<Player, Boolean>>,
-        pinSelections: List<Pin>,
+        selectedPins: List<Pin>,
         pathSetter: (String) -> Unit,
         className: String
     ) = a(classes = "super pink button") {
         attrs {
             classes += className
-            onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections, pinSelections) }
+            onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections, selectedPins) }
         }
         +"Spin!"
     }

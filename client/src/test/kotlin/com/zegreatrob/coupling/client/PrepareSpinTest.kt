@@ -25,7 +25,7 @@ class PrepareSpinTest {
     }
 
     @Test
-    fun whenPinIsClickedWillDeselectPin() = setup(object {
+    fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {
         val tribe = stubTribe()
         val players = emptyList<Player>()
         val history = emptyList<PairAssignmentDocument>()
@@ -39,6 +39,32 @@ class PrepareSpinTest {
             .onClick()
     } verify {
         wrapper.findByClass(styles["deselectedPins"]).findComponent(PinButton)
+            .props().pin
+            .assertIsEqualTo(firstPin)
+    }
+
+    @Test
+    fun whenDeselectedPinIsClickedWillSelectPin() = setup(object {
+        val tribe = stubTribe()
+        val players = emptyList<Player>()
+        val history = emptyList<PairAssignmentDocument>()
+        val pins = listOf(stubPin(), stubPin())
+        val firstPin = pins[0]
+
+        val wrapper = shallow(PrepareSpinProps(tribe, players, history, pins) {})
+
+        init {
+            wrapper.findByClass(styles["selectedPins"])
+                .findPinButtonPropsFor(firstPin)
+                .onClick()
+        }
+    }) exercise {
+        wrapper.findByClass(styles["deselectedPins"])
+            .findPinButtonPropsFor(firstPin)
+            .onClick()
+    } verify {
+        wrapper.findByClass(styles["selectedPins"]).findComponent(PinButton)
+            .at(0)
             .props().pin
             .assertIsEqualTo(firstPin)
     }
