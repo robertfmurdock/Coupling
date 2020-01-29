@@ -40,6 +40,7 @@ data class PlayerConfigProps(
 
 external interface PlayerConfigStyles {
     val className: String
+    val headerRow: String
     val saveButton: String
     val tribeBrowser: String
     val playerView: String
@@ -61,12 +62,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
     override fun ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>.render() = with(props) {
         reactElement {
             div(classes = styles.className) {
-                div {
-                    div(classes = styles.tribeBrowser) {
-                        tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
-                    }
-                    playerView(this)
-                }
+                div { playerView(this) }
                 playerRoster(
                     PlayerRosterProps(
                         players = players,
@@ -90,8 +86,13 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
         val shouldShowPrompt = updatedPlayer != player
         rBuilder.run {
             span(classes = styles.playerView) {
-                span(classes = styles.player) {
-                    div { h1 { +"Player Configuration" } }
+                div(classes = styles.player) {
+                    div(classes = styles.headerRow) {
+                        tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter, size = 50))
+                        h1 {
+                            +"Player Configuration"
+                        }
+                    }
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()
                     prompt(
                         `when` = shouldShowPrompt,
@@ -139,8 +140,10 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
         val (isSaving, setIsSaving) = useState(false)
         return {
             form {
-                attrs { name = "playerForm"; onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) } }
-
+                attrs {
+                    name = "playerForm"
+                    onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) }
+                }
                 div {
                     editor {
                         li { nameInput(player, onChange) }
@@ -173,7 +176,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
             +"Retire"
         }
 
-    private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(classes = "large blue button") {
+    private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(classes = "super blue button") {
         attrs {
             classes += className
             type = ButtonType.submit

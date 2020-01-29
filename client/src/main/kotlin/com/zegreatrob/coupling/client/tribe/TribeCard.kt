@@ -15,7 +15,6 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.ReactElement
-import react.dom.div
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
@@ -69,6 +68,7 @@ interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardSt
 
         styledDiv {
             attrs {
+                ref = tribeNameRef
                 classes = setOf(styles.header)
                 css {
                     margin((size * 0.02).px, 0.px, 0.px, 0.px)
@@ -76,10 +76,7 @@ interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardSt
                 }
                 onClickFunction = { event -> goToConfigTribe(event) }
             }
-            div {
-                attrs { ref = tribeNameRef }
-                +(tribe.name ?: "Unknown")
-            }
+            +(tribe.name ?: "Unknown")
         }
     }
 

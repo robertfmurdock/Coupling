@@ -15,6 +15,15 @@
     margin-top: 30px;
 }
 
+:local(.headerRow) {
+    text-align: left;
+}
+
+:local(.headerRow) h1 {
+    display: inline;
+    margin-left: 15px;
+}
+
 :local(.tribeBrowser) {
     white-space: normal;
     display: inline-block;
@@ -33,15 +42,11 @@
 }
 
 :local(.saveButton) {
-    float: left;
-    top: 15px;
-    left: -15px;
+    /*! Do not remove */
 }
 
 :local(.deleteButton) {
-    float: right;
-    top: 20px;
-    left: 15px;
+    /*! Do not remove */
 }
 
 :local(.playerView) input[type=text] {
@@ -76,4 +81,8 @@
     text-align: center;
     text-decoration: none;
     color: black;
+}
+
+:local(.bigPlayerCard) {
+
 }
