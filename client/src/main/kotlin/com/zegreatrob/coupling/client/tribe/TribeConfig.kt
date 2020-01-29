@@ -49,9 +49,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
 
         return reactElement {
             div(classes = styles.className) {
-                div {
-                    h1 { +"Tribe Configuration" }
-                }
+                div { h1 { +"Tribe Configuration" } }
 
                 child(tribeForm(updatedTribe, isNew, onChange))
 

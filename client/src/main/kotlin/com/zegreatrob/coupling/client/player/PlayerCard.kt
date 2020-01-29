@@ -122,7 +122,6 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
             }
             div {
                 attrs { ref = playerNameRef }
-                +(if (player.id == null) "NEW:" else "")
                 +(if (player.name.isNullOrBlank()) "Unknown" else player.name!!)
             }
         }

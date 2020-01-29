@@ -48,7 +48,7 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
-        wrapper.find<Any>("input[name='badge'][value='${Badge.Default.value}'][checked]")
+        wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
             .assertIsEqualTo(1)
     }
@@ -67,7 +67,7 @@ class PlayerConfigTest {
     }) exercise {
         shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
     } verify { wrapper ->
-        wrapper.find<Any>("input[name='badge'][value='${Badge.Alternate.value}'][checked]")
+        wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
             .assertIsEqualTo(1)
     }

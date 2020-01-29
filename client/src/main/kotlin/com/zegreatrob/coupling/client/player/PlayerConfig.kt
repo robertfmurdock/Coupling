@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -17,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.html.*
+import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
 import org.w3c.dom.events.Event
@@ -89,19 +91,14 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
         rBuilder.run {
             span(classes = styles.playerView) {
                 span(classes = styles.player) {
+                    div { h1 { +"Player Configuration" } }
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()
                     prompt(
                         `when` = shouldShowPrompt,
                         message = "You have unsaved data. Would you like to save before you leave?"
                     )
                 }
-                playerCard(
-                    PlayerCardProps(
-                        tribe.id,
-                        updatedPlayer,
-                        size = 250,
-                        pathSetter = {})
-                )
+                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
             }
         }
     }
@@ -145,113 +142,137 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
                 attrs { name = "playerForm"; onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) } }
 
                 div {
-                    configInput(
-                        labelText = "Name",
-                        id = "player-name",
-                        name = "name",
-                        value = player.name ?: "",
-                        type = InputType.text,
-                        onChange = onChange
-                    )
-                }
-                div {
-                    configInput(
-                        labelText = "Email",
-                        id = "player-email",
-                        name = "email",
-                        value = player.email ?: "",
-                        type = InputType.text,
-                        onChange = onChange
-                    )
-                }
-                if (tribe.callSignsEnabled) {
-                    callSignConfig(player, onChange)
-                }
-                if (tribe.badgesEnabled) {
-                    badgeConfig(tribe, player, onChange, styles)
-                }
-                button(classes = "large blue button") {
-                    attrs {
-                        classes += styles.saveButton
-                        type = ButtonType.submit
-                        tabIndex = "0"
-                        value = "Save"
-                        disabled = isSaving
+                    editor {
+                        li { nameInput(player, onChange) }
+                        li { emailInput(player, onChange) }
+                        if (tribe.callSignsEnabled) {
+                            callSignConfig(player, onChange)
+                        }
+                        if (tribe.badgesEnabled) {
+                            badgeConfig(tribe, player, onChange, styles.badgeConfig)
+                        }
                     }
-                    +"Save"
                 }
+                saveButton(isSaving, styles.saveButton)
                 val playerId = player.id
                 if (playerId != null) {
-                    div(classes = "small red button") {
-                        attrs {
-                            classes += styles.deleteButton
-                            onClickFunction = { removePlayer(tribe, props.pathSetter, scope, playerId) }
-                        }
-                        +"Retire"
-                    }
+                    retireButton(this@playerConfigForm, tribe, playerId)
                 }
             }
         }
     }
 
-    private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
-        div {
-            div {
-                configInput(
-                    labelText = "Call-Sign Adjective",
-                    id = "adjective-input",
-                    name = "callSignAdjective",
-                    value = player.callSignAdjective ?: "",
-                    type = InputType.text,
-                    onChange = onChange,
-                    list = "callSignAdjectiveOptions"
-                )
-                dataList { attrs { id = "callSignAdjectiveOptions" } }
+    private fun RBuilder.retireButton(context: PlayerConfigContext, tribe: Tribe, playerId: String) =
+        div(classes = "small red button") {
+            attrs {
+                classes += context.styles.deleteButton
+                onClickFunction = {
+                    removePlayer(tribe, context.props.pathSetter, context.scope, playerId)
+                }
             }
-            div {
-                configInput(
-                    labelText = "Call-Sign Noun",
-                    id = "noun-input",
-                    name = "callSignNoun",
-                    value = player.callSignNoun ?: "",
-                    type = InputType.text,
-                    onChange = onChange,
-                    list = "callSignNounOptions"
-                )
-                dataList { attrs { id = "callSignNounOptions" } }
-            }
+            +"Retire"
         }
+
+    private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(classes = "large blue button") {
+        attrs {
+            classes += className
+            type = ButtonType.submit
+            tabIndex = "0"
+            value = "Save"
+            disabled = isSaving
+        }
+        +"Save"
+    }
+
+    private inline fun RBuilder.nameInput(player: Player, noinline onChange: (Event) -> Unit) {
+        configInput(
+            labelText = "Name",
+            id = "player-name",
+            name = "name",
+            value = player.name ?: "",
+            type = InputType.text,
+            onChange = onChange,
+            placeholder = "My name is..."
+        )
+        span { +"What's your moniker?" }
+    }
+
+    private fun RBuilder.emailInput(player: Player, onChange: (Event) -> Unit) {
+        configInput(
+            labelText = "Email",
+            id = "player-email",
+            name = "email",
+            value = player.email ?: "",
+            type = InputType.text,
+            onChange = onChange,
+            placeholder = "email"
+        )
+        span { +"Email provides access privileges, so you can see all Tribes you're in!" }
+    }
+
+    private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
+        li {
+            configInput(
+                labelText = "Call-Sign Adjective",
+                id = "adjective-input",
+                name = "callSignAdjective",
+                value = player.callSignAdjective ?: "",
+                type = InputType.text,
+                onChange = onChange,
+                list = "callSignAdjectiveOptions"
+            )
+            dataList { attrs { id = "callSignAdjectiveOptions" } }
+            span { +"I feel the need..." }
+        }
+        li {
+            configInput(
+                labelText = "Call-Sign Noun",
+                id = "noun-input",
+                name = "callSignNoun",
+                value = player.callSignNoun ?: "",
+                type = InputType.text,
+                onChange = onChange,
+                list = "callSignNounOptions"
+            )
+            dataList { attrs { id = "callSignNounOptions" } }
+            span { +"... the need for speed!" }
+        }
+
     }
 
     private fun RBuilder.badgeConfig(
         tribe: Tribe,
         player: Player,
         onChange: (Event) -> Unit,
-        styles: PlayerConfigStyles
+        className: String
     ) {
-        div(classes = styles.badgeConfig) {
-            div {
-                configInput(
-                    labelText = tribe.defaultBadgeName ?: "",
-                    id = "default-badge-radio",
-                    name = "badge",
-                    value = "${Badge.Default.value}",
-                    type = InputType.radio,
-                    onChange = onChange,
-                    checked = player.badge.let { it == Badge.Default.value || it == null }
-                )
+        li(classes = className) {
+            label { attrs { htmlFor = "badge" }; +"Badge" }
+            select {
+                attrs {
+                    id = "badge"
+                    name = "badge"
+                    this["value"] = "${player.badge ?: Badge.Default.value}"
+                    onChangeFunction = onChange
+                }
+                option {
+                    attrs {
+                        id = "default-badge-option"
+                        key = "${Badge.Default.value}"
+                        value = "${Badge.Default.value}"
+                        label = tribe.defaultBadgeName ?: ""
+                    }
+                }
+                option {
+                    attrs {
+                        id = "alt-badge-option"
+                        key = "${Badge.Alternate.value}"
+                        value = "${Badge.Alternate.value}"
+                        label = tribe.alternateBadgeName ?: ""
+                    }
+                }
             }
-            div {
-                configInput(
-                    labelText = tribe.alternateBadgeName ?: "",
-                    id = "alt-badge-radio",
-                    name = "badge",
-                    value = "${Badge.Alternate.value}",
-                    type = InputType.radio,
-                    onChange = onChange,
-                    checked = player.badge == Badge.Alternate.value
-                )
-            }
+            span { +"Your badge makes you feel... different than the others." }
         }
     }
 

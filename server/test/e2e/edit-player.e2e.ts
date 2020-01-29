@@ -15,8 +15,8 @@ const hostName = `http://${config.publicHost}:${config.port}`;
 
 const playerElements = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
 
-const defaultBadgeRadio = element(By.css('#default-badge-radio'));
-const altBadgeRadio = element(By.css('#alt-badge-radio'));
+const defaultBadgeOption = element(By.css('#default-badge-option'));
+const altBadgeOption = element(By.css('#alt-badge-option'));
 
 
 const tribeCardElement = element(By.className(TribeCardStyles.className));
@@ -110,8 +110,8 @@ describe('The edit player page', function () {
         it('should not show the badge selector', async function () {
             await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
-            expect(defaultBadgeRadio.isPresent()).toEqual(false);
-            expect(altBadgeRadio.isPresent()).toEqual(false);
+            expect(defaultBadgeOption.isPresent()).toEqual(false);
+            expect(altBadgeOption.isPresent()).toEqual(false);
         });
     });
 
@@ -128,27 +128,27 @@ describe('The edit player page', function () {
         it('should show the badge selector', async function () {
             await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
-            expect(defaultBadgeRadio.isDisplayed()).toEqual(true);
-            expect(element(By.css('label[for=default-badge-radio]')).getText()).toBe('Badge 1');
+            expect(defaultBadgeOption.isDisplayed()).toEqual(true);
+            expect(element(By.css('option[value="1"]')).getAttribute("label")).toBe('Badge 1');
 
-            expect(altBadgeRadio.isDisplayed()).toEqual(true);
-            expect(element(By.css('label[for=alt-badge-radio]')).getText()).toBe('Badge 2');
+            expect(altBadgeOption.isDisplayed()).toEqual(true);
+            expect(element(By.css('option[value="2"]')).getAttribute("label")).toBe('Badge 2');
         });
 
         it('the player default badge should be selected', function () {
-            expect(defaultBadgeRadio.getAttribute('checked')).toBe('true');
+            expect(defaultBadgeOption.getAttribute('checked')).toBe('true');
         });
 
         it(`should remember badge selection`, async function () {
             await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
 
-            await browser.wait(() => altBadgeRadio.isPresent(), 1000);
+            await browser.wait(() => altBadgeOption.isPresent(), 1000);
 
-            await altBadgeRadio.click();
+            await altBadgeOption.click();
             await savePlayerButton.click();
             await waitForSaveToComplete(player1.name);
             await PlayerConfigPage.goToPlayerConfig(tribe.id, player1._id);
-            expect(altBadgeRadio.getAttribute('checked')).toBe('true');
+            expect(altBadgeOption.getAttribute('checked')).toBe('true');
         });
 
     });
