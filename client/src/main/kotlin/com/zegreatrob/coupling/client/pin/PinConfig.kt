@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
+import com.zegreatrob.coupling.client.pin.PinCard.pinCard
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson
@@ -65,20 +66,13 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                 }
                 child(pinViewElement())
-                child(pinBagElement())
+                pinBag(props.tribe, props.pinList, styles.pinBag)
             }
         }
     }
 
-    fun PinConfigContext.pinBagElement(): ReactElement {
-        val tribeId = props.tribe.id
-        return reactElement {
-            div(styles.pinBag) {
-                props.pinList.map { pin ->
-                    child(PinCard(PinCardProps(tribeId, pin), key = pin._id))
-                }
-            }
-        }
+    private inline fun RBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: String) = div(classes = className) {
+        pinList.map { pin -> pinCard(tribe.id, pin, key = pin._id) }
     }
 
     private fun PinConfigContext.pinViewElement(): ReactElement {

@@ -18,16 +18,14 @@ data class PinCardProps(
     val shouldLink: Boolean = true
 ) : RProps
 
-external class PinCardStyles {
-    val className: String
-    val icon: String
-}
-
 object PinCard : FRComponent<PinCardProps>(provider()) {
+
+    fun RBuilder.pinCard(tribeId: TribeId, pin: Pin, shouldLink: Boolean = true, key: String? = null) =
+        child(PinCard(PinCardProps(tribeId, pin, shouldLink), key = key))
 
     override fun render(props: PinCardProps) = reactElement {
         val (tribeId, pin, shouldLink) = props
-        val styles = useStyles<PinCardStyles>("pin/PinCard")
+        val styles = useStyles("pin/PinCard")
 
         optionalLink(shouldLink, tribeId, pin) {
             div(styles.className) {

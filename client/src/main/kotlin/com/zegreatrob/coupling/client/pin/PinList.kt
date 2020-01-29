@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.pin.PinCard.pinCard
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pin.Pin
@@ -30,7 +31,7 @@ interface PinListBuilder : StyledComponentRenderer<PinListProps, SimpleStyle> {
                 h2 { +"These are your pins." }
                 h3 { +"There are many like them, but these are yours." }
                 div {
-                    pins.map { child(PinCard(PinCardProps(tribe.id, it, true), key = it._id)) }
+                    pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it._id) }
                 }
                 div {
                     a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
