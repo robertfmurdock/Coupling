@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.FRComponent
-import com.zegreatrob.coupling.client.external.react.provider
-import com.zegreatrob.coupling.client.external.react.reactElement
-import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
@@ -12,6 +9,7 @@ import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.dom.i
+import react.dom.span
 import styled.css
 import styled.styledDiv
 
@@ -25,10 +23,6 @@ data class PinButtonProps(
     val className: String = "",
     val onClick: () -> Unit = {}
 ) : RProps
-
-external class PinButtonStyles {
-    val className: String
-}
 
 object PinButton : FRComponent<PinButtonProps>(provider()) {
 
@@ -44,7 +38,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
 
     override fun render(props: PinButtonProps) = reactElement {
         val (pin, scale) = props
-        val styles = useStyles<PinButtonStyles>("pin/PinButton")
+        val styles = useStyles("pin/PinButton")
 
         styledDiv {
             attrs {
@@ -53,6 +47,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
                 onClickFunction = { props.onClick() }
             }
 
+            span(classes = styles["tooltip"]) { +(pin.name ?: "") }
             i(scale.faTag) { attrs { classes += targetIcon(pin) } }
         }
     }
