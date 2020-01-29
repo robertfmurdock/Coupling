@@ -21,6 +21,7 @@ data class PinButtonProps(
     val pin: Pin,
     val scale: PinButtonScale = PinButtonScale.Normal,
     val className: String = "",
+    val showTooltip: Boolean = true,
     val onClick: () -> Unit = {}
 ) : RProps
 
@@ -31,9 +32,10 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
         scale: PinButtonScale = PinButtonScale.Small,
         className: String = "",
         onClick: () -> Unit = {},
-        key: String? = null
+        key: String? = null,
+        showTooltip: Boolean = true
     ) = child(
-        PinButton(PinButtonProps(pin, scale, className, onClick), key = key)
+        PinButton(PinButtonProps(pin, scale, className, showTooltip, onClick), key = key)
     )
 
     override fun render(props: PinButtonProps) = reactElement {
@@ -47,7 +49,9 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
                 onClickFunction = { props.onClick() }
             }
 
-            span(classes = styles["tooltip"]) { +(pin.name ?: "") }
+            if (props.showTooltip) {
+                span(classes = styles["tooltip"]) { +(pin.name ?: "") }
+            }
             i(scale.faTag) { attrs { classes += targetIcon(pin) } }
         }
     }

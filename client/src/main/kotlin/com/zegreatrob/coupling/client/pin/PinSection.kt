@@ -48,7 +48,7 @@ object PinSection : FRComponent<PinSectionProps>(provider()) {
                     if (canDrag)
                         draggablePinButton(pin, scale)
                     else
-                        pinButton(pin, scale, key = null)
+                        pinButton(pin, scale, key = null, showTooltip = true)
                 }
             }
         }

@@ -28,6 +28,7 @@ import react.dom.span
 object History : RComponent<HistoryProps>(provider()), HistoryRenderer, Sdk by SdkSingleton
 
 external interface HistoryStyles {
+    val className: String
     val pair: String
     val tribeBrowser: String
     val historyView: String
@@ -56,7 +57,7 @@ interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryS
 
     override fun ScopedStyledRContext<HistoryProps, HistoryStyles>.render() = with(props) {
         reactElement {
-            div {
+            div(classes = styles.className) {
                 div(classes = styles.tribeBrowser) {
                     tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                 }

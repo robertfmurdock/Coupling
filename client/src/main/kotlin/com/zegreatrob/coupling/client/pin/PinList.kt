@@ -27,10 +27,8 @@ interface PinListBuilder : StyledComponentRenderer<PinListProps, SimpleStyle> {
                 div(classes = styles["tribeBrowser"]) {
                     tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
                 }
-
                 h2 { +"These are your pins." }
                 h3 { +"There are many like them, but these are yours." }
-
                 div {
                     pins.map { child(PinCard(PinCardProps(tribe.id, it, true), key = it._id)) }
                 }

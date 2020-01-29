@@ -1,11 +1,20 @@
+:local(.className) {
+    display: inline-block;
+    margin: 15px;
+    background: #dae8e0;
+    padding: 0 25px 25px 25px;
+    min-height: 100vh;
+    border: 12px solid #4f5853;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+}
+
 :local(.tribeBrowser) {
     white-space: normal;
     display: inline-block;
     vertical-align: top;
-    border-radius: 20px;
     padding: 10px;
-    border: 11px outset darkorange;
-    background-color: lightgoldenrodyellow;
     margin: 15px;
 }
 
@@ -19,15 +28,10 @@
 }
 
 :local(.historyView) :local(.header) {
-    display: inline-block;
     border-radius: 25px;
     padding: 10px;
     margin: 10px;
-    text-fill-color: white;
-    text-stroke-width: 1.5px;
-    text-stroke-color: darkred;
     font-size: xx-large;
-    background: steelblue url(../overlay.png) repeat-x;
 }
 
 :local(.player) {

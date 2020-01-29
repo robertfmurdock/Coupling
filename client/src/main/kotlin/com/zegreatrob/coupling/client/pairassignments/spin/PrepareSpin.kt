@@ -110,7 +110,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
             styledDiv {
                 attrs { key = pin._id ?: "" }
                 css { display = Display.inlineBlock }
-                pinButton(pin, onClick = onClick)
+                pinButton(pin, onClick = onClick, showTooltip = true)
             }
         }
 
