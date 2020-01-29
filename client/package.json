@@ -54,7 +54,7 @@
     "node-sass": "^4.13.1",
     "npm-check-updates": "^4.0.1",
     "prefixfree": "^1.0.0",
-    "protractor": "^5.4.2",
+    "protractor": "^5.4.3",
     "protractor-jasmine2-screenshot-reporter": "^0.5.0",
     "protractor-screenshot-reporter": "0.0.5",
     "pug": "^2.0.4",
