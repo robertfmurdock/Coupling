@@ -1,6 +1,15 @@
 :local(.className) {
     text-align: left;
     display: inline-block;
+
+    margin: 15px;
+    background: #989898;
+    padding: 0 25px 25px 25px;
+    min-height: 100vh;
+    border: 12px solid #dcdada;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
 }
 
 :local(.leftSection) {
