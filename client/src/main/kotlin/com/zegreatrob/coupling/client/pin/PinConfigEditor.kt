@@ -30,26 +30,36 @@ data class PinConfigEditorProps(
     val tribe: Tribe,
     val pin: Pin,
     val pathSetter: (String) -> Unit,
-    val reload: () -> Unit,
-    val scope: CoroutineScope
+    val reload: () -> Unit
 ) : RProps
 
+object PinConfigEditor : FRComponent<PinConfigEditorProps>(provider()), WindowFunctions, SavePinCommandDispatcher,
+    DeletePinCommandDispatcher, RepositoryCatalog by SdkSingleton, PinConfigEditorRenderer {
 
-interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>, WindowFunctions, SavePinCommandDispatcher,
+    fun RBuilder.pinConfigEditor(tribe: Tribe, pin: Pin, pathSetter: (String) -> Unit, reload: () -> Unit) =
+        child(PinConfigEditor.component.rFunction, PinConfigEditorProps(tribe, pin, pathSetter, reload))
+
+}
+
+interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
+    ReactScopeProvider,
+    WindowFunctions,
+    SavePinCommandDispatcher,
     DeletePinCommandDispatcher {
-
-    override val pinRepository: PinRepository
 
     companion object {
         val styles = useStyles("pin/PinConfigEditor")
     }
 
+    override val pinRepository: PinRepository
+
     override fun render(props: PinConfigEditorProps) = reactElement {
-        val (tribe, _, pathSetter, reload, scope) = props
+        val (tribe, _, pathSetter, reload) = props
+        val scope = useScope(styles.className)
         val (values, onChange) = useForm(props.pin.toJson())
+
         val updatedPin = values.toPin()
         val onSubmitFunc = handleSubmitFunc { savePin(updatedPin, tribe, reload) }
-
         val shouldShowPrompt = updatedPin != props.pin
 
         span(classes = styles.className) {
@@ -197,19 +207,6 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>, WindowFunc
         }
         span { +"This is where the pin is assigned." }
     }
-
-}
-
-object PinConfigEditor : FRComponent<PinConfigEditorProps>(provider()), WindowFunctions, SavePinCommandDispatcher,
-    DeletePinCommandDispatcher, RepositoryCatalog by SdkSingleton, PinConfigEditorRenderer {
-
-    fun RBuilder.pinConfigEditor(
-        tribe: Tribe,
-        pin: Pin,
-        pathSetter: (String) -> Unit,
-        reload: () -> Unit,
-        scope: CoroutineScope
-    ) = child(PinConfigEditor.component.rFunction, PinConfigEditorProps(tribe, pin, pathSetter, reload, scope))
 
 }
 

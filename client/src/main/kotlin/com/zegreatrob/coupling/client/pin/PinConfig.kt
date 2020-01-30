@@ -46,7 +46,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     override fun PinConfigContext.render() = reactElement {
         val (tribe, pin, pinList, pathSetter, reload) = props
         configFrame(styles.className) {
-            pinConfigEditor(tribe, pin, pathSetter, reload, scope)
+            pinConfigEditor(tribe, pin, pathSetter, reload)
             pinBag(tribe, pinList, styles.pinBag)
         }
     }

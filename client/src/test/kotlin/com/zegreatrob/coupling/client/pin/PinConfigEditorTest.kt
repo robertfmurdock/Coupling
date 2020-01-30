@@ -15,7 +15,6 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
 import findByClass
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.withContext
 import shallow
 import simulateInputChange
@@ -36,7 +35,7 @@ class PinConfigEditorTest {
         val pin = Pin(_id = null)
 
     }) exercise {
-        shallow(PinConfigEditorProps(tribe, pin, {}, {}, MainScope()))
+        shallow(PinConfigEditorProps(tribe, pin, {}, {}))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -48,7 +47,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditorProps(tribe, pin, {}, {}, MainScope()))
+        shallow(PinConfigEditorProps(tribe, pin, {}, {}))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -59,9 +58,10 @@ class PinConfigEditorTest {
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = testAsync {
         withContext(coroutineContext) {
             setupAsync(object : RendererWithStub() {
+                override fun buildScope() = this@withContext
                 val tribe = Tribe(TribeId("dumb tribe"))
                 val pin = Pin(_id = null, name = null)
-                val wrapper = shallow(PinConfigEditorProps(tribe, pin, {}, {}, this@withContext))
+                val wrapper = shallow(PinConfigEditorProps(tribe, pin, {}, {}))
                 val newName = "pin new name"
                 val newIcon = "pin new icon"
 
