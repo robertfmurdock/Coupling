@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -48,7 +47,7 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
         val (pinSelections, setPinSelections) = useState(pins.map { it._id })
         return reactElement {
             div(classes = styles.className) {
-                div { tribeBrowser(TribeBrowserProps(tribe, pathSetter)) }
+                div { tribeBrowser(tribe, pathSetter) }
                 div {
                     div {
                         spinButton(

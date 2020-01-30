@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
-import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -73,7 +72,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                 attrs { backend = HTML5Backend }
                 div(classes = styles.className) {
                     div {
-                        tribeBrowser(TribeBrowserProps(tribe, pathSetter))
+                        tribeBrowser(tribe, pathSetter)
                         child(currentPairAssignmentsElement(pairAssignments, swapCallback, pinDropCallback))
                     }
                     div(classes = styles.controlPanel) {

@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.player.retired
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.tribe.TribeBrowserProps
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RProps
@@ -32,7 +31,7 @@ interface RetiredPlayersBuilder : StyledComponentRenderer<RetiredPlayersProps, R
         val (tribe, players, pathSetter) = props
         return reactElement {
             div(classes = styles.className) {
-                tribeBrowser(TribeBrowserProps(tribe, pathSetter))
+                tribeBrowser(tribe, pathSetter)
                 div(classes = styles.header) { +"Retired Players" }
                 div {
                     players.forEach { player ->

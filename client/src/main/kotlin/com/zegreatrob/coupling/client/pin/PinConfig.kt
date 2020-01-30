@@ -58,11 +58,11 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     override val componentPath: String get() = "pin/PinConfig"
 
     override fun PinConfigContext.render() = reactElement {
-        val (tribe, _, _, pathSetter) = props
+        val (tribe, _, pinList, _) = props
         div(classes = styles.className) {
             div {
                 child(pinViewElement())
-                pinBag(props.tribe, props.pinList, styles.pinBag)
+                pinBag(tribe, pinList, styles.pinBag)
             }
         }
     }
@@ -129,7 +129,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
                     editor {
                         li { nameInput(pin, onChange) }
                         li { iconInput(pin, onChange) }
-                        li { targetInput(pin, onChange) }
+                        li { targetInput(onChange) }
                     }
                 }
                 saveButton(isSaving, styles.saveButton)
@@ -206,7 +206,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         span { +"This is what you call the pin. You won't see this much." }
     }
 
-    private fun RBuilder.targetInput(pin: Pin, onChange: (Event) -> Unit) {
+    private inline fun RBuilder.targetInput(noinline onChange: (Event) -> Unit) {
         label { attrs { htmlFor = "pinTarget" }; +"Target" }
         select {
             attrs {
