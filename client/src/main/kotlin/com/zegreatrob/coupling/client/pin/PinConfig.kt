@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.configInput
+import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
@@ -53,7 +55,7 @@ external interface PinConfigStyles {
 typealias PinConfigContext = ScopedStyledRContext<PinConfigProps, PinConfigStyles>
 
 interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinConfigStyles>,
-    WindowFunctions, UseFormHook, SavePinCommandDispatcher, DeletePinCommandDispatcher {
+    WindowFunctions, SavePinCommandDispatcher, DeletePinCommandDispatcher {
 
     override val pinRepository: PinRepository
     override val componentPath: String get() = "pin/PinConfig"
@@ -61,10 +63,8 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     override fun PinConfigContext.render() = reactElement {
         val (tribe, _, pinList, _) = props
         configFrame(styles.className) {
-            div {
-                child(pinViewElement())
-                pinBag(tribe, pinList, styles.pinBag)
-            }
+            child(pinViewElement())
+            pinBag(tribe, pinList, styles.pinBag)
         }
     }
 

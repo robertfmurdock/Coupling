@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.configInput
+import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.json.toJson
@@ -51,7 +53,7 @@ external interface PlayerConfigStyles {
 typealias PlayerConfigContext = ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>
 
 interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps, PlayerConfigStyles>,
-    WindowFunctions, UseFormHook, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
+    WindowFunctions, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
 
     override val playerRepository: PlayerRepository
 
@@ -60,15 +62,17 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
     override fun ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>.render() = with(props) {
         reactElement {
             configFrame(styles.className) {
-                div { playerView(this) }
-                playerRoster(
-                    PlayerRosterProps(
-                        players = players,
-                        tribeId = tribe.id,
-                        pathSetter = pathSetter,
-                        className = styles.playerRoster
+                playerView(this)
+                div {
+                    playerRoster(
+                        PlayerRosterProps(
+                            players = players,
+                            tribeId = tribe.id,
+                            pathSetter = pathSetter,
+                            className = styles.playerRoster
+                        )
                     )
-                )
+                }
             }
         }
     }

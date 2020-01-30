@@ -23,7 +23,9 @@ object ConfigFrame : FRComponent<ConfigFrameProps>(provider()) {
     override fun render(props: ConfigFrameProps) = reactElement {
         div(classes = styles.className) {
             attrs { props.className?.let { classes += it } }
-            props.children()
+            div {
+                props.children()
+            }
         }
     }
 }

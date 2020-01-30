@@ -2,10 +2,6 @@
     /*! Do not remove */
 }
 
-:local(.className) > div {
-    margin-top: 30px;
-}
-
 :local(.playerView) {
     display: inline-block;
 }
