@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.external.react.configInput
-import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
@@ -63,7 +61,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     override fun PinConfigContext.render() = reactElement {
         val (tribe, _, pinList, _) = props
         configFrame(styles.className) {
-            child(pinViewElement())
+            pinConfigEditor(props, scope, styles)
             pinBag(tribe, pinList, styles.pinBag)
         }
     }
@@ -72,92 +70,92 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         pinList.map { pin -> pinCard(tribe.id, pin, key = pin._id) }
     }
 
-    private fun PinConfigContext.pinViewElement(): ReactElement {
+    private inline fun RBuilder.pinConfigEditor(
+        props: PinConfigProps,
+        scope: CoroutineScope,
+        styles: PinConfigStyles
+    ): ReactElement {
         val (tribe, _, _, pathSetter, reload) = props
 
         val (values, onChange) = useForm(props.pin.toJson())
         val updatedPin = values.toPin()
-        val onSubmitFunc = handleSubmitFunc { savePin(scope, updatedPin, tribe, reload) }
+        val onSubmitFunc = handleSubmitFunc { savePin(updatedPin, tribe, reload) }
 
         val shouldShowPrompt = updatedPin != props.pin
-        return reactElement {
-            span(classes = styles.pinView) {
-                configHeader(tribe, pathSetter) { +"Pin Configuration" }
-                span(classes = styles.pin) {
-                    pinConfigForm(updatedPin, tribe, onChange, onSubmitFunc)()
-                    prompt(
-                        `when` = shouldShowPrompt,
-                        message = "You have unsaved data. Would you like to save before you leave?"
-                    )
-                }
-                span(classes = styles.icon) {
-                    pinButton(updatedPin, PinButtonScale.Large, key = null, showTooltip = false)
-                }
+        return span(classes = styles.pinView) {
+            configHeader(tribe, pathSetter) { +"Pin Configuration" }
+            span(classes = styles.pin) {
+                pinConfigForm(updatedPin, tribe, pathSetter, onChange, onSubmitFunc, scope, styles)
+                prompt(
+                    `when` = shouldShowPrompt,
+                    message = "You have unsaved data. Would you like to save before you leave?"
+                )
+            }
+            span(classes = styles.icon) {
+                pinButton(updatedPin, PinButtonScale.Large, key = null, showTooltip = false)
             }
         }
     }
 
-    private fun handleSubmitFunc(handler: () -> Job) = { event: Event ->
-        event.preventDefault()
-        handler()
-    }
+    private inline fun handleSubmitFunc(crossinline handler: CoroutineScope.() -> Job) =
+        { scope: CoroutineScope, event: Event ->
+            event.preventDefault()
+            scope.handler()
+        }
 
-    private fun savePin(scope: CoroutineScope, updatedPin: Pin, tribe: Tribe, reload: () -> Unit) = scope.launch {
+    private inline fun CoroutineScope.savePin(updatedPin: Pin, tribe: Tribe, crossinline reload: () -> Unit) = launch {
         SavePinCommand(tribe.id, updatedPin).perform()
         reload()
     }
 
-    private fun removePin(tribe: Tribe, pathSetter: (String) -> Unit, scope: CoroutineScope, pinId: String) =
-        scope.launch {
-            if (window.confirm("Are you sure you want to delete this pin?")) {
-                DeletePinCommand(tribe.id, pinId).perform()
-                pathSetter("/${tribe.id.value}/pins")
-            }
-        }
-
-    private fun PinConfigContext.pinConfigForm(
-        pin: Pin,
-        tribe: Tribe,
-        onChange: (Event) -> Unit,
-        onSubmit: (Event) -> Job
-    ): RBuilder.() -> ReactElement {
-        val (isSaving, setIsSaving) = useState(false)
-        return {
-            form {
-                attrs { name = "pinForm"; onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit) }
-
-                div {
-                    editor {
-                        li { nameInput(pin, onChange) }
-                        li { iconInput(pin, onChange) }
-                        li { targetInput(onChange) }
-                    }
-                }
-                saveButton(isSaving, styles.saveButton)
-                val pinId = pin._id
-                if (pinId != null) {
-                    child(retireButtonElement(tribe, pinId))
-                }
-            }
+    private fun CoroutineScope.removePin(tribe: Tribe, pinId: String, pathSetter: (String) -> Unit) = launch {
+        if (window.confirm("Are you sure you want to delete this pin?")) {
+            DeletePinCommand(tribe.id, pinId).perform()
+            pathSetter("/${tribe.id.value}/pins")
         }
     }
 
-    private fun PinConfigContext.retireButtonElement(tribe: Tribe, pinId: String) = reactElement {
-        div(classes = "small red button") {
-            attrs {
-                classes += styles.deleteButton
-                onClickFunction =
-                    {
-                        removePin(
-                            tribe,
-                            props.pathSetter,
-                            scope,
-                            pinId
-                        )
-                    }
-            }
-            +"Retire"
+    private inline fun RBuilder.pinConfigForm(
+        pin: Pin,
+        tribe: Tribe,
+        noinline pathSetter: (String) -> Unit,
+        noinline onChange: (Event) -> Unit,
+        crossinline onSubmit: (CoroutineScope, Event) -> Job,
+        scope: CoroutineScope,
+        styles: PinConfigStyles
+    ) = form {
+        val (isSaving, setIsSaving) = useState(false)
+        attrs {
+            name = "pinForm"; onSubmitFunction =
+            onSubmitFunction(setIsSaving, { event -> onSubmit(scope, event) })
         }
+
+        div {
+            editor {
+                li { nameInput(pin, onChange) }
+                li { iconInput(pin, onChange) }
+                li { targetInput(onChange) }
+            }
+        }
+        saveButton(isSaving, styles.saveButton)
+        val pinId = pin._id
+        if (pinId != null) {
+            retireButtonElement(tribe, pinId, pathSetter, scope, styles)
+        }
+    }
+
+    private inline fun RBuilder.retireButtonElement(
+        tribe: Tribe,
+        pinId: String,
+        noinline pathSetter: (String) -> Unit,
+        scope: CoroutineScope,
+        styles: PinConfigStyles
+    ) = div(classes = "small red button") {
+        attrs {
+            classes += styles.deleteButton
+            onClickFunction = { scope.removePin(tribe, pinId, pathSetter) }
+        }
+        +"Retire"
     }
 
     private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Job): (Event) -> Unit =

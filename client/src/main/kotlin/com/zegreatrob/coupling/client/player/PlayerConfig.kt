@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.external.react.configInput
-import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.json.toJson
@@ -59,44 +57,45 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
 
     override val componentPath: String get() = "player/PlayerConfig"
 
-    override fun ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>.render() = with(props) {
-        reactElement {
-            configFrame(styles.className) {
-                playerView(this)
-                div {
-                    playerRoster(
-                        PlayerRosterProps(
-                            players = players,
-                            tribeId = tribe.id,
-                            pathSetter = pathSetter,
-                            className = styles.playerRoster
-                        )
+    override fun PlayerConfigContext.render() = reactElement {
+        val (tribe, _, players, pathSetter, _) = props
+        configFrame(styles.className) {
+            playerConfigEditor(props, scope, styles)
+            div {
+                playerRoster(
+                    PlayerRosterProps(
+                        players = players,
+                        tribeId = tribe.id,
+                        pathSetter = pathSetter,
+                        className = styles.playerRoster
                     )
-                }
+                )
             }
         }
     }
 
-    private fun PlayerConfigContext.playerView(rBuilder: RBuilder) {
+    private inline fun RBuilder.playerConfigEditor(
+        props: PlayerConfigProps,
+        scope: CoroutineScope,
+        styles: PlayerConfigStyles
+    ) {
         val (tribe, player, _, pathSetter, reload) = props
-
         val (values, onChange) = useForm(player.toJson())
         val updatedPlayer = values.toPlayer()
-        val onSubmitFunc = handleSubmitFunc { savePlayer(scope, updatedPlayer, tribe, reload) }
+        val onSubmitFunc = handleSubmitFunc { scope.savePlayer(updatedPlayer, tribe, reload) }
 
         val shouldShowPrompt = updatedPlayer != player
-        rBuilder.run {
-            span(classes = styles.playerView) {
-                configHeader(tribe, pathSetter) { +"Player Configuration" }
-                div(classes = styles.player) {
-                    playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()
-                    prompt(
-                        `when` = shouldShowPrompt,
-                        message = "You have unsaved data. Would you like to save before you leave?"
-                    )
-                }
-                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
+
+        span(classes = styles.playerView) {
+            configHeader(tribe, pathSetter) { +"Player Configuration" }
+            div(classes = styles.player) {
+                playerConfigForm(updatedPlayer, tribe, props.pathSetter, scope, styles, onChange, onSubmitFunc)
+                prompt(
+                    `when` = shouldShowPrompt,
+                    message = "You have unsaved data. Would you like to save before you leave?"
+                )
             }
+            playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
         }
     }
 
@@ -105,72 +104,71 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
         handler()
     }
 
-    private fun savePlayer(
-        scope: CoroutineScope,
-        updatedPlayer: Player,
-        tribe: Tribe,
-        reload: () -> Unit
-    ) = scope.launch {
-        SavePlayerCommand(tribe.id, updatedPlayer).perform()
-        reload()
-    }
+    private inline fun CoroutineScope.savePlayer(updatedPlayer: Player, tribe: Tribe, crossinline reload: () -> Unit) =
+        launch {
+            SavePlayerCommand(tribe.id, updatedPlayer).perform()
+            reload()
+        }
 
-    private fun removePlayer(
+    private inline fun CoroutineScope.removePlayer(
         tribe: Tribe,
-        pathSetter: (String) -> Unit,
-        scope: CoroutineScope,
+        crossinline pathSetter: (String) -> Unit,
         playerId: String
-    ) = scope.launch {
+    ) = launch {
         if (window.confirm("Are you sure you want to delete this player?")) {
             DeletePlayerCommand(tribe.id, playerId).perform()
             pathSetter("/${tribe.id.value}/pairAssignments/current/")
         }
     }
 
-    private fun PlayerConfigContext.playerConfigForm(
+    private inline fun RBuilder.playerConfigForm(
         player: Player,
         tribe: Tribe,
-        onChange: (Event) -> Unit,
-        onSubmit: (Event) -> Job
-    ): RBuilder.() -> ReactElement {
+        noinline pathSetter: (String) -> Unit,
+        scope: CoroutineScope,
+        styles: PlayerConfigStyles,
+        noinline onChange: (Event) -> Unit,
+        crossinline onSubmit: (Event) -> Job
+    ): ReactElement {
         val (isSaving, setIsSaving) = useState(false)
-        return {
-            form {
-                attrs {
-                    name = "playerForm"
-                    onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) }
-                }
-                div {
-                    editor {
-                        li { nameInput(player, onChange) }
-                        li { emailInput(player, onChange) }
-                        if (tribe.callSignsEnabled) {
-                            callSignConfig(player, onChange)
-                        }
-                        if (tribe.badgesEnabled) {
-                            badgeConfig(tribe, player, onChange, styles.badgeConfig)
-                        }
+        return form {
+            attrs {
+                name = "playerForm"
+                onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) }
+            }
+            div {
+                editor {
+                    li { nameInput(player, onChange) }
+                    li { emailInput(player, onChange) }
+                    if (tribe.callSignsEnabled) {
+                        callSignConfig(player, onChange)
+                    }
+                    if (tribe.badgesEnabled) {
+                        badgeConfig(tribe, player, onChange, styles.badgeConfig)
                     }
                 }
-                saveButton(isSaving, styles.saveButton)
-                val playerId = player.id
-                if (playerId != null) {
-                    retireButton(this@playerConfigForm, tribe, playerId)
-                }
+            }
+            saveButton(isSaving, styles.saveButton)
+            val playerId = player.id
+            if (playerId != null) {
+                retireButton(tribe, playerId, pathSetter, scope, styles)
             }
         }
     }
 
-    private fun RBuilder.retireButton(context: PlayerConfigContext, tribe: Tribe, playerId: String) =
-        div(classes = "small red button") {
-            attrs {
-                classes += context.styles.deleteButton
-                onClickFunction = {
-                    removePlayer(tribe, context.props.pathSetter, context.scope, playerId)
-                }
-            }
-            +"Retire"
+    private inline fun RBuilder.retireButton(
+        tribe: Tribe,
+        playerId: String,
+        noinline pathSetter: (String) -> Unit,
+        scope: CoroutineScope,
+        styles: PlayerConfigStyles
+    ) = div(classes = "small red button") {
+        attrs {
+            classes += styles.deleteButton
+            onClickFunction = { scope.removePlayer(tribe, pathSetter, playerId) }
         }
+        +"Retire"
+    }
 
     private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(classes = "super blue button") {
         attrs {
