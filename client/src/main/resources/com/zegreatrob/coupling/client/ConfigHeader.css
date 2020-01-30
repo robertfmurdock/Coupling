@@ -1,0 +1,17 @@
+:local(.className) {
+    text-align: left;
+    display: flex;
+}
+
+:local(.className) > div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+:local(.className) h1 {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    text-decoration: underline;
+    flex-grow: 2;
+}

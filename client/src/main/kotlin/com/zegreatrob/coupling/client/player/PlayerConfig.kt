@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.tribe.TribeCardProps
-import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
@@ -76,8 +75,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
     }
 
     private fun PlayerConfigContext.playerView(rBuilder: RBuilder) {
-        val (tribe, _, _, _, reload) = props
-        val player = props.player
+        val (tribe, player, _, pathSetter, reload) = props
 
         val (values, onChange) = useForm(player.toJson())
         val updatedPlayer = values.toPlayer()
@@ -86,13 +84,8 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
         val shouldShowPrompt = updatedPlayer != player
         rBuilder.run {
             span(classes = styles.playerView) {
+                configHeader(tribe, pathSetter) { +"Player Configuration" }
                 div(classes = styles.player) {
-                    div(classes = styles.headerRow) {
-                        div { tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter, size = 50)) }
-                        div {
-                            h1 { +"Player Configuration" }
-                        }
-                    }
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()
                     prompt(
                         `when` = shouldShowPrompt,

@@ -1,13 +1,12 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.client.pin.PinCard.pinCard
-import com.zegreatrob.coupling.client.tribe.TribeCardProps
-import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
@@ -62,9 +61,6 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         val (tribe, _, _, pathSetter) = props
         div(classes = styles.className) {
             div {
-                div(classes = styles.tribeBrowser) {
-                    tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
-                }
                 child(pinViewElement())
                 pinBag(props.tribe, props.pinList, styles.pinBag)
             }
@@ -76,7 +72,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
     }
 
     private fun PinConfigContext.pinViewElement(): ReactElement {
-        val (tribe, _, _, _, reload) = props
+        val (tribe, _, _, pathSetter, reload) = props
 
         val (values, onChange) = useForm(props.pin.toJson())
         val updatedPin = values.toPin()
@@ -85,10 +81,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
         val shouldShowPrompt = updatedPin != props.pin
         return reactElement {
             span(classes = styles.pinView) {
-                div {
-                    h1 { +"Pin Configuration" }
-                }
-
+                configHeader(tribe, pathSetter) { +"Pin Configuration" }
                 span(classes = styles.pin) {
                     pinConfigForm(updatedPin, tribe, onChange, onSubmitFunc)()
                     prompt(

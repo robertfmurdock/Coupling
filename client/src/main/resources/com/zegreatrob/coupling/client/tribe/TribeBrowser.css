@@ -9,10 +9,18 @@
     vertical-align: middle;
 }
 
-:local(.className) h1 {
+:local(.headerContents) {
+    display: flex;
+    align-items: baseline;
+}
+
+:local(.headerText) {
+    flex-grow: 2;
+}
+
+:local(.controlButtons) {
     display: inline-block;
     margin: 0 20px;
-    text-decoration: underline;
 }
 
 :local(.iconButtonText) {

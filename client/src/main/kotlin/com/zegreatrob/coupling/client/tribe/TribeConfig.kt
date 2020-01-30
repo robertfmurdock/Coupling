@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.json.toJson
@@ -49,7 +50,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
 
         return reactElement {
             div(classes = styles.className) {
-                div { h1 { +"Tribe Configuration" } }
+                configHeader(props.tribe, props.pathSetter) { +"Tribe Configuration" }
 
                 child(tribeForm(updatedTribe, isNew, onChange))
 

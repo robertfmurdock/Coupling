@@ -11,6 +11,10 @@
     text-align: left;
 }
 
+:local(.className) > div {
+    margin-top: 30px;
+}
+
 :local(.icon) {
     margin-left: 15px;
     margin-bottom: 15px;
