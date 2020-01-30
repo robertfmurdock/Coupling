@@ -6,6 +6,7 @@ export const PlayerCardStyles = require(`${"../../../../client/build/processedRe
 export const PlayerConfigStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerConfig.css`);
 export const PlayerRosterStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerRoster.css`);
 export const PinConfigStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pin/PinConfig.css`);
+export const PinConfigEditorStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pin/PinConfigEditor.css`);
 export const PinListStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pin/PinList.css`);
 export const PinButtonStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pin/PinButton.css`);
 export const RetiredPlayersStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/RetiredPlayers.css`);

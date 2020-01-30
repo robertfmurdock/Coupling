@@ -1,10 +1,10 @@
 import setLocation from "../setLocation";
 import {browser, By, element} from "protractor";
-import {PinConfigStyles} from "../page-objects/Styles";
+import {PinConfigEditorStyles, PinConfigStyles} from "../page-objects/Styles";
 
 const pinConfigPage = element(By.className(PinConfigStyles.className));
-const saveButton = element(By.className(PinConfigStyles.saveButton));
-const deleteButton = element(By.className(PinConfigStyles.deleteButton));
+const saveButton = element(By.className(PinConfigEditorStyles.saveButton));
+const deleteButton = element(By.className(PinConfigEditorStyles.deleteButton));
 const pinBag = element(By.className(PinConfigStyles.pinBag));
 const nameTextField = element(By.id('pin-name'));
 const iconTextField = element(By.id('pin-icon'));

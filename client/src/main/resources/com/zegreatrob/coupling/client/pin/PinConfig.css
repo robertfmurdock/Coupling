@@ -2,20 +2,7 @@
     /*! Do not remove */
 }
 
-:local(.icon) {
-    margin-left: 15px;
-    margin-bottom: 15px;
-}
-
 :local(.pinBag) {
-    /*! Do not remove */
-}
-
-:local(.saveButton) {
-    /*! Do not remove */
-}
-
-:local(.deleteButton) {
     /*! Do not remove */
 }
 
@@ -29,18 +16,6 @@
     margin-bottom: 15px;
 }
 
-:local(.pinView) {
-    display: inline-block;
-}
-
-:local(.pinView) :local(.pin) {
-    display: inline-block;
-    vertical-align: top;
-    border-radius: 20px;
-    padding: 10px;
-    border-width: 11px;
-}
-
 :local(.pinRoster) {
     display: inline-block;
     border-radius: 20px;
@@ -52,13 +27,4 @@
 :local(.pinRoster) :local(.pin) {
     top: 0;
     margin-bottom: 25px;
-}
-
-:local(.pin) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    color: black;
 }

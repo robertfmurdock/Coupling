@@ -1,0 +1,34 @@
+:local(.className) {
+    display: inline-block;
+}
+
+:local(.className) :local(.pin) {
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 20px;
+    padding: 10px;
+    border-width: 11px;
+}
+
+
+:local(.pin) {
+    position: relative;
+    clear: both;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+:local(.icon) {
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+:local(.saveButton) {
+    /*! Do not remove */
+}
+
+:local(.deleteButton) {
+    /*! Do not remove */
+}
