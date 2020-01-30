@@ -88,9 +88,9 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
             span(classes = styles.playerView) {
                 div(classes = styles.player) {
                     div(classes = styles.headerRow) {
-                        tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter, size = 50))
-                        h1 {
-                            +"Player Configuration"
+                        div { tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter, size = 50)) }
+                        div {
+                            h1 { +"Player Configuration" }
                         }
                     }
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc)()

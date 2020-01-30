@@ -19,6 +19,11 @@
     text-align: left;
 }
 
+:local(.headerRow) > div {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 :local(.headerRow) h1 {
     display: inline;
     margin-left: 15px;
