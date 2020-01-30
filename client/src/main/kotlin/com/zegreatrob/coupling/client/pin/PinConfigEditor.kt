@@ -59,17 +59,19 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         val (values, onChange) = useForm(props.pin.toJson())
 
         val updatedPin = values.toPin()
-        val onSubmitFunc = handleSubmitFunc { savePin(updatedPin, tribe, reload) }
-        val shouldShowPrompt = updatedPin != props.pin
+        val onSubmitFunc = handleSubmitFunc { scope.savePin(updatedPin, tribe, reload) }
+        val onRemove = scope.onRemove(tribe, pathSetter)
 
         span(classes = styles.className) {
             configHeader(tribe, pathSetter) { +"Pin Configuration" }
             span(classes = styles["pin"]) {
-                pinConfigForm(updatedPin, tribe, pathSetter, onChange, onSubmitFunc, scope)
-                prompt(
-                    `when` = shouldShowPrompt,
-                    message = "You have unsaved data. Would you like to save before you leave?"
+                pinConfigForm(
+                    updatedPin,
+                    onChange,
+                    onSubmitFunc,
+                    onRemove
                 )
+                promptOnExit(shouldShowPrompt = updatedPin != props.pin)
             }
             span(classes = styles["icon"]) {
                 pinButton(updatedPin, PinButtonScale.Large, key = null, showTooltip = false)
@@ -77,24 +79,29 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         }
     }
 
-    private inline fun handleSubmitFunc(crossinline handler: CoroutineScope.() -> Job) =
-        { scope: CoroutineScope, event: Event ->
-            event.preventDefault()
-            scope.handler()
-        }
+    private inline fun CoroutineScope.onRemove(tribe: Tribe, noinline pathSetter: (String) -> Unit): (String) -> Unit =
+        { pinId: String -> removePin(tribe, pinId, pathSetter) }
+
+    private inline fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
+        `when` = shouldShowPrompt,
+        message = "You have unsaved data. Would you like to save before you leave?"
+    )
+
+    private inline fun handleSubmitFunc(crossinline handler: () -> Job) = { event: Event ->
+        event.preventDefault()
+        handler()
+    }
 
     private inline fun RBuilder.pinConfigForm(
         pin: Pin,
-        tribe: Tribe,
-        noinline pathSetter: (String) -> Unit,
         noinline onChange: (Event) -> Unit,
-        crossinline onSubmit: (CoroutineScope, Event) -> Job,
-        scope: CoroutineScope
+        crossinline onSubmit: (Event) -> Job,
+        noinline onRemove: (String) -> Unit
     ) = form {
         val (isSaving, setIsSaving) = useState(false)
         attrs {
             name = "pinForm"; onSubmitFunction =
-            onSubmitFunction(setIsSaving, { event -> onSubmit(scope, event) })
+            onSubmitFunction(setIsSaving, { event -> onSubmit(event) })
         }
 
         div {
@@ -107,10 +114,9 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         saveButton(isSaving, styles["saveButton"])
         val pinId = pin._id
         if (pinId != null) {
-            retireButtonElement(tribe, pinId, pathSetter, scope)
+            retireButtonElement { onRemove(pinId) }
         }
     }
-
 
     private inline fun CoroutineScope.savePin(updatedPin: Pin, tribe: Tribe, crossinline reload: () -> Unit) = launch {
         SavePinCommand(tribe.id, updatedPin).perform()
@@ -124,18 +130,14 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         }
     }
 
-    private inline fun RBuilder.retireButtonElement(
-        tribe: Tribe,
-        pinId: String,
-        noinline pathSetter: (String) -> Unit,
-        scope: CoroutineScope
-    ) = div(classes = "small red button") {
-        attrs {
-            classes += styles["deleteButton"]
-            onClickFunction = { scope.removePin(tribe, pinId, pathSetter) }
+    private inline fun RBuilder.retireButtonElement(noinline onRetire: (Event) -> Unit) =
+        div(classes = "small red button") {
+            attrs {
+                classes += styles["deleteButton"]
+                onClickFunction = onRetire
+            }
+            +"Retire"
         }
-        +"Retire"
-    }
 
     private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Job): (Event) -> Unit =
         { event -> setIsSaving(true); onSubmit(event) }
