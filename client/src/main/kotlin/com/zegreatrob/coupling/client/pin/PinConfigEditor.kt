@@ -74,7 +74,7 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
                 promptOnExit(shouldShowPrompt = updatedPin != props.pin)
             }
             span(classes = styles["icon"]) {
-                pinButton(updatedPin, PinButtonScale.Large, key = null, showTooltip = false)
+                pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
             }
         }
     }

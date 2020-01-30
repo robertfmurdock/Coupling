@@ -2,57 +2,10 @@
     /*! Do not remove */
 }
 
-:local(.playerView) {
-    display: inline-block;
-}
-
-:local(.playerView) :local(.player) {
-    vertical-align: top;
-    padding: 0 10px;
-}
-
-:local(.saveButton) {
-    /*! Do not remove */
-}
-
-:local(.deleteButton) {
-    /*! Do not remove */
-}
-
-:local(.playerView) input[type=text] {
-    width: 215px;
-    font-size: large;
-    border-radius: 20px;
-    border-width: 4px;
-    padding: 4px;
-}
-
-:local(.playerView) :local(.badgeConfig) > div {
-    display: inline-block;
-}
-
 :local(.playerRoster) {
     display: inline-block;
     border-radius: 20px;
     padding: 10px;
     border: 11px outset tan;
     background-color: wheat;
-}
-
-:local(.playerRoster) :local(.player) {
-    top: 0;
-    margin-bottom: 25px;
-}
-
-:local(.player) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    color: black;
-}
-
-:local(.bigPlayerCard) {
-
 }

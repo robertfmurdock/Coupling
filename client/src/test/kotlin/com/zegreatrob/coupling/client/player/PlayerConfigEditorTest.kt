@@ -2,9 +2,10 @@ package com.zegreatrob.coupling.client.player
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.loadStyles
+import com.zegreatrob.coupling.client.external.react.FRComponent
+import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
@@ -14,6 +15,7 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.TribeIdPlayerId
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.PlayerRepository
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -30,42 +32,41 @@ import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.test.Test
 
-class PlayerConfigTest {
+class PlayerConfigEditorTest {
 
-    private val styles = loadStyles<PlayerConfigStyles>("player/PlayerConfig")
+    private val styles = useStyles("player/PlayerConfigEditor")
 
-    @Test
-    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object : PlayerConfigRenderer,
-        PropsClassProvider<PlayerConfigProps> by provider() {
-        override val playerRepository get() = throw NotImplementedError("stubbed")
-        val tribe = Tribe(
-            id = TribeId("party"),
-            name = "Party tribe",
-            badgesEnabled = true
-        )
-
-        val player = Player(id = "blarg")
-    }) exercise {
-        shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
-    } verify { wrapper ->
-        wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
-            .length
-            .assertIsEqualTo(1)
+    abstract class RendererWithStub : FRComponent<PlayerConfigEditorProps>(provider()), PlayerConfigEditorRenderer {
+        override val playerRepository: PlayerRepository get() = throw NotImplementedError("stubbed")
     }
 
     @Test
-    fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : PlayerConfigRenderer,
-        PropsClassProvider<PlayerConfigProps> by provider() {
-        override val playerRepository get() = throw NotImplementedError("stubbed")
+    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() =
+        setup(object : RendererWithStub() {
+            val tribe = Tribe(
+                id = TribeId("party"),
+                name = "Party tribe",
+                badgesEnabled = true
+            )
+            val player = Player(id = "blarg")
+        }) exercise {
+            shallow(PlayerConfigEditorProps(tribe, player, {}, {}))
+        } verify { wrapper ->
+            wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
+                .length
+                .assertIsEqualTo(1)
+        }
+
+    @Test
+    fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object : RendererWithStub() {
         val tribe = Tribe(
             id = TribeId("party"),
             name = "Party tribe",
             badgesEnabled = true
         )
-
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {}))
+        shallow(PlayerConfigEditorProps(tribe, player, {}, {}))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -75,8 +76,7 @@ class PlayerConfigTest {
     @Test
     fun submitWillSaveAndReload() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : PlayerConfigRenderer,
-                PropsClassProvider<PlayerConfigProps> by provider() {
+            setupAsync(object : RendererWithStub() {
                 override val playerRepository get() = throw NotImplementedError("stubbed")
                 override fun buildScope() = this@withContext
 
@@ -91,7 +91,7 @@ class PlayerConfigTest {
                 val player = Player(id = "blarg", badge = Badge.Default.value)
                 val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
 
-                val wrapper = shallow(PlayerConfigProps(tribe, player, listOf(player), {}, {
+                val wrapper = shallow(PlayerConfigEditorProps(tribe, player, {}, {
                     reloaderSpy.spyFunction(Unit)
                 }))
             }) {
@@ -115,9 +115,7 @@ class PlayerConfigTest {
     @Test
     fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : PlayerConfigRenderer,
-                PropsClassProvider<PlayerConfigProps> by provider() {
-                override val playerRepository get() = throw NotImplementedError("stubbed")
+            setupAsync(object : RendererWithStub() {
                 override fun buildScope() = this@withContext
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
 
@@ -132,17 +130,12 @@ class PlayerConfigTest {
                 val tribe = Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
-                val wrapper = shallow(PlayerConfigProps(
-                    tribe,
-                    player,
-                    listOf(player),
-                    pathSetterSpy::spyFunction
-                ) {})
+                val wrapper = shallow(PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction) {})
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
             } exerciseAsync {
-                wrapper.find<Any>(".${styles.deleteButton}")
+                wrapper.find<Any>(".${styles["deleteButton"]}")
                     .simulate("click")
             }
         } verifyAsync {
@@ -160,9 +153,7 @@ class PlayerConfigTest {
     @Test
     fun clickingDeleteWhenNotConfirmedWillDoNothing() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : PlayerConfigRenderer,
-                PropsClassProvider<PlayerConfigProps> by provider() {
-                override val playerRepository get() = throw NotImplementedError("stubbed")
+            setupAsync(object : RendererWithStub() {
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
                 val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
@@ -176,17 +167,12 @@ class PlayerConfigTest {
                 val tribe =
                     Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
-                val wrapper = shallow(PlayerConfigProps(
-                    tribe,
-                    player,
-                    listOf(player),
-                    pathSetterSpy::spyFunction
-                ) {})
+                val wrapper = shallow(PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction) {})
             }) {
                 pathSetterSpy.spyWillReturn(Unit)
                 removeSpy.spyWillReturn(Promise.resolve(Unit))
             } exerciseAsync {
-                wrapper.find<Any>(".${styles.deleteButton}")
+                wrapper.find<Any>(".${styles["deleteButton"]}")
                     .simulate("click")
             }
         } verifyAsync {
@@ -196,17 +182,11 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
-        PropsClassProvider<PlayerConfigProps> by provider() {
+    fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object : RendererWithStub() {
         override val playerRepository get() = throw NotImplementedError("stubbed")
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfigProps(
-            tribe,
-            player,
-            listOf(player),
-            {}
-        ) {})
+        val wrapper = shallow(PlayerConfigEditorProps(tribe, player, {}) {})
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -216,21 +196,16 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object : PlayerConfigRenderer,
-        PropsClassProvider<PlayerConfigProps> by provider() {
-        override val playerRepository get() = throw NotImplementedError("stubbed")
-        val tribe = Tribe(TribeId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value)
-    }) exercise {
-        shallow(PlayerConfigProps(
-            tribe,
-            player,
-            listOf(player),
-            {}
-        ) {})
-    } verify { wrapper ->
-        wrapper.find(PromptComponent).props().`when`
-            .assertIsEqualTo(false)
-    }
+    fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() =
+        setup(object : RendererWithStub() {
+            override val playerRepository get() = throw NotImplementedError("stubbed")
+            val tribe = Tribe(TribeId("party"))
+            val player = Player("blarg", badge = Badge.Alternate.value)
+        }) exercise {
+            shallow(PlayerConfigEditorProps(tribe, player, {}) {})
+        } verify { wrapper ->
+            wrapper.find(PromptComponent).props().`when`
+                .assertIsEqualTo(false)
+        }
 
 }

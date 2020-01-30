@@ -8,7 +8,13 @@ import * as clone from "ramda/src/clone";
 import * as pluck from "ramda/src/pluck";
 import PlayerConfigPage from "./page-objects/PlayerConfigPage";
 import TestLogin from "./TestLogin";
-import {PlayerCardStyles, PlayerConfigStyles, PlayerRosterStyles, TribeCardStyles} from "./page-objects/Styles";
+import {
+    PlayerCardStyles,
+    PlayerConfigEditorStyles,
+    PlayerConfigStyles,
+    PlayerRosterStyles,
+    TribeCardStyles
+} from "./page-objects/Styles";
 
 const config = require("../../config/config");
 const hostName = `http://${config.publicHost}:${config.port}`;
@@ -20,8 +26,8 @@ const altBadgeOption = element(By.css('#alt-badge-option'));
 
 
 const tribeCardElement = element(By.className(TribeCardStyles.className));
-const deleteButton = element(By.className(PlayerConfigStyles.deleteButton));
-const savePlayerButton = element(By.className(PlayerConfigStyles.saveButton));
+const deleteButton = element(By.className(PlayerConfigEditorStyles.deleteButton));
+const savePlayerButton = element(By.className(PlayerConfigEditorStyles.saveButton));
 
 describe('The edit player page', function () {
 
