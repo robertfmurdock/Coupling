@@ -1,0 +1,13 @@
+:local(.className) {
+    background: hsla(45, 80%, 96%, 1);
+    border: 12px solid;
+    border-color: black;
+    border-top: 2px;
+    border-bottom: 2px;
+    border-radius: 82px;
+    display: inline-block;
+    margin: 15px;
+    min-height: 100vh;
+    padding: 0 25px 25px 25px;
+    text-align: left;
+}

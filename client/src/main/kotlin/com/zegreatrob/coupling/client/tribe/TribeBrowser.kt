@@ -15,10 +15,10 @@ data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit)
 
 object TribeBrowser : FRComponent<TribeBrowserProps>(provider()) {
 
-    val styles = useStyles("tribe/TribeBrowser")
-
     fun RBuilder.tribeBrowser(tribe: Tribe, pathSetter: (String) -> Unit) =
-        tribeBrowser(TribeBrowserProps(tribe, pathSetter))
+        render(this)(TribeBrowserProps(tribe, pathSetter))
+
+    val styles = useStyles("tribe/TribeBrowser")
 
     override fun render(props: TribeBrowserProps) = reactElement {
         val (tribe, pathSetter) = props
@@ -52,7 +52,3 @@ object TribeBrowser : FRComponent<TribeBrowserProps>(provider()) {
 
 }
 
-private val RBuilder.tribeBrowser: RenderToBuilder<TribeBrowserProps>
-    get() {
-        return TribeBrowser.render(this)
-    }

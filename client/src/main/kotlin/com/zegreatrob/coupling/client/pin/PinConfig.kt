@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
@@ -59,7 +60,7 @@ interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinC
 
     override fun PinConfigContext.render() = reactElement {
         val (tribe, _, pinList, _) = props
-        div(classes = styles.className) {
+        configFrame(styles.className) {
             div {
                 child(pinViewElement())
                 pinBag(tribe, pinList, styles.pinBag)

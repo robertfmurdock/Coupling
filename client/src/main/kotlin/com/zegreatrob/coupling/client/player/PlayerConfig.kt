@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
@@ -39,9 +40,7 @@ data class PlayerConfigProps(
 
 external interface PlayerConfigStyles {
     val className: String
-    val headerRow: String
     val saveButton: String
-    val tribeBrowser: String
     val playerView: String
     val playerRoster: String
     val player: String
@@ -60,7 +59,7 @@ interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps
 
     override fun ScopedStyledRContext<PlayerConfigProps, PlayerConfigStyles>.render() = with(props) {
         reactElement {
-            div(classes = styles.className) {
+            configFrame(styles.className) {
                 div { playerView(this) }
                 playerRoster(
                     PlayerRosterProps(
