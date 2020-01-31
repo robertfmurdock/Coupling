@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.external.react.configInput
-import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -14,6 +12,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.html.InputType
 import kotlinx.html.classes
@@ -33,8 +32,9 @@ object TribeConfig : RComponent<TribeConfigProps>(provider()), TribeConfigBuilde
 data class TribeConfigProps(val tribe: Tribe, val pathSetter: (String) -> Unit) : RProps
 
 external interface TribeConfigStyles {
-    val saveButton: String
     val className: String
+    val saveButton: String
+    val tribeConfigEditor: String
 }
 
 typealias TribeConfigRenderer = ScopedStyledRContext<TribeConfigProps, TribeConfigStyles>
@@ -51,39 +51,44 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
         val (values, onChange) = useForm(props.tribe.toJson())
         val updatedTribe = values.toTribe()
 
+        val onSave = { onClickSave(updatedTribe) }
+        val onDelete = { onClickDelete() }
+
         return reactElement {
             configFrame(styles.className) {
                 configHeader(props.tribe, props.pathSetter) { +"Tribe Configuration" }
-
-                child(tribeForm(updatedTribe, isNew, onChange))
-
                 div {
-                    child(saveButton(updatedTribe))
-                    if (!isNew) {
-                        child(retireButton())
+                    span(styles.tribeConfigEditor) {
+                        configInputs(
+                            updatedTribe,
+                            isNew,
+                            onChange,
+                            onSave,
+                            onDelete,
+                            styles
+                        )
                     }
+                    tribeCard(TribeCardProps(updatedTribe, pathSetter = props.pathSetter))
                 }
             }
         }
     }
 
-    fun TribeConfigRenderer.retireButton() = reactElement {
+    private inline fun RBuilder.retireButton(crossinline onDelete: () -> Job) =
         div(classes = "small red button delete-tribe-button") {
-            attrs { onClickFunction = { onClickDelete() } }
+            attrs { onClickFunction = { onDelete() } }
             +"Retire"
         }
-    }
 
-    private fun TribeConfigRenderer.saveButton(updatedTribe: Tribe) = reactElement {
+    private inline fun RBuilder.saveButton(styles: TribeConfigStyles, crossinline onSave: () -> Job) =
         input(InputType.button, classes = "super blue button") {
             attrs {
                 classes += styles.saveButton
                 tabIndex = "0"
                 value = "Save"
-                onClickFunction = { onClickSave(updatedTribe) }
+                onClickFunction = { onSave() }
             }
         }
-    }
 
     private fun TribeConfigRenderer.onClickDelete() = scope.launch {
         DeleteTribeCommand(props.tribe.id).perform()
@@ -95,49 +100,53 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
         props.pathSetter("/tribes/")
     }
 
-    private fun TribeConfigRenderer.tribeForm(tribe: Tribe, isNew: Boolean, onChange: (Event) -> Unit) = reactElement {
+    private inline fun RBuilder.configInputs(
+        tribe: Tribe,
+        isNew: Boolean,
+        noinline onChange: (Event) -> Unit,
+        noinline onSave: () -> Job,
+        noinline onDelete: () -> Job,
+        styles: TribeConfigStyles
+    ) {
         div {
-            span {
-                configInputs(tribe, onChange, isNew)
+            editor {
+                li {
+                    nameInput(tribe, onChange)
+                    span { +"The full tribe name!" }
+                }
+                li {
+                    emailInput(tribe, onChange)
+                    span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
+                }
+
+                if (isNew) {
+                    li { uniqueIdInput(tribe, onChange) }
+                }
+                li {
+                    enableCallSignsInput(tribe, onChange)
+                    span { +"Every Couple needs a Call Sign. Makes things more fun!" }
+                }
+                li {
+                    enableBadgesInput(tribe, onChange)
+                    span { +"Advanced users only: this lets you divide your tribe into two groups." }
+                }
+                li {
+                    defaultBadgeInput(tribe, onChange)
+                    span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
+                }
+                li {
+                    altBadgeInput(tribe, onChange)
+                    span { +"The other badge a player can be given. A player can only have one badge at a time." }
+                }
+                li {
+                    pairingRuleSelect(tribe, onChange)
+                    span { +"Advanced users only: This rule affects how players are assigned." }
+                }
             }
-            tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
         }
-    }
-
-    private fun RBuilder.configInputs(tribe: Tribe, onChange: (Event) -> Unit, isNew: Boolean) {
-        editor {
-            li {
-                nameInput(tribe, onChange)
-                span { +"The full tribe name!" }
-            }
-            li {
-                emailInput(tribe, onChange)
-                span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
-            }
-
-            if (isNew) {
-                li { uniqueIdInput(tribe, onChange) }
-            }
-            li {
-                enableCallSignsInput(tribe, onChange)
-                span { +"Every Couple needs a Call Sign. Makes things more fun!" }
-            }
-            li {
-                enableBadgesInput(tribe, onChange)
-                span { +"Advanced users only: this lets you divide your tribe into two groups." }
-            }
-            li {
-                defaultBadgeInput(tribe, onChange)
-                span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
-            }
-            li {
-                altBadgeInput(tribe, onChange)
-                span { +"The other badge a player can be given. A player can only have one badge at a time." }
-            }
-            li {
-                pairingRuleSelect(tribe, onChange)
-                span { +"Advanced users only: This rule affects how players are assigned." }
-            }
+        saveButton(styles, onSave)
+        if (!isNew) {
+            retireButton(onDelete)
         }
     }
 
@@ -269,7 +278,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
     }
 }
 
-val pairingRuleDescriptions = mapOf(
+private val pairingRuleDescriptions = mapOf(
     PairingRule.LongestTime to "Prefer Longest Time",
     PairingRule.PreferDifferentBadge to "Prefer Different Badges (Beta)"
 )

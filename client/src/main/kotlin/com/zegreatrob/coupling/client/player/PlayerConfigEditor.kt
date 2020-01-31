@@ -65,17 +65,19 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
 
         span(classes = styles.className) {
             configHeader(tribe, pathSetter) { +"Player Configuration" }
-            div(classes = styles["player"]) {
-                playerConfigForm(
-                    updatedPlayer,
-                    tribe,
-                    onChange,
-                    onSubmitFunc,
-                    onRemove
-                )
-                promptOnExit(shouldShowPrompt = updatedPlayer != props.player)
+            div {
+                div(classes = styles["player"]) {
+                    playerConfigForm(
+                        updatedPlayer,
+                        tribe,
+                        onChange,
+                        onSubmitFunc,
+                        onRemove
+                    )
+                    promptOnExit(shouldShowPrompt = updatedPlayer != props.player)
+                }
+                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
             }
-            playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
         }
     }
 

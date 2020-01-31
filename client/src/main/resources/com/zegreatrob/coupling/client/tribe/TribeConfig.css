@@ -3,6 +3,15 @@
     border-color: #ff8c00;
 }
 
+:local(.className) > div > div {
+    display: flex;
+}
+
 :local(.saveButton) {
     /*! Do not remove */
+}
+
+:local(.tribeConfigEditor) {
+    display: inline-block;
+    flex-grow: 2;
 }

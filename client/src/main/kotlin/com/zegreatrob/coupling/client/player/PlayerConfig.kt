@@ -23,9 +23,9 @@ data class PlayerConfigProps(
     val reload: () -> Unit
 ) : RProps
 
-typealias PlayerConfigContext = ScopedStyledRContext<PlayerConfigProps, SimpleStyle>
+typealias PlayerConfigContext = StyledRContext<PlayerConfigProps, SimpleStyle>
 
-interface PlayerConfigRenderer : ScopedStyledComponentRenderer<PlayerConfigProps, SimpleStyle>,
+interface PlayerConfigRenderer : StyledComponentRenderer<PlayerConfigProps, SimpleStyle>,
     WindowFunctions, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
 
     override val playerRepository: PlayerRepository
