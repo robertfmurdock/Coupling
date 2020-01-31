@@ -21,7 +21,6 @@
 }
 
 :local(.className) input[type=text] {
-    width: 215px;
     font-size: large;
     border-radius: 20px;
     border-width: 4px;
