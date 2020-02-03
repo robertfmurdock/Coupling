@@ -245,13 +245,13 @@ class PairAssignmentsTest {
         targetProps.run {
             val targetPair = pairAssignments?.pairs?.first { it.players.map { it.player }.contains(target) }!!
 
-            swapCallback(id!!, targetPair.players.first { it.player == target }, targetPair)
+            onPlayerSwap(id!!, targetPair.players.first { it.player == target }, targetPair)
         }
     }
 
     private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
         val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
-        targetProps.pinDropCallback(this, targetPair)
+        targetProps.onPinDrop(this, targetPair)
     }
 
     @Test

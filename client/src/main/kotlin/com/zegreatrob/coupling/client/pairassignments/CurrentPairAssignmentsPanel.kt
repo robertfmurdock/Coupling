@@ -18,8 +18,8 @@ import react.dom.div
 data class CurrentPairAssignmentsPanelProps(
     val tribe: Tribe,
     val pairAssignments: PairAssignmentDocument?,
-    val swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    val pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
+    val onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    val onPinDrop: (Pin, PinnedCouplingPair) -> Unit,
     val onSave: () -> Unit,
     val pathSetter: (String) -> Unit
 ) : RProps
@@ -31,55 +31,59 @@ object CurrentPairAssignmentsPanel : FRComponent<CurrentPairAssignmentsPanelProp
     fun RBuilder.currentPairAssignments(
         tribe: Tribe,
         pairAssignments: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
+        onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        onPinDrop: (Pin, PinnedCouplingPair) -> Unit,
         onSave: () -> Unit,
         pathSetter: (String) -> Unit
     ) = child(
         CurrentPairAssignmentsPanel.component.rFunction,
-        CurrentPairAssignmentsPanelProps(tribe, pairAssignments, swapCallback, pinDropCallback, onSave, pathSetter)
+        CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter)
     )
 
-    override fun render(props: CurrentPairAssignmentsPanelProps) = reactElement {
-        val (tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter) = props
-        div(classes = styles.className) {
-            pairAssignmentsHeader(pairAssignments)
-            pairAssignmentList(pairAssignments, onSwap, onPinDrop, tribe, pathSetter)
-            saveButtonSection(pairAssignments, onSave)
-        }
-    }
-
-    private fun RBuilder.pairAssignmentsHeader(pairAssignments: PairAssignmentDocument?) =
-        if (pairAssignments != null) {
-            div {
-                div {
-                    div(classes = styles["pairAssignmentsHeader"]) {
-                        +"Couples for ${pairAssignments.dateText()}"
-                    }
+    override fun render(props: CurrentPairAssignmentsPanelProps) = with(props) {
+        reactElement {
+            div(classes = styles.className) {
+                if (pairAssignments == null) {
+                    noPairsHeader()
+                } else {
+                    dateHeader(pairAssignments)
+                    pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
+                    saveButtonSection(pairAssignments, onSave)
                 }
             }
-        } else {
-            div(classes = styles["noPairsNotice"]) { +"No pair assignments yet!" }
         }
+    }
+
+    private fun RBuilder.noPairsHeader() = div(classes = styles["noPairsNotice"]) { +"No pair assignments yet!" }
+
+    private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
+        div {
+            div(classes = styles["pairAssignmentsHeader"]) {
+                +"Couples for ${pairAssignments.dateText()}"
+            }
+        }
+    }
 
     private fun RBuilder.pairAssignmentList(
-        pairAssignments: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
         tribe: Tribe,
+        pairAssignments: PairAssignmentDocument,
+        onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        onPinDrop: (Pin, PinnedCouplingPair) -> Unit,
         pathSetter: (String) -> Unit
     ) = div(classes = styles["pairAssignmentsContent"]) {
-        pairAssignments?.pairs?.mapIndexed { index, pair ->
-            assignedPair(tribe, pair, swapCallback, pinDropCallback, pairAssignments, pathSetter, key = "$index")
+        pairAssignments.pairs.mapIndexed { index, pair ->
+            assignedPair(tribe, pair, onPlayerSwap, onPinDrop, pairAssignments, pathSetter, key = "$index")
         }
     }
 
 
-    private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument?, onSave: () -> Unit) = div {
-        if (pairAssignments != null && pairAssignments.id == null) {
+    private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument, onSave: () -> Unit) = div {
+        if (pairAssignments.isNotSaved()) {
             saveButton(onSave)
         }
     }
+
+    private fun PairAssignmentDocument.isNotSaved() = id == null
 
     private fun RBuilder.saveButton(onSave: () -> Unit) = a(classes = "super green button") {
         attrs {

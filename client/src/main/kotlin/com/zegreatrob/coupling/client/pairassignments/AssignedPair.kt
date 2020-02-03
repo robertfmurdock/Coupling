@@ -26,7 +26,7 @@ data class AssignedPairProps(
     val pair: PinnedCouplingPair,
     val swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
     val pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
-    val pairAssignmentDocument: PairAssignmentDocument?,
+    val pairAssignmentDocument: PairAssignmentDocument,
     val pathSetter: (String) -> Unit
 ) : RProps
 
@@ -37,7 +37,7 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         pair: PinnedCouplingPair,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
         pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
-        pairAssignmentDocument: PairAssignmentDocument?,
+        pairAssignmentDocument: PairAssignmentDocument,
         pathSetter: (String) -> Unit,
         key: String
     ) = child(
@@ -46,9 +46,9 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         key = key
     )
 
-    override fun render(props: AssignedPairProps) = with(props) {
-        val styles = useStyles("pairassignments/AssignedPair")
+    private val styles = useStyles("pairassignments/AssignedPair")
 
+    override fun render(props: AssignedPairProps) = with(props) {
         val callSign = pair.findCallSign()
         val canDrag = pairAssignmentDocument.isSaved()
 
@@ -71,7 +71,7 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         }
     }
 
-    private fun PairAssignmentDocument?.isSaved() = this != null && id == null
+    private fun PairAssignmentDocument.isSaved() = id == null
 
     private fun AssignedPairProps.usePinDrop() = useDrop(
         acceptItemType = pinDragItemType,
@@ -85,7 +85,7 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
                 tribe,
                 player,
                 pair,
-                pairAssignmentDocument!!,
+                pairAssignmentDocument,
                 swapCallback
             )
         } else { player ->
@@ -93,10 +93,10 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         }
 
     private fun AssignedPairProps.findDroppedPin(item: Json) = pairAssignmentDocument
-        ?.pairs
-        ?.map(PinnedCouplingPair::pins)
-        ?.flatten()
-        ?.find { it._id == item["id"].unsafeCast<String>() }
+        .pairs
+        .map(PinnedCouplingPair::pins)
+        .flatten()
+        .find { it._id == item["id"].unsafeCast<String>() }
 
     private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
         if (tribe.callSignsEnabled && callSign != null) {
