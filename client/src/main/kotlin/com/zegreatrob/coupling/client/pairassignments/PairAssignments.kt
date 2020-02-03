@@ -22,7 +22,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.a
@@ -56,8 +55,6 @@ external interface PairAssignmentsStyles {
     val controlPanel: String
 }
 
-typealias PairAssignmentRenderer = ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>
-
 interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignmentsProps, PairAssignmentsStyles>,
     SavePairAssignmentsCommandDispatcher {
 
@@ -66,8 +63,9 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     override fun ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>.render() = with(props) {
         val (pairAssignments, setPairAssignments) = useState(pairAssignments)
 
-        val swapCallback = makeSwapCallback(pairAssignments, setPairAssignments)
-        val pinDropCallback = makePinCallback(pairAssignments, setPairAssignments)
+        val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
+        val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
+        val onSave = onClickSave(pairAssignments, tribe, pathSetter, scope)
         reactElement {
             DndProvider {
                 attrs { backend = HTML5Backend }
@@ -77,11 +75,11 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                         currentPairAssignments(
                             props.tribe,
                             pairAssignments,
-                            swapCallback,
-                            pinDropCallback,
+                            onSwap,
+                            onPinDrop,
+                            onSave,
                             props.pathSetter,
-                            styles,
-                            scope
+                            styles
                         )
                     }
                     div(classes = styles.controlPanel) {
@@ -150,18 +148,18 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-    private fun RBuilder.currentPairAssignments(
+    private inline fun RBuilder.currentPairAssignments(
         tribe: Tribe,
         pairAssignments: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
-        pathSetter: (String) -> Unit,
-        styles: PairAssignmentsStyles,
-        scope: CoroutineScope
+        noinline swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        noinline pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
+        noinline onSave: () -> Unit,
+        noinline pathSetter: (String) -> Unit,
+        styles: PairAssignmentsStyles
     ) = div(classes = styles.pairAssignments) {
         pairAssignmentsHeader(pairAssignments, styles)
         pairAssignmentList(pairAssignments, swapCallback, pinDropCallback, tribe, pathSetter, styles)
-        saveButtonSection(pairAssignments, tribe, pathSetter, scope, styles)
+        saveButtonSection(pairAssignments, styles, onSave)
     }
 
     private fun RBuilder.pairAssignmentsHeader(
@@ -202,28 +200,23 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
-    private fun RBuilder.saveButtonSection(
+    private inline fun RBuilder.saveButtonSection(
         pairAssignments: PairAssignmentDocument?,
-        tribe: Tribe,
-        pathSetter: (String) -> Unit,
-        scope: CoroutineScope,
-        styles: PairAssignmentsStyles
+        styles: PairAssignmentsStyles,
+        noinline onSave: () -> Unit
     ) = div {
         if (pairAssignments != null && pairAssignments.id == null) {
-            saveButton(pairAssignments, tribe, pathSetter, scope, styles)
+            saveButton(styles, onSave)
         }
     }
 
-    private fun RBuilder.saveButton(
-        pairAssignments: PairAssignmentDocument,
-        tribe: Tribe,
-        pathSetter: (String) -> Unit,
-        scope: CoroutineScope,
-        styles: PairAssignmentsStyles
+    private inline fun RBuilder.saveButton(
+        styles: PairAssignmentsStyles,
+        crossinline onSave: () -> Unit
     ) = a(classes = "super green button") {
         attrs {
             classes += styles.saveButton
-            onClickFunction = onClickSave(pairAssignments, tribe, pathSetter, scope)
+            onClickFunction = { onSave() }
         }
         +"Save!"
     }
@@ -264,17 +257,21 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         +" Retirees!"
     }
 
-    private fun onClickSave(
-        pairAssignments: PairAssignmentDocument,
+    private inline fun onClickSave(
+        pairAssignments: PairAssignmentDocument?,
         tribe: Tribe,
-        pathSetter: (String) -> Unit,
+        crossinline pathSetter: (String) -> Unit,
         scope: CoroutineScope
-    ): (Event) -> Unit = {
-        scope.launch {
-            SavePairAssignmentsCommand(tribe.id, pairAssignments).perform()
+    ): () -> Unit = if (pairAssignments != null) {
+        {
+            scope.launch {
+                SavePairAssignmentsCommand(tribe.id, pairAssignments).perform()
 
-            pathSetter("/${tribe.id.value}/pairAssignments/current/")
+                pathSetter("/${tribe.id.value}/pairAssignments/current/")
+            }
         }
+    } else {
+        {}
     }
 
     private fun PairAssignmentDocument.swapPlayers(
