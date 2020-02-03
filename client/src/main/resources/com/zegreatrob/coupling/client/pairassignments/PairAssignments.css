@@ -9,29 +9,6 @@
     border-radius: 82px;
 }
 
-:local(.pairAssignmentsHeader) {
-    display: inline-block;
-    font-size: 28px;
-    font-weight: bold;
-    border-radius: 15px;
-    padding-left: 40px;
-    padding-right: 5px;
-    padding-bottom: 6px;
-}
-
-:local(.pairAssignmentsContent) {
-    white-space: pre-line;
-}
-
-:local(.pairAssignments) {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 5px;
-    margin: 5px 0;
-    background-color: hsla(146, 17%, 80%, 1);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
 :local(.controlPanel) {
     display: inline-block;
     border-radius: 20px;
@@ -47,23 +24,6 @@
     padding: 10px;
     background-color: #f5c3b3;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-:local(.noPairsNotice) {
-    border: 8px outset dimgray;
-    background-color: aliceblue;
-    display: inline-block;
-    border-radius: 40px;
-    font-size: xx-large;
-    font-weight: bold;
-    width: 500px;
-    height: 150px;
-    padding: 100px 5px 5px;
-    margin: 0 2px 5px;
-}
-
-:local(.saveButton) {
-    margin: 4px;
 }
 
 :local(.newPairsButton) {

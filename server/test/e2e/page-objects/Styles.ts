@@ -17,5 +17,6 @@ export const TeamStatisticsStyles = require(`${"../../../../client/build/process
 export const TribeStatisticsStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/stats/TribeStatistics.css`);
 export const PairReportTableStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/stats/PairReportTable.css`);
 export const PairAssignmentsStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pairassignments/PairAssignments.css`);
+export const CurrentPairAssignmentsPanelStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pairassignments/CurrentPairAssignmentsPanel.css`);
 export const AssignedPairStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pairassignments/AssignedPair.css`);
 export const DataLoadWrapperStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/routing/DataLoadWrapper.css`);

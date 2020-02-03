@@ -5,7 +5,7 @@ import e2eHelp from "./e2e-help";
 import * as pluck from 'ramda/src/pluck'
 import setLocation from "./setLocation";
 import {
-    AssignedPairStyles,
+    AssignedPairStyles, CurrentPairAssignmentsPanelStyles,
     PairAssignmentsStyles, PinButtonStyles,
     PlayerCardStyles,
     PlayerRosterStyles,
@@ -27,7 +27,7 @@ async function goToPrepare(tribe) {
     await browser.wait(() => prepareToSpinPage.isPresent(), 2000)
 }
 
-const pairAssignmentsPage = element(By.className(PairAssignmentsStyles.pairAssignments));
+const pairAssignmentsPage = element(By.className(CurrentPairAssignmentsPanelStyles.className));
 
 function waitForCurrentPairAssignmentPage() {
     browser.wait(() => pairAssignmentsPage.isPresent(), 1000);
@@ -111,7 +111,7 @@ describe('The prepare to spin page', function () {
             const players = element.all(By.css(`.${PlayerRosterStyles.className} .${PlayerCardStyles.player}`));
             expect(players.count()).toEqual(3);
 
-            const saveButton = element(By.className(PairAssignmentsStyles.saveButton));
+            const saveButton = element(By.className(CurrentPairAssignmentsPanelStyles.saveButton));
             saveButton.click();
             waitForCurrentPairAssignmentPage();
 

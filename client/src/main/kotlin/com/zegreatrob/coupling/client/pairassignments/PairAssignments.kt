@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
-import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
-import com.zegreatrob.coupling.client.pairassignments.list.dateText
+import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPanel.currentPairAssignments
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
@@ -21,7 +20,6 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
-import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.dom.a
@@ -42,9 +40,6 @@ data class PairAssignmentsProps(
 external interface PairAssignmentsStyles {
     val className: String
     val pairAssignments: String
-    val pairAssignmentsHeader: String
-    val pairAssignmentsContent: String
-    val noPairsNotice: String
     val pair: String
     val saveButton: String
     val newPairsButton: String
@@ -78,8 +73,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                             onSwap,
                             onPinDrop,
                             onSave,
-                            props.pathSetter,
-                            styles
+                            props.pathSetter
                         )
                     }
                     div(classes = styles.controlPanel) {
@@ -98,15 +92,15 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
-    private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) = pA
-        ?.let { pairAssignments -> pairAssignments.dropThePin(setPairAssignments) }
-        ?: { _, _ -> }
+    private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
+        pA?.dropThePin(setPairAssignments)
+            ?: { _, _ -> }
 
     private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
         { pin: Pin, droppedPair: PinnedCouplingPair ->
-            pairs.movePinTo(pin, droppedPair)
-                .let { updatedPairs -> copy(pairs = updatedPairs) }
-                .let { setPairAssignments(it) }
+            setPairAssignments(
+                copy(pairs = pairs.movePinTo(pin, droppedPair))
+            )
         }
 
     private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
@@ -148,79 +142,6 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-    private inline fun RBuilder.currentPairAssignments(
-        tribe: Tribe,
-        pairAssignments: PairAssignmentDocument?,
-        noinline swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        noinline pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
-        noinline onSave: () -> Unit,
-        noinline pathSetter: (String) -> Unit,
-        styles: PairAssignmentsStyles
-    ) = div(classes = styles.pairAssignments) {
-        pairAssignmentsHeader(pairAssignments, styles)
-        pairAssignmentList(pairAssignments, swapCallback, pinDropCallback, tribe, pathSetter, styles)
-        saveButtonSection(pairAssignments, styles, onSave)
-    }
-
-    private fun RBuilder.pairAssignmentsHeader(
-        pairAssignments: PairAssignmentDocument?,
-        styles: PairAssignmentsStyles
-    ) = if (pairAssignments != null) {
-        div {
-            div {
-                div(classes = styles.pairAssignmentsHeader) {
-                    +"Couples for ${pairAssignments.dateText()}"
-                }
-            }
-        }
-    } else {
-        div(classes = styles.noPairsNotice) {
-            +"No pair assignments yet!"
-        }
-    }
-
-    private fun RBuilder.pairAssignmentList(
-        pairAssignments: PairAssignmentDocument?,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
-        tribe: Tribe,
-        pathSetter: (String) -> Unit,
-        styles: PairAssignmentsStyles
-    ) = div(classes = styles.pairAssignmentsContent) {
-        pairAssignments?.pairs?.mapIndexed { index, pair ->
-            assignedPair(
-                tribe,
-                pair,
-                swapCallback,
-                pinDropCallback,
-                pairAssignments,
-                pathSetter,
-                key = "$index"
-            )
-        }
-    }
-
-    private inline fun RBuilder.saveButtonSection(
-        pairAssignments: PairAssignmentDocument?,
-        styles: PairAssignmentsStyles,
-        noinline onSave: () -> Unit
-    ) = div {
-        if (pairAssignments != null && pairAssignments.id == null) {
-            saveButton(styles, onSave)
-        }
-    }
-
-    private inline fun RBuilder.saveButton(
-        styles: PairAssignmentsStyles,
-        crossinline onSave: () -> Unit
-    ) = a(classes = "super green button") {
-        attrs {
-            classes += styles.saveButton
-            onClickFunction = { onSave() }
-        }
-        +"Save!"
-    }
-
     private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
         a(href = "/${tribe.id.value}/prepare/", classes = "super pink button") {
             attrs { classes += className }
@@ -234,7 +155,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             +" History!"
         }
 
-    private inline fun RBuilder.pinListButton(tribe: Tribe, className: String) =
+    private fun RBuilder.pinListButton(tribe: Tribe, className: String) =
         a(href = "/${tribe.id.value}/pins/", classes = "large white button") {
             attrs { classes += className }
             i(classes = "fa fa-peace") {}

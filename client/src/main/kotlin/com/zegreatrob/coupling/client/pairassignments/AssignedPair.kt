@@ -40,21 +40,11 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         pairAssignmentDocument: PairAssignmentDocument?,
         pathSetter: (String) -> Unit,
         key: String
-    ) {
-        child(
-            AssignedPair.component.rFunction,
-            AssignedPairProps(
-                tribe,
-                pair,
-                swapCallback,
-                pinMoveCallback,
-                pairAssignmentDocument,
-                pathSetter
-            ),
-            key = key
-        )
-    }
-
+    ) = child(
+        AssignedPair.component.rFunction,
+        AssignedPairProps(tribe, pair, swapCallback, pinMoveCallback, pairAssignmentDocument, pathSetter),
+        key = key
+    )
 
     override fun render(props: AssignedPairProps) = with(props) {
         val styles = useStyles("pairassignments/AssignedPair")

@@ -5,7 +5,6 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.loadStyles
 import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
@@ -17,7 +16,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.setup
@@ -32,7 +30,6 @@ import kotlin.test.Test
 class PairAssignmentsTest {
 
     val tribe = Tribe(TribeId("Party"))
-    private val styles = loadStyles<PairAssignmentsStyles>("pairassignments/PairAssignments")
 
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsRenderer,
@@ -51,10 +48,7 @@ class PairAssignmentsTest {
             date = DateTime.now(),
             pairs = listOf(
                 pairOf(
-                    Player(
-                        id = "0",
-                        name = "Tom"
-                    ), Player(id = "z", name = "Jerry")
+                    Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")
                 ),
                 pairOf(fellow, guy)
             ).withPins()
@@ -118,8 +112,8 @@ class PairAssignmentsTest {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find<Any>(".${styles.saveButton}")
-                    .simulate("click")
+                wrapper.findComponent(CurrentPairAssignmentsPanel).props()
+                    .onSave()
             }
         } verifyAsync {
             saveSpy.spyReceivedValues.size
@@ -151,10 +145,10 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(AssignedPair)
-        pairs.at(0).props().pair.toPair().asArray().toList()
+        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        pairs.pairs[0].toPair().asArray().toList()
             .assertIsEqualTo(listOf(player1, player3))
-        pairs.at(1).props().pair.toPair().asArray().toList()
+        pairs.pairs[1].toPair().asArray().toList()
             .assertIsEqualTo(listOf(player2, player4))
     }
 
@@ -168,10 +162,7 @@ class PairAssignmentsTest {
         val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(listOf(pin2))
         val pairAssignments = PairAssignmentDocument(
             date = DateTime.now(),
-            pairs = listOf(
-                pair1,
-                pair2
-            )
+            pairs = listOf(pair1, pair2)
         )
         val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
     }) exercise {
@@ -179,10 +170,10 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(AssignedPair)
-        pairs.at(0).props().pair
+        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        pairs.pairs[0]
             .assertIsEqualTo(pair1.copy(pins = emptyList()))
-        pairs.at(1).props().pair
+        pairs.pairs[1]
             .assertIsEqualTo(pair2.copy(pins = listOf(pin2, pin1)))
     }
 
@@ -211,10 +202,10 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(AssignedPair)
-        pairs.at(0).props().pair.pins
+        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        pairs.pairs[0].pins
             .assertIsEqualTo(listOf(pin1))
-        pairs.at(1).props().pair.pins
+        pairs.pairs[1].pins
             .assertIsEqualTo(listOf(pin2))
     }
 
@@ -241,29 +232,26 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(AssignedPair)
-        pairs.at(0).props().pair.toPair().asArray().toList()
+        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        pairs.pairs[0].toPair().asArray().toList()
             .assertIsEqualTo(listOf(player1, player2))
-        pairs.at(1).props().pair.toPair().asArray().toList()
+        pairs.pairs[1].toPair().asArray().toList()
             .assertIsEqualTo(listOf(player3, player4))
     }
 
     private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
-        val allAssignedPairProps = wrapper.findComponent(AssignedPair).map { it.props() }
+        val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
 
-        val targetProps = allAssignedPairProps.find { it.pair.toPair().asArray().contains(target) }
+        targetProps.run {
+            val targetPair = pairAssignments?.pairs?.first { it.players.map { it.player }.contains(target) }!!
 
-        targetProps.assertIsNotEqualTo(null)
-
-        targetProps?.run {
-            swapCallback(id!!, pair.players.first { it.player == target }, pair)
+            swapCallback(id!!, targetPair.players.first { it.player == target }, targetPair)
         }
     }
 
     private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
-        val allAssignedPairProps = wrapper.findComponent(AssignedPair).map { it.props() }
-        val targetPairProps = allAssignedPairProps.first { it.pair == targetPair }
-        targetPairProps.pinMoveCallback(this, targetPair)
+        val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
+        targetProps.pinDropCallback(this, targetPair)
     }
 
     @Test
