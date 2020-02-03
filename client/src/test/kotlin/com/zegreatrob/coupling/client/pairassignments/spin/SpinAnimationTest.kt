@@ -18,38 +18,62 @@ import kotlin.test.Test
 
 class SpinAnimationTest {
 
-    private val styles = useStyles("pairassignments/SpinAnimation")
-
-    @Test
-    fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(object {
-        val players = listOf(
-            stubPlayer(),
-            stubPlayer(),
-            stubPlayer(),
-            stubPlayer()
-        )
-        val pairAssignments = stubPairAssignmentDoc().copy(
-            pairs = listOf(
-                pairOf(players[0], players[1]).withPins(emptyList()),
-                pairOf(players[2], players[3]).withPins(emptyList())
+    class GivenFourPlayersAndTwoPairs {
+        open class Setup {
+            val players = listOf(
+                stubPlayer(),
+                stubPlayer(),
+                stubPlayer(),
+                stubPlayer()
             )
-        )
-    }) exercise {
-        shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, Start))
-    } verify { result ->
-        result.apply {
-            playersInRoster().assertIsEqualTo(players)
-            shownPairAssignments().assertIsEqualTo(emptyList())
+            val pairAssignments = stubPairAssignmentDoc().copy(
+                pairs = listOf(
+                    pairOf(players[1], players[3]).withPins(emptyList()),
+                    pairOf(players[0], players[2]).withPins(emptyList())
+                )
+            )
         }
+
+        @Test
+        fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(Setup()) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, Start))
+        } verify { result ->
+            result.apply {
+                playersInRoster().assertIsEqualTo(players)
+                shownPairAssignments().assertIsEqualTo(emptyList())
+            }
+        }
+
+        @Test
+        fun whenShowingFirstPlayerWillRemoveFromRosterAndShowInSpotlight() = setup(object : Setup() {
+            val firstAssignedPlayer = players[1]
+        }) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, ShowPlayer(firstAssignedPlayer)))
+        } verify { result ->
+            result.apply {
+                playerInSpotlight().assertIsEqualTo(firstAssignedPlayer)
+                playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
+                shownPairAssignments().assertIsEqualTo(emptyList())
+            }
+        }
+
     }
 
-    private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(styles["playerRoster"])
-        .findComponent(PlayerCard)
-        .map { it.props().player }
-        .toList()
+    companion object {
+        private val styles = useStyles("pairassignments/SpinAnimation")
 
-    private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
-        .findComponent(AssignedPair)
-        .map { it.props().pair }
-        .toList()
+        private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(styles["playerRoster"])
+            .findComponent(PlayerCard)
+            .map { it.props().player }
+            .toList()
+
+        private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass(styles["playerSpotlight"])
+            .findComponent(PlayerCard).props().player
+
+        private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
+            .findComponent(AssignedPair)
+            .map { it.props().pair }
+            .toList()
+    }
+
 }
