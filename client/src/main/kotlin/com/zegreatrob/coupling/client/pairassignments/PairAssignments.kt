@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -73,7 +74,15 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                 div(classes = styles.className) {
                     div {
                         tribeBrowser(tribe, pathSetter)
-                        child(currentPairAssignmentsElement(pairAssignments, swapCallback, pinDropCallback))
+                        currentPairAssignments(
+                            props.tribe,
+                            pairAssignments,
+                            swapCallback,
+                            pinDropCallback,
+                            props.pathSetter,
+                            styles,
+                            scope
+                        )
                     }
                     div(classes = styles.controlPanel) {
                         div {
@@ -141,16 +150,18 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
 
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-    private fun PairAssignmentRenderer.currentPairAssignmentsElement(
+    private fun RBuilder.currentPairAssignments(
+        tribe: Tribe,
         pairAssignments: PairAssignmentDocument?,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit
-    ) = reactElement {
-        div(classes = styles.pairAssignments) {
-            pairAssignmentsHeader(pairAssignments, styles)
-            child(pairAssignmentListyElement(pairAssignments, swapCallback, pinDropCallback))
-            child(saveButtonSectionElement(pairAssignments))
-        }
+        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
+        pathSetter: (String) -> Unit,
+        styles: PairAssignmentsStyles,
+        scope: CoroutineScope
+    ) = div(classes = styles.pairAssignments) {
+        pairAssignmentsHeader(pairAssignments, styles)
+        pairAssignmentList(pairAssignments, swapCallback, pinDropCallback, tribe, pathSetter, styles)
+        saveButtonSection(pairAssignments, tribe, pathSetter, scope, styles)
     }
 
     private fun RBuilder.pairAssignmentsHeader(
@@ -170,43 +181,51 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
     }
 
-    private fun PairAssignmentRenderer.pairAssignmentListyElement(
+    private fun RBuilder.pairAssignmentList(
         pairAssignments: PairAssignmentDocument?,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit
-    ) = reactElement {
-        div(classes = styles.pairAssignmentsContent) {
-            pairAssignments?.pairs?.mapIndexed { index, pair ->
-                assignedPair(
-                    props.tribe,
-                    pair,
-                    swapCallback,
-                    pinDropCallback,
-                    pairAssignments,
-                    props.pathSetter,
-                    key = "$index"
-                )
-            }
+        pinDropCallback: (Pin, PinnedCouplingPair) -> Unit,
+        tribe: Tribe,
+        pathSetter: (String) -> Unit,
+        styles: PairAssignmentsStyles
+    ) = div(classes = styles.pairAssignmentsContent) {
+        pairAssignments?.pairs?.mapIndexed { index, pair ->
+            assignedPair(
+                tribe,
+                pair,
+                swapCallback,
+                pinDropCallback,
+                pairAssignments,
+                pathSetter,
+                key = "$index"
+            )
         }
     }
 
-    private fun PairAssignmentRenderer.saveButtonSectionElement(pairAssignments: PairAssignmentDocument?) =
-        reactElement {
-            div {
-                if (pairAssignments != null && pairAssignments.id == null) {
-                    child(saveButtonElement(pairAssignments))
-                }
-            }
+    private fun RBuilder.saveButtonSection(
+        pairAssignments: PairAssignmentDocument?,
+        tribe: Tribe,
+        pathSetter: (String) -> Unit,
+        scope: CoroutineScope,
+        styles: PairAssignmentsStyles
+    ) = div {
+        if (pairAssignments != null && pairAssignments.id == null) {
+            saveButton(pairAssignments, tribe, pathSetter, scope, styles)
         }
+    }
 
-    private fun PairAssignmentRenderer.saveButtonElement(pairAssignments: PairAssignmentDocument) = reactElement {
-        a(classes = "super green button") {
-            attrs {
-                classes += styles.saveButton
-                onClickFunction = onClickSave(pairAssignments)
-            }
-            +"Save!"
+    private fun RBuilder.saveButton(
+        pairAssignments: PairAssignmentDocument,
+        tribe: Tribe,
+        pathSetter: (String) -> Unit,
+        scope: CoroutineScope,
+        styles: PairAssignmentsStyles
+    ) = a(classes = "super green button") {
+        attrs {
+            classes += styles.saveButton
+            onClickFunction = onClickSave(pairAssignments, tribe, pathSetter, scope)
         }
+        +"Save!"
     }
 
     private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
@@ -245,11 +264,16 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         +" Retirees!"
     }
 
-    private fun PairAssignmentRenderer.onClickSave(pairAssignments: PairAssignmentDocument): (Event) -> Unit = {
+    private fun onClickSave(
+        pairAssignments: PairAssignmentDocument,
+        tribe: Tribe,
+        pathSetter: (String) -> Unit,
+        scope: CoroutineScope
+    ): (Event) -> Unit = {
         scope.launch {
-            SavePairAssignmentsCommand(props.tribe.id, pairAssignments).perform()
+            SavePairAssignmentsCommand(tribe.id, pairAssignments).perform()
 
-            props.pathSetter("/${props.tribe.id.value}/pairAssignments/current/")
+            pathSetter("/${tribe.id.value}/pairAssignments/current/")
         }
     }
 
