@@ -6,7 +6,7 @@ import react.RHandler
 
 fun RBuilder.flipper(
     flipKey: String,
-    classes: String,
+    classes: String = "",
     handler: RHandler<FlipperProps>
 ) = child(Flipper, jsObject<FlipperProps> { }) {
     attrs {

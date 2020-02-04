@@ -20,6 +20,7 @@ import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.visibility
 import react.RBuilder
+import react.RHandler
 import react.RProps
 import react.ReactElement
 import react.dom.div
@@ -53,20 +54,21 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
 
         val rosterPlayers = when (state) {
             Start -> players
-            is ShowPlayer -> players - pairAssignments.presentedPlayers(state.player, true)
+            is ShowPlayer -> (players - pairAssignments.presentedPlayers(state.player, true))
+                .let { whenEmptyAddPlaceholder(it, pairAssignments) }
             is AssignedPlayer -> players - pairAssignments.presentedPlayers(state.player, true)
             End -> emptyList()
         }
 
         val revealedPairs = when (state) {
-            Start -> pairAssignments.makePlaceholderPlayers().toSimulatedPairs()
-            is AssignedPlayer -> pairAssignments.revealedPairs(state.player, true)
+            Start -> makePlaceholderPlayers(pairAssignments).toSimulatedPairs()
             is ShowPlayer -> pairAssignments.revealedPairs(state.player, false)
+            is AssignedPlayer -> pairAssignments.revealedPairs(state.player, true)
             End -> emptyList()
         }
 
         return reactElement {
-            flipper(flipKey = state.toString(), classes = styles.className) {
+            div(classes = styles.className) {
                 playerRoster(rosterPlayers)
                 div(classes = styles["playerSpotlight"]) {
                     when (state) {
@@ -79,8 +81,13 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
     }
 
+    private fun whenEmptyAddPlaceholder(it: List<Player>, pairAssignments: PairAssignmentDocument) = if (it.isEmpty())
+        makePlaceholderPlayers(pairAssignments)
+    else
+        it
+
     private fun RBuilder.placeholderPlayerCard() = styledDiv {
-        css { visibility = Visibility.hidden }
+        css { visibility = Visibility.hidden; display = Display.inlineBlock }
         flippedPlayer(placeholderPlayer)
     }
 
@@ -96,8 +103,8 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         generateSequence { placeholderPlayer }.take(document.orderedPairedPlayers().size - it.size)
             .toList()
 
-    private fun PairAssignmentDocument.makePlaceholderPlayers() =
-        generateSequence { placeholderPlayer }.take(orderedPairedPlayers().size)
+    private fun makePlaceholderPlayers(pairAssignmentDocument: PairAssignmentDocument) =
+        generateSequence { placeholderPlayer }.take(pairAssignmentDocument.orderedPairedPlayers().size)
             .toList()
 
     private fun PairAssignmentDocument.presentedPlayers(player: Player, inclusive: Boolean = false): List<Player> {
@@ -135,7 +142,13 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
 
     private fun RBuilder.playerRoster(players: List<Player>) = div(classes = styles["playerRoster"]) {
-        players.map { flippedPlayer(it, key = it.id) }
+        players.map {
+            if (it == placeholderPlayer) {
+                placeholderPlayerCard()
+            } else {
+                flippedPlayer(it, key = it.id)
+            }
+        }
     }
 }
 
@@ -166,22 +179,33 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
     }
 }
 
-data class AnimatorProps(val players: List<Player>, val pairAssignments: PairAssignmentDocument) : RProps
+data class AnimatorProps(val players: List<Player>, val pairAssignments: PairAssignmentDocument?) : RProps
 
 object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
 
-    fun RBuilder.animator(players: List<Player>, pairAssignments: PairAssignmentDocument) =
-        child(Animator.component.rFunction, AnimatorProps(players, pairAssignments))
+    fun RBuilder.animator(
+        players: List<Player>,
+        pairAssignments: PairAssignmentDocument?,
+        handler: RHandler<AnimatorProps>
+    ) = child(Animator.component.rFunction, AnimatorProps(players, pairAssignments), handler = handler)
 
     override fun render(props: AnimatorProps) = reactElement {
         val (state, setState) = useState<SpinAnimationState>(Start)
         val (players, pairAssignments) = props
 
         useEffect {
-            window.setTimeout({
-                setState(state.next(pairAssignments))
-            }, 1000)
+            window.setTimeout({ pairAssignments?.let { setState(state.next(it)) } }, 300)
         }
-        spinAnimation(players, pairAssignments, state)
+
+        if (pairAssignments != null) {
+            flipper(flipKey = state.toString()) {
+                if (state == End)
+                    props.children()
+                else
+                    spinAnimation(players, pairAssignments, state)
+            }
+        } else {
+            props.children()
+        }
     }
 }

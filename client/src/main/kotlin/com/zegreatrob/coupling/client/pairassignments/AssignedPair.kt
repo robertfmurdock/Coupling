@@ -85,15 +85,33 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
 
     private fun AssignedPairProps.playerCardComponent(canDrag: Boolean): RBuilder.(PinnedPlayer) -> ReactElement =
         if (canDrag) { player ->
-            swappablePlayer(
-                tribe,
-                player,
-                pair,
-                swapCallback,
-                canDrag
-            )
+            playerFlipped(player.player) {
+                swappablePlayer(
+                    tribe,
+                    player,
+                    pair,
+                    swapCallback,
+                    canDrag
+                )
+            }
         } else { player ->
-            notSwappablePlayer(tribe, pathSetter, player.player)
+            playerFlipped(player.player) {
+                notSwappablePlayer(tribe, pathSetter, player.player)
+            }
+        }
+
+    private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> ReactElement) =
+        flipped(flipId = player.id) {
+            styledDiv {
+                attrs { this.key = player.id ?: "" }
+                css {
+                    display = Display.inlineBlock
+                    if (player == placeholderPlayer) {
+                        visibility = Visibility.hidden
+                    }
+                }
+                handler()
+            }
         }
 
     private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
@@ -130,23 +148,12 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
     private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player) =
-        flipped(flipId = player.id) {
-            styledDiv {
-                attrs { this.key = player.id ?: "" }
-                css {
-                    display = Display.inlineBlock
-                    if (player == placeholderPlayer) {
-                        visibility = Visibility.hidden
-                    }
-                }
-                playerCard(
-                    PlayerCardProps(
-                        tribe.id,
-                        player,
-                        pathSetter,
-                        false
-                    )
-                )
-            }
-        }
+        playerCard(
+            PlayerCardProps(
+                tribe.id,
+                player,
+                pathSetter,
+                false
+            )
+        )
 }

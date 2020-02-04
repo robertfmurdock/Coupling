@@ -65,11 +65,11 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             DndProvider {
                 attrs { backend = HTML5Backend }
                 div(classes = styles.className) {
-
                     div {
                         tribeBrowser(tribe, pathSetter)
-//                        pairAssignments?.let { animator(players, it) }
+//                        animator(players, pairAssignments) {
                         currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
+//                        }
                     }
                     div(classes = styles.controlPanel) {
                         div {
