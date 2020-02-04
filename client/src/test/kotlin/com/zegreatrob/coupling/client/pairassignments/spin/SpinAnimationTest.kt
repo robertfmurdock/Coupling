@@ -21,6 +21,26 @@ private val placeholder = Player("?", name = "Next...")
 
 class SpinAnimationTest {
 
+    class GivenOnePlayerAndOnePair {
+        open class Setup {
+            val player = stubPlayer()
+            val pairAssignments = stubPairAssignmentDoc().copy(
+                pairs = listOf(
+                    pairOf(player).withPins(emptyList())
+                )
+            )
+        }
+
+        @Test
+        fun startWillMoveToShowFirstAssignedPlayer() = setup(object : Setup() {
+            val state = Start
+        }) exercise {
+            state.next(pairAssignments)
+        } verify { result ->
+            result.assertIsEqualTo(ShowPlayer(player))
+        }
+    }
+
     class GivenThreePlayersAndOnePair {
         open class Setup {
             val excludedPlayer = stubPlayer()
@@ -83,10 +103,30 @@ class SpinAnimationTest {
         }
 
         @Test
-        fun startWillMoveToShowFirstAssignedPlayer() = setup(object : Setup() {
+        fun startWillMoveToShuffleStep1() = setup(object : Setup() {
             val state = Start
         }) exercise {
             state.next(pairAssignments)
+        } verify { result ->
+            result.assertIsEqualTo(Shuffle(target = pairAssignments.pairs[0].players[0].player, step = 0))
+        }
+
+        @Test
+        fun startWillEventuallyMoveToShowFirstPlayer() = setup(object : Setup() {
+            val state = Start
+
+            val maxTries = 100
+            var tries = 0
+            fun SpinAnimationState.nextUntilNotShuffle(): SpinAnimationState = next(pairAssignments)
+                .also { tries++ }
+                .let { next ->
+                    if (next is Shuffle && tries < maxTries) {
+                        next.nextUntilNotShuffle()
+                    } else
+                        next
+                }
+        }) exercise {
+            state.nextUntilNotShuffle()
         } verify { result ->
             result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[0].player))
         }
