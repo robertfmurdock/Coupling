@@ -93,6 +93,15 @@ class SpinAnimationTest {
                 )
             }
         }
+
+        @Test
+        fun assignedPlayerWillTransitionToEndTEMPORARY() = setup(object : Setup() {
+            val state = AssignedPlayer(pairAssignments.pairs[0].players[0].player)
+        }) exercise {
+            state.next(pairAssignments)
+        } verify { result ->
+            result.assertIsEqualTo(End)
+        }
     }
 
     companion object {
