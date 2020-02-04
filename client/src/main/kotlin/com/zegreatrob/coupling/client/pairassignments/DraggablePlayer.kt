@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.DraggableThing.draggableThing
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
@@ -18,7 +17,7 @@ val RBuilder.draggablePlayer get() = DraggablePlayer.render(this)
 data class DraggablePlayerProps(
     val pinnedPlayer: PinnedPlayer,
     val tribe: Tribe,
-    val pairAssignmentDocument: PairAssignmentDocument,
+    val zoomOnHover: Boolean,
     val onPlayerDrop: (String) -> Unit
 ) : RProps
 
@@ -43,7 +42,7 @@ interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps,
                         player = pinnedPlayer.player,
                         pathSetter = {},
                         headerDisabled = false,
-                        className = playerCardClassName(pairAssignmentDocument, isOver, styles)
+                        className = playerCardClassName(isOver, styles, zoomOnHover)
                     ),
                     key = pinnedPlayer.player.id
                 )
@@ -52,11 +51,11 @@ interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps,
     }
 
     private fun playerCardClassName(
-        pairAssignmentDocument: PairAssignmentDocument,
         isOver: Boolean,
-        styles: DraggablePlayerStyles
+        styles: DraggablePlayerStyles,
+        zoomOnHover: Boolean
     ) = mapOf(
-        styles.hoverZoom to (pairAssignmentDocument.id == null),
+        styles.hoverZoom to zoomOnHover,
         styles.onDragHover to isOver
     )
         .filterValues { it }

@@ -6,10 +6,8 @@ import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.classes
@@ -19,14 +17,13 @@ import react.RProps
 import react.ReactElement
 import react.dom.div
 import react.dom.span
-import kotlin.js.Json
 
 data class AssignedPairProps(
     val tribe: Tribe,
     val pair: PinnedCouplingPair,
     val swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    val pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
-    val pairAssignmentDocument: PairAssignmentDocument,
+    val pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
+    val canDrag: Boolean,
     val pathSetter: (String) -> Unit
 ) : RProps
 
@@ -36,13 +33,13 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         tribe: Tribe,
         pair: PinnedCouplingPair,
         swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinMoveCallback: (Pin, PinnedCouplingPair) -> Unit,
-        pairAssignmentDocument: PairAssignmentDocument,
+        pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
+        canDrag: Boolean,
         pathSetter: (String) -> Unit,
         key: String
     ) = child(
         AssignedPair.component.rFunction,
-        AssignedPairProps(tribe, pair, swapCallback, pinMoveCallback, pairAssignmentDocument, pathSetter),
+        AssignedPairProps(tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter),
         key = key
     )
 
@@ -50,7 +47,6 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
 
     override fun render(props: AssignedPairProps) = with(props) {
         val callSign = pair.findCallSign()
-        val canDrag = pairAssignmentDocument.isSaved()
 
         val (isOver, drop) = usePinDrop()
         val pinDroppableRef = useRef<Node>(null)
@@ -71,11 +67,9 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         }
     }
 
-    private fun PairAssignmentDocument.isSaved() = id == null
-
     private fun AssignedPairProps.usePinDrop() = useDrop(
         acceptItemType = pinDragItemType,
-        drop = { item -> findDroppedPin(item)?.let { pinMoveCallback(it, pair) } },
+        drop = { item -> pinMoveCallback(item["id"].unsafeCast<String>(), pair) },
         collect = { monitor -> monitor.isOver() }
     )
 
@@ -85,18 +79,12 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
                 tribe,
                 player,
                 pair,
-                pairAssignmentDocument,
-                swapCallback
+                swapCallback,
+                canDrag
             )
         } else { player ->
             notSwappablePlayer(tribe, player, pathSetter)
         }
-
-    private fun AssignedPairProps.findDroppedPin(item: Json) = pairAssignmentDocument
-        .pairs
-        .map(PinnedCouplingPair::pins)
-        .flatten()
-        .find { it._id == item["id"].unsafeCast<String>() }
 
     private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
         if (tribe.callSignsEnabled && callSign != null) {
@@ -123,12 +111,12 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         tribe: Tribe,
         pinnedPlayer: PinnedPlayer,
         pair: PinnedCouplingPair,
-        pairAssignmentDocument: PairAssignmentDocument,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+        zoomOnHover: Boolean
     ) = draggablePlayer(DraggablePlayerProps(
         pinnedPlayer,
         tribe,
-        pairAssignmentDocument
+        zoomOnHover
     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
     private fun RBuilder.notSwappablePlayer(tribe: Tribe, pinnedPlayer: PinnedPlayer, pathSetter: (String) -> Unit) =

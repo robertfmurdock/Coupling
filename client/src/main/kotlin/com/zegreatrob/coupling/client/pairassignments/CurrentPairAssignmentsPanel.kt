@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -19,7 +18,7 @@ data class CurrentPairAssignmentsPanelProps(
     val tribe: Tribe,
     val pairAssignments: PairAssignmentDocument?,
     val onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    val onPinDrop: (Pin, PinnedCouplingPair) -> Unit,
+    val onPinDrop: (String, PinnedCouplingPair) -> Unit,
     val onSave: () -> Unit,
     val pathSetter: (String) -> Unit
 ) : RProps
@@ -32,7 +31,7 @@ object CurrentPairAssignmentsPanel : FRComponent<CurrentPairAssignmentsPanelProp
         tribe: Tribe,
         pairAssignments: PairAssignmentDocument?,
         onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        onPinDrop: (Pin, PinnedCouplingPair) -> Unit,
+        onPinDrop: (String, PinnedCouplingPair) -> Unit,
         onSave: () -> Unit,
         pathSetter: (String) -> Unit
     ) = child(
@@ -68,14 +67,13 @@ object CurrentPairAssignmentsPanel : FRComponent<CurrentPairAssignmentsPanelProp
         tribe: Tribe,
         pairAssignments: PairAssignmentDocument,
         onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        onPinDrop: (Pin, PinnedCouplingPair) -> Unit,
+        onPinDrop: (String, PinnedCouplingPair) -> Unit,
         pathSetter: (String) -> Unit
     ) = div(classes = styles["pairAssignmentsContent"]) {
         pairAssignments.pairs.mapIndexed { index, pair ->
-            assignedPair(tribe, pair, onPlayerSwap, onPinDrop, pairAssignments, pathSetter, key = "$index")
+            assignedPair(tribe, pair, onPlayerSwap, onPinDrop, pairAssignments.isNotSaved(), pathSetter, key = "$index")
         }
     }
-
 
     private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument, onSave: () -> Unit) = div {
         if (pairAssignments.isNotSaved()) {

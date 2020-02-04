@@ -35,8 +35,10 @@ class SpinAnimationTest {
         }
 
         @Test
-        fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(Setup()) exercise {
-            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, Start))
+        fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(object : Setup() {
+            val state = Start
+        }) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players)
@@ -45,10 +47,20 @@ class SpinAnimationTest {
         }
 
         @Test
+        fun startWillMoveToShowFirstAssignedPlayer() = setup(object : Setup() {
+            val state = Start
+        }) exercise {
+            state.next(pairAssignments)
+        } verify { result ->
+            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[0].player))
+        }
+
+        @Test
         fun whenShowingFirstPlayerWillRemoveFromRosterAndShowInSpotlight() = setup(object : Setup() {
             val firstAssignedPlayer = players[1]
+            val state = ShowPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, ShowPlayer(firstAssignedPlayer)))
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
         } verify { result ->
             result.apply {
                 playerInSpotlight().assertIsEqualTo(firstAssignedPlayer)
@@ -57,6 +69,30 @@ class SpinAnimationTest {
             }
         }
 
+        @Test
+        fun showPlayerWillTransitionToAssigned() = setup(object : Setup() {
+            val state = ShowPlayer(pairAssignments.pairs[0].players[0].player)
+        }) exercise {
+            state.next(pairAssignments)
+        } verify { result ->
+            result.assertIsEqualTo(AssignedPlayer(pairAssignments.pairs[0].players[0].player))
+        }
+
+        @Test
+        fun whenShowingAssignedPlayerWillRemoveFromRosterAndShowInSpotlight() = setup(object : Setup() {
+            val firstAssignedPlayer = pairAssignments.pairs[0].players[0].player
+            val state = AssignedPlayer(firstAssignedPlayer)
+        }) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
+        } verify { result ->
+            result.apply {
+                playerInSpotlight().assertIsEqualTo(null)
+                playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
+                shownPairAssignments().assertIsEqualTo(
+                    listOf(pairOf(firstAssignedPlayer).withPins(emptyList()))
+                )
+            }
+        }
     }
 
     companion object {
@@ -68,7 +104,9 @@ class SpinAnimationTest {
             .toList()
 
         private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass(styles["playerSpotlight"])
-            .findComponent(PlayerCard).props().player
+            .findComponent(PlayerCard).run {
+                if (length == 1) props().player else null
+            }
 
         private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
             .findComponent(AssignedPair)

@@ -251,7 +251,7 @@ class PairAssignmentsTest {
 
     private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
         val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
-        targetProps.onPinDrop(this, targetPair)
+        targetProps.onPinDrop(this._id!!, targetPair)
     }
 
     @Test

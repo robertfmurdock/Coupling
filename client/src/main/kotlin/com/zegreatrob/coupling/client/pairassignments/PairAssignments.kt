@@ -90,11 +90,18 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             ?: { _, _ -> }
 
     private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
-        { pin: Pin, droppedPair: PinnedCouplingPair ->
+        { pinId: String, droppedPair: PinnedCouplingPair ->
             setPairAssignments(
-                copy(pairs = pairs.movePinTo(pin, droppedPair))
+                copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this@dropThePin), droppedPair))
             )
         }
+
+    private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
+        .pairs
+        .map(PinnedCouplingPair::pins)
+        .flatten()
+        .first { it._id == id }
+
 
     private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
         when {
