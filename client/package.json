@@ -35,7 +35,7 @@
     "fitty": "^2.3.0",
     "fork-promise": "^2.0.0",
     "fs-extra": "^8.1.0",
-    "inline-style-prefixer": "^5.1.0",
+    "inline-style-prefixer": "^5.1.1",
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "jasmine-reporters": "^2.3.2",
