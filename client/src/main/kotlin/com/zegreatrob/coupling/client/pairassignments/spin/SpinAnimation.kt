@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
@@ -179,33 +180,55 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
     }
 }
 
-data class AnimatorProps(val players: List<Player>, val pairAssignments: PairAssignmentDocument?) : RProps
+data class AnimatorProps(
+    val players: List<Player>,
+    val pairAssignments: PairAssignmentDocument?,
+    val enabled: Boolean
+) : RProps
 
 object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
+
+    private val animationContextConsumer = animationsDisabledContext.Consumer
 
     fun RBuilder.animator(
         players: List<Player>,
         pairAssignments: PairAssignmentDocument?,
+        enabled: Boolean,
         handler: RHandler<AnimatorProps>
-    ) = child(Animator.component.rFunction, AnimatorProps(players, pairAssignments), handler = handler)
+    ) = child(Animator.component.rFunction, AnimatorProps(players, pairAssignments, enabled), handler = handler)
 
     override fun render(props: AnimatorProps) = reactElement {
+        val (players, pairAssignments, enabled) = props
         val (state, setState) = useState<SpinAnimationState>(Start)
-        val (players, pairAssignments) = props
 
         useEffect {
-            window.setTimeout({ pairAssignments?.let { setState(state.next(it)) } }, 300)
+            if (state != End)
+                window.setTimeout({ moveToNextState(state, setState, pairAssignments) }, 300)
         }
-
-        if (pairAssignments != null) {
-            flipper(flipKey = state.toString()) {
-                if (state == End)
-                    props.children()
-                else
-                    spinAnimation(players, pairAssignments, state)
+        consumer(animationContextConsumer) { animationsDisabled: Boolean ->
+            if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
+                flipper(flipKey = state.toString()) {
+                    if (state == End)
+                        props.children()
+                    else
+                        spinAnimation(players, pairAssignments, state)
+                }
+            } else {
+                props.children()
             }
-        } else {
-            props.children()
         }
+    }
+
+    private fun moveToNextState(
+        state: SpinAnimationState,
+        setState: (SpinAnimationState) -> Unit,
+        pairAssignments: PairAssignmentDocument?
+    ) {
+        setState(
+            if (pairAssignments == null)
+                End
+            else
+                state.next(pairAssignments)
+        )
     }
 }

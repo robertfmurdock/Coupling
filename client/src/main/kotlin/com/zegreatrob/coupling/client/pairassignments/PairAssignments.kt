@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPanel.currentPairAssignments
+import com.zegreatrob.coupling.client.pairassignments.spin.Animator.animator
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
@@ -67,9 +68,9 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                 div(classes = styles.className) {
                     div {
                         tribeBrowser(tribe, pathSetter)
-//                        animator(players, pairAssignments) {
-                        currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
-//                        }
+                        animator(players, pairAssignments, false) {
+                            currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
+                        }
                     }
                     div(classes = styles.controlPanel) {
                         div {

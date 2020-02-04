@@ -63,7 +63,7 @@ fun <T> useState(default: () -> T): StateValueContent<T> {
     )
 }
 
-fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> ReactElement) = child(
+fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> Unit) = child(
     React.createElement(type, jsObject {}) { value: T ->
         buildElement {
             children(value)
