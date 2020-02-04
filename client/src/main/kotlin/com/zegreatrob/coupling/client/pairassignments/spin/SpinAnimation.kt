@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
+import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.spin.SpinAnimation.spinAnimation
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -12,9 +15,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import kotlinx.css.Display
+import kotlinx.css.display
 import react.RBuilder
 import react.RProps
 import react.dom.div
+import react.dom.key
+import styled.css
+import styled.styledDiv
 
 data class SpinAnimationProps(
     val players: List<Player>,
@@ -49,15 +57,23 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
 
         reactElement {
-            div(classes = styles.className) {
+            flipper(flipKey = state.toString(), classes = styles.className) {
                 playerRoster(rosterPlayers)
                 when (state) {
                     is ShowPlayer -> div(classes = styles["playerSpotlight"]) {
-                        playerCard(PlayerCardProps(TribeId(""), state.player))
+                        flippedPlayer(state.player)
                     }
                 }
                 assignedPairs(revealedPairs)
             }
+        }
+    }
+
+    private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id ?: "") {
+        styledDiv {
+            attrs { this.key = key ?: "" }
+            css { display = Display.inlineBlock }
+            playerCard(PlayerCardProps(TribeId(""), player))
         }
     }
 
@@ -76,7 +92,7 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
 
     private fun RBuilder.playerRoster(players: List<Player>) = div(classes = styles["playerRoster"]) {
-        players.map { playerCard(PlayerCardProps(TribeId(""), it), key = it.id) }
+        players.map { flippedPlayer(it, key = it.id) }
     }
 }
 
@@ -85,10 +101,12 @@ sealed class SpinAnimationState {
 }
 
 object Start : SpinAnimationState() {
+    override fun toString() = "Start"
     override fun next(pairAssignments: PairAssignmentDocument) = ShowPlayer(pairAssignments.pairs[0].players[0].player)
 }
 
 object End : SpinAnimationState() {
+    override fun toString() = "End"
     override fun next(pairAssignments: PairAssignmentDocument) = this
 }
 
@@ -102,7 +120,7 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
 
 data class AnimatorProps(val players: List<Player>, val pairAssignments: PairAssignmentDocument) : RProps
 
-object Animator : FRComponent<AnimatorProps>(provider()) {
+object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
 
     fun RBuilder.animator(players: List<Player>, pairAssignments: PairAssignmentDocument) =
         child(Animator.component.rFunction, AnimatorProps(players, pairAssignments))
@@ -111,7 +129,11 @@ object Animator : FRComponent<AnimatorProps>(provider()) {
         val (state, setState) = useState<SpinAnimationState>(Start)
         val (players, pairAssignments) = props
 
-        useEffect { setState(state.next(pairAssignments)) }
+        useEffect {
+            window.setTimeout({
+                setState(state.next(pairAssignments))
+            }, 5000)
+        }
         spinAnimation(players, pairAssignments, state)
     }
 }

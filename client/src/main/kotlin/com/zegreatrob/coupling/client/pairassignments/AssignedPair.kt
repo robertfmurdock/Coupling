@@ -10,13 +10,18 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
+import kotlinx.css.Display
+import kotlinx.css.display
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
 import react.ReactElement
 import react.dom.div
+import react.dom.key
 import react.dom.span
+import styled.css
+import styled.styledDiv
 
 data class AssignedPairProps(
     val tribe: Tribe,
@@ -120,13 +125,16 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
     private fun RBuilder.notSwappablePlayer(tribe: Tribe, pinnedPlayer: PinnedPlayer, pathSetter: (String) -> Unit) =
-        playerCard(
-            PlayerCardProps(
-                tribe.id,
-                pinnedPlayer.player,
-                pathSetter,
-                false
-            ), key = pinnedPlayer.player.id
-        )
-
+        styledDiv {
+            attrs { this.key = pinnedPlayer.player.id ?: "" }
+            css { display = Display.inlineBlock }
+            playerCard(
+                PlayerCardProps(
+                    tribe.id,
+                    pinnedPlayer.player,
+                    pathSetter,
+                    false
+                )
+            )
+        }
 }
