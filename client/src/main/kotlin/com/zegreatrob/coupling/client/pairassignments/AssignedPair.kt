@@ -3,16 +3,20 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
+import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.css.Display
+import kotlinx.css.Visibility
 import kotlinx.css.display
+import kotlinx.css.visibility
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RBuilder
@@ -89,7 +93,7 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
                 canDrag
             )
         } else { player ->
-            notSwappablePlayer(tribe, player, pathSetter)
+            notSwappablePlayer(tribe, pathSetter, player.player)
         }
 
     private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
@@ -125,15 +129,20 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
         zoomOnHover
     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
-    private fun RBuilder.notSwappablePlayer(tribe: Tribe, pinnedPlayer: PinnedPlayer, pathSetter: (String) -> Unit) =
-        flipped(flipId = pinnedPlayer.player.id) {
+    private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player) =
+        flipped(flipId = player.id) {
             styledDiv {
-                attrs { this.key = pinnedPlayer.player.id ?: "" }
-                css { display = Display.inlineBlock }
+                attrs { this.key = player.id ?: "" }
+                css {
+                    display = Display.inlineBlock
+                    if (player == placeholderPlayer) {
+                        visibility = Visibility.hidden
+                    }
+                }
                 playerCard(
                     PlayerCardProps(
                         tribe.id,
-                        pinnedPlayer.player,
+                        player,
                         pathSetter,
                         false
                     )

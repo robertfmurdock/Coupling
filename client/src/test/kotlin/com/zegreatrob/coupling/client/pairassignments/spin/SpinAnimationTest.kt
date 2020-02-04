@@ -17,7 +17,37 @@ import stubPairAssignmentDoc
 import stubPlayer
 import kotlin.test.Test
 
+private val placeholder = Player("?", name = "Next...")
+
 class SpinAnimationTest {
+
+    class GivenThreePlayersAndOnePair {
+        open class Setup {
+            val excludedPlayer = stubPlayer()
+            val players = listOf(
+                stubPlayer(),
+                excludedPlayer,
+                stubPlayer()
+            )
+            val pairAssignments = stubPairAssignmentDoc().copy(
+                pairs = listOf(
+                    pairOf(players[0], players[2]).withPins(emptyList())
+                )
+            )
+        }
+
+        @Test
+        fun whenInStartStateWillShowAllPlayersExceptExcluded() = setup(object : Setup() {
+            val state = Start
+        }) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
+        } verify { result ->
+            result.apply {
+                playersInRoster().assertIsEqualTo(players - excludedPlayer)
+            }
+        }
+
+    }
 
     class GivenFourPlayersAndTwoPairs {
         open class Setup {
@@ -43,7 +73,12 @@ class SpinAnimationTest {
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players)
-                shownPairAssignments().assertIsEqualTo(emptyList())
+                shownPairAssignments().assertIsEqualTo(
+                    listOf(
+                        pairOf(placeholder, placeholder).withPins(emptyList()),
+                        pairOf(placeholder, placeholder).withPins(emptyList())
+                    )
+                )
             }
         }
 
@@ -66,7 +101,12 @@ class SpinAnimationTest {
             result.apply {
                 playerInSpotlight().assertIsEqualTo(firstAssignedPlayer)
                 playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
-                shownPairAssignments().assertIsEqualTo(emptyList())
+                shownPairAssignments().assertIsEqualTo(
+                    listOf(
+                        pairOf(placeholder, placeholder).withPins(emptyList()),
+                        pairOf(placeholder, placeholder).withPins(emptyList())
+                    )
+                )
             }
         }
 
@@ -83,7 +123,10 @@ class SpinAnimationTest {
                     listOf(pairAssignments.pairs[1].players[1].player)
                 )
                 shownPairAssignments().assertIsEqualTo(
-                    listOf(pairAssignments.pairs[0])
+                    listOf(
+                        pairAssignments.pairs[0],
+                        pairOf(placeholder, placeholder).withPins(emptyList())
+                    )
                 )
             }
         }
@@ -105,10 +148,13 @@ class SpinAnimationTest {
             shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
         } verify { result ->
             result.apply {
-                playerInSpotlight().assertIsEqualTo(Player("?", name = "Next..."))
+                playerInSpotlight().assertIsEqualTo(placeholder)
                 playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
                 shownPairAssignments().assertIsEqualTo(
-                    listOf(pairOf(firstAssignedPlayer).withPins(emptyList()))
+                    listOf(
+                        pairOf(firstAssignedPlayer, placeholder).withPins(emptyList()),
+                        pairOf(placeholder, placeholder).withPins(emptyList())
+                    )
                 )
             }
         }
@@ -126,7 +172,10 @@ class SpinAnimationTest {
                     listOf(pairAssignments.pairs[1].players[1].player)
                 )
                 shownPairAssignments().assertIsEqualTo(
-                    listOf(pairAssignments.pairs[0], pairOf(midwayAssignedPlayer).withPins(emptyList()))
+                    listOf(
+                        pairAssignments.pairs[0],
+                        pairOf(midwayAssignedPlayer, placeholder).withPins(emptyList())
+                    )
                 )
             }
         }
