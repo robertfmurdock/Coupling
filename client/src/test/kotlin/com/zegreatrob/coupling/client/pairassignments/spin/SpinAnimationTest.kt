@@ -80,7 +80,7 @@ class SpinAnimationTest {
         }
 
         @Test
-        fun whenShowingAssignedPlayerWillRemoveFromRosterAndShowInSpotlight() = setup(object : Setup() {
+        fun whenShowingFirstAssignedPlayerWillRemoveFromRosterAndShowInSpotlight() = setup(object : Setup() {
             val firstAssignedPlayer = pairAssignments.pairs[0].players[0].player
             val state = AssignedPlayer(firstAssignedPlayer)
         }) exercise {
@@ -96,13 +96,39 @@ class SpinAnimationTest {
         }
 
         @Test
-        fun assignedPlayerWillTransitionToEndTEMPORARY() = setup(object : Setup() {
+        fun whenShowingMidwayAssignedPlayerWillContinueShowingPreviousAssignments() = setup(object : Setup() {
+            val midwayAssignedPlayer = pairAssignments.pairs[1].players[0].player
+            val state = AssignedPlayer(midwayAssignedPlayer)
+        }) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
+        } verify { result ->
+            result.apply {
+                playerInSpotlight().assertIsEqualTo(Player("?", name = "Next..."))
+                playersInRoster().assertIsEqualTo(players - midwayAssignedPlayer)
+                shownPairAssignments().assertIsEqualTo(
+                    listOf(pairAssignments.pairs[0], pairOf(midwayAssignedPlayer).withPins(emptyList()))
+                )
+            }
+        }
+
+        @Test
+        fun assignedPlayerWillTransitionToShowNextPlayerInPair() = setup(object : Setup() {
             val state = AssignedPlayer(pairAssignments.pairs[0].players[0].player)
         }) exercise {
             state.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(End)
+            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[1].player))
         }
+
+        @Test
+        fun assignedPlayerWillTransitionToShowNextPlayerInNextPair() = setup(object : Setup() {
+            val state = AssignedPlayer(pairAssignments.pairs[0].players[1].player)
+        }) exercise {
+            state.next(pairAssignments)
+        } verify { result ->
+            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[1].players[0].player))
+        }
+
     }
 
     companion object {

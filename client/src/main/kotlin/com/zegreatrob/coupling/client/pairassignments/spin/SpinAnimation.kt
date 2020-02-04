@@ -53,7 +53,14 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
 
         val revealedPairs = when (state) {
-            is AssignedPlayer -> listOf(pairOf(state.player).withPins(emptyList()))
+            is AssignedPlayer -> {
+                val orderedPairedPlayers = pairAssignments.pairs.flatMap { it.players }.map { it.player }
+                val index = orderedPairedPlayers.indexOf(state.player)
+                val presentedPlayers = orderedPairedPlayers.subList(0, index + 1)
+                presentedPlayers.chunked(2)
+                    .map { if(it.size > 1) pairOf(it[0], it[1]) else pairOf(it[0])}
+                    .map { it.withPins(emptyList()) }
+            }
             is ShowPlayer -> emptyList()
             Start -> emptyList()
             End -> emptyList()
@@ -124,7 +131,12 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
 }
 
 data class AssignedPlayer(val player: Player) : SpinAnimationState() {
-    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState = End
+    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
+        val orderedPlayers = pairAssignments.pairs.flatMap { it.players }.map { it.player }
+        val playerIndex = orderedPlayers.indexOf(player)
+        val nextPlayer = orderedPlayers.getOrNull(playerIndex + 1)
+        return nextPlayer?.let(::ShowPlayer) ?: End
+    }
 }
 
 data class AnimatorProps(val players: List<Player>, val pairAssignments: PairAssignmentDocument) : RProps
@@ -141,7 +153,7 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
         useEffect {
             window.setTimeout({
                 setState(state.next(pairAssignments))
-            }, 5000)
+            }, 2000)
         }
         spinAnimation(players, pairAssignments, state)
     }
