@@ -46,22 +46,15 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
 
     override fun render(props: SpinAnimationProps) = with(props) {
         val rosterPlayers = when (state) {
-            is ShowPlayer -> players - state.player
-            is AssignedPlayer -> players - state.player
             Start -> players
+            is ShowPlayer -> players - presentedPlayers(state.player, true)
+            is AssignedPlayer -> players - presentedPlayers(state.player, true)
             End -> emptyList()
         }
 
         val revealedPairs = when (state) {
-            is AssignedPlayer -> {
-                val orderedPairedPlayers = pairAssignments.pairs.flatMap { it.players }.map { it.player }
-                val index = orderedPairedPlayers.indexOf(state.player)
-                val presentedPlayers = orderedPairedPlayers.subList(0, index + 1)
-                presentedPlayers.chunked(2)
-                    .map { if(it.size > 1) pairOf(it[0], it[1]) else pairOf(it[0])}
-                    .map { it.withPins(emptyList()) }
-            }
-            is ShowPlayer -> emptyList()
+            is AssignedPlayer -> revealedPairs(state.player, true)
+            is ShowPlayer -> revealedPairs(state.player, false)
             Start -> emptyList()
             End -> emptyList()
         }
@@ -83,6 +76,19 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
                 assignedPairs(revealedPairs)
             }
         }
+    }
+
+    private fun SpinAnimationProps.revealedPairs(player: Player, inclusive: Boolean) =
+        presentedPlayers(player, inclusive)
+            .chunked(2)
+            .map { if (it.size > 1) pairOf(it[0], it[1]) else pairOf(it[0]) }
+            .map { it.withPins(emptyList()) }
+
+    private fun SpinAnimationProps.presentedPlayers(player: Player, inclusive: Boolean = false): List<Player> {
+        val orderedPairedPlayers = pairAssignments.pairs.flatMap { it.players }.map { it.player }
+        val index = orderedPairedPlayers.indexOf(player)
+        val toIndex = if (inclusive) index + 1 else index
+        return orderedPairedPlayers.subList(0, toIndex)
     }
 
     private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id ?: "") {

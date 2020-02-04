@@ -71,6 +71,24 @@ class SpinAnimationTest {
         }
 
         @Test
+        fun whenShowingMidwayShownPlayerWillContinueShowingPreviousAssignments() = setup(object : Setup() {
+            val midwayShownPlayer = pairAssignments.pairs[1].players[0].player
+            val state = ShowPlayer(midwayShownPlayer)
+        }) exercise {
+            shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
+        } verify { result ->
+            result.apply {
+                playerInSpotlight().assertIsEqualTo(midwayShownPlayer)
+                playersInRoster().assertIsEqualTo(
+                    listOf(pairAssignments.pairs[1].players[1].player)
+                )
+                shownPairAssignments().assertIsEqualTo(
+                    listOf(pairAssignments.pairs[0])
+                )
+            }
+        }
+
+        @Test
         fun showPlayerWillTransitionToAssigned() = setup(object : Setup() {
             val state = ShowPlayer(pairAssignments.pairs[0].players[0].player)
         }) exercise {
@@ -104,7 +122,9 @@ class SpinAnimationTest {
         } verify { result ->
             result.apply {
                 playerInSpotlight().assertIsEqualTo(Player("?", name = "Next..."))
-                playersInRoster().assertIsEqualTo(players - midwayAssignedPlayer)
+                playersInRoster().assertIsEqualTo(
+                    listOf(pairAssignments.pairs[1].players[1].player)
+                )
                 shownPairAssignments().assertIsEqualTo(
                     listOf(pairAssignments.pairs[0], pairOf(midwayAssignedPlayer).withPins(emptyList()))
                 )
