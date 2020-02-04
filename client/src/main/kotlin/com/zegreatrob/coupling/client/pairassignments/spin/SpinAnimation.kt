@@ -16,7 +16,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.css.Display
+import kotlinx.css.Visibility
 import kotlinx.css.display
+import kotlinx.css.visibility
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -30,6 +32,7 @@ data class SpinAnimationProps(
     val state: SpinAnimationState
 ) : RProps
 
+private val placeholderPlayer = Player("?", name = "Next...")
 
 object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
 
@@ -59,9 +62,15 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         reactElement {
             flipper(flipKey = state.toString(), classes = styles.className) {
                 playerRoster(rosterPlayers)
-                when (state) {
-                    is ShowPlayer -> div(classes = styles["playerSpotlight"]) {
-                        flippedPlayer(state.player)
+                div(classes = styles["playerSpotlight"]) {
+                    when (state) {
+                        is ShowPlayer -> flippedPlayer(state.player)
+                        else -> styledDiv {
+                            css {
+                                visibility = Visibility.hidden
+                            }
+                            flippedPlayer(placeholderPlayer)
+                        }
                     }
                 }
                 assignedPairs(revealedPairs)

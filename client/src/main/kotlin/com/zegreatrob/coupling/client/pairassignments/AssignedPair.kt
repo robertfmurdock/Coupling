@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -125,16 +126,18 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
     ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
 
     private fun RBuilder.notSwappablePlayer(tribe: Tribe, pinnedPlayer: PinnedPlayer, pathSetter: (String) -> Unit) =
-        styledDiv {
-            attrs { this.key = pinnedPlayer.player.id ?: "" }
-            css { display = Display.inlineBlock }
-            playerCard(
-                PlayerCardProps(
-                    tribe.id,
-                    pinnedPlayer.player,
-                    pathSetter,
-                    false
+        flipped(flipId = pinnedPlayer.player.id) {
+            styledDiv {
+                attrs { this.key = pinnedPlayer.player.id ?: "" }
+                css { display = Display.inlineBlock }
+                playerCard(
+                    PlayerCardProps(
+                        tribe.id,
+                        pinnedPlayer.player,
+                        pathSetter,
+                        false
+                    )
                 )
-            )
+            }
         }
 }

@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findByClass
@@ -86,7 +87,7 @@ class SpinAnimationTest {
             shallow(SpinAnimation, SpinAnimationProps(players, pairAssignments, state))
         } verify { result ->
             result.apply {
-                playerInSpotlight().assertIsEqualTo(null)
+                playerInSpotlight().assertIsEqualTo(Player("?", name = "Next..."))
                 playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
                 shownPairAssignments().assertIsEqualTo(
                     listOf(pairOf(firstAssignedPlayer).withPins(emptyList()))
