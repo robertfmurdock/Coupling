@@ -39,6 +39,12 @@ data class SpinAnimationProps(
 
 val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
 
+data class SpinStateData(
+    val rosterPlayers: List<Player>,
+    val revealedPairs: List<PinnedCouplingPair>,
+    val shownPlayer: Player?
+)
+
 object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
 
     private val styles = useStyles("pairassignments/SpinAnimation")
@@ -57,43 +63,60 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
         val players = props.players.filter(orderedPairedPlayers::contains)
 
-        val rosterPlayers = when (state) {
-            Start -> players
-            is Shuffle -> remainingRoster(players, pairAssignments, state.target, false)
-                .let {
-                    val peopleToRotate = state.step % it.size
-                    it.takeLast(it.size - peopleToRotate) + it.take(peopleToRotate)
-                }
-            is ShowPlayer -> remainingRoster(players, pairAssignments, state.player, true)
-                .let { whenEmptyAddPlaceholder(it, pairAssignments) }
-            is AssignedPlayer -> remainingRoster(players, pairAssignments, state.player, true)
-            End -> emptyList()
-        }
-
-        val revealedPairs = when (state) {
-            Start -> makePlaceholderPlayers(pairAssignments).toSimulatedPairs()
-            is ShowPlayer -> pairAssignments.revealedPairs(state.player, false)
-            is Shuffle -> pairAssignments.revealedPairs(state.target, false)
-            is AssignedPlayer -> pairAssignments.revealedPairs(state.player, true)
-            End -> emptyList()
-        }
+        val (rosterPlayers, revealedPairs, shownPlayer) = spinStateData(state, players, pairAssignments)
 
         return reactElement {
             div(classes = styles.className) {
                 pairAssignmentsHeader(pairAssignments)
-
                 assignedPairs(tribe, revealedPairs)
-
-                div(classes = styles["playerSpotlight"]) {
-                    when (state) {
-                        is ShowPlayer -> flippedPlayer(state.player)
-                        else -> placeholderPlayerCard()
-                    }
-                }
-
+                playerSpotlight(shownPlayer)
                 playerRoster(rosterPlayers)
             }
         }
+    }
+
+    private fun spinStateData(
+        state: SpinAnimationState,
+        players: List<Player>,
+        pairAssignments: PairAssignmentDocument
+    ) = when (state) {
+        Start -> SpinStateData(
+            rosterPlayers = players,
+            revealedPairs = makePlaceholderPlayers(pairAssignments).toSimulatedPairs(),
+            shownPlayer = null
+        )
+        is Shuffle -> SpinStateData(
+            rosterPlayers = remainingRoster(players, pairAssignments, state.target, false)
+                .let {
+                    val peopleToRotate = state.step % it.size
+                    it.takeLast(it.size - peopleToRotate) + it.take(peopleToRotate)
+                },
+            revealedPairs = pairAssignments.revealedPairs(state.target, false),
+            shownPlayer = null
+        )
+        is ShowPlayer -> SpinStateData(
+            rosterPlayers = remainingRoster(players, pairAssignments, state.player, true)
+                .let { whenEmptyAddPlaceholder(it, pairAssignments) },
+            revealedPairs = pairAssignments.revealedPairs(state.player, false),
+            shownPlayer = state.player
+        )
+        is AssignedPlayer -> SpinStateData(
+            rosterPlayers = remainingRoster(players, pairAssignments, state.player, true),
+            revealedPairs = pairAssignments.revealedPairs(state.player, true),
+            shownPlayer = null
+        )
+        End -> SpinStateData(
+            rosterPlayers = emptyList(),
+            revealedPairs = emptyList(),
+            shownPlayer = null
+        )
+    }
+
+    private fun RBuilder.playerSpotlight(shownPlayer: Player?) = div(classes = styles["playerSpotlight"]) {
+        if (shownPlayer != null)
+            flippedPlayer(shownPlayer)
+        else
+            placeholderPlayerCard()
     }
 
     private fun remainingRoster(
