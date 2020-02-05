@@ -18,7 +18,7 @@
 :local(.playerSpotlight) > div {
     position: absolute;
     z-index: 1;
-    transform: scale(1.5) translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
 }
 
 :local(.pairAssignments) {
