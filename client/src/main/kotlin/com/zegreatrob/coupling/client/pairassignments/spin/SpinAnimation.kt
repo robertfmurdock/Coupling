@@ -170,6 +170,7 @@ private fun PairAssignmentDocument.orderedPairedPlayers() = pairs
 
 sealed class SpinAnimationState {
     abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState
+    open fun getDuration(pairAssignments: PairAssignmentDocument): Int = 200
 }
 
 object Start : SpinAnimationState() {
@@ -196,19 +197,31 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
 }
 
 data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
+
+    private val fullShuffles = 2
+    private val shuffleTotalDuration = 750
+
     override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
-        val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
-
-        val indexOfTarget = orderedPairedPlayers.indexOf(target)
-
-        val numberOfPlayersShuffling = orderedPairedPlayers.size - indexOfTarget
-        val hasShuffledEnough = step / numberOfPlayersShuffling >= 2
+        val numberOfPlayersShuffling = numberOfPlayersShuffling(pairAssignments)
+        val hasShuffledEnough = step / numberOfPlayersShuffling >= fullShuffles
         return if (numberOfPlayersShuffling == 1 || hasShuffledEnough) {
             ShowPlayer(target)
         } else {
             Shuffle(target, step + 1)
         }
     }
+
+    private fun numberOfPlayersShuffling(pairAssignments: PairAssignmentDocument): Int {
+        val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
+
+        val indexOfTarget = orderedPairedPlayers.indexOf(target)
+
+        return orderedPairedPlayers.size - indexOfTarget
+    }
+
+    override fun getDuration(pairAssignments: PairAssignmentDocument) =
+        shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
+
 }
 
 data class AssignedPlayer(val player: Player) : SpinAnimationState() {
@@ -243,7 +256,7 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
 
         useEffect {
             if (state != End)
-                window.setTimeout({ moveToNextState(state, setState, pairAssignments) }, 200)
+                window.setTimeout({ setState(nextState(pairAssignments, state)) }, getDuration(state, pairAssignments))
         }
         consumer(animationContextConsumer) { animationsDisabled: Boolean ->
             if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
@@ -259,16 +272,15 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
         }
     }
 
-    private fun moveToNextState(
-        state: SpinAnimationState,
-        setState: (SpinAnimationState) -> Unit,
-        pairAssignments: PairAssignmentDocument?
-    ) {
-        setState(
-            if (pairAssignments == null)
-                End
-            else
-                state.next(pairAssignments)
-        )
-    }
+    private fun getDuration(state: SpinAnimationState, pairAssignments: PairAssignmentDocument?) =
+        if (pairAssignments == null)
+            0
+        else
+            state.getDuration(pairAssignments)
+
+    private fun nextState(pairAssignments: PairAssignmentDocument?, state: SpinAnimationState) =
+        if (pairAssignments == null)
+            End
+        else
+            state.next(pairAssignments)
 }
