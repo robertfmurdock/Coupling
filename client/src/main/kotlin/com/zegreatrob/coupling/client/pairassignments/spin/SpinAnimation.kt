@@ -31,25 +31,28 @@ import styled.css
 import styled.styledDiv
 
 data class SpinAnimationProps(
+    val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
     val state: SpinAnimationState
 ) : RProps
 
-val placeholderPlayer = Player("?", name = "Next...")
+val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
 
 object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
 
     private val styles = useStyles("pairassignments/SpinAnimation")
 
     fun RBuilder.spinAnimation(
+        tribe: Tribe,
         players: List<Player>,
         pairAssignments: PairAssignmentDocument,
         state: SpinAnimationState
-    ) = child(SpinAnimation.component.rFunction, SpinAnimationProps(players, pairAssignments, state))
+    ) = child(SpinAnimation.component.rFunction, SpinAnimationProps(tribe, players, pairAssignments, state))
 
     override fun render(props: SpinAnimationProps): ReactElement {
         val state = props.state
+        val tribe = props.tribe
         val pairAssignments = props.pairAssignments
         val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
         val players = props.players.filter(orderedPairedPlayers::contains)
@@ -79,7 +82,7 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
             div(classes = styles.className) {
                 pairAssignmentsHeader(pairAssignments)
 
-                assignedPairs(revealedPairs)
+                assignedPairs(tribe, revealedPairs)
 
                 div(classes = styles["playerSpotlight"]) {
                     when (state) {
@@ -141,11 +144,11 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
     }
 
-    private fun RBuilder.assignedPairs(revealedPairs: List<PinnedCouplingPair>) =
+    private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) =
         div(classes = styles["pairAssignments"]) {
             revealedPairs.mapIndexed { index, it ->
                 assignedPair(
-                    Tribe(TribeId("")),
+                    tribe,
                     it,
                     { _, _, _ -> },
                     { _, _ -> },
@@ -196,13 +199,14 @@ object End : SpinAnimationState() {
 }
 
 data class ShowPlayer(val player: Player) : SpinAnimationState() {
+    override fun getDuration(pairAssignments: PairAssignmentDocument) = 500
     override fun next(pairAssignments: PairAssignmentDocument) = AssignedPlayer(player)
 }
 
 data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
 
     private val fullShuffles = 2
-    private val shuffleTotalDuration = 750
+    private val shuffleTotalDuration = 1000
 
     override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
         val numberOfPlayersShuffling = numberOfPlayersShuffling(pairAssignments)
@@ -237,6 +241,7 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
 }
 
 data class AnimatorProps(
+    val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val enabled: Boolean
@@ -247,14 +252,15 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
     private val animationContextConsumer = animationsDisabledContext.Consumer
 
     fun RBuilder.animator(
+        tribe: Tribe,
         players: List<Player>,
         pairAssignments: PairAssignmentDocument?,
         enabled: Boolean,
         handler: RHandler<AnimatorProps>
-    ) = child(Animator.component.rFunction, AnimatorProps(players, pairAssignments, enabled), handler = handler)
+    ) = child(Animator.component.rFunction, AnimatorProps(tribe, players, pairAssignments, enabled), handler = handler)
 
     override fun render(props: AnimatorProps) = reactElement {
-        val (players, pairAssignments, enabled) = props
+        val (tribe, players, pairAssignments, enabled) = props
         val (state, setState) = useState<SpinAnimationState>(Start)
 
         useEffect {
@@ -267,7 +273,7 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
                     if (state == End)
                         props.children()
                     else
-                        spinAnimation(players, pairAssignments, state)
+                        spinAnimation(tribe, players, pairAssignments, state)
                 }
             } else {
                 props.children()

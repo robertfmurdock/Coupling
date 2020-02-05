@@ -68,7 +68,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
                 div(classes = styles.className) {
                     div {
                         tribeBrowser(tribe, pathSetter)
-                        animator(players, pairAssignments, false) {
+                        animator(tribe, players, pairAssignments, false) {
                             currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
                         }
                     }
