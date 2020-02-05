@@ -60,12 +60,12 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
                 div {
                     span(styles.tribeConfigEditor) {
                         configInputs(
-                            updatedTribe,
-                            isNew,
-                            onChange,
-                            onSave,
-                            onDelete,
-                            styles
+                            tribe = updatedTribe,
+                            isNew = isNew,
+                            onChange = onChange,
+                            onSave = onSave,
+                            onDelete = onDelete,
+                            styles = styles
                         )
                     }
                     tribeCard(TribeCardProps(updatedTribe, pathSetter = props.pathSetter))
@@ -121,6 +121,10 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
 
                 if (isNew) {
                     li { uniqueIdInput(tribe, onChange) }
+                }
+                li {
+                    enableAnimationsInput(tribe, onChange)
+                    span { +"Keep things wacky and springy, or still and deadly serious." }
                 }
                 li {
                     enableCallSignsInput(tribe, onChange)
@@ -215,6 +219,21 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
             type = InputType.checkBox,
             onChange = onChange,
             checked = tribe.badgesEnabled
+        )
+    }
+
+    private fun RBuilder.enableAnimationsInput(
+        tribe: Tribe,
+        onChange: (Event) -> Unit
+    ) {
+        configInput(
+            labelText = "Enable Animations",
+            id = "animations-checkbox",
+            name = "animationsEnabled",
+            value = tribe.id.value,
+            type = InputType.checkBox,
+            onChange = onChange,
+            checked = tribe.animationEnabled
         )
     }
 

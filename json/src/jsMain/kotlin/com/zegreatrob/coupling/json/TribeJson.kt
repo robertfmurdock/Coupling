@@ -15,7 +15,8 @@ fun Json.toTribe(): Tribe =
         defaultBadgeName = stringValue("defaultBadgeName"),
         alternateBadgeName = stringValue("alternateBadgeName"),
         badgesEnabled = this["badgesEnabled"]?.toBoolean() ?: false,
-        callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: false
+        callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: false,
+        animationEnabled = this["animationsEnabled"]?.toBoolean() ?: true
     )
 
 private fun Any.toBoolean() = when (this) {
@@ -34,7 +35,8 @@ fun Tribe.toJson() = json(
     "defaultBadgeName" to defaultBadgeName,
     "alternateBadgeName" to alternateBadgeName,
     "badgesEnabled" to badgesEnabled,
-    "callSignsEnabled" to callSignsEnabled
+    "callSignsEnabled" to callSignsEnabled,
+    "animationsEnabled" to animationEnabled
 )
 
 val tribeJsonKeys = Tribe(TribeId(""))
