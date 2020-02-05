@@ -66,7 +66,6 @@ class SpinAnimationTest {
                 playersInRoster().assertIsEqualTo(players - excludedPlayer)
             }
         }
-
     }
 
     class GivenFourPlayersAndTwoPairs {
@@ -221,21 +220,21 @@ class SpinAnimationTest {
         }
 
         @Test
-        fun assignedPlayerWillTransitionToShowNextPlayerInPair() = setup(object : Setup() {
+        fun assignedPlayerWillTransitionToShuffleNextPlayerInPair() = setup(object : Setup() {
             val state = AssignedPlayer(pairAssignments.pairs[0].players[0].player)
         }) exercise {
             state.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[1].player))
+            result.assertIsEqualTo(Shuffle(pairAssignments.pairs[0].players[1].player, 0))
         }
 
         @Test
-        fun assignedPlayerWillTransitionToShowNextPlayerInNextPair() = setup(object : Setup() {
+        fun assignedPlayerWillTransitionToShuffleNextPlayerInNextPair() = setup(object : Setup() {
             val state = AssignedPlayer(pairAssignments.pairs[0].players[1].player)
         }) exercise {
             state.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[1].players[0].player))
+            result.assertIsEqualTo(Shuffle(pairAssignments.pairs[1].players[0].player, 0))
         }
 
     }

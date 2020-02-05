@@ -216,7 +216,7 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
         val orderedPlayers = pairAssignments.pairs.flatMap { it.players }.map { it.player }
         val playerIndex = orderedPlayers.indexOf(player)
         val nextPlayer = orderedPlayers.getOrNull(playerIndex + 1)
-        return nextPlayer?.let(::ShowPlayer) ?: End
+        return nextPlayer?.let { Shuffle(it, 0) } ?: End
     }
 }
 
