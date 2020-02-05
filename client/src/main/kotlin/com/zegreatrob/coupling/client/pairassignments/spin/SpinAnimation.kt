@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
+import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader.pairAssignmentsHeader
 import com.zegreatrob.coupling.client.pairassignments.spin.SpinAnimation.spinAnimation
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -76,6 +77,8 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
 
         return reactElement {
             div(classes = styles.className) {
+                pairAssignmentsHeader(pairAssignments)
+
                 assignedPairs(revealedPairs)
 
                 div(classes = styles["playerSpotlight"]) {

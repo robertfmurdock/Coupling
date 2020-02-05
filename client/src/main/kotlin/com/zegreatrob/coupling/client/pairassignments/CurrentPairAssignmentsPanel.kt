@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
-import com.zegreatrob.coupling.client.pairassignments.list.dateText
+import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader.pairAssignmentsHeader
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -57,9 +57,7 @@ object CurrentPairAssignmentsPanel : FRComponent<CurrentPairAssignmentsPanelProp
 
     private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
         div {
-            div(classes = styles["pairAssignmentsHeader"]) {
-                +"Couples for ${pairAssignments.dateText()}"
-            }
+            pairAssignmentsHeader(pairAssignments)
         }
     }
 
