@@ -17,11 +17,12 @@ fun stubTribe() = Tribe(
     id = TribeId(uuidString()),
     name = "Stub Tribe $tribeCounter",
     alternateBadgeName = "Badgely",
-    badgesEnabled = true,
-    callSignsEnabled = true,
+    badgesEnabled = tribeCounter % 2 == 0,
+    callSignsEnabled = tribeCounter % 2 == 1,
     defaultBadgeName = "Badgerton",
     email = "stuby@stub.edu",
-    pairingRule = PairingRule.LongestTime
+    pairingRule = PairingRule.LongestTime,
+    animationEnabled = tribeCounter % 2 == 0
 )
 
 var playerCounter = 1

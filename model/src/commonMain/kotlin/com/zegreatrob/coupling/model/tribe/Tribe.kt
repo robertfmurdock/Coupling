@@ -8,5 +8,6 @@ data class Tribe(
     val alternateBadgeName: String? = "Alternate",
     val email: String? = null,
     val name: String? = null,
-    val callSignsEnabled: Boolean = false
+    val callSignsEnabled: Boolean = false,
+    val animationEnabled: Boolean = true
 )

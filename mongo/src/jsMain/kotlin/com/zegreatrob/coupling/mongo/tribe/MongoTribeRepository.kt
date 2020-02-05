@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.mongo.tribe
 
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -15,12 +15,14 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
 
     val jsRepository: dynamic
 
+    val tribesCollection: dynamic get() = jsRepository.tribesCollection
+
     override suspend fun save(tribe: Tribe) = tribe.toDbJson()
-        .save(jsRepository.tribesCollection)
+        .save(tribesCollection)
 
     override suspend fun delete(tribeId: TribeId) = deleteEntity(
         id = tribeId.value,
-        collection = jsRepository.tribesCollection,
+        collection = tribesCollection,
         entityName = "Tribe",
         toDomain = { toTribe() },
         toDbJson = { toDbJson() },
@@ -29,12 +31,12 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
 
     override suspend fun getTribe(tribeId: TribeId): Tribe? = findByQuery(
         json("id" to tribeId.value),
-        jsRepository.tribesCollection
+        tribesCollection
     )
         .firstOrNull()
         ?.toTribe()
 
-    override suspend fun getTribes(): List<Tribe> = findByQuery(json(), jsRepository.tribesCollection)
+    override suspend fun getTribes(): List<Tribe> = findByQuery(json(), tribesCollection)
         .map { it.toTribe() }
 
     private fun Tribe.toDbJson() = json(
@@ -45,7 +47,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         "defaultBadgeName" to defaultBadgeName,
         "alternateBadgeName" to alternateBadgeName,
         "badgesEnabled" to badgesEnabled,
-        "callSignsEnabled" to callSignsEnabled
+        "callSignsEnabled" to callSignsEnabled,
+        "animationsEnabled" to animationEnabled
     )
 
     private fun Json.toTribe(): Tribe =
@@ -57,7 +60,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             defaultBadgeName = this["defaultBadgeName"]?.toString(),
             alternateBadgeName = this["alternateBadgeName"]?.toString(),
             badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-            callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false
+            callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false,
+            animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true
         )
 
 }
