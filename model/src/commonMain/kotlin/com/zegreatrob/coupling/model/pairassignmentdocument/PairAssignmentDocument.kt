@@ -12,4 +12,9 @@ data class PairAssignmentDocument(
 fun PairAssignmentDocument.with(tribeId: TribeId) =
     TribeIdPairAssignmentDocument(tribeId, this)
 
+fun PairAssignmentDocument.orderedPairedPlayers() = pairs
+    .asSequence()
+    .flatMap { it.players.asSequence() }
+    .map { it.player }
+
 data class TribeIdPairAssignmentDocument(val tribeId: TribeId, val document: PairAssignmentDocument)
