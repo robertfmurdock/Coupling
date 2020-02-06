@@ -63,7 +63,7 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
         val players = props.players.filter(orderedPairedPlayers::contains)
 
-        val (rosterPlayers, revealedPairs, shownPlayer) = spinStateData(state, players, pairAssignments)
+        val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
 
         return reactElement {
             div(classes = styles.className) {
@@ -75,56 +75,6 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
         }
     }
 
-    private fun spinStateData(
-        state: SpinAnimationState,
-        players: List<Player>,
-        pairAssignments: PairAssignmentDocument
-    ) = when (state) {
-        Start -> startStateData(players, pairAssignments)
-        is Shuffle -> shuffleStateData(players, pairAssignments, state)
-        is ShowPlayer -> state.showPlayerStateData(players, pairAssignments)
-        is AssignedPlayer -> state.assignedPlayerStateData(players, pairAssignments)
-        End -> endStateData()
-    }
-
-    private fun startStateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
-        rosterPlayers = players,
-        revealedPairs = makePlaceholderPlayers(pairAssignments).toSimulatedPairs(),
-        shownPlayer = null
-    )
-
-    private fun shuffleStateData(players: List<Player>, pairAssignments: PairAssignmentDocument, state: Shuffle) =
-        SpinStateData(
-            rosterPlayers = remainingRoster(players, pairAssignments, state.target, false)
-                .let {
-                    val peopleToRotate = state.step % it.size
-                    it.takeLast(it.size - peopleToRotate) + it.take(peopleToRotate)
-                },
-            revealedPairs = pairAssignments.revealedPairs(state.target, false),
-            shownPlayer = null
-        )
-
-    private fun ShowPlayer.showPlayerStateData(players: List<Player>, pairAssignments: PairAssignmentDocument) =
-        SpinStateData(
-            rosterPlayers = remainingRoster(players, pairAssignments, player, true)
-                .let { whenEmptyAddPlaceholder(it, pairAssignments) },
-            revealedPairs = pairAssignments.revealedPairs(player, false),
-            shownPlayer = player
-        )
-
-    private fun AssignedPlayer.assignedPlayerStateData(players: List<Player>, pairAssignments: PairAssignmentDocument) =
-        SpinStateData(
-            rosterPlayers = remainingRoster(players, pairAssignments, player, true),
-            revealedPairs = pairAssignments.revealedPairs(player, true),
-            shownPlayer = null
-        )
-
-    private fun endStateData() = SpinStateData(
-        rosterPlayers = emptyList(),
-        revealedPairs = emptyList(),
-        shownPlayer = null
-    )
-
     private fun RBuilder.playerSpotlight(shownPlayer: Player?) = div(classes = styles["playerSpotlight"]) {
         if (shownPlayer != null)
             flippedPlayer(shownPlayer)
@@ -132,44 +82,9 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
             placeholderPlayerCard()
     }
 
-    private fun remainingRoster(
-        players: List<Player>,
-        pairAssignments: PairAssignmentDocument,
-        player: Player,
-        inclusive: Boolean
-    ) = players - pairAssignments.presentedPlayers(player, inclusive)
-
-    private fun whenEmptyAddPlaceholder(it: List<Player>, pairAssignments: PairAssignmentDocument) = if (it.isEmpty())
-        makePlaceholderPlayers(pairAssignments)
-    else
-        it
-
     private fun RBuilder.placeholderPlayerCard() = styledDiv {
         css { visibility = Visibility.hidden; display = Display.inlineBlock }
         flippedPlayer(placeholderPlayer)
-    }
-
-    private fun PairAssignmentDocument.revealedPairs(player: Player, inclusive: Boolean) =
-        this.presentedPlayers(player, inclusive)
-            .let { it + makePlaceholderPlayers(it, this) }.toSimulatedPairs()
-
-    private fun List<Player>.toSimulatedPairs() = chunked(2)
-        .map { if (it.size > 1) pairOf(it[0], it[1]) else pairOf(it[0]) }
-        .map { it.withPins(emptyList()) }
-
-    private fun makePlaceholderPlayers(it: List<Player>, document: PairAssignmentDocument) =
-        generateSequence { placeholderPlayer }.take(document.orderedPairedPlayers().count() - it.size)
-            .toList()
-
-    private fun makePlaceholderPlayers(pairAssignmentDocument: PairAssignmentDocument) =
-        generateSequence { placeholderPlayer }.take(pairAssignmentDocument.orderedPairedPlayers().count())
-            .toList()
-
-    private fun PairAssignmentDocument.presentedPlayers(player: Player, inclusive: Boolean = false): List<Player> {
-        val orderedPairedPlayers = orderedPairedPlayers()
-        val index = orderedPairedPlayers.indexOf(player)
-        val toIndex = if (inclusive) index + 1 else index
-        return orderedPairedPlayers.take(toIndex).toList()
     }
 
     private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id ?: "") {
@@ -213,6 +128,7 @@ private fun PairAssignmentDocument.orderedPairedPlayers() = pairs
 
 sealed class SpinAnimationState {
     abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState
+    abstract fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData
     open fun getDuration(pairAssignments: PairAssignmentDocument): Int = 200
 }
 
@@ -228,16 +144,42 @@ object Start : SpinAnimationState() {
             Shuffle(firstPlayer, 0)
         }
     }
+
+    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
+        rosterPlayers = allPlayers,
+        revealedPairs = makePlaceholderPlayers(pairAssignments).toSimulatedPairs(),
+        shownPlayer = null
+    )
 }
 
 object End : SpinAnimationState() {
     override fun toString() = "End"
     override fun next(pairAssignments: PairAssignmentDocument) = this
+    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
+        rosterPlayers = emptyList(),
+        revealedPairs = emptyList(),
+        shownPlayer = null
+    )
 }
 
 data class ShowPlayer(val player: Player) : SpinAnimationState() {
     override fun getDuration(pairAssignments: PairAssignmentDocument) = 500
     override fun next(pairAssignments: PairAssignmentDocument) = AssignedPlayer(player)
+
+    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+        fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = if (rosterPlayers.isEmpty())
+            makePlaceholderPlayers(pairAssignments)
+        else
+            rosterPlayers
+
+        val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player)
+
+        return SpinStateData(
+            rosterPlayers = (allPlayers - presentedPlayers - player).let(::ifEmptyAddPlaceholder),
+            revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
+            shownPlayer = player
+        )
+    }
 }
 
 data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
@@ -266,6 +208,21 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
     override fun getDuration(pairAssignments: PairAssignmentDocument) =
         shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
 
+    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+        fun rotateList(rosterPlayers: List<Player>): List<Player> {
+            val peopleToRotate = step % rosterPlayers.size
+            return rosterPlayers.takeLast(rosterPlayers.size - peopleToRotate) + rosterPlayers.take(peopleToRotate)
+        }
+
+        val presentedPlayers = pairAssignments.previouslyPresentedPlayers(target)
+        return SpinStateData(
+            rosterPlayers = (allPlayers - presentedPlayers).let(::rotateList),
+            revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
+            shownPlayer = null
+        )
+
+    }
+
 }
 
 data class AssignedPlayer(val player: Player) : SpinAnimationState() {
@@ -275,7 +232,39 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
         val nextPlayer = orderedPlayers.getOrNull(playerIndex + 1)
         return nextPlayer?.let { Shuffle(it, 0) } ?: End
     }
+
+    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+        val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player) + player
+        return SpinStateData(
+            rosterPlayers = allPlayers - presentedPlayers,
+            revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
+            shownPlayer = null
+        )
+    }
+
 }
+
+private fun PairAssignmentDocument.previouslyPresentedPlayers(player: Player) = orderedPairedPlayers()
+    .takeWhile { it != player }
+    .toList()
+
+private fun PairAssignmentDocument.revealedPairs(presentedPlayers: List<Player>) =
+    presentedPlayers
+        .let { it + makePlaceholderPlayers(it, this) }.toSimulatedPairs()
+
+private fun List<Player>.toSimulatedPairs() = chunked(2)
+    .map { if (it.size > 1) pairOf(it[0], it[1]) else pairOf(it[0]) }
+    .map { it.withPins(emptyList()) }
+
+private fun makePlaceholderPlayers(it: List<Player>, document: PairAssignmentDocument) = infinitePlaceholders()
+    .take(document.orderedPairedPlayers().count() - it.size)
+    .toList()
+
+private fun makePlaceholderPlayers(pairAssignmentDocument: PairAssignmentDocument) = infinitePlaceholders()
+    .take(pairAssignmentDocument.orderedPairedPlayers().count())
+    .toList()
+
+private fun infinitePlaceholders() = generateSequence { placeholderPlayer }
 
 data class AnimatorProps(
     val tribe: Tribe,
