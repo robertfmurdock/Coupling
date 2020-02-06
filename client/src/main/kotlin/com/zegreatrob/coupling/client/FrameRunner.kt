@@ -13,7 +13,9 @@ private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(fir
 
 private fun <A, B, C> Pair<A, B>.let(transform: (A, B) -> C) = transform(first, second)
 
-private fun <I, O, O2> ((I) -> O).join(transform: O.() -> O2) = { pair: I -> this(pair).transform() }
+private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> transform(this(pair)) }
+
+private fun <I, O> ((I) -> O).curryOneArgToNoArgsFunc(): (I) -> () -> O = { it: I -> { this(it) } }
 
 object FrameRunner : FRComponent<FrameRunnerProps>(provider()), WindowFunctions {
 
@@ -32,23 +34,15 @@ object FrameRunner : FRComponent<FrameRunnerProps>(provider()), WindowFunctions 
         children(state, props)
     }
 
-    private fun scheduleStateFunc(setState: (Any?) -> Unit) = toSetTimeoutArgsFunc(setState)
-        .join { let(FrameRunner::setTimeout) }
-        .join { Unit }
+    private fun scheduleStateFunc(setState: (Any?) -> Unit) = setState.statePairToTimeoutArgsFunc()
+        .join { args -> args.let(::setTimeout); Unit }
 
-    private fun toSetTimeoutArgsFunc(setState: (Any?) -> Unit) = { pair: Pair<*, Int> ->
-        asSetTimeoutArgs(
-            pair,
-            curryStateToTimedFunc(setState)
-        )
+    private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
+        pairTransformFirstFunc(curryOneArgToNoArgsFunc())
+
+    private fun <I, O, V> pairTransformFirstFunc(transform: (I) -> O): (Pair<I, V>) -> Pair<O, V> = { pair ->
+        pair.letFirst(transform)
     }
-
-    private fun curryStateToTimedFunc(setState: (Any?) -> Unit) = { it: Any? ->
-        { setState(it) }
-    }
-
-    private fun asSetTimeoutArgs(pair: Pair<*, Int>, setStateToTimedFunc: (Any?) -> () -> Unit) =
-        pair.letFirst(setStateToTimedFunc)
 
     private fun setTimeout(timedFunc: () -> Unit, time: Int) = window.setTimeout(timedFunc, time)
 
