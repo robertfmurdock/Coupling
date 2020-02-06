@@ -1,18 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader.pairAssignmentsHeader
-import com.zegreatrob.coupling.client.pairassignments.spin.SpinAnimation.spinAnimation
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.orderedPairedPlayers
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -21,7 +15,6 @@ import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.visibility
 import react.RBuilder
-import react.RHandler
 import react.RProps
 import react.ReactElement
 import react.dom.div
@@ -29,10 +22,9 @@ import react.dom.key
 import styled.css
 import styled.styledDiv
 
-data class SpinAnimationProps(
+data class SpinAnimationPanelProps(
     val tribe: Tribe,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument,
+    val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
 ) : RProps
 
@@ -44,23 +36,23 @@ data class SpinStateData(
     val shownPlayer: Player?
 )
 
-object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
+object SpinAnimationPanel : FRComponent<SpinAnimationPanelProps>(provider()) {
 
     private val styles = useStyles("pairassignments/SpinAnimation")
 
     fun RBuilder.spinAnimation(
         tribe: Tribe,
-        players: List<Player>,
-        pairAssignments: PairAssignmentDocument,
+        rosteredPairAssignments: RosteredPairAssignments,
         state: SpinAnimationState
-    ) = child(SpinAnimation.component.rFunction, SpinAnimationProps(tribe, players, pairAssignments, state))
+    ) = child(
+        SpinAnimationPanel.component.rFunction, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
+    )
 
-    override fun render(props: SpinAnimationProps): ReactElement {
+    override fun render(props: SpinAnimationPanelProps): ReactElement {
         val state = props.state
         val tribe = props.tribe
-        val pairAssignments = props.pairAssignments
-        val orderedPairedPlayers = pairAssignments.orderedPairedPlayers()
-        val players = props.players.filter(orderedPairedPlayers::contains)
+        val pairAssignments = props.rosteredPairAssignments.pairAssignments
+        val players = props.rosteredPairAssignments.selectedPlayers
 
         val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
 
@@ -118,58 +110,4 @@ object SpinAnimation : FRComponent<SpinAnimationProps>(provider()) {
             }
         }
     }
-}
-
-data class AnimatorProps(
-    val tribe: Tribe,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument?,
-    val enabled: Boolean
-) : RProps
-
-object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
-
-    private val animationContextConsumer = animationsDisabledContext.Consumer
-
-    fun RBuilder.animator(
-        tribe: Tribe,
-        players: List<Player>,
-        pairAssignments: PairAssignmentDocument?,
-        enabled: Boolean,
-        handler: RHandler<AnimatorProps>
-    ) = child(Animator.component.rFunction, AnimatorProps(tribe, players, pairAssignments, enabled), handler = handler)
-
-    override fun render(props: AnimatorProps) = reactElement {
-        val (tribe, players, pairAssignments, enabled) = props
-        val (state, setState) = useState<SpinAnimationState>(Start)
-
-        useEffect {
-            if (state != End)
-                window.setTimeout({ setState(nextState(pairAssignments, state)) }, getDuration(state, pairAssignments))
-        }
-        consumer(animationContextConsumer) { animationsDisabled: Boolean ->
-            if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
-                flipper(flipKey = state.toString()) {
-                    if (state == End)
-                        props.children()
-                    else
-                        spinAnimation(tribe, players, pairAssignments, state)
-                }
-            } else {
-                props.children()
-            }
-        }
-    }
-
-    private fun getDuration(state: SpinAnimationState, pairAssignments: PairAssignmentDocument?) =
-        if (pairAssignments == null)
-            0
-        else
-            state.getDuration(pairAssignments)
-
-    private fun nextState(pairAssignments: PairAssignmentDocument?, state: SpinAnimationState) =
-        if (pairAssignments == null)
-            End
-        else
-            state.next(pairAssignments)
 }

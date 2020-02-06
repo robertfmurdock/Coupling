@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.player.Player
 
 sealed class SpinAnimationState {
     abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState
-    abstract fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData
+    abstract fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData
     open fun getDuration(pairAssignments: PairAssignmentDocument): Int = 200
 }
 
@@ -24,25 +24,23 @@ object Start : SpinAnimationState() {
         }
     }
 
-    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument) =
-        SpinStateData(
-            rosterPlayers = allPlayers,
-            revealedPairs = makePlaceholderPlayers(
-                pairAssignments
-            ).toSimulatedPairs(),
-            shownPlayer = null
-        )
+    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
+        rosterPlayers = players,
+        revealedPairs = makePlaceholderPlayers(
+            pairAssignments
+        ).toSimulatedPairs(),
+        shownPlayer = null
+    )
 }
 
 object End : SpinAnimationState() {
     override fun toString() = "End"
     override fun next(pairAssignments: PairAssignmentDocument) = this
-    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument) =
-        SpinStateData(
-            rosterPlayers = emptyList(),
-            revealedPairs = emptyList(),
-            shownPlayer = null
-        )
+    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
+        rosterPlayers = emptyList(),
+        revealedPairs = emptyList(),
+        shownPlayer = null
+    )
 }
 
 data class ShowPlayer(val player: Player) : SpinAnimationState() {
@@ -50,18 +48,16 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
     override fun next(pairAssignments: PairAssignmentDocument) =
         AssignedPlayer(player)
 
-    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
         fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = if (rosterPlayers.isEmpty())
-            makePlaceholderPlayers(
-                pairAssignments
-            )
+            makePlaceholderPlayers(pairAssignments)
         else
             rosterPlayers
 
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player)
 
         return SpinStateData(
-            rosterPlayers = (allPlayers - presentedPlayers - player).let(::ifEmptyAddPlaceholder),
+            rosterPlayers = (players - presentedPlayers - player).let(::ifEmptyAddPlaceholder),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = player
         )
@@ -94,7 +90,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
     override fun getDuration(pairAssignments: PairAssignmentDocument) =
         shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
 
-    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
         fun rotateList(rosterPlayers: List<Player>): List<Player> {
             val peopleToRotate = step % rosterPlayers.size
             return rosterPlayers.takeLast(rosterPlayers.size - peopleToRotate) + rosterPlayers.take(peopleToRotate)
@@ -102,7 +98,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
 
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(target)
         return SpinStateData(
-            rosterPlayers = (allPlayers - presentedPlayers).let(::rotateList),
+            rosterPlayers = (players - presentedPlayers).let(::rotateList),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = null
         )
@@ -119,10 +115,10 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
         return nextPlayer?.let { Shuffle(it, 0) } ?: End
     }
 
-    override fun stateData(allPlayers: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
+    override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player) + player
         return SpinStateData(
-            rosterPlayers = allPlayers - presentedPlayers,
+            rosterPlayers = players - presentedPlayers,
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = null
         )
