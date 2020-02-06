@@ -7,9 +7,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
 
 sealed class SpinAnimationState {
-    abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState
+    abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState?
     abstract fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData
-    open fun getDuration(pairAssignments: PairAssignmentDocument): Int = 200
+    open fun duration(pairAssignments: PairAssignmentDocument): Int = 200
 }
 
 object Start : SpinAnimationState() {
@@ -35,7 +35,7 @@ object Start : SpinAnimationState() {
 
 object End : SpinAnimationState() {
     override fun toString() = "End"
-    override fun next(pairAssignments: PairAssignmentDocument) = this
+    override fun next(pairAssignments: PairAssignmentDocument) = null
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
         rosterPlayers = emptyList(),
         revealedPairs = emptyList(),
@@ -44,7 +44,7 @@ object End : SpinAnimationState() {
 }
 
 data class ShowPlayer(val player: Player) : SpinAnimationState() {
-    override fun getDuration(pairAssignments: PairAssignmentDocument) = 500
+    override fun duration(pairAssignments: PairAssignmentDocument) = 500
     override fun next(pairAssignments: PairAssignmentDocument) =
         AssignedPlayer(player)
 
@@ -87,7 +87,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
         return orderedPairedPlayers.count() - indexOfTarget
     }
 
-    override fun getDuration(pairAssignments: PairAssignmentDocument) =
+    override fun duration(pairAssignments: PairAssignmentDocument) =
         shuffleTotalDuration / (numberOfPlayersShuffling(pairAssignments) * fullShuffles)
 
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {

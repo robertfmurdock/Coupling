@@ -1,9 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.FRComponent
+import com.zegreatrob.coupling.client.external.react.consumer
+import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.spin.FrameRunner.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.SpinAnimationPanel.spinAnimation
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -38,30 +42,26 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
     override fun render(props: AnimatorProps) =
         reactElement {
             val (tribe, players, pairAssignments, enabled) = props
-            val (state, setState) = useState<SpinAnimationState>(Start)
 
-            useEffect {
-                if (state != End)
-                    scheduleNextState(pairAssignments, state, setState)
-            }
             consumer(animationContextConsumer) { animationsDisabled: Boolean ->
                 if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
-                    val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
-                    flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
+                    frameRunner(pairAssignments.stateSequence()) { state ->
+                        val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+                        flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
+                    }
                 } else {
                     props.children()
                 }
             }
         }
 
-    private fun scheduleNextState(
-        pairAssignments: PairAssignmentDocument?,
-        state: SpinAnimationState,
-        setState: (SpinAnimationState) -> Unit
-    ) = window.setTimeout(
-        handler = { setState(nextState(pairAssignments, state)) },
-        timeout = state.duration(pairAssignments)
-    )
+    private fun PairAssignmentDocument.stateSequence() =
+        generateSequence<Pair<SpinAnimationState, Int>>(Start to 0) { (state, time) ->
+            state.next(this)
+                ?.let {
+                    it to time + state.duration(this)
+                }
+        }
 
     private fun RBuilder.flipperSpinAnimation(
         state: SpinAnimationState,
@@ -75,16 +75,4 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
             spinAnimation(tribe, rosteredPairAssignments, state)
         }
     }
-
-    private fun SpinAnimationState.duration(pairAssignments: PairAssignmentDocument?) =
-        if (pairAssignments == null)
-            0
-        else
-            getDuration(pairAssignments)
-
-    private fun nextState(pairAssignments: PairAssignmentDocument?, state: SpinAnimationState) =
-        if (pairAssignments == null)
-            End
-        else
-            state.next(pairAssignments)
 }

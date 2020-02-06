@@ -128,7 +128,7 @@ class SpinAnimationTest {
 
             val maxTries = 100
             var tries = 0
-            fun SpinAnimationState.nextUntilNotShuffle(): SpinAnimationState = next(pairAssignments)
+            fun SpinAnimationState.nextUntilNotShuffle(): SpinAnimationState? = next(pairAssignments)
                 .also { tries++ }
                 .let { next ->
                     if (next is Shuffle && tries < maxTries) {

@@ -33,6 +33,10 @@ fun useEffect(callback: () -> Unit) {
     }
 }
 
+fun <T> useEffect(dependencies: Collection<T>, callback: () -> Unit) {
+    React.useEffect({ callback() }, dependencies.toTypedArray())
+}
+
 fun useEffectWithCleanup(dependencies: Array<Any>? = null, callback: () -> () -> Unit) {
     React.useEffect({ return@useEffect callback() }, dependencies)
 }
