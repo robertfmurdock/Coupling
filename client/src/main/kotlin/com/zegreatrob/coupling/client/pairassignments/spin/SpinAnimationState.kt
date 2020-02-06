@@ -10,6 +10,16 @@ sealed class SpinAnimationState {
     abstract fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState?
     abstract fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData
     open fun duration(pairAssignments: PairAssignmentDocument): Int = 200
+
+    companion object {
+        fun sequence(pairAssignments: PairAssignmentDocument) =
+            generateSequence<Pair<SpinAnimationState, Int>>(Start to 0) { (state, time) ->
+                state.next(pairAssignments)
+                    ?.let {
+                        it to time + state.duration(pairAssignments)
+                    }
+            }
+    }
 }
 
 object Start : SpinAnimationState() {

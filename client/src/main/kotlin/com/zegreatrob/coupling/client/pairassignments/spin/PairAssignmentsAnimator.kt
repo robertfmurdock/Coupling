@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.FrameRunner.frameRunner
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.FRComponent
 import com.zegreatrob.coupling.client.external.react.consumer
@@ -7,7 +8,6 @@ import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pairassignments.spin.FrameRunner.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.SpinAnimationPanel.spinAnimation
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -17,14 +17,14 @@ import react.RBuilder
 import react.RHandler
 import react.RProps
 
-data class AnimatorProps(
+data class PairAssignmentsAnimatorProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val enabled: Boolean
 ) : RProps
 
-object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
+object PairAssignmentsAnimator : FRComponent<PairAssignmentsAnimatorProps>(provider()), WindowFunctions {
 
     private val animationContextConsumer = animationsDisabledContext.Consumer
 
@@ -33,39 +33,30 @@ object Animator : FRComponent<AnimatorProps>(provider()), WindowFunctions {
         players: List<Player>,
         pairAssignments: PairAssignmentDocument?,
         enabled: Boolean,
-        handler: RHandler<AnimatorProps>
+        handler: RHandler<PairAssignmentsAnimatorProps>
     ) = child(
-        Animator.component.rFunction,
-        AnimatorProps(tribe, players, pairAssignments, enabled), handler = handler
+        PairAssignmentsAnimator.component.rFunction,
+        PairAssignmentsAnimatorProps(tribe, players, pairAssignments, enabled), handler = handler
     )
 
-    override fun render(props: AnimatorProps) =
-        reactElement {
-            val (tribe, players, pairAssignments, enabled) = props
+    override fun render(props: PairAssignmentsAnimatorProps) = reactElement {
+        val (tribe, players, pairAssignments, enabled) = props
 
-            consumer(animationContextConsumer) { animationsDisabled: Boolean ->
-                if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
-                    frameRunner(pairAssignments.stateSequence()) { state ->
-                        val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
-                        flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
-                    }
-                } else {
-                    props.children()
+        consumer(animationContextConsumer) { animationsDisabled: Boolean ->
+            if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
+                frameRunner(SpinAnimationState.sequence(pairAssignments)) { state ->
+                    val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+                    flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
                 }
+            } else {
+                props.children()
             }
         }
-
-    private fun PairAssignmentDocument.stateSequence() =
-        generateSequence<Pair<SpinAnimationState, Int>>(Start to 0) { (state, time) ->
-            state.next(this)
-                ?.let {
-                    it to time + state.duration(this)
-                }
-        }
+    }
 
     private fun RBuilder.flipperSpinAnimation(
         state: SpinAnimationState,
-        props: AnimatorProps,
+        props: PairAssignmentsAnimatorProps,
         tribe: Tribe,
         rosteredPairAssignments: RosteredPairAssignments
     ) = flipper(flipKey = state.toString()) {
