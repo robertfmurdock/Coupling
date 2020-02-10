@@ -7,9 +7,10 @@ import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import react.*
 
-data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>) : RProps
+data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Int) : RProps
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
+private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
 
 private fun <A, B, C> Pair<A, B>.let(transform: (A, B) -> C) = transform(first, second)
 
@@ -19,29 +20,39 @@ private fun <I, O> ((I) -> O).curryOneArgToNoArgsFunc(): (I) -> () -> O = { it: 
 
 object FrameRunner : FRComponent<FrameRunnerProps>(provider()), WindowFunctions {
 
-    fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, children: RBuilder.(T) -> Unit) = child(
-        createElement(component.rFunction, FrameRunnerProps(sequence), { value: T ->
+    fun <T> RBuilder.frameRunner(
+        sequence: Sequence<Pair<T, Int>>,
+        speed: Int,
+        children: RBuilder.(T) -> Unit
+    ) = child(
+        createElement(component.rFunction, FrameRunnerProps(sequence, speed), { value: T ->
             buildElements { children(value) }
         })
     )
 
     override fun render(props: FrameRunnerProps) = reactElement {
-        val (sequence) = props
+        val (sequence, speed) = props
         val (state, setState) = useState(sequence.first().first)
-        val scheduleStateFunc = scheduleStateFunc(setState)
+        val scheduleStateFunc = scheduleStateFunc(setState, speed)
 
         useEffect(emptyList()) { sequence.forEach(scheduleStateFunc) }
         children(state, props)
     }
 
-    private fun scheduleStateFunc(setState: (Any?) -> Unit) = setState.statePairToTimeoutArgsFunc()
+    private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Int) = setState.statePairToTimeoutArgsFunc()
+        .join(pairTransformSecondFunc<Int, Int, () -> Unit> { it / speed })
         .join { args -> args.let(::setTimeout); Unit }
 
     private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
         pairTransformFirstFunc(curryOneArgToNoArgsFunc())
 
+
     private fun <I, O, V> pairTransformFirstFunc(transform: (I) -> O): (Pair<I, V>) -> Pair<O, V> = { pair ->
         pair.letFirst(transform)
+    }
+
+    private fun <I, O, K> pairTransformSecondFunc(transform: (I) -> O): (Pair<K, I>) -> Pair<K, O> = { pair ->
+        pair.letSecond(transform)
     }
 
     private fun setTimeout(timedFunc: () -> Unit, time: Int) = window.setTimeout(timedFunc, time)
