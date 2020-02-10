@@ -9,5 +9,6 @@ data class Tribe(
     val email: String? = null,
     val name: String? = null,
     val callSignsEnabled: Boolean = false,
-    val animationEnabled: Boolean = true
+    val animationEnabled: Boolean = true,
+    val animationSpeed: Int = 1
 )

@@ -22,8 +22,9 @@ fun stubTribe() = Tribe(
     defaultBadgeName = "Badgerton",
     email = "stuby@stub.edu",
     pairingRule = PairingRule.LongestTime,
-    animationEnabled = tribeCounter % 2 == 0
-)
+    animationEnabled = tribeCounter % 2 == 0,
+    animationSpeed = tribeCounter
+).also { tribeCounter++ }
 
 var playerCounter = 1
 fun stubPlayer() = Player(

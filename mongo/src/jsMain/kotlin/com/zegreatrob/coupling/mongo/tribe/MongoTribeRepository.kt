@@ -48,7 +48,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         "alternateBadgeName" to alternateBadgeName,
         "badgesEnabled" to badgesEnabled,
         "callSignsEnabled" to callSignsEnabled,
-        "animationsEnabled" to animationEnabled
+        "animationsEnabled" to animationEnabled,
+        "animationSpeed" to animationSpeed
     )
 
     private fun Json.toTribe(): Tribe =
@@ -61,7 +62,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             alternateBadgeName = this["alternateBadgeName"]?.toString(),
             badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
             callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false,
-            animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true
+            animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true,
+            animationSpeed = this["animationSpeed"]?.unsafeCast<Int>() ?: 1
         )
 
 }
