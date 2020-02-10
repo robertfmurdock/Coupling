@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import stubTribes
 import kotlin.test.Test
 
 class TribesTest {
@@ -17,11 +18,7 @@ class TribesTest {
     fun postsThenGetWillReturnSavedTribes() = testAsync {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
         setupAsync(object {
-            val tribes = listOf(
-                Tribe(TribeId(uuid4().toString()), name = "one", badgesEnabled = true),
-                Tribe(TribeId(uuid4().toString()), name = "two", callSignsEnabled = true),
-                Tribe(TribeId(uuid4().toString()), name = "three")
-            )
+            val tribes = stubTribes(3)
         }) {
             tribes.forEach { sdk.save(it) }
         } exerciseAsync {

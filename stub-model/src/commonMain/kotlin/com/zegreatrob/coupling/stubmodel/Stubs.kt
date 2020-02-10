@@ -11,6 +11,9 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
+
+fun stubTribes(number: Int) = generateSequence { stubTribe() }.take(number).toList()
+
 var tribeCounter = 1
 
 fun stubTribe() = Tribe(

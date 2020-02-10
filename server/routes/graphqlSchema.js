@@ -87,6 +87,7 @@ const TribeType = new GraphQLObjectType({
     badgesEnabled: {type: GraphQLBoolean},
     callSignsEnabled: {type: GraphQLBoolean},
     animationsEnabled: {type: GraphQLBoolean},
+    animationSpeed: {type: GraphQLInt},
     pinList: {
       type: new GraphQLList(PinType),
       resolve: Resolvers.pinList
