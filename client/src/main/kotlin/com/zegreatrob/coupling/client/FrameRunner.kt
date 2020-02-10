@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.external.react.reactElement
 import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import react.*
+import kotlin.math.round
 
 data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Int) : RProps
 
@@ -40,8 +41,10 @@ object FrameRunner : FRComponent<FrameRunnerProps>(provider()), WindowFunctions 
     }
 
     private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Int) = setState.statePairToTimeoutArgsFunc()
-        .join(pairTransformSecondFunc<Int, Int, () -> Unit> { it / speed })
+        .join(pairTransformSecondFunc<Int, Int, () -> Unit> { it.applySpeed(speed) })
         .join { args -> args.let(::setTimeout); Unit }
+
+    private fun Int.applySpeed(speed: Int): Int = round(this / speed.toDouble()).toInt()
 
     private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
         pairTransformFirstFunc(curryOneArgToNoArgsFunc())

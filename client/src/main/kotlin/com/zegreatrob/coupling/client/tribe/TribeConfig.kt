@@ -100,12 +100,12 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
         props.pathSetter("/tribes/")
     }
 
-    private inline fun RBuilder.configInputs(
+    private fun RBuilder.configInputs(
         tribe: Tribe,
         isNew: Boolean,
-        noinline onChange: (Event) -> Unit,
-        noinline onSave: () -> Job,
-        noinline onDelete: () -> Job,
+        onChange: (Event) -> Unit,
+        onSave: () -> Job,
+        onDelete: () -> Job,
         styles: TribeConfigStyles
     ) {
         div {
@@ -125,6 +125,10 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
                 li {
                     enableAnimationsInput(tribe, onChange)
                     span { +"Keep things wacky and springy, or still and deadly serious." }
+                }
+                li {
+                    animationSpeedSelect(tribe, onChange)
+                    span { +"In case you want things to move a little... faster." }
                 }
                 li {
                     enableCallSignsInput(tribe, onChange)
@@ -151,6 +155,31 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
         saveButton(styles, onSave)
         if (!isNew) {
             retireButton(onDelete)
+        }
+    }
+
+    private fun RBuilder.animationSpeedSelect(tribe: Tribe, onChange: (Event) -> Unit) {
+        label {
+            attrs { htmlFor = "animation-speed" }
+            +"Animation Speed"
+        }
+        select {
+            attrs {
+                id = "animation-speed"
+                name = "animationSpeed"
+                this["value"] = "${tribe.animationSpeed}"
+                onChangeFunction = onChange
+            }
+            (1..4)
+                .map { speed ->
+                    option {
+                        attrs {
+                            key = "$speed"
+                            value = "$speed"
+                            label = "${speed}x"
+                        }
+                    }
+                }
         }
     }
 
