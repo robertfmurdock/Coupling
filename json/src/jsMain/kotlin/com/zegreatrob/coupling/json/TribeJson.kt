@@ -17,13 +17,19 @@ fun Json.toTribe(): Tribe =
         badgesEnabled = this["badgesEnabled"]?.toBoolean() ?: false,
         callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: false,
         animationEnabled = this["animationsEnabled"]?.toBoolean() ?: true,
-        animationSpeed = this["animationSpeed"]?.toIntFromStringOrInt() ?: 1
+        animationSpeed = this["animationSpeed"].apply { println("speed $this") }?.toDouble() ?: 1.0
     )
 
 private fun Any.toBoolean() = when (this) {
     is String -> isTruthyString()
     is Boolean -> this
     else -> false
+}
+
+private fun Any.toDouble() = when (this) {
+    is String -> toDoubleOrNull()
+    is Double -> this
+    else -> null
 }
 
 private fun Any.isTruthyString() = this == "on" || this == "true"

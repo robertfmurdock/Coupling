@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import react.*
 import kotlin.math.round
 
-data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Int) : RProps
+data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Double) : RProps
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
@@ -23,7 +23,7 @@ object FrameRunner : FRComponent<FrameRunnerProps>(provider()), WindowFunctions 
 
     fun <T> RBuilder.frameRunner(
         sequence: Sequence<Pair<T, Int>>,
-        speed: Int,
+        speed: Double,
         children: RBuilder.(T) -> Unit
     ) = child(
         createElement(component.rFunction, FrameRunnerProps(sequence, speed), { value: T ->
@@ -40,11 +40,11 @@ object FrameRunner : FRComponent<FrameRunnerProps>(provider()), WindowFunctions 
         children(state, props)
     }
 
-    private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Int) = setState.statePairToTimeoutArgsFunc()
+    private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
         .join(pairTransformSecondFunc<Int, Int, () -> Unit> { it.applySpeed(speed) })
         .join { args -> args.let(::setTimeout); Unit }
 
-    private fun Int.applySpeed(speed: Int): Int = round(this / speed.toDouble()).toInt()
+    private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 
     private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
         pairTransformFirstFunc(curryOneArgToNoArgsFunc())

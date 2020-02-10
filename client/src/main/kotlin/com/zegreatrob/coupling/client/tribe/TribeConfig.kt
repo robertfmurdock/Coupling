@@ -170,7 +170,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
                 this["value"] = "${tribe.animationSpeed}"
                 onChangeFunction = onChange
             }
-            (1..4)
+            listOf(0.25, 0.5, 1.0, 1.25, 1.5, 2, 3, 4)
                 .map { speed ->
                     option {
                         attrs {

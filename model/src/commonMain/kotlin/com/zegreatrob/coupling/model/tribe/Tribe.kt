@@ -10,5 +10,5 @@ data class Tribe(
     val name: String? = null,
     val callSignsEnabled: Boolean = false,
     val animationEnabled: Boolean = true,
-    val animationSpeed: Int = 1
+    val animationSpeed: Double = 1.0
 )

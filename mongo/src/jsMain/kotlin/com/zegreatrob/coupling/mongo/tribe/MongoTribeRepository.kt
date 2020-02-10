@@ -63,7 +63,7 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
             badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
             callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false,
             animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true,
-            animationSpeed = this["animationSpeed"]?.unsafeCast<Int>() ?: 1
+            animationSpeed = this["animationSpeed"]?.unsafeCast<Double>() ?: 1.0
         )
 
 }

@@ -1,6 +1,7 @@
 import {
   GraphQLBoolean,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -87,7 +88,7 @@ const TribeType = new GraphQLObjectType({
     badgesEnabled: {type: GraphQLBoolean},
     callSignsEnabled: {type: GraphQLBoolean},
     animationsEnabled: {type: GraphQLBoolean},
-    animationSpeed: {type: GraphQLInt},
+    animationSpeed: {type: GraphQLFloat},
     pinList: {
       type: new GraphQLList(PinType),
       resolve: Resolvers.pinList

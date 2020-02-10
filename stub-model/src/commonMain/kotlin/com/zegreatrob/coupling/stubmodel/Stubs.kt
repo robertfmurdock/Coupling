@@ -26,7 +26,7 @@ fun stubTribe() = Tribe(
     email = "stuby@stub.edu",
     pairingRule = PairingRule.LongestTime,
     animationEnabled = tribeCounter % 2 == 0,
-    animationSpeed = tribeCounter
+    animationSpeed = tribeCounter.toDouble()
 ).also { tribeCounter++ }
 
 var playerCounter = 1
