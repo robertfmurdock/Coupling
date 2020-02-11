@@ -55,22 +55,6 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
     }
 
     @Test
-    fun canSaveAndGetPlayer() = testAsync {
-        withMongoRepository {
-            dropPlayers()
-            setupAsync(object {
-                val tribeId = TribeId("woo")
-                val player = stubPlayer()
-            }) exerciseAsync {
-                save(TribeIdPlayer(tribeId, player))
-                getPlayers(tribeId)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(player))
-            }
-        }
-    }
-
-    @Test
     fun savedPlayersIncludeModificationDateAndUsername() = testAsync {
         withMongoRepository {
             dropPlayers()
@@ -92,40 +76,23 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
         }
     }
 
-    class SavingTheSamePlayerTwice {
-
-        private suspend fun MongoPlayerRepositoryTestAnchor.setupSavedPlayer() = setupAsync(object {
-            val tribeId = TribeId("boo")
-            val player = stubPlayer()
-            val updatedPlayer = player.copy(name = "Timmy")
-        }) {
-            dropPlayers()
-            save(TribeIdPlayer(tribeId, player))
-        }
-
-        @Test
-        fun willNotDeleteOriginalRecord() = testAsync {
-            withMongoRepository {
-                setupSavedPlayer() exerciseAsync {
-                    save(TribeIdPlayer(tribeId, updatedPlayer))
-                    getDbPlayers(tribeId)
-                } verifyAsync { result ->
-                    result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
-                        .map { it["name"] }
-                        .assertIsEqualTo(listOf("Timmy", player.name))
-                }
-            }
-        }
-
-        @Test
-        fun getWillOnlyReturnTheUpdatedPlayer() = testAsync {
-            withMongoRepository {
-                setupSavedPlayer() exerciseAsync {
-                    save(TribeIdPlayer(tribeId, updatedPlayer))
-                    getPlayers(tribeId)
-                } verifyAsync { result ->
-                    result.assertIsEqualTo(listOf(updatedPlayer))
-                }
+    @Test
+    fun savingTwiceWillNotDeleteOriginalRecord() = testAsync {
+        withMongoRepository {
+            setupAsync(object {
+                val tribeId = TribeId("boo")
+                val player = stubPlayer()
+                val updatedPlayer = player.copy(name = "Timmy")
+            }) {
+                dropPlayers()
+                save(TribeIdPlayer(tribeId, player))
+            } exerciseAsync {
+                save(TribeIdPlayer(tribeId, updatedPlayer))
+                getDbPlayers(tribeId)
+            } verifyAsync { result ->
+                result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
+                    .map { it["name"] }
+                    .assertIsEqualTo(listOf("Timmy", player.name))
             }
         }
     }
