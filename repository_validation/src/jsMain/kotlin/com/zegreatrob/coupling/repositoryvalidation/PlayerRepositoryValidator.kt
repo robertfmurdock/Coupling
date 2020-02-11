@@ -47,4 +47,18 @@ interface PlayerRepositoryValidator {
         }
     }
 
+    @Test
+    fun deleteWillRemoveAGivenPlayer() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val player = stubPlayer()
+        }) {
+            repository.save(TribeIdPlayer(tribeId, player))
+        } exerciseAsync {
+            repository.deletePlayer(tribeId, player.id!!)
+            repository.getPlayers(tribeId)
+        } verifyAsync { result ->
+            result.contains(player).assertIsEqualTo(false)
+        }
+    }
+
 }

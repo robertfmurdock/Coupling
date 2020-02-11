@@ -100,31 +100,6 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
     private fun DateTime.isCloseToNow() = (DateTime.now() - this) < 1.seconds
 
     @Test
-    fun canSaveDeleteAndNotGetPlayer() = testAsync {
-        withMongoRepository {
-            dropPlayers()
-            setupAsync(object {
-                val tribe = TribeId("hoo")
-                val playerId = id()
-                val player = Player(
-                    id = playerId,
-                    badge = 0,
-                    name = "Jim",
-                    callSignAdjective = "Spicy",
-                    callSignNoun = "Meatball",
-                    email = "jim@jim.meat",
-                    imageURL = "italian.jpg"
-                )
-            }) exerciseAsync {
-                save(TribeIdPlayer(tribe, player))
-                deletePlayer(tribe, playerId)
-            } verifyAsync {
-                getPlayers(tribe).assertIsEqualTo(emptyList())
-            }
-        }
-    }
-
-    @Test
     fun whenPlayerIsDeletedWillShowUpInGetDeleted() = testAsync {
         withMongoRepository {
             setupAsync(object {
