@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.repositoryvalidation
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -74,6 +76,17 @@ interface PairAssignmentDocumentRepositoryValidator {
             result.assertIsEqualTo(true)
             repository.getPairAssignments(tribeId)
                 .assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val id = PairAssignmentDocumentId("${uuid4()}")
+        }) exerciseAsync {
+            repository.delete(tribeId, id)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(false)
         }
     }
 

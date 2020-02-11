@@ -59,20 +59,6 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
     }
 
     @Test
-    fun deleteWhenRecordDoesNotExistWillReturnFalse() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                private val pair = stubSimplePairAssignmentDocument()
-                val id = pair.first
-            }) exerciseAsync {
-                delete(TribeId("sldkjf"), id)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(false)
-            }
-        }
-    }
-
-    @Test
     fun whenFindingLegacyFormatWillCorrectlyLoad() = testAsync {
         withMongoRepository {
             dropHistory()

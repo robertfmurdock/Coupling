@@ -12,10 +12,14 @@ interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, AxiosS
         tribeId: TribeId,
         pairAssignmentDocumentId: PairAssignmentDocumentId
     ): Boolean {
-        axios.delete("/api/tribes/${tribeId.value}/history/${pairAssignmentDocumentId.value}")
-            .unsafeCast<Promise<Unit>>()
-            .asDeferred()
-            .await()
-        return true
+        return try {
+            axios.delete("/api/tribes/${tribeId.value}/history/${pairAssignmentDocumentId.value}")
+                .unsafeCast<Promise<Unit>>()
+                .asDeferred()
+                .await()
+            true
+        } catch (_: Throwable) {
+            false
+        }
     }
 }
