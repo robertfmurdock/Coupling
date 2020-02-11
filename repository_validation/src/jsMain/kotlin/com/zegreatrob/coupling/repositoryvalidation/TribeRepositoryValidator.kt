@@ -9,9 +9,9 @@ import stubTribe
 import stubTribes
 import kotlin.test.Test
 
-abstract class TribeRepositoryValidator {
+interface TribeRepositoryValidator {
 
-    abstract suspend fun withRepository(handler: suspend (TribeRepository) -> Unit)
+    suspend fun withRepository(handler: suspend (TribeRepository) -> Unit)
 
     private fun testRepository(block: suspend CoroutineScope.(TribeRepository) -> Any?) = testAsync {
         withRepository { repository -> block(repository) }

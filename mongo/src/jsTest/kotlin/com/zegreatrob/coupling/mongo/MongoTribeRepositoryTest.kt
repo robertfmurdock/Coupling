@@ -17,7 +17,7 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 
-class MongoTribeRepositoryTest : TribeRepositoryValidator() {
+class MongoTribeRepositoryTest : TribeRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
         withMongoRepository { handler(this) }

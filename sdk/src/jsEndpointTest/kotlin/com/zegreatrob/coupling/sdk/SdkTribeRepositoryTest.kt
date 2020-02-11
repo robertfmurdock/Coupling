@@ -13,7 +13,7 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
-class SdkTribeRepositoryTest : TribeRepositoryValidator() {
+class SdkTribeRepositoryTest : TribeRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
