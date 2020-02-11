@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.repositoryvalidation.PlayerRepositoryValidator
@@ -72,30 +71,11 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator {
             val sdk = authorizedSdk()
             setupAsync(object {
             }) exerciseAsync {
-                catchAxiosError {
-                    sdk.deletePlayer(tribeId, "player id")
-                }
+                sdk.deletePlayer(tribeId, "player id")
             } verifyAsync { result ->
-                result["status"].assertIsEqualTo(404)
+                result.assertIsEqualTo(false)
             }
         }
     }
 
-    @Test
-    fun deleteWillReturnErrorWhenPlayerDoesNotExist() = testAsync {
-        val sdk = authorizedSdk()
-        setupAsync(object {
-            val tribe = Tribe(id = TribeId(uuid4().toString()))
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            catchAxiosError {
-                sdk.deletePlayer(tribe.id, monk.id().toString())
-            }
-        } verifyAsync { result ->
-            result["status"].assertIsEqualTo(404)
-            result["data"].unsafeCast<Json>()["message"]
-                .assertIsEqualTo("Player could not be deleted.")
-        }
-    }
 }

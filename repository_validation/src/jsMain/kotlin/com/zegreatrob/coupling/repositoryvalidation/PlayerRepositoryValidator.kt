@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repositoryvalidation
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -77,21 +78,31 @@ interface PlayerRepositoryValidator {
     }
 
     @Test
-    fun whenPlayerIsDeletedThenBroughtBackThenDeletedWillShowUpOnceInGetDeleted() =
-        testRepository { repository, tribeId ->
-            setupAsync(object {
-                val player = stubPlayer()
-                val playerId = player.id!!
-            }) {
-                repository.save(player with tribeId)
-                repository.deletePlayer(tribeId, playerId)
-                repository.save(player with tribeId)
-                repository.deletePlayer(tribeId, playerId)
-            } exerciseAsync {
-                repository.getDeleted(tribeId)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(player))
-            }
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val player = stubPlayer()
+            val playerId = player.id!!
+        }) {
+            repository.save(player with tribeId)
+            repository.deletePlayer(tribeId, playerId)
+            repository.save(player with tribeId)
+            repository.deletePlayer(tribeId, playerId)
+        } exerciseAsync {
+            repository.getDeleted(tribeId)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(player))
         }
+    }
+
+    @Test
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val playerId = "${uuid4()}"
+        }) exerciseAsync {
+            repository.deletePlayer(tribeId, playerId)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(false)
+        }
+    }
 
 }

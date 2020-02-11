@@ -243,16 +243,6 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
         }
     }
 
-    @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val playerId = id()
-            }) exerciseAsync {
-                deletePlayer(TribeId(""), playerId)
-            } verifyAsync { result -> result.assertIsEqualTo(false) }
-        }
-    }
 
     @Test
     fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testAsync {
