@@ -108,8 +108,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
                                         "Meatball",
                                         "italian.jpg"
                                     )
-                                )
-                                    .withPins()
+                                ).withPins()
                             ),
                             PairAssignmentDocumentId(documentId)
                         )
@@ -119,47 +118,30 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
         }
     }
 
-    class SavingTheSameDocumentTwice {
-
-        private suspend fun MongoPairAssignmentDocumentRepositoryTestAnchor.setupSavedDocument() = setupAsync(object {
-            val tribeId = TribeId("boo")
-            val originalDateTime = DateTime.now()
-            val pairAssignmentDocument = stubSimplePairAssignmentDocument(date = originalDateTime).second
-            val updatedDateTime = originalDateTime.plus(3.days)
-            val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
-        }) {
-            dropHistory()
-            save(pairAssignmentDocument.with(tribeId))
-        }
-
-        @Test
-        fun willNotDeleteOriginalRecord() = testAsync {
-            withMongoRepository {
-                setupSavedDocument() exerciseAsync {
-                    save(updatedDocument.with(tribeId))
-                    getDbHistory(tribeId)
-                } verifyAsync { result ->
-                    result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date?>()?.toDateTime() }
-                        .map { it["date"].unsafeCast<Date?>()?.toDateTime() }
-                        .assertIsEqualTo(
-                            listOf(
-                                updatedDateTime,
-                                originalDateTime
-                            )
+    @Test
+    fun savingTheSameDocTwiceWillNotDeleteOriginalRecord() = testAsync {
+        withMongoRepository {
+            setupAsync(object {
+                val tribeId = TribeId("boo")
+                val originalDateTime = DateTime.now()
+                val pairAssignmentDocument = stubSimplePairAssignmentDocument(date = originalDateTime).second
+                val updatedDateTime = originalDateTime.plus(3.days)
+                val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
+            }) {
+                dropHistory()
+                save(pairAssignmentDocument.with(tribeId))
+            } exerciseAsync {
+                save(updatedDocument.with(tribeId))
+                getDbHistory(tribeId)
+            } verifyAsync { result ->
+                result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date?>()?.toDateTime() }
+                    .map { it["date"].unsafeCast<Date?>()?.toDateTime() }
+                    .assertIsEqualTo(
+                        listOf(
+                            updatedDateTime,
+                            originalDateTime
                         )
-                }
-            }
-        }
-
-        @Test
-        fun getWillOnlyReturnTheUpdatedDocument() = testAsync {
-            withMongoRepository {
-                setupSavedDocument() exerciseAsync {
-                    save(updatedDocument.with(tribeId))
-                    getPairAssignments(tribeId)
-                } verifyAsync { result ->
-                    result.assertIsEqualTo(listOf(updatedDocument))
-                }
+                    )
             }
         }
     }

@@ -90,4 +90,21 @@ interface PairAssignmentDocumentRepositoryValidator {
         }
     }
 
+    @Test
+    fun afterSavingAndUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val originalDateTime = DateTime.now()
+            val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
+            val updatedDateTime = originalDateTime.plus(3.days)
+            val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
+        }) {
+            repository.save(pairAssignmentDocument.with(tribeId))
+        } exerciseAsync {
+            repository.save(updatedDocument.with(tribeId))
+            repository.getPairAssignments(tribeId)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(updatedDocument))
+        }
+    }
+
 }
