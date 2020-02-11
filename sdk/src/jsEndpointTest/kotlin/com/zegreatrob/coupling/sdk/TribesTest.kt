@@ -5,27 +5,19 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repositoryvalidation.TribeRepositoryValidator
 import com.zegreatrob.coupling.sdk.PlayersTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubTribes
 import kotlin.test.Test
 
-class TribesTest {
+class TribesTest : TribeRepositoryValidator() {
 
-    @Test
-    fun postsThenGetWillReturnSavedTribes() = testAsync {
+    override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribes = stubTribes(3)
-        }) {
-            tribes.forEach { sdk.save(it) }
-        } exerciseAsync {
-            sdk.getTribes()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(tribes)
-        }
+        handler(sdk)
     }
 
     @Test
