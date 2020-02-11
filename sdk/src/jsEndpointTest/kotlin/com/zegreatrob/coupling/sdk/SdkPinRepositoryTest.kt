@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repositoryvalidation.PinRepositoryValidator
@@ -18,20 +17,6 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
         val tribe = stubTribe()
         sdk.save(tribe)
         handler(sdk, tribe.id)
-    }
-
-    @Test
-    fun givenNoPinsWillReturnEmptyList() = testAsync {
-        val sdk = authorizedSdk()
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            sdk.getPins(tribe.id)
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
-        }
     }
 
     @Test

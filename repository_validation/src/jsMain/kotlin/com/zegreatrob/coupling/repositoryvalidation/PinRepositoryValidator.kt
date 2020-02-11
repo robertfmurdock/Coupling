@@ -72,4 +72,14 @@ interface PinRepositoryValidator {
         }
     }
 
+    @Test
+    fun givenNoPinsWillReturnEmptyList() = testRepository { repository, tribeId ->
+        setupAsync(object {
+        }) exerciseAsync {
+            repository.getPins(tribeId)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
+
 }
