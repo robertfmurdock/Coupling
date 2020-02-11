@@ -61,4 +61,18 @@ interface PlayerRepositoryValidator {
         }
     }
 
+    @Test
+    fun deletedPlayersShowUpInGetDeleted() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val player = stubPlayer()
+        }) {
+            repository.save(TribeIdPlayer(tribeId, player))
+            repository.deletePlayer(tribeId, player.id!!)
+        } exerciseAsync {
+            repository.getDeleted(tribeId)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(listOf(player))
+        }
+    }
+
 }
