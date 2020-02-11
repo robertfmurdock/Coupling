@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repositoryvalidation
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -59,4 +60,16 @@ interface PinRepositoryValidator {
                 .assertIsEqualTo(2)
         }
     }
+
+    @Test
+    fun deleteWillFailWhenPinDoesNotExist() = testRepository { repository, tribeId ->
+        setupAsync(object {
+        }) {
+        } exerciseAsync {
+            repository.deletePin(tribeId, "${uuid4()}")
+        } verifyAsync { result ->
+            result.assertIsEqualTo(false)
+        }
+    }
+
 }

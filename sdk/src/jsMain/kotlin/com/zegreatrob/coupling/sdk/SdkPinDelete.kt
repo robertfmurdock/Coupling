@@ -6,11 +6,13 @@ import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 
 interface SdkPinDelete : PinDelete, AxiosSyntax {
-    override suspend fun deletePin(tribeId: TribeId, pinId: String): Boolean {
+    override suspend fun deletePin(tribeId: TribeId, pinId: String) = try {
         axios.delete("/api/tribes/${tribeId.value}/pins/$pinId")
             .unsafeCast<Promise<Unit>>()
             .asDeferred()
             .await()
-        return true
+        true
+    } catch (error: Throwable) {
+        false
     }
 }
