@@ -11,6 +11,7 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import stubPairAssignmentDoc
 import kotlin.test.Test
+import kotlin.test.assertNotNull
 
 interface PairAssignmentDocumentRepositoryValidator {
     suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit)
@@ -46,4 +47,17 @@ interface PairAssignmentDocumentRepositoryValidator {
         }
     }
 
+    @Test
+    fun saveWillAssignIdWhenDocumentHasNone() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val pairAssignmentDoc = stubPairAssignmentDoc().copy(id = null)
+        }) exerciseAsync {
+            repository.save(pairAssignmentDoc.with(tribeId))
+            repository.getPairAssignments(tribeId)
+        } verifyAsync { result ->
+            val resultId = result.getOrNull(0)?.id
+            assertNotNull(resultId)
+            result.assertIsEqualTo(listOf(pairAssignmentDoc.copy(id = resultId)))
+        }
+    }
 }

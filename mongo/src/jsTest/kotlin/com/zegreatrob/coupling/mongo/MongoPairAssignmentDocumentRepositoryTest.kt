@@ -13,7 +13,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
-import stubPairAssignmentDoc
 import stubSimplePairAssignmentDocument
 import stubTribeId
 import kotlin.js.Date
@@ -22,7 +21,6 @@ import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.random.Random
 import kotlin.test.Test
-import kotlin.test.assertNotNull
 
 private const val mongoUrl = "localhost/MongoPairAssignmentDocumentRepositoryTest"
 
@@ -56,25 +54,6 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
                 with(repositoryWithDb, block)
             } finally {
                 repositoryWithDb.db.close().unsafeCast<Promise<Unit>>().await()
-            }
-        }
-    }
-
-    @Test
-    fun willAssignIdWhenDocumentHasNone() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val tribeId = TribeId("tribe-id-99")
-                val tribeIdDocument = stubPairAssignmentDoc().copy(id = null).with(tribeId)
-            }) {
-                dropHistory()
-            } exerciseAsync {
-                save(tribeIdDocument)
-                getPairAssignments(tribeId)
-            } verifyAsync { result ->
-                val resultId = result.getOrNull(0)?.id
-                assertNotNull(resultId)
-                result.assertIsEqualTo(listOf(tribeIdDocument.document.copy(id = resultId)))
             }
         }
     }
