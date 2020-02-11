@@ -17,7 +17,7 @@ fun stubTribes(number: Int) = generateSequence { stubTribe() }.take(number).toLi
 var tribeCounter = 1
 
 fun stubTribe() = Tribe(
-    id = TribeId(uuidString()),
+    id = stubTribeId(),
     name = "Stub Tribe $tribeCounter",
     alternateBadgeName = "Badgely",
     badgesEnabled = tribeCounter % 2 == 0,
@@ -29,16 +29,20 @@ fun stubTribe() = Tribe(
     animationSpeed = tribeCounter.toDouble()
 ).also { tribeCounter++ }
 
+fun stubTribeId() = TribeId(uuidString())
+
 var playerCounter = 1
 fun stubPlayer() = Player(
     id = uuidString(),
     badge = 1,
     name = "Tim $playerCounter",
-    callSignAdjective = "Spicy",
-    callSignNoun = "Meatball",
-    email = "tim@tim.meat",
-    imageURL = "italian.jpg"
+    callSignAdjective = "Spicy $playerCounter",
+    callSignNoun = "Meatball $playerCounter",
+    email = "tim$playerCounter@tim.meat",
+    imageURL = "italian$playerCounter.jpg"
 ).also { playerCounter++ }
+
+fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()
 
 var pinCounter = 1
 fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget()).also { pinCounter++ }

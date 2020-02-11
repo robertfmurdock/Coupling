@@ -5,14 +5,24 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.player.PlayerRepository
+import com.zegreatrob.coupling.repositoryvalidation.PlayerRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import stubTribe
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
-class PlayersTest {
+class SdkPlayerRepositoryTest : PlayerRepositoryValidator {
+
+    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId) -> Unit) {
+        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+        val tribe = stubTribe()
+        sdk.save(tribe)
+        handler(sdk, tribe.id)
+    }
 
     companion object {
         inline fun catchAxiosError(function: () -> Any?) = try {

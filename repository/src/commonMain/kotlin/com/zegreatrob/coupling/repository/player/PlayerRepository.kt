@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 interface PlayerRepository : PlayerListGet,
     PlayerSave,
     PlayerDelete,
-    PlayerListGetDeleted,
-    PlayerListGetByEmail
+    PlayerListGetDeleted
 
 interface PlayerDelete {
     suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean

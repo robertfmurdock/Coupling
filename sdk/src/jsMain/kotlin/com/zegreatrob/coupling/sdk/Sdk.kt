@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repository.player.PlayerDelete
-import com.zegreatrob.coupling.repository.player.PlayerListGet
-import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
-import com.zegreatrob.coupling.repository.player.PlayerSave
+import com.zegreatrob.coupling.repository.player.*
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
@@ -30,8 +27,6 @@ interface SdkPinRepository : SdkPinGet, SdkPinSave, SdkPinDelete, PinRepository
 interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
     SdkPairAssignmentDocumentDelete
-
-interface PlayerRepository : PlayerListGet, PlayerSave, PlayerDelete, PlayerListGetDeleted
 
 interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
     SdkPinRepository, SdkSpin, SdkSyntax, SdkCreateGoogleSession, SdkLogout {

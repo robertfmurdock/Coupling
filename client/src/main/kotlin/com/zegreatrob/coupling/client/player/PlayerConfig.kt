@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.player.PlayerConfigEditor.playerConfigEditor
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.sdk.PlayerRepository
+import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RProps

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.sdk.PlayerRepository
+import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope

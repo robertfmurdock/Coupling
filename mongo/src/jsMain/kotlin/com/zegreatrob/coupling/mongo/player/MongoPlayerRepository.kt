@@ -1,18 +1,20 @@
 package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
+import com.zegreatrob.coupling.repository.player.PlayerRepository
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
 interface MongoPlayerRepository : PlayerRepository,
+    PlayerListGetByEmail,
     PlayerToDbSyntax,
     DbRecordSaveSyntax,
     DbRecordLoadSyntax,

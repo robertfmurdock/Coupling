@@ -8,18 +8,25 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
+import com.zegreatrob.coupling.repository.player.PlayerRepository
+import com.zegreatrob.coupling.repositoryvalidation.PlayerRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import stubPlayer
+import stubTribeId
 import kotlin.js.*
 import kotlin.random.Random
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-class MongoPlayerRepositoryTest {
+class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
+
+    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId) -> Unit) {
+        withMongoRepository { handler(this, stubTribeId()) }
+    }
 
     companion object {
         private fun repositoryWithDb() = MongoPlayerRepositoryTestAnchor()
@@ -37,7 +44,7 @@ class MongoPlayerRepositoryTest {
                 playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
-        private inline fun withRepository(block: MongoPlayerRepositoryTestAnchor.() -> Unit) {
+        private inline fun withMongoRepository(block: MongoPlayerRepositoryTestAnchor.() -> Unit) {
             val repositoryWithDb = repositoryWithDb()
             try {
                 with(repositoryWithDb, block)
@@ -49,7 +56,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun canSaveAndGetPlayer() = testAsync {
-        withRepository {
+        withMongoRepository {
             dropPlayers()
             setupAsync(object {
                 val tribeId = TribeId("woo")
@@ -65,7 +72,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun savedPlayersIncludeModificationDateAndUsername() = testAsync {
-        withRepository {
+        withMongoRepository {
             dropPlayers()
             setupAsync(object {
                 val tribeId = TribeId("woo")
@@ -98,7 +105,7 @@ class MongoPlayerRepositoryTest {
 
         @Test
         fun willNotDeleteOriginalRecord() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupSavedPlayer() exerciseAsync {
                     save(TribeIdPlayer(tribeId, updatedPlayer))
                     getDbPlayers(tribeId)
@@ -112,7 +119,7 @@ class MongoPlayerRepositoryTest {
 
         @Test
         fun getWillOnlyReturnTheUpdatedPlayer() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupSavedPlayer() exerciseAsync {
                     save(TribeIdPlayer(tribeId, updatedPlayer))
                     getPlayers(tribeId)
@@ -127,7 +134,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun canSaveDeleteAndNotGetPlayer() = testAsync {
-        withRepository {
+        withMongoRepository {
             dropPlayers()
             setupAsync(object {
                 val tribe = TribeId("hoo")
@@ -152,7 +159,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun whenPlayerIsDeletedWillShowUpInGetDeleted() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val tribeId = TribeId("hoo")
                 val playerId = id()
@@ -171,7 +178,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun whenPlayerIsDeletedThenBroughtBackThenDeletedWillShowUpOnceInGetDeleted() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val tribeId = TribeId("hoo")
                 val playerId = id()
@@ -192,7 +199,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun deleteRecordWillIncludeUsername() = testAsync {
-        withRepository {
+        withMongoRepository {
             dropPlayers()
             setupAsync(object {
                 val tribeId = TribeId("hoo")
@@ -202,7 +209,7 @@ class MongoPlayerRepositoryTest {
             }) {
                 with(object : MongoPlayerRepository {
                     override val userEmail = userWhoSaved
-                    override val jsRepository = this@withRepository.jsRepository
+                    override val jsRepository = this@withMongoRepository.jsRepository
                 }) {
                     save(TribeIdPlayer(tribeId, player))
                 }
@@ -242,7 +249,7 @@ class MongoPlayerRepositoryTest {
 
         @Test
         fun canGetPlayersThatLookHistorical() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupLegacyPlayer() exerciseAsync {
                     getPlayers(tribeId)
                 } verifyAsync { result ->
@@ -260,7 +267,7 @@ class MongoPlayerRepositoryTest {
 
         @Test
         fun canDeletePlayersThatLookHistorical() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupLegacyPlayer() exerciseAsync {
                     deletePlayer(tribeId, playerId)
                     getPlayers(tribeId)
@@ -272,7 +279,7 @@ class MongoPlayerRepositoryTest {
 
         @Test
         fun saveThenGetWillOnlyReturnTheUpdatedPlayer() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupAsync(object {
                     val playerId = id()
                     val tribeId = TribeId("woo")
@@ -301,7 +308,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun forRealisticLegacyData() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val tribeId = TribeId("nah")
                 val playerDbJson = json(
@@ -336,7 +343,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun deleteWithUnknownPlayerIdWillReturnFalse() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val playerId = id()
             }) exerciseAsync {
@@ -347,7 +354,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val email = "test@zegreatrob.com"
                 val player = Player(id(), email = email, name = "Testo")
@@ -369,7 +376,7 @@ class MongoPlayerRepositoryTest {
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val email = "test@zegreatrob.com"
                 val player = Player(id(), email = email, name = "Testo")

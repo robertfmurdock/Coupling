@@ -14,6 +14,7 @@ class MongoRepositoryCatalog(
     override val user: User
 ) : RepositoryCatalog,
     MongoTribeRepository,
+    ServerPlayerRepository,
     MongoPlayerRepository,
     MongoPairAssignmentDocumentRepository,
     MongoPinRepository,
