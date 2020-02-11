@@ -71,20 +71,6 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
     }
 
     @Test
-    fun whenNoHistoryGetWillReturnEmptyList() = testAsync {
-        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "one")
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            sdk.getPairAssignments(tribe.id)
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
-        }
-    }
-
-    @Test
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {

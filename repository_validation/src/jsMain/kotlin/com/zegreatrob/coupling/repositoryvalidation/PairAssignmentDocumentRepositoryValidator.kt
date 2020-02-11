@@ -36,4 +36,14 @@ interface PairAssignmentDocumentRepositoryValidator {
         }
     }
 
+    @Test
+    fun whenNoHistoryGetWillReturnEmptyList() = testRepository { repository, tribeId ->
+        setupAsync(object {
+        }) exerciseAsync {
+            repository.getPairAssignments(tribeId)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
+
 }
