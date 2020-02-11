@@ -6,35 +6,23 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repositoryvalidation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.sdk.SdkPlayerRepositoryTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import stubTribe
 import kotlin.js.Json
 import kotlin.test.Test
 
-class HistoryTest {
+class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
 
-    @Test
-    fun postsThenGetWillReturnSavedPairs() = testAsync {
+    override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "one")
-            val pairAssignments = PairAssignmentDocument(
-                id = PairAssignmentDocumentId(uuid4().toString()),
-                date = DateTime.now(),
-                pairs = listOf(
-                    pairOf(Player(name = "Shaggy"), Player(name = "Scooby"))
-                ).withPins()
-            )
-        }) {
-            sdk.save(tribe)
-            sdk.save(pairAssignments.with(tribe.id))
-        } exerciseAsync {
-            sdk.getPairAssignments(tribe.id)
-        } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(pairAssignments))
-        }
+        val tribe = stubTribe()
+        sdk.save(tribe)
+        handler(sdk, tribe.id)
     }
 
     @Test

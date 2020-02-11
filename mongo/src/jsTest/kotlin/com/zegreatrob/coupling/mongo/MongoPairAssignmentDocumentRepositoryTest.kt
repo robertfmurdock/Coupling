@@ -7,12 +7,15 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repositoryvalidation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import stubPairAssignmentDoc
 import stubSimplePairAssignmentDocument
+import stubTribeId
 import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -23,7 +26,11 @@ import kotlin.test.assertNotNull
 
 private const val mongoUrl = "localhost/MongoPairAssignmentDocumentRepositoryTest"
 
-class MongoPairAssignmentDocumentRepositoryTest {
+class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
+
+    override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
+        withMongoRepository { handler(this, stubTribeId()) }
+    }
 
     companion object {
 
@@ -43,7 +50,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
                 historyCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
-        private suspend inline fun withRepository(block: MongoPairAssignmentDocumentRepositoryTestAnchor.() -> Unit) {
+        private suspend inline fun withMongoRepository(block: MongoPairAssignmentDocumentRepositoryTestAnchor.() -> Unit) {
             val repositoryWithDb = repositoryWithDb()
             try {
                 with(repositoryWithDb, block)
@@ -54,44 +61,8 @@ class MongoPairAssignmentDocumentRepositoryTest {
     }
 
     @Test
-    fun givenSimplePairSaveAndGetWorks() = testAsync {
-        withRepository {
-            setupAsync(object {
-                val tribeId = TribeId("tribe-id-99")
-                val document = stubSimplePairAssignmentDocument().second
-            }) {
-                dropHistory()
-            } exerciseAsync {
-                save(document.with(tribeId))
-                getPairAssignments(tribeId)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(document))
-            }
-        }
-    }
-
-    @Test
-    fun differentDocumentsBothShowUpInGetFromNewestToOldestByDate() = testAsync {
-        withRepository {
-            setupAsync(object {
-                val tribeId = TribeId("tribe-id-99")
-                val oldest = stubSimplePairAssignmentDocument(date = DateTime.now().minus(3.days)).second
-                val middle = stubSimplePairAssignmentDocument(date = DateTime.now()).second
-                val newest = stubSimplePairAssignmentDocument(date = DateTime.now().plus(2.days)).second
-            }) {
-                dropHistory()
-                listOf(middle, oldest, newest).forEach { save(it.with(tribeId)) }
-            } exerciseAsync {
-                getPairAssignments(tribeId)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(newest, middle, oldest))
-            }
-        }
-    }
-
-    @Test
     fun willAssignIdWhenDocumentHasNone() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val tribeId = TribeId("tribe-id-99")
                 val tribeIdDocument = stubPairAssignmentDoc().copy(id = null).with(tribeId)
@@ -110,7 +81,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
     @Test
     fun saveAndDeleteThenGetWillReturnNothing() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val tribeId = TribeId("tribe-id-99")
                 private val pair = stubSimplePairAssignmentDocument()
@@ -131,7 +102,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
     @Test
     fun deleteWhenRecordDoesNotExistWillReturnFalse() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 private val pair = stubSimplePairAssignmentDocument()
                 val id = pair.first
@@ -145,7 +116,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
     @Test
     fun whenFindingLegacyFormatWillCorrectlyLoad() = testAsync {
-        withRepository {
+        withMongoRepository {
             setupAsync(object {
                 val documentId = "b1988bc3-2d58-4dcf-a51f-913d1cce3b50"
                 val tribeId = "boo"
@@ -218,7 +189,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
         @Test
         fun willNotDeleteOriginalRecord() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupSavedDocument() exerciseAsync {
                     save(updatedDocument.with(tribeId))
                     getDbHistory(tribeId)
@@ -237,7 +208,7 @@ class MongoPairAssignmentDocumentRepositoryTest {
 
         @Test
         fun getWillOnlyReturnTheUpdatedDocument() = testAsync {
-            withRepository {
+            withMongoRepository {
                 setupSavedDocument() exerciseAsync {
                     save(updatedDocument.with(tribeId))
                     getPairAssignments(tribeId)

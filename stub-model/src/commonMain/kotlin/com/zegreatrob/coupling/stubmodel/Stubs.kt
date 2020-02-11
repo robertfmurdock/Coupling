@@ -1,5 +1,6 @@
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.minutes
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -59,8 +60,10 @@ fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) = PairAssi
         id to stubPairAssignmentDoc().copy(date = date, id = id)
     }
 
+
+var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
-    date = DateTime.now(),
+    date = DateTime.now().plus(pairAssignmentDocumentCounter.minutes),
     pairs = listOf(
         PinnedCouplingPair(
             listOf(
@@ -72,6 +75,8 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
         )
     ),
     id = PairAssignmentDocumentId(uuidString())
-)
+).also { pairAssignmentDocumentCounter++ }
+
+fun stubPairAssignmentDocList(number: Int) = generateSequence { stubPairAssignmentDoc() }.take(number).toList()
 
 private fun uuidString() = uuid4().toString()
