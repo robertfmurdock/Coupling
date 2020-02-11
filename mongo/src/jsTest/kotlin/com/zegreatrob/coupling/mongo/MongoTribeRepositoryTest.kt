@@ -10,8 +10,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
-import stubTribe
-import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.random.Random
@@ -22,7 +20,7 @@ private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 class MongoTribeRepositoryTest : TribeRepositoryValidator() {
 
     override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
-        withRepositoryOld { handler(this) }
+        withMongoRepository { handler(this) }
     }
 
     companion object {
@@ -31,18 +29,11 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator() {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
             override val userEmail: String = "user-${Random.nextInt(200)}"
-
-            suspend fun drop() {
-                tribesCollection.drop().unsafeCast<Promise<Unit>>().await()
-            }
-
-            suspend fun getDbTribes(tribeId: TribeId) =
-                tribesCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
         private fun repositoryWithDb() = MongoTribeRepositoryTestAnchor()
 
-        private inline fun withRepositoryOld(block: MongoTribeRepositoryTestAnchor.() -> Unit) {
+        private inline fun withMongoRepository(block: MongoTribeRepositoryTestAnchor.() -> Unit) {
             val repositoryWithDb = repositoryWithDb()
             try {
                 with(repositoryWithDb, block)
@@ -53,49 +44,8 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator() {
     }
 
     @Test
-    fun canSaveAndLoadTribe() = testAsync {
-        withRepositoryOld {
-            setupAsync(object {
-                val tribe = Tribe(
-                    id = TribeId(id()),
-                    pairingRule = PairingRule.PreferDifferentBadge,
-                    email = "safety@dance.edu",
-                    badgesEnabled = true,
-                    callSignsEnabled = true
-                )
-            }) {
-                drop()
-            } exerciseAsync {
-                save(tribe)
-                getTribe(tribe.id)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(tribe)
-            }
-        }
-    }
-
-    @Test
-    fun canSaveAndLoadVarietyOfTribes() = testAsync {
-        withRepositoryOld {
-            setupAsync(object {
-                val tribes = listOf(
-                    stubTribe(),
-                    stubTribe(),
-                    stubTribe()
-                )
-            }) exerciseAsync {
-                tribes.forEach { save(it) }
-                tribes.map { it.id }
-                    .map { id -> getTribe(id) }
-            } verifyAsync { loadedTribes ->
-                loadedTribes.assertIsEqualTo(tribes)
-            }
-        }
-    }
-
-    @Test
     fun canLoadTribeFromOldSchema() = testAsync {
-        withRepositoryOld {
+        withMongoRepository {
             setupAsync(object {
                 val expectedTribe = Tribe(
                     id = TribeId("safety"),
@@ -119,38 +69,6 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator() {
                 getTribe(expectedTribe.id)
             } verifyAsync { result ->
                 result.assertIsEqualTo(expectedTribe)
-            }
-        }
-    }
-
-    @Test
-    fun willLoadAllTribes() = testAsync {
-        withRepositoryOld {
-            setupAsync(object {
-                val tribes = listOf(
-                    Tribe(
-                        id = TribeId(id()),
-                        pairingRule = PairingRule.PreferDifferentBadge,
-                        name = "1"
-                    ),
-                    Tribe(
-                        id = TribeId(id()),
-                        pairingRule = PairingRule.LongestTime,
-                        name = "2"
-                    ),
-                    Tribe(
-                        id = TribeId(id()),
-                        pairingRule = PairingRule.LongestTime,
-                        name = "3"
-                    )
-                )
-            }) {
-                drop()
-                tribes.forEach { save(it) }
-            } exerciseAsync {
-                getTribes()
-            } verifyAsync { result ->
-                result.assertIsEqualTo(tribes)
             }
         }
     }

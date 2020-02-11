@@ -10,5 +10,5 @@ interface SdkPlayerListGet : PlayerListGet, GqlQueryComponent {
     override suspend fun getPlayers(tribeId: TribeId) = performQueryGetComponent(tribeId, PlayerList) {
         it.unsafeCast<Array<Json>?>()
             ?.map(Json::toPlayer)
-    }
+    } ?: emptyList()
 }

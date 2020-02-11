@@ -13,4 +13,5 @@ interface SdkPairAssignmentDocumentGet : PairAssignmentDocumentGet, GqlQueryComp
             it.unsafeCast<Array<Json>?>()
                 ?.map(Json::toPairAssignmentDocument)
         }
+            ?: emptyList()
 }

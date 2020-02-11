@@ -11,7 +11,7 @@ interface SdkPinGet : PinGet, GqlQueryComponent {
         tribeId,
         PinList,
         ::doPinThing
-    )
+    ) ?: emptyList()
 
     private fun doPinThing(content: dynamic) = content
         .unsafeCast<Array<Json>?>()

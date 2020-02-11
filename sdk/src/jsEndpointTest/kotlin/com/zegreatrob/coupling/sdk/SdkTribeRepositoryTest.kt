@@ -13,7 +13,7 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
-class TribesTest : TribeRepositoryValidator() {
+class SdkTribeRepositoryTest : TribeRepositoryValidator() {
 
     override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
@@ -83,22 +83,4 @@ class TribesTest : TribeRepositoryValidator() {
         }
     }
 
-    @Test
-    fun deleteWillRemoveTribeFromRegularCommunications() = testAsync {
-        val sdk = authorizedSdk("eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            sdk.delete(tribe.id)
-            Pair(
-                sdk.getTribes(),
-                catchException { sdk.getTribe(tribe.id) }
-            )
-        } verifyAsync { (result, error) ->
-            result.assertIsEqualTo(emptyList())
-            error?.message.assertIsEqualTo("Tribe not found.")
-        }
-    }
 }

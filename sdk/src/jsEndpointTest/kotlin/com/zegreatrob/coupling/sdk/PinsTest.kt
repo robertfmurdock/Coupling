@@ -99,11 +99,9 @@ class PinsTest {
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
-            catchException {
-                sdk.getPins(TribeId("someoneElseTribe"))
-            }
-        } verifyAsync { exception ->
-            exception?.message.assertIsEqualTo("Tribe not found.")
+            sdk.getPins(TribeId("someoneElseTribe"))
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
         }
     }
 }
