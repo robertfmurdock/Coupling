@@ -5,6 +5,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.pin.PinRepository
+import com.zegreatrob.coupling.repositoryvalidation.PinRepositoryValidator
 import com.zegreatrob.coupling.sdk.SdkPlayerRepositoryTest.Companion.catchAxiosError
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -12,29 +14,17 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import stubTribe
 import kotlin.js.Json
 import kotlin.test.Test
 
-class PinsTest {
+class SdkPinRepositoryTest : PinRepositoryValidator {
 
-    @Test
-    fun postThenGetWillShowAllPins() = testAsync {
+    override suspend fun withRepository(handler: suspend (PinRepository, TribeId) -> Unit) {
         val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()))
-            val pins = listOf(
-                Pin(uuid4().toString(), "1", "icon1"),
-                Pin(uuid4().toString(), "2", "icon2"),
-                Pin(uuid4().toString(), "3", "icon3")
-            )
-        }) {
-            sdk.save(tribe)
-            pins.forEach { sdk.save(TribeIdPin(tribe.id, it)) }
-        } exerciseAsync {
-            sdk.getPins(tribe.id)
-        } verifyAsync { result ->
-            result.assertIsEqualTo(pins)
-        }
+        val tribe = stubTribe()
+        sdk.save(tribe)
+        handler(sdk, tribe.id)
     }
 
     @Test
