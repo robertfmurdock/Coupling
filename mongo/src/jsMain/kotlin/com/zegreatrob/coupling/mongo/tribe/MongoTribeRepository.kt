@@ -52,19 +52,18 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         "animationSpeed" to animationSpeed
     )
 
-    private fun Json.toTribe(): Tribe =
-        Tribe(
-            id = TribeId(this["id"].toString()),
-            pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
-            name = this["name"]?.toString(),
-            email = this["email"]?.toString(),
-            defaultBadgeName = this["defaultBadgeName"]?.toString(),
-            alternateBadgeName = this["alternateBadgeName"]?.toString(),
-            badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-            callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false,
-            animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true,
-            animationSpeed = this["animationSpeed"]?.unsafeCast<Double>() ?: 1.0
-        )
+    private fun Json.toTribe(): Tribe = Tribe(
+        id = TribeId(this["id"].toString()),
+        pairingRule = PairingRule.fromValue(this["pairingRule"] as? Int),
+        name = this["name"]?.toString(),
+        email = this["email"]?.toString(),
+        defaultBadgeName = this["defaultBadgeName"]?.toString(),
+        alternateBadgeName = this["alternateBadgeName"]?.toString(),
+        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
+        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false,
+        animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true,
+        animationSpeed = this["animationSpeed"]?.unsafeCast<Double>() ?: 1.0
+    )
 
 }
 

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="repository_validation-jvm">
+    <output-path>$PROJECT_DIR$/repository_validation/build/libs</output-path>
+    <root id="archive" name="repository_validation-jvm.jar">
+      <element id="module-output" name="Coupling.repository_validation.jvmMain" />
+    </root>
+  </artifact>
+</component>
