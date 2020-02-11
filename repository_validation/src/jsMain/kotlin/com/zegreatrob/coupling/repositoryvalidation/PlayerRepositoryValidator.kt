@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repositoryvalidation
 
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -74,5 +75,23 @@ interface PlayerRepositoryValidator {
             result.assertIsEqualTo(listOf(player))
         }
     }
+
+    @Test
+    fun whenPlayerIsDeletedThenBroughtBackThenDeletedWillShowUpOnceInGetDeleted() =
+        testRepository { repository, tribeId ->
+            setupAsync(object {
+                val player = stubPlayer()
+                val playerId = player.id!!
+            }) {
+                repository.save(player with tribeId)
+                repository.deletePlayer(tribeId, playerId)
+                repository.save(player with tribeId)
+                repository.deletePlayer(tribeId, playerId)
+            } exerciseAsync {
+                repository.getDeleted(tribeId)
+            } verifyAsync { result ->
+                result.assertIsEqualTo(listOf(player))
+            }
+        }
 
 }
