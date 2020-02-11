@@ -5,6 +5,7 @@ node_modules
 .tmp
 build
 data
+dynamodb_data
 .DS_Store
 
 # The following is based on https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore

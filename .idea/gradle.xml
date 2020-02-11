@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/action" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
+            <option value="$PROJECT_DIR$/dynamo" />
             <option value="$PROJECT_DIR$/json" />
             <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/model" />

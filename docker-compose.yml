@@ -21,11 +21,16 @@ mongo:
   environment:
     - AUTH=no
   ports:
-      - "27017:27017"
+   - "27017:27017"
   volumes:
     - ./data/db:/data/db
+dynamo:
+  image: amazon/dynamodb-local
   ports:
-    - "27017:27017"
+    - "8000:8000"
+  command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
+  volumes:
+    - ./dynamodb_data:/home/dynamodblocal/data
 statsd:
   image: hopsoft/graphite-statsd
   ports:

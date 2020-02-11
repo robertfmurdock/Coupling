@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dynamo-js">
+    <output-path>$PROJECT_DIR$/dynamo/build/libs</output-path>
+    <root id="archive" name="dynamo-js.jar" />
+  </artifact>
+</component>

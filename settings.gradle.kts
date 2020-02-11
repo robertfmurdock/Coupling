@@ -16,6 +16,7 @@ rootProject.name = "Coupling"
 include("model")
 include("json")
 include("mongo")
+include("dynamo")
 include("client")
 include("repository")
 include("repository_validation")
