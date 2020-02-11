@@ -59,27 +59,6 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
     }
 
     @Test
-    fun saveAndDeleteThenGetWillReturnNothing() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val tribeId = TribeId("tribe-id-99")
-                private val pair = stubSimplePairAssignmentDocument()
-                val id = pair.first
-                val document = pair.second.with(tribeId)
-            }) {
-                dropHistory()
-                save(document)
-            } exerciseAsync {
-                delete(tribeId, id)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(true)
-                getPairAssignments(tribeId)
-                    .assertIsEqualTo(emptyList())
-            }
-        }
-    }
-
-    @Test
     fun deleteWhenRecordDoesNotExistWillReturnFalse() = testAsync {
         withMongoRepository {
             setupAsync(object {
@@ -96,6 +75,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
     @Test
     fun whenFindingLegacyFormatWillCorrectlyLoad() = testAsync {
         withMongoRepository {
+            dropHistory()
             setupAsync(object {
                 val documentId = "b1988bc3-2d58-4dcf-a51f-913d1cce3b50"
                 val tribeId = "boo"

@@ -60,4 +60,21 @@ interface PairAssignmentDocumentRepositoryValidator {
             result.assertIsEqualTo(listOf(pairAssignmentDoc.copy(id = resultId)))
         }
     }
+
+    @Test
+    fun saveAndDeleteThenGetWillReturnNothing() = testRepository { repository, tribeId ->
+        setupAsync(object {
+            val document = stubPairAssignmentDoc()
+            val id = document.id!!
+        }) {
+            repository.save(document.with(tribeId))
+        } exerciseAsync {
+            repository.delete(tribeId, id)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(true)
+            repository.getPairAssignments(tribeId)
+                .assertIsEqualTo(emptyList())
+        }
+    }
+
 }
