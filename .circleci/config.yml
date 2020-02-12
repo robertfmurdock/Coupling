@@ -26,13 +26,13 @@ jobs:
           name: Save test results
           command: |
             mkdir -p build/test-output/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp --parents {} build/test-output/junit/{} \;
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
           when: always
       - run:
           name: Save test reports
           command: |
             mkdir -p build/test-output/reports/
-            find . -type f -regex ".*/build/reports/.*" -exec cp --parents {} build/test-output/reports/{} \;
+            find . -type f -regex ".*/build/reports/.*" -exec cp {} build/test-output/reports/{} \;
           when: always
       - store_artifacts:
           path: build/test-output
