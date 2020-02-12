@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  gradle: circleci/gradle@2.0.0
 jobs:
   build:
     docker:
@@ -22,6 +24,9 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew build check"
+      - collect_test_results:
+          - reports_path: build/test-output/reports
+          - test_results_path: build/test-output
       - store_artifacts:
           path: build/test-output
       - store_test_results:
