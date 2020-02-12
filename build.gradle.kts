@@ -19,6 +19,13 @@ allprojects {
         maven { url = uri("https://dl.bintray.com/robertfmurdock/zegreatrob") }
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
     }
+
+    tasks {
+        val copyReportsToCircleCIDirectory by creating(Copy::class) {
+            from("build/reports")
+            into("${rootProject.buildDir.path}/test-output/${project.name}")
+        }
+    }
 }
 
 docker {
