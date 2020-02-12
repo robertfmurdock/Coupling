@@ -23,12 +23,12 @@
     "google-auth-library": "^5.9.2",
     "graphql": "^14.6.0",
     "method-override": "^3.0.0",
-    "mongodb": "^3.5.2",
+    "mongodb": "^3.5.3",
     "monk": "^7.1.2",
     "on-finished": "^2.3.0",
     "passport": "^0.4.1",
     "passport-azure-ad": "^4.2.1",
-    "passport-custom": "^1.1.0",
+    "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0",
     "pug": "^2.0.4",
     "ramda": "^0.27.0",
@@ -64,7 +64,7 @@
     "url-loader": "^3.0.0",
     "webpack": "^4.41.6",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^3.3.10",
+    "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
