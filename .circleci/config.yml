@@ -24,7 +24,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew build check"
-      - collect_test_results:
+      - gradle/collect_test_results:
           reports_path: build/test-output/reports
           test_results_path: build/test-output
       - store_artifacts:
