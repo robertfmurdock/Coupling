@@ -1,5 +1,3 @@
-orbs:
-  gradle: circleci/gradle@2.0.0
 version: 2.1
 jobs:
   build:
@@ -24,9 +22,18 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew build check"
-      - gradle/collect_test_results:
-          reports_path: build/test-output/reports
-          test_results_path: build/test-output
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p build/test-output/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/ \;
+          when: always
+      - run:
+          name: Save test reports
+          command: |
+            mkdir -p build/test-output/reports/
+            find . -type f -regex ".*/build/reports/.*" -exec cp {} build/test-output/reports/ \;
+          when: always
       - store_artifacts:
           path: build/test-output
       - store_test_results:
