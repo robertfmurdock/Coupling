@@ -25,10 +25,12 @@ fun stubTribe() = Tribe(
     callSignsEnabled = tribeCounter % 2 == 1,
     defaultBadgeName = "Badgerton",
     email = "stuby@stub.edu",
-    pairingRule = PairingRule.LongestTime,
+    pairingRule = stubPairingRule(),
     animationEnabled = tribeCounter % 2 == 0,
     animationSpeed = tribeCounter.toDouble()
 ).also { tribeCounter++ }
+
+private fun stubPairingRule() = PairingRule.values()[tribeCounter % PairingRule.values().size]
 
 fun stubTribeId() = TribeId(uuidString())
 
