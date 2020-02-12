@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -8,7 +7,15 @@ plugins {
 
 kotlin {
     targets {
-        js { nodejs() }
+        js {
+            nodejs {
+                testTask {
+                    useMocha {
+                        timeout = "10s"
+                    }
+                }
+            }
+        }
     }
 
     sourceSets {

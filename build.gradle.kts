@@ -26,6 +26,7 @@ allprojects {
             into("${rootProject.buildDir.path}/test-output/${project.path}")
         }
     }
+
 }
 
 docker {
@@ -119,6 +120,7 @@ tasks {
     val build by getting {
         dependsOn(test, ":client:compile", ":server:build")
     }
+
 }
 
 fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
