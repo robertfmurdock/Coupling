@@ -88,7 +88,6 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
         .itemsNode()
         .sortByRecordTimestamp()
         .lastOrNull()
-        .also { println("first item is ${JSON.stringify(it)}") }
         ?.let(::excludeDeleted)
         ?.toTribe()
 
@@ -140,7 +139,7 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
         )
     )
 
-    private fun Json.toTribe(): Tribe = Tribe(
+    private fun Json.toTribe() = Tribe(
         id = TribeId(getDynamoStringValue("id")!!),
         name = getDynamoStringValue("name"),
         email = getDynamoStringValue("email"),
