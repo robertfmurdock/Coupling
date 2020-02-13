@@ -1,56 +1,25 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.dynamo.external.DynamoDB
-import com.zegreatrob.coupling.dynamo.external.config
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import kotlinx.coroutines.await
-import kotlinx.coroutines.yield
 import kotlin.js.Json
 import kotlin.js.json
 
+class DynamoTribeRepository private constructor() : TribeRepository,
+    DynamoItemGetSyntax,
+    DynamoItemPutSyntax,
+    DynamoItemListGetSyntax,
+    DynamoItemDeleteSyntax,
+    DynamoTableNameSyntax by Companion,
+    DynamoDBSyntax by DynamoDbProvider {
 
-suspend fun dynamoTribeRepository(): DynamoTribeRepository {
-    config.update(
-        json(
-            "region" to "us-east-1",
-            "endpoint" to "http://localhost:8000"
-        )
-    )
-    val dynamoDB = DynamoDB()
-
-    if (!checkTableExists(dynamoDB)) {
-        createTribeTable(dynamoDB)
-
-        while (tribeTableStatus(dynamoDB) != "ACTIVE") {
-            yield()
-        }
-    }
-
-    return DynamoTribeRepository(dynamoDB)
-}
-
-private suspend fun tribeTableStatus(dynamoDB: DynamoDB) = describeTribeTable(dynamoDB)
-    .let { it["Table"].unsafeCast<Json>()["TableStatus"] }
-
-private suspend fun checkTableExists(dynamoDB: DynamoDB) = try {
-    describeTribeTable(dynamoDB)
-    true
-} catch (throwable: Throwable) {
-    false
-}
-
-private suspend fun describeTribeTable(dynamoDB: DynamoDB): Json = dynamoDB.describeTable(json("TableName" to "TRIBE"))
-    .promise()
-    .await()
-
-private suspend fun createTribeTable(dynamoDB: DynamoDB) {
-    dynamoDB.createTable(
-        json(
-            "TableName" to DynamoTribeRepository.tableName,
+    companion object : DynamoTableNameSyntax, DynamoCreateTableSyntax, DynamoDBSyntax by DynamoDbProvider {
+        override val tableName = "TRIBE"
+        override val createTableParams = json(
+            "TableName" to tableName,
             "KeySchema" to arrayOf(
                 json(
                     "AttributeName" to "id",
@@ -73,18 +42,9 @@ private suspend fun createTribeTable(dynamoDB: DynamoDB) {
             ),
             "BillingMode" to "PAY_PER_REQUEST"
         )
-    ).promise().await()
-}
 
-
-class DynamoTribeRepository(override val dynamoDB: DynamoDB) : TribeRepository, DynamoItemDeleteSyntax,
-    DynamoItemGetSyntax, DynamoItemListGetSyntax, DynamoItemPutSyntax {
-
-    companion object {
-        const val tableName = "TRIBE"
+        suspend fun dynamoTribeRepository() = DynamoTribeRepository().also { ensureTableExists() }
     }
-
-    override val tableName: String get() = Companion.tableName
 
     override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()
 
@@ -124,4 +84,3 @@ class DynamoTribeRepository(override val dynamoDB: DynamoDB) : TribeRepository, 
     )
 
 }
-

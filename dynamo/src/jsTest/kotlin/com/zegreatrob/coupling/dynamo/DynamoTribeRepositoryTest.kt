@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.zegreatrob.coupling.dynamo.DynamoTribeRepository.Companion.dynamoTribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repositoryvalidation.TribeRepositoryValidator
 
