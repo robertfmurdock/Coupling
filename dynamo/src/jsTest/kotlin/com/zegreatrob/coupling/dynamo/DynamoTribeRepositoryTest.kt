@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.zegreatrob.coupling.dynamo.DynamoTribeRepository.Companion.dynamoTribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repositoryvalidation.TribeRepositoryValidator
 
@@ -8,7 +7,7 @@ import com.zegreatrob.coupling.repositoryvalidation.TribeRepositoryValidator
 class DynamoTribeRepositoryTest : TribeRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
-        val repository = dynamoTribeRepository()
+        val repository = DynamoTribeRepository()
         handler(repository)
     }
 

@@ -10,10 +10,10 @@ interface DynamoCreateTableSyntax : DynamoTableNameSyntax,
     val createTableParams: Json
 
     suspend fun ensureTableExists() {
-        if (!DynamoTribeRepository.checkTableExists()) {
-            DynamoTribeRepository.createTable()
+        if (!checkTableExists()) {
+            createTable()
 
-            while (DynamoTribeRepository.tableStatus() != "ACTIVE") {
+            while (tableStatus() != "ACTIVE") {
                 yield()
             }
         }

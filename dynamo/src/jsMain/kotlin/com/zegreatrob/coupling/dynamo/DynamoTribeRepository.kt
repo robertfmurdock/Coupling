@@ -43,12 +43,14 @@ class DynamoTribeRepository private constructor() : TribeRepository,
             "BillingMode" to "PAY_PER_REQUEST"
         )
 
-        suspend fun dynamoTribeRepository() = DynamoTribeRepository().also { ensureTableExists() }
+        suspend operator fun invoke() = DynamoTribeRepository().also { ensureTableExists() }
     }
 
     override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()
 
-    override suspend fun getTribes() = scanForItemList().map { it.toTribe() }
+    override suspend fun getTribes() = scanForItemList(scanParams()).map { it.toTribe() }
+
+    private fun scanParams() = json("TableName" to tableName)
 
     override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson())
 
