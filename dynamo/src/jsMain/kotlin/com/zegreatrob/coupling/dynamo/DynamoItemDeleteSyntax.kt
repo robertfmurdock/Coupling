@@ -12,27 +12,21 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
         if (current == null) {
             false
         } else {
-            dynamoDB.putItem(deleteItemJson(id, tribeId)).promise().await()
+            dynamoDB.putItem(current.deleteItemParams()).promise().await()
             true
         }
     } catch (uhOh: Throwable) {
-        println("uh oh ${JSON.stringify(uhOh)}")
+        println("message: ${uhOh.message} uh oh ${JSON.stringify(uhOh)}")
         false
     }
 
-    private fun deleteItemJson(id: String, tribeId: TribeId?) = json(
+    private inline fun Json.deleteItemParams() = json(
         "TableName" to tableName,
-        "Item" to json(
-            "id" to id.dynamoString(),
-            "timestamp" to DateTime.now().isoWithMillis().dynamoString(),
-            "isDeleted" to true.dynamoBool()
-        ).appendTribeId(tribeId)
+        "Item" to add(
+            json(
+                "timestamp" to DateTime.now().isoWithMillis().dynamoString(),
+                "isDeleted" to true.dynamoBool()
+            )
+        )
     )
-
-    private fun Json.appendTribeId(tribeId: TribeId?) = if (tribeId == null) {
-        this
-    } else {
-        this.add(json("tribeId" to tribeId.value.dynamoString()))
-    }
-
 }

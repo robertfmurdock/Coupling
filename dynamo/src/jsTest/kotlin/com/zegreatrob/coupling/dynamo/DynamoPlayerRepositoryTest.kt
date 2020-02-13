@@ -12,12 +12,4 @@ class DynamoPlayerRepositoryTest : PlayerRepositoryValidator {
         handler(DynamoPlayerRepository(), stubTribeId())
     }
 
-    override fun deletedPlayersShowUpInGetDeleted(): Any? {
-        TODO()
-    }
-
-    override fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted(): Any? {
-        TODO()
-    }
-
 }

@@ -60,9 +60,8 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(playerId, tribeId)
 
-    override suspend fun getDeleted(tribeId: TribeId): List<Player> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun getDeleted(tribeId: TribeId) = scanForDeletedItemList(tribeId.scanParams())
+        .map { it.toPlayer() }
 
     private fun TribeIdPlayer.toDynamoJson() = json(
         "tribeId" to tribeId.value.dynamoString(),
