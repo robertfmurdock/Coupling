@@ -11,6 +11,4 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator {
         handler(repository)
     }
 
-    override fun deleteWillMakeTribeInaccessible() = TODO()
-
 }

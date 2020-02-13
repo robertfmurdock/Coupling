@@ -44,10 +44,9 @@ private suspend fun checkTableExists(dynamoDB: DynamoDB) = try {
     false
 }
 
-private suspend fun describeTribeTable(dynamoDB: DynamoDB): Json =
-    dynamoDB.describeTable(json("TableName" to "TRIBE"))
-        .promise()
-        .await()
+private suspend fun describeTribeTable(dynamoDB: DynamoDB): Json = dynamoDB.describeTable(json("TableName" to "TRIBE"))
+    .promise()
+    .await()
 
 private suspend fun createTribeTable(dynamoDB: DynamoDB) {
     dynamoDB.createTable(
@@ -85,38 +84,61 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
         const val tableName = "TRIBE"
     }
 
-    override suspend fun getTribe(tribeId: TribeId): Tribe? {
-        return dynamoDB.query(
-            json(
-                "TableName" to tableName,
-                "ExpressionAttributeValues" to json(
-                    ":id" to json(
-                        "S" to tribeId.value
-                    )
-                ),
-                "KeyConditionExpression" to "id = :id"
-            )
-        ).promise().await()
-            .let { it["Items"].unsafeCast<Array<Json>>() }
-            .map { it.toTribe() }
-            .firstOrNull()
+    override suspend fun getTribe(tribeId: TribeId) = dynamoDB.query(singleTribeQuery(tribeId)).promise().await()
+        .itemsNode()
+        .sortByRecordTimestamp()
+        .lastOrNull()
+        .also { println("first item is ${JSON.stringify(it)}") }
+        ?.let(::excludeDeleted)
+        ?.toTribe()
+
+    private fun singleTribeQuery(tribeId: TribeId) = json(
+        "TableName" to tableName,
+        "ExpressionAttributeValues" to json(":id" to json("S" to tribeId.value)),
+        "KeyConditionExpression" to "id = :id"
+    )
+
+    private fun excludeDeleted(it: Json) = if (it.getDynamoBoolValue("isDeleted") == true)
+        null
+    else
+        it
+
+    override suspend fun getTribes() = dynamoDB.scan(allTribesScan()).promise().await()
+        .itemsNode()
+        .sortByRecordTimestamp()
+        .groupBy { it.getDynamoStringValue("id") }
+        .map { it.value.last() }
+        .mapNotNull(::excludeDeleted)
+        .map { it.toTribe() }
+
+    private fun allTribesScan() = json("TableName" to tableName)
+
+    private fun Json.itemsNode() = this["Items"].unsafeCast<Array<Json>>()
+
+    private fun Array<Json>.sortByRecordTimestamp() = sortedBy { it.getDynamoStringValue("timestamp") }
+
+    override suspend fun save(tribe: Tribe) = dynamoDB.putItem(
+        json(
+            "TableName" to tableName,
+            "Item" to tribe.asDynamoJson()
+        )
+    ).promise().await()
+
+    override suspend fun delete(tribeId: TribeId) = try {
+        dynamoDB.putItem(deleteTableItemJson(tribeId)).promise().await()
+        true
+    } catch (uhOh: Throwable) {
+        false
     }
 
-    override suspend fun getTribes(): List<Tribe> {
-        val response = dynamoDB.scan(json("TableName" to tableName)).promise().await()
-        return response["Items"].unsafeCast<Array<Json>>()
-            .sortedBy { it.getDynamoStringValue("timestamp") }
-            .map { it.toTribe() }
-    }
-
-    override suspend fun save(tribe: Tribe) {
-        dynamoDB.putItem(
-            json(
-                "TableName" to tableName,
-                "Item" to tribe.asDynamoJson()
-            )
-        ).promise().await()
-    }
+    private fun deleteTableItemJson(tribeId: TribeId) = json(
+        "TableName" to tableName,
+        "Item" to json(
+            "id" to tribeId.value.dynamoString(),
+            "timestamp" to DateTime.now().isoWithMillis().dynamoString(),
+            "isDeleted" to true.dynamoBool()
+        )
+    )
 
     private fun Json.toTribe(): Tribe = Tribe(
         id = TribeId(getDynamoStringValue("id")!!),
@@ -164,9 +186,6 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
     private fun Boolean.dynamoBool() = json("BOOL" to this)
     private fun dynamoNull(): Json = json("NULL" to "true")
 
-    override suspend fun delete(tribeId: TribeId): Boolean {
-        TODO("not implemented")
-    }
 }
 
 
