@@ -12,7 +12,7 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
 
     companion object : DynamoTableNameSyntax, DynamoCreateTableSyntax, DynamoDBSyntax by DynamoDbProvider,
         DynamoItemPutSyntax,
-        DynamoItemListGetSyntax,
+        TribeIdDynamoItemListGetSyntax,
         DynamoItemDeleteSyntax,
         DynamoDatatypeSyntax {
 
@@ -47,21 +47,13 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
         )
     }
 
-    override suspend fun getPlayers(tribeId: TribeId) = scanForItemList(tribeId.scanParams())
-        .map { it.toPlayer() }
-
-    private fun TribeId.scanParams() = json(
-        "TableName" to tableName,
-        "ExpressionAttributeValues" to json(":tribeId" to value.dynamoString()),
-        "FilterExpression" to "tribeId = :tribeId"
-    )
+    override suspend fun getPlayers(tribeId: TribeId) = tribeId.scanForItemList().map { it.toPlayer() }
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = performPutItem(tribeIdPlayer.toDynamoJson())
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(playerId, tribeId)
 
-    override suspend fun getDeleted(tribeId: TribeId) = scanForDeletedItemList(tribeId.scanParams())
-        .map { it.toPlayer() }
+    override suspend fun getDeleted(tribeId: TribeId) = tribeId.scanForDeletedItemList().map { it.toPlayer() }
 
     private fun TribeIdPlayer.toDynamoJson() = json(
         "tribeId" to tribeId.value.dynamoString(),

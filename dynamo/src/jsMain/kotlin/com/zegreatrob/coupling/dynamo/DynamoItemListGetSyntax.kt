@@ -16,3 +16,4 @@ interface DynamoItemListGetSyntax : DynamoItemSyntax,
         .groupBy { it.getDynamoStringValue("id") }
         .map { it.value.last() }
 }
+
