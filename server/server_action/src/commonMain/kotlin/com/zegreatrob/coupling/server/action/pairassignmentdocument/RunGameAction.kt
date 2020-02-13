@@ -27,8 +27,8 @@ interface RunGameActionDispatcher : Clock, FindNewPairsActionDispatcher, AssignP
         AssignPinsAction(pairs, pins, history).perform()
 
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
-        currentDate(),
-        pairAssignments
+        date = currentDate(),
+        pairs = pairAssignments
     )
 }
 

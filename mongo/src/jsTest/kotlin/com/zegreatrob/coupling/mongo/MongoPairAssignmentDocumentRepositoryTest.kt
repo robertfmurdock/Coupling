@@ -96,6 +96,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
                 result.assertIsEqualTo(
                     listOf(
                         PairAssignmentDocument(
+                            PairAssignmentDocumentId(documentId),
                             todayDate.toDateTime(),
                             listOf(
                                 pairOf(
@@ -109,8 +110,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
                                         "italian.jpg"
                                     )
                                 ).withPins()
-                            ),
-                            PairAssignmentDocumentId(documentId)
+                            )
                         )
                     )
                 )

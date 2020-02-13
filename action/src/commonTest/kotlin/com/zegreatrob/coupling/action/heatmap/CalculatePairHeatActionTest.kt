@@ -21,8 +21,8 @@ class CalculatePairHeatActionTest {
 
         fun List<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
-                DateTime(2016, 3, 1),
-                AssignPinsAction(this, emptyList(), emptyList()).perform()
+                date = DateTime(2016, 3, 1),
+                pairs = AssignPinsAction(this, emptyList(), emptyList()).perform()
             )
     }
 

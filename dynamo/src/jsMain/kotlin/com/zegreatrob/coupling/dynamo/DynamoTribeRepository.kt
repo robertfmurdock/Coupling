@@ -72,17 +72,17 @@ class DynamoTribeRepository private constructor() : TribeRepository,
     )
 
     private fun Tribe.asDynamoJson() = json(
-        "id" to id.value.dynamoString(),
-        "timestamp" to DateTime.now().isoWithMillis().dynamoString(),
-        "name" to name.dynamoString(),
-        "email" to email.dynamoString(),
-        "pairingRule" to PairingRule.toValue(pairingRule).dynamoNumber(),
-        "defaultBadgeName" to defaultBadgeName.dynamoString(),
-        "alternateBadgeName" to alternateBadgeName.dynamoString(),
-        "badgesEnabled" to badgesEnabled.dynamoBool(),
-        "callSignsEnabled" to callSignsEnabled.dynamoBool(),
-        "animationEnabled" to animationEnabled.dynamoBool(),
-        "animationSpeed" to animationSpeed.dynamoNumber()
+        "id" to id.value,
+        "timestamp" to DateTime.now().isoWithMillis(),
+        "name" to name,
+        "email" to email,
+        "pairingRule" to PairingRule.toValue(pairingRule),
+        "defaultBadgeName" to defaultBadgeName,
+        "alternateBadgeName" to alternateBadgeName,
+        "badgesEnabled" to badgesEnabled,
+        "callSignsEnabled" to callSignsEnabled,
+        "animationEnabled" to animationEnabled,
+        "animationSpeed" to animationSpeed
     )
 
 }

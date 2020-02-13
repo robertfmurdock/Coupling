@@ -17,15 +17,15 @@ interface DynamoItemGetSyntax : DynamoQuerySyntax,
     private fun singleQuery(id: String, tribeId: TribeId?) = if (tribeId == null) json(
         "TableName" to tableName,
         "ExpressionAttributeValues" to json(
-            ":id" to id.dynamoString()
+            ":id" to id
         ),
         "KeyConditionExpression" to "id = :id"
     )
     else json(
         "TableName" to tableName,
         "ExpressionAttributeValues" to json(
-            ":id" to id.dynamoString(),
-            ":tribeId" to tribeId.value.dynamoString()
+            ":id" to id,
+            ":tribeId" to tribeId.value
         ),
         "KeyConditionExpression" to "id = :id AND tribeId = :tribeId"
     )

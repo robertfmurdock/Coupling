@@ -12,7 +12,7 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
         if (current == null) {
             false
         } else {
-            dynamoDB.putItem(current.deleteItemParams()).promise().await()
+            documentClient.put(current.deleteItemParams()).promise().await()
             true
         }
     } catch (uhOh: Throwable) {
@@ -24,8 +24,8 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
         "TableName" to tableName,
         "Item" to add(
             json(
-                "timestamp" to DateTime.now().isoWithMillis().dynamoString(),
-                "isDeleted" to true.dynamoBool()
+                "timestamp" to DateTime.now().isoWithMillis(),
+                "isDeleted" to true
             )
         )
     )

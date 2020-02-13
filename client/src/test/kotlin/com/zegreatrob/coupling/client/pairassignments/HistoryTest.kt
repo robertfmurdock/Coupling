@@ -48,9 +48,9 @@ class HistoryTest {
 
                 val history = listOf(
                     PairAssignmentDocument(
+                        PairAssignmentDocumentId("RealId"),
                         DateTime.now(),
-                        emptyList(),
-                        PairAssignmentDocumentId("RealId")
+                        emptyList()
                     )
                 )
                 val wrapper = shallow(
@@ -88,9 +88,9 @@ class HistoryTest {
 
                 val history = listOf(
                     PairAssignmentDocument(
+                        PairAssignmentDocumentId("RealId"),
                         DateTime.now(),
-                        emptyList(),
-                        PairAssignmentDocumentId("RealId")
+                        emptyList()
                     )
                 )
                 val wrapper = shallow(

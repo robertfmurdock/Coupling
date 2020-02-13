@@ -86,8 +86,8 @@ class GameExamplesTest {
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
             val history = listOf(
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 10),
-                    listOf(
+                    date = DateTime(2014, 1, 10),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             clark
@@ -95,8 +95,8 @@ class GameExamplesTest {
                     ).withNoPins()
                 ),
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 9),
-                    listOf(
+                    date = DateTime(2014, 1, 9),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             diana
@@ -104,8 +104,8 @@ class GameExamplesTest {
                     ).withNoPins()
                 ),
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 8),
-                    listOf(
+                    date = DateTime(2014, 1, 8),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             hal
@@ -113,8 +113,8 @@ class GameExamplesTest {
                     ).withNoPins()
                 ),
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 7),
-                    listOf(
+                    date = DateTime(2014, 1, 7),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             barry
@@ -151,8 +151,8 @@ class GameExamplesTest {
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
             val history = listOf(
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 10),
-                    listOf(
+                    date = DateTime(2014, 1, 10),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             clark
@@ -160,8 +160,8 @@ class GameExamplesTest {
                     ).withNoPins()
                 ),
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 9),
-                    listOf(
+                    date = DateTime(2014, 1, 9),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             diana
@@ -169,8 +169,8 @@ class GameExamplesTest {
                     ).withNoPins()
                 ),
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 8),
-                    listOf(
+                    date = DateTime(2014, 1, 8),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             hal
@@ -178,8 +178,8 @@ class GameExamplesTest {
                     ).withNoPins()
                 ),
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 7),
-                    listOf(
+                    date = DateTime(2014, 1, 7),
+                    pairs = listOf(
                         CouplingPair.Double(
                             bruce,
                             barry
@@ -210,8 +210,8 @@ class GameExamplesTest {
 
         val history = listOf(
             PairAssignmentDocument(
-                DateTime(2014, 1, 10),
-                listOf(
+                date = DateTime(2014, 1, 10),
+                pairs = listOf(
                     CouplingPair.Double(
                         kamala,
                         thor
@@ -219,8 +219,8 @@ class GameExamplesTest {
                 ).withNoPins()
             ),
             PairAssignmentDocument(
-                DateTime(2014, 1, 9),
-                listOf(
+                date = DateTime(2014, 1, 9),
+                pairs = listOf(
                     CouplingPair.Double(
                         kamala,
                         steve
@@ -228,8 +228,8 @@ class GameExamplesTest {
                 ).withNoPins()
             ),
             PairAssignmentDocument(
-                DateTime(2014, 1, 8),
-                listOf(
+                date = DateTime(2014, 1, 8),
+                pairs = listOf(
                     CouplingPair.Double(
                         kamala,
                         logan

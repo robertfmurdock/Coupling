@@ -51,12 +51,12 @@ class SpinTest {
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    DateTime(2014, 1, 10), listOf(
+                    date = DateTime(2014, 1, 10), pairs = listOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins()
                     )
                 ), PairAssignmentDocument(
-                    DateTime(2014, 1, 9), listOf(
+                    date = DateTime(2014, 1, 9), pairs = listOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins()
                     )
@@ -84,12 +84,12 @@ class SpinTest {
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    DateTime(2014, 2, 10), listOf(
+                    date = DateTime(2014, 2, 10), pairs = listOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins()
                     )
                 ), PairAssignmentDocument(
-                    DateTime(2014, 2, 9), listOf(
+                    date = DateTime(2014, 2, 9), pairs = listOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins()
                     )

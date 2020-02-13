@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.zegreatrob.coupling.dynamo.external.DocumentClient
 import com.zegreatrob.coupling.dynamo.external.DynamoDB
 import com.zegreatrob.coupling.dynamo.external.config
 import kotlin.js.json
@@ -13,5 +14,9 @@ object DynamoDbProvider : DynamoDBSyntax {
             )
         )
         DynamoDB()
+    }
+
+    override val documentClient: DocumentClient by lazy {
+        also { dynamoDB }.let { DocumentClient() }
     }
 }

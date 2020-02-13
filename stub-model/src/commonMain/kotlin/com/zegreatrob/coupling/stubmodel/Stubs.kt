@@ -65,6 +65,7 @@ fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) = PairAssi
 
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
+    id = PairAssignmentDocumentId(uuidString()),
     date = DateTime.now().plus(pairAssignmentDocumentCounter.minutes),
     pairs = listOf(
         PinnedCouplingPair(
@@ -75,8 +76,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
                 stubPin()
             )
         )
-    ),
-    id = PairAssignmentDocumentId(uuidString())
+    )
 ).also { pairAssignmentDocumentCounter++ }
 
 fun stubPairAssignmentDocList(number: Int) = generateSequence { stubPairAssignmentDoc() }.take(number).toList()

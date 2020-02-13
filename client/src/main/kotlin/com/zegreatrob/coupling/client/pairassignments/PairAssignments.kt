@@ -95,7 +95,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
         { pinId: String, droppedPair: PinnedCouplingPair ->
             setPairAssignments(
-                copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this@dropThePin), droppedPair))
+                copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
             )
         }
 

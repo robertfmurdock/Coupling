@@ -230,7 +230,7 @@ class ComposeStatisticsActionTest {
             )
 
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
-                PairAssignmentDocument(stubDate, pairs)
+                PairAssignmentDocument(date = stubDate, pairs = pairs)
         }) exercise {
             ComposeStatisticsAction(tribe, players, history)
                 .perform()
@@ -278,8 +278,8 @@ class ComposeStatisticsActionTest {
         companion object {
             private fun pairAssignmentDocument(dateTime: DateTime) =
                 PairAssignmentDocument(
-                    dateTime,
-                    emptyList()
+                    date = dateTime,
+                    pairs = emptyList()
                 )
         }
 
@@ -354,8 +354,8 @@ class ComposeStatisticsActionTest {
             val players = emptyList<Player>()
             val history = listOf(
                 PairAssignmentDocument(
-                    DateTime(2017, 2, 17),
-                    emptyList()
+                    date = DateTime(2017, 2, 17),
+                    pairs = emptyList()
                 )
             )
         }) exercise {

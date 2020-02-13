@@ -4,9 +4,9 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class PairAssignmentDocument(
+    val id: PairAssignmentDocumentId? = null,
     val date: DateTime,
-    val pairs: List<PinnedCouplingPair>,
-    val id: PairAssignmentDocumentId? = null
+    val pairs: List<PinnedCouplingPair>
 )
 
 fun PairAssignmentDocument.with(tribeId: TribeId) =

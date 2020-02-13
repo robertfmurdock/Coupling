@@ -65,10 +65,10 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun Json.toPairAssignmentDocument() = TribeIdPairAssignmentDocument(
         TribeId(this["tribe"].unsafeCast<String>()),
         PairAssignmentDocument(
-            date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
-            pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map { pairFromRaw(it) } ?: listOf(),
             id = idStringValue()
-                .let(::PairAssignmentDocumentId)
+                .let(::PairAssignmentDocumentId),
+            date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
+            pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map { pairFromRaw(it) } ?: listOf()
         )
     )
 

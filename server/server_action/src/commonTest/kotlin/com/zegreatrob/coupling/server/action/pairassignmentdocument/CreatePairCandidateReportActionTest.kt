@@ -12,7 +12,7 @@ class CreatePairCandidateReportActionTest {
 
     companion object : CreatePairCandidateReportActionDispatcher {
         fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
-            PairAssignmentDocument(DateTime.now(), pairs)
+            PairAssignmentDocument(date = DateTime.now(), pairs = pairs)
 
         fun pinnedPair(player1: Player, player2: Player) =
             PinnedCouplingPair(

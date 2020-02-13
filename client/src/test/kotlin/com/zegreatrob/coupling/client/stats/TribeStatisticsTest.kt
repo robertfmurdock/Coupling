@@ -221,18 +221,18 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         )
         val history = listOf(
             PairAssignmentDocument(
+                date = DateTime(2017, 3, 14),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3])
-                ).withNoPins(),
-                date = DateTime(2017, 3, 14)
+                ).withNoPins()
             ),
             PairAssignmentDocument(
+                date = DateTime(2017, 3, 12),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3])
-                ).withNoPins(),
-                date = DateTime(2017, 3, 12)
+                ).withNoPins()
             )
         )
         val props = TribeStatisticsProps(
