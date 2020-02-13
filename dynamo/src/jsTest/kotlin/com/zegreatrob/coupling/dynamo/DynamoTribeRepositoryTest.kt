@@ -11,8 +11,6 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator {
         handler(repository)
     }
 
-    override fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = TODO()
-
     override fun deleteWillMakeTribeInaccessible() = TODO()
 
 }

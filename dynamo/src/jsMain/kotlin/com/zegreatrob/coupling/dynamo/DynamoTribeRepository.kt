@@ -28,7 +28,6 @@ suspend fun dynamoTribeRepository(): DynamoTribeRepository {
 
         while (tribeTableStatus(dynamoDB) != "ACTIVE") {
             yield()
-            println("yield")
         }
     }
 
@@ -87,19 +86,20 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
     }
 
     override suspend fun getTribe(tribeId: TribeId): Tribe? {
-        val response = dynamoDB.query(
+        return dynamoDB.query(
             json(
                 "TableName" to tableName,
                 "ExpressionAttributeValues" to json(
-                    "id" to json(
+                    ":id" to json(
                         "S" to tribeId.value
                     )
                 ),
                 "KeyConditionExpression" to "id = :id"
             )
         ).promise().await()
-
-        return null
+            .let { it["Items"].unsafeCast<Array<Json>>() }
+            .map { it.toTribe() }
+            .firstOrNull()
     }
 
     override suspend fun getTribes(): List<Tribe> {
@@ -119,8 +119,7 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
     }
 
     private fun Json.toTribe(): Tribe = Tribe(
-        id = TribeId(getDynamoStringValue("id")!!)
-            .also { println("id is.. $it") },
+        id = TribeId(getDynamoStringValue("id")!!),
         name = getDynamoStringValue("name"),
         email = getDynamoStringValue("email"),
         pairingRule = PairingRule.fromValue(
