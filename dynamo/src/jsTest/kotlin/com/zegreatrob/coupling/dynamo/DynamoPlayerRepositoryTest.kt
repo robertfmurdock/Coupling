@@ -12,16 +12,6 @@ class DynamoPlayerRepositoryTest : PlayerRepositoryValidator {
         handler(DynamoPlayerRepository(), stubTribeId())
     }
 
-    override fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = TODO()
-
-    override fun deleteWillRemoveAGivenPlayer(): Any? {
-        TODO()
-    }
-
-    override fun deleteWithUnknownPlayerIdWillReturnFalse(): Any? {
-        TODO()
-    }
-
     override fun deletedPlayersShowUpInGetDeleted(): Any? {
         TODO()
     }

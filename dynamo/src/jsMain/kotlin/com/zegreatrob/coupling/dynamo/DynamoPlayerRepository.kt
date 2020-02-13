@@ -13,6 +13,7 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
     companion object : DynamoTableNameSyntax, DynamoCreateTableSyntax, DynamoDBSyntax by DynamoDbProvider,
         DynamoItemPutSyntax,
         DynamoItemListGetSyntax,
+        DynamoItemDeleteSyntax,
         DynamoDatatypeSyntax {
 
         suspend operator fun invoke() = DynamoPlayerRepository().also {
@@ -47,7 +48,6 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
     }
 
     override suspend fun getPlayers(tribeId: TribeId) = scanForItemList(tribeId.scanParams())
-        .also { println("item list is ${JSON.stringify(it)}") }
         .map { it.toPlayer() }
 
     private fun TribeId.scanParams() = json(
@@ -58,9 +58,7 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = performPutItem(tribeIdPlayer.toDynamoJson())
 
-    override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(playerId, tribeId)
 
     override suspend fun getDeleted(tribeId: TribeId): List<Player> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -89,5 +87,4 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
     )
 
 }
-
 
