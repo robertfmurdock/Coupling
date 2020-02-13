@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.ISO8601
 import com.zegreatrob.coupling.dynamo.external.DynamoDB
 import com.zegreatrob.coupling.dynamo.external.config
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -78,41 +77,22 @@ private suspend fun createTribeTable(dynamoDB: DynamoDB) {
 }
 
 
-class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository, DynamoItemDeleteSyntax,
-    DynamoItemGetSyntax, DynamoQuerySyntax {
+class DynamoTribeRepository(override val dynamoDB: DynamoDB) : TribeRepository, DynamoItemDeleteSyntax,
+    DynamoItemGetSyntax, DynamoItemListGetSyntax, DynamoItemPutSyntax {
 
     companion object {
         const val tableName = "TRIBE"
     }
 
-    override suspend fun getTribe(tribeId: TribeId) = dynamoDB.performGetSingleItemQuery(tableName, tribeId.value)
-        ?.toTribe()
+    override val tableName: String get() = Companion.tableName
 
-    override suspend fun getTribes() = dynamoDB.scan(allTribesScan()).promise().await()
-        .itemsNode()
-        .sortByRecordTimestamp()
-        .groupBy { it.getDynamoStringValue("id") }
-        .map { it.value.last() }
-        .mapNotNull(::excludeDeleted)
-        .map { it.toTribe() }
+    override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()
 
-    private fun allTribesScan() = json("TableName" to tableName)
+    override suspend fun getTribes() = scanForItemList().map { it.toTribe() }
 
-    override suspend fun save(tribe: Tribe) = dynamoDB.putItem(
-        json(
-            "TableName" to tableName,
-            "Item" to tribe.asDynamoJson()
-        )
-    ).promise().await()
+    override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson())
 
-    override suspend fun delete(tribeId: TribeId) = try {
-        dynamoDB.putItem(deleteTableItemJson(tribeId)).promise().await()
-        true
-    } catch (uhOh: Throwable) {
-        false
-    }
-
-    private fun deleteTableItemJson(tribeId: TribeId) = deleteItemJson(tableName, tribeId.value)
+    override suspend fun delete(tribeId: TribeId) = performDelete(tribeId.value)
 
     private fun Json.toTribe() = Tribe(
         id = TribeId(getDynamoStringValue("id")!!),
@@ -144,70 +124,4 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository, D
     )
 
 }
-
-interface DynamoQuerySyntax {
-    suspend fun DynamoDB.performQuery(query: Json) = query(query).promise().await()
-}
-
-interface DynamoItemGetSyntax : DynamoQuerySyntax, DynamoDatatypeSyntax, DynamoItemSyntax {
-
-    suspend fun DynamoDB.performGetSingleItemQuery(tableName: String, id: String) =
-        performQuery(singleQuery(tableName, id))
-            .itemsNode()
-            .sortByRecordTimestamp()
-            .lastOrNull()
-            ?.let(::excludeDeleted)
-
-    private fun singleQuery(tableName: String, id: String) = json(
-        "TableName" to tableName,
-        "ExpressionAttributeValues" to json(":id" to json("S" to id)),
-        "KeyConditionExpression" to "id = :id"
-    )
-
-}
-
-interface DynamoItemSyntax : DynamoDatatypeSyntax {
-    fun excludeDeleted(it: Json) = if (it.getDynamoBoolValue("isDeleted") == true)
-        null
-    else
-        it
-
-    fun Array<Json>.sortByRecordTimestamp() = sortedBy { it.getDynamoStringValue("timestamp") }
-
-}
-
-interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax {
-    fun deleteItemJson(tableName: String, id: String) = json(
-        "TableName" to tableName,
-        "Item" to json(
-            "id" to id.dynamoString(),
-            "timestamp" to DateTime.now().isoWithMillis().dynamoString(),
-            "isDeleted" to true.dynamoBool()
-        )
-    )
-}
-
-interface DynamoDatatypeSyntax {
-
-    fun Json.itemsNode() = this["Items"].unsafeCast<Array<Json>>()
-
-    fun DateTime.isoWithMillis() = "${format(ISO8601.DATETIME_COMPLETE)}.${format("SSS")}"
-
-    fun String.dynamoString() = json("S" to this)
-    fun String?.dynamoString() = this?.dynamoString() ?: dynamoNull()
-    fun Number.dynamoNumber(): Json = json("N" to "$this")
-    fun Boolean.dynamoBool() = json("BOOL" to this)
-    fun dynamoNull(): Json = json("NULL" to "true")
-
-    fun Json.getDynamoStringValue(property: String) =
-        this[property].unsafeCast<Json?>()?.get("S")?.unsafeCast<String?>()
-
-    fun Json.getDynamoNumberValue(property: String) =
-        this[property].unsafeCast<Json?>()?.get("N")?.unsafeCast<String?>()
-
-    fun Json.getDynamoBoolValue(property: String) =
-        this[property].unsafeCast<Json?>()?.get("BOOL")?.unsafeCast<Boolean?>()
-
-}
-
 
