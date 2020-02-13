@@ -83,7 +83,7 @@ private suspend fun createTribeTable(dynamoDB: DynamoDB) {
 class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
 
     companion object {
-        val tableName = "TRIBE"
+        const val tableName = "TRIBE"
     }
 
     override suspend fun getTribe(tribeId: TribeId): Tribe? {
@@ -103,24 +103,10 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
     }
 
     override suspend fun getTribes(): List<Tribe> {
-        val response = dynamoDB.scan(
-            json(
-                "TableName" to tableName
-            )
-        ).promise().await()
-
-
+        val response = dynamoDB.scan(json("TableName" to tableName)).promise().await()
         return response["Items"].unsafeCast<Array<Json>>()
             .sortedBy { it.getDynamoStringValue("timestamp") }
-            .also {
-                it.forEach {
-                    println("timestamp: ${it.getDynamoStringValue("timestamp")}")
-                }
-            }
-            .also { println("returned tribes json ${JSON.stringify(it)}") }
             .map { it.toTribe() }
-            .also { println("returned tribes $it") }
-
     }
 
     override suspend fun save(tribe: Tribe) {
@@ -180,7 +166,7 @@ class DynamoTribeRepository(private val dynamoDB: DynamoDB) : TribeRepository {
     private fun dynamoNull(): Json = json("NULL" to "true")
 
     override suspend fun delete(tribeId: TribeId): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 }
 
