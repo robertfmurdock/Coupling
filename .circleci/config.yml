@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:13-jdk
       - image: mongo:latest
       - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
