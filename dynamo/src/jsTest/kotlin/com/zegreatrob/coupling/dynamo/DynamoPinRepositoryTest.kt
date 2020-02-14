@@ -10,13 +10,4 @@ class DynamoPinRepositoryTest : PinRepositoryValidator {
     override suspend fun withRepository(handler: suspend (PinRepository, TribeId) -> Unit) {
         handler(DynamoPinRepository(), stubTribeId())
     }
-
-    override fun saveThenDeleteWillNotShowThatPin(): Any? {
-        TODO()
-    }
-
-    override fun deleteWillFailWhenPinDoesNotExist(): Any? {
-        TODO()
-    }
-
 }

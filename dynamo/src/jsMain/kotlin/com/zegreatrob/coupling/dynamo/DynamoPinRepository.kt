@@ -11,6 +11,7 @@ class DynamoPinRepository private constructor() : PinRepository {
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
+        DynamoItemDeleteSyntax,
         DynamoPinJsonMapping,
         DynamoDBSyntax by DynamoDbProvider {
         override val construct = ::DynamoPinRepository
@@ -21,8 +22,6 @@ class DynamoPinRepository private constructor() : PinRepository {
 
     override suspend fun getPins(tribeId: TribeId): List<Pin> = tribeId.scanForItemList().map { it.toPin() }
 
-    override suspend fun deletePin(tribeId: TribeId, pinId: String): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun deletePin(tribeId: TribeId, pinId: String) = performDelete(pinId, tribeId)
 
 }
