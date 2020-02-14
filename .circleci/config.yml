@@ -21,7 +21,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew build check --info --stacktrace"
+      - run: "./gradlew build check --info --stacktrace --debug"
       - run:
           name: Copy test results
           command: |
