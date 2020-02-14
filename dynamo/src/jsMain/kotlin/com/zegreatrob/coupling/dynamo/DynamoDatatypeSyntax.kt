@@ -10,16 +10,12 @@ interface DynamoDatatypeSyntax {
 
     fun DateTime.isoWithMillis() = "${format(ISO8601.DATETIME_COMPLETE)}.${format("SSS")}"
 
-    fun Json.getDynamoStringValue(property: String) =
-        this[property].unsafeCast<String?>()
+    fun Json.getDynamoStringValue(property: String) = this[property].unsafeCast<String?>()
 
-    fun Json.getDynamoNumberValue(property: String) =
-        this[property].unsafeCast<Number?>()
+    fun Json.getDynamoNumberValue(property: String) = this[property].unsafeCast<Number?>()
 
-    fun Json.getDynamoBoolValue(property: String) =
-        this[property].unsafeCast<Boolean?>()
+    fun Json.getDynamoBoolValue(property: String) = this[property].unsafeCast<Boolean?>()
 
-    fun Json.getDynamoListValue(property: String) =
-        this[property].unsafeCast<Array<Json>?>()
+    fun Json.getDynamoListValue(property: String) = this[property].unsafeCast<Array<Json>?>()
 
 }
