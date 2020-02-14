@@ -11,19 +11,11 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
         handler(DynamoPairAssignmentDocumentRepository(), stubTribeId())
     }
 
-    override fun afterSavingAndUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument(): Any? {
-        TODO()
-    }
-
     override fun deleteWhenDocumentDoesNotExistWillReturnFalse(): Any? {
         TODO()
     }
 
     override fun saveAndDeleteThenGetWillReturnNothing(): Any? {
-        TODO()
-    }
-
-    override fun saveWillAssignIdWhenDocumentHasNone(): Any? {
         TODO()
     }
 
