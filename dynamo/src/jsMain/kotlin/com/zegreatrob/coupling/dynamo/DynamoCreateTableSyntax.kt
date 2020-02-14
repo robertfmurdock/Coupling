@@ -5,8 +5,7 @@ import kotlinx.coroutines.yield
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoCreateTableSyntax : DynamoTableNameSyntax,
-    DynamoDBSyntax {
+interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
     val createTableParams: Json
 
     suspend fun ensureTableExists() {

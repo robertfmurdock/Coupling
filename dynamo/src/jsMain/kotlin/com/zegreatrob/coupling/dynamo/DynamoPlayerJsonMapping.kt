@@ -1,18 +1,13 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax {
-    fun TribeIdPlayer.toDynamoJson() = json(
-        "tribeId" to tribeId.value,
-        "timestamp" to DateTime.now().isoWithMillis()
-    ).add(
-        player.toDynamoJson()
-    )
+interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJsonMapping {
+    fun TribeIdPlayer.toDynamoJson() = tribeId.recordJson()
+        .add(player.toDynamoJson())
 
     fun Player.toDynamoJson() = json(
         "id" to id,

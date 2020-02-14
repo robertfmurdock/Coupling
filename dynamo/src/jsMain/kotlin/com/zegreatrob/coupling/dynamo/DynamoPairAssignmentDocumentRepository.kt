@@ -32,6 +32,3 @@ class DynamoPairAssignmentDocumentRepository private constructor() : PairAssignm
         performDelete(pairAssignmentDocumentId.value, tribeId)
 
 }
-
-
-

@@ -6,19 +6,15 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoPairAssignmentDocumentJsonMapping : DynamoPlayerJsonMapping, DynamoPinJsonMapping {
+interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMapping, DynamoPlayerJsonMapping,
+    DynamoPinJsonMapping {
 
-    fun TribeIdPairAssignmentDocument.toDynamoJson() = json(
-        "tribeId" to tribeId.value,
+    fun TribeIdPairAssignmentDocument.toDynamoJson() = tribeId.recordJson().add(json(
         "id" to (document.id?.value ?: "${uuid4()}"),
-        "timestamp" to DateTime.now().isoWithMillis()
-    ).add(
-        json(
-            "date" to "${document.date.unixMillisLong}",
-            "pairs" to document.pairs.map { it.toDynamoJson() }
-                .toTypedArray()
-        )
-    )
+        "date" to "${document.date.unixMillisLong}",
+        "pairs" to document.pairs.map { it.toDynamoJson() }
+            .toTypedArray()
+    ))
 
     private fun PinnedCouplingPair.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),
@@ -50,3 +46,4 @@ interface DynamoPairAssignmentDocumentJsonMapping : DynamoPlayerJsonMapping, Dyn
 
 
 }
+
