@@ -11,10 +11,6 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
         handler(DynamoPairAssignmentDocumentRepository(), stubTribeId())
     }
 
-    override fun saveAndDeleteThenGetWillReturnNothing(): Any? {
-        TODO()
-    }
-
     override fun deleteWhenDocumentDoesNotExistWillReturnFalse(): Any? {
         TODO()
     }

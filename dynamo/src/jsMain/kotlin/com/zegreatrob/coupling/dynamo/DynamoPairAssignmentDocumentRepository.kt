@@ -12,6 +12,7 @@ class DynamoPairAssignmentDocumentRepository private constructor() : PairAssignm
     companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
+        DynamoItemDeleteSyntax,
         TribeIdDynamoItemListGetSyntax,
         DynamoPairAssignmentDocumentJsonMapping,
         DynamoDBSyntax by DynamoDbProvider {
@@ -27,9 +28,8 @@ class DynamoPairAssignmentDocumentRepository private constructor() : PairAssignm
         .map { it.toPairAssignmentDocument() }
         .sortedByDescending { it.date }
 
-    override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
+        performDelete(pairAssignmentDocumentId.value, tribeId)
 
 }
 
