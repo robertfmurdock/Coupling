@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling
 
 import SpyData
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
@@ -29,7 +30,8 @@ class FindOrCreateUserActionTest {
         }) exerciseAsync {
             FindOrCreateUserAction.perform()
         } verifyAsync { result ->
-            result.assertIsEqualTo(User(userEmail, emptySet()))
+            result.email.assertIsEqualTo(userEmail)
+            result.authorizedTribeIds.assertIsEqualTo(emptySet())
             saveSpy.spyReceivedValues.assertContains(result)
         }
     }
@@ -40,7 +42,7 @@ class FindOrCreateUserActionTest {
             override val userRepository = this
             override val userEmail = "test@test.tes"
 
-            val expectedUser = User(userEmail, setOf(TribeId("Best tribe")))
+            val expectedUser = User("${uuid4()}", userEmail, setOf(TribeId("Best tribe")))
             override suspend fun getUser() = expectedUser
             override suspend fun save(user: User) = fail("Should not save")
 

@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.mongo.user
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlin.js.Json
 import kotlin.js.json
@@ -23,11 +24,13 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
 
 
     private fun User.toDbJson() = json(
+        "id" to id,
         "email" to email,
         "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
     )
 
     private fun Json.fromDbToUser() = User(
+        id = this["id"]?.toString() ?: "${uuid4()}",
         email = this["email"].toString(),
         authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map {
             TribeId(

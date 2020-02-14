@@ -12,7 +12,7 @@ private const val mongoUrl = "localhost/UsersRepositoryTest"
 class MongoUserRepositoryTest : UserRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (UserRepository, User) -> Unit) {
-        val currentUser = User("${uuid4()}", emptySet())
+        val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
         withMongoRepository(currentUser.email) {
             handler(it, currentUser)
         }

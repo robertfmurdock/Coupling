@@ -14,18 +14,19 @@ import com.zegreatrob.coupling.server.entity.player.PlayersQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
+import com.zegreatrob.coupling.server.entity.user.toUser
 import kotlinx.coroutines.*
+import kotlin.js.Json
 
 @Suppress("unused")
 @JsName("commandDispatcher")
 fun commandDispatcher(
     jsRepository: dynamic,
     userCollection: dynamic,
-    userEmail: String,
-    tribeIds: Array<String>,
+    userJson: Json,
     path: String
 ): Any {
-    val user = User(userEmail, tribeIds.map(::TribeId).toSet())
+    val user = userJson.toUser()
     return CommandDispatcher(user, jsRepository, userCollection, path)
 }
 

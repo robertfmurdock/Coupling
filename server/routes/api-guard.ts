@@ -30,8 +30,7 @@ export default function (userDataService, couplingDataService) {
             request.commandDispatcher = commandDispatcher(
                 dataService,
                 userDataService.usersCollection,
-                email,
-                request.user.tribes,
+                request.user,
                 `${request.method} ${request.path}`
             );
 
