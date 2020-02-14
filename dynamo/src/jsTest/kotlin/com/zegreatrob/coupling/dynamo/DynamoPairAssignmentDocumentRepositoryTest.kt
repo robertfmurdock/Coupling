@@ -10,9 +10,4 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
     override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
         handler(DynamoPairAssignmentDocumentRepository(), stubTribeId())
     }
-
-    override fun deleteWhenDocumentDoesNotExistWillReturnFalse(): Any? {
-        TODO()
-    }
-
 }
