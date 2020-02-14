@@ -143,13 +143,10 @@ tasks {
             vendorCompile,
             testVendorCompile,
             ":action:jsTest",
-            compileTestKotlinJs,
-            runDceTestKotlin
+            compileTestKotlinJs
         )
         inputs.file(file("package.json"))
         inputs.files(vendorCompile.inputs.files)
-        inputs.dir("build/kotlin-js-min/main")
-        inputs.dir("build/kotlin-js-min/test")
         inputs.dir("test")
         outputs.dir(file("build/test-results"))
 
