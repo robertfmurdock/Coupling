@@ -11,15 +11,11 @@ class DynamoPinRepositoryTest : PinRepositoryValidator {
         handler(DynamoPinRepository(), stubTribeId())
     }
 
-    override fun deleteWillFailWhenPinDoesNotExist(): Any? {
-        TODO()
-    }
-
-    override fun givenNoPinsWillReturnEmptyList(): Any? {
-        TODO()
-    }
-
     override fun saveThenDeleteWillNotShowThatPin(): Any? {
+        TODO()
+    }
+
+    override fun deleteWillFailWhenPinDoesNotExist(): Any? {
         TODO()
     }
 

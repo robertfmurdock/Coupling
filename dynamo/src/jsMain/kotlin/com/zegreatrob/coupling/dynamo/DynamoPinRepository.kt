@@ -26,4 +26,3 @@ class DynamoPinRepository private constructor() : PinRepository {
     }
 
 }
-
