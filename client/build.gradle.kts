@@ -89,6 +89,7 @@ tasks {
     }
 
     val runDceTestKotlin by getting(KotlinJsDce::class) {
+        enabled = false
         keep(
             "client_test.setLogLevel"
         )
