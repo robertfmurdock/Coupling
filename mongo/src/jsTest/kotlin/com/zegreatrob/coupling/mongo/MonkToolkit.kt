@@ -14,6 +14,7 @@ interface MonkToolkit {
         "playersCollection" to db.get("players"),
         "historyCollection" to db.get("history"),
         "tribesCollection" to db.get("tribes"),
+        "userCollection" to db.get("users"),
         "pinCollection" to db.get("pins")
     )
 
