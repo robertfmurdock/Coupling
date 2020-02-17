@@ -8,6 +8,7 @@ jobs:
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
+      JVM_OPTS: -Xmx2048m
     steps:
       - checkout
       - restore_cache:
