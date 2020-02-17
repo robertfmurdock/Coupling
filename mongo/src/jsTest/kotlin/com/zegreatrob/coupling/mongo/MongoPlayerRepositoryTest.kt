@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.mongo
 
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.js.toDateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.Player
@@ -31,9 +32,10 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
     }
 
     companion object {
-        private fun repositoryWithDb(userEmail: String) = MongoPlayerRepositoryTestAnchor(userEmail)
+        private fun repositoryWithDb(userEmail: String) = MongoPlayerRepositoryTestAnchor(userEmail, TimeProvider)
 
-        class MongoPlayerRepositoryTestAnchor(override val userEmail: String) : MongoPlayerRepository, MonkToolkit {
+        class MongoPlayerRepositoryTestAnchor(override val userEmail: String, override val clock: TimeProvider) :
+            MongoPlayerRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
 
@@ -115,6 +117,7 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
             }) {
                 with(object : MongoPlayerRepository {
                     override val userEmail = userWhoSaved
+                    override val clock: TimeProvider get() = TimeProvider
                     override val jsRepository = this@withMongoRepository.jsRepository
                 }) {
                     save(TribeIdPlayer(tribeId, player))

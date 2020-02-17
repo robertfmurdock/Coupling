@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.mongo
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -19,9 +20,9 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
     }
 
     companion object {
-        private fun repositoryWithDb() = MongoPinRepositoryTestAnchor()
+        private fun repositoryWithDb() = MongoPinRepositoryTestAnchor(TimeProvider)
 
-        class MongoPinRepositoryTestAnchor : MongoPinRepository, MonkToolkit {
+        class MongoPinRepositoryTestAnchor(override val clock: TimeProvider) : MongoPinRepository, MonkToolkit {
             private val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
             override val userEmail: String = "user-${Random.nextInt(200)}"

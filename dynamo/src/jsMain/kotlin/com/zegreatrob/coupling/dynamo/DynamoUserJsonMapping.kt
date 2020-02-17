@@ -23,4 +23,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
             .toSet()
     )
 
+    fun Json.toUserRecord() = toRecord(
+        toUser()
+    )
 }

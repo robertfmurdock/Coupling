@@ -5,11 +5,12 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.mongo.player.JsonRecordSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlin.js.Json
 import kotlin.js.json
 
-interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoadSyntax {
+interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoadSyntax, JsonRecordSyntax {
 
     val userCollection: dynamic
 
@@ -20,8 +21,7 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
 
     override suspend fun getUser() = findByQuery(json("email" to userEmail), userCollection, "email")
         .firstOrNull()
-        ?.fromDbToUser()
-
+        ?.let { it.toDbRecord(it.fromDbToUser()) }
 
     private fun User.toDbJson() = json(
         "id" to id,

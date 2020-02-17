@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
@@ -10,6 +11,6 @@ import stubUser
 class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
     override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
         val user = stubUser()
-        handler(DynamoPairAssignmentDocumentRepository(user.email), stubTribeId())
+        handler(DynamoPairAssignmentDocumentRepository(user.email, TimeProvider), stubTribeId())
     }
 }

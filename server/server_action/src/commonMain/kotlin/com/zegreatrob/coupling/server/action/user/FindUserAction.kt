@@ -12,5 +12,5 @@ interface FindUserActionDispatcher : ActionLoggingSyntax, UserEmailSyntax {
 
     val userRepository: UserRepository
 
-    suspend fun FindUserAction.perform(): User? = logAsync { userRepository.getUser() }
+    suspend fun FindUserAction.perform(): User? = logAsync { userRepository.getUser()?.data }
 }

@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.mongo
 
+import com.soywiz.klock.js.toDate
+import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlinx.coroutines.await
-import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.Promise
 
@@ -14,9 +15,9 @@ interface DbRecordSaveSyntax : DbRecordInfoSyntax {
         }
 }
 
-interface DbRecordInfoSyntax : UserEmailSyntax {
+interface DbRecordInfoSyntax : UserEmailSyntax, ClockSyntax {
     fun Json.addRecordInfo() = also {
-        this["timestamp"] = Date()
+        this["timestamp"] = now().toDate()
         this["modifiedByUsername"] = userEmail
     }
 }

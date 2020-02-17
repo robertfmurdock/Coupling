@@ -1,13 +1,17 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.json
 
-class DynamoTribeRepository private constructor(override val userEmail: String) : TribeRepository,
+class DynamoTribeRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
+    TribeRepository,
     UserEmailSyntax,
+    ClockSyntax,
     DynamoTribeJsonMapping {
 
     companion object : DynamoTableNameSyntax, CreateTableParamProvider,

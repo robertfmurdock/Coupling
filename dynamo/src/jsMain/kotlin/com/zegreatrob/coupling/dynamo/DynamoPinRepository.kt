@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
-class DynamoPinRepository private constructor(override val userEmail: String) : PinRepository, UserEmailSyntax,
+class DynamoPinRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
+    PinRepository,
+    UserEmailSyntax,
     DynamoPinJsonMapping {
 
     companion object : DynamoRepositoryCreatorSyntax<DynamoPinRepository>,

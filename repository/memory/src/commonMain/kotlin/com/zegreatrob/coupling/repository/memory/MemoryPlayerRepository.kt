@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.repository.memory
 
+import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 
-class MemoryPlayerRepository(override val userEmail: String) : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>, RecordSaveSyntax<TribeIdPlayer> {
+class MemoryPlayerRepository(override val userEmail: String, override val clock: TimeProvider) : PlayerRepository,
+    TypeRecordSyntax<TribeIdPlayer>, RecordSaveSyntax<TribeIdPlayer> {
 
     override var records = emptyList<Record<TribeIdPlayer>>()
 

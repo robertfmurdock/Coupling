@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 
 interface UserGetSyntax {
     val userRepository: UserRepository
-    suspend fun loadUser() = userRepository.getUser()
+    suspend fun loadUser() = userRepository.getUser()?.data
 }

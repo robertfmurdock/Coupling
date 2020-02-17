@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
@@ -12,7 +13,7 @@ class DynamoPlayerRepositoryTest : PlayerRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId, User) -> Unit) {
         val user = stubUser()
-        handler(DynamoPlayerRepository(user.email), stubTribeId(), user)
+        handler(DynamoPlayerRepository(user.email, TimeProvider), stubTribeId(), user)
     }
 
 }

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.mongo
 
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.days
 import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
@@ -33,9 +34,10 @@ class MongoPairAssignmentDocumentRepositoryTest :
 
     companion object {
 
-        private fun repositoryWithDb() = MongoPairAssignmentDocumentRepositoryTestAnchor()
+        private fun repositoryWithDb() = MongoPairAssignmentDocumentRepositoryTestAnchor(TimeProvider)
 
-        class MongoPairAssignmentDocumentRepositoryTestAnchor : MongoPairAssignmentDocumentRepository, MonkToolkit {
+        class MongoPairAssignmentDocumentRepositoryTestAnchor(override val clock: TimeProvider) :
+            MongoPairAssignmentDocumentRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
             override val userEmail: String = "user-${Random.nextInt(200)}"

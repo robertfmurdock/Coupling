@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repository.memory
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
@@ -10,6 +11,6 @@ import stubUser
 class MemoryPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
     override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
         val user = stubUser()
-        handler(MemoryPairAssignmentDocumentRepository(user.email), stubTribeId())
+        handler(MemoryPairAssignmentDocumentRepository(user.email, TimeProvider), stubTribeId())
     }
 }

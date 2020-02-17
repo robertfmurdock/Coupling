@@ -2,8 +2,7 @@ package com.zegreatrob.coupling.model.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.player.Player
 
-interface PairingTimeCalculationSyntax :
-    CouplingComparisionSyntax {
+interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
 
     fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairAssignmentDocument>): TimeResult {
         val documentsSinceLastPartnership =

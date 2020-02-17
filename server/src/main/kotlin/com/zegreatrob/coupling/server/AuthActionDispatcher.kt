@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.entity.user.AuthUserDispatcherJs
 import kotlinx.coroutines.CoroutineScope
@@ -19,4 +20,5 @@ class AuthActionDispatcher(
 ) : AuthUserDispatcherJs, MongoUserRepository {
     override val userRepository = this
     override val scope: CoroutineScope = MainScope()
+    override val clock = TimeProvider
 }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repository.memory
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
@@ -10,6 +11,6 @@ import stubUser
 class MemoryPinRepositoryTest : PinRepositoryValidator {
     override suspend fun withRepository(handler: suspend (PinRepository, TribeId) -> Unit) {
         val user = stubUser()
-        handler(MemoryPinRepository(user.email), stubTribeId())
+        handler(MemoryPinRepository(user.email, TimeProvider), stubTribeId())
     }
 }

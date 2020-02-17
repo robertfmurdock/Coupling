@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
@@ -25,4 +26,5 @@ class MongoRepositoryCatalog(
     override val playerRepository = this
     override val pairAssignmentDocumentRepository = this
     override val pinRepository = this
+    override val clock = TimeProvider
 }

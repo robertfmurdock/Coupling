@@ -1,9 +1,12 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.soywiz.klock.TimeProvider
+
 interface DynamoRepositoryCreatorSyntax<T> : DynamoCreateTableSyntax {
 
-    val construct: (String) -> T
+    val construct: (String, TimeProvider) -> T
 
-    suspend operator fun invoke(userEmail: String): T = construct(userEmail).also { ensureTableExists() }
+    suspend operator fun invoke(userEmail: String, clock: TimeProvider): T = construct(userEmail, clock)
+        .also { ensureTableExists() }
 
 }

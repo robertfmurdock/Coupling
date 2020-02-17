@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.mongo
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -26,13 +27,13 @@ class MongoTribeRepositoryTest :
 
     companion object {
 
-        class MongoTribeRepositoryTestAnchor : MongoTribeRepository, MonkToolkit {
+        class MongoTribeRepositoryTestAnchor(override val clock: TimeProvider) : MongoTribeRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
             override val userEmail: String = "user-${Random.nextInt(200)}"
         }
 
-        private fun repositoryWithDb() = MongoTribeRepositoryTestAnchor()
+        private fun repositoryWithDb() = MongoTribeRepositoryTestAnchor(TimeProvider)
 
         private inline fun withMongoRepository(block: MongoTribeRepositoryTestAnchor.() -> Unit) {
             val repositoryWithDb = repositoryWithDb()

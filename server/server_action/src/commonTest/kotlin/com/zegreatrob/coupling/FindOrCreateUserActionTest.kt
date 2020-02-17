@@ -2,6 +2,8 @@ package com.zegreatrob.coupling
 
 import SpyData
 import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
@@ -22,7 +24,7 @@ class FindOrCreateUserActionTest {
             override val userRepository = this
             override val userEmail = "test@test.tes"
 
-            override suspend fun getUser(): User? = null
+            override suspend fun getUser(): Nothing? = null
 
             val saveSpy = SpyData<User, Unit>().apply { spyWillReturn(Unit) }
             override suspend fun save(user: User) = saveSpy.spyFunction(user)
@@ -43,7 +45,7 @@ class FindOrCreateUserActionTest {
             override val userEmail = "test@test.tes"
 
             val expectedUser = User("${uuid4()}", userEmail, setOf(TribeId("Best tribe")))
-            override suspend fun getUser() = expectedUser
+            override suspend fun getUser() = Record(expectedUser, DateTime.now(), false, "")
             override suspend fun save(user: User) = fail("Should not save")
 
         }) exerciseAsync {

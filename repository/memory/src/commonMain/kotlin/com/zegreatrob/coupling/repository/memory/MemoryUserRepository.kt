@@ -1,19 +1,19 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
 
-class MemoryUserRepository(private val currentUserEmail: String) : UserRepository {
+class MemoryUserRepository(override val userEmail: String, override val clock: TimeProvider) : UserRepository,
+    TypeRecordSyntax<User>,
+    RecordSaveSyntax<User> {
 
-    private var users = emptyMap<User, DateTime>()
+    override var records: List<Record<User>> = emptyList()
 
-    override suspend fun save(user: User) = (user to DateTime.now()).let(::addToUserMap)
+    override suspend fun save(user: User) = user.record().save()
 
-    private fun addToUserMap(it: Pair<User, DateTime>) {
-        users = users + it
-    }
+    override suspend fun getUser() = records.lastOrNull { it.data.email == userEmail }
 
-    override suspend fun getUser() = users.filterKeys { it.email == currentUserEmail }.keys.lastOrNull()
 
 }

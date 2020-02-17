@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.repository.memory
 
+import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
-class MemoryPinRepository(override val userEmail: String) : PinRepository, TypeRecordSyntax<TribeIdPin>,
+class MemoryPinRepository(override val userEmail: String, override val clock: TimeProvider) : PinRepository,
+    TypeRecordSyntax<TribeIdPin>,
     RecordSaveSyntax<TribeIdPin> {
 
     override var records = emptyList<Record<TribeIdPin>>()
