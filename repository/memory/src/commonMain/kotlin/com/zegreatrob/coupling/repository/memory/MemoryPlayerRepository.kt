@@ -35,12 +35,3 @@ class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>
         .map { it.data.player }
 
 }
-
-interface RecordSaveSyntax<T> {
-    var records: List<Record<T>>
-
-    fun Record<T>.save() {
-        records = records + this
-    }
-
-}
