@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 
-class MemoryPlayerRepository : PlayerRepository {
+class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer> {
 
     private var playerMap = emptyList<Record<TribeIdPlayer>>()
 
@@ -33,13 +32,8 @@ class MemoryPlayerRepository : PlayerRepository {
         }
     }
 
-    private fun TribeIdPlayer.record() = Record(this, DateTime.now(), false)
-
-    private fun TribeIdPlayer.deleteRecord() = Record(this, DateTime.now(), true)
-
     override suspend fun getDeleted(tribeId: TribeId) = tribeId.players()
         .filter { it.isDeleted }
         .map { it.data.player }
 
 }
-
