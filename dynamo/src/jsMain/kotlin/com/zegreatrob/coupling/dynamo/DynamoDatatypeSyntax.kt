@@ -1,14 +1,21 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.ISO8601
+import com.soywiz.klock.PatternDateFormat
+import com.soywiz.klock.parse
 import kotlin.js.Json
+
+
+private val dateFormat = PatternDateFormat("YYYYMMddHHmmss.SSS")
 
 interface DynamoDatatypeSyntax {
 
     fun Json.itemsNode() = this["Items"].unsafeCast<Array<Json>>()
 
-    fun DateTime.isoWithMillis() = "${format(ISO8601.DATETIME_COMPLETE)}.${format("SSS")}"
+    fun DateTime.isoWithMillis() = format(dateFormat)
+
+    fun Json.getDynamoDateTimeValue(property: String) = this[property].unsafeCast<String?>()
+        ?.let(dateFormat::parse)
 
     fun Json.getDynamoStringValue(property: String) = this[property].unsafeCast<String?>()
 

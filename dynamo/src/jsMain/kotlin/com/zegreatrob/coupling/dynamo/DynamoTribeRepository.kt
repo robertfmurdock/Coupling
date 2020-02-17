@@ -2,19 +2,19 @@ package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.json
 
-class DynamoTribeRepository private constructor() : TribeRepository,
-    DynamoItemGetSyntax,
-    DynamoItemPutSyntax,
-    DynamoItemListGetSyntax,
-    DynamoItemDeleteSyntax,
-    DynamoTribeJsonMapping,
-    DynamoTableNameSyntax by Companion,
-    DynamoDBSyntax by DynamoDbProvider {
+class DynamoTribeRepository private constructor(override val userEmail: String) : TribeRepository,
+    UserEmailSyntax,
+    DynamoTribeJsonMapping {
 
     companion object : DynamoTableNameSyntax, CreateTableParamProvider,
+        DynamoItemGetSyntax,
+        DynamoItemPutSyntax,
+        DynamoItemListGetSyntax,
+        DynamoItemDeleteSyntax,
         DynamoRepositoryCreatorSyntax<DynamoTribeRepository>,
         DynamoDBSyntax by DynamoDbProvider {
         override val tableName = "TRIBE"

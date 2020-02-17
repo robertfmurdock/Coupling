@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 
 
 fun stubTribes(number: Int) = generateSequence { stubTribe() }.take(number).toList()
@@ -82,3 +83,10 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
 fun stubPairAssignmentDocList(number: Int) = generateSequence { stubPairAssignmentDoc() }.take(number).toList()
 
 private fun uuidString() = uuid4().toString()
+
+var userCounter = 1
+fun stubUser() = User(
+    id = uuidString(),
+    email = "$userCounter@gmail.com",
+    authorizedTribeIds = setOf(stubTribeId())
+).also { userCounter++ }

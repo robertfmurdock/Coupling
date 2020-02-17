@@ -2,7 +2,11 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
+import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
@@ -31,15 +35,23 @@ class PlayersQueryTest {
                     callSignNoun = "Tacos"
                 )
             )
+
             override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(authorizedTribeId, players) }
+                .apply { whenever(authorizedTribeId, players.map { toRecord(it, authorizedTribeId) }) }
         }) exerciseAsync {
-            PlayersQuery
-                .perform()
+            PlayersQuery.perform()
         } verifyAsync { result ->
-            result.assertIsEqualTo(players)
+            result.map { it.data.player }.assertIsEqualTo(players)
         }
     }
+
+    private fun toRecord(it: Player, authorizedTribeId: TribeId) =
+        Record(
+            TribeIdPlayer(authorizedTribeId, it),
+            DateTime.now(),
+            false,
+            "${uuid4()}@email.com"
+        )
 
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = testAsync {
@@ -51,22 +63,24 @@ class PlayersQueryTest {
                 Player(id = "3")
             )
             override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(authorizedTribeId, players) }
+                .apply { whenever(authorizedTribeId, players.map { toRecord(it, authorizedTribeId) }) }
         }) exerciseAsync {
-            PlayersQuery
-                .perform()
+            PlayersQuery.perform()
         } verifyAsync { result ->
-            result.map(Player::id)
-                .assertIsEqualTo(players.map(Player::id))
-            result.mapNotNull(Player::callSignAdjective).size
-                .assertIsEqualTo(players.size)
-            result.mapNotNull(Player::callSignNoun).size
-                .assertIsEqualTo(players.size)
+            result.map { it.data.player }
+                .apply {
+                    map(Player::id)
+                        .assertIsEqualTo(players.map(Player::id))
+                    mapNotNull(Player::callSignAdjective).size
+                        .assertIsEqualTo(players.size)
+                    mapNotNull(Player::callSignNoun).size
+                        .assertIsEqualTo(players.size)
+                }
         }
     }
 
 
-    class PlayerRepositorySpy : PlayerListGet, Spy<TribeId, List<Player>> by SpyData() {
-        override suspend fun getPlayers(tribeId: TribeId): List<Player> = spyFunction(tribeId)
+    class PlayerRepositorySpy : PlayerListGet, Spy<TribeId, List<Record<TribeIdPlayer>>> by SpyData() {
+        override suspend fun getPlayers(tribeId: TribeId) = spyFunction(tribeId)
     }
 }

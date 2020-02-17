@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.dynamo
 
 interface DynamoRepositoryCreatorSyntax<T> : DynamoCreateTableSyntax {
 
-    val construct: () -> T
+    val construct: (String) -> T
 
-    suspend operator fun invoke(): T = construct().also { ensureTableExists() }
+    suspend operator fun invoke(userEmail: String): T = construct(userEmail).also { ensureTableExists() }
 
 }

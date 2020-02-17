@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
@@ -16,26 +17,25 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import stubPlayer
 import stubTribeId
+import stubUser
 import kotlin.js.*
-import kotlin.random.Random
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-class MongoPlayerRepositoryTest :
-    PlayerRepositoryValidator {
+class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
 
-    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId) -> Unit) {
-        withMongoRepository { handler(this, stubTribeId()) }
+    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId, User) -> Unit) {
+        val user = stubUser()
+        withMongoRepository(user) { handler(this, stubTribeId(), user) }
     }
 
     companion object {
-        private fun repositoryWithDb() = MongoPlayerRepositoryTestAnchor()
+        private fun repositoryWithDb(userEmail: String) = MongoPlayerRepositoryTestAnchor(userEmail)
 
-        class MongoPlayerRepositoryTestAnchor : MongoPlayerRepository, MonkToolkit {
+        class MongoPlayerRepositoryTestAnchor(override val userEmail: String) : MongoPlayerRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
-            override val userEmail: String = "user-${Random.nextInt(200)}"
 
             suspend fun dropPlayers() {
                 playersCollection.drop().unsafeCast<Promise<Unit>>().await()
@@ -45,8 +45,11 @@ class MongoPlayerRepositoryTest :
                 playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
-        private inline fun withMongoRepository(block: MongoPlayerRepositoryTestAnchor.() -> Unit) {
-            val repositoryWithDb = repositoryWithDb()
+        private inline fun withMongoRepository(
+            user: User = stubUser(),
+            block: MongoPlayerRepositoryTestAnchor.() -> Unit
+        ) {
+            val repositoryWithDb = repositoryWithDb(user.email)
             try {
                 with(repositoryWithDb, block)
             } finally {
@@ -56,7 +59,7 @@ class MongoPlayerRepositoryTest :
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsername() = testAsync {
+    fun savedPlayersIncludeModificationDateAndUsernameInMongo() = testAsync {
         withMongoRepository {
             dropPlayers()
             setupAsync(object {
@@ -156,14 +159,10 @@ class MongoPlayerRepositoryTest :
                 setupLegacyPlayer() exerciseAsync {
                     getPlayers(tribeId)
                 } verifyAsync { result ->
-                    result.assertIsEqualTo(
-                        listOf(
-                            Player(
-                                id = playerId,
-                                name = playerDbJson["name"].toString()
-                            )
+                    result.map { it.data.player }
+                        .assertIsEqualTo(
+                            listOf(Player(id = playerId, name = playerDbJson["name"].toString()))
                         )
-                    )
                 }
             }
         }
@@ -203,7 +202,8 @@ class MongoPlayerRepositoryTest :
                     save(TribeIdPlayer(tribeId, updatedPlayer))
                     getPlayers(tribeId)
                 } verifyAsync { result ->
-                    result.assertIsEqualTo(listOf(updatedPlayer))
+                    result.map { it.data.player }
+                        .assertIsEqualTo(listOf(updatedPlayer))
                 }
             }
         }
@@ -239,7 +239,7 @@ class MongoPlayerRepositoryTest :
             } exerciseAsync {
                 getPlayers(tribeId)
             } verifyAsync { result ->
-                result[0].badge.assertIsEqualTo(2)
+                result[0].data.player.badge.assertIsEqualTo(2)
             }
         }
     }

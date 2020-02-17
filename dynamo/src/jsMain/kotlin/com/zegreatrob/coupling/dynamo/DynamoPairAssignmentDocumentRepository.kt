@@ -4,17 +4,18 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 
 
-class DynamoPairAssignmentDocumentRepository private constructor() : PairAssignmentDocumentRepository {
+class DynamoPairAssignmentDocumentRepository private constructor(override val userEmail: String) :
+    PairAssignmentDocumentRepository, UserEmailSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
     companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoItemDeleteSyntax,
         TribeIdDynamoItemListGetSyntax,
-        DynamoPairAssignmentDocumentJsonMapping,
         DynamoDBSyntax by DynamoDbProvider {
         override val construct = ::DynamoPairAssignmentDocumentRepository
         override val tableName = "PAIR_ASSIGNMENTS"

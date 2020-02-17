@@ -4,9 +4,10 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 
-class MemoryPairAssignmentDocumentRepository : PairAssignmentDocumentRepository,
+class MemoryPairAssignmentDocumentRepository(override val userEmail: String) : PairAssignmentDocumentRepository,
     TypeRecordSyntax<TribeIdPairAssignmentDocument>,
     RecordSaveSyntax<TribeIdPairAssignmentDocument> {
 

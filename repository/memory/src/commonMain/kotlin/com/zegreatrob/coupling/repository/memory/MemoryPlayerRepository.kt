@@ -2,9 +2,10 @@ package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 
-class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>, RecordSaveSyntax<TribeIdPlayer> {
+class MemoryPlayerRepository(override val userEmail: String) : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>, RecordSaveSyntax<TribeIdPlayer> {
 
     override var records = emptyList<Record<TribeIdPlayer>>()
 
@@ -12,7 +13,6 @@ class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>
 
     override suspend fun getPlayers(tribeId: TribeId) = tribeId.players()
         .filterNot { it.isDeleted }
-        .map { it.data.player }
 
     private fun TribeId.players() = records.asSequence()
         .filter { (data) -> data.tribeId == this }

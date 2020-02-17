@@ -6,14 +6,14 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.await
 import kotlin.js.json
 
-class DynamoUserRepository private constructor(override val userEmail: String) : UserRepository, UserEmailSyntax {
+class DynamoUserRepository private constructor(override val userEmail: String) : UserRepository, UserEmailSyntax,
+    DynamoUserJsonMapping {
 
     companion object : DynamoDBSyntax by DynamoDbProvider,
         CreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
-        DynamoItemSyntax,
-        DynamoUserJsonMapping {
+        DynamoItemSyntax {
         override val tableName = "USER"
         suspend operator fun invoke(email: String) = DynamoUserRepository(email).also { ensureTableExists() }
     }

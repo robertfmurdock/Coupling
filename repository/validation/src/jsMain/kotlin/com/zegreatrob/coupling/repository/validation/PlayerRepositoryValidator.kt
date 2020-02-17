@@ -1,9 +1,12 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -15,14 +18,14 @@ import kotlin.test.Test
 
 interface PlayerRepositoryValidator {
 
-    suspend fun withRepository(handler: suspend (PlayerRepository, TribeId) -> Unit)
+    suspend fun withRepository(handler: suspend (PlayerRepository, TribeId, User) -> Unit)
 
-    private fun testRepository(block: suspend CoroutineScope.(PlayerRepository, TribeId) -> Any?) = testAsync {
-        withRepository { repository, tribeId -> block(repository, tribeId) }
+    private fun testRepository(block: suspend CoroutineScope.(PlayerRepository, TribeId, User) -> Any?) = testAsync {
+        withRepository { repository, tribeId, user -> block(repository, tribeId, user) }
     }
 
     @Test
-    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = testRepository { repository, tribeId ->
+    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val players = stubPlayers(3)
         }) {
@@ -30,12 +33,13 @@ interface PlayerRepositoryValidator {
         } exerciseAsync {
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(players)
+            result.map { it.data.player }
+                .assertIsEqualTo(players)
         }
     }
 
     @Test
-    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = testRepository { repository, tribeId ->
+    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val player = stubPlayer()
             val updatedPlayer = player.copy(name = "Timmy!")
@@ -45,12 +49,13 @@ interface PlayerRepositoryValidator {
             repository.save(TribeIdPlayer(tribeId, updatedPlayer))
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(updatedPlayer))
+            result.map { it.data.player }
+                .assertIsEqualTo(listOf(updatedPlayer))
         }
     }
 
     @Test
-    fun deleteWillRemoveAGivenPlayer() = testRepository { repository, tribeId ->
+    fun deleteWillRemoveAGivenPlayer() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val player = stubPlayer()
         }) {
@@ -59,12 +64,14 @@ interface PlayerRepositoryValidator {
             repository.deletePlayer(tribeId, player.id!!)
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
-            result.contains(player).assertIsEqualTo(false)
+            result.map { it.data.player }
+                .contains(player)
+                .assertIsEqualTo(false)
         }
     }
 
     @Test
-    fun deletedPlayersShowUpInGetDeleted() = testRepository { repository, tribeId ->
+    fun deletedPlayersShowUpInGetDeleted() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val player = stubPlayer()
         }) {
@@ -78,7 +85,7 @@ interface PlayerRepositoryValidator {
     }
 
     @Test
-    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = testRepository { repository, tribeId ->
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val player = stubPlayer()
             val playerId = player.id!!
@@ -95,7 +102,7 @@ interface PlayerRepositoryValidator {
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = testRepository { repository, tribeId ->
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val playerId = "${uuid4()}"
         }) exerciseAsync {
@@ -104,5 +111,24 @@ interface PlayerRepositoryValidator {
             result.assertIsEqualTo(false)
         }
     }
+
+    @Test
+    fun savedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user ->
+        setupAsync(object {
+            val player = stubPlayer()
+        }) exerciseAsync {
+            repository.save(TribeIdPlayer(tribeId, player))
+            repository.getPlayers(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                timestamp.isCloseToNow()
+                    .assertIsEqualTo(true)
+                modifyingUserEmail.assertIsEqualTo(user.email)
+            }
+        }
+    }
+
+    private inline fun DateTime.isCloseToNow() = (DateTime.now() - this) < 1.seconds
 
 }

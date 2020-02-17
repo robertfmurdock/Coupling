@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
@@ -39,13 +38,13 @@ interface MongoPlayerRepository : PlayerRepository,
         { toDbJson() }
     )
 
-    override suspend fun getPlayers(tribeId: TribeId): List<Player> =
+    override suspend fun getPlayers(tribeId: TribeId) =
         findByQuery(json("tribe" to tribeId.value), playersCollection)
-            .map { it.fromDbToPlayer() }
+            .map { it.toPlayerRecord() }
 
     override suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer> =
         getLatestRecordsRelatedToAsync(json("email" to email), playersCollection)
-            .map { it.fromDbToPlayer() with TribeId(it["tribe"].toString()) }
+            .map { it.toPlayerRecord().data }
             .filter { it.player.email == email }
 
     private suspend fun getLatestRecordsRelatedToAsync(query: Json, collection: dynamic) =
@@ -56,11 +55,11 @@ interface MongoPlayerRepository : PlayerRepository,
             .mapNotNull { getLatestRecordWithId(it, collection) }
 
     override suspend fun getDeleted(tribeId: TribeId): List<Player> = findDeletedByQuery(tribeId, playersCollection)
-        .map { it.fromDbToPlayer() }
+        .map { it.toPlayerRecord().data.player }
 
     private fun Json.toTribeIdPlayer() = TribeIdPlayer(
         tribeId = TribeId(this["tribe"].unsafeCast<String>()),
-        player = applyIdCorrection().fromDbToPlayer()
+        player = applyIdCorrection().toPlayerRecord().data.player
     )
 
 }

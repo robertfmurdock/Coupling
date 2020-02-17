@@ -4,25 +4,34 @@ import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
+import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.AuthorizedTribeIdSyntax
 
 object PlayersQuery : Action
 
-interface PlayersQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax, TribeIdPlayersSyntax,
+interface PlayersQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax, TribeIdPlayerRecordsListSyntax,
     FindCallSignActionDispatcher {
     suspend fun PlayersQuery.perform() = logAsync {
-        val players = authorizedTribeId?.getPlayerList() ?: emptyList()
+        val playerRecords = authorizedTribeId?.getPlayerRecords() ?: emptyList()
 
-        var updatedPlayers = emptyList<Player>()
-        players
-            .forEachIndexed { index, player ->
+        var updatedPlayers = emptyList<Record<TribeIdPlayer>>()
+        playerRecords
+            .forEachIndexed { index, record ->
 
-                val callSign = findCallSign(updatedPlayers, players, index, player)
+                val callSign = findCallSign(
+                    updatedPlayers.map { it.data.player },
+                    playerRecords.map { it.data.player },
+                    index,
+                    record.data.player
+                )
 
-                updatedPlayers = updatedPlayers + player.withCallSign(callSign)
+                updatedPlayers = updatedPlayers + record.copy(
+                    data = record.data.copy(player = record.data.player.withCallSign(callSign))
+                )
 
             }
         updatedPlayers

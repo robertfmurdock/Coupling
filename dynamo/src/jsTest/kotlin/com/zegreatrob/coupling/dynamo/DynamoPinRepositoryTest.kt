@@ -4,11 +4,12 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import stubTribeId
+import stubUser
 
 @Suppress("unused")
-class DynamoPinRepositoryTest :
-    PinRepositoryValidator {
+class DynamoPinRepositoryTest : PinRepositoryValidator {
     override suspend fun withRepository(handler: suspend (PinRepository, TribeId) -> Unit) {
-        handler(DynamoPinRepository(), stubTribeId())
+        val user = stubUser()
+        handler(DynamoPinRepository(user.email), stubTribeId())
     }
 }

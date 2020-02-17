@@ -31,6 +31,8 @@ const PlayerType = new GraphQLObjectType({
     callSignAdjective: {type: GraphQLString},
     callSignNoun: {type: GraphQLString},
     imageURL: {type: GraphQLString},
+    modifyingUserEmail: {type: GraphQLString},
+    timestamp: {type: GraphQLString}
   }),
 });
 

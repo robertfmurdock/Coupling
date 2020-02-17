@@ -2,9 +2,11 @@ package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
-class MemoryPinRepository : PinRepository, TypeRecordSyntax<TribeIdPin>, RecordSaveSyntax<TribeIdPin> {
+class MemoryPinRepository(override val userEmail: String) : PinRepository, TypeRecordSyntax<TribeIdPin>,
+    RecordSaveSyntax<TribeIdPin> {
 
     override var records = emptyList<Record<TribeIdPin>>()
 

@@ -4,24 +4,27 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import stubTribe
+import stubUser
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
-class SdkPlayerRepositoryTest :
-    PlayerRepositoryValidator {
+class SdkPlayerRepositoryTest : PlayerRepositoryValidator {
 
-    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId) -> Unit) {
-        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
+    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId, User) -> Unit) {
+        val username = "eT-user-${uuid4()}"
+        val sdk = authorizedSdk(username = username)
         val tribe = stubTribe()
         sdk.save(tribe)
-        handler(sdk, tribe.id)
+        val user = stubUser().copy(email = "$username._temp")
+        handler(sdk, tribe.id, user)
     }
 
     companion object {
