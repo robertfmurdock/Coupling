@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
+                api(project(":repository"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
             }
         }
