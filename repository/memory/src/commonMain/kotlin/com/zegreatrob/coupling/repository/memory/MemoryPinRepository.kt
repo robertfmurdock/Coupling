@@ -26,9 +26,7 @@ class MemoryPinRepository : PinRepository, TypeRecordSyntax<TribeIdPin> {
         .map { it.value.last() }
 
     override suspend fun deletePin(tribeId: TribeId, pinId: String): Boolean {
-        val tribeIdPin = tribeId.recordList()
-            .find { (data) -> data.pin._id == pinId }
-            ?.data
+        val tribeIdPin = recordWithId(tribeId, pinId)?.data
         return if (tribeIdPin == null) {
             false
         } else {
@@ -36,5 +34,8 @@ class MemoryPinRepository : PinRepository, TypeRecordSyntax<TribeIdPin> {
             true
         }
     }
+
+    private fun recordWithId(tribeId: TribeId, pinId: String) = tribeId.recordList()
+        .find { (data) -> data.pin._id == pinId }
 
 }
