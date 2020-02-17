@@ -8,14 +8,11 @@ import com.zegreatrob.coupling.repositoryvalidation.UserRepositoryValidator
 @Suppress("unused")
 class DynamoUserRepositoryTest : UserRepositoryValidator {
     override suspend fun withRepository(handler: suspend (UserRepository, User) -> Unit) {
-        handler(DynamoUserRepository(), User("${uuid4()}", "${uuid4()}", emptySet()))
+        val email = "${uuid4()}"
+        handler(DynamoUserRepository(email), User("${uuid4()}", email, emptySet()))
     }
 
     override fun saveUserRepeatedlyGetsLatest(): Any? {
-        TODO()
-    }
-
-    override fun saveUserThenGetWillContainAllSavedValues(): Any? {
         TODO()
     }
 

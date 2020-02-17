@@ -1,15 +1,22 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
+import kotlinx.coroutines.await
 import kotlin.js.json
 
-class DynamoUserRepository : UserRepository {
+class DynamoUserRepository private constructor(override val userEmail: String) : UserRepository, UserEmailSyntax {
 
-    companion object : DynamoRepositoryCreatorSyntax<DynamoUserRepository>, DynamoDBSyntax by DynamoDbProvider,
+    companion object : DynamoDBSyntax by DynamoDbProvider,
         DynamoCreateTableSyntax,
-        DynamoItemPutSyntax {
-        override val construct = ::DynamoUserRepository
+        DynamoItemPutSyntax,
+        DynamoQuerySyntax,
+        DynamoItemSyntax,
+        DynamoUserJsonMapping {
+
+        suspend operator fun invoke(email: String) = DynamoUserRepository(email).also { ensureTableExists() }
+
         override val tableName = "USER"
         override val createTableParams = json(
             "TableName" to tableName,
@@ -38,10 +45,18 @@ class DynamoUserRepository : UserRepository {
 
     }
 
-    override suspend fun save(user: User) {}
+    override suspend fun save(user: User) = performPutItem(user.asDynamoJson())
 
-    override suspend fun getUser(): User? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override suspend fun getUser(): User? = documentClient.scan(emailQuery()).promise().await()
+        .itemsNode()
+        .sortByRecordTimestamp()
+        .lastOrNull()
+        ?.toUser()
+
+    private fun emailQuery() = json(
+        "TableName" to tableName,
+        "ExpressionAttributeValues" to json(":email" to userEmail),
+        "FilterExpression" to "email = :email"
+    )
 
 }
