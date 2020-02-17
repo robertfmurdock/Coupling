@@ -4,19 +4,17 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 
-class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer> {
+class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>, RecordSaveSyntax<TribeIdPlayer> {
 
-    private var playerMap = emptyList<Record<TribeIdPlayer>>()
+    override var records = emptyList<Record<TribeIdPlayer>>()
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
-        playerMap = playerMap + tribeIdPlayer.record()
-    }
+    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = tribeIdPlayer.record().save()
 
     override suspend fun getPlayers(tribeId: TribeId) = tribeId.players()
         .filterNot { it.isDeleted }
         .map { it.data.player }
 
-    private fun TribeId.players() = playerMap.asSequence()
+    private fun TribeId.players() = records.asSequence()
         .filter { (data) -> data.tribeId == this }
         .groupBy { (data) -> data.player.id }
         .map { it.value.last() }
@@ -27,7 +25,7 @@ class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>
         return if (tribeIdPlayer == null) {
             false
         } else {
-            playerMap = playerMap + tribeIdPlayer.deleteRecord()
+            tribeIdPlayer.deletionRecord().save()
             true
         }
     }
@@ -35,5 +33,14 @@ class MemoryPlayerRepository : PlayerRepository, TypeRecordSyntax<TribeIdPlayer>
     override suspend fun getDeleted(tribeId: TribeId) = tribeId.players()
         .filter { it.isDeleted }
         .map { it.data.player }
+
+}
+
+interface RecordSaveSyntax<T> {
+    var records: List<Record<T>>
+
+    fun Record<T>.save() {
+        records = records + this
+    }
 
 }

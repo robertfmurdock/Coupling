@@ -10,7 +10,7 @@ interface TypeRecordSyntax<T> {
         isDeleted = false
     )
 
-    fun T.deleteRecord() = Record(
+    fun T.deletionRecord() = Record(
         data = this,
         timestamp = DateTime.now(),
         isDeleted = true
