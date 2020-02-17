@@ -39,7 +39,7 @@ class RequestCombineEndpointTest {
         } exerciseAsync {
             coroutineScope {
                 val a1 = async { sdk.getPlayers(tribe.id).map { it.data.player } }
-                val a2 = async { sdk.getPins(tribe.id) }
+                val a2 = async { sdk.getPins(tribe.id).map { it.data.pin } }
                 a1.await() to a2.await()
             }
         } verifyAsync { (players, pins) ->

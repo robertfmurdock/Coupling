@@ -1,14 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.pinJsonKeys
-import com.zegreatrob.coupling.json.playerJsonKeys
-import com.zegreatrob.coupling.json.playerRecordJsonKeys
-import com.zegreatrob.coupling.json.tribeJsonKeys
+import com.zegreatrob.coupling.json.*
 
 enum class TribeGQLComponent(val value: String, val jsonPath: String) {
     TribeData(tribeJsonKeys.joinToString(","), "/tribe"),
     PlayerList("playerList {${playerRecordJsonKeys.joinToString(",")}}", "/tribe/playerList"),
-    PinList("pinList {${pinJsonKeys.joinToString(",")}}", "/tribe/pinList"),
+    PinList("pinList {${pinRecordJsonKeys.joinToString(",")}}", "/tribe/pinList"),
     PairAssignmentDocumentList(
         "pairAssignmentDocumentList {_id,date," +
                 "pairs { " +

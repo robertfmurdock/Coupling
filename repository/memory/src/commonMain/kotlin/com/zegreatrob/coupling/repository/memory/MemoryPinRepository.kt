@@ -16,7 +16,6 @@ class MemoryPinRepository(override val userEmail: String, override val clock: Ti
 
     override suspend fun getPins(tribeId: TribeId) = tribeId.recordList()
         .filterNot { it.isDeleted }
-        .map { it.data.pin }
 
     private fun TribeId.recordList() = records.asSequence()
         .filter { (data) -> data.tribeId == this }

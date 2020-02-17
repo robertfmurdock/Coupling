@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.recordFor
 import com.zegreatrob.coupling.json.toPin
+import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.sdk.TribeGQLComponent.PinList
@@ -15,5 +17,8 @@ interface SdkPinGet : PinGet, GqlQueryComponent {
 
     private fun doPinThing(content: dynamic) = content
         .unsafeCast<Array<Json>?>()
-        ?.map(Json::toPin)
+        ?.map {
+            val pin = it.toPin()
+            it.recordFor(TribeIdPin(TribeId(""), pin))
+        }
 }

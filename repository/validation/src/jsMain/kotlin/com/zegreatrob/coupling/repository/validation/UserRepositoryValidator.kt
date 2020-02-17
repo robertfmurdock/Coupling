@@ -73,8 +73,3 @@ interface UserRepositoryValidator {
     }
 
 }
-
-class MagicClock : TimeProvider {
-    var currentTime: DateTime? = null
-    override fun now() = currentTime ?: TimeProvider.now()
-}

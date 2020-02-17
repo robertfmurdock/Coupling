@@ -15,5 +15,4 @@ class MemoryUserRepository(override val userEmail: String, override val clock: T
 
     override suspend fun getUser() = records.lastOrNull { it.data.email == userEmail }
 
-
 }

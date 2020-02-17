@@ -17,6 +17,8 @@ const PinType = new GraphQLObjectType({
     _id: {type: GraphQLNonNull(GraphQLString)},
     icon: {type: GraphQLString},
     name: {type: GraphQLString},
+    modifyingUserEmail: {type: GraphQLString},
+    timestamp: {type: GraphQLString}
   }),
 });
 

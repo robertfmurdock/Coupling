@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeProvider
+import com.soywiz.klock.hours
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -16,14 +20,16 @@ import kotlin.test.Test
 
 interface PinRepositoryValidator {
 
-    suspend fun withRepository(handler: suspend (PinRepository, TribeId) -> Unit)
+    suspend fun withRepository(clock: TimeProvider, handler: suspend (PinRepository, TribeId, User) -> Unit)
 
-    private fun testRepository(block: suspend CoroutineScope.(PinRepository, TribeId) -> Any?) = testAsync {
-        withRepository { repository, tribeId -> block(repository, tribeId) }
-    }
+    fun testRepository(block: suspend CoroutineScope.(PinRepository, TribeId, User, MagicClock) -> Any?) =
+        testAsync {
+            val clock = MagicClock()
+            withRepository(clock) { repository, tribeId, user -> block(repository, tribeId, user, clock) }
+        }
 
     @Test
-    fun canSaveAndGetPins() = testRepository { repository, tribeId ->
+    fun canSaveAndGetPins() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val pins = listOf(
                 stubPin(),
@@ -34,12 +40,13 @@ interface PinRepositoryValidator {
             pins.forEach { repository.save(TribeIdPin(tribeId, it)) }
             repository.getPins(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(pins)
+            result.map { it.data.pin }
+                .assertIsEqualTo(pins)
         }
     }
 
     @Test
-    fun saveThenDeleteWillNotShowThatPin() = testRepository { repository, tribeId ->
+    fun saveThenDeleteWillNotShowThatPin() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val pins = listOf(
                 stubPin(),
@@ -54,7 +61,8 @@ interface PinRepositoryValidator {
             repository.deletePin(tribeId, pins[1]._id!!)
             repository.getPins(tribeId)
         } verifyAsync { result ->
-            result.assertContains(pins[0])
+            result.map { it.data.pin }
+                .assertContains(pins[0])
                 .assertContains(pins[2])
                 .size
                 .assertIsEqualTo(2)
@@ -62,7 +70,7 @@ interface PinRepositoryValidator {
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = testRepository { repository, tribeId ->
+    fun deleteWillFailWhenPinDoesNotExist() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
         }) {
         } exerciseAsync {
@@ -73,12 +81,30 @@ interface PinRepositoryValidator {
     }
 
     @Test
-    fun givenNoPinsWillReturnEmptyList() = testRepository { repository, tribeId ->
+    fun givenNoPinsWillReturnEmptyList() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
         }) exerciseAsync {
             repository.getPins(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun savedPinsIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, clock ->
+        setupAsync(object {
+            val pin = stubPin()
+        }) {
+            clock.currentTime = DateTime.now().plus(4.hours)
+            repository.save(TribeIdPin(tribeId, pin))
+        } exerciseAsync {
+            repository.getPins(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                timestamp.assertIsEqualTo(clock.currentTime)
+                modifyingUserEmail.assertIsEqualTo(user.email)
+            }
         }
     }
 
