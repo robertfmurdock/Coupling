@@ -20,13 +20,13 @@ class DynamoUserRepository private constructor(override val userEmail: String) :
 
     override suspend fun save(user: User) = performPutItem(user.asDynamoJson())
 
-    override suspend fun getUser(): User? = documentClient.scan(emailQuery()).promise().await()
+    override suspend fun getUser(): User? = documentClient.scan(emailScanParams()).promise().await()
         .itemsNode()
         .sortByRecordTimestamp()
         .lastOrNull()
         ?.toUser()
 
-    private fun emailQuery() = json(
+    private fun emailScanParams() = json(
         "TableName" to tableName,
         "ExpressionAttributeValues" to json(":email" to userEmail),
         "FilterExpression" to "email = :email"
