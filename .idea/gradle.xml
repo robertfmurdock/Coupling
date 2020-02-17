@@ -21,6 +21,8 @@
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/mongo" />
             <option value="$PROJECT_DIR$/repository" />
+            <option value="$PROJECT_DIR$/repository/compound" />
+            <option value="$PROJECT_DIR$/repository/memory" />
             <option value="$PROJECT_DIR$/repository/validation" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
