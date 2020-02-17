@@ -4,12 +4,13 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
-import com.zegreatrob.coupling.repositoryvalidation.UserRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 
 private const val mongoUrl = "localhost/UsersRepositoryTest"
 
 @Suppress("unused")
-class MongoUserRepositoryTest : UserRepositoryValidator {
+class MongoUserRepositoryTest :
+    UserRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (UserRepository, User) -> Unit) {
         val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())

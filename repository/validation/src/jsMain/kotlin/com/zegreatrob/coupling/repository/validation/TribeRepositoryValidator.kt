@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.repositoryvalidation
+package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.minassert.assertIsEqualTo

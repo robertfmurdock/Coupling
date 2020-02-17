@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.repositoryvalidation
+package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pin.TribeIdPin

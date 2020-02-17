@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="validation-jvm">
+    <output-path>$PROJECT_DIR$/repository/validation/build/libs</output-path>
+    <root id="archive" name="validation-jvm.jar" />
+  </artifact>
+</component>

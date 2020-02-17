@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.repository.player.PlayerRepository
-import com.zegreatrob.coupling.repositoryvalidation.PlayerRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -22,7 +22,8 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
+class MongoPlayerRepositoryTest :
+    PlayerRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId) -> Unit) {
         withMongoRepository { handler(this, stubTribeId()) }

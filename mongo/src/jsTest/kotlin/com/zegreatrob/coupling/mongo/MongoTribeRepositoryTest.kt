@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.repositoryvalidation.TribeRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -17,7 +17,8 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 
-class MongoTribeRepositoryTest : TribeRepositoryValidator {
+class MongoTribeRepositoryTest :
+    TribeRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (TribeRepository) -> Unit) {
         withMongoRepository { handler(this) }

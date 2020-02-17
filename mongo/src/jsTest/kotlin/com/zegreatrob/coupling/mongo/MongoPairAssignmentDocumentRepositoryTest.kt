@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.repositoryvalidation.PairAssignmentDocumentRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -24,7 +24,8 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoPairAssignmentDocumentRepositoryTest"
 
-class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
+class MongoPairAssignmentDocumentRepositoryTest :
+    PairAssignmentDocumentRepositoryValidator {
 
     override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
         withMongoRepository { handler(this, stubTribeId()) }

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.mongo
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repositoryvalidation.PinRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import kotlinx.coroutines.await
 import stubTribeId
 import kotlin.js.Promise

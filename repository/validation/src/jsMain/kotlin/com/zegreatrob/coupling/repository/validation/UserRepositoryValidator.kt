@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.repositoryvalidation
+package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository

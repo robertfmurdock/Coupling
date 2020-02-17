@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repositoryvalidation.PinRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
