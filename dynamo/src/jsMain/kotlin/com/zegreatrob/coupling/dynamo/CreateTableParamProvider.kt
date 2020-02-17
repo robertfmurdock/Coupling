@@ -2,27 +2,27 @@ package com.zegreatrob.coupling.dynamo
 
 import kotlin.js.json
 
-interface TribeCreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNameSyntax {
+interface CreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNameSyntax {
     override val createTableParams
         get() = json(
             "TableName" to tableName,
             "KeySchema" to arrayOf(
                 json(
-                    "AttributeName" to "tribeId",
+                    "AttributeName" to "id",
                     "KeyType" to "HASH"
                 ),
                 json(
-                    "AttributeName" to "id",
+                    "AttributeName" to "timestamp",
                     "KeyType" to "RANGE"
                 )
             ),
             "AttributeDefinitions" to arrayOf(
                 json(
-                    "AttributeName" to "tribeId",
+                    "AttributeName" to "id",
                     "AttributeType" to "S"
                 ),
                 json(
-                    "AttributeName" to "id",
+                    "AttributeName" to "timestamp",
                     "AttributeType" to "S"
                 )
             ),
@@ -30,4 +30,3 @@ interface TribeCreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNa
         )
 
 }
-

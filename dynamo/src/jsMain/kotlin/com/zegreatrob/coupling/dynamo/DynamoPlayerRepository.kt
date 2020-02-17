@@ -25,4 +25,3 @@ class DynamoPlayerRepository private constructor() : PlayerRepository {
     override suspend fun getDeleted(tribeId: TribeId) = tribeId.scanForDeletedItemList().map { it.toPlayer() }
 
 }
-

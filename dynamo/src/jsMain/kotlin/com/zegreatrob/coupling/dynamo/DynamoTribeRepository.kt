@@ -16,34 +16,11 @@ class DynamoTribeRepository private constructor() : TribeRepository,
     DynamoTableNameSyntax by Companion,
     DynamoDBSyntax by DynamoDbProvider {
 
-    companion object : DynamoTableNameSyntax, DynamoCreateTableSyntax, DynamoDBSyntax by DynamoDbProvider {
+    companion object : DynamoTableNameSyntax, CreateTableParamProvider,
+        DynamoRepositoryCreatorSyntax<DynamoTribeRepository>,
+        DynamoDBSyntax by DynamoDbProvider {
         override val tableName = "TRIBE"
-        override val createTableParams = json(
-            "TableName" to tableName,
-            "KeySchema" to arrayOf(
-                json(
-                    "AttributeName" to "id",
-                    "KeyType" to "HASH"
-                ),
-                json(
-                    "AttributeName" to "timestamp",
-                    "KeyType" to "RANGE"
-                )
-            ),
-            "AttributeDefinitions" to arrayOf(
-                json(
-                    "AttributeName" to "id",
-                    "AttributeType" to "S"
-                ),
-                json(
-                    "AttributeName" to "timestamp",
-                    "AttributeType" to "S"
-                )
-            ),
-            "BillingMode" to "PAY_PER_REQUEST"
-        )
-
-        suspend operator fun invoke() = DynamoTribeRepository().also { ensureTableExists() }
+        override val construct = ::DynamoTribeRepository
     }
 
     override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()

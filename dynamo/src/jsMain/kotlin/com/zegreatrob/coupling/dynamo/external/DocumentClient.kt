@@ -1,6 +1,7 @@
 @file:JsModule("aws-sdk")
 @file:JsNonModule
 @file:JsQualifier("DynamoDB")
+
 package com.zegreatrob.coupling.dynamo.external
 
 import kotlin.js.Json
