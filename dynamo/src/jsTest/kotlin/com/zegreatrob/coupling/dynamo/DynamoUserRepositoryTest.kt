@@ -11,9 +11,4 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
         val email = "${uuid4()}"
         handler(DynamoUserRepository(email), User("${uuid4()}", email, emptySet()))
     }
-
-    override fun saveUserRepeatedlyGetsLatest(): Any? {
-        TODO()
-    }
-
 }
