@@ -8,6 +8,8 @@
       <module name="Coupling.core-json.jvmTest" target="1.6" />
       <module name="Coupling.core.jvmMain" target="1.6" />
       <module name="Coupling.core.jvmTest" target="1.6" />
+      <module name="Coupling.repository_validation.jvmMain" target="1.6" />
+      <module name="Coupling.repository_validation.jvmTest" target="1.6" />
       <module name="Coupling.sdk.jvmMain" target="1.6" />
       <module name="Coupling.sdk.jvmTest" target="1.6" />
       <module name="Coupling.server.endpointTest" target="1.8" />

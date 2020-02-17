@@ -40,7 +40,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":json"))
-                api(project(":repository_validation"))
+                api(project(":repository:validation"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:+")

@@ -32,7 +32,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":repository_validation"))
+                api(project(":repository:validation"))
                 api(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
