@@ -63,7 +63,8 @@ jobs:
   update-client:
     docker:
       - image: openjdk:8-jdk
-      - image: mongo:latest
+      - image: circleci/mongo:latest
+      - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
@@ -85,7 +86,8 @@ jobs:
   update-server:
     docker:
       - image: openjdk:8-jdk
-      - image: mongo:latest
+      - image: circleci/mongo:latest
+      - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
