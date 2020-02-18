@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: openjdk:13-jdk
-      - image: mongo:latest
+      - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
     environment:
