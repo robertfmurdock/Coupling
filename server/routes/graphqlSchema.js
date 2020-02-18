@@ -73,6 +73,8 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
     pairs: {
       type: new GraphQLList(PinnedPairType)
     },
+    modifyingUserEmail: {type: GraphQLString},
+    timestamp: {type: GraphQLString}
   }),
 });
 

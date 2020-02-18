@@ -37,10 +37,10 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
         toDbJson = { toDbJson() }
     )
 
-    override suspend fun getPairAssignments(tribeId: TribeId): List<PairAssignmentDocument> =
+    override suspend fun getPairAssignmentRecords(tribeId: TribeId) =
         findByQuery(json("tribe" to tribeId.value), jsRepository.historyCollection)
-            .map { json -> json.toPairAssignmentDocument().document }
-            .sortedByDescending { it.date }
+            .map { json -> json.toDbRecord(json.toPairAssignmentDocument()) }
+            .sortedByDescending { it.data.document.date }
 
     private fun TribeIdPairAssignmentDocument.toDbJson() = json(
         "id" to document.id?.value,

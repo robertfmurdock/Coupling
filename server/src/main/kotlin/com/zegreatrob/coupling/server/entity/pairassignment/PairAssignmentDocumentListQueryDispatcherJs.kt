@@ -8,6 +8,6 @@ interface PairAssignmentDocumentListQueryDispatcherJs : PairAssignmentDocumentLi
 
     suspend fun performPairAssignmentDocumentListQueryGQL() = PairAssignmentDocumentListQuery
         .perform()
-        .map { it.toJson() }
+        .map { it.toJson().add(it.data.document.toJson()) }
         .toTypedArray()
 }

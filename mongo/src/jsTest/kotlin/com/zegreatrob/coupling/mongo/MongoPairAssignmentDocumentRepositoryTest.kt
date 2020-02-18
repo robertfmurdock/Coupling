@@ -4,9 +4,11 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.days
 import com.soywiz.klock.js.toDateTime
+import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
@@ -16,31 +18,38 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import stubSimplePairAssignmentDocument
 import stubTribeId
+import stubUser
 import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
-import kotlin.random.Random
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoPairAssignmentDocumentRepositoryTest"
 
-class MongoPairAssignmentDocumentRepositoryTest :
-    PairAssignmentDocumentRepositoryValidator {
+class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
 
-    override suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit) {
-        withMongoRepository { handler(this, stubTribeId()) }
+    override suspend fun withRepository(
+        clock: TimeProvider,
+        handler: suspend (PairAssignmentDocumentRepository, TribeId, User) -> Unit
+    ) {
+        val user = stubUser()
+        withMongoRepository(user, clock) { handler(this, stubTribeId(), user) }
     }
 
     companion object {
 
-        private fun repositoryWithDb() = MongoPairAssignmentDocumentRepositoryTestAnchor(TimeProvider)
+        private fun repositoryWithDb(
+            user: User = stubUser(),
+            clock: TimeProvider = TimeProvider
+        ) = MongoPairAssignmentDocumentRepositoryTestAnchor(user.email, clock)
 
-        class MongoPairAssignmentDocumentRepositoryTestAnchor(override val clock: TimeProvider) :
-            MongoPairAssignmentDocumentRepository, MonkToolkit {
+        class MongoPairAssignmentDocumentRepositoryTestAnchor(
+            override val userEmail: String,
+            override val clock: TimeProvider
+        ) : MongoPairAssignmentDocumentRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
-            override val userEmail: String = "user-${Random.nextInt(200)}"
             val historyCollection: dynamic by lazy<dynamic> { getCollection("history", db) }
 
             suspend fun dropHistory() {
@@ -51,8 +60,12 @@ class MongoPairAssignmentDocumentRepositoryTest :
                 historyCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
-        private suspend inline fun withMongoRepository(block: MongoPairAssignmentDocumentRepositoryTestAnchor.() -> Unit) {
-            val repositoryWithDb = repositoryWithDb()
+        private suspend inline fun withMongoRepository(
+            user: User = stubUser(),
+            clock: TimeProvider = TimeProvider,
+            block: MongoPairAssignmentDocumentRepositoryTestAnchor.() -> Unit
+        ) {
+            val repositoryWithDb = repositoryWithDb(user, clock)
             try {
                 with(repositoryWithDb, block)
             } finally {
@@ -94,29 +107,30 @@ class MongoPairAssignmentDocumentRepositoryTest :
             }) {
                 historyCollection.insert(data).unsafeCast<Promise<Unit>>().await()
             } exerciseAsync {
-                getPairAssignments(TribeId(tribeId))
+                getPairAssignmentRecords(TribeId(tribeId))
             } verifyAsync { result ->
-                result.assertIsEqualTo(
-                    listOf(
-                        PairAssignmentDocument(
-                            PairAssignmentDocumentId(documentId),
-                            todayDate.toDateTime(),
-                            listOf(
-                                pairOf(
-                                    Player(
-                                        "d52b7390-6b65-4733-97e1-07190bf730a0",
-                                        1,
-                                        "Tim 9",
-                                        "tim@tim.meat",
-                                        "Spicy",
-                                        "Meatball",
-                                        "italian.jpg"
-                                    )
-                                ).withPins()
+                result.data().map { it.document }
+                    .assertIsEqualTo(
+                        listOf(
+                            PairAssignmentDocument(
+                                PairAssignmentDocumentId(documentId),
+                                todayDate.toDateTime(),
+                                listOf(
+                                    pairOf(
+                                        Player(
+                                            "d52b7390-6b65-4733-97e1-07190bf730a0",
+                                            1,
+                                            "Tim 9",
+                                            "tim@tim.meat",
+                                            "Spicy",
+                                            "Meatball",
+                                            "italian.jpg"
+                                        )
+                                    ).withPins()
+                                )
                             )
                         )
                     )
-                )
             }
         }
     }
@@ -148,4 +162,6 @@ class MongoPairAssignmentDocumentRepositoryTest :
             }
         }
     }
+
+
 }

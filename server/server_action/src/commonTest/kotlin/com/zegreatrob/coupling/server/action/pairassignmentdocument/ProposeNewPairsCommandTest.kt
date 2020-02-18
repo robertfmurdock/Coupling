@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import SpyData
+import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -28,8 +31,12 @@ class ProposeNewPairsCommandTest {
 
             val stubRepository = object : TribeGet, PairAssignmentDocumentGet {
                 override suspend fun getTribe(tribeId: TribeId) = tribe.also { tribeId.assertIsEqualTo(tribe.id) }
-                override suspend fun getPairAssignments(tribeId: TribeId) =
-                    history.also { tribeId.assertIsEqualTo(tribe.id) }
+                override suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
+                    history
+                        .map {
+                            Record(TribeIdPairAssignmentDocument(tribe.id, it), DateTime.now(), false, "")
+                        }
+                        .also { tribeId.assertIsEqualTo(tribe.id) }
             }
 
             val players = listOf(Player(name = "John"))

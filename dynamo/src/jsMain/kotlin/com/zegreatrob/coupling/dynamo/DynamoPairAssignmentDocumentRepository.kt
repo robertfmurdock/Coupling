@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -29,9 +28,9 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         tribeIdPairAssignmentDocument.toDynamoJson()
     )
 
-    override suspend fun getPairAssignments(tribeId: TribeId): List<PairAssignmentDocument> = tribeId.scanForItemList()
-        .map { it.toPairAssignmentDocument() }
-        .sortedByDescending { it.date }
+    override suspend fun getPairAssignmentRecords(tribeId: TribeId) = tribeId.scanForItemList()
+        .map { it.toRecord(TribeIdPairAssignmentDocument(tribeId, it.toPairAssignmentDocument())) }
+        .sortedByDescending { it.data.document.date }
 
     override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
         performDelete(pairAssignmentDocumentId.value, tribeId)

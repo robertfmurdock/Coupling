@@ -16,5 +16,5 @@ interface PairAssignmentDocumentListQueryDispatcher : ActionLoggingSyntax, Tribe
 
 interface TribeIdPairAssignmentDocumentGetSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentGet
-    suspend fun TribeId.loadPairAssignmentDocumentList() = pairAssignmentDocumentRepository.getPairAssignments(this)
+    suspend fun TribeId.loadPairAssignmentDocumentList() = pairAssignmentDocumentRepository.getPairAssignmentRecords(this)
 }

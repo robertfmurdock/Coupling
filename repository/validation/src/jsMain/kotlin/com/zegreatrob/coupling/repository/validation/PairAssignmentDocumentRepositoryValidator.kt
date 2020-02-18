@@ -2,10 +2,14 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.days
+import com.soywiz.klock.hours
+import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -16,15 +20,19 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 interface PairAssignmentDocumentRepositoryValidator {
-    suspend fun withRepository(handler: suspend (PairAssignmentDocumentRepository, TribeId) -> Unit)
+    suspend fun withRepository(
+        clock: TimeProvider,
+        handler: suspend (PairAssignmentDocumentRepository, TribeId, User) -> Unit
+    )
 
-    private fun testRepository(block: suspend CoroutineScope.(PairAssignmentDocumentRepository, TribeId) -> Any?) =
+    fun testRepository(block: suspend CoroutineScope.(PairAssignmentDocumentRepository, TribeId, User, MagicClock) -> Any?) =
         testAsync {
-            withRepository { repository, tribeId -> block(repository, tribeId) }
+            val clock = MagicClock()
+            withRepository(clock) { repository, tribeId, user -> block(repository, tribeId, user, clock) }
         }
 
     @Test
-    fun saveMultipleInTribeThenGetListWillReturnSavedDocumentsNewestToOldest() = testRepository { repository, tribeId ->
+    fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
@@ -33,38 +41,58 @@ interface PairAssignmentDocumentRepositoryValidator {
             listOf(middle, oldest, newest)
                 .forEach { repository.save(it.with(tribeId)) }
         } exerciseAsync {
-            repository.getPairAssignments(tribeId)
+            repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(newest, middle, oldest))
+            result.data().map { it.document }
+                .assertIsEqualTo(listOf(newest, middle, oldest))
         }
     }
 
     @Test
-    fun whenNoHistoryGetWillReturnEmptyList() = testRepository { repository, tribeId ->
+    fun whenNoHistoryGetWillReturnEmptyList() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
         }) exerciseAsync {
-            repository.getPairAssignments(tribeId)
+            repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }
     }
 
     @Test
-    fun saveWillAssignIdWhenDocumentHasNone() = testRepository { repository, tribeId ->
+    fun saveWillAssignIdWhenDocumentHasNone() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val pairAssignmentDoc = stubPairAssignmentDoc().copy(id = null)
         }) exerciseAsync {
             repository.save(pairAssignmentDoc.with(tribeId))
-            repository.getPairAssignments(tribeId)
+            repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
-            val resultId = result.getOrNull(0)?.id
+            val resultDocument = result.data().map { it.document }.getOrNull(0)
+            val resultId = resultDocument?.id
             assertNotNull(resultId)
-            result.assertIsEqualTo(listOf(pairAssignmentDoc.copy(id = resultId)))
+            resultDocument.assertIsEqualTo(pairAssignmentDoc.copy(id = resultId))
         }
     }
 
     @Test
-    fun saveAndDeleteThenGetWillReturnNothing() = testRepository { repository, tribeId ->
+    fun savedWillIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, clock ->
+        setupAsync(object {
+            val pairAssignmentDoc = stubPairAssignmentDoc()
+        }) {
+            clock.currentTime = DateTime.now().plus(4.hours)
+            repository.save(pairAssignmentDoc.with(tribeId))
+        } exerciseAsync {
+            repository.getPairAssignmentRecords(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                timestamp.assertIsEqualTo(clock.currentTime)
+                modifyingUserEmail.assertIsEqualTo(user.email)
+            }
+        }
+    }
+
+    @Test
+    fun saveAndDeleteThenGetWillReturnNothing() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val document = stubPairAssignmentDoc()
             val id = document.id!!
@@ -74,13 +102,14 @@ interface PairAssignmentDocumentRepositoryValidator {
             repository.delete(tribeId, id)
         } verifyAsync { result ->
             result.assertIsEqualTo(true)
-            repository.getPairAssignments(tribeId)
+            repository.getPairAssignmentRecords(tribeId)
+                .data().map { it.document }
                 .assertIsEqualTo(emptyList())
         }
     }
 
     @Test
-    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = testRepository { repository, tribeId ->
+    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val id = PairAssignmentDocumentId("${uuid4()}")
         }) exerciseAsync {
@@ -91,7 +120,7 @@ interface PairAssignmentDocumentRepositoryValidator {
     }
 
     @Test
-    fun afterSavingAndUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() = testRepository { repository, tribeId ->
+    fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val originalDateTime = DateTime.now()
             val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
@@ -101,9 +130,10 @@ interface PairAssignmentDocumentRepositoryValidator {
             repository.save(pairAssignmentDocument.with(tribeId))
         } exerciseAsync {
             repository.save(updatedDocument.with(tribeId))
-            repository.getPairAssignments(tribeId)
+            repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(updatedDocument))
+            result.data().map { it.document }
+                .assertIsEqualTo(listOf(updatedDocument))
         }
     }
 

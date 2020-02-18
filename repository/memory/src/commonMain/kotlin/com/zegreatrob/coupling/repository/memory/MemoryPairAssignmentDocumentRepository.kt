@@ -26,10 +26,10 @@ class MemoryPairAssignmentDocumentRepository(override val userEmail: String, ove
         )
     )
 
-    override suspend fun getPairAssignments(tribeId: TribeId) = tribeId.records()
-        .filterNot { it.isDeleted }
-        .map { it.data.document }
-        .sortedByDescending { it.date }
+    override suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
+        tribeId.records()
+            .filterNot { it.isDeleted }
+            .sortedByDescending { it.data.document.date }
 
     private fun TribeId.records() = records.asSequence()
         .filter { (data) -> data.tribeId == this }
