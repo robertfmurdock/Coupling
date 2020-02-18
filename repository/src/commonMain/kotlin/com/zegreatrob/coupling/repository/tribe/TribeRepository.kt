@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repository.tribe
 
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
@@ -21,5 +22,5 @@ interface TribeGet {
 }
 
 interface TribeListGet {
-    suspend fun getTribes(): List<Tribe>
+    suspend fun getTribes(): List<Record<Tribe>>
 }

@@ -7,6 +7,6 @@ import com.zegreatrob.coupling.server.action.tribe.TribeListQueryDispatcher
 interface TribeListQueryDispatcherJs : TribeListQueryDispatcher {
     suspend fun performTribeListQueryGQL() = TribeListQuery
         .perform()
-        .map { it.toJson() }
+        .map { it.toJson().add(it.data.toJson()) }
         .toTypedArray()
 }

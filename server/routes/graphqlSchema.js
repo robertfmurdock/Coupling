@@ -95,6 +95,8 @@ const TribeType = new GraphQLObjectType({
     callSignsEnabled: {type: GraphQLBoolean},
     animationsEnabled: {type: GraphQLBoolean},
     animationSpeed: {type: GraphQLFloat},
+    modifyingUserEmail: {type: GraphQLString},
+    timestamp: {type: GraphQLString},
     pinList: {
       type: new GraphQLList(PinType),
       resolve: Resolvers.pinList

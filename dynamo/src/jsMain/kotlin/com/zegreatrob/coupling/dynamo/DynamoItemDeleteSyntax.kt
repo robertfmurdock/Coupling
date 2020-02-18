@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
 interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemGetSyntax {
-    suspend fun performDelete(id: String, tribeId: TribeId? = null) = try {
+    suspend fun performDelete(id: String, recordJson: Json, tribeId: TribeId? = null) = try {
         val current = performGetSingleItemQuery(id, tribeId)
         if (current == null) {
             false
         } else {
-            documentClient.put(current.deleteItemParams()).promise().await()
+            val updatedCurrent = current.add(recordJson).add(json("isDeleted" to true))
+            documentClient.put(updatedCurrent.deleteItemParams()).promise().await()
             true
         }
     } catch (uhOh: Throwable) {
@@ -22,11 +22,6 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
 
     private inline fun Json.deleteItemParams() = json(
         "TableName" to tableName,
-        "Item" to add(
-            json(
-                "timestamp" to DateTime.now().isoWithMillis(),
-                "isDeleted" to true
-            )
-        )
+        "Item" to this
     )
 }

@@ -10,6 +10,7 @@ import kotlin.js.json
 
 class DynamoTribeRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
     TribeRepository,
+    DynamoRecordJsonMapping,
     UserEmailSyntax,
     ClockSyntax,
     DynamoTribeJsonMapping {
@@ -27,12 +28,12 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
 
     override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()
 
-    override suspend fun getTribes() = scanForItemList(scanParams()).map { it.toTribe() }
+    override suspend fun getTribes() = scanForItemList(scanParams()).map { it.toRecord(it.toTribe()) }
 
     private fun scanParams() = json("TableName" to tableName)
 
-    override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson())
+    override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson().add(recordJson()))
 
-    override suspend fun delete(tribeId: TribeId) = performDelete(tribeId.value)
+    override suspend fun delete(tribeId: TribeId) = performDelete(tribeId.value, recordJson())
 
 }

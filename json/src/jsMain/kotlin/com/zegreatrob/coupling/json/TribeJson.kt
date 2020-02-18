@@ -47,6 +47,9 @@ fun Tribe.toJson() = json(
     "animationSpeed" to animationSpeed
 )
 
-val tribeJsonKeys = Tribe(TribeId(""))
-    .toJson()
-    .getKeys()
+val tribeJsonKeys
+    get() = Tribe(TribeId(""))
+        .toJson()
+        .getKeys()
+
+val tribeRecordJsonKeys get() = tribeJsonKeys + recordJsonKeys

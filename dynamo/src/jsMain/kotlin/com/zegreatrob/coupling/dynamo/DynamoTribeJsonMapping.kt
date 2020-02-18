@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -26,7 +25,6 @@ interface DynamoTribeJsonMapping : DynamoDatatypeSyntax {
 
     fun Tribe.asDynamoJson() = json(
         "id" to id.value,
-        "timestamp" to DateTime.now().isoWithMillis(),
         "name" to name,
         "email" to email,
         "pairingRule" to PairingRule.toValue(pairingRule),

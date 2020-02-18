@@ -28,6 +28,6 @@ class DynamoPinRepository private constructor(override val userEmail: String, ov
         it.toRecord(TribeIdPin(tribeId, pin))
     }
 
-    override suspend fun deletePin(tribeId: TribeId, pinId: String) = performDelete(pinId, tribeId)
+    override suspend fun deletePin(tribeId: TribeId, pinId: String) = performDelete(pinId, recordJson(), tribeId)
 
 }

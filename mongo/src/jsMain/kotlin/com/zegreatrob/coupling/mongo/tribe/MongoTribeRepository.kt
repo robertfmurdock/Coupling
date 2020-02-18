@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.mongo.tribe
 
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -7,11 +8,13 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
+import com.zegreatrob.coupling.mongo.player.JsonRecordSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.Json
 import kotlin.js.json
 
-interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLoadSyntax, DbRecordDeleteSyntax {
+interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLoadSyntax, DbRecordDeleteSyntax,
+    JsonRecordSyntax {
 
     val jsRepository: dynamic
 
@@ -36,8 +39,8 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         .firstOrNull()
         ?.toTribe()
 
-    override suspend fun getTribes(): List<Tribe> = findByQuery(json(), tribesCollection)
-        .map { it.toTribe() }
+    override suspend fun getTribes(): List<Record<Tribe>> = findByQuery(json(), tribesCollection)
+        .map { it.toDbRecord(it.toTribe()) }
 
     private fun Tribe.toDbJson() = json(
         "id" to id.value,

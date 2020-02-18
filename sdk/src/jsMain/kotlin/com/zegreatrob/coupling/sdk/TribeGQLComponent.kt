@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.json.*
 
 enum class TribeGQLComponent(val value: String, val jsonPath: String) {
-    TribeData(tribeJsonKeys.joinToString(","), "/tribe"),
+    TribeData(tribeRecordJsonKeys.joinToString(","), "/tribe"),
     PlayerList("playerList {${playerRecordJsonKeys.joinToString(",")}}", "/tribe/playerList"),
     PinList("pinList {${pinRecordJsonKeys.joinToString(",")}}", "/tribe/pinList"),
     PairAssignmentDocumentList(

@@ -17,7 +17,7 @@ interface SdkSpin : AxiosSyntax {
         .await()
         .toPairAssignmentDocument()
 
-    private inline fun spinBody(players: List<Player>, pins: List<Pin>) = json(
+    private fun spinBody(players: List<Player>, pins: List<Pin>) = json(
         "players" to players.map { it.toJson() }.toTypedArray(),
         "pins" to pins.map { it.toJson() }.toTypedArray()
     )

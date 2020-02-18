@@ -1,31 +1,37 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.soywiz.klock.DateTime
+import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 
-class MemoryTribeRepository : TribeRepository {
+class MemoryTribeRepository(override val userEmail: String, override val clock: TimeProvider) : TribeRepository,
+    TypeRecordSyntax<Tribe>, RecordSaveSyntax<Tribe> {
 
-    private var tribeMap = emptyMap<Tribe, DateTime>()
+    override var records = emptyList<Record<Tribe>>()
 
-    override suspend fun save(tribe: Tribe) = (tribe to DateTime.now()).let(::addToMap)
+    override suspend fun save(tribe: Tribe) = tribe.record().save()
 
-    private fun addToMap(pair: Pair<Tribe, DateTime>) {
-        tribeMap = tribeMap + pair
+    override suspend fun getTribe(tribeId: TribeId): Tribe? = tribeId.findTribe()
+        ?.let { if (it.isDeleted) null else it.data }
+
+    override suspend fun getTribes() = recordList()
+        .filterNot { it.isDeleted }
+
+    private fun recordList() = records.groupBy { (tribe) -> tribe.id }
+        .map { it.value.last() }
+
+    override suspend fun delete(tribeId: TribeId) = tribeId.findTribe()?.data.deleteRecord()
+
+    private fun Tribe?.deleteRecord() = if (this == null) {
+        false
+    } else {
+        deletionRecord().save()
+        true
     }
 
-    override suspend fun getTribe(tribeId: TribeId): Tribe? = tribeMap.asSequence()
-        .filter { it.key.id == tribeId }
-        .lastOrNull()
-        ?.key
-
-    override suspend fun getTribes() = tribeMap.entries.groupBy { (tribe) -> tribe.id }
-        .map { it.value.last().key }
-
-    override suspend fun delete(tribeId: TribeId): Boolean {
-        tribeMap = tribeMap.filterKeys { it.id != tribeId }
-        return true
-    }
+    private fun TribeId.findTribe() = recordList()
+        .firstOrNull { it.data.id == this }
 
 }

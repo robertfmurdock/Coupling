@@ -52,9 +52,10 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
         }
     }
 
-    private fun DateTime.isWithinOneSecondOfNow() {
-        val timeSpan = DateTime.now() - this
-        (timeSpan.seconds < 1)
-            .assertIsEqualTo(true)
-    }
+}
+
+fun DateTime.isWithinOneSecondOfNow() {
+    val timeSpan = DateTime.now() - this
+    (timeSpan.seconds < 1)
+        .assertIsEqualTo(true)
 }

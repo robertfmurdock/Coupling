@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.repository.tribe.TribeListSyntax
 
 object TribeListQuery : Action
 
-interface TribeListQueryDispatcher : ActionLoggingSyntax,
-    TribeListSyntax {
+interface TribeListQueryDispatcher : ActionLoggingSyntax, TribeListSyntax {
     suspend fun TribeListQuery.perform() = logAsync { getTribes() }
 }

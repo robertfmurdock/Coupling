@@ -33,6 +33,6 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         .sortedByDescending { it.data.document.date }
 
     override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
-        performDelete(pairAssignmentDocumentId.value, tribeId)
+        performDelete(pairAssignmentDocumentId.value, recordJson(), tribeId)
 
 }
