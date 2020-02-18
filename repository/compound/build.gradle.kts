@@ -15,12 +15,15 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
+                api(project(":repository"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
+                implementation(project(":repository:memory"))
+                implementation(project(":repository:validation"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("org.jetbrains.kotlin:kotlin-test")
