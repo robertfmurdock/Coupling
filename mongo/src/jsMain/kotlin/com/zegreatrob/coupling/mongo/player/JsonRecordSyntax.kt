@@ -11,6 +11,6 @@ interface JsonRecordSyntax : JsonTimestampSyntax, JsonStringValueSyntax {
         data = data,
         timestamp = timeStamp() ?: DateTime.EPOCH,
         modifyingUserEmail = stringValue("modifiedByUsername") ?: "NOT RECORDED",
-        isDeleted = false
+        isDeleted = this["isDeleted"]?.unsafeCast<Boolean>() ?: false
     )
 }

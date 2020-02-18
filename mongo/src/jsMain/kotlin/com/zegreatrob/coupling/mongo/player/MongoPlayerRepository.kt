@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.mongo.player
 
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
@@ -54,8 +54,9 @@ interface MongoPlayerRepository : PlayerRepository,
             .distinct()
             .mapNotNull { getLatestRecordWithId(it, collection) }
 
-    override suspend fun getDeleted(tribeId: TribeId): List<Player> = findDeletedByQuery(tribeId, playersCollection)
-        .map { it.toPlayerRecord().data.player }
+    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> =
+        findDeletedByQuery(tribeId, playersCollection)
+            .map { it.toPlayerRecord() }
 
     private fun Json.toTribeIdPlayer() = TribeIdPlayer(
         tribeId = TribeId(this["tribe"].unsafeCast<String>()),

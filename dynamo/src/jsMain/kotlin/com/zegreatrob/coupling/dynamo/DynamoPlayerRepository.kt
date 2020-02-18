@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
@@ -31,6 +32,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         playerId, recordJson(), tribeId
     )
 
-    override suspend fun getDeleted(tribeId: TribeId) = tribeId.scanForDeletedItemList().map { it.toPlayer() }
+    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
+        .map { it.toRecord(TribeIdPlayer(tribeId, it.toPlayer())) }
 
 }

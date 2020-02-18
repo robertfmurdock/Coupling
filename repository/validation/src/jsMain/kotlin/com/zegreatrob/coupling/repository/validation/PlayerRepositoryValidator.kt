@@ -80,7 +80,8 @@ interface PlayerRepositoryValidator {
         } exerciseAsync {
             repository.getDeleted(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(player))
+            result.map { it.data.player }
+                .assertIsEqualTo(listOf(player))
         }
     }
 
@@ -97,7 +98,8 @@ interface PlayerRepositoryValidator {
         } exerciseAsync {
             repository.getDeleted(tribeId)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(player))
+            result.map { it.data.player }
+                .assertIsEqualTo(listOf(player))
         }
     }
 
@@ -122,6 +124,25 @@ interface PlayerRepositoryValidator {
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
+                timestamp.isCloseToNow()
+                    .assertIsEqualTo(true)
+                modifyingUserEmail.assertIsEqualTo(user.email)
+            }
+        }
+    }
+
+    @Test
+    fun deletedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user ->
+        setupAsync(object {
+            val player = stubPlayer()
+        }) exerciseAsync {
+            repository.save(TribeIdPlayer(tribeId, player))
+            repository.deletePlayer(tribeId, player.id!!)
+            repository.getDeleted(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                isDeleted.assertIsEqualTo(true)
                 timestamp.isCloseToNow()
                     .assertIsEqualTo(true)
                 modifyingUserEmail.assertIsEqualTo(user.email)

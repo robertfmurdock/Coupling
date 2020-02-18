@@ -32,8 +32,7 @@ class MemoryPlayerRepository(override val userEmail: String, override val clock:
         }
     }
 
-    override suspend fun getDeleted(tribeId: TribeId) = tribeId.players()
+    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.players()
         .filter { it.isDeleted }
-        .map { it.data.player }
 
 }
