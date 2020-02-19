@@ -105,7 +105,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
         .map { it.toPlayerRecord() }
 
-    override suspend fun getPlayersByEmail(email: String): List<TribeElement<Player>> {
+    override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> {
         val recordsWithEmail = scanForItemList(emailScanParams(email))
             .map { it.toPlayerRecord() }
             .map { it.data }
@@ -116,6 +116,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
             .map { it.toPlayerRecord() }
             .map { it.data }
             .filter { it.element.email == email }
+            .map { it.id.with(it.element.id!!) }
     }
 
     private fun playerIdScanParams(recordTribePlayerIds: List<String>) = json(

@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.action.tribe
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
@@ -19,7 +19,7 @@ data class SaveTribeCommand(val tribe: Tribe) : Action
 
 interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSyntax,
     TribeIdGetSyntax,
-    TribeSaveSyntax, UserPlayersSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
+    TribeSaveSyntax, UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
 
     override val tribeRepository: TribeRepository
 
@@ -35,16 +35,16 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
 
     private suspend fun User.saveIfUserChanged() = if (this != user) save() else Unit
 
-    private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndPlayers()
+    private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndUserPlayerIds()
         .let { (loadedTribe, players) -> shouldSave(tribe.id, loadedTribe, players) }
 
-    private suspend fun SaveTribeCommand.getTribeAndPlayers() = coroutineScope {
+    private suspend fun SaveTribeCommand.getTribeAndUserPlayerIds() = coroutineScope {
         await(
             async { tribe.id.get() },
-            async { getUserPlayers() })
+            async { getUserPlayerIds() })
     }
 
-    private fun shouldSave(tribeId: TribeId, loadedTribe: Tribe?, playerList: List<TribeIdPlayer>) =
+    private fun shouldSave(tribeId: TribeId, loadedTribe: Tribe?, playerList: List<TribeElement<String>>) =
         tribeIsNew(loadedTribe)
                 || playerList.authenticatedTribeIds().contains(tribeId)
 

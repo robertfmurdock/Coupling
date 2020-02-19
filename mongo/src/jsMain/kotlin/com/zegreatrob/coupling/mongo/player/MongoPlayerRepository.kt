@@ -45,10 +45,11 @@ interface MongoPlayerRepository : PlayerRepository,
         findByQuery(json("tribe" to tribeId.value), playersCollection)
             .map { it.toPlayerRecord() }
 
-    override suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer> =
+    override suspend fun getPlayerIdsByEmail(email: String) =
         getLatestRecordsRelatedToAsync(json("email" to email), playersCollection)
             .map { it.toPlayerRecord().data }
             .filter { it.player.email == email }
+            .map { it.id.with(it.player.id!!) }
 
     private suspend fun getLatestRecordsRelatedToAsync(query: Json, collection: dynamic) =
         rawFindBy(query, collection).await()

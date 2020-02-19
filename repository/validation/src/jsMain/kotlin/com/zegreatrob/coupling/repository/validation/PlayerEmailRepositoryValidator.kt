@@ -24,9 +24,9 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
             repository.save(tribeId.with(redHerring))
             repository.save(tribeId.with(updatedPlayer))
         } exerciseAsync {
-            repository.getPlayersByEmail(email)
+            repository.getPlayerIdsByEmail(email)
         } verifyAsync { result ->
-            result.assertIsEqualTo(listOf(tribeId.with(updatedPlayer)))
+            result.assertIsEqualTo(listOf(tribeId.with(player.id)))
         }
     }
 
@@ -41,7 +41,7 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
                 repository.save(tribeId.with(player))
                 repository.save(tribeId.with(updatedPlayer))
             } exerciseAsync {
-                repository.getPlayersByEmail(email)
+                repository.getPlayerIdsByEmail(email)
             } verifyAsync { result ->
                 result.assertIsEqualTo(emptyList())
             }

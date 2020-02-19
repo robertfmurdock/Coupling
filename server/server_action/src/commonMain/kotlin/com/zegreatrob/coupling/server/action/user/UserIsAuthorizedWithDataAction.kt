@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedTribeIdSyntax
-import com.zegreatrob.coupling.server.action.tribe.UserPlayersSyntax
+import com.zegreatrob.coupling.server.action.tribe.UserPlayerIdsSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -17,12 +17,12 @@ data class UserIsAuthorizedWithDataAction(val tribeId: TribeId)
 
 interface ServerPlayerGet: PlayerListGetByEmail, PlayerListGet
 
-interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayersSyntax,
+interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax,
     TribeIdGetSyntax, TribeIdPlayersSyntax {
     override val playerRepository: ServerPlayerGet
 
     suspend fun UserIsAuthorizedWithDataAction.perform(): Pair<Tribe, List<Player>>? {
-        val contains = getUserPlayers()
+        val contains = getUserPlayerIds()
             .authenticatedTribeIds()
             .contains(tribeId)
 
