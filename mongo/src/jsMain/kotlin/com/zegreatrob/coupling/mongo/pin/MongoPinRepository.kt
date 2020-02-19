@@ -2,7 +2,10 @@ package com.zegreatrob.coupling.mongo.pin
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.pin
+import com.zegreatrob.coupling.model.pin.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
@@ -25,7 +28,7 @@ interface MongoPinRepository : PinRepository,
         findByQuery(json("tribe" to tribeId.value), pinCollection)
             .map {
                 val pin = it.fromDbToPin()
-                it.toDbRecord(TribeIdPin(tribeId, pin))
+                it.toDbRecord(tribeId.with(pin))
             }
 
     override suspend fun save(tribeIdPin: TribeIdPin) = tribeIdPin.toDbJson()
@@ -44,9 +47,8 @@ interface MongoPinRepository : PinRepository,
         { toDbJson() }
     )
 
-    private fun Json.toTribeIdPin() = TribeIdPin(
-        tribeId = TribeId(this["tribe"].unsafeCast<String>()),
-        pin = applyIdCorrection().fromDbToPin()
+    private fun Json.toTribeIdPin() = TribeId(this["tribe"].unsafeCast<String>()).with(
+        element = applyIdCorrection().fromDbToPin()
     )
 
 }

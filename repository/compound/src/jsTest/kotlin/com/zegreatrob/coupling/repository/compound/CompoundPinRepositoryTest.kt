@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.pin.with
+import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -40,7 +41,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator {
             val tribeId = stubTribeId()
             val pin = stubPin()
         }) exerciseAsync {
-            compoundRepo.save(pin.with(tribeId))
+            compoundRepo.save(tribeId.with(pin))
         } verifyAsync {
             repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
                 .assertIsEqualTo(pin)
@@ -60,7 +61,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator {
             val tribeId = stubTribeId()
             val pin = stubPin()
         }) exerciseAsync {
-            compoundRepo.save(pin.with(tribeId))
+            compoundRepo.save(tribeId.with(pin))
             compoundRepo.deletePin(tribeId, pin._id!!)
         } verifyAsync {
             repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }

@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.pin
+import com.zegreatrob.coupling.model.pin.tribeId
 import kotlin.js.Json
 import kotlin.js.json
 

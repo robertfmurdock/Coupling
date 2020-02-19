@@ -4,8 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.hours
-import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minassert.assertContains
@@ -37,7 +38,7 @@ interface PinRepositoryValidator {
                 stubPin()
             )
         }) exerciseAsync {
-            pins.forEach { repository.save(TribeIdPin(tribeId, it)) }
+            pins.forEach { repository.save(tribeId.with(it)) }
             repository.getPins(tribeId)
         } verifyAsync { result ->
             result.map { it.data.pin }
@@ -55,7 +56,7 @@ interface PinRepositoryValidator {
             )
         }) {
             coroutineScope {
-                pins.forEach { launch { repository.save(TribeIdPin(tribeId, it)) } }
+                pins.forEach { launch { repository.save(tribeId.with(it)) } }
             }
         } exerciseAsync {
             repository.deletePin(tribeId, pins[1]._id!!)
@@ -96,7 +97,7 @@ interface PinRepositoryValidator {
             val pin = stubPin()
         }) {
             clock.currentTime = DateTime.now().plus(4.hours)
-            repository.save(TribeIdPin(tribeId, pin))
+            repository.save(tribeId.with(pin))
         } exerciseAsync {
             repository.getPins(tribeId)
         } verifyAsync { result ->

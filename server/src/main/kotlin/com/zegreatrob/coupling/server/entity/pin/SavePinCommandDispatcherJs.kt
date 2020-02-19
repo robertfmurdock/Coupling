@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.pin
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
@@ -20,6 +20,6 @@ interface SavePinCommandDispatcherJs : SavePinCommandDispatcher, RequestTribeIdS
         .toJson()
 
     private fun Request.savePinCommand() = SavePinCommand(
-        TribeIdPin(tribeId(), jsonBody().toPin())
+        tribeId().with(jsonBody().toPin())
     )
 }

@@ -4,7 +4,6 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -165,7 +164,7 @@ class SpinTest {
             sdk.save(tribe)
             players.forEach { launch { sdk.save(tribe.id.with(it)) } }
             history.forEach { launch { sdk.save(TribeIdPairAssignmentDocument(tribe.id, it)) } }
-            pins.forEach { launch { sdk.save(TribeIdPin(tribe.id, it)) } }
+            pins.forEach { launch { sdk.save(tribe.id.with(it)) } }
         }
 
     }

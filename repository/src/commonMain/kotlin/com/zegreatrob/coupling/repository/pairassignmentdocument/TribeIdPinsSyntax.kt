@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repository.pairassignmentdocument
 
+import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdPinsSyntax: TribeIdPinRecordsSyntax {

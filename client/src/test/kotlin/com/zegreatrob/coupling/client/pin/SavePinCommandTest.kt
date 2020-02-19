@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pin.PinSave
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -30,7 +31,7 @@ class SavePinCommandTest {
         } verifyAsync {
             saveSpy.spyReceivedValues
                 .assertIsEqualTo(
-                    listOf(TribeIdPin(tribe.id, pin))
+                    listOf(tribe.id.with(pin))
                 )
         }
 

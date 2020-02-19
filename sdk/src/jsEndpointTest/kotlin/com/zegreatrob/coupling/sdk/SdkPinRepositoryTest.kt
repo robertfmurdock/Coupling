@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
@@ -40,7 +40,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
         setupAsync(object {
             val pin = stubPin()
         }) {
-            repository.save(TribeIdPin(tribeId, pin))
+            repository.save(tribeId.with(pin))
         } exerciseAsync {
             repository.getPins(tribeId)
         } verifyAsync { result ->

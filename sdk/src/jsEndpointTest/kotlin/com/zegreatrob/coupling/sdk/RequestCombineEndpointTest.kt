@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -33,7 +33,7 @@ class RequestCombineEndpointTest {
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
         }) {
             sdk.save(tribe)
-            pinsToSave.forEach { sdk.save(TribeIdPin(tribe.id, it)) }
+            pinsToSave.forEach { sdk.save(tribe.id.with(it)) }
             playersToSave
                 .map { tribe.id.with(it) }
                 .forEach { sdk.save(it) }
