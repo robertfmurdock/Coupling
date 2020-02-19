@@ -6,10 +6,12 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 
 class DynamoPlayerRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
     PlayerRepository,
+    PlayerListGetByEmail,
     UserEmailSyntax,
     DynamoPlayerJsonMapping {
 
@@ -35,5 +37,9 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
 
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
         .map { it.toRecord(tribeId.with(it.toPlayer())) }
+
+    override suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer> {
+        TODO()
+    }
 
 }

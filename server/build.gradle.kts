@@ -33,6 +33,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
     implementation(project(":mongo"))
+    implementation(project(":dynamo"))
     implementation(project("server_action"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
     implementation("com.soywiz.korlibs.klock:klock:1.8.9")
