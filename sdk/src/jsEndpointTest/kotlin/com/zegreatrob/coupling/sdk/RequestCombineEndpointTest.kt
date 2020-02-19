@@ -33,9 +33,9 @@ class RequestCombineEndpointTest {
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
         }) {
             sdk.save(tribe)
-            pinsToSave.forEach { sdk.save(tribe.id.with(it)) }
-            playersToSave
-                .map { tribe.id.with(it) }
+            tribe.id.with(pinsToSave)
+                .forEach { sdk.save(it) }
+            tribe.id.with(playersToSave)
                 .forEach { sdk.save(it) }
         } exerciseAsync {
             coroutineScope {

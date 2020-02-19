@@ -39,8 +39,8 @@ interface PairAssignmentDocumentRepositoryValidator {
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
             val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
         }) {
-            listOf(middle, oldest, newest)
-                .forEach { repository.save(tribeId.with(it)) }
+            tribeId.with(listOf(middle, oldest, newest))
+                .forEach { repository.save(it) }
         } exerciseAsync {
             repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->

@@ -38,7 +38,7 @@ interface PinRepositoryValidator {
                 stubPin()
             )
         }) exerciseAsync {
-            pins.forEach { repository.save(tribeId.with(it)) }
+            tribeId.with(pins).forEach { repository.save(it) }
             repository.getPins(tribeId)
         } verifyAsync { result ->
             result.map { it.data.pin }
@@ -56,7 +56,7 @@ interface PinRepositoryValidator {
             )
         }) {
             coroutineScope {
-                pins.forEach { launch { repository.save(tribeId.with(it)) } }
+                tribeId.with(pins).forEach { launch { repository.save(it) } }
             }
         } exerciseAsync {
             repository.deletePin(tribeId, pins[1]._id!!)

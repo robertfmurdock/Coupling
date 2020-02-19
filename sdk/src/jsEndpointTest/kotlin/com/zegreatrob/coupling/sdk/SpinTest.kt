@@ -2,7 +2,10 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
@@ -162,9 +165,9 @@ class SpinTest {
             pins: List<Pin> = emptyList()
         ) = coroutineScope {
             sdk.save(tribe)
-            players.forEach { launch { sdk.save(tribe.id.with(it)) } }
-            history.forEach { launch { sdk.save(tribe.id.with(it)) } }
-            pins.forEach { launch { sdk.save(tribe.id.with(it)) } }
+            tribe.id.with(players).forEach { launch { sdk.save(it) } }
+            tribe.id.with(history).forEach { launch { sdk.save(it) } }
+            tribe.id.with(pins).forEach { launch { sdk.save(it) } }
         }
 
     }

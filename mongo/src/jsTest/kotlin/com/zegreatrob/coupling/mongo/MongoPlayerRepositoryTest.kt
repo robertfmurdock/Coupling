@@ -6,7 +6,6 @@ import com.soywiz.klock.js.toDateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
@@ -260,13 +259,13 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                 val tribeId = TribeId("test")
             }) {
                 dropPlayers()
-                save(player with tribeId)
-                save(redHerring with tribeId)
-                save(updatedPlayer with tribeId)
+                save(tribeId.with(player))
+                save(tribeId.with(redHerring))
+                save(tribeId.with(updatedPlayer))
             } exerciseAsync {
                 getPlayersByEmail(email)
             } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(updatedPlayer with tribeId))
+                result.assertIsEqualTo(listOf(tribeId.with(updatedPlayer)))
             }
         }
     }
@@ -281,8 +280,8 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                 val tribeId = TribeId("test")
             }) {
                 dropPlayers()
-                save(player with tribeId)
-                save(updatedPlayer with tribeId)
+                save(tribeId.with(player))
+                save(tribeId.with(updatedPlayer))
             } exerciseAsync {
                 getPlayersByEmail(email)
             } verifyAsync { result ->

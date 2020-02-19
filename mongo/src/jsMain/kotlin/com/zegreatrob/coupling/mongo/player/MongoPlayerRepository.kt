@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.player.tribeId
@@ -62,7 +61,7 @@ interface MongoPlayerRepository : PlayerRepository,
         findDeletedByQuery(tribeId, playersCollection)
             .map { it.toPlayerRecord() }
 
-    private fun Json.toTribeIdPlayer() = TribeId(this["tribe"].unsafeCast<String>()).with<Player>(
+    private fun Json.toTribeIdPlayer() = TribeId(this["tribe"].unsafeCast<String>()).with(
         element = applyIdCorrection().toPlayerRecord().data.player
     )
 

@@ -4,8 +4,8 @@ import Spy
 import SpyData
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
@@ -29,9 +29,9 @@ class SavePlayerCommandTest {
                 email = "tim@tim.meat",
                 imageURL = "italian.jpg"
             )
-            override val playerRepository = PlayerSaverSpy().apply { whenever(player with tribe, Unit) }
+            override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
         }) exerciseAsync {
-            SavePlayerCommand(player with tribe)
+            SavePlayerCommand(tribe.with(player))
                 .perform()
         } verifyAsync { result ->
             result.assertIsEqualTo(player)

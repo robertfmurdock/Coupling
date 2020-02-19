@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.player.PlayerRepository
@@ -40,7 +40,7 @@ class CompoundPlayerRepositoryTest : PlayerRepositoryValidator {
             val tribeId = stubTribeId()
             val player = stubPlayer()
         }) exerciseAsync {
-            compoundRepo.save(player.with(tribeId))
+            compoundRepo.save(tribeId.with(player))
         } verifyAsync {
             repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
                 .assertIsEqualTo(player)
@@ -60,7 +60,7 @@ class CompoundPlayerRepositoryTest : PlayerRepositoryValidator {
             val tribeId = stubTribeId()
             val player = stubPlayer()
         }) exerciseAsync {
-            compoundRepo.save(player.with(tribeId))
+            compoundRepo.save(tribeId.with(player))
             compoundRepo.deletePlayer(tribeId, player.id!!)
         } verifyAsync {
             repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }

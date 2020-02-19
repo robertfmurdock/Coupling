@@ -4,7 +4,6 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
@@ -30,7 +29,7 @@ interface PlayerRepositoryValidator {
         setupAsync(object {
             val players = stubPlayers(3)
         }) {
-            players.forEach { repository.save(tribeId.with(it)) }
+            tribeId.with(players).forEach { repository.save(it) }
         } exerciseAsync {
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
@@ -92,9 +91,9 @@ interface PlayerRepositoryValidator {
             val player = stubPlayer()
             val playerId = player.id!!
         }) {
-            repository.save(player with tribeId)
+            repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, playerId)
-            repository.save(player with tribeId)
+            repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, playerId)
         } exerciseAsync {
             repository.getDeleted(tribeId)
