@@ -32,7 +32,7 @@ kotlin {
                 api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
-                api("com.soywiz.korlibs.klock:klock:1.8.1")
+                api("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.14.0-1.3.60-eap-76")
             }

@@ -26,7 +26,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
-                implementation("com.soywiz.korlibs.klock:klock:1.8.1")
+                implementation("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("com.benasher44:uuid:0.0.7")
             }
         }

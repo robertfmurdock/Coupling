@@ -35,7 +35,7 @@ dependencies {
     implementation(project(":mongo"))
     implementation(project("server_action"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
-    implementation("com.soywiz.korlibs.klock:klock:1.8.1")
+    implementation("com.soywiz.korlibs.klock:klock:1.8.9")
     implementation("io.github.microutils:kotlin-logging-js:1.7.8")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.14.0-1.3.60-eap-76")
 
