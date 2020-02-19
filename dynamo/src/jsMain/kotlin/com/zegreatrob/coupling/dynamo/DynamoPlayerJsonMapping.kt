@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
+import com.zegreatrob.coupling.model.player.tribeId
 import kotlin.js.Json
 import kotlin.js.json
 

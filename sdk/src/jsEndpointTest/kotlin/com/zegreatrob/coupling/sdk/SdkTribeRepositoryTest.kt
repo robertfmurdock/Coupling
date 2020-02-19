@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
@@ -39,7 +39,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
             )
         }) {
             otherSdk.save(tribe)
-            otherSdk.save(TribeIdPlayer(tribe.id, player))
+            otherSdk.save(tribe.id.with(player))
         } exerciseAsync {
             sdk.getTribes()
         } verifyAsync { result ->
@@ -62,8 +62,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
             )
         }) {
             otherSdk.save(tribe)
-            otherSdk.save(TribeIdPlayer(tribe.id, player))
-            otherSdk.save(TribeIdPlayer(tribe.id, player.copy(email = "something else")))
+            otherSdk.save(tribe.id.with(player))
+            otherSdk.save(tribe.id.with(player.copy(email = "something else")))
         } exerciseAsync {
             sdk.getTribes()
         } verifyAsync { result ->

@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -163,7 +163,7 @@ class SpinTest {
             pins: List<Pin> = emptyList()
         ) = coroutineScope {
             sdk.save(tribe)
-            players.forEach { launch { sdk.save(TribeIdPlayer(tribe.id, it)) } }
+            players.forEach { launch { sdk.save(tribe.id.with(it)) } }
             history.forEach { launch { sdk.save(TribeIdPairAssignmentDocument(tribe.id, it)) } }
             pins.forEach { launch { sdk.save(TribeIdPin(tribe.id, it)) } }
         }

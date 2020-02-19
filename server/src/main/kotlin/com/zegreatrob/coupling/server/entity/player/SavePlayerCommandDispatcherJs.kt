@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
@@ -24,7 +24,7 @@ interface SavePlayerCommandDispatcherJs : SavePlayerCommandDispatcher, RequestTr
         .toJson()
 
     private fun Request.savePlayerCommand() = SavePlayerCommand(
-        TribeIdPlayer(tribeId(), jsonBody().toPlayer())
+        tribeId().with(jsonBody().toPlayer())
     )
 
 }

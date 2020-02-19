@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.repository.memory
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
+import com.zegreatrob.coupling.model.player.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 

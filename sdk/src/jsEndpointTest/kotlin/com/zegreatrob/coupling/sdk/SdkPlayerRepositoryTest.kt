@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
@@ -63,7 +63,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator {
                 )
             }) exerciseAsync {
                 catchAxiosError {
-                    sdk.save(TribeIdPlayer(tribeId, player))
+                    sdk.save(tribeId.with(player))
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)

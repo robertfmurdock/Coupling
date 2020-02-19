@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.action.player
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 
 data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) : Action

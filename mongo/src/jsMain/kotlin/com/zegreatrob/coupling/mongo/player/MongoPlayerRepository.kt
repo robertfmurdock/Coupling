@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.mongo.player
 
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
+import com.zegreatrob.coupling.model.player.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
@@ -58,9 +62,8 @@ interface MongoPlayerRepository : PlayerRepository,
         findDeletedByQuery(tribeId, playersCollection)
             .map { it.toPlayerRecord() }
 
-    private fun Json.toTribeIdPlayer() = TribeIdPlayer(
-        tribeId = TribeId(this["tribe"].unsafeCast<String>()),
-        player = applyIdCorrection().toPlayerRecord().data.player
+    private fun Json.toTribeIdPlayer() = TribeId(this["tribe"].unsafeCast<String>()).with<Player>(
+        element = applyIdCorrection().toPlayerRecord().data.player
     )
 
 }

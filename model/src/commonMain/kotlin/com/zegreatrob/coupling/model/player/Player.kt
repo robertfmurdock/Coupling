@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.model.player
 
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 
 data class Player(
     val id: String? = null,
@@ -12,6 +14,9 @@ data class Player(
     val imageURL: String? = null
 )
 
-infix fun Player.with(tribeId: TribeId) = TribeIdPlayer(tribeId, this)
+infix fun Player.with(tribeId: TribeId) = tribeId.with(this)
 
-data class TribeIdPlayer(val tribeId: TribeId, val player: Player)
+typealias TribeIdPlayer = TribeElement<Player>
+
+val TribeIdPlayer.tribeId get() = id
+val TribeIdPlayer.player get() = element

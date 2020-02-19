@@ -7,7 +7,9 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
@@ -47,7 +49,7 @@ class PlayersQueryTest {
 
     private fun toRecord(it: Player, authorizedTribeId: TribeId) =
         Record(
-            TribeIdPlayer(authorizedTribeId, it),
+            authorizedTribeId.with(it),
             DateTime.now(),
             false,
             "${uuid4()}@email.com"

@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.model.user.UserAuthorizedTribeIdsSyntax
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.tribeId
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.UserAuthorizedTribeIdsSyntax
+import com.zegreatrob.coupling.model.user.UserEmailSyntax
 
 interface UserAuthenticatedTribeIdSyntax : UserEmailSyntax, UserAuthorizedTribeIdsSyntax {
 

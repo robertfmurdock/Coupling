@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User

@@ -2,11 +2,12 @@ package com.zegreatrob.coupling.server.action.tribe
 
 import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.*
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax

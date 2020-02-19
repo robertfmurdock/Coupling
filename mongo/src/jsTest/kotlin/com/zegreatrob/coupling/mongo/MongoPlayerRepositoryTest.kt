@@ -5,9 +5,10 @@ import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.js.toDateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.repository.player.PlayerRepository
@@ -68,7 +69,7 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                 val tribeId = TribeId("woo")
                 val player = stubPlayer()
             }) exerciseAsync {
-                save(TribeIdPlayer(tribeId, player))
+                save(tribeId.with(player))
                 getDbPlayers(tribeId)
             } verifyAsync { result ->
                 result.size.assertIsEqualTo(1)
@@ -91,9 +92,9 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                 val updatedPlayer = player.copy(name = "Timmy")
             }) {
                 dropPlayers()
-                save(TribeIdPlayer(tribeId, player))
+                save(tribeId.with(player))
             } exerciseAsync {
-                save(TribeIdPlayer(tribeId, updatedPlayer))
+                save(tribeId.with(updatedPlayer))
                 getDbPlayers(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
@@ -120,7 +121,7 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                     override val clock: TimeProvider get() = TimeProvider
                     override val jsRepository = this@withMongoRepository.jsRepository
                 }) {
-                    save(TribeIdPlayer(tribeId, player))
+                    save(tribeId.with(player))
                 }
             } exerciseAsync {
                 deletePlayer(tribeId, playerId)
@@ -202,7 +203,7 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                     dropPlayers()
                     playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
                 } exerciseAsync {
-                    save(TribeIdPlayer(tribeId, updatedPlayer))
+                    save(tribeId.with(updatedPlayer))
                     getPlayers(tribeId)
                 } verifyAsync { result ->
                     result.map { it.data.player }
@@ -236,7 +237,7 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
                     email = "duder",
                     badge = 2
                 )
-                save(TribeIdPlayer(tribeId, tribeIdPlayer))
+                save(tribeId.with(tribeIdPlayer))
 
                 playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
             } exerciseAsync {

@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -22,9 +23,8 @@ interface PlayerToDbSyntax : JsonRecordSyntax {
 
     fun Json.toPlayerRecord(): Record<TribeIdPlayer> =
         toDbRecord(
-            TribeIdPlayer(
-                tribeId = TribeId(stringValue("tribe")!!),
-                player = fromDbToPlayer()
+            TribeId(stringValue("tribe")!!).with(
+                element = fromDbToPlayer()
             )
         )
 

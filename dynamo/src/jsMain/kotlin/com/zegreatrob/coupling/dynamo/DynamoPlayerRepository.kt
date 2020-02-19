@@ -4,6 +4,7 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 
@@ -23,7 +24,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
 
     override suspend fun getPlayers(tribeId: TribeId) = tribeId.scanForItemList().map {
         val player = it.toPlayer()
-        it.toRecord(TribeIdPlayer(tribeId, player))
+        it.toRecord(tribeId.with(player))
     }
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = performPutItem(tribeIdPlayer.toDynamoJson())
@@ -33,6 +34,6 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     )
 
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
-        .map { it.toRecord(TribeIdPlayer(tribeId, it.toPlayer())) }
+        .map { it.toRecord(tribeId.with(it.toPlayer())) }
 
 }

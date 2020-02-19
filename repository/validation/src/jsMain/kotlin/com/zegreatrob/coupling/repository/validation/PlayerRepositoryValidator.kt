@@ -3,9 +3,10 @@ package com.zegreatrob.coupling.repository.validation
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.player.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -29,7 +30,7 @@ interface PlayerRepositoryValidator {
         setupAsync(object {
             val players = stubPlayers(3)
         }) {
-            players.forEach { repository.save(TribeIdPlayer(tribeId, it)) }
+            players.forEach { repository.save(tribeId.with(it)) }
         } exerciseAsync {
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
@@ -44,9 +45,9 @@ interface PlayerRepositoryValidator {
             val player = stubPlayer()
             val updatedPlayer = player.copy(name = "Timmy!")
         }) {
-            repository.save(TribeIdPlayer(tribeId, player))
+            repository.save(tribeId.with(player))
         } exerciseAsync {
-            repository.save(TribeIdPlayer(tribeId, updatedPlayer))
+            repository.save(tribeId.with(updatedPlayer))
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
             result.map { it.data.player }
@@ -59,7 +60,7 @@ interface PlayerRepositoryValidator {
         setupAsync(object {
             val player = stubPlayer()
         }) {
-            repository.save(TribeIdPlayer(tribeId, player))
+            repository.save(tribeId.with(player))
         } exerciseAsync {
             repository.deletePlayer(tribeId, player.id!!)
             repository.getPlayers(tribeId)
@@ -75,7 +76,7 @@ interface PlayerRepositoryValidator {
         setupAsync(object {
             val player = stubPlayer()
         }) {
-            repository.save(TribeIdPlayer(tribeId, player))
+            repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, player.id!!)
         } exerciseAsync {
             repository.getDeleted(tribeId)
@@ -119,7 +120,7 @@ interface PlayerRepositoryValidator {
         setupAsync(object {
             val player = stubPlayer()
         }) exerciseAsync {
-            repository.save(TribeIdPlayer(tribeId, player))
+            repository.save(tribeId.with(player))
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
@@ -136,7 +137,7 @@ interface PlayerRepositoryValidator {
         setupAsync(object {
             val player = stubPlayer()
         }) exerciseAsync {
-            repository.save(TribeIdPlayer(tribeId, player))
+            repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, player.id!!)
             repository.getDeleted(tribeId)
         } verifyAsync { result ->

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import kotlin.js.Json
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()

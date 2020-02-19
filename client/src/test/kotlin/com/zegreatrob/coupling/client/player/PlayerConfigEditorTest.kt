@@ -9,10 +9,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
-import com.zegreatrob.coupling.model.player.Badge
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.TribeIdPlayerId
+import com.zegreatrob.coupling.model.player.*
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerRepository

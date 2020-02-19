@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.AuthorizedTribeIdSyntax
 
@@ -30,7 +31,7 @@ interface PlayersQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax,
                 )
 
                 updatedPlayers = updatedPlayers + record.copy(
-                    data = record.data.copy(player = record.data.player.withCallSign(callSign))
+                    data = record.data.copy(element = record.data.player.withCallSign(callSign))
                 )
 
             }
