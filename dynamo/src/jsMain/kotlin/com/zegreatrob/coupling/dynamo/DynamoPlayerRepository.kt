@@ -2,12 +2,16 @@ package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
+import kotlin.js.Json
+import kotlin.js.json
 
 class DynamoPlayerRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
     PlayerRepository,
@@ -24,10 +28,14 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         override val tableName: String = "PLAYER"
     }
 
-    override suspend fun getPlayers(tribeId: TribeId) = tribeId.scanForItemList().map {
-        val player = it.toPlayer()
-        it.toRecord(tribeId.with(player))
+    override suspend fun getPlayers(tribeId: TribeId) = tribeId.scanForItemList().map { it.toPlayerRecord() }
+
+    private fun Json.toPlayerRecord(): Record<TribeElement<Player>> {
+        val player = toPlayer()
+        return toRecord(tribeId().with(player))
     }
+
+    private fun Json.tribeId() = TribeId(this["tribeId"].unsafeCast<String>())
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = performPutItem(tribeIdPlayer.toDynamoJson())
 
@@ -36,10 +44,16 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     )
 
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
-        .map { it.toRecord(tribeId.with(it.toPlayer())) }
+        .map { it.toPlayerRecord() }
 
-    override suspend fun getPlayersByEmail(email: String): List<TribeIdPlayer> {
-        TODO()
-    }
+    override suspend fun getPlayersByEmail(email: String) = scanForItemList(emailScanParams(email))
+        .map { it.toPlayerRecord() }
+        .map { it.data }
+
+    private fun emailScanParams(email: String) = json(
+        "TableName" to tableName,
+        "ExpressionAttributeValues" to json(":email" to email),
+        "FilterExpression" to "email = :email"
+    )
 
 }
