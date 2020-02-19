@@ -7,8 +7,9 @@ import com.soywiz.klock.days
 import com.soywiz.klock.hours
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.with
+import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -39,7 +40,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
         }) {
             listOf(middle, oldest, newest)
-                .forEach { repository.save(it.with(tribeId)) }
+                .forEach { repository.save(tribeId.with(it)) }
         } exerciseAsync {
             repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
@@ -63,7 +64,7 @@ interface PairAssignmentDocumentRepositoryValidator {
         setupAsync(object {
             val pairAssignmentDoc = stubPairAssignmentDoc().copy(id = null)
         }) exerciseAsync {
-            repository.save(pairAssignmentDoc.with(tribeId))
+            repository.save(tribeId.with(pairAssignmentDoc))
             repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
             val resultDocument = result.data().map { it.document }.getOrNull(0)
@@ -79,7 +80,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }) {
             clock.currentTime = DateTime.now().plus(4.hours)
-            repository.save(pairAssignmentDoc.with(tribeId))
+            repository.save(tribeId.with(pairAssignmentDoc))
         } exerciseAsync {
             repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
@@ -97,7 +98,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             val document = stubPairAssignmentDoc()
             val id = document.id!!
         }) {
-            repository.save(document.with(tribeId))
+            repository.save(tribeId.with(document))
         } exerciseAsync {
             repository.delete(tribeId, id)
         } verifyAsync { result ->
@@ -127,9 +128,9 @@ interface PairAssignmentDocumentRepositoryValidator {
             val updatedDateTime = originalDateTime.plus(3.days)
             val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
         }) {
-            repository.save(pairAssignmentDocument.with(tribeId))
+            repository.save(tribeId.with(pairAssignmentDocument))
         } exerciseAsync {
-            repository.save(updatedDocument.with(tribeId))
+            repository.save(tribeId.with(updatedDocument))
             repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->
             result.data().map { it.document }

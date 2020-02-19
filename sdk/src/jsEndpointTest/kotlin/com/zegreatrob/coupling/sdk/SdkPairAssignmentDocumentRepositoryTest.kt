@@ -4,8 +4,8 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.seconds
-import com.zegreatrob.coupling.model.pairassignmentdocument.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
@@ -44,7 +44,7 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         setupAsync(object {
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }) {
-            repository.save(pairAssignmentDoc.with(tribeId))
+            repository.save(tribeId.with(pairAssignmentDoc))
         } exerciseAsync {
             repository.getPairAssignmentRecords(tribeId)
         } verifyAsync { result ->

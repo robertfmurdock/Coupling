@@ -163,7 +163,7 @@ class SpinTest {
         ) = coroutineScope {
             sdk.save(tribe)
             players.forEach { launch { sdk.save(tribe.id.with(it)) } }
-            history.forEach { launch { sdk.save(TribeIdPairAssignmentDocument(tribe.id, it)) } }
+            history.forEach { launch { sdk.save(tribe.id.with(it)) } }
             pins.forEach { launch { sdk.save(tribe.id.with(it)) } }
         }
 

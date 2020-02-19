@@ -5,6 +5,8 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.document
+import com.zegreatrob.coupling.model.pairassignmentdocument.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 
@@ -21,7 +23,7 @@ class MemoryPairAssignmentDocumentRepository(override val userEmail: String, ove
             .save()
 
     private fun TribeIdPairAssignmentDocument.addMissingId() = copy(
-        document = document.copy(
+        element = document.copy(
             id = document.id ?: "${uuid4()}".let(::PairAssignmentDocumentId)
         )
     )

@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.pairassignmentdocument.with
+import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -43,7 +44,7 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
             val tribeId = stubTribeId()
             val pairAssignmentDocument = stubPairAssignmentDoc()
         }) exerciseAsync {
-            compoundRepo.save(pairAssignmentDocument.with(tribeId))
+            compoundRepo.save(tribeId.with(pairAssignmentDocument))
         } verifyAsync {
             repository2.getPairAssignmentRecords(tribeId).map { it.data.document }
                 .find { it.id == pairAssignmentDocument.id }
@@ -64,7 +65,7 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
             val tribeId = stubTribeId()
             val pairAssignmentDocument = stubPairAssignmentDoc()
         }) exerciseAsync {
-            compoundRepo.save(pairAssignmentDocument.with(tribeId))
+            compoundRepo.save(tribeId.with(pairAssignmentDocument))
             compoundRepo.delete(tribeId, pairAssignmentDocument.id!!)
         } verifyAsync {
             repository2.getPairAssignmentRecords(tribeId).map { it.data.document }

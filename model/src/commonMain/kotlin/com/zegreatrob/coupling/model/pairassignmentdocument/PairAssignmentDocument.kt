@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.TribeElement
 
 data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId? = null,
@@ -9,12 +9,12 @@ data class PairAssignmentDocument(
     val pairs: List<PinnedCouplingPair>
 )
 
-fun PairAssignmentDocument.with(tribeId: TribeId) =
-    TribeIdPairAssignmentDocument(tribeId, this)
-
 fun PairAssignmentDocument.orderedPairedPlayers() = pairs
     .asSequence()
     .flatMap { it.players.asSequence() }
     .map { it.player }
 
-data class TribeIdPairAssignmentDocument(val tribeId: TribeId, val document: PairAssignmentDocument)
+typealias TribeIdPairAssignmentDocument = TribeElement<PairAssignmentDocument>
+
+val TribeIdPairAssignmentDocument.tribeId get() = id
+val TribeIdPairAssignmentDocument.document get() = element

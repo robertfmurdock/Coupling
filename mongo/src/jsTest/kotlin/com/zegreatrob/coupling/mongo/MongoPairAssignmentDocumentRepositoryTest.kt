@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -146,9 +147,9 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
                 val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
             }) {
                 dropHistory()
-                save(pairAssignmentDocument.with(tribeId))
+                save(tribeId.with(pairAssignmentDocument))
             } exerciseAsync {
-                save(updatedDocument.with(tribeId))
+                save(tribeId.with(updatedDocument))
                 getDbHistory(tribeId)
             } verifyAsync { result ->
                 result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date?>()?.toDateTime() }

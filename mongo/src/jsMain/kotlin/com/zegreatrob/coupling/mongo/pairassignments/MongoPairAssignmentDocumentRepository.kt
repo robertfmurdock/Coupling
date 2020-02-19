@@ -5,6 +5,7 @@ import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
@@ -62,8 +63,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
     private fun List<Pin>.toDbJson(): Array<Json> = map { it.toDbJson() }
         .toTypedArray()
 
-    private fun Json.toPairAssignmentDocument() = TribeIdPairAssignmentDocument(
-        TribeId(this["tribe"].unsafeCast<String>()),
+    private fun Json.toPairAssignmentDocument() = TribeId(this["tribe"].unsafeCast<String>()).with(
         PairAssignmentDocument(
             id = idStringValue()
                 .let(::PairAssignmentDocumentId),

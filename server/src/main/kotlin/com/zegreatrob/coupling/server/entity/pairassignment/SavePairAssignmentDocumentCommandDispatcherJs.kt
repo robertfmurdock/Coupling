@@ -2,7 +2,8 @@ package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.document
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
@@ -26,8 +27,7 @@ interface SavePairAssignmentDocumentCommandDispatcherJs : SavePairAssignmentDocu
             .toJson()
 
     private fun Request.savePairAssignmentDocumentCommand() = SavePairAssignmentDocumentCommand(
-        TribeIdPairAssignmentDocument(
-            tribeId(),
+        tribeId().with(
             jsonBody().toPairAssignmentDocument()
         )
     )

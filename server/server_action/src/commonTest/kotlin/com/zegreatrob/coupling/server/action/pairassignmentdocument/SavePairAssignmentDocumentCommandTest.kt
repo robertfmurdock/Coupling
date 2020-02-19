@@ -4,10 +4,10 @@ import Spy
 import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.with
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -17,11 +17,13 @@ class SavePairAssignmentDocumentCommandTest {
     @Test
     fun willSendToRepository() = testAsync {
         setupAsync(object : SavePairAssignmentDocumentCommandDispatcher {
-            val pairAssignmentDocument = PairAssignmentDocument(
-                id = null,
-                date = DateTime.now(),
-                pairs = emptyList()
-            ).with(TribeId("tribe-239"))
+            val pairAssignmentDocument = TribeId("tribe-239").with(
+                PairAssignmentDocument(
+                        id = null,
+                        date = DateTime.now(),
+                        pairs = emptyList()
+                    )
+            )
 
             override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
                 .apply { whenever(pairAssignmentDocument, Unit) }

@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -34,7 +35,7 @@ class ProposeNewPairsCommandTest {
                 override suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
                     history
                         .map {
-                            Record(TribeIdPairAssignmentDocument(tribe.id, it), DateTime.now(), false, "")
+                            Record(tribe.id.with(it), DateTime.now(), false, "")
                         }
                         .also { tribeId.assertIsEqualTo(tribe.id) }
             }
