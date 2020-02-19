@@ -9,6 +9,8 @@ interface PlayerRepository : PlayerListGet,
     PlayerDelete,
     PlayerListGetDeleted
 
+interface PlayerEmailRepository : PlayerRepository, PlayerListGetByEmail
+
 interface PlayerDelete {
     suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean
 }

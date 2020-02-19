@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
-import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -15,7 +15,7 @@ import stubTribeId
 import stubUser
 import kotlin.test.Test
 
-class CompoundPlayerRepositoryTest : PlayerRepositoryValidator<CompoundPlayerRepository> {
+class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
     override suspend fun withRepository(handler: suspend (CompoundPlayerRepository, TribeId, User) -> Unit) {
         val stubUser = stubUser()
 
