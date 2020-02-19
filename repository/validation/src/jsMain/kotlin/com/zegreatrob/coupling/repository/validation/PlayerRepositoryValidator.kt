@@ -16,11 +16,11 @@ import stubPlayer
 import stubPlayers
 import kotlin.test.Test
 
-interface PlayerRepositoryValidator {
+interface PlayerRepositoryValidator<T : PlayerRepository> {
 
-    suspend fun withRepository(handler: suspend (PlayerRepository, TribeId, User) -> Unit)
+    suspend fun withRepository(handler: suspend (T, TribeId, User) -> Unit)
 
-    private fun testRepository(block: suspend CoroutineScope.(PlayerRepository, TribeId, User) -> Any?) = testAsync {
+    fun testRepository(block: suspend CoroutineScope.(T, TribeId, User) -> Any?) = testAsync {
         withRepository { repository, tribeId, user -> block(repository, tribeId, user) }
     }
 

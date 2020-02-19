@@ -10,8 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
-import com.zegreatrob.coupling.repository.player.PlayerRepository
-import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -24,9 +23,9 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
+class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepository> {
 
-    override suspend fun withRepository(handler: suspend (PlayerRepository, TribeId, User) -> Unit) {
+    override suspend fun withRepository(handler: suspend (MongoPlayerRepository, TribeId, User) -> Unit) {
         val user = stubUser()
         withMongoRepository(user) { handler(this, stubTribeId(), user) }
     }
@@ -247,46 +246,4 @@ class MongoPlayerRepositoryTest : PlayerRepositoryValidator {
         }
     }
 
-
-    @Test
-    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val email = "test@zegreatrob.com"
-                val player = Player(id(), email = email, name = "Testo")
-                val redHerring = Player(id(), email = "somethingelse", name = "Testo")
-                val updatedPlayer = player.copy(name = "Besto")
-                val tribeId = TribeId("test")
-            }) {
-                dropPlayers()
-                save(tribeId.with(player))
-                save(tribeId.with(redHerring))
-                save(tribeId.with(updatedPlayer))
-            } exerciseAsync {
-                getPlayersByEmail(email)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(listOf(tribeId.with(updatedPlayer)))
-            }
-        }
-    }
-
-    @Test
-    fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val email = "test@zegreatrob.com"
-                val player = Player(id(), email = email, name = "Testo")
-                val updatedPlayer = player.copy(name = "Besto", email = "something else ")
-                val tribeId = TribeId("test")
-            }) {
-                dropPlayers()
-                save(tribeId.with(player))
-                save(tribeId.with(updatedPlayer))
-            } exerciseAsync {
-                getPlayersByEmail(email)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(emptyList())
-            }
-        }
-    }
 }
