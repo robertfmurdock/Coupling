@@ -4,6 +4,7 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -46,9 +47,26 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
         .map { it.toPlayerRecord() }
 
-    override suspend fun getPlayersByEmail(email: String) = scanForItemList(emailScanParams(email))
-        .map { it.toPlayerRecord() }
-        .map { it.data }
+    override suspend fun getPlayersByEmail(email: String): List<TribeElement<Player>> {
+        val recordsWithEmail = scanForItemList(emailScanParams(email))
+            .map { it.toPlayerRecord() }
+            .map { it.data }
+
+        val recordTribePlayerIds = recordsWithEmail.map { it.player.id!! }
+
+        return scanForItemList(playerIdScanParams(recordTribePlayerIds))
+            .map { it.toPlayerRecord() }
+            .map { it.data }
+            .filter { it.element.email == email }
+    }
+
+    private fun playerIdScanParams(recordTribePlayerIds: List<String>) = json(
+        "TableName" to tableName,
+        "ExpressionAttributeValues" to json(
+            ":playerIdList" to recordTribePlayerIds.toTypedArray()
+        ),
+        "FilterExpression" to "contains(:playerIdList, id)"
+    )
 
     private fun emailScanParams(email: String) = json(
         "TableName" to tableName,

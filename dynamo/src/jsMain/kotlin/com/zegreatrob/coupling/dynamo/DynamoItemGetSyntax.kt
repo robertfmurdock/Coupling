@@ -3,23 +3,24 @@ package com.zegreatrob.coupling.dynamo
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.json
 
-interface DynamoItemGetSyntax : DynamoQuerySyntax,
+interface DynamoItemGetSyntax : DynamoScanSyntax,
     DynamoDatatypeSyntax,
     DynamoItemSyntax,
     DynamoTableNameSyntax {
 
-    suspend fun performGetSingleItemQuery(id: String, tribeId: TribeId? = null) = performQuery(singleQuery(id, tribeId))
-        .itemsNode()
-        .sortByRecordTimestamp()
-        .lastOrNull()
-        ?.let(::excludeDeleted)
+    suspend fun performGetSingleItemQuery(id: String, tribeId: TribeId? = null) =
+        performScan(singleScanParams(id, tribeId))
+            .itemsNode()
+            .sortByRecordTimestamp()
+            .lastOrNull()
+            ?.let(::excludeDeleted)
 
-    private fun singleQuery(id: String, tribeId: TribeId?) = if (tribeId == null) json(
+    private fun singleScanParams(id: String, tribeId: TribeId?) = if (tribeId == null) json(
         "TableName" to tableName,
         "ExpressionAttributeValues" to json(
             ":id" to id
         ),
-        "KeyConditionExpression" to "id = :id"
+        "FilterExpression" to "id = :id"
     )
     else json(
         "TableName" to tableName,
@@ -27,7 +28,7 @@ interface DynamoItemGetSyntax : DynamoQuerySyntax,
             ":id" to id,
             ":tribeId" to tribeId.value
         ),
-        "KeyConditionExpression" to "id = :id AND tribeId = :tribeId"
+        "FilterExpression" to "id = :id AND tribeId = :tribeId"
     )
 
 }
