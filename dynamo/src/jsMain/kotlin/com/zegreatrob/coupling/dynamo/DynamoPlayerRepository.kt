@@ -27,6 +27,64 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         DynamoItemDeleteSyntax {
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"
+
+        override val createTableParams: Json
+            get() = json(
+                "TableName" to tableName,
+                "KeySchema" to arrayOf(
+                    json(
+                        "AttributeName" to "tribeId",
+                        "KeyType" to "HASH"
+                    ),
+                    json(
+                        "AttributeName" to "timestamp",
+                        "KeyType" to "RANGE"
+                    )
+                ),
+                "AttributeDefinitions" to arrayOf(
+                    json(
+                        "AttributeName" to "tribeId",
+                        "AttributeType" to "S"
+                    ),
+                    json(
+                        "AttributeName" to "timestamp",
+                        "AttributeType" to "S"
+                    ),
+                    json(
+                        "AttributeName" to "id",
+                        "AttributeType" to "S"
+                    ),
+                    json(
+                        "AttributeName" to "email",
+                        "AttributeType" to "S"
+                    )
+                ),
+                "BillingMode" to "PAY_PER_REQUEST"
+            ).add(
+                json(
+                    "GlobalSecondaryIndexes" to arrayOf(
+                        json(
+                            "IndexName" to "PlayerEmailIndex",
+                            "KeySchema" to arrayOf(
+                                json(
+                                    "AttributeName" to "email",
+                                    "KeyType" to "HASH"
+                                ),
+                                json(
+                                    "AttributeName" to "id",
+                                    "KeyType" to "range"
+                                )
+                            ),
+                            "Projection" to json(
+                                "NonKeyAttributes" to arrayOf(
+                                    "STRING_VALUE"
+                                ),
+                                "ProjectionType" to "INCLUDE"
+                            )
+                        )
+                    )
+                )
+            )
     }
 
     override suspend fun getPlayers(tribeId: TribeId) = tribeId.scanForItemList().map { it.toPlayerRecord() }
