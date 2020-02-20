@@ -18,8 +18,9 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
     companion object : DynamoTableNameSyntax, CreateTableParamProvider,
         DynamoItemGetSyntax,
         DynamoItemPutSyntax,
-        DynamoItemListGetSyntax,
+        DynamoQueryItemListGetSyntax,
         DynamoItemDeleteSyntax,
+        ListLatestRecordSyntax,
         DynamoRepositoryCreatorSyntax<DynamoTribeRepository>,
         DynamoDBSyntax by DynamoDbProvider {
         override val tableName = "TRIBE"
@@ -28,9 +29,12 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
 
     override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()
 
-    override suspend fun getTribes() = scanForItemList(scanParams()).map { it.toRecord(it.toTribe()) }
+    override suspend fun getTribes() = performScan(queryParams())
+        .fullList()
+        .map { it.toRecord(it.toTribe()) }
+        .filterNot { it.isDeleted }
 
-    private fun scanParams() = json("TableName" to tableName)
+    private fun queryParams() = json("TableName" to tableName)
 
     override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson().add(recordJson()))
 

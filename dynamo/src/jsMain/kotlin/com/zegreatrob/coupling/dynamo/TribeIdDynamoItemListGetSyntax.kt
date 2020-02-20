@@ -3,16 +3,16 @@ package com.zegreatrob.coupling.dynamo
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.json
 
-interface TribeIdDynamoItemListGetSyntax : DynamoItemListGetSyntax {
+interface TribeIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax {
 
-    suspend fun TribeId.scanForItemList() = scanForItemList(scanParams())
+    suspend fun TribeId.scanForItemList() = queryForItemList(queryParams())
 
-    suspend fun TribeId.scanForDeletedItemList() = scanForDeletedItemList(scanParams())
+    suspend fun TribeId.scanForDeletedItemList() = queryForDeletedItemList(queryParams())
 
-    private fun TribeId.scanParams() = json(
+    private fun TribeId.queryParams() = json(
         "TableName" to tableName,
         "ExpressionAttributeValues" to json(":tribeId" to value),
-        "FilterExpression" to "tribeId = :tribeId"
+        "KeyConditionExpression" to "tribeId = :tribeId"
     )
 
 }

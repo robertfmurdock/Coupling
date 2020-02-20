@@ -27,7 +27,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         DynamoItemDeleteSyntax {
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"
-        val playerEmailIndex = "PlayerEmailIndex"
+        const val playerEmailIndex = "PlayerEmailIndex"
 
         override val createTableParams: Json
             get() = json(
@@ -110,7 +110,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> {
         val playerIdsWithEmail = performQuery(emailQueryParams(email))
             .itemsNode()
-            .map { it["id"].unsafeCast<String>() }
+            .mapNotNull { it.getDynamoStringValue("id") }
 
         return performScan(playerIdScanParams(playerIdsWithEmail))
             .itemsNode()
