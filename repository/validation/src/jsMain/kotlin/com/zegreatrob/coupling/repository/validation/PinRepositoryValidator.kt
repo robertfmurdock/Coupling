@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.hours
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -16,7 +17,9 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import stubPin
+import uuidString
 import kotlin.test.Test
 
 interface PinRepositoryValidator {
@@ -47,6 +50,24 @@ interface PinRepositoryValidator {
     }
 
     @Test
+    fun saveWorksWithNullableValues() = testRepository { repository, tribeId, _, _ ->
+        setupAsync(object {
+            val pin = Pin(
+                _id = uuidString(),
+                name = null,
+                icon = null
+            )
+        }) {
+            repository.save(tribeId.with(pin))
+        } exerciseAsync {
+            repository.getPins(tribeId)
+        } verifyAsync { result ->
+            result.map { it.data.pin }
+                .assertIsEqualTo(listOf(pin))
+        }
+    }
+
+    @Test
     fun saveThenDeleteWillNotShowThatPin() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val pins = listOf(
@@ -59,7 +80,9 @@ interface PinRepositoryValidator {
                 tribeId.with(pins).forEach { launch { repository.save(it) } }
             }
         } exerciseAsync {
+            yield()
             repository.deletePin(tribeId, pins[1]._id!!)
+            yield()
             repository.getPins(tribeId)
         } verifyAsync { result ->
             result.map { it.data.pin }

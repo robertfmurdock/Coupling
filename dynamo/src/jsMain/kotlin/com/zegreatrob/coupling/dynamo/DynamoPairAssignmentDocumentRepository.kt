@@ -28,6 +28,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = performPutItem(
         tribeIdPairAssignmentDocument.toDynamoJson()
+            .also { println("DYNAMO SAVE BABY ${JSON.stringify(it)}") }
     )
 
     override suspend fun getPairAssignmentRecords(tribeId: TribeId) = tribeId.scanForItemList()

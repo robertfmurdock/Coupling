@@ -5,13 +5,12 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.player.tribeId
 import kotlin.js.Json
-import kotlin.js.json
 
 interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJsonMapping {
     fun TribeIdPlayer.toDynamoJson() = tribeId.recordJson()
         .add(player.toDynamoJson())
 
-    fun Player.toDynamoJson() = json(
+    fun Player.toDynamoJson() = nullFreeJson(
         "id" to id,
         "name" to name,
         "email" to email,

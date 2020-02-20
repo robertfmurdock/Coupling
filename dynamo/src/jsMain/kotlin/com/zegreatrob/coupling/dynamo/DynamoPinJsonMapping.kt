@@ -5,14 +5,13 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.pin.tribeId
 import kotlin.js.Json
-import kotlin.js.json
 
 interface DynamoPinJsonMapping : TribeIdDynamoRecordJsonMapping {
 
     fun TribeIdPin.toDynamoJson() = tribeId.recordJson()
         .add(pin.toDynamoJson())
 
-    fun Pin.toDynamoJson() = json(
+    fun Pin.toDynamoJson() = nullFreeJson(
         "id" to _id,
         "name" to name,
         "icon" to icon

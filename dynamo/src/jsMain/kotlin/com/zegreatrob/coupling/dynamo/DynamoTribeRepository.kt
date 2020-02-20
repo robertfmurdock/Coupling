@@ -15,7 +15,8 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
     ClockSyntax,
     DynamoTribeJsonMapping {
 
-    companion object : DynamoTableNameSyntax, CreateTableParamProvider,
+    companion object : DynamoTableNameSyntax,
+        CreateTableParamProvider,
         DynamoItemGetSyntax,
         DynamoItemPutSyntax,
         DynamoQueryItemListGetSyntax,

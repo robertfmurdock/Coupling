@@ -26,14 +26,15 @@ export default function (userDataService, couplingDataService, tempDataService) 
                 dataService = couplingDataService;
             }
 
-            request.commandDispatcher = commandDispatcher(
+            commandDispatcher(
                 dataService,
                 userDataService.usersCollection,
                 request.user,
                 `${request.method} ${request.path}`
-            );
-
-            next();
+            ).then(dispatcher => {
+                request.commandDispatcher = dispatcher;
+                next();
+            });
         }
     };
 };

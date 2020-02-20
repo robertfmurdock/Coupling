@@ -27,18 +27,32 @@ fun commandDispatcher(
     path: String
 ): Any {
     val user = userJson.toUser()
-    return CommandDispatcher(user, jsRepository, userCollection, path)
+    val scope = MainScope() + CoroutineName(path)
+    return scope.promise { commandDispatcher(userCollection, jsRepository, user, scope) }
 }
 
-class CommandDispatcher(override val user: User, jsRepository: dynamic, userCollection: dynamic, path: String) :
+private suspend fun commandDispatcher(
+    userCollection: dynamic,
+    jsRepository: dynamic,
+    user: User,
+    scope: CoroutineScope
+): CommandDispatcher {
+    val repositoryCatalog = MongoRepositoryCatalog(userCollection, jsRepository, user)
+    return CommandDispatcher(user, repositoryCatalog, scope)
+}
+
+class CommandDispatcher(
+    override val user: User,
+    private val repositoryCatalog: RepositoryCatalog,
+    override val scope: CoroutineScope
+) :
     TribeDispatcherJs,
     PlayerDispatcherJs,
     PairAssignmentDispatcherJs,
     UserDispatcherJs,
     HandleWebsocketConnectionActionDispatcher,
-    RepositoryCatalog by MongoRepositoryCatalog(userCollection, jsRepository, user),
+    RepositoryCatalog by repositoryCatalog,
     PinDispatcherJs {
-    override val scope = MainScope() + CoroutineName(path)
 
     private var authorizedTribeIdDispatcherJob: Deferred<AuthorizedTribeIdDispatcher>? = null
 

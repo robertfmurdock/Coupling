@@ -5,16 +5,24 @@ import kotlinx.coroutines.yield
 import kotlin.js.Json
 import kotlin.js.json
 
+
+val validatedTableList = mutableListOf<String>()
+
 interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
     val createTableParams: Json
 
     suspend fun ensureTableExists() {
-        if (!checkTableExists()) {
-            createTable()
+        if (validatedTableList.contains(tableName)) {
+            return
+        } else {
+            if (!checkTableExists()) {
+                createTable()
 
-            while (tableStatus() != "ACTIVE") {
-                yield()
+                while (tableStatus() != "ACTIVE") {
+                    yield()
+                }
             }
+            validatedTableList.add(tableName)
         }
     }
 

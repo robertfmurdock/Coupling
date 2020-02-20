@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.validation
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -14,6 +15,7 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import stubPlayer
 import stubPlayers
+import uuidString
 import kotlin.test.Test
 
 interface PlayerRepositoryValidator<T : PlayerRepository> {
@@ -35,6 +37,28 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
         } verifyAsync { result ->
             result.map { it.data.player }
                 .assertIsEqualTo(players)
+        }
+    }
+
+    @Test
+    fun saveWorksWithNullableValues() = testRepository { repository, tribeId, _ ->
+        setupAsync(object {
+            val player = Player(
+                id = uuidString(),
+                callSignAdjective = "1",
+                callSignNoun = "2",
+                imageURL = null,
+                badge = null,
+                name = null,
+                email = null
+            )
+        }) {
+            repository.save(tribeId.with(player))
+        } exerciseAsync {
+            repository.getPlayers(tribeId)
+        } verifyAsync { result ->
+            result.map { it.data.player }
+                .assertIsEqualTo(listOf(player))
         }
     }
 

@@ -45,13 +45,14 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
+                api(project(":logging"))
+                implementation(npm("aws-sdk", "2.615.0"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
             }
         }
         val jsTest by getting {
             dependencies {
-                api(project(":logging"))
-                implementation(npm("aws-sdk", "2.615.0"))
+
             }
         }
     }

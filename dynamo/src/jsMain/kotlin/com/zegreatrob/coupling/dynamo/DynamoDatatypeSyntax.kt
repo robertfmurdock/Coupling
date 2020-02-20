@@ -4,6 +4,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.PatternDateFormat
 import com.soywiz.klock.parse
 import kotlin.js.Json
+import kotlin.js.json
 
 
 private val dateFormat = PatternDateFormat("YYYYMMddHHmmss.SSS")
@@ -24,5 +25,12 @@ interface DynamoDatatypeSyntax {
     fun Json.getDynamoBoolValue(property: String) = this[property].unsafeCast<Boolean?>()
 
     fun Json.getDynamoListValue(property: String) = this[property].unsafeCast<Array<Json>?>()
+
+    fun nullFreeJson(vararg pairs: Pair<String, Any?>) = json(
+        *pairs.toMap()
+            .filterValues { it != null && it != "" }
+            .toList()
+            .toTypedArray()
+    )
 
 }

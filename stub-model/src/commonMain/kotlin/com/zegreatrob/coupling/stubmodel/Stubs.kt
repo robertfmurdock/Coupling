@@ -82,7 +82,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
 
 fun stubPairAssignmentDocList(number: Int) = generateSequence { stubPairAssignmentDoc() }.take(number).toList()
 
-private fun uuidString() = uuid4().toString()
+fun uuidString() = uuid4().toString()
 
 var userCounter = 1
 fun stubUser() = User(
