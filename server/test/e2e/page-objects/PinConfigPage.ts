@@ -1,6 +1,6 @@
 import setLocation from "../setLocation";
 import {browser, By, element} from "protractor";
-import {PinConfigEditorStyles, PinConfigStyles} from "../page-objects/Styles";
+import {PinConfigEditorStyles, PinConfigStyles} from "./Styles";
 
 const pinConfigPage = element(By.className(PinConfigStyles.className));
 const saveButton = element(By.className(PinConfigEditorStyles.saveButton));

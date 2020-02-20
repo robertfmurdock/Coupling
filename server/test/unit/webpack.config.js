@@ -15,13 +15,14 @@ config.output = {
 config.mode = "development";
 config.devtool = "inline-source-map";
 config.target = 'node';
-config.externals = [nodeExternals(), nodeExternals({modulesDir: path.resolve(__dirname, '../build/js/node_modules')}),];
+config.externals = [
+  nodeExternals({modulesDir: path.resolve(__dirname, '../build/js/node_modules')}),
+  nodeExternals()
+];
 
 function testResolve() {
   let resolve = clone(config.resolve);
   resolve.modules = [
-    path.resolve(__dirname, '../../build/classes/kotlin/main'),
-    path.resolve(__dirname, '../../build/classes/kotlin/test'),
     path.resolve(__dirname, '../../../build/js/node_modules')
   ];
 

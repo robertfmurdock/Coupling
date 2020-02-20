@@ -25,7 +25,6 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(kotlin("stdlib-js", BuildConstants.kotlinVersion))
-
             }
         }
     }

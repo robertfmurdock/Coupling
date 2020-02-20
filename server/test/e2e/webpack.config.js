@@ -33,7 +33,7 @@ config.output = {
 };
 
 config.target = 'node';
-config.externals = [nodeExternals(), nodeExternals({modulesDir: path.resolve(__dirname, '../../build/js/node_modules')})];
+config.externals = [nodeExternals({modulesDir: path.resolve(__dirname, '../../build/js/node_modules')}), nodeExternals()];
 config.mode = "development";
 
 

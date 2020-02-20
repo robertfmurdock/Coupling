@@ -39,14 +39,14 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(project(":json"))
                 api(project(":repository:validation"))
+                implementation(project(":json"))
+                implementation(project(":test-logging"))
+                implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation(project(":test-logging"))
-                implementation(project(":stub-model"))
                 implementation("com.benasher44:uuid:0.0.7")
             }
         }

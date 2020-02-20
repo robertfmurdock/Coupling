@@ -29,10 +29,21 @@ kotlin {
     }
 
     sourceSets {
-        val test by getting {}
+        val test by getting {
+            dependencies {
+                implementation(npm("uuid", "^3.3.2"))
+            }
+        }
 
         val endToEndTest by getting {
             dependsOn(test)
+
+            dependencies {
+                implementation(project(":sdk"))
+                implementation(npm("axios-cookiejar-support", "^0.5.0"))
+                implementation(npm("tough-cookie", "^3.0.1"))
+                implementation(npm("uuid", "^3.3.2"))
+            }
         }
     }
 }
@@ -81,7 +92,7 @@ tasks {
     }
 
     val compileEndToEndTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
@@ -160,6 +171,7 @@ tasks {
         inputs.files(findByPath(":client:compile")?.outputs?.files)
         inputs.files(serverTest.inputs.files)
         inputs.files(serverCompile.outputs.files)
+        inputs.files(compileEndToEndTestKotlinJs.outputs.files)
         inputs.file(file("package.json"))
         inputs.dir("test/e2e")
         outputs.dir("../test-output/e2e")
