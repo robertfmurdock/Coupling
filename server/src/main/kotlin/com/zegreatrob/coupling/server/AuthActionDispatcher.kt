@@ -1,24 +1,25 @@
 package com.zegreatrob.coupling.server
 
-import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.mongo.user.MongoUserRepository
+import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.server.entity.user.AuthUserDispatcherJs
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.promise
 
 @Suppress("unused")
 @JsName("authActionDispatcher")
-fun authActionDispatcher(userCollection: dynamic, userEmail: String) = AuthActionDispatcher(
-    userEmail,
-    userCollection
-)
+fun authActionDispatcher(userCollection: dynamic, userEmail: String) = GlobalScope.promise {
+    AuthActionDispatcher(
+        userEmail,
+        userRepository(userCollection, userEmail)
+    )
+}
 
 @Suppress("unused")
 class AuthActionDispatcher(
     override val userEmail: String,
-    override val userCollection: dynamic
-) : AuthUserDispatcherJs, MongoUserRepository {
-    override val userRepository = this
+    override val userRepository: UserRepository
+) : AuthUserDispatcherJs, UserRepository by userRepository {
     override val scope: CoroutineScope = MainScope()
-    override val clock = TimeProvider
 }

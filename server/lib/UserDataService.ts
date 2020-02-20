@@ -14,7 +14,7 @@ export default class UserDataService {
 
     public findOrCreate = (email, callback) => {
         authActionDispatcher(this.usersCollection, email)
-            .performFindOrCreateUserAction()
+            .then(it => it.performFindOrCreateUserAction())
             .then(function (user) {
                 callback(null, user)
             }, function (error) {
@@ -32,7 +32,7 @@ export default class UserDataService {
 
     public deserializeUser = (id, done) => {
         authActionDispatcher(this.usersCollection, id)
-            .performFindUserAction()
+            .then(it => it.performFindOrCreateUserAction())
             .then(function (user) {
                 if (user) {
                     done(null, user);

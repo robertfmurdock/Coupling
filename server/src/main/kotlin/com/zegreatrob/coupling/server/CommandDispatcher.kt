@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.server
 
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcherJs
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
@@ -29,16 +31,6 @@ fun commandDispatcher(
     val user = userJson.toUser()
     val scope = MainScope() + CoroutineName(path)
     return scope.promise { commandDispatcher(userCollection, jsRepository, user, scope) }
-}
-
-private suspend fun commandDispatcher(
-    userCollection: dynamic,
-    jsRepository: dynamic,
-    user: User,
-    scope: CoroutineScope
-): CommandDispatcher {
-    val repositoryCatalog = MongoRepositoryCatalog(userCollection, jsRepository, user)
-    return CommandDispatcher(user, repositoryCatalog, scope)
 }
 
 class CommandDispatcher(
