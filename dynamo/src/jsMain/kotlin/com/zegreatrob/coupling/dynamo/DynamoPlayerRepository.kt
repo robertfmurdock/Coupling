@@ -4,7 +4,6 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -24,9 +23,11 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
+        DynamoQuerySyntax,
         DynamoItemDeleteSyntax {
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"
+        val playerEmailIndex = "PlayerEmailIndex"
 
         override val createTableParams: Json
             get() = json(
@@ -64,7 +65,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
                 json(
                     "GlobalSecondaryIndexes" to arrayOf(
                         json(
-                            "IndexName" to "PlayerEmailIndex",
+                            "IndexName" to playerEmailIndex,
                             "KeySchema" to arrayOf(
                                 json(
                                     "AttributeName" to "email",
@@ -77,7 +78,8 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
                             ),
                             "Projection" to json(
                                 "NonKeyAttributes" to arrayOf(
-                                    "STRING_VALUE"
+                                    "tribeId",
+                                    "timestamp"
                                 ),
                                 "ProjectionType" to "INCLUDE"
                             )
@@ -106,31 +108,36 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         .map { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> {
-        val recordsWithEmail = scanForItemList(emailScanParams(email))
-            .map { it.toPlayerRecord() }
-            .map { it.data }
+        val playerIdsWithEmail = performQuery(emailQueryParams(email))
+            .itemsNode()
+            .map { it["id"].unsafeCast<String>() }
 
-        val recordTribePlayerIds = recordsWithEmail.map { it.player.id!! }
-
-        return scanForItemList(playerIdScanParams(recordTribePlayerIds))
-            .map { it.toPlayerRecord() }
-            .map { it.data }
-            .filter { it.element.email == email }
-            .map { it.id.with(it.element.id!!) }
+        return performScan(playerIdScanParams(playerIdsWithEmail))
+            .itemsNode()
+            .sortByRecordTimestamp()
+            .groupBy { it.getDynamoStringValue("id") }
+            .map { it.value.last() }
+            .filter { it["email"] == email }
+            .map {
+                TribeId(it.getDynamoStringValue("tribeId")!!)
+                    .with(it.getDynamoStringValue("id")!!)
+            }
     }
 
     private fun playerIdScanParams(recordTribePlayerIds: List<String>) = json(
         "TableName" to tableName,
+        "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(
             ":playerIdList" to recordTribePlayerIds.toTypedArray()
         ),
         "FilterExpression" to "contains(:playerIdList, id)"
     )
 
-    private fun emailScanParams(email: String) = json(
+    private fun emailQueryParams(email: String) = json(
         "TableName" to tableName,
+        "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(":email" to email),
-        "FilterExpression" to "email = :email"
+        "KeyConditionExpression" to "email = :email"
     )
 
 }

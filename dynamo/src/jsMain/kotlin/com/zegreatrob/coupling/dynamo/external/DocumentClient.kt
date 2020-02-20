@@ -10,4 +10,5 @@ external class DocumentClient {
     fun put(params: Json): AwsPromisable<Unit>
     fun scan(params: Json): AwsPromisable<Json>
     fun query(params: Json): AwsPromisable<Json>
+    fun batchGet(params: Json): AwsPromisable<Json>
 }
