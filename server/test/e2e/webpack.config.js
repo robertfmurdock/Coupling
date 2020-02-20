@@ -1,7 +1,9 @@
 const config = require('../../webpack.config');
+const clone = require('ramda/src/clone');
 const path = require('path');
-const jsPath = path.resolve(__dirname, './');
 const nodeExternals = require('webpack-node-externals');
+
+const jsPath = path.resolve(__dirname, './');
 
 config.entry = {
   config: path.resolve(jsPath, './protractor-conf.ts'),
@@ -31,6 +33,20 @@ config.output = {
 };
 
 config.target = 'node';
-config.externals = [nodeExternals()];
+config.externals = [nodeExternals(), nodeExternals({modulesDir: path.resolve(__dirname, '../../build/js/node_modules')})];
 config.mode = "development";
+
+
+function testResolve() {
+  let resolve = clone(config.resolve);
+  resolve.modules = [
+    path.resolve(__dirname, '../../../build/js/node_modules')
+  ];
+
+  return resolve;
+}
+
+config.resolve = testResolve();
+
+
 module.exports = config;

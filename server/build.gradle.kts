@@ -27,6 +27,14 @@ kotlin {
             val endToEndTest by compilations.creating
         }
     }
+
+    sourceSets {
+        val test by getting {}
+
+        val endToEndTest by getting {
+            dependsOn(test)
+        }
+    }
 }
 
 dependencies {
@@ -67,6 +75,12 @@ tasks {
     }
 
     val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
+
+    val compileEndToEndTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "umd"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
@@ -140,7 +154,7 @@ tasks {
     }
 
     val endToEndTest by creating(YarnTask::class) {
-        dependsOn(assemble, updateWebdriver)
+        dependsOn(assemble, updateWebdriver, compileEndToEndTestKotlinJs)
         mustRunAfter(serverTest, ":client:test", ":sdk:endpointTest")
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:compile")?.outputs?.files)
