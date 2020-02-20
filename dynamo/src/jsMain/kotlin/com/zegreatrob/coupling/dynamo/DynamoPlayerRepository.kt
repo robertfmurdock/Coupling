@@ -8,14 +8,12 @@ import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
-import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
-import com.zegreatrob.coupling.repository.player.PlayerRepository
+import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlin.js.Json
 import kotlin.js.json
 
 class DynamoPlayerRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
-    PlayerRepository,
-    PlayerListGetByEmail,
+    PlayerEmailRepository,
     UserEmailSyntax,
     DynamoPlayerJsonMapping {
 
