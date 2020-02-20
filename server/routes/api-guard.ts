@@ -6,8 +6,7 @@ const commandDispatcher = server.com.zegreatrob.coupling.server.commandDispatche
 
 const config = require('../config/config');
 
-export default function (userDataService, couplingDataService) {
-    const tempDataService = new CouplingDataService(config.tempMongoUrl);
+export default function (userDataService, couplingDataService, tempDataService) {
     return function (request, response, next) {
 
         request.statsdKey = ['http', request.method.toLowerCase(), request.path].join('.');

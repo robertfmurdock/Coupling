@@ -1,21 +1,12 @@
 import CouplingDataService from "./lib/CouplingDataService";
 import UserDataService from "./lib/UserDataService";
-import * as Promise from "bluebird";
 import * as express from "express";
 import * as expressWs from "express-ws";
 
 const config = require('./config/config');
 const serverKt = require("Coupling-server");
 
-export function start() {
-    const wsInstance = expressWs(express());
-    const app = wsInstance.app;
-    const couplingDataService = new CouplingDataService(config.mongoUrl);
-    const userDataService = new UserDataService(couplingDataService.database);
-
-    require('./config/express')(app, userDataService);
-    require('./routes/routes')(wsInstance, userDataService, couplingDataService);
-
+function listen(app) {
     return new Promise(function (resolve) {
         const server = app.listen(app.get('port'), function () {
             // noinspection JSUnresolvedVariable, JSUnresolvedFunction
@@ -29,4 +20,17 @@ export function start() {
             resolve(server);
         });
     });
+}
+
+export async function start() {
+    const wsInstance = expressWs(express());
+    const app = wsInstance.app;
+    const couplingDataService = new CouplingDataService(config.mongoUrl);
+    const tempDataService = new CouplingDataService(config.tempMongoUrl);
+    const userDataService = new UserDataService(couplingDataService.database);
+
+    require('./config/express')(app, userDataService);
+    require('./routes/routes')(wsInstance, userDataService, couplingDataService, tempDataService);
+
+    return await listen(app);
 }

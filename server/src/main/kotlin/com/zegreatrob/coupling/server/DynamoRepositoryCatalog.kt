@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.compound.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -43,6 +44,21 @@ class DynamoRepositoryCatalog private constructor(
         }
     }
 
+}
+
+
+
+suspend fun compoundRepositoryCatalog(
+    userCollection: dynamic,
+    jsRepository: dynamic,
+    user: User
+): CompoundRepositoryCatalog {
+    val mongoRepositoryCatalog = MongoRepositoryCatalog(userCollection, jsRepository, user)
+    val dynamoRepositoryCatalog = DynamoRepositoryCatalog(user.email, TimeProvider)
+    return CompoundRepositoryCatalog(
+        catalog1 = mongoRepositoryCatalog,
+        catalog2 = dynamoRepositoryCatalog
+    )
 }
 
 class CompoundRepositoryCatalog private constructor(
