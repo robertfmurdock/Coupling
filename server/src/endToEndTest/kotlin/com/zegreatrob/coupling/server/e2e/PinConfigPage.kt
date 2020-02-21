@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.By
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
-import com.zegreatrob.coupling.server.e2e.external.protractor.browser
-import com.zegreatrob.coupling.server.e2e.external.protractor.element
+import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import kotlinx.coroutines.await
 
 object PinConfigPage : ProtractorSyntax {
@@ -12,26 +9,32 @@ object PinConfigPage : ProtractorSyntax {
     val pinConfigStyles = loadStyles("pin/PinConfig")
     val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
 
-    val pinConfigPage = element(
-        By.className(pinConfigStyles.className)
-    )
-    val nameTextField = element(
-        By.id("pin-name")
-    )
+    val pinConfigPage = elementFor(pinConfigStyles)
 
-    val saveButton = element(
-        By.className(pinConfigEditorStyles["saveButton"])
-    )
+    val nameTextField = element(By.id("pin-name"))
+    val iconTextField = element(By.id("pin-icon"))
+
+    val saveButton = element(By.className(pinConfigEditorStyles["saveButton"]))
+    val deleteButton = element(By.className(pinConfigEditorStyles["deleteButton"]))
+
     val pinBag = element(
         By.className(pinConfigStyles["pinBag"])
     )
 
-    suspend fun TribeId.goToNewPinConfig() {
+    suspend fun pinBagPinNames(): List<String> {
+        pinBag.waitToBePresent()
+        return pinBag.all(By.className("pin-name"))
+            .map { it.getText() }
+            .await()
+            .toList()
+    }
+
+    suspend fun TribeId.goToNew() {
         setLocation("/$value/pin/new")
         waitForLoad()
     }
 
-    suspend fun goToPinConfig(tribeId: TribeId, pinId: String?) {
+    suspend fun goTo(tribeId: TribeId, pinId: String?) {
         setLocation("/${tribeId.value}/pin/$pinId")
         waitForLoad()
     }
@@ -39,4 +42,16 @@ object PinConfigPage : ProtractorSyntax {
     suspend fun waitForLoad() {
         browser.wait({ pinConfigPage.isPresent() }, 2000).await()
     }
+}
+
+object PinListPage : ProtractorSyntax {
+
+    val pinListStyles = loadStyles("pin/PinList")
+
+    val page = elementFor(pinListStyles)
+
+    suspend fun waitForLoad() {
+        browser.wait({ page.isPresent() }, 2000).await()
+    }
+
 }

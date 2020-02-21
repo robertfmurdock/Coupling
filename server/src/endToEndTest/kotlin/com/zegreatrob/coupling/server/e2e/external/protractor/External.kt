@@ -12,7 +12,16 @@ external interface Browser {
 
     fun get(url: String): Promise<Unit>
     fun wait(condition: () -> Promise<Boolean>, timeout: Int): Promise<Unit>
+    fun switchTo(): SwitchTo
 
+}
+
+external interface SwitchTo {
+    fun alert(): Promise<ProtractorAlert>
+}
+
+external interface ProtractorAlert {
+    fun accept(): Promise<Unit>
 }
 
 external fun element(by: ProtractorBy): ElementSelector
@@ -26,6 +35,7 @@ external interface ElementSelector {
 
     fun <T> map(transform: (ElementSelector) -> Promise<T>): Promise<Array<T>>
     fun getText(): Promise<String>
+    fun getAttribute(name: String): Promise<String>
 }
 
 external object By {
