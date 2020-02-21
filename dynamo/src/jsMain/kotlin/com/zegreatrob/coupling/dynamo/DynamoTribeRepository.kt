@@ -37,8 +37,8 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
 
     private fun queryParams() = json("TableName" to tableName)
 
-    override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson().add(recordJson()))
+    override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson().add(recordJson(now())))
 
-    override suspend fun delete(tribeId: TribeId) = performDelete(tribeId.value, recordJson())
+    override suspend fun delete(tribeId: TribeId) = performDelete(tribeId.value, recordJson(now()))
 
 }

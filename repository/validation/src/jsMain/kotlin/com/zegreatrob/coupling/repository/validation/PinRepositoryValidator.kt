@@ -17,7 +17,6 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
 import stubPin
 import uuidString
 import kotlin.test.Test
@@ -77,12 +76,12 @@ interface PinRepositoryValidator {
             )
         }) {
             coroutineScope {
-                tribeId.with(pins).forEach { launch { repository.save(it) } }
+                tribeId.with(pins).forEach {
+                    launch { repository.save(it) }
+                }
             }
         } exerciseAsync {
-            yield()
             repository.deletePin(tribeId, pins[1]._id!!)
-            yield()
             repository.getPins(tribeId)
         } verifyAsync { result ->
             result.map { it.data.pin }

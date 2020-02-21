@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.player.tribeId
 import kotlin.js.Json
 
 interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJsonMapping {
-    fun TribeIdPlayer.toDynamoJson() = tribeId.recordJson()
+    fun TribeIdPlayer.toDynamoJson() = tribeId.recordJson(player.id)
         .add(player.toDynamoJson())
 
     fun Player.toDynamoJson() = nullFreeJson(
@@ -21,7 +21,7 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
     )
 
     fun Json.toPlayer() = Player(
-        id = getDynamoStringValue("id")!!,
+        id = getDynamoStringValue("id"),
         name = getDynamoStringValue("name"),
         email = getDynamoStringValue("email"),
         badge = getDynamoNumberValue("badge")?.toInt(),

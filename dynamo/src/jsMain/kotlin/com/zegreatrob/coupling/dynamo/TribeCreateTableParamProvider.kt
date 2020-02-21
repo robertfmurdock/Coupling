@@ -12,7 +12,7 @@ interface TribeCreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNa
                     "KeyType" to "HASH"
                 ),
                 json(
-                    "AttributeName" to "timestamp",
+                    "AttributeName" to "timestamp+id",
                     "KeyType" to "RANGE"
                 )
             ),
@@ -22,7 +22,7 @@ interface TribeCreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNa
                     "AttributeType" to "S"
                 ),
                 json(
-                    "AttributeName" to "timestamp",
+                    "AttributeName" to "timestamp+id",
                     "AttributeType" to "S"
                 )
             ),

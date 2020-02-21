@@ -8,7 +8,7 @@ import kotlin.js.Json
 
 interface DynamoPinJsonMapping : TribeIdDynamoRecordJsonMapping {
 
-    fun TribeIdPin.toDynamoJson() = tribeId.recordJson()
+    fun TribeIdPin.toDynamoJson() = tribeId.recordJson(pin._id)
         .add(pin.toDynamoJson())
 
     fun Pin.toDynamoJson() = nullFreeJson(

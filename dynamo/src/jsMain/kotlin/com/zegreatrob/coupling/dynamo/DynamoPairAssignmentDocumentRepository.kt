@@ -28,7 +28,6 @@ class DynamoPairAssignmentDocumentRepository private constructor(
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = performPutItem(
         tribeIdPairAssignmentDocument.toDynamoJson()
-            .also { println("DYNAMO SAVE BABY ${JSON.stringify(it)}") }
     )
 
     override suspend fun getPairAssignmentRecords(tribeId: TribeId) = tribeId.scanForItemList()
@@ -36,6 +35,6 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         .sortedByDescending { it.data.document.date }
 
     override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
-        performDelete(pairAssignmentDocumentId.value, recordJson(), tribeId)
+        performDelete(pairAssignmentDocumentId.value, recordJson(now()), tribeId)
 
 }

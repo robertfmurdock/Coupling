@@ -49,7 +49,8 @@ fun stubPlayer() = Player(
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()
 
 var pinCounter = 1
-fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget()).also { pinCounter++ }
+fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget())
+    .also { pinCounter++ }
 
 var pinTargetCounter = 1
 fun stubPinTarget(): PinTarget {

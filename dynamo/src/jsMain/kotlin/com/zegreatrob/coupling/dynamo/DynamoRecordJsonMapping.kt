@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
@@ -9,8 +10,8 @@ import kotlin.js.json
 interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax,
     ClockSyntax {
 
-    fun recordJson() = json(
-        "timestamp" to now().isoWithMillis(),
+    fun recordJson(timestamp: DateTime) = json(
+        "timestamp" to timestamp.isoWithMillis(),
         "modifyingUserEmail" to userEmail
     )
 

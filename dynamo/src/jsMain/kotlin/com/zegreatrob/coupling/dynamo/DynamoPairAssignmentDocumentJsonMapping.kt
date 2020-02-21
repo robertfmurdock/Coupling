@@ -9,12 +9,15 @@ import kotlin.js.json
 interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMapping, DynamoPlayerJsonMapping,
     DynamoPinJsonMapping {
 
-    fun TribeIdPairAssignmentDocument.toDynamoJson() = tribeId.recordJson().add(json(
-        "id" to (document.id?.value ?: "${uuid4()}"),
-        "date" to "${document.date.unixMillisLong}",
-        "pairs" to document.pairs.map { it.toDynamoJson() }
-            .toTypedArray()
-    ))
+    fun TribeIdPairAssignmentDocument.toDynamoJson(): Json {
+        val docId: String? = document.id?.value ?: "${uuid4()}"
+        return tribeId.recordJson(docId).add(json(
+            "id" to docId,
+            "date" to "${document.date.unixMillisLong}",
+            "pairs" to document.pairs.map { it.toDynamoJson() }
+                .toTypedArray()
+        ))
+    }
 
     private fun PinnedCouplingPair.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),

@@ -7,7 +7,7 @@ import kotlin.js.json
 
 interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
 
-    fun User.asDynamoJson() = recordJson().add(
+    fun User.asDynamoJson() = recordJson(now()).add(
         json(
             "id" to id,
             "email" to email,
