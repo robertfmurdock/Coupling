@@ -2,38 +2,40 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.By
-import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
+import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlin.random.Random
 import kotlin.test.Test
 
 class PinConfigE2ETest {
 
+    private fun testWithTribe(handler: suspend (tribe: Tribe) -> Unit) = testAsync {
+        val tribe = tribeProvider.await()
+        login.await()
+
+        handler(tribe)
+    }
+
     @Test
-    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = testAsync {
-        val sdk = authorizedSdk()
+    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = testWithTribe { tribe ->
         setupAsync(object {
-            val tribe = Tribe(TribeId("${randomInt()}-test"))
             val newPinName = "Excellent pin name${randomInt()}"
         }) {
-            sdk.save(tribe)
-
-            TestLogin.login(sdk.userEmail)
             with(PinConfigPage) {
-                goToNewPinConfig(tribe.id)
-                nameTextField.clear().await()
-                nameTextField.sendKeys(newPinName).await()
+                tribe.id.goToNewPinConfig()
+                nameTextField.performClear()
+                nameTextField.performSendKeys(newPinName)
             }
-
         } exerciseAsync {
             with(PinConfigPage) {
-                saveButton.click();
-                wait()
-            };
+                saveButton.performClick()
+                waitForLoad()
+            }
         } verifyAsync {
             with(PinConfigPage) {
                 pinBag.waitToBePresent()
@@ -46,5 +48,27 @@ class PinConfigE2ETest {
         }
     }
 
-    private fun randomInt() = Random.nextInt()
+    companion object {
+        private val sdkProvider by lazy {
+            GlobalScope.async { authorizedSdk() }
+        }
+
+        private val tribeProvider by lazy {
+            GlobalScope.async {
+                val sdk = sdkProvider.await()
+                Tribe(TribeId("${randomInt()}-test"))
+                    .also { sdk.save(it) }
+            }
+        }
+
+        private val login by lazy {
+            GlobalScope.async {
+                val sdk = sdkProvider.await()
+                TestLogin.login(sdk.userEmail)
+            }
+        }
+
+        private fun randomInt() = Random.nextInt()
+
+    }
 }

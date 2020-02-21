@@ -26,17 +26,17 @@ object PinConfigPage : ProtractorSyntax {
         By.className(pinConfigStyles["pinBag"])
     )
 
-    suspend fun goToNewPinConfig(tribeId: TribeId) {
-        setLocation("/${tribeId.value}/pin/new")
-        wait()
+    suspend fun TribeId.goToNewPinConfig() {
+        setLocation("/$value/pin/new")
+        waitForLoad()
     }
 
     suspend fun goToPinConfig(tribeId: TribeId, pinId: String?) {
         setLocation("/${tribeId.value}/pin/$pinId")
-        wait()
+        waitForLoad()
     }
 
-    suspend fun wait() {
+    suspend fun waitForLoad() {
         browser.wait({ pinConfigPage.isPresent() }, 2000).await()
     }
 }
