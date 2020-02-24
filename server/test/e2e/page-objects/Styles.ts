@@ -3,7 +3,6 @@ export const TribeListStyles = require(`${"../../../../client/build/processedRes
 export const TribeConfigStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/tribe/TribeConfig.css`);
 export const PlayerCardStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerCard.css`);
 export const PlayerConfigStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerConfig.css`);
-export const PlayerConfigEditorStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerConfigEditor.css`);
 export const PlayerRosterStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerRoster.css`);
 export const PinButtonStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pin/PinButton.css`);
 export const RetiredPlayersStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/RetiredPlayers.css`);

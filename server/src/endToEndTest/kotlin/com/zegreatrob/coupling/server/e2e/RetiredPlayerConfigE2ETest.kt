@@ -11,30 +11,25 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
-class StatisticsE2ETest {
+class RetiredPlayerConfigE2ETest {
 
     @Test
-    fun pageShowsImportantElements() = testAsync {
+    fun willShowThePlayerData() = testAsync {
         val sdk = sdkProvider.await()
         setupAsync(object {
-            val tribe = Tribe(TribeId("${randomInt()}-statsE2E"), name = "Funkytown")
-            val players = generateSequence { Player(id = "${randomInt()}-statsE2E") }
-                .take(6).toList()
+            val tribe = Tribe(TribeId("${randomInt()}-RetiredPlayerConfigE2E"))
+            val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
         }) {
             sdk.save(tribe)
-            players.forEach { player -> sdk.save(tribe.id.with(player)) }
+            sdk.save(tribe.id.with(player))
+            sdk.deletePlayer(tribe.id, player.id!!)
             CouplingLogin.login
         } exerciseAsync {
-            StatisticsPage.goTo(tribe.id)
+            RetiredPlayerConfig.goTo(tribe.id, player.id)
         } verifyAsync {
-            with(StatisticsPage) {
-                TribeCard.element.getText().await()
-                    .assertIsEqualTo(tribe.name)
-                fullRotationNumber.getText().await()
-                    .assertIsEqualTo("5")
-                pairReports.count().await()
-                    .assertIsEqualTo(15)
-            }
+            RetiredPlayerConfig.playerNameTextField.getAttribute("value").await()
+                .assertIsEqualTo(player.name)
         }
     }
+
 }
