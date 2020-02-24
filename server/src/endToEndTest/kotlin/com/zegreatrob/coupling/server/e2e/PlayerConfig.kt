@@ -45,7 +45,7 @@ object PlayerConfig : ProtractorSyntax {
                 .then { it == name }
         }, 100).await()
     }
-    
+
 }
 
 object PlayerCard {
