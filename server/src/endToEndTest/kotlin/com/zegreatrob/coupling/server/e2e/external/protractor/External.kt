@@ -37,6 +37,7 @@ external interface ElementSelector {
     fun <T> map(transform: (ElementSelector) -> Promise<T>): Promise<Array<T>>
     fun getText(): Promise<String>
     fun getAttribute(name: String): Promise<String>
+    fun count(): Promise<Int>
 }
 
 external object By {

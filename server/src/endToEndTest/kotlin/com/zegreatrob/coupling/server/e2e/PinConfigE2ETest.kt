@@ -113,10 +113,7 @@ class PinConfigE2ETest {
                     .also { sdk.save(it) }
             }
         }
-
-
-        private fun randomInt() = Random.nextInt()
-
     }
 }
 
+fun randomInt() = Random.nextInt()
