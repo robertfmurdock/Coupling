@@ -6,10 +6,10 @@ import kotlinx.coroutines.await
 
 object PinConfigPage : ProtractorSyntax {
 
-    val pinConfigStyles = loadStyles("pin/PinConfig")
-    val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
+    private val pinConfigStyles = loadStyles("pin/PinConfig")
+    private val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
 
-    val pinConfigPage = elementFor(pinConfigStyles)
+    private val pinConfigPage = elementFor(pinConfigStyles)
 
     val nameTextField = element(By.id("pin-name"))
     val iconTextField = element(By.id("pin-icon"))
