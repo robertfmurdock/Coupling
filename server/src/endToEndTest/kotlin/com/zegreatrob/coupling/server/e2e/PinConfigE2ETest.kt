@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.server.e2e.CouplingLogin.login
+import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -103,9 +105,6 @@ class PinConfigE2ETest {
             handler(tribe)
         }
 
-        private val sdkProvider by lazy {
-            GlobalScope.async { authorizedSdk() }
-        }
 
         private val tribeProvider by lazy {
             GlobalScope.async {
@@ -115,14 +114,9 @@ class PinConfigE2ETest {
             }
         }
 
-        private val login by lazy {
-            GlobalScope.async {
-                val sdk = sdkProvider.await()
-                TestLogin.login(sdk.userEmail)
-            }
-        }
 
         private fun randomInt() = Random.nextInt()
 
     }
 }
+
