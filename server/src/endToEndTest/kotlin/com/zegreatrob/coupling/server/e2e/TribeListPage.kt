@@ -1,18 +1,21 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.zegreatrob.coupling.server.e2e.external.protractor.By
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
-import com.zegreatrob.coupling.server.e2e.external.protractor.browser
-import com.zegreatrob.coupling.server.e2e.external.protractor.element
+import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import kotlinx.coroutines.await
 
 object TribeListPage : ProtractorSyntax {
     val tribeListStyles = loadStyles("tribe/TribeList")
-    val newTribeButton = element(
-        By.className(tribeListStyles["newTribeButton"])
-    )
+    val tribeCardStyles = loadStyles("tribe/TribeCard")
 
-    suspend fun wait() {
+    val newTribeButton = element(By.className(tribeListStyles["newTribeButton"]))
+    val tribeCardElements = all(By.className(tribeCardStyles.className))
+
+    suspend fun goTo() {
+        setLocation("/tribes/")
+        waitForPage()
+    }
+
+    suspend fun waitForPage() {
         browser.wait({ newTribeButton.isPresent() }, 2000).await()
     }
 }

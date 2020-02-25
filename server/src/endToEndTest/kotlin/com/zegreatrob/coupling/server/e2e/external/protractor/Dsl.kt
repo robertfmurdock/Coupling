@@ -9,3 +9,8 @@ suspend fun ElementSelector.performClick() = click().await()
 suspend fun ElementSelector.performClear() = clear().await()
 
 suspend fun ElementSelector.performSendKeys(value: String) = sendKeys(value).await()
+
+suspend fun ElementSelector.performClearSendKeys(value: String) {
+    performClear()
+    performSendKeys(value)
+}
