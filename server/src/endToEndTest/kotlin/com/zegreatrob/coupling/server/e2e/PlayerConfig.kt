@@ -51,4 +51,5 @@ object PlayerConfig : ProtractorSyntax {
 object PlayerCard {
     val playerCardStyles = loadStyles("player/PlayerCard")
     val header = element(By.className(playerCardStyles["header"]))
+    val playerElements = all(By.className(playerCardStyles["player"]))
 }

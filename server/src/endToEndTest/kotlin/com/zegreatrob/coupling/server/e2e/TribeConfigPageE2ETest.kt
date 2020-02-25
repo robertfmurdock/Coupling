@@ -121,4 +121,3 @@ class TribeConfigPageE2ETest {
     }
 
 }
-
