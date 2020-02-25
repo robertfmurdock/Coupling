@@ -43,6 +43,7 @@ external interface ElementSelector {
     fun count(): Promise<Int>
     fun isEnabled(): Promise<Boolean>
     fun first(): ElementSelector
+    fun get(index: Int): ElementSelector
 }
 
 external object By {
