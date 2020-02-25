@@ -44,6 +44,7 @@ external interface ElementSelector {
     fun isEnabled(): Promise<Boolean>
     fun first(): ElementSelector
     fun get(index: Int): ElementSelector
+    fun element(by: ProtractorBy): ElementSelector
 }
 
 external object By {

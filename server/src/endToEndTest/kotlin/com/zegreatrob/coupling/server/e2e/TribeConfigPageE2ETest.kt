@@ -61,6 +61,20 @@ class TribeConfigPageE2ETest {
         }
 
         @Test
+        fun showsBasicInformation() = testWithSdk { sdk ->
+            val tribe = buildTribe().copy(email = "${randomInt()}-email")
+            sdk.save(tribe)
+            setupAsync(TribeConfigPage) exerciseAsync {
+                goTo(tribe.id)
+            } verifyAsync {
+                tribeNameInput.getAttribute("value").await()
+                    .assertIsEqualTo(tribe.name)
+                tribeEmailInput.getAttribute("value").await()
+                    .assertIsEqualTo(tribe.email)
+            }
+        }
+
+        @Test
         fun canDeleteTribe() = testWithSdk { sdk ->
             val tribe = buildTribe()
             sdk.save(tribe)
@@ -73,7 +87,6 @@ class TribeConfigPageE2ETest {
                 TribeListPage.tribeCardElements
                     .map { it.getText() }
                     .await()
-                    .also { println("WOOOO ${JSON.stringify(it)}") }
                     .contains(tribe.name)
                     .assertIsEqualTo(false)
             }
@@ -85,12 +98,10 @@ class TribeConfigPageE2ETest {
                 handler(sdkProvider.await())
             }
 
-            private fun buildTribe(): Tribe {
-                return Tribe(
-                    id = "${randomInt()}-TribeConfigPageE2ETest-tribeId".let(::TribeId),
-                    name = "${randomInt()}-TribeConfigPageE2ETest-name"
-                )
-            }
+            private fun buildTribe() = Tribe(
+                id = "${randomInt()}-TribeConfigPageE2ETest-tribeId".let(::TribeId),
+                name = "${randomInt()}-TribeConfigPageE2ETest-name"
+            )
         }
     }
 

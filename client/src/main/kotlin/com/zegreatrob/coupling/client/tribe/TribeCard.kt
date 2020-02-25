@@ -29,7 +29,6 @@ data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter:
 external interface TribeCardStyles {
     val className: String
     val header: String
-
 }
 
 interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardStyles> {
@@ -46,6 +45,7 @@ interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardSt
                     onClickFunction = { props.goToPairAssignments() }
                     tabIndex = "0"
                     tribeCardCss(size)
+                    setProp("data-tribe-id", tribe.id.value)
                 }
                 tribeCardHeader(props, styles)
                 tribeGravatar(tribe, size)

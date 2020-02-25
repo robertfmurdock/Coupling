@@ -12,6 +12,7 @@ object TribeConfigPage : ProtractorSyntax {
     val pageElement = elementFor(tribeConfigStyles)
 
     val tribeNameInput = element(By.id("tribe-name"))
+    val tribeEmailInput = element(By.id("tribe-email"))
     val tribeIdInput = element(By.id("tribe-id"))
     val callSignCheckbox = element(By.id("call-sign-checkbox"))
     val badgeCheckbox = element(By.id("badge-checkbox"))
