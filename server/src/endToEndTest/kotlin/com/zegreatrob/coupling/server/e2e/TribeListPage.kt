@@ -20,6 +20,6 @@ object TribeListPage : ProtractorSyntax {
     }
 
     suspend fun waitForPage() {
-        browser.wait({ newTribeButton.isPresent() }, 2000).await()
+        browser.wait({ newTribeButton.isPresent() }, 2000, "TribeListPage.waitForPage").await()
     }
 }

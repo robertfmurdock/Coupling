@@ -23,7 +23,7 @@ class StatisticsE2ETest {
         }) {
             sdk.save(tribe)
             players.forEach { player -> sdk.save(tribe.id.with(player)) }
-            CouplingLogin.login
+            CouplingLogin.loginProvider
         } exerciseAsync {
             StatisticsPage.goTo(tribe.id)
         } verifyAsync {

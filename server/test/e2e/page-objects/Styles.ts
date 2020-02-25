@@ -1,10 +1,6 @@
 export const TribeCardStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/tribe/TribeCard.css`);
-export const TribeListStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/tribe/TribeList.css`);
-export const TribeConfigStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/tribe/TribeConfig.css`);
 export const PlayerCardStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerCard.css`);
 export const PlayerRosterStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/player/PlayerRoster.css`);
-export const PinButtonStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pin/PinButton.css`);
-export const PrepareSpinStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/PrepareSpin.css`);
 export const PairAssignmentsStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pairassignments/PairAssignments.css`);
 export const CurrentPairAssignmentsPanelStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pairassignments/CurrentPairAssignmentsPanel.css`);
 export const AssignedPairStyles = require(`${"../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/pairassignments/AssignedPair.css`);

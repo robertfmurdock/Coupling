@@ -94,7 +94,7 @@ class TribeConfigPageE2ETest {
 
         companion object {
             fun testWithSdk(handler: suspend CoroutineScope.(Sdk) -> Unit) = testAsync {
-                CouplingLogin.login.await()
+                CouplingLogin.loginProvider.await()
                 handler(sdkProvider.await())
             }
 
@@ -108,7 +108,7 @@ class TribeConfigPageE2ETest {
     class NewTribe {
         @Test
         fun idFieldShowsAndPersistsAsTextIsAdded() = testAsync {
-            CouplingLogin.login.await()
+            CouplingLogin.loginProvider.await()
             setupAsync(TribeConfigPage) {
                 goToNew()
             } exerciseAsync {
@@ -121,7 +121,7 @@ class TribeConfigPageE2ETest {
 
         @Test
         fun willDefaultPairingRuleToLongestTime() = testAsync {
-            CouplingLogin.login.await()
+            CouplingLogin.loginProvider.await()
             setupAsync(TribeConfigPage) exerciseAsync {
                 goToNew()
             } verifyAsync {

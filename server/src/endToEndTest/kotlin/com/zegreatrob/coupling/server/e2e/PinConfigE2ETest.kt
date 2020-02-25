@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.server.e2e.CouplingLogin.login
+import com.zegreatrob.coupling.server.e2e.CouplingLogin.loginProvider
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertContains
@@ -102,7 +102,7 @@ class PinConfigE2ETest {
 
         private fun testWithTribe(handler: suspend (tribe: Tribe) -> Unit) = testAsync {
             val tribe = tribeProvider.await()
-            login.await()
+            loginProvider.await()
 
             handler(tribe)
         }

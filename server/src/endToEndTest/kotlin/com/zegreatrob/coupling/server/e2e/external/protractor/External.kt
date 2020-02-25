@@ -11,7 +11,7 @@ external interface Browser {
     val baseUrl: String
 
     fun get(url: String): Promise<Unit>
-    fun wait(condition: () -> Promise<Boolean>, timeout: Int): Promise<Unit>
+    fun wait(condition: () -> Promise<Boolean>, timeout: Int, message: String): Promise<Unit>
     fun switchTo(): SwitchTo
     fun getCurrentUrl(): Promise<String>
 

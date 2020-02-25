@@ -138,7 +138,7 @@ class PlayerConfigPageE2ETest {
             setupAsync(PlayerConfig) {
                 goTo(tribe.id, players[0].id)
             } exerciseAsync {
-                playerElements.map { element -> element.getText() }.await().toList()
+                PlayerRoster.playerElements.map { element -> element.getText() }.await().toList()
             } verifyAsync { result ->
                 result.assertIsEqualTo(players.map { it.name })
             }

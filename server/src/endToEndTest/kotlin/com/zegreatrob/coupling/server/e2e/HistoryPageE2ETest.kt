@@ -31,7 +31,7 @@ class HistoryPageE2ETest {
                     val tribe = tribeProvider.await()
                     val pairAssignments = pairAssignmentsProvider.await()
 
-                    CouplingLogin.login.await()
+                    CouplingLogin.loginProvider.await()
                     HistoryPage.goTo(tribe.id)
 
                     tribe to pairAssignments
@@ -87,7 +87,11 @@ class HistoryPageE2ETest {
                 browser.switchTo().alert().await()
                     .accept().await()
             } verifyAsync {
-                browser.wait({ pairAssignmentDocElements.count().then { it == pairAssignments.size - 1 } }, 2000)
+                browser.wait(
+                    { pairAssignmentDocElements.count().then { it == pairAssignments.size - 1 } },
+                    2000,
+                    "HistoryPageE2ETest.pairingCanBeDeleted"
+                )
 
                 pairAssignmentDocElements.count().await()
                     .assertIsEqualTo(1)

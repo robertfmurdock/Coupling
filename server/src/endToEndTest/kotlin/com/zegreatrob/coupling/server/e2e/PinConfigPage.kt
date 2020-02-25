@@ -40,7 +40,7 @@ object PinConfigPage : ProtractorSyntax {
     }
 
     suspend fun waitForLoad() {
-        browser.wait({ pinConfigPage.isPresent() }, 2000).await()
+        browser.wait({ pinConfigPage.isPresent() }, 2000, "PinConfigPage.waitForLoad").await()
     }
 }
 
@@ -51,7 +51,7 @@ object PinListPage : ProtractorSyntax {
     val page = elementFor(pinListStyles)
 
     suspend fun waitForLoad() {
-        browser.wait({ page.isPresent() }, 2000).await()
+        browser.wait({ page.isPresent() }, 2000, "PinListPage.waitForLoad").await()
     }
 
 }

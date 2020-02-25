@@ -7,7 +7,7 @@ import kotlinx.coroutines.await
 
 object PlayerConfig : ProtractorSyntax {
     private val playerConfigStyles = loadStyles("player/PlayerConfig")
-    private val playerRosterStyles = loadStyles("player/PlayerRoster")
+
     private val playerConfigEditorStyles = loadStyles("player/PlayerConfigEditor")
 
     val playerConfigPage = elementFor(playerConfigStyles)
@@ -18,8 +18,6 @@ object PlayerConfig : ProtractorSyntax {
     val altBadgeOption = element(By.id("alt-badge-option"));
     val adjectiveTextInput = element(By.id("adjective-input"));
     val nounTextInput = element(By.id("noun-input"));
-
-    val playerElements = all(By.css(".${playerRosterStyles.className} .${playerCardStyles["player"]}"))
 
     suspend fun goTo(tribeId: TribeId, playerId: String?) {
         setLocation("/${tribeId.value}/player/${playerId}")
@@ -36,14 +34,14 @@ object PlayerConfig : ProtractorSyntax {
     }
 
     suspend fun waitForSaveToComplete(name: String?) {
-        browser.wait({ saveButton.isEnabled().then({ it }, { false }) }, 1000).await()
+        browser.wait({ saveButton.isEnabled().then({ it }, { false }) }, 1000, "PlayerConfig.waitForSaveButtonDisable").await()
 
         browser.wait({
             all(By.css(".${playerConfigStyles["playerRoster"]} .${playerCardStyles["header"]}"))
                 .first()
                 .getText()
                 .then { it == name }
-        }, 100).await()
+        }, 100, "PlayerConfig.waitForSave.nameIncluded").await()
     }
 
 }
@@ -52,4 +50,12 @@ object PlayerCard {
     val playerCardStyles = loadStyles("player/PlayerCard")
     val header = element(By.className(playerCardStyles["header"]))
     val playerElements = all(By.className(playerCardStyles["player"]))
+    val iconLocator: ProtractorBy = By.className(playerCardStyles["playerIcon"])
+}
+
+object PlayerRoster {
+    private val playerRosterStyles = loadStyles("player/PlayerRoster")
+
+    val playerElements = all(By.css(".${playerRosterStyles.className} .${playerCardStyles["player"]}"))
+
 }

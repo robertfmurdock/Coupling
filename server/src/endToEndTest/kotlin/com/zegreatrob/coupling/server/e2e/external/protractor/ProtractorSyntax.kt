@@ -25,7 +25,7 @@ interface ProtractorSyntax {
             } catch (bad: Throwable) {
                 GlobalScope.promise { false }
             }
-        }, 5000)
+        }, 5000, "")
 
         val finalUrl = browser.getCurrentUrl().await()
         finalUrl.startsWith(expectedUrl).assertIsEqualTo(true)
