@@ -14,6 +14,7 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
+import kotlinx.coroutines.delay
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -32,6 +33,7 @@ class PinConfigE2ETest {
         } exerciseAsync {
             with(PinConfigPage) {
                 saveButton.performClick()
+                delay(50)
                 waitForLoad()
             }
         } verifyAsync {
