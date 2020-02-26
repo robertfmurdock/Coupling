@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
@@ -96,7 +97,13 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
 
     private fun Json.tribeId() = TribeId(this["tribeId"].unsafeCast<String>())
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = performPutItem(tribeIdPlayer.toDynamoJson())
+    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
+        performPutItem(tribeIdPlayer.copy(element = with(tribeIdPlayer.element) {
+            copy(
+                id = id ?: "${uuid4()}"
+            )
+        }).toDynamoJson())
+    }
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(
         playerId, recordJson(now()), tribeId

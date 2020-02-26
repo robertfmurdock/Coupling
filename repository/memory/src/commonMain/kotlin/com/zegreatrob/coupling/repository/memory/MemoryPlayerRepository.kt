@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.repository.memory
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
@@ -14,7 +15,10 @@ class MemoryPlayerRepository(override val userEmail: String, override val clock:
 
     override var records = emptyList<Record<TribeIdPlayer>>()
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = tribeIdPlayer.record().save()
+    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
+        tribeIdPlayer.copy(element = with(tribeIdPlayer.element) { copy(id = id ?: "${uuid4()}") })
+            .record().save()
+    }
 
     override suspend fun getPlayers(tribeId: TribeId) = tribeId.players()
         .filterNot { it.isDeleted }

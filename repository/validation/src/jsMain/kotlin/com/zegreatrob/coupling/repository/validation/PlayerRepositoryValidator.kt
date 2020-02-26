@@ -10,12 +10,12 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import stubPlayer
 import stubPlayers
-import uuidString
 import kotlin.test.Test
 
 interface PlayerRepositoryValidator<T : PlayerRepository> {
@@ -41,10 +41,10 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun saveWorksWithNullableValues() = testRepository { repository, tribeId, _ ->
+    fun saveWorksWithNullableValuesAndAssignsIds() = testRepository { repository, tribeId, _ ->
         setupAsync(object {
             val player = Player(
-                id = uuidString(),
+                id = null,
                 callSignAdjective = "1",
                 callSignNoun = "2",
                 imageURL = null,
@@ -58,8 +58,14 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
             repository.getPlayers(tribeId)
         } verifyAsync { result ->
             result.map { it.data.player }
+                .also { it.assertHasIds() }
+                .map { it.copy(id = null) }
                 .assertIsEqualTo(listOf(player))
         }
+    }
+
+    private fun List<Player>.assertHasIds() {
+        forEach { player -> player.id.assertIsNotEqualTo(null) }
     }
 
     @Test
