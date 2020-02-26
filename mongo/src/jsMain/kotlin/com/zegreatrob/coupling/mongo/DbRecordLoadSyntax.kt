@@ -42,12 +42,18 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
     private suspend fun getAllRecordsWithId(id: String, collection: dynamic, usesRawId: Boolean = true) = listOf(
         rawFindBy(json("id" to id), collection),
         if (id.isValidObjectId() && usesRawId)
-            rawFindBy(json("_id" to id), collection)
+            safeRawFindByMongoId(id, collection)
         else
             Promise.resolve(emptyArray())
     )
         .map { it.await().toList() }
         .flatten()
+
+    private inline fun safeRawFindByMongoId(id: String, collection: dynamic): Promise<Array<Json>> = try {
+        rawFindBy(json("_id" to id), collection)
+    } catch (badId: Throwable) {
+        Promise.resolve(emptyArray())
+    }
 }
 
 interface JsonTimestampSyntax {
@@ -55,6 +61,8 @@ interface JsonTimestampSyntax {
 }
 
 fun String.isValidObjectId(): Boolean {
-    val objectIdType = js("require('mongodb').ObjectID")
-    return objectIdType.isValid(this).unsafeCast<Boolean>()
+    val objectIdType = js("require('bson').ObjectID")
+    val valid = objectIdType.isValid(this)
+    console.log("is valid", valid)
+    return valid.unsafeCast<Boolean>()
 }
