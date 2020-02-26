@@ -22,7 +22,10 @@ class DynamoPinRepository private constructor(override val userEmail: String, ov
         override val tableName = "PIN"
     }
 
-    override suspend fun save(tribeIdPin: TribeIdPin) = performPutItem(tribeIdPin.toDynamoJson())
+    override suspend fun save(tribeIdPin: TribeIdPin) = performPutItem(
+        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(_id = _id ?: "${com.benasher44.uuid.uuid4()}") })
+            .toDynamoJson()
+    )
 
     override suspend fun getPins(tribeId: TribeId) = tribeId.scanForItemList().map {
         val pin = it.toPin()

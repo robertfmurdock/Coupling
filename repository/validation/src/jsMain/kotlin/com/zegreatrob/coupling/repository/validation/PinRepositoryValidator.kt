@@ -12,13 +12,13 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import stubPin
-import uuidString
 import kotlin.test.Test
 
 interface PinRepositoryValidator {
@@ -49,10 +49,10 @@ interface PinRepositoryValidator {
     }
 
     @Test
-    fun saveWorksWithNullableValues() = testRepository { repository, tribeId, _, _ ->
+    fun saveWorksWithNullableValuesAndAsignsIds() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val pin = Pin(
-                _id = uuidString(),
+                _id = null,
                 name = null,
                 icon = null
             )
@@ -62,8 +62,14 @@ interface PinRepositoryValidator {
             repository.getPins(tribeId)
         } verifyAsync { result ->
             result.map { it.data.pin }
+                .also { it.assertHasIds() }
+                .map { it.copy(_id = null) }
                 .assertIsEqualTo(listOf(pin))
         }
+    }
+
+    private fun List<Pin>.assertHasIds() {
+        forEach { pin -> pin._id.assertIsNotEqualTo(null) }
     }
 
     @Test

@@ -14,7 +14,9 @@ class MemoryPinRepository(override val userEmail: String, override val clock: Ti
 
     override var records = emptyList<Record<TribeIdPin>>()
 
-    override suspend fun save(tribeIdPin: TribeIdPin) = tribeIdPin.record().save()
+    override suspend fun save(tribeIdPin: TribeIdPin) =
+        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(_id = _id ?: "${com.benasher44.uuid.uuid4()}") })
+            .record().save()
 
     override suspend fun getPins(tribeId: TribeId) = tribeId.recordList()
         .filterNot { it.isDeleted }
