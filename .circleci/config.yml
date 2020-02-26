@@ -9,7 +9,7 @@ jobs:
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JVM_OPTS:
-      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError -Dkotlin.parallel.tasks.in.project=false -Dorg.gradle.parallel=false
+      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
     steps:
       - checkout
       - restore_cache:
@@ -23,6 +23,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
+      - run: "./gradlew compile"
       - run: "./gradlew build check"
       - run:
           name: Copy test results
