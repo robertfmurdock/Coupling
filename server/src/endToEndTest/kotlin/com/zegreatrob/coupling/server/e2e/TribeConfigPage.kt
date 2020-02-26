@@ -9,7 +9,8 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 object TribeConfigPage : ProtractorSyntax {
 
     val tribeConfigStyles = loadStyles("tribe/TribeConfig")
-    val pageElement = elementFor(tribeConfigStyles)
+    val pageElement = tribeConfigStyles.element()
+    val saveButton by tribeConfigStyles.getting()
 
     val tribeNameInput = element(By.id("tribe-name"))
     val tribeEmailInput = element(By.id("tribe-email"))
@@ -19,7 +20,7 @@ object TribeConfigPage : ProtractorSyntax {
     val defaultBadgeNameInput = element(By.id("default-badge-name"))
     val altBadgeNameInput = element(By.id("alt-badge-name"))
     val differentBadgesOption = element(By.css("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]"))
-    val saveButton = element(By.className(tribeConfigStyles["saveButton"]))
+
     val deleteButton = element(By.className("delete-tribe-button"))
     val checkedOption = element(By.css("#pairing-rule option:checked"))
 

@@ -7,14 +7,14 @@ import kotlinx.coroutines.await
 object CurrentPairAssignmentPage : ProtractorSyntax {
 
     val currentPairAssignmentsPanelStyles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
-    val pageElement = elementFor(currentPairAssignmentsPanelStyles)
-    val saveButton = element(By.className(currentPairAssignmentsPanelStyles["saveButton"]))
+    val pageElement = currentPairAssignmentsPanelStyles.element()
+    val saveButton by currentPairAssignmentsPanelStyles.getting()
 
     val pairAssignmentsStyles = loadStyles("pairassignments/PairAssignments")
-    val viewHistoryButton = pairAssignmentsStyles.elementWithClass("viewHistoryButton")
-    val newPairsButton = pairAssignmentsStyles.elementWithClass("newPairsButton")
-    val statisticsButton = pairAssignmentsStyles.elementWithClass("statisticsButton")
-    val retiredPlayersButton = pairAssignmentsStyles.elementWithClass("retiredPlayersButton")
+    val viewHistoryButton by pairAssignmentsStyles.getting()
+    val newPairsButton by pairAssignmentsStyles.getting()
+    val statisticsButton by pairAssignmentsStyles.getting()
+    val retiredPlayersButton by pairAssignmentsStyles.getting()
 
     val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
     val assignedPairElements = all(By.className(assignedPairStyles.className))
@@ -41,3 +41,4 @@ object CurrentPairAssignmentPage : ProtractorSyntax {
 
     private fun ElementSelector.isNotPresent() = isPresent().then({ !it }, { false })
 }
+

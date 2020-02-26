@@ -6,6 +6,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
+import kotlin.reflect.KProperty
 
 interface ProtractorSyntax {
 
@@ -15,7 +16,8 @@ interface ProtractorSyntax {
 
     suspend fun browserGoTo(url: String) = browser.get(url).await()
 
-    fun elementFor(simpleStyle: SimpleStyle) = element(By.className(simpleStyle.className))
+    fun SimpleStyle.locator() = By.className(className)
+    fun SimpleStyle.element() = element(locator())
 
     fun SimpleStyle.elementWithClass(className: String) = element(By.className(this[className]))
 
@@ -33,6 +35,12 @@ interface ProtractorSyntax {
 
         val finalUrl = browser.getCurrentUrl().await()
         finalUrl.startsWith(expectedUrl).assertIsEqualTo(true)
+    }
+
+    fun SimpleStyle.getting() = StyledElementDelegate(this, this@ProtractorSyntax)
+
+    class StyledElementDelegate(private val style: SimpleStyle, syntax: ProtractorSyntax) : ProtractorSyntax by syntax {
+        operator fun getValue(thisRef: Any?, property: KProperty<*>) = style.elementWithClass(property.name)
     }
 
 }

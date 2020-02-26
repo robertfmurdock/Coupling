@@ -9,17 +9,11 @@ object WelcomePage : ProtractorSyntax {
 
     private val welcomeStyles = loadStyles("Welcome")
 
-    val enterButton = element(
-        By.className("enter-button")
-    )
-    val googleButton = element(
-        By.className("google-login")
-    )
-    val microsoftButton = element(
-        By.className("ms-login")
-    )
+    val enterButton = element(By.className("enter-button"))
+    val googleButton = element(By.className("google-login"))
+    val microsoftButton = element(By.className("ms-login"))
 
-    private val welcomePage = elementFor(welcomeStyles)
+    private val welcomePage = welcomeStyles.element()
 
     suspend fun goTo() {
         setLocation("/welcome")

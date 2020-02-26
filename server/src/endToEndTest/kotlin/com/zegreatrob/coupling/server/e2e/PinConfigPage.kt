@@ -7,19 +7,16 @@ import kotlinx.coroutines.await
 object PinConfigPage : ProtractorSyntax {
 
     private val pinConfigStyles = loadStyles("pin/PinConfig")
+    private val pinConfigPage = pinConfigStyles.element()
+    val pinBag by pinConfigStyles.getting()
+
     private val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
 
-    private val pinConfigPage = elementFor(pinConfigStyles)
+    val saveButton by pinConfigEditorStyles.getting()
+    val deleteButton by pinConfigEditorStyles.getting()
 
     val nameTextField = element(By.id("pin-name"))
     val iconTextField = element(By.id("pin-icon"))
-
-    val saveButton = element(By.className(pinConfigEditorStyles["saveButton"]))
-    val deleteButton = element(By.className(pinConfigEditorStyles["deleteButton"]))
-
-    val pinBag = element(
-        By.className(pinConfigStyles["pinBag"])
-    )
 
     suspend fun pinBagPinNames(): List<String> {
         pinBag.waitToBePresent()
@@ -48,7 +45,7 @@ object PinListPage : ProtractorSyntax {
 
     val pinListStyles = loadStyles("pin/PinList")
 
-    val page = elementFor(pinListStyles)
+    val page = pinListStyles.element()
 
     suspend fun waitForLoad() {
         browser.wait({ page.isPresent() }, 2000, "PinListPage.waitForLoad").await()

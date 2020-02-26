@@ -75,7 +75,7 @@ class HistoryPageE2ETest {
         fun showsRecentPairings() = testHistoryPage { pairAssignments ->
             setupAsync(HistoryPage) exerciseAsync {
             } verifyAsync {
-                pairAssignmentDocElements.count().await()
+                this.pairAssignments.count().await()
                     .assertIsEqualTo(pairAssignments.size)
             }
         }
@@ -88,12 +88,12 @@ class HistoryPageE2ETest {
                     .accept().await()
             } verifyAsync {
                 browser.wait(
-                    { pairAssignmentDocElements.count().then { it == pairAssignments.size - 1 } },
+                    { this.pairAssignments.count().then { it == pairAssignments.size - 1 } },
                     2000,
                     "HistoryPageE2ETest.pairingCanBeDeleted"
                 )
 
-                pairAssignmentDocElements.count().await()
+                this.pairAssignments.count().await()
                     .assertIsEqualTo(1)
             }
         }

@@ -1,21 +1,18 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.*
+import com.zegreatrob.coupling.server.e2e.external.protractor.By
+import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
+import com.zegreatrob.coupling.server.e2e.external.protractor.all
+import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 
 object HistoryPage : ProtractorSyntax {
     val historyStyles = loadStyles("pairassignments/History")
 
-    val historyView = element(
-        By.className(historyStyles["historyView"])
-    )
+    val historyView by historyStyles.getting()
 
-    val pairAssignmentDocElements = all(
-        By.className(historyStyles["pairAssignments"])
-    )
-    val deleteButtons = all(
-        By.className(historyStyles["deleteButton"])
-    )
+    val pairAssignments = all(By.className(historyStyles["pairAssignments"]))
+    val deleteButtons = all(By.className(historyStyles["deleteButton"]))
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/history")

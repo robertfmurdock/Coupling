@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 object RetiredPlayersPage : ProtractorSyntax {
 
     val retiredPlayersPage = loadStyles("player/RetiredPlayers")
-    val pageElement = elementFor(retiredPlayersPage)
+    val pageElement = retiredPlayersPage.element()
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/players/retired")

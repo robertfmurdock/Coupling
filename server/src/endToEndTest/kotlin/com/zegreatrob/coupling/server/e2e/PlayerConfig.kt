@@ -10,11 +10,12 @@ object PlayerConfig : ProtractorSyntax {
 
     private val playerConfigEditorStyles = loadStyles("player/PlayerConfigEditor")
 
-    val playerConfigPage = elementFor(playerConfigStyles)
+    val playerConfigPage = playerConfigStyles.element()
     val playerNameTextField = element(By.id("player-name"))
-    val deleteButton = element(By.className(playerConfigEditorStyles["deleteButton"]))
-    val saveButton = element(By.className(playerConfigEditorStyles["saveButton"]))
-    val defaultBadgeOption = element(By.id("default-badge-option"));
+    val deleteButton by playerConfigEditorStyles.getting()
+    val saveButton by playerConfigEditorStyles.getting()
+    val defaultBadgeOption =
+        element(By.id("default-badge-option"));
     val altBadgeOption = element(By.id("alt-badge-option"));
     val adjectiveTextInput = element(By.id("adjective-input"));
     val nounTextInput = element(By.id("noun-input"));
@@ -34,7 +35,8 @@ object PlayerConfig : ProtractorSyntax {
     }
 
     suspend fun waitForSaveToComplete(name: String?) {
-        browser.wait({ saveButton.isEnabled().then({ it }, { false }) }, 1000, "PlayerConfig.waitForSaveButtonDisable").await()
+        browser.wait({ saveButton.isEnabled().then({ it }, { false }) }, 1000, "PlayerConfig.waitForSaveButtonDisable")
+            .await()
 
         browser.wait({
             all(By.css(".${playerConfigStyles["playerRoster"]} .${playerCardStyles["header"]}"))
@@ -48,17 +50,17 @@ object PlayerConfig : ProtractorSyntax {
 
 object PlayerCard {
     val playerCardStyles = loadStyles("player/PlayerCard")
-    val playerLocator: ProtractorBy = By.className(playerCardStyles["player"])
-    val headerLocator: ProtractorBy = By.className(playerCardStyles["header"])
+    val playerLocator = By.className(playerCardStyles["player"])
+    val headerLocator = By.className(playerCardStyles["header"])
     val header = element(headerLocator)
     val playerElements = all(playerLocator)
     val iconLocator: ProtractorBy = By.className(playerCardStyles["playerIcon"])
 }
 
-object PlayerRoster {
+object PlayerRoster : ProtractorSyntax {
     private val playerRosterStyles = loadStyles("player/PlayerRoster")
 
     val playerElements = all(By.css(".${playerRosterStyles.className} .${playerCardStyles["player"]}"))
-    val addPlayerButton = element(By.className(playerRosterStyles["addPlayerButton"]))
+    val addPlayerButton by playerRosterStyles.getting()
 
 }

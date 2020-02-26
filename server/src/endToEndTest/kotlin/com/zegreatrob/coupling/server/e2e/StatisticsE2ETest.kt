@@ -30,7 +30,7 @@ class StatisticsE2ETest {
             with(StatisticsPage) {
                 TribeCard.element.getText().await()
                     .assertIsEqualTo(tribe.name)
-                fullRotationNumber.getText().await()
+                rotationNumber.getText().await()
                     .assertIsEqualTo("5")
                 pairReports.count().await()
                     .assertIsEqualTo(15)
