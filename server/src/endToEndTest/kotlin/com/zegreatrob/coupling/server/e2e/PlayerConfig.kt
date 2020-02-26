@@ -48,8 +48,10 @@ object PlayerConfig : ProtractorSyntax {
 
 object PlayerCard {
     val playerCardStyles = loadStyles("player/PlayerCard")
-    val header = element(By.className(playerCardStyles["header"]))
-    val playerElements = all(By.className(playerCardStyles["player"]))
+    val playerLocator: ProtractorBy = By.className(playerCardStyles["player"])
+    val headerLocator: ProtractorBy = By.className(playerCardStyles["header"])
+    val header = element(headerLocator)
+    val playerElements = all(playerLocator)
     val iconLocator: ProtractorBy = By.className(playerCardStyles["playerIcon"])
 }
 
@@ -57,5 +59,6 @@ object PlayerRoster {
     private val playerRosterStyles = loadStyles("player/PlayerRoster")
 
     val playerElements = all(By.css(".${playerRosterStyles.className} .${playerCardStyles["player"]}"))
+    val addPlayerButton = element(By.className(playerRosterStyles["addPlayerButton"]))
 
 }

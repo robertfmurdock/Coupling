@@ -1,16 +1,8 @@
 "use strict";
 import {browser} from "protractor";
 import * as util from "util";
-import {usersCollection} from "./database";
 
 const userEmail = 'protractor@test.goo';
-
-async function authorizeUserForTribes(authorizedTribes) {
-    const tempUserEmail = userEmail + "._temp";
-    await usersCollection.remove({email: tempUserEmail});
-    await usersCollection.insert({email: tempUserEmail, tribes: authorizedTribes, timestamp: new Date()});
-    return null
-}
 
 async function clearBrowserLogs() {
     const capabilities = await browser.getCapabilities();
@@ -21,7 +13,6 @@ async function clearBrowserLogs() {
 
 const helper = {
     userEmail: userEmail,
-    authorizeUserForTribes: authorizeUserForTribes,
     afterEachAssertLogsAreEmpty: function () {
 
         afterEach(async function () {
