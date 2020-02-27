@@ -7,7 +7,7 @@
     "test": "test"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.8.6",
     "@babel/preset-react": "^7.8.3",
     "@types/blueimp-md5": "^2.7.0",
     "@types/d3": "^5.7.2",
@@ -60,10 +60,10 @@
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
     "ramda": "^0.27.0",
-    "react": "^16.12.0",
+    "react": "^16.13.0",
     "react-dnd": "^10.0.2",
     "react-dnd-html5-backend": "^10.0.2",
-    "react-dom": "^16.12.0",
+    "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
     "react-websocket": "^2.1.0",
     "require-from-string": "^2.0.2",
