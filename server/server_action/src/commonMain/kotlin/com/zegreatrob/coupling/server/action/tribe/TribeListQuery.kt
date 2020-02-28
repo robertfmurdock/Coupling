@@ -26,7 +26,7 @@ interface TribeListQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribe
     private fun Pair<List<Record<Tribe>>, List<TribeElement<String>>>.onlyAuthenticatedTribes() =
         let { (tribeRecords, players) ->
             tribeRecords.filter {
-                players.authenticatedFilter()(it.data)
+                players.authenticatedFilter()(it)
             }
         }
 

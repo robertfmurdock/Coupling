@@ -28,7 +28,8 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
         override val construct = ::DynamoTribeRepository
     }
 
-    override suspend fun getTribe(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)?.toTribe()
+    override suspend fun getTribeRecord(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)
+        ?.let { it.toRecord(it.toTribe()) }
 
     override suspend fun getTribes() = performScan(queryParams())
         .fullList()

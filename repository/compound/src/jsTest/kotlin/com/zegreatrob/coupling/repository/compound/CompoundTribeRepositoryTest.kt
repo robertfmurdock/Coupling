@@ -37,7 +37,8 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator {
         }) exerciseAsync {
             compoundRepo.save(tribe)
         } verifyAsync {
-            repository2.getTribe(tribe.id)
+            repository2.getTribeRecord(tribe.id)
+                ?.data
                 .assertIsEqualTo(tribe)
         }
     }
@@ -57,7 +58,7 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator {
             compoundRepo.save(tribe)
             compoundRepo.delete(tribe.id)
         } verifyAsync {
-            repository2.getTribe(tribe.id)
+            repository2.getTribeRecord(tribe.id)
                 .assertIsEqualTo(null)
         }
     }

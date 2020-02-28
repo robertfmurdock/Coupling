@@ -45,7 +45,7 @@ interface TribeRepositoryValidator {
         }) {
             tribes.forEach { repository.save(it) }
         } exerciseAsync {
-            tribes.map { repository.getTribe(it.id) }
+            tribes.map { repository.getTribeRecord(it.id)?.data }
         } verifyAsync { result ->
             result.takeLast(tribes.size)
                 .assertIsEqualTo(tribes)
@@ -79,7 +79,7 @@ interface TribeRepositoryValidator {
             repository.delete(tribe.id)
             Pair(
                 repository.getTribes(),
-                repository.getTribe(tribe.id)
+                repository.getTribeRecord(tribe.id)?.data
             )
         } verifyAsync { (listResult, getResult) ->
             listResult.find { it.data.id == tribe.id }

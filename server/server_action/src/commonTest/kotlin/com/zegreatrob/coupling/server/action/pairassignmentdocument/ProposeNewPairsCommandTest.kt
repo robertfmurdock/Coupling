@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import SpyData
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
@@ -31,11 +30,13 @@ class ProposeNewPairsCommandTest {
             override val tribeRepository get() = stubRepository
 
             val stubRepository = object : TribeGet, PairAssignmentDocumentGet {
-                override suspend fun getTribe(tribeId: TribeId) = tribe.also { tribeId.assertIsEqualTo(tribe.id) }
+                override suspend fun getTribeRecord(tribeId: TribeId) = Record(tribe, modifyingUserEmail = "test")
+                    .also { tribeId.assertIsEqualTo(tribe.id) }
+
                 override suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
                     history
                         .map {
-                            Record(tribe.id.with(it), DateTime.now(), false, "")
+                            Record(tribe.id.with(it), modifyingUserEmail = "")
                         }
                         .also { tribeId.assertIsEqualTo(tribe.id) }
             }

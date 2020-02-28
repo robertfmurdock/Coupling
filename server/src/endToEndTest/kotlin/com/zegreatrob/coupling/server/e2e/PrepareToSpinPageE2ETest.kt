@@ -54,7 +54,7 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = testPairAssignments { tribe, players, _ ->
+    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = testPairAssignments { tribe, _, _ ->
         setupAsync(PrepareToSpinPage) {
             goTo(tribe.id)
         } exerciseAsync {

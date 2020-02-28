@@ -3,7 +3,12 @@ package com.zegreatrob.coupling.model
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.TribeElement
 
-data class Record<T>(val data: T, val timestamp: DateTime, val isDeleted: Boolean, val modifyingUserEmail: String)
+data class Record<T>(
+    val data: T,
+    val timestamp: DateTime = DateTime.now(),
+    val isDeleted: Boolean = false,
+    val modifyingUserEmail: String
+)
 
 fun <T> List<Record<T>>.data() = map { it.data }
 

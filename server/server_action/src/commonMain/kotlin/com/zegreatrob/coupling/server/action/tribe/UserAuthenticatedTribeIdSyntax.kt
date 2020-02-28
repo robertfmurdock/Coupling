@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.tribe
 
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -12,5 +13,5 @@ interface UserAuthenticatedTribeIdSyntax : UserEmailSyntax, UserAuthorizedTribeI
 
     fun List<TribeElement<String>>.authenticatedTribeIds() = map { it.id } + userAuthorizedTribeIds()
 
-    private fun List<TribeId>.authenticatedFilter(): (Tribe) -> Boolean = { contains(it.id) }
+    private fun List<TribeId>.authenticatedFilter(): (Record<Tribe>) -> Boolean = { contains(it.data.id) }
 }

@@ -18,7 +18,7 @@ interface TribeDelete {
 }
 
 interface TribeGet {
-    suspend fun getTribe(tribeId: TribeId): Tribe?
+    suspend fun getTribeRecord(tribeId: TribeId): Record<Tribe>?
 }
 
 interface TribeListGet {

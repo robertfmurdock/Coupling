@@ -13,8 +13,8 @@ class MemoryTribeRepository(override val userEmail: String, override val clock: 
 
     override suspend fun save(tribe: Tribe) = tribe.record().save()
 
-    override suspend fun getTribe(tribeId: TribeId): Tribe? = tribeId.findTribe()
-        ?.let { if (it.isDeleted) null else it.data }
+    override suspend fun getTribeRecord(tribeId: TribeId) = tribeId.findTribe()
+        ?.let { if (it.isDeleted) null else it }
 
     override suspend fun getTribes() = recordList()
         .filterNot { it.isDeleted }

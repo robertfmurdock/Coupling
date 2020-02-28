@@ -32,12 +32,9 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         usesRawId = false
     )
 
-    override suspend fun getTribe(tribeId: TribeId): Tribe? = findByQuery(
-        json("id" to tribeId.value),
-        tribesCollection
-    )
+    override suspend fun getTribeRecord(tribeId: TribeId) = findByQuery(json("id" to tribeId.value), tribesCollection)
         .firstOrNull()
-        ?.toTribe()
+        ?.let { it.toDbRecord(it.toTribe()) }
 
     override suspend fun getTribes(): List<Record<Tribe>> = findByQuery(json(), tribesCollection)
         .map { it.toDbRecord(it.toTribe()) }

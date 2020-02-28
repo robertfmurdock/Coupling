@@ -8,5 +8,7 @@ import com.zegreatrob.coupling.server.action.tribe.TribeQueryDispatcher
 interface TribeQueryDispatcherJs : TribeQueryDispatcher {
     suspend fun performTribeQueryGQL(id: String) = TribeQuery(TribeId(id))
         .perform()
-        ?.toJson()
+        ?.let {
+            it.toJson().add(it.data.toJson())
+        }
 }

@@ -76,9 +76,10 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator {
                 ).unsafeCast<Promise<Unit>>().await()
                 Unit
             } exerciseAsync {
-                getTribe(expectedTribe.id)
+                getTribeRecord(expectedTribe.id)
             } verifyAsync { result ->
-                result.assertIsEqualTo(expectedTribe)
+                result?.data
+                    .assertIsEqualTo(expectedTribe)
             }
         }
     }
