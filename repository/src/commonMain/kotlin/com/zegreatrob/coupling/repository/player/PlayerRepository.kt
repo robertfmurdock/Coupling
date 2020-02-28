@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.player
 
-import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -21,11 +22,11 @@ interface PlayerSave {
 }
 
 interface PlayerListGet {
-    suspend fun getPlayers(tribeId: TribeId): List<Record<TribeIdPlayer>>
+    suspend fun getPlayers(tribeId: TribeId): List<TribeRecord<Player>>
 }
 
 interface PlayerListGetDeleted {
-    suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>>
+    suspend fun getDeleted(tribeId: TribeId): List<TribeRecord<Player>>
 }
 
 interface PlayerListGetByEmail {

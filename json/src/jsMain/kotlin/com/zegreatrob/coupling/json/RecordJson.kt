@@ -7,9 +7,9 @@ import kotlin.js.json
 
 fun <T> Json.recordFor(data: T) = Record(
     data = data,
-    timestamp = DateTime(this["timestamp"].unsafeCast<String>().toLong()),
     modifyingUserEmail = this["modifyingUserEmail"].toString(),
-    isDeleted = false
+    isDeleted = false,
+    timestamp = DateTime(this["timestamp"].unsafeCast<String>().toLong())
 )
 
 fun Record<*>.toJson() = json(
@@ -18,6 +18,6 @@ fun Record<*>.toJson() = json(
 )
 
 val recordJsonKeys
-    get() = Record(null, DateTime.EPOCH, false, "")
+    get() = Record(null, "", false, DateTime.EPOCH)
         .toJson()
         .getKeys()

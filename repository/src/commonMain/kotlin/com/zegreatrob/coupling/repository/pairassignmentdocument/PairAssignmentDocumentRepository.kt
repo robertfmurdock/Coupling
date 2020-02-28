@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -14,7 +15,7 @@ interface PairAssignmentDocumentDelete {
 }
 
 interface PairAssignmentDocumentGet {
-    suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>>
+    suspend fun getPairAssignmentRecords(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>>
 }
 
 interface PairAssignmentDocumentSave {

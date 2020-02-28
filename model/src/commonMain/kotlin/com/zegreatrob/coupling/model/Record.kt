@@ -2,16 +2,27 @@ package com.zegreatrob.coupling.model
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class Record<T>(
     val data: T,
-    val timestamp: DateTime = DateTime.now(),
+    val modifyingUserEmail: String,
     val isDeleted: Boolean = false,
-    val modifyingUserEmail: String
+    val timestamp: DateTime = DateTime.now()
 )
 
 fun <T> List<Record<T>>.data() = map { it.data }
 
-val <T> Record<TribeElement<T>>.element get() = this.data.element
+typealias TribeRecord<T> = Record<TribeElement<T>>
 
-val <T> List<Record<TribeElement<T>>>.elements get() = map { it.element }
+operator fun <T> TribeRecord<T>.invoke(
+    tribeId: TribeId,
+    data: T,
+    timestamp: DateTime = DateTime.now(),
+    isDeleted: Boolean = false,
+    modifyingUserEmail: String
+) = TribeRecord(TribeElement(tribeId, data), modifyingUserEmail, isDeleted, timestamp)
+
+val <T> TribeRecord<T>.element get() = this.data.element
+
+val <T> List<TribeRecord<T>>.elements get() = map { it.element }

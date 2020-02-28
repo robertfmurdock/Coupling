@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.await
+import uuidString
 import kotlin.js.json
 
 external val process: dynamic
@@ -44,6 +45,6 @@ suspend fun authorizedAxios(username: String = userEmail): Axios {
     return hostAxios
 }
 
-suspend fun authorizedSdk(username: String = userEmail) = AuthorizedSdk(authorizedAxios(username))
+suspend fun authorizedSdk(username: String = "${uuidString()}-$userEmail") = AuthorizedSdk(authorizedAxios(username))
 
 class AuthorizedSdk(override val axios: Axios) : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(axios)

@@ -50,9 +50,9 @@ class PlayersQueryTest {
     private fun toRecord(it: Player, authorizedTribeId: TribeId) =
         Record(
             authorizedTribeId.with(it),
-            DateTime.now(),
+            "${uuid4()}@email.com",
             false,
-            "${uuid4()}@email.com"
+            DateTime.now()
         )
 
     @Test

@@ -45,7 +45,7 @@ class FindOrCreateUserActionTest {
             override val userEmail = "test@test.tes"
 
             val expectedUser = User("${uuid4()}", userEmail, setOf(TribeId("Best tribe")))
-            override suspend fun getUser() = Record(expectedUser, DateTime.now(), false, "")
+            override suspend fun getUser() = Record(expectedUser, "", false, DateTime.now())
             override suspend fun save(user: User) = fail("Should not save")
 
         }) exerciseAsync {

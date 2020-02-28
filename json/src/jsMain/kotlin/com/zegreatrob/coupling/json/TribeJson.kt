@@ -17,7 +17,7 @@ fun Json.toTribe(): Tribe =
         badgesEnabled = this["badgesEnabled"]?.toBoolean() ?: false,
         callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: false,
         animationEnabled = this["animationsEnabled"]?.toBoolean() ?: true,
-        animationSpeed = this["animationSpeed"].apply { println("speed $this") }?.toDouble() ?: 1.0
+        animationSpeed = this["animationSpeed"]?.toDouble() ?: 1.0
     )
 
 private fun Any.toBoolean() = when (this) {

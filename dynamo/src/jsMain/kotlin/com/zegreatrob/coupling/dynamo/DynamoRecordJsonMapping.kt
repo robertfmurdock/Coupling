@@ -17,9 +17,9 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax,
 
     fun <T> Json.toRecord(data: T) = Record(
         data,
-        getDynamoDateTimeValue("timestamp")?.utc!!,
+        getDynamoStringValue("modifyingUserEmail")!!,
         getDynamoBoolValue("isDeleted") ?: false,
-        getDynamoStringValue("modifyingUserEmail")!!
+        getDynamoDateTimeValue("timestamp")?.utc!!
     )
 
 }
