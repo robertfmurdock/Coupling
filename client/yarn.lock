@@ -6310,10 +6310,10 @@ npm-bundled@^1.1.1:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-4.0.2.tgz#739cda23cee4416f102cc51a265b496f98ce18b6"
-  integrity sha512-EVJzwOIIdm58ug0vInAlkvkvfX603Szl614c/FFpttzexXG8KXQXj+Cf0GJ+9HEfBb8hPc8rLk4Csq9h7kL+ig==
+npm-check-updates@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-4.0.3.tgz#72ce2125ca581eb1222aca68659fa4d03bea1ad8"
+  integrity sha512-m0XrBr+n/tKrNqJskPyddUTpmdqvL/9ePH6K8AsTnx1Vt3R6Lk0OgwH1d2QCV/3us6KyT2abnpN3zsYwzU8yCQ==
   dependencies:
     chalk "^3.0.0"
     cint "^8.2.1"
@@ -8909,10 +8909,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
-  integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
+typescript@^3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 uglify-js@^2.6.1:
   version "2.8.29"
