@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.3.61"
+    id("kotlinx-serialization") version "1.3.70"
 }
 
 kotlin {
@@ -40,7 +40,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:1.7.8")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.10.2")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.10.3")
             }
         }
 
