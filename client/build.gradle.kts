@@ -87,6 +87,10 @@ tasks {
     val processDceKotlinJs by getting(KotlinJsDce::class) {
     }
 
+    val browserProductionWebpack by getting {
+        enabled = false
+    }
+
     val vendorCompile by creating(YarnTask::class) {
         dependsOn(yarn, processDceKotlinJs, compileKotlinJs)
         mustRunAfter("clean")
