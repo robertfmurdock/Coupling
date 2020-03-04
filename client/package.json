@@ -99,6 +99,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
     "raw-loader": "^4.0.0",
-    "react-flip-toolkit": "^7.0.8"
+    "react-flip-toolkit": "^7.0.8",
+    "react-markdown": "^4.3.1"
   }
 }
