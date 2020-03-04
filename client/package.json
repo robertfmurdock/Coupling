@@ -57,8 +57,6 @@
     "protractor": "^5.4.3",
     "protractor-jasmine2-screenshot-reporter": "^0.5.0",
     "protractor-screenshot-reporter": "0.0.5",
-    "pug": "^2.0.4",
-    "pug-loader": "^2.4.0",
     "ramda": "^0.27.0",
     "react": "^16.13.0",
     "react-dnd": "^10.0.2",
@@ -100,6 +98,7 @@
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
+    "raw-loader": "^4.0.0",
     "react-flip-toolkit": "^7.0.8"
   }
 }

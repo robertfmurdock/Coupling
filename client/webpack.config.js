@@ -42,9 +42,8 @@ const config = {
         enforce: "pre"
       },
       {
-        test: /\.(pug)$/,
-        loader: 'pug-loader',
-        include: jsPath
+        test: /\.md$/i,
+        use: 'raw-loader',
       },
       {
         test: /\.(sa|sc|c)ss$/,
