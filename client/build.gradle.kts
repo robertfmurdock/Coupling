@@ -6,7 +6,6 @@ import java.io.FileOutputStream
 
 plugins {
     kotlin("js")
-    id("kotlin-dce-js")
     id("com.github.node-gradle.node")
 }
 
@@ -85,21 +84,14 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
-    val runDceKotlin by getting(KotlinJsDce::class) {
-    }
-
-    val runDceTestKotlin by getting(KotlinJsDce::class) {
-        enabled = false
-        keep(
-            "client_test.setLogLevel"
-        )
+    val processDceKotlinJs by getting(KotlinJsDce::class) {
     }
 
     val vendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlin, compileKotlinJs)
+        dependsOn(yarn, processDceKotlinJs, compileKotlinJs)
         mustRunAfter("clean")
 
-        inputs.files(fileTree("build/kotlin-js-min/main").matching {
+        inputs.files(fileTree("../build/js/packages/Coupling-client/kotlin-dce").matching {
             exclude("Coupling-*")
         })
         inputs.file(file("package.json"))
@@ -112,10 +104,10 @@ tasks {
     }
 
     val testVendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, runDceKotlin, compileKotlinJs, compileTestKotlinJs)
+        dependsOn(yarn, processDceKotlinJs, compileKotlinJs, compileTestKotlinJs)
         mustRunAfter("clean")
 
-        inputs.files(runDceKotlin.outputs)
+        inputs.files(processDceKotlinJs.outputs)
         inputs.files("node_modules")
         inputs.file(file("package.json"))
         inputs.files("${rootProject.buildDir.path}/js/node_modules")
@@ -126,9 +118,9 @@ tasks {
     }
 
     task<YarnTask>("compile") {
-        dependsOn(yarn, vendorCompile, runDceKotlin, processResources)
+        dependsOn(yarn, vendorCompile, processDceKotlinJs, processResources)
         inputs.file(file("package.json"))
-        inputs.files(runDceKotlin.outputs)
+        inputs.files(processDceKotlinJs.outputs)
         inputs.file(file("webpack.config.js"))
         inputs.file(file("tsconfig.json"))
         inputs.files("build/lib/vendor")
@@ -193,7 +185,7 @@ tasks {
     }
 
     task<YarnTask>("vendorStats") {
-        dependsOn(yarn, runDceKotlin)
+        dependsOn(yarn, processDceKotlinJs)
         setEnvironment(mapOf("NODE_ENV" to nodeEnv))
         args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
 
