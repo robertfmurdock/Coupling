@@ -46,7 +46,7 @@ jobs:
             - "*"
   deploy-prod:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:13-jdk
     steps:
       - attach_workspace:
           at: ./
@@ -63,7 +63,7 @@ jobs:
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment"
   update-client:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:13-jdk
       - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
@@ -88,7 +88,7 @@ jobs:
       - run: "git push"
   update-server:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:13-jdk
       - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
