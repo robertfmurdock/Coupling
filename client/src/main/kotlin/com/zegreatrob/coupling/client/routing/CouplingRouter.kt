@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
@@ -54,6 +55,7 @@ interface CouplingRouterBuilder : SimpleComponentRenderer<CouplingRouterProps> {
 
     private fun RBuilder.authenticatedRoutes() = switch {
         route(path = "/", exact = true, render = { redirect(from = "", to = "/tribes/") })
+        couplingRoute(CouplingRouteProps(path = "/about", rComponent = AboutPage))
         couplingRoute(CouplingRouteProps(path = "/tribes/", rComponent = TribeListPage))
         couplingRoute(CouplingRouteProps(path = "/logout/", rComponent = Logout))
         couplingRoute(CouplingRouteProps(path = "/new-tribe/", rComponent = TribeConfigPage))
