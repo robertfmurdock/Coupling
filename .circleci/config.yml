@@ -13,10 +13,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-32-{{ .Branch }}
+          key: coupling-cache-33-{{ .Branch }}
       - run: "./gradlew yarn kotlinNpmInstall"
       - save_cache:
-          key: coupling-cache-32-{{ .Branch }}
+          key: coupling-cache-33-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
@@ -51,7 +51,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-32-{{ .Branch }}
+          key: coupling-cache-33-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -73,7 +73,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-32-{{ .Branch }}
+          key: coupling-cache-33-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
       - run: "./gradlew compile --no-daemon"
       - run: "./gradlew build check"
@@ -98,7 +98,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-32-{{ .Branch }}
+          key: coupling-cache-33-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
       - run: "./gradlew compile --no-daemon"
       - run: "./gradlew build check"
