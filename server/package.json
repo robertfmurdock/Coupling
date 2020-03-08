@@ -35,7 +35,7 @@
     "ramda": "^0.27.0",
     "serve-favicon": "^2.5.0",
     "source-map-loader": "^0.2.4",
-    "ws": "^7.2.1"
+    "ws": "^7.2.2"
   },
   "devDependencies": {
     "@types/es6-shim": "^0.31.39",
