@@ -16,7 +16,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
                 api("com.benasher44:uuid:0.0.7")
             }
         }
@@ -36,7 +36,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
             }
         }
 
@@ -54,7 +54,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
             }
         }
         val jsTest by getting {

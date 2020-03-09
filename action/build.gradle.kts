@@ -18,11 +18,11 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
                 implementation("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.14.0-1.3.60-eap-76")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
             }
         }
         getByName("commonTest") {
@@ -59,9 +59,9 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
                 implementation("io.github.microutils:kotlin-logging-js:1.7.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.14.0-1.3.60-eap-76")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
             }
         }
         val jsTest by getting {

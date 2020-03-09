@@ -19,8 +19,8 @@ kotlin {
                 implementation("com.benasher44:uuid:0.0.7")
                 implementation("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
             }
         }
         getByName("commonTest") {
@@ -38,7 +38,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
             }
         }
         val jsTest by getting {

@@ -24,8 +24,8 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
                 implementation("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("com.benasher44:uuid:0.0.7")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.8")
@@ -49,7 +49,7 @@ kotlin {
                 api(project(":logging"))
                 implementation(npm("aws-sdk", "2.615.0"))
                 implementation("io.github.microutils:kotlin-logging-js:1.7.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
             }
         }
         val jsTest by getting {
