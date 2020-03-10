@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.model.pairassignmentdocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 
-
 data class AssignPinsAction(
     val pairs: List<CouplingPair>,
     val pins: List<Pin>,

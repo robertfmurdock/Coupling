@@ -24,6 +24,8 @@ let promise = Promise.all([
 
     process.stdin.pipe(serverProcess.stdin);
 
+    fs.mkdirSync(__dirname + '/../../build/test-results/e2e', { recursive: true });
+    
     const serverOut = fs.createWriteStream(__dirname + '/../../build/test-results/e2e/server.out.log');
     const serverErr = fs.createWriteStream(__dirname + '/../../build/test-results/e2e/server.err.log');
     serverProcess.stdout.pipe(serverOut);

@@ -63,6 +63,5 @@ interface JsonTimestampSyntax {
 fun String.isValidObjectId(): Boolean {
     val objectIdType = js("require('bson').ObjectID")
     val valid = objectIdType.isValid(this)
-    console.log("is valid", valid)
     return valid.unsafeCast<Boolean>()
 }

@@ -37,6 +37,23 @@ statsd:
     - "3002:80"
     - "2003:2003"
     - "8125:8125/udp"
+elasticsearch:
+  image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
+  environment:
+    - http.host=0.0.0.0
+    - ES_JAVA_OPTS=-Xms512m -Xmx512m
+graylog:
+  image: graylog/graylog:3.2
+  links:
+    - mongo
+    - elasticsearch
+  ports:
+    - "9000:9000"
+    - "12201:12201"
+    - "1514:1514"
+    - "5555:5555"
+  environment:
+    - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
 grafana:
   image: grafana/grafana
   links:
