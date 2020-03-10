@@ -113,22 +113,27 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
         .map { it.toPlayerRecord() }
 
-    override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> = logAsync("deleteItem") {
-        val playerIdsWithEmail = performQuery(emailQueryParams(email))
-            .itemsNode()
-            .mapNotNull { it.getDynamoStringValue("id") }
-
-        performScan(playerIdScanParams(playerIdsWithEmail))
-            .itemsNode()
-            .sortByRecordTimestamp()
-            .groupBy { it.getDynamoStringValue("id") }
-            .map { it.value.last() }
-            .filter { it["email"] == email }
-            .map {
-                TribeId(it.getDynamoStringValue("tribeId")!!)
-                    .with(it.getDynamoStringValue("id")!!)
+    override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> =
+        logAsync("getPlayerIdsByEmail") {
+            val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
+                performQuery(emailQueryParams(email))
+                    .itemsNode()
+                    .mapNotNull { it.getDynamoStringValue("id") }
             }
-    }
+
+            logAsync("recordsWithIds") {
+                performScan(playerIdScanParams(playerIdsWithEmail))
+                    .itemsNode()
+                    .sortByRecordTimestamp()
+                    .groupBy { it.getDynamoStringValue("id") }
+                    .map { it.value.last() }
+                    .filter { it["email"] == email }
+                    .map {
+                        TribeId(it.getDynamoStringValue("tribeId")!!)
+                            .with(it.getDynamoStringValue("id")!!)
+                    }
+            }
+        }
 
     private fun playerIdScanParams(recordTribePlayerIds: List<String>) = json(
         "TableName" to tableName,

@@ -61,8 +61,6 @@ interface AssignPinsActionDispatcher {
 
         val numberOfPinsGroup = lastTimePairs.groupBy { it.pins.count() }
         val leastPinnedOptions = numberOfPinsGroup[numberOfPinsGroup.keys.min()]
-
-        println("least pinned options $leastPinnedOptions")
         return leastPinnedOptions ?: emptyList()
     }
 
