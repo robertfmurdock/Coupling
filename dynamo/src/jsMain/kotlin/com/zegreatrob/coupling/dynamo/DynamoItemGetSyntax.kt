@@ -6,14 +6,16 @@ import kotlin.js.json
 interface DynamoItemGetSyntax : DynamoScanSyntax,
     DynamoDatatypeSyntax,
     DynamoItemSyntax,
-    DynamoTableNameSyntax {
+    DynamoTableNameSyntax,
+    DynamoLoggingSyntax {
 
-    suspend fun performGetSingleItemQuery(id: String, tribeId: TribeId? = null) =
+    suspend fun performGetSingleItemQuery(id: String, tribeId: TribeId? = null) = logAsync("getSingleItem") {
         performScan(singleScanParams(id, tribeId))
             .itemsNode()
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.let(::excludeDeleted)
+    }
 
     private fun singleScanParams(id: String, tribeId: TribeId?) = if (tribeId == null) json(
         "TableName" to tableName,

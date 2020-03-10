@@ -23,7 +23,8 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
         DynamoQuerySyntax,
-        DynamoItemDeleteSyntax {
+        DynamoItemDeleteSyntax,
+        DynamoLoggingSyntax {
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"
         const val playerEmailIndex = "PlayerEmailIndex"
@@ -112,12 +113,12 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
         .map { it.toPlayerRecord() }
 
-    override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> {
+    override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> = logAsync("deleteItem") {
         val playerIdsWithEmail = performQuery(emailQueryParams(email))
             .itemsNode()
             .mapNotNull { it.getDynamoStringValue("id") }
 
-        return performScan(playerIdScanParams(playerIdsWithEmail))
+        performScan(playerIdScanParams(playerIdsWithEmail))
             .itemsNode()
             .sortByRecordTimestamp()
             .groupBy { it.getDynamoStringValue("id") }
