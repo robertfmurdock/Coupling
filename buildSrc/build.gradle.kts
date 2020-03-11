@@ -22,5 +22,7 @@ dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
     implementation("com.github.node-gradle:gradle-node-plugin:1.3.0")
+    implementation("io.github.microutils:kotlin-logging:1.7.8")
+    implementation("com.soywiz.korlibs.klock:klock:1.8.9")
 }
 
