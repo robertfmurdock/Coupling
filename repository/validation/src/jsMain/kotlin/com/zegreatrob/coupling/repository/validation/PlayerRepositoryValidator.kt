@@ -20,14 +20,15 @@ import kotlin.test.Test
 
 interface PlayerRepositoryValidator<T : PlayerRepository> {
 
-    suspend fun withRepository(handler: suspend (T, TribeId, User) -> Unit)
+    suspend fun withRepository(clock: MagicClock, handler: suspend (T, TribeId, User) -> Unit)
 
-    fun testRepository(block: suspend CoroutineScope.(T, TribeId, User) -> Any?) = testAsync {
-        withRepository { repository, tribeId, user -> block(repository, tribeId, user) }
+    fun testRepository(block: suspend CoroutineScope.(T, TribeId, User, MagicClock) -> Any?) = testAsync {
+        val clock = MagicClock()
+        withRepository(clock) { repository, tribeId, user -> block(repository, tribeId, user, clock) }
     }
 
     @Test
-    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = testRepository { repository, tribeId, _ ->
+    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val players = stubPlayers(3)
         }) {
@@ -41,7 +42,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = testRepository { repository, tribeId, _ ->
+    fun saveWorksWithNullableValuesAndAssignsIds() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val player = Player(
                 id = null,
@@ -69,7 +70,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = testRepository { repository, tribeId, _ ->
+    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val player = stubPlayer()
             val updatedPlayer = player.copy(name = "Timmy!")
@@ -85,7 +86,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun deleteWillRemoveAGivenPlayer() = testRepository { repository, tribeId, _ ->
+    fun deleteWillRemoveAGivenPlayer() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val player = stubPlayer()
         }) {
@@ -101,7 +102,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun deletedPlayersShowUpInGetDeleted() = testRepository { repository, tribeId, _ ->
+    fun deletedPlayersShowUpInGetDeleted() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val player = stubPlayer()
         }) {
@@ -116,7 +117,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = testRepository { repository, tribeId, _ ->
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val player = stubPlayer()
             val playerId = player.id!!
@@ -134,7 +135,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = testRepository { repository, tribeId, _ ->
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val playerId = "${uuid4()}"
         }) exerciseAsync {
@@ -145,7 +146,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user ->
+    fun savedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->
         setupAsync(object {
             val player = stubPlayer()
         }) exerciseAsync {
@@ -162,7 +163,7 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun deletedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user ->
+    fun deletedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->
         setupAsync(object {
             val player = stubPlayer()
         }) exerciseAsync {

@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -17,7 +18,10 @@ import kotlin.test.Test
 
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
-    override suspend fun withRepository(handler: suspend (SdkPlayerRepository, TribeId, User) -> Unit) {
+    override suspend fun withRepository(
+        clock: MagicClock,
+        handler: suspend (SdkPlayerRepository, TribeId, User) -> Unit
+    ) {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         val tribe = stubTribe()

@@ -13,7 +13,7 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
         where T : PlayerRepository, T : PlayerListGetByEmail {
 
     @Test
-    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testRepository { repository, tribeId, _ ->
+    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
@@ -32,7 +32,7 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() =
-        testRepository { repository, tribeId, _ ->
+        testRepository { repository, tribeId, _, _ ->
             setupAsync(object {
                 val email = "test-${uuid4()}@zegreatrob.com"
                 val player = stubPlayer().copy(email = email)

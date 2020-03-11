@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -16,11 +17,14 @@ import stubUser
 import kotlin.test.Test
 
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
-    override suspend fun withRepository(handler: suspend (CompoundPlayerRepository, TribeId, User) -> Unit) {
+    override suspend fun withRepository(
+        clock: MagicClock,
+        handler: suspend (CompoundPlayerRepository, TribeId, User) -> Unit
+    ) {
         val stubUser = stubUser()
 
-        val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPlayerRepository(stubUser.email, clock)
+        val repository2 = MemoryPlayerRepository(stubUser.email, clock)
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
         handler(compoundRepo, stubTribeId(), stubUser)

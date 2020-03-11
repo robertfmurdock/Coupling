@@ -1,8 +1,35 @@
+const childProcess = require('child_process');
+const fs = require('fs-extra');
+
 const startJasmine = function () {
   return require('../buildSrc/test-wrapper')
 };
 
 process.env.PORT = "3001";
 
-require('../server/build/executable/app').start()
+const serverProcess = childProcess.fork(__dirname + '/forkStartup', [], {stdio: "pipe"});
+
+process.on('exit', () => serverProcess.kill());
+
+new Promise(function (resolve, reject) {
+  serverProcess.on('message', message => {
+    if (message === 'ready') {
+      console.log("server ready");
+      resolve();
+    }
+  });
+  serverProcess.on('exit', err => {
+    console.log("server exit", err);
+    reject(err);
+  });
+
+  process.stdin.pipe(serverProcess.stdin);
+
+  fs.mkdirSync(__dirname + '/build/test-results', {recursive: true});
+
+  const serverOut = fs.createWriteStream(__dirname + '/build/test-results/server.out.log');
+  const serverErr = fs.createWriteStream(__dirname + '/build/test-results/server.err.log');
+  serverProcess.stdout.pipe(serverOut);
+  serverProcess.stderr.pipe(serverErr);
+})
   .then(startJasmine);

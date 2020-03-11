@@ -7,7 +7,7 @@ interface TribeIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax, DynamoL
 
     suspend fun TribeId.scanForItemList() = logAsync("itemList") { queryForItemList(queryParams()) }
 
-    suspend fun TribeId.scanForDeletedItemList() = logAsync("deleteItem") { queryForDeletedItemList(queryParams()) }
+    suspend fun TribeId.scanForDeletedItemList() = logAsync("getDeleteItems") { queryForDeletedItemList(queryParams()) }
 
     private fun TribeId.queryParams() = json(
         "TableName" to tableName,

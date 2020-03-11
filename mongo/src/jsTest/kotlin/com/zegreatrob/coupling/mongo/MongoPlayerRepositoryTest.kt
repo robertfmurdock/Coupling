@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -25,13 +26,17 @@ private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
 class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepository> {
 
-    override suspend fun withRepository(handler: suspend (MongoPlayerRepository, TribeId, User) -> Unit) {
+    override suspend fun withRepository(
+        clock: MagicClock,
+        handler: suspend (MongoPlayerRepository, TribeId, User) -> Unit
+    ) {
         val user = stubUser()
-        withMongoRepository(user) { handler(this, stubTribeId(), user) }
+        withMongoRepository(user, clock) { handler(this, stubTribeId(), user) }
     }
 
     companion object {
-        private fun repositoryWithDb(userEmail: String) = MongoPlayerRepositoryTestAnchor(userEmail, TimeProvider)
+        private fun repositoryWithDb(userEmail: String, clock: TimeProvider) =
+            MongoPlayerRepositoryTestAnchor(userEmail, clock)
 
         class MongoPlayerRepositoryTestAnchor(override val userEmail: String, override val clock: TimeProvider) :
             MongoPlayerRepository, MonkToolkit {
@@ -48,9 +53,10 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
 
         private inline fun withMongoRepository(
             user: User = stubUser(),
+            clock: TimeProvider = TimeProvider,
             block: MongoPlayerRepositoryTestAnchor.() -> Unit
         ) {
-            val repositoryWithDb = repositoryWithDb(user.email)
+            val repositoryWithDb = repositoryWithDb(user.email, clock)
             try {
                 with(repositoryWithDb, block)
             } finally {
