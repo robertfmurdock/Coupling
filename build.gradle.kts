@@ -2,6 +2,8 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.zegreatrob.coupling.build.CustomTestListener
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     id("com.github.node-gradle.node") apply false
@@ -24,6 +26,13 @@ allprojects {
         val copyReportsToCircleCIDirectory by creating(Copy::class) {
             from("build/reports")
             into("${rootProject.buildDir.path}/test-output/${project.path}")
+        }
+
+    }
+
+    afterEvaluate {
+        tasks.withType(KotlinJsTest::class) {
+            addTestListener(CustomTestListener())
         }
     }
 

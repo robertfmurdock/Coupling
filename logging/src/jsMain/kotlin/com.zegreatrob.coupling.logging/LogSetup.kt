@@ -21,7 +21,7 @@ data class Message(
 
 fun DateTime.logFormat() = toString(DateFormat.FORMAT1)
 
-@UseExperimental(UnstableDefault::class)
+@OptIn(UnstableDefault::class)
 @Suppress("unused")
 @JsName("initializeJasmineLogging")
 fun initializeJasmineLogging(developmentMode: Boolean) {
