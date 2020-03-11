@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
@@ -45,7 +46,7 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
     ReactScopeProvider,
     WindowFunctions,
     SavePinCommandDispatcher,
-    DeletePinCommandDispatcher {
+    DeletePinCommandDispatcher, NullTraceIdProvider {
 
     companion object {
         val styles = useStyles("pin/PinConfigEditor")

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQuery
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -17,7 +18,8 @@ object PrepareSpinPage : RComponent<PageProps>(provider()), PrepareSpinPageBuild
 private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
-interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher {
+interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher,
+    NullTraceIdProvider {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId

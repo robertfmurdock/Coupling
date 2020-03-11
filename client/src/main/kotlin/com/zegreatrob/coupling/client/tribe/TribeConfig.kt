@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -40,7 +41,7 @@ external interface TribeConfigStyles {
 typealias TribeConfigRenderer = ScopedStyledRContext<TribeConfigProps, TribeConfigStyles>
 
 interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, TribeConfigStyles>,
-    SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
+    SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher, NullTraceIdProvider {
     override val tribeRepository: TribeRepository
 
     override val componentPath: String get() = "tribe/TribeConfig"

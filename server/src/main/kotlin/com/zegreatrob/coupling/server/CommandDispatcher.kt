@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server
 
-import com.soywiz.klock.TimeProvider
+import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.action.TraceIdSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
-import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcherJs
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
@@ -26,17 +26,19 @@ fun commandDispatcher(
     jsRepository: dynamic,
     userCollection: dynamic,
     userJson: Json,
-    path: String
+    path: String,
+    traceId: Uuid?
 ): Any {
     val user = userJson.toUser()
     val scope = MainScope() + CoroutineName(path)
-    return scope.promise { commandDispatcher(userCollection, jsRepository, user, scope) }
+    return scope.promise { commandDispatcher(userCollection, jsRepository, user, scope, traceId) }
 }
 
 class CommandDispatcher(
     override val user: User,
     private val repositoryCatalog: RepositoryCatalog,
-    override val scope: CoroutineScope
+    override val scope: CoroutineScope,
+    override val traceId: Uuid?
 ) :
     TribeDispatcherJs,
     PlayerDispatcherJs,
@@ -82,6 +84,7 @@ class AuthorizedTribeIdDispatcher(
     ScopeSyntax by commandDispatcher,
     AuthenticatedUserSyntax by commandDispatcher,
     UserEmailSyntax by commandDispatcher,
+    TraceIdSyntax by commandDispatcher,
     PinsQueryDispatcherJs,
     PlayersQueryDispatcherJs,
     PairAssignmentDocumentListQueryDispatcherJs

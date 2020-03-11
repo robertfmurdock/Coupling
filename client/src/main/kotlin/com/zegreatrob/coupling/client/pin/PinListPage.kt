@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.DataLoadProps
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -18,7 +19,7 @@ object PinListPage : RComponent<PageProps>(provider()), PinListPageBuilder,
 private val LoadedPinList = dataLoadWrapper(PinList)
 private val RBuilder.loadedPinList get() = LoadedPinList.render(this)
 
-interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, TribePinListQueryDispatcher {
+interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, TribePinListQueryDispatcher, NullTraceIdProvider {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId

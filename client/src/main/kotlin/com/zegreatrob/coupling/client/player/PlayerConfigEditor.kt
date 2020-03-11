@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
@@ -46,7 +47,8 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
     ReactScopeProvider,
     WindowFunctions,
     SavePlayerCommandDispatcher,
-    DeletePlayerCommandDispatcher {
+    DeletePlayerCommandDispatcher,
+    NullTraceIdProvider {
 
     companion object {
         val styles = useStyles("player/PlayerConfigEditor")

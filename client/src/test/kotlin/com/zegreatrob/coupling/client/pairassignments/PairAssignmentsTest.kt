@@ -34,6 +34,7 @@ class PairAssignmentsTest {
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
+        override val traceId = null
         override val pairAssignmentDocumentRepository get() = TODO("not implemented")
         val fellow = Player(id = "3", name = "fellow")
         val guy = Player(id = "2", name = "Guy")

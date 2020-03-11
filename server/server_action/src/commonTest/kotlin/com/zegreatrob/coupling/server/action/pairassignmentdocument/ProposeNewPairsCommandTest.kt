@@ -24,6 +24,7 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = testAsync {
         setupAsync(object : ProposeNewPairsCommandDispatcher {
+            override val traceId = null
             override val actionDispatcher get() = throw NotImplementedError("Do not use")
             override val wheel: Wheel get() = throw NotImplementedError("Do not use")
             override val pairAssignmentDocumentRepository get() = stubRepository

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.external.express
 
+import com.benasher44.uuid.Uuid
 import kotlin.js.Json
 
 external interface Request {
@@ -10,6 +11,7 @@ external interface Request {
     val url: String
     val commandDispatcher: dynamic
     val user: dynamic
+    var traceId: Uuid?
 }
 
 fun Request.jsonBody() = body.unsafeCast<Json>()

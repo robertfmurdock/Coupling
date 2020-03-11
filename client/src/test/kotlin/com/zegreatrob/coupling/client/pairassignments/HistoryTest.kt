@@ -33,6 +33,7 @@ class HistoryTest {
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
+                override val traceId = null
                 override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
@@ -74,6 +75,7 @@ class HistoryTest {
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
+                override val traceId = null
                 override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()

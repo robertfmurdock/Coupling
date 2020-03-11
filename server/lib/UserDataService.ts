@@ -12,8 +12,8 @@ export default class UserDataService {
         this.usersCollection.createIndex({'email': 1});
     }
 
-    public findOrCreate = (email, callback) => {
-        authActionDispatcher(this.usersCollection, email)
+    public findOrCreate = (email, traceId, callback) => {
+        authActionDispatcher(this.usersCollection, email, traceId)
             .then(it => it.performFindOrCreateUserAction())
             .then(function (user) {
                 callback(null, user)
@@ -31,7 +31,7 @@ export default class UserDataService {
     };
 
     public deserializeUser = (id, done) => {
-        authActionDispatcher(this.usersCollection, id)
+        authActionDispatcher(this.usersCollection, id, null)
             .then(it => it.performFindOrCreateUserAction())
             .then(function (user) {
                 if (user) {

@@ -4,6 +4,7 @@ import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -51,7 +52,8 @@ data class HistoryProps(
 interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryStyles>,
     DeletePairAssignmentsCommandDispatcher,
     WindowFunctions,
-    ScopeProvider {
+    ScopeProvider,
+    NullTraceIdProvider {
 
     override val componentPath: String get() = "pairassignments/History"
 

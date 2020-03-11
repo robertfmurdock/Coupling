@@ -17,10 +17,11 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":model"))
+                implementation("com.benasher44:uuid:0.0.7")
+                implementation("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
-                implementation("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
             }

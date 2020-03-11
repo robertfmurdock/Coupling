@@ -45,7 +45,7 @@ function azureODICStrategy(userDataService) {
       let email = profile._json.email;
 
       if (email) {
-        userDataService.findOrCreate(email, function (err, user) {
+        userDataService.findOrCreate(email, null, function (err, user) {
           done(err, user);
         });
       } else {
@@ -70,7 +70,7 @@ function googleAuthTransferStrategy(userDataService) {
   return new Strategy(function (request, done) {
     verify(request.body.idToken)
       .then(payload => {
-        userDataService.findOrCreate(payload.email, function (err, user) {
+        userDataService.findOrCreate(payload.email, request.traceId, function (err, user) {
           done(err, user);
         });
       }, err => done(err))
@@ -139,7 +139,7 @@ module.exports = function (app, userDataService) {
 
   if (isInDevelopmentMode) {
     passport.use(new LocalStrategy(function (username, password, done) {
-      userDataService.findOrCreate(username + "._temp", function (err, user) {
+      userDataService.findOrCreate(username + "._temp", null, function (err, user) {
         done(err, user);
       });
     }));

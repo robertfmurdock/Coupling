@@ -15,7 +15,8 @@ object NewPairAssignmentsPage : RComponent<PageProps>(provider()), NewPairAssign
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
-interface NewPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, NewPairAssignmentsQueryDispatcher {
+interface NewPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, NewPairAssignmentsQueryDispatcher,
+    NullTraceIdProvider {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId

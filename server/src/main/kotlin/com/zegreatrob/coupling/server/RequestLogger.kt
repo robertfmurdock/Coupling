@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.measureTime
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
@@ -14,6 +15,7 @@ private val logger by lazy { KotlinLogging.logger("RequestLogger") }
 @JsName("logRequestAsync")
 fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) -> Unit) = GlobalScope.launch {
     val duration = measureTime {
+        request.traceId = uuid4()
         val deferred = CompletableDeferred<Unit>()
 
         block { deferred.complete(Unit) }
@@ -29,7 +31,8 @@ fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) ->
             "url" to url,
             "statusCode" to "${response.statusCode}",
             "contentLength" to response["content-length"]?.toString(),
-            "duration" to "$duration"
+            "duration" to "$duration",
+            "traceId" to "${request.traceId}"
         )
     }
 }

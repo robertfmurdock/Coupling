@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":logging"))
     implementation("com.soywiz.korlibs.klock:klock:1.8.9")
     implementation("io.github.microutils:kotlin-logging-js:1.7.8")
+    implementation("com.benasher44:uuid:0.0.7")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.93-kotlin-1.3.70")
     implementation("org.jetbrains:kotlin-css:1.0.0-pre.93-kotlin-1.3.70")

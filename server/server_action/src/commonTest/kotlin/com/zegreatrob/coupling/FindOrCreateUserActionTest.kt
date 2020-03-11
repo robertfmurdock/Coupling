@@ -22,6 +22,7 @@ class FindOrCreateUserActionTest {
     fun whenUserDoesNotAlreadyExistWillCreate() = testAsync {
         setupAsync(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
+            override val traceId = null
             override val userEmail = "test@test.tes"
 
             override suspend fun getUser(): Nothing? = null
@@ -42,6 +43,7 @@ class FindOrCreateUserActionTest {
     fun whenUserWithEmailExistsWillUseExistingUser() = testAsync {
         setupAsync(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
+            override val traceId = null
             override val userEmail = "test@test.tes"
 
             val expectedUser = User("${uuid4()}", userEmail, setOf(TribeId("Best tribe")))

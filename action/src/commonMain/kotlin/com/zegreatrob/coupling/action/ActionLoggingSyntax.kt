@@ -6,7 +6,7 @@ import com.soywiz.klock.microseconds
 
 interface Action
 
-interface ActionLoggingSyntax : LoggingSyntax {
+interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
 
     fun <I : Action, O> I.log(block: (I) -> O) = logBlock { block(this) }
 
@@ -33,13 +33,30 @@ interface ActionLoggingSyntax : LoggingSyntax {
         return result
     }
 
-    private fun logStart(className: String?) = logger.info { mapOf("action" to className, "type" to "Start") }
+    private fun logStart(className: String?) = logger.info {
+        mapOf(
+            "action" to className,
+            "type" to "Start",
+            "traceId" to traceId
+        )
+    }
 
-    private fun logEnd(className: String?, duration: TimeSpan) =
-        logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
+    private fun logEnd(className: String?, duration: TimeSpan) = logger.info {
+        mapOf(
+            "action" to className,
+            "type" to "End",
+            "duration" to "$duration",
+            "traceId" to traceId
+        )
+    }
 
-    private fun logException(exception: Exception, className: String?) =
-        logger.info(exception) { mapOf("action" to className, "type" to "End") }
+    private fun logException(exception: Exception, className: String?) = logger.info(exception) {
+        mapOf(
+            "action" to className,
+            "type" to "End",
+            "traceId" to traceId
+        )
+    }
 
 }
 

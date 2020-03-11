@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -14,7 +15,7 @@ object HistoryPage : RComponent<PageProps>(provider()), HistoryPageBuilder, Repo
 private val LoadedPairAssignments = dataLoadWrapper(History)
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
-interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryDispatcher {
+interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryDispatcher, NullTraceIdProvider {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId

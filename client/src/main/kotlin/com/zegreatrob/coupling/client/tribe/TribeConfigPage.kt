@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 
 object TribeConfigPage : RComponent<PageProps>(provider()), TribeConfigPageBuilder,
@@ -16,7 +17,7 @@ object TribeConfigPage : RComponent<PageProps>(provider()), TribeConfigPageBuild
 private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)
 
-interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQueryDispatcher {
+interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQueryDispatcher, NullTraceIdProvider {
 
     override fun RContext<PageProps>.render() = reactElement {
         loadedTribeConfig(

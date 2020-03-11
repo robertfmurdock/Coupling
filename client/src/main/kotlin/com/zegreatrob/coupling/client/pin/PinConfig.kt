@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pin.PinCard.pinCard
 import com.zegreatrob.coupling.client.pin.PinConfigEditor.pinConfigEditor
 import com.zegreatrob.coupling.model.pin.Pin
@@ -38,7 +39,7 @@ external interface PinConfigStyles {
 typealias PinConfigContext = ScopedStyledRContext<PinConfigProps, PinConfigStyles>
 
 interface PinConfigRenderer : ScopedStyledComponentRenderer<PinConfigProps, PinConfigStyles>,
-    WindowFunctions, SavePinCommandDispatcher, DeletePinCommandDispatcher {
+    WindowFunctions, SavePinCommandDispatcher, DeletePinCommandDispatcher, NullTraceIdProvider {
 
     override val pinRepository: PinRepository
     override val componentPath: String get() = "pin/PinConfig"

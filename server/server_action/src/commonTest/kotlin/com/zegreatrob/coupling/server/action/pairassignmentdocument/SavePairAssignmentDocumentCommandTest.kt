@@ -17,6 +17,7 @@ class SavePairAssignmentDocumentCommandTest {
     @Test
     fun willSendToRepository() = testAsync {
         setupAsync(object : SavePairAssignmentDocumentCommandDispatcher {
+            override val traceId = null
             val pairAssignmentDocument = TribeId("tribe-239").with(
                 PairAssignmentDocument(
                         id = null,

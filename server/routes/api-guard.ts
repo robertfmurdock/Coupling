@@ -30,7 +30,8 @@ export default function (userDataService, couplingDataService, tempDataService) 
                 dataService,
                 userDataService.usersCollection,
                 request.user,
-                `${request.method} ${request.path}`
+                `${request.method} ${request.path}`,
+                request.traceId
             ).then(dispatcher => {
                 request.commandDispatcher = dispatcher;
                 next();

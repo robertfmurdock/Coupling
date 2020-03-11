@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 import react.ReactElement
 
@@ -15,7 +15,8 @@ object CurrentPairsPage : RComponent<PageProps>(provider()), CurrentPairAssignme
 
 private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
 
-interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher {
+interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher,
+    NullTraceIdProvider {
 
     override fun RContext<PageProps>.render(): ReactElement {
         val tribeId = props.tribeId

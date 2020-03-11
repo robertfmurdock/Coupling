@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.player.PlayerConfigEditor.playerConfigEditor
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -26,7 +27,7 @@ data class PlayerConfigProps(
 typealias PlayerConfigContext = StyledRContext<PlayerConfigProps, SimpleStyle>
 
 interface PlayerConfigRenderer : StyledComponentRenderer<PlayerConfigProps, SimpleStyle>,
-    WindowFunctions, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
+    WindowFunctions, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher, NullTraceIdProvider {
 
     override val playerRepository: PlayerRepository
 

@@ -52,7 +52,7 @@ external interface PairAssignmentsStyles {
 }
 
 interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignmentsProps, PairAssignmentsStyles>,
-    SavePairAssignmentsCommandDispatcher {
+    SavePairAssignmentsCommandDispatcher, NullTraceIdProvider {
 
     override val componentPath: String get() = "pairassignments/PairAssignments"
 
