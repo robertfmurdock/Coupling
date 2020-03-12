@@ -1,0 +1,35 @@
+{
+  "Configuration": {
+    "Appenders": {
+      "Console": {
+        "JsonLayout": {
+          "eventEol": true,
+          "compact": true,
+          "objectMessageAsJsonObject": true
+        },
+        "name": "Console",
+        "target": "SYSTEM_OUT"
+      },
+      "File": {
+        "JsonLayout": {
+          "eventEol": true,
+          "compact": true,
+          "objectMessageAsJsonObject": true
+        },
+        "name": "File",
+        "fileName": "build/test-output/test.log",
+        "createOnDemand": true
+      }
+    },
+    "Loggers": {
+      "Root": {
+        "AppenderRef": [
+          {
+            "ref": "File"
+          }
+        ],
+        "level": "trace"
+      }
+    }
+  }
+}

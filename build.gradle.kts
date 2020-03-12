@@ -2,7 +2,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.zegreatrob.coupling.build.CustomTestListener
+import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -31,8 +31,9 @@ allprojects {
     }
 
     afterEvaluate {
+        mkdir(file(rootProject.buildDir.toPath().resolve("test-output")))
         tasks.withType(KotlinJsTest::class) {
-            addTestListener(CustomTestListener())
+            addTestListener(JsonLoggingTestListener(path))
         }
     }
 
@@ -93,7 +94,6 @@ tasks {
             copyEndToEndScreenshotResults
         )
     }
-
 
     val pullProductionImage by creating(DockerPullImage::class) {
         image.set("zegreatrob/coupling:latest")
