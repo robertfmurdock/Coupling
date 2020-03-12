@@ -19,6 +19,18 @@
         "name": "File",
         "fileName": "build/test-output/test.log",
         "createOnDemand": true
+      },
+      "Socket": {
+        "JsonLayout": {
+          "eventEol": true,
+          "compact": true,
+          "objectMessageAsJsonObject": true
+        },
+        "name": "Socket",
+        "host": "localhost",
+        "port": 5555,
+        "immediateFail": true,
+        "ignoreExceptions": true
       }
     },
     "Loggers": {
@@ -26,6 +38,9 @@
         "AppenderRef": [
           {
             "ref": "File"
+          },
+          {
+            "ref": "Socket"
           }
         ],
         "level": "trace"
