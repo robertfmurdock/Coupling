@@ -14,6 +14,9 @@ import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.coroutineContext
 
 data class SaveTribeCommand(val tribe: Tribe) : Action
 
@@ -26,11 +29,16 @@ interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTri
     suspend fun SaveTribeCommand.perform() = logAsync {
         isAuthorizedToSave()
             .whenTrue {
-                tribe.save()
-
-                user.copy(authorizedTribeIds = user.authorizedTribeIds + tribe.id)
-                    .saveIfUserChanged()
+                saveTribeAndUser()
             }
+    }
+
+    private suspend fun SaveTribeCommand.saveTribeAndUser() = withContext(coroutineContext) {
+        launch { tribe.save() }
+        launch {
+            user.copy(authorizedTribeIds = user.authorizedTribeIds + tribe.id)
+                .saveIfUserChanged()
+        }
     }
 
     private suspend fun User.saveIfUserChanged() = if (this != user) save() else Unit

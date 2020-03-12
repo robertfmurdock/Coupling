@@ -49,7 +49,7 @@ interface PinRepositoryValidator {
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAsignsIds() = testRepository { repository, tribeId, _, _ ->
+    fun saveWorksWithNullableValuesAndAssignsIds() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
             val pin = Pin(
                 _id = null,

@@ -14,7 +14,21 @@ external interface Browser {
     fun wait(condition: () -> Promise<Boolean>, timeout: Int, message: String): Promise<Unit>
     fun switchTo(): SwitchTo
     fun getCurrentUrl(): Promise<String>
+    fun getCapabilities(): Promise<Capabilities>
+    fun manage(): Manage
 
+}
+
+external interface Manage {
+    fun logs(): Logs
+}
+
+external interface Logs {
+    operator fun get(key: String): Promise<Array<String>>
+}
+
+external interface Capabilities {
+    operator fun get(key: String): String?
 }
 
 external interface SwitchTo {

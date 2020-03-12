@@ -45,6 +45,7 @@ class PinConfigE2ETest {
         }
     }
 
+
     class WhenThePinExists {
 
         @Test
@@ -104,9 +105,20 @@ class PinConfigE2ETest {
             val tribe = tribeProvider.await()
             loginProvider.await()
 
-            handler(tribe)
+            try {
+                handler(tribe)
+            } finally {
+                checkLogs()
+            }
         }
 
+        private suspend fun checkLogs() {
+            if (browser.getCapabilities().await()["browserName"] != "firefox") {
+                val browserLog = browser.manage().logs().get("browser").await()
+                browserLog.toList()
+                    .assertIsEqualTo(emptyList())
+            }
+        }
 
         private val tribeProvider by lazy {
             GlobalScope.async {
