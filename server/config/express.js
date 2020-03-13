@@ -14,11 +14,13 @@ const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const DynamoDBStore = require('connect-dynamodb')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const statsd = require('express-statsd');
 const config = require('./config');
 const onFinished = require('on-finished');
+const AWS = require('aws-sdk')
 
 function azureODICStrategy(userDataService) {
   return new OIDCStrategy({
@@ -109,7 +111,12 @@ module.exports = function (app, userDataService) {
     secret: config.secret,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({url: config.mongoUrl})
+    store: new DynamoDBStore({
+      client: new AWS.DynamoDB({
+        region: 'us-east-1',
+        endpoint: new AWS.Endpoint('http://localhost:8000')
+      }),
+    })
   }));
   app.use(passport.initialize());
   app.use(passport.session());

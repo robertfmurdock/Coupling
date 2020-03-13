@@ -25,10 +25,10 @@ new Promise(function (resolve, reject) {
 
   process.stdin.pipe(serverProcess.stdin);
 
-  fs.mkdirSync(__dirname + '/build/test-results', {recursive: true});
+  fs.mkdirSync(__dirname + '/build/reports/tests', {recursive: true});
 
-  const serverOut = fs.createWriteStream(__dirname + '/build/test-results/server.out.log');
-  const serverErr = fs.createWriteStream(__dirname + '/build/test-results/server.err.log');
+  const serverOut = fs.createWriteStream(__dirname + '/build/reports/tests/server.out.log');
+  const serverErr = fs.createWriteStream(__dirname + '/build/reports/tests/server.err.log');
   serverProcess.stdout.pipe(serverOut);
   serverProcess.stderr.pipe(serverErr);
 })
