@@ -128,6 +128,6 @@ suspend fun checkLogs() {
     if (browser.getCapabilities().await()["browserName"] != "firefox") {
         val browserLog = browser.manage().logs().get("browser").await()
         browserLog.toList()
-            .assertIsEqualTo(emptyList())
+            .assertIsEqualTo(emptyList(), JSON.stringify(browserLog))
     }
 }
