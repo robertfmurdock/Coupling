@@ -13,13 +13,12 @@ object DynamoDbProvider : DynamoDBSyntax {
     }
 
     private fun dynamoConfig(): Json {
-        val secret = js("process.env.AWS_SECRET_ACCESS_KEY")
         val json = json("region" to "us-east-1")
-        return if (secret == null)
-            json.add(json("endpoint" to "http://localhost:8000"))
-        else {
+        val secret = js("process.env.AWS_SECRET_ACCESS_KEY").unsafeCast<String?>()
+        return if (secret != null) {
             json
-        }
+        } else
+            json.add(json("endpoint" to "http://localhost:8000"))
     }
 
     override val documentClient: DocumentClient by lazy {
