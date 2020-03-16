@@ -155,11 +155,16 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
-                timestamp.isCloseToNow()
-                    .assertIsEqualTo(true)
+                timestamp.assertIsCloseToNow()
                 modifyingUserEmail.assertIsEqualTo(user.email)
             }
         }
+    }
+
+    private fun DateTime.assertIsCloseToNow() {
+        val distanceFromNow = DateTime.now() - this
+        (distanceFromNow < 1.seconds)
+            .assertIsEqualTo(true, "Distance from now was $distanceFromNow, but was expected to be < 1")
     }
 
     @Test
@@ -174,13 +179,10 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
             result.size.assertIsEqualTo(1)
             result.first().apply {
                 isDeleted.assertIsEqualTo(true)
-                timestamp.isCloseToNow()
-                    .assertIsEqualTo(true)
+                timestamp.assertIsCloseToNow()
                 modifyingUserEmail.assertIsEqualTo(user.email)
             }
         }
     }
-
-    private inline fun DateTime.isCloseToNow() = (DateTime.now() - this) < 1.seconds
 
 }
