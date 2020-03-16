@@ -20,7 +20,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const statsd = require('express-statsd');
 const config = require('./config');
 const onFinished = require('on-finished');
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
 
 function azureODICStrategy(userDataService) {
   return new OIDCStrategy({
@@ -107,11 +107,25 @@ module.exports = function (app, userDataService) {
 
   app.use(express.static(path.join(__dirname, 'public'), {extensions: ['json']}));
   app.use(cookieParser());
+
+  let store;
+  if (process.env.AWS_SECRET_ACCESS_KEY) {
+    store = new DynamoDBStore({
+      client: new AWS.DynamoDB({region: 'us-east-1'}),
+    })
+  } else if (process.env.LOCAL_DYNAMO) {
+    store = new DynamoDBStore({
+      client: new AWS.DynamoDB({region: 'us-east-1', endpoint: new AWS.Endpoint('http://localhost:8000')}),
+    })
+  } else {
+    store = new MongoStore({url: config.mongoUrl})
+  }
+
   app.use(session({
     secret: config.secret,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({url: config.mongoUrl})
+    store: store
   }));
   app.use(passport.initialize());
   app.use(passport.session());
