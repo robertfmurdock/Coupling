@@ -111,12 +111,7 @@ module.exports = function (app, userDataService) {
     secret: config.secret,
     resave: true,
     saveUninitialized: true,
-    store: new DynamoDBStore({
-      client: new AWS.DynamoDB({
-        region: 'us-east-1',
-        endpoint: new AWS.Endpoint('http://localhost:8000')
-      }),
-    })
+    store: new MongoStore({url: config.mongoUrl})
   }));
   app.use(passport.initialize());
   app.use(passport.session());
