@@ -23,7 +23,12 @@ class HistoryPageE2ETest {
         companion object {
             fun testHistoryPage(test: suspend (List<PairAssignmentDocument>) -> Unit) = testAsync {
                 val (_, pairAssignments) = setupProvider.await()
-                test(pairAssignments)
+
+                try {
+                    test(pairAssignments)
+                } finally {
+                    checkLogs()
+                }
             }
 
             val setupProvider by lazy {

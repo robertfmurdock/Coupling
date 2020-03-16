@@ -112,14 +112,6 @@ class PinConfigE2ETest {
             }
         }
 
-        private suspend fun checkLogs() {
-            if (browser.getCapabilities().await()["browserName"] != "firefox") {
-                val browserLog = browser.manage().logs().get("browser").await()
-                browserLog.toList()
-                    .assertIsEqualTo(emptyList())
-            }
-        }
-
         private val tribeProvider by lazy {
             GlobalScope.async {
                 val sdk = sdkProvider.await()
@@ -131,3 +123,11 @@ class PinConfigE2ETest {
 }
 
 fun randomInt() = Random.nextInt()
+
+suspend fun checkLogs() {
+    if (browser.getCapabilities().await()["browserName"] != "firefox") {
+        val browserLog = browser.manage().logs().get("browser").await()
+        browserLog.toList()
+            .assertIsEqualTo(emptyList())
+    }
+}

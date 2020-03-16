@@ -95,7 +95,11 @@ class TribeConfigPageE2ETest {
         companion object {
             fun testWithSdk(handler: suspend CoroutineScope.(Sdk) -> Unit) = testAsync {
                 CouplingLogin.loginProvider.await()
-                handler(sdkProvider.await())
+                try {
+                    handler(sdkProvider.await())
+                } finally {
+                    checkLogs()
+                }
             }
 
             private fun buildTribe() = Tribe(

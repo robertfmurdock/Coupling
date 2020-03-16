@@ -19,7 +19,11 @@ class PrepareToSpinPageE2ETest {
         fun testPairAssignments(handler: suspend (Tribe, List<Player>, Pin) -> Unit) = testAsync {
             val (tribe, players, pin) = beforeAllProvider.await()
             CouplingLogin.loginProvider.await()
-            handler(tribe, players, pin)
+            try {
+                handler(tribe, players, pin)
+            } finally {
+                checkLogs()
+            }
         }
 
         val beforeAllProvider by lazyDeferred {

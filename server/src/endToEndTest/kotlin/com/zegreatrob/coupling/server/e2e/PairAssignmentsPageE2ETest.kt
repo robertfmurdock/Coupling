@@ -56,7 +56,12 @@ class PairAssignmentsPageE2ETest {
             fun testPairAssignmentsPage(handler: suspend () -> Unit) = testAsync {
                 setupProvider.await()
 
-                handler()
+                try {
+                    handler()
+                } finally {
+                    checkLogs()
+                }
+
             }
 
             val setupProvider by lazyDeferred {
@@ -196,7 +201,11 @@ class PairAssignmentsPageE2ETest {
 
         private fun testPairAssignmentsPage(handler: suspend () -> Unit) = testAsync {
             beforeAllProvider.await()
-            handler()
+            try {
+                handler()
+            } finally {
+                checkLogs()
+            }
         }
 
         @Test

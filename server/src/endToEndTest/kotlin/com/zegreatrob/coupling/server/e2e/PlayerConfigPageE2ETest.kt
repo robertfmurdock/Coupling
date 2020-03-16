@@ -318,7 +318,11 @@ abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildP
         val tribe = tribeProvider.await()
         val player = playerProvider.await()
 
-        handler(tribe, player)
+        try {
+            handler(tribe, player)
+        } finally {
+            checkLogs()
+        }
     }
 
     private val tribeProvider by lazy {

@@ -52,7 +52,11 @@ class TribeListPageE2ETest {
         fun testTribeListPage(test: suspend (List<Tribe>) -> Unit) = testAsync {
             val tribes = tribeListProvider.await()
             TribeListPage.goTo()
-            test(tribes)
+            try {
+                test(tribes)
+            } finally {
+                checkLogs()
+            }
         }
 
         private val tribeListProvider by lazyDeferred {
