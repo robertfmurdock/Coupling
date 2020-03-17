@@ -98,6 +98,7 @@
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
+    "minimist": "^1.2.2",
     "raw-loader": "^4.0.0",
     "react-flip-toolkit": "^7.0.9",
     "react-markdown": "^4.3.1"

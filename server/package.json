@@ -25,6 +25,7 @@
     "google-auth-library": "^5.10.1",
     "graphql": "^14.6.0",
     "method-override": "^3.0.0",
+    "minimist": "^1.2.2",
     "mongodb": "^3.5.5",
     "monk": "^7.1.2",
     "on-finished": "^2.3.0",
