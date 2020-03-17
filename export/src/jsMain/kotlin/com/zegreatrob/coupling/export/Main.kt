@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.export
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.export.external.monk.MonkDb
+import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
@@ -10,6 +11,8 @@ import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.js.json
 
 
@@ -20,8 +23,18 @@ fun main() {
     val jsRepo = jsRepository(monkDb)
     val repositoryCatalog = MongoRepositoryCatalog(jsRepo.get("userCollection"), jsRepo, user);
 
+    val job = GlobalScope.launch {
+        repositoryCatalog.getTribes()
+            .forEach { record ->
+                json(
+                    "tribeRecords" to arrayOf(record.toJson().add(record.data.toJson()))
+                )
+                    .let { println(JSON.stringify(it)) }
+            }
+    }
 
-    
+
+    job.invokeOnCompletion { js("process.exit(0)") }
 }
 
 class MongoRepositoryCatalog(

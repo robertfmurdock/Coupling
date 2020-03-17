@@ -24,6 +24,9 @@ kotlin {
                 api(project(":mongo"))
 
                 api(kotlin("stdlib-js", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
+
+                implementation(npm("monk", "7.1.1"))
+                implementation(npm("mongodb", "3.5.0"))
             }
         }
     }
