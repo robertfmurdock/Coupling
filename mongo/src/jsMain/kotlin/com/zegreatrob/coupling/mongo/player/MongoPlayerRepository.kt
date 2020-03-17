@@ -41,9 +41,13 @@ interface MongoPlayerRepository : PlayerRepository,
         { toDbJson() }
     )
 
-    override suspend fun getPlayers(tribeId: TribeId) =
-        findByQuery(json("tribe" to tribeId.value), playersCollection)
-            .map { it.toPlayerRecord() }
+    override suspend fun getPlayers(tribeId: TribeId) = getPlayerRecords(tribeId).groupBy { it.data.element.id }
+        .map { group -> group.value.asSequence().sortedByDescending { record -> record.timestamp }.first() }
+        .filterNot { it.isDeleted }
+
+    suspend fun getPlayerRecords(tribeId: TribeId) = rawFindBy(json("tribe" to tribeId.value), playersCollection)
+        .await()
+        .map { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String) =
         getLatestRecordsRelatedToAsync(json("email" to email), playersCollection)

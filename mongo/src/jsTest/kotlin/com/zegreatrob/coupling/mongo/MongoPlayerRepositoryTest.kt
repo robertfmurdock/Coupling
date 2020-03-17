@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.mongo
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.TimeProvider
+import com.soywiz.klock.*
 import com.soywiz.klock.js.toDateTime
-import com.soywiz.klock.seconds
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -20,6 +19,8 @@ import stubPlayer
 import stubTribeId
 import stubUser
 import kotlin.js.*
+import kotlin.js.Date
+import kotlin.js.Date.Companion.parse
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
@@ -61,6 +62,52 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
                 with(repositoryWithDb, block)
             } finally {
                 repositoryWithDb.db.close()
+            }
+        }
+    }
+
+    @Test
+    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = testAsync {
+        val clock = MagicClock()
+        val user = stubUser()
+        withMongoRepository(user = user, clock = clock) {
+            setupAsync(object {
+                val tribeId = stubTribeId()
+                val player = stubPlayer()
+                val initialSaveTime = DateTime.now().minus(3.days)
+                val updatedPlayer = player.copy(name = "CLONE")
+                val updatedSaveTime = initialSaveTime.plus(2.hours)
+            }) {
+                clock.currentTime = initialSaveTime
+                save(tribeId.with(player))
+                clock.currentTime = updatedSaveTime
+                save(tribeId.with(updatedPlayer))
+                deletePlayer(tribeId, player.id!!)
+            } exerciseAsync {
+                getPlayerRecords(tribeId)
+            } verifyAsync { result ->
+                result.assertIsEqualTo(
+                    listOf(
+                        Record(
+                            data = tribeId.with(player),
+                            modifyingUserEmail = user.email,
+                            isDeleted = false,
+                            timestamp = initialSaveTime
+                        ),
+                        Record(
+                            data = tribeId.with(updatedPlayer),
+                            modifyingUserEmail = user.email,
+                            isDeleted = false,
+                            timestamp = updatedSaveTime
+                        ),
+                        Record(
+                            data = tribeId.with(updatedPlayer),
+                            modifyingUserEmail = user.email,
+                            isDeleted = true,
+                            timestamp = updatedSaveTime
+                        )
+                    )
+                )
             }
         }
     }
