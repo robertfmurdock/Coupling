@@ -73,7 +73,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
                                 ),
                                 json(
                                     "AttributeName" to "id",
-                                    "KeyType" to "range"
+                                    "KeyType" to "RANGE"
                                 )
                             ),
                             "Projection" to json(
