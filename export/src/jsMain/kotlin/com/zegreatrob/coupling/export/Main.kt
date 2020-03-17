@@ -24,12 +24,17 @@ fun main() {
 
     GlobalScope.launch {
         repositoryCatalog.getTribeRecordList()
-            .groupBy { it.data.id.value }
+            .groupBy { it.data.id }
             .forEach { tribeGroup ->
+
+
                 json(
-                    "tribeId" to tribeGroup.key,
+                    "tribeId" to tribeGroup.key.value,
                     "tribeRecords" to tribeGroup.value.map { record -> record.toJson().add(record.data.toJson()) }
-                        .toTypedArray()
+                        .toTypedArray(),
+                    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeGroup.key).map { record ->
+                        record.toJson().add(record.data.element.toJson())
+                    }
                 )
                     .let { println(JSON.stringify(it)) }
             }
