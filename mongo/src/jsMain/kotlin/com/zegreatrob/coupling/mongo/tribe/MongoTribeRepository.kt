@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.mongo.player.JsonRecordSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -36,7 +37,15 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         .firstOrNull()
         ?.let { it.toDbRecord(it.toTribe()) }
 
-    override suspend fun getTribes(): List<Record<Tribe>> = findByQuery(json(), tribesCollection)
+    override suspend fun getTribes() = getTribeRecordList()
+        .onlyLatestVersion()
+
+    private inline fun List<Record<Tribe>>.onlyLatestVersion(): List<Record<Tribe>> = groupBy { it.data.id }
+        .map { group -> group.value.asSequence().sortedByDescending { it.timestamp }.first() }
+        .filterNot { it.isDeleted }
+
+    suspend fun getTribeRecordList() = rawFindBy(json(), tribesCollection)
+        .await()
         .map { it.toDbRecord(it.toTribe()) }
 
     private fun Tribe.toDbJson() = json(

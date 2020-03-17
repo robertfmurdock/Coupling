@@ -1,17 +1,22 @@
 package com.zegreatrob.coupling.mongo
 
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
+import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
+import stubTribe
 import stubUser
 import kotlin.js.Promise
 import kotlin.js.json
@@ -22,8 +27,57 @@ private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 class MongoTribeRepositoryTest : TribeRepositoryValidator {
 
     override suspend fun withRepository(clock: TimeProvider, handler: suspend (TribeRepository, User) -> Unit) {
+        withMongoRepository(clock) { repository, user -> handler(repository, user) }
+    }
+
+    private suspend fun withMongoRepository(
+        clock: TimeProvider,
+        handler: suspend (MongoTribeRepository, User) -> Unit
+    ) {
         val user = stubUser()
         withMongoRepository(user, clock) { handler(this, user) }
+    }
+
+    private fun testMongoRepository(block: suspend CoroutineScope.(MongoTribeRepository, User, MagicClock) -> Any?) =
+        testAsync {
+            val clock = MagicClock()
+            withMongoRepository(clock) { repository, user -> block(repository, user, clock) }
+        }
+
+    @Test
+    fun getTribeRecordListWillIncludeAllSavesOfTribeIncludingDelete() = testMongoRepository { repository, user, clock ->
+        setupAsync(object {
+            val tribe = stubTribe()
+            val updatedTribe = tribe.copy(name = "CLONE")
+            val firstSaveTime = DateTime.now().minus(3.days)
+            val secondSaveTime = firstSaveTime.plus(3.days)
+        }) {
+            clock.currentTime = firstSaveTime
+            repository.save(tribe)
+            clock.currentTime = secondSaveTime
+            repository.save(updatedTribe)
+            repository.delete(tribe.id)
+        } exerciseAsync {
+            repository.getTribeRecordList()
+        } verifyAsync { result ->
+            result.filter { it.data.id == tribe.id }.let {
+                it[0].apply {
+                    modifyingUserEmail.assertIsEqualTo(user.email)
+                    timestamp.assertIsEqualTo(firstSaveTime)
+                    isDeleted.assertIsEqualTo(false)
+                }
+                it[1].apply {
+                    modifyingUserEmail.assertIsEqualTo(user.email)
+                    timestamp.assertIsEqualTo(secondSaveTime)
+                    isDeleted.assertIsEqualTo(false)
+                }
+                it[2].apply {
+                    modifyingUserEmail.assertIsEqualTo(user.email)
+                    timestamp.assertIsEqualTo(secondSaveTime)
+                    isDeleted.assertIsEqualTo(true)
+                }
+            }
+        }
     }
 
     companion object {

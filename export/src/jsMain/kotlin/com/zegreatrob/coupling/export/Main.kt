@@ -23,7 +23,7 @@ fun main() {
     val jsRepo = jsRepository(monkDb)
     val repositoryCatalog = MongoRepositoryCatalog(jsRepo.get("userCollection"), jsRepo, user);
 
-    val job = GlobalScope.launch {
+    GlobalScope.launch {
         repositoryCatalog.getTribes()
             .forEach { record ->
                 json(
@@ -31,10 +31,7 @@ fun main() {
                 )
                     .let { println(JSON.stringify(it)) }
             }
-    }
-
-
-    job.invokeOnCompletion { js("process.exit(0)") }
+    }.invokeOnCompletion { js("process.exit(0)") }
 }
 
 class MongoRepositoryCatalog(
