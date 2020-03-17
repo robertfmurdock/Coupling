@@ -15,7 +15,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.js.json
 
-
 val user = User("EXPORT_USER", "robert.f.murdock@gmail.com", emptySet())
 
 fun main() {
@@ -24,10 +23,13 @@ fun main() {
     val repositoryCatalog = MongoRepositoryCatalog(jsRepo.get("userCollection"), jsRepo, user);
 
     GlobalScope.launch {
-        repositoryCatalog.getTribes()
-            .forEach { record ->
+        repositoryCatalog.getTribeRecordList()
+            .groupBy { it.data.id.value }
+            .forEach { tribeGroup ->
                 json(
-                    "tribeRecords" to arrayOf(record.toJson().add(record.data.toJson()))
+                    "tribeId" to tribeGroup.key,
+                    "tribeRecords" to tribeGroup.value.map { record -> record.toJson().add(record.data.toJson()) }
+                        .toTypedArray()
                 )
                     .let { println(JSON.stringify(it)) }
             }
