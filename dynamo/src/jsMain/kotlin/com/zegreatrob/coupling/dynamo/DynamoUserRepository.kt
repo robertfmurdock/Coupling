@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
@@ -22,7 +23,10 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
             .also { ensureTableExists() }
     }
 
-    override suspend fun save(user: User) = performPutItem(user.asDynamoJson())
+    override suspend fun save(user: User) = performPutItem(user.toRecord().asDynamoJson())
+
+    private fun <T> T.toRecord() = Record(this, userEmail, false, now())
+
 
     override suspend fun getUser() = documentClient.scan(emailScanParams()).promise().await()
         .itemsNode()
@@ -36,4 +40,12 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
         "FilterExpression" to "email = :email"
     )
 
+    suspend fun saveRawRecord(record: Record<User>) = performPutItem(record.asDynamoJson())
+
+    suspend fun getUserRecords() = documentClient.scan(json("TableName" to tableName)).promise().await()
+        .itemsNode()
+        .sortByRecordTimestamp()
+        .map { it.toUserRecord() }
+
 }
+

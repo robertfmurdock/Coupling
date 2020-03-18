@@ -10,6 +10,11 @@ import kotlin.js.json
 interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax,
     ClockSyntax {
 
+    fun <T> Record<T>.recordJson() = json(
+        "timestamp" to timestamp.isoWithMillis(),
+        "modifyingUserEmail" to modifyingUserEmail
+    )
+
     fun recordJson(timestamp: DateTime) = json(
         "timestamp" to timestamp.isoWithMillis(),
         "modifyingUserEmail" to userEmail
