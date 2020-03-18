@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.mongo.player.JsonRecordSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
+import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -30,6 +31,10 @@ interface MongoPinRepository : PinRepository,
                 val pin = it.fromDbToPin()
                 it.toDbRecord(tribeId.with(pin))
             }
+
+    suspend fun getPinRecords(tribeId: TribeId) = rawFindBy(json("tribe" to tribeId.value), pinCollection)
+        .await()
+        .map { it.toDbRecord(tribeId.with(it.fromDbToPin())) }
 
     override suspend fun save(tribeIdPin: TribeIdPin) = tribeIdPin.toDbJson()
         .savePinJson()

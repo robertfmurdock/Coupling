@@ -1,14 +1,21 @@
 package com.zegreatrob.coupling.mongo
 
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
+import com.soywiz.klock.days
+import com.soywiz.klock.hours
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.tribeRecord
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import stubPin
 import stubTribeId
@@ -43,6 +50,33 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
         }
     }
 
+    @Test
+    fun getRecordsWillReturnAllRevisionsIncludingDeleted() = testAsync {
+        val clock = MagicClock()
+        val user = stubUser()
+        withMongoRepository(user = user, clock = clock) { repository ->
+            setupAsync(object {
+                val tribeId = stubTribeId()
+                val pin = stubPin()
+                val updatedPin = pin.copy(name = "CLONE")
+                val initialTimestamp = DateTime.now().minus(3.days)
+                val updatedTimestamp = initialTimestamp.plus(2.hours)
+            }) {
+                clock.currentTime = initialTimestamp
+                repository.save(tribeId.with(pin))
+                repository.deletePin(tribeId, pin._id!!)
+                clock.currentTime = updatedTimestamp
+                repository.save(tribeId.with(updatedPin))
+            } exerciseAsync {
+                repository.getPinRecords(tribeId)
+            } verifyAsync { result ->
+                result.assertContains(tribeRecord(tribeId, pin, initialTimestamp, false, user.email))
+                    .assertContains(tribeRecord(tribeId, pin, initialTimestamp, true, user.email))
+                    .assertContains(tribeRecord(tribeId, updatedPin, updatedTimestamp, false, user.email))
+            }
+        }
+    }
+
     companion object {
         private fun repositoryWithDb(
             clock: TimeProvider,
@@ -59,14 +93,14 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
             fun close() = db.close()
         }
 
-        private inline fun withMongoRepository(
+        private suspend fun withMongoRepository(
             clock: TimeProvider,
             user: User,
-            block: (MongoPinRepositoryTestAnchor) -> Unit
+            block: suspend (MongoPinRepositoryTestAnchor) -> Unit
         ) {
             val repositoryWithDb = repositoryWithDb(clock, user)
             try {
-                with(repositoryWithDb, block)
+                block(repositoryWithDb)
             } finally {
                 repositoryWithDb.close()
             }

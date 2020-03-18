@@ -54,6 +54,9 @@ private suspend fun collectTribeData(
     },
     "pairAssignmentRecords" to repositoryCatalog.getPairAssignmentRecords(tribeId).map { record ->
         record.toJson().add(record.data.element.toJson())
+    },
+    "pinRecords" to repositoryCatalog.getPinRecords(tribeId).map { record ->
+        record.toJson().add(record.data.element.toJson())
     }
 )
 
