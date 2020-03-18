@@ -3,14 +3,11 @@ import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.export.external.readline.inputReader
 import com.zegreatrob.coupling.export.external.readline.onEnd
 import com.zegreatrob.coupling.export.external.readline.onNewLine
+import com.zegreatrob.coupling.json.recordFor
+import com.zegreatrob.coupling.json.toUser
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -36,18 +33,25 @@ fun main() {
     }
 }
 
-private suspend fun loadUser(userJson: Json, userRepository: UserRepository) {
+private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepository) {
     println("LOADING USER ${userJson["userEmail"]}")
+
+    userJson["userRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
+        userRepository.saveRawRecord(
+            recordJson.recordFor(recordJson.toUser())
+        )
+    }
+
 }
 
 class DynamoRepositoryCatalog private constructor(
     override val userEmail: String,
     override val clock: TimeProvider,
-    val tribeRepository: TribeRepository,
-    val playerRepository: PlayerEmailRepository,
-    val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
-    val pinRepository: PinRepository,
-    val userRepository: UserRepository
+    val tribeRepository: DynamoTribeRepository,
+    val playerRepository: DynamoPlayerRepository,
+    val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
+    val pinRepository: DynamoPinRepository,
+    val userRepository: DynamoUserRepository
 ) : UserEmailSyntax, ClockSyntax {
 
     companion object {

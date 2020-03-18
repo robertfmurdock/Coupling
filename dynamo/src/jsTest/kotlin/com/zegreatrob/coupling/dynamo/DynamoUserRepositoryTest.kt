@@ -22,7 +22,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
         withDynamoRepository(clock, handler)
     }
 
-    private inline suspend fun withDynamoRepository(
+    private suspend inline fun withDynamoRepository(
         clock: TimeProvider = TimeProvider,
         handler: suspend (DynamoUserRepository, User) -> Unit
     ) {
@@ -61,7 +61,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
     }
 
     @Test
-    fun canSaveRawRecord() = testDynamoRepository { repository, user, _ ->
+    fun canSaveRawRecord() = testDynamoRepository { repository, _, _ ->
         setupAsync(object {
             val records = listOf(
                 Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months)),
