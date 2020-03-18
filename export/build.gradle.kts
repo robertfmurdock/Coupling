@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
+
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
 }
@@ -28,6 +30,16 @@ kotlin {
                 implementation(npm("monk", "7.1.1"))
                 implementation(npm("mongodb", "3.5.0"))
             }
+        }
+    }
+}
+
+val outputFile: String? by project
+
+tasks {
+    val jsNodeRun by getting(NodeJsExec::class) {
+        outputFile?.let {
+            standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()
         }
     }
 }
