@@ -3,6 +3,7 @@ test-output
 **/sandbox/*.json
 node_modules
 .tmp
+dummy.log
 build
 data
 dynamodb_data

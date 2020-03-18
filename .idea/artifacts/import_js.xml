@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="import-js">
+    <output-path>$PROJECT_DIR$/import/build/libs</output-path>
+    <root id="archive" name="import-js.jar">
+      <element id="module-output" name="Coupling.import.jsMain" />
+    </root>
+  </artifact>
+</component>

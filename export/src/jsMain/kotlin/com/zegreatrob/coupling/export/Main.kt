@@ -47,17 +47,15 @@ private suspend fun collectTribeData(
     tribeRecords: List<Record<Tribe>>
 ) = json(
     "tribeId" to tribeId.value,
-    "tribeRecords" to tribeRecords.map { record -> record.toJson().add(record.data.toJson()) }
-        .toTypedArray(),
+    "tribeRecords" to tribeRecords.map { record -> record.toJson().add(record.data.toJson()) },
     "playerRecords" to repositoryCatalog.getPlayerRecords(tribeId).map { record ->
         record.toJson().add(record.data.element.toJson())
     },
     "pairAssignmentRecords" to repositoryCatalog.getPairAssignmentRecords(tribeId).map { record ->
         record.toJson().add(record.data.element.toJson())
     },
-    "pinRecords" to repositoryCatalog.getPinRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    }
+    "pinRecords" to repositoryCatalog.getPinRecords(tribeId)
+        .map { record -> record.toJson().add(record.data.element.toJson()) }
 )
 
 private fun Json.print() = println(JSON.stringify(this))
