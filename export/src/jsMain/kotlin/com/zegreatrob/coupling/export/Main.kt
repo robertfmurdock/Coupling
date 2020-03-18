@@ -3,6 +3,9 @@ package com.zegreatrob.coupling.export
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.export.external.monk.MonkDb
 import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
@@ -11,8 +14,9 @@ import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlin.js.Json
 import kotlin.js.json
 
 val user = User("EXPORT_USER", "robert.f.murdock@gmail.com", emptySet())
@@ -22,23 +26,43 @@ fun main() {
     val jsRepo = jsRepository(monkDb)
     val repositoryCatalog = MongoRepositoryCatalog(jsRepo.get("userCollection"), jsRepo, user);
 
-    GlobalScope.launch {
-        repositoryCatalog.getTribeRecordList()
-            .groupBy { it.data.id }
-            .forEach { tribeGroup ->
+    MainScope().launch {
+        outputUsers(repositoryCatalog)
+        repositoryCatalog.outputTribes()
+    }.invokeOnCompletion {
+        monkDb.close()
+    }
+}
 
+private suspend fun MongoRepositoryCatalog.outputTribes() = getTribeRecordList()
+    .groupBy { it.data.id }
+    .forEach { tribeGroup ->
+        collectTribeData(tribeGroup, this)
+            .print()
+    }
 
-                json(
-                    "tribeId" to tribeGroup.key.value,
-                    "tribeRecords" to tribeGroup.value.map { record -> record.toJson().add(record.data.toJson()) }
-                        .toTypedArray(),
-                    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeGroup.key).map { record ->
-                        record.toJson().add(record.data.element.toJson())
-                    }
-                )
-                    .let { println(JSON.stringify(it)) }
-            }
-    }.invokeOnCompletion { js("process.exit(0)") }
+private suspend fun collectTribeData(
+    tribeGroup: Map.Entry<TribeId, List<Record<Tribe>>>,
+    repositoryCatalog: MongoRepositoryCatalog
+) = json(
+    "tribeId" to tribeGroup.key.value,
+    "tribeRecords" to tribeGroup.value.map { record -> record.toJson().add(record.data.toJson()) }
+        .toTypedArray(),
+    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeGroup.key).map { record ->
+        record.toJson().add(record.data.element.toJson())
+    }
+)
+
+private fun Json.print() = println(JSON.stringify(this))
+
+private suspend fun outputUsers(repositoryCatalog: MongoRepositoryCatalog) {
+    repositoryCatalog.getUserRecords().groupBy { it.data.email }.forEach {
+        json("userEmail" to it.key,
+            "userRecords" to it.value.map { record ->
+                record.toJson().add(record.data.toJson())
+            })
+            .print()
+    }
 }
 
 class MongoRepositoryCatalog(

@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.mongo.user
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.mongo.player.JsonRecordSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
+import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -38,5 +40,8 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
             )
         }?.toSet() ?: emptySet()
     )
+
+    suspend fun getUserRecords(): List<Record<User>> = rawFindBy(json(), userCollection).await()
+        .map { it.toDbRecord(it.fromDbToUser()) }
 
 }
