@@ -46,7 +46,7 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
         }) exerciseAsync {
             compoundRepo.save(tribeId.with(pairAssignmentDocument))
         } verifyAsync {
-            repository2.getPairAssignmentRecords(tribeId).map { it.data.document }
+            repository2.getPairAssignments(tribeId).map { it.data.document }
                 .find { it.id == pairAssignmentDocument.id }
                 .assertIsEqualTo(pairAssignmentDocument)
         }
@@ -68,7 +68,7 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
             compoundRepo.save(tribeId.with(pairAssignmentDocument))
             compoundRepo.delete(tribeId, pairAssignmentDocument.id!!)
         } verifyAsync {
-            repository2.getPairAssignmentRecords(tribeId).map { it.data.document }
+            repository2.getPairAssignments(tribeId).map { it.data.document }
                 .find { it.id == pairAssignmentDocument.id }
                 .assertIsEqualTo(null)
         }

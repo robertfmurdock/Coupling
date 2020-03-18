@@ -15,7 +15,7 @@ interface PairAssignmentDocumentDelete {
 }
 
 interface PairAssignmentDocumentGet {
-    suspend fun getPairAssignmentRecords(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>>
+    suspend fun getPairAssignments(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>>
 }
 
 interface PairAssignmentDocumentSave {

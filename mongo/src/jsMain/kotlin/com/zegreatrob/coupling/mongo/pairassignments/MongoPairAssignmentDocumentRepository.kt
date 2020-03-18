@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
 import com.zegreatrob.coupling.mongo.pin.PinToDbSyntax
 import com.zegreatrob.coupling.mongo.player.PlayerToDbSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import kotlinx.coroutines.await
 import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.json
@@ -38,7 +39,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
         toDbJson = { toDbJson() }
     )
 
-    override suspend fun getPairAssignmentRecords(tribeId: TribeId) =
+    override suspend fun getPairAssignments(tribeId: TribeId) =
         findByQuery(json("tribe" to tribeId.value), jsRepository.historyCollection)
             .map { json -> json.toDbRecord(json.toPairAssignmentDocument()) }
             .sortedByDescending { it.data.document.date }
@@ -50,12 +51,19 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
         "tribe" to tribeId.value
     )
 
+    suspend fun getPairAssignmentRecords(tribeId: TribeId) =
+        rawFindBy(json("tribe" to tribeId.value), jsRepository.historyCollection)
+            .await()
+            .map { json -> json.toDbRecord(json.toPairAssignmentDocument()) }
+            .sortedByDescending { it.data.document.date }
+
+
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
-        json(
-            "pins" to it.pins.map { pin -> pin.toDbJson() }.toTypedArray(),
-            "players" to it.players.map { player -> player.toJson() }.toTypedArray()
-        )
-    }
+            json(
+                "pins" to it.pins.map { pin -> pin.toDbJson() }.toTypedArray(),
+                "players" to it.players.map { player -> player.toJson() }.toTypedArray()
+            )
+        }
         .toTypedArray()
 
     private fun PinnedPlayer.toJson(): Json = player.toDbJson().apply { this["pins"] = pins.toDbJson() }

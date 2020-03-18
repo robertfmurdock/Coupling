@@ -36,7 +36,7 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
         setupAsync(object {}) exerciseAsync {
-            sdk.getPairAssignmentRecords(TribeId("someoneElseTribe"))
+            sdk.getPairAssignments(TribeId("someoneElseTribe"))
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }
@@ -48,7 +48,7 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         }) {
             repository.save(tribeId.with(pairAssignmentDoc))
         } exerciseAsync {
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {

@@ -34,7 +34,7 @@ class ProposeNewPairsCommandTest {
                 override suspend fun getTribeRecord(tribeId: TribeId) = Record(tribe, modifyingUserEmail = "test")
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
-                override suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
+                override suspend fun getPairAssignments(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
                     history
                         .map {
                             Record(tribe.id.with(it), modifyingUserEmail = "")

@@ -42,7 +42,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             tribeId.with(listOf(middle, oldest, newest))
                 .forEach { repository.save(it) }
         } exerciseAsync {
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.data().map { it.document }
                 .assertIsEqualTo(listOf(newest, middle, oldest))
@@ -53,7 +53,7 @@ interface PairAssignmentDocumentRepositoryValidator {
     fun whenNoHistoryGetWillReturnEmptyList() = testRepository { repository, tribeId, _, _ ->
         setupAsync(object {
         }) exerciseAsync {
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }
@@ -65,7 +65,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             val pairAssignmentDoc = stubPairAssignmentDoc().copy(id = null)
         }) exerciseAsync {
             repository.save(tribeId.with(pairAssignmentDoc))
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
         } verifyAsync { result ->
             val resultDocument = result.data().map { it.document }.getOrNull(0)
             val resultId = resultDocument?.id
@@ -82,7 +82,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             clock.currentTime = DateTime.now().plus(4.hours)
             repository.save(tribeId.with(pairAssignmentDoc))
         } exerciseAsync {
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
@@ -103,7 +103,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             repository.delete(tribeId, id)
         } verifyAsync { result ->
             result.assertIsEqualTo(true)
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
                 .data().map { it.document }
                 .assertIsEqualTo(emptyList())
         }
@@ -131,7 +131,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             repository.save(tribeId.with(pairAssignmentDocument))
         } exerciseAsync {
             repository.save(tribeId.with(updatedDocument))
-            repository.getPairAssignmentRecords(tribeId)
+            repository.getPairAssignments(tribeId)
         } verifyAsync { result ->
             result.data().map { it.document }
                 .assertIsEqualTo(listOf(updatedDocument))

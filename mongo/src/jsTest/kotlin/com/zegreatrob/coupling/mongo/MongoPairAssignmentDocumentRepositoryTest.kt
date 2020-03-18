@@ -3,20 +3,25 @@ package com.zegreatrob.coupling.mongo
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.days
+import com.soywiz.klock.hours
 import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.tribeRecord
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
+import stubPairAssignmentDoc
 import stubSimplePairAssignmentDocument
 import stubTribeId
 import stubUser
@@ -108,7 +113,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
             }) {
                 historyCollection.insert(data).unsafeCast<Promise<Unit>>().await()
             } exerciseAsync {
-                getPairAssignmentRecords(TribeId(tribeId))
+                getPairAssignments(TribeId(tribeId))
             } verifyAsync { result ->
                 result.data().map { it.document }
                     .assertIsEqualTo(
@@ -164,5 +169,32 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
         }
     }
 
+    @Test
+    fun getRecordsWillReturnAllRecordsIncludingRevisionsAndDeletions() = testAsync {
+        val clock = MagicClock()
+        val user = stubUser()
+        withMongoRepository(user = user, clock = clock) {
+            setupAsync(object {
+                val tribeId = stubTribeId()
+                val initialTimestamp = DateTime.now().minus(3.days)
+                val pairAssignmentDocument = stubPairAssignmentDoc()
+                val updatedTimestamp = initialTimestamp.plus(3.hours)
+                val updatedDocument = pairAssignmentDocument.copy(pairs = emptyList())
+            }) {
+                clock.currentTime = initialTimestamp
+                save(tribeId.with(pairAssignmentDocument))
+                clock.currentTime = updatedTimestamp
+                delete(tribeId, pairAssignmentDocument.id!!)
+                save(tribeId.with(updatedDocument))
+            } exerciseAsync {
+                getPairAssignmentRecords(tribeId)
+            } verifyAsync { result ->
+                result.assertContains(tribeRecord(tribeId, pairAssignmentDocument, initialTimestamp, false, user.email))
+                    .assertContains(tribeRecord(tribeId, pairAssignmentDocument, updatedTimestamp, true, user.email))
+                    .assertContains(tribeRecord(tribeId, updatedDocument, updatedTimestamp, false, user.email))
+                    .size.assertIsEqualTo(3)
+            }
+        }
+    }
 
 }

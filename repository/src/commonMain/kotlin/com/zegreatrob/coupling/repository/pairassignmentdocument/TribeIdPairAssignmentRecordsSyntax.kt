@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface TribeIdPairAssignmentRecordsSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentGet
-    suspend fun TribeId.loadPairAssignmentRecords() = pairAssignmentDocumentRepository.getPairAssignmentRecords(this)
+    suspend fun TribeId.loadPairAssignmentRecords() = pairAssignmentDocumentRepository.getPairAssignments(this)
 }

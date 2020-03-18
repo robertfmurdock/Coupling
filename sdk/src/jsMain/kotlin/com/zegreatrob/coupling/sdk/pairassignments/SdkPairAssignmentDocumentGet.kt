@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.sdk.TribeGQLComponent.PairAssignmentDocumentList
 import kotlin.js.Json
 
 interface SdkPairAssignmentDocumentGet : PairAssignmentDocumentGet, GqlQueryComponent {
-    override suspend fun getPairAssignmentRecords(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
+    override suspend fun getPairAssignments(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
         performQueryGetComponent(tribeId, PairAssignmentDocumentList) {
             it.unsafeCast<Array<Json>?>()
                 ?.map { recordJson -> recordJson.recordFor(tribeId.with(recordJson.toPairAssignmentDocument())) }

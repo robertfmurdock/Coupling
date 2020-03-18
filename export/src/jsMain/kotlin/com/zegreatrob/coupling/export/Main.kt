@@ -37,18 +37,22 @@ fun main() {
 private suspend fun MongoRepositoryCatalog.outputTribes() = getTribeRecordList()
     .groupBy { it.data.id }
     .forEach { tribeGroup ->
-        collectTribeData(tribeGroup, this)
+        collectTribeData(this, tribeGroup.key, tribeGroup.value)
             .print()
     }
 
 private suspend fun collectTribeData(
-    tribeGroup: Map.Entry<TribeId, List<Record<Tribe>>>,
-    repositoryCatalog: MongoRepositoryCatalog
+    repositoryCatalog: MongoRepositoryCatalog,
+    tribeId: TribeId,
+    tribeRecords: List<Record<Tribe>>
 ) = json(
-    "tribeId" to tribeGroup.key.value,
-    "tribeRecords" to tribeGroup.value.map { record -> record.toJson().add(record.data.toJson()) }
+    "tribeId" to tribeId.value,
+    "tribeRecords" to tribeRecords.map { record -> record.toJson().add(record.data.toJson()) }
         .toTypedArray(),
-    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeGroup.key).map { record ->
+    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeId).map { record ->
+        record.toJson().add(record.data.element.toJson())
+    },
+    "pairAssignmentRecords" to repositoryCatalog.getPairAssignmentRecords(tribeId).map { record ->
         record.toJson().add(record.data.element.toJson())
     }
 )

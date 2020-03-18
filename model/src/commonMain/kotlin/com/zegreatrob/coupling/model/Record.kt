@@ -15,7 +15,7 @@ fun <T> List<Record<T>>.data() = map { it.data }
 
 typealias TribeRecord<T> = Record<TribeElement<T>>
 
-operator fun <T> TribeRecord<T>.invoke(
+fun <T> tribeRecord(
     tribeId: TribeId,
     data: T,
     timestamp: DateTime = DateTime.now(),
