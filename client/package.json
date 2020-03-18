@@ -31,7 +31,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "es-abstract": "^1.17.4",
     "expect.js": "^0.3.1",
-    "file-loader": "^5.1.0",
+    "file-loader": "^6.0.0",
     "fitty": "^2.3.0",
     "fork-promise": "^2.0.0",
     "fs-extra": "^8.1.0",
@@ -74,7 +74,7 @@
     "text-loader": "0.0.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
-    "url-loader": "^3.0.0",
+    "url-loader": "^4.0.0",
     "webpack": "^4.42.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.11",
@@ -98,7 +98,7 @@
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
-    "minimist": "^1.2.2",
+    "minimist": "^1.2.5",
     "raw-loader": "^4.0.0",
     "react-flip-toolkit": "^7.0.9",
     "react-markdown": "^4.3.1"
