@@ -5,11 +5,12 @@ import kotlin.js.json
 
 interface TribeIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax, DynamoLoggingSyntax {
 
-    suspend fun TribeId.scanForItemList() = logAsync("itemList") { queryForItemList(queryParams()) }
+    suspend fun TribeId.queryForItemList() = logAsync("itemList") { queryForItemList(itemListQueryParams()) }
 
-    suspend fun TribeId.scanForDeletedItemList() = logAsync("getDeleteItems") { queryForDeletedItemList(queryParams()) }
+    suspend fun TribeId.queryForDeletedItemList() =
+        logAsync("getDeleteItems") { queryForDeletedItemList(itemListQueryParams()) }
 
-    private fun TribeId.queryParams() = json(
+    fun TribeId.itemListQueryParams() = json(
         "TableName" to tableName,
         "ExpressionAttributeValues" to json(":tribeId" to value),
         "KeyConditionExpression" to "tribeId = :tribeId"

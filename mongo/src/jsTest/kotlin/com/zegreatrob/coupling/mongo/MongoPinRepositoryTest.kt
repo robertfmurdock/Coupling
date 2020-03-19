@@ -70,9 +70,9 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
             } exerciseAsync {
                 repository.getPinRecords(tribeId)
             } verifyAsync { result ->
-                result.assertContains(tribeRecord(tribeId, pin, initialTimestamp, false, user.email))
-                    .assertContains(tribeRecord(tribeId, pin, initialTimestamp, true, user.email))
-                    .assertContains(tribeRecord(tribeId, updatedPin, updatedTimestamp, false, user.email))
+                result.assertContains(tribeRecord(tribeId, pin, user.email, false, initialTimestamp))
+                    .assertContains(tribeRecord(tribeId, pin, user.email, true, initialTimestamp))
+                    .assertContains(tribeRecord(tribeId, updatedPin, user.email, false, updatedTimestamp))
             }
         }
     }

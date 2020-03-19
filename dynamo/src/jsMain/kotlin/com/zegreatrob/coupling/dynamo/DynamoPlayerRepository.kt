@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.dynamo
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeElement
@@ -16,7 +17,8 @@ import kotlin.js.json
 class DynamoPlayerRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
     PlayerEmailRepository,
     UserEmailSyntax,
-    DynamoPlayerJsonMapping {
+    DynamoPlayerJsonMapping,
+    RecordSyntax {
 
     companion object : DynamoRepositoryCreatorSyntax<DynamoPlayerRepository>, DynamoDBSyntax by DynamoDbProvider,
         TribeCreateTableParamProvider,
@@ -89,7 +91,12 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
             )
     }
 
-    override suspend fun getPlayers(tribeId: TribeId) = tribeId.scanForItemList().map { it.toPlayerRecord() }
+    override suspend fun getPlayers(tribeId: TribeId) = tribeId.queryForItemList().map { it.toPlayerRecord() }
+
+    suspend fun getPlayerRecords(tribeId: TribeId) = tribeId.logAsync("itemList") {
+        performQuery(tribeId.itemListQueryParams()).itemsNode()
+    }.map { it.toPlayerRecord() }
+
 
     private fun Json.toPlayerRecord(): Record<TribeElement<Player>> {
         val player = toPlayer()
@@ -98,19 +105,21 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
 
     private fun Json.tribeId() = TribeId(this["tribeId"].unsafeCast<String>())
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
-        performPutItem(tribeIdPlayer.copy(element = with(tribeIdPlayer.element) {
-            copy(
-                id = id ?: "${uuid4()}"
-            )
-        }).toDynamoJson())
-    }
+    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = saveRawRecord(
+        tribeIdPlayer.copyWithIdCorrection().toRecord()
+    )
+
+    private fun TribeIdPlayer.copyWithIdCorrection() = copy(element = with(element) {
+        copy(id = id ?: "${uuid4()}")
+    })
+
+    suspend fun saveRawRecord(record: TribeRecord<Player>) = performPutItem(record.asDynamoJson())
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(
         playerId, recordJson(now()), tribeId
     )
 
-    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.scanForDeletedItemList()
+    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.queryForDeletedItemList()
         .map { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> =

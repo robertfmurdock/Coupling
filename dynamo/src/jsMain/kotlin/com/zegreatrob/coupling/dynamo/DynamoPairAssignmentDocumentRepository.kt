@@ -30,7 +30,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         tribeIdPairAssignmentDocument.toDynamoJson()
     )
 
-    override suspend fun getPairAssignments(tribeId: TribeId) = tribeId.scanForItemList()
+    override suspend fun getPairAssignments(tribeId: TribeId) = tribeId.queryForItemList()
         .map { it.toRecord(tribeId.with(it.toPairAssignmentDocument())) }
         .sortedByDescending { it.data.document.date }
 

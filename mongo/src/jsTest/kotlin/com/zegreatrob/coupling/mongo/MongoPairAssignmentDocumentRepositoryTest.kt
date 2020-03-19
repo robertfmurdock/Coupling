@@ -189,9 +189,9 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
             } exerciseAsync {
                 getPairAssignmentRecords(tribeId)
             } verifyAsync { result ->
-                result.assertContains(tribeRecord(tribeId, pairAssignmentDocument, initialTimestamp, false, user.email))
-                    .assertContains(tribeRecord(tribeId, pairAssignmentDocument, updatedTimestamp, true, user.email))
-                    .assertContains(tribeRecord(tribeId, updatedDocument, updatedTimestamp, false, user.email))
+                result.assertContains(tribeRecord(tribeId, pairAssignmentDocument, user.email, false, initialTimestamp))
+                    .assertContains(tribeRecord(tribeId, pairAssignmentDocument, user.email, true, updatedTimestamp))
+                    .assertContains(tribeRecord(tribeId, updatedDocument, user.email, false, updatedTimestamp))
                     .size.assertIsEqualTo(3)
             }
         }

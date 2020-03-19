@@ -27,7 +27,7 @@ class DynamoPinRepository private constructor(override val userEmail: String, ov
             .toDynamoJson()
     )
 
-    override suspend fun getPins(tribeId: TribeId) = tribeId.scanForItemList().map {
+    override suspend fun getPins(tribeId: TribeId) = tribeId.queryForItemList().map {
         val pin = it.toPin()
         it.toRecord(tribeId.with(pin))
     }

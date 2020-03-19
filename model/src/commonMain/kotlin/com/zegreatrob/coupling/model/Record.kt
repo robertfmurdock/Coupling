@@ -18,9 +18,9 @@ typealias TribeRecord<T> = Record<TribeElement<T>>
 fun <T> tribeRecord(
     tribeId: TribeId,
     data: T,
-    timestamp: DateTime = DateTime.now(),
+    modifyingUserEmail: String,
     isDeleted: Boolean = false,
-    modifyingUserEmail: String
+    timestamp: DateTime = DateTime.now()
 ) = TribeRecord(TribeElement(tribeId, data), modifyingUserEmail, isDeleted, timestamp)
 
 val <T> TribeRecord<T>.element get() = this.data.element

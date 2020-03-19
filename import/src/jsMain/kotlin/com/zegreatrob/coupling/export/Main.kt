@@ -5,9 +5,12 @@ import com.zegreatrob.coupling.export.external.readline.inputReader
 import com.zegreatrob.coupling.export.external.readline.onEnd
 import com.zegreatrob.coupling.export.external.readline.onNewLine
 import com.zegreatrob.coupling.json.recordFor
+import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.json.toUser
 import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlinx.coroutines.CompletableDeferred
@@ -39,9 +42,15 @@ private fun ReadLine.inputStreamEnd() = CompletableDeferred<Unit>().also { endDe
 }
 
 suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
+    val tribeId = jsonLine["tribeId"].unsafeCast<String>().let(::TribeId)
     jsonLine["tribeRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
         catalog.tribeRepository.saveRawRecord(
             recordJson.recordFor(recordJson.toTribe())
+        )
+    }
+    jsonLine["playerRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
+        catalog.playerRepository.saveRawRecord(
+            recordJson.recordFor(tribeId.with(recordJson.toPlayer()))
         )
     }
 }
