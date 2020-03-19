@@ -88,6 +88,6 @@ fun uuidString() = uuid4().toString()
 var userCounter = 1
 fun stubUser() = User(
     id = uuidString(),
-    email = "$userCounter@gmail.com",
+    email = "$userCounter-${uuidString()}@gmail.com",
     authorizedTribeIds = setOf(stubTribeId())
 ).also { userCounter++ }

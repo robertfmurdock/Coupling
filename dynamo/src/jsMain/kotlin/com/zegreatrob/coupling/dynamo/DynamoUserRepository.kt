@@ -27,7 +27,6 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
 
     private fun <T> T.toRecord() = Record(this, userEmail, false, now())
 
-
     override suspend fun getUser() = documentClient.scan(emailScanParams()).promise().await()
         .itemsNode()
         .sortByRecordTimestamp()
@@ -48,4 +47,3 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
         .map { it.toUserRecord() }
 
 }
-

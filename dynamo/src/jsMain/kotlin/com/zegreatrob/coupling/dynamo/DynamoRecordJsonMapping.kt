@@ -12,7 +12,8 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax,
 
     fun <T> Record<T>.recordJson() = json(
         "timestamp" to timestamp.isoWithMillis(),
-        "modifyingUserEmail" to modifyingUserEmail
+        "modifyingUserEmail" to modifyingUserEmail,
+        "isDeleted" to isDeleted
     )
 
     fun recordJson(timestamp: DateTime) = json(
