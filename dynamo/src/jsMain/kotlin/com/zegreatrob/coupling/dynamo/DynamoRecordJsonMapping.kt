@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax,
-    ClockSyntax {
+interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax, ClockSyntax {
 
     fun <T> Record<T>.recordJson() = json(
         "timestamp" to timestamp.isoWithMillis(),
