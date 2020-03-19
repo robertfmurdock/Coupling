@@ -12,6 +12,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import stubUser
 import uuidString
 import kotlin.test.Test
@@ -69,6 +70,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
             )
         }) exerciseAsync {
             records.forEach { repository.saveRawRecord(it) }
+            delay(15)
         } verifyAsync {
             with(repository.getUserRecords()) {
                 records.forEach { assertContains(it) }
