@@ -1,9 +1,11 @@
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.*
+import com.zegreatrob.coupling.export.external.readline.ReadLine
 import com.zegreatrob.coupling.export.external.readline.inputReader
 import com.zegreatrob.coupling.export.external.readline.onEnd
 import com.zegreatrob.coupling.export.external.readline.onNewLine
 import com.zegreatrob.coupling.json.recordFor
+import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.json.toUser
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.user.User
@@ -23,13 +25,24 @@ fun main() {
         val reader = inputReader()
         reader.onNewLine { line ->
             val jsonLine = JSON.parse<Json>(line)
-            if (jsonLine["userEmail"] != null) {
-                launch { loadUser(jsonLine, catalog.userRepository) }
+            when {
+                jsonLine["userEmail"] != null -> launch { loadUser(jsonLine, catalog.userRepository) }
+                jsonLine["tribeId"] != null -> launch { loadTribeData(jsonLine, catalog) }
             }
         }
-        val endDeferred = CompletableDeferred<Unit>()
-        reader.onEnd { endDeferred.complete(Unit) }
-        endDeferred.await()
+        reader.inputStreamEnd().await()
+    }
+}
+
+private fun ReadLine.inputStreamEnd() = CompletableDeferred<Unit>().also { endDeferred ->
+    onEnd { endDeferred.complete(Unit) }
+}
+
+suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
+    jsonLine["tribeRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
+        catalog.tribeRepository.saveRawRecord(
+            recordJson.recordFor(recordJson.toTribe())
+        )
     }
 }
 

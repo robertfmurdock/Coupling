@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
@@ -13,6 +14,7 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
     DynamoRecordJsonMapping,
     UserEmailSyntax,
     ClockSyntax,
+    RecordSyntax,
     DynamoTribeJsonMapping {
 
     companion object : DynamoTableNameSyntax,
@@ -38,8 +40,15 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
 
     private fun queryParams() = json("TableName" to tableName)
 
-    override suspend fun save(tribe: Tribe) = performPutItem(tribe.asDynamoJson().add(recordJson(now())))
+    override suspend fun save(tribe: Tribe) = performPutItem(tribe.toRecord().asDynamoJson())
 
     override suspend fun delete(tribeId: TribeId) = performDelete(tribeId.value, recordJson(now()))
+
+    suspend fun getTribeRecords() = performScan(queryParams())
+        .itemsNode()
+        .sortByRecordTimestamp()
+        .map { it.toRecord(it.toTribe()) }
+
+    suspend fun saveRawRecord(record: Record<Tribe>) = performPutItem(record.asDynamoJson())
 
 }

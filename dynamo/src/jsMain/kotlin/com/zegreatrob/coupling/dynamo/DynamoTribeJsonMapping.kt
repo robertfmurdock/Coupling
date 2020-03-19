@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoTribeJsonMapping : DynamoDatatypeSyntax {
+interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping {
+
+    fun Record<Tribe>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 
     fun Json.toTribe() = Tribe(
         id = TribeId(getDynamoStringValue("id")!!),
