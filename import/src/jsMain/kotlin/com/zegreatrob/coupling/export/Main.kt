@@ -4,10 +4,7 @@ import com.zegreatrob.coupling.export.external.readline.ReadLine
 import com.zegreatrob.coupling.export.external.readline.inputReader
 import com.zegreatrob.coupling.export.external.readline.onEnd
 import com.zegreatrob.coupling.export.external.readline.onNewLine
-import com.zegreatrob.coupling.json.recordFor
-import com.zegreatrob.coupling.json.toPlayer
-import com.zegreatrob.coupling.json.toTribe
-import com.zegreatrob.coupling.json.toUser
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -43,17 +40,24 @@ private fun ReadLine.inputStreamEnd() = CompletableDeferred<Unit>().also { endDe
 
 suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     val tribeId = jsonLine["tribeId"].unsafeCast<String>().let(::TribeId)
-    jsonLine["tribeRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
+    jsonLine.getArray("tribeRecords").forEach { recordJson ->
         catalog.tribeRepository.saveRawRecord(
             recordJson.recordFor(recordJson.toTribe())
         )
     }
-    jsonLine["playerRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
+    jsonLine.getArray("playerRecords").forEach { recordJson ->
         catalog.playerRepository.saveRawRecord(
             recordJson.recordFor(tribeId.with(recordJson.toPlayer()))
         )
     }
+    jsonLine.getArray("pinRecords").forEach { recordJson ->
+        catalog.pinRepository.saveRawRecord(
+            recordJson.recordFor(tribeId.with(recordJson.toPin()))
+        )
+    }
 }
+
+private fun Json.getArray(attributeName: String) = this[attributeName].unsafeCast<Array<Json>>()
 
 private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepository) {
     println("LOADING USER ${userJson["userEmail"]}")
