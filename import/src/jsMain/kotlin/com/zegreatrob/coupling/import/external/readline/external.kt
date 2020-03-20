@@ -1,7 +1,7 @@
 @file:JsModule("readline")
 @file:JsNonModule
 
-package com.zegreatrob.coupling.export.external.readline
+package com.zegreatrob.coupling.import.external.readline
 
 external fun createInterface(args: dynamic): ReadLine
 

@@ -116,7 +116,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
     suspend fun saveRawRecord(record: TribeRecord<Player>) = performPutItem(record.asDynamoJson())
 
     override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(
-        playerId, recordJson(now()), tribeId
+        playerId, tribeId, now(), { toPlayerRecord() }, { asDynamoJson() }
     )
 
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.queryForDeletedItemList()

@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
@@ -8,18 +10,20 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import kotlin.js.Json
 
 
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userEmail: String,
     override val clock: TimeProvider
 ) :
-    PairAssignmentDocumentRepository, UserEmailSyntax, DynamoPairAssignmentDocumentJsonMapping {
+    PairAssignmentDocumentRepository, UserEmailSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
     companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoItemDeleteSyntax,
+
         TribeIdDynamoItemListGetSyntax,
         DynamoDBSyntax by DynamoDbProvider {
         override val construct = ::DynamoPairAssignmentDocumentRepository
@@ -27,14 +31,33 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     }
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = performPutItem(
-        tribeIdPairAssignmentDocument.toDynamoJson()
+        tribeIdPairAssignmentDocument.toRecord().asDynamoJson()
+    )
+
+    suspend fun saveRawRecord(record: TribeRecord<PairAssignmentDocument>) = performPutItem(
+        record.asDynamoJson()
     )
 
     override suspend fun getPairAssignments(tribeId: TribeId) = tribeId.queryForItemList()
-        .map { it.toRecord(tribeId.with(it.toPairAssignmentDocument())) }
+        .map { toRecord(it) }
         .sortedByDescending { it.data.document.date }
 
     override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
-        performDelete(pairAssignmentDocumentId.value, recordJson(now()), tribeId)
+        performDelete(
+            pairAssignmentDocumentId.value, tribeId, now(), ::toRecord
+        ) { asDynamoJson() }
+
+    suspend fun getRecords(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>> =
+        tribeId.logAsync("getPairAssignmentRecords") {
+                performQuery(tribeId.itemListQueryParams()).itemsNode()
+            }
+            .map { toRecord(it) }
+
+    private fun toRecord(json: Json): TribeRecord<PairAssignmentDocument> = json.toRecord(
+        json.tribeId().with(json.toPairAssignmentDocument())
+    )
+
+    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::TribeId)
+
 
 }

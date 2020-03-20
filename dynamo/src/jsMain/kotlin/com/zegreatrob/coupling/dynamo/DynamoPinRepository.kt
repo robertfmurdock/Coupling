@@ -2,14 +2,16 @@ package com.zegreatrob.coupling.dynamo
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import kotlin.js.json
+import kotlin.js.Json
 
 class DynamoPinRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
     PinRepository,
@@ -38,20 +40,21 @@ class DynamoPinRepository private constructor(override val userEmail: String, ov
     )
 
     override suspend fun getPins(tribeId: TribeId) = tribeId.queryForItemList().map {
-        val pin = it.toPin()
-        it.toRecord(tribeId.with(pin))
+        it.toRecord()
+    }
+
+    private fun Json.toRecord(): Record<TribeElement<Pin>> {
+        val tribeId = this["tribeId"].unsafeCast<String>().let(::TribeId)
+        val pin = toPin()
+        return toRecord(tribeId.with(pin))
     }
 
     override suspend fun deletePin(tribeId: TribeId, pinId: String) = performDelete(
         pinId,
-        now().let {
-            json(
-                "timestamp" to it.isoWithMillis(),
-                "modifyingUserEmail" to userEmail,
-                "timestamp+id" to "${it.isoWithMillis()}+${pinId}"
-            )
-        },
-        tribeId
+        tribeId,
+        now(),
+        { toRecord() },
+        { asDynamoJson() }
     )
 
     suspend fun getPinRecords(tribeId: TribeId) = tribeId.logAsync("itemList") {

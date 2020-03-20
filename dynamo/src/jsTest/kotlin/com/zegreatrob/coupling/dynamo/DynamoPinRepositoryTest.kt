@@ -38,19 +38,16 @@ class DynamoPinRepositoryTest : PinRepositoryValidator {
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val updatedSaveTime2 = initialSaveTime.plus(4.hours)
         }) {
-            println("setup")
             clock.currentTime = initialSaveTime
             repository.save(tribeId.with(pin))
             clock.currentTime = updatedSaveTime
             repository.save(tribeId.with(updatedPin))
             clock.currentTime = updatedSaveTime2
             repository.deletePin(tribeId, pin._id!!)
-            println("save and deletes done")
         } exerciseAsync {
             repository.getPinRecords(tribeId)
         } verifyAsync { result ->
             result
-                .also { println("resuslts ${JSON.stringify(it)}") }
                 .assertContains(Record(tribeId.with(pin), user.email, false, initialSaveTime))
                 .assertContains(Record(tribeId.with(updatedPin), user.email, false, updatedSaveTime))
                 .assertContains(Record(tribeId.with(updatedPin), user.email, true, updatedSaveTime2))

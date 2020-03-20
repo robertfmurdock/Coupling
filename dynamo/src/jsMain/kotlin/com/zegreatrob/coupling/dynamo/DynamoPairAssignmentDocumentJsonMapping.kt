@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.dynamo
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import kotlin.js.Json
 import kotlin.js.json
@@ -9,15 +10,25 @@ import kotlin.js.json
 interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMapping, DynamoPlayerJsonMapping,
     DynamoPinJsonMapping {
 
-    fun TribeIdPairAssignmentDocument.toDynamoJson(): Json {
-        val docId: String? = document.id?.value ?: "${uuid4()}"
-        return tribeId.recordJson(docId).add(json(
+    private fun PairAssignmentDocument.toDynamoJson(): Json {
+        val docId: String? = id?.value ?: "${uuid4()}"
+        return json(
             "id" to docId,
-            "date" to "${document.date.unixMillisLong}",
-            "pairs" to document.pairs.map { it.toDynamoJson() }
+            "date" to "${date.unixMillisLong}",
+            "pairs" to pairs.map { it.toDynamoJson() }
                 .toTypedArray()
-        ))
+        )
     }
+
+    fun Record<TribeIdPairAssignmentDocument>.asDynamoJson() = recordJson()
+        .add(
+            json(
+                "tribeId" to data.tribeId.value,
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}"
+            )
+        )
+        .add(data.element.toDynamoJson())
+
 
     private fun PinnedCouplingPair.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),

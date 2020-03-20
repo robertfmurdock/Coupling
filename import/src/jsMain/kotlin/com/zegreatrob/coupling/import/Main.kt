@@ -1,9 +1,9 @@
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.*
-import com.zegreatrob.coupling.export.external.readline.ReadLine
-import com.zegreatrob.coupling.export.external.readline.inputReader
-import com.zegreatrob.coupling.export.external.readline.onEnd
-import com.zegreatrob.coupling.export.external.readline.onNewLine
+import com.zegreatrob.coupling.import.external.readline.ReadLine
+import com.zegreatrob.coupling.import.external.readline.inputReader
+import com.zegreatrob.coupling.import.external.readline.onEnd
+import com.zegreatrob.coupling.import.external.readline.onNewLine
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -14,7 +14,6 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlin.js.Json
-
 
 val user = User("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet())
 
@@ -53,6 +52,11 @@ suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     jsonLine.getArray("pinRecords").forEach { recordJson ->
         catalog.pinRepository.saveRawRecord(
             recordJson.recordFor(tribeId.with(recordJson.toPin()))
+        )
+    }
+    jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->
+        catalog.pairAssignmentDocumentRepository.saveRawRecord(
+            recordJson.recordFor(tribeId.with(recordJson.toPairAssignmentDocument()))
         )
     }
 }
