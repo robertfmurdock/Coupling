@@ -52,6 +52,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
                 performQuery(tribeId.itemListQueryParams()).itemsNode()
             }
             .map { toRecord(it) }
+            .sortedByDescending { it.timestamp }
 
     private fun toRecord(json: Json): TribeRecord<PairAssignmentDocument> = json.toRecord(
         json.tribeId().with(json.toPairAssignmentDocument())
