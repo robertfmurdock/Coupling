@@ -163,7 +163,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
             labelText = "Name",
             id = "player-name",
             name = "name",
-            value = player.name ?: "",
+            value = player.name,
             type = InputType.text,
             onChange = onChange,
             placeholder = "My name is..."
@@ -176,7 +176,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
             labelText = "Email",
             id = "player-email",
             name = "email",
-            value = player.email ?: "",
+            value = player.email,
             type = InputType.text,
             onChange = onChange,
             placeholder = "email"
@@ -190,7 +190,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
                 labelText = "Call-Sign Adjective",
                 id = "adjective-input",
                 name = "callSignAdjective",
-                value = player.callSignAdjective ?: "",
+                value = player.callSignAdjective,
                 type = InputType.text,
                 onChange = onChange,
                 list = "callSignAdjectiveOptions"
@@ -203,7 +203,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
                 labelText = "Call-Sign Noun",
                 id = "noun-input",
                 name = "callSignNoun",
-                value = player.callSignNoun ?: "",
+                value = player.callSignNoun,
                 type = InputType.text,
                 onChange = onChange,
                 list = "callSignNounOptions"
@@ -226,7 +226,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
                 attrs {
                     id = "badge"
                     name = "badge"
-                    this["value"] = "${player.badge ?: Badge.Default.value}"
+                    this["value"] = "${player.badge}"
                     onChangeFunction = onChange
                 }
                 option {
@@ -234,7 +234,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
                         id = "default-badge-option"
                         key = "${Badge.Default.value}"
                         value = "${Badge.Default.value}"
-                        label = tribe.defaultBadgeName ?: ""
+                        label = tribe.defaultBadgeName
                     }
                 }
                 option {
@@ -242,7 +242,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
                         id = "alt-badge-option"
                         key = "${Badge.Alternate.value}"
                         value = "${Badge.Alternate.value}"
-                        label = tribe.alternateBadgeName ?: ""
+                        label = tribe.alternateBadgeName
                     }
                 }
             }

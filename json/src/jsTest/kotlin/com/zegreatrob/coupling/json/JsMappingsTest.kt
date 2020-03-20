@@ -16,7 +16,9 @@ class JsMappingsTest {
                 "_id" to "599ae087ce362e001a8c1620",
                 "badge" to 1,
                 "name" to "Neal",
-                "email" to "nfebbrar@gmail.com"
+                "email" to "nfebbrar@gmail.com",
+                "callSignAdjective" to "",
+                "callSignNoun" to ""
             )
         }) exercise {
             original.toPlayer().toJson()

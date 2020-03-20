@@ -48,10 +48,9 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
                 id = null,
                 callSignAdjective = "1",
                 callSignNoun = "2",
-                imageURL = null,
-                badge = null,
-                name = null,
-                email = null
+                name = "",
+                email = "",
+                imageURL = null
             )
         }) {
             repository.save(tribeId.with(player))

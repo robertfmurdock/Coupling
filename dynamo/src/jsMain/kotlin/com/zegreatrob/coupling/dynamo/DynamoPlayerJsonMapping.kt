@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.TribeRecord
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.player.tribeId
+import com.zegreatrob.coupling.model.player.*
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -26,11 +23,11 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
 
     fun Json.toPlayer() = Player(
         id = getDynamoStringValue("id"),
-        name = getDynamoStringValue("name"),
-        email = getDynamoStringValue("email"),
-        badge = getDynamoNumberValue("badge")?.toInt(),
-        callSignAdjective = getDynamoStringValue("callSignAdjective"),
-        callSignNoun = getDynamoStringValue("callSignNoun"),
+        name = getDynamoStringValue("name") ?: defaultPlayer.name,
+        email = getDynamoStringValue("email") ?: defaultPlayer.email,
+        badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
+        callSignAdjective = getDynamoStringValue("callSignAdjective") ?: defaultPlayer.callSignAdjective,
+        callSignNoun = getDynamoStringValue("callSignNoun") ?: defaultPlayer.callSignNoun,
         imageURL = getDynamoStringValue("imageURL")
     )
 }
