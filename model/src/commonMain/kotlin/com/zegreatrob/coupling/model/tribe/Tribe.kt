@@ -12,3 +12,5 @@ data class Tribe(
     val animationEnabled: Boolean = true,
     val animationSpeed: Double = 1.0
 )
+
+val defaultTribe = Tribe(TribeId("DEFAULT"))

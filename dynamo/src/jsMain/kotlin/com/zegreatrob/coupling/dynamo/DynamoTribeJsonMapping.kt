@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.defaultTribe
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -15,15 +16,13 @@ interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
         id = TribeId(getDynamoStringValue("id")!!),
         name = getDynamoStringValue("name"),
         email = getDynamoStringValue("email"),
-        pairingRule = PairingRule.fromValue(
-            getDynamoNumberValue("pairingRule")?.toInt()
-        ),
+        pairingRule = getDynamoNumberValue("pairingRule")?.toInt().let { PairingRule.fromValue(it) },
         defaultBadgeName = getDynamoStringValue("defaultBadgeName"),
         alternateBadgeName = getDynamoStringValue("alternateBadgeName"),
-        badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: false,
-        callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: false,
-        animationEnabled = getDynamoBoolValue("animationEnabled") ?: false,
-        animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: 1.0
+        badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: defaultTribe.badgesEnabled,
+        callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: defaultTribe.callSignsEnabled,
+        animationEnabled = getDynamoBoolValue("animationEnabled") ?: defaultTribe.animationEnabled,
+        animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: defaultTribe.animationSpeed
     )
 
     fun Tribe.asDynamoJson() = json(

@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.defaultTribe
 import com.zegreatrob.coupling.mongo.DbRecordDeleteSyntax
 import com.zegreatrob.coupling.mongo.DbRecordLoadSyntax
 import com.zegreatrob.coupling.mongo.DbRecordSaveSyntax
@@ -68,10 +69,10 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
         email = this["email"]?.toString(),
         defaultBadgeName = this["defaultBadgeName"]?.toString(),
         alternateBadgeName = this["alternateBadgeName"]?.toString(),
-        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: false,
-        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: false,
-        animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: true,
-        animationSpeed = this["animationSpeed"]?.unsafeCast<Double>() ?: 1.0
+        badgesEnabled = this["badgesEnabled"]?.unsafeCast<Boolean>() ?: defaultTribe.badgesEnabled,
+        callSignsEnabled = this["callSignsEnabled"]?.unsafeCast<Boolean>() ?: defaultTribe.callSignsEnabled,
+        animationEnabled = this["animationsEnabled"]?.unsafeCast<Boolean>() ?: defaultTribe.animationEnabled,
+        animationSpeed = this["animationSpeed"]?.unsafeCast<Double>() ?: defaultTribe.animationSpeed
     )
 
 }
