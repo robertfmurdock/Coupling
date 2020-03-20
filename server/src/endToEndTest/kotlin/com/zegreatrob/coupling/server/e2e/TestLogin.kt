@@ -14,6 +14,7 @@ object TestLogin : ProtractorSyntax {
             } catch (throwable: Throwable) {
                 println("Failed login attempt $attempt")
                 if (attempt == 3) throw throwable
+                browserGoTo("/")
             }
         }
         clearLogs()
