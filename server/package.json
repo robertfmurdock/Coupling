@@ -49,7 +49,7 @@
     "expect.js": "^0.3.1",
     "file-loader": "^6.0.0",
     "fork-promise": "^2.0.0",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "jasmine-reporters": "^2.3.2",
