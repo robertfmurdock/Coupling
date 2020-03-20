@@ -18,7 +18,8 @@ const PinType = new GraphQLObjectType({
     icon: {type: GraphQLString},
     name: {type: GraphQLString},
     modifyingUserEmail: {type: GraphQLString},
-    timestamp: {type: GraphQLString}
+    timestamp: {type: GraphQLString},
+    isDeleted: {type: GraphQLBoolean}
   }),
 });
 
@@ -34,7 +35,8 @@ const PlayerType = new GraphQLObjectType({
     callSignNoun: {type: GraphQLString},
     imageURL: {type: GraphQLString},
     modifyingUserEmail: {type: GraphQLString},
-    timestamp: {type: GraphQLString}
+    timestamp: {type: GraphQLString},
+    isDeleted: {type: GraphQLBoolean}
   }),
 });
 
@@ -74,7 +76,8 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
       type: new GraphQLList(PinnedPairType)
     },
     modifyingUserEmail: {type: GraphQLString},
-    timestamp: {type: GraphQLString}
+    timestamp: {type: GraphQLString},
+    isDeleted: {type: GraphQLBoolean}
   }),
 });
 
@@ -97,6 +100,7 @@ const TribeType = new GraphQLObjectType({
     animationSpeed: {type: GraphQLFloat},
     modifyingUserEmail: {type: GraphQLString},
     timestamp: {type: GraphQLString},
+    isDeleted: {type: GraphQLBoolean},
     pinList: {
       type: new GraphQLList(PinType),
       resolve: Resolvers.pinList

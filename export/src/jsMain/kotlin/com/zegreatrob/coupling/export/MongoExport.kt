@@ -39,6 +39,7 @@ fun exportWithMongo() {
 
 private suspend fun MongoRepositoryCatalog.outputTribes() = getTribeRecordList()
     .groupBy { it.data.id }
+    .entries.sortedBy { it.key.value }
     .forEach { tribeGroup ->
         collectTribeData(this, tribeGroup.key, tribeGroup.value)
             .print()
@@ -64,11 +65,13 @@ private suspend fun collectTribeData(
 
 private fun Json.print() = println(JSON.stringify(this))
 private suspend fun outputUsers(repositoryCatalog: MongoRepositoryCatalog) {
-    repositoryCatalog.getUserRecords().groupBy { it.data.email }.forEach {
+    repositoryCatalog.getUserRecords()
+        .groupBy { it.data.email }
+        .entries.sortedBy { it.key }.forEach {
         json("userEmail" to it.key,
-                "userRecords" to it.value.map { record ->
-                    record.toJson().add(record.data.toJson())
-                })
+            "userRecords" to it.value.map { record ->
+                record.toJson().add(record.data.toJson())
+            })
             .print()
     }
 }

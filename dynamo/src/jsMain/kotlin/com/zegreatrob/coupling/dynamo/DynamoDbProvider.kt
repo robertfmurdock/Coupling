@@ -23,6 +23,6 @@ object DynamoDbProvider : DynamoDBSyntax {
     }
 
     override val documentClient: DocumentClient by lazy {
-        also { dynamoDB }.let { DocumentClient() }
+        also { dynamoDB }.let { DocumentClient(json("convertEmptyValues" to true)) }
     }
 }

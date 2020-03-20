@@ -23,6 +23,7 @@ fun exportWithDynamo() {
 
 private suspend fun DynamoRepositoryCatalog.outputTribes() = tribeRepository.getTribeRecords()
     .groupBy { it.data.id }
+    .entries.sortedBy { it.key.value }
     .forEach { tribeGroup ->
         collectTribeData(this, tribeGroup.key, tribeGroup.value)
             .print()
@@ -48,13 +49,16 @@ private suspend fun collectTribeData(
 
 private fun Json.print() = println(JSON.stringify(this))
 private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
-    repositoryCatalog.userRepository.getUserRecords().groupBy { it.data.email }.forEach {
-        json("userEmail" to it.key,
-            "userRecords" to it.value.map { record ->
-                record.toJson().add(record.data.toJson())
-            })
-            .print()
-    }
+    repositoryCatalog.userRepository.getUserRecords()
+        .groupBy { it.data.email }
+        .entries.sortedBy { it.key }
+        .forEach {
+            json("userEmail" to it.key,
+                "userRecords" to it.value.map { record ->
+                    record.toJson().add(record.data.toJson())
+                })
+                .print()
+        }
 }
 
 class DynamoRepositoryCatalog private constructor(

@@ -6,7 +6,7 @@ package com.zegreatrob.coupling.dynamo.external
 
 import kotlin.js.Json
 
-external class DocumentClient {
+external class DocumentClient(json: Json?) {
     fun put(params: Json): AwsPromisable<Unit>
     fun scan(params: Json): AwsPromisable<Json>
     fun query(params: Json): AwsPromisable<Json>
