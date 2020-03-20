@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.defaultTribe
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -12,12 +13,12 @@ fun Json.toTribe(): Tribe =
         name = stringValue("name"),
         email = stringValue("email"),
         pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
-        defaultBadgeName = stringValue("defaultBadgeName"),
-        alternateBadgeName = stringValue("alternateBadgeName"),
-        badgesEnabled = this["badgesEnabled"]?.toBoolean() ?: false,
-        callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: false,
-        animationEnabled = this["animationsEnabled"]?.toBoolean() ?: true,
-        animationSpeed = this["animationSpeed"]?.toDouble() ?: 1.0
+        defaultBadgeName = stringValue("defaultBadgeName") ?: defaultTribe.defaultBadgeName,
+        alternateBadgeName = stringValue("alternateBadgeName") ?: defaultTribe.alternateBadgeName,
+        badgesEnabled = this["badgesEnabled"]?.toBoolean() ?: defaultTribe.badgesEnabled,
+        callSignsEnabled = this["callSignsEnabled"]?.toBoolean() ?: defaultTribe.callSignsEnabled,
+        animationEnabled = this["animationsEnabled"]?.toBoolean() ?: defaultTribe.animationEnabled,
+        animationSpeed = this["animationSpeed"]?.toDouble() ?: defaultTribe.animationSpeed
     )
 
 private fun Any.toBoolean() = when (this) {
