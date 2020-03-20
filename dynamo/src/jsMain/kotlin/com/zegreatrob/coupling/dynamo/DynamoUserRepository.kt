@@ -90,13 +90,14 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
                     .itemsNode()
                     .mapNotNull { it.getDynamoStringValue("id") }
             }
-
-            logAsync("get user with id latest revision") {
-                performQuery(queryParams(userIdsWithEmail.first()))
-                    .itemsNode()
-                    .sortByRecordTimestamp()
-                    .lastOrNull()
-                    ?.toUserRecord()
+            userIdsWithEmail.firstOrNull()?.let { userId ->
+                logAsync("get user with id latest revision") {
+                    performQuery(queryParams(userId))
+                        .itemsNode()
+                        .sortByRecordTimestamp()
+                        .lastOrNull()
+                        ?.toUserRecord()
+                }
             }
         }
     }

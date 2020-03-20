@@ -53,8 +53,8 @@ interface PinRepositoryValidator {
         setupAsync(object {
             val pin = Pin(
                 _id = null,
-                name = null,
-                icon = null
+                name = "",
+                icon = ""
             )
         }) {
             repository.save(tribeId.with(pin))

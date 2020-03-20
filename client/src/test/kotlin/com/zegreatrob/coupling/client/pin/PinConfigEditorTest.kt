@@ -60,7 +60,7 @@ class PinConfigEditorTest {
             setupAsync(object : RendererWithStub() {
                 override fun buildScope() = this@withContext
                 val tribe = Tribe(TribeId("dumb tribe"))
-                val pin = Pin(_id = null, name = null)
+                val pin = Pin(_id = null, name = "")
                 val wrapper = shallow(PinConfigEditorProps(tribe, pin, {}, {}))
                 val newName = "pin new name"
                 val newIcon = "pin new icon"

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.defaultPin
 import com.zegreatrob.coupling.model.pin.pin
 import kotlin.js.Json
 import kotlin.js.json
@@ -20,8 +21,8 @@ fun Array<Json>.toPins() = map { it.toPin() }
 
 fun Json.toPin() = Pin(
     _id = this["_id"]?.toString(),
-    name = this["name"]?.toString(),
-    icon = this["icon"]?.toString()
+    name = this["name"]?.toString() ?: defaultPin.name,
+    icon = this["icon"]?.toString() ?: defaultPin.icon
 )
 
 val pinJsonKeys

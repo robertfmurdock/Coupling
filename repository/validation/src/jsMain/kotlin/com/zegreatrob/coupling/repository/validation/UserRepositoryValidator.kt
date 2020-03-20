@@ -26,6 +26,16 @@ interface UserRepositoryValidator {
     }
 
     @Test
+    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = testRepository { repository, user, _ ->
+        setupAsync(object {
+        }) exerciseAsync {
+            repository.getUser()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(null)
+        }
+    }
+
+    @Test
     fun saveUserThenGetWillContainAllSavedValues() = testRepository { repository, user, _ ->
         setupAsync(object {
             val updatedUser = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))

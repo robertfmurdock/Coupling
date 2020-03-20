@@ -102,12 +102,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
         }
     }
 
-    private fun Array<Json>.toPins() = map {
-        Pin(
-            _id = it["id"]?.toString() ?: it["_id"]?.toString(),
-            name = it["name"]?.toString()
-        )
-    }
+    private fun Array<Json>.toPins() = map { it.fromDbToPin() }
 
     private fun List<PinnedPlayer>.toPairs() =
         PinnedCouplingPair(this)
