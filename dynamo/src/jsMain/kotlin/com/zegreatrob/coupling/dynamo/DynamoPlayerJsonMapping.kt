@@ -1,15 +1,23 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.TribeRecord
-import com.zegreatrob.coupling.model.player.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.model.player.player
+import com.zegreatrob.coupling.model.player.tribeId
 import kotlin.js.Json
 import kotlin.js.json
 
 interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJsonMapping {
 
-    fun TribeRecord<Player>.asDynamoJson() = recordJson().add(data.toDynamoJson())
-
-    fun TribeIdPlayer.toDynamoJson() = json("tribeId" to tribeId.value).add(player.toDynamoJson())
+    fun TribeRecord<Player>.asDynamoJson() = recordJson()
+        .add(
+            json(
+                "tribeId" to data.tribeId.value,
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.player.id}"
+            )
+        )
+        .add(data.player.toDynamoJson())
 
     fun Player.toDynamoJson() = nullFreeJson(
         "id" to id,

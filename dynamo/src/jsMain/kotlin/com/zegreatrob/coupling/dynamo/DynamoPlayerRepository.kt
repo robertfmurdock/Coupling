@@ -40,7 +40,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
                         "KeyType" to "HASH"
                     ),
                     json(
-                        "AttributeName" to "timestamp",
+                        "AttributeName" to "timestamp+id",
                         "KeyType" to "RANGE"
                     )
                 ),
@@ -50,7 +50,7 @@ class DynamoPlayerRepository private constructor(override val userEmail: String,
                         "AttributeType" to "S"
                     ),
                     json(
-                        "AttributeName" to "timestamp",
+                        "AttributeName" to "timestamp+id",
                         "AttributeType" to "S"
                     ),
                     json(
