@@ -24,7 +24,7 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
         .add(
             json(
                 "tribeId" to data.tribeId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}"
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id?.value}"
             )
         )
         .add(data.element.toDynamoJson())
