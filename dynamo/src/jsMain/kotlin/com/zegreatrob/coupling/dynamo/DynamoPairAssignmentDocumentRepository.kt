@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -30,7 +31,11 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     }
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) = performPutItem(
-        tribeIdPairAssignmentDocument.toRecord().asDynamoJson()
+        with(tribeIdPairAssignmentDocument) {
+            copy(id, element.copy(id = element.id ?: PairAssignmentDocumentId("${uuid4()}")))
+        }
+            .toRecord()
+            .asDynamoJson()
     )
 
     suspend fun saveRawRecord(record: TribeRecord<PairAssignmentDocument>) = performPutItem(
@@ -48,8 +53,8 @@ class DynamoPairAssignmentDocumentRepository private constructor(
 
     suspend fun getRecords(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>> =
         tribeId.logAsync("getPairAssignmentRecords") {
-                performQuery(tribeId.itemListQueryParams()).itemsNode()
-            }
+            performQuery(tribeId.itemListQueryParams()).itemsNode()
+        }
             .map { toRecord(it) }
             .sortedByDescending { it.timestamp }
 

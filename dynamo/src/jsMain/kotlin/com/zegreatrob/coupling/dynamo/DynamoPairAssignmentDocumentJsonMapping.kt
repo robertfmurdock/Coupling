@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
@@ -10,15 +9,12 @@ import kotlin.js.json
 interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMapping, DynamoPlayerJsonMapping,
     DynamoPinJsonMapping {
 
-    private fun PairAssignmentDocument.toDynamoJson(): Json {
-        val docId: String? = id?.value ?: "${uuid4()}"
-        return json(
-            "id" to docId,
-            "date" to "${date.unixMillisLong}",
-            "pairs" to pairs.map { it.toDynamoJson() }
-                .toTypedArray()
-        )
-    }
+    private fun PairAssignmentDocument.toDynamoJson() = json(
+        "id" to id?.value,
+        "date" to "${date.unixMillisLong}",
+        "pairs" to pairs.map { it.toDynamoJson() }
+            .toTypedArray()
+    )
 
     fun Record<TribeIdPairAssignmentDocument>.asDynamoJson() = recordJson()
         .add(
