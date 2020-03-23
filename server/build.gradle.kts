@@ -1,6 +1,7 @@
 import com.moowork.gradle.node.task.NodeTask
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -19,9 +20,6 @@ node {
 kotlin {
     target {
         nodejs {
-            testTask {
-                enabled = false
-            }
         }
         compilations {
             val endToEndTest by compilations.creating
@@ -48,6 +46,8 @@ kotlin {
     }
 }
 
+val packageJson = loadPackageJson()
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
@@ -61,11 +61,19 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
 
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
+
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-logging"))
     testImplementation("com.zegreatrob.testmints:standard:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
     testImplementation("com.zegreatrob.testmints:async-js:+")
+
+    packageJson.devDependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
 }
 
 tasks {

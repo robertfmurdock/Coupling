@@ -1,5 +1,6 @@
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 import java.io.FileOutputStream
@@ -32,6 +33,8 @@ kotlin {
     }
 }
 
+val packageJson = loadPackageJson()
+
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation(project(":model"))
@@ -50,6 +53,10 @@ dependencies {
     implementation("org.jetbrains:kotlin-react-dom:16.13.0-pre.93-kotlin-1.3.70")
     implementation("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.93-kotlin-1.3.70")
 
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
+    
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
@@ -58,6 +65,10 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:standard:+")
     testImplementation("com.zegreatrob.testmints:async-js:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
+
+    packageJson.devDependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"

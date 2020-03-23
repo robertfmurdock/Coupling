@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Coupling.export.jvmMain" target="1.6" />
+      <module name="Coupling.export.jvmTest" target="1.6" />
+      <module name="Coupling.import.jvmMain" target="1.6" />
+      <module name="Coupling.import.jvmTest" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
