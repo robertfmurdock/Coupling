@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.3.70"
+    id("kotlinx-serialization") version "1.3.71"
 }
 
 kotlin {
@@ -52,8 +52,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
-                implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.6.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.6.1")
             }
         }
 

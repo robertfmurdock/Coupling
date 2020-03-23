@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     kotlin("js")
     id("com.github.node-gradle.node")
-    id("kotlinx-serialization") version "1.3.70"
+    id("kotlinx-serialization") version "1.3.71"
 }
 
 node {

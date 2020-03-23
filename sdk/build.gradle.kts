@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("kotlinx-serialization") version "1.3.70"
+    id("kotlinx-serialization") version "1.3.71"
     id("com.github.node-gradle.node")
 }
 
@@ -147,6 +147,7 @@ tasks {
 
         setArgs(listOf("${compileEndpointTestKotlinJs.outputFile}"))
     }
+
     val check by getting {
         dependsOn(endpointTest)
     }
