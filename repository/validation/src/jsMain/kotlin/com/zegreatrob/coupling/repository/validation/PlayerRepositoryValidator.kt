@@ -162,8 +162,8 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
 
     private fun DateTime.assertIsCloseToNow() {
         val distanceFromNow = DateTime.now() - this
-        (distanceFromNow < 1.seconds)
-            .assertIsEqualTo(true, "Distance from now was $distanceFromNow, but was expected to be < 1")
+        (distanceFromNow < 5.seconds)
+            .assertIsEqualTo(true, "Distance from now was $distanceFromNow, but was expected to be < 5")
     }
 
     @Test
