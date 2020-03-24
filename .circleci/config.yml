@@ -78,6 +78,8 @@ jobs:
       - restore_cache:
           key: coupling-cache-34-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+      - run: "./gradlew yarn"
       - run: "./gradlew compile --no-daemon"
       - run: "./gradlew build check"
       - store_artifacts:
@@ -104,6 +106,8 @@ jobs:
       - restore_cache:
           key: coupling-cache-34-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+      - run: "./gradlew yarn"
       - run: "./gradlew compile --no-daemon"
       - run: "./gradlew build check"
       - store_artifacts:
