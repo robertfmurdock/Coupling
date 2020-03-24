@@ -19,11 +19,7 @@ node {
 
 kotlin {
     target {
-        browser {
-            testTask {
-                enabled = false
-            }
-        }
+        browser {}
     }
 
     sourceSets {
@@ -56,7 +52,7 @@ dependencies {
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
-    
+
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
@@ -66,8 +62,10 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async-js:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
 
+    val ignoredDependencies = listOf("karma", "karma-webpack", "karma-sourcemap-loader", "karma-chrome-launcher")
     packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
+        if (!ignoredDependencies.contains(it.first))
+            testImplementation(npm(it.first, it.second.asText()))
     }
 }
 
@@ -119,20 +117,6 @@ tasks {
         args = listOf("webpack", "--config", "vendor.webpack.config.js")
     }
 
-    val testVendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, processDceKotlinJs, compileKotlinJs, compileTestKotlinJs)
-        mustRunAfter("clean")
-
-        inputs.files(processDceKotlinJs.outputs)
-        inputs.files("node_modules")
-        inputs.file(file("package.json"))
-        inputs.files("${rootProject.buildDir.path}/js/node_modules")
-        inputs.file(file("test/vendor.webpack.config.js"))
-        outputs.dir("build/lib/test-vendor")
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-        args = listOf("webpack", "--config", "test/vendor.webpack.config.js")
-    }
-
     task<YarnTask>("compile") {
         dependsOn(yarn, vendorCompile, processDceKotlinJs, processResources)
         inputs.file(file("package.json"))
@@ -146,33 +130,9 @@ tasks {
         args = listOf("webpack", "--config", "webpack.config.js")
     }
 
-    val karma by creating(YarnTask::class) {
-        dependsOn(
-            yarn,
-            vendorCompile,
-            testVendorCompile,
-            ":action:jsTest",
-            compileTestKotlinJs
-        )
-        inputs.file(file("package.json"))
-        inputs.files(vendorCompile.inputs.files)
-        inputs.dir("test")
-        outputs.dir(file("build/test-results"))
-
-        args = listOf("run", "test", "--silent")
-    }
-
     val updateDependencies by creating(YarnTask::class) {
         dependsOn(yarn)
         args = listOf("run", "ncu", "-u")
-    }
-
-    val test by getting {
-        dependsOn(karma)
-    }
-
-    task<YarnTask>("testWatch") {
-        args = listOf("run", "testWatch")
     }
 
     task<YarnTask>("stats") {
@@ -184,19 +144,6 @@ tasks {
         setExecOverrides(closureOf<ExecSpec> {
             file("build/report").mkdirs()
             standardOutput = FileOutputStream(file("build/report/stats.json"))
-        })
-    }
-
-    task<YarnTask>("testStats") {
-        dependsOn(yarn, testVendorCompile)
-
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-
-        args = listOf("-s", "webpack", "--json", "--profile", "--config", "test/webpack.config.js")
-
-        setExecOverrides(closureOf<ExecSpec> {
-            file("build/report").mkdirs()
-            standardOutput = FileOutputStream(file("build/report/test-stats.json"))
         })
     }
 

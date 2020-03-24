@@ -48,29 +48,10 @@ docker {
 }
 
 tasks {
-    val copyClientTestResults by creating(Copy::class, copyForTask(findByPath(":client:test")) {
-        from("client/build/test-results")
-        into("build/test-output/client")
-    })
-
-    val copyActionTestResults by creating(Copy::class, copyForTask(findByPath(":action:jsTest")) {
-        from("action/build/test-results/jsTest")
-        into("build/test-output/action")
-    })
-
-    val copyServerTestResults by creating(Copy::class, copyForTask(findByPath(":server:serverTest")) {
-        from("server/build/test-results/server")
-        into("build/test-output/server")
-    })
 
     val copyEndpointTestResults by creating(Copy::class, copyForTask(findByPath(":sdk:endpointTest")) {
         from("sdk/build/test-results/jsTest")
         into("build/test-output/endpoint")
-    })
-
-    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":server:server_action:jsTest")) {
-        from("engine/build/test-results/jsTest")
-        into("build/test-output/engine")
     })
 
     val copyEndToEndResults by creating(Copy::class, copyForTask(findByPath(":server:endToEndTest")) {
@@ -85,11 +66,7 @@ tasks {
 
     val copyTestResultsForCircle by creating {
         dependsOn(
-            copyClientTestResults,
-            copyServerTestResults,
             copyEndpointTestResults,
-            copyActionTestResults,
-            copyEngineTestResults,
             copyEndToEndResults,
             copyEndToEndScreenshotResults
         )

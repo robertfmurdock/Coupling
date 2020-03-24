@@ -102,5 +102,8 @@
     "raw-loader": "^4.0.0",
     "react-flip-toolkit": "^7.0.9",
     "react-markdown": "^4.3.1"
+  },
+  "resolutions": {
+    "minimist": "^1.2.5"
   }
 }
