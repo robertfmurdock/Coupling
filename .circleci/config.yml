@@ -14,18 +14,19 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-34-{{ .Branch }}
+          key: coupling-cache-35-{{ .Branch }}
+      - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-cache-34-{{ .Branch }}
+          key: coupling-cache-35-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew compile --no-daemon"
+      - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - run:
           name: Copy test results
@@ -53,7 +54,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-34-{{ .Branch }}
+          key: coupling-cache-35-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -76,11 +77,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-34-{{ .Branch }}
+          key: coupling-cache-35-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
+      - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
-      - run: "./gradlew compile --no-daemon"
+      - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - store_artifacts:
           path: build/test-output
@@ -104,11 +106,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-34-{{ .Branch }}
+          key: coupling-cache-35-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
+      - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
-      - run: "./gradlew compile --no-daemon"
+      - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - store_artifacts:
           path: build/test-output

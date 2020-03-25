@@ -15,7 +15,7 @@ config.module.rules.push({
   loader: 'css-loader',
   options: {
     modules: {
-      context: path.resolve(__dirname, '../../../client/'),
+      context: path.resolve(__dirname, '../../../build/js/packages/Coupling-client/'),
     },
     onlyLocals: true,
   }

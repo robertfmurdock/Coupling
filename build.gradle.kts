@@ -27,7 +27,6 @@ allprojects {
             from("build/reports")
             into("${rootProject.buildDir.path}/test-output/${project.path}")
         }
-
     }
 
     afterEvaluate {
@@ -104,7 +103,7 @@ tasks {
     }
 
     val build by getting {
-        dependsOn(test, ":client:compile", ":server:build")
+        dependsOn(test, ":client:assemble", ":server:build")
     }
 
 }
