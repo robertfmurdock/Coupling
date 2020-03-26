@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="stub-model-js">
-    <output-path>$PROJECT_DIR$/stub-model/build/libs</output-path>
-    <root id="archive" name="stub-model-js.jar">
-      <element id="module-output" name="Coupling.stub-model.jsMain" />
-    </root>
-  </artifact>
-</component>

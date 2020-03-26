@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="test-logging-jvm">
-    <output-path>$PROJECT_DIR$/test-logging/build/libs</output-path>
-    <root id="archive" name="test-logging-jvm.jar">
-      <element id="module-output" name="Coupling.test-logging.jvmMain" />
-    </root>
-  </artifact>
-</component>

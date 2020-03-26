@@ -5,6 +5,7 @@ import kotlin.js.Json
 
 external interface Request {
     val params: Json
+
     val body: dynamic
     val method: String
     val originalUrl: String?
@@ -12,6 +13,7 @@ external interface Request {
     val commandDispatcher: dynamic
     val user: dynamic
     var traceId: Uuid?
+    fun logout()
 }
 
 fun Request.jsonBody() = body.unsafeCast<Json>()

@@ -70,6 +70,7 @@ dependencies {
         "connect-dynamodb",
         "connect-mongo",
         "cookie-parser",
+        "errorhandler",
         "express",
         "express-session",
         "express-statsd",
@@ -77,6 +78,10 @@ dependencies {
         "method-override",
         "monk",
         "on-finished",
+        "passport",
+        "passport-azure-ad",
+        "passport-custom",
+        "passport-local",
         "serve-favicon"
     )
 

@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="core-json-js">
-    <output-path>$PROJECT_DIR$/core-json/build/libs</output-path>
-    <root id="archive" name="core-json-js.jar">
-      <element id="module-output" name="Coupling.core-json.jsMain" />
-    </root>
-  </artifact>
-</component>

@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.dynamo.DynamoDbProvider
+import com.zegreatrob.coupling.logging.initializeJasmineLogging
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.static
+import com.zegreatrob.coupling.server.external.passport.passport
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -56,6 +58,10 @@ external fun onFinished(response: Response, callback: dynamic)
 @JsNonModule
 external fun methodOverride()
 
+@JsModule("errorhandler")
+@JsNonModule
+external fun errorHandler()
+
 @JsModule("cookie-parser")
 @JsNonModule
 external fun cookieParser()
@@ -79,18 +85,41 @@ fun configureExpress(app: Express, userDataService: Json) {
     app.use(static(resourcePath("public"), json("extensions" to arrayOf("json"))))
     app.use(cookieParser())
     app.use(buildSessionHandler())
+    app.use(passport.initialize())
+    app.use(passport.session())
+
+    app.use(logoutOnUnhandledError())
+
+    val inDevelopmentMode = isInDevelopmentMode(app)
+    if (inDevelopmentMode) {
+        app.use(errorHandler())
+    }
+
+    initializeJasmineLogging(inDevelopmentMode)
 }
 
-fun buildSessionHandler(): dynamic {
-    return session(
-        json(
-            "secret" to Config.secret,
-            "resave" to true,
-            "saveUninitialized" to true,
-            "store" to chooseStore()
-        )
-    )
+fun isInDevelopmentMode(app: Express): Boolean {
+    return app.get("env") == "development" || app.get("env") == "test"
 }
+
+private fun logoutOnUnhandledError() =
+    { err: dynamic, request: Request, _: Response, next: (dynamic) -> Unit ->
+        if (err != null) {
+            request.logout()
+            next(err)
+        } else {
+            next(null)
+        }
+    }
+
+fun buildSessionHandler() = session(
+    json(
+        "secret" to Config.secret,
+        "resave" to true,
+        "saveUninitialized" to true,
+        "store" to chooseStore()
+    )
+)
 
 fun chooseStore() = if (Process.getEnv("AWS_SECRET_ACCESS_KEY") != null || Process.getEnv("LOCAL_DYNAMO") != null) {
     newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
