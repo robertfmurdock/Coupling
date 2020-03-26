@@ -70,7 +70,10 @@ dependencies {
         "express",
         "express-ws",
         "express-statsd",
-        "monk"
+        "method-override",
+        "monk",
+        "on-finished",
+        "serve-favicon"
     )
 
     packageJson.dependencies()
