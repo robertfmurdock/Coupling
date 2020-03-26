@@ -1,14 +1,16 @@
 package com.zegreatrob.coupling.server
 
-import kotlin.js.Promise
+import kotlinx.coroutines.*
 
 @JsName("start")
-fun start(): Promise<Unit> {
-    return js("require('./app.ts').start()")
+fun start() = startDeferred.asPromise()
+
+private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
+    println("KT Start.")
 }
 
 fun main() {
-//    MainScope().launch {
-//        start().await()
-//    }
+    MainScope().launch {
+        startDeferred.await()
+    }
 }
