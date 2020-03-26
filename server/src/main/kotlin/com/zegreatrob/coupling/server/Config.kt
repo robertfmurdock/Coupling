@@ -12,6 +12,7 @@ object Config {
         get() = (Process.getEnv("MONGO_CONNECTION")
             ?: "localhost")
 
+    val secret = "maythefourthbewithyou"
     val buildDate: String = "None"
     val gitRev: String = "None"
 }

@@ -3,6 +3,8 @@
 
 package com.zegreatrob.coupling.server.external.express
 
+import kotlin.js.Json
+
 external class Router(params: RouterParams) {
     fun route(path: String): Route
     fun use(path: String, router: Router)
@@ -20,3 +22,4 @@ external interface RouterParams {
     val mergeParams: Boolean
 }
 
+external fun static(path: String, options: Json): dynamic

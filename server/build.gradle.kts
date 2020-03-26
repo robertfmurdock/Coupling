@@ -67,9 +67,13 @@ dependencies {
 
     val includeOnly = listOf(
         "compression",
+        "connect-dynamodb",
+        "connect-mongo",
+        "cookie-parser",
         "express",
-        "express-ws",
+        "express-session",
         "express-statsd",
+        "express-ws",
         "method-override",
         "monk",
         "on-finished",
