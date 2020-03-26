@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.export
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.export.external.monk.MonkDb
-import com.zegreatrob.coupling.export.external.monk.default
+import com.zegreatrob.coupling.mongo.external.monk.MonkDb
+import com.zegreatrob.coupling.mongo.external.monk.default
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe

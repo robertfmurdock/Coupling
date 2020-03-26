@@ -65,6 +65,17 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
 
+
+    val includeOnly = listOf(
+        "express-ws"
+    )
+
+    packageJson.dependencies()
+        .filter { includeOnly.contains(it.first) }
+        .forEach {
+            implementation(npm(it.first, it.second.asText()))
+        }
+
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-logging"))
     testImplementation("com.zegreatrob.testmints:standard:+")
