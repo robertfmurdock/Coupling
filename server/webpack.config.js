@@ -5,7 +5,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const config = {
   mode: "production",
-  entry: path.resolve(jsPath, './app.ts'),
+  entry: path.resolve(jsPath, './src/main/javascript/app.ts'),
   output: {
     path: path.resolve(__dirname, 'build/executable'),
     filename: 'app.js',

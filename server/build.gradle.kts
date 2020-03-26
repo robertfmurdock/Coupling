@@ -27,6 +27,10 @@ kotlin {
     }
 
     sourceSets {
+        val main by getting {
+            resources.srcDir("src/main/javascript")
+        }
+
         val test by getting {
             dependencies {
                 implementation(npm("uuid", "^3.3.2"))
@@ -127,12 +131,10 @@ tasks {
         inputs.file(file("package.json"))
         inputs.file(file("tsconfig.json"))
         inputs.file(file("webpack.config.js"))
-        inputs.dir("config")
-        inputs.dir("lib")
+        inputs.dir("src/main/javascript")
         inputs.dir("public")
         inputs.dir("routes")
         inputs.dir("views")
-        inputs.file("app.ts")
         outputs.dir(file("build/executable"))
         setEnvironment(mapOf("NODE_ENV" to "production"))
         args = listOf("webpack", "--config", "webpack.config.js")

@@ -1,4 +1,4 @@
-const config = require('../config/config');
+const config = require('../src/main/javascript/config/config');
 
 export function index(expressEnv) {
     return function (request, response) {

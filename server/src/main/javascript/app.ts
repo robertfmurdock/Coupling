@@ -30,7 +30,7 @@ export async function start() {
     const userDataService = new UserDataService(couplingDataService.database);
 
     require('./config/express')(app, userDataService);
-    require('./routes/routes')(wsInstance, userDataService, couplingDataService, tempDataService);
+    require('../../../routes/routes')(wsInstance, userDataService, couplingDataService, tempDataService);
 
     return await listen(app);
 }
