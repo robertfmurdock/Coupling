@@ -9,8 +9,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.setupAsync2
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
@@ -18,9 +17,9 @@ import kotlin.test.Test
 class RequestCombineEndpointTest {
 
     @Test
-    fun postPlayersAndPinsThenGet() = testAsync {
-        val sdk = authorizedSdk()
-        setupAsync(object {
+    fun postPlayersAndPinsThenGet() = setupAsync2(contextProvider = withSdk {
+        object {
+            val sdk = it
             val tribe = Tribe(id = TribeId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(
@@ -31,22 +30,22 @@ class RequestCombineEndpointTest {
                 )
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
-        }) {
-            sdk.save(tribe)
-            tribe.id.with(pinsToSave)
-                .forEach { sdk.save(it) }
-            tribe.id.with(playersToSave)
-                .forEach { sdk.save(it) }
-        } exerciseAsync {
-            coroutineScope {
-                val a1 = async { sdk.getPlayers(tribe.id).map { it.data.player } }
-                val a2 = async { sdk.getPins(tribe.id).map { it.data.pin } }
-                a1.await() to a2.await()
-            }
-        } verifyAsync { (players, pins) ->
-            players.assertIsEqualTo(playersToSave)
-            pins.assertIsEqualTo(pinsToSave)
         }
+    }) {
+        sdk.save(tribe)
+        tribe.id.with(pinsToSave)
+            .forEach { sdk.save(it) }
+        tribe.id.with(playersToSave)
+            .forEach { sdk.save(it) }
+    } exercise {
+        coroutineScope {
+            val a1 = async { sdk.getPlayers(tribe.id).map { it.data.player } }
+            val a2 = async { sdk.getPins(tribe.id).map { it.data.pin } }
+            a1.await() to a2.await()
+        }
+    } verify { (players, pins) ->
+        players.assertIsEqualTo(playersToSave)
+        pins.assertIsEqualTo(pinsToSave)
     }
 
 }
