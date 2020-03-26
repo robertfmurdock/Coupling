@@ -8,8 +8,10 @@ object Config {
             ?: "mongodb://localhost/Coupling"
     val tempMongoUrl: String
         get() = "${tempHost}/CouplingTemp"
-
     private val tempHost
         get() = (Process.getEnv("MONGO_CONNECTION")
             ?: "localhost")
+
+    val buildDate: String = "None"
+    val gitRev: String = "None"
 }

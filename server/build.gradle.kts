@@ -65,8 +65,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
 
-
     val includeOnly = listOf(
+        "compression",
+        "express",
         "express-ws",
         "express-statsd",
         "monk"

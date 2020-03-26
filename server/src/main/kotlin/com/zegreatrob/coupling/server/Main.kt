@@ -19,11 +19,21 @@ private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
     val userDataService = userDataService(couplingDataService["usersCollection"])
 
     configureExpress(app, userDataService)
-    app
+
+    val startDeferred = CompletableDeferred<Unit>()
+
+    val port = app.get("port").unsafeCast<Int?>() ?: 0
+    app.listen(port) {
+        logStartup(port, Config.buildDate, Config.gitRev, app.get("env").unsafeCast<String?>() ?: "UNKNOWN")
+        startDeferred.complete(Unit)
+    }
+
+    startDeferred.await()
 }
 
 fun main() {
-    MainScope().launch {
+//    MainScope().launch {
 //        startDeferred.await()
-    }
+//        println("Startup complete")
+//    }
 }

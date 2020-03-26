@@ -1,6 +1,9 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="server">
     <output-path>$PROJECT_DIR$/server/build/libs</output-path>
-    <root id="archive" name="server.jar" />
+    <root id="archive" name="server.jar">
+      <element id="module-output" name="Coupling.server.endToEndTest" />
+      <element id="module-output" name="Coupling.server.main" />
+    </root>
   </artifact>
 </component>

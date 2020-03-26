@@ -17,12 +17,8 @@ fun configureExpress(app: Express, userDataService: Json) {
     app.use(compression())
     app.use(statsd(json("host" to "statsd", "port" to 8125)))
     app.set("port", Config.port)
-    app.set(
-        "views", arrayOf(
-            resourcePath("public"),
-            resourcePath("views")
-        )
-    )
+    app.set("views", arrayOf(resourcePath("public"), resourcePath("views")))
+    app.set("view engine", "pug")
 }
 
 fun resourcePath(directory: String): String {
