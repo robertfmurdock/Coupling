@@ -3,6 +3,8 @@
 
 package com.zegreatrob.coupling.mongo.external.monk
 
+import kotlin.js.Json
+
 external val default: (String) -> MonkDb
 
 external interface MonkDb {
@@ -11,5 +13,6 @@ external interface MonkDb {
 }
 
 external interface MonkCollection {
+    fun createIndex(config: Json)
 
 }

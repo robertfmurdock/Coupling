@@ -67,7 +67,9 @@ dependencies {
 
 
     val includeOnly = listOf(
-        "express-ws"
+        "express-ws",
+        "express-statsd",
+        "monk"
     )
 
     packageJson.dependencies()

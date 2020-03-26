@@ -16,6 +16,9 @@ private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
     val couplingDataService = couplingDataService(Config.mongoUrl)
     val tempDataService = couplingDataService(Config.tempMongoUrl)
 
+    val userDataService = userDataService(couplingDataService["usersCollection"])
+
+    configureExpress(app, userDataService)
     app
 }
 

@@ -10,6 +10,7 @@ fun couplingDataService(mongoUrl: String): Json {
         "playersCollection" to database.get("players"),
         "historyCollection" to database.get("history"),
         "tribesCollection" to database.get("tribes"),
-        "pinCollection" to database.get("pins")
+        "pinCollection" to database.get("pins"),
+        "usersCollection" to database.get("users")
     )
 }

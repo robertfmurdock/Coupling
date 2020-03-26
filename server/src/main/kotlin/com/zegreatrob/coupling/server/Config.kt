@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server
 
 object Config {
+    val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
     val mongoUrl: String
         get() = Process.getEnv("MONGOHQ_URL_MONGOURL")
             ?: Process.getEnv("MONGOHQ_URL")
