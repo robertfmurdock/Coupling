@@ -83,7 +83,7 @@ jobs:
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - run: "./gradlew assemble"
-      - run: "./gradlew build check"
+      - run: "./gradlew build check --no-parallel"
       - store_artifacts:
           path: build/test-output
       - store_test_results:
