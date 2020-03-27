@@ -18,8 +18,8 @@ import kotlin.test.fail
 class FindOrCreateUserActionTest {
 
     @Test
-    fun whenUserDoesNotAlreadyExistWillCreate() = setupAsync2(
-        object : FindOrCreateUserActionDispatcher, UserRepository {
+    fun whenUserDoesNotAlreadyExistWillCreate() =
+        setupAsync2(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
             override val traceId = null
             override val userEmail = "test@test.tes"
@@ -28,15 +28,13 @@ class FindOrCreateUserActionTest {
 
             val saveSpy = SpyData<User, Unit>().apply { spyWillReturn(Unit) }
             override suspend fun save(user: User) = saveSpy.spyFunction(user)
-
+        }) exercise {
+            FindOrCreateUserAction.perform()
+        } verify { result ->
+            result.email.assertIsEqualTo(userEmail)
+            result.authorizedTribeIds.assertIsEqualTo(emptySet())
+            saveSpy.spyReceivedValues.assertContains(result)
         }
-    ) exercise {
-        FindOrCreateUserAction.perform()
-    } verify { result ->
-        result.email.assertIsEqualTo(userEmail)
-        result.authorizedTribeIds.assertIsEqualTo(emptySet())
-        saveSpy.spyReceivedValues.assertContains(result)
-    }
 
     @Test
     fun whenUserWithEmailExistsWillUseExistingUser() = setupAsync2(
