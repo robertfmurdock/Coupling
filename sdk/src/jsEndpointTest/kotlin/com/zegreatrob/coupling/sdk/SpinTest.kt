@@ -14,8 +14,11 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.async.testAsync
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import stubPin
@@ -109,6 +112,38 @@ class SpinTest {
                 )
             )
         }
+    }
+
+
+    @Test
+    fun givenTheLongestPairRuleItWillIgnoreBadgesdfsdfs() = setupAsync2(object : ScopeMint() {
+        val sdk = setupScope.async { authorizedSdk(username = "eT-user-${uuid4()}") }
+        val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
+        val players = fourPlayersTwoDefaultTwoAlternate()
+        val history = listOf(
+            PairAssignmentDocument(
+                date = DateTime(2014, 2, 10), pairs = listOf(
+                    pairOf(players[0], players[3]).withPins(),
+                    pairOf(players[1], players[2]).withPins()
+                )
+            ), PairAssignmentDocument(
+                date = DateTime(2014, 2, 9), pairs = listOf(
+                    pairOf(players[0], players[2]).withPins(),
+                    pairOf(players[1], players[3]).withPins()
+                )
+            )
+        )
+    }) {
+        setupScenario(sdk.await(), tribe, players, history)
+    } exercise {
+        sdk.await().requestSpin(tribe.id, players, emptyList())
+    } verify { result ->
+        result.pairs.assertIsEqualTo(
+            listOf(
+                pairOf(players[0], players[1]).withPins(),
+                pairOf(players[2], players[3]).withPins()
+            )
+        )
     }
 
     class WhenPinExists {

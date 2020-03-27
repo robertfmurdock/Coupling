@@ -17,6 +17,7 @@ import stubTribe
 import stubUser
 import kotlin.test.Test
 
+@Suppress("unused")
 val setJasmineTimeout = js("jasmine.DEFAULT_TIMEOUT_INTERVAL=10000")
 
 class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
