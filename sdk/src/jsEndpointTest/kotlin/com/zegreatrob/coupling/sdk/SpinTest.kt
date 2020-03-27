@@ -82,41 +82,7 @@ class SpinTest {
     }
 
     @Test
-    fun givenTheLongestPairRuleItWillIgnoreBadges() = testAsync {
-        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
-            val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
-            val players = fourPlayersTwoDefaultTwoAlternate()
-            val history = listOf(
-                PairAssignmentDocument(
-                    date = DateTime(2014, 2, 10), pairs = listOf(
-                        pairOf(players[0], players[3]).withPins(),
-                        pairOf(players[1], players[2]).withPins()
-                    )
-                ), PairAssignmentDocument(
-                    date = DateTime(2014, 2, 9), pairs = listOf(
-                        pairOf(players[0], players[2]).withPins(),
-                        pairOf(players[1], players[3]).withPins()
-                    )
-                )
-            )
-        }) {
-            setupScenario(sdk, tribe, players, history)
-        } exerciseAsync {
-            sdk.requestSpin(tribe.id, players, emptyList())
-        } verifyAsync { result ->
-            result.pairs.assertIsEqualTo(
-                listOf(
-                    pairOf(players[0], players[1]).withPins(),
-                    pairOf(players[2], players[3]).withPins()
-                )
-            )
-        }
-    }
-
-
-    @Test
-    fun givenTheLongestPairRuleItWillIgnoreBadgesdfsdfs() = setupAsync2(object : ScopeMint() {
+    fun givenTheLongestPairRuleItWillIgnoreBadges() = setupAsync2(object : ScopeMint() {
         val sdk = setupScope.async { authorizedSdk(username = "eT-user-${uuid4()}") }
         val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
