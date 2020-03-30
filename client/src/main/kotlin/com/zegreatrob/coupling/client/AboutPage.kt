@@ -7,9 +7,13 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import kotlinx.css.*
 import kotlinx.html.DIV
-import react.dom.RDOMBuilder
-import react.dom.div
+import react.RBuilder
+import react.dom.*
+import styled.css
+import styled.styledDiv
+import styled.styledSpan
 
 object AboutPage : FRComponent<PageProps>(provider()) {
 
@@ -18,10 +22,24 @@ object AboutPage : FRComponent<PageProps>(provider()) {
     override fun render(props: PageProps) = reactElement {
         div(classes = styles.className) {
             div(classes = styles["content"]) {
+                backButtonSection()
                 markdown(loadMarkdown("About"))
                 playerHeader()
             }
         }
+    }
+
+    private fun RDOMBuilder<DIV>.backButtonSection() = styledDiv {
+        css { position = Position.relative }
+        styledSpan {
+            css { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
+            backButton()
+        }
+    }
+
+    private fun RBuilder.backButton() = a(href = "/tribes", classes = "large blue button") {
+        i(classes = "fa fa-step-backward") {}
+        span { +"Back to Coupling!" }
     }
 
     private fun RDOMBuilder<DIV>.playerHeader() = div {

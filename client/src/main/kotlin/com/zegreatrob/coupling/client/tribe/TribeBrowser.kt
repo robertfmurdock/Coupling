@@ -40,7 +40,7 @@ object TribeBrowser : FRComponent<TribeBrowserProps>(provider()) {
 
     private fun RBuilder.logoutButton() = a(href = "/logout", classes = "large red button") {
         attrs { classes += styles["logoutButton"] }
-        i(classes = "fa fa-sign-out") {}
+        i(classes = "fa fa-sign-out-alt") {}
         span { +"Sign Out" }
     }
 
