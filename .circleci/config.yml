@@ -26,8 +26,8 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew assemble"
-      - run: "./gradlew build check"
+      - run: "./gradlew assemble --no-parallel"
+      - run: "./gradlew build check --no-parallel"
       - run:
           name: Copy test results
           command: |
