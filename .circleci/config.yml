@@ -63,7 +63,7 @@ jobs:
     environment:
       AWS_DEFAULT_REGION: us-east-1
     steps:
-      - run: "aws ecs update-service --service Coupling-service --force-new-deployment"
+      - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
   update-client:
     docker:
       - image: circleci/openjdk:9-jdk
