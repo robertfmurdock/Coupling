@@ -41,14 +41,9 @@ class PinConfigE2ETest {
     }
 
     private suspend fun PinConfigPage.waitForPinNameToAppear(newPinName: String) = browser.wait({
-        val scope = MainScope()
-        try {
-            scope.async { pinBagPinNames().contains(newPinName) }
-        } catch (bad: Throwable) {
-            scope.async { false }
-        }.asPromise()
-    }, 2000, "PinConfigPage.waitForLoad").await()
-
+        MainScope().async { pinBagPinNames().contains(newPinName) }
+            .asPromise().then({ it }) { false }
+    }, 2000, "PinConfigPage.waitForPinNameToAppear").await()
 
     class WhenThePinExists {
 
