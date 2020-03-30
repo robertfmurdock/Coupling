@@ -26,19 +26,13 @@ object AboutPage : FRComponent<PageProps>(provider()) {
 
     private fun RDOMBuilder<DIV>.playerHeader() = div {
         val tribeId = TribeId("developers")
-        playerCard(
-            PlayerCardProps(
-                tribeId,
-                Player("1", name = "RoB", imageURL = "/images/icons/players/robcard.small.png"),
-                className = listOf(styles["player"], styles["left"]).joinToString(" ")
+        listOf(
+            "left" to Player("1", name = "RoB", imageURL = "/images/icons/players/robcard.small.png"),
+            "right" to Player("2", name = "Autumn", imageURL = "/images/icons/players/autumncard.small.png")
+        ).forEach { (side, player) ->
+            playerCard(
+                PlayerCardProps(tribeId, player, className = listOf(styles["player"], styles[side]).joinToString(" "))
             )
-        )
-        playerCard(
-            PlayerCardProps(
-                tribeId,
-                Player("2", name = "Autumn", imageURL = "/images/icons/players/autumncard.small.png"),
-                className = listOf(styles["player"], styles["right"]).joinToString(" ")
-            )
-        )
+        }
     }
 }
