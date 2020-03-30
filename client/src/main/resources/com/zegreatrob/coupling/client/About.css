@@ -5,3 +5,9 @@
     background-color: hsla(0, 0%, 80%, 1);
     padding: 0 42px 42px;
 }
+
+:local(.className) :local(.content) {
+    width: 40em;
+    background-color: floralwhite;
+    border-radius: 50px;
+}

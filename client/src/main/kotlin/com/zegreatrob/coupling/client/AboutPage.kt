@@ -11,7 +11,7 @@ object AboutPage : FRComponent<PageProps>(provider()) {
 
     override fun render(props: PageProps) = reactElement {
         div(classes = styles.className) {
-            div {
+            div(classes = styles["content"]) {
                 markdown(loadMarkdown("About"))
             }
         }
