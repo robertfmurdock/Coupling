@@ -117,18 +117,8 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
 
     suspend fun saveRawRecord(record: Record<User>) = performPutItem(record.asDynamoJson())
 
-    suspend fun getUserRecords() = scanRecords()
+    suspend fun getUserRecords() = scanAllRecords()
         .sortByRecordTimestamp()
         .map { it.toUserRecord() }
-
-    private suspend fun scanRecords(): Array<Json> = performScan(json("TableName" to tableName))
-        .continueScan()
-
-    private suspend fun Json.continueScan(): Array<Json> = if (this["LastEvaluatedKey"] != null) {
-        itemsNode() + performScan(
-            json("TableName" to tableName, "ExclusiveStartKey" to this["LastEvaluatedKey"])
-        ).continueScan()
-    } else
-        itemsNode()
 
 }

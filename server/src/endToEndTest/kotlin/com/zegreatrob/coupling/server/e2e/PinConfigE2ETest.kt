@@ -11,10 +11,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.await
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -33,17 +30,24 @@ class PinConfigE2ETest {
         } exerciseAsync {
             with(PinConfigPage) {
                 saveButton.performClick()
-                delay(50)
-                waitForLoad()
             }
         } verifyAsync {
             with(PinConfigPage) {
-                pinBag.waitToBePresent()
+                waitForPinNameToAppear(newPinName)
                 pinBagPinNames()
                     .assertContains(newPinName)
             }
         }
     }
+
+    private suspend fun PinConfigPage.waitForPinNameToAppear(newPinName: String) = browser.wait({
+        val scope = MainScope()
+        try {
+            scope.async { pinBagPinNames().contains(newPinName) }.asPromise()
+        } catch (bad: Throwable) {
+            scope.async { false }.asPromise()
+        }
+    }, 2000, "PinConfigPage.waitForLoad").await()
 
 
     class WhenThePinExists {

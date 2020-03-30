@@ -51,8 +51,7 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
         { asDynamoJson() }
     )
 
-    suspend fun getTribeRecords() = performScan(queryParams())
-        .itemsNode()
+    suspend fun getTribeRecords() = scanAllRecords()
         .sortByRecordTimestamp()
         .map { it.asTribeRecord() }
 
