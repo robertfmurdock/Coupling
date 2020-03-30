@@ -2,7 +2,13 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
+import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.TribeId
+import kotlinx.html.DIV
+import react.dom.RDOMBuilder
 import react.dom.div
 
 object AboutPage : FRComponent<PageProps>(provider()) {
@@ -13,7 +19,26 @@ object AboutPage : FRComponent<PageProps>(provider()) {
         div(classes = styles.className) {
             div(classes = styles["content"]) {
                 markdown(loadMarkdown("About"))
+                playerHeader()
             }
         }
+    }
+
+    private fun RDOMBuilder<DIV>.playerHeader() = div {
+        val tribeId = TribeId("developers")
+        playerCard(
+            PlayerCardProps(
+                tribeId,
+                Player("1", name = "RoB", imageURL = "/images/icons/players/robcard.small.png"),
+                className = listOf(styles["player"], styles["left"]).joinToString(" ")
+            )
+        )
+        playerCard(
+            PlayerCardProps(
+                tribeId,
+                Player("2", name = "Autumn", imageURL = "/images/icons/players/autumncard.small.png"),
+                className = listOf(styles["player"], styles["right"]).joinToString(" ")
+            )
+        )
     }
 }

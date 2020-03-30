@@ -11,3 +11,13 @@
     background-color: floralwhite;
     border-radius: 50px;
 }
+
+:local(.player):local(.left) {
+    position: relative;
+    transform: rotate(-8deg);
+}
+
+:local(.player):local(.right) {
+    position: relative;
+    transform: rotate(8deg);
+}
