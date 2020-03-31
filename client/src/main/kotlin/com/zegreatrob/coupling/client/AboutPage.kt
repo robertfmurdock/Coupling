@@ -23,7 +23,7 @@ object AboutPage : FRComponent<PageProps>(provider()) {
         div(classes = styles.className) {
             div(classes = styles["content"]) {
                 backButtonSection()
-                markdown(loadMarkdown("About"))
+                markdown(loadMarkdownString("About"))
                 playerHeader()
             }
         }
