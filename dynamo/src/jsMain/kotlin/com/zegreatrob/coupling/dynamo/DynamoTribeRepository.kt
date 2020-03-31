@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.Json
-import kotlin.js.json
 
 class DynamoTribeRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
     TribeRepository,
@@ -34,12 +33,12 @@ class DynamoTribeRepository private constructor(override val userEmail: String, 
     override suspend fun getTribeRecord(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)
         ?.let { it.toRecord(it.toTribe()) }
 
-    override suspend fun getTribes() = performScan(queryParams())
-        .fullList()
+    override suspend fun getTribes() = scanAllRecords()
         .map { it.toRecord(it.toTribe()) }
+        .sortedBy { it.timestamp }
+        .groupBy { it.data.id }
+        .map { it.value.last() }
         .filterNot { it.isDeleted }
-
-    private fun queryParams() = json("TableName" to tableName)
 
     override suspend fun save(tribe: Tribe) = performPutItem(tribe.toRecord().asDynamoJson())
 
