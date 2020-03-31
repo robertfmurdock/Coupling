@@ -62,6 +62,7 @@ jobs:
       - image: mikesir87/aws-cli
     environment:
       AWS_DEFAULT_REGION: us-east-1
+      AWS_PAGER: ""
     steps:
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
   update-client:
