@@ -58,6 +58,9 @@ object TribeBrowser : FRComponent<TribeBrowserProps>(provider()) {
                             "*" {
                                 verticalAlign = VerticalAlign.baseline
                             }
+                            marginLeft = 15.px
+                            marginRight = 15.px
+                            marginBottom = 15.px
                         }
                         markdown(loadMarkdownString("recent-info"))
                     }
