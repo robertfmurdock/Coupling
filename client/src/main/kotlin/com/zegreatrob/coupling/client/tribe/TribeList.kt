@@ -3,9 +3,11 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.classes
+import react.RBuilder
 import react.RProps
-import react.dom.a
+import react.dom.button
 import react.dom.div
+import react.router.dom.navLink
 
 object TribeList : RComponent<TribeListProps>(provider()), TribeListBuilder
 
@@ -23,21 +25,27 @@ interface TribeListBuilder : StyledComponentRenderer<TribeListProps, TribeListCs
     override fun StyledRContext<TribeListProps, TribeListCss>.render() = with(props) {
         reactElement {
             div(classes = styles.className) {
+                div { aboutButton() }
                 div {
                     tribes.forEach { tribe ->
                         tribeCard(TribeCardProps(tribe, pathSetter = pathSetter), key = tribe.id.value)
                     }
                 }
                 div {
-                    a(href = "/new-tribe/", classes = "super green button") {
-                        attrs {
-                            classes += styles.newTribeButton
-                            type = "button"
-                        }
-                        +"Add a new tribe!"
-                    }
+                    newTribeButton(styles.newTribeButton)
                 }
             }
+        }
+    }
+
+    private fun RBuilder.aboutButton() = navLink(to = "/about") {
+        button(classes = "super orange button") { +"About Coupling" }
+    }
+
+    private fun RBuilder.newTribeButton(className: String) = navLink(to = "/new-tribe/") {
+        button(classes = "super green button") {
+            attrs { classes += className }
+            +"Add a new tribe!"
         }
     }
 

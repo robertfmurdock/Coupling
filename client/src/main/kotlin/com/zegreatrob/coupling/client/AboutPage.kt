@@ -11,6 +11,7 @@ import kotlinx.css.*
 import kotlinx.html.DIV
 import react.RBuilder
 import react.dom.*
+import react.router.dom.navLink
 import styled.css
 import styled.styledDiv
 import styled.styledSpan
@@ -37,9 +38,11 @@ object AboutPage : FRComponent<PageProps>(provider()) {
         }
     }
 
-    private fun RBuilder.backButton() = a(href = "/tribes", classes = "large blue button") {
-        i(classes = "fa fa-step-backward") {}
-        span { +"Back to Coupling!" }
+    private fun RBuilder.backButton() = navLink(to = "/tribes") {
+        button(classes = "large blue button") {
+            i(classes = "fa fa-step-backward") {}
+            span { +"Back to Coupling!" }
+        }
     }
 
     private fun RDOMBuilder<DIV>.playerHeader() = div {
