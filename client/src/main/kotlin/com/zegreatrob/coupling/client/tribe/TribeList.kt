@@ -9,32 +9,22 @@ import react.dom.button
 import react.dom.div
 import react.router.dom.navLink
 
-object TribeList : RComponent<TribeListProps>(provider()), TribeListBuilder
-
 data class TribeListProps(val tribes: List<Tribe>, val pathSetter: (String) -> Unit) : RProps
 
-interface TribeListCss {
-    val className: String
-    val newTribeButton: String
-}
+object TribeList : FRComponent<TribeListProps>(provider()) {
 
-interface TribeListBuilder : StyledComponentRenderer<TribeListProps, TribeListCss> {
+    val styles = useStyles("tribe/TribeList")
 
-    override val componentPath: String get() = "tribe/TribeList"
-
-    override fun StyledRContext<TribeListProps, TribeListCss>.render() = with(props) {
-        reactElement {
-            div(classes = styles.className) {
-                div { aboutButton() }
-                div {
-                    tribes.forEach { tribe ->
-                        tribeCard(TribeCardProps(tribe, pathSetter = pathSetter), key = tribe.id.value)
-                    }
-                }
-                div {
-                    newTribeButton(styles.newTribeButton)
+    override fun render(props: TribeListProps) = reactElement {
+        val (tribes, pathSetter) = props
+        div(classes = styles.className) {
+            div { aboutButton() }
+            div {
+                tribes.forEach { tribe ->
+                    tribeCard(TribeCardProps(tribe, pathSetter = pathSetter), key = tribe.id.value)
                 }
             }
+            div { newTribeButton(styles["newTribeButton"]) }
         }
     }
 
