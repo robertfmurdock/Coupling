@@ -95,7 +95,7 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
             }
         }
     } else {
-        val email = player.email ?: player.name ?: ""
+        val email = player.email
         gravatarImage(
             email = email,
             className = styles.playerIcon,
@@ -122,7 +122,7 @@ interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCar
             }
             div {
                 attrs { ref = playerNameRef }
-                +(if (player.name.isNullOrBlank()) "Unknown" else player.name!!)
+                +(if (player.name.isBlank()) "Unknown" else player.name)
             }
         }
     }

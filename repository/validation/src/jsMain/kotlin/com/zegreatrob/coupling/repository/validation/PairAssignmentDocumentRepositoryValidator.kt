@@ -16,7 +16,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 

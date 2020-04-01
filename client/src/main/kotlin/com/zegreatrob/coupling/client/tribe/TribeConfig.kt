@@ -217,7 +217,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
             labelText = "Alt Badge Name",
             id = "alt-badge-name",
             name = "alternateBadgeName",
-            value = tribe.alternateBadgeName ?: "",
+            value = tribe.alternateBadgeName,
             type = InputType.text,
             onChange = onChange
         )
@@ -231,7 +231,7 @@ interface TribeConfigBuilder : ScopedStyledComponentRenderer<TribeConfigProps, T
             labelText = "Default Badge Name",
             id = "default-badge-name",
             name = "defaultBadgeName",
-            value = tribe.defaultBadgeName ?: "",
+            value = tribe.defaultBadgeName,
             type = InputType.text,
             onChange = onChange
         )

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
+import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -29,7 +30,7 @@ class SavePlayerCommandTest {
                 email = "tim@tim.meat",
                 imageURL = "italian.jpg"
             )
-            override val traceId = null
+            override val traceId: Uuid? = null
             override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
         }) exerciseAsync {
             SavePlayerCommand(tribe.with(player))

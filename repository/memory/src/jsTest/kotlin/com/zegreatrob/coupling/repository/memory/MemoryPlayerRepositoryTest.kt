@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import stubTribeId
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
 
 @Suppress("unused")
 class MemoryPlayerRepositoryTest : PlayerEmailRepositoryValidator<MemoryPlayerRepository> {

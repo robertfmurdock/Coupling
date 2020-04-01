@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
-import stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import kotlin.test.Test
 
 interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>

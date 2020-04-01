@@ -14,8 +14,8 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import stubPlayer
-import stubPlayers
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayers
 import kotlin.test.Test
 
 interface PlayerRepositoryValidator<T : PlayerRepository> {

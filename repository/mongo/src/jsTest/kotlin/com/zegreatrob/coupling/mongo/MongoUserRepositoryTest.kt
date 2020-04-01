@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/UsersRepositoryTest"

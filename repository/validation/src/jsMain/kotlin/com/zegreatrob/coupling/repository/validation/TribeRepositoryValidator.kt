@@ -9,8 +9,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import stubTribe
-import stubTribes
+import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubTribes
 import kotlin.test.Test
 
 interface TribeRepositoryValidator {

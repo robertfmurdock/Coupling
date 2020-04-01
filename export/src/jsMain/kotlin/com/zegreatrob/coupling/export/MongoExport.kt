@@ -27,7 +27,7 @@ fun exportWithMongo() {
         jsRepo.get("userCollection"),
         jsRepo,
         user
-    );
+    )
 
     MainScope().launch {
         outputUsers(repositoryCatalog)

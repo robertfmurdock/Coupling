@@ -15,7 +15,7 @@ import kotlin.test.Test
 class CalculateHeatMapCommandTest {
 
     companion object : CalculateHeatMapActionDispatcher, AssignPinsActionDispatcher {
-        override val traceId = null
+        override val traceId: Nothing? = null
 
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(

@@ -10,7 +10,7 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
-import stubTribe
+import com.zegreatrob.coupling.stubmodel.stubTribe
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -24,6 +24,8 @@ external interface WS {
 }
 
 class WebsocketTest {
+
+    private fun AuthorizedSdk.baseUrl() = URL(axios.defaults.baseURL.unsafeCast<String>())
 
     @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = testAsync {
@@ -139,7 +141,7 @@ class WebsocketTest {
         val sdk = authorizedSdk()
         setupAsync(object {
         }) exerciseAsync {
-            val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
+            val baseUrl = sdk.baseUrl()
             val host = baseUrl.host
             val url = "ws://$host/api/${TribeId("whoops").value}/pairAssignments/current"
             val socket = newWebsocket(url, json())
@@ -174,7 +176,7 @@ class WebsocketTest {
         val sdk = authorizedSdk()
         setupAsync(object {
         }) exerciseAsync {
-            val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
+            val baseUrl = sdk.baseUrl()
             val host = baseUrl.host
             val url = "ws://$host/api/404WTF"
             val socket = newWebsocket(url, json())

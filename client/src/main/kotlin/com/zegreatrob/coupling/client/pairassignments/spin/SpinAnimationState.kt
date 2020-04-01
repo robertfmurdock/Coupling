@@ -45,7 +45,7 @@ object Start : SpinAnimationState() {
 
 object End : SpinAnimationState() {
     override fun toString() = "End"
-    override fun next(pairAssignments: PairAssignmentDocument) = null
+    override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState? = null
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
         rosterPlayers = emptyList(),
         revealedPairs = emptyList(),

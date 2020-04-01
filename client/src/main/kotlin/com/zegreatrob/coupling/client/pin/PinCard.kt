@@ -31,7 +31,7 @@ object PinCard : FRComponent<PinCardProps>(provider()) {
             div(styles.className) {
                 pinButton(pin, key = null, showTooltip = false)
                 div(classes = "pin-name") {
-                    +(pin.name ?: "Unnamed pin")
+                    +pin.name
                 }
             }
         }

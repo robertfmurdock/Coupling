@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.await
-import uuidString
+import com.zegreatrob.coupling.stubmodel.uuidString
 import kotlin.js.json
 
 external val process: dynamic

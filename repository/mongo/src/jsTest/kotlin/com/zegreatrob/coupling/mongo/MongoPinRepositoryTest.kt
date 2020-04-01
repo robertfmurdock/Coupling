@@ -17,9 +17,9 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
-import stubPin
-import stubTribeId
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.js.Promise
 import kotlin.test.Test
 

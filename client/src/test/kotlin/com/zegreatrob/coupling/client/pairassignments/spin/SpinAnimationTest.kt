@@ -13,9 +13,9 @@ import com.zegreatrob.testmints.setup
 import findByClass
 import findComponent
 import shallow
-import stubPairAssignmentDoc
-import stubPlayer
-import stubTribe
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubTribe
 import kotlin.test.Test
 
 class SpinAnimationTest {

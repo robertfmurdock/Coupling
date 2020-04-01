@@ -39,14 +39,14 @@ interface PlayersQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax,
     }
 
     private fun Player.withCallSign(callSign: CallSign) = copy(
-        callSignAdjective = callSignAdjective ?: callSign.adjective,
-        callSignNoun = callSignNoun ?: callSign.noun
+        callSignAdjective = callSignAdjective,
+        callSignNoun = callSignNoun
     )
 
     private fun findCallSign(updatedPlayers: List<Player>, players: List<Player>, index: Int, player: Player) =
         FindCallSignAction(
             players = playersWithNamesSoFar(updatedPlayers, players, index),
-            email = player.email ?: player.id ?: ""
+            email = player.email
         )
             .perform()
 

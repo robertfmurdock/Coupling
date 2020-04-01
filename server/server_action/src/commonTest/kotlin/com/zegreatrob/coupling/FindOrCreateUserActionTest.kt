@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling
 
 import SpyData
+import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
@@ -21,7 +22,7 @@ class FindOrCreateUserActionTest {
     fun whenUserDoesNotAlreadyExistWillCreate() =
         setupAsync2(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
-            override val traceId = null
+            override val traceId: Uuid? = null
             override val userEmail = "test@test.tes"
 
             override suspend fun getUser(): Nothing? = null

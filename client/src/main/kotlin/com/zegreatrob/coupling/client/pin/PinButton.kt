@@ -50,7 +50,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
             }
 
             if (props.showTooltip) {
-                span(classes = styles["tooltip"]) { +(pin.name ?: "") }
+                span(classes = styles["tooltip"]) { +pin.name }
             }
             i(scale.faTag) { attrs { classes += targetIcon(pin) } }
         }
@@ -66,7 +66,7 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
     }
 
     private fun targetIcon(pin: Pin): String {
-        var targetIcon = if (pin.icon.isNullOrEmpty()) "fa-skull" else pin.icon!!
+        var targetIcon = if (pin.icon.isEmpty()) "fa-skull" else pin.icon
         if (!targetIcon.startsWith("fa")) {
             targetIcon = "fa-$targetIcon"
         }

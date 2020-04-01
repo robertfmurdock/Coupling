@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubTribe
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.test.Test
 
 class CompoundTribeRepositoryTest : TribeRepositoryValidator {

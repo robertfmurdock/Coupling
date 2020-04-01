@@ -12,8 +12,8 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import stubUser
-import uuidString
+import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
 import kotlin.test.Test
 
 @Suppress("unused")

@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import stubPairAssignmentDoc
-import stubPin
-import stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import kotlin.test.Test
 
 class AssignPinsActionTest {

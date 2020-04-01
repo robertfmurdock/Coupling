@@ -10,7 +10,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubTribeId
 import kotlin.test.Test
 import kotlin.test.fail
 

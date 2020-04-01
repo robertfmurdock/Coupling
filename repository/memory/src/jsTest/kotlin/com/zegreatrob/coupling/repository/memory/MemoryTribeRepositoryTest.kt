@@ -4,7 +4,7 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubUser
 
 @Suppress("unused")
 class MemoryTribeRepositoryTest : TribeRepositoryValidator {

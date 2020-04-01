@@ -26,7 +26,7 @@ interface TribeGQLPerformer : AxiosSyntax {
         component.jsonPath.split("/").filterNot(String::isBlank).forEach { bit ->
             node = node.unsafeCast<Json?>()?.get(bit)
         }
-        return node
+        return node.unsafeCast<Json>()
     }
 
     private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>): dynamic = axios.post(

@@ -15,7 +15,7 @@ import kotlin.js.json
 
 fun exportWithDynamo() {
     MainScope().launch {
-        val repositoryCatalog = DynamoRepositoryCatalog(user.email, TimeProvider);
+        val repositoryCatalog = DynamoRepositoryCatalog(user.email, TimeProvider)
         outputUsers(repositoryCatalog)
         repositoryCatalog.outputTribes()
     }

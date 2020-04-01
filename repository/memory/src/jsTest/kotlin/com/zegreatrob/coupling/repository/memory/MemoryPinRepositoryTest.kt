@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import stubTribeId
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
 
 @Suppress("unused")
 class MemoryPinRepositoryTest : PinRepositoryValidator {

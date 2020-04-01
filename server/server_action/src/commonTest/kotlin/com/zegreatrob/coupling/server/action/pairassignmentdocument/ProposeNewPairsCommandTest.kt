@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import SpyData
+import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
@@ -15,7 +16,7 @@ import com.zegreatrob.coupling.repository.tribe.TribeGet
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -24,7 +25,7 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = testAsync {
         setupAsync(object : ProposeNewPairsCommandDispatcher {
-            override val traceId = null
+            override val traceId: Uuid? = null
             override val actionDispatcher get() = throw NotImplementedError("Do not use")
             override val wheel: Wheel get() = throw NotImplementedError("Do not use")
             override val pairAssignmentDocumentRepository get() = stubRepository

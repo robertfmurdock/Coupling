@@ -15,12 +15,11 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
-import stubPlayer
-import stubTribeId
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.js.*
 import kotlin.js.Date
-import kotlin.js.Date.Companion.parse
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"

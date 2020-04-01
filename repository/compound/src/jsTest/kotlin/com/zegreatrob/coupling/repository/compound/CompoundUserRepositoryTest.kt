@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.repository.compound;
+package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.user.User
@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.test.Test
 
 @Suppress("unused")

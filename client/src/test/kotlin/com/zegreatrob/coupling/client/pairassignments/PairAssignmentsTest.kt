@@ -22,7 +22,7 @@ import com.zegreatrob.testmints.setup
 import findComponent
 import kotlinx.coroutines.withContext
 import shallow
-import stubPin
+import com.zegreatrob.coupling.stubmodel.stubPin
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.test.Test

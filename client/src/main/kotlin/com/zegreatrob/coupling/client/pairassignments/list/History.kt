@@ -128,7 +128,7 @@ interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryS
         span(classes = styles.player) {
             attrs { key = "${pinnedPlayer.player.id}" }
             div(classes = styles.playerHeader) {
-                +(pinnedPlayer.player.name ?: "Unknown")
+                +pinnedPlayer.player.name
             }
         }
 }

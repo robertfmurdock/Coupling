@@ -16,8 +16,8 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
-import stubTribe
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.test.Test

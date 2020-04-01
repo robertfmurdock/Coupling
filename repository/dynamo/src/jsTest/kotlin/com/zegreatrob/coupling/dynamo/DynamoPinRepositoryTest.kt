@@ -12,10 +12,10 @@ import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubPin
-import stubTribeId
-import stubUser
-import uuidString
+import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
 import kotlin.test.Test
 
 @Suppress("unused")

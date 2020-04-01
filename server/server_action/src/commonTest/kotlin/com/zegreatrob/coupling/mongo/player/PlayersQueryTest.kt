@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
+import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
@@ -23,7 +24,7 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepository() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
-            override val traceId = null
+            override val traceId: Uuid? = null
             override val authorizedTribeId = TribeId("Excellent Tribe")
             val players = listOf(
                 Player(
@@ -59,7 +60,7 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
-            override val traceId = null
+            override val traceId: Uuid? = null
             override val authorizedTribeId = TribeId("Excellent Tribe")
             val players = listOf(
                 Player(id = "1"),

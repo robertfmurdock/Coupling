@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import stubPairAssignmentDoc
-import stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import kotlin.test.Test
 
 class RosteredPairAssignmentsTest {

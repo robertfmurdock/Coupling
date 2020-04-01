@@ -21,10 +21,10 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
-import stubPairAssignmentDoc
-import stubSimplePairAssignmentDocument
-import stubTribeId
-import stubUser
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubSimplePairAssignmentDocument
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.js.Date
 import kotlin.js.Json
 import kotlin.js.Promise

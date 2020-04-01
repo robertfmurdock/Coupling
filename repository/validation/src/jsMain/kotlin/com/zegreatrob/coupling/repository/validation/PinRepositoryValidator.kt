@@ -18,7 +18,7 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import stubPin
+import com.zegreatrob.coupling.stubmodel.stubPin
 import kotlin.test.Test
 
 interface PinRepositoryValidator {

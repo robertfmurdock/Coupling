@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import stubTribe
-import stubUser
-import uuidString
+import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
 import kotlin.test.Test
 
 @Suppress("unused")

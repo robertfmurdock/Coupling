@@ -10,7 +10,7 @@ object TribeListPage : ProtractorSyntax {
 
     val newTribeButton by tribeListStyles.getting()
     val tribeCardElements = all(By.className(tribeCardStyles.className))
-    val tribeCardHeaderLocator = By.className(tribeCardStyles["header"]);
+    val tribeCardHeaderLocator = By.className(tribeCardStyles["header"])
 
     fun tribeCardElement(tribeId: TribeId) =
         element(By.css(".${tribeCardStyles.className}[data-tribe-id=\"${tribeId.value}\"]"))

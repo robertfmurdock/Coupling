@@ -1,17 +1,16 @@
 package com.zegreatrob.coupling.server
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.repository.memory.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 
-class DynamoRepositoryCatalog private constructor(
+class MemoryRepositoryCatalog private constructor(
     override val userEmail: String,
     override val clock: TimeProvider,
     override val tribeRepository: TribeRepository,
@@ -25,13 +24,21 @@ class DynamoRepositoryCatalog private constructor(
     ClockSyntax {
 
     companion object {
-        suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {
-            val tribeRepository = DynamoTribeRepository(userEmail, clock)
-            val playerRepository = DynamoPlayerRepository(userEmail, clock)
-            val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)
-            val pinRepository = DynamoPinRepository(userEmail, clock)
-            val userRepository = DynamoUserRepository(userEmail, clock)
-            return DynamoRepositoryCatalog(
+        suspend operator fun invoke(userEmail: String, clock: TimeProvider): MemoryRepositoryCatalog {
+            val tribeRepository =
+                MemoryTribeRepository(userEmail, clock)
+            val playerRepository =
+                MemoryPlayerRepository(userEmail, clock)
+            val pairAssignmentDocumentRepository =
+                MemoryPairAssignmentDocumentRepository(
+                    userEmail,
+                    clock
+                )
+            val pinRepository =
+                MemoryPinRepository(userEmail, clock)
+            val userRepository =
+                MemoryUserRepository(userEmail, clock)
+            return MemoryRepositoryCatalog(
                 userEmail,
                 clock,
                 tribeRepository,

@@ -14,8 +14,8 @@ import com.zegreatrob.testmints.setup
 import findByClass
 import findComponent
 import shallow
-import stubPin
-import stubTribe
+import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.stubmodel.stubTribe
 import kotlin.test.Test
 
 class PrepareSpinTest {

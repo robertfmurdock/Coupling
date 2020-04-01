@@ -21,9 +21,9 @@ import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import stubPin
-import stubPlayer
-import stubTribe
+import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubTribe
 import kotlin.test.Test
 
 class SpinTest {

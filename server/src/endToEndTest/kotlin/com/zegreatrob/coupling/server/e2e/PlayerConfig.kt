@@ -14,11 +14,10 @@ object PlayerConfig : ProtractorSyntax {
     val playerNameTextField = element(By.id("player-name"))
     val deleteButton by playerConfigEditorStyles.getting()
     val saveButton by playerConfigEditorStyles.getting()
-    val defaultBadgeOption =
-        element(By.id("default-badge-option"));
-    val altBadgeOption = element(By.id("alt-badge-option"));
-    val adjectiveTextInput = element(By.id("adjective-input"));
-    val nounTextInput = element(By.id("noun-input"));
+    val defaultBadgeOption = element(By.id("default-badge-option"))
+    val altBadgeOption = element(By.id("alt-badge-option"))
+    val adjectiveTextInput = element(By.id("adjective-input"))
+    val nounTextInput = element(By.id("noun-input"))
 
     suspend fun goTo(tribeId: TribeId, playerId: String?) {
         setLocation("/${tribeId.value}/player/${playerId}")
