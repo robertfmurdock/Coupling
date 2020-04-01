@@ -23,9 +23,10 @@ import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
-import react.dom.a
+import react.dom.button
 import react.dom.div
 import react.dom.i
+import react.router.dom.navLink
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -146,40 +147,47 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
     private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
-        a(href = "/${tribe.id.value}/prepare/", classes = "super pink button") {
-            attrs { classes += className }
-            +"Prepare to spin!"
+        navLink(to = "/${tribe.id.value}/prepare/") {
+            button(classes = "super pink button") {
+                attrs { classes += className }
+                +"Prepare to spin!"
+            }
         }
 
     private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
-        a(href = "/${tribe.id.value}/history/", classes = "large green button") {
-            attrs { classes += className }
-            i(classes = "fa fa-history") {}
-            +" History!"
+        navLink(to = "/${tribe.id.value}/history/") {
+            button(classes = "large green button") {
+                attrs { classes += className }
+                i(classes = "fa fa-history") {}
+                +" History!"
+            }
         }
 
-    private fun RBuilder.pinListButton(tribe: Tribe, className: String) =
-        a(href = "/${tribe.id.value}/pins/", classes = "large white button") {
+    private fun RBuilder.pinListButton(tribe: Tribe, className: String) = navLink(to = "/${tribe.id.value}/pins/") {
+        button(classes = "large white button") {
             attrs { classes += className }
             i(classes = "fa fa-peace") {}
             +" Pin Bag!"
         }
+    }
 
     private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
-        a(href = "/${tribe.id.value}/statistics", classes = "large gray button") {
-            attrs { this.classes += className }
-            i(classes = "fa fa-database") {}
-            +" Statistics!"
+        navLink(to = "/${tribe.id.value}/statistics") {
+            button(classes = "large gray button") {
+                attrs { this.classes += className }
+                i(classes = "fa fa-database") {}
+                +" Statistics!"
+            }
         }
 
-    private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) = a(
-        href = "/${tribe.id.value}/players/retired",
-        classes = "large yellow button"
-    ) {
-        attrs { classes += className }
-        i(classes = "fa fa-user-slash") {}
-        +" Retirees!"
-    }
+    private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
+        navLink("/${tribe.id.value}/players/retired") {
+            button(classes = "large yellow button") {
+                attrs { classes += className }
+                i(classes = "fa fa-user-slash") {}
+                +" Retirees!"
+            }
+        }
 
     private inline fun onClickSave(
         pairAssignments: PairAssignmentDocument?,
