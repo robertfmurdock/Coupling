@@ -32,7 +32,7 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
     )
 
     private fun Json.fromDbToUser() = User(
-        id = this["id"]?.toString() ?: "${uuid4()}",
+        id = this["id"]?.toString() ?: this["email"]?.toString() ?: "${uuid4()}",
         email = this["email"].toString(),
         authorizedTribeIds = this["tribes"]?.unsafeCast<Array<String>>()?.map {
             TribeId(

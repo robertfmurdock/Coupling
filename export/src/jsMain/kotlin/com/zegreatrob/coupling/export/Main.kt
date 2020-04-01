@@ -8,6 +8,6 @@ val user = User("EXPORT_USER", "robert.f.murdock@gmail.com", emptySet())
 
 fun main() {
     KotlinLoggingConfiguration.LOG_LEVEL = KotlinLoggingLevel.WARN
-    exportWithDynamo()
-//    exportWithMongo()
+//    exportWithDynamo()
+    exportWithMongo()
 }
