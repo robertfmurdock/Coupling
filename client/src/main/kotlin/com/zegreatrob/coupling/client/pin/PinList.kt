@@ -8,10 +8,11 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RProps
 import react.ReactElement
-import react.dom.a
+import react.dom.button
 import react.dom.div
 import react.dom.h2
 import react.dom.h3
+import react.router.dom.routeLink
 
 object PinList : RComponent<PinListProps>(provider()), PinListBuilder
 
@@ -34,8 +35,8 @@ interface PinListBuilder : StyledComponentRenderer<PinListProps, SimpleStyle> {
                     pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it._id) }
                 }
                 div {
-                    a(classes = "large orange button", href = "/${tribe.id.value}/pin/new") {
-                        +"Add a new pin."
+                    routeLink(to = "/${tribe.id.value}/pin/new") {
+                        button(classes = "large orange button") { +"Add a new pin." }
                     }
                 }
             }

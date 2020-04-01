@@ -6,8 +6,9 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
-import react.dom.a
+import react.dom.button
 import react.dom.div
+import react.router.dom.routeLink
 
 
 object PlayerRoster : RComponent<PlayerRosterProps>(provider()), PlayerRosterBuilder
@@ -41,9 +42,11 @@ interface PlayerRosterBuilder : StyledComponentRenderer<PlayerRosterProps, Playe
                 }
                 renderPlayers(props)
             }
-            a(href = "/${props.tribeId.value}/player/new/", classes = "large orange button") {
-                attrs { classes += styles.addPlayerButton }
-                +"Add a new player!"
+            routeLink(to = "/${props.tribeId.value}/player/new/") {
+                button(classes = "large orange button") {
+                    attrs { classes += styles.addPlayerButton }
+                    +"Add a new player!"
+                }
             }
         }
     }

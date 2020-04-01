@@ -26,7 +26,7 @@ import react.RProps
 import react.dom.button
 import react.dom.div
 import react.dom.i
-import react.router.dom.navLink
+import react.router.dom.routeLink
 import kotlin.browser.window
 
 object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
@@ -147,7 +147,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
     private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
-        navLink(to = "/${tribe.id.value}/prepare/") {
+        routeLink(to = "/${tribe.id.value}/prepare/") {
             button(classes = "super pink button") {
                 attrs { classes += className }
                 +"Prepare to spin!"
@@ -155,7 +155,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
 
     private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
-        navLink(to = "/${tribe.id.value}/history/") {
+        routeLink(to = "/${tribe.id.value}/history/") {
             button(classes = "large green button") {
                 attrs { classes += className }
                 i(classes = "fa fa-history") {}
@@ -163,7 +163,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
             }
         }
 
-    private fun RBuilder.pinListButton(tribe: Tribe, className: String) = navLink(to = "/${tribe.id.value}/pins/") {
+    private fun RBuilder.pinListButton(tribe: Tribe, className: String) = routeLink(to = "/${tribe.id.value}/pins/") {
         button(classes = "large white button") {
             attrs { classes += className }
             i(classes = "fa fa-peace") {}
@@ -172,7 +172,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
     }
 
     private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
-        navLink(to = "/${tribe.id.value}/statistics") {
+        routeLink(to = "/${tribe.id.value}/statistics") {
             button(classes = "large gray button") {
                 attrs { this.classes += className }
                 i(classes = "fa fa-database") {}
@@ -181,7 +181,7 @@ interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignment
         }
 
     private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
-        navLink("/${tribe.id.value}/players/retired") {
+        routeLink("/${tribe.id.value}/players/retired") {
             button(classes = "large yellow button") {
                 attrs { classes += className }
                 i(classes = "fa fa-user-slash") {}

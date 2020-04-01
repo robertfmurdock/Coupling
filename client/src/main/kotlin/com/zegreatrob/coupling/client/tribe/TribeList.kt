@@ -7,7 +7,7 @@ import react.RBuilder
 import react.RProps
 import react.dom.button
 import react.dom.div
-import react.router.dom.navLink
+import react.router.dom.routeLink
 
 data class TribeListProps(val tribes: List<Tribe>, val pathSetter: (String) -> Unit) : RProps
 
@@ -28,11 +28,11 @@ object TribeList : FRComponent<TribeListProps>(provider()) {
         }
     }
 
-    private fun RBuilder.aboutButton() = navLink(to = "/about") {
+    private fun RBuilder.aboutButton() = routeLink(to = "/about") {
         button(classes = "super orange button") { +"About Coupling" }
     }
 
-    private fun RBuilder.newTribeButton(className: String) = navLink(to = "/new-tribe/") {
+    private fun RBuilder.newTribeButton(className: String) = routeLink(to = "/new-tribe/") {
         button(classes = "super green button") {
             attrs { classes += className }
             +"Add a new tribe!"

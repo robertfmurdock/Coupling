@@ -9,10 +9,11 @@ import kotlinx.css.*
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
-import react.dom.a
+import react.dom.button
 import react.dom.div
 import react.dom.i
 import react.dom.span
+import react.router.dom.routeLink
 import styled.css
 import styled.styledDiv
 import styled.styledSpan
@@ -95,16 +96,20 @@ object TribeBrowser : FRComponent<TribeBrowserProps>(provider()) {
         notificationSection()
     }
 
-    private fun RBuilder.logoutButton() = a(href = "/logout", classes = "large red button") {
-        attrs { classes += styles["logoutButton"] }
-        i(classes = "fa fa-sign-out-alt") {}
-        span { +"Sign Out" }
+    private fun RBuilder.logoutButton() = routeLink(to = "/logout") {
+        button(classes = "large red button") {
+            attrs { classes += styles["logoutButton"] }
+            i(classes = "fa fa-sign-out-alt") {}
+            span { +"Sign Out" }
+        }
     }
 
-    private fun RBuilder.tribeSelectButton() = a(href = "/tribes/", classes = "large gray button") {
-        attrs { classes += styles["tribeSelectButton"] }
-        i(classes = "fa fa-arrow-circle-up") {}
-        span { +"Tribe select" }
+    private fun RBuilder.tribeSelectButton() = routeLink(to = "/tribes/") {
+        button(classes = "large gray button") {
+            attrs { classes += styles["tribeSelectButton"] }
+            i(classes = "fa fa-arrow-circle-up") {}
+            span { +"Tribe select" }
+        }
     }
 
 }
