@@ -23,8 +23,8 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(project(":json"))
-                api(project(":mongo"))
-                api(project(":dynamo"))
+                api(project(":repository:mongo"))
+                api(project(":repository:dynamo"))
                 api("io.github.microutils:kotlin-logging-js:1.7.9")
 
                 api(kotlin("stdlib-js", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
