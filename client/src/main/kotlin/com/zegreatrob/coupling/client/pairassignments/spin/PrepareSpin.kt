@@ -98,11 +98,9 @@ interface PrepareSpinRenderer : StyledComponentRenderer<PrepareSpinProps, Simple
         }
     }
 
-    private inline fun List<Pin>.selectByIds(pinSelections: List<String?>) =
-        filter { pinSelections.contains(it._id) }
+    private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it._id) }
 
-    private inline fun List<Pin>.removeByIds(pinSelections: List<String?>) =
-        filterNot { pinSelections.contains(it._id) }
+    private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pinSelections.contains(it._id) }
 
     private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) =
         flipped(pin._id) {
