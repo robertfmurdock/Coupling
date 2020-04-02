@@ -103,6 +103,4 @@ private fun logRequests() = { request: Request, response: Response, next: () -> 
         .also { next() }
 }
 
-fun resourcePath(directory: String): String {
-    return "$directory"
-}
+fun resourcePath(directory: String) = "$directory"

@@ -4,6 +4,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.logging.initializeJasmineLogging
 import mu.KotlinLogging
 
+@Suppress("unused")
 @JsName("JasmineJsonLoggingReporter")
 class JasmineJsonLoggingReporter {
     private val logger by lazy { KotlinLogging.logger("JasmineJsonLoggingReporter") }

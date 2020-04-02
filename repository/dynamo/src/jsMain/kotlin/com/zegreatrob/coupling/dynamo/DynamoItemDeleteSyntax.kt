@@ -34,8 +34,4 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
         }
     }
 
-    private inline fun Json.deleteItemParams() = json(
-        "TableName" to tableName,
-        "Item" to this
-    )
 }

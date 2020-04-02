@@ -15,7 +15,7 @@ interface DynamoLoggingSyntax {
 
     suspend fun <I, O> I.logAsync(className: String, block: suspend (I) -> O) = logBlock(className) { block(this) }
 
-    private inline fun <I : Any, O> I.logBlock(className: String, anotherBlock: () -> O): O {
+    private inline fun <O> logBlock(className: String, anotherBlock: () -> O): O {
         logStart(className)
 
         return try {

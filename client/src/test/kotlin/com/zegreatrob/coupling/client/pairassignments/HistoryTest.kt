@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import Spy
 import SpyData
+import com.benasher44.uuid.Uuid
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.loadStyles
@@ -33,7 +34,7 @@ class HistoryTest {
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
-                override val traceId = null
+                override val traceId: Uuid? = null
                 override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
@@ -75,7 +76,7 @@ class HistoryTest {
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = testAsync {
         withContext(Dispatchers.Default) {
             setupAsync(object : HistoryRenderer, PropsClassProvider<HistoryProps> by provider() {
-                override val traceId = null
+                override val traceId: Uuid? = null
                 override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
                 override fun buildScope() = this@withContext
                 override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()

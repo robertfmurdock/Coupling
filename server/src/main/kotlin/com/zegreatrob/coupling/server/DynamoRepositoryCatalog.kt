@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository

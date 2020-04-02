@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import ShallowWrapper
 import Spy
 import SpyData
+import com.benasher44.uuid.Uuid
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.PropsClassProvider
 import com.zegreatrob.coupling.client.external.react.provider
@@ -34,7 +35,7 @@ class PairAssignmentsTest {
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsRenderer,
         PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val traceId = null
+        override val traceId: Uuid? = null
         override val pairAssignmentDocumentRepository get() = TODO("not implemented")
         val fellow = Player(id = "3", name = "fellow")
         val guy = Player(id = "2", name = "Guy")

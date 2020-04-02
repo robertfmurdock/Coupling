@@ -56,7 +56,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
         ) : MongoPairAssignmentDocumentRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
-            val historyCollection: dynamic by lazy<dynamic> { getCollection("history", db) }
+            val historyCollection: dynamic by lazy { getCollection("history", db) }
 
             suspend fun dropHistory() {
                 historyCollection.drop().unsafeCast<Promise<Unit>>().await()

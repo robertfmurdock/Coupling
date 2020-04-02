@@ -60,7 +60,7 @@ external val enzyme: Enzyme
 
 
 @JsModule("enzyme-adapter-react-16")
-external class Adapter {}
+external class Adapter
 
 fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(function))
 

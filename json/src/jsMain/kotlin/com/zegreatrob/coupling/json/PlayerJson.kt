@@ -19,9 +19,6 @@ fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
 
 fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
 
-fun List<Player>.toJsonArray() = map { it.toJson() }
-    .toTypedArray()
-
 fun List<Record<TribeIdPlayer>>.toJsonArray() = map { it.toJson().add(it.data.player.toJson()) }
     .toTypedArray()
 

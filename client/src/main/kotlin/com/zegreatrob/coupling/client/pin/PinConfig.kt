@@ -30,7 +30,6 @@ external interface PinConfigStyles {
     val icon: String
     val saveButton: String
     val tribeBrowser: String
-    val pinView: String
     val pin: String
     val deleteButton: String
     val pinBag: String
