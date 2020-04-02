@@ -14,42 +14,31 @@ import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
-import react.ReactElement
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 import styled.styledSpan
 
-object TribeCard : RComponent<TribeCardProps>(provider()), TribeCardBuilder
-
 val RBuilder.tribeCard get() = TribeCard.render(this)
 
 data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
-external interface TribeCardStyles {
-    val className: String
-    val header: String
-}
+object TribeCard : FRComponent<TribeCardProps>(provider()) {
 
-interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardStyles> {
+    val styles = useStyles("tribe/TribeCard")
 
-    override val componentPath: String get() = "tribe/TribeCard"
-
-    override fun StyledRContext<TribeCardProps, TribeCardStyles>.render(): ReactElement {
+    override fun render(props: TribeCardProps) = reactElement {
         val (tribe, size) = props
-
-        return reactElement {
-            styledSpan {
-                attrs {
-                    classes = setOf(styles.className)
-                    onClickFunction = { props.goToPairAssignments() }
-                    tabIndex = "0"
-                    tribeCardCss(size)
-                    setProp("data-tribe-id", tribe.id.value)
-                }
-                tribeCardHeader(props, styles)
-                tribeGravatar(tribe, size)
+        styledSpan {
+            attrs {
+                classes = setOf(styles.className)
+                onClickFunction = { props.goToPairAssignments() }
+                tabIndex = "0"
+                tribeCardCss(size)
+                setProp("data-tribe-id", tribe.id.value)
             }
+            tribeCardHeader(props)
+            tribeGravatar(tribe, size)
         }
     }
 
@@ -62,14 +51,14 @@ interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardSt
         borderWidth = (size * 0.01).px
     }
 
-    private fun StyledDOMBuilder<SPAN>.tribeCardHeader(props: TribeCardProps, styles: TribeCardStyles) = with(props) {
+    private fun RBuilder.tribeCardHeader(props: TribeCardProps) = with(props) {
         val tribeNameRef = useRef<Node>(null)
         useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
 
         styledDiv {
             attrs {
                 ref = tribeNameRef
-                classes = setOf(styles.header)
+                classes = setOf(styles["header"])
                 css {
                     margin((size * 0.02).px, 0.px, 0.px, 0.px)
                     height = (size * 0.35).px
@@ -99,5 +88,4 @@ interface TribeCardBuilder : StyledComponentRenderer<TribeCardProps, TribeCardSt
             override val default = "identicon"
         }
     )
-
 }
