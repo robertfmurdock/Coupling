@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.mongo
 
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.js.toDateTime
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.await
@@ -33,7 +34,7 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
         this["_id"] = this[idProperty].unsafeCast<String?>() ?: this["_id"]
     }
 
-    fun List<Json>.latestByTimestamp() = sortedByDescending { it.timeStamp() }.firstOrNull()
+    fun List<Json>.latestByTimestamp() = maxBy { it.timeStamp() }
 
     suspend fun getLatestRecordWithId(id: String, collection: dynamic, usesRawId: Boolean = true) =
         getAllRecordsWithId(id, collection, usesRawId)
@@ -57,7 +58,7 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
 }
 
 interface JsonTimestampSyntax {
-    fun Json.timeStamp() = this["timestamp"]?.unsafeCast<Date>()?.toDateTime()
+    fun Json.timeStamp() = this["timestamp"]?.unsafeCast<Date>()?.toDateTime() ?: DateTime.EPOCH
 }
 
 fun String.isValidObjectId(): Boolean {
