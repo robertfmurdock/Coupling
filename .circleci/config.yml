@@ -7,6 +7,8 @@ jobs:
       - image: amazon/dynamodb-local
         command: -Xmx1G -jar DynamoDBLocal.jar -sharedDb
       - image: selenium/standalone-chrome
+        environment:
+          JAVA_OPTS: -Xmx512m
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
