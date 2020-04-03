@@ -8,12 +8,12 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
+import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import com.zegreatrob.coupling.stubmodel.stubUser
-import com.zegreatrob.coupling.stubmodel.uuidString
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -22,7 +22,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
         withDynamoRepository(clock, handler)
     }
 
-    private suspend inline fun withDynamoRepository(
+    private suspend fun withDynamoRepository(
         clock: TimeProvider = TimeProvider,
         handler: suspend (DynamoUserRepository, User) -> Unit
     ) {

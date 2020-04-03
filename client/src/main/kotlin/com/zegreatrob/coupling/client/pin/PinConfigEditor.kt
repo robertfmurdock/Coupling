@@ -56,7 +56,8 @@ open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEdito
         val (values, onChange) = useForm(props.pin.toJson())
 
         val updatedPin = values.toPin()
-        val onSubmitFunc = handleSubmitFunc { dispatcher.savePin(scope, updatedPin, tribe, reload) }
+
+        val onSubmitFunc = scope.handleSubmitFunc { savePin(dispatcher, tribe, updatedPin, reload) }
         val onRemove = onRemove(dispatcher, scope, tribe, pathSetter)
 
         span(classes = styles.className) {
@@ -71,12 +72,17 @@ open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEdito
         }
     }
 
+    private fun CoroutineScope.handleSubmitFunc(suspendFunction1: suspend CoroutineScope.() -> Unit) =
+        this@PinConfigEditor.handleSubmitFunc {
+            launch(block = suspendFunction1)
+        }
+
     private fun onRemove(
         dispatcher: PinCommandDispatcher,
         scope: CoroutineScope,
         tribe: Tribe,
         pathSetter: (String) -> Unit
-    ): (String) -> Unit = { pinId: String -> dispatcher.removePin(scope, tribe, pinId, pathSetter) }
+    ): (String) -> Unit = { pinId: String -> scope.removePin(dispatcher, tribe, pinId, pathSetter) }
 
     private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
         `when` = shouldShowPrompt,
@@ -114,22 +120,21 @@ open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEdito
         }
     }
 
-    private inline fun PinCommandDispatcher.savePin(
-        scope: CoroutineScope,
-        updatedPin: Pin,
-        tribe: Tribe,
-        crossinline reload: () -> Unit
-    ) = scope.launch {
-        SavePinCommand(tribe.id, updatedPin).perform()
+    private suspend fun savePin(dispatcher: PinCommandDispatcher, tribe: Tribe, updatedPin: Pin, reload: () -> Unit) {
+        with(dispatcher) { SavePinCommand(tribe.id, updatedPin).perform() }
         reload()
     }
 
-    private fun PinCommandDispatcher.removePin(
-        scope: CoroutineScope,
+    private fun CoroutineScope.removePin(
+        dispatcher: PinCommandDispatcher,
         tribe: Tribe,
         pinId: String,
         pathSetter: (String) -> Unit
-    ) = scope.launch {
+    ) = launch {
+        dispatcher.removePin(tribe, pinId, pathSetter)
+    }
+
+    private suspend fun PinCommandDispatcher.removePin(tribe: Tribe, pinId: String, pathSetter: (String) -> Unit) {
         if (window.confirm("Are you sure you want to delete this pin?")) {
             DeletePinCommand(tribe.id, pinId).perform()
             pathSetter("/${tribe.id.value}/pins")
