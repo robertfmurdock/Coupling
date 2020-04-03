@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
@@ -32,8 +33,8 @@ data class PinConfigEditorProps(
     val commandDispatcher: PinCommandDispatcher
 ) : RProps
 
-open class PinConfigEditor(provider: ReactScopeProvider) : FRComponent<PinConfigEditorProps>(provider()),
-    ReactScopeProvider by provider, WindowFunctions {
+open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEditorProps>(provider()),
+    ScopeProvider by provider, ReactScopeProvider, WindowFunctions {
 
     companion object : PinConfigEditor(object : ReactScopeProvider {}) {
 
