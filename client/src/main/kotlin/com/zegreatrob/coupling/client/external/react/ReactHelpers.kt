@@ -120,6 +120,11 @@ fun <P : RProps> RBuilder.child(
     )
 }
 
+inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit) =
+    object : FRComponent<T>(provider()) {
+        override fun render(props: T) = reactElement { function(props) }
+    }
+
 inline fun <reified P : RProps> reactFunctionComponent(noinline builder: (props: P) -> ReactElement) =
     ReactFunctionComponent(P::class, builder)
 
