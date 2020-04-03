@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pin.PinCard.pinCard
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pin.Pin

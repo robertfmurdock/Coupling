@@ -83,7 +83,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
         }
     }
 
-    private inline fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
+    private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
         `when` = shouldShowPrompt,
         message = "You have unsaved data. Would you like to save before you leave?"
     )
