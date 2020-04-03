@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.client.pin
 
 import Spy
 import SpyData
-import com.zegreatrob.coupling.client.external.react.FRComponent
+import com.zegreatrob.coupling.client.external.react.ReactScopeProvider
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -25,17 +25,16 @@ class PinConfigEditorTest {
 
     private val styles = useStyles("pin/PinConfigEditor")
 
-    abstract class RendererWithStub : FRComponent<PinConfigEditorProps>(provider()), PinConfigEditorRenderer {
+    private val stubDispatcher = object : PinCommandDispatcher, NullTraceIdProvider {
         override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
     }
 
     @Test
-    fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object : RendererWithStub() {
+    fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = null)
-
     }) exercise {
-        shallow(PinConfigEditorProps(tribe, pin, {}, {}))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -43,11 +42,11 @@ class PinConfigEditorTest {
     }
 
     @Test
-    fun whenGivenPinHasIdWillShowDeleteButton() = setup(object : RendererWithStub() {
+    fun whenGivenPinHasIdWillShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditorProps(tribe, pin, {}, {}))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -57,18 +56,20 @@ class PinConfigEditorTest {
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = testAsync {
         withContext(coroutineContext) {
-            setupAsync(object : RendererWithStub() {
-                override fun buildScope() = this@withContext
+            setupAsync(object : ReactScopeProvider {
                 val tribe = Tribe(TribeId("dumb tribe"))
                 val pin = Pin(_id = null, name = "")
-                val wrapper = shallow(PinConfigEditorProps(tribe, pin, {}, {}))
                 val newName = "pin new name"
                 val newIcon = "pin new icon"
+                val stubDispatcher = object : PinCommandDispatcher, NullTraceIdProvider {
+                    override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
+                    override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this)
+                }
+
+                override fun buildScope() = this@withContext
 
                 val savePinSpy = object : Spy<SavePinCommand, Unit> by SpyData() {}.apply { spyWillReturn(Unit) }
-
-                override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this)
-
+                val wrapper = shallow(PinConfigEditor(this), PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher))
             }) {
                 wrapper.simulateInputChange("name", newName)
                 wrapper.simulateInputChange("icon", newIcon)

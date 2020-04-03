@@ -1,20 +1,17 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
 import com.zegreatrob.coupling.client.Editor.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pin.PinButton.pinButton
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -31,47 +28,40 @@ data class PinConfigEditorProps(
     val tribe: Tribe,
     val pin: Pin,
     val pathSetter: (String) -> Unit,
-    val reload: () -> Unit
+    val reload: () -> Unit,
+    val commandDispatcher: PinCommandDispatcher
 ) : RProps
 
-object PinConfigEditor : FRComponent<PinConfigEditorProps>(provider()), WindowFunctions, SavePinCommandDispatcher,
-    DeletePinCommandDispatcher, RepositoryCatalog by SdkSingleton, PinConfigEditorRenderer {
+open class PinConfigEditor(provider: ReactScopeProvider) : FRComponent<PinConfigEditorProps>(provider()),
+    ReactScopeProvider by provider, WindowFunctions {
 
-    fun RBuilder.pinConfigEditor(tribe: Tribe, pin: Pin, pathSetter: (String) -> Unit, reload: () -> Unit) =
-        child(PinConfigEditor.component.rFunction, PinConfigEditorProps(tribe, pin, pathSetter, reload))
+    companion object : PinConfigEditor(object : ReactScopeProvider {}) {
 
-}
+        fun RBuilder.pinConfigEditor(
+            tribe: Tribe,
+            pin: Pin,
+            dispatcher: CommandDispatcher,
+            pathSetter: (String) -> Unit,
+            reload: () -> Unit
+        ) = child(PinConfigEditor.component.rFunction, PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatcher))
 
-interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
-    ReactScopeProvider,
-    WindowFunctions,
-    SavePinCommandDispatcher,
-    DeletePinCommandDispatcher, NullTraceIdProvider {
-
-    companion object {
-        val styles = useStyles("pin/PinConfigEditor")
     }
 
-    override val pinRepository: PinRepository
+    val styles = useStyles("pin/PinConfigEditor")
 
     override fun render(props: PinConfigEditorProps) = reactElement {
-        val (tribe, _, pathSetter, reload) = props
+        val (tribe, _, pathSetter, reload, dispatcher) = props
         val scope = useScope(styles.className)
         val (values, onChange) = useForm(props.pin.toJson())
 
         val updatedPin = values.toPin()
-        val onSubmitFunc = handleSubmitFunc { scope.savePin(updatedPin, tribe, reload) }
-        val onRemove = scope.onRemove(tribe, pathSetter)
+        val onSubmitFunc = handleSubmitFunc { dispatcher.savePin(scope, updatedPin, tribe, reload) }
+        val onRemove = onRemove(dispatcher, scope, tribe, pathSetter)
 
         span(classes = styles.className) {
             configHeader(tribe, pathSetter) { +"Pin Configuration" }
             span(classes = styles["pin"]) {
-                pinConfigForm(
-                    updatedPin,
-                    onChange,
-                    onSubmitFunc,
-                    onRemove
-                )
+                pinConfigForm(updatedPin, onChange, onSubmitFunc, onRemove)
                 promptOnExit(shouldShowPrompt = updatedPin != props.pin)
             }
             span(classes = styles["icon"]) {
@@ -80,10 +70,14 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         }
     }
 
-    private inline fun CoroutineScope.onRemove(tribe: Tribe, noinline pathSetter: (String) -> Unit): (String) -> Unit =
-        { pinId: String -> removePin(tribe, pinId, pathSetter) }
+    private fun onRemove(
+        dispatcher: PinCommandDispatcher,
+        scope: CoroutineScope,
+        tribe: Tribe,
+        pathSetter: (String) -> Unit
+    ): (String) -> Unit = { pinId: String -> dispatcher.removePin(scope, tribe, pinId, pathSetter) }
 
-    private inline fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
+    private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
         `when` = shouldShowPrompt,
         message = "You have unsaved data. Would you like to save before you leave?"
     )
@@ -119,26 +113,35 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         }
     }
 
-    private inline fun CoroutineScope.savePin(updatedPin: Pin, tribe: Tribe, crossinline reload: () -> Unit) = launch {
+    private inline fun PinCommandDispatcher.savePin(
+        scope: CoroutineScope,
+        updatedPin: Pin,
+        tribe: Tribe,
+        crossinline reload: () -> Unit
+    ) = scope.launch {
         SavePinCommand(tribe.id, updatedPin).perform()
         reload()
     }
 
-    private fun CoroutineScope.removePin(tribe: Tribe, pinId: String, pathSetter: (String) -> Unit) = launch {
-        if (PinConfigEditor.window.confirm("Are you sure you want to delete this pin?")) {
+    private fun PinCommandDispatcher.removePin(
+        scope: CoroutineScope,
+        tribe: Tribe,
+        pinId: String,
+        pathSetter: (String) -> Unit
+    ) = scope.launch {
+        if (window.confirm("Are you sure you want to delete this pin?")) {
             DeletePinCommand(tribe.id, pinId).perform()
             pathSetter("/${tribe.id.value}/pins")
         }
     }
 
-    private inline fun RBuilder.retireButtonElement(noinline onRetire: (Event) -> Unit) =
-        div(classes = "small red button") {
-            attrs {
-                classes += styles["deleteButton"]
-                onClickFunction = onRetire
-            }
-            +"Retire"
+    private fun RBuilder.retireButtonElement(onRetire: (Event) -> Unit) = div(classes = "small red button") {
+        attrs {
+            classes += styles["deleteButton"]
+            onClickFunction = onRetire
         }
+        +"Retire"
+    }
 
     private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Job): (Event) -> Unit =
         { event -> setIsSaving(true); onSubmit(event) }
@@ -187,7 +190,7 @@ interface PinConfigEditorRenderer : FComponent<PinConfigEditorProps>,
         span { +"This is what you call the pin. You won't see this much." }
     }
 
-    private inline fun RBuilder.targetInput(noinline onChange: (Event) -> Unit) {
+    private fun RBuilder.targetInput(onChange: (Event) -> Unit) {
         label { attrs { htmlFor = "pinTarget" }; +"Target" }
         select {
             attrs {
