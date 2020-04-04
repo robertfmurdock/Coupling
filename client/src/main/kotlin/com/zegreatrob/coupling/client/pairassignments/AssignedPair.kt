@@ -37,123 +37,132 @@ data class AssignedPairProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
+private val styles = useStyles("pairassignments/AssignedPair")
 
-    fun RBuilder.assignedPair(
-        tribe: Tribe,
-        pair: PinnedCouplingPair,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
-        canDrag: Boolean,
-        pathSetter: (String) -> Unit,
-        key: String
-    ) = child(
-        AssignedPair.component.rFunction,
-        AssignedPairProps(tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter),
-        key = key
-    )
+fun RBuilder.assignedPair(
+    tribe: Tribe,
+    pair: PinnedCouplingPair,
+    swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
+    canDrag: Boolean,
+    pathSetter: (String) -> Unit,
+    key: String
+) = child(
+    AssignedPair.component.rFunction,
+    AssignedPairProps(tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter),
+    key = key
+)
 
-    private val styles = useStyles("pairassignments/AssignedPair")
+val AssignedPair = reactFunction<AssignedPairProps> { (
+                                                          tribe,
+                                                          pair,
+                                                          swapCallback,
+                                                          pinMoveCallback,
+                                                          canDrag,
+                                                          pathSetter
+                                                      ) ->
+    val callSign = pair.findCallSign()
 
-    override fun render(props: AssignedPairProps) = with(props) {
-        val callSign = pair.findCallSign()
+    val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
+    val pinDroppableRef = useRef<Node>(null)
+    drop(pinDroppableRef)
 
-        val (isOver, drop) = usePinDrop()
-        val pinDroppableRef = useRef<Node>(null)
-        drop(pinDroppableRef)
+    val playerCard = playerCardComponent(tribe, pair, swapCallback, canDrag, pathSetter)
 
-        val playerCard = playerCardComponent(canDrag)
-
-        reactElement {
-            span(classes = styles.className) {
-                attrs {
-                    ref = pinDroppableRef
-                    if (isOver) classes += styles["pairPinOver"]
-                }
-                callSign(tribe, callSign, styles["callSign"])
-                pair.players.map { player -> playerCard(player) }
-                pinSection(pinList = pair.pins, canDrag = canDrag)
-            }
+    span(classes = styles.className) {
+        attrs {
+            ref = pinDroppableRef
+            if (isOver) classes += styles["pairPinOver"]
         }
+        callSign(tribe, callSign, styles["callSign"])
+        pair.players.map { player -> playerCard(player) }
+        pinSection(pinList = pair.pins, canDrag = canDrag)
     }
+}
 
-    private fun AssignedPairProps.usePinDrop() = useDrop(
-        acceptItemType = pinDragItemType,
-        drop = { item -> pinMoveCallback(item["id"].unsafeCast<String>(), pair) },
-        collect = { monitor -> monitor.isOver() }
-    )
+private fun PinnedCouplingPair.findCallSign(): CallSign? {
+    val nounPlayer = toPair().asArray().getOrNull(0)
+    val adjectivePlayer = toPair().asArray().getOrNull(1) ?: nounPlayer
 
-    private fun AssignedPairProps.playerCardComponent(canDrag: Boolean): RBuilder.(PinnedPlayer) -> ReactElement =
-        if (canDrag) { player ->
-            playerFlipped(player.player) {
-                swappablePlayer(
-                    tribe,
-                    player,
-                    pair,
-                    swapCallback,
-                    canDrag
-                )
-            }
-        } else { player ->
-            playerFlipped(player.player) {
-                notSwappablePlayer(tribe, pathSetter, player.player)
-            }
-        }
-
-    private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> ReactElement) =
-        flipped(flipId = player.id) {
-            styledDiv {
-                attrs { this.key = player.id ?: "" }
-                css {
-                    display = Display.inlineBlock
-                    if (player == placeholderPlayer) {
-                        visibility = Visibility.hidden
-                    }
-                }
-                handler()
-            }
-        }
-
-    private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
-        if (tribe.callSignsEnabled && callSign != null) {
-            span(classes = classes) {
-                +"${callSign.adjective} ${callSign.noun}"
-            }
-        }
+    val adjective = adjectivePlayer?.callSignAdjective
+    val noun = nounPlayer?.callSignNoun
+    return if (adjective != null && noun != null) {
+        CallSign(adjective, noun)
+    } else {
+        null
     }
+}
 
-    private fun PinnedCouplingPair.findCallSign(): CallSign? {
-        val nounPlayer = toPair().asArray().getOrNull(0)
-        val adjectivePlayer = toPair().asArray().getOrNull(1) ?: nounPlayer
+private fun usePinDrop(
+    pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
+    pair: PinnedCouplingPair
+) = useDrop(
+    acceptItemType = pinDragItemType,
+    drop = { item -> pinMoveCallback(item["id"].unsafeCast<String>(), pair) },
+    collect = { monitor -> monitor.isOver() }
+)
 
-        val adjective = adjectivePlayer?.callSignAdjective
-        val noun = nounPlayer?.callSignNoun
-        return if (adjective != null && noun != null) {
-            CallSign(adjective, noun)
-        } else {
-            null
-        }
-    }
-
-    private fun RBuilder.swappablePlayer(
-        tribe: Tribe,
-        pinnedPlayer: PinnedPlayer,
-        pair: PinnedCouplingPair,
-        swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        zoomOnHover: Boolean
-    ) = draggablePlayer(DraggablePlayerProps(
-        pinnedPlayer,
-        tribe,
-        zoomOnHover
-    ) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
-
-    private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player) =
-        playerCard(
-            PlayerCardProps(
-                tribe.id,
+private fun playerCardComponent(
+    tribe: Tribe,
+    pair: PinnedCouplingPair,
+    swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    canDrag: Boolean,
+    pathSetter: (String) -> Unit
+): RBuilder.(PinnedPlayer) -> ReactElement =
+    if (canDrag) { player ->
+        playerFlipped(player.player) {
+            swappablePlayer(
+                tribe,
                 player,
-                pathSetter,
-                false
+                pair,
+                swapCallback,
+                canDrag
             )
-        )
+        }
+    } else { player ->
+        playerFlipped(player.player) {
+            notSwappablePlayer(tribe, pathSetter, player.player)
+        }
+    }
+
+private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> ReactElement) = flipped(flipId = player.id) {
+    styledDiv {
+        attrs { this.key = player.id ?: "" }
+        css {
+            display = Display.inlineBlock
+            if (player == placeholderPlayer) {
+                visibility = Visibility.hidden
+            }
+        }
+        handler()
+    }
+}
+
+private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player) = playerCard(
+    PlayerCardProps(
+        tribe.id,
+        player,
+        pathSetter,
+        false
+    )
+)
+
+private fun RBuilder.swappablePlayer(
+    tribe: Tribe,
+    pinnedPlayer: PinnedPlayer,
+    pair: PinnedCouplingPair,
+    swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    zoomOnHover: Boolean
+) = draggablePlayer(DraggablePlayerProps(
+    pinnedPlayer,
+    tribe,
+    zoomOnHover
+) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
+
+private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
+    if (tribe.callSignsEnabled && callSign != null) {
+        span(classes = classes) {
+            +"${callSign.adjective} ${callSign.noun}"
+        }
+    }
 }

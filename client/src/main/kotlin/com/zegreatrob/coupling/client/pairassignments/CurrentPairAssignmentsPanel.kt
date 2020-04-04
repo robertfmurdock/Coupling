@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.pairassignments.AssignedPair.assignedPair
-import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader.pairAssignmentsHeader
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -23,70 +24,69 @@ data class CurrentPairAssignmentsPanelProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-object CurrentPairAssignmentsPanel : FRComponent<CurrentPairAssignmentsPanelProps>(provider()) {
+private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
-    private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
-
-    fun RBuilder.currentPairAssignments(
-        tribe: Tribe,
-        pairAssignments: PairAssignmentDocument?,
-        onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        onPinDrop: (String, PinnedCouplingPair) -> Unit,
-        onSave: () -> Unit,
-        pathSetter: (String) -> Unit
-    ) = child(
-        CurrentPairAssignmentsPanel.component.rFunction,
-        CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter)
-    )
-
-    override fun render(props: CurrentPairAssignmentsPanelProps) = with(props) {
-        reactElement {
-            div(classes = styles.className) {
-                if (pairAssignments == null) {
-                    noPairsHeader()
-                } else {
-                    dateHeader(pairAssignments)
-                    pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
-                    saveButtonSection(pairAssignments, onSave)
-                }
-            }
+val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { (tribe,
+                                                                                        pairAssignments,
+                                                                                        onPlayerSwap,
+                                                                                        onPinDrop,
+                                                                                        onSave,
+                                                                                        pathSetter) ->
+    div(classes = styles.className) {
+        if (pairAssignments == null) {
+            noPairsHeader()
+        } else {
+            dateHeader(pairAssignments)
+            pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
+            saveButtonSection(pairAssignments, onSave)
         }
     }
-
-    private fun RBuilder.noPairsHeader() = div(classes = styles["noPairsNotice"]) { +"No pair assignments yet!" }
-
-    private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
-        div {
-            pairAssignmentsHeader(pairAssignments)
-        }
-    }
-
-    private fun RBuilder.pairAssignmentList(
-        tribe: Tribe,
-        pairAssignments: PairAssignmentDocument,
-        onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-        onPinDrop: (String, PinnedCouplingPair) -> Unit,
-        pathSetter: (String) -> Unit
-    ) = div(classes = styles["pairAssignmentsContent"]) {
-        pairAssignments.pairs.mapIndexed { index, pair ->
-            assignedPair(tribe, pair, onPlayerSwap, onPinDrop, pairAssignments.isNotSaved(), pathSetter, key = "$index")
-        }
-    }
-
-    private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument, onSave: () -> Unit) = div {
-        if (pairAssignments.isNotSaved()) {
-            saveButton(onSave)
-        }
-    }
-
-    private fun PairAssignmentDocument.isNotSaved() = id == null
-
-    private fun RBuilder.saveButton(onSave: () -> Unit) = a(classes = "super green button") {
-        attrs {
-            classes += styles["saveButton"]
-            onClickFunction = { onSave() }
-        }
-        +"Save!"
-    }
-
 }
+
+private fun RBuilder.noPairsHeader() = div(classes = styles["noPairsNotice"]) { +"No pair assignments yet!" }
+
+private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
+    div {
+        pairAssignmentsHeader(pairAssignments)
+    }
+}
+
+private fun RBuilder.pairAssignmentList(
+    tribe: Tribe,
+    pairAssignments: PairAssignmentDocument,
+    onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    onPinDrop: (String, PinnedCouplingPair) -> Unit,
+    pathSetter: (String) -> Unit
+) = div(classes = styles["pairAssignmentsContent"]) {
+    pairAssignments.pairs.mapIndexed { index, pair ->
+        assignedPair(tribe, pair, onPlayerSwap, onPinDrop, pairAssignments.isNotSaved(), pathSetter, key = "$index")
+    }
+}
+
+private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument, onSave: () -> Unit) = div {
+    if (pairAssignments.isNotSaved()) {
+        saveButton(onSave)
+    }
+}
+
+private fun PairAssignmentDocument.isNotSaved() = id == null
+
+private fun RBuilder.saveButton(onSave: () -> Unit) = a(classes = "super green button") {
+    attrs {
+        classes += styles["saveButton"]
+        onClickFunction = { onSave() }
+    }
+    +"Save!"
+}
+
+fun RBuilder.currentPairAssignments(
+    tribe: Tribe,
+    pairAssignments: PairAssignmentDocument?,
+    onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    onPinDrop: (String, PinnedCouplingPair) -> Unit,
+    onSave: () -> Unit,
+    pathSetter: (String) -> Unit
+) = child(
+    CurrentPairAssignmentsPanel.component.rFunction,
+    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter)
+)

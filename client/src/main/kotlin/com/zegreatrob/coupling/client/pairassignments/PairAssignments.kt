@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
-import com.zegreatrob.coupling.client.pairassignments.CurrentPairAssignmentsPanel.currentPairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator.animator
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
