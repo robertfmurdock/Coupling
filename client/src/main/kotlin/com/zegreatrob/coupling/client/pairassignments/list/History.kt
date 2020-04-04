@@ -35,51 +35,57 @@ data class HistoryProps(
 ) : RProps
 
 open class History(scopeProvider: ScopeProvider, windowFunctions: WindowFunctions) :
-    FRComponent<HistoryProps>(provider()),
+    IFRComponent<HistoryProps>(provider()),
     ReactScopeProvider,
     WindowFunctions by windowFunctions,
     ScopeProvider by scopeProvider {
 
     companion object : History(object : ScopeProvider {}, object : WindowFunctions {});
 
-    override fun render(props: HistoryProps) = reactElement {
-        val (tribe, _, _, pathSetter, _) = props
+    override val renderer = rendererFunc { (tribe, history, reload, pathSetter, dispatcher) ->
         val scope = useScope(styles.className)
+        val onDeleteFunc = scope.onDeleteFunc(dispatcher, tribe, reload)
+
         div(classes = styles.className) {
             div(classes = styles["tribeBrowser"]) {
                 tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
             }
             span(classes = styles["historyView"]) {
                 div(classes = styles["header"]) { +"History!" }
-                pairAssignmentList(props, scope)
+                pairAssignmentList(history, onDeleteFunc)
             }
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope) =
-        props.history.forEach {
-            val pairAssignmentDocumentId = it.id ?: return@forEach
+    private fun CoroutineScope.onDeleteFunc(
+        dispatcher: DeletePairAssignmentsCommandDispatcher,
+        tribe: Tribe,
+        reload: () -> Unit
+    ) = { documentId: PairAssignmentDocumentId ->
+        launch(block = { dispatcher.removeButtonOnClick(documentId, tribe.id, reload) })
+    }
 
-            div(classes = styles["pairAssignments"]) {
-                attrs { key = pairAssignmentDocumentId.value }
-                span(classes = styles["pairAssignmentsHeader"]) { +it.dateText() }
-                deleteButton(scope) {
-                    props.commandDispatcher.removeButtonOnClick(
-                        pairAssignmentDocumentId, props.tribe.id, props.reload
-                    )
-                }
-                div { showPairs(it) }
-            }
-        }
+    private fun RBuilder.pairAssignmentList(
+        history: List<PairAssignmentDocument>,
+        onDeleteFunc: (PairAssignmentDocumentId) -> Any
+    ) = history.forEach {
+        val pairAssignmentDocumentId = it.id ?: return@forEach
 
-    private fun RBuilder.deleteButton(scope: CoroutineScope, onClick: suspend CoroutineScope.() -> Unit) =
-        span(classes = "small red button") {
-            attrs {
-                classes += styles["deleteButton"]
-                onClickFunction = { scope.launch(block = onClick) }
-            }
-            +"DELETE"
+        div(classes = styles["pairAssignments"]) {
+            attrs { key = pairAssignmentDocumentId.value }
+            span(classes = styles["pairAssignmentsHeader"]) { +it.dateText() }
+            deleteButton { onDeleteFunc(pairAssignmentDocumentId) }
+            div { showPairs(it) }
         }
+    }
+
+    private fun RBuilder.deleteButton(onClickFunc: (Any) -> Unit) = span(classes = "small red button") {
+        attrs {
+            classes += styles["deleteButton"]
+            onClickFunction = onClickFunc
+        }
+        +"DELETE"
+    }
 
     private suspend fun DeletePairAssignmentsCommandDispatcher.removeButtonOnClick(
         pairAssignmentDocumentId: PairAssignmentDocumentId,
@@ -102,13 +108,12 @@ open class History(scopeProvider: ScopeProvider, windowFunctions: WindowFunction
         }
     }
 
-    private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) =
-        span(classes = styles["player"]) {
-            attrs { key = "${pinnedPlayer.player.id}" }
-            div(classes = styles["playerHeader"]) {
-                +pinnedPlayer.player.name
-            }
+    private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span(classes = styles["player"]) {
+        attrs { key = "${pinnedPlayer.player.id}" }
+        div(classes = styles["playerHeader"]) {
+            +pinnedPlayer.player.name
         }
+    }
 }
 
 fun PairAssignmentDocument.dateText() =
