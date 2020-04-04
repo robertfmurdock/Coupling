@@ -4,7 +4,6 @@ import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -14,8 +13,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
@@ -26,83 +23,65 @@ import react.dom.div
 import react.dom.key
 import react.dom.span
 
-object History : RComponent<HistoryProps>(provider()), HistoryRenderer, Sdk by SdkSingleton
 
-external interface HistoryStyles {
-    val className: String
-    val pair: String
-    val tribeBrowser: String
-    val historyView: String
-    val header: String
-    val player: String
-    val playerHeader: String
-    val deleteButton: String
-    val pairAssignments: String
-    val pairAssignmentsHeader: String
-    val pinSection: String
-}
+private val styles = useStyles("pairassignments/History")
 
 data class HistoryProps(
     val tribe: Tribe,
     val history: List<PairAssignmentDocument>,
     val reload: () -> Unit,
-    val pathSetter: (String) -> Unit
+    val pathSetter: (String) -> Unit,
+    val commandDispatcher: DeletePairAssignmentsCommandDispatcher
 ) : RProps
 
-interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryStyles>,
-    DeletePairAssignmentsCommandDispatcher,
-    WindowFunctions,
-    ScopeProvider,
-    NullTraceIdProvider {
+open class History(scopeProvider: ScopeProvider, windowFunctions: WindowFunctions) :
+    FRComponent<HistoryProps>(provider()),
+    ReactScopeProvider,
+    WindowFunctions by windowFunctions,
+    ScopeProvider by scopeProvider {
 
-    override val componentPath: String get() = "pairassignments/History"
+    companion object : History(object : ScopeProvider {}, object : WindowFunctions {});
 
-    override fun ScopedStyledRContext<HistoryProps, HistoryStyles>.render() = with(props) {
-        reactElement {
-            div(classes = styles.className) {
-                div(classes = styles.tribeBrowser) {
-                    tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
-                }
-                span(classes = styles.historyView) {
-                    div(classes = styles.header) { +"History!" }
-                    pairAssignmentList(props, scope, styles)
-                }
+    override fun render(props: HistoryProps) = reactElement {
+        val (tribe, _, _, pathSetter, _) = props
+        val scope = useScope(styles.className)
+        div(classes = styles.className) {
+            div(classes = styles["tribeBrowser"]) {
+                tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+            }
+            span(classes = styles["historyView"]) {
+                div(classes = styles["header"]) { +"History!" }
+                pairAssignmentList(props, scope)
             }
         }
     }
 
-    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope, styles: HistoryStyles) =
+    private fun RBuilder.pairAssignmentList(props: HistoryProps, scope: CoroutineScope) =
         props.history.forEach {
             val pairAssignmentDocumentId = it.id ?: return@forEach
 
-            div(classes = styles.pairAssignments) {
+            div(classes = styles["pairAssignments"]) {
                 attrs { key = pairAssignmentDocumentId.value }
-                span(classes = styles.pairAssignmentsHeader) { +it.dateText() }
-                deleteButton(styles, scope, pairAssignmentDocumentId, props)
-                div { showPairs(it, styles) }
+                span(classes = styles["pairAssignmentsHeader"]) { +it.dateText() }
+                deleteButton(scope) {
+                    props.commandDispatcher.removeButtonOnClick(
+                        pairAssignmentDocumentId, props.tribe.id, props.reload
+                    )
+                }
+                div { showPairs(it) }
             }
         }
 
-    private fun RBuilder.deleteButton(
-        styles: HistoryStyles,
-        scope: CoroutineScope,
-        pairAssignmentDocumentId: PairAssignmentDocumentId,
-        props: HistoryProps
-    ) {
+    private fun RBuilder.deleteButton(scope: CoroutineScope, onClick: suspend CoroutineScope.() -> Unit) =
         span(classes = "small red button") {
             attrs {
-                classes += styles.deleteButton
-                onClickFunction = { _ ->
-                    scope.launch {
-                        removeButtonOnClick(pairAssignmentDocumentId, props.tribe.id, props.reload)
-                    }
-                }
+                classes += styles["deleteButton"]
+                onClickFunction = { scope.launch(block = onClick) }
             }
             +"DELETE"
         }
-    }
 
-    private suspend fun removeButtonOnClick(
+    private suspend fun DeletePairAssignmentsCommandDispatcher.removeButtonOnClick(
         pairAssignmentDocumentId: PairAssignmentDocumentId,
         tribeId: TribeId,
         reload: () -> Unit
@@ -113,21 +92,20 @@ interface HistoryRenderer : ScopedStyledComponentRenderer<HistoryProps, HistoryS
         }
     }
 
-    private fun RBuilder.showPairs(document: PairAssignmentDocument, styles: HistoryStyles) =
-        document.pairs.mapIndexed { index, pair ->
-            span(classes = styles.pair) {
-                attrs { key = "$index" }
-                pair.players.map { pinnedPlayer: PinnedPlayer ->
-                    showPlayer(styles, pinnedPlayer)
-                }
-                pinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles.pinSection)
+    private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->
+        span(classes = styles["pair"]) {
+            attrs { key = "$index" }
+            pair.players.map { pinnedPlayer: PinnedPlayer ->
+                showPlayer(pinnedPlayer)
             }
+            pinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"])
         }
+    }
 
-    private fun RBuilder.showPlayer(styles: HistoryStyles, pinnedPlayer: PinnedPlayer) =
-        span(classes = styles.player) {
+    private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) =
+        span(classes = styles["player"]) {
             attrs { key = "${pinnedPlayer.player.id}" }
-            div(classes = styles.playerHeader) {
+            div(classes = styles["playerHeader"]) {
                 +pinnedPlayer.player.name
             }
         }
