@@ -33,11 +33,12 @@ data class PinConfigEditorProps(
     val commandDispatcher: PinCommandDispatcher
 ) : RProps
 
-open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEditorProps>(provider()),
+private val styles = useStyles("pin/PinConfigEditor")
+
+open class PinConfigEditor(provider: ScopeProvider) : IFRComponent<PinConfigEditorProps>(provider()),
     ScopeProvider by provider, ReactScopeProvider, WindowFunctions {
 
     companion object : PinConfigEditor(object : ReactScopeProvider {}) {
-
         fun RBuilder.pinConfigEditor(
             tribe: Tribe,
             pin: Pin,
@@ -45,15 +46,11 @@ open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEdito
             pathSetter: (String) -> Unit,
             reload: () -> Unit
         ) = child(PinConfigEditor.component.rFunction, PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatcher))
-
     }
 
-    val styles = useStyles("pin/PinConfigEditor")
-
-    override fun render(props: PinConfigEditorProps) = reactElement {
-        val (tribe, _, pathSetter, reload, dispatcher) = props
+    override val renderer = rendererFunc { (tribe, pin, pathSetter, reload, dispatcher) ->
         val scope = useScope(styles.className)
-        val (values, onChange) = useForm(props.pin.toJson())
+        val (values, onChange) = useForm(pin.toJson())
 
         val updatedPin = values.toPin()
 
@@ -64,7 +61,7 @@ open class PinConfigEditor(provider: ScopeProvider) : FRComponent<PinConfigEdito
             configHeader(tribe, pathSetter) { +"Pin Configuration" }
             span(classes = styles["pin"]) {
                 pinConfigForm(updatedPin, onChange, onSubmitFunc, onRemove)
-                promptOnExit(shouldShowPrompt = updatedPin != props.pin)
+                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
             span(classes = styles["icon"]) {
                 pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
