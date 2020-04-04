@@ -5,4 +5,6 @@ import kotlinx.coroutines.MainScope
 
 interface ScopeProvider {
     fun buildScope(): CoroutineScope = MainScope()
+
+    companion object : ScopeProvider
 }

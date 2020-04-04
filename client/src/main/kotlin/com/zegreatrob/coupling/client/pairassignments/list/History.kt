@@ -23,7 +23,6 @@ import react.dom.div
 import react.dom.key
 import react.dom.span
 
-
 private val styles = useStyles("pairassignments/History")
 
 data class HistoryProps(
@@ -40,7 +39,7 @@ open class History(scopeProvider: ScopeProvider, windowFunctions: WindowFunction
     WindowFunctions by windowFunctions,
     ScopeProvider by scopeProvider {
 
-    companion object : History(object : ScopeProvider {}, object : WindowFunctions {});
+    companion object : History(ScopeProvider, WindowFunctions);
 
     override val renderer = rendererFunc { (tribe, history, reload, pathSetter, dispatcher) ->
         val scope = useScope(styles.className)
@@ -52,7 +51,9 @@ open class History(scopeProvider: ScopeProvider, windowFunctions: WindowFunction
             }
             span(classes = styles["historyView"]) {
                 div(classes = styles["header"]) { +"History!" }
-                pairAssignmentList(history, onDeleteFunc)
+                history.forEach {
+                    pairAssignmentRow(it, onDeleteFunc)
+                }
             }
         }
     }
@@ -65,17 +66,17 @@ open class History(scopeProvider: ScopeProvider, windowFunctions: WindowFunction
         launch(block = { dispatcher.removeButtonOnClick(documentId, tribe.id, reload) })
     }
 
-    private fun RBuilder.pairAssignmentList(
-        history: List<PairAssignmentDocument>,
+    private fun RBuilder.pairAssignmentRow(
+        document: PairAssignmentDocument,
         onDeleteFunc: (PairAssignmentDocumentId) -> Any
-    ) = history.forEach {
-        val pairAssignmentDocumentId = it.id ?: return@forEach
+    ) {
+        val pairAssignmentDocumentId = document.id ?: return
 
         div(classes = styles["pairAssignments"]) {
             attrs { key = pairAssignmentDocumentId.value }
-            span(classes = styles["pairAssignmentsHeader"]) { +it.dateText() }
+            span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
             deleteButton { onDeleteFunc(pairAssignmentDocumentId) }
-            div { showPairs(it) }
+            div { showPairs(document) }
         }
     }
 
