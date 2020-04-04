@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
-import com.zegreatrob.coupling.client.pin.PinSection.pinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
+import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair

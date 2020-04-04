@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pin.PinButtonScale
-import com.zegreatrob.coupling.client.pin.PinSection.pinSection
+import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

@@ -139,7 +139,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
         }
     }
 
-    private inline fun RBuilder.retireButton(noinline onRetire: (Event) -> Unit) = div(classes = "small red button") {
+    private fun RBuilder.retireButton(onRetire: (Event) -> Unit) = div(classes = "small red button") {
         attrs {
             classes += styles["deleteButton"]
             onClickFunction = onRetire
@@ -158,7 +158,7 @@ interface PlayerConfigEditorRenderer : FComponent<PlayerConfigEditorProps>,
         +"Save"
     }
 
-    private inline fun RBuilder.nameInput(player: Player, noinline onChange: (Event) -> Unit) {
+    private fun RBuilder.nameInput(player: Player, onChange: (Event) -> Unit) {
         configInput(
             labelText = "Name",
             id = "player-name",
