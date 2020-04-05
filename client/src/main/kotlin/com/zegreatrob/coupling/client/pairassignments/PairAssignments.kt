@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator.animator
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
-import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

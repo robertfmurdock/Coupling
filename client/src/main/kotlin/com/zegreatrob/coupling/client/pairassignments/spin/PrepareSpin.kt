@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
