@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
@@ -10,16 +12,7 @@ import react.dom.button
 import react.dom.div
 import react.router.dom.routeLink
 
-
-object PlayerRoster : RComponent<PlayerRosterProps>(provider()), PlayerRosterBuilder
-
 val RBuilder.playerRoster get() = PlayerRoster.render(this)
-
-interface PlayerRosterStyles {
-    val className: String
-    val addPlayerButton: String
-    val header: String
-}
 
 data class PlayerRosterProps(
     val label: String? = null,
@@ -29,36 +22,32 @@ data class PlayerRosterProps(
     val className: String? = null
 ) : RProps
 
-interface PlayerRosterBuilder : StyledComponentRenderer<PlayerRosterProps, PlayerRosterStyles> {
+private val styles = useStyles("player/PlayerRoster")
 
-    override val componentPath: String get() = "player/PlayerRoster"
-
-    override fun StyledRContext<PlayerRosterProps, PlayerRosterStyles>.render() = reactElement {
-        div(classes = props.className) {
-            attrs { classes += styles.className }
-            div {
-                div(classes = styles.header) {
-                    +(props.label ?: "Players")
-                }
-                renderPlayers(props)
+val PlayerRoster = reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
+    div(classes = className) {
+        attrs { classes += styles.className }
+        div {
+            div(classes = styles["header"]) {
+                +(label ?: "Players")
             }
-            routeLink(to = "/${props.tribeId.value}/player/new/") {
-                button(classes = "large orange button") {
-                    attrs { classes += styles.addPlayerButton }
-                    +"Add a new player!"
-                }
-            }
+            renderPlayers(players, tribeId, pathSetter)
         }
-    }
-
-    private fun RBuilder.renderPlayers(props: PlayerRosterProps) = with(props) {
-        players.forEach { player ->
-            playerCard(
-                PlayerCardProps(tribeId = tribeId, player = player, pathSetter = pathSetter),
-                key = player.id
-            )
-        }
+        addPlayerButton(tribeId)
     }
 }
 
-val RBuilder.pairAssignments get() = PlayerRoster.render(this)
+private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${tribeId.value}/player/new/") {
+    button(classes = "large orange button") {
+        attrs { classes += styles["addPlayerButton"] }
+        +"Add a new player!"
+    }
+}
+
+private fun RBuilder.renderPlayers(players: List<Player>, tribeId: TribeId, pathSetter: (String) -> Unit) =
+    players.forEach { player ->
+        playerCard(
+            PlayerCardProps(tribeId, player, pathSetter),
+            key = player.id
+        )
+    }

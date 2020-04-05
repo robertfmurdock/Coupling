@@ -33,7 +33,7 @@ data class PlayerCardProps(
     val deselected: Boolean = false
 ) : RProps
 
-val styles = useStyles("player/PlayerCard")
+private val styles = useStyles("player/PlayerCard")
 
 val PlayerCard = reactFunction<PlayerCardProps> { (
                                                       tribeId,

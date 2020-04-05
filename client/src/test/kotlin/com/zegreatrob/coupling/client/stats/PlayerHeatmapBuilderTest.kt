@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.provider
-import com.zegreatrob.coupling.client.external.react.loadStyles
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -15,11 +14,10 @@ import kotlin.test.Test
 
 class PlayerHeatmapBuilderTest {
 
-    private val styles = loadStyles<PlayerHeatmapStyles>("stats/PlayerHeatmap")
+    private val styles = useStyles("stats/PlayerHeatmap")
 
     @Test
-    fun hasRowOfPlayersToTheSide() = setup(object : PlayerHeatmapBuilder,
-        PropsClassProvider<PlayerHeatmapProps> by provider() {
+    fun hasRowOfPlayersToTheSide() = setup(object {
         val players = listOf(
             Player("harry"),
             Player("larry"),
@@ -32,9 +30,9 @@ class PlayerHeatmapBuilderTest {
             heatmapData = emptyList()
         )
     }) exercise {
-        shallow(props)
+        shallow(PlayerHeatmap, props)
     } verify { wrapper ->
-        wrapper.find<Any>(".${styles.heatmapPlayersSideRow}")
+        wrapper.find<Any>(".${styles["heatmapPlayersSideRow"]}")
             .findComponent(PlayerCard)
             .map { it.props().player }
             .toList()
@@ -42,8 +40,7 @@ class PlayerHeatmapBuilderTest {
     }
 
     @Test
-    fun hasRowOfPlayersAboveHeatmap() = setup(object : PlayerHeatmapBuilder,
-        PropsClassProvider<PlayerHeatmapProps> by provider() {
+    fun hasRowOfPlayersAboveHeatmap() = setup(object {
         val players = listOf(
             Player("harry"),
             Player("larry"),
@@ -56,9 +53,9 @@ class PlayerHeatmapBuilderTest {
             heatmapData = emptyList()
         )
     }) exercise {
-        shallow(props)
+        shallow(PlayerHeatmap, props)
     } verify { wrapper ->
-        wrapper.find<Any>(".${styles.heatmapPlayersTopRow}")
+        wrapper.find<Any>(".${styles["heatmapPlayersTopRow"]}")
             .findComponent(PlayerCard)
             .map { it.props().player }
             .toList()
