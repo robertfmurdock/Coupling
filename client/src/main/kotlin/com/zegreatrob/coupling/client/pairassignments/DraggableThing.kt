@@ -15,32 +15,28 @@ data class DraggableThingProps(
     val handler: RBuilder.(isOver: Boolean) -> Unit
 ) : RProps
 
-object DraggableThing : FRComponent<DraggableThingProps>(provider()) {
+private val styles = useStyles<SimpleStyle>("DraggableThing")
 
-    fun RBuilder.draggableThing(
-        itemType: String,
-        itemId: String,
-        dropCallback: (String) -> Unit,
-        handler: RBuilder.(isOver: Boolean) -> Unit
-    ) = child(DraggableThing.component.rFunction, DraggableThingProps(itemType, itemId, dropCallback, handler))
+val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
+    val draggableRef = useRef<Node>(null)
 
-    override fun render(props: DraggableThingProps) = with(props) {
-        val styles = useStyles<SimpleStyle>("DraggableThing")
-        val draggableRef = useRef<Node>(null)
+    val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })
+    val (isOver, drop) = useDrop(
+        acceptItemType = itemType,
+        drop = { item -> dropCallback(item["id"].unsafeCast<String>()) },
+        collect = { monitor -> monitor.isOver() }
+    )
+    drag(drop(draggableRef))
 
-        val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })
-        val (isOver, drop) = useDrop(
-            acceptItemType = itemType,
-            drop = { item -> dropCallback(item["id"].unsafeCast<String>()) },
-            collect = { monitor -> monitor.isOver() }
-        )
-        drag(drop(draggableRef))
-
-        reactElement {
-            div(classes = styles.className) {
-                attrs { ref = draggableRef }
-                handler(isOver)
-            }
-        }
+    div(classes = styles.className) {
+        attrs { ref = draggableRef }
+        handler(isOver)
     }
 }
+
+fun RBuilder.draggableThing(
+    itemType: String,
+    itemId: String,
+    dropCallback: (String) -> Unit,
+    handler: RBuilder.(isOver: Boolean) -> Unit
+) = child(DraggableThing.component.rFunction, DraggableThingProps(itemType, itemId, dropCallback, handler))
