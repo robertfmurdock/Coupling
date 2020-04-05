@@ -14,23 +14,13 @@ import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
-import react.ReactElement
 import react.dom.div
 import react.dom.img
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-object PlayerCard : RComponent<PlayerCardProps>(provider()), PlayerCardBuilder
-
 val RBuilder.playerCard get() = PlayerCard.render(this)
-
-external interface PlayerCardStyles {
-    val player: String
-    val header: String
-    val playerIcon: String
-    val deselected: String
-}
 
 data class PlayerCardProps(
     val tribeId: TribeId,
@@ -43,107 +33,110 @@ data class PlayerCardProps(
     val deselected: Boolean = false
 ) : RProps
 
-typealias PlayerCardContext = StyledRContext<PlayerCardProps, PlayerCardStyles>
+val styles = useStyles("player/PlayerCard")
 
-interface PlayerCardBuilder : StyledComponentRenderer<PlayerCardProps, PlayerCardStyles> {
+val PlayerCard = reactFunction<PlayerCardProps> { (
+                                                      tribeId,
+                                                      player,
+                                                      pathSetter,
+                                                      headerDisabled,
+                                                      className,
+                                                      size,
+                                                      onClick,
+                                                      deselected) ->
+    styledDiv {
+        attrs {
+            classes += additionalClasses(className, deselected)
+            playerCardStyle(size)
+            onClickFunction = onClick
+        }
+        playerGravatarImage(player, size)
+        child(playerCardHeaderElement(tribeId, player, pathSetter, headerDisabled, size))
+    }
+}
 
-    override val componentPath: String get() = "player/PlayerCard"
-
-    override fun PlayerCardContext.render(): ReactElement {
-        val (_, player, _, _, _, size, onClick) = props
-        return reactElement {
-            styledDiv {
-                attrs {
-                    classes += additionalClasses()
-                    playerCardStyle(size)
-                    onClickFunction = onClick
-                }
-                playerGravatarImage(player, size, styles)
-                child(playerCardHeaderElement())
-            }
+private fun additionalClasses(className: String?, deselected: Boolean) = setOf(className, styles["player"])
+    .filterNotNull()
+    .let {
+        when {
+            deselected -> it + styles["deselected"]
+            else -> it
         }
     }
 
-    private fun PlayerCardContext.additionalClasses() = setOf(props.className, styles.player)
-        .filterNotNull()
-        .let {
-            when {
-                props.deselected -> it + styles.deselected
-                else -> it
-            }
-        }
+private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
+    css {
+        width = size.px
+        height = (size * 1.4).px
+        padding(all = (size * 0.06).px)
+        borderWidth = (size * 0.04).px
+        borderRadius = (size * 0.08).px
+    }
+}
 
-    private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
+
+private fun playerCardHeaderElement(
+    tribeId: TribeId,
+    player: Player,
+    pathSetter: (String) -> Unit,
+    disabled: Boolean,
+    size: Int
+) = reactElement {
+    val playerNameRef = useRef<Node>(null)
+    useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
+
+    styledDiv {
+        attrs {
+            classes += styles["header"]
+            onClickFunction = handleNameClick(tribeId, player, disabled, pathSetter)
+        }
         css {
-            width = size.px
-            height = (size * 1.4).px
-            padding(all = (size * 0.06).px)
-            borderWidth = (size * 0.04).px
-            borderRadius = (size * 0.08).px
+            margin(top = (size * 0.02).px)
+        }
+        div {
+            attrs { ref = playerNameRef }
+            +(if (player.name.isBlank()) "Unknown" else player.name)
         }
     }
+}
 
-    private fun RBuilder.playerGravatarImage(
-        player: Player,
-        size: Int,
-        styles: PlayerCardStyles
-    ) = if (player.imageURL != null) {
-        img(src = player.imageURL, classes = styles.playerIcon, alt = "icon") {
-            attrs {
-                width = size.toString()
-                height = size.toString()
-            }
-        }
-    } else {
-        val email = player.email
-        gravatarImage(
-            email = email,
-            className = styles.playerIcon,
-            alt = "icon",
-            options = object : GravatarOptions {
-                override val size = size
-                override val default = "retro"
-            }
-        )
+private fun handleNameClick(
+    tribeId: TribeId,
+    player: Player,
+    disabled: Boolean,
+    pathSetter: (String) -> Unit
+) = { event: Event ->
+    if (!disabled) {
+        event.stopPropagation()
+
+        pathSetter("/${tribeId.value}/player/${player.id}/")
     }
+}
 
-    private fun PlayerCardContext.playerCardHeaderElement() = reactElement {
-        val (tribeId, player, pathSetter, disabled, _, size, _) = props
-        val playerNameRef = useRef<Node>(null)
-        useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
-
-        styledDiv {
-            attrs {
-                classes += styles.header
-                onClickFunction = handleNameClick(tribeId, player, disabled, pathSetter)
-            }
-            css {
-                margin(top = (size * 0.02).px)
-            }
-            div {
-                attrs { ref = playerNameRef }
-                +(if (player.name.isBlank()) "Unknown" else player.name)
-            }
+private fun RBuilder.playerGravatarImage(
+    player: Player,
+    size: Int
+) = if (player.imageURL != null) {
+    img(src = player.imageURL, classes = styles["playerIcon"], alt = "icon") {
+        attrs {
+            width = size.toString()
+            height = size.toString()
         }
     }
-
-    private fun handleNameClick(
-        tribeId: TribeId,
-        player: Player,
-        disabled: Boolean,
-        pathSetter: (String) -> Unit
-    ) = { event: Event ->
-        if (!disabled) {
-            event.stopPropagation()
-
-            pathSetter("/${tribeId.value}/player/${player.id}/")
+} else {
+    gravatarImage(
+        email = player.email,
+        className = styles["playerIcon"],
+        alt = "icon",
+        options = object : GravatarOptions {
+            override val size = size
+            override val default = "retro"
         }
-    }
+    )
+}
 
-    private fun Node.fitPlayerName(size: Int) {
-        val maxFontHeight = (size * 0.31)
-        val minFontHeight = (size * 0.16)
-        fitty(maxFontHeight, minFontHeight, true)
-    }
-
+private fun Node.fitPlayerName(size: Int) {
+    val maxFontHeight = (size * 0.31)
+    val minFontHeight = (size * 0.16)
+    fitty(maxFontHeight, minFontHeight, true)
 }
