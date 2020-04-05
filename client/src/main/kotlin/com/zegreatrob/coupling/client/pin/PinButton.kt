@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
@@ -25,58 +27,54 @@ data class PinButtonProps(
     val onClick: () -> Unit = {}
 ) : RProps
 
-object PinButton : FRComponent<PinButtonProps>(provider()) {
+fun RBuilder.pinButton(
+    pin: Pin,
+    scale: PinButtonScale = PinButtonScale.Small,
+    className: String = "",
+    onClick: () -> Unit = {},
+    key: String? = null,
+    showTooltip: Boolean = true
+) = child(
+    PinButton(PinButtonProps(pin, scale, className, showTooltip, onClick), key = key)
+)
 
-    fun RBuilder.pinButton(
-        pin: Pin,
-        scale: PinButtonScale = PinButtonScale.Small,
-        className: String = "",
-        onClick: () -> Unit = {},
-        key: String? = null,
-        showTooltip: Boolean = true
-    ) = child(
-        PinButton(PinButtonProps(pin, scale, className, showTooltip, onClick), key = key)
-    )
+private val styles = useStyles("pin/PinButton")
 
-    override fun render(props: PinButtonProps) = reactElement {
-        val (pin, scale) = props
-        val styles = useStyles("pin/PinButton")
-
-        styledDiv {
-            attrs {
-                classes += listOf(props.className, styles.className)
-                css { scaledStyles(scale) }
-                onClickFunction = { props.onClick() }
-            }
-
-            if (props.showTooltip) {
-                span(classes = styles["tooltip"]) { +pin.name }
-            }
-            i(scale.faTag) { attrs { classes += targetIcon(pin) } }
-        }
-    }
-
-    private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
-        padding((3.2 * scale.factor).px)
-        borderWidth = (2 * scale.factor).px
-        borderRadius = (12 * scale.factor).px
-        lineHeight = LineHeight((4.6 * scale.factor).px.value)
-        height = (14 * scale.factor).px
-        width = (14 * scale.factor).px
-    }
-
-    private fun targetIcon(pin: Pin): String {
-        var targetIcon = if (pin.icon.isEmpty()) "fa-skull" else pin.icon
-        if (!targetIcon.startsWith("fa")) {
-            targetIcon = "fa-$targetIcon"
-        }
-        var fontAwesomeStyle = "fa"
-        val split = targetIcon.split(" ")
-        if (split.size > 1) {
-            fontAwesomeStyle = ""
+val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
+    styledDiv {
+        attrs {
+            classes += listOf(className, styles.className)
+            css { scaledStyles(scale) }
+            onClickFunction = { onClick() }
         }
 
-        targetIcon = "$fontAwesomeStyle $targetIcon"
-        return targetIcon
+        if (showTooltip) {
+            span(classes = styles["tooltip"]) { +pin.name }
+        }
+        i(scale.faTag) { attrs { classes += targetIcon(pin) } }
     }
+}
+
+private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
+    padding((3.2 * scale.factor).px)
+    borderWidth = (2 * scale.factor).px
+    borderRadius = (12 * scale.factor).px
+    lineHeight = LineHeight((4.6 * scale.factor).px.value)
+    height = (14 * scale.factor).px
+    width = (14 * scale.factor).px
+}
+
+private fun targetIcon(pin: Pin): String {
+    var targetIcon = if (pin.icon.isEmpty()) "fa-skull" else pin.icon
+    if (!targetIcon.startsWith("fa")) {
+        targetIcon = "fa-$targetIcon"
+    }
+    var fontAwesomeStyle = "fa"
+    val split = targetIcon.split(" ")
+    if (split.size > 1) {
+        fontAwesomeStyle = ""
+    }
+
+    targetIcon = "$fontAwesomeStyle $targetIcon"
+    return targetIcon
 }

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
-import com.zegreatrob.coupling.client.pin.PinButton.pinButton
+import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowser.tribeBrowser
