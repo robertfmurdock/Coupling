@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.pairAssignmentsHeader
@@ -16,7 +19,6 @@ import kotlinx.css.display
 import kotlinx.css.visibility
 import react.RBuilder
 import react.RProps
-import react.ReactElement
 import react.dom.div
 import react.dom.key
 import styled.css
@@ -36,78 +38,72 @@ data class SpinStateData(
     val shownPlayer: Player?
 )
 
-object SpinAnimationPanel : FRComponent<SpinAnimationPanelProps>(provider()) {
+private val styles = useStyles("pairassignments/SpinAnimation")
 
-    private val styles = useStyles("pairassignments/SpinAnimation")
+fun RBuilder.spinAnimation(
+    tribe: Tribe,
+    rosteredPairAssignments: RosteredPairAssignments,
+    state: SpinAnimationState
+) = child(
+    SpinAnimationPanel.component.rFunction, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
+)
 
-    fun RBuilder.spinAnimation(
-        tribe: Tribe,
-        rosteredPairAssignments: RosteredPairAssignments,
-        state: SpinAnimationState
-    ) = child(
-        SpinAnimationPanel.component.rFunction, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
-    )
+val SpinAnimationPanel = reactFunction<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
+    val pairAssignments = rosteredPairAssignments.pairAssignments
+    val players = rosteredPairAssignments.selectedPlayers
 
-    override fun render(props: SpinAnimationPanelProps): ReactElement {
-        val state = props.state
-        val tribe = props.tribe
-        val pairAssignments = props.rosteredPairAssignments.pairAssignments
-        val players = props.rosteredPairAssignments.selectedPlayers
+    val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
 
-        val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
-
-        return reactElement {
-            div(classes = styles.className) {
-                pairAssignmentsHeader(pairAssignments)
-                assignedPairs(tribe, revealedPairs)
-                playerSpotlight(shownPlayer)
-                playerRoster(rosterPlayers)
-            }
-        }
+    div(classes = styles.className) {
+        pairAssignmentsHeader(pairAssignments)
+        assignedPairs(tribe, revealedPairs)
+        playerSpotlight(shownPlayer)
+        playerRoster(rosterPlayers)
     }
+}
 
-    private fun RBuilder.playerSpotlight(shownPlayer: Player?) = div(classes = styles["playerSpotlight"]) {
-        if (shownPlayer != null)
-            flippedPlayer(shownPlayer)
-        else
+private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) = div(
+    classes = styles["pairAssignments"]
+) {
+    revealedPairs.mapIndexed { index, it ->
+        assignedPair(
+            tribe,
+            it,
+            { _, _, _ -> },
+            { _, _ -> },
+            false,
+            {},
+            key = "$index"
+        )
+    }
+}
+
+private fun RBuilder.playerSpotlight(shownPlayer: Player?) = div(classes = styles["playerSpotlight"]) {
+    if (shownPlayer != null)
+        flippedPlayer(shownPlayer)
+    else
+        placeholderPlayerCard()
+}
+
+private fun RBuilder.placeholderPlayerCard() = styledDiv {
+    css { visibility = Visibility.hidden; display = Display.inlineBlock }
+    flippedPlayer(placeholderPlayer)
+}
+
+private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id ?: "") {
+    styledDiv {
+        attrs { this.key = key ?: "" }
+        css { display = Display.inlineBlock }
+        playerCard(PlayerCardProps(TribeId(""), player))
+    }
+}
+
+private fun RBuilder.playerRoster(players: List<Player>) = div(classes = styles["playerRoster"]) {
+    players.map {
+        if (it == placeholderPlayer) {
             placeholderPlayerCard()
-    }
-
-    private fun RBuilder.placeholderPlayerCard() = styledDiv {
-        css { visibility = Visibility.hidden; display = Display.inlineBlock }
-        flippedPlayer(placeholderPlayer)
-    }
-
-    private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id ?: "") {
-        styledDiv {
-            attrs { this.key = key ?: "" }
-            css { display = Display.inlineBlock }
-            playerCard(PlayerCardProps(TribeId(""), player))
-        }
-    }
-
-    private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) =
-        div(classes = styles["pairAssignments"]) {
-            revealedPairs.mapIndexed { index, it ->
-                assignedPair(
-                    tribe,
-                    it,
-                    { _, _, _ -> },
-                    { _, _ -> },
-                    false,
-                    {},
-                    key = "$index"
-                )
-            }
-        }
-
-    private fun RBuilder.playerRoster(players: List<Player>) = div(classes = styles["playerRoster"]) {
-        players.map {
-            if (it == placeholderPlayer) {
-                placeholderPlayerCard()
-            } else {
-                flippedPlayer(it, key = it.id)
-            }
+        } else {
+            flippedPlayer(it, key = it.id)
         }
     }
 }
