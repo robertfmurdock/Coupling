@@ -1,71 +1,82 @@
-web:
-  hostname: web
-  build: .
-  ports:
-    - "3000:3000"
-  links:
-    - "mongo:mongo"
-    - "seleniumhub:hub"
-    - "statsd:statsd"
-  volumes:
-    - ./public:/usr/src/app/public
-    - ./server:/usr/src/app/server
-    - ./client:/usr/src/app/client
-    - ./views:/usr/src/app/views
-    - ./test:/usr/src/app/test
-    - ./package.json:/usr/src/app/package.json
-    - ./config.js:/usr/src/app/config.js
-    - ./test-output:/usr/src/app/test-output
-mongo:
-  image: mongo
-  environment:
-    - AUTH=no
-  ports:
-   - "27017:27017"
-  volumes:
-    - ./data/db:/data/db
-dynamo:
-  image: amazon/dynamodb-local
-  ports:
-    - "8000:8000"
-  command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
-  volumes:
-    - ./dynamodb_data:/home/dynamodblocal/data
-statsd:
-  image: hopsoft/graphite-statsd
-  ports:
-    - "3002:80"
-    - "2003:2003"
-    - "8125:8125/udp"
-elasticsearch:
-  image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
-  environment:
-    - http.host=0.0.0.0
-    - ES_JAVA_OPTS=-Xms512m -Xmx512m
-graylog:
-  image: graylog/graylog:3.2
-  links:
-    - mongo
-    - elasticsearch
-  ports:
-    - "9000:9000"
-    - "12201:12201"
-    - "1514:1514"
-    - "5555:5555"
-  environment:
-    - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-grafana:
-  image: grafana/grafana
-  links:
-    - statsd
-  ports:
-    - "4001:3000"
-seleniumhub:
-  image: selenium/hub
-chromenode:
-  image: selenium/node-chrome
-  volumes:
-    - /dev/shm:/dev/shm
-  links:
-    - "seleniumhub:hub"
-    - "web:web"
+version: '2'
+services:
+  web:
+    hostname: web
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - "mongo:mongo"
+      - "seleniumhub:hub"
+      - "statsd:statsd"
+    volumes:
+      - ./public:/usr/src/app/public
+      - ./server:/usr/src/app/server
+      - ./client:/usr/src/app/client
+      - ./views:/usr/src/app/views
+      - ./test:/usr/src/app/test
+      - ./package.json:/usr/src/app/package.json
+      - ./config.js:/usr/src/app/config.js
+      - ./test-output:/usr/src/app/test-output
+  mongo:
+    image: mongo
+    environment:
+      - AUTH=no
+    ports:
+     - "27017:27017"
+    volumes:
+      - ./data/db:/data/db
+  dynamo:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
+    volumes:
+      - ./dynamodb_data:/home/dynamodblocal/data
+  statsd:
+    image: hopsoft/graphite-statsd
+    ports:
+      - "3002:80"
+      - "2003:2003"
+      - "8125:8125/udp"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
+    environment:
+      - http.host=0.0.0.0
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+  graylog:
+    image: graylog/graylog:3.2
+    links:
+      - mongo
+      - elasticsearch
+    ports:
+      - "9000:9000"
+      - "12201:12201"
+      - "1514:1514"
+      - "5555:5555"
+    environment:
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+    volumes:
+      - graylog_journal:/usr/share/graylog/data/journal
+  grafana:
+    image: grafana/grafana
+    links:
+      - statsd
+    ports:
+      - "4001:3000"
+  seleniumhub:
+    image: selenium/hub
+  chromenode:
+    image: selenium/node-chrome
+    volumes:
+      - /dev/shm:/dev/shm
+    links:
+      - "seleniumhub:hub"
+      - "web:web"
+volumes:
+  es_data:
+    driver: local
+  graylog_journal:
+    driver: local
