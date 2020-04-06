@@ -123,8 +123,8 @@ module.exports = function (app, userDataService) {
 
   app.use(session({
     secret: config.secret,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: store
   }));
   app.use(passport.initialize());
