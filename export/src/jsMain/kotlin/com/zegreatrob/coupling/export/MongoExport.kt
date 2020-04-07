@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.export
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.mongo.external.monk.MonkDb
-import com.zegreatrob.coupling.mongo.external.monk.default
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.mongo.external.monk.MonkDb
+import com.zegreatrob.coupling.mongo.external.monk.default
 import com.zegreatrob.coupling.mongo.pairassignments.MongoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
@@ -68,13 +68,18 @@ private suspend fun outputUsers(repositoryCatalog: MongoRepositoryCatalog) {
     repositoryCatalog.getUserRecords()
         .groupBy { it.data.email }
         .entries.sortedBy { it.key }.forEach {
-        json("userEmail" to it.key,
-            "userRecords" to it.value.map { record ->
-                record.toJson().add(record.data.toJson())
-            })
-            .print()
-    }
+            json("userEmail" to it.key,
+                "userRecords" to it.value.map { record ->
+                    record.toJson()
+                        .add(record.data.toJson())
+                        .add(overrideUserIdWithEmailToAvoidBadRecordProblems(record))
+                })
+                .print()
+        }
 }
+
+private fun overrideUserIdWithEmailToAvoidBadRecordProblems(record: Record<User>) =
+    json("id" to record.data.email)
 
 class MongoRepositoryCatalog(
     override val userCollection: dynamic,
