@@ -7,14 +7,14 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.653.0",
+    "aws-sdk": "2.654.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.5",
-    "css-loader": "^3.4.2",
+    "css-loader": "^3.5.1",
     "date-fns": "^2.11.1",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
