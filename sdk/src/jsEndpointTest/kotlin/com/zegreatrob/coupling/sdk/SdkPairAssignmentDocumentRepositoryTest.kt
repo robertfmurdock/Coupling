@@ -54,7 +54,7 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
             result.size.assertIsEqualTo(1)
             result.first().apply {
                 timestamp.assertIsRecentDateTime()
-                modifyingUserEmail.assertIsEqualTo(user.email)
+                modifyingUserId.assertIsEqualTo(user.email)
             }
         }
     }

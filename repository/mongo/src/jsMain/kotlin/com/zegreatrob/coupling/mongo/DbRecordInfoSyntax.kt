@@ -9,6 +9,6 @@ interface DbRecordInfoSyntax : UserEmailSyntax,
     ClockSyntax {
     fun Json.addRecordInfo() = also {
         this["timestamp"] = now().toDate()
-        this["modifiedByUsername"] = userEmail
+        this["modifiedByUsername"] = userId
     }
 }

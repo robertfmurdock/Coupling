@@ -23,31 +23,52 @@ class FindOrCreateUserActionTest {
         setupAsync2(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
             override val traceId: Uuid? = null
-            override val userEmail = "test@test.tes"
+            override val userId = "test@test.tes"
 
             override suspend fun getUser(): Nothing? = null
+            override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
 
             val saveSpy = SpyData<User, Unit>().apply { spyWillReturn(Unit) }
             override suspend fun save(user: User) = saveSpy.spyFunction(user)
         }) exercise {
             FindOrCreateUserAction.perform()
         } verify { result ->
-            result.email.assertIsEqualTo(userEmail)
+            result.email.assertIsEqualTo(userId)
             result.authorizedTribeIds.assertIsEqualTo(emptySet())
             saveSpy.spyReceivedValues.assertContains(result)
         }
 
     @Test
-    fun whenUserWithEmailExistsWillUseExistingUser() = setupAsync2(
+    fun whenUserWithEmailAsIdExistsWillUseExistingUser() = setupAsync2(
         object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
             override val traceId: Nothing? = null
-            override val userEmail = "test@test.tes"
+            override val userId = "test@test.tes"
 
-            val expectedUser = User("${uuid4()}", userEmail, setOf(TribeId("Best tribe")))
+            val expectedUser = User("${uuid4()}", userId, setOf(TribeId("Best tribe")))
             override suspend fun getUser() = Record(expectedUser, "", false, DateTime.now())
+            override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
             override suspend fun save(user: User) = fail("Should not save")
+        }
+    ) exercise {
+        FindOrCreateUserAction.perform()
+    } verify { result ->
+        result.assertIsEqualTo(expectedUser)
+    }
 
+    @Test
+    fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() = setupAsync2(
+        object : FindOrCreateUserActionDispatcher, UserRepository {
+            override val userRepository = this
+            override val traceId: Nothing? = null
+            override val userId = "test@test.tes"
+
+            val expectedUser = User("${uuid4()}", userId, setOf(TribeId("Best tribe")))
+            override suspend fun getUser(): Nothing? = null
+            override suspend fun getUsersWithEmail(email: String): List<Record<User>> =
+                listOf(Record(expectedUser, "", false, DateTime.now()))
+
+            override suspend fun save(user: User) = fail("Should not save")
         }
     ) exercise {
         FindOrCreateUserAction.perform()

@@ -38,7 +38,7 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
         private fun repositoryWithDb(userEmail: String, clock: TimeProvider) =
             MongoPlayerRepositoryTestAnchor(userEmail, clock)
 
-        class MongoPlayerRepositoryTestAnchor(override val userEmail: String, override val clock: TimeProvider) :
+        class MongoPlayerRepositoryTestAnchor(override val userId: String, override val clock: TimeProvider) :
             MongoPlayerRepository, MonkToolkit {
             val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)
@@ -89,19 +89,19 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
                     listOf(
                         Record(
                             data = tribeId.with(player),
-                            modifyingUserEmail = user.email,
+                            modifyingUserId = user.email,
                             isDeleted = false,
                             timestamp = initialSaveTime
                         ),
                         Record(
                             data = tribeId.with(updatedPlayer),
-                            modifyingUserEmail = user.email,
+                            modifyingUserId = user.email,
                             isDeleted = false,
                             timestamp = updatedSaveTime
                         ),
                         Record(
                             data = tribeId.with(updatedPlayer),
-                            modifyingUserEmail = user.email,
+                            modifyingUserId = user.email,
                             isDeleted = true,
                             timestamp = updatedSaveTime
                         )
@@ -127,7 +127,7 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
                     get("timestamp").unsafeCast<Date>().toDateTime()
                         .isCloseToNow()
                         .assertIsEqualTo(true)
-                    get("modifiedByUsername").assertIsEqualTo(userEmail)
+                    get("modifiedByUsername").assertIsEqualTo(userId)
                 }
             }
         }
@@ -167,7 +167,7 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
                 val userWhoSaved = "user that saved"
             }) {
                 with(object : MongoPlayerRepository {
-                    override val userEmail = userWhoSaved
+                    override val userId = userWhoSaved
                     override val clock: TimeProvider get() = TimeProvider
                     override val jsRepository = this@withMongoRepository.jsRepository
                 }) {
@@ -182,7 +182,7 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
                     .map { it["modifiedByUsername"].unsafeCast<String>() }
                     .assertIsEqualTo(
                         listOf(
-                            userEmail,
+                            userId,
                             userWhoSaved
                         )
                     )

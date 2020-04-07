@@ -23,8 +23,8 @@ export default class UserDataService {
     };
 
     public serializeUser(user, done) {
-        if (user.email) {
-            done(null, user.email);
+        if (user.id) {
+            done(null, user.id);
         } else {
             done('The user did not have an id to serialize.');
         }

@@ -10,17 +10,17 @@ import kotlinx.coroutines.promise
 
 @Suppress("unused")
 @JsName("authActionDispatcher")
-fun authActionDispatcher(userCollection: dynamic, userEmail: String, traceId: Uuid?) = GlobalScope.promise {
+fun authActionDispatcher(userCollection: dynamic, userId: String, traceId: Uuid?) = GlobalScope.promise {
     AuthActionDispatcher(
-        userEmail,
-        userRepository(userCollection, userEmail),
+        userId,
+        userRepository(userCollection, userId),
         traceId
     )
 }
 
 @Suppress("unused")
 class AuthActionDispatcher(
-    override val userEmail: String,
+    override val userId: String,
     override val userRepository: UserRepository,
     override val traceId: Uuid?
 ) : AuthUserDispatcherJs, UserRepository by userRepository {

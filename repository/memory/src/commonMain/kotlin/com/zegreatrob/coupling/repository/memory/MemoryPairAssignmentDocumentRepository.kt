@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 
-class MemoryPairAssignmentDocumentRepository(override val userEmail: String, override val clock: TimeProvider) :
+class MemoryPairAssignmentDocumentRepository(override val userId: String, override val clock: TimeProvider) :
     PairAssignmentDocumentRepository,
     TypeRecordSyntax<TribeIdPairAssignmentDocument>,
     RecordSaveSyntax<TribeIdPairAssignmentDocument> {

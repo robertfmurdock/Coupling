@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class Record<T>(
     val data: T,
-    val modifyingUserEmail: String,
+    val modifyingUserId: String,
     val isDeleted: Boolean = false,
     val timestamp: DateTime = DateTime.now()
 )

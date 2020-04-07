@@ -10,8 +10,14 @@ object FindOrCreateUserAction : Action
 
 interface FindOrCreateUserActionDispatcher : ActionLoggingSyntax, UserEmailSyntax, UserSaveSyntax, UserGetSyntax {
 
-    suspend fun FindOrCreateUserAction.perform(): User = logAsync { loadUser() ?: newUser() }
+    suspend fun FindOrCreateUserAction.perform(): User = logAsync {
+        loadUser() ?: getFirstUserWithEmail() ?: newUser()
+    }
 
-    private suspend fun newUser() = User(id = "${uuid4()}", email = userEmail, authorizedTribeIds = emptySet())
+    private suspend inline fun getFirstUserWithEmail() = userRepository.getUsersWithEmail(userId)
+        .firstOrNull()
+        ?.data
+
+    private suspend fun newUser() = User(id = "${uuid4()}", email = userId, authorizedTribeIds = emptySet())
         .apply { save() }
 }

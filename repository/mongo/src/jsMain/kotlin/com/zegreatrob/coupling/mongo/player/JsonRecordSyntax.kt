@@ -9,7 +9,7 @@ import kotlin.js.Json
 interface JsonRecordSyntax : JsonTimestampSyntax, JsonStringValueSyntax {
     fun <T> Json.toDbRecord(data: T) = Record(
         data = data,
-        modifyingUserEmail = stringValue("modifiedByUsername") ?: "NOT RECORDED",
+        modifyingUserId = stringValue("modifiedByUsername") ?: "NOT RECORDED",
         isDeleted = this["isDeleted"]?.unsafeCast<Boolean>() ?: false,
         timestamp = timeStamp() ?: DateTime.EPOCH
     )

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pin.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
-class MemoryPinRepository(override val userEmail: String, override val clock: TimeProvider) : PinRepository,
+class MemoryPinRepository(override val userId: String, override val clock: TimeProvider) : PinRepository,
     TypeRecordSyntax<TribeIdPin>,
     RecordSaveSyntax<TribeIdPin> {
 

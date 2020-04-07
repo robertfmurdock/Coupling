@@ -6,11 +6,12 @@ import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
+import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
-import com.zegreatrob.coupling.stubmodel.stubTribeId
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -32,6 +33,20 @@ interface UserRepositoryValidator {
             repository.getUser()
         } verifyAsync { result ->
             result.assertIsEqualTo(null)
+        }
+    }
+
+    @Test
+    fun getUsersWithEmailWillShowAllUsersWithEmail() = testRepository { repository, user, _ ->
+        setupAsync(object {
+            val userWithEmail = stubUser()
+        }) {
+            repository.save(userWithEmail)
+        } exerciseAsync {
+            repository.getUsersWithEmail(userWithEmail.email)
+        } verifyAsync { result ->
+            result.map { it.data }
+                .assertIsEqualTo(listOf(userWithEmail))
         }
     }
 
@@ -61,7 +76,7 @@ interface UserRepositoryValidator {
         } verifyAsync { result: Record<User>? ->
             if (result == null)
                 fail()
-            result.modifyingUserEmail.assertIsEqualTo(user.email)
+            result.modifyingUserId.assertIsEqualTo(user.id)
             result.timestamp.assertIsEqualTo(clock.currentTime)
         }
     }

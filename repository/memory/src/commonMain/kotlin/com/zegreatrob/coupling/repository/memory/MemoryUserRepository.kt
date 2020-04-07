@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
 
-class MemoryUserRepository(override val userEmail: String, override val clock: TimeProvider) : UserRepository,
+class MemoryUserRepository(override val userId: String, override val clock: TimeProvider) : UserRepository,
     TypeRecordSyntax<User>,
     RecordSaveSyntax<User> {
 
@@ -13,6 +13,10 @@ class MemoryUserRepository(override val userEmail: String, override val clock: T
 
     override suspend fun save(user: User) = user.record().save()
 
-    override suspend fun getUser() = records.lastOrNull { it.data.email == userEmail }
+    override suspend fun getUser() = records.lastOrNull { it.data.id == userId }
+
+    override suspend fun getUsersWithEmail(email: String) = records.filter { it.data.email == email }
+        .groupBy { it.data.id }
+        .mapNotNull { group -> group.value.maxBy { it.timestamp } }
 
 }

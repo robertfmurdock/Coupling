@@ -32,13 +32,13 @@ suspend fun commandDispatcher(
     return CommandDispatcher(user, repositoryCatalog, scope, traceId)
 }
 
-suspend fun userRepository(userCollection: dynamic, userEmail: String) = CompoundUserRepository(
-    mongoUserRepository(userCollection, userEmail),
-    DynamoUserRepository(userEmail, TimeProvider)
+suspend fun userRepository(userCollection: dynamic, userId: String) = CompoundUserRepository(
+    mongoUserRepository(userCollection, userId),
+    DynamoUserRepository(userId, TimeProvider)
 )
 
 private fun mongoUserRepository(userCollection: dynamic, userEmail: String) = object : MongoUserRepository {
     override val userCollection = userCollection
-    override val userEmail = userEmail
+    override val userId = userEmail
     override val clock = TimeProvider
 }

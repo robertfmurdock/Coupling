@@ -98,7 +98,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
             repository.getTribes()
         } verifyAsync { result ->
             result.first { it.data.id == tribe.id }.apply {
-                modifyingUserEmail.assertIsEqualTo(user.email)
+                modifyingUserId.assertIsEqualTo(user.email)
                 timestamp.isWithinOneSecondOfNow()
             }
         }

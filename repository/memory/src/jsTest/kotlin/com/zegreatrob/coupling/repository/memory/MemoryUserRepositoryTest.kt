@@ -11,9 +11,9 @@ class MemoryUserRepositoryTest : UserRepositoryValidator {
 
     override suspend fun withRepository(clock: TimeProvider, handler: suspend (UserRepository, User) -> Unit) {
         val email = "${uuid4()}@mail.com"
-        val repository = MemoryUserRepository(email, clock)
         val id = "${uuid4()}"
         val user = User(id, email, emptySet())
+        val repository = MemoryUserRepository(id, clock)
         handler(repository, user)
     }
 }

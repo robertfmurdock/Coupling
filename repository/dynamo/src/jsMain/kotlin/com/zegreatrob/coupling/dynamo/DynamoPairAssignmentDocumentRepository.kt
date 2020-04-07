@@ -15,7 +15,7 @@ import kotlin.js.Json
 
 
 class DynamoPairAssignmentDocumentRepository private constructor(
-    override val userEmail: String,
+    override val userId: String,
     override val clock: TimeProvider
 ) : PairAssignmentDocumentRepository, UserEmailSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 

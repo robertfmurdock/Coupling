@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.Json
 
-class DynamoTribeRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
+class DynamoTribeRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     TribeRepository,
     DynamoRecordJsonMapping,
     UserEmailSyntax,

@@ -26,8 +26,9 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
         clock: TimeProvider = TimeProvider,
         handler: suspend (DynamoUserRepository, User) -> Unit
     ) {
-        val email = "${uuid4()}"
-        handler(DynamoUserRepository(email, clock), User("${uuid4()}", email, emptySet()))
+        val userId = "${uuid4()}"
+        val user = User(userId, "${uuid4()}", emptySet())
+        handler(DynamoUserRepository(userId, clock), user)
     }
 
     private fun testDynamoRepository(
@@ -54,9 +55,9 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
             repository.getUserRecords()
         } verifyAsync { result ->
             result
-                .assertContains(Record(user, user.email, false, initialSaveTime))
-                .assertContains(Record(altUser, user.email, false, initialSaveTime))
-                .assertContains(Record(updatedUser, user.email, false, updatedSaveTime))
+                .assertContains(Record(user, user.id, false, initialSaveTime))
+                .assertContains(Record(altUser, user.id, false, initialSaveTime))
+                .assertContains(Record(updatedUser, user.id, false, updatedSaveTime))
         }
     }
 

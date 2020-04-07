@@ -51,7 +51,7 @@ class MongoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposito
         ) = MongoPairAssignmentDocumentRepositoryTestAnchor(user.email, clock)
 
         class MongoPairAssignmentDocumentRepositoryTestAnchor(
-            override val userEmail: String,
+            override val userId: String,
             override val clock: TimeProvider
         ) : MongoPairAssignmentDocumentRepository, MonkToolkit {
             val db = getDb(mongoUrl)

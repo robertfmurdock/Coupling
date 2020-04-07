@@ -8,14 +8,14 @@ interface TypeRecordSyntax<T> : UserEmailSyntax, ClockSyntax {
 
     fun T.record() = Record(
         data = this,
-        modifyingUserEmail = userEmail,
+        modifyingUserId = userId,
         isDeleted = false,
         timestamp = now()
     )
 
     fun T.deletionRecord() = Record(
         data = this,
-        modifyingUserEmail = userEmail,
+        modifyingUserId = userId,
         isDeleted = true,
         timestamp = now()
     )

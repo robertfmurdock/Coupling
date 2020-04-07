@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoUserRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
+class DynamoUserRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     UserRepository,
     UserEmailSyntax,
     DynamoUserJsonMapping,
@@ -22,7 +22,7 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
         DynamoScanSyntax {
         override val tableName = "USER"
         val userEmailIndex = "USER_EMAIL_INDEX"
-        suspend operator fun invoke(email: String, clock: TimeProvider) = DynamoUserRepository(email, clock)
+        suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoUserRepository(userId, clock)
             .also { ensureTableExists() }
 
         override val createTableParams: Json
@@ -84,19 +84,26 @@ class DynamoUserRepository private constructor(override val userEmail: String, o
     override suspend fun save(user: User) = performPutItem(user.toRecord().asDynamoJson())
 
     override suspend fun getUser() = logAsync("getUser") {
-        val userIdsWithEmail = logAsync("userIdsWithEmail") {
-            performQuery(emailQueryParams(userEmail))
+        logAsync("get user with id latest revision") {
+            performQuery(queryParams(userId))
                 .itemsNode()
-                .mapNotNull { it.getDynamoStringValue("id") }
+                .sortByRecordTimestamp()
+                .lastOrNull()
+                ?.toUserRecord()
         }
-        userIdsWithEmail.firstOrNull()?.let { userId ->
-            logAsync("get user with id latest revision") {
-                performQuery(queryParams(userId))
-                    .itemsNode()
-                    .sortByRecordTimestamp()
-                    .lastOrNull()
-                    ?.toUserRecord()
-            }
+    }
+
+    override suspend fun getUsersWithEmail(email: String) = logAsync("userIdsWithEmail") {
+        performQuery(emailQueryParams(email))
+            .itemsNode()
+            .mapNotNull { it.getDynamoStringValue("id") }
+    }.mapNotNull { userId ->
+        logAsync("get user with id latest revision") {
+            performQuery(queryParams(userId))
+                .itemsNode()
+                .sortByRecordTimestamp()
+                .lastOrNull()
+                ?.toUserRecord()
         }
     }
 

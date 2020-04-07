@@ -32,13 +32,13 @@ class ProposeNewPairsCommandTest {
             override val tribeRepository get() = stubRepository
 
             val stubRepository = object : TribeGet, PairAssignmentDocumentGet {
-                override suspend fun getTribeRecord(tribeId: TribeId) = Record(tribe, modifyingUserEmail = "test")
+                override suspend fun getTribeRecord(tribeId: TribeId) = Record(tribe, modifyingUserId = "test")
                     .also { tribeId.assertIsEqualTo(tribe.id) }
 
                 override suspend fun getPairAssignments(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
                     history
                         .map {
-                            Record(tribe.id.with(it), modifyingUserEmail = "")
+                            Record(tribe.id.with(it), modifyingUserId = "")
                         }
                         .also { tribeId.assertIsEqualTo(tribe.id) }
             }

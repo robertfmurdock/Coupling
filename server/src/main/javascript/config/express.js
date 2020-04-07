@@ -156,7 +156,8 @@ module.exports = function (app, userDataService) {
   if (isInDevelopmentMode) {
     passport.use(new LocalStrategy(function (username, password, done) {
       userDataService.findOrCreate(username + "._temp", null, function (err, user) {
-        console.error(`Problem with find or create user '${username}' in local strategy`, err);
+        if (err)
+          console.error(`Problem with find or create user '${username}' in local strategy`, err);
         done(err, user);
       });
     }));

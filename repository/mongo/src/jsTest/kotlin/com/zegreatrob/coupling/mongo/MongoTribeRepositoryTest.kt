@@ -62,17 +62,17 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator {
         } verifyAsync { result ->
             result.filter { it.data.id == tribe.id }.let {
                 it[0].apply {
-                    modifyingUserEmail.assertIsEqualTo(user.email)
+                    modifyingUserId.assertIsEqualTo(user.email)
                     timestamp.assertIsEqualTo(firstSaveTime)
                     isDeleted.assertIsEqualTo(false)
                 }
                 it[1].apply {
-                    modifyingUserEmail.assertIsEqualTo(user.email)
+                    modifyingUserId.assertIsEqualTo(user.email)
                     timestamp.assertIsEqualTo(secondSaveTime)
                     isDeleted.assertIsEqualTo(false)
                 }
                 it[2].apply {
-                    modifyingUserEmail.assertIsEqualTo(user.email)
+                    modifyingUserId.assertIsEqualTo(user.email)
                     timestamp.assertIsEqualTo(secondSaveTime)
                     isDeleted.assertIsEqualTo(true)
                 }
@@ -83,7 +83,7 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator {
     companion object {
 
         class MongoTribeRepositoryTestAnchor(
-            override val userEmail: String,
+            override val userId: String,
             override val clock: TimeProvider
         ) : MongoTribeRepository, MonkToolkit {
             val db = getDb(mongoUrl)

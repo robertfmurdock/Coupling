@@ -12,10 +12,10 @@ import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
+import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/UsersRepositoryTest"
@@ -25,7 +25,7 @@ class MongoUserRepositoryTest : UserRepositoryValidator {
 
     override suspend fun withRepository(clock: TimeProvider, handler: suspend (UserRepository, User) -> Unit) {
         val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
-        withMongoRepository(currentUser.email, clock) {
+        withMongoRepository(currentUser.id, clock) {
             handler(it, currentUser)
         }
     }
@@ -33,7 +33,7 @@ class MongoUserRepositoryTest : UserRepositoryValidator {
     companion object {
         private fun repositoryWithDb(email: String, clock: TimeProvider) = MongoUserRepositoryTestAnchor(email, clock)
 
-        class MongoUserRepositoryTestAnchor(override val userEmail: String, override val clock: TimeProvider) :
+        class MongoUserRepositoryTestAnchor(override val userId: String, override val clock: TimeProvider) :
             MongoUserRepository,
             MonkToolkit {
             private val db = getDb(mongoUrl)

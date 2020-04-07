@@ -62,7 +62,7 @@ private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
 }
 
 class DynamoRepositoryCatalog private constructor(
-    override val userEmail: String,
+    override val userId: String,
     override val clock: TimeProvider,
     val tribeRepository: DynamoTribeRepository,
     val playerRepository: DynamoPlayerRepository,

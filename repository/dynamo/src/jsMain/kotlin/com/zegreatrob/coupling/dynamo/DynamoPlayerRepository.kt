@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoPlayerRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
+class DynamoPlayerRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     PlayerEmailRepository,
     UserEmailSyntax,
     DynamoPlayerJsonMapping,

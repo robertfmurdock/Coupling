@@ -46,7 +46,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
         } verifyAsync { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
-                modifyingUserEmail.assertIsEqualTo(user.email)
+                modifyingUserId.assertIsEqualTo(user.email)
                 timestamp.isWithinOneSecondOfNow()
             }
         }

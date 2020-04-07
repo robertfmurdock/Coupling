@@ -87,7 +87,7 @@ interface PairAssignmentDocumentRepositoryValidator {
             result.size.assertIsEqualTo(1)
             result.first().apply {
                 timestamp.assertIsEqualTo(clock.currentTime)
-                modifyingUserEmail.assertIsEqualTo(user.email)
+                modifyingUserId.assertIsEqualTo(user.email)
             }
         }
     }

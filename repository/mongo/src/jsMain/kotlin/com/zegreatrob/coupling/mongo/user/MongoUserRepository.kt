@@ -21,9 +21,15 @@ interface MongoUserRepository : UserRepository, DbRecordSaveSyntax, DbRecordLoad
             .save(userCollection)
     }
 
-    override suspend fun getUser() = findByQuery(json("email" to userEmail), userCollection, "email")
+    override suspend fun getUser() = findByQuery(json("id" to userId), userCollection, "email")
         .firstOrNull()
         ?.let { it.toDbRecord(it.fromDbToUser()) }
+
+    override suspend fun getUsersWithEmail(email: String): List<Record<User>> = findByQuery(
+        json("email" to email),
+        userCollection,
+        "email"
+    ).map { it.toDbRecord(it.fromDbToUser()) }
 
     private fun User.toDbJson() = json(
         "id" to id,

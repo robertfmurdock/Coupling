@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 
 class MemoryRepositoryCatalog private constructor(
-    override val userEmail: String,
+    override val userId: String,
     override val clock: TimeProvider,
     override val tribeRepository: TribeRepository,
     override val playerRepository: PlayerEmailRepository,

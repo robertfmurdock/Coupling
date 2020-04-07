@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlin.js.Json
 
-class DynamoPinRepository private constructor(override val userEmail: String, override val clock: TimeProvider) :
+class DynamoPinRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     PinRepository,
     UserEmailSyntax,
     DynamoPinJsonMapping,

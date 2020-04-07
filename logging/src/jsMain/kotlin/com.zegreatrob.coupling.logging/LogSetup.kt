@@ -18,7 +18,7 @@ data class Message(
     val stackTrace: List<String>? = null
 )
 
-fun DateTime.logFormat() = toString(DateFormat.FORMAT1)
+fun DateTime.logFormat() = toString(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
 
 @OptIn(UnstableDefault::class)
 @Suppress("unused")

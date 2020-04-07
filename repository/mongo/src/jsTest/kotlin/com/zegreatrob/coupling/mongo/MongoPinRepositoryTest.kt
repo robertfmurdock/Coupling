@@ -83,7 +83,7 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
             user: User
         ) = MongoPinRepositoryTestAnchor(clock, user.email)
 
-        class MongoPinRepositoryTestAnchor(override val clock: TimeProvider, override val userEmail: String) :
+        class MongoPinRepositoryTestAnchor(override val clock: TimeProvider, override val userId: String) :
             MongoPinRepository, MonkToolkit {
             private val db = getDb(mongoUrl)
             override val jsRepository: dynamic = jsRepository(db)

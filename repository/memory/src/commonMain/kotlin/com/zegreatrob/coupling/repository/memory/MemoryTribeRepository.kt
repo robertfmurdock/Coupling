@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 
-class MemoryTribeRepository(override val userEmail: String, override val clock: TimeProvider) : TribeRepository,
+class MemoryTribeRepository(override val userId: String, override val clock: TimeProvider) : TribeRepository,
     TypeRecordSyntax<Tribe>, RecordSaveSyntax<Tribe> {
 
     override var records = emptyList<Record<Tribe>>()
