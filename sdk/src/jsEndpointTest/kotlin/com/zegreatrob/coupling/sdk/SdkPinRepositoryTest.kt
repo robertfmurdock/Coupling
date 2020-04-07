@@ -8,12 +8,13 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 class SdkPinRepositoryTest : PinRepositoryValidator {
@@ -29,8 +30,14 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
     @Test
     fun givenNoAuthGetIsNotAllowed() = testAsync {
         val sdk = authorizedSdk()
-        setupAsync(object {}) exerciseAsync {
-            sdk.getPins(TribeId("someoneElseTribe"))
+        val otherSdk = authorizedSdk(uuidString())
+        setupAsync(object {
+            val otherTribe = stubTribe()
+        }) {
+            otherSdk.save(otherTribe)
+            otherSdk.save(otherTribe.id.with(stubPin()))
+        } exerciseAsync {
+            sdk.getPins(otherTribe.id)
         } verifyAsync { result ->
             result.assertIsEqualTo(emptyList())
         }

@@ -87,6 +87,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         logAsync("get user with id latest revision") {
             performQuery(queryParams(userId))
                 .itemsNode()
+                .also { logger.debug { "user RECORD COUNT IS ${it.size}" } }
                 .sortByRecordTimestamp()
                 .lastOrNull()
                 ?.toUserRecord()

@@ -61,7 +61,7 @@ interface HandleWebsocketConnectionActionDispatcher : ScopeSyntax, UserIsAuthori
                     "text" to "Users viewing this page: ${matchingConnection.size}",
                     "players" to toUserPlayerList(matchingConnection, players).map(Player::toJson)
                 )
-            )
+            ).also { logger.debug { "Broadcasting '$it'" } }
         )
     }
 

@@ -16,13 +16,9 @@ private val logger by lazy { KotlinLogging.logger("RequestLogger") }
 fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) -> Unit) = GlobalScope.launch {
     val url = request.originalUrl ?: request.url
     request.traceId = uuid4()
+
     logger.debug {
-        mapOf(
-            "method" to request.method,
-            "url" to url,
-            "message" to "STARTING",
-            "traceId" to "${request.traceId}"
-        )
+        mapOf("method" to request.method, "url" to url, "message" to "STARTING", "traceId" to "${request.traceId}")
     }
 
     val duration = measureTime {

@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
+import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcherJs
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
@@ -48,7 +49,7 @@ class CommandDispatcher(
     RepositoryCatalog by repositoryCatalog,
     PinDispatcherJs {
 
-    private var authorizedTribeIdDispatcherJob: Deferred<AuthorizedTribeIdDispatcher>? = null
+    private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
 
     @Suppress("unused")
     @JsName("authorizedDispatcher")
@@ -56,28 +57,20 @@ class CommandDispatcher(
         authorizedTribeIdDispatcher(tribeId)
     }
 
-    suspend fun authorizedTribeIdDispatcher(tribeId: String): AuthorizedTribeIdDispatcher {
+    suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentTribeIdDispatcher {
         val preexistingJob = authorizedTribeIdDispatcherJob
-        return if (preexistingJob == null) {
-            val async = scope.async {
-                AuthorizedTribeIdDispatcher(
-                    TribeId(tribeId).validateAuthorized(), this@CommandDispatcher
-                )
-            }
-            authorizedTribeIdDispatcherJob = async
-            async.await()
-        } else
-            preexistingJob.await()
+        return preexistingJob?.await()
+            ?: scope.async {
+                CurrentTribeIdDispatcher(TribeId(tribeId), this@CommandDispatcher)
+            }.also {
+                authorizedTribeIdDispatcherJob = it
+            }.await()
     }
 
-    private suspend fun TribeId.validateAuthorized() =
-        if (userIsAuthorized(this)) this else null
-
-    private suspend fun userIsAuthorized(tribeId: TribeId) = UserIsAuthorizedAction(tribeId).perform()
 }
 
-class AuthorizedTribeIdDispatcher(
-    override val authorizedTribeId: TribeId?,
+class CurrentTribeIdDispatcher(
+    override val currentTribeId: TribeId,
     private val commandDispatcher: CommandDispatcher
 ) :
     RepositoryCatalog by commandDispatcher,
@@ -87,4 +80,13 @@ class AuthorizedTribeIdDispatcher(
     TraceIdSyntax by commandDispatcher,
     PinsQueryDispatcherJs,
     PlayersQueryDispatcherJs,
-    PairAssignmentDocumentListQueryDispatcherJs
+    PairAssignmentDocumentListQueryDispatcherJs,
+    UserIsAuthorizedActionDispatcher {
+
+    suspend fun isAuthorized() = currentTribeId.validateAuthorized() != null
+
+    private suspend fun TribeId.validateAuthorized() = if (userIsAuthorized(this)) this else null
+
+    private suspend fun userIsAuthorized(tribeId: TribeId) = UserIsAuthorizedAction(tribeId).perform()
+
+}

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity
 
-import com.zegreatrob.coupling.server.AuthorizedTribeIdDispatcher
 import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.CurrentTribeIdDispatcher
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise
 import kotlin.js.Json
@@ -38,10 +38,16 @@ private fun buildResolver(func: suspend CommandDispatcher.(Json, Json) -> Any?):
         }
     }
 
-private fun buildAuthorizedResolver(func: suspend AuthorizedTribeIdDispatcher.() -> Any?) =
+private fun buildAuthorizedResolver(func: suspend CurrentTribeIdDispatcher.() -> Any?) =
     buildResolver { entity, _ ->
         val authorizedDispatcher = authorizedTribeIdDispatcher(entity["id"].toString())
         authorizedDispatcher.func()
+            .let {
+                when {
+                    authorizedDispatcher.isAuthorized() -> it
+                    else -> null
+                }
+            }
     }
 
 typealias GraphQLResolver = (Json, Json, Request) -> Promise<Any?>

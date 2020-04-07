@@ -7,11 +7,12 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import com.zegreatrob.coupling.stubmodel.stubTribe
-import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
@@ -40,15 +41,18 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
     }
 
     class GivenUsersWithoutAccess {
-        companion object {
-            val tribeId = TribeId("somebodyElsesTribe")
-        }
 
         @Test
         fun getIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
-            setupAsync(object {}) exerciseAsync {
-                sdk.getPlayers(tribeId)
+            val otherSdk = authorizedSdk("alt-user-${uuid4()}")
+            setupAsync(object {
+                val tribe = stubTribe()
+            }) {
+                otherSdk.save(tribe)
+                otherSdk.save(tribe.id.with(stubPlayer()))
+            } exerciseAsync {
+                sdk.getPlayers(tribe.id)
             } verifyAsync { result ->
                 result.assertIsEqualTo(emptyList())
             }
@@ -58,15 +62,17 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         fun postIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
             setupAsync(object {
+                val tribe = stubTribe()
                 val player = Player(
                     id = "${uuid4()}",
                     name = "Awesome-O",
                     callSignAdjective = "Awesome",
                     callSignNoun = "Sauce"
                 )
+
             }) exerciseAsync {
                 catchAxiosError {
-                    sdk.save(tribeId.with(player))
+                    sdk.save(tribe.id.with(player))
                 }
             } verifyAsync { result ->
                 result["status"].assertIsEqualTo(404)
@@ -77,8 +83,9 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         fun deleteIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
             setupAsync(object {
+                val tribe = stubTribe()
             }) exerciseAsync {
-                sdk.deletePlayer(tribeId, "player id")
+                sdk.deletePlayer(tribe.id, "player id")
             } verifyAsync { result ->
                 result.assertIsEqualTo(false)
             }

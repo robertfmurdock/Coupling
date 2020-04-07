@@ -25,7 +25,7 @@ class PlayersQueryTest {
     fun willReturnPlayersFromRepository() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
             override val traceId: Uuid? = null
-            override val authorizedTribeId = TribeId("Excellent Tribe")
+            override val currentTribeId = TribeId("Excellent Tribe")
             val players = listOf(
                 Player(
                     id = "1",
@@ -41,7 +41,7 @@ class PlayersQueryTest {
             )
 
             override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(authorizedTribeId, players.map { toRecord(it, authorizedTribeId) }) }
+                .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
         }) exerciseAsync {
             PlayersQuery.perform()
         } verifyAsync { result ->
@@ -61,14 +61,14 @@ class PlayersQueryTest {
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = testAsync {
         setupAsync(object : PlayersQueryDispatcher {
             override val traceId: Uuid? = null
-            override val authorizedTribeId = TribeId("Excellent Tribe")
+            override val currentTribeId = TribeId("Excellent Tribe")
             val players = listOf(
                 Player(id = "1"),
                 Player(id = "2"),
                 Player(id = "3")
             )
             override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(authorizedTribeId, players.map { toRecord(it, authorizedTribeId) }) }
+                .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
         }) exerciseAsync {
             PlayersQuery.perform()
         } verifyAsync { result ->

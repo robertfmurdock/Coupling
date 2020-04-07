@@ -10,14 +10,14 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
-import com.zegreatrob.coupling.server.action.AuthorizedTribeIdSyntax
+import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 
 object PlayersQuery : Action
 
-interface PlayersQueryDispatcher : ActionLoggingSyntax, AuthorizedTribeIdSyntax, TribeIdPlayerRecordsListSyntax,
+interface PlayersQueryDispatcher : ActionLoggingSyntax, CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax,
     FindCallSignActionDispatcher {
     suspend fun PlayersQuery.perform() = logAsync {
-        val playerRecords = authorizedTribeId?.getPlayerRecords() ?: emptyList()
+        val playerRecords = currentTribeId.getPlayerRecords()
 
         var updatedPlayers = emptyList<Record<TribeIdPlayer>>()
         playerRecords

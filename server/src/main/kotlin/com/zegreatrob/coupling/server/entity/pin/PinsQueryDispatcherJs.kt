@@ -8,6 +8,6 @@ interface PinsQueryDispatcherJs : PinsQueryDispatcher {
 
     suspend fun performPinListQueryGQL() = PinsQuery
         .perform()
-        ?.toJsonArray()
+        .toJsonArray()
 
 }
