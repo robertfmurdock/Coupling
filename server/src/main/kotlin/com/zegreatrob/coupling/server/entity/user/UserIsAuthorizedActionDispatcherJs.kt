@@ -6,6 +6,5 @@ import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatch
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 
 interface UserIsAuthorizedActionDispatcherJs : UserIsAuthorizedActionDispatcher, ScopeSyntax {
-    suspend fun performUserIsAuthorizedAction(tribeId: String) = UserIsAuthorizedAction(TribeId(tribeId))
-        .perform()
+    suspend fun performUserIsAuthorizedAction(tribeId: String) = UserIsAuthorizedAction(TribeId(tribeId)).perform()
 }
