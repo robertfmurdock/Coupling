@@ -20,8 +20,8 @@ object Resolvers {
     val pairAssignmentDocumentList = buildAuthorizedResolver { performPairAssignmentDocumentListQueryGQL() }
 
     @JsName("tribe")
-    val tribe = buildResolver { _, args ->
-        performTribeQueryGQL(args["id"].toString())
+    val tribe = buildResolver { entity, _ ->
+        performTribeQueryGQL(entity["id"].toString())
     }
 
     @JsName("tribeList")

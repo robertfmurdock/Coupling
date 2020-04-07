@@ -84,6 +84,30 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
 // noinspection JSUnresolvedVariable
 const {Resolvers} = server.com.zegreatrob.coupling.server.entity;
 
+const TribeDataType = new GraphQLObjectType({
+  name: 'TribeData',
+  description: 'Everything you wanted to know about a tribe but never asked.',
+  fields: () => ({
+    id: {type: GraphQLNonNull(GraphQLString)},
+    tribe: {
+      type: TribeType,
+      resolve: Resolvers.tribe
+    },
+    pinList: {
+      type: new GraphQLList(PinType),
+      resolve: Resolvers.pinList
+    },
+    playerList: {
+      type: new GraphQLList(PlayerType),
+      resolve: Resolvers.playerList
+    },
+    pairAssignmentDocumentList: {
+      type: new GraphQLList(PairAssignmentDocumentType),
+      resolve: Resolvers.pairAssignmentDocumentList
+    }
+  })
+});
+
 const TribeType = new GraphQLObjectType({
   name: 'Tribe',
   description: 'The people you couple with!',
@@ -100,19 +124,7 @@ const TribeType = new GraphQLObjectType({
     animationSpeed: {type: GraphQLFloat},
     modifyingUserEmail: {type: GraphQLString},
     timestamp: {type: GraphQLString},
-    isDeleted: {type: GraphQLBoolean},
-    pinList: {
-      type: new GraphQLList(PinType),
-      resolve: Resolvers.pinList
-    },
-    playerList: {
-      type: new GraphQLList(PlayerType),
-      resolve: Resolvers.playerList
-    },
-    pairAssignmentDocumentList: {
-      type: new GraphQLList(PairAssignmentDocumentType),
-      resolve: Resolvers.pairAssignmentDocumentList
-    }
+    isDeleted: {type: GraphQLBoolean}
   }),
 });
 
@@ -124,10 +136,10 @@ const CouplingSchema = new GraphQLSchema({
         type: new GraphQLList(TribeType),
         resolve: Resolvers.tribeList,
       },
-      tribe: {
-        type: TribeType,
+      tribeData: {
+        type: TribeDataType,
         args: {id: {type: GraphQLString},},
-        resolve: Resolvers.tribe
+        resolve: (entity, args) => ({id: args["id"]})
       }
     },
   }),

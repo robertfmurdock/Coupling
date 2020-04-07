@@ -92,8 +92,12 @@ class CurrentTribeIdDispatcher(
 
     suspend fun performPlayerListQueryGQL() = playerDeferred.await().toJsonArray()
 
-    private suspend fun userIsAuthorized(tribeId: TribeId) = players().map { it.email }.contains(user.email)
-            || user.authorizedTribeIds.contains(tribeId)
+    private suspend fun userIsAuthorized(tribeId: TribeId) = user.authorizedTribeIds.contains(tribeId)
+            || userIsAlsoPlayer()
+
+    private suspend fun userIsAlsoPlayer() = players()
+        .map { it.email }
+        .contains(user.email)
 
     private suspend fun players() = playerDeferred.await().map { it.data.element }
 

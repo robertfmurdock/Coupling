@@ -35,7 +35,7 @@ interface TribeGQLPerformer : AxiosSyntax {
         )
     ).await()
 
-    private fun TribeId.tribeQueryArgs() = "tribe(id: \"$value\")"
+    private fun TribeId.tribeQueryArgs() = "tribeData(id: \"$value\")"
 
     private fun List<TribeGQLComponent>.tribeComponentString() = joinToString(",") { it.value }
 

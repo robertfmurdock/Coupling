@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.json.*
 
 enum class TribeGQLComponent(val value: String, val jsonPath: String) {
-    TribeData(tribeRecordJsonKeys.joinToString(","), "/tribe"),
-    PlayerList("playerList {${playerRecordJsonKeys.joinToString(",")}}", "/tribe/playerList"),
-    PinList("pinList {${pinRecordJsonKeys.joinToString(",")}}", "/tribe/pinList"),
+    TribeData(queryAllFields("tribe", tribeRecordJsonKeys), "/tribeData/tribe"),
+    PlayerList(queryAllFields("playerList", playerRecordJsonKeys), "/tribeData/playerList"),
+    PinList(queryAllFields("pinList", pinRecordJsonKeys), "/tribeData/pinList"),
     PairAssignmentDocumentList(
         "pairAssignmentDocumentList {_id,date,modifyingUserEmail,timestamp," +
                 "pairs { " +
@@ -15,8 +15,9 @@ enum class TribeGQLComponent(val value: String, val jsonPath: String) {
                 "}" +
                 "pins {${pinJsonKeys.joinToString(",")}}" +
                 "}" +
-                "}", "/tribe/pairAssignmentDocumentList"
+                "}", "/tribeData/pairAssignmentDocumentList"
     );
 
-
 }
+
+private fun queryAllFields(name: String, keys: Array<String>) = "$name {${keys.joinToString(",")}}"
