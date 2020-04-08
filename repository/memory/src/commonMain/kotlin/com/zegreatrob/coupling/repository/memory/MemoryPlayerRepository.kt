@@ -45,6 +45,7 @@ class MemoryPlayerRepository(override val userId: String, override val clock: Ti
     override suspend fun getPlayerIdsByEmail(email: String) = records.asSequence()
         .groupBy { it.data.player.id }
         .map { it.value.last() }
+        .filterNot { it.isDeleted }
         .filter { it.data.element.email == email }
         .map { it.data.id.with(it.data.player.id!!) }
 
