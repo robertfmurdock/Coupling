@@ -4,9 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.coupling.stubmodel.stubPlayer
 import kotlin.test.Test
 
 interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
@@ -46,5 +46,20 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
                 result.assertIsEqualTo(emptyList())
             }
         }
+
+    @Test
+    fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() = testRepository { repository, tribeId, _, _ ->
+        setupAsync(object {
+            val email = "test-${uuid4()}@zegreatrob.com"
+            val player = stubPlayer().copy(email = email)
+        }) {
+            repository.save(tribeId.with(player))
+            repository.deletePlayer(tribeId, player.id!!)
+        } exerciseAsync {
+            repository.getPlayerIdsByEmail(email)
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
 
 }

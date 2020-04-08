@@ -81,7 +81,8 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                             "Projection" to json(
                                 "NonKeyAttributes" to arrayOf(
                                     "tribeId",
-                                    "timestamp"
+                                    "timestamp",
+                                    "isDeleted"
                                 ),
                                 "ProjectionType" to "INCLUDE"
                             )
@@ -136,7 +137,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                     .sortByRecordTimestamp()
                     .groupBy { it.getDynamoStringValue("id") }
                     .map { it.value.last() }
-                    .filter { it["email"] == email }
+                    .filter { it["email"] == email && it["isDeleted"] != true }
                     .map {
                         TribeId(it.getDynamoStringValue("tribeId")!!)
                             .with(it.getDynamoStringValue("id")!!)

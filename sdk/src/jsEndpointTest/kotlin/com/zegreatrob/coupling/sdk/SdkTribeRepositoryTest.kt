@@ -10,11 +10,11 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.coupling.sdk.SdkPlayerRepositoryTest.Companion.catchAxiosError
+import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
-import com.zegreatrob.coupling.stubmodel.stubTribe
-import com.zegreatrob.coupling.stubmodel.stubUser
 import kotlin.test.Test
 
 class SdkTribeRepositoryTest : TribeRepositoryValidator {
@@ -64,6 +64,29 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
             otherSdk.save(tribe)
             otherSdk.save(tribe.id.with(player))
             otherSdk.save(tribe.id.with(player.copy(email = "something else")))
+        } exerciseAsync {
+            sdk.getTribes()
+        } verifyAsync { result ->
+            result.assertIsEqualTo(emptyList())
+        }
+    }
+
+    @Test
+    fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = testAsync {
+        val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
+        val username = "eT-user-${uuid4()}"
+        val sdk = authorizedSdk(username = username)
+        setupAsync(object {
+            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val player = Player(
+                id = monk.id().toString(),
+                name = "delete-me",
+                email = "$username._temp"
+            )
+        }) {
+            otherSdk.save(tribe)
+            otherSdk.save(tribe.id.with(player))
+            otherSdk.deletePlayer(tribe.id, player.id!!)
         } exerciseAsync {
             sdk.getTribes()
         } verifyAsync { result ->

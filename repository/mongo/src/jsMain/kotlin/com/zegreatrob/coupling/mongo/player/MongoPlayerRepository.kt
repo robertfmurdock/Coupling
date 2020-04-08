@@ -51,8 +51,9 @@ interface MongoPlayerRepository : PlayerRepository,
 
     override suspend fun getPlayerIdsByEmail(email: String) =
         getLatestRecordsRelatedToAsync(json("email" to email), playersCollection)
-            .map { it.toPlayerRecord().data }
-            .filter { it.player.email == email }
+            .map { it.toPlayerRecord() }
+            .filter { it.data.player.email == email && !it.isDeleted }
+            .map { it.data }
             .map { it.id.with(it.player.id!!) }
 
     private suspend fun getLatestRecordsRelatedToAsync(query: Json, collection: dynamic) =
