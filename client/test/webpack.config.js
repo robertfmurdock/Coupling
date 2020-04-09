@@ -38,7 +38,7 @@ const config = {
     removeEmptyChunks: false,
     splitChunks: false,
   },
-  devtool: 'inline-source-map'
+  devtool: process.env.SELENIUM_ADDRESS ? 'none' : "inline-source-map"
 };
 
 module.exports = config;
