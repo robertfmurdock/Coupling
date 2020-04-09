@@ -13,6 +13,7 @@ jobs:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
+      NODE_OPTIONS: --max_old_space_size=4096
     steps:
       - checkout
       - restore_cache:
