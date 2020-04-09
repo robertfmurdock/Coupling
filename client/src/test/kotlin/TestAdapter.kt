@@ -1,12 +1,18 @@
-import mu.KLogger
+import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import mu.KotlinLogging
 import mu.KotlinLoggingConfiguration.LOG_LEVEL
 import mu.KotlinLoggingLevel
 
-val logger: KLogger = KotlinLogging.logger("TestAdapter")
-    .also { it.setLogLevel() }
+private val logger = KotlinLogging.logger("TestAdapter")
 
-private fun KLogger.setLogLevel() {
+@Suppress("unused")
+@JsName("setLogLevel")
+fun setLogLevel() {
     LOG_LEVEL = KotlinLoggingLevel.DEBUG
-    warn { "Setting log level to debug." }
+    logger.warn { "Setting log level to debug." }
+
+    @Suppress("UNUSED_VARIABLE")
+    val reporter = JasmineJsonLoggingReporter()
+
+    js("jasmine.getEnv().addReporter(reporter)")
 }

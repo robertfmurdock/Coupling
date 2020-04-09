@@ -2,6 +2,7 @@ import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import java.io.FileOutputStream
 
 plugins {
     kotlin("js")
@@ -17,7 +18,11 @@ node {
 
 kotlin {
     target {
-        browser {}
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
     }
 
     sourceSets {
@@ -97,9 +102,43 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
+    val karma by creating(YarnTask::class) {
+        dependsOn(
+            yarn,
+            ":action:jsTest",
+            compileTestKotlinJs
+        )
+        inputs.file(file("package.json"))
+        inputs.dir("test")
+        outputs.dir(file("build/test-results"))
+
+        args = listOf("run", "test", "--silent")
+    }
+
     val updateDependencies by creating(YarnTask::class) {
         dependsOn(yarn)
         args = listOf("run", "ncu", "-u")
+    }
+
+    val test by getting {
+        dependsOn(karma)
+    }
+
+    task<YarnTask>("testWatch") {
+        args = listOf("run", "testWatch")
+    }
+
+    task<YarnTask>("testStats") {
+        dependsOn(yarn)
+
+        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
+
+        args = listOf("-s", "webpack", "--json", "--profile", "--config", "test/webpack.config.js")
+
+        setExecOverrides(closureOf<ExecSpec> {
+            file("build/report").mkdirs()
+            standardOutput = FileOutputStream(file("build/report/test-stats.json"))
+        })
     }
 
     forEach { if (!it.name.startsWith("clean")) it.mustRunAfter("clean") }
