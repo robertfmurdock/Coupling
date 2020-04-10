@@ -68,10 +68,6 @@ jobs:
           path: build/test-output
       - store_test_results:
           path: build/test-output
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - "*"
   deploy-prod:
     docker:
       - image: openjdk:13-jdk
