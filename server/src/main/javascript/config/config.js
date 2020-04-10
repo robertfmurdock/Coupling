@@ -10,15 +10,6 @@ var config = {
   get port() {
     return process.env.PORT || 3000;
   },
-  get mongoUrl() {
-    return process.env.MONGOHQ_URL_MONGOURL || process.env.MONGOHQ_URL || 'mongodb://' + "localhost/Coupling";
-  },
-  get testMongoUrl() {
-    return process.env.MONGO_CONNECTION || "localhost"
-  },
-  get tempMongoUrl() {
-    return (process.env.MONGO_CONNECTION || "localhost") + "/CouplingTemp";
-  },
   get secret() {
     return "maythefourthbewithyou";
   },

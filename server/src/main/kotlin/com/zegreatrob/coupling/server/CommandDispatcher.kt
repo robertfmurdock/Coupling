@@ -25,15 +25,13 @@ import kotlin.js.Json
 @Suppress("unused")
 @JsName("commandDispatcher")
 fun commandDispatcher(
-    jsRepository: dynamic,
-    userCollection: dynamic,
     userJson: Json,
     path: String,
     traceId: Uuid?
 ): Any {
     val user = userJson.toUser()
     val scope = MainScope() + CoroutineName(path)
-    return scope.promise { commandDispatcher(userCollection, jsRepository, user, scope, traceId) }
+    return scope.promise { commandDispatcher(user, scope, traceId) }
 }
 
 class CommandDispatcher(

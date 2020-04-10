@@ -13,12 +13,7 @@ private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
     val expressWs = expressWs(express())
     val app = expressWs.app
 
-    val couplingDataService = couplingDataService(Config.mongoUrl)
-    val tempDataService = couplingDataService(Config.tempMongoUrl)
-
-    val userDataService = userDataService(couplingDataService["usersCollection"])
-
-    configureExpress(app, userDataService)
+    configureExpress(app)
 
     val startDeferred = CompletableDeferred<Unit>()
 

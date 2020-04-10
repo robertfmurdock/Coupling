@@ -8,7 +8,7 @@ import CouplingSchema from "./graphqlSchema"
 
 const {tribeListRouter, websocketRoute} = server.com.zegreatrob.coupling.server.route;
 
-module.exports = function (wsInstance, userDataService, couplingDataService, tempDataService) {
+module.exports = function (wsInstance) {
     const app = wsInstance.app;
 
     app.get('/api/logout', function (req, res) {
@@ -29,7 +29,7 @@ module.exports = function (wsInstance, userDataService, couplingDataService, tem
 
     const indexRoute = routes.index(expressEnv);
     app.get('/', indexRoute);
-    app.all('/api/*', apiGuard(userDataService, couplingDataService, tempDataService));
+    app.all('/api/*', apiGuard());
     app.use('/api/tribes', tribeListRouter);
 
     app.use(

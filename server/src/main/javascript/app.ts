@@ -1,4 +1,3 @@
-import CouplingDataService from "./lib/CouplingDataService";
 import UserDataService from "./lib/UserDataService";
 import * as express from "express";
 import * as expressWs from "express-ws";
@@ -25,12 +24,10 @@ function listen(app) {
 export async function start() {
     const wsInstance = expressWs(express());
     const app = wsInstance.app;
-    const couplingDataService = new CouplingDataService(config.mongoUrl);
-    const tempDataService = new CouplingDataService(config.tempMongoUrl);
-    const userDataService = new UserDataService(couplingDataService.database);
+    const userDataService = new UserDataService();
 
     require('./config/express')(app, userDataService);
-    require('./routes/routes')(wsInstance, userDataService, couplingDataService, tempDataService);
+    require('./routes/routes')(wsInstance);
 
     return await listen(app);
 }

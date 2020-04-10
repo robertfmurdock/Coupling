@@ -13,7 +13,6 @@ const {OAuth2Client} = require('google-auth-library');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 const DynamoDBStore = require('connect-dynamodb')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -113,12 +112,10 @@ module.exports = function (app, userDataService) {
     store = new DynamoDBStore({
       client: new AWS.DynamoDB({region: 'us-east-1'}),
     })
-  } else if (process.env.LOCAL_DYNAMO) {
+  } else {
     store = new DynamoDBStore({
       client: new AWS.DynamoDB({region: 'us-east-1', endpoint: new AWS.Endpoint('http://localhost:8000')}),
     })
-  } else {
-    store = new MongoStore({url: config.mongoUrl})
   }
 
   app.use(session({

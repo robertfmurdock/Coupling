@@ -35,15 +35,6 @@ fun newDynamoDbStore(@Suppress("UNUSED_PARAMETER") config: Json): dynamic {
     return js("new store(config)")
 }
 
-@JsModule("connect-mongo")
-@JsNonModule
-external fun connectMongo(session: dynamic)
-
-fun newMongoStore(@Suppress("UNUSED_PARAMETER") config: Json): dynamic {
-    @Suppress("UNUSED_VARIABLE") val store = connectMongo(expressSession)
-    return js("new store(config)")
-}
-
 @JsModule("serve-favicon")
 @JsNonModule
 external fun favicon(iconPath: String): dynamic
@@ -60,7 +51,7 @@ external fun methodOverride()
 @JsNonModule
 external fun cookieParser()
 
-fun configureExpress(app: Express, userDataService: Json) {
+fun configureExpress(app: Express) {
     app.use(compression())
     app.use(statsd(json("host" to "statsd", "port" to 8125)))
     app.set("port", Config.port)
@@ -87,16 +78,12 @@ fun buildSessionHandler(): dynamic {
             "secret" to Config.secret,
             "resave" to true,
             "saveUninitialized" to true,
-            "store" to chooseStore()
+            "store" to sessionStore()
         )
     )
 }
 
-fun chooseStore() = if (Process.getEnv("AWS_SECRET_ACCESS_KEY") != null || Process.getEnv("LOCAL_DYNAMO") != null) {
-    newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
-} else {
-    newMongoStore(json("url" to Config.mongoUrl))
-}
+fun sessionStore() = newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
 
 private fun logRequests() = { request: Request, response: Response, next: () -> Unit ->
     logRequestAsync(request, response) { callback -> onFinished(response, callback) }

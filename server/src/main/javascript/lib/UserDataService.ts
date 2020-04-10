@@ -5,15 +5,11 @@ const authActionDispatcher = server.com.zegreatrob.coupling.server.authActionDis
 
 export default class UserDataService {
 
-    private usersCollection;
-
-    constructor(public database) {
-        this.usersCollection = database.get('users');
-        this.usersCollection.createIndex({'email': 1});
+    constructor() {
     }
 
     public findOrCreate = (email, traceId, callback) => {
-        authActionDispatcher(this.usersCollection, email, traceId)
+        authActionDispatcher(email, traceId)
             .then(it => it.performFindOrCreateUserAction())
             .then(function (user) {
                 callback(null, user)
@@ -31,7 +27,7 @@ export default class UserDataService {
     };
 
     public deserializeUser = (id, done) => {
-        authActionDispatcher(this.usersCollection, id, null)
+        authActionDispatcher(id, null)
             .then(it => it.performFindOrCreateUserAction())
             .then(function (user) {
                 if (user) {

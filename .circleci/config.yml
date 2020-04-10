@@ -3,12 +3,9 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:9-jdk
-      - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
         command: -Xmx1G -jar DynamoDBLocal.jar -sharedDb
       - image: selenium/standalone-chrome
-        environment:
-          JAVA_OPTS: -Xmx512m
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -29,7 +26,33 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew assemble --no-parallel"
-      - run: "./gradlew build check --no-parallel"
+      - run: "./gradlew build check --no-parallel -x :repository:mongo:check"
+      - run:
+          name: Copy test results
+          command: |
+            mkdir -p build/test-output/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
+          when: always
+      - run:
+          name: Copy test reports
+          command: |
+            ./gradlew copyReportsToCircleCIDirectory
+          when: always
+      - store_artifacts:
+          path: build/test-output
+      - store_test_results:
+          path: build/test-output
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - "*"
+  buildMongo:
+    docker:
+      - image: circleci/openjdk:9-jdk
+      - image: circleci/mongo:latest
+    steps:
+      - checkout
+      - run: "./gradlew :repository:mongo:check --no-parallel -Dorg.gradle.configureondemand=false"
       - run:
           name: Copy test results
           command: |
@@ -130,9 +153,11 @@ workflows:
   build-deploy:
     jobs:
       - build
+      - buildMongo
       - deploy-prod:
           requires:
             - build
+            - buildMongo
           filters:
             branches:
               only: master

@@ -55,27 +55,24 @@ val packageJson = loadPackageJson()
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
-    implementation(project(":repository:mongo"))
     implementation(project(":repository:dynamo"))
-    implementation(project(":repository:compound"))
     implementation(project(":repository:memory"))
     implementation(project("server_action"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
     implementation("com.soywiz.korlibs.klock:klock:1.10.3")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+    implementation("com.benasher44:uuid:0.0.7")
 
     val includeOnly = listOf(
         "compression",
         "connect-dynamodb",
-        "connect-mongo",
         "cookie-parser",
         "express",
         "express-session",
         "express-statsd",
         "express-ws",
         "method-override",
-        "monk",
         "on-finished",
         "serve-favicon"
     )

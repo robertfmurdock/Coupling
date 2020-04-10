@@ -10,10 +10,10 @@ import kotlinx.coroutines.promise
 
 @Suppress("unused")
 @JsName("authActionDispatcher")
-fun authActionDispatcher(userCollection: dynamic, userId: String, traceId: Uuid?) = GlobalScope.promise {
+fun authActionDispatcher(userId: String, traceId: Uuid?) = GlobalScope.promise {
     AuthActionDispatcher(
         userId,
-        userRepository(userCollection, userId),
+        userRepository(userId),
         traceId
     )
 }
