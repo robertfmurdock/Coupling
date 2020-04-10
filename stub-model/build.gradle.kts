@@ -18,8 +18,8 @@ kotlin {
                 api(project(":model"))
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:1.8.9")
-                api("com.benasher44:uuid:0.0.7")
+                api("com.soywiz.korlibs.klock:klock:1.10.3")
+                api("com.benasher44:uuid:0.1.0")
             }
         }
         val jsMain by getting {

@@ -61,7 +61,7 @@ dependencies {
     implementation(project(":repository:memory"))
     implementation(project("server_action"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
-    implementation("com.soywiz.korlibs.klock:klock:1.8.9")
+    implementation("com.soywiz.korlibs.klock:klock:1.10.3")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
 
