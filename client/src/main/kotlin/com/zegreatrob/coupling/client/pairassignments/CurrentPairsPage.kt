@@ -36,7 +36,7 @@ interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>
         com.zegreatrob.coupling.client.routing.dataLoadProps(
             query = { TribeDataSetQuery(tribeId).perform() },
             toProps = { _, (tribe, players, history) ->
-                PairAssignmentsProps(tribe, players, history.firstOrNull(), pathSetter)
+                PairAssignmentsProps(tribe, players, history.firstOrNull(), pathSetter = pathSetter)
             }
         )
 }

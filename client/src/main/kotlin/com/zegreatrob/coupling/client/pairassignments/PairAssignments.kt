@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.action.ScopeProvider
+import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
@@ -28,217 +30,203 @@ import react.dom.i
 import react.router.dom.routeLink
 import kotlin.browser.window
 
-object PairAssignments : RComponent<PairAssignmentsProps>(provider()), PairAssignmentsRenderer,
-    RepositoryCatalog by SdkSingleton
-
 data class PairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
+    val commandDispatcher: SavePairAssignmentsCommandDispatcher = CommandDispatcher,
     val pathSetter: (String) -> Unit
 ) : RProps
 
-external interface PairAssignmentsStyles {
-    val className: String
-    val pairAssignments: String
-    val pair: String
-    val saveButton: String
-    val newPairsButton: String
-    val pinListButton: String
-    val statisticsButton: String
-    val viewHistoryButton: String
-    val retiredPlayersButton: String
-    val controlPanel: String
-}
+open class PairAssignments(val scopeProvider: ScopeProvider) : FRComponent<PairAssignmentsProps>(provider()),
+    ReactScopeProvider,
+    RepositoryCatalog by SdkSingleton, ScopeProvider by scopeProvider {
 
-interface PairAssignmentsRenderer : ScopedStyledComponentRenderer<PairAssignmentsProps, PairAssignmentsStyles>,
-    SavePairAssignmentsCommandDispatcher, NullTraceIdProvider {
+    companion object : PairAssignments(object : ReactScopeProvider {})
 
-    override val componentPath: String get() = "pairassignments/PairAssignments"
+    override fun render(props: PairAssignmentsProps) = reactElement {
+        val (tribe, players, _, commandDispatcher, pathSetter) = props
+        val styles = useStyles("pairassignments/PairAssignments")
+        val scope = useScope("pairassignments/PairAssignments")
 
-    override fun ScopedStyledRContext<PairAssignmentsProps, PairAssignmentsStyles>.render() = with(props) {
-        val (pairAssignments, setPairAssignments) = useState(pairAssignments)
+        val (pairAssignments, setPairAssignments) = useState(props.pairAssignments)
 
         val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
         val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
-        val onSave = onClickSave(pairAssignments, tribe, pathSetter, scope)
-        reactElement {
-            DndProvider {
-                attrs { backend = HTML5Backend }
-                div(classes = styles.className) {
+        val onSave = scope.launchFunc { commandDispatcher.handleOnClickSave(tribe, pairAssignments, pathSetter) }
+        DndProvider {
+            attrs { backend = HTML5Backend }
+            div(classes = styles.className) {
+                div {
+                    tribeBrowser(tribe, pathSetter)
+                    animator(tribe, players, pairAssignments, tribe.animationEnabled) {
+                        currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
+                    }
+                }
+                div(classes = styles["controlPanel"]) {
                     div {
-                        tribeBrowser(tribe, pathSetter)
-                        animator(tribe, players, pairAssignments, tribe.animationEnabled) {
-                            currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
-                        }
+                        prepareToSpinButton(props.tribe, styles["newPairsButton"])
                     }
-                    div(classes = styles.controlPanel) {
-                        div {
-                            prepareToSpinButton(props.tribe, styles.newPairsButton)
-                        }
-                        viewHistoryButton(props.tribe, styles.viewHistoryButton)
-                        pinListButton(props.tribe, styles.pinListButton)
-                        statisticsButton(tribe, styles.statisticsButton)
-                        viewRetireesButton(props.tribe, styles.retiredPlayersButton)
-                    }
-                    unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
-                    serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
+                    viewHistoryButton(props.tribe, styles["viewHistoryButton"])
+                    pinListButton(props.tribe, styles["pinListButton"])
+                    statisticsButton(tribe, styles["statisticsButton"])
+                    viewRetireesButton(props.tribe, styles["retiredPlayersButton"])
                 }
+                unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
+                serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
             }
         }
     }
 
-    private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
-        pA?.dropThePin(setPairAssignments)
-            ?: { _, _ -> }
+}
 
-    private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
-        { pinId: String, droppedPair: PinnedCouplingPair ->
-            setPairAssignments(
-                copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
-            )
-        }
+private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
+    pA?.dropThePin(setPairAssignments)
+        ?: { _, _ -> }
 
-    private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
-        .pairs
-        .map(PinnedCouplingPair::pins)
-        .flatten()
-        .first { it._id == id }
-
-
-    private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
-        when {
-            pair == droppedPair -> pair.addPin(pin)
-            pair.pins.contains(pin) -> pair.removePin(pin)
-            else -> pair
-        }
-    }
-
-    private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
-
-    private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
-
-    private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
-        playerRoster(
-            PlayerRosterProps(
-                label = "Unpaired players",
-                players = players,
-                tribeId = tribe.id,
-                pathSetter = pathSetter
-            )
+private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
+    { pinId: String, droppedPair: PinnedCouplingPair ->
+        setPairAssignments(
+            copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
         )
-
-    private fun makeSwapCallback(
-        pairAssignments: PairAssignmentDocument?,
-        setPairAssignments: (PairAssignmentDocument?) -> Unit
-    ) = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
-        setPairAssignments(pairAssignments?.swapPlayers(droppedPlayerId, targetPlayer, targetPair))
     }
 
-    private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
-        if (pairAssignments == null) {
-            players
-        } else {
-            val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
-            players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
-        }
+private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
+    .pairs
+    .map(PinnedCouplingPair::pins)
+    .flatten()
+    .first { it._id == id }
 
-    private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-    private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
-        routeLink(to = "/${tribe.id.value}/prepare/") {
-            button(classes = "super pink button") {
-                attrs { classes += className }
-                +"Prepare to spin!"
-            }
-        }
-
-    private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
-        routeLink(to = "/${tribe.id.value}/history/") {
-            button(classes = "large green button") {
-                attrs { classes += className }
-                i(classes = "fa fa-history") {}
-                +" History!"
-            }
-        }
-
-    private fun RBuilder.pinListButton(tribe: Tribe, className: String) = routeLink(to = "/${tribe.id.value}/pins/") {
-        button(classes = "large white button") {
-            attrs { classes += className }
-            i(classes = "fa fa-peace") {}
-            +" Pin Bag!"
-        }
+private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
+    when {
+        pair == droppedPair -> pair.addPin(pin)
+        pair.pins.contains(pin) -> pair.removePin(pin)
+        else -> pair
     }
+}
 
-    private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
-        routeLink(to = "/${tribe.id.value}/statistics") {
-            button(classes = "large gray button") {
-                attrs { this.classes += className }
-                i(classes = "fa fa-database") {}
-                +" Statistics!"
-            }
-        }
+private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
 
-    private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
-        routeLink("/${tribe.id.value}/players/retired") {
-            button(classes = "large yellow button") {
-                attrs { classes += className }
-                i(classes = "fa fa-user-slash") {}
-                +" Retirees!"
-            }
-        }
+private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
 
-    private inline fun onClickSave(
-        pairAssignments: PairAssignmentDocument?,
-        tribe: Tribe,
-        crossinline pathSetter: (String) -> Unit,
-        scope: CoroutineScope
-    ): () -> Unit = if (pairAssignments != null) {
-        {
-            scope.launch {
-                SavePairAssignmentsCommand(tribe.id, pairAssignments).perform()
+private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
+    playerRoster(
+        PlayerRosterProps(
+            label = "Unpaired players",
+            players = players,
+            tribeId = tribe.id,
+            pathSetter = pathSetter
+        )
+    )
 
-                pathSetter("/${tribe.id.value}/pairAssignments/current/")
-            }
-        }
+private fun makeSwapCallback(
+    pairAssignments: PairAssignmentDocument?,
+    setPairAssignments: (PairAssignmentDocument?) -> Unit
+) = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
+    setPairAssignments(pairAssignments?.swapPlayers(droppedPlayerId, targetPlayer, targetPair))
+}
+
+private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
+    if (pairAssignments == null) {
+        players
     } else {
-        {}
+        val currentlyPairedPlayerIds = pairAssignments.currentlyPairedPlayerIds()
+        players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
     }
 
-    private fun PairAssignmentDocument.swapPlayers(
-        droppedPlayerId: String,
-        targetPlayer: PinnedPlayer,
-        targetPair: PinnedCouplingPair
-    ): PairAssignmentDocument {
-        val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
-        val droppedPlayer = sourcePair?.players?.firstOrNull { it.player.id == droppedPlayerId }
+private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-        if (sourcePair == targetPair || droppedPlayer == null) {
-            return this
+private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
+    routeLink(to = "/${tribe.id.value}/prepare/") {
+        button(classes = "super pink button") {
+            attrs { classes += className }
+            +"Prepare to spin!"
         }
-
-        return copy(
-            pairs = pairs.map { pair ->
-                when (pair) {
-                    targetPair -> pair.replacePlayer(targetPlayer, droppedPlayer)
-                    sourcePair -> pair.replacePlayer(droppedPlayer, targetPlayer)
-                    else -> pair
-                }
-            }
-        )
     }
 
-    private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
-        copy(players = players.map { pinnedPlayer ->
-            if (pinnedPlayer == playerToReplace) {
-                replacement
-            } else {
-                pinnedPlayer
-            }
-        })
-
-    private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
-        pair.players.any { player -> player.player.id == droppedPlayerId }
+private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
+    routeLink(to = "/${tribe.id.value}/history/") {
+        button(classes = "large green button") {
+            attrs { classes += className }
+            i(classes = "fa fa-history") {}
+            +" History!"
+        }
     }
 
+private fun RBuilder.pinListButton(tribe: Tribe, className: String) = routeLink(to = "/${tribe.id.value}/pins/") {
+    button(classes = "large white button") {
+        attrs { classes += className }
+        i(classes = "fa fa-peace") {}
+        +" Pin Bag!"
+    }
+}
+
+private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
+    routeLink(to = "/${tribe.id.value}/statistics") {
+        button(classes = "large gray button") {
+            attrs { this.classes += className }
+            i(classes = "fa fa-database") {}
+            +" Statistics!"
+        }
+    }
+
+private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
+    routeLink("/${tribe.id.value}/players/retired") {
+        button(classes = "large yellow button") {
+            attrs { classes += className }
+            i(classes = "fa fa-user-slash") {}
+            +" Retirees!"
+        }
+    }
+
+private fun CoroutineScope.launchFunc(handler: suspend () -> Unit): () -> Unit = {
+    launch(block = { handler() })
+}
+
+private suspend fun SavePairAssignmentsCommandDispatcher.handleOnClickSave(
+    tribe: Tribe,
+    pairAssignments: PairAssignmentDocument?,
+    pathSetter: (String) -> Unit
+) {
+    if (pairAssignments != null) {
+        SavePairAssignmentsCommand(tribe.id, pairAssignments).perform()
+        pathSetter("/${tribe.id.value}/pairAssignments/current/")
+    }
+}
+
+private fun PairAssignmentDocument.swapPlayers(
+    droppedPlayerId: String,
+    targetPlayer: PinnedPlayer,
+    targetPair: PinnedCouplingPair
+): PairAssignmentDocument {
+    val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
+    val droppedPlayer = sourcePair?.players?.firstOrNull { it.player.id == droppedPlayerId }
+
+    if (sourcePair == targetPair || droppedPlayer == null) {
+        return this
+    }
+
+    return copy(
+        pairs = pairs.map { pair ->
+            when (pair) {
+                targetPair -> pair.replacePlayer(targetPlayer, droppedPlayer)
+                sourcePair -> pair.replacePlayer(droppedPlayer, targetPlayer)
+                else -> pair
+            }
+        }
+    )
+}
+
+private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
+    copy(players = players.map { pinnedPlayer ->
+        if (pinnedPlayer == playerToReplace) {
+            replacement
+        } else {
+            pinnedPlayer
+        }
+    })
+
+private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
+    pair.players.any { player -> player.player.id == droppedPlayerId }
 }

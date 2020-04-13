@@ -37,7 +37,7 @@ interface NewPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, Ne
     ) = dataLoadProps(
         query = { NewPairAssignmentsQuery(tribeId, playerIds, pinIds).perform() },
         toProps = { _, (tribe, players, pairAssignments) ->
-            PairAssignmentsProps(tribe!!, players, pairAssignments, pathSetter)
+            PairAssignmentsProps(tribe!!, players, pairAssignments, pathSetter = pathSetter)
         }
     )
 }

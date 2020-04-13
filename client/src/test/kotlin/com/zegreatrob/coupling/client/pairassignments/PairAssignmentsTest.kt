@@ -5,8 +5,7 @@ import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.json.toJson
@@ -15,6 +14,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
@@ -23,7 +23,6 @@ import com.zegreatrob.testmints.setup
 import findComponent
 import kotlinx.coroutines.withContext
 import shallow
-import com.zegreatrob.coupling.stubmodel.stubPin
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.test.Test
@@ -33,10 +32,11 @@ class PairAssignmentsTest {
     val tribe = Tribe(TribeId("Party"))
 
     @Test
-    fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val traceId: Uuid? = null
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+    fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
         val fellow = Player(id = "3", name = "fellow")
         val guy = Player(id = "2", name = "Guy")
 
@@ -56,7 +56,15 @@ class PairAssignmentsTest {
             ).withPins()
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, pairAssignments) {})
+        shallow(
+            PairAssignments,
+            PairAssignmentsProps(
+                tribe,
+                players,
+                pairAssignments,
+                commandDispatcher = commandDispatcher,
+                pathSetter = {})
+        )
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
             .props()
@@ -71,9 +79,11 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+    fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
         val players = listOf(
             Player(id = "1", name = "rigby"),
             Player(id = "2", name = "Guy"),
@@ -82,7 +92,7 @@ class PairAssignmentsTest {
             Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, players, null) {})
+        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, commandDispatcher) {})
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
             .props()
@@ -93,23 +103,32 @@ class PairAssignmentsTest {
     @Test
     fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = testAsync {
         withContext(coroutineContext) {
-            setupAsync(object : PairAssignmentsRenderer,
-                PropsClassProvider<PairAssignmentsProps> by provider() {
-                override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+            setupAsync(object : ScopeProvider {
+                val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+                    override val traceId: Uuid? = null
+                    override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+                    override suspend fun TribeIdPairAssignmentDocument.save() {
+                        saveSpy.spyFunction(document.toJson())
+                    }
+                }
+
                 override fun buildScope() = this@withContext
                 val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
-
-                override suspend fun TribeIdPairAssignmentDocument.save() {
-                    saveSpy.spyFunction(document.toJson())
-                }
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
                 val pairAssignments = PairAssignmentDocument(
                     date = DateTime.now(),
                     pairs = emptyList()
                 )
-                val wrapper =
-                    shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments, pathSetterSpy::spyFunction))
+                val wrapper = shallow(
+                    PairAssignments(this), PairAssignmentsProps(
+                        tribe,
+                        emptyList(),
+                        pairAssignments,
+                        commandDispatcher,
+                        pathSetterSpy::spyFunction
+                    )
+                )
             }) {
                 saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
@@ -126,9 +145,11 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+    fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -141,7 +162,9 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
+        val wrapper = shallow(
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, commandDispatcher) {}
+        )
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
@@ -155,9 +178,11 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+    fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
         val pin1 = stubPin()
         val pin2 = stubPin()
         val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(listOf(pin1))
@@ -166,7 +191,9 @@ class PairAssignmentsTest {
             date = DateTime.now(),
             pairs = listOf(pair1, pair2)
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
+        val wrapper = shallow(
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, commandDispatcher) {}
+        )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
     } verify {
@@ -180,9 +207,11 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+    fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -198,7 +227,9 @@ class PairAssignmentsTest {
                 pairOf(player3, player4).withPins(listOf(pin2))
             )
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
+        val wrapper = shallow(
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, commandDispatcher) {}
+        )
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
@@ -212,10 +243,11 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
-
+    fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -228,7 +260,9 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
-        val wrapper = shallow(PairAssignmentsProps(tribe, emptyList(), pairAssignments) {})
+        val wrapper = shallow(
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, commandDispatcher) {}
+        )
     }) exercise {
         player4.dragTo(player3, wrapper)
     } verify {
@@ -241,7 +275,7 @@ class PairAssignmentsTest {
             .assertIsEqualTo(listOf(player3, player4))
     }
 
-    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
+    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<PairAssignments>) {
         val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
 
         targetProps.run {
@@ -251,17 +285,21 @@ class PairAssignmentsTest {
         }
     }
 
-    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<PairAssignmentsRenderer>) {
+    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<PairAssignments>) {
         val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
         targetProps.onPinDrop(this._id!!, targetPair)
     }
 
     @Test
-    fun passesDownTribeIdToServerMessage() = setup(object : PairAssignmentsRenderer,
-        PropsClassProvider<PairAssignmentsProps> by provider() {
-        override val pairAssignmentDocumentRepository get() = TODO("not implemented")
+    fun passesDownTribeIdToServerMessage() = setup(object {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+        }
     }) exercise {
-        shallow(PairAssignmentsProps(tribe, listOf(), null) {})
+        shallow(
+            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, commandDispatcher) {}
+        )
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)
             .props()
