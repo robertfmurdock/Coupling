@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/openjdk:9-jdk
       - image: amazon/dynamodb-local
-        command: -Xmx1G -jar DynamoDBLocal.jar -sharedDb
+        command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
