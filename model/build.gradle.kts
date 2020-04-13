@@ -33,8 +33,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit5", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.6.1")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.6.1")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.6.2")
             }
         }
 
