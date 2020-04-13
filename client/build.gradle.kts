@@ -65,19 +65,6 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async-js:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
 
-    val ignoredDependencies = listOf(
-        "karma",
-        "karma-webpack",
-        "karma-sourcemap-loader",
-        "karma-chrome-launcher",
-        "webpack",
-        "webpack-cli",
-        "source-map-loader"
-    )
-    packageJson.devDependencies().forEach {
-        if (!ignoredDependencies.contains(it.first))
-            testImplementation(npm(it.first, it.second.asText()))
-    }
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
