@@ -6,7 +6,7 @@ let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
 
 export let config: Config = {
 
-    allScriptsTimeout: 11000,
+    allScriptsTimeout: 31000,
 
     capabilities: {
         'browserName': 'chrome',
@@ -28,7 +28,7 @@ export let config: Config = {
 
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 10000
+        defaultTimeoutInterval: 30000
     },
     onPrepare: async function () {
         await browser.waitForAngularEnabled(false);
