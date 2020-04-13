@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlin.js.Json
@@ -37,6 +38,38 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             json()
         } catch (error: dynamic) {
             error.response.unsafeCast<Json>()
+        }
+    }
+
+    override fun deletedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, _, _ ->
+        setupAsync(object {
+            val player = stubPlayer()
+        }) exerciseAsync {
+            repository.save(tribeId.with(player))
+            repository.deletePlayer(tribeId, player.id!!)
+            repository.getDeleted(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                isDeleted.assertIsEqualTo(true)
+                timestamp.assertIsCloseToNow()
+                modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+            }
+        }
+    }
+
+    override fun savedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, _, _ ->
+        setupAsync(object {
+            val player = stubPlayer()
+        }) exerciseAsync {
+            repository.save(tribeId.with(player))
+            repository.getPlayers(tribeId)
+        } verifyAsync { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                timestamp.assertIsCloseToNow()
+                modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+            }
         }
     }
 

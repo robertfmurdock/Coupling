@@ -24,7 +24,7 @@ suspend fun commandDispatcher(
     scope: CoroutineScope,
     traceId: Uuid?
 ): CommandDispatcher {
-    val dynamoRepositoryCatalog = DynamoRepositoryCatalog(user.email, TimeProvider)
+    val dynamoRepositoryCatalog = DynamoRepositoryCatalog(user.id, TimeProvider)
     return CommandDispatcher(user, dynamoRepositoryCatalog, scope, traceId)
 }
 

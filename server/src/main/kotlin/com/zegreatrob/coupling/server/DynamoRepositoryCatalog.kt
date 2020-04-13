@@ -24,14 +24,14 @@ class DynamoRepositoryCatalog private constructor(
     ClockSyntax {
 
     companion object {
-        suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {
-            val tribeRepository = DynamoTribeRepository(userEmail, clock)
-            val playerRepository = DynamoPlayerRepository(userEmail, clock)
-            val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)
-            val pinRepository = DynamoPinRepository(userEmail, clock)
-            val userRepository = DynamoUserRepository(userEmail, clock)
+        suspend operator fun invoke(userId: String, clock: TimeProvider): DynamoRepositoryCatalog {
+            val tribeRepository = DynamoTribeRepository(userId, clock)
+            val playerRepository = DynamoPlayerRepository(userId, clock)
+            val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userId, clock)
+            val pinRepository = DynamoPinRepository(userId, clock)
+            val userRepository = DynamoUserRepository(userId, clock)
             return DynamoRepositoryCatalog(
-                userEmail,
+                userId,
                 clock,
                 tribeRepository,
                 playerRepository,
