@@ -77,7 +77,7 @@ private fun RBuilder.notificationSection() = styledSpan {
 
 private fun RBuilder.notificationButton(open: Boolean) = styledDiv {
     css {
-        backgroundColor = Color.black
+        backgroundColor = Color.darkCyan
         borderColor = Color.black
         color = if (open) Color.darkGray else Color.white
         borderRadius = 40.px
