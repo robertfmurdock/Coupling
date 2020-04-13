@@ -2,7 +2,9 @@ package com.zegreatrob.coupling.server.e2e.external.protractor
 
 import kotlinx.coroutines.await
 
-suspend fun ElementSelector.waitToBePresent() = browser.wait({ this.isPresent() }, 5000, "").await()
+val waitToBePresentDuration = 5000
+
+suspend fun ElementSelector.waitToBePresent() = browser.wait({ this.isPresent() }, waitToBePresentDuration, "").await()
 
 suspend fun ElementSelector.performClick() = click().await()
 

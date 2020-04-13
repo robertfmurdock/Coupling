@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
+import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -94,7 +95,7 @@ class HistoryPageE2ETest {
             } verifyAsync {
                 browser.wait(
                     { this.pairAssignments.count().then { it == pairAssignments.size - 1 } },
-                    2000,
+                    waitToBePresentDuration,
                     "HistoryPageE2ETest.pairingCanBeDeleted"
                 )
 

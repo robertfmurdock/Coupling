@@ -34,8 +34,11 @@ object PlayerConfig : ProtractorSyntax {
     }
 
     suspend fun waitForSaveToComplete(name: String?) {
-        browser.wait({ saveButton.isEnabled().then({ it }, { false }) }, 1000, "PlayerConfig.waitForSaveButtonDisable")
-            .await()
+        browser.wait(
+            { saveButton.isEnabled().then({ it }, { false }) },
+            waitToBePresentDuration,
+            "PlayerConfig.waitForSaveButtonDisable"
+        ).await()
 
         browser.wait({
             all(By.css(".${playerConfigStyles["playerRoster"]} .${playerCardStyles["header"]}"))
