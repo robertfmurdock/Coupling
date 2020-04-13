@@ -106,6 +106,17 @@ jobs:
       - run: "./gradlew yarn"
       - run: "./gradlew assemble"
       - run: "./gradlew build check --no-parallel"
+      - run:
+          name: Copy test results
+          command: |
+            mkdir -p build/test-output/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
+          when: always
+      - run:
+          name: Copy test reports
+          command: |
+            ./gradlew copyReportsToCircleCIDirectory
+          when: always
       - store_artifacts:
           path: build/test-output
       - store_test_results:
@@ -135,6 +146,17 @@ jobs:
       - run: "./gradlew yarn"
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
+      - run:
+          name: Copy test results
+          command: |
+            mkdir -p build/test-output/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
+          when: always
+      - run:
+          name: Copy test reports
+          command: |
+            ./gradlew copyReportsToCircleCIDirectory
+          when: always
       - store_artifacts:
           path: build/test-output
       - store_test_results:
