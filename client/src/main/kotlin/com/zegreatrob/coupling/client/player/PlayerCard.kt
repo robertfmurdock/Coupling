@@ -64,16 +64,13 @@ private fun additionalClasses(className: String?, deselected: Boolean) = setOf(c
         }
     }
 
-private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) {
-    css {
-        width = size.px
-        height = (size * 1.4).px
-        padding(all = (size * 0.06).px)
-        borderWidth = (size * 0.04).px
-        borderRadius = (size * 0.08).px
-    }
+private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) = css {
+    width = size.px
+    height = (size * 1.4).px
+    padding(all = (size * 0.06).px)
+    borderWidth = (size * 0.04).px
+    borderRadius = (size * 0.08).px
 }
-
 
 private fun playerCardHeaderElement(
     tribeId: TribeId,
@@ -90,9 +87,7 @@ private fun playerCardHeaderElement(
             classes += styles["header"]
             onClickFunction = handleNameClick(tribeId, player, disabled, pathSetter)
         }
-        css {
-            margin(top = (size * 0.02).px)
-        }
+        css { margin(top = (size * 0.02).px) }
         div {
             attrs { ref = playerNameRef }
             +(if (player.name.isBlank()) "Unknown" else player.name)
@@ -113,10 +108,7 @@ private fun handleNameClick(
     }
 }
 
-private fun RBuilder.playerGravatarImage(
-    player: Player,
-    size: Int
-) = if (player.imageURL != null) {
+private fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
     img(src = player.imageURL, classes = styles["playerIcon"], alt = "icon") {
         attrs {
             width = size.toString()
@@ -125,7 +117,7 @@ private fun RBuilder.playerGravatarImage(
     }
 } else {
     gravatarImage(
-        email = player.email,
+        email = player.emailWithFallback(),
         className = styles["playerIcon"],
         alt = "icon",
         options = object : GravatarOptions {
@@ -133,6 +125,12 @@ private fun RBuilder.playerGravatarImage(
             override val default = "retro"
         }
     )
+}
+
+private fun Player.emailWithFallback() = when {
+    email != "" -> email
+    name != "" -> name
+    else -> "name"
 }
 
 private fun Node.fitPlayerName(size: Int) {
