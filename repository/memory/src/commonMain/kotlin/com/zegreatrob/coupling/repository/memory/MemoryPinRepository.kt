@@ -1,18 +1,19 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.pin.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
-class MemoryPinRepository(override val userId: String, override val clock: TimeProvider) : PinRepository,
+class MemoryPinRepository(
+    override val userId: String,
+    override val clock: TimeProvider,
+    private val recordBackend: RecordBackend<TribeIdPin> = SimpleRecordBackend()
+) : PinRepository,
     TypeRecordSyntax<TribeIdPin>,
-    RecordSaveSyntax<TribeIdPin> {
-
-    override var records = emptyList<Record<TribeIdPin>>()
+    RecordBackend<TribeIdPin> by recordBackend {
 
     override suspend fun save(tribeIdPin: TribeIdPin) =
         tribeIdPin.copy(element = with(tribeIdPin.element) { copy(_id = _id ?: "${com.benasher44.uuid.uuid4()}") })

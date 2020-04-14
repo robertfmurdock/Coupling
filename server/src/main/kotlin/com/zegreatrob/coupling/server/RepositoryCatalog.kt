@@ -24,8 +24,26 @@ suspend fun commandDispatcher(
     scope: CoroutineScope,
     traceId: Uuid?
 ): CommandDispatcher {
-    val dynamoRepositoryCatalog = DynamoRepositoryCatalog(user.id, TimeProvider)
-    return CommandDispatcher(user, dynamoRepositoryCatalog, scope, traceId)
+    val repositoryCatalog = repositoryCatalog(user)
+    return CommandDispatcher(user, repositoryCatalog, scope, traceId)
 }
 
-suspend fun userRepository(userEmail: String) = DynamoUserRepository(userEmail, TimeProvider)
+private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory())
+    memoryRepositoryCatalog(user.id)
+else
+    DynamoRepositoryCatalog(user.id, TimeProvider)
+
+val memoryBackend by lazy { MemoryRepositoryBackend() }
+
+private suspend fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(
+    userId,
+    memoryBackend,
+    TimeProvider
+)
+
+suspend fun userRepository(userId: String): UserRepository = if (useInMemory())
+    memoryRepositoryCatalog(userId).userRepository
+else
+    DynamoUserRepository(userId, TimeProvider)
+
+private fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"

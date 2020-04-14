@@ -2,6 +2,11 @@ package com.zegreatrob.coupling.server
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.memory.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -24,20 +29,17 @@ class MemoryRepositoryCatalog private constructor(
     ClockSyntax {
 
     companion object {
-        suspend operator fun invoke(userEmail: String, clock: TimeProvider): MemoryRepositoryCatalog {
-            val tribeRepository =
-                MemoryTribeRepository(userEmail, clock)
-            val playerRepository =
-                MemoryPlayerRepository(userEmail, clock)
+        suspend operator fun invoke(
+            userEmail: String,
+            backend: MemoryRepositoryBackend,
+            clock: TimeProvider
+        ): MemoryRepositoryCatalog {
+            val tribeRepository = MemoryTribeRepository(userEmail, clock, backend.tribe)
+            val playerRepository = MemoryPlayerRepository(userEmail, clock, backend.player)
             val pairAssignmentDocumentRepository =
-                MemoryPairAssignmentDocumentRepository(
-                    userEmail,
-                    clock
-                )
-            val pinRepository =
-                MemoryPinRepository(userEmail, clock)
-            val userRepository =
-                MemoryUserRepository(userEmail, clock)
+                MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments)
+            val pinRepository = MemoryPinRepository(userEmail, clock, backend.pin)
+            val userRepository = MemoryUserRepository(userEmail, clock, backend.user)
             return MemoryRepositoryCatalog(
                 userEmail,
                 clock,
@@ -50,4 +52,12 @@ class MemoryRepositoryCatalog private constructor(
         }
     }
 
+}
+
+class MemoryRepositoryBackend {
+    val tribe = SimpleRecordBackend<Tribe>()
+    val player = SimpleRecordBackend<TribeIdPlayer>()
+    val pairAssignments = SimpleRecordBackend<TribeIdPairAssignmentDocument>()
+    val pin = SimpleRecordBackend<TribeIdPin>()
+    val user = SimpleRecordBackend<User>()
 }

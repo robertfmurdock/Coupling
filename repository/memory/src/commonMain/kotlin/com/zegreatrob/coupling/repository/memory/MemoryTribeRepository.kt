@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 
-class MemoryTribeRepository(override val userId: String, override val clock: TimeProvider) : TribeRepository,
-    TypeRecordSyntax<Tribe>, RecordSaveSyntax<Tribe> {
-
-    override var records = emptyList<Record<Tribe>>()
+class MemoryTribeRepository(
+    override val userId: String,
+    override val clock: TimeProvider,
+    private val recordBackend: RecordBackend<Tribe> = SimpleRecordBackend()
+) : TribeRepository, TypeRecordSyntax<Tribe>, RecordBackend<Tribe> by recordBackend {
 
     override suspend fun save(tribe: Tribe) = tribe.record().save()
 

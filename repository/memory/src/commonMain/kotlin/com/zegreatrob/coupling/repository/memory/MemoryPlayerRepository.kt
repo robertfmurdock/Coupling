@@ -10,10 +10,12 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
-class MemoryPlayerRepository(override val userId: String, override val clock: TimeProvider) : PlayerEmailRepository,
-    TypeRecordSyntax<TribeIdPlayer>, RecordSaveSyntax<TribeIdPlayer> {
-
-    override var records = emptyList<Record<TribeIdPlayer>>()
+class MemoryPlayerRepository(
+    override val userId: String,
+    override val clock: TimeProvider,
+    private val recordBackend: RecordBackend<TribeIdPlayer> = SimpleRecordBackend()
+) : PlayerEmailRepository,
+    TypeRecordSyntax<TribeIdPlayer>, RecordBackend<TribeIdPlayer> by recordBackend {
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
         tribeIdPlayer.copy(element = with(tribeIdPlayer.element) { copy(id = id ?: "${uuid4()}") })

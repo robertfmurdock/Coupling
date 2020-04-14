@@ -10,12 +10,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.tribeId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 
-class MemoryPairAssignmentDocumentRepository(override val userId: String, override val clock: TimeProvider) :
+class MemoryPairAssignmentDocumentRepository(
+    override val userId: String,
+    override val clock: TimeProvider,
+    private val recordBackend: RecordBackend<TribeIdPairAssignmentDocument> = SimpleRecordBackend()
+) :
     PairAssignmentDocumentRepository,
     TypeRecordSyntax<TribeIdPairAssignmentDocument>,
-    RecordSaveSyntax<TribeIdPairAssignmentDocument> {
-
-    override var records = emptyList<Record<TribeIdPairAssignmentDocument>>()
+    RecordBackend<TribeIdPairAssignmentDocument> by recordBackend {
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) =
         tribeIdPairAssignmentDocument.addMissingId()

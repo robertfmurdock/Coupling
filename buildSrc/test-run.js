@@ -7,6 +7,6 @@ runHelpers.startJasmineSimple('', args[2], 'build/test-results/jsTest', 'js')
   .then(function () {
     process.exit(0);
   }, function (err) {
-    console.log('Jasmine test run failed:', err);
-    process.exit(-1);
+    console.log('Jasmine test run failed.');
+    process.exit(1);
   });
