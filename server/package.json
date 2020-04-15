@@ -59,7 +59,7 @@
     "source-map-support": "^0.5.16",
     "supertest": "^4.0.2",
     "text-loader": "0.0.1",
-    "ts-loader": "^6.2.2",
+    "ts-loader": "^7.0.0",
     "typescript": "^3.8.3",
     "url-loader": "^4.1.0",
     "webpack": "^4.42.1",
