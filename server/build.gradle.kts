@@ -195,7 +195,7 @@ tasks {
         inputs.files(compileEndToEndTestKotlinJs.outputs.files)
         inputs.file(file("package.json"))
         inputs.dir("test/e2e")
-        outputs.dir("../test-output/e2e")
+        outputs.dir("${project.buildDir}/test-results/e2e")
 
         setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules"))
         args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")

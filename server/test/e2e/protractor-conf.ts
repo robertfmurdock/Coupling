@@ -36,6 +36,15 @@ export let config: Config = {
         browser.baseUrl = 'http://localhost:3001';
         const jasmineReporters = require('jasmine-reporters');
 
+        // noinspection NpmUsedModulesInstalled
+        const testLogging = require('Coupling-test-logging');
+        // noinspection JSUnresolvedFunction
+        const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
+
+        jasmine.getEnv().clearReporters();
+
+        jasmine.getEnv().addReporter(loggingReporter);
+
         jasmine.getEnv().addReporter(
             new jasmineReporters.JUnitXmlReporter({
                 consolidateAll: true,
@@ -49,6 +58,7 @@ export let config: Config = {
             cleanDestination: true,
             captureOnlyFailedSpecs: true
         }));
+
 
         await browser.get('http://localhost:3001');
         await browser.executeScript('window.sessionStorage.setItem(\'animationDisabled\', true)');

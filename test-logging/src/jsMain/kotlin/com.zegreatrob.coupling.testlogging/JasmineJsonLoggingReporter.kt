@@ -35,14 +35,14 @@ class JasmineJsonLoggingReporter {
     private fun endTest(testName: String, status: String, failed: Array<dynamic>) {
         val duration = lastStart?.let { DateTime.now() - it }
         logger.info {
-                mapOf(
-                    "type" to "TestEnd",
-                    "test" to testName,
-                    "status" to status,
-                    "duration" to "$duration",
-                    "failures" to failed.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
-                )
-            }
+            mapOf(
+                "type" to "TestEnd",
+                "test" to testName,
+                "status" to status,
+                "duration" to "$duration",
+                "failures" to failed.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
+            )
+        }
             .also { lastStart = null }
     }
 }

@@ -24,7 +24,7 @@ let promise = Promise.all([
 
     process.stdin.pipe(serverProcess.stdin);
 
-    fs.mkdirSync(__dirname + '/../../build/test-results/e2e', { recursive: true });
+    fs.mkdirSync(__dirname + '/../../build/test-results/e2e', {recursive: true});
 
     const serverOut = fs.createWriteStream(__dirname + '/../../build/test-results/e2e/server.out.log');
     const serverErr = fs.createWriteStream(__dirname + '/../../build/test-results/e2e/server.err.log');
@@ -37,8 +37,7 @@ let promise = Promise.all([
 promise = promise
   .then(function () {
     return new Promise(function (resolve, reject) {
-      const process = childProcess.fork(__dirname + '/forkProtractor');
-
+      const process = childProcess.fork(__dirname + '/forkProtractor', [], {stdio: "pipe"});
       process.on('exit', function (code) {
         console.log('protractor fork code ' + code);
         if (code === 0)
@@ -47,6 +46,12 @@ promise = promise
           reject(code);
         }
       });
+
+      const testOut = fs.createWriteStream(__dirname + '/../../build/test-results/e2e/test.out.log');
+      const testErr = fs.createWriteStream(__dirname + '/../../build/test-results/e2e/test.err.log');
+
+      process.stdout.pipe(testOut);
+      process.stderr.pipe(testErr);
     });
   });
 

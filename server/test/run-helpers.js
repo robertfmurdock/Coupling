@@ -28,8 +28,6 @@ function startJasmineSimple(specDir, specFile, jasmineSavePath, filePrefix) {
   // noinspection JSUnresolvedFunction
   const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
 
-  // jasmine.clearReporters();
-
   jasmine.addReporter(loggingReporter);
   jasmine.addReporter(junitReporter);
 
