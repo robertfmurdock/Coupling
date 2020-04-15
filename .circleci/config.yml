@@ -10,7 +10,7 @@ jobs:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
-      COUPLING_IN_MEMORY: false
+      COUPLING_IN_MEMORY: true
     steps:
       - checkout
       - restore_cache:
