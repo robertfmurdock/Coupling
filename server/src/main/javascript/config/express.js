@@ -142,7 +142,7 @@ module.exports = function (app, userDataService) {
   }
 
   // noinspection JSUnresolvedVariable, JSUnresolvedFunction
-  logging.com.zegreatrob.coupling.logging.initializeJasmineLogging(isInDevelopmentMode);
+  logging.com.zegreatrob.coupling.logging.initializeLogging(isInDevelopmentMode);
 
   passport.serializeUser(userDataService.serializeUser);
   passport.deserializeUser(userDataService.deserializeUser);

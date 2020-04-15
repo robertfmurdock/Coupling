@@ -22,8 +22,8 @@ fun DateTime.logFormat() = toString(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
 
 @OptIn(UnstableDefault::class)
 @Suppress("unused")
-@JsName("initializeJasmineLogging")
-fun initializeJasmineLogging(developmentMode: Boolean) {
+@JsName("initializeLogging")
+fun initializeLogging(developmentMode: Boolean) {
     KotlinLoggingConfiguration.LOG_LEVEL = if (developmentMode) {
         KotlinLoggingLevel.DEBUG
     } else {

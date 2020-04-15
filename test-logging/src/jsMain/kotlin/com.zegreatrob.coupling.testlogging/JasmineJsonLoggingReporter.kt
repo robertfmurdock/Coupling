@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.testlogging
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.logging.initializeJasmineLogging
+import com.zegreatrob.coupling.logging.initializeLogging
 import mu.KotlinLogging
 
 @Suppress("unused")
@@ -11,7 +11,7 @@ class JasmineJsonLoggingReporter {
     private var lastStart: DateTime? = null
 
     init {
-        initializeJasmineLogging(true)
+        initializeLogging(true)
         JsonLoggingTestMintsReporter.initialize()
     }
 
