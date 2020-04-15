@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -27,7 +28,13 @@ interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryD
                     dataLoadProps(
                         query = { HistoryQuery(tribeId).perform() },
                         toProps = { reload, scope, (tribe, history) ->
-                            HistoryProps(tribe!!, history, reload, props.pathSetter, CommandDispatcher, scope)
+                            HistoryProps(
+                                tribe!!,
+                                history,
+                                reload,
+                                props.pathSetter,
+                                buildCommandFunc(scope, CommandDispatcher)
+                            )
                         }
                     )
                 )

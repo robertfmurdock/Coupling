@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
+import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
@@ -29,8 +30,7 @@ data class HistoryProps(
     val history: List<PairAssignmentDocument>,
     val reload: () -> Unit,
     val pathSetter: (String) -> Unit,
-    val commandDispatcher: DeletePairAssignmentsCommandDispatcher,
-    val scope: CoroutineScope
+    val commandFunc: CommandFunc<DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
 open class History(windowFunctions: WindowFunctions = WindowFunctions) : IFRComponent<HistoryProps>(provider()),
@@ -38,8 +38,10 @@ open class History(windowFunctions: WindowFunctions = WindowFunctions) : IFRComp
 
     companion object : History();
 
-    override val renderer = rendererFunc { (tribe, history, reload, pathSetter, dispatcher, scope) ->
-        val onDeleteFunc = scope.onDeleteFunc(dispatcher, tribe, reload)
+    override val renderer = rendererFunc { (tribe, history, reload, pathSetter, runner) ->
+        val onDeleteFunc = { documentId: PairAssignmentDocumentId ->
+            runner { removeButtonOnClick(documentId, tribe.id, reload) }
+        }
 
         div(classes = styles.className) {
             div(classes = styles["tribeBrowser"]) {
