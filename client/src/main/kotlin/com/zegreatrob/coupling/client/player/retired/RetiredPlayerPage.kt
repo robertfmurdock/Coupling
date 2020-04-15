@@ -31,14 +31,8 @@ interface RetiredPlayerPageBuilder : SimpleComponentRenderer<PageProps>, Retired
                 loadedRetiredPlayer(
                     dataLoadProps(
                         query = { performRetiredPlayerQuery(tribeId, playerId) },
-                        toProps = { reload, (tribe, players, player) ->
-                            PlayerConfigProps(
-                                tribe = tribe!!,
-                                player = player,
-                                players = players,
-                                pathSetter = props.pathSetter,
-                                reload = reload
-                            )
+                        toProps = { reload, _, (tribe, players, player) ->
+                            PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload)
                         }
                     )
                 ) {

@@ -2,8 +2,9 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.action.ScopeProvider
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -17,7 +18,7 @@ interface DataLoadStyles {
 inline fun <reified P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>): RComponent<DataLoadProps<P>> =
 
     object : RComponent<DataLoadProps<P>>(provider()), StyledComponentRenderer<DataLoadProps<P>, DataLoadStyles>,
-        ScopeProvider {
+        ReactScopeProvider {
         private val animationContextConsumer = animationsDisabledContext.Consumer
 
         override val componentPath: String get() = "routing/DataLoadWrapper"
@@ -28,7 +29,9 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>
             val (animationState, setAnimationState) = useState(AnimationState.Start)
             val shouldStartAnimation = data != null && animationState === AnimationState.Start
 
-            props.getDataAsync.invokeOnScope(setData)
+            val scope = useScope("Data load")
+
+            props.getDataAsync.invokeOnScope(scope, setData)
 
             return reactElement {
                 consumer(animationContextConsumer) { animationsDisabled: Boolean ->
@@ -48,19 +51,17 @@ inline fun <reified P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>
             }
         }
 
-        private fun (suspend (ReloadFunction) -> P).invokeOnScope(setData: (P?) -> Unit) {
-            val (scope) = useState { buildScope() + CoroutineName("Data Load") }
-            useEffectWithCleanup(arrayOf()) {
-                { scope.cancel() }
-            }
-
+        private fun (suspend (ReloadFunction, CoroutineScope) -> P).invokeOnScope(
+            scope: CoroutineScope,
+            setData: (P?) -> Unit
+        ) {
             val (loadingJob, setLoadingJob) = useState<Job?>(null)
 
             if (loadingJob == null) {
                 val reloadFunction = { setData(null); setLoadingJob(null) }
                 setLoadingJob(
                     scope.launch {
-                        setData(this@invokeOnScope.invoke(reloadFunction))
+                        setData(this@invokeOnScope.invoke(reloadFunction, scope))
                     }
                 )
             }
@@ -76,7 +77,9 @@ enum class AnimationState {
 
 typealias ReloadFunction = () -> Unit
 
-data class DataLoadProps<P : RProps>(val getDataAsync: suspend (ReloadFunction) -> P) : RProps
+typealias DataloadPropsFunc<P> = suspend (ReloadFunction, CoroutineScope) -> P
 
-fun <D, P : RProps> dataLoadProps(query: suspend () -> D, toProps: (ReloadFunction, D) -> P) =
-    DataLoadProps { reload -> query().let { result -> toProps(reload, result) } }
+data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : RProps
+
+fun <D, P : RProps> dataLoadProps(query: suspend () -> D, toProps: (ReloadFunction, CoroutineScope, D) -> P) =
+    DataLoadProps { reload, scope -> query().let { result -> toProps(reload, scope, result) } }

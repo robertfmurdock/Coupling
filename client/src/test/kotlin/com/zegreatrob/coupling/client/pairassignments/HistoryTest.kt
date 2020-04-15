@@ -4,7 +4,6 @@ import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.exerciseScopeProvider
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -53,8 +52,8 @@ class HistoryTest {
             )
         )
         val wrapper = shallow(
-            History(exerciseScopeProvider(), this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, dispatcher)
+            History(this),
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, dispatcher, exerciseScope)
         )
     }) {
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -85,8 +84,8 @@ class HistoryTest {
             )
         )
         val wrapper = shallow(
-            History(exerciseScopeProvider(), this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, dispatcher)
+            History(this),
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, dispatcher, exerciseScope)
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")

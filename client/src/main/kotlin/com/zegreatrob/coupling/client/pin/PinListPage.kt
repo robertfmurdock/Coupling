@@ -26,7 +26,7 @@ interface PinListPageBuilder : SimpleComponentRenderer<PageProps>, TribePinListQ
 
         return if (tribeId != null) {
             reactElement {
-                loadedPinList(DataLoadProps {
+                loadedPinList(DataLoadProps { _, _ ->
                     tribeId.performPinListQuery()
                         .toPinListProps(props.pathSetter)
                 })

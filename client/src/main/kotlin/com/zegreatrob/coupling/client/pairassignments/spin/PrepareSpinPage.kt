@@ -29,7 +29,7 @@ interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeData
                 loadedPairAssignments(
                     dataLoadProps(
                         query = { TribeDataSetQuery(tribeId).perform() },
-                        toProps = { _, (tribe, players, history, pins) ->
+                        toProps = { _, _, (tribe, players, history, pins) ->
                             PrepareSpinProps(tribe, players, history, pins, props.pathSetter)
                         }
                     )

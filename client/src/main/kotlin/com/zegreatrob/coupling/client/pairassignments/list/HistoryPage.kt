@@ -26,8 +26,8 @@ interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryD
                 loadedPairAssignments(
                     dataLoadProps(
                         query = { HistoryQuery(tribeId).perform() },
-                        toProps = { reload, (tribe, history) ->
-                            HistoryProps(tribe!!, history, reload, props.pathSetter, CommandDispatcher)
+                        toProps = { reload, scope, (tribe, history) ->
+                            HistoryProps(tribe!!, history, reload, props.pathSetter, CommandDispatcher, scope)
                         }
                     )
                 )

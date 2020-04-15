@@ -28,7 +28,7 @@ interface RetiredPlayersPageBuilder : SimpleComponentRenderer<PageProps>, Retire
             reactElement {
                 loadedRetiredPlayers(dataLoadProps(
                     query = { RetiredPlayerListQuery(tribeId).perform() },
-                    toProps = { _, data -> toRetiredPlayersProps(data, props.pathSetter) }
+                    toProps = { _, _, data -> toRetiredPlayersProps(data, props.pathSetter) }
                 ))
             }
         } else throw Exception("WHAT")

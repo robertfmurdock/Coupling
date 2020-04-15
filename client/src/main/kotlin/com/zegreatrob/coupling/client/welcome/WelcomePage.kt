@@ -15,7 +15,7 @@ interface WelcomePageRenderer : SimpleComponentRenderer<PageProps> {
 
     override fun RContext<PageProps>.render() = reactElement {
         loadedWelcome(
-            DataLoadProps { EmptyProps }
+            DataLoadProps { _, _ -> EmptyProps }
         )
     }
 

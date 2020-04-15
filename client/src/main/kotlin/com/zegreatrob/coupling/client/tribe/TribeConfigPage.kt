@@ -23,7 +23,7 @@ interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQuer
         loadedTribeConfig(
             dataLoadProps(
                 query = { performCorrectQuery(props.tribeId) },
-                toProps = { _, data -> tribeConfigProps(data, props.pathSetter) }
+                toProps = { _, _, data -> tribeConfigProps(data, props.pathSetter) }
             )
         )
     }

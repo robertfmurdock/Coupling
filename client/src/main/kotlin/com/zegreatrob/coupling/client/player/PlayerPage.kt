@@ -3,11 +3,8 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.routing.ReloadFunction
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
@@ -30,7 +27,9 @@ interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, TribePlayerQue
                 loadedPlayer(
                     dataLoadProps(
                         query = { TribePlayerQuery(tribeId, playerId).perform() },
-                        toProps = toPropsFunc(props)
+                        toProps = { reload, _, (tribe, players, player) ->
+                            PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload)
+                        }
                     )
                 ) {
                     playerId?.let { attrs { key = it } }
@@ -39,14 +38,4 @@ interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, TribePlayerQue
         } else throw Exception("WHAT")
     }
 
-    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<Tribe?, List<Player>, Player>) -> PlayerConfigProps =
-        { reload, (tribe, players, player) ->
-            PlayerConfigProps(
-                tribe = tribe!!,
-                player = player,
-                players = players,
-                pathSetter = pageProps.pathSetter,
-                reload = reload
-            )
-        }
 }

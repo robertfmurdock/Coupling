@@ -19,7 +19,7 @@ interface TribeListPageBuilder : SimpleComponentRenderer<PageProps>, TribeListQu
 
     override fun RContext<PageProps>.render() = reactElement {
         loadedTribeList(
-            DataLoadProps {
+            DataLoadProps { _, _ ->
                 val tribes = performTribeQuery()
                 TribeListProps(
                     tribes = tribes,

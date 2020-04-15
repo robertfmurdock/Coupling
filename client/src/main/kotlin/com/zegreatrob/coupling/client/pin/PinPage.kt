@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import kotlinx.coroutines.CoroutineScope
 import react.RBuilder
 import react.ReactElement
 
@@ -39,8 +40,8 @@ interface PinPageBuilder : SimpleComponentRenderer<PageProps>, TribePinQueryDisp
         } else throw Exception("WHAT")
     }
 
-    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, Triple<Tribe?, List<Pin>, Pin>) -> PinConfigProps =
-        { reload, (tribe, pins, pin) ->
+    private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, CoroutineScope, Triple<Tribe?, List<Pin>, Pin>) -> PinConfigProps =
+        { reload, _, (tribe, pins, pin) ->
             PinConfigProps(
                 tribe = tribe!!,
                 pin = pin,

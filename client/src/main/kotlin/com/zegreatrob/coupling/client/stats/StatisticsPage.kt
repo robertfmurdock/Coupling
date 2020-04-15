@@ -26,7 +26,7 @@ interface StatisticsPageBuilder : SimpleComponentRenderer<PageProps>, Statistics
                 loadedPairAssignments(
                     dataLoadProps(
                         query = { StatisticsQuery(tribeId).perform() },
-                        toProps = { _, queryResult -> TribeStatisticsProps(queryResult, props.pathSetter) }
+                        toProps = { _, _, queryResult -> TribeStatisticsProps(queryResult, props.pathSetter) }
                     )
                 )
             }
