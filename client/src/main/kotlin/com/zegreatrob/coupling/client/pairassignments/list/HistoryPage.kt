@@ -33,7 +33,7 @@ interface HistoryPageBuilder : SimpleComponentRenderer<PageProps>, HistoryQueryD
                                 history,
                                 reload,
                                 props.pathSetter,
-                                buildCommandFunc(scope, CommandDispatcher)
+                                CommandDispatcher.buildCommandFunc(scope)
                             )
                         }
                     )

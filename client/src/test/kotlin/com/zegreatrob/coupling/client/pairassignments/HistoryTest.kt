@@ -4,6 +4,7 @@ import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -38,6 +39,7 @@ class HistoryTest {
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = setupAsync2(object : ScopeMint(), WindowFunctions {
         val dispatcher = deleteDispatcher()
+        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
         val tribe = Tribe(TribeId("me"))
@@ -53,7 +55,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             History(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, dispatcher, exerciseScope)
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
         )
     }) {
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -70,6 +72,7 @@ class HistoryTest {
     @Test
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setupAsync2(object : ScopeMint(), WindowFunctions {
         val dispatcher = deleteDispatcher()
+        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
         val tribe = Tribe(TribeId("me"))
@@ -85,7 +88,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             History(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, dispatcher, exerciseScope)
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")

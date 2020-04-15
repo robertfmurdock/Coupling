@@ -13,8 +13,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
@@ -56,32 +54,24 @@ open class History(windowFunctions: WindowFunctions = WindowFunctions) : IFRComp
         }
     }
 
-    private fun CoroutineScope.onDeleteFunc(
-        dispatcher: DeletePairAssignmentsCommandDispatcher,
-        tribe: Tribe,
-        reload: () -> Unit
-    ) = { documentId: PairAssignmentDocumentId ->
-        launch(block = { dispatcher.removeButtonOnClick(documentId, tribe.id, reload) })
-    }
-
     private fun RBuilder.pairAssignmentRow(
         document: PairAssignmentDocument,
-        onDeleteFunc: (PairAssignmentDocumentId) -> Any
+        onDeleteFunc: (PairAssignmentDocumentId) -> () -> Unit
     ) {
         val pairAssignmentDocumentId = document.id ?: return
 
         div(classes = styles["pairAssignments"]) {
             attrs { key = pairAssignmentDocumentId.value }
             span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
-            deleteButton { onDeleteFunc(pairAssignmentDocumentId) }
+            deleteButton(onClickFunc = onDeleteFunc(pairAssignmentDocumentId))
             div { showPairs(document) }
         }
     }
 
-    private fun RBuilder.deleteButton(onClickFunc: (Any) -> Unit) = span(classes = "small red button") {
+    private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = span(classes = "small red button") {
         attrs {
             classes += styles["deleteButton"]
-            onClickFunction = onClickFunc
+            onClickFunction = { onClickFunc() }
         }
         +"DELETE"
     }
