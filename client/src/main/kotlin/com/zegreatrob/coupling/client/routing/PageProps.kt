@@ -21,7 +21,7 @@ data class PageProps(
 
 interface Commander {
     val dispatcher: CommandDispatcher
-    fun <T> suspendFunc(dispatch: suspend CommandDispatcher.() -> T): suspend () -> T = { dispatcher.dispatch() }
+    suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = dispatcher.dispatch()
 
     fun buildCommandFunc(scope: CoroutineScope): CommandFunc<CommandDispatcher> = { runCommands ->
         { scope.launch { with(dispatcher) { runCommands() } } }

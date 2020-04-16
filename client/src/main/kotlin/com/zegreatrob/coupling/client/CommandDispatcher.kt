@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
@@ -12,9 +13,12 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 
 object CommandDispatcher : PinCommandDispatcher,
     SavePairAssignmentsCommandDispatcher,
+    NewPairAssignmentsQueryDispatcher,
     PlayerConfigDispatcher,
     TribeConfigDispatcher,
     DeletePairAssignmentsCommandDispatcher,
     RepositoryCatalog by SdkSingleton,
     NullTraceIdProvider,
-    TribeDataSetQueryDispatcher
+    TribeDataSetQueryDispatcher {
+    override val sdk = SdkSingleton
+}
