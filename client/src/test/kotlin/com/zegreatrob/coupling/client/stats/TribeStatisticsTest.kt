@@ -7,8 +7,6 @@ import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.provider
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
@@ -25,8 +23,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     override val traceId: Uuid? = null
 
     @Test
-    fun willShowTribeCard() = setup(object : TribeStatisticsBuilder,
-        PropsClassProvider<TribeStatisticsProps> by provider() {
+    fun willShowTribeCard() = setup(object {
         val tribe = Tribe(TribeId("1"))
         val props = TribeStatisticsProps(
             StatisticQueryResults(
@@ -42,7 +39,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             )
         ) {}
     }) exercise {
-        shallow(props)
+        shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.findComponent(TribeCard)
             .props()
@@ -50,8 +47,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }
 
     @Test
-    fun willShowPairings() = setup(object : TribeStatisticsBuilder, ComposeStatisticsActionDispatcher,
-        PropsClassProvider<TribeStatisticsProps> by provider() {
+    fun willShowPairings() = setup(object {
         val players = listOf(
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
@@ -82,7 +78,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
 
         ) {}
     }) exercise {
-        shallow(props)
+        shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.findComponent(PairReportTable)
             .props()
@@ -120,8 +116,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }
 
     @Test
-    fun sendsPlayerHeatDataToSubComponent() = setup(object : TribeStatisticsBuilder,
-        PropsClassProvider<TribeStatisticsProps> by provider() {
+    fun sendsPlayerHeatDataToSubComponent() = setup(object {
         val players = listOf(
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
@@ -157,7 +152,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             pathSetter = {}
         )
     }) exercise {
-        shallow(props)
+        shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.findComponent(PlayerHeatmap)
             .props()
@@ -173,9 +168,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }
 
     @Test
-    fun willShowBasicStatisticsOnSubComponent() = setup(object : TribeStatisticsBuilder,
-        ComposeStatisticsActionDispatcher,
-        PropsClassProvider<TribeStatisticsProps> by provider() {
+    fun willShowBasicStatisticsOnSubComponent() = setup(object {
         val players = listOf(
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
@@ -197,7 +190,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             pathSetter = {}
         )
     }) exercise {
-        shallow(props)
+        shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.findComponent(TeamStatistics)
             .props()
@@ -210,8 +203,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }
 
     @Test
-    fun willShowTheMedianSpinTimeOnSubComponent() = setup(object : TribeStatisticsBuilder,
-        PropsClassProvider<TribeStatisticsProps> by provider() {
+    fun willShowTheMedianSpinTimeOnSubComponent() = setup(object {
         val players = listOf(
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
@@ -249,7 +241,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             pathSetter = {}
         )
     }) exercise {
-        shallow(props)
+        shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.findComponent(TeamStatistics)
             .props()

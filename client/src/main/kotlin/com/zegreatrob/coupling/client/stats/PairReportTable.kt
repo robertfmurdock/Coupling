@@ -31,9 +31,7 @@ val PairReportTable = reactFunction<PairReportTableProps> { (tribe, pairReports)
     }
 }
 
-private fun RBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div(
-    classes = styles["pairReport"]
-) {
+private fun RBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div(styles["pairReport"]) {
     attrs { key = "$index" }
     pairReport.pair.asArray().map { player -> reportPlayerCard(player, tribe) }
 
@@ -51,7 +49,7 @@ private fun TimeResult.presentationString() = when (this) {
     NeverPaired -> "Never Paired"
 }
 
-private fun RBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div(classes = styles["playerCard"]) {
+private fun RBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div(styles["playerCard"]) {
     attrs { key = player.id ?: "" }
     playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
 }

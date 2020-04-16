@@ -13,7 +13,7 @@ import react.ReactElement
 object StatisticsPage : RComponent<PageProps>(provider()), StatisticsPageBuilder,
     RepositoryCatalog by SdkSingleton
 
-private val LoadedPairAssignments = dataLoadWrapper(TribeStatistics)
+private val LoadedPairAssignments by lazy { dataLoadWrapper(TribeStatistics) }
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
 interface StatisticsPageBuilder : SimpleComponentRenderer<PageProps>, StatisticsQueryDispatcher, NullTraceIdProvider {

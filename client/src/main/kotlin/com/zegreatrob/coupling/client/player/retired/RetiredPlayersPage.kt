@@ -15,7 +15,7 @@ import react.ReactElement
 object RetiredPlayersPage : RComponent<PageProps>(provider()), RetiredPlayersPageBuilder,
     RepositoryCatalog by SdkSingleton
 
-private val LoadedRetiredPlayers = dataLoadWrapper(RetiredPlayers)
+private val LoadedRetiredPlayers by lazy { dataLoadWrapper(RetiredPlayers) }
 private val RBuilder.loadedRetiredPlayers get() = LoadedRetiredPlayers.render(this)
 
 interface RetiredPlayersPageBuilder : SimpleComponentRenderer<PageProps>, RetiredPlayerListQueryDispatcher,
