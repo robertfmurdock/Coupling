@@ -1,11 +1,7 @@
 package com.zegreatrob.coupling.client.external.react
 
-import com.zegreatrob.coupling.action.ScopeProvider
 import kotlinext.js.jsObject
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.plus
 import org.w3c.dom.Node
 import react.*
 import kotlin.reflect.KClass
@@ -120,13 +116,11 @@ fun <P : RProps> RBuilder.child(
     )
 }
 
-inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit) =
-    object : FRComponent<T>(provider()) {
+inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit): RComponent<T> =
+    object : RComponent<T>(provider()), FComponent<T> {
         override fun render(props: T) = reactElement { function(props) }
+        override fun build() = ReactFunctionComponent(kClass) { render(it) }
     }
-
-inline fun <reified P : RProps> reactFunctionComponent(noinline builder: (props: P) -> ReactElement) =
-    ReactFunctionComponent(P::class, builder)
 
 class ReactFunctionComponent<P : RProps>(
     private val clazz: KClass<P>,
@@ -166,22 +160,6 @@ class ScopedStyledRContext<P, S>(
     val scope: CoroutineScope
 ) {
     inline fun handle(builder: ScopedStyledRContext<P, S>.() -> ReactElement) = builder()
-}
-
-inline fun <reified P : RProps, S> ScopeProvider.styledComponent(
-    styleName: String,
-    crossinline builder: ScopedStyledRContext<P, S>.() -> ReactElement
-): ReactFunctionComponent<P> {
-    val styles = loadStyles<S>(styleName)
-
-    return reactFunctionComponent { props: P ->
-        val (scope) = useState { buildScope() + CoroutineName(styleName) }
-        useEffectWithCleanup(arrayOf()) {
-            { scope.cancel() }
-        }
-        ScopedStyledRContext(props, styles, scope)
-            .handle(builder)
-    }
 }
 
 object EmptyProps : RProps

@@ -10,7 +10,6 @@ import react.dom.label
 import kotlin.js.Json
 import kotlin.js.json
 
-
 fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
     .let { (values, setValues) ->
         Pair(
