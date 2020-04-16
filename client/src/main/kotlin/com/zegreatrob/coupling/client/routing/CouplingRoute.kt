@@ -28,7 +28,8 @@ interface CouplingRouteBuilder : SimpleComponentRenderer<CouplingRouteProps> {
     private fun pageProps(routeProps: RouteResultProps<RProps>) = PageProps(
         pathParams = routeProps.pathParams(),
         pathSetter = { path -> routeProps.history.push(path) },
-        search = URLSearchParams(routeProps.location.search)
+        search = URLSearchParams(routeProps.location.search),
+        commander = MasterCommander
     )
 
     private fun RouteResultProps<RProps>.pathParams(): Map<String, String> {

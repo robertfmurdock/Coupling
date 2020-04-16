@@ -1,49 +1,35 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.buildCommandFunc
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
-import react.ReactElement
-
-object CurrentPairsPage : RComponent<PageProps>(provider()), CurrentPairAssignmentsPageBuilder,
-    RepositoryCatalog by SdkSingleton
 
 private val LoadedPairAssignments by lazy { dataLoadWrapper(PairAssignments) }
 
-interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher,
-    NullTraceIdProvider {
-
-    override fun RContext<PageProps>.render(): ReactElement {
-        val tribeId = props.tribeId
-
-        return if (tribeId != null) {
-            reactElement { pairAssignments(tribeId, props.pathSetter) }
-        } else throw Exception("WHAT")
-    }
-
-    private fun RBuilder.pairAssignments(tribeId: TribeId, pathSetter: (String) -> Unit) =
-        child(LoadedPairAssignments, dataLoadProps(tribeId, pathSetter))
-
-    private fun dataLoadProps(
-        tribeId: TribeId,
-        pathSetter: (String) -> Unit
-    ) =
-        com.zegreatrob.coupling.client.routing.dataLoadProps(
-            query = { TribeDataSetQuery(tribeId).perform() },
-            toProps = { _, scope, (tribe, players, history) ->
-                PairAssignmentsProps(
-                    tribe,
-                    players,
-                    history.firstOrNull(),
-                    CommandDispatcher.buildCommandFunc(scope),
-                    pathSetter
-                )
-            }
-        )
+val CurrentPairsPage = reactFunction<PageProps> { props ->
+    val tribeId = props.tribeId
+    if (tribeId != null) {
+        pairAssignments(tribeId, props.pathSetter, props.commander)
+    } else throw Exception("WHAT")
 }
+
+private fun RBuilder.pairAssignments(tribeId: TribeId, pathSetter: (String) -> Unit, commander: Commander) =
+    child(LoadedPairAssignments, dataLoadProps(tribeId, pathSetter, commander))
+
+private fun dataLoadProps(tribeId: TribeId, pathSetter: (String) -> Unit, commander: Commander) = dataLoadProps(
+    query = commander.suspendFunc { TribeDataSetQuery(tribeId).perform() },
+    toProps = { _, scope, (tribe, players, history) ->
+        PairAssignmentsProps(
+            tribe,
+            players,
+            history.firstOrNull(),
+            commander.buildCommandFunc(scope),
+            pathSetter
+        )
+    }
+)
