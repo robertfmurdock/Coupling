@@ -1,50 +1,28 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.buildCommandFunc
-import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
-import react.ReactElement
-
-object PlayerPage : RComponent<PageProps>(provider()), PlayerPageBuilder,
-    RepositoryCatalog by SdkSingleton
 
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.render(this)
 
-interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, TribePlayerQueryDispatcher, NullTraceIdProvider {
+val PlayerPage = reactFunction<PageProps> { props ->
+    val tribeId = props.tribeId
+    if (tribeId != null) {
+        loadedPlayer(tribeId, props)
+    } else throw Exception("WHAT")
+}
 
-    override fun RContext<PageProps>.render(): ReactElement {
-        val tribeId = props.tribeId
-        val playerId = props.playerId
-
-        return if (tribeId != null) {
-            reactElement {
-                loadedPlayer(
-                    dataLoadProps(
-                        query = { TribePlayerQuery(tribeId, playerId).perform() },
-                        toProps = { reload, scope, (tribe, players, player) ->
-                            PlayerConfigProps(
-                                tribe!!,
-                                player,
-                                players,
-                                props.pathSetter,
-                                reload,
-                                CommandDispatcher.buildCommandFunc(scope)
-                            )
-                        }
-                    )
-                ) {
-                    playerId?.let { attrs { key = it } }
-                }
-            }
-        } else throw Exception("WHAT")
-    }
-
+private fun RBuilder.loadedPlayer(tribeId: TribeId, props: PageProps) = with(props) {
+    loadedPlayer(dataLoadProps(
+        commander = commander,
+        query = { TribePlayerQuery(tribeId, playerId).perform() },
+        toProps = { reload, commandFunc, (tribe, players, player) ->
+            PlayerConfigProps(tribe!!, player, players, pathSetter, reload, commandFunc)
+        }
+    )) { playerId?.let { attrs { key = it } } }
 }
