@@ -26,8 +26,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew assemble --no-parallel"
-      - run: "./gradlew build check --no-parallel -x :repository:mongo:check"
+      - run: "./gradlew build check -x :repository:mongo:check"
       - run:
           name: Copy test results
           command: |
