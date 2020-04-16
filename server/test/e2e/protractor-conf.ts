@@ -4,6 +4,11 @@ import {DataLoadWrapperStyles} from "./page-objects/Styles";
 
 let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
 
+function disableDotReporter() {
+    return function () {
+    };
+}
+
 export let config: Config = {
 
     allScriptsTimeout: 31000,
@@ -28,7 +33,8 @@ export let config: Config = {
 
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 30000
+        defaultTimeoutInterval: 30000,
+        print: disableDotReporter()
     },
     onPrepare: async function () {
         await browser.waitForAngularEnabled(false);
@@ -41,10 +47,7 @@ export let config: Config = {
         // noinspection JSUnresolvedFunction
         const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
 
-        jasmine.getEnv().clearReporters();
-
         jasmine.getEnv().addReporter(loggingReporter);
-
         jasmine.getEnv().addReporter(
             new jasmineReporters.JUnitXmlReporter({
                 consolidateAll: true,

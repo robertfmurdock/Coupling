@@ -36,9 +36,9 @@ open class History(windowFunctions: WindowFunctions = WindowFunctions) : IFRComp
 
     companion object : History();
 
-    override val renderer = rendererFunc { (tribe, history, reload, pathSetter, runner) ->
+    override val renderer = rendererFunc { (tribe, history, reload, pathSetter, commandFunc) ->
         val onDeleteFunc = { documentId: PairAssignmentDocumentId ->
-            runner { removeButtonOnClick(documentId, tribe.id, reload) }
+            commandFunc { removeButtonOnClick(documentId, tribe.id, reload) }
         }
 
         div(classes = styles.className) {

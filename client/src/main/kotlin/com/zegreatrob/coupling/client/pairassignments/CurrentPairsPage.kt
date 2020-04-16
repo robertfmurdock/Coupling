@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -9,11 +11,10 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 import react.ReactElement
 
-
 object CurrentPairsPage : RComponent<PageProps>(provider()), CurrentPairAssignmentsPageBuilder,
     RepositoryCatalog by SdkSingleton
 
-private val LoadedPairAssignments = dataLoadWrapper(PairAssignments)
+private val LoadedPairAssignments by lazy { dataLoadWrapper(PairAssignments) }
 
 interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher,
     NullTraceIdProvider {
@@ -35,8 +36,14 @@ interface CurrentPairAssignmentsPageBuilder : SimpleComponentRenderer<PageProps>
     ) =
         com.zegreatrob.coupling.client.routing.dataLoadProps(
             query = { TribeDataSetQuery(tribeId).perform() },
-            toProps = { _, _, (tribe, players, history) ->
-                PairAssignmentsProps(tribe, players, history.firstOrNull(), pathSetter = pathSetter)
+            toProps = { _, scope, (tribe, players, history) ->
+                PairAssignmentsProps(
+                    tribe,
+                    players,
+                    history.firstOrNull(),
+                    CommandDispatcher.buildCommandFunc(scope),
+                    pathSetter
+                )
             }
         )
 }

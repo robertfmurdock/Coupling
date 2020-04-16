@@ -1,8 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.ScopeProvider
-import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useState
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator.animator
@@ -17,10 +19,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -34,50 +32,40 @@ data class PairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
-    val commandDispatcher: SavePairAssignmentsCommandDispatcher = CommandDispatcher,
+    val commandFunc: CommandFunc<SavePairAssignmentsCommandDispatcher>,
     val pathSetter: (String) -> Unit
 ) : RProps
 
-open class PairAssignments(val scopeProvider: ScopeProvider) : FRComponent<PairAssignmentsProps>(provider()),
-    ReactScopeProvider,
-    RepositoryCatalog by SdkSingleton, ScopeProvider by scopeProvider {
+val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
+    val styles = useStyles("pairassignments/PairAssignments")
 
-    companion object : PairAssignments(object : ReactScopeProvider {})
+    val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
-    override fun render(props: PairAssignmentsProps) = reactElement {
-        val (tribe, players, _, commandDispatcher, pathSetter) = props
-        val styles = useStyles("pairassignments/PairAssignments")
-        val scope = useScope("pairassignments/PairAssignments")
-
-        val (pairAssignments, setPairAssignments) = useState(props.pairAssignments)
-
-        val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
-        val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
-        val onSave = scope.launchFunc { commandDispatcher.handleOnClickSave(tribe, pairAssignments, pathSetter) }
-        DndProvider {
-            attrs { backend = HTML5Backend }
-            div(classes = styles.className) {
-                div {
-                    tribeBrowser(tribe, pathSetter)
-                    animator(tribe, players, pairAssignments, tribe.animationEnabled) {
-                        currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
-                    }
+    val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
+    val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
+    val onSave = commandFunc { handleOnClickSave(tribe, pairAssignments, pathSetter) }
+    DndProvider {
+        attrs { backend = HTML5Backend }
+        div(classes = styles.className) {
+            div {
+                tribeBrowser(tribe, pathSetter)
+                animator(tribe, players, pairAssignments, tribe.animationEnabled) {
+                    currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
                 }
-                div(classes = styles["controlPanel"]) {
-                    div {
-                        prepareToSpinButton(props.tribe, styles["newPairsButton"])
-                    }
-                    viewHistoryButton(props.tribe, styles["viewHistoryButton"])
-                    pinListButton(props.tribe, styles["pinListButton"])
-                    statisticsButton(tribe, styles["statisticsButton"])
-                    viewRetireesButton(props.tribe, styles["retiredPlayersButton"])
-                }
-                unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
-                serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
             }
+            div(classes = styles["controlPanel"]) {
+                div {
+                    prepareToSpinButton(tribe, styles["newPairsButton"])
+                }
+                viewHistoryButton(tribe, styles["viewHistoryButton"])
+                pinListButton(tribe, styles["pinListButton"])
+                statisticsButton(tribe, styles["statisticsButton"])
+                viewRetireesButton(tribe, styles["retiredPlayersButton"])
+            }
+            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
+            serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
         }
     }
-
 }
 
 private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
@@ -180,9 +168,6 @@ private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
         }
     }
 
-private fun CoroutineScope.launchFunc(handler: suspend () -> Unit): () -> Unit = {
-    launch(block = { handler() })
-}
 
 private suspend fun SavePairAssignmentsCommandDispatcher.handleOnClickSave(
     tribe: Tribe,
