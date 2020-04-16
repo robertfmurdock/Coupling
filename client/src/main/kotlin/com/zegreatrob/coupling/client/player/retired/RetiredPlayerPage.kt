@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.player.retired
 
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.player.PlayerConfig
@@ -31,8 +33,15 @@ interface RetiredPlayerPageBuilder : SimpleComponentRenderer<PageProps>, Retired
                 loadedRetiredPlayer(
                     dataLoadProps(
                         query = { performRetiredPlayerQuery(tribeId, playerId) },
-                        toProps = { reload, _, (tribe, players, player) ->
-                            PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload)
+                        toProps = { reload, scope, (tribe, players, player) ->
+                            PlayerConfigProps(
+                                tribe!!,
+                                player,
+                                players,
+                                props.pathSetter,
+                                reload,
+                                CommandDispatcher.buildCommandFunc(scope)
+                            )
                         }
                     )
                 ) {

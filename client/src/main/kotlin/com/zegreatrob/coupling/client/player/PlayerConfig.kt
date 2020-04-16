@@ -1,53 +1,43 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.ConfigFrame.configFrame
-import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
-import com.zegreatrob.coupling.client.player.PlayerConfigEditor.playerConfigEditor
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.player.PlayerRepository
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RProps
 import react.dom.div
-
-object PlayerConfig : RComponent<PlayerConfigProps>(provider()), PlayerConfigRenderer,
-    RepositoryCatalog by SdkSingleton
 
 data class PlayerConfigProps(
     val tribe: Tribe,
     val player: Player,
     val players: List<Player>,
     val pathSetter: (String) -> Unit,
-    val reload: () -> Unit
+    val reload: () -> Unit,
+    val commandFunc: CommandFunc<PlayerConfigDispatcher>
 ) : RProps
 
-typealias PlayerConfigContext = StyledRContext<PlayerConfigProps, SimpleStyle>
-
-interface PlayerConfigRenderer : StyledComponentRenderer<PlayerConfigProps, SimpleStyle>,
-    WindowFunctions, SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher, NullTraceIdProvider {
-
+interface PlayerConfigDispatcher : SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
     override val playerRepository: PlayerRepository
+}
 
-    override val componentPath: String get() = "player/PlayerConfig"
+private val styles = useStyles("player/PlayerConfig")
 
-    override fun PlayerConfigContext.render() = reactElement {
-        val (tribe, player, players, pathSetter, reload) = props
-        configFrame(styles.className) {
-            playerConfigEditor(tribe, player, pathSetter, reload)
-            div {
-                playerRoster(
-                    PlayerRosterProps(
-                        players = players,
-                        tribeId = tribe.id,
-                        pathSetter = pathSetter,
-                        className = styles["playerRoster"]
-                    )
+val PlayerConfig = reactFunction<PlayerConfigProps> { (tribe, player, players, pathSetter, reload, commandFunc) ->
+    configFrame(styles.className) {
+        playerConfigEditor(tribe, player, pathSetter, reload, commandFunc)
+        div {
+            playerRoster(
+                PlayerRosterProps(
+                    players = players,
+                    tribeId = tribe.id,
+                    pathSetter = pathSetter,
+                    className = styles["playerRoster"]
                 )
-            }
+            )
         }
     }
-
 }

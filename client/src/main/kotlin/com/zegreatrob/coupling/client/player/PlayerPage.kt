@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -27,8 +29,15 @@ interface PlayerPageBuilder : SimpleComponentRenderer<PageProps>, TribePlayerQue
                 loadedPlayer(
                     dataLoadProps(
                         query = { TribePlayerQuery(tribeId, playerId).perform() },
-                        toProps = { reload, _, (tribe, players, player) ->
-                            PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload)
+                        toProps = { reload, scope, (tribe, players, player) ->
+                            PlayerConfigProps(
+                                tribe!!,
+                                player,
+                                players,
+                                props.pathSetter,
+                                reload,
+                                CommandDispatcher.buildCommandFunc(scope)
+                            )
                         }
                     )
                 ) {
