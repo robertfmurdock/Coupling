@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.ConfigFrame.configFrame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pin.PinConfigEditor.Companion.pinConfigEditor
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
@@ -17,14 +16,15 @@ data class PinConfigProps(
     val pin: Pin,
     val pinList: List<Pin>,
     val pathSetter: (String) -> Unit,
-    val reload: () -> Unit
+    val reload: () -> Unit,
+    val commandFunc: CommandFunc<PinCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pin/PinConfig")
 
-val PinConfig = reactFunction<PinConfigProps> { (tribe, pin, pinList, pathSetter, reload) ->
+val PinConfig = reactFunction<PinConfigProps> { (tribe, pin, pinList, pathSetter, reload, commandFunc) ->
     configFrame(styles.className) {
-        pinConfigEditor(tribe, pin, CommandDispatcher, pathSetter, reload)
+        pinConfigEditor(tribe, pin, commandFunc, pathSetter, reload)
         pinBag(tribe, pinList, styles["pinBag"])
     }
 }

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import SpyData
-import com.zegreatrob.coupling.client.exerciseScopeProvider
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
@@ -23,16 +23,12 @@ class PinConfigEditorTest {
 
     private val styles = useStyles("pin/PinConfigEditor")
 
-    private val stubDispatcher = object : PinCommandDispatcher, NullTraceIdProvider {
-        override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
-    }
-
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, { {} }))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -44,7 +40,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, { {} }))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -64,7 +60,7 @@ class PinConfigEditorTest {
         val newIcon = "pin new icon"
 
         val wrapper = shallow(
-            PinConfigEditor(exerciseScopeProvider()), PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher)
+            PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher.buildCommandFunc(exerciseScope))
         ).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)

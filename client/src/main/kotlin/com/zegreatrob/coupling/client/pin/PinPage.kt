@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -17,7 +19,7 @@ import react.ReactElement
 object PinPage : RComponent<PageProps>(provider()), PinPageBuilder,
     RepositoryCatalog by SdkSingleton
 
-private val LoadedPin = dataLoadWrapper(PinConfig)
+private val LoadedPin by lazy { dataLoadWrapper(PinConfig) }
 private val RBuilder.loadedPin get() = LoadedPin.render(this)
 
 interface PinPageBuilder : SimpleComponentRenderer<PageProps>, TribePinQueryDispatcher, NullTraceIdProvider {
@@ -41,13 +43,14 @@ interface PinPageBuilder : SimpleComponentRenderer<PageProps>, TribePinQueryDisp
     }
 
     private fun toPropsFunc(pageProps: PageProps): (ReloadFunction, CoroutineScope, Triple<Tribe?, List<Pin>, Pin>) -> PinConfigProps =
-        { reload, _, (tribe, pins, pin) ->
+        { reload, scope, (tribe, pins, pin) ->
             PinConfigProps(
                 tribe = tribe!!,
                 pin = pin,
                 pinList = pins,
                 pathSetter = pageProps.pathSetter,
-                reload = reload
+                reload = reload,
+                commandFunc = CommandDispatcher.buildCommandFunc(scope)
             )
         }
 }
