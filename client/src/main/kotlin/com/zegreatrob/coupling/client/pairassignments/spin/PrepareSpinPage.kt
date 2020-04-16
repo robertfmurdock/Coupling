@@ -15,7 +15,7 @@ import react.ReactElement
 object PrepareSpinPage : RComponent<PageProps>(provider()), PrepareSpinPageBuilder,
     RepositoryCatalog by SdkSingleton
 
-private val LoadedPairAssignments = dataLoadWrapper(PrepareSpin)
+private val LoadedPairAssignments by lazy { dataLoadWrapper(PrepareSpin) }
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
 interface PrepareSpinPageBuilder : SimpleComponentRenderer<PageProps>, TribeDataSetQueryDispatcher,

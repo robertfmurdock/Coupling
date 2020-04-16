@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
-import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator.animator
+import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.tribe.tribeBrowser

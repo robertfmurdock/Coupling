@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 
 object CommandDispatcher : PinCommandDispatcher,
-    DeletePairAssignmentsCommandDispatcher,
-    RepositoryCatalog by SdkSingleton,
-    NullTraceIdProvider,
     SavePairAssignmentsCommandDispatcher,
     PlayerConfigDispatcher,
-    TribeConfigDispatcher
+    TribeConfigDispatcher,
+    DeletePairAssignmentsCommandDispatcher,
+    RepositoryCatalog by SdkSingleton,
+    NullTraceIdProvider
