@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.ConfigHeader.configHeader
-import com.zegreatrob.coupling.client.Editor.editor
+import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.json.toJson

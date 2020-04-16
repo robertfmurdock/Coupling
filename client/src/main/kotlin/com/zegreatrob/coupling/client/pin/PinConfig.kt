@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.CommandFunc
-import com.zegreatrob.coupling.client.ConfigFrame.configFrame
+import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
