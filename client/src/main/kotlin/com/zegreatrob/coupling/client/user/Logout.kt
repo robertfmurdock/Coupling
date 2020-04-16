@@ -1,41 +1,32 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useScope
+import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import react.ReactElement
 import react.dom.div
 import react.router.dom.redirect
 
-object Logout : RComponent<PageProps>(provider()), LogoutBuilder, Sdk by SdkSingleton
-
-interface LogoutBuilder : SimpleComponentRenderer<PageProps>, GoogleSignIn, LogoutCommandDispatcher,
-    ReactScopeProvider {
-
-    override fun RContext<PageProps>.render(): ReactElement {
-        val scope = useScope("Logout")
-        val (isLoggedOut, setIsLoggedOut) = useState(false)
-        val (logoutPromise, setLogout) = useState<Any?>(null)
-        if (logoutPromise == null) {
-            setLogout(
-                scope.launch { waitForLogout(setIsLoggedOut) }
-            )
-        }
-        return reactElement {
-            if (isLoggedOut) {
-                redirect(to = "/welcome", from = "")
-            } else {
-                div { }
-            }
-        }
+val Logout = reactFunction<PageProps> { props ->
+    val scope = useScope("Logout")
+    val (isLoggedOut, setIsLoggedOut) = useState(false)
+    val (logoutPromise, setLogout) = useState<Any?>(null)
+    if (logoutPromise == null) {
+        setLogout(
+            scope.launch { props.commander.runQuery { waitForLogout(setIsLoggedOut) } }
+        )
     }
-
-    private suspend fun waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
-        launch { LogoutCommand.perform() }
-        launch { googleSignOut() }
-    }.run { setIsLoggedOut(true) }
-
+    if (isLoggedOut) {
+        redirect(to = "/welcome", from = "")
+    } else {
+        div { }
+    }
 }
+
+private suspend fun CommandDispatcher.waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
+    launch { LogoutCommand.perform() }
+    launch { googleSignOut() }
+}.run { setIsLoggedOut(true) }

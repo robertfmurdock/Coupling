@@ -7,12 +7,18 @@ import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatche
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
+import com.zegreatrob.coupling.client.pin.TribePinListQueryDispatcher
+import com.zegreatrob.coupling.client.pin.TribePinQueryDispatcher
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.player.TribePlayerQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
+import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeListQueryDispatcher
+import com.zegreatrob.coupling.client.tribe.TribeQueryDispatcher
+import com.zegreatrob.coupling.client.user.GoogleSignIn
+import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 
@@ -29,6 +35,12 @@ object CommandDispatcher : PinCommandDispatcher,
     RetiredPlayerQueryDispatcher,
     RetiredPlayerListQueryDispatcher,
     TribeListQueryDispatcher,
-    TribePlayerQueryDispatcher {
+    TribeQueryDispatcher,
+    TribePlayerQueryDispatcher,
+    TribePinQueryDispatcher,
+    TribePinListQueryDispatcher,
+    GoogleSignIn,
+    LogoutCommandDispatcher,
+    StatisticsQueryDispatcher {
     override val sdk = SdkSingleton
 }

@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.action.ScopeProvider
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.*
 import react.RProps
 import react.ReactElement
 
@@ -55,4 +52,12 @@ interface ReactScopeProvider : ScopeProvider {
         }
         return scope
     }
+}
+
+fun useScope(coroutineName: String): CoroutineScope {
+    val (scope) = useState { MainScope() + CoroutineName(coroutineName) }
+    useEffectWithCleanup(arrayOf()) {
+        { scope.cancel() }
+    }
+    return scope
 }

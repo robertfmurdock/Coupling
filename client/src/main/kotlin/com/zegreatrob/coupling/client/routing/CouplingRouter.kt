@@ -21,46 +21,43 @@ import react.RBuilder
 import react.RElementBuilder
 import react.RProps
 import react.dom.div
-import react.router.dom.browserRouter
-import react.router.dom.redirect
-import react.router.dom.route
-import react.router.dom.switch
+import react.router.dom.*
 import kotlin.browser.window
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
 val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
     browserRouter {
-        animationsDisabledContext.Provider(value = animationsDisabled) {
-            switch { routes(isSignedIn) }
-        }
+        animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
     }
 }
 
-private fun RElementBuilder<RProps>.routes(isSignedIn: Boolean) {
-    couplingRoute(path = "/welcome/", rComponent = WelcomePage)
+private fun RBuilder.routes(isSignedIn: Boolean) {
+    couplingRoute("/welcome/", WelcomePage)
+    couplingRoute("/about", AboutPage)
 
-    if (isSignedIn) {
+    if (isSignedIn)
         authenticatedRoutes()
-    } else {
-        console.warn("not signed in!!!!", window.location.pathname)
-        redirect(from = "", to = "/welcome")
-    }
+    else
+        redirectUnauthenticated()
 
-    route<RProps>(path = "", render = { props ->
-        div { +"Hmm, you seem to be lost. At ${props.location.pathname}" }
-    })
+    lostRoute()
 }
+
+private fun RBuilder.redirectUnauthenticated() = redirect(from = "", to = "/welcome")
+    .also { console.warn("not signed in!!!!", window.location.pathname) }
+
+private fun RBuilder.lostRoute() = route<RProps>(
+    path = "",
+    render = { props -> div { +"Hmm, you seem to be lost. At ${props.location.pathname}" } }
+)
 
 private fun RBuilder.authenticatedRoutes() = switch {
     route(path = "/", exact = true, render = { redirect(from = "", to = "/tribes/") })
-    couplingRoute("/about", AboutPage)
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/new-tribe/", TribeConfigPage)
-    route<RProps>("/:tribeId", exact = true, render = { props ->
-        redirect(from = "", to = "/${props.match.params.asDynamic().tribeId}/pairAssignments/current/")
-    })
+    route<RProps>("/:tribeId", exact = true, render = { props -> redirectToCurrentPairs(props) })
     couplingRoute("/:tribeId/prepare/", PrepareSpinPage)
     couplingRoute("/:tribeId/edit/", TribeConfigPage)
     couplingRoute("/:tribeId/history", HistoryPage)
@@ -75,3 +72,10 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/:tribeId/statistics", StatisticsPage)
     couplingRoute("/:tribeId/players/retired", RetiredPlayersPage)
 }
+
+private fun RElementBuilder<RProps>.redirectToCurrentPairs(props: RouteResultProps<RProps>) = redirect(
+    from = "",
+    to = "/${props.tribeId}/pairAssignments/current/"
+)
+
+private val RouteResultProps<RProps>.tribeId get() = match.params.asDynamic().tribeId
