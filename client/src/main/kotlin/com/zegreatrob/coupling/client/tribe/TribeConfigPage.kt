@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -11,10 +13,9 @@ import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import react.RBuilder
 
-object TribeConfigPage : RComponent<PageProps>(provider()), TribeConfigPageBuilder,
-    RepositoryCatalog by SdkSingleton
+object TribeConfigPage : RComponent<PageProps>(provider()), TribeConfigPageBuilder, RepositoryCatalog by SdkSingleton
 
-private val LoadedTribeConfig = dataLoadWrapper(TribeConfig)
+private val LoadedTribeConfig by lazy { dataLoadWrapper(TribeConfig) }
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)
 
 interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQueryDispatcher, NullTraceIdProvider {
@@ -23,7 +24,13 @@ interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQuer
         loadedTribeConfig(
             dataLoadProps(
                 query = { performCorrectQuery(props.tribeId) },
-                toProps = { _, _, data -> tribeConfigProps(data, props.pathSetter) }
+                toProps = { _, scope, data ->
+                    TribeConfigProps(
+                        data!!,
+                        props.pathSetter,
+                        CommandDispatcher.buildCommandFunc(scope)
+                    )
+                }
             )
         )
     }
@@ -40,8 +47,4 @@ interface TribeConfigPageBuilder : SimpleComponentRenderer<PageProps>, TribeQuer
         alternateBadgeName = "Alternate"
     )
 
-    private fun tribeConfigProps(tribe: Tribe?, pathSetter: (String) -> Unit) = TribeConfigProps(
-        tribe = tribe!!,
-        pathSetter = pathSetter
-    )
 }

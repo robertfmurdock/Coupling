@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
+import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 
@@ -13,4 +14,5 @@ object CommandDispatcher : PinCommandDispatcher,
     RepositoryCatalog by SdkSingleton,
     NullTraceIdProvider,
     SavePairAssignmentsCommandDispatcher,
-    PlayerConfigDispatcher
+    PlayerConfigDispatcher,
+    TribeConfigDispatcher

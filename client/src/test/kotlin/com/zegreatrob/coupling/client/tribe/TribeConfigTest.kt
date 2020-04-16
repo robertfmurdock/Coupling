@@ -3,14 +3,14 @@ package com.zegreatrob.coupling.client.tribe
 import ShallowWrapper
 import Spy
 import SpyData
-import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.loadStyles
-import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.client.buildCommandFunc
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -25,17 +25,13 @@ import kotlin.test.Test
 
 class TribeConfigTest {
 
-    private val styles = loadStyles<TribeConfigStyles>("tribe/TribeConfig")
+    private val styles = useStyles("tribe/TribeConfig")
 
     @Test
-    fun willDefaultTribeThatIsMissingData(): Unit = setup(object : TribeConfigBuilder,
-        PropsClassProvider<TribeConfigProps> by provider() {
-        override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
-        val tribe =
-            Tribe(TribeId("1"), name = "1")
-
+    fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
+        val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow(TribeConfigProps(tribe) {})
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, { {} }))
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -65,14 +61,14 @@ class TribeConfigTest {
     @Test
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = testAsync {
         withContext(coroutineContext) {
-            setupAsync(object : TribeConfigBuilder,
-                PropsClassProvider<TribeConfigProps> by provider() {
-                override fun buildScope() = this@withContext
-                override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
-                val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
-
-                override suspend fun Tribe.save() {
-                    saveSpy.spyFunction(toJson())
+            setupAsync(object {
+                val dispatcher = object : TribeConfigDispatcher {
+                    override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
+                    override val traceId: Nothing? = null
+                    val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
+                    override suspend fun Tribe.save() {
+                        saveSpy.spyFunction(toJson())
+                    }
                 }
 
                 val tribe = Tribe(
@@ -85,15 +81,22 @@ class TribeConfigTest {
                 )
 
                 val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val wrapper = shallow(TribeConfigProps(tribe, pathSetterSpy::spyFunction))
+                val wrapper = shallow(
+                    TribeConfig,
+                    TribeConfigProps(
+                        tribe,
+                        pathSetterSpy::spyFunction,
+                        dispatcher.buildCommandFunc(this@withContext)
+                    )
+                )
             }) {
-                saveSpy.spyWillReturn(Promise.resolve(Unit))
+                dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
                 pathSetterSpy.spyWillReturn(Unit)
             } exerciseAsync {
-                wrapper.find<Any>(".${styles.saveButton}").simulate("click")
+                wrapper.find<Any>(".${styles["saveButton"]}").simulate("click")
             }
         } verifyAsync {
-            saveSpy.spyReceivedValues.map { it.toTribe() }.assertContains(tribe)
+            dispatcher.saveSpy.spyReceivedValues.map { it.toTribe() }.assertContains(tribe)
             pathSetterSpy.spyReceivedValues.assertContains("/tribes/")
         }
     }
