@@ -12,6 +12,7 @@ config.resolve.extensions = ['.js', '.ts'];
 config.module.rules.push({
     test: /\.ts(x?)$/,
     use: [
+      'cache-loader',
       'babel-loader',
       'ts-loader?' + JSON.stringify({silent: true})
     ]
@@ -19,6 +20,7 @@ config.module.rules.push({
   {test: /\.md$/i, use: 'raw-loader'}, {
     test: /\.(sa|sc|c)ss$/,
     use: [
+      'cache-loader',
       {
         loader: MiniCssExtractPlugin.loader,
         options: {
@@ -35,7 +37,10 @@ config.module.rules.push({
     ],
   }, {
     test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url-loader?limit=100000'
+    loader: [
+      'cache-loader',
+      'url-loader?limit=100000'
+    ]
   }
 );
 config.plugins.push(new MiniCssExtractPlugin({

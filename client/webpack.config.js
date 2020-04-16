@@ -30,6 +30,7 @@ const config = {
       {
         test: /\.ts(x?)$/,
         use: [
+          'cache-loader',
           'babel-loader',
           'ts-loader?' + JSON.stringify({
             silent: true
@@ -38,7 +39,10 @@ const config = {
       },
       {
         test: /\.js$/,
-        use: ["source-map-loader"],
+        use: [
+          'cache-loader',
+          "source-map-loader"
+        ],
         enforce: "pre"
       },
       {
@@ -48,6 +52,7 @@ const config = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
+          'cache-loader',
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
@@ -65,7 +70,10 @@ const config = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=100000'
+        loader: [
+          'cache-loader',
+          'url-loader?limit=100000'
+        ]
       }
     ]
   },
