@@ -69,8 +69,8 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/:tribeId/player/new", PlayerPage)
     couplingRoute("/:tribeId/player/:playerId/", PlayerPage)
     couplingRoute("/:tribeId/retired-player/:playerId/", RetiredPlayerPage)
-    couplingRoute("/:tribeId/statistics", StatisticsPage)
     couplingRoute("/:tribeId/players/retired", RetiredPlayersPage)
+    couplingRoute("/:tribeId/statistics", StatisticsPage)
 }
 
 private fun RElementBuilder<RProps>.redirectToCurrentPairs(props: RouteResultProps<RProps>) = redirect(

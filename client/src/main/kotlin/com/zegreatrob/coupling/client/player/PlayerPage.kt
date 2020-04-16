@@ -1,20 +1,17 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedPlayer get() = LoadedPlayer.render(this)
 
-val PlayerPage = reactFunction<PageProps> { props ->
-    val tribeId = props.tribeId
-    if (tribeId != null) {
-        loadedPlayer(tribeId, props)
-    } else throw Exception("WHAT")
+val PlayerPage = tribePageFunction { props, tribeId ->
+    loadedPlayer(tribeId, props)
 }
 
 private fun RBuilder.loadedPlayer(tribeId: TribeId, props: PageProps) = with(props) {
