@@ -18,7 +18,7 @@ kotlin {
                 api(project(":action"))
                 api(project(":repository"))
                 implementation("com.benasher44:uuid:0.1.0")
-                implementation("com.soywiz.korlibs.klock:klock:1.10.3")
+                implementation("com.soywiz.korlibs.klock:klock:1.10.5")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")

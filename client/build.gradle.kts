@@ -41,7 +41,7 @@ dependencies {
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
-    implementation("com.soywiz.korlibs.klock:klock:1.10.3")
+    implementation("com.soywiz.korlibs.klock:klock:1.10.5")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("com.benasher44:uuid:0.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
