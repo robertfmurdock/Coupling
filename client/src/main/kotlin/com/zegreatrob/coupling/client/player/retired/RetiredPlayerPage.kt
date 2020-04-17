@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
+import react.dom.div
 
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedRetiredPlayer get() = LoadedRetiredPlayer.render(this)
@@ -16,9 +17,10 @@ val RetiredPlayerPage = reactFunction<PageProps> { props ->
     val tribeId = props.tribeId
     val playerId = props.playerId
 
-    if (tribeId != null && playerId != null) {
+    if (tribeId != null && playerId != null)
         loadedRetiredPlayer(props, tribeId, playerId)
-    } else throw Exception("WHAT")
+    else
+        div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
 }
 
 private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, playerId: String) =

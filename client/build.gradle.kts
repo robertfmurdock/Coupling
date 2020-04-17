@@ -98,7 +98,8 @@ tasks {
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("test")
-        inputs.dir("${rootProject.buildDir}/js/packages/Coupling-client-test")
+        inputs.file(compileKotlinJs.outputFile)
+        inputs.file(compileTestKotlinJs.outputFile)
         outputs.dir(file("build/test-results"))
 
         args = listOf("run", "test", "--silent")
