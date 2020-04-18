@@ -8,4 +8,6 @@ interface RandomProvider {
 
     fun <T> List<T>.random() = nextRandomInt(this.size).let(::get)
 
+    companion object : RandomProvider
+
 }

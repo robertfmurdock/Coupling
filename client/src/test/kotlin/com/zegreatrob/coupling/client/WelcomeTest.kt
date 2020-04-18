@@ -1,14 +1,15 @@
 package com.zegreatrob.coupling.client
 
 import ShallowWrapper
-import com.zegreatrob.coupling.client.external.react.EmptyProps
-import com.zegreatrob.coupling.client.external.react.PropsClassProvider
-import com.zegreatrob.coupling.client.external.react.loadStyles
-import com.zegreatrob.coupling.client.external.react.provider
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.welcome.WelcomeRenderer
-import com.zegreatrob.coupling.client.welcome.WelcomeStyles
+import com.zegreatrob.coupling.client.user.GoogleSignIn
+import com.zegreatrob.coupling.client.welcome.RandomProvider
+import com.zegreatrob.coupling.client.welcome.Welcome
+import com.zegreatrob.coupling.client.welcome.WelcomeProps
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
@@ -19,40 +20,44 @@ import kotlin.test.Test
 
 class WelcomeTest {
 
-    private val styles = loadStyles<WelcomeStyles>("Welcome")
+    private val styles = useStyles("Welcome")
 
     @Test
-    fun doesNotShowInitially() = setup(object : WelcomeRenderer, PropsClassProvider<EmptyProps> by provider() {
+    fun doesNotShowInitially() = setup(object {
     }) exercise {
-        shallow(EmptyProps)
+        shallow(Welcome, WelcomeProps { {} })
     } verify { wrapper ->
         wrapper.find<Any>(".${styles.className}")
-            .hasClass(styles.hidden)
+            .hasClass(styles["hidden"])
             .assertIsEqualTo(true)
     }
 
     @Test
     fun willShowAfterZeroTimeoutSoThatAnimationWorks() = testAsync {
         withContext(coroutineContext) {
-            setupAsync(object : WelcomeRenderer, PropsClassProvider<EmptyProps> by provider() {
-                override fun buildScope() = this@withContext
+            setupAsync(object {
+                val dispatcher = object : GoogleSignIn {
+                    override val sdk: Sdk get() = TODO("Not yet implemented")
+                }
+                val props = WelcomeProps(commandFunc = dispatcher.buildCommandFunc(this@withContext))
             }) exerciseAsync {
-                shallow(EmptyProps)
+                shallow(Welcome, props)
             }
         } verifyAsync { wrapper ->
             wrapper.update()
                 .find<ShallowWrapper<Any>>(".${styles.className}")
-                .hasClass(styles.hidden)
+                .hasClass(styles["hidden"])
                 .assertIsEqualTo(false)
         }
     }
 
     @Test
-    fun whenZeroIsRolledWillShowHobbits() = setup(object : WelcomeRenderer,
-        PropsClassProvider<EmptyProps> by provider() {
-        override fun nextRandomInt(until: Int) = 0
+    fun whenZeroIsRolledWillShowHobbits() = setup(object {
+        val randomProvider = object : RandomProvider {
+            override fun nextRandomInt(until: Int) = 0
+        }
     }) exercise {
-        shallow(EmptyProps)
+        shallow(Welcome, WelcomeProps(randomProvider) { {} })
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -72,17 +77,18 @@ class WelcomeTest {
                     imageURL = "/images/icons/players/samwise-icon.png"
                 )
             )
-        wrapper.find<Any>(".${styles.welcomeProverb}")
+        wrapper.find<Any>(".${styles["welcomeProverb"]}")
             .text()
             .assertIsEqualTo("Together, climb mountains.")
     }
 
     @Test
-    fun whenOneIsRolledWillShowTheDynamicDuo() = setup(object : WelcomeRenderer,
-        PropsClassProvider<EmptyProps> by provider() {
-        override fun nextRandomInt(until: Int) = 1
+    fun whenOneIsRolledWillShowTheDynamicDuo() = setup(object {
+        val randomProvider = object : RandomProvider {
+            override fun nextRandomInt(until: Int) = 1
+        }
     }) exercise {
-        shallow(EmptyProps)
+        shallow(Welcome, WelcomeProps(randomProvider) { {} })
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -102,17 +108,18 @@ class WelcomeTest {
                     imageURL = "/images/icons/players/wayne-icon.png"
                 )
             )
-        wrapper.find<Any>(".${styles.welcomeProverb}")
+        wrapper.find<Any>(".${styles["welcomeProverb"]}")
             .text()
             .assertIsEqualTo("Clean up the city, together.")
     }
 
     @Test
-    fun whenTwoIsRolledWillShowTheHeroesOfWWII() = setup(object : WelcomeRenderer,
-        PropsClassProvider<EmptyProps> by provider() {
-        override fun nextRandomInt(until: Int) = 2
+    fun whenTwoIsRolledWillShowTheHeroesOfWWII() = setup(object {
+        val randomProvider = object : RandomProvider {
+            override fun nextRandomInt(until: Int) = 2
+        }
     }) exercise {
-        shallow(EmptyProps)
+        shallow(Welcome, WelcomeProps(randomProvider) { {} })
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -132,15 +139,15 @@ class WelcomeTest {
                     imageURL = "/images/icons/players/wendy-icon.png"
                 )
             )
-        wrapper.find<Any>(".${styles.welcomeProverb}")
+        wrapper.find<Any>(".${styles["welcomeProverb"]}")
             .text()
             .assertIsEqualTo("Team up. Get things done.")
     }
 
-    private fun ShallowWrapper<dynamic>.findRightCardProps() = find<PlayerCardProps>(".${styles.playerCard}.right")
+    private fun ShallowWrapper<dynamic>.findRightCardProps() = find<PlayerCardProps>(".${styles["playerCard"]}.right")
         .props()
 
-    private fun ShallowWrapper<dynamic>.findLeftCardProps() = find<PlayerCardProps>(".${styles.playerCard}.left")
+    private fun ShallowWrapper<dynamic>.findLeftCardProps() = find<PlayerCardProps>(".${styles["playerCard"]}.left")
         .props()
 
 }

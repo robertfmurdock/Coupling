@@ -1,35 +1,46 @@
 package com.zegreatrob.coupling.client.welcome
 
+import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.user.GoogleSignIn
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
 import react.RBuilder
+import react.RProps
 import react.ReactElement
 import react.dom.a
 import react.dom.div
 import react.dom.span
 
-object Welcome : RComponent<EmptyProps>(provider()), WelcomeRenderer
+private val styles = useStyles("Welcome")
 
-external interface WelcomeStyles {
-    val className: String
-    val hidden: String
-    val welcome: String
-    val welcomeProverb: String
-    val welcomeTitle: String
-    val welcomePair: String
-    val playerCard: String
-    val enterButtonContainer: String
-    val enterButton: String
+data class WelcomeProps(
+    val randomProvider: RandomProvider = RandomProvider,
+    val commandFunc: CommandFunc<GoogleSignIn>
+) : RProps
+
+val Welcome = reactFunction<WelcomeProps> { (randomProvider, commandFunc) ->
+    val (show, setShow) = useState(false)
+
+    if (!show) {
+        commandFunc { setShow(true) }()
+    }
+
+    val hiddenTag = if (show) "" else styles["hidden"]
+
+    div(classes = styles.className) {
+        attrs { classes += hiddenTag }
+        div { welcomeSplash(hiddenTag, randomProvider) }
+        div { comeOnIn(hiddenTag, commandFunc) }
+    }
 }
 
 val welcomeTribeId = TribeId("welcome")
@@ -56,126 +67,90 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 
 private data class Card(val name: String, val imagePath: String)
 
-typealias WelcomeContext = ScopedStyledRContext<EmptyProps, WelcomeStyles>
+private fun RBuilder.welcomeSplash(hiddenTag: String, randomProvider: RandomProvider) {
+    val (pairAndProverb) = useState { randomProvider.choosePairAndProverb() }
 
-interface WelcomeRenderer : ScopedStyledComponentRenderer<EmptyProps, WelcomeStyles>, RandomProvider,
-    LoginChooserRenderer {
+    val (pair, proverb) = pairAndProverb
 
-    override val componentPath get() = "Welcome"
-
-    override fun WelcomeContext.render(): ReactElement {
-        val (show, setShow) = useState(false)
-
-        if (!show) {
-            scope.launch { setShow(true) }
+    span(classes = styles["welcome"]) {
+        welcomeTitle()()
+        div {
+            welcomePair(pair)()
         }
-
-        val hiddenTag = if (show) "" else styles.hidden
-
-        return reactElement {
-            div(classes = styles.className) {
-                attrs { classes += hiddenTag }
-                div {
-                    welcomeSplash(hiddenTag)()
-                }
-                div {
-                    comeOnIn(hiddenTag)()
-                }
-            }
-        }
-    }
-
-    private fun WelcomeContext.welcomeSplash(hiddenTag: String): RBuilder.() -> ReactElement {
-        val (pairAndProverb) = useState { choosePairAndProverb() }
-
-        val (pair, proverb) = pairAndProverb
-
-        return {
-            span(classes = styles.welcome) {
-                welcomeTitle()()
-                div {
-                    welcomePair(pair)()
-                }
-                div(classes = styles.welcomeProverb) {
-                    attrs { classes += hiddenTag }
-                    +proverb
-                }
-            }
-        }
-    }
-
-    private fun choosePairAndProverb() = chooseWelcomeCardSet().toPairAndProverb()
-
-    private fun WelcomeCardSet.toPairAndProverb() = pairOf(
-        left.toPlayer(),
-        right.toPlayer()
-    ) to proverb
-
-    private fun chooseWelcomeCardSet() = candidates.random()
-
-    private fun Card.toPlayer() = Player(
-        id = name,
-        name = name,
-        imageURL = "/images/icons/players/$imagePath"
-    )
-
-    private fun WelcomeContext.welcomeTitle(): RBuilder.() -> ReactElement {
-        val welcomeTitleRef = useRef<Node>(null)
-
-        useLayoutEffect {
-            welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
-        }
-        return {
-            div(classes = styles.welcomeTitle) {
-                attrs { ref = welcomeTitleRef }
-                +"Coupling!"
-            }
-        }
-    }
-
-    private fun WelcomeContext.welcomePair(pair: CouplingPair.Double): RBuilder.() -> ReactElement = {
-        div(classes = styles.welcomePair) {
-            playerCard(
-                PlayerCardProps(
-                    tribeId = welcomeTribeId,
-                    player = pair.player1,
-                    className = "left ${styles.playerCard}",
-                    size = 100,
-                    headerDisabled = true
-                )
-            )
-            playerCard(
-                PlayerCardProps(
-                    tribeId = welcomeTribeId,
-                    player = pair.player2,
-                    className = "right ${styles.playerCard}",
-                    size = 100,
-                    headerDisabled = true
-                )
-            )
-        }
-    }
-
-    private fun WelcomeContext.comeOnIn(hiddenTag: String): RBuilder.() -> ReactElement {
-        val (showLoginChooser, setShowLoginChooser) = useState(false)
-
-        return {
-            div(classes = styles.enterButtonContainer) {
-                if (showLoginChooser) {
-                    loginChooser()
-                } else {
-                    a(classes = "enter-button super pink button") {
-                        attrs {
-                            classes += styles.enterButton
-                            classes += hiddenTag
-                            onClickFunction = { setShowLoginChooser(true) }
-                            target = "_self"
-                        }
-                        +"Come on in!"
-                    }
-                }
-            }
+        div(classes = styles["welcomeProverb"]) {
+            attrs { classes += hiddenTag }
+            +proverb
         }
     }
 }
 
+private fun RandomProvider.choosePairAndProverb() = chooseWelcomeCardSet().toPairAndProverb()
+
+private fun WelcomeCardSet.toPairAndProverb() = pairOf(
+    left.toPlayer(),
+    right.toPlayer()
+) to proverb
+
+private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
+
+private fun Card.toPlayer() = Player(
+    id = name,
+    name = name,
+    imageURL = "/images/icons/players/$imagePath"
+)
+
+private fun welcomeTitle(): RBuilder.() -> ReactElement {
+    val welcomeTitleRef = useRef<Node>(null)
+
+    useLayoutEffect {
+        welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
+    }
+    return {
+        div(classes = styles["welcomeTitle"]) {
+            attrs { ref = welcomeTitleRef }
+            +"Coupling!"
+        }
+    }
+}
+
+private fun welcomePair(pair: CouplingPair.Double): RBuilder.() -> ReactElement = {
+    div(classes = styles["welcomePair"]) {
+        playerCard(
+            PlayerCardProps(
+                tribeId = welcomeTribeId,
+                player = pair.player1,
+                className = "left ${styles["playerCard"]}",
+                size = 100,
+                headerDisabled = true
+            )
+        )
+        playerCard(
+            PlayerCardProps(
+                tribeId = welcomeTribeId,
+                player = pair.player2,
+                className = "right ${styles["playerCard"]}",
+                size = 100,
+                headerDisabled = true
+            )
+        )
+    }
+}
+
+private fun RBuilder.comeOnIn(hiddenTag: String, commandFunc: CommandFunc<GoogleSignIn>) {
+    val (showLoginChooser, setShowLoginChooser) = useState(false)
+    div(classes = styles["enterButtonContainer"]) {
+        if (showLoginChooser) {
+            loginChooser(commandFunc)
+        } else {
+            a(classes = "enter-button super pink button") {
+                attrs {
+                    classes += styles["enterButton"]
+                    classes += hiddenTag
+                    onClickFunction = { setShowLoginChooser(true) }
+                    target = "_self"
+                }
+                +"Come on in!"
+            }
+        }
+    }
+}
