@@ -8,70 +8,52 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
-import react.RBuilder
 import react.RProps
-import react.ReactElement
 import react.dom.div
 
-interface DataLoadStyles {
-    val viewFrame: String
+private val styles = useStyles("routing/DataLoadWrapper")
+
+fun <P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>) = reactFunction<DataLoadProps<P>> { props ->
+    val (data, setData) = useState<P?>(null)
+
+    val (animationState, setAnimationState) = useState(AnimationState.Start)
+    val shouldStartAnimation = data != null && animationState === AnimationState.Start
+
+    val scope = useScope("Data load")
+
+    props.getDataAsync.invokeOnScope(scope, setData)
+
+    consumer(animationsDisabledContext.Consumer) { animationsDisabled: Boolean ->
+        div {
+            attrs {
+                classes += styles["viewFrame"]
+                if (shouldStartAnimation && !animationsDisabled) {
+                    classes += "ng-enter"
+                }
+                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
+            }
+            if (data != null) {
+                wrappedRComponent.render(this)(data)
+            }
+        }
+    }
 }
 
-inline fun <reified P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>): RComponent<DataLoadProps<P>> =
+private fun <P> (suspend (ReloadFunction, CoroutineScope) -> P).invokeOnScope(
+    scope: CoroutineScope,
+    setData: (P?) -> Unit
+) {
+    val (loadingJob, setLoadingJob) = useState<Job?>(null)
 
-    object : RComponent<DataLoadProps<P>>(provider()), StyledComponentRenderer<DataLoadProps<P>, DataLoadStyles>,
-        ReactScopeProvider {
-        private val animationContextConsumer = animationsDisabledContext.Consumer
-
-        override val componentPath: String get() = "routing/DataLoadWrapper"
-
-        override fun StyledRContext<DataLoadProps<P>, DataLoadStyles>.render(): ReactElement {
-            val (data, setData) = useState<P?>(null)
-
-            val (animationState, setAnimationState) = useState(AnimationState.Start)
-            val shouldStartAnimation = data != null && animationState === AnimationState.Start
-
-            val scope = useScope("Data load")
-
-            props.getDataAsync.invokeOnScope(scope, setData)
-
-            return reactElement {
-                consumer(animationContextConsumer) { animationsDisabled: Boolean ->
-                    div {
-                        attrs {
-                            classes += styles.viewFrame
-                            if (shouldStartAnimation && !animationsDisabled) {
-                                classes += "ng-enter"
-                            }
-                            this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
-                        }
-                        if (data != null) {
-                            wrappedComponent(data)
-                        }
-                    }
-                }
+    if (loadingJob == null) {
+        val reloadFunction = { setData(null); setLoadingJob(null) }
+        setLoadingJob(
+            scope.launch {
+                setData(this@invokeOnScope.invoke(reloadFunction, scope))
             }
-        }
-
-        private fun (suspend (ReloadFunction, CoroutineScope) -> P).invokeOnScope(
-            scope: CoroutineScope,
-            setData: (P?) -> Unit
-        ) {
-            val (loadingJob, setLoadingJob) = useState<Job?>(null)
-
-            if (loadingJob == null) {
-                val reloadFunction = { setData(null); setLoadingJob(null) }
-                setLoadingJob(
-                    scope.launch {
-                        setData(this@invokeOnScope.invoke(reloadFunction, scope))
-                    }
-                )
-            }
-        }
-
-        private fun RBuilder.wrappedComponent(props: P) = wrappedRComponent.render(this)(props)
-
+        )
     }
+}
 
 enum class AnimationState {
     Start, Stop

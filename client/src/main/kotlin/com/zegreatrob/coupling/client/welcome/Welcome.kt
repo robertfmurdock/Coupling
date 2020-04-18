@@ -15,7 +15,6 @@ import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
-import react.ReactElement
 import react.dom.a
 import react.dom.div
 import react.dom.span
@@ -73,10 +72,8 @@ private fun RBuilder.welcomeSplash(hiddenTag: String, randomProvider: RandomProv
     val (pair, proverb) = pairAndProverb
 
     span(classes = styles["welcome"]) {
-        welcomeTitle()()
-        div {
-            welcomePair(pair)()
-        }
+        welcomeTitle()
+        div { welcomePair(pair) }
         div(classes = styles["welcomeProverb"]) {
             attrs { classes += hiddenTag }
             +proverb
@@ -99,41 +96,36 @@ private fun Card.toPlayer() = Player(
     imageURL = "/images/icons/players/$imagePath"
 )
 
-private fun welcomeTitle(): RBuilder.() -> ReactElement {
+private fun RBuilder.welcomeTitle() {
     val welcomeTitleRef = useRef<Node>(null)
-
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
     }
-    return {
-        div(classes = styles["welcomeTitle"]) {
-            attrs { ref = welcomeTitleRef }
-            +"Coupling!"
-        }
+    div(classes = styles["welcomeTitle"]) {
+        attrs { ref = welcomeTitleRef }
+        +"Coupling!"
     }
 }
 
-private fun welcomePair(pair: CouplingPair.Double): RBuilder.() -> ReactElement = {
-    div(classes = styles["welcomePair"]) {
-        playerCard(
-            PlayerCardProps(
-                tribeId = welcomeTribeId,
-                player = pair.player1,
-                className = "left ${styles["playerCard"]}",
-                size = 100,
-                headerDisabled = true
-            )
+private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styles["welcomePair"]) {
+    playerCard(
+        PlayerCardProps(
+            tribeId = welcomeTribeId,
+            player = pair.player1,
+            className = "left ${styles["playerCard"]}",
+            size = 100,
+            headerDisabled = true
         )
-        playerCard(
-            PlayerCardProps(
-                tribeId = welcomeTribeId,
-                player = pair.player2,
-                className = "right ${styles["playerCard"]}",
-                size = 100,
-                headerDisabled = true
-            )
+    )
+    playerCard(
+        PlayerCardProps(
+            tribeId = welcomeTribeId,
+            player = pair.player2,
+            className = "right ${styles["playerCard"]}",
+            size = 100,
+            headerDisabled = true
         )
-    }
+    )
 }
 
 private fun RBuilder.comeOnIn(hiddenTag: String, commandFunc: CommandFunc<GoogleSignIn>) {
