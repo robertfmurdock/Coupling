@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -104,5 +105,6 @@ private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span(classes = sty
     }
 }
 
-fun PairAssignmentDocument.dateText() =
-    "${date.format(DateFormat("MM/dd/YYYY"))} - ${date.format(DateFormat("HH:mm:ss"))}"
+fun PairAssignmentDocument.dateText() = date.local.dateText()
+
+private fun DateTimeTz.dateText() = "${format(DateFormat("MM/dd/YYYY"))} - ${format(DateFormat("HH:mm:ss"))}"
