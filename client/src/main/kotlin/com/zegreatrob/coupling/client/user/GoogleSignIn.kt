@@ -1,5 +1,9 @@
 package com.zegreatrob.coupling.client.user
 
+import com.zegreatrob.coupling.client.external.GoogleAuth
+import com.zegreatrob.coupling.client.external.GoogleAuth2
+import com.zegreatrob.coupling.client.external.GoogleUser
+import com.zegreatrob.coupling.client.external.gapi
 import com.zegreatrob.coupling.sdk.SdkSyntax
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CompletableDeferred

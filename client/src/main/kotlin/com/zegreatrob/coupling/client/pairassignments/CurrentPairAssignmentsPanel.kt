@@ -18,20 +18,16 @@ import react.dom.div
 data class CurrentPairAssignmentsPanelProps(
     val tribe: Tribe,
     val pairAssignments: PairAssignmentDocument?,
-    val onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    val onPinDrop: (String, PinnedCouplingPair) -> Unit,
+    val onPlayerSwap: SwapCallback,
+    val onPinDrop: PinMoveCallback,
     val onSave: () -> Unit,
     val pathSetter: (String) -> Unit
 ) : RProps
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
-val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { (tribe,
-                                                                                        pairAssignments,
-                                                                                        onPlayerSwap,
-                                                                                        onPinDrop,
-                                                                                        onSave,
-                                                                                        pathSetter) ->
+val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { props ->
+    val (tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter) = props
     div(classes = styles.className) {
         if (pairAssignments == null) {
             noPairsHeader()
@@ -82,8 +78,8 @@ private fun RBuilder.saveButton(onSave: () -> Unit) = a(classes = "super green b
 fun RBuilder.currentPairAssignments(
     tribe: Tribe,
     pairAssignments: PairAssignmentDocument?,
-    onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    onPinDrop: (String, PinnedCouplingPair) -> Unit,
+    onPlayerSwap: SwapCallback,
+    onPinDrop: PinMoveCallback,
     onSave: () -> Unit,
     pathSetter: (String) -> Unit
 ) = child(

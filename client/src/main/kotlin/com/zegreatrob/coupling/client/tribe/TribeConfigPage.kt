@@ -12,11 +12,13 @@ private val LoadedTribeConfig by lazy { dataLoadWrapper(TribeConfig) }
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)
 
 val TribeConfigPage = reactFunction<PageProps> { props ->
-    loadedTribeConfig(dataLoadProps(
-        commander = props.commander,
-        query = { performCorrectQuery(props.tribeId) },
-        toProps = { _, commandFunc, data -> TribeConfigProps(data!!, props.pathSetter, commandFunc) }
-    ))
+    with(props) {
+        loadedTribeConfig(dataLoadProps(
+            commander = commander,
+            query = { performCorrectQuery(tribeId) },
+            toProps = { _, commandFunc, data -> TribeConfigProps(data!!, pathSetter, commandFunc) }
+        ))
+    }
 }
 
 private suspend fun TribeQueryDispatcher.performCorrectQuery(tribeId: TribeId?) = if (tribeId != null)

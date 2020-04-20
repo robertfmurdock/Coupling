@@ -22,11 +22,11 @@ import react.dom.span
 private val styles = useStyles("Welcome")
 
 data class WelcomeProps(
-    val randomProvider: RandomProvider = RandomProvider,
-    val commandFunc: CommandFunc<GoogleSignIn>
+    val commandFunc: CommandFunc<GoogleSignIn>,
+    val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
-val Welcome = reactFunction<WelcomeProps> { (randomProvider, commandFunc) ->
+val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
     val (show, setShow) = useState(false)
 
     if (!show) {

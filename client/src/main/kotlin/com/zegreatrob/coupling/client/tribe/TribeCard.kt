@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
@@ -30,7 +31,7 @@ val TribeCard = reactFunction<TribeCardProps> { props ->
     styledSpan {
         attrs {
             classes = setOf(styles.className)
-            onClickFunction = { props.goToPairAssignments() }
+            onClickFunction = { goToPairAssignments(props.pathSetter, props.tribe.id) }
             tabIndex = "0"
             tribeCardCss(size)
             setProp("data-tribe-id", tribe.id.value)
@@ -40,7 +41,8 @@ val TribeCard = reactFunction<TribeCardProps> { props ->
     }
 }
 
-private fun TribeCardProps.goToPairAssignments() = pathSetter("/${tribe.id.value}/pairAssignments/current/")
+private fun goToPairAssignments(pathSetter: (String) -> Unit, tribeId: TribeId) =
+    pathSetter("/${tribeId.value}/pairAssignments/current/")
 
 private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
     width = size.px

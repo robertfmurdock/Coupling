@@ -10,8 +10,10 @@ private val LoadedTribeList = dataLoadWrapper(TribeList)
 private val RBuilder.loadedTribeList get() = LoadedTribeList.render(this)
 
 val TribeListPage = reactFunction<PageProps> { props ->
-    loadedTribeList(DataLoadProps { _, _ ->
-        val tribes = props.commander.runQuery { TribeListQuery.perform() }
-        TribeListProps(tribes, props.pathSetter)
-    })
+    with(props) {
+        loadedTribeList(DataLoadProps { _, _ ->
+            val tribes = commander.runQuery { TribeListQuery.perform() }
+            TribeListProps(tribes, pathSetter)
+        })
+    }
 }

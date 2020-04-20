@@ -31,19 +31,22 @@ import styled.styledDiv
 data class AssignedPairProps(
     val tribe: Tribe,
     val pair: PinnedCouplingPair,
-    val swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    val pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
+    val swapCallback: SwapCallback,
+    val pinMoveCallback: PinMoveCallback,
     val canDrag: Boolean,
     val pathSetter: (String) -> Unit
 ) : RProps
+
+typealias SwapCallback = (String, PinnedPlayer, PinnedCouplingPair) -> Unit
+typealias PinMoveCallback = (String, PinnedCouplingPair) -> Unit
 
 private val styles = useStyles("pairassignments/AssignedPair")
 
 fun RBuilder.assignedPair(
     tribe: Tribe,
     pair: PinnedCouplingPair,
-    swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
-    pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
+    swapCallback: SwapCallback,
+    pinMoveCallback: PinMoveCallback,
     canDrag: Boolean,
     pathSetter: (String) -> Unit,
     key: String
@@ -53,14 +56,8 @@ fun RBuilder.assignedPair(
     key = key
 )
 
-val AssignedPair = reactFunction<AssignedPairProps> { (
-                                                          tribe,
-                                                          pair,
-                                                          swapCallback,
-                                                          pinMoveCallback,
-                                                          canDrag,
-                                                          pathSetter
-                                                      ) ->
+val AssignedPair = reactFunction<AssignedPairProps> { props ->
+    val (tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter) = props
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
@@ -93,10 +90,7 @@ private fun PinnedCouplingPair.findCallSign(): CallSign? {
     }
 }
 
-private fun usePinDrop(
-    pinMoveCallback: (String, PinnedCouplingPair) -> Unit,
-    pair: PinnedCouplingPair
-) = useDrop(
+private fun usePinDrop(pinMoveCallback: PinMoveCallback, pair: PinnedCouplingPair) = useDrop(
     acceptItemType = pinDragItemType,
     drop = { item -> pinMoveCallback(item["id"].unsafeCast<String>(), pair) },
     collect = { monitor -> monitor.isOver() }
@@ -105,7 +99,7 @@ private fun usePinDrop(
 private fun playerCardComponent(
     tribe: Tribe,
     pair: PinnedCouplingPair,
-    swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    swapCallback: SwapCallback,
     canDrag: Boolean,
     pathSetter: (String) -> Unit
 ): RBuilder.(PinnedPlayer) -> ReactElement =
@@ -151,7 +145,7 @@ private fun RBuilder.swappablePlayer(
     tribe: Tribe,
     pinnedPlayer: PinnedPlayer,
     pair: PinnedCouplingPair,
-    swapCallback: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
+    swapCallback: SwapCallback,
     zoomOnHover: Boolean
 ) = draggablePlayer(DraggablePlayerProps(
     pinnedPlayer,

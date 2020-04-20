@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.user
+package com.zegreatrob.coupling.client.external
 
 import kotlin.js.Promise
 

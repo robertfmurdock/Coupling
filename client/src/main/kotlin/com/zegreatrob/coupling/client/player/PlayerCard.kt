@@ -35,15 +35,8 @@ data class PlayerCardProps(
 
 private val styles = useStyles("player/PlayerCard")
 
-val PlayerCard = reactFunction<PlayerCardProps> { (
-                                                      tribeId,
-                                                      player,
-                                                      pathSetter,
-                                                      headerDisabled,
-                                                      className,
-                                                      size,
-                                                      onClick,
-                                                      deselected) ->
+val PlayerCard = reactFunction<PlayerCardProps> { props ->
+    val (tribeId, player, pathSetter, headerDisabled, className, size, onClick, deselected) = props
     styledDiv {
         attrs {
             classes += additionalClasses(className, deselected)
@@ -95,18 +88,14 @@ private fun playerCardHeaderElement(
     }
 }
 
-private fun handleNameClick(
-    tribeId: TribeId,
-    player: Player,
-    disabled: Boolean,
-    pathSetter: (String) -> Unit
-) = { event: Event ->
-    if (!disabled) {
-        event.stopPropagation()
+private fun handleNameClick(tribeId: TribeId, player: Player, disabled: Boolean, pathSetter: (String) -> Unit) =
+    { event: Event ->
+        if (!disabled) {
+            event.stopPropagation()
 
-        pathSetter("/${tribeId.value}/player/${player.id}/")
+            pathSetter("/${tribeId.value}/player/${player.id}/")
+        }
     }
-}
 
 private fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
     img(src = player.imageURL, classes = styles["playerIcon"], alt = "icon") {

@@ -13,7 +13,7 @@ abstract class RComponent<P : RProps>(private val provider: PropsClassProvider<P
         key: String? = null,
         ref: RReadableRef<Node>? = null,
         handler: RHandler<P> = {}
-    ) = buildElement { render.invoke(this)(props, key, ref, handler) }!!
+    ) = buildElement { render.invoke(this)(props, key, ref, handler) }
 
     val component: ReactFunctionComponent<P> by lazy { build() }
     val render by lazy {

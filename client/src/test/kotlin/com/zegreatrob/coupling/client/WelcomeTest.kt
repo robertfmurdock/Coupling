@@ -25,7 +25,7 @@ class WelcomeTest {
     @Test
     fun doesNotShowInitially() = setup(object {
     }) exercise {
-        shallow(Welcome, WelcomeProps { {} })
+        shallow(Welcome, WelcomeProps({ {} }))
     } verify { wrapper ->
         wrapper.find<Any>(".${styles.className}")
             .hasClass(styles["hidden"])
@@ -57,7 +57,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 0
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(randomProvider) { {} })
+        shallow(Welcome, WelcomeProps({ {} }, randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -88,7 +88,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(randomProvider) { {} })
+        shallow(Welcome, WelcomeProps({ {} }, randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -119,7 +119,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(randomProvider) { {} })
+        shallow(Welcome, WelcomeProps({ {} }, randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player

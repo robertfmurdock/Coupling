@@ -147,7 +147,7 @@ class ReactFunctionComponent<P : RProps>(
 
 }
 
-fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)!!
+fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)
 
 class RContext<P>(
     val props: P

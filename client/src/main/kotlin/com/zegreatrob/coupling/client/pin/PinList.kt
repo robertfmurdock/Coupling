@@ -18,7 +18,7 @@ data class PinListProps(val tribe: Tribe, val pins: List<Pin>, val pathSetter: (
 
 private val styles = useStyles("pin/PinList")
 
-val PinList = reactFunction { (tribe, pins, pathSetter): PinListProps ->
+val PinList = reactFunction<PinListProps> { (tribe, pins, pathSetter) ->
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
             tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
