@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import react.RBuilder
 
-private val LoadedPairAssignments = dataLoadWrapper(History)
+private val LoadedPairAssignments by lazy{ dataLoadWrapper(History)}
 private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
 
 val HistoryPage = tribePageFunction { props, tribeId ->

@@ -42,9 +42,7 @@ fun RBuilder.playerConfigEditor(
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val PlayerConfigEditor by lazy { playerConfigEditorComponent(WindowFunctions) }
-
-fun playerConfigEditorComponent(windowFunctions: WindowFunctions) =
+val PlayerConfigEditorComponent = { windowFunctions: WindowFunctions ->
     reactFunction<PlayerConfigEditorProps> { (tribe, player, pathSetter, reload, commandFunc) ->
         val (values, onChange) = useForm(player.toJson())
 
@@ -64,6 +62,9 @@ fun playerConfigEditorComponent(windowFunctions: WindowFunctions) =
             }
         }
     }
+}
+
+val PlayerConfigEditor by lazy { PlayerConfigEditorComponent(WindowFunctions) }
 
 private suspend fun DeletePlayerCommandDispatcher.removePlayer(
     tribe: Tribe,

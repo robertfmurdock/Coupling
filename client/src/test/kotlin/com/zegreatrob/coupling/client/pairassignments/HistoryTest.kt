@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.list.History
+import com.zegreatrob.coupling.client.pairassignments.list.HistoryComponent
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -54,7 +54,7 @@ class HistoryTest {
             )
         )
         val wrapper = shallow(
-            History(this),
+            HistoryComponent(this),
             HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
         )
     }) {
@@ -87,7 +87,7 @@ class HistoryTest {
             )
         )
         val wrapper = shallow(
-            History(this),
+            HistoryComponent(this),
             HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
         )
     }) exercise {

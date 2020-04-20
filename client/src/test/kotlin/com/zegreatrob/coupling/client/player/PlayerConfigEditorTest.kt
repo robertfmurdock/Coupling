@@ -132,7 +132,7 @@ class PlayerConfigEditorTest {
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
                 val wrapper = shallow(
-                    playerConfigEditorComponent(this),
+                    PlayerConfigEditorComponent(this),
                     PlayerConfigEditorProps(
                         tribe,
                         player,
@@ -180,7 +180,7 @@ class PlayerConfigEditorTest {
                 val tribe = Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
                 val wrapper = shallow(
-                    playerConfigEditorComponent(windowFunctions),
+                    PlayerConfigEditorComponent(windowFunctions),
                     PlayerConfigEditorProps(
                         tribe,
                         player,

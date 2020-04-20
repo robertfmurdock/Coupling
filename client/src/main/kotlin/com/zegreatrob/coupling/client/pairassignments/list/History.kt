@@ -2,7 +2,9 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.client.CommandFunc
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
@@ -31,14 +33,12 @@ data class HistoryProps(
     val commandFunc: CommandFunc<DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
-open class History(windowFunctions: WindowFunctions = WindowFunctions) : IFRComponent<HistoryProps>(provider()),
-    WindowFunctions by windowFunctions {
+val History by lazy { HistoryComponent(WindowFunctions)}
 
-    companion object : History();
-
-    override val renderer = rendererFunc { (tribe, history, reload, pathSetter, commandFunc) ->
+val HistoryComponent = { windowFunctions: WindowFunctions ->
+    reactFunction<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc) ->
         val onDeleteFunc = { documentId: PairAssignmentDocumentId ->
-            commandFunc { removeButtonOnClick(documentId, tribe.id, reload) }
+            commandFunc { removeButtonOnClick(documentId, tribe.id, reload, windowFunctions) }
         }
 
         div(classes = styles.className) {
@@ -53,55 +53,56 @@ open class History(windowFunctions: WindowFunctions = WindowFunctions) : IFRComp
             }
         }
     }
+}
 
-    private fun RBuilder.pairAssignmentRow(
-        document: PairAssignmentDocument,
-        onDeleteFunc: (PairAssignmentDocumentId) -> () -> Unit
-    ) {
-        val pairAssignmentDocumentId = document.id ?: return
+private fun RBuilder.pairAssignmentRow(
+    document: PairAssignmentDocument,
+    onDeleteFunc: (PairAssignmentDocumentId) -> () -> Unit
+) {
+    val pairAssignmentDocumentId = document.id ?: return
 
-        div(classes = styles["pairAssignments"]) {
-            attrs { key = pairAssignmentDocumentId.value }
-            span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
-            deleteButton(onClickFunc = onDeleteFunc(pairAssignmentDocumentId))
-            div { showPairs(document) }
-        }
+    div(classes = styles["pairAssignments"]) {
+        attrs { key = pairAssignmentDocumentId.value }
+        span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
+        deleteButton(onClickFunc = onDeleteFunc(pairAssignmentDocumentId))
+        div { showPairs(document) }
     }
+}
 
-    private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = span(classes = "small red button") {
-        attrs {
-            classes += styles["deleteButton"]
-            onClickFunction = { onClickFunc() }
-        }
-        +"DELETE"
+private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = span(classes = "small red button") {
+    attrs {
+        classes += styles["deleteButton"]
+        onClickFunction = { onClickFunc() }
     }
+    +"DELETE"
+}
 
-    private suspend fun DeletePairAssignmentsCommandDispatcher.removeButtonOnClick(
-        pairAssignmentDocumentId: PairAssignmentDocumentId,
-        tribeId: TribeId,
-        reload: () -> Unit
-    ) {
-        if (window.confirm("Are you sure you want to delete these pair assignments?")) {
-            DeletePairAssignmentsCommand(tribeId, pairAssignmentDocumentId).perform()
-            reload()
-        }
+private suspend fun DeletePairAssignmentsCommandDispatcher.removeButtonOnClick(
+    pairAssignmentDocumentId: PairAssignmentDocumentId,
+    tribeId: TribeId,
+    reload: () -> Unit,
+    windowFunctions: WindowFunctions
+) = with(windowFunctions) {
+    if (window.confirm("Are you sure you want to delete these pair assignments?")) {
+        DeletePairAssignmentsCommand(tribeId, pairAssignmentDocumentId).perform()
+        reload()
     }
+}
 
-    private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->
-        span(classes = styles["pair"]) {
-            attrs { key = "$index" }
-            pair.players.map { pinnedPlayer: PinnedPlayer ->
-                showPlayer(pinnedPlayer)
-            }
-            pinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"])
+private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->
+    span(classes = styles["pair"]) {
+        attrs { key = "$index" }
+        pair.players.map { pinnedPlayer: PinnedPlayer ->
+            showPlayer(pinnedPlayer)
         }
+        pinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"])
     }
+}
 
-    private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span(classes = styles["player"]) {
-        attrs { key = "${pinnedPlayer.player.id}" }
-        div(classes = styles["playerHeader"]) {
-            +pinnedPlayer.player.name
-        }
+private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span(classes = styles["player"]) {
+    attrs { key = "${pinnedPlayer.player.id}" }
+    div(classes = styles["playerHeader"]) {
+        +pinnedPlayer.player.name
     }
 }
 
