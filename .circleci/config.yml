@@ -15,7 +15,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-37-{{ .Branch }}
-      - run: "./gradlew kotlinNodeJsSetup"
+      - run: "./gradlew kotlinNodeJsSetup -Dorg.gradle.configureondemand=false"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - save_cache:
