@@ -14,12 +14,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-36-{{ .Branch }}
+          key: coupling-cache-37-{{ .Branch }}
       - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - save_cache:
-          key: coupling-cache-36-{{ .Branch }}
+          key: coupling-cache-37-{{ .Branch }}
           paths:
             - "~/.gradle"
             - ".gradle"
@@ -75,7 +75,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-36-{{ .Branch }}
+          key: coupling-cache-37-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -99,7 +99,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-36-{{ .Branch }}
+          key: coupling-cache-37-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
       - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
@@ -139,7 +139,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-36-{{ .Branch }}
+          key: coupling-cache-37-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
       - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
