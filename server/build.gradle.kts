@@ -161,6 +161,23 @@ tasks {
         dependsOn(serverCompile, copyClient)
     }
 
+    val serverTest by creating(YarnTask::class) {
+        dependsOn(
+            yarn,
+            compileKotlinJs,
+            compileTestKotlinJs,
+            copyClient
+        )
+        inputs.file(file("package.json"))
+        inputs.files(serverCompile.inputs.files)
+        inputs.files(serverCompile.outputs.files)
+        inputs.dir("test/unit")
+        outputs.dir("build/test-results/server.unit")
+
+        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules"))
+        args = listOf("run", "serverTest")
+    }
+
     val updateWebdriver by creating(YarnTask::class) {
         dependsOn(yarn)
         inputs.file("package.json")
@@ -170,9 +187,10 @@ tasks {
 
     val endToEndTest by creating(YarnTask::class) {
         dependsOn(assemble, updateWebdriver, compileEndToEndTestKotlinJs)
-        mustRunAfter(":client:test", ":sdk:endpointTest")
+        mustRunAfter(serverTest, ":client:test", ":sdk:endpointTest")
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
+        inputs.files(serverTest.inputs.files)
         inputs.files(serverCompile.outputs.files)
         inputs.files(compileEndToEndTestKotlinJs.outputs.files)
         inputs.file(file("package.json"))
@@ -188,7 +206,9 @@ tasks {
         args = listOf("run", "ncu", "-u")
     }
 
-    val test by getting {}
+    val test by getting {
+        dependsOn(serverTest)
+    }
 
     val start by creating(YarnTask::class) {
         dependsOn(assemble)
