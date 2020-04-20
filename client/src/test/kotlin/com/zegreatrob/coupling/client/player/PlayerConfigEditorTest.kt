@@ -34,21 +34,20 @@ class PlayerConfigEditorTest {
     private val styles = useStyles("player/PlayerConfigEditor")
 
     @Test
-    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() =
-        setup(object {
-            val tribe = Tribe(
-                id = TribeId("party"),
-                name = "Party tribe",
-                badgesEnabled = true
-            )
-            val player = Player(id = "blarg")
-        }) exercise {
-            shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
-        } verify { wrapper ->
-            wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
-                .length
-                .assertIsEqualTo(1)
-        }
+    fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
+        val tribe = Tribe(
+            id = TribeId("party"),
+            name = "Party tribe",
+            badgesEnabled = true
+        )
+        val player = Player(id = "blarg")
+    }) exercise {
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
+    } verify { wrapper ->
+        wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
+            .length
+            .assertIsEqualTo(1)
+    }
 
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
@@ -164,7 +163,7 @@ class PlayerConfigEditorTest {
     fun clickingDeleteWhenNotConfirmedWillDoNothing() = testAsync {
         withContext(this.coroutineContext) {
             setupAsync(object {
-                val windowFunctions = object: WindowFunctions {
+                val windowFunctions = object : WindowFunctions {
                     override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
                 }
                 val dispatcher = object : PlayerConfigDispatcher {

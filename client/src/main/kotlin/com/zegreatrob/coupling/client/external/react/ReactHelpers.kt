@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import kotlinext.js.jsObject
-import kotlinx.coroutines.CoroutineScope
 import org.w3c.dom.Node
 import react.*
 import kotlin.reflect.KClass
@@ -146,23 +145,6 @@ class ReactFunctionComponent<P : RProps>(
 }
 
 fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)
-
-class RContext<P>(
-    val props: P
-)
-
-class StyledRContext<P, S>(
-    val props: P,
-    val styles: S
-)
-
-class ScopedStyledRContext<P, S>(
-    val props: P,
-    val styles: S,
-    val scope: CoroutineScope
-) {
-    inline fun handle(builder: ScopedStyledRContext<P, S>.() -> ReactElement) = builder()
-}
 
 object EmptyProps : RProps
 

@@ -70,7 +70,6 @@
   "scripts": {
     "start-built-app": "NODE_PATH='../build/js/node_modules' node ./startup.js",
     "webpack": "webpack",
-    "serverTest": "node test/unit/run.js",
     "update-webdriver": "webdriver-manager update",
     "protractor": "node test/e2e/run.js",
     "ncu": "ncu -u"

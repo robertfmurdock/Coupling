@@ -68,8 +68,8 @@ private suspend fun DeletePlayerCommandDispatcher.removePlayer(
     playerId: String,
     pathSetter: (String) -> Unit,
     windowFunctions: WindowFunctions
-) = with(windowFunctions) {
-    if (window.confirm("Are you sure you want to delete this player?")) {
+) {
+    if (windowFunctions.window.confirm("Are you sure you want to delete this player?")) {
         DeletePlayerCommand(tribe.id, playerId).perform()
         pathSetter("/${tribe.id.value}/pairAssignments/current/")
     }
