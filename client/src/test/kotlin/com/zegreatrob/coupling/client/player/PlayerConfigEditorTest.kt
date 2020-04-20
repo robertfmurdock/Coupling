@@ -132,7 +132,7 @@ class PlayerConfigEditorTest {
                 val player = Player("blarg", badge = Badge.Alternate.value)
 
                 val wrapper = shallow(
-                    PlayerConfigEditor(this),
+                    playerConfigEditorComponent(this),
                     PlayerConfigEditorProps(
                         tribe,
                         player,
@@ -163,8 +163,10 @@ class PlayerConfigEditorTest {
     @Test
     fun clickingDeleteWhenNotConfirmedWillDoNothing() = testAsync {
         withContext(this.coroutineContext) {
-            setupAsync(object : WindowFunctions {
-                override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
+            setupAsync(object {
+                val windowFunctions = object: WindowFunctions {
+                    override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
+                }
                 val dispatcher = object : PlayerConfigDispatcher {
                     override val playerRepository get() = throw NotImplementedError("stubbed")
                     override val traceId: Uuid? get() = null
@@ -178,7 +180,7 @@ class PlayerConfigEditorTest {
                 val tribe = Tribe(TribeId("party"))
                 val player = Player("blarg", badge = Badge.Alternate.value)
                 val wrapper = shallow(
-                    PlayerConfigEditor(this),
+                    playerConfigEditorComponent(windowFunctions),
                     PlayerConfigEditorProps(
                         tribe,
                         player,

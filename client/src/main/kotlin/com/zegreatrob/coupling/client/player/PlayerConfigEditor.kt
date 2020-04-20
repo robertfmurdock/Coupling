@@ -29,20 +29,30 @@ data class PlayerConfigEditorProps(
     val commandFunc: CommandFunc<PlayerConfigDispatcher>
 ) : RProps
 
+fun RBuilder.playerConfigEditor(
+    tribe: Tribe,
+    player: Player,
+    pathSetter: (String) -> Unit,
+    reload: () -> Unit,
+    commandFunc: CommandFunc<PlayerConfigDispatcher>
+) = child(
+    PlayerConfigEditor.component.rFunction,
+    PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc)
+)
+
 private val styles = useStyles("player/PlayerConfigEditor")
 
-open class PlayerConfigEditor(windowFunctions: WindowFunctions = WindowFunctions) :
-    IFRComponent<PlayerConfigEditorProps>(provider()),
-    WindowFunctions by windowFunctions {
-    companion object : PlayerConfigEditor()
+val PlayerConfigEditor by lazy { playerConfigEditorComponent(WindowFunctions) }
 
-    override val renderer = rendererFunc { (tribe, player, pathSetter, reload, commandFunc) ->
+fun playerConfigEditorComponent(windowFunctions: WindowFunctions) =
+    reactFunction<PlayerConfigEditorProps> { (tribe, player, pathSetter, reload, commandFunc) ->
         val (values, onChange) = useForm(player.toJson())
 
         val updatedPlayer = values.toPlayer()
         val onSubmitFunc = preventDefault(commandFunc { savePlayer(tribe, updatedPlayer, reload) })
-        val onRemoveFunc = { playerId: String -> commandFunc { removePlayer(tribe, playerId, pathSetter) } }
-
+        val onRemoveFunc = { playerId: String ->
+            commandFunc { removePlayer(tribe, playerId, pathSetter, windowFunctions) }
+        }
         span(classes = styles.className) {
             configHeader(tribe, pathSetter) { +"Player Configuration" }
             div {
@@ -55,15 +65,15 @@ open class PlayerConfigEditor(windowFunctions: WindowFunctions = WindowFunctions
         }
     }
 
-    private suspend fun DeletePlayerCommandDispatcher.removePlayer(
-        tribe: Tribe,
-        playerId: String,
-        pathSetter: (String) -> Unit
-    ) {
-        if (window.confirm("Are you sure you want to delete this player?")) {
-            DeletePlayerCommand(tribe.id, playerId).perform()
-            pathSetter("/${tribe.id.value}/pairAssignments/current/")
-        }
+private suspend fun DeletePlayerCommandDispatcher.removePlayer(
+    tribe: Tribe,
+    playerId: String,
+    pathSetter: (String) -> Unit,
+    windowFunctions: WindowFunctions
+) = with(windowFunctions) {
+    if (window.confirm("Are you sure you want to delete this player?")) {
+        DeletePlayerCommand(tribe.id, playerId).perform()
+        pathSetter("/${tribe.id.value}/pairAssignments/current/")
     }
 }
 
@@ -71,17 +81,6 @@ private suspend fun SavePlayerCommandDispatcher.savePlayer(tribe: Tribe, updated
     SavePlayerCommand(tribe.id, updatedPlayer).perform()
     reload()
 }
-
-fun RBuilder.playerConfigEditor(
-    tribe: Tribe,
-    player: Player,
-    pathSetter: (String) -> Unit,
-    reload: () -> Unit,
-    commandFunc: CommandFunc<PlayerConfigDispatcher>
-) = child(
-    PlayerConfigEditor.component.rFunction,
-    PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc)
-)
 
 private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     `when` = shouldShowPrompt,
