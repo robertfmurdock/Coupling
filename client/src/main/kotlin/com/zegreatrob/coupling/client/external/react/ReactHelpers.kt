@@ -11,7 +11,6 @@ import kotlin.reflect.KClass
 private external val React: dynamic
 
 @JsModule("core-js/features/object/assign")
-
 external fun <T, R : T> objectAssign(dest: R, vararg src: T): R
 
 fun <T> useRef(default: T?) = React.useRef(default).unsafeCast<RReadableRef<T>>()
@@ -118,9 +117,8 @@ fun <P : RProps> RBuilder.child(
 }
 
 inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit): RComponent<T> =
-    object : RComponent<T>(provider()), FComponent<T> {
-        override fun render(props: T) = reactElement { function(props) }
-        override fun build() = ReactFunctionComponent(kClass) { render(it) }
+    object : RComponent<T>(provider()) {
+        override fun build() = ReactFunctionComponent(kClass) { reactElement { function(it) } }
     }
 
 inline fun <reified T : RProps> windowReactFunc(crossinline handler: RBuilder.(T, WindowFunctions) -> Unit) =
