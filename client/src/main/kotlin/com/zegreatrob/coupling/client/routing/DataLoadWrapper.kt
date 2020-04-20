@@ -21,7 +21,7 @@ fun <P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>) = reactFuncti
 
     val scope = useScope("Data load")
 
-    props.getDataAsync.invokeOnScope(scope, setData)
+    invokeOnScope(props.getDataAsync, scope, setData)
 
     consumer(animationsDisabledContext.Consumer) { animationsDisabled: Boolean ->
         div {
@@ -39,7 +39,8 @@ fun <P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>) = reactFuncti
     }
 }
 
-private fun <P> (suspend (ReloadFunction, CoroutineScope) -> P).invokeOnScope(
+private fun <P> invokeOnScope(
+    getDataAsync: suspend (ReloadFunction, CoroutineScope) -> P,
     scope: CoroutineScope,
     setData: (P?) -> Unit
 ) {
@@ -49,7 +50,7 @@ private fun <P> (suspend (ReloadFunction, CoroutineScope) -> P).invokeOnScope(
         val reloadFunction = { setData(null); setLoadingJob(null) }
         setLoadingJob(
             scope.launch {
-                setData(this@invokeOnScope.invoke(reloadFunction, scope))
+                setData(getDataAsync.invoke(reloadFunction, scope))
             }
         )
     }
