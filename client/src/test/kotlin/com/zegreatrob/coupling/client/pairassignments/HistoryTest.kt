@@ -32,7 +32,7 @@ class HistoryTest {
     private fun deleteDispatcher() = object : DeletePairAssignmentsCommandDispatcher {
         override val traceId: Uuid? = null
         override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
-        val removeSpy = SpyData<Unit, Promise<Unit>>()
+        val removeSpy = SpyData<Unit, Promise<Unit>>().also { it.spyWillReturn(Promise.resolve(Unit)) }
         override suspend fun TribeIdPairAssignmentDocumentId.delete() = removeSpy.spyFunction(Unit).let { true }
     }
 
@@ -73,7 +73,7 @@ class HistoryTest {
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setupAsync2(object : ScopeMint(), WindowFunctions {
         val dispatcher = deleteDispatcher()
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
-        override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
+        override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
 
         val tribe = Tribe(TribeId("me"))
 
