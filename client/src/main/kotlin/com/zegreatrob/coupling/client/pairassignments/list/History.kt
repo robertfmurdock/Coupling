@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.soywiz.klock.DateFormat
 import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
@@ -33,23 +33,21 @@ data class HistoryProps(
     val commandFunc: CommandFunc<DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
-val History by lazy { HistoryComponent(WindowFunctions)}
+val History by lazy { HistoryComponent(WindowFunctions) }
 
-val HistoryComponent = { windowFunctions: WindowFunctions ->
-    reactFunction<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc) ->
-        val onDeleteFunc = { documentId: PairAssignmentDocumentId ->
-            commandFunc { removeButtonOnClick(documentId, tribe.id, reload, windowFunctions) }
+val HistoryComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc), windowFuncs ->
+    val onDeleteFunc = { documentId: PairAssignmentDocumentId ->
+        commandFunc { removeButtonOnClick(documentId, tribe.id, reload, windowFuncs) }
+    }
+
+    div(classes = styles.className) {
+        div(classes = styles["tribeBrowser"]) {
+            tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
         }
-
-        div(classes = styles.className) {
-            div(classes = styles["tribeBrowser"]) {
-                tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
-            }
-            span(classes = styles["historyView"]) {
-                div(classes = styles["header"]) { +"History!" }
-                history.forEach {
-                    pairAssignmentRow(it, onDeleteFunc)
-                }
+        span(classes = styles["historyView"]) {
+            div(classes = styles["header"]) { +"History!" }
+            history.forEach {
+                pairAssignmentRow(it, onDeleteFunc)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.external.react
 
+import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import kotlinext.js.jsObject
 import kotlinx.coroutines.CoroutineScope
 import org.w3c.dom.Node
@@ -121,6 +122,9 @@ inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T)
         override fun render(props: T) = reactElement { function(props) }
         override fun build() = ReactFunctionComponent(kClass) { render(it) }
     }
+
+inline fun <reified T : RProps> windowReactFunc(crossinline handler: RBuilder.(T, WindowFunctions) -> Unit) =
+    { windowFunctions: WindowFunctions -> reactFunction<T> { handler(it, windowFunctions) } }
 
 class ReactFunctionComponent<P : RProps>(
     private val clazz: KClass<P>,

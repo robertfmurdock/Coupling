@@ -42,24 +42,21 @@ fun RBuilder.playerConfigEditor(
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val PlayerConfigEditorComponent = { windowFunctions: WindowFunctions ->
-    reactFunction<PlayerConfigEditorProps> { (tribe, player, pathSetter, reload, commandFunc) ->
-        val (values, onChange) = useForm(player.toJson())
+val PlayerConfigEditorComponent = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->
+    val (tribe, player, pathSetter, reload, commandFunc) = props
+    val (values, onChange) = useForm(player.toJson())
 
-        val updatedPlayer = values.toPlayer()
-        val onSubmitFunc = preventDefault(commandFunc { savePlayer(tribe, updatedPlayer, reload) })
-        val onRemoveFunc = { playerId: String ->
-            commandFunc { removePlayer(tribe, playerId, pathSetter, windowFunctions) }
-        }
-        span(classes = styles.className) {
-            configHeader(tribe, pathSetter) { +"Player Configuration" }
-            div {
-                div(classes = styles["player"]) {
-                    playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc, onRemoveFunc)
-                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
-                }
-                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
+    val updatedPlayer = values.toPlayer()
+    val onSubmitFunc = preventDefault(commandFunc { savePlayer(tribe, updatedPlayer, reload) })
+    val onRemoveFunc = { playerId: String -> commandFunc { removePlayer(tribe, playerId, pathSetter, windowFuncs) } }
+    span(classes = styles.className) {
+        configHeader(tribe, pathSetter) { +"Player Configuration" }
+        div {
+            div(classes = styles["player"]) {
+                playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc, onRemoveFunc)
+                promptOnExit(shouldShowPrompt = updatedPlayer != player)
             }
+            playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
         }
     }
 }
