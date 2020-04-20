@@ -36,7 +36,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
             }
         }
 

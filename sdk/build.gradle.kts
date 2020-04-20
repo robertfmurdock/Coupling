@@ -31,7 +31,7 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
                 api("com.soywiz.korlibs.klock:klock:1.10.5")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.9")

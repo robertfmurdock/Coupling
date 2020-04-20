@@ -29,7 +29,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
