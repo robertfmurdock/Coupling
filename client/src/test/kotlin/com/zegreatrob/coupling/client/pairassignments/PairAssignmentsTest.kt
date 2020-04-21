@@ -5,7 +5,6 @@ import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.ScopeProvider
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.RComponent
 import com.zegreatrob.coupling.client.player.PlayerRoster
@@ -19,11 +18,10 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.ScopeMint
+import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
 import findComponent
-import kotlinx.coroutines.withContext
 import shallow
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -90,47 +88,43 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = testAsync {
-        withContext(coroutineContext) {
-            setupAsync(object : ScopeProvider {
-                val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
-                    override val traceId: Uuid? = null
-                    override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
-                    override suspend fun TribeIdPairAssignmentDocument.save() {
-                        saveSpy.spyFunction(document.toJson())
-                    }
-                }
-
-                override fun buildScope() = this@withContext
-                val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
-
-                val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val pairAssignments = PairAssignmentDocument(
-                    date = DateTime.now(),
-                    pairs = emptyList()
-                )
-                val wrapper = shallow(
-                    PairAssignments, PairAssignmentsProps(
-                        tribe,
-                        emptyList(),
-                        pairAssignments,
-                        commandDispatcher.buildCommandFunc(this@withContext),
-                        pathSetterSpy::spyFunction
-                    )
-                )
-            }) {
-                saveSpy.spyWillReturn(Promise.resolve(Unit))
-                pathSetterSpy.spyWillReturn(Unit)
-            } exerciseAsync {
-                wrapper.findComponent(CurrentPairAssignmentsPanel).props()
-                    .onSave()
+    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = setupAsync2(object : ScopeMint() {
+        val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
+            override val traceId: Uuid? = null
+            override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
+            override suspend fun TribeIdPairAssignmentDocument.save() {
+                saveSpy.spyFunction(document.toJson())
             }
-        } verifyAsync {
-            saveSpy.spyReceivedValues.size
-                .assertIsEqualTo(1)
-            pathSetterSpy.spyReceivedValues
-                .assertContains("/${tribe.id.value}/pairAssignments/current/")
         }
+
+        val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
+
+        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val pairAssignments = PairAssignmentDocument(
+            date = DateTime.now(),
+            pairs = emptyList()
+        )
+        val wrapper = shallow(
+            PairAssignments,
+            PairAssignmentsProps(
+                tribe,
+                emptyList(),
+                pairAssignments,
+                commandDispatcher.buildCommandFunc(exerciseScope),
+                pathSetterSpy::spyFunction
+            )
+        )
+    }) {
+        saveSpy.spyWillReturn(Promise.resolve(Unit))
+        pathSetterSpy.spyWillReturn(Unit)
+    } exercise {
+        wrapper.findComponent(CurrentPairAssignmentsPanel).props()
+            .onSave()
+    } verify {
+        saveSpy.spyReceivedValues.size
+            .assertIsEqualTo(1)
+        pathSetterSpy.spyReceivedValues
+            .assertContains("/${tribe.id.value}/pairAssignments/current/")
     }
 
     @Test

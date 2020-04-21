@@ -11,10 +11,9 @@ import com.zegreatrob.coupling.client.welcome.WelcomeProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.ScopeMint
+import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
-import kotlinx.coroutines.withContext
 import shallow
 import kotlin.test.Test
 
@@ -33,22 +32,18 @@ class WelcomeTest {
     }
 
     @Test
-    fun willShowAfterZeroTimeoutSoThatAnimationWorks() = testAsync {
-        withContext(coroutineContext) {
-            setupAsync(object {
-                val dispatcher = object : GoogleSignIn {
-                    override val sdk: Sdk get() = TODO("Not yet implemented")
-                }
-                val props = WelcomeProps(commandFunc = dispatcher.buildCommandFunc(this@withContext))
-            }) exerciseAsync {
-                shallow(Welcome, props)
-            }
-        } verifyAsync { wrapper ->
-            wrapper.update()
-                .find<ShallowWrapper<Any>>(".${styles.className}")
-                .hasClass(styles["hidden"])
-                .assertIsEqualTo(false)
+    fun willShowAfterZeroTimeoutSoThatAnimationWorks() = setupAsync2(object : ScopeMint() {
+        val dispatcher = object : GoogleSignIn {
+            override val sdk: Sdk get() = TODO("Not yet implemented")
         }
+        val props = WelcomeProps(commandFunc = dispatcher.buildCommandFunc(exerciseScope))
+    }) exercise {
+        shallow(Welcome, props)
+    } verify { wrapper ->
+        wrapper.update()
+            .find<ShallowWrapper<Any>>(".${styles.className}")
+            .hasClass(styles["hidden"])
+            .assertIsEqualTo(false)
     }
 
     @Test
