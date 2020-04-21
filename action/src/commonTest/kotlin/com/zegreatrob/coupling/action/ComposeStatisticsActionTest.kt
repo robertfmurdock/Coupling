@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action
 
-import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
@@ -17,7 +17,7 @@ import kotlin.test.Test
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
-        override val traceId: Uuid? get() = null
+        override val traceId = uuid4()
         val tribe = Tribe(
             TribeId("LOL"),
             PairingRule.LongestTime

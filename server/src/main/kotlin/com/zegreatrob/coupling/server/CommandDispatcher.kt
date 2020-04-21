@@ -27,7 +27,7 @@ import kotlin.js.Json
 fun commandDispatcher(
     userJson: Json,
     path: String,
-    traceId: Uuid?
+    traceId: Uuid
 ): Any {
     val user = userJson.toUser()
     val scope = MainScope() + CoroutineName(path)
@@ -38,7 +38,7 @@ class CommandDispatcher(
     override val user: User,
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
-    override val traceId: Uuid?
+    override val traceId: Uuid
 ) :
     TribeDispatcherJs,
     PlayerDispatcherJs,

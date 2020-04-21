@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import ShallowWrapper
 import Spy
 import SpyData
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -61,7 +62,7 @@ class TribeConfigTest {
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = setupAsync2(object : ScopeMint() {
         val dispatcher = object : TribeConfigDispatcher {
             override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
-            override val traceId: Nothing? = null
+            override val traceId = uuid4()
             val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
             override suspend fun Tribe.save() {
                 saveSpy.spyFunction(toJson())

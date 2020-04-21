@@ -10,7 +10,7 @@ import kotlinx.coroutines.promise
 
 @Suppress("unused")
 @JsName("authActionDispatcher")
-fun authActionDispatcher(userId: String, traceId: Uuid?) = GlobalScope.promise {
+fun authActionDispatcher(userId: String, traceId: Uuid) = GlobalScope.promise {
     AuthActionDispatcher(
         userId,
         userRepository(userId),
@@ -22,7 +22,7 @@ fun authActionDispatcher(userId: String, traceId: Uuid?) = GlobalScope.promise {
 class AuthActionDispatcher(
     override val userId: String,
     override val userRepository: UserRepository,
-    override val traceId: Uuid?
+    override val traceId: Uuid
 ) : AuthUserDispatcherJs, UserRepository by userRepository {
     override val scope: CoroutineScope = MainScope()
 }

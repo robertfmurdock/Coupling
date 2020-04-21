@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.mongo.player
 
 import Spy
 import SpyData
-import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
@@ -17,7 +17,7 @@ class DeletePlayerCommandTest {
     fun willUseRepositoryToRemove() = testAsync {
         setupAsync(object : DeletePlayerCommandDispatcher {
             val playerId = "ThatGuyGetHim"
-            override val traceId: Uuid? = null
+            override val traceId = uuid4()
             override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
         }) exerciseAsync {
             DeletePlayerCommand(TribeId(""), playerId)

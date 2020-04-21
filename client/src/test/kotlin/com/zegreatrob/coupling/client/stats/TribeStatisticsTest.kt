@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
@@ -20,7 +20,7 @@ import kotlin.test.Test
 
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
 
-    override val traceId: Uuid? = null
+    override val traceId = uuid4()
 
     @Test
     fun willShowTribeCard() = setup(object {

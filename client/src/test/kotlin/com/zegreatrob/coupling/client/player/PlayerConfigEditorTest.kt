@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.player
 import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -68,7 +69,7 @@ class PlayerConfigEditorTest {
     fun submitWillSaveAndReload() = setupAsync2(object : ScopeMint() {
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
-            override val traceId: Uuid? get() = null
+            override val traceId = uuid4()
             val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
             override suspend fun TribeIdPlayer.save() {
                 saveSpy.spyFunction(player.toJson() to tribeId.value).await()
@@ -106,7 +107,7 @@ class PlayerConfigEditorTest {
         }
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
-            override val traceId: Uuid? get() = null
+            override val traceId = uuid4()
             val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
 
             override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
@@ -148,7 +149,7 @@ class PlayerConfigEditorTest {
         }
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
-            override val traceId: Uuid? get() = null
+            override val traceId = uuid4()
             val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
 
             override suspend fun TribeIdPlayerId.deletePlayer() = true.also {

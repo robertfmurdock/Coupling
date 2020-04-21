@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.action.heatmap
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
@@ -15,7 +16,7 @@ import kotlin.test.Test
 class CalculateHeatMapCommandTest {
 
     companion object : CalculateHeatMapActionDispatcher, AssignPinsActionDispatcher {
-        override val traceId: Nothing? = null
+        override val traceId = uuid4()
 
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(

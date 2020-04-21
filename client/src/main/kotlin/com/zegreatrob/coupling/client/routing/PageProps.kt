@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -20,15 +22,17 @@ data class PageProps(
 }
 
 interface Commander {
-    val dispatcher: CommandDispatcher
-    suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = dispatcher.dispatch()
+    fun getDispatcher(traceId: Uuid): CommandDispatcher
+
+    private fun tracingDispatcher() = getDispatcher(uuid4())
+    suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = tracingDispatcher().dispatch()
 
     fun buildCommandFunc(scope: CoroutineScope): CommandFunc<CommandDispatcher> = { runCommands ->
-        { scope.launch { with(dispatcher) { runCommands() } } }
+        { scope.launch { with(tracingDispatcher()) { runCommands() } } }
     }
 
 }
 
 object MasterCommander : Commander {
-    override val dispatcher: CommandDispatcher = CommandDispatcher
+    override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(traceId)
 }

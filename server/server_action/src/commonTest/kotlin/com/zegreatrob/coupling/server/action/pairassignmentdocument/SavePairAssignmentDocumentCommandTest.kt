@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import Spy
 import SpyData
-import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
@@ -18,7 +18,7 @@ class SavePairAssignmentDocumentCommandTest {
     @Test
     fun willSendToRepository() = testAsync {
         setupAsync(object : SavePairAssignmentDocumentCommandDispatcher {
-            override val traceId: Uuid? = null
+            override val traceId = uuid4()
             val pairAssignmentDocument = TribeId("tribe-239").with(
                 PairAssignmentDocument(
                     id = null,

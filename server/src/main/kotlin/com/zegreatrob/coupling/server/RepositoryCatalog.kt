@@ -19,11 +19,7 @@ interface RepositoryCatalog {
     val userRepository: UserRepository
 }
 
-suspend fun commandDispatcher(
-    user: User,
-    scope: CoroutineScope,
-    traceId: Uuid?
-): CommandDispatcher {
+suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid): CommandDispatcher {
     val repositoryCatalog = repositoryCatalog(user)
     return CommandDispatcher(user, repositoryCatalog, scope, traceId)
 }

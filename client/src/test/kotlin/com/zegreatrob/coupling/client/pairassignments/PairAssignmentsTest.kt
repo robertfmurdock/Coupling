@@ -4,6 +4,7 @@ import ShallowWrapper
 import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.RComponent
@@ -90,7 +91,7 @@ class PairAssignmentsTest {
     @Test
     fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = setupAsync2(object : ScopeMint() {
         val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
-            override val traceId: Uuid? = null
+            override val traceId = uuid4()
             override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
             override suspend fun TribeIdPairAssignmentDocument.save() {
                 saveSpy.spyFunction(document.toJson())

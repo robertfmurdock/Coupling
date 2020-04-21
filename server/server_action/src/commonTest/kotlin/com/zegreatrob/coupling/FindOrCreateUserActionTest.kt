@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling
 
 import SpyData
-import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
@@ -21,8 +20,8 @@ class FindOrCreateUserActionTest {
     @Test
     fun whenUserDoesNotAlreadyExistWillCreate() =
         setupAsync2(object : FindOrCreateUserActionDispatcher, UserRepository {
+            override val traceId = uuid4()
             override val userRepository = this
-            override val traceId: Uuid? = null
             override val userId = "test@test.tes"
 
             override suspend fun getUser(): Nothing? = null
@@ -42,7 +41,7 @@ class FindOrCreateUserActionTest {
     fun whenUserWithEmailAsIdExistsWillUseExistingUser() = setupAsync2(
         object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
-            override val traceId: Nothing? = null
+            override val traceId = uuid4()
             override val userId = "test@test.tes"
 
             val expectedUser = User("${uuid4()}", userId, setOf(TribeId("Best tribe")))
@@ -60,7 +59,7 @@ class FindOrCreateUserActionTest {
     fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() = setupAsync2(
         object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
-            override val traceId: Nothing? = null
+            override val traceId = uuid4()
             override val userId = "test@test.tes"
 
             val expectedUser = User("${uuid4()}", userId, setOf(TribeId("Best tribe")))

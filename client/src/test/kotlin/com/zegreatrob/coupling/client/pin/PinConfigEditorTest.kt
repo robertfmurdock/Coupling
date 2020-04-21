@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
 import SpyData
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pairassignments.NullTraceIdProvider
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -49,7 +49,8 @@ class PinConfigEditorTest {
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setupAsync2(object : ScopeMint() {
-        val stubDispatcher = object : PinCommandDispatcher, NullTraceIdProvider {
+        val stubDispatcher = object : PinCommandDispatcher {
+            override val traceId = uuid4()
             val savePinSpy = SpyData<SavePinCommand, Unit>().apply { spyWillReturn(Unit) }
             override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
             override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this)

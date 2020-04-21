@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import Spy
 import SpyData
 import com.benasher44.uuid.Uuid
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
@@ -30,7 +31,7 @@ class HistoryTest {
     private val styles = useStyles("pairassignments/History")
 
     private fun deleteDispatcher() = object : DeletePairAssignmentsCommandDispatcher {
-        override val traceId: Uuid? = null
+        override val traceId = uuid4()
         override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
         val removeSpy = SpyData<Unit, Promise<Unit>>().also { it.spyWillReturn(Promise.resolve(Unit)) }
         override suspend fun TribeIdPairAssignmentDocumentId.delete() = removeSpy.spyFunction(Unit).let { true }
