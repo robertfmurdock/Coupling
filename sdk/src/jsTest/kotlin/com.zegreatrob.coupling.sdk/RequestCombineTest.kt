@@ -33,9 +33,9 @@ class RequestCombineTest {
 
     private fun mockAxios(allPostCalls: MutableList<Pair<String, dynamic>>) = json("post" to
             fun(url: String, body: dynamic): Promise<dynamic> {
-                allPostCalls.add(url to body)
-                return GlobalScope.promise<dynamic> { stubResponseData() }
-            }
+            allPostCalls.add(url to body)
+            return GlobalScope.promise<dynamic> { stubResponseData() }
+    }
     ).unsafeCast<Axios>()
 }
 
