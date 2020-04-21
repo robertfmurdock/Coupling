@@ -14,10 +14,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.ScopeMint
+import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
-import kotlinx.coroutines.withContext
 import shallow
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -59,46 +58,39 @@ class TribeConfigTest {
     }
 
     @Test
-    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = testAsync {
-        withContext(coroutineContext) {
-            setupAsync(object {
-                val dispatcher = object : TribeConfigDispatcher {
-                    override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
-                    override val traceId: Nothing? = null
-                    val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
-                    override suspend fun Tribe.save() {
-                        saveSpy.spyFunction(toJson())
-                    }
-                }
-
-                val tribe = Tribe(
-                    TribeId("1"),
-                    name = "1",
-                    alternateBadgeName = "alt",
-                    defaultBadgeName = "def",
-                    email = "email-y",
-                    pairingRule = PairingRule.PreferDifferentBadge
-                )
-
-                val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val wrapper = shallow(
-                    TribeConfig,
-                    TribeConfigProps(
-                        tribe,
-                        pathSetterSpy::spyFunction,
-                        dispatcher.buildCommandFunc(this@withContext)
-                    )
-                )
-            }) {
-                dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
-                pathSetterSpy.spyWillReturn(Unit)
-            } exerciseAsync {
-                wrapper.find<Any>(".${styles["saveButton"]}").simulate("click")
+    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = setupAsync2(object : ScopeMint() {
+        val dispatcher = object : TribeConfigDispatcher {
+            override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
+            override val traceId: Nothing? = null
+            val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
+            override suspend fun Tribe.save() {
+                saveSpy.spyFunction(toJson())
             }
-        } verifyAsync {
-            dispatcher.saveSpy.spyReceivedValues.map { it.toTribe() }.assertContains(tribe)
-            pathSetterSpy.spyReceivedValues.assertContains("/tribes/")
         }
+
+        val tribe = Tribe(
+            TribeId("1"),
+            name = "1",
+            alternateBadgeName = "alt",
+            defaultBadgeName = "def",
+            email = "email-y",
+            pairingRule = PairingRule.PreferDifferentBadge
+        )
+
+        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
+        val wrapper = shallow(
+            TribeConfig,
+            TribeConfigProps(tribe, pathSetterSpy::spyFunction, commandFunc)
+        )
+    }) {
+        dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
+        pathSetterSpy.spyWillReturn(Unit)
+    } exercise {
+        wrapper.find<Any>(".${styles["saveButton"]}").simulate("click")
+    } verify {
+        dispatcher.saveSpy.spyReceivedValues.map { it.toTribe() }.assertContains(tribe)
+        pathSetterSpy.spyReceivedValues.assertContains("/tribes/")
     }
 
 }

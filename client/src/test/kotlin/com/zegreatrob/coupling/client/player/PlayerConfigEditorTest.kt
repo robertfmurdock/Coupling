@@ -15,12 +15,11 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.ScopeMint
+import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.await
-import kotlinx.coroutines.withContext
 import org.w3c.dom.Window
 import shallow
 import simulateInputChange
@@ -66,139 +65,115 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun submitWillSaveAndReload() = testAsync {
-        withContext(this.coroutineContext) {
-            setupAsync(object {
-                val dispatcher = object : PlayerConfigDispatcher {
-                    override val playerRepository get() = throw NotImplementedError("stubbed")
-                    override val traceId: Uuid? get() = null
-                    val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
-                    override suspend fun TribeIdPlayer.save() {
-                        saveSpy.spyFunction(player.toJson() to tribeId.value).await()
-                    }
-                }
-                val tribe = Tribe(TribeId("party"))
-                val player = Player(id = "blarg", badge = Badge.Default.value)
-                val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
-
-                val wrapper = shallow(
-                    PlayerConfigEditor,
-                    PlayerConfigEditorProps(
-                        tribe,
-                        player,
-                        {},
-                        { reloaderSpy.spyFunction(Unit) },
-                        dispatcher.buildCommandFunc(this@withContext)
-                    )
-                )
-            }) {
-                dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
-                reloaderSpy.spyWillReturn(Unit)
-            } exerciseAsync {
-                wrapper.simulateInputChange("name", "nonsense")
-                wrapper.find<Any>("form")
-                    .simulate("submit", json("preventDefault" to {}))
+    fun submitWillSaveAndReload() = setupAsync2(object : ScopeMint() {
+        val dispatcher = object : PlayerConfigDispatcher {
+            override val playerRepository get() = throw NotImplementedError("stubbed")
+            override val traceId: Uuid? get() = null
+            val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
+            override suspend fun TribeIdPlayer.save() {
+                saveSpy.spyFunction(player.toJson() to tribeId.value).await()
             }
-        } verifyAsync {
-            dispatcher.saveSpy.spyReceivedValues
-                .map { it.first.toPlayer() to TribeId(it.second) }
-                .assertContains(
-                    player.copy(name = "nonsense") to tribe.id
-                )
-            reloaderSpy.spyReceivedValues.size.assertIsEqualTo(1)
         }
-    }
+        val tribe = Tribe(TribeId("party"))
+        val player = Player(id = "blarg", badge = Badge.Default.value)
+        val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
 
-    @Test
-    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = testAsync {
-        withContext(this.coroutineContext) {
-            setupAsync(object : WindowFunctions {
-                override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
-
-                val dispatcher = object : PlayerConfigDispatcher {
-                    override val playerRepository get() = throw NotImplementedError("stubbed")
-                    override val traceId: Uuid? get() = null
-                    val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
-
-                    override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
-                        removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
-                        return true
-                    }
-                }
-
-                val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val tribe = Tribe(TribeId("party"))
-                val player = Player("blarg", badge = Badge.Alternate.value)
-
-                val wrapper = shallow(
-                    PlayerConfigEditorComponent(this),
-                    PlayerConfigEditorProps(
-                        tribe,
-                        player,
-                        pathSetterSpy::spyFunction,
-                        {},
-                        dispatcher.buildCommandFunc(this@withContext)
-                    )
-                )
-            }) {
-                pathSetterSpy.spyWillReturn(Unit)
-                dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
-            } exerciseAsync {
-                wrapper.find<Any>(".${styles["deleteButton"]}")
-                    .simulate("click")
-            }
-        } verifyAsync {
-            dispatcher.removeSpy.spyReceivedValues
-                .map { TribeId(it.first) to it.second }
-                .assertContains(
-                    tribe.id to player.id
-                )
-            pathSetterSpy.spyReceivedValues.contains(
-                "/${tribe.id.value}/pairAssignments/current/"
+        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
+        val wrapper = shallow(
+            PlayerConfigEditor,
+            PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, commandFunc)
+        )
+    }) {
+        dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
+        reloaderSpy.spyWillReturn(Unit)
+    } exercise {
+        wrapper.simulateInputChange("name", "nonsense")
+        wrapper.find<Any>("form")
+            .simulate("submit", json("preventDefault" to {}))
+    } verify {
+        dispatcher.saveSpy.spyReceivedValues
+            .map { it.first.toPlayer() to TribeId(it.second) }
+            .assertContains(
+                player.copy(name = "nonsense") to tribe.id
             )
-        }
+        reloaderSpy.spyReceivedValues.size.assertIsEqualTo(1)
     }
 
     @Test
-    fun clickingDeleteWhenNotConfirmedWillDoNothing() = testAsync {
-        withContext(this.coroutineContext) {
-            setupAsync(object {
-                val windowFunctions = object : WindowFunctions {
-                    override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
-                }
-                val dispatcher = object : PlayerConfigDispatcher {
-                    override val playerRepository get() = throw NotImplementedError("stubbed")
-                    override val traceId: Uuid? get() = null
-                    val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
-
-                    override suspend fun TribeIdPlayerId.deletePlayer() = true.also {
-                        removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
-                    }
-                }
-                val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
-                val tribe = Tribe(TribeId("party"))
-                val player = Player("blarg", badge = Badge.Alternate.value)
-                val wrapper = shallow(
-                    PlayerConfigEditorComponent(windowFunctions),
-                    PlayerConfigEditorProps(
-                        tribe,
-                        player,
-                        pathSetterSpy::spyFunction,
-                        {},
-                        dispatcher.buildCommandFunc(this@withContext)
-                    )
-                )
-            }) {
-                pathSetterSpy.spyWillReturn(Unit)
-                dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
-            } exerciseAsync {
-                wrapper.find<Any>(".${styles["deleteButton"]}")
-                    .simulate("click")
-            }
-        } verifyAsync {
-            dispatcher.removeSpy.spyReceivedValues.isEmpty().assertIsEqualTo(true)
-            pathSetterSpy.spyReceivedValues.isEmpty().assertIsEqualTo(true)
+    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = setupAsync2(object : ScopeMint() {
+        val windowFuncs = object : WindowFunctions {
+            override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         }
+        val dispatcher = object : PlayerConfigDispatcher {
+            override val playerRepository get() = throw NotImplementedError("stubbed")
+            override val traceId: Uuid? get() = null
+            val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
+
+            override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
+                removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
+                return true
+            }
+        }
+        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
+
+        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val tribe = Tribe(TribeId("party"))
+        val player = Player("blarg", badge = Badge.Alternate.value)
+
+        val wrapper = shallow(
+            PlayerConfigEditorComponent(windowFuncs),
+            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, commandFunc)
+        )
+    }) {
+        pathSetterSpy.spyWillReturn(Unit)
+        dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
+    } exercise {
+        wrapper.find<Any>(".${styles["deleteButton"]}")
+            .simulate("click")
+    } verify {
+        dispatcher.removeSpy.spyReceivedValues
+            .map { TribeId(it.first) to it.second }
+            .assertContains(
+                tribe.id to player.id
+            )
+        pathSetterSpy.spyReceivedValues.contains(
+            "/${tribe.id.value}/pairAssignments/current/"
+        )
+    }
+
+    @Test
+    fun clickingDeleteWhenNotConfirmedWillDoNothing() = setupAsync2(object : ScopeMint() {
+        val windowFunctions = object : WindowFunctions {
+            override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
+        }
+        val dispatcher = object : PlayerConfigDispatcher {
+            override val playerRepository get() = throw NotImplementedError("stubbed")
+            override val traceId: Uuid? get() = null
+            val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
+
+            override suspend fun TribeIdPlayerId.deletePlayer() = true.also {
+                removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
+            }
+        }
+        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
+
+        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val tribe = Tribe(TribeId("party"))
+        val player = Player("blarg", badge = Badge.Alternate.value)
+
+        val wrapper = shallow(
+            PlayerConfigEditorComponent(windowFunctions),
+            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, commandFunc)
+        )
+    }) {
+        pathSetterSpy.spyWillReturn(Unit)
+        dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
+    } exercise {
+        wrapper.find<Any>(".${styles["deleteButton"]}")
+            .simulate("click")
+    } verify {
+        dispatcher.removeSpy.spyReceivedValues.isEmpty().assertIsEqualTo(true)
+        pathSetterSpy.spyReceivedValues.isEmpty().assertIsEqualTo(true)
     }
 
     @Test
