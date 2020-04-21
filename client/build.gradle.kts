@@ -46,12 +46,12 @@ dependencies {
     implementation("com.benasher44:uuid:0.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.100-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-css:1.0.0-pre.100-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.100-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-react:16.13.1-pre.100-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.100-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.100-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.101-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-css:1.0.0-pre.101-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.101-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-react:16.13.1-pre.101-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.101-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.101-kotlin-1.3.72")
 
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))

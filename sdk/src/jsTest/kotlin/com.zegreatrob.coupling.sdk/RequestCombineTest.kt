@@ -31,12 +31,12 @@ class RequestCombineTest {
         allPostCalls.size.assertIsEqualTo(1)
     }
 
-    private fun mockAxios(allPostCalls: MutableList<Pair<String, dynamic>>): Axios {
-        return json("post" to fun(url: String, body: dynamic): Promise<dynamic> {
-            allPostCalls.add(url to body)
-            return GlobalScope.promise<dynamic> { stubResponseData() }
-        }).unsafeCast<Axios>()
-    }
+    private fun mockAxios(allPostCalls: MutableList<Pair<String, dynamic>>) = json("post" to
+            fun(url: String, body: dynamic): Promise<dynamic> {
+                allPostCalls.add(url to body)
+                return GlobalScope.promise<dynamic> { stubResponseData() }
+            }
+    ).unsafeCast<Axios>()
 }
 
 private fun stubResponseData() = json(
