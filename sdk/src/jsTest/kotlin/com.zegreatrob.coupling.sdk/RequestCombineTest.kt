@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.setupAsync2
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.promise
@@ -16,35 +16,36 @@ import kotlin.test.Test
 class RequestCombineTest {
 
     @Test
-    fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = testAsync {
+    fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = setupAsync2(object {
         val allPostCalls = mutableListOf<Pair<String, dynamic>>()
-        val mockAxios = json("post" to fun(url: String, body: dynamic): Promise<dynamic> {
-            allPostCalls.add(url to body)
-            return promise { stubResponseData() }
-        }).unsafeCast<Axios>()
-        setupAsync(object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(mockAxios) {
-            override val axios: Axios get() = mockAxios
-            val tribeId = TribeId("Random")
-        }) exerciseAsync {
-            coroutineScope {
-                val a1 = async { getPlayers(tribeId) }
-                val a2 = async { getPins(tribeId) }
-                a1.await()
-                a2.await()
-            }
-        } verifyAsync {
-            allPostCalls.size.assertIsEqualTo(1)
+        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(mockAxios(allPostCalls)) {}
+        val tribeId = TribeId("Random")
+    }) exercise {
+        coroutineScope {
+            val a1 = async { sdk.getPlayers(tribeId) }
+            val a2 = async { sdk.getPins(tribeId) }
+            a1.await()
+            a2.await()
         }
+    } verify {
+        allPostCalls.size.assertIsEqualTo(1)
     }
 
-    private fun stubResponseData() = json(
+    private fun mockAxios(allPostCalls: MutableList<Pair<String, dynamic>>): Axios {
+        return json("post" to fun(url: String, body: dynamic): Promise<dynamic> {
+            allPostCalls.add(url to body)
+            return GlobalScope.promise<dynamic> { stubResponseData() }
+        }).unsafeCast<Axios>()
+    }
+}
+
+private fun stubResponseData() = json(
+    "data" to json(
         "data" to json(
-            "data" to json(
-                "tribe" to json(
-                    "playerList" to emptyArray<Json>(),
-                    "pinList" to emptyArray<Json>()
-                )
+            "tribe" to json(
+                "playerList" to emptyArray<Json>(),
+                "pinList" to emptyArray<Json>()
             )
         )
     )
-}
+)
