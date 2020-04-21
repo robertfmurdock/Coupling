@@ -8,12 +8,11 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync2
 import kotlin.test.Test
 
 class CompoundPinRepositoryTest : PinRepositoryValidator {
@@ -29,44 +28,40 @@ class CompoundPinRepositoryTest : PinRepositoryValidator {
     }
 
     @Test
-    fun saveWillWriteToSecondRepository() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun saveWillWriteToSecondRepository() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryPinRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryPinRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPinRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPinRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundPinRepository(repository1, repository2)
+        val compoundRepo = CompoundPinRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
-            val pin = stubPin()
-        }) exerciseAsync {
-            compoundRepo.save(tribeId.with(pin))
-        } verifyAsync {
-            repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
-                .assertIsEqualTo(pin)
-        }
+        val tribeId = stubTribeId()
+        val pin = stubPin()
+    }) exercise {
+        compoundRepo.save(tribeId.with(pin))
+    } verify {
+        repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
+            .assertIsEqualTo(pin)
     }
 
     @Test
-    fun deleteWillWriteToSecondRepository() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun deleteWillWriteToSecondRepository() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryPinRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryPinRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPinRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPinRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundPinRepository(repository1, repository2)
+        val compoundRepo = CompoundPinRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
-            val pin = stubPin()
-        }) exerciseAsync {
-            compoundRepo.save(tribeId.with(pin))
-            compoundRepo.deletePin(tribeId, pin._id!!)
-        } verifyAsync {
-            repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
-                .assertIsEqualTo(null)
-        }
+        val tribeId = stubTribeId()
+        val pin = stubPin()
+    }) exercise {
+        compoundRepo.save(tribeId.with(pin))
+        compoundRepo.deletePin(tribeId, pin._id!!)
+    } verify {
+        repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
+            .assertIsEqualTo(null)
     }
 
 }

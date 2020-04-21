@@ -8,12 +8,11 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync2
 import kotlin.test.Test
 
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
@@ -31,43 +30,39 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     }
 
     @Test
-    fun saveWillWriteToSecondRepository() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun saveWillWriteToSecondRepository() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundPlayerRepository(repository1, repository2)
+        val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
-            val player = stubPlayer()
-        }) exerciseAsync {
-            compoundRepo.save(tribeId.with(player))
-        } verifyAsync {
-            repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
-                .assertIsEqualTo(player)
-        }
+        val tribeId = stubTribeId()
+        val player = stubPlayer()
+    }) exercise {
+        compoundRepo.save(tribeId.with(player))
+    } verify {
+        repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
+            .assertIsEqualTo(player)
     }
 
     @Test
-    fun deleteWillWriteToSecondRepository() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun deleteWillWriteToSecondRepository() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundPlayerRepository(repository1, repository2)
+        val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
-            val player = stubPlayer()
-        }) exerciseAsync {
-            compoundRepo.save(tribeId.with(player))
-            compoundRepo.deletePlayer(tribeId, player.id!!)
-        } verifyAsync {
-            repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
-                .assertIsEqualTo(null)
-        }
+        val tribeId = stubTribeId()
+        val player = stubPlayer()
+    }) exercise {
+        compoundRepo.save(tribeId.with(player))
+        compoundRepo.deletePlayer(tribeId, player.id!!)
+    } verify {
+        repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
+            .assertIsEqualTo(null)
     }
 }

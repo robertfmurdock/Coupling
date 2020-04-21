@@ -5,11 +5,10 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryTribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync2
 import kotlin.test.Test
 
 class CompoundTribeRepositoryTest : TribeRepositoryValidator {
@@ -24,42 +23,38 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator {
     }
 
     @Test
-    fun saveWillWriteToSecondRepositoryAsWell() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun saveWillWriteToSecondRepositoryAsWell() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryTribeRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryTribeRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundTribeRepository(repository1, repository2)
+        val compoundRepo = CompoundTribeRepository(repository1, repository2)
 
-            val tribe = stubTribe()
-        }) exerciseAsync {
-            compoundRepo.save(tribe)
-        } verifyAsync {
-            repository2.getTribeRecord(tribe.id)
-                ?.data
-                .assertIsEqualTo(tribe)
-        }
+        val tribe = stubTribe()
+    }) exercise {
+        compoundRepo.save(tribe)
+    } verify {
+        repository2.getTribeRecord(tribe.id)
+            ?.data
+            .assertIsEqualTo(tribe)
     }
 
     @Test
-    fun deleteWillWriteToSecondRepositoryAsWell() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun deleteWillWriteToSecondRepositoryAsWell() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryTribeRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryTribeRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundTribeRepository(repository1, repository2)
+        val compoundRepo = CompoundTribeRepository(repository1, repository2)
 
-            val tribe = stubTribe()
-        }) exerciseAsync {
-            compoundRepo.save(tribe)
-            compoundRepo.delete(tribe.id)
-        } verifyAsync {
-            repository2.getTribeRecord(tribe.id)
-                .assertIsEqualTo(null)
-        }
+        val tribe = stubTribe()
+    }) exercise {
+        compoundRepo.save(tribe)
+        compoundRepo.delete(tribe.id)
+    } verify {
+        repository2.getTribeRecord(tribe.id)
+            .assertIsEqualTo(null)
     }
 }

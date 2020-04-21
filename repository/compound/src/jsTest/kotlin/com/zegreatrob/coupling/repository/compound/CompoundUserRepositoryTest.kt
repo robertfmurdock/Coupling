@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.setupAsync2
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -24,20 +23,18 @@ class CompoundUserRepositoryTest : UserRepositoryValidator {
     }
 
     @Test
-    fun saveWillSaveToSecondRepositoryAsWell() = testAsync {
-        setupAsync(object {
-            val user = stubUser()
+    fun saveWillSaveToSecondRepositoryAsWell() = setupAsync2(object {
+        val user = stubUser()
 
-            val repository1 = MemoryUserRepository(user.id, TimeProvider)
-            val repository2 = MemoryUserRepository(user.id, TimeProvider)
+        val repository1 = MemoryUserRepository(user.id, TimeProvider)
+        val repository2 = MemoryUserRepository(user.id, TimeProvider)
 
-            val compoundRepo = CompoundUserRepository(repository1, repository2)
-        }) exerciseAsync {
-            compoundRepo.save(user)
-        } verifyAsync {
-            repository2.getUser()?.data
-                .assertIsEqualTo(user)
-        }
+        val compoundRepo = CompoundUserRepository(repository1, repository2)
+    }) exercise {
+        compoundRepo.save(user)
+    } verify {
+        repository2.getUser()?.data
+            .assertIsEqualTo(user)
     }
 
 }

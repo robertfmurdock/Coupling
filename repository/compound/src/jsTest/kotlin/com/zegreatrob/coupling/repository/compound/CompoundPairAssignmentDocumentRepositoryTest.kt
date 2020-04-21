@@ -8,12 +8,11 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.setupAsync2
 import kotlin.test.Test
 
 class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
@@ -32,45 +31,41 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
     }
 
     @Test
-    fun saveWillWriteToSecondRepository() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun saveWillWriteToSecondRepository() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundPairAssignmentDocumentRepository(repository1, repository2)
+        val compoundRepo = CompoundPairAssignmentDocumentRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
-            val pairAssignmentDocument = stubPairAssignmentDoc()
-        }) exerciseAsync {
-            compoundRepo.save(tribeId.with(pairAssignmentDocument))
-        } verifyAsync {
-            repository2.getPairAssignments(tribeId).map { it.data.document }
-                .find { it.id == pairAssignmentDocument.id }
-                .assertIsEqualTo(pairAssignmentDocument)
-        }
+        val tribeId = stubTribeId()
+        val pairAssignmentDocument = stubPairAssignmentDoc()
+    }) exercise {
+        compoundRepo.save(tribeId.with(pairAssignmentDocument))
+    } verify {
+        repository2.getPairAssignments(tribeId).map { it.data.document }
+            .find { it.id == pairAssignmentDocument.id }
+            .assertIsEqualTo(pairAssignmentDocument)
     }
 
     @Test
-    fun deleteWillWriteToSecondRepository() = testAsync {
-        setupAsync(object {
-            val stubUser = stubUser()
+    fun deleteWillWriteToSecondRepository() = setupAsync2(object {
+        val stubUser = stubUser()
 
-            val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
-            val repository2 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
 
-            val compoundRepo = CompoundPairAssignmentDocumentRepository(repository1, repository2)
+        val compoundRepo = CompoundPairAssignmentDocumentRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
-            val pairAssignmentDocument = stubPairAssignmentDoc()
-        }) exerciseAsync {
-            compoundRepo.save(tribeId.with(pairAssignmentDocument))
-            compoundRepo.delete(tribeId, pairAssignmentDocument.id!!)
-        } verifyAsync {
-            repository2.getPairAssignments(tribeId).map { it.data.document }
-                .find { it.id == pairAssignmentDocument.id }
-                .assertIsEqualTo(null)
-        }
+        val tribeId = stubTribeId()
+        val pairAssignmentDocument = stubPairAssignmentDoc()
+    }) exercise {
+        compoundRepo.save(tribeId.with(pairAssignmentDocument))
+        compoundRepo.delete(tribeId, pairAssignmentDocument.id!!)
+    } verify {
+        repository2.getPairAssignments(tribeId).map { it.data.document }
+            .find { it.id == pairAssignmentDocument.id }
+            .assertIsEqualTo(null)
     }
 }
