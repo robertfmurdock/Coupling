@@ -36,9 +36,9 @@ data class PairAssignmentsProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
-    val styles = useStyles("pairassignments/PairAssignments")
+private val styles = useStyles("pairassignments/PairAssignments")
 
+val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
