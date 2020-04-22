@@ -74,7 +74,13 @@ dependencies {
         "express-ws",
         "method-override",
         "on-finished",
-        "serve-favicon"
+        "serve-favicon",
+        "passport",
+        "passport-custom",
+        "passport-local",
+        "passport-azure-ad",
+        "errorhandler",
+        "google-auth-library"
     )
 
     packageJson.dependencies()

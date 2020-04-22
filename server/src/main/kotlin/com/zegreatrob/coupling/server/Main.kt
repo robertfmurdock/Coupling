@@ -27,8 +27,5 @@ private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
 }
 
 fun main() {
-//    MainScope().launch {
-//        startDeferred.await()
-//        println("Startup complete")
-//    }
+//    MainScope().launch { startDeferred.await() }
 }

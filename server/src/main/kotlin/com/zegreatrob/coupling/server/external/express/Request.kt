@@ -9,6 +9,8 @@ external interface Request {
     val method: String
     val originalUrl: String?
     val url: String
+    fun logout()
+
     val commandDispatcher: dynamic
     val user: dynamic
     var traceId: Uuid?

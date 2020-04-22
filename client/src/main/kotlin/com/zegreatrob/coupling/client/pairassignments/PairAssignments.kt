@@ -54,9 +54,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, ori
                 }
             }
             div(classes = styles["controlPanel"]) {
-                div {
-                    prepareToSpinButton(tribe, styles["newPairsButton"])
-                }
+                div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
                 viewHistoryButton(tribe, styles["viewHistoryButton"])
                 pinListButton(tribe, styles["pinListButton"])
                 statisticsButton(tribe, styles["statisticsButton"])
