@@ -12,6 +12,8 @@ external interface Response {
     fun send(body: Any?)
 
     fun sendStatus(statusCode: Int)
+    fun redirect(path: String)
+    fun render(view: String, json: Json)
 }
 
 fun Response.sendSuccessful(body: Any?) {

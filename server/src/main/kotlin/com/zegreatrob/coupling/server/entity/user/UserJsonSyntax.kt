@@ -11,7 +11,6 @@ interface UserJsonSyntax {
         "email" to email,
         "tribes" to authorizedTribeIds.map { it.value }.toTypedArray()
     )
-
 }
 
 fun Json.toUser() = User(

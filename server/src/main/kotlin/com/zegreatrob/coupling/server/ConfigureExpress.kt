@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.static
 import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
+import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import com.zegreatrob.coupling.server.external.passportcustom.Strategy
 import kotlinx.coroutines.GlobalScope
@@ -63,17 +64,13 @@ external fun cookieParser()
 @JsNonModule
 external fun errorHandler()
 
-@JsModule("passport")
-@JsNonModule
-external val passport: dynamic
-
 fun configureExpress(app: Express) {
     app.use(compression())
     app.use(statsd(json("host" to "statsd", "port" to 8125)))
     app.set("port", Config.port)
-    app.set("views", arrayOf(resourcePath("public"), resourcePath("views")))
+    app.set("views", arrayOf(resourcePath("build/executable/public"), resourcePath("views")))
     app.set("view engine", "pug")
-    app.use(favicon(resourcePath("public/images/favicon.ico")))
+    app.use(favicon(resourcePath("build/executable/public/images/favicon.ico")))
 
     if (Process.getEnv("DISABLE_LOGGING") == null) {
         app.use(logRequests())
@@ -83,7 +80,7 @@ fun configureExpress(app: Express) {
     app.use(com.zegreatrob.coupling.server.external.bodyparser.json())
     app.use(methodOverride())
 
-    app.use(static(resourcePath("public"), json("extensions" to arrayOf("json"))))
+    app.use(static(resourcePath("build/executable/public"), json("extensions" to arrayOf("json"))))
     app.use(cookieParser())
     app.use(buildSessionHandler())
     app.use(passport.initialize())
@@ -184,16 +181,14 @@ private fun logoutOnError() = { err: dynamic, request: Request, _: Response, nex
     next(error?.also { request.logout() })
 }
 
-fun buildSessionHandler(): dynamic {
-    return session(
-        json(
-            "secret" to Config.secret,
-            "resave" to true,
-            "saveUninitialized" to true,
-            "store" to sessionStore()
-        )
+fun buildSessionHandler() = session(
+    json(
+        "secret" to Config.secret,
+        "resave" to true,
+        "saveUninitialized" to true,
+        "store" to sessionStore()
     )
-}
+)
 
 fun sessionStore() = newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
 

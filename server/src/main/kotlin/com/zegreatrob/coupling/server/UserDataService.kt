@@ -29,5 +29,5 @@ object UserDataService {
         with(AuthActionDispatcher(email, userRepository(email), traceId)) {
             FindOrCreateUserAction.perform()
                 .toJson()
-        }
+    }
 }

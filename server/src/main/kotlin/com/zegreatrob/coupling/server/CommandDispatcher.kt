@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
 import com.zegreatrob.coupling.server.entity.user.toUser
 import kotlinx.coroutines.*
 import kotlin.js.Json
+import kotlin.js.Promise
 
 @Suppress("unused")
 @JsName("commandDispatcher")
@@ -28,7 +29,7 @@ fun commandDispatcher(
     userJson: Json,
     path: String,
     traceId: Uuid
-): Any {
+): Promise<CommandDispatcher> {
     val user = userJson.toUser()
     val scope = MainScope() + CoroutineName(path)
     return scope.promise { commandDispatcher(user, scope, traceId) }

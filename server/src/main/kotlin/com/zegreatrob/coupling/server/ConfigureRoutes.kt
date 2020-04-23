@@ -1,0 +1,101 @@
+package com.zegreatrob.coupling.server
+
+import com.zegreatrob.coupling.server.external.express.Handler
+import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.coupling.server.external.express.Router
+import com.zegreatrob.coupling.server.external.expressws.ExpressWs
+import com.zegreatrob.coupling.server.external.passport.passport
+import com.zegreatrob.coupling.server.route.tribeListRouter
+import kotlin.js.Json
+import kotlin.js.json
+
+@JsModule("express-graphql")
+@JsNonModule
+private external val graphqlHTTP: (Json) -> Router
+
+fun configureRoutes(expressWs: ExpressWs) {
+    val app = expressWs.app
+
+    app.get("/api/logout") { request, response, _ ->
+        request.logout()
+        response.send("ok")
+    }
+
+    app.post(
+        "/auth/google-token",
+        { _, _, next -> console.log("pass through");next() },
+        passport.authenticate("custom"),
+        { _, response, _ ->
+            console.log("sending 200")
+            response.sendStatus(200)
+        })
+
+    app.get("/microsoft-login", passport.authenticate("azuread-openidconnect"))
+    app.post(
+        "/auth/signin-microsoft",
+        passport.authenticate("azuread-openidconnect", json("failureRedirect" to "/")),
+        { _, response, _ -> response.redirect("/") }
+    )
+
+    val expressEnv = app.get("env").unsafeCast<String>()
+    val isInDevMode = when (expressEnv) {
+        "development" -> true
+        "test" -> true
+        else -> false
+    }
+
+    if (isInDevMode) {
+        app.get(
+            "/test-login",
+            passport.authenticate("local", json("successRedirect" to "/", "failureRedirect" to "/login"))
+        )
+    }
+
+    val indexRoute = buildIndexRoute(expressEnv)
+    app.get("/", indexRoute)
+    app.all("/api/*", apiGuard())
+    app.use("/api/tribes", tribeListRouter)
+    app.use("/api/graphql", graphqlHTTP(json("schema" to "", "graphiql" to true)))
+
+    app.get("*", indexRoute)
+}
+
+private fun buildIndexRoute(expressEnv: String): Handler = { request, response, _ ->
+    response.render(
+        "index",
+        json(
+            "title" to "Coupling",
+            "buildDate" to Config.buildDate,
+            "gitRev" to Config.gitRev,
+            "googleClientId" to Config.googleClientID,
+            "expressEnv" to expressEnv,
+            "isAuthenticated" to request.isAuthenticated()
+        )
+    )
+}
+
+private fun apiGuard(): Handler = { request, response, next ->
+    request.statsdkey = listOf("http", request.method.toLowerCase(), request.path).joinToString(".")
+
+    if (!request.isAuthenticated()) {
+        handleNotAuthenticated(request, response)
+    } else {
+        commandDispatcher(request.user, "${request.method} ${request.path}", request.traceId!!)
+            .then {
+                request.commandDispatcher = it
+                next()
+            }
+    }
+}
+
+private fun handleNotAuthenticated(
+    request: Request,
+    response: Response
+) {
+    if (request.originalUrl?.contains(".websocket") == true) {
+        request.close()
+    } else {
+        response.sendStatus(401)
+    }
+}

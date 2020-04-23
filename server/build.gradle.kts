@@ -69,6 +69,7 @@ dependencies {
         "connect-dynamodb",
         "cookie-parser",
         "express",
+        "express-graphql",
         "express-session",
         "express-statsd",
         "express-ws",
@@ -80,7 +81,9 @@ dependencies {
         "passport-local",
         "passport-azure-ad",
         "errorhandler",
-        "google-auth-library"
+        "google-auth-library",
+        "graphql",
+        "pug"
     )
 
     packageJson.dependencies()

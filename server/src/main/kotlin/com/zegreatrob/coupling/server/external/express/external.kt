@@ -9,5 +9,11 @@ external interface Express {
     fun set(key: String, value: dynamic)
     fun get(key: String): dynamic
     fun listen(port: Int, function: () -> Unit)
-
+    fun get(path: String, function: Handler)
+    fun all(path: String, function: Handler)
+    fun use(path: String, router: Router)
+    fun post(path: String, vararg handlers: Handler)
 }
+
+typealias Handler = (Request, Response, Next) -> Unit
+typealias Next = () -> Unit
