@@ -32,4 +32,7 @@ new Promise(function (resolve, reject) {
   serverProcess.stdout.pipe(serverOut);
   serverProcess.stderr.pipe(serverErr);
 })
-  .then(startJasmine);
+  .then(startJasmine, err => {
+    console.log("FAILURE, did not run tests.", err);
+    process.exit(1)
+  });

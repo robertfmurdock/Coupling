@@ -65,23 +65,21 @@ dependencies {
     implementation("com.benasher44:uuid:0.1.0")
 
     val includeOnly = listOf(
-        "compression",
-        "connect-dynamodb",
-        "cookie-parser",
-        "express",
-        "express-graphql",
+        "graphql",
         "express-session",
         "express-statsd",
-        "express-ws",
-        "method-override",
-        "on-finished",
         "serve-favicon",
-        "passport",
-        "passport-custom",
-        "passport-local",
+        "connect-dynamodb",
+        "method-override",
+        "cookie-parser",
         "passport-azure-ad",
-        "errorhandler",
-        "google-auth-library"
+        "google-auth-library",
+        "passport",
+        "passport-local",
+        "passport-custom",
+        "express-graphql",
+        "express-ws",
+        "errorhandler"
     )
 
     packageJson.dependencies()

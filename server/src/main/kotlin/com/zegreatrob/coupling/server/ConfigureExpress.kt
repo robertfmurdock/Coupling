@@ -67,8 +67,6 @@ external fun errorHandler()
 fun configureExpress(app: Express) {
     configureExpressKt(app)
 
-    app.use(cookieParser())
-    app.use(buildSessionHandler())
     app.use(passport.initialize())
     app.use(passport.session())
 
@@ -108,13 +106,17 @@ fun configureExpress(app: Express) {
 
 @JsName("configureExpressKt")
 fun configureExpressKt(app: Express) = with(app) {
+    configure()
+}
+
+private fun Express.configure() {
     use(compression())
     use(statsd(json("host" to "statsd", "port" to 8125)))
     set("port", Config.port)
 
-    set("views", arrayOf(resourcePath("build/executable/public"), resourcePath("views")))
+    set("views", arrayOf(resourcePath("public"), resourcePath("views")))
     set("view engine", "pug")
-    use(favicon(resourcePath("build/executable/public/images/favicon.ico")))
+    use(favicon(resourcePath("public/images/favicon.ico")))
     if (Process.getEnv("DISABLE_LOGGING") == null) {
         use(logRequests())
     }
@@ -123,8 +125,9 @@ fun configureExpressKt(app: Express) = with(app) {
     use(com.zegreatrob.coupling.server.external.bodyparser.json())
     use(methodOverride())
 
-    use(static(resourcePath("build/executable/public"), json("extensions" to arrayOf("json"))))
-
+    use(static(resourcePath("public"), json("extensions" to arrayOf("json"))))
+    use(cookieParser())
+    use(buildSessionHandler())
 }
 
 fun azureODICStrategy(): dynamic {
@@ -204,4 +207,4 @@ private fun logRequests() = { request: Request, response: Response, next: () -> 
         .also { next() }
 }
 
-fun resourcePath(directory: String) = "$directory"
+fun resourcePath(directory: String) = "${js("__dirname")}/../../../../../server/build/executable/$directory"

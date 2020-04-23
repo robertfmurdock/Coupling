@@ -79,25 +79,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  app.use(cookieParser());
-
-  let store;
-  if (process.env.AWS_SECRET_ACCESS_KEY) {
-    store = new DynamoDBStore({
-      client: new AWS.DynamoDB({region: 'us-east-1'}),
-    })
-  } else {
-    store = new DynamoDBStore({
-      client: new AWS.DynamoDB({region: 'us-east-1', endpoint: new AWS.Endpoint('http://localhost:8000')}),
-    })
-  }
-
-  app.use(session({
-    secret: config.secret,
-    resave: false,
-    saveUninitialized: false,
-    store: store
-  }));
   app.use(passport.initialize());
   app.use(passport.session());
 
