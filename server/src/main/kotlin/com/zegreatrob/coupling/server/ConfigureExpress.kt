@@ -67,9 +67,6 @@ external fun errorHandler()
 fun configureExpress(app: Express) {
     configureExpressKt(app)
 
-    app.use(urlencoded(json("extended" to true)))
-    app.use(com.zegreatrob.coupling.server.external.bodyparser.json())
-    app.use(methodOverride())
 
     app.use(static(resourcePath("build/executable/public"), json("extensions" to arrayOf("json"))))
     app.use(cookieParser())
@@ -123,6 +120,11 @@ fun configureExpressKt(app: Express) = with(app) {
     if (Process.getEnv("DISABLE_LOGGING") == null) {
         use(logRequests())
     }
+
+    use(urlencoded(json("extended" to true)))
+    use(com.zegreatrob.coupling.server.external.bodyparser.json())
+    use(methodOverride())
+
 }
 
 fun azureODICStrategy(): dynamic {
