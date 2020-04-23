@@ -79,11 +79,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  app.set('views', [
-    path.join(__dirname, 'public'),
-    path.join(__dirname, 'views')
-  ]);
-  app.set('view engine', 'pug');
   app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
   if (!process.env['DISABLE_LOGGING']) {
     app.use(function (request, response, next) {
