@@ -81,9 +81,7 @@ dependencies {
         "passport-local",
         "passport-azure-ad",
         "errorhandler",
-        "google-auth-library",
-        "graphql"
-//        "pug"
+        "google-auth-library"
     )
 
     packageJson.dependencies()
