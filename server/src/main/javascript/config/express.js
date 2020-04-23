@@ -79,7 +79,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  app.use(express.static(path.join(__dirname, 'public'), {extensions: ['json']}));
   app.use(cookieParser());
 
   let store;

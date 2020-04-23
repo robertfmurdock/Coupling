@@ -67,8 +67,6 @@ external fun errorHandler()
 fun configureExpress(app: Express) {
     configureExpressKt(app)
 
-
-    app.use(static(resourcePath("build/executable/public"), json("extensions" to arrayOf("json"))))
     app.use(cookieParser())
     app.use(buildSessionHandler())
     app.use(passport.initialize())
@@ -124,6 +122,8 @@ fun configureExpressKt(app: Express) = with(app) {
     use(urlencoded(json("extended" to true)))
     use(com.zegreatrob.coupling.server.external.bodyparser.json())
     use(methodOverride())
+
+    use(static(resourcePath("build/executable/public"), json("extensions" to arrayOf("json"))))
 
 }
 
