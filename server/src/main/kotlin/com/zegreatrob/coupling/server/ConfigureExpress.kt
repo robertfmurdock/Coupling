@@ -80,7 +80,7 @@ fun configureExpress(app: Express) {
 
     if (isInDevelopmentMode) {
         app.use(errorHandler())
-    }
+}
 
     initializeLogging(isInDevelopmentMode)
 

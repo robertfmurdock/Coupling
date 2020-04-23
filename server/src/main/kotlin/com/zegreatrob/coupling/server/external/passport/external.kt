@@ -11,8 +11,8 @@ external val passport: Passport
 external interface Passport {
     fun authenticate(strategy: String): Handler
     fun authenticate(strategy: String, options: Json): Handler
-    fun initialize(): dynamic
-    fun session(): dynamic
+    fun initialize(): Handler
+    fun session(): Handler
     fun serializeUser(kFunction2: KFunction2<dynamic, (dynamic, dynamic) -> Unit, Unit>)
     fun deserializeUser(kFunction2: KFunction2<String, (dynamic, dynamic) -> Unit, Unit>)
     fun use(googleAuthTransferStrategy: dynamic)

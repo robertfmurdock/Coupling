@@ -127,6 +127,7 @@ tasks {
         )
         val script = projectDir.path + "/endpoint-wrapper.js"
         inputs.file(script)
+        inputs.files(findByPath(":server:serverCompile")!!.outputs)
 
         setScript(File(script))
         outputs.dir("build/test-results/jsTest")
