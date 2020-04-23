@@ -65,9 +65,8 @@ external fun cookieParser()
 external fun errorHandler()
 
 fun configureExpress(app: Express) {
-    app.use(compression())
-    app.use(statsd(json("host" to "statsd", "port" to 8125)))
-    app.set("port", Config.port)
+    configureExpressKt(app)
+
     app.set("views", arrayOf(resourcePath("build/executable/public"), resourcePath("views")))
     app.set("view engine", "pug")
     app.use(favicon(resourcePath("build/executable/public/images/favicon.ico")))
@@ -118,6 +117,13 @@ fun configureExpress(app: Express) {
                 { done(it, null) })
         }))
     }
+}
+
+@JsName("configureExpressKt")
+fun configureExpressKt(app: Express) {
+    app.use(compression())
+    app.use(statsd(json("host" to "statsd", "port" to 8125)))
+    app.set("port", Config.port)
 }
 
 fun azureODICStrategy(): dynamic {

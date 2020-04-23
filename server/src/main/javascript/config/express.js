@@ -79,10 +79,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  app.use(compression());
-  app.use(statsd({host: 'statsd', port: 8125}));
-
-  app.set('port', config.port);
   app.set('views', [
     path.join(__dirname, 'public'),
     path.join(__dirname, 'views')
