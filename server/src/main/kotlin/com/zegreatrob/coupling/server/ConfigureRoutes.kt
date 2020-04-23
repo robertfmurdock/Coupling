@@ -27,20 +27,15 @@ fun configureRoutes(expressWs: ExpressWs) {
 fun configRoutes(expressEnv: String, app: Express): Handler {
     val indexRoute = buildIndexRoute(expressEnv)
     app.get("/", indexRoute)
+    app.get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     app.all("/api/*", apiGuard())
     app.use("/api/tribes", tribeListRouter)
     return indexRoute
 }
 
 private fun configAuthRoutes(app: Express): String {
-    app.get("/api/logout") { request, response, _ ->
-        request.logout()
-        response.send("ok")
-    }
-
     app.post(
         "/auth/google-token",
-        { _, _, next -> console.log("pass through");next() },
         passport.authenticate("custom"),
         { _, response, _ ->
             console.log("sending 200")
@@ -98,13 +93,10 @@ private fun apiGuard(): Handler = { request, response, next ->
     }
 }
 
-private fun handleNotAuthenticated(
-    request: Request,
-    response: Response
-) {
+private fun handleNotAuthenticated(request: Request, response: Response) =
     if (request.originalUrl?.contains(".websocket") == true) {
         request.close()
     } else {
         response.sendStatus(401)
     }
-}
+

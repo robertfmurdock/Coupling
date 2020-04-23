@@ -6,16 +6,11 @@ import * as server from "Coupling-server";
 import graphqlHTTP = require("express-graphql");
 import CouplingSchema from "./graphqlSchema"
 
-const {tribeListRouter, websocketRoute} = server.com.zegreatrob.coupling.server.route;
+const {websocketRoute} = server.com.zegreatrob.coupling.server.route;
 const {configRoutes} = server.com.zegreatrob.coupling.server;
 
 module.exports = function (wsInstance) {
     const app = wsInstance.app;
-
-    app.get('/api/logout', function (req, res) {
-        req.logout();
-        res.send('ok')
-    });
 
     app.post('/auth/google-token', passport.authenticate('custom'), ((req, res) => res.sendStatus(200)));
     app.get('/microsoft-login', passport.authenticate('azuread-openidconnect'));

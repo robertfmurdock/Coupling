@@ -1,25 +1,10 @@
 "use strict";
-const logging = require("Coupling-logging");
-const server = require("Coupling-server");
-const compression = require('compression');
-const path = require('path');
-const favicon = require('serve-favicon');
-const methodOverride = require('method-override');
-const express = require('express');
-const bodyParser = require('body-parser');
 const Strategy = require('passport-custom').Strategy;
 const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 const {OAuth2Client} = require('google-auth-library');
-const errorHandler = require('errorhandler');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const DynamoDBStore = require('connect-dynamodb')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const statsd = require('express-statsd');
 const config = require('./config');
-const onFinished = require('on-finished');
-const AWS = require('aws-sdk');
 
 function azureODICStrategy(userDataService) {
   return new OIDCStrategy({
