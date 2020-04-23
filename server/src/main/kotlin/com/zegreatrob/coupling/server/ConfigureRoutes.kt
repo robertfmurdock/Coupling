@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.server.external.express.Handler
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
-import com.zegreatrob.coupling.server.external.express.Router
+import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.route.tribeListRouter
@@ -17,6 +14,25 @@ private external val graphqlHTTP: (Json) -> Router
 fun configureRoutes(expressWs: ExpressWs) {
     val app = expressWs.app
 
+    val expressEnv = configAuthRoutes(app)
+
+    val indexRoute = configRoutes(expressEnv, app)
+
+    app.use("/api/graphql", graphqlHTTP(json("schema" to "", "graphiql" to true)))
+
+    app.get("*", indexRoute)
+}
+
+@JsName("configRoutes")
+fun configRoutes(expressEnv: String, app: Express): Handler {
+    val indexRoute = buildIndexRoute(expressEnv)
+    app.get("/", indexRoute)
+    app.all("/api/*", apiGuard())
+    app.use("/api/tribes", tribeListRouter)
+    return indexRoute
+}
+
+private fun configAuthRoutes(app: Express): String {
     app.get("/api/logout") { request, response, _ ->
         request.logout()
         response.send("ok")
@@ -51,14 +67,7 @@ fun configureRoutes(expressWs: ExpressWs) {
             passport.authenticate("local", json("successRedirect" to "/", "failureRedirect" to "/login"))
         )
     }
-
-    val indexRoute = buildIndexRoute(expressEnv)
-    app.get("/", indexRoute)
-    app.all("/api/*", apiGuard())
-    app.use("/api/tribes", tribeListRouter)
-    app.use("/api/graphql", graphqlHTTP(json("schema" to "", "graphiql" to true)))
-
-    app.get("*", indexRoute)
+    return expressEnv
 }
 
 private fun buildIndexRoute(expressEnv: String): Handler = { request, response, _ ->

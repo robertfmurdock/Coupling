@@ -7,6 +7,7 @@ import graphqlHTTP = require("express-graphql");
 import CouplingSchema from "./graphqlSchema"
 
 const {tribeListRouter, websocketRoute} = server.com.zegreatrob.coupling.server.route;
+const {configRoutes} = server.com.zegreatrob.coupling.server;
 
 module.exports = function (wsInstance) {
     const app = wsInstance.app;
@@ -28,9 +29,7 @@ module.exports = function (wsInstance) {
     }
 
     const indexRoute = routes.index(expressEnv);
-    app.get('/', indexRoute);
-    app.all('/api/*', apiGuard());
-    app.use('/api/tribes', tribeListRouter);
+    configRoutes(expressEnv, app);
 
     app.use(
         '/api/graphql',
