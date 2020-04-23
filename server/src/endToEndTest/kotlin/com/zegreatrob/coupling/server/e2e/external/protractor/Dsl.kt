@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.e2e.external.protractor
 
 import kotlinx.coroutines.await
 
-val waitToBePresentDuration = 5000
+const val waitToBePresentDuration = 5000
 
 suspend fun ElementSelector.waitToBePresent() = browser.wait({ this.isPresent() }, waitToBePresentDuration, "").await()
 

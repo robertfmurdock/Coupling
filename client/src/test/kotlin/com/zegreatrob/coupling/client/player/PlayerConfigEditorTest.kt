@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.player
 
 import Spy
 import SpyData
-import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get

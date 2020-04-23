@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments
 import ShallowWrapper
 import Spy
 import SpyData
-import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.buildCommandFunc
@@ -247,7 +246,7 @@ class PairAssignmentsTest {
         val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
 
         targetProps.run {
-            val targetPair = pairAssignments?.pairs?.first { it.players.map { it.player }.contains(target) }!!
+            val targetPair = pairAssignments?.pairs?.first { pair -> pair.players.map { it.player }.contains(target) }!!
 
             onPlayerSwap(id!!, targetPair.players.first { it.player == target }, targetPair)
         }

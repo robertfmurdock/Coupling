@@ -2,14 +2,14 @@ package com.zegreatrob.coupling.server
 
 import kotlin.js.json
 
-private val microsoftConsumerTenantId = "common"
+private const val microsoftConsumerTenantId = "common"
 
 object Config {
     val microsoft = MicrosoftConfig()
     val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
-    val secret = "maythefourthbewithyou"
-    val buildDate: String = "None"
-    val gitRev: String = "None"
+    const val secret = "maythefourthbewithyou"
+    const val buildDate: String = "None"
+    const val gitRev: String = "None"
     val googleClientID: String = Process.getEnv("GOOGLE_CLIENT_ID")
         ?: "24452716216-9lqe1p511qcf53kuihamdhggb05gbt4p.apps.googleusercontent.com"
     val googleClientSecret: String = Process.getEnv("GOOGLE_CLIENT_SECRET")

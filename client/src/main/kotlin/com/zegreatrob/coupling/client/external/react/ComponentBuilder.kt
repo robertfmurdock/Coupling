@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.external.react
 
-import com.zegreatrob.coupling.action.ScopeProvider
 import kotlinx.coroutines.*
 import react.RProps
 

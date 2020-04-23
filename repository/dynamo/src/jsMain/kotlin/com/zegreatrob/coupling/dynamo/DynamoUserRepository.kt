@@ -21,7 +21,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         DynamoItemSyntax,
         DynamoScanSyntax {
         override val tableName = "USER"
-        val userEmailIndex = "USER_EMAIL_INDEX"
+        const val userEmailIndex = "USER_EMAIL_INDEX"
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoUserRepository(userId, clock)
             .also { ensureTableExists() }
 

@@ -69,10 +69,6 @@ fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { child(b
 fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallowRender { child(component, props) }
 
 fun <P : RProps, T> ShallowWrapper<T>.findComponent(
-    reactFunctionComponent: ReactFunctionComponent<P>
-): ShallowWrapper<P> = find(reactFunctionComponent.rFunction)
-
-fun <P : RProps, T> ShallowWrapper<T>.findComponent(
     RComponent: RComponent<P>
 ): ShallowWrapper<P> = find(RComponent.component.rFunction)
 
