@@ -79,18 +79,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  app.use(favicon(path.join(__dirname, 'public/images/favicon.ico')));
-  if (!process.env['DISABLE_LOGGING']) {
-    app.use(function (request, response, next) {
-      // noinspection JSUnresolvedVariable, JSUnresolvedFunction
-      server.com.zegreatrob.coupling.server.logRequestAsync(request, response, function (callback) {
-        onFinished(response, callback);
-      });
-
-      next();
-    });
-  }
-
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(methodOverride());

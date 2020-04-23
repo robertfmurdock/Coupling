@@ -67,12 +67,6 @@ external fun errorHandler()
 fun configureExpress(app: Express) {
     configureExpressKt(app)
 
-    app.use(favicon(resourcePath("build/executable/public/images/favicon.ico")))
-
-    if (Process.getEnv("DISABLE_LOGGING") == null) {
-        app.use(logRequests())
-    }
-
     app.use(urlencoded(json("extended" to true)))
     app.use(com.zegreatrob.coupling.server.external.bodyparser.json())
     app.use(methodOverride())
@@ -118,13 +112,17 @@ fun configureExpress(app: Express) {
 }
 
 @JsName("configureExpressKt")
-fun configureExpressKt(app: Express) {
-    app.use(compression())
-    app.use(statsd(json("host" to "statsd", "port" to 8125)))
-    app.set("port", Config.port)
+fun configureExpressKt(app: Express) = with(app) {
+    use(compression())
+    use(statsd(json("host" to "statsd", "port" to 8125)))
+    set("port", Config.port)
 
-    app.set("views", arrayOf(resourcePath("build/executable/public"), resourcePath("views")))
-    app.set("view engine", "pug")
+    set("views", arrayOf(resourcePath("build/executable/public"), resourcePath("views")))
+    set("view engine", "pug")
+    use(favicon(resourcePath("build/executable/public/images/favicon.ico")))
+    if (Process.getEnv("DISABLE_LOGGING") == null) {
+        use(logRequests())
+    }
 }
 
 fun azureODICStrategy(): dynamic {
