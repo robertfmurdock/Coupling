@@ -3,6 +3,7 @@ import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import java.io.FileOutputStream
 
 plugins {
     kotlin("js")
@@ -223,5 +224,17 @@ tasks {
     val testWatch by creating(NodeTask::class) {
         setArgs(listOf("test/continuous-run.js"))
     }
+
+    task<YarnTask>("stats") {
+        dependsOn(yarn)
+
+        args = listOf("-s", "webpack", "--json", "--profile", "--config", "webpack.config.js")
+
+        setExecOverrides(closureOf<ExecSpec> {
+            file("build/report").mkdirs()
+            standardOutput = FileOutputStream(file("build/report/stats.json"))
+        })
+    }
+
 
 }

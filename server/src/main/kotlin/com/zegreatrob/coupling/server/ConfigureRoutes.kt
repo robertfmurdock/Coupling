@@ -18,10 +18,16 @@ fun configureRoutes(expressWs: ExpressWs) {
 
     val indexRoute = configRoutes(expressEnv, app)
 
-    app.use("/api/graphql", graphqlHTTP(json("schema" to "", "graphiql" to true)))
+    app.use("/api/graphql", graphqlHTTP(json("schema" to graphqlSchema(), "graphiql" to true)))
 
     app.get("*", indexRoute)
 }
+
+//@JsModule("routes/graphqlSchema")
+//@JsNonModule
+//private external val schema: dynamic
+
+fun graphqlSchema() = ""
 
 @JsName("configRoutes")
 fun configRoutes(expressEnv: String, app: Express): Handler {
@@ -30,6 +36,7 @@ fun configRoutes(expressEnv: String, app: Express): Handler {
     app.get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     app.all("/api/*", apiGuard())
     app.use("/api/tribes", tribeListRouter)
+
     return indexRoute
 }
 
