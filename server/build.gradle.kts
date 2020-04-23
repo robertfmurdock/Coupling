@@ -181,7 +181,7 @@ tasks {
         inputs.dir("test/unit")
         outputs.dir("build/test-results/server.unit")
 
-        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules"))
+        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:node_modules"))
         args = listOf("run", "serverTest")
     }
 
@@ -204,7 +204,7 @@ tasks {
         inputs.dir("test/e2e")
         outputs.dir("${project.buildDir}/test-results/e2e")
 
-        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules"))
+        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:node_modules"))
         args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
