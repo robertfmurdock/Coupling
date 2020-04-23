@@ -82,22 +82,7 @@ module.exports = function (app, userDataService) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use(function (err, req, res, next) {
-    if (err) {
-      req.logout();
-      next(err);
-    } else {
-      next();
-    }
-  });
-
   const isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
-  if (isInDevelopmentMode) {
-    app.use(errorHandler());
-  }
-
-  // noinspection JSUnresolvedVariable, JSUnresolvedFunction
-  logging.com.zegreatrob.coupling.logging.initializeLogging(isInDevelopmentMode);
 
   passport.serializeUser(userDataService.serializeUser);
   passport.deserializeUser(userDataService.deserializeUser);

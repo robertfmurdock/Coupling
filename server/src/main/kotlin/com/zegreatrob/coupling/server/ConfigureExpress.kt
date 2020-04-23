@@ -67,22 +67,12 @@ external fun errorHandler()
 fun configureExpress(app: Express) {
     configureExpressKt(app)
 
-    app.use(passport.initialize())
-    app.use(passport.session())
-
-    app.use(logoutOnError())
-
-    val isInDevelopmentMode = when (app.get("env")) {
-        "development" -> true
-        "test" -> true
-        else -> false
-    }
-
-    if (isInDevelopmentMode) {
-        app.use(errorHandler())
+    app.configPassport(app.isInDevMode())
 }
 
-    initializeLogging(isInDevelopmentMode)
+private fun Express.configPassport(isInDevelopmentMode: Boolean) {
+    use(passport.initialize())
+    use(passport.session())
 
     passport.serializeUser(UserDataService::serializeUser)
     passport.deserializeUser(UserDataService::deserializeUser)
@@ -128,6 +118,22 @@ private fun Express.configure() {
     use(static(resourcePath("public"), json("extensions" to arrayOf("json"))))
     use(cookieParser())
     use(buildSessionHandler())
+
+    use(logoutOnError())
+
+    val isInDevelopmentMode = isInDevMode()
+
+    if (isInDevelopmentMode) {
+        use(errorHandler())
+    }
+
+    initializeLogging(isInDevelopmentMode)
+}
+
+private fun Express.isInDevMode() = when (get("env")) {
+    "development" -> true
+    "test" -> true
+    else -> false
 }
 
 fun azureODICStrategy(): dynamic {

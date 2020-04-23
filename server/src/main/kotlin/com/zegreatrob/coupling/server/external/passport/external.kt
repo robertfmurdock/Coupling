@@ -6,7 +6,7 @@ import kotlin.reflect.KFunction2
 
 @JsModule("passport")
 @JsNonModule
-external val passport: Passport
+external val passport: dynamic
 
 external interface Passport {
     fun authenticate(strategy: String): Handler
