@@ -78,8 +78,8 @@ private fun Express.configPassport() {
     passport.use(azureODICStrategy())
 
     if (isInDevMode()) {
-        passport.use(LocalStrategy { username, _, done ->
-            doneAfter(done, UserDataService.findOrCreate("$username._temp", uuid4()))
+        passport.use(LocalStrategy(json("passReqToCallback" to true)) { request, username, _, done ->
+            doneAfter(done, UserDataService.findOrCreate("$username._temp", request.traceId))
         })
     }
 }
@@ -199,7 +199,7 @@ fun buildSessionHandler() = session(
 
 fun sessionStore() = newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
 
-private fun logRequests(): Handler = { request: Request, response: Response, next: () -> Unit ->
+private fun logRequests(): Handler = { request, response, next ->
     logRequestAsync(request, response) { callback -> onFinished(response, callback) }
         .also { next() }
 }
