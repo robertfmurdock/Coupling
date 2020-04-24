@@ -3,8 +3,10 @@ package com.zegreatrob.coupling.server
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
+import kotlin.js.Json
 
 object UserDataService {
     fun serializeUser(user: dynamic, done: (dynamic, dynamic) -> Unit) {
@@ -17,17 +19,27 @@ object UserDataService {
     }
 
     fun deserializeUser(userId: String, done: (dynamic, dynamic) -> Unit) {
-        GlobalScope.promise {
-            with(AuthActionDispatcher(userId, userRepository(userId), uuid4())) {
+        onMainScope(done) {
+            val receiver = authActionDispatcher(userId, uuid4())
+            with(receiver) {
                 FindOrCreateUserAction.perform()
                     .toJson()
             }
-        }.then({ done(null, it) }, { done(it, null) })
+        }
     }
 
-    suspend fun findOrCreate(email: String, traceId: Uuid) =
-        with(AuthActionDispatcher(email, userRepository(email), traceId)) {
-            FindOrCreateUserAction.perform()
-                .toJson()
+    private fun onMainScope(done: (dynamic, dynamic) -> Unit, block: suspend CoroutineScope.() -> Json) {
+        MainScope().promise(block = block).then({ done(null, it) }, { done(it, null) })
+    }
+
+    private suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
+        userId,
+        userRepository(userId),
+        traceId
+    )
+
+    suspend fun findOrCreate(email: String, traceId: Uuid) = with(authActionDispatcher(email, traceId)) {
+        FindOrCreateUserAction.perform()
+            .toJson()
     }
 }

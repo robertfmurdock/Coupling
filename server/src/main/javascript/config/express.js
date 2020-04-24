@@ -66,9 +66,6 @@ function googleAuthTransferStrategy(userDataService) {
 module.exports = function (app, userDataService) {
   const isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
 
-  passport.serializeUser(userDataService.serializeUser);
-  passport.deserializeUser(userDataService.deserializeUser);
-
   passport.use(googleAuthTransferStrategy(userDataService));
   passport.use(azureODICStrategy(userDataService));
 

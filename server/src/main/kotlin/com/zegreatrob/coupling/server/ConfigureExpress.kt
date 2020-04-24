@@ -72,10 +72,10 @@ fun configureExpress(app: Express) {
 private fun Express.configPassport(isInDevelopmentMode: Boolean) {
     use(passport.initialize())
     use(passport.session())
-//
-//    passport.serializeUser(UserDataService::serializeUser)
-//    passport.deserializeUser(UserDataService::deserializeUser)
-//
+
+    passport.serializeUser(UserDataService::serializeUser)
+    passport.deserializeUser(UserDataService::deserializeUser)
+
 //    passport.use(googleAuthTransferStrategy())
 //    passport.use(azureODICStrategy())
 //
