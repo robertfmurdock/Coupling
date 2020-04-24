@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.external.express
 
 import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.CommandDispatcher
 import kotlin.js.Json
 
@@ -16,7 +17,7 @@ external interface Request {
     fun close()
 
     var commandDispatcher: CommandDispatcher
-    val user: Json
+    val user: User
     val traceId: Uuid
     var statsdkey: String?
 }

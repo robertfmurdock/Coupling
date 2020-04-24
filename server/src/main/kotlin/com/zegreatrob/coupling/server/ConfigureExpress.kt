@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.dynamo.DynamoDbProvider
 import com.zegreatrob.coupling.logging.initializeLogging
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
@@ -83,7 +84,7 @@ private fun Express.configPassport() {
     }
 }
 
-private fun doneAfter(done: (dynamic, dynamic) -> Unit, promise: Promise<Json>) {
+private fun doneAfter(done: (dynamic, dynamic) -> Unit, promise: Promise<User>) {
     promise.then({ done(null, it) }, { done(it, null) })
 }
 

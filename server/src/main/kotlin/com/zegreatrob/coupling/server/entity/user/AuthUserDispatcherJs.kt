@@ -1,3 +1,5 @@
 package com.zegreatrob.coupling.server.entity.user
 
-interface AuthUserDispatcherJs : FindOrCreateUserActionDispatcherJs, FindUserActionDispatcherJs
+import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatcher
+
+interface AuthUserDispatcherJs : FindOrCreateUserActionDispatcher, FindUserActionDispatcherJs

@@ -99,7 +99,7 @@ private fun apiGuard(): Handler = { request, response, next ->
     if (!request.isAuthenticated()) {
         handleNotAuthenticated(request, response)
     } else {
-        commandDispatcher(request.user, "${request.method} ${request.path}", request.traceId!!)
+        commandDispatcher(request.user, "${request.method} ${request.path}", request.traceId)
             .then {
                 request.commandDispatcher = it
                 next()
