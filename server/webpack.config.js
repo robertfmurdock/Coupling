@@ -18,13 +18,16 @@ const config = {
   devtool: 'eval',
   target: 'node',
   externals: [
-    nodeExternals({modulesDir: path.resolve(__dirname, '../build/js/node_modules')}),
-    nodeExternals()
+    nodeExternals({
+      modulesDir: path.resolve(__dirname, '../build/js/node_modules'),
+      whitelist: ['Coupling-server', 'uuid']
+    })
   ],
   resolve: {
     extensions: ['.js', '.ts'],
     modules: [
       path.resolve(__dirname, '../build/js/node_modules'),
+      path.resolve(__dirname, 'build/processedResources/Js/main'),
       path.resolve(__dirname, 'node_modules')
     ]
   },

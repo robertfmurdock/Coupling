@@ -213,4 +213,4 @@ private fun logRequests() = { request: Request, response: Response, next: () -> 
         .also { next() }
 }
 
-fun resourcePath(directory: String) = "${js("__dirname")}/../../../../../server/build/executable/$directory"
+fun resourcePath(directory: String) = "${js("__dirname")}/../../../server/build/executable/$directory"

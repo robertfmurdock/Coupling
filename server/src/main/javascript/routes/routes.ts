@@ -26,14 +26,6 @@ module.exports = function (wsInstance) {
     const indexRoute = routes.index(expressEnv);
     configRoutes(expressEnv, app);
 
-    app.use(
-        '/api/graphql',
-        graphqlHTTP({
-            schema: CouplingSchema,
-            graphiql: true,
-        }),
-    );
-
     app.get('/app/*.html', routes.components);
     app.get('/partials/:name', routes.partials);
 

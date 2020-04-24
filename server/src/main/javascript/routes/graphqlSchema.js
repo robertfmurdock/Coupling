@@ -1,14 +1,13 @@
 import {
   GraphQLBoolean,
-  GraphQLInt,
   GraphQLFloat,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
 } from 'graphql';
-import * as server from "Coupling-server";
 
 const PinType = new GraphQLObjectType({
   name: 'Pin',
@@ -81,68 +80,65 @@ const PairAssignmentDocumentType = new GraphQLObjectType({
   }),
 });
 
-// noinspection JSUnresolvedVariable
-const {Resolvers} = server.com.zegreatrob.coupling.server.entity;
-
-const TribeDataType = new GraphQLObjectType({
-  name: 'TribeData',
-  description: 'Everything you wanted to know about a tribe but never asked.',
-  fields: () => ({
-    id: {type: GraphQLNonNull(GraphQLString)},
-    tribe: {
-      type: TribeType,
-      resolve: Resolvers.tribe
-    },
-    pinList: {
-      type: new GraphQLList(PinType),
-      resolve: Resolvers.pinList
-    },
-    playerList: {
-      type: new GraphQLList(PlayerType),
-      resolve: Resolvers.playerList
-    },
-    pairAssignmentDocumentList: {
-      type: new GraphQLList(PairAssignmentDocumentType),
-      resolve: Resolvers.pairAssignmentDocumentList
-    }
-  })
-});
-
-const TribeType = new GraphQLObjectType({
-  name: 'Tribe',
-  description: 'The people you couple with!',
-  fields: () => ({
-    id: {type: GraphQLNonNull(GraphQLString)},
-    name: {type: GraphQLString},
-    email: {type: GraphQLString},
-    pairingRule: {type: GraphQLInt},
-    defaultBadgeName: {type: GraphQLString},
-    alternateBadgeName: {type: GraphQLString},
-    badgesEnabled: {type: GraphQLBoolean},
-    callSignsEnabled: {type: GraphQLBoolean},
-    animationsEnabled: {type: GraphQLBoolean},
-    animationSpeed: {type: GraphQLFloat},
-    modifyingUserEmail: {type: GraphQLString},
-    timestamp: {type: GraphQLString},
-    isDeleted: {type: GraphQLBoolean}
-  }),
-});
-
-const CouplingSchema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'RootQueryType',
-    fields: {
-      tribeList: {
-        type: new GraphQLList(TribeType),
-        resolve: Resolvers.tribeList,
+export function buildSchema(Resolvers) {
+  const TribeDataType = new GraphQLObjectType({
+    name: 'TribeData',
+    description: 'Everything you wanted to know about a tribe but never asked.',
+    fields: () => ({
+      id: {type: GraphQLNonNull(GraphQLString)},
+      tribe: {
+        type: TribeType,
+        resolve: Resolvers.tribe
       },
-      tribeData: {
-        type: TribeDataType,
-        args: {id: {type: GraphQLString},},
-        resolve: (entity, args) => ({id: args["id"]})
+      pinList: {
+        type: new GraphQLList(PinType),
+        resolve: Resolvers.pinList
+      },
+      playerList: {
+        type: new GraphQLList(PlayerType),
+        resolve: Resolvers.playerList
+      },
+      pairAssignmentDocumentList: {
+        type: new GraphQLList(PairAssignmentDocumentType),
+        resolve: Resolvers.pairAssignmentDocumentList
       }
-    },
-  }),
-});
+    })
+  });
 
-export default CouplingSchema;
+  const TribeType = new GraphQLObjectType({
+    name: 'Tribe',
+    description: 'The people you couple with!',
+    fields: () => ({
+      id: {type: GraphQLNonNull(GraphQLString)},
+      name: {type: GraphQLString},
+      email: {type: GraphQLString},
+      pairingRule: {type: GraphQLInt},
+      defaultBadgeName: {type: GraphQLString},
+      alternateBadgeName: {type: GraphQLString},
+      badgesEnabled: {type: GraphQLBoolean},
+      callSignsEnabled: {type: GraphQLBoolean},
+      animationsEnabled: {type: GraphQLBoolean},
+      animationSpeed: {type: GraphQLFloat},
+      modifyingUserEmail: {type: GraphQLString},
+      timestamp: {type: GraphQLString},
+      isDeleted: {type: GraphQLBoolean}
+    }),
+  });
+
+  return new GraphQLSchema({
+    query: new GraphQLObjectType({
+      name: 'RootQueryType',
+      fields: {
+        tribeList: {
+          type: new GraphQLList(TribeType),
+          resolve: Resolvers.tribeList,
+        },
+        tribeData: {
+          type: TribeDataType,
+          args: {id: {type: GraphQLString},},
+          resolve: (entity, args) => ({id: args["id"]})
+        }
+      },
+    }),
+  });
+}

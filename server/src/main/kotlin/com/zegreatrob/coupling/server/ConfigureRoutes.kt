@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.server.entity.Resolvers
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
 import com.zegreatrob.coupling.server.external.passport.passport
@@ -18,16 +19,14 @@ fun configureRoutes(expressWs: ExpressWs) {
 
     val indexRoute = configRoutes(expressEnv, app)
 
-    app.use("/api/graphql", graphqlHTTP(json("schema" to graphqlSchema(), "graphiql" to true)))
-
     app.get("*", indexRoute)
 }
 
-//@JsModule("routes/graphqlSchema")
-//@JsNonModule
-//private external val schema: dynamic
+@JsModule("routes/graphqlSchema")
+@JsNonModule
+private external val schema: dynamic
 
-fun graphqlSchema() = ""
+fun graphqlSchema() = schema.buildSchema(Resolvers)
 
 @JsName("configRoutes")
 fun configRoutes(expressEnv: String, app: Express): Handler {
@@ -36,7 +35,7 @@ fun configRoutes(expressEnv: String, app: Express): Handler {
     app.get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     app.all("/api/*", apiGuard())
     app.use("/api/tribes", tribeListRouter)
-
+    app.use("/api/graphql", graphqlHTTP(json("schema" to graphqlSchema(), "graphiql" to true)))
     return indexRoute
 }
 
