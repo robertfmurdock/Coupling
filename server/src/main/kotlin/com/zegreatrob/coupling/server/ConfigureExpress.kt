@@ -12,10 +12,7 @@ import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import com.zegreatrob.coupling.server.external.passportcustom.Strategy
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.await
-import kotlinx.coroutines.promise
+import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -78,7 +75,7 @@ private fun Express.configPassport(isInDevelopmentMode: Boolean) {
 
 //    passport.use(googleAuthTransferStrategy())
 //    passport.use(azureODICStrategy())
-//
+
 //    if (isInDevelopmentMode) {
 //        passport.use(LocalStrategy { username, _, done ->
 //            doneAfter(done, { UserDataService.findOrCreate("$username._temp", uuid4()) })
@@ -165,7 +162,7 @@ fun azureODICStrategy(): dynamic {
             refreshToken: String,
             done: (dynamic, dynamic) -> Unit
         ) {
-            GlobalScope.promise {
+            MainScope().promise {
                 val email = profile["_json"].unsafeCast<Json>()["email"].unsafeCast<String?>()
                 email?.let {
                     UserDataService.findOrCreate(email, uuid4())
@@ -181,7 +178,7 @@ fun googleAuthTransferStrategy(): dynamic {
     val client = OAuth2Client(clientID)
 
     return Strategy { request, done ->
-        GlobalScope.promise {
+        MainScope().promise {
             val payload = client.verifyIdToken(
                 json("idToken" to request.body.idToken, "audience" to clientID)
             ).await().getPayload()
