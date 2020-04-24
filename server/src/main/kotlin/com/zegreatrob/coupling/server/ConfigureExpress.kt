@@ -133,46 +133,45 @@ private fun Express.isInDevMode() = when (get("env")) {
     else -> false
 }
 
-fun azureODICStrategy(): dynamic {
-    return OIDCStrategy(
-        json(
-            "identityMetadata" to Config.microsoft.identityMetadata,
-            "clientID" to Config.microsoft.clientID,
-            "responseType" to Config.microsoft.responseType,
-            "responseMode" to Config.microsoft.responseMode,
-            "redirectUrl" to Config.microsoft.redirectUrl,
-            "allowHttpForRedirectUrl" to Config.microsoft.allowHttpForRedirectUrl,
-            "clientSecret" to Config.microsoft.clientSecret,
-            "validateIssuer" to Config.microsoft.validateIssuer,
-            "isB2C" to Config.microsoft.isB2C,
-            "issuer" to Config.microsoft.issuer,
-            "passReqToCallback" to Config.microsoft.passReqToCallback,
-            "scope" to Config.microsoft.scope,
-            "loggingLevel" to Config.microsoft.loggingLevel,
-            "nonceLifetime" to Config.microsoft.nonceLifetime,
-            "nonceMaxAmount" to Config.microsoft.nonceMaxAmount,
-            "useCookieInsteadOfSession" to Config.microsoft.useCookieInsteadOfSession,
-            "cookieEncryptionKeys" to Config.microsoft.cookieEncryptionKeys,
-            "clockSkew" to Config.microsoft.clockSkew
-        ),
-        fun(
-            iss: String,
-            sub: String,
-            profile: Json,
-            accessToken: String,
-            refreshToken: String,
-            done: (dynamic, dynamic) -> Unit
-        ) {
-            MainScope().promise {
-                val email = profile["_json"].unsafeCast<Json>()["email"].unsafeCast<String?>()
-                email?.let {
-                    UserDataService.findOrCreate(email, uuid4())
-                }
-            }.then({ if (it != null) done(null, it) else done("Auth succeeded but no email found", null) },
-                { done(it, null) })
-        }
-    )
-}
+fun azureODICStrategy() = OIDCStrategy(
+    json(
+        "identityMetadata" to Config.microsoft.identityMetadata,
+        "clientID" to Config.microsoft.clientID,
+        "responseType" to Config.microsoft.responseType,
+        "responseMode" to Config.microsoft.responseMode,
+        "redirectUrl" to Config.microsoft.redirectUrl,
+        "allowHttpForRedirectUrl" to Config.microsoft.allowHttpForRedirectUrl,
+        "clientSecret" to Config.microsoft.clientSecret,
+        "validateIssuer" to Config.microsoft.validateIssuer,
+        "isB2C" to Config.microsoft.isB2C,
+        "issuer" to Config.microsoft.issuer,
+        "passReqToCallback" to true,
+        "scope" to Config.microsoft.scope,
+        "loggingLevel" to Config.microsoft.loggingLevel,
+        "nonceLifetime" to Config.microsoft.nonceLifetime,
+        "nonceMaxAmount" to Config.microsoft.nonceMaxAmount,
+        "useCookieInsteadOfSession" to Config.microsoft.useCookieInsteadOfSession,
+        "cookieEncryptionKeys" to Config.microsoft.cookieEncryptionKeys,
+        "clockSkew" to Config.microsoft.clockSkew
+    ),
+    fun(
+        request: Request,
+        iss: String,
+        sub: String,
+        profile: Json,
+        accessToken: String,
+        refreshToken: String,
+        done: (dynamic, dynamic) -> Unit
+    ) {
+        MainScope().promise {
+            val email = profile["_json"].unsafeCast<Json>()["email"].unsafeCast<String?>()
+            email?.let {
+                UserDataService.findOrCreate(email, request.traceId)
+            }
+        }.then({ if (it != null) done(null, it) else done("Auth succeeded but no email found", null) },
+            { done(it, null) })
+    }
+)
 
 fun googleAuthTransferStrategy(): dynamic {
     val clientID = Config.googleClientID

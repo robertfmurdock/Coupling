@@ -31,7 +31,6 @@ class MicrosoftConfig {
     val allowHttpForRedirectUrl = true
     val validateIssuer = false
     val issuer = "https://login.microsoftonline.com/${microsoftConsumerTenantId}/v2.0"
-    val passReqToCallback = false
     val useCookieInsteadOfSession = true
     val cookieEncryptionKeys = arrayOf(
         json(
