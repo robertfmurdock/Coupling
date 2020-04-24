@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.TraceIdSyntax
 import com.zegreatrob.coupling.json.toJsonArray
+import com.zegreatrob.coupling.json.toUser
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
@@ -18,7 +19,6 @@ import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
-import com.zegreatrob.coupling.server.entity.user.toUser
 import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.Promise

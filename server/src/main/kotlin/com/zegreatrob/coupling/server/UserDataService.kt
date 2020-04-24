@@ -2,7 +2,9 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
+import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
@@ -20,11 +22,8 @@ object UserDataService {
 
     fun deserializeUser(userId: String, done: (dynamic, dynamic) -> Unit) {
         onMainScope(done) {
-            val receiver = authActionDispatcher(userId, uuid4())
-            with(receiver) {
-                FindOrCreateUserAction.perform()
-                    .toJson()
-            }
+            authActionDispatcher(userId, uuid4())
+                .findOrCreateUser()
         }
     }
 
@@ -38,8 +37,11 @@ object UserDataService {
         traceId
     )
 
-    suspend fun findOrCreate(email: String, traceId: Uuid) = with(authActionDispatcher(email, traceId)) {
-        FindOrCreateUserAction.perform()
-            .toJson()
+    fun findOrCreate(email: String, traceId: Uuid) = MainScope().promise {
+        authActionDispatcher(email, traceId)
+            .findOrCreateUser()
     }
+
+    private suspend fun FindOrCreateUserActionDispatcher.findOrCreateUser() = FindOrCreateUserAction.perform()
+        .toJson()
 }

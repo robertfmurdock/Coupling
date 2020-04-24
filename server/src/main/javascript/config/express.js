@@ -64,18 +64,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  const isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
-
   passport.use(googleAuthTransferStrategy(userDataService));
   passport.use(azureODICStrategy(userDataService));
-
-  if (isInDevelopmentMode) {
-    passport.use(new LocalStrategy(function (username, password, done) {
-      userDataService.findOrCreate(username + "._temp", null, function (err, user) {
-        if (err)
-          console.error(`Problem with find or create user '${username}' in local strategy`, err);
-        done(err, user);
-      });
-    }));
-  }
 };

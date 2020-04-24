@@ -12,8 +12,11 @@ import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import com.zegreatrob.coupling.server.external.passportcustom.Strategy
-import kotlinx.coroutines.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.await
+import kotlinx.coroutines.promise
 import kotlin.js.Json
+import kotlin.js.Promise
 import kotlin.js.json
 
 
@@ -76,15 +79,15 @@ private fun Express.configPassport(isInDevelopmentMode: Boolean) {
 //    passport.use(googleAuthTransferStrategy())
 //    passport.use(azureODICStrategy())
 
-//    if (isInDevelopmentMode) {
-//        passport.use(LocalStrategy { username, _, done ->
-//            doneAfter(done, { UserDataService.findOrCreate("$username._temp", uuid4()) })
-//        })
-//    }
+    if (isInDevelopmentMode) {
+        passport.use(LocalStrategy { username, _, done ->
+            doneAfter(done, UserDataService.findOrCreate("$username._temp", uuid4()))
+        })
+    }
 }
 
-private fun doneAfter(done: (dynamic, dynamic) -> Unit, block: suspend CoroutineScope.() -> Json) {
-    GlobalScope.promise(block = block).then({ done(null, it) }, { done(it, null) })
+private fun doneAfter(done: (dynamic, dynamic) -> Unit, promise: Promise<Json>) {
+    promise.then({ done(null, it) }, { done(it, null) })
 }
 
 typealias LocalStrategy = com.zegreatrob.coupling.server.external.passportlocal.Strategy
