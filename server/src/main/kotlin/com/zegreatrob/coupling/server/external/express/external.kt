@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.route.WS
 external fun express(): Express
 
 external interface Express {
-    fun use(middlewareFunction: dynamic)
+    fun use(middlewareFunction: Handler)
     fun set(key: String, value: dynamic)
     fun get(key: String): dynamic
     fun listen(port: Int, function: () -> Unit)

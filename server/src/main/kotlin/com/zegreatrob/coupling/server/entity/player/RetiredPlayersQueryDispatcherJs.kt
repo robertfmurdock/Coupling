@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.sendSuccessful
 
 interface RetiredPlayersQueryDispatcherJs : RetiredPlayersQueryDispatcher, RequestTribeIdSyntax, EndpointHandlerSyntax {
-    @JsName("performRetiredPlayersQuery")
     val performRetiredPlayersQuery
         get() = endpointHandler(Response::sendSuccessful) {
             RetiredPlayersQuery(tribeId())

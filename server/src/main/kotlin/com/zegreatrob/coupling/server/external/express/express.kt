@@ -22,4 +22,4 @@ external interface RouterParams {
     val mergeParams: Boolean
 }
 
-external fun static(path: String, options: Json): dynamic
+external fun static(path: String, options: Json): Handler

@@ -17,7 +17,7 @@ external interface Request {
 
     var commandDispatcher: CommandDispatcher
     val user: Json
-    var traceId: Uuid?
+    val traceId: Uuid
     var statsdkey: String?
 }
 

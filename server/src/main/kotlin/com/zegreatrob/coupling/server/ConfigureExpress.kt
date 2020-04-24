@@ -4,10 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.dynamo.DynamoDbProvider
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
-import com.zegreatrob.coupling.server.external.express.Express
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
-import com.zegreatrob.coupling.server.external.express.static
+import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
@@ -22,15 +19,15 @@ import kotlin.js.json
 
 @JsModule("compression")
 @JsNonModule
-external fun compression(): dynamic
+external fun compression(): Handler
 
 @JsModule("express-statsd")
 @JsNonModule
-external fun statsd(config: Json): dynamic
+external fun statsd(config: Json): Handler
 
 @JsModule("express-session")
 @JsNonModule
-external fun session(config: Json): dynamic
+external fun session(config: Json): Handler
 
 @JsModule("express-session")
 @JsNonModule
@@ -47,7 +44,7 @@ fun newDynamoDbStore(@Suppress("UNUSED_PARAMETER") config: Json): dynamic {
 
 @JsModule("serve-favicon")
 @JsNonModule
-external fun favicon(iconPath: String): dynamic
+external fun favicon(iconPath: String): Handler
 
 @JsModule("on-finished")
 @JsNonModule
@@ -55,21 +52,21 @@ external fun onFinished(response: Response, callback: dynamic)
 
 @JsModule("method-override")
 @JsNonModule
-external fun methodOverride()
+external fun methodOverride(): Handler
 
 @JsModule("cookie-parser")
 @JsNonModule
-external fun cookieParser()
+external fun cookieParser(): Handler
 
 @JsModule("errorhandler")
 @JsNonModule
-external fun errorHandler()
+external fun errorHandler(): Handler
 
 fun configureExpress(app: Express) {
     configureExpressKt(app)
 }
 
-private fun Express.configPassport(isInDevelopmentMode: Boolean) {
+private fun Express.configPassport() {
     use(passport.initialize())
     use(passport.session())
 
@@ -79,7 +76,7 @@ private fun Express.configPassport(isInDevelopmentMode: Boolean) {
     passport.use(googleAuthTransferStrategy())
     passport.use(azureODICStrategy())
 
-    if (isInDevelopmentMode) {
+    if (isInDevMode()) {
         passport.use(LocalStrategy { username, _, done ->
             doneAfter(done, UserDataService.findOrCreate("$username._temp", uuid4()))
         })
@@ -92,10 +89,8 @@ private fun doneAfter(done: (dynamic, dynamic) -> Unit, promise: Promise<Json>) 
 
 typealias LocalStrategy = com.zegreatrob.coupling.server.external.passportlocal.Strategy
 
-@JsName("configureExpressKt")
 fun configureExpressKt(app: Express) = with(app) {
     configure()
-    app.configPassport(app.isInDevMode())
 }
 
 private fun Express.configure() {
@@ -106,7 +101,9 @@ private fun Express.configure() {
     set("views", arrayOf(resourcePath("public"), resourcePath("views")))
     set("view engine", "pug")
     use(favicon(resourcePath("public/images/favicon.ico")))
-    if (Process.getEnv("DISABLE_LOGGING") == null) {
+    use(addTraceId())
+
+    if (Config.disableLogging) {
         use(logRequests())
     }
 
@@ -118,16 +115,16 @@ private fun Express.configure() {
     use(cookieParser())
     use(buildSessionHandler())
 
-    use(logoutOnError())
-
-    val isInDevelopmentMode = isInDevMode()
-
-    if (isInDevelopmentMode) {
+    if (isInDevMode()) {
         use(errorHandler())
     }
 
-    initializeLogging(isInDevelopmentMode)
+    initializeLogging(isInDevMode())
+
+    configPassport()
 }
+
+private fun addTraceId(): Handler = { request, _, next -> request.asDynamic().traceId = uuid4(); next() }
 
 private fun Express.isInDevMode() = when (get("env")) {
     "development" -> true
@@ -186,14 +183,9 @@ fun googleAuthTransferStrategy(): dynamic {
                 json("idToken" to request.body.idToken, "audience" to clientID)
             ).await().getPayload()
 
-            UserDataService.findOrCreate(payload.email, request.traceId ?: uuid4())
+            UserDataService.findOrCreate(payload.email, request.traceId)
         }.then({ done(null, it) }, { done(it, null) })
     }
-}
-
-private fun logoutOnError() = { err: dynamic, request: Request, _: Response, next: (dynamic) -> Unit ->
-    val error = err.unsafeCast<Any?>()
-    next(error?.also { request.logout() })
 }
 
 fun buildSessionHandler() = session(
@@ -207,7 +199,7 @@ fun buildSessionHandler() = session(
 
 fun sessionStore() = newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
 
-private fun logRequests() = { request: Request, response: Response, next: () -> Unit ->
+private fun logRequests(): Handler = { request: Request, response: Response, next: () -> Unit ->
     logRequestAsync(request, response) { callback -> onFinished(response, callback) }
         .also { next() }
 }

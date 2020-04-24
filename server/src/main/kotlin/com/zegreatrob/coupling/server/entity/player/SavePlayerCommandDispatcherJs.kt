@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.server.external.express.sendSuccessful
 interface SavePlayerCommandDispatcherJs : SavePlayerCommandDispatcher, RequestTribeIdSyntax,
     EndpointHandlerSyntax {
 
-    @JsName("performSavePlayerCommand")
     val performSavePlayerCommand
         get() = endpointHandler(Response::sendSuccessful, ::handleSavePlayerCommand)
 

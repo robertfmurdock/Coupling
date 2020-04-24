@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 
 interface DeletePairAssignmentDocumentCommandDispatcherJs : DeletePairAssignmentDocumentCommandDispatcher,
     RequestTribeIdSyntax, RequestPairAssignmentDocumentIdSyntax, EndpointHandlerSyntax {
-    @JsName("performDeletePairAssignmentDocumentCommand")
+
     val performDeletePairAssignmentDocumentCommand
         get() = endpointHandler(sendDeleteResults("Pair Assignments")) {
             DeletePairAssignmentDocumentCommand(tribeId(), pairAssignmentDocumentId())

@@ -8,17 +8,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 
-@Suppress("unused")
-@JsName("authActionDispatcher")
-fun authActionDispatcher(userId: String, traceId: Uuid) = GlobalScope.promise {
-    AuthActionDispatcher(
-        userId,
-        userRepository(userId),
-        traceId
-    )
-}
-
-@Suppress("unused")
 class AuthActionDispatcher(
     override val userId: String,
     override val userRepository: UserRepository,

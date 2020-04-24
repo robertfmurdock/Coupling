@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.server.external.express.sendSuccessful
 interface SavePairAssignmentDocumentCommandDispatcherJs : SavePairAssignmentDocumentCommandDispatcher,
     RequestTribeIdSyntax, EndpointHandlerSyntax {
 
-    @JsName("performSavePairAssignmentDocumentCommand")
     val performSavePairAssignmentDocumentCommand
         get() = endpointHandler(Response::sendSuccessful, ::handleSavePairAssignmentDocumentCommand)
 

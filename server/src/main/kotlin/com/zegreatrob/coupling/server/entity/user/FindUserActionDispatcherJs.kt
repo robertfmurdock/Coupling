@@ -8,7 +8,6 @@ import kotlinx.coroutines.promise
 
 interface FindUserActionDispatcherJs : FindUserActionDispatcher, ScopeSyntax {
 
-    @JsName("performFindUserAction")
     fun performFindUserAction() = scope.promise {
         FindUserAction.perform()
             ?.toJson()

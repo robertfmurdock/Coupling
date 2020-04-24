@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 
 interface DeletePlayerCommandDispatcherJs : DeletePlayerCommandDispatcher, RequestTribeIdSyntax, RequestPlayerIdSyntax,
     EndpointHandlerSyntax {
-    @JsName("performDeletePlayerCommand")
+
     val performDeletePlayerCommand
         get() = endpointHandler(sendDeleteResults("Player")) {
             DeletePlayerCommand(tribeId(), playerId())

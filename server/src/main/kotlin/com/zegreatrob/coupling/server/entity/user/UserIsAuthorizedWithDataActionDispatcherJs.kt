@@ -11,7 +11,7 @@ import kotlin.js.json
 
 interface UserIsAuthorizedWithDataActionDispatcherJs : UserIsAuthorizedWithDataActionDispatcher, RequestTribeIdSyntax,
     ScopeSyntax {
-    @JsName("performUserIsAuthorizedWithDataAction")
+
     fun performUserIsAuthorizedWithDataAction(request: Request) = scope.promise {
         UserIsAuthorizedWithDataAction(request.tribeId())
             .perform()

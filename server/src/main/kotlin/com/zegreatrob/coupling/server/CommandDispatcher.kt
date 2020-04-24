@@ -23,8 +23,6 @@ import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.Promise
 
-@Suppress("unused")
-@JsName("commandDispatcher")
 fun commandDispatcher(
     userJson: Json,
     path: String,
@@ -50,12 +48,6 @@ class CommandDispatcher(
     PinDispatcherJs {
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
-
-    @Suppress("unused")
-    @JsName("authorizedDispatcher")
-    fun authorizedDispatcher(tribeId: String) = scope.promise {
-        authorizedTribeIdDispatcher(tribeId)
-    }
 
     suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentTribeIdDispatcher {
         val preexistingJob = authorizedTribeIdDispatcherJob

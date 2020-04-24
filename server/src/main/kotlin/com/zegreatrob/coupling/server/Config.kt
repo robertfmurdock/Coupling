@@ -7,6 +7,8 @@ private const val microsoftConsumerTenantId = "common"
 object Config {
     val microsoft = MicrosoftConfig()
     val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
+    val disableLogging get() = Process.getEnv("DISABLE_LOGGING")?.toBoolean() ?: false
+
     const val secret = "maythefourthbewithyou"
     const val buildDate: String = "None"
     const val gitRev: String = "None"

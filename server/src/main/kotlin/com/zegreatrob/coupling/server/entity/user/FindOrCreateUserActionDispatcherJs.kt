@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import kotlinx.coroutines.promise
 
 interface FindOrCreateUserActionDispatcherJs : FindOrCreateUserActionDispatcher, ScopeSyntax {
-    @JsName("performFindOrCreateUserAction")
+
     fun performFindOrCreateUserAction() = scope.promise {
         FindOrCreateUserAction.perform()
             .toJson()

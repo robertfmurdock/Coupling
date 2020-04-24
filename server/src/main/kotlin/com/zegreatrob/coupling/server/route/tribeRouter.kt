@@ -23,8 +23,6 @@ val tribeRouter = Router(routerParams(mergeParams = true)).apply {
     use("/pins", pinRouter)
 }
 
-@Suppress("unused")
-@JsName("tribeListRouter")
 val tribeListRouter = Router(routerParams()).apply {
     route("/")
         .post(handleRequest { performSaveTribeCommand })

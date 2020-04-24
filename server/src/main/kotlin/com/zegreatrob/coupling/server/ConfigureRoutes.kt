@@ -25,7 +25,6 @@ private external val schema: dynamic
 
 fun graphqlSchema() = schema.buildSchema(Resolvers)
 
-@JsName("configRoutes")
 fun configRoutes(expressWs: ExpressWs) {
     with(expressWs.app) { configureRoutes(expressWs.getWss()) }
 }
