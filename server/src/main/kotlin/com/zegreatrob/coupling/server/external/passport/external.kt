@@ -17,4 +17,3 @@ external interface Passport {
     fun deserializeUser(kFunction2: KFunction2<String, (dynamic, dynamic) -> Unit, Unit>)
     fun use(googleAuthTransferStrategy: dynamic)
 }
-

@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.HandleWebsocketConnectionAction
 import com.zegreatrob.coupling.server.external.express.Request
 
-@Suppress("unused")
-@JsName("websocketRoute")
 val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) = with(request.commandDispatcher()) {
     HandleWebsocketConnectionAction(websocket, request, wss)
         .perform()

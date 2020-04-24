@@ -26,9 +26,11 @@ export async function start() {
     const app = wsInstance.app;
     const userDataService = new UserDataService();
 
-    serverKt.com.zegreatrob.coupling.server.configureExpressKt(app)
+    const {configureExpressKt, configRoutes} = serverKt.com.zegreatrob.coupling.server;
+
+    configureExpressKt(app)
     require('./config/express')(app, userDataService);
-    require('./routes/routes')(wsInstance);
+    configRoutes(wsInstance)
 
     return await listen(app);
 }
