@@ -64,9 +64,6 @@ function googleAuthTransferStrategy(userDataService) {
 }
 
 module.exports = function (app, userDataService) {
-  app.use(passport.initialize());
-  app.use(passport.session());
-
   const isInDevelopmentMode = 'development' == app.get('env') || 'test' == app.get('env');
 
   passport.serializeUser(userDataService.serializeUser);

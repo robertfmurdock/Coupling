@@ -67,25 +67,23 @@ external fun errorHandler()
 
 fun configureExpress(app: Express) {
     configureExpressKt(app)
-
-    app.configPassport(app.isInDevMode())
 }
 
 private fun Express.configPassport(isInDevelopmentMode: Boolean) {
     use(passport.initialize())
     use(passport.session())
-
-    passport.serializeUser(UserDataService::serializeUser)
-    passport.deserializeUser(UserDataService::deserializeUser)
-
-    passport.use(googleAuthTransferStrategy())
-    passport.use(azureODICStrategy())
-
-    if (isInDevelopmentMode) {
-        passport.use(LocalStrategy { username, _, done ->
-            doneAfter(done, { UserDataService.findOrCreate("$username._temp", uuid4()) })
-        })
-    }
+//
+//    passport.serializeUser(UserDataService::serializeUser)
+//    passport.deserializeUser(UserDataService::deserializeUser)
+//
+//    passport.use(googleAuthTransferStrategy())
+//    passport.use(azureODICStrategy())
+//
+//    if (isInDevelopmentMode) {
+//        passport.use(LocalStrategy { username, _, done ->
+//            doneAfter(done, { UserDataService.findOrCreate("$username._temp", uuid4()) })
+//        })
+//    }
 }
 
 private fun doneAfter(done: (dynamic, dynamic) -> Unit, block: suspend CoroutineScope.() -> Json) {
@@ -97,6 +95,7 @@ typealias LocalStrategy = com.zegreatrob.coupling.server.external.passportlocal.
 @JsName("configureExpressKt")
 fun configureExpressKt(app: Express) = with(app) {
     configure()
+    app.configPassport(app.isInDevMode())
 }
 
 private fun Express.configure() {
