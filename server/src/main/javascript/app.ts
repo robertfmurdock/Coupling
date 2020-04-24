@@ -26,10 +26,8 @@ function listen(app) {
 export async function start() {
     const wsInstance = expressWs(express());
     const app = wsInstance.app;
-    const userDataService = new UserDataService();
 
     configureExpressKt(app)
-    require('./config/express')(app, userDataService);
     configRoutes(wsInstance)
 
     return await listen(app);

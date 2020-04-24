@@ -76,8 +76,8 @@ private fun Express.configPassport(isInDevelopmentMode: Boolean) {
     passport.serializeUser(UserDataService::serializeUser)
     passport.deserializeUser(UserDataService::deserializeUser)
 
-//    passport.use(googleAuthTransferStrategy())
-//    passport.use(azureODICStrategy())
+    passport.use(googleAuthTransferStrategy())
+    passport.use(azureODICStrategy())
 
     if (isInDevelopmentMode) {
         passport.use(LocalStrategy { username, _, done ->
