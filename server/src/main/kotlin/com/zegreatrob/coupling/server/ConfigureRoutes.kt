@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.route.tribeListRouter
+import com.zegreatrob.coupling.server.route.websocketRoute
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -17,9 +18,7 @@ fun configureRoutes(expressWs: ExpressWs) {
 
     val expressEnv = configAuthRoutes(app)
 
-    val indexRoute = configRoutes(expressEnv, app)
-
-    app.get("*", indexRoute)
+    configRoutes(expressEnv, app, expressWs)
 }
 
 @JsModule("routes/graphqlSchema")
@@ -29,14 +28,21 @@ private external val schema: dynamic
 fun graphqlSchema() = schema.buildSchema(Resolvers)
 
 @JsName("configRoutes")
-fun configRoutes(expressEnv: String, app: Express): Handler {
+fun configRoutes(expressEnv: String, app: Express, expressWs: ExpressWs) {
     val indexRoute = buildIndexRoute(expressEnv)
     app.get("/", indexRoute)
     app.get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     app.all("/api/*", apiGuard())
     app.use("/api/tribes", tribeListRouter)
     app.use("/api/graphql", graphqlHTTP(json("schema" to graphqlSchema(), "graphiql" to true)))
-    return indexRoute
+
+    app.ws("/api/:tribeId/pairAssignments/current") { connection, request ->
+        websocketRoute(connection, request, expressWs.getWss())
+    }
+
+    app.ws("*") { ws, _ -> ws.close() }
+
+    app.get("*", indexRoute)
 }
 
 private fun configAuthRoutes(app: Express): String {

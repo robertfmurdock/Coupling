@@ -1,10 +1,7 @@
-import apiGuard from "./api-guard";
 import * as passport from "passport";
 import * as routes from "./index";
 // @ts-ignore
 import * as server from "Coupling-server";
-import graphqlHTTP = require("express-graphql");
-import CouplingSchema from "./graphqlSchema"
 
 const {websocketRoute} = server.com.zegreatrob.coupling.server.route;
 const {configRoutes} = server.com.zegreatrob.coupling.server;
@@ -24,19 +21,6 @@ module.exports = function (wsInstance) {
     }
 
     const indexRoute = routes.index(expressEnv);
-    configRoutes(expressEnv, app);
-
-    app.get('/app/*.html', routes.components);
-    app.get('/partials/:name', routes.partials);
-
-    app.ws('/api/:tribeId/pairAssignments/current', (connection, request) => {
-        websocketRoute(connection, request, wsInstance.getWss())
-    });
-
-    app.ws('*', (ws) => {
-        ws.close();
-    });
-
-    app.get('*', indexRoute);
+    configRoutes(expressEnv, app, wsInstance);
 
 };
