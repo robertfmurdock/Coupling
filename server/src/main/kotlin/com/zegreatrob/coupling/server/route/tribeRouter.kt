@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 
 val tribeRouter = Router(routerParams(mergeParams = true)).apply {
     route("/*").all(handler = { request, response, next ->
-        with(request.commandDispatcher()) {
+        with(request.commandDispatcher) {
             scope.launch {
                 val isAuthorized = performUserIsAuthorizedAction(request.params["tribeId"].toString())
                 if (isAuthorized) {

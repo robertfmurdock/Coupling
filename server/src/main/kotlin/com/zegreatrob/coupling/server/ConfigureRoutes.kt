@@ -83,7 +83,7 @@ private fun apiGuard(): Handler = { request, response, next ->
     } else {
         commandDispatcher(request.user, "${request.method} ${request.path}", request.traceId)
             .then {
-                request.commandDispatcher = it
+                request.asDynamic().commandDispatcher = it
                 next()
             }
     }

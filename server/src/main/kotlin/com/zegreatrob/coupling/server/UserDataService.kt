@@ -5,25 +5,22 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatcher
-import kotlinx.coroutines.CoroutineScope
+import com.zegreatrob.coupling.server.express.async
+import com.zegreatrob.coupling.server.external.Done
+import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
 
 object UserDataService {
-    fun serializeUser(user: User, done: (dynamic, dynamic) -> Unit) {
+
+    fun serializeUser(user: User, done: Done) {
         done(null, user.id)
     }
 
-    fun deserializeUser(userId: String, done: (dynamic, dynamic) -> Unit) {
-        onMainScope(done) {
-            authActionDispatcher(userId, uuid4())
-                .findOrCreateUser()
-        }
-    }
-
-    private fun onMainScope(done: (dynamic, dynamic) -> Unit, block: suspend CoroutineScope.() -> User) {
-        MainScope().promise(block = block).then({ done(null, it) }, { done(it, null) })
+    fun deserializeUser(request: Request, userId: String, done: Done): Unit = request.scope.async(done) {
+        authActionDispatcher(userId, uuid4())
+            .findOrCreateUser()
     }
 
     private suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(

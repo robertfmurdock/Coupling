@@ -32,7 +32,7 @@ object Resolvers {
 
 private fun buildResolver(func: suspend CommandDispatcher.(Json, Json) -> Any?): (Json, Json, Request) -> Promise<Any?> =
     { entity, args, request ->
-        val commandDispatcher = request.commandDispatcher.unsafeCast<CommandDispatcher>()
+        val commandDispatcher = request.commandDispatcher
         commandDispatcher.scope.promise {
             func(commandDispatcher, entity, args)
         }

@@ -1,8 +1,10 @@
 package com.zegreatrob.coupling.server.external.passport
 
+import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.server.external.Done
 import com.zegreatrob.coupling.server.external.express.Handler
+import com.zegreatrob.coupling.server.external.express.Request
 import kotlin.js.Json
-import kotlin.reflect.KFunction2
 
 @JsModule("passport")
 @JsNonModule
@@ -13,7 +15,7 @@ external interface Passport {
     fun authenticate(strategy: String, options: Json): Handler
     fun initialize(): Handler
     fun session(): Handler
-    fun serializeUser(kFunction2: KFunction2<dynamic, (dynamic, dynamic) -> Unit, Unit>)
-    fun deserializeUser(kFunction2: KFunction2<String, (dynamic, dynamic) -> Unit, Unit>)
+    fun serializeUser(kFunction2: (User, Done) -> Unit)
+    fun deserializeUser(kFunction2: (Request, String, Done) -> Unit)
     fun use(googleAuthTransferStrategy: dynamic)
 }

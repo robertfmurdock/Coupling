@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.external.express
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.CommandDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlin.js.Json
 
 external interface Request {
@@ -16,11 +17,11 @@ external interface Request {
     fun isAuthenticated(): Boolean
     fun close()
 
-    var commandDispatcher: CommandDispatcher
+    val commandDispatcher: CommandDispatcher
     val user: User
     val traceId: Uuid
+    val scope: CoroutineScope
     var statsdkey: String?
 }
 
 fun Request.jsonBody() = body.unsafeCast<Json>()
-fun Request.jsonArrayBody() = body.unsafeCast<Array<Json>>()

@@ -19,6 +19,7 @@ fun Express.middleware() {
     set("view engine", "pug")
     use(favicon())
     use(tracer())
+    use(scope())
     if (Config.disableLogging) {
         use(logRequests())
     }
