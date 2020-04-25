@@ -17,11 +17,7 @@ fun googleAuthTransferStrategy(): dynamic {
             val payload = client.verifyIdToken(
                 json("idToken" to request.body.idToken, "audience" to clientID)
             ).await().getPayload()
-
-            UserDataService.findOrCreate(
-                payload.email,
-                request.traceId
-            )
+            UserDataService.findOrCreate(payload.email, request.traceId, request.scope)
         }.then({ done(null, it) }, { done(it, null) })
     }
 }

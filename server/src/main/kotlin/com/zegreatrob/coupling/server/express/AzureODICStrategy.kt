@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.express
 
 import com.zegreatrob.coupling.server.UserDataService
-import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
@@ -14,7 +13,7 @@ fun azureODICStrategy() = OIDCStrategy(
         MainScope().promise {
             val email = profile["_json"].unsafeCast<Json>()["email"].unsafeCast<String?>()
             email?.let {
-                UserDataService.findOrCreate(email, request.traceId)
+                UserDataService.findOrCreate(email, request.traceId, request.scope)
             }
         }.then({ if (it != null) done(null, it) else done("Auth succeeded but no email found", null) },
             { done(it, null) })

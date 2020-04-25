@@ -3,10 +3,7 @@ package com.zegreatrob.coupling.server
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.express.isInDevMode
-import com.zegreatrob.coupling.server.external.express.Express
-import com.zegreatrob.coupling.server.external.express.Handler
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
 import com.zegreatrob.coupling.server.external.graphqlSchema
@@ -15,6 +12,8 @@ import com.zegreatrob.coupling.server.route.WS
 import com.zegreatrob.coupling.server.route.WebSocketServer
 import com.zegreatrob.coupling.server.route.tribeListRouter
 import com.zegreatrob.coupling.server.route.websocketRoute
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlin.js.json
 
 fun ExpressWs.routes() = with(app) { routes(getWss()) }
@@ -81,18 +80,22 @@ private fun apiGuard(): Handler = { request, response, next ->
     if (!request.isAuthenticated()) {
         handleNotAuthenticated(request, response)
     } else {
-        commandDispatcher(request.user, "${request.method} ${request.path}", request.traceId)
-            .then {
-                request.asDynamic().commandDispatcher = it
-                next()
-            }
+        request.scope.launch(block = setupDispatcher(request, next))
     }
 }
 
-private fun handleNotAuthenticated(request: Request, response: Response) =
-    if (request.originalUrl?.contains(".websocket") == true) {
-        request.close()
-    } else {
-        response.sendStatus(401)
-    }
+private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScope.() -> Unit = {
+    request.asDynamic().commandDispatcher = request.commandDispatcher()
+    next()
+}
+
+private suspend fun Request.commandDispatcher() = commandDispatcher(user, scope, traceId)
+
+private fun handleNotAuthenticated(request: Request, response: Response) = if (request.isWebsocketConnection()) {
+    request.close()
+} else {
+    response.sendStatus(401)
+}
+
+private fun Request.isWebsocketConnection() = originalUrl?.contains(".websocket") == true
 

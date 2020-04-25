@@ -18,17 +18,10 @@ import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
-import kotlinx.coroutines.*
-import kotlin.js.Promise
-
-fun commandDispatcher(
-    user: User,
-    path: String,
-    traceId: Uuid
-): Promise<CommandDispatcher> {
-    val scope = MainScope() + CoroutineName(path)
-    return scope.promise { commandDispatcher(user, scope, traceId) }
-}
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 
 class CommandDispatcher(
     override val user: User,
