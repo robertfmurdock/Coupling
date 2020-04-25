@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatch
 import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.Done
 import com.zegreatrob.coupling.server.external.express.Request
-import kotlinx.coroutines.CoroutineScope
 
 object UserDataService {
 
@@ -17,21 +16,18 @@ object UserDataService {
     }
 
     fun deserializeUser(request: Request, userId: String, done: Done): Unit = request.scope.async(done) {
-        authActionDispatcher(userId, uuid4(), request.scope)
+        authActionDispatcher(userId, uuid4())
             .findOrCreateUser()
     }
 
-    private suspend fun authActionDispatcher(userId: String, traceId: Uuid, scope: CoroutineScope) =
-        AuthActionDispatcher(
-            userId,
-            userRepository(userId),
-            traceId,
-            scope
-        )
+    private suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
+        userId,
+        userRepository(userId),
+        traceId
+    )
 
-    suspend fun findOrCreate(email: String, traceId: Uuid, scope: CoroutineScope) =
-        authActionDispatcher(email, traceId, scope)
-            .findOrCreateUser()
+    suspend fun findOrCreateUser(email: String, traceId: Uuid) = authActionDispatcher(email, traceId)
+        .findOrCreateUser()
 
     private suspend fun FindOrCreateUserActionDispatcher.findOrCreateUser() = FindOrCreateUserAction.perform()
 }

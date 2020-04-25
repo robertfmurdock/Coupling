@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.express
 
-import com.zegreatrob.coupling.server.UserDataService
+import com.zegreatrob.coupling.server.UserDataService.findOrCreateUser
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import kotlin.js.Json
@@ -12,7 +12,7 @@ fun azureODICStrategy() = OIDCStrategy(azureOidcConfig()) { request, _, _, profi
 
 private fun findOrCreateUser(profile: Json, request: Request) = suspend {
     profile.email()?.let {
-        UserDataService.findOrCreate(it, request.traceId, request.scope)
+        findOrCreateUser(it, request.traceId)
     } ?: throw Exception("Auth succeeded but no email found")
 }
 
