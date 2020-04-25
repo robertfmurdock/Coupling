@@ -9,8 +9,6 @@ import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.Done
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.promise
-import kotlin.js.Promise
 
 object UserDataService {
 
@@ -31,10 +29,9 @@ object UserDataService {
             scope
         )
 
-    fun findOrCreate(email: String, traceId: Uuid, scope: CoroutineScope): Promise<User> = scope.promise {
+    suspend fun findOrCreate(email: String, traceId: Uuid, scope: CoroutineScope) =
         authActionDispatcher(email, traceId, scope)
             .findOrCreateUser()
-    }
 
     private suspend fun FindOrCreateUserActionDispatcher.findOrCreateUser() = FindOrCreateUserAction.perform()
 }

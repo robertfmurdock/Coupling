@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.server.express
 
 import com.zegreatrob.coupling.server.UserDataService
+import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
 import com.zegreatrob.coupling.server.external.passportcustom.Strategy
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
-import kotlinx.coroutines.promise
 import kotlin.js.json
 
 fun googleAuthTransferStrategy(): dynamic {
@@ -13,11 +12,13 @@ fun googleAuthTransferStrategy(): dynamic {
     val client = OAuth2Client(clientID)
 
     return Strategy { request, done ->
-        MainScope().promise {
-            val payload = client.verifyIdToken(
-                json("idToken" to request.body.idToken, "audience" to clientID)
-            ).await().getPayload()
+        request.scope.async(done) {
+            val payload = client.verifyIdToken(request, clientID).getPayload()
             UserDataService.findOrCreate(payload.email, request.traceId, request.scope)
-        }.then({ done(null, it) }, { done(it, null) })
+        }
     }
 }
+
+private suspend fun OAuth2Client.verifyIdToken(request: Request, clientID: String) = verifyIdToken(
+    json("idToken" to request.body.idToken, "audience" to clientID)
+).await()

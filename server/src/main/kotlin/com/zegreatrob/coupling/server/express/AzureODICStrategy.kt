@@ -1,23 +1,22 @@
 package com.zegreatrob.coupling.server.express
 
 import com.zegreatrob.coupling.server.UserDataService
+import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.json
 
-fun azureODICStrategy() = OIDCStrategy(
-    azureOidcConfig(),
-    fun(request, _, _, profile, _, _, done) {
-        MainScope().promise {
-            val email = profile["_json"].unsafeCast<Json>()["email"].unsafeCast<String?>()
-            email?.let {
-                UserDataService.findOrCreate(email, request.traceId, request.scope)
-            }
-        }.then({ if (it != null) done(null, it) else done("Auth succeeded but no email found", null) },
-            { done(it, null) })
-    })
+fun azureODICStrategy() = OIDCStrategy(azureOidcConfig()) { request, _, _, profile, _, _, done ->
+    request.scope.async(done, findOrCreateUser(profile, request))
+}
+
+private fun findOrCreateUser(profile: Json, request: Request) = suspend {
+    profile.email()?.let {
+        UserDataService.findOrCreate(it, request.traceId, request.scope)
+    } ?: throw Exception("Auth succeeded but no email found")
+}
+
+private fun Json.email() = this["_json"].unsafeCast<Json>()["email"].unsafeCast<String?>()
 
 private fun azureOidcConfig() = json(
     "identityMetadata" to Config.microsoft.identityMetadata,
