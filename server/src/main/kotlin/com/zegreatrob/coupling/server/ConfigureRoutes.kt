@@ -1,35 +1,25 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.server.entity.Resolvers
-import com.zegreatrob.coupling.server.external.express.*
+import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.express.env
+import com.zegreatrob.coupling.server.express.isInDevMode
+import com.zegreatrob.coupling.server.external.express.Express
+import com.zegreatrob.coupling.server.external.express.Handler
+import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
+import com.zegreatrob.coupling.server.external.graphqlSchema
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.route.WS
 import com.zegreatrob.coupling.server.route.WebSocketServer
 import com.zegreatrob.coupling.server.route.tribeListRouter
 import com.zegreatrob.coupling.server.route.websocketRoute
-import kotlin.js.Json
 import kotlin.js.json
 
-@JsModule("express-graphql")
-@JsNonModule
-private external val graphqlHTTP: (Json) -> Router
+fun ExpressWs.routes() = with(app) { routes(getWss()) }
 
-fun configureRoutes(expressWs: ExpressWs) {
-    configRoutes(expressWs)
-}
-
-@JsModule("routes/graphqlSchema")
-@JsNonModule
-private external val schema: dynamic
-
-fun graphqlSchema() = schema.buildSchema(Resolvers)
-
-fun configRoutes(expressWs: ExpressWs) {
-    with(expressWs.app) { configureRoutes(expressWs.getWss()) }
-}
-
-private fun Express.configureRoutes(webSocketServer: WebSocketServer) {
+fun Express.routes(webSocketServer: WebSocketServer) {
     authRoutes()
     get("/", indexRoute())
     get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
@@ -49,7 +39,7 @@ private fun Express.authRoutes() {
     post("/auth/google-token", authenticateCustomGoogle(), send200())
     get("/microsoft-login", authenticateAzure())
     post("/auth/signin-microsoft", authenticateAzureWithFailure(), redirectToRoot())
-    if (isInDevMode())
+    if (isInDevMode)
         get("/test-login", authenticateLocal())
 }
 
@@ -71,14 +61,6 @@ private fun authenticateAzureWithFailure() = passport.authenticate(
 
 private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/") }
 
-private fun Express.isInDevMode() = when (expressEnv()) {
-    "development" -> true
-    "test" -> true
-    else -> false
-}
-
-private fun Express.expressEnv() = get("env").unsafeCast<String>()
-
 private fun Express.indexRoute(): Handler = { request, response, _ ->
     response.render(
         "index",
@@ -87,7 +69,7 @@ private fun Express.indexRoute(): Handler = { request, response, _ ->
             "buildDate" to Config.buildDate,
             "gitRev" to Config.gitRev,
             "googleClientId" to Config.googleClientID,
-            "expressEnv" to expressEnv(),
+            "expressEnv" to env,
             "isAuthenticated" to request.isAuthenticated()
         )
     )

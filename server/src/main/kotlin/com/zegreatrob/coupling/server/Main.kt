@@ -1,5 +1,10 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.express.env
+import com.zegreatrob.coupling.server.express.middleware
+import com.zegreatrob.coupling.server.express.port
+import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.coupling.server.external.expressws.expressWs
 import kotlinx.coroutines.*
@@ -13,19 +18,19 @@ private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
     val expressWs = expressWs(express())
     val app = expressWs.app
 
-    app.configureExpress()
-    configureRoutes(expressWs)
+    app.middleware()
+    expressWs.routes()
 
-    val startDeferred = CompletableDeferred<Unit>()
-
-    val port = app.get("port").unsafeCast<Int?>() ?: 0
-    app.listen(port) {
-        logStartup(port, Config.buildDate, Config.gitRev, app.get("env").unsafeCast<String?>() ?: "UNKNOWN")
-        startDeferred.complete(Unit)
-    }
-
-    startDeferred.await()
+    app.startListening()
 }
+
+private suspend fun Express.startListening() = CompletableDeferred<Unit>()
+    .apply {
+        listen(port) {
+            logStartup(port, Config.buildDate, Config.gitRev, env)
+            complete(Unit)
+        }
+    }.await()
 
 fun main() {
     MainScope().launch { startDeferred.await() }

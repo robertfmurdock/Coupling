@@ -29,29 +29,17 @@ class MemoryRepositoryCatalog private constructor(
     ClockSyntax {
 
     companion object {
-        suspend operator fun invoke(
-            userEmail: String,
-            backend: MemoryRepositoryBackend,
-            clock: TimeProvider
-        ): MemoryRepositoryCatalog {
-            val tribeRepository = MemoryTribeRepository(userEmail, clock, backend.tribe)
-            val playerRepository = MemoryPlayerRepository(userEmail, clock, backend.player)
-            val pairAssignmentDocumentRepository =
-                MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments)
-            val pinRepository = MemoryPinRepository(userEmail, clock, backend.pin)
-            val userRepository = MemoryUserRepository(userEmail, clock, backend.user)
-            return MemoryRepositoryCatalog(
+        operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: TimeProvider) =
+            MemoryRepositoryCatalog(
                 userEmail,
                 clock,
-                tribeRepository,
-                playerRepository,
-                pairAssignmentDocumentRepository,
-                pinRepository,
-                userRepository
+                MemoryTribeRepository(userEmail, clock, backend.tribe),
+                MemoryPlayerRepository(userEmail, clock, backend.player),
+                MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
+                MemoryPinRepository(userEmail, clock, backend.pin),
+                MemoryUserRepository(userEmail, clock, backend.user)
             )
-        }
     }
-
 }
 
 class MemoryRepositoryBackend {
