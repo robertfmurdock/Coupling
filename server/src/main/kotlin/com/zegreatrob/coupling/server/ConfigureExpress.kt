@@ -4,15 +4,24 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.dynamo.DynamoDbProvider
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.server.external.bodyparser.bodyParserJson
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
+import com.zegreatrob.coupling.server.external.compression.compression
+import com.zegreatrob.coupling.server.external.connect_dynamodb.newDynamoDbStore
+import com.zegreatrob.coupling.server.external.cookie_parser.cookieParser
+import com.zegreatrob.coupling.server.external.errorhandler.errorHandler
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Handler
-import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.static
+import com.zegreatrob.coupling.server.external.express_session.session
 import com.zegreatrob.coupling.server.external.googleauthlibrary.OAuth2Client
+import com.zegreatrob.coupling.server.external.method_override.methodOverride
+import com.zegreatrob.coupling.server.external.on_finished.onFinished
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import com.zegreatrob.coupling.server.external.passportcustom.Strategy
+import com.zegreatrob.coupling.server.external.serve_favicon.favicon
+import com.zegreatrob.coupling.server.external.statsd.statsd
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.promise
@@ -21,53 +30,28 @@ import kotlin.js.Promise
 import kotlin.js.json
 
 
-@JsModule("compression")
-@JsNonModule
-external fun compression(): Handler
-
-@JsModule("express-statsd")
-@JsNonModule
-external fun statsd(config: Json): Handler
-
-@JsModule("express-session")
-@JsNonModule
-external fun session(config: Json): Handler
-
-@JsModule("express-session")
-@JsNonModule
-external val expressSession: dynamic
-
-@JsModule("connect-dynamodb")
-@JsNonModule
-external fun connectDynamoDb(session: dynamic)
-
-fun newDynamoDbStore(@Suppress("UNUSED_PARAMETER") config: Json): dynamic {
-    @Suppress("UNUSED_VARIABLE") val store = connectDynamoDb(expressSession)
-    return js("new store(config)")
-}
-
-@JsModule("serve-favicon")
-@JsNonModule
-external fun favicon(iconPath: String): Handler
-
-@JsModule("on-finished")
-@JsNonModule
-external fun onFinished(response: Response, callback: dynamic)
-
-@JsModule("method-override")
-@JsNonModule
-external fun methodOverride(): Handler
-
-@JsModule("cookie-parser")
-@JsNonModule
-external fun cookieParser(): Handler
-
-@JsModule("errorhandler")
-@JsNonModule
-external fun errorHandler(): Handler
-
-fun configureExpress(app: Express) {
-    configureExpressKt(app)
+fun Express.configureExpress() {
+    use(compression())
+    use(statsd(json("host" to "statsd", "port" to 8125)))
+    set("port", Config.port)
+    set("views", arrayOf(resourcePath("public"), resourcePath("views")))
+    set("view engine", "pug")
+    use(favicon(resourcePath("public/images/favicon.ico")))
+    use(tracer())
+    if (Config.disableLogging) {
+        use(logRequests())
+    }
+    use(urlencoded(json("extended" to true)))
+    use(bodyParserJson())
+    use(methodOverride())
+    use(static(resourcePath("public"), json("extensions" to arrayOf("json"))))
+    use(cookieParser())
+    use(buildSessionHandler())
+    if (isInDevMode()) {
+        use(errorHandler())
+    }
+    initializeLogging(isInDevMode())
+    configPassport()
 }
 
 private fun Express.configPassport() {
@@ -92,41 +76,6 @@ private fun doneAfter(done: (dynamic, dynamic) -> Unit, promise: Promise<User>) 
 }
 
 typealias LocalStrategy = com.zegreatrob.coupling.server.external.passportlocal.Strategy
-
-fun configureExpressKt(app: Express) = with(app) {
-    configure()
-}
-
-private fun Express.configure() {
-    use(compression())
-    use(statsd(json("host" to "statsd", "port" to 8125)))
-    set("port", Config.port)
-
-    set("views", arrayOf(resourcePath("public"), resourcePath("views")))
-    set("view engine", "pug")
-    use(favicon(resourcePath("public/images/favicon.ico")))
-    use(tracer())
-
-    if (Config.disableLogging) {
-        use(logRequests())
-    }
-
-    use(urlencoded(json("extended" to true)))
-    use(com.zegreatrob.coupling.server.external.bodyparser.json())
-    use(methodOverride())
-
-    use(static(resourcePath("public"), json("extensions" to arrayOf("json"))))
-    use(cookieParser())
-    use(buildSessionHandler())
-
-    if (isInDevMode()) {
-        use(errorHandler())
-    }
-
-    initializeLogging(isInDevMode())
-
-    configPassport()
-}
 
 private fun tracer(): Handler = { request, _, next -> request.asDynamic().traceId = uuid4(); next() }
 
@@ -191,10 +140,16 @@ fun buildSessionHandler() = session(
     )
 )
 
-fun sessionStore() = newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
+fun sessionStore() =
+    newDynamoDbStore(json("client" to DynamoDbProvider.dynamoDB))
 
 private fun logRequests(): Handler = { request, response, next ->
-    logRequestAsync(request, response) { callback -> onFinished(response, callback) }
+    logRequestAsync(request, response) { callback ->
+        onFinished(
+            response,
+            callback
+        )
+    }
         .also { next() }
 }
 

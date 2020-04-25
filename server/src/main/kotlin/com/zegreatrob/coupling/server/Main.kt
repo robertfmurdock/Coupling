@@ -13,7 +13,7 @@ private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
     val expressWs = expressWs(express())
     val app = expressWs.app
 
-    configureExpress(app)
+    app.configureExpress()
     configureRoutes(expressWs)
 
     val startDeferred = CompletableDeferred<Unit>()
