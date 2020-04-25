@@ -69,7 +69,7 @@ data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : R
 fun <D, P : RProps> dataLoadProps(
     query: suspend () -> D,
     toProps: (ReloadFunction, CoroutineScope, D) -> P
-): DataLoadProps<P> = DataLoadProps { reload, scope -> query().let { result -> toProps(reload, scope, result) } }
+): DataLoadProps<P> = DataLoadProps { reload, scope -> toProps(reload, scope, query()) }
 
 
 fun <D, P : RProps> dataLoadProps(

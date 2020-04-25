@@ -1,5 +1,6 @@
 @file:JsModule("google-auth-library")
 @file:JsNonModule
+
 package com.zegreatrob.coupling.server.external.googleauthlibrary
 
 import kotlin.js.Json
@@ -10,8 +11,7 @@ external class OAuth2Client(clientID: String) {
 }
 
 external interface Ticket {
-    fun getPayload() : Payload
-
+    fun getPayload(): Payload
 }
 
 external interface Payload {

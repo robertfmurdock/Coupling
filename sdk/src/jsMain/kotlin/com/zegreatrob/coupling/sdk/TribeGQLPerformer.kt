@@ -47,7 +47,7 @@ class BatchingTribeGQLPerformer(override val axios: Axios) : TribeGQLPerformer {
 
     private var pending: Deferred<Map<TribeGQLComponent, dynamic>>? = null
 
-    var pendingComponents = emptyList<TribeGQLComponent>()
+    private var pendingComponents = emptyList<TribeGQLComponent>()
 
     override suspend fun performTribeGQLQuery(
         tribeId: TribeId,
