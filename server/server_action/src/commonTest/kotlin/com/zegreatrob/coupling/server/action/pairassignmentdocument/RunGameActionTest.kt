@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import SpyData
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -12,6 +11,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

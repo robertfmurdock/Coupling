@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.mongo.player
 
-import Spy
-import SpyData
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.Spy
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test

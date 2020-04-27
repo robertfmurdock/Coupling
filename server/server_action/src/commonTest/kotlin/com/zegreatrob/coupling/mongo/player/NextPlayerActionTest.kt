@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.mongo.player
 
-import Spy
-import SpyData
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.Spy
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

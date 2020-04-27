@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import Spy
-import SpyData
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
@@ -9,6 +7,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.Spy
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 import kotlin.test.assertEquals

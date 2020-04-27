@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling
 
-import SpyData
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
@@ -11,6 +10,7 @@ import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatcher
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.setupAsync2
 import kotlin.test.Test
 import kotlin.test.fail
