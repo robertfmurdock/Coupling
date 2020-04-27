@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import Spy
-import SpyData
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
@@ -15,6 +13,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
@@ -69,14 +68,14 @@ class PlayerConfigEditorTest {
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
             override val traceId = uuid4()
-            val saveSpy = object : Spy<Pair<Json, String>, Promise<Unit>> by SpyData() {}
+            val saveSpy = SpyData<Pair<Json, String>, Promise<Unit>>()
             override suspend fun TribeIdPlayer.save() {
                 saveSpy.spyFunction(player.toJson() to tribeId.value).await()
             }
         }
         val tribe = Tribe(TribeId("party"))
         val player = Player(id = "blarg", badge = Badge.Default.value)
-        val reloaderSpy = object : Spy<Unit, Unit> by SpyData() {}
+        val reloaderSpy = SpyData<Unit, Unit>()
 
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
@@ -107,7 +106,7 @@ class PlayerConfigEditorTest {
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
             override val traceId = uuid4()
-            val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
+            val removeSpy = SpyData<Pair<String, String>, Promise<Unit>>()
 
             override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
                 removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
@@ -116,7 +115,7 @@ class PlayerConfigEditorTest {
         }
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
 
-        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val pathSetterSpy = SpyData<String, Unit>()
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
@@ -149,7 +148,7 @@ class PlayerConfigEditorTest {
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
             override val traceId = uuid4()
-            val removeSpy = object : Spy<Pair<String, String>, Promise<Unit>> by SpyData() {}
+            val removeSpy = SpyData<Pair<String, String>, Promise<Unit>>()
 
             override suspend fun TribeIdPlayerId.deletePlayer() = true.also {
                 removeSpy.spyFunction(tribeId.value to playerId).asDeferred().await()
@@ -157,7 +156,7 @@ class PlayerConfigEditorTest {
         }
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
 
-        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val pathSetterSpy = SpyData<String, Unit>()
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 

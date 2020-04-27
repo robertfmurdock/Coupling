@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import ShallowWrapper
-import Spy
-import SpyData
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.buildCommandFunc
@@ -18,6 +16,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
@@ -97,9 +96,9 @@ class PairAssignmentsTest {
             }
         }
 
-        val saveSpy = object : Spy<Json, Promise<Unit>> by SpyData() {}
+        val saveSpy = SpyData<Json, Promise<Unit>>()
 
-        val pathSetterSpy = object : Spy<String, Unit> by SpyData() {}
+        val pathSetterSpy = SpyData<String, Unit>()
         val pairAssignments = PairAssignmentDocument(
             date = DateTime.now(),
             pairs = emptyList()

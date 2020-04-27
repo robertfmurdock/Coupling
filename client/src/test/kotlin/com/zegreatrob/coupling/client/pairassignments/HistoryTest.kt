@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import Spy
-import SpyData
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.buildCommandFunc
@@ -17,6 +15,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmen
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.Spy
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.setupAsync2
 import org.w3c.dom.Window
@@ -44,7 +44,7 @@ class HistoryTest {
 
         val tribe = Tribe(TribeId("me"))
 
-        val reloadSpy = object : Spy<Unit, Unit> by SpyData() {}
+        val reloadSpy = SpyData<Unit, Unit>()
 
         val history = listOf(
             PairAssignmentDocument(

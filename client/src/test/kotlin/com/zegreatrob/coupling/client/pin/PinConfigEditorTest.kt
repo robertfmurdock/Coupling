@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pin
 
-import SpyData
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.setupAsync2
 import com.zegreatrob.testmints.setup
