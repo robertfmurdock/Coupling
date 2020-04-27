@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.mongo.player
+package com.zegreatrob.coupling.server.action.player
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
@@ -9,8 +9,6 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerListGet
-import com.zegreatrob.coupling.server.action.player.PlayersQuery
-import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData

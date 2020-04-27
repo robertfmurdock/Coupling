@@ -20,11 +20,7 @@ class SavePairAssignmentDocumentCommandTest {
         setupAsync(object : SavePairAssignmentDocumentCommandDispatcher {
             override val traceId = uuid4()
             val pairAssignmentDocument = TribeId("tribe-239").with(
-                PairAssignmentDocument(
-                    id = null,
-                    date = DateTime.now(),
-                    pairs = emptyList()
-                )
+                PairAssignmentDocument(id = null, date = DateTime.now(), pairs = emptyList())
             )
 
             override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
