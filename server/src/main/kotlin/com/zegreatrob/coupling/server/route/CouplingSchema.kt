@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.server.route
 
-import com.zegreatrob.coupling.server.entity.Resolvers
+import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.entity.verifyAuth
+import com.zegreatrob.coupling.server.entity.buildResolver
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.graphql.*
 import kotlin.js.Json
@@ -111,13 +113,13 @@ val TribeDataType = objectType(
     description = "Everything you wanted to know about a tribe but never asked.",
     fields = arrayOf(
         field("id", GraphQLNonNull(GraphQLString)),
-        field("tribe", TribeType, resolve = Resolvers.tribe),
-        field("pinList", GraphQLList(PinType), resolve = Resolvers.pinList),
-        field("playerList", GraphQLList(PlayerType), resolve = Resolvers.playerList),
+        field("tribe", TribeType) { entity, _ -> performTribeQueryGQL(entity["id"].toString()) },
+        field("pinList", GraphQLList(PinType), verifyAuth { performPinListQueryGQL() }),
+        field("playerList", GraphQLList(PlayerType), verifyAuth { performPlayerListQueryGQL() }),
         field(
             "pairAssignmentDocumentList",
             GraphQLList(PairAssignmentDocumentType),
-            resolve = Resolvers.pairAssignmentDocumentList
+            verifyAuth { performPairAssignmentListQueryGQL() }
         )
     )
 )
@@ -127,7 +129,7 @@ fun couplingSchema() = GraphQLSchema(
         "query" to objectType(
             name = "RootQueryType",
             fields = arrayOf(
-                field("tribeList", GraphQLList(TribeType), resolve = Resolvers.tribeList),
+                field("tribeList", GraphQLList(TribeType)) { _, _ -> performTribeListQueryGQL() },
                 field("tribeData", TribeDataType, args = json("id" to field(GraphQLString))) { _, args, _ ->
                     json("id" to args["id"])
                 }
@@ -135,6 +137,9 @@ fun couplingSchema() = GraphQLSchema(
         )
     )
 )
+
+private fun field(name: String, type: GraphQLType, commandResolve: suspend CommandDispatcher.(Json, Json) -> Any?) =
+    field(name, type, resolve = buildResolver(commandResolve))
 
 typealias Resolver = (Json, Json, Request) -> Any?
 

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignme
 
 interface PairAssignmentDocumentListQueryDispatcherJs : PairAssignmentDocumentListQueryDispatcher {
 
-    suspend fun performPairAssignmentDocumentListQueryGQL() = PairAssignmentDocumentListQuery
+    suspend fun performPairAssignmentListQueryGQL() = PairAssignmentDocumentListQuery
         .perform()
         .map { it.toJson().add(it.data.document.toJson()) }
         .toTypedArray()

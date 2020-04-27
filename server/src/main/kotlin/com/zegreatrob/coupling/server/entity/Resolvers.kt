@@ -5,49 +5,20 @@ import com.zegreatrob.coupling.server.CurrentTribeIdDispatcher
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise
 import kotlin.js.Json
-import kotlin.js.Promise
 
-@Suppress("unused")
-@JsName("Resolvers")
-object Resolvers {
-    @JsName("pinList")
-    val pinList: GraphQLResolver = buildAuthorizedResolver { performPinListQueryGQL() }
+typealias CommandResolver = suspend CommandDispatcher.(Json, Json) -> Any?
 
-    @JsName("playerList")
-    val playerList: GraphQLResolver = buildAuthorizedResolver { performPlayerListQueryGQL() }
+fun verifyAuth(dispatcher: suspend CurrentTribeIdDispatcher.() -> Any?): CommandResolver =
+    { entity, _ -> verifyAuth(entity, dispatcher) }
 
-    @JsName("pairAssignmentDocumentList")
-    val pairAssignmentDocumentList = buildAuthorizedResolver { performPairAssignmentDocumentListQueryGQL() }
-
-    @JsName("tribe")
-    val tribe = buildResolver { entity, _ ->
-        performTribeQueryGQL(entity["id"].toString())
-    }
-
-    @JsName("tribeList")
-    val tribeList = buildResolver { _, _ ->
-        performTribeListQueryGQL()
-    }
+fun buildResolver(func: CommandResolver) = { entity: Json, args: Json, request: Request ->
+    request.scope.promise { func(request.commandDispatcher, entity, args) }
 }
 
-private fun buildResolver(func: suspend CommandDispatcher.(Json, Json) -> Any?): (Json, Json, Request) -> Promise<Any?> =
-    { entity, args, request ->
-        val commandDispatcher = request.commandDispatcher
-        commandDispatcher.scope.promise {
-            func(commandDispatcher, entity, args)
-        }
+suspend fun CommandDispatcher.verifyAuth(entity: Json, func: suspend CurrentTribeIdDispatcher.() -> Any?): Any? {
+    val dispatcher = authorizedTribeIdDispatcher(entity["id"].toString())
+    return when {
+        dispatcher.isAuthorized() -> func(dispatcher)
+        else -> null
     }
-
-private fun buildAuthorizedResolver(func: suspend CurrentTribeIdDispatcher.() -> Any?) =
-    buildResolver { entity, _ ->
-        val authorizedDispatcher = authorizedTribeIdDispatcher(entity["id"].toString())
-        authorizedDispatcher.func()
-            .let {
-                when {
-                    authorizedDispatcher.isAuthorized() -> it
-                    else -> null
-                }
-            }
-    }
-
-typealias GraphQLResolver = (Json, Json, Request) -> Promise<Any?>
+}
