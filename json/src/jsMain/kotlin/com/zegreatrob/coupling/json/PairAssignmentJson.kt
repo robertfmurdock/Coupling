@@ -50,7 +50,7 @@ private fun toPinnedPlayer(it: Json) = PinnedPlayer(
 
 fun PairAssignmentDocument.toJson() = json(
     "_id" to id?.value,
-    "date" to date.toDate(),
+    "date" to date.toDate().toISOString(),
     "pairs" to toJsPairs()
 )
 
