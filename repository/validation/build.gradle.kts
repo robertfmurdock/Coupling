@@ -44,7 +44,7 @@ kotlin {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.5")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.zegreatrob.testmints:async:+")
             }
         }
     }

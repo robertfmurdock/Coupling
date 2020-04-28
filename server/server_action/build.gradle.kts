@@ -29,7 +29,7 @@ kotlin {
             dependencies {
                 api(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.zegreatrob.testmints:async:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:minspy:+")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")

@@ -80,7 +80,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.zegreatrob.testmints:async:+")
             }
         }
 
@@ -89,7 +89,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.zegreatrob.testmints:async:+")
             }
         }
     }

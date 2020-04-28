@@ -60,7 +60,7 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.zegreatrob.testmints:async:+")
             }
         }
     }

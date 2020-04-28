@@ -29,7 +29,7 @@ kotlin {
                 api(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("com.zegreatrob.testmints:async-js:+")
+                implementation("com.zegreatrob.testmints:async:+")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")

@@ -63,7 +63,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
     testImplementation("com.zegreatrob.testmints:standard:+")
-    testImplementation("com.zegreatrob.testmints:async-js:+")
+    testImplementation("com.zegreatrob.testmints:async:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
     testImplementation("com.zegreatrob.testmints:minspy:+")
 
