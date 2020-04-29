@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.testlogging
 
-import com.zegreatrob.testmints.MintReporter
-import com.zegreatrob.testmints.StandardMints
+import com.zegreatrob.testmints.report.MintReporter
+import com.zegreatrob.testmints.report.MintReporterConfig
 import mu.KotlinLogging
 
 class JsonLoggingTestMintsReporter private constructor() : MintReporter {
@@ -26,7 +26,7 @@ class JsonLoggingTestMintsReporter private constructor() : MintReporter {
 
     companion object {
         fun initialize() {
-            StandardMints.reporter = JsonLoggingTestMintsReporter()
+            MintReporterConfig.reporter = JsonLoggingTestMintsReporter()
         }
     }
 }
