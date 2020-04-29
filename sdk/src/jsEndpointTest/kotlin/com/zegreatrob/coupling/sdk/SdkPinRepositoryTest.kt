@@ -13,8 +13,8 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 class SdkPinRepositoryTest : PinRepositoryValidator {
@@ -28,19 +28,21 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
     }
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = testAsync {
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup(contextProvider = {
         val sdk = authorizedSdk()
         val otherSdk = authorizedSdk(uuidString())
-        setupAsync(object {
+        object {
             val otherTribe = stubTribe()
-        }) {
-            otherSdk.save(otherTribe)
-            otherSdk.save(otherTribe.id.with(stubPin()))
-        } exerciseAsync {
-            sdk.getPins(otherTribe.id)
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
+            val sdk = sdk
+            val otherSdk = otherSdk
         }
+    }) {
+        otherSdk.save(otherTribe)
+        otherSdk.save(otherTribe.id.with(stubPin()))
+    } exercise {
+        sdk.getPins(otherTribe.id)
+    } verify { result ->
+        result.assertIsEqualTo(emptyList())
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->

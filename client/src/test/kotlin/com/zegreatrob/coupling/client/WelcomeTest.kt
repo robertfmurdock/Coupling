@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import shallow
 import kotlin.test.Test
@@ -32,7 +32,7 @@ class WelcomeTest {
     }
 
     @Test
-    fun willShowAfterZeroTimeoutSoThatAnimationWorks() = setupAsync2(object : ScopeMint() {
+    fun willShowAfterZeroTimeoutSoThatAnimationWorks() = asyncSetup(object : ScopeMint() {
         val dispatcher = object : GoogleSignIn {
             override val sdk: Sdk get() = TODO("Not yet implemented")
         }

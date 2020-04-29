@@ -14,8 +14,8 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -35,19 +35,21 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
     }
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = testAsync {
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup(contextProvider = {
         val sdk = authorizedSdk()
         val otherSdk = authorizedSdk(uuidString())
-        setupAsync(object {
+        object {
             val otherTribe = stubTribe()
-        }) {
-            otherSdk.save(otherTribe)
-            otherSdk.save(otherTribe.id.with(stubPairAssignmentDoc()))
-        } exerciseAsync {
-            sdk.getPairAssignments(TribeId("someoneElseTribe"))
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
+            val sdk = sdk
+            val otherSdk = otherSdk
         }
+    }) {
+        otherSdk.save(otherTribe)
+        otherSdk.save(otherTribe.id.with(stubPairAssignmentDoc()))
+    } exercise {
+        sdk.getPairAssignments(TribeId("someoneElseTribe"))
+    } verify { result ->
+        result.assertIsEqualTo(emptyList())
     }
 
     override fun savedWillIncludeModificationDateAndUsername() = super.testRepository { repository, tribeId, user, _ ->

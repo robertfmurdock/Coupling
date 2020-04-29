@@ -15,7 +15,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import shallow
 import kotlin.js.Json
@@ -58,7 +58,7 @@ class TribeConfigTest {
     }
 
     @Test
-    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = setupAsync2(object : ScopeMint() {
+    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = asyncSetup(object : ScopeMint() {
         val dispatcher = object : TribeConfigDispatcher {
             override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
             override val traceId = uuid4()
@@ -83,10 +83,10 @@ class TribeConfigTest {
             TribeConfig,
             TribeConfigProps(tribe, pathSetterSpy::spyFunction, commandFunc)
         )
-    }) {
+    }, {
         dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
         pathSetterSpy.spyWillReturn(Unit)
-    } exercise {
+    }) exercise {
         wrapper.find<Any>(".${styles["saveButton"]}").simulate("click")
     } verify {
         dispatcher.saveSpy.spyReceivedValues.map { it.toTribe() }.assertContains(tribe)

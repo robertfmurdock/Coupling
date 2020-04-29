@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
@@ -17,17 +17,12 @@ import kotlin.test.Test
 class RequestCombineEndpointTest {
 
     @Test
-    fun postPlayersAndPinsThenGet() = setupAsync2(contextProvider = withSdk {
+    fun postPlayersAndPinsThenGet() = asyncSetup(contextProvider = withSdk {
         object {
             val sdk = it
             val tribe = Tribe(id = TribeId("et-${uuid4()}"))
             val playersToSave = listOf(
-                Player(
-                    id = "${uuid4()}",
-                    name = "Awesome-O",
-                    callSignAdjective = "Awesome",
-                    callSignNoun = "Sauce"
-                )
+                Player(id = "${uuid4()}", name = "Awesome-O", callSignAdjective = "Awesome", callSignNoun = "Sauce")
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
         }

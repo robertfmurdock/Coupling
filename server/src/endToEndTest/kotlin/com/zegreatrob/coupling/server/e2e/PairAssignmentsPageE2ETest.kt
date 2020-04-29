@@ -64,7 +64,7 @@ class PairAssignmentsPageE2ETest {
 
             }
 
-            val setupProvider by lazyDeferred {
+            private val setupProvider by lazyDeferred {
                 sdkProvider.await().save(tribe, players)
 
                 CouplingLogin.loginProvider.await()

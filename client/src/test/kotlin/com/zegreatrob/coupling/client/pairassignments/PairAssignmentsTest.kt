@@ -18,7 +18,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import findComponent
 import shallow
@@ -87,7 +87,7 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = setupAsync2(object : ScopeMint() {
+    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = asyncSetup(object : ScopeMint() {
         val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
             override val traceId = uuid4()
             override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
@@ -103,15 +103,10 @@ class PairAssignmentsTest {
             date = DateTime.now(),
             pairs = emptyList()
         )
+        val commandFunc = commandDispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
             PairAssignments,
-            PairAssignmentsProps(
-                tribe,
-                emptyList(),
-                pairAssignments,
-                commandDispatcher.buildCommandFunc(exerciseScope),
-                pathSetterSpy::spyFunction
-            )
+            PairAssignmentsProps(tribe, emptyList(), pairAssignments, commandFunc, pathSetterSpy::spyFunction)
         )
     }) {
         saveSpy.spyWillReturn(Promise.resolve(Unit))

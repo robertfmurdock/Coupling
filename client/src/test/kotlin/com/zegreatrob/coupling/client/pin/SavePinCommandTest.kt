@@ -8,13 +8,13 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pin.PinSave
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class SavePinCommandTest {
 
     @Test
-    fun whenPerformedWillSaveThePinInTheRepository() = setupAsync2(object : SavePinCommandDispatcher, PinSave {
+    fun whenPerformedWillSaveThePinInTheRepository() = asyncSetup(object : SavePinCommandDispatcher, PinSave {
         override val pinRepository: PinSave get() = this
         val saveSpy = SpyData<TribeIdPin, Unit>().apply { spyWillReturn(Unit) }
         override suspend fun save(tribeIdPin: TribeIdPin) = saveSpy.spyFunction(tribeIdPin)

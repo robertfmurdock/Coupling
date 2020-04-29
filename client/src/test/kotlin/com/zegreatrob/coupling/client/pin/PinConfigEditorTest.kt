@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import findByClass
 import shallow
@@ -48,7 +48,7 @@ class PinConfigEditorTest {
     }
 
     @Test
-    fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setupAsync2(object : ScopeMint() {
+    fun whenSaveIsPressedWillSavePinWithUpdatedContent() = asyncSetup(object : ScopeMint() {
         val stubDispatcher = object : PinCommandDispatcher {
             override val traceId = uuid4()
             val savePinSpy = SpyData<SavePinCommand, Unit>().apply { spyWillReturn(Unit) }
