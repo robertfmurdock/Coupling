@@ -11,8 +11,7 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
@@ -22,17 +21,14 @@ class HistoryPageE2ETest {
 
     class WithTwoAssignments {
         companion object {
-            fun testHistoryPage(test: suspend (List<PairAssignmentDocument>) -> Unit) = testAsync {
-                val (_, pairAssignments) = setupProvider.await()
+            private fun historyPageSetup() = asyncSetupTeardown(setupHistoryPageWithPairAssignments(), { checkLogs() })
 
-                try {
-                    test(pairAssignments)
-                } finally {
-                    checkLogs()
-                }
+            private fun setupHistoryPageWithPairAssignments() = suspend {
+                val (_, pairAssignments) = setupProvider.await()
+                HistoryPageSetup(pairAssignments)
             }
 
-            val setupProvider by lazy {
+            private val setupProvider by lazy {
                 GlobalScope.async {
                     val tribe = tribeProvider.await()
                     val pairAssignments = pairAssignmentsProvider.await()
@@ -44,7 +40,7 @@ class HistoryPageE2ETest {
                 }
             }
 
-            val tribeProvider by lazy {
+            private val tribeProvider by lazy {
                 GlobalScope.async {
                     val sdk = sdkProvider.await()
                     buildTribe()
@@ -52,7 +48,7 @@ class HistoryPageE2ETest {
                 }
             }
 
-            val pairAssignmentsProvider by lazy {
+            private val pairAssignmentsProvider by lazy {
                 GlobalScope.async {
                     val sdk = sdkProvider.await()
                     val tribe = tribeProvider.await()
@@ -78,32 +74,45 @@ class HistoryPageE2ETest {
         }
 
         @Test
-        fun showsRecentPairings() = testHistoryPage { pairAssignments ->
-            setupAsync(HistoryPage) exerciseAsync {
-            } verifyAsync {
-                this.pairAssignments.count().await()
-                    .assertIsEqualTo(pairAssignments.size)
-            }
+        fun showsRecentPairings() = historyPageSetup().exercise {
+        } verify {
+            page.pairAssignments.count().await()
+                .assertIsEqualTo(pairAssignments.size)
         }
 
         @Test
-        fun pairingCanBeDeleted() = testHistoryPage { pairAssignments ->
-            setupAsync(HistoryPage) exerciseAsync {
-                deleteButtons.get(0).performClick()
+        fun pairingCanBeDeleted() = historyPageSetup()
+            .exercise {
+                page.deleteButtons.get(0).performClick()
                 browser.switchTo().alert().await()
                     .accept().await()
-            } verifyAsync {
-                browser.wait(
-                    { this.pairAssignments.count().then { it == pairAssignments.size - 1 } },
-                    waitToBePresentDuration,
-                    "HistoryPageE2ETest.pairingCanBeDeleted"
-                )
-
-                this.pairAssignments.count().await()
-                    .assertIsEqualTo(1)
-            }
+            } verify {
+            browser.wait(
+                { page.pairAssignments.count().then { it == pairAssignments.size - 1 } },
+                waitToBePresentDuration,
+                "HistoryPageE2ETest.pairingCanBeDeleted"
+            )
+            page.pairAssignments.count().await()
+                .assertIsEqualTo(1)
         }
+
     }
 
 }
 
+class HistoryPageSetup(val pairAssignments: List<PairAssignmentDocument>) {
+    val page = HistoryPage
+}
+
+private fun <C : Any> asyncSetupTeardown(contextProvider: suspend () -> C, teardownFunc: suspend () -> Unit) =
+    object {
+        infix fun exercise(exerciseFunc: suspend C.() -> Unit) = asyncSetup(contextProvider = contextProvider)
+            .exercise(exerciseFunc)
+            .let { verifyObj ->
+                object {
+                    infix fun verify(verify: suspend C.(Unit) -> Unit) {
+                        verifyObj.verifyAnd(verify) teardown teardownFunc
+                    }
+                }
+            }
+    }
