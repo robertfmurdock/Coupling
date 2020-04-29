@@ -15,7 +15,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.asDeferred
 import kotlinx.coroutines.await
@@ -64,7 +64,7 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun submitWillSaveAndReload() = setupAsync2(object : ScopeMint() {
+    fun submitWillSaveAndReload() = asyncSetup(object : ScopeMint() {
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
             override val traceId = uuid4()
@@ -82,10 +82,10 @@ class PlayerConfigEditorTest {
             PlayerConfigEditor,
             PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, commandFunc)
         )
-    }) {
+    }, {
         dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
         reloaderSpy.spyWillReturn(Unit)
-    } exercise {
+    }) exercise {
         wrapper.simulateInputChange("name", "nonsense")
         wrapper.find<Any>("form")
             .simulate("submit", json("preventDefault" to {}))
@@ -99,7 +99,7 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = setupAsync2(object : ScopeMint() {
+    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = asyncSetup(object : ScopeMint() {
         val windowFuncs = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         }
@@ -123,10 +123,10 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorComponent(windowFuncs),
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, commandFunc)
         )
-    }) {
+    }, {
         pathSetterSpy.spyWillReturn(Unit)
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
-    } exercise {
+    }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}")
             .simulate("click")
     } verify {
@@ -141,7 +141,7 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun clickingDeleteWhenNotConfirmedWillDoNothing() = setupAsync2(object : ScopeMint() {
+    fun clickingDeleteWhenNotConfirmedWillDoNothing() = asyncSetup(object : ScopeMint() {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
@@ -164,10 +164,10 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorComponent(windowFunctions),
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, commandFunc)
         )
-    }) {
+    }, {
         pathSetterSpy.spyWillReturn(Unit)
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
-    } exercise {
+    }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}")
             .simulate("click")
     } verify {
@@ -189,15 +189,14 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() =
-        setup(object {
-            val tribe = Tribe(TribeId("party"))
-            val player = Player("blarg", badge = Badge.Alternate.value)
-        }) exercise {
-            shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
-        } verify { wrapper ->
-            wrapper.find(PromptComponent).props().`when`
-                .assertIsEqualTo(false)
-        }
+    fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object {
+        val tribe = Tribe(TribeId("party"))
+        val player = Player("blarg", badge = Badge.Alternate.value)
+    }) exercise {
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
+    } verify { wrapper ->
+        wrapper.find(PromptComponent).props().`when`
+            .assertIsEqualTo(false)
+    }
 
 }

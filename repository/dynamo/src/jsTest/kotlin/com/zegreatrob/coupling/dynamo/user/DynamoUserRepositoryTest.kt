@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlin.test.Test
@@ -41,7 +41,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
     }
 
     @Test
-    fun getUserRecordsWillReturnAllRecordsForAllUsers() = setupAsync2(contextProvider = buildRepository { context ->
+    fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(contextProvider = buildRepository { context ->
         object : Context by context {
             val initialSaveTime = DateTime.now().minus(3.days)
             val updatedUser = user.copy(authorizedTribeIds = setOf(TribeId("clone!")))
@@ -64,7 +64,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
     }
 
     @Test
-    fun canSaveRawRecord() = setupAsync2(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val records = listOf(
                 Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months)),
