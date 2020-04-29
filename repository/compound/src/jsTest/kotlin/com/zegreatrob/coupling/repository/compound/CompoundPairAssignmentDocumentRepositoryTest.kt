@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
@@ -31,7 +31,7 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
     }
 
     @Test
-    fun saveWillWriteToSecondRepository() = setupAsync2(object {
+    fun saveWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUser()
 
         val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)
@@ -50,7 +50,7 @@ class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepos
     }
 
     @Test
-    fun deleteWillWriteToSecondRepository() = setupAsync2(object {
+    fun deleteWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUser()
 
         val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, TimeProvider)

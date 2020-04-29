@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class CompoundTribeRepositoryTest : TribeRepositoryValidator {
@@ -23,7 +23,7 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator {
     }
 
     @Test
-    fun saveWillWriteToSecondRepositoryAsWell() = setupAsync2(object {
+    fun saveWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUser()
 
         val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
@@ -41,7 +41,7 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator {
     }
 
     @Test
-    fun deleteWillWriteToSecondRepositoryAsWell() = setupAsync2(object {
+    fun deleteWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUser()
 
         val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)

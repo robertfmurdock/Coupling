@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -23,7 +23,7 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator {
     }
 
     @Test
-    fun getTribeRecordsWillReturnAllRecordsForAllUsers() = setupAsync2(contextProvider = buildRepository { context ->
+    fun getTribeRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(contextProvider = buildRepository { context ->
         object : Context by context {
             val initialSaveTime = DateTime.now().minus(3.days)
             val tribe = stubTribe()
@@ -31,14 +31,14 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator {
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val altTribe = stubTribe()
         }
-    }) {
+    }, additionalActions = {
         clock.currentTime = initialSaveTime
         repository.save(tribe)
         repository.save(altTribe)
         clock.currentTime = updatedSaveTime
         repository.save(updatedTribe)
         repository.delete(altTribe.id)
-    } exercise {
+    }) exercise {
         repository.getTribeRecords()
     } verify { result ->
         result
@@ -49,7 +49,7 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator {
     }
 
     @Test
-    fun canSaveRawRecord() = setupAsync2(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val records = listOf(
                 Record(stubTribe(), uuidString(), false, DateTime.now().minus(3.months)),

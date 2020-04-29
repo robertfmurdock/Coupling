@@ -18,7 +18,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import org.w3c.dom.Window
 import shallow
 import kotlin.js.Promise
@@ -37,7 +37,7 @@ class HistoryTest {
     }
 
     @Test
-    fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = setupAsync2(object : ScopeMint(), WindowFunctions {
+    fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = asyncSetup(object : ScopeMint(), WindowFunctions {
         val dispatcher = deleteDispatcher()
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
@@ -57,10 +57,10 @@ class HistoryTest {
             HistoryComponent(this),
             HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
         )
-    }) {
+    }, {
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
         reloadSpy.spyWillReturn(Unit)
-    } exercise {
+    }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
     } verify {
         dispatcher.removeSpy.spyReceivedValues.isNotEmpty()
@@ -70,7 +70,7 @@ class HistoryTest {
     }
 
     @Test
-    fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setupAsync2(object : ScopeMint(), WindowFunctions {
+    fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = asyncSetup(object : ScopeMint(), WindowFunctions {
         val dispatcher = deleteDispatcher()
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()

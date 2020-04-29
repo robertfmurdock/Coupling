@@ -11,35 +11,34 @@ import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatch
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 import kotlin.test.fail
 
 class FindOrCreateUserActionTest {
 
     @Test
-    fun whenUserDoesNotAlreadyExistWillCreate() =
-        setupAsync2(object : FindOrCreateUserActionDispatcher, UserRepository {
-            override val traceId = uuid4()
-            override val userRepository = this
-            override val userId = "test@test.tes"
+    fun whenUserDoesNotAlreadyExistWillCreate() = asyncSetup(object : FindOrCreateUserActionDispatcher, UserRepository {
+        override val traceId = uuid4()
+        override val userRepository = this
+        override val userId = "test@test.tes"
 
-            override suspend fun getUser(): Nothing? = null
-            override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
+        override suspend fun getUser(): Nothing? = null
+        override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
 
-            val saveSpy = SpyData<User, Unit>().apply { spyWillReturn(Unit) }
-            override suspend fun save(user: User) = saveSpy.spyFunction(user)
-        }) exercise {
-            FindOrCreateUserAction.perform()
-        } verify { result ->
-            result.email.assertIsEqualTo(userId)
-            result.authorizedTribeIds.assertIsEqualTo(emptySet())
-            saveSpy.spyReceivedValues.assertContains(result)
-        }
+        val saveSpy = SpyData<User, Unit>().apply { spyWillReturn(Unit) }
+        override suspend fun save(user: User) = saveSpy.spyFunction(user)
+    }) exercise {
+        FindOrCreateUserAction.perform()
+    } verify { result ->
+        result.email.assertIsEqualTo(userId)
+        result.authorizedTribeIds.assertIsEqualTo(emptySet())
+        saveSpy.spyReceivedValues.assertContains(result)
+    }
 
     @Test
-    fun whenUserWithEmailAsIdExistsWillUseExistingUser() = setupAsync2(
-        object : FindOrCreateUserActionDispatcher, UserRepository {
+    fun whenUserWithEmailAsIdExistsWillUseExistingUser() =
+        asyncSetup(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
             override val traceId = uuid4()
             override val userId = "test@test.tes"
@@ -49,15 +48,15 @@ class FindOrCreateUserActionTest {
             override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
             override suspend fun save(user: User) = fail("Should not save")
         }
-    ) exercise {
-        FindOrCreateUserAction.perform()
-    } verify { result ->
-        result.assertIsEqualTo(expectedUser)
-    }
+        ) exercise {
+            FindOrCreateUserAction.perform()
+        } verify { result ->
+            result.assertIsEqualTo(expectedUser)
+        }
 
     @Test
-    fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() = setupAsync2(
-        object : FindOrCreateUserActionDispatcher, UserRepository {
+    fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() =
+        asyncSetup(object : FindOrCreateUserActionDispatcher, UserRepository {
             override val userRepository = this
             override val traceId = uuid4()
             override val userId = "test@test.tes"
@@ -69,10 +68,10 @@ class FindOrCreateUserActionTest {
 
             override suspend fun save(user: User) = fail("Should not save")
         }
-    ) exercise {
-        FindOrCreateUserAction.perform()
-    } verify { result ->
-        result.assertIsEqualTo(expectedUser)
-    }
+        ) exercise {
+            FindOrCreateUserAction.perform()
+        } verify { result ->
+            result.assertIsEqualTo(expectedUser)
+        }
 
 }

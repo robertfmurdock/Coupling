@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -26,7 +26,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator {
     }
 
     @Test
-    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = setupAsync2(contextProvider = buildRepository { context ->
+    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(contextProvider = buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val pin = stubPin()
@@ -35,14 +35,14 @@ class DynamoPinRepositoryTest : PinRepositoryValidator {
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val updatedSaveTime2 = initialSaveTime.plus(4.hours)
         }
-    }) {
+    }, additionalActions = {
         clock.currentTime = initialSaveTime
         repository.save(tribeId.with(pin))
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPin))
         clock.currentTime = updatedSaveTime2
         repository.deletePin(tribeId, pin._id!!)
-    } exercise {
+    }) exercise {
         repository.getPinRecords(tribeId)
     } verify { result ->
         result
@@ -52,7 +52,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator {
     }
 
     @Test
-    fun canSaveRawRecord() = setupAsync2(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val records = listOf(

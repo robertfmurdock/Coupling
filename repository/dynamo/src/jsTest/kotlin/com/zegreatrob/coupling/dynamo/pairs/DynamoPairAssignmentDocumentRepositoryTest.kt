@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.*
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -30,7 +30,7 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
 
     @Test
     fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() =
-        setupAsync2(contextProvider = buildRepository { context ->
+        asyncSetup(contextProvider = buildRepository { context ->
             object : Context by context {
                 val tribeId = stubTribeId()
                 val pairAssignmentDocument = stubPairAssignmentDoc()
@@ -58,7 +58,7 @@ class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentReposit
         }
 
     @Test
-    fun canSaveRawRecord() = setupAsync2(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val records = listOf(

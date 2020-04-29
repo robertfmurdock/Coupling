@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -31,7 +31,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
 
     @Test
     fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() =
-        setupAsync2(contextProvider = buildRepository { context ->
+        asyncSetup(contextProvider = buildRepository { context ->
             object : Context by context {
                 val tribeId = stubTribeId()
                 val player = stubPlayer()
@@ -40,14 +40,14 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)
             }
-        }) {
+        }, additionalActions = {
             clock.currentTime = initialSaveTime
             repository.save(tribeId.with(player))
             clock.currentTime = updatedSaveTime
             repository.save(tribeId.with(updatedPlayer))
             clock.currentTime = updatedSaveTime2
             repository.deletePlayer(tribeId, player.id!!)
-        } exercise {
+        }) exercise {
             repository.getPlayerRecords(tribeId)
         } verify { result ->
             result
@@ -57,7 +57,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         }
 
     @Test
-    fun canSaveRawRecord() = setupAsync2(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val records = listOf(

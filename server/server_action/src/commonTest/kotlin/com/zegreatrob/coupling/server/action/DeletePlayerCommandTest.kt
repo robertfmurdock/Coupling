@@ -8,24 +8,21 @@ import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatche
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class DeletePlayerCommandTest {
     @Test
-    fun willUseRepositoryToRemove() = testAsync {
-        setupAsync(object : DeletePlayerCommandDispatcher {
-            val playerId = "ThatGuyGetHim"
-            override val traceId = uuid4()
-            override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
-        }) exerciseAsync {
-            DeletePlayerCommand(TribeId(""), playerId)
-                .perform()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(true)
-            playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
-        }
+    fun willUseRepositoryToRemove() = asyncSetup(object : DeletePlayerCommandDispatcher {
+        val playerId = "ThatGuyGetHim"
+        override val traceId = uuid4()
+        override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
+    }) exercise {
+        DeletePlayerCommand(TribeId(""), playerId)
+            .perform()
+    } verify { result ->
+        result.assertIsEqualTo(true)
+        playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
     }
 
     class PlayerRepositorySpy : PlayerDelete, Spy<String, Boolean> by SpyData() {

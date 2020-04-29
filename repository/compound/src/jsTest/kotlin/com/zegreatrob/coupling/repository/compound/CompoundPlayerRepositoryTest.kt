@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync2
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
@@ -30,7 +30,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     }
 
     @Test
-    fun saveWillWriteToSecondRepository() = setupAsync2(object {
+    fun saveWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUser()
 
         val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
@@ -48,7 +48,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     }
 
     @Test
-    fun deleteWillWriteToSecondRepository() = setupAsync2(object {
+    fun deleteWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUser()
 
         val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)

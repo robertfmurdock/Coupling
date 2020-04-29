@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.mongo.player
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.mongo.JsonTimestampSyntax
 import com.zegreatrob.coupling.mongo.pin.JsonStringValueSyntax
@@ -11,6 +10,6 @@ interface JsonRecordSyntax : JsonTimestampSyntax, JsonStringValueSyntax {
         data = data,
         modifyingUserId = stringValue("modifiedByUsername") ?: "NOT RECORDED",
         isDeleted = this["isDeleted"]?.unsafeCast<Boolean>() ?: false,
-        timestamp = timeStamp() ?: DateTime.EPOCH
+        timestamp = timeStamp()
     )
 }
