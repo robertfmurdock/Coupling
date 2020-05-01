@@ -12,14 +12,15 @@ import com.zegreatrob.coupling.mongo.pin.MongoPinRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.await
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertContains
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.waitForTest
+import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.test.Test
 
@@ -38,14 +39,14 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
 
     @Test
     fun saveThenDeleteWith12CharacterStringPinIdWillWorkCorrectly() = testRepository { repository, tribeId, _, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val pin = stubPin().copy(_id = "19377906-pin")
         }) {
             repository.save(tribeId.with(pin))
-        } exerciseAsync {
+        } exercise {
             repository.deletePin(tribeId, pin._id!!)
             repository.getPins(tribeId)
-        } verifyAsync { result ->
+        } verify { result ->
             result.assertIsEqualTo(emptyList())
         }
     }
@@ -55,24 +56,26 @@ class MongoPinRepositoryTest : PinRepositoryValidator {
         val clock = MagicClock()
         val user = stubUser()
         withMongoRepository(user = user, clock = clock) { repository ->
-            setupAsync(object {
-                val tribeId = stubTribeId()
-                val pin = stubPin()
-                val updatedPin = pin.copy(name = "CLONE")
-                val initialTimestamp = DateTime.now().minus(3.days)
-                val updatedTimestamp = initialTimestamp.plus(2.hours)
-            }) {
-                clock.currentTime = initialTimestamp
-                repository.save(tribeId.with(pin))
-                repository.deletePin(tribeId, pin._id!!)
-                clock.currentTime = updatedTimestamp
-                repository.save(tribeId.with(updatedPin))
-            } exerciseAsync {
-                repository.getPinRecords(tribeId)
-            } verifyAsync { result ->
-                result.assertContains(tribeRecord(tribeId, pin, user.email, false, initialTimestamp))
-                    .assertContains(tribeRecord(tribeId, pin, user.email, true, initialTimestamp))
-                    .assertContains(tribeRecord(tribeId, updatedPin, user.email, false, updatedTimestamp))
+            waitForTest {
+                asyncSetup(object {
+                    val tribeId = stubTribeId()
+                    val pin = stubPin()
+                    val updatedPin = pin.copy(name = "CLONE")
+                    val initialTimestamp = DateTime.now().minus(3.days)
+                    val updatedTimestamp = initialTimestamp.plus(2.hours)
+                }) {
+                    clock.currentTime = initialTimestamp
+                    repository.save(tribeId.with(pin))
+                    repository.deletePin(tribeId, pin._id!!)
+                    clock.currentTime = updatedTimestamp
+                    repository.save(tribeId.with(updatedPin))
+                } exercise {
+                    repository.getPinRecords(tribeId)
+                } verify { result ->
+                    result.assertContains(tribeRecord(tribeId, pin, user.email, false, initialTimestamp))
+                        .assertContains(tribeRecord(tribeId, pin, user.email, true, initialTimestamp))
+                        .assertContains(tribeRecord(tribeId, updatedPin, user.email, false, updatedTimestamp))
+                }
             }
         }
     }

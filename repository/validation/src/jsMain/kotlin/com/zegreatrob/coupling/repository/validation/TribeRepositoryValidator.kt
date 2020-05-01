@@ -5,33 +5,32 @@ import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CoroutineScope
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubTribes
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.waitForTest
 import kotlin.test.Test
 
 interface TribeRepositoryValidator {
 
     suspend fun withRepository(clock: TimeProvider, handler: suspend (TribeRepository, User) -> Unit)
 
-    fun testRepository(block: suspend CoroutineScope.(TribeRepository, User, MagicClock) -> Any?) =
-        testAsync {
-            val clock = MagicClock()
-            withRepository(clock) { repository, user -> block(repository, user, clock) }
-        }
+    fun testRepository(block: (TribeRepository, User, MagicClock) -> dynamic) = testAsync {
+        val clock = MagicClock()
+        withRepository(clock) { repository, user -> waitForTest { block(repository, user, clock) } }
+    }
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedTribes() = testRepository { repository, _, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val tribes = stubTribes(3)
         }) {
             tribes.forEach { repository.save(it) }
-        } exerciseAsync {
+        } exercise {
             repository.getTribes()
-        } verifyAsync { result ->
+        } verify { result ->
             result.takeLast(tribes.size)
                 .map { it.data }
                 .assertIsEqualTo(tribes)
@@ -40,13 +39,13 @@ interface TribeRepositoryValidator {
 
     @Test
     fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = testRepository { repository, _, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val tribes = stubTribes(3)
         }) {
             tribes.forEach { repository.save(it) }
-        } exerciseAsync {
+        } exercise {
             tribes.map { repository.getTribeRecord(it.id)?.data }
-        } verifyAsync { result ->
+        } verify { result ->
             result.takeLast(tribes.size)
                 .assertIsEqualTo(tribes)
         }
@@ -54,14 +53,14 @@ interface TribeRepositoryValidator {
 
     @Test
     fun saveWillIncludeModificationInformation() = testRepository { repository, user, clock ->
-        setupAsync(object {
+        asyncSetup(object {
             val tribe = stubTribe()
         }) {
             clock.currentTime = DateTime.now().minus(3.days)
             repository.save(tribe)
-        } exerciseAsync {
+        } exercise {
             repository.getTribes()
-        } verifyAsync { result ->
+        } verify { result ->
             result.first { it.data.id == tribe.id }.apply {
                 modifyingUserId.assertIsEqualTo(user.email)
                 timestamp.assertIsEqualTo(clock.currentTime)
@@ -71,17 +70,17 @@ interface TribeRepositoryValidator {
 
     @Test
     fun deleteWillMakeTribeInaccessible() = testRepository { repository, _, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val tribe = stubTribe()
         }) {
             repository.save(tribe)
-        } exerciseAsync {
+        } exercise {
             repository.delete(tribe.id)
             Pair(
                 repository.getTribes(),
                 repository.getTribeRecord(tribe.id)?.data
             )
-        } verifyAsync { (listResult, getResult) ->
+        } verify { (listResult, getResult) ->
             listResult.find { it.data.id == tribe.id }
                 .assertIsEqualTo(null)
             getResult.assertIsEqualTo(null)

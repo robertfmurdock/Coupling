@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CoroutineScope
+import com.zegreatrob.testmints.async.waitForTest
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -20,31 +20,31 @@ interface UserRepositoryValidator {
     suspend fun withRepository(clock: TimeProvider, handler: suspend (UserRepository, User) -> Unit)
 
     private fun testRepository(
-        block: suspend CoroutineScope.(UserRepository, User, MagicClock) -> Any?
+        block: (UserRepository, User, MagicClock) -> dynamic
     ) = testAsync {
         val clock = MagicClock()
-        withRepository(clock) { repository, user -> block(repository, user, clock) }
+        withRepository(clock) { repository, user -> waitForTest { block(repository, user, clock) } }
     }
 
     @Test
     fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = testRepository { repository, user, _ ->
-        setupAsync(object {
-        }) exerciseAsync {
+        asyncSetup(object {
+        }) exercise {
             repository.getUser()
-        } verifyAsync { result ->
+        } verify { result ->
             result.assertIsEqualTo(null)
         }
     }
 
     @Test
     fun getUsersWithEmailWillShowAllUsersWithEmail() = testRepository { repository, user, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val userWithEmail = stubUser()
         }) {
             repository.save(userWithEmail)
-        } exerciseAsync {
+        } exercise {
             repository.getUsersWithEmail(userWithEmail.email)
-        } verifyAsync { result ->
+        } verify { result ->
             result.map { it.data }
                 .assertIsEqualTo(listOf(userWithEmail))
         }
@@ -52,13 +52,13 @@ interface UserRepositoryValidator {
 
     @Test
     fun saveUserThenGetWillContainAllSavedValues() = testRepository { repository, user, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val updatedUser = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
         }) {
             repository.save(updatedUser)
-        } exerciseAsync {
+        } exercise {
             repository.getUser()
-        } verifyAsync { result ->
+        } verify { result ->
             result?.data
                 .assertIsEqualTo(updatedUser)
         }
@@ -66,14 +66,14 @@ interface UserRepositoryValidator {
 
     @Test
     fun saveUserThenGetWillIncludeMarkingInformation() = testRepository { repository, user, clock ->
-        setupAsync(object {
+        asyncSetup(object {
             val updatedUser = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
         }) {
             clock.currentTime = DateTime.now().plus(10.days)
             repository.save(updatedUser)
-        } exerciseAsync {
+        } exercise {
             repository.getUser()
-        } verifyAsync { result: Record<User>? ->
+        } verify { result: Record<User>? ->
             if (result == null)
                 fail()
             result.modifyingUserId.assertIsEqualTo(user.id)
@@ -83,15 +83,15 @@ interface UserRepositoryValidator {
 
     @Test
     fun saveUserRepeatedlyGetsLatest() = testRepository { repository, user, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val updatedUser1 = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
             val updatedUser2 = user.copy(authorizedTribeIds = setOf(stubTribeId()))
         }) {
             repository.save(updatedUser1)
             repository.save(updatedUser2)
-        } exerciseAsync {
+        } exercise {
             repository.getUser()
-        } verifyAsync { result ->
+        } verify { result ->
             result?.data
                 .assertIsEqualTo(updatedUser2)
         }

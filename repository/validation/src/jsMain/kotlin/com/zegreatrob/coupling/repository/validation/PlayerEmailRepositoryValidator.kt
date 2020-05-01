@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
@@ -14,7 +14,7 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
 
     @Test
     fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = testRepository { repository, tribeId, _, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val redHerring = stubPlayer().copy(email = "something else")
@@ -23,9 +23,9 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
             repository.save(tribeId.with(player))
             repository.save(tribeId.with(redHerring))
             repository.save(tribeId.with(updatedPlayer))
-        } exerciseAsync {
+        } exercise {
             repository.getPlayerIdsByEmail(email)
-        } verifyAsync { result ->
+        } verify { result ->
             result.assertIsEqualTo(listOf(tribeId.with(player.id)))
         }
     }
@@ -33,31 +33,31 @@ interface PlayerEmailRepositoryValidator<T> : PlayerRepositoryValidator<T>
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() =
         testRepository { repository, tribeId, _, _ ->
-            setupAsync(object {
+            asyncSetup(object {
                 val email = "test-${uuid4()}@zegreatrob.com"
                 val player = stubPlayer().copy(email = email)
                 val updatedPlayer = player.copy(name = "Besto", email = "something else ")
             }) {
                 repository.save(tribeId.with(player))
                 repository.save(tribeId.with(updatedPlayer))
-            } exerciseAsync {
+            } exercise {
                 repository.getPlayerIdsByEmail(email)
-            } verifyAsync { result ->
+            } verify { result ->
                 result.assertIsEqualTo(emptyList())
             }
         }
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() = testRepository { repository, tribeId, _, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
         }) {
             repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, player.id!!)
-        } exerciseAsync {
+        } exercise {
             repository.getPlayerIdsByEmail(email)
-        } verifyAsync { result ->
+        } verify { result ->
             result.assertIsEqualTo(emptyList())
         }
     }

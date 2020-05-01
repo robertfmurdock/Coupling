@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.setupAsync
 import kotlin.test.Test
 
 class SdkPinRepositoryTest : PinRepositoryValidator {
@@ -46,13 +45,13 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val pin = stubPin()
         }) {
             repository.save(tribeId.with(pin))
-        } exerciseAsync {
+        } exercise {
             repository.getPins(tribeId)
-        } verifyAsync { result ->
+        } verify { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
                 modifyingUserId.assertIsEqualTo(user.email)

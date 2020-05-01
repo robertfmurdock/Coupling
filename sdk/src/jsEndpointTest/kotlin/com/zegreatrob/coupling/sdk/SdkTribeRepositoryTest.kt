@@ -13,8 +13,9 @@ import com.zegreatrob.coupling.sdk.SdkPlayerRepositoryTest.Companion.catchAxiosE
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.waitForTest
 import kotlin.test.Test
 
 class SdkTribeRepositoryTest : TribeRepositoryValidator {
@@ -30,21 +31,23 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
         val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
-            val player = Player(
-                id = monk.id().toString(),
-                name = "delete-me",
-                email = "$username._temp"
-            )
-        }) {
-            otherSdk.save(tribe)
-            otherSdk.save(tribe.id.with(player))
-        } exerciseAsync {
-            sdk.getTribes()
-        } verifyAsync { result ->
-            result.map { it.data }
-                .assertIsEqualTo(listOf(tribe))
+        waitForTest {
+            asyncSetup(object {
+                val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+                val player = Player(
+                    id = monk.id().toString(),
+                    name = "delete-me",
+                    email = "$username._temp"
+                )
+            }) {
+                otherSdk.save(tribe)
+                otherSdk.save(tribe.id.with(player))
+            } exercise {
+                sdk.getTribes()
+            } verify { result ->
+                result.map { it.data }
+                    .assertIsEqualTo(listOf(tribe))
+            }
         }
     }
 
@@ -53,21 +56,23 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
         val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
-            val player = Player(
-                id = monk.id().toString(),
-                name = "delete-me",
-                email = "$username._temp"
-            )
-        }) {
-            otherSdk.save(tribe)
-            otherSdk.save(tribe.id.with(player))
-            otherSdk.save(tribe.id.with(player.copy(email = "something else")))
-        } exerciseAsync {
-            sdk.getTribes()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
+        waitForTest {
+            asyncSetup(object {
+                val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+                val player = Player(
+                    id = monk.id().toString(),
+                    name = "delete-me",
+                    email = "$username._temp"
+                )
+            }) {
+                otherSdk.save(tribe)
+                otherSdk.save(tribe.id.with(player))
+                otherSdk.save(tribe.id.with(player.copy(email = "something else")))
+            } exercise {
+                sdk.getTribes()
+            } verify { result ->
+                result.assertIsEqualTo(emptyList())
+            }
         }
     }
 
@@ -76,21 +81,23 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
         val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
-            val player = Player(
-                id = monk.id().toString(),
-                name = "delete-me",
-                email = "$username._temp"
-            )
-        }) {
-            otherSdk.save(tribe)
-            otherSdk.save(tribe.id.with(player))
-            otherSdk.deletePlayer(tribe.id, player.id!!)
-        } exerciseAsync {
-            sdk.getTribes()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(emptyList())
+        waitForTest {
+            asyncSetup(object {
+                val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+                val player = Player(
+                    id = monk.id().toString(),
+                    name = "delete-me",
+                    email = "$username._temp"
+                )
+            }) {
+                otherSdk.save(tribe)
+                otherSdk.save(tribe.id.with(player))
+                otherSdk.deletePlayer(tribe.id, player.id!!)
+            } exercise {
+                sdk.getTribes()
+            } verify { result ->
+                result.assertIsEqualTo(emptyList())
+            }
         }
     }
 
@@ -99,27 +106,29 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
         val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
-        setupAsync(object {
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
-        }) {
-            otherSdk.save(tribe)
-        } exerciseAsync {
-            catchAxiosError {
-                sdk.save(tribe)
+        waitForTest {
+            asyncSetup(object {
+                val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            }) {
+                otherSdk.save(tribe)
+            } exercise {
+                catchAxiosError {
+                    sdk.save(tribe)
+                }
+            } verify { result ->
+                result["status"].assertIsEqualTo(400)
             }
-        } verifyAsync { result ->
-            result["status"].assertIsEqualTo(400)
         }
     }
 
     override fun saveWillIncludeModificationInformation() = super.testRepository { repository, user, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val tribe = stubTribe()
         }) {
             repository.save(tribe)
-        } exerciseAsync {
+        } exercise {
             repository.getTribes()
-        } verifyAsync { result ->
+        } verify { result ->
             result.first { it.data.id == tribe.id }.apply {
                 modifyingUserId.assertIsEqualTo(user.email)
                 timestamp.isWithinOneSecondOfNow()
