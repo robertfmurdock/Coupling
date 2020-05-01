@@ -104,7 +104,7 @@ class HistoryPageSetup(val pairAssignments: List<PairAssignmentDocument>) {
     val page = HistoryPage
 }
 
-private fun <C : Any> asyncSetupTeardown(contextProvider: suspend () -> C, teardownFunc: suspend () -> Unit) =
+private fun <C : Any> asyncSetupTeardown(contextProvider: suspend () -> C, teardownFunc: suspend C.(Unit) -> Unit) =
     object {
         infix fun exercise(exerciseFunc: suspend C.() -> Unit) = asyncSetup(contextProvider = contextProvider)
             .exercise(exerciseFunc)
