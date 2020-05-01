@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:13-jdk
+      - image: openjdk:13
       - image: amazon/dynamodb-local
         command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
       - image: selenium/standalone-chrome
