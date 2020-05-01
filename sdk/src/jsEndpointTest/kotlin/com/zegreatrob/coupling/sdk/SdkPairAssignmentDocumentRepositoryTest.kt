@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.setupAsync
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -53,13 +52,13 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
     }
 
     override fun savedWillIncludeModificationDateAndUsername() = super.testRepository { repository, tribeId, user, _ ->
-        setupAsync(object {
+        asyncSetup(object {
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }) {
             repository.save(tribeId.with(pairAssignmentDoc))
-        } exerciseAsync {
+        } exercise {
             repository.getPairAssignments(tribeId)
-        } verifyAsync { result ->
+        } verify { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
                 timestamp.assertIsRecentDateTime()
