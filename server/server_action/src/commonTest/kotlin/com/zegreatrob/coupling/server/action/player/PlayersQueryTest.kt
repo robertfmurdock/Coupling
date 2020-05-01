@@ -12,38 +12,35 @@ import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class PlayersQueryTest {
 
     @Test
-    fun willReturnPlayersFromRepository() = testAsync {
-        setupAsync(object : PlayersQueryDispatcher {
-            override val traceId = uuid4()
-            override val currentTribeId = TribeId("Excellent Tribe")
-            val players = listOf(
-                Player(
-                    id = "1",
-                    callSignAdjective = "Red",
-                    callSignNoun = "Horner"
-                ),
-                Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
-                Player(
-                    id = "3",
-                    callSignAdjective = "Green",
-                    callSignNoun = "Tacos"
-                )
+    fun willReturnPlayersFromRepository() = asyncSetup(object : PlayersQueryDispatcher {
+        override val traceId = uuid4()
+        override val currentTribeId = TribeId("Excellent Tribe")
+        val players = listOf(
+            Player(
+                id = "1",
+                callSignAdjective = "Red",
+                callSignNoun = "Horner"
+            ),
+            Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
+            Player(
+                id = "3",
+                callSignAdjective = "Green",
+                callSignNoun = "Tacos"
             )
+        )
 
-            override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
-        }) exerciseAsync {
-            PlayersQuery.perform()
-        } verifyAsync { result ->
-            result.map { it.data.player }.assertIsEqualTo(players)
-        }
+        override val playerRepository = PlayerRepositorySpy()
+            .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
+    }) exercise {
+        PlayersQuery.perform()
+    } verify { result ->
+        result.map { it.data.player }.assertIsEqualTo(players)
     }
 
     private fun toRecord(it: Player, authorizedTribeId: TribeId) =
@@ -55,32 +52,29 @@ class PlayersQueryTest {
         )
 
     @Test
-    fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = testAsync {
-        setupAsync(object : PlayersQueryDispatcher {
-            override val traceId = uuid4()
-            override val currentTribeId = TribeId("Excellent Tribe")
-            val players = listOf(
-                Player(id = "1"),
-                Player(id = "2"),
-                Player(id = "3")
-            )
-            override val playerRepository = PlayerRepositorySpy()
-                .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
-        }) exerciseAsync {
-            PlayersQuery.perform()
-        } verifyAsync { result ->
-            result.map { it.data.player }
-                .apply {
-                    map(Player::id)
-                        .assertIsEqualTo(players.map(Player::id))
-                    mapNotNull(Player::callSignAdjective).size
-                        .assertIsEqualTo(players.size)
-                    mapNotNull(Player::callSignNoun).size
-                        .assertIsEqualTo(players.size)
-                }
-        }
+    fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object : PlayersQueryDispatcher {
+        override val traceId = uuid4()
+        override val currentTribeId = TribeId("Excellent Tribe")
+        val players = listOf(
+            Player(id = "1"),
+            Player(id = "2"),
+            Player(id = "3")
+        )
+        override val playerRepository = PlayerRepositorySpy()
+            .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
+    }) exercise {
+        PlayersQuery.perform()
+    } verify { result ->
+        result.map { it.data.player }
+            .apply {
+                map(Player::id)
+                    .assertIsEqualTo(players.map(Player::id))
+                mapNotNull(Player::callSignAdjective).size
+                    .assertIsEqualTo(players.size)
+                mapNotNull(Player::callSignNoun).size
+                    .assertIsEqualTo(players.size)
+            }
     }
-
 
     class PlayerRepositorySpy : PlayerListGet, Spy<TribeId, List<Record<TribeIdPlayer>>> by SpyData() {
         override suspend fun getPlayers(tribeId: TribeId) = spyFunction(tribeId)

@@ -4,7 +4,6 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.Json
-import kotlin.js.json
 
 interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemGetSyntax,
     DynamoLoggingSyntax, DynamoItemPutSyntax {

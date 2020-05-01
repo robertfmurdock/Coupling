@@ -1,6 +1,5 @@
 import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.RComponent
-import com.zegreatrob.coupling.client.external.react.ReactFunctionComponent
 import com.zegreatrob.coupling.client.external.react.child
 import react.RBuilder
 import react.RClass

@@ -31,7 +31,7 @@ else
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
 
-private suspend fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(
+private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(
     userId,
     memoryBackend,
     TimeProvider

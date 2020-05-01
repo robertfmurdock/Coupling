@@ -10,28 +10,25 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {
     @Test
-    fun willSendToRepository() = testAsync {
-        setupAsync(object : SavePairAssignmentDocumentCommandDispatcher {
-            override val traceId = uuid4()
-            val pairAssignmentDocument = TribeId("tribe-239").with(
-                PairAssignmentDocument(id = null, date = DateTime.now(), pairs = emptyList())
-            )
+    fun willSendToRepository() = asyncSetup(object : SavePairAssignmentDocumentCommandDispatcher {
+        override val traceId = uuid4()
+        val pairAssignmentDocument = TribeId("tribe-239").with(
+            PairAssignmentDocument(id = null, date = DateTime.now(), pairs = emptyList())
+        )
 
-            override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
-                .apply { whenever(pairAssignmentDocument, Unit) }
-        }) exerciseAsync {
-            SavePairAssignmentDocumentCommand(pairAssignmentDocument)
-                .perform()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(pairAssignmentDocument)
-            pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
-        }
+        override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
+            .apply { whenever(pairAssignmentDocument, Unit) }
+    }) exercise {
+        SavePairAssignmentDocumentCommand(pairAssignmentDocument)
+            .perform()
+    } verify { result ->
+        result.assertIsEqualTo(pairAssignmentDocument)
+        pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
     }
 }
 

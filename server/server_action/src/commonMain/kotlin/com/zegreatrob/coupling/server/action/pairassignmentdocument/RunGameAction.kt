@@ -15,8 +15,7 @@ data class RunGameAction(
 
 interface RunGameActionDispatcher : Clock, FindNewPairsActionDispatcher, AssignPinsActionDispatcher {
 
-    fun RunGameAction.perform() = findNewPairs()
-        .let { assignPinsToPairs(it, pins, history) }
+    fun RunGameAction.perform() = assignPinsToPairs(findNewPairs(), pins, history)
         .let(::pairAssignmentDocument)
 
     private fun RunGameAction.findNewPairs() = findNewPairsAction().perform()

@@ -9,33 +9,30 @@ import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class SavePlayerCommandTest {
 
     @Test
-    fun willSaveToRepository() = testAsync {
-        setupAsync(object : SavePlayerCommandDispatcher {
-            val tribe = TribeId("woo")
-            val player = Player(
-                id = "1",
-                badge = 1,
-                name = "Tim",
-                callSignAdjective = "Spicy",
-                callSignNoun = "Meatball",
-                email = "tim@tim.meat",
-                imageURL = "italian.jpg"
-            )
-            override val traceId = uuid4()
-            override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
-        }) exerciseAsync {
-            SavePlayerCommand(tribe.with(player))
-                .perform()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(player)
-        }
+    fun willSaveToRepository() = asyncSetup(object : SavePlayerCommandDispatcher {
+        val tribe = TribeId("woo")
+        val player = Player(
+            id = "1",
+            badge = 1,
+            name = "Tim",
+            callSignAdjective = "Spicy",
+            callSignNoun = "Meatball",
+            email = "tim@tim.meat",
+            imageURL = "italian.jpg"
+        )
+        override val traceId = uuid4()
+        override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
+    }) exercise {
+        SavePlayerCommand(tribe.with(player))
+            .perform()
+    } verify { result ->
+        result.assertIsEqualTo(player)
     }
 
     class PlayerSaverSpy : PlayerSave, Spy<TribeIdPlayer, Unit> by SpyData() {

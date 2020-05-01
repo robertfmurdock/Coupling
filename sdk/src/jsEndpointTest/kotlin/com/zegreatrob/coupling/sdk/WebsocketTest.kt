@@ -26,8 +26,8 @@ class WebsocketTest {
     private fun AuthorizedSdk.baseUrl() = URL(axios.defaults.baseURL.unsafeCast<String>())
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(contextProvider = sdkContext { context ->
-        object : SdkContext by context {
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(contextProvider = sdkContext {
+        object : SdkContext by it {
             val tribe = stubTribe()
         }
     }) {
@@ -53,8 +53,8 @@ class WebsocketTest {
     private fun expectedUserList(username: String) = listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(contextProvider = sdkContext { context ->
-        object : SdkContext by context {
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(contextProvider = sdkContext {
+        object : SdkContext by it {
             val tribe = stubTribe()
         }
     }) {
@@ -79,8 +79,8 @@ class WebsocketTest {
 
     @Test
     fun whenNewConnectionIsOpenExistingConnectionsReceiveMessageWithNewCount() =
-        asyncSetup(contextProvider = sdkContext { context ->
-            object : SdkContext by context {
+        asyncSetup(contextProvider = sdkContext {
+            object : SdkContext by it {
                 val tribe = stubTribe()
             }
         }) {
@@ -129,7 +129,7 @@ class WebsocketTest {
 
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(contextProvider = sdkContext { context -> context }
+    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(contextProvider = sdkContext { it }
     ) exercise {
         val baseUrl = sdk.baseUrl()
         val host = baseUrl.host

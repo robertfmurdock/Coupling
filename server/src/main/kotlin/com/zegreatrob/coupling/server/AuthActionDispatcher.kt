@@ -8,5 +8,4 @@ class AuthActionDispatcher internal constructor(
     override val userId: String,
     override val userRepository: UserRepository,
     override val traceId: Uuid
-) : AuthUserDispatcherJs, UserRepository by userRepository {
-}
+) : AuthUserDispatcherJs, UserRepository by userRepository
