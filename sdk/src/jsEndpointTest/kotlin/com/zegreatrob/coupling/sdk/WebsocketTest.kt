@@ -1,16 +1,14 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
-import com.zegreatrob.coupling.stubmodel.stubTribe
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -28,74 +26,70 @@ class WebsocketTest {
     private fun AuthorizedSdk.baseUrl() = URL(axios.defaults.baseURL.unsafeCast<String>())
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = testAsync {
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedSdk(username = username)
-        setupAsync(object {
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(contextProvider = sdkContext { context ->
+        object : SdkContext by context {
             val tribe = stubTribe()
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            val socket = connectToSocket(sdk, tribe.id)
-
-            val messageDeferred = CompletableDeferred<String>()
-            socket.on("message") {
-                messageDeferred.complete(it)
-                socket.close()
-            }
-            socket.on("close") {
-                messageDeferred.completeExceptionally(Exception("socket closed"))
-            }
-            messageDeferred.await()
-        } verifyAsync { result ->
-            result.assertIsEqualTo(
-                expectedConnectionMessage(1, expectedUserList(username))
-            )
         }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val socket = connectToSocket(sdk, tribe.id)
+
+        val messageDeferred = CompletableDeferred<String>()
+        socket.on("message") {
+            messageDeferred.complete(it)
+            socket.close()
+        }
+        socket.on("close") {
+            messageDeferred.completeExceptionally(Exception("socket closed"))
+        }
+        messageDeferred.await()
+    } verify { result ->
+        result.assertIsEqualTo(
+            expectedConnectionMessage(1, expectedUserList(username))
+        )
     }
 
     private fun expectedUserList(username: String) = listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = testAsync {
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedSdk(username = username)
-        setupAsync(object {
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(contextProvider = sdkContext { context ->
+        object : SdkContext by context {
             val tribe = stubTribe()
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            val firstTwoSockets = withContext(Dispatchers.Default) {
-                val job = launch { }
-                listOf(
-                    openSocket(sdk, tribe, job),
-                    openSocket(sdk, tribe, job)
-                ).map { it.await() }
-            }
-
-            val thirdSocket = openSocket(sdk, tribe).await()
-            (firstTwoSockets + thirdSocket)
-        } verifyAsync { result ->
-            result[2].first.assertIsEqualTo(
-                mutableListOf(expectedConnectionMessage(3, expectedUserList(username)))
-            )
-            result.forEach { it.second.close() }
         }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val firstTwoSockets = withContext(Dispatchers.Default) {
+            val job = launch { }
+            listOf(
+                openSocket(sdk, tribe, job),
+                openSocket(sdk, tribe, job)
+            ).map { it.await() }
+        }
+
+        val thirdSocket = openSocket(sdk, tribe).await()
+        (firstTwoSockets + thirdSocket)
+    } verify { result ->
+        result[2].first.assertIsEqualTo(
+            mutableListOf(expectedConnectionMessage(3, expectedUserList(username)))
+        )
+        result.forEach { it.second.close() }
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessageWithNewCount() = testAsync {
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedSdk(username = username)
-        setupAsync(object {
-            val tribe = stubTribe()
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessageWithNewCount() =
+        asyncSetup(contextProvider = sdkContext { context ->
+            object : SdkContext by context {
+                val tribe = stubTribe()
+            }
         }) {
             sdk.save(tribe)
-        } exerciseAsync {
+        } exercise {
             val socket1 = openSocket(sdk, tribe).await()
             val socket2 = openSocket(sdk, tribe).await()
             listOf(socket1, socket2)
-        } verifyAsync { sockets ->
+        } verify { sockets ->
             sockets[0].first.assertIsEqualTo(
                 mutableListOf(
                     expectedConnectionMessage(1, expectedUserList(username)),
@@ -104,114 +98,102 @@ class WebsocketTest {
             )
             sockets.forEach { it.second.close() }
         }
-    }
 
     @Test
-    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = testAsync {
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedSdk(username = username)
-        setupAsync(object {
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(contextProvider = sdkContext {
+        object : SdkContext by it {
             val tribe = stubTribe()
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            val socketToClose = openSocket(sdk, tribe).await()
-            openSocket(sdk, tribe).await()
-                .also {
-                    val deferred = CompletableDeferred<Unit>()
-                    it.second.on("message") {
-                        deferred.complete(Unit)
-                    }
-                    socketToClose.second.close()
-                    deferred.await()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val socketToClose = openSocket(sdk, tribe).await()
+        openSocket(sdk, tribe).await()
+            .also {
+                val deferred = CompletableDeferred<Unit>()
+                it.second.on("message") {
+                    deferred.complete(Unit)
                 }
-        } verifyAsync { openSocket ->
-            openSocket.first.assertIsEqualTo(
-                mutableListOf(
-                    expectedConnectionMessage(2, expectedUserList(username)),
-                    expectedConnectionMessage(1, expectedUserList(username))
-                )
+                socketToClose.second.close()
+                deferred.await()
+            }
+    } verify { openSocket ->
+        openSocket.first.assertIsEqualTo(
+            mutableListOf(
+                expectedConnectionMessage(2, expectedUserList(username)),
+                expectedConnectionMessage(1, expectedUserList(username))
             )
-            openSocket.second.close()
+        )
+        openSocket.second.close()
+    }
+
+
+    @Test
+    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(contextProvider = sdkContext { context -> context }
+    ) exercise {
+        val baseUrl = sdk.baseUrl()
+        val host = baseUrl.host
+        val url = "ws://$host/api/${TribeId("whoops").value}/pairAssignments/current"
+        val socket = newWebsocket(url, json())
+        CompletableDeferred<Unit>().also { deferred ->
+            socket.on("close") { deferred.complete(Unit) }
+        }
+    } verify { deferred ->
+        withTimeout(100) {
+            deferred.await()
         }
     }
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = testAsync {
-        val sdk = authorizedSdk()
-        setupAsync(object {
-        }) exerciseAsync {
-            val baseUrl = sdk.baseUrl()
-            val host = baseUrl.host
-            val url = "ws://$host/api/${TribeId("whoops").value}/pairAssignments/current"
-            val socket = newWebsocket(url, json())
-            CompletableDeferred<Unit>().also { deferred ->
-                socket.on("close") { deferred.complete(Unit) }
-            }
-        } verifyAsync { deferred ->
-            withTimeout(100) {
-                deferred.await()
-            }
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(contextProvider = sdkContext { it }
+    ) exercise {
+        val socket = connectToSocket(sdk, stubTribe().id)
+        CompletableDeferred<Unit>().also { deferred ->
+            socket.on("close") { deferred.complete(Unit) }
+        }
+    } verify { deferred ->
+        withTimeout(200) {
+            deferred.await()
+        }
+    }
+
+
+    @Test
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(contextProvider = sdkContext { it }
+    ) exercise {
+        val baseUrl = sdk.baseUrl()
+        val host = baseUrl.host
+        val url = "ws://$host/api/404WTF"
+        val socket = newWebsocket(url, json())
+        CompletableDeferred<Unit>().also { deferred ->
+            socket.on("close") { deferred.complete(Unit) }
+        }
+    } verify { deferred ->
+        withTimeout(100) {
+            deferred.await()
         }
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = testAsync {
-        val sdk = authorizedSdk()
-        setupAsync(object {
-        }) exerciseAsync {
-            val socket = connectToSocket(sdk, stubTribe().id)
-            CompletableDeferred<Unit>().also { deferred ->
-                socket.on("close") { deferred.complete(Unit) }
-            }
-        } verifyAsync { deferred ->
-            withTimeout(200) {
-                deferred.await()
-            }
-        }
-    }
-
-    @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = testAsync {
-        val sdk = authorizedSdk()
-        setupAsync(object {
-        }) exerciseAsync {
-            val baseUrl = sdk.baseUrl()
-            val host = baseUrl.host
-            val url = "ws://$host/api/404WTF"
-            val socket = newWebsocket(url, json())
-            CompletableDeferred<Unit>().also { deferred ->
-                socket.on("close") { deferred.complete(Unit) }
-            }
-        } verifyAsync { deferred ->
-            withTimeout(100) {
-                deferred.await()
-            }
-        }
-    }
-
-    @Test
-    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = testAsync {
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedSdk(username = username)
-        setupAsync(object {
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(contextProvider = sdkContext {
+        object : SdkContext by it {
             val tribe = stubTribe()
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            val socket = connectToSocket(sdk, tribe.id)
-            val messageDeferred = CompletableDeferred<Unit>()
-            socket.on("open") {
-                socket.close()
-            }
-            socket.on("close") {
-                messageDeferred.complete(Unit)
-            }
-            messageDeferred
-        } verifyAsync { deferred ->
-            withTimeout(100) {
-                deferred.await()
-            }
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val socket = connectToSocket(sdk, tribe.id)
+        val messageDeferred = CompletableDeferred<Unit>()
+        socket.on("open") {
+            socket.close()
+        }
+        socket.on("close") {
+            messageDeferred.complete(Unit)
+        }
+        messageDeferred
+    } verify { deferred ->
+        withTimeout(100) {
+            deferred.await()
         }
     }
 

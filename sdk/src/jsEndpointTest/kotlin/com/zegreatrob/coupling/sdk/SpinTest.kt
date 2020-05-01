@@ -13,45 +13,41 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.setupAsync2
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
+import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.test.Test
 
 class SpinTest {
 
     @Test
-    fun willTakeThePlayersGivenAndUseThoseForPairing() = testAsync {
-        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
+    fun willTakeThePlayersGivenAndUseThoseForPairing() = asyncSetup(contextProvider = sdkContext { context ->
+        object : SdkContext by context {
             val tribe = Tribe(id = TribeId(uuid4().toString()), name = "test", pairingRule = PairingRule.LongestTime)
             val players = listOf(
                 Player(name = "dude1"),
                 Player(name = "dude2")
             )
-        }) {
-            sdk.save(tribe)
-        } exerciseAsync {
-            sdk.requestSpin(tribe.id, players, emptyList())
-        } verifyAsync { result ->
-            result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
-            )
         }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        sdk.requestSpin(tribe.id, players, emptyList())
+    } verify { result ->
+        result.pairs.assertIsEqualTo(
+            listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
+        )
     }
 
     @Test
-    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = testAsync {
-        val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-        setupAsync(object {
+    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = asyncSetup(contextProvider = sdkContext {
+        object : SdkContext by it {
             val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
@@ -67,22 +63,22 @@ class SpinTest {
                     )
                 )
             )
-        }) {
-            setupScenario(sdk, tribe, players, history)
-        } exerciseAsync {
-            sdk.requestSpin(tribe.id, players, emptyList())
-        } verifyAsync { result ->
-            result.pairs.assertIsEqualTo(
-                listOf(
-                    pairOf(players[0], players[3]).withPins(),
-                    pairOf(players[1], players[2]).withPins()
-                )
-            )
         }
+    }) {
+        setupScenario(sdk, tribe, players, history)
+    } exercise {
+        sdk.requestSpin(tribe.id, players, emptyList())
+    } verify { result ->
+        result.pairs.assertIsEqualTo(
+            listOf(
+                pairOf(players[0], players[3]).withPins(),
+                pairOf(players[1], players[2]).withPins()
+            )
+        )
     }
 
     @Test
-    fun givenTheLongestPairRuleItWillIgnoreBadges() = setupAsync2(object : ScopeMint() {
+    fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
         val sdk = setupScope.async { authorizedSdk(username = "eT-user-${uuid4()}") }
         val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
@@ -115,38 +111,34 @@ class SpinTest {
     class WhenPinExists {
 
         private val pinExistsSetup
-            get() = object {
-                val tribe = stubTribe()
-                val players = listOf(stubPlayer())
-                val pin = stubPin()
+            get() = { context: SdkContext ->
+                object : SdkContext by context {
+                    val tribe = stubTribe()
+                    val players = listOf(stubPlayer())
+                    val pin = stubPin()
+                }
             }
 
         @Test
-        fun whenAPinExistsWillAssignOnePinToPair() = testAsync {
-            val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-            setupAsync(pinExistsSetup) {
-                setupScenario(sdk, tribe, players, pins = listOf(pin))
-            } exerciseAsync {
-                sdk.requestSpin(tribe.id, players, listOf(pin))
-            } verifyAsync { result ->
-                result.pairs.assertIsEqualTo(
-                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
-                )
-            }
+        fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup(contextProvider = sdkContext(pinExistsSetup)) {
+            setupScenario(sdk, tribe, players, pins = listOf(pin))
+        } exercise {
+            sdk.requestSpin(tribe.id, players, listOf(pin))
+        } verify { result ->
+            result.pairs.assertIsEqualTo(
+                listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
+            )
         }
 
         @Test
-        fun whenAPinExistsButIsDeselectedWillNotAssign() = testAsync {
-            val sdk = authorizedSdk(username = "eT-user-${uuid4()}")
-            setupAsync(pinExistsSetup) {
-                setupScenario(sdk, tribe, players, pins = listOf(pin))
-            } exerciseAsync {
-                sdk.requestSpin(tribe.id, players, emptyList())
-            } verifyAsync { result ->
-                result.pairs.assertIsEqualTo(
-                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
-                )
-            }
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup(contextProvider = sdkContext(pinExistsSetup)) {
+            setupScenario(sdk, tribe, players, pins = listOf(pin))
+        } exercise {
+            sdk.requestSpin(tribe.id, players, emptyList())
+        } verify { result ->
+            result.pairs.assertIsEqualTo(
+                listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
+            )
         }
     }
 
@@ -159,7 +151,7 @@ class SpinTest {
 
     companion object {
         private suspend fun setupScenario(
-            sdk: AuthorizedSdk,
+            sdk: Sdk,
             tribe: Tribe,
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),
