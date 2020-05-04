@@ -12,9 +12,9 @@ import com.zegreatrob.coupling.server.external.express.*
 
 val pinRouter = Router(routerParams(mergeParams = true)).apply {
     route("/")
-        .post(handleRequest { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) })
+        .post(dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) })
     route("/:pinId")
-        .delete(handleRequest { endpointHandler(sendDeleteResults("Pin"), ::handleDeletePin) })
+        .delete(dispatch { endpointHandler(sendDeleteResults("Pin"), ::handleDeletePin) })
 }
 
 suspend fun SavePinCommandDispatcher.handleSavePinCommand(request: Request) = request.savePinCommand()

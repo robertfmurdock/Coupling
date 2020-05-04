@@ -17,7 +17,7 @@ val tribeRouter = Router(routerParams(mergeParams = true)).apply {
         }
     })
 
-    route("/spin").post(handleRequest { performProposeNewPairsCommand })
+    route("/spin").post(dispatch { performProposeNewPairsCommand })
     use("/history", historyRouter)
     use("/players", playerRouter)
     use("/pins", pinRouter)
@@ -25,9 +25,9 @@ val tribeRouter = Router(routerParams(mergeParams = true)).apply {
 
 val tribeListRouter = Router(routerParams()).apply {
     route("/")
-        .post(handleRequest { performSaveTribeCommand })
+        .post(dispatch { performSaveTribeCommand })
     route("/:tribeId")
-        .post(handleRequest { performSaveTribeCommand })
-        .delete(handleRequest { performDeleteTribeCommand })
+        .post(dispatch { performSaveTribeCommand })
+        .delete(dispatch { performDeleteTribeCommand })
     use("/:tribeId", tribeRouter)
 }
