@@ -7,14 +7,10 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
-import com.zegreatrob.coupling.server.external.express.jsonBody
-import com.zegreatrob.coupling.server.external.express.sendSuccessful
+import com.zegreatrob.coupling.server.external.express.*
 
 interface SavePairAssignmentDocumentCommandDispatcherJs : SavePairAssignmentDocumentCommandDispatcher,
-    RequestTribeIdSyntax, EndpointHandlerSyntax {
+    EndpointHandlerSyntax {
 
     val performSavePairAssignmentDocumentCommand
         get() = endpointHandler(Response::sendSuccessful, ::handleSavePairAssignmentDocumentCommand)

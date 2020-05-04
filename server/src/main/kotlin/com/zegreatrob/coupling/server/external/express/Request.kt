@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.external.express
 
 import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.CommandDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -25,3 +26,6 @@ external interface Request {
 }
 
 fun Request.jsonBody() = body.unsafeCast<Json>()
+
+fun Request.tribeId() = TribeId(params["tribeId"].toString())
+fun Request.pinId() = params["pinId"].toString()

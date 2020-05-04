@@ -6,15 +6,10 @@ import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.server.EndpointHandlerSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommandDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
-import com.zegreatrob.coupling.server.external.express.jsonBody
-import com.zegreatrob.coupling.server.external.express.sendSuccessful
+import com.zegreatrob.coupling.server.external.express.*
 import kotlin.js.Json
 
-interface ProposeNewPairsCommandDispatcherJs : ProposeNewPairsCommandDispatcher, RequestTribeIdSyntax,
-    EndpointHandlerSyntax {
+interface ProposeNewPairsCommandDispatcherJs : ProposeNewPairsCommandDispatcher, EndpointHandlerSyntax {
     val performProposeNewPairsCommand get() = endpointHandler(Response::sendSuccessful, ::handleProposeNewPairsCommand)
 
     private suspend fun handleProposeNewPairsCommand(request: Request) = request.proposeNewPairsCommand()

@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.RequestTribeIdSyntax
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.external.express.OPEN
 import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.coupling.server.route.WS
 import com.zegreatrob.coupling.server.route.WebSocketServer
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import kotlin.js.json
 data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
 
 interface HandleWebsocketConnectionActionDispatcher : ScopeSyntax, UserIsAuthorizedWithDataActionDispatcher,
-    RequestTribeIdSyntax, LoggingSyntax {
+    LoggingSyntax {
 
     fun HandleWebsocketConnectionAction.perform() = scope.launch {
         val tribeId = request.tribeId()
