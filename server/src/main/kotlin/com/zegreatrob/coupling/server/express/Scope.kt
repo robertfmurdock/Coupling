@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.server.express
 
 import com.zegreatrob.coupling.server.external.express.Handler
+import com.zegreatrob.coupling.server.serverScope
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.plus
 
 fun scope(): Handler = { request, _, next ->
-    request.asDynamic().scope = mainScope(request.path)
+    request.asDynamic().scope = pathScope(request.path)
     next()
 }
 
-private fun mainScope(path: String) = MainScope() + CoroutineName(path)
+private fun pathScope(path: String) = serverScope + CoroutineName(path)

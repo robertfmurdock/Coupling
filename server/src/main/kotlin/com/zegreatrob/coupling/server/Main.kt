@@ -9,10 +9,13 @@ import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.coupling.server.external.expressws.expressWs
 import kotlinx.coroutines.*
 
+
+val serverScope = MainScope() + CoroutineName("Server")
+
 @JsName("start")
 fun start() = startDeferred.asPromise()
 
-private val startDeferred = MainScope().async(start = CoroutineStart.LAZY) {
+private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
     println("KT Start.")
 
     val expressWs = expressWs(express())
@@ -33,5 +36,6 @@ private suspend fun Express.startListening() = CompletableDeferred<Unit>()
     }.await()
 
 fun main() {
-    MainScope().launch { startDeferred.await() }
+
+    serverScope.launch { startDeferred.await() }
 }
