@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.route
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.server.ResponseHelpers
+import com.zegreatrob.coupling.server.ResponseHelpers.sendDeleteResults
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
@@ -14,9 +14,7 @@ val pinRouter = Router(routerParams(mergeParams = true)).apply {
     route("/")
         .post(handleRequest { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) })
     route("/:pinId")
-        .delete(handleRequest {
-            endpointHandler(ResponseHelpers.sendDeleteResults("Pin"), ::handleDeletePin)
-        })
+        .delete(handleRequest { endpointHandler(sendDeleteResults("Pin"), ::handleDeletePin) })
 }
 
 suspend fun SavePinCommandDispatcher.handleSavePinCommand(request: Request) = request.savePinCommand()

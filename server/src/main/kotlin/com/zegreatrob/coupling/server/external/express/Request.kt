@@ -29,3 +29,4 @@ fun Request.jsonBody() = body.unsafeCast<Json>()
 
 fun Request.tribeId() = TribeId(params["tribeId"].toString())
 fun Request.pinId() = params["pinId"].toString()
+fun Request.playerId() = params["playerId"].toString()

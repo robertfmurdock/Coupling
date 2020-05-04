@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispat
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
-import com.zegreatrob.coupling.server.entity.player.PlayerDispatcherJs
+import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
 import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
@@ -30,7 +30,7 @@ class CommandDispatcher(
     override val traceId: Uuid
 ) :
     TribeDispatcherJs,
-    PlayerDispatcherJs,
+    PlayerDispatcher,
     PairAssignmentDispatcherJs,
     UserDispatcherJs,
     HandleWebsocketConnectionActionDispatcher,

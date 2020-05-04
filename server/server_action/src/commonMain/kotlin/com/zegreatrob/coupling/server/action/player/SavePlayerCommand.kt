@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 
 data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) : Action
 
-interface SavePlayerCommandDispatcher : ActionLoggingSyntax,
-    TribeIdPlayerSaveSyntax {
+interface SavePlayerCommandDispatcher : ActionLoggingSyntax, TribeIdPlayerSaveSyntax {
 
     suspend fun SavePlayerCommand.perform() = logAsync { tribeIdPlayer.save().let { tribeIdPlayer.player } }
 
