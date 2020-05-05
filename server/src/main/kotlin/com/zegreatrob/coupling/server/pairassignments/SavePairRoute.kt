@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssi
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.route.dispatch
 
-val savePairsRoute by lazy { dispatch { endpointHandler(Response::sendSuccessful, ::handleSave) } }
+val savePairsRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleSave) }
 
 private suspend fun SavePairAssignmentDocumentCommandDispatcher.handleSave(request: Request) =
     request.savePairAssignmentDocumentCommand()

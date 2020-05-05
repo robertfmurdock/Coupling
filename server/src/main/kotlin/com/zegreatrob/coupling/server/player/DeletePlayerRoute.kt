@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.server.route.dispatch
 
 private val sendDeleteResults = ResponseHelpers.sendDeleteResults("Player")
 
-val deletePlayerRoute by lazy { dispatch { endpointHandler(sendDeleteResults, ::handleDeletePlayer) } }
+val deletePlayerRoute = dispatch { endpointHandler(sendDeleteResults, ::handleDeletePlayer) }
 
 private suspend fun DeletePlayerCommandDispatcher.handleDeletePlayer(request: Request) = request
     .deletePlayerCommand()

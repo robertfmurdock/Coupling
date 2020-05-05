@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.server.route.dispatch
 
 private val sendDeleteResults = ResponseHelpers.sendDeleteResults("Pair Assignments")
 
-val deletePairsRoute by lazy { dispatch { endpointHandler(sendDeleteResults, ::deleteAssignments) } }
+val deletePairsRoute = dispatch { endpointHandler(sendDeleteResults, ::deleteAssignments) }
 
 private suspend fun DeletePairAssignmentDocumentCommandDispatcher.deleteAssignments(request: Request) =
     request.command().perform()

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.route.dispatch
 
-val savePinRoute by lazy { dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) } }
+val savePinRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) }
 
 suspend fun SavePinCommandDispatcher.handleSavePinCommand(request: Request) = request.savePinCommand()
     .perform()
