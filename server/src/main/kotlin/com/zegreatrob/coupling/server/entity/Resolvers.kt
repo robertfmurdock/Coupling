@@ -16,7 +16,7 @@ fun buildResolver(func: CommandResolver) = { entity: Json, args: Json, request: 
     request.scope.promise { func(request.commandDispatcher, entity, args) }
 }
 
-suspend fun CommandDispatcher.verifyAuth(entity: Json, func: suspend CurrentTribeIdDispatcher.() -> Any?): Any? {
+suspend fun <R : Any?> CommandDispatcher.verifyAuth(entity: Json, func: suspend CurrentTribeIdDispatcher.() -> R): R? {
     val dispatcher = authorizedTribeIdDispatcher(entity.tribeId())
     return when {
         dispatcher.isAuthorized() -> func(dispatcher)
@@ -26,15 +26,11 @@ suspend fun CommandDispatcher.verifyAuth(entity: Json, func: suspend CurrentTrib
 
 private fun Json.tribeId() = this["id"].toString()
 
-fun <Q, R> dispatchTribeCommand(
+fun <Q, R, J> dispatchTribeCommand(
     toQuery: () -> Q,
     dispatch: suspend CurrentTribeIdDispatcher.(Q) -> R,
-    toJson: (R) -> Any?
-): CommandResolver = { entity, more ->
-    val query = toQuery()
-
-    verifyAuth {
-        val result = dispatch(query)
-        toJson(result)
-    }(entity, more)
+    toJson: (R) -> J
+): CommandResolver = { entity, _ ->
+    verifyAuth(entity) { dispatch(toQuery()) }
+        ?.let(toJson)
 }
