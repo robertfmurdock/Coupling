@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.server.entity.tribe.TribeType
 import com.zegreatrob.coupling.server.entity.tribe.performTribeQueryGQL
 import com.zegreatrob.coupling.server.entity.verifyAuth
 import com.zegreatrob.coupling.server.external.graphql.*
-import com.zegreatrob.coupling.server.pairassignments.PairAssignmentDocumentType
+import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentType
 import com.zegreatrob.coupling.server.entity.pin.PinType
 import com.zegreatrob.coupling.server.entity.player.PlayerType
 

@@ -6,15 +6,6 @@ import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-interface EndpointHandlerSyntax : LoggingSyntax {
-    fun <T> endpointHandler(responder: Response.(T) -> Unit, handler: suspend Request.() -> T): EndpointHandler =
-        { request: Request, response: Response ->
-            handleRequestAndRespond(request, response, handler, responder)
-        }
-
-
-}
-
 typealias EndpointHandler = (Request, Response) -> Job
 
 fun <T> LoggingSyntax.handleRequestAndRespond(

@@ -36,7 +36,6 @@ class CommandDispatcher(
     UserDispatcher,
     HandleWebsocketConnectionActionDispatcher,
     RepositoryCatalog by repositoryCatalog,
-    EndpointHandlerSyntax,
     PinDispatcher {
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null

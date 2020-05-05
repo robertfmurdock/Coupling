@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.pairassignments
+package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.server.external.graphql.*
 

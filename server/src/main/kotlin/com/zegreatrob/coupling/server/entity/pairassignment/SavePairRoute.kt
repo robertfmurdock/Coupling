@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.pairassignments
+package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
@@ -11,15 +11,13 @@ import com.zegreatrob.coupling.server.external.express.jsonBody
 import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val savePairsRoute = dispatchCommand(::savePairAssignmentDocumentCommand, { it.perform() }, ::toJson)
+val savePairsRoute = dispatchCommand(Request::command, { it.perform() }, ::toJson)
 
-private fun savePairAssignmentDocumentCommand(request: Request) = with(request) {
-    SavePairAssignmentDocumentCommand(
-        tribeId().with(
-            jsonBody().toPairAssignmentDocument()
-        )
+private fun Request.command() = SavePairAssignmentDocumentCommand(
+    tribeId().with(
+        jsonBody().toPairAssignmentDocument()
     )
-}
+)
 
 private fun toJson(result: TribeIdPairAssignmentDocument) = result
     .document

@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.server.pairassignments
+package com.zegreatrob.coupling.server.entity.pairassignment
 
+import com.zegreatrob.coupling.server.entity.pin.PinType
 import com.zegreatrob.coupling.server.external.graphql.GraphQLList
 import com.zegreatrob.coupling.server.external.graphql.field
 import com.zegreatrob.coupling.server.external.graphql.objectType
-import com.zegreatrob.coupling.server.entity.pin.PinType
 
 val PinnedPairType by lazy {
     objectType(

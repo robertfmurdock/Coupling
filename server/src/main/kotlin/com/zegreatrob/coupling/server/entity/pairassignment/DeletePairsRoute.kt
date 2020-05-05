@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.pairassignments
+package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.server.ResponseHelpers
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.server.route.dispatchCommand
 
 private val sendDeleteResults = ResponseHelpers.sendDeleteResults("Pair Assignments")
 
-val deletePairsRoute = dispatchCommand(::command, { it.perform() }, { it }, sendDeleteResults)
+val deletePairsRoute = dispatchCommand(Request::command, { it.perform() }, { it }, sendDeleteResults)
 
-private fun command(request: Request) = DeletePairAssignmentDocumentCommand(
-    request.tribeId(),
-    request.pairAssignmentDocumentId()
+private fun Request.command() = DeletePairAssignmentDocumentCommand(
+    tribeId(),
+    pairAssignmentDocumentId()
 )
