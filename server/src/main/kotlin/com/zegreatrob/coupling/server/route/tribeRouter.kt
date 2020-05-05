@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.server.route
 
 import com.zegreatrob.coupling.server.external.express.Router
+import com.zegreatrob.coupling.server.pairassignments.historyRouter
+import com.zegreatrob.coupling.server.pin.pinRouter
+import com.zegreatrob.coupling.server.player.playerRouter
 import kotlinx.coroutines.launch
 
 val tribeRouter = Router(routerParams(mergeParams = true)).apply {

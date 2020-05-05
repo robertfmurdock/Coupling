@@ -8,13 +8,10 @@ import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.route.dispatch
 
-val savePlayerRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePlayer) }
+val savePlayerRoute by lazy { dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePlayer) } }
 
 private suspend fun SavePlayerCommandDispatcher.handleSavePlayer(request: Request) = request.savePlayerCommand()
     .perform()
     .toJson()
 
-private fun Request.savePlayerCommand() =
-    SavePlayerCommand(
-        tribeId().with(jsonBody().toPlayer())
-    )
+private fun Request.savePlayerCommand() = SavePlayerCommand(tribeId().with(jsonBody().toPlayer()))

@@ -1,16 +1,15 @@
 package com.zegreatrob.coupling.server.player
 
-import com.zegreatrob.coupling.server.ResponseHelpers
-import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.playerId
-import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.external.express.Router
+import com.zegreatrob.coupling.server.route.routerParams
 
-val deletePlayerRoute = dispatch { endpointHandler(ResponseHelpers.sendDeleteResults("Player"), ::handleDeletePlayer) }
-
-private suspend fun DeletePlayerCommandDispatcher.handleDeletePlayer(request: Request) = request.deletePlayerCommand()
-    .perform()
-
-private fun Request.deletePlayerCommand() = DeletePlayerCommand(tribeId(), playerId())
+val playerRouter by lazy {
+    Router(routerParams(mergeParams = true)).apply {
+        route("/")
+            .post(savePlayerRoute)
+        route("/:playerId")
+            .delete(deletePlayerRoute)
+        route("/retired")
+            .get(retiredPlayerRoute)
+    }
+}

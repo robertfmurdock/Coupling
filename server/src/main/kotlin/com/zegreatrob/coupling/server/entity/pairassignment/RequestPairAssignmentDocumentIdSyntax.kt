@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.server.external.express.Request
 
 interface RequestPairAssignmentDocumentIdSyntax {
-    fun Request.pairAssignmentDocumentId() = params["id"].toString().let(::PairAssignmentDocumentId)
+
 }
