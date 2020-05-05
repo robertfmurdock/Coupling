@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.pinId
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val deletePinRoute = dispatch { endpointHandler(ResponseHelpers.sendDeleteResults("Pin"), ::handleDeletePin) }
+val deletePinRoute = dispatchCommand { endpointHandler(ResponseHelpers.sendDeleteResults("Pin"), ::handleDeletePin) }
 
 private suspend fun DeletePinCommandDispatcher.handleDeletePin(request: Request) = request.deletePinCommand().perform()
 

@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.sendSuccessful
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val retiredPlayerRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleRetiredPlayerList) }
+val retiredPlayerRoute = dispatchCommand { endpointHandler(Response::sendSuccessful, ::handleRetiredPlayerList) }
 
 private suspend fun RetiredPlayersQueryDispatcher.handleRetiredPlayerList(request: Request) = request
     .retiredPlayersQuery()

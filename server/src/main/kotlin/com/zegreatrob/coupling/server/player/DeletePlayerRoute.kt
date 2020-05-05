@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatche
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.playerId
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
 private val sendDeleteResults = ResponseHelpers.sendDeleteResults("Player")
 
-val deletePlayerRoute = dispatch { endpointHandler(sendDeleteResults, ::handleDeletePlayer) }
+val deletePlayerRoute = dispatchCommand { endpointHandler(sendDeleteResults, ::handleDeletePlayer) }
 
 private suspend fun DeletePlayerCommandDispatcher.handleDeletePlayer(request: Request) = request
     .deletePlayerCommand()

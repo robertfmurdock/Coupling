@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.*
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val savePinRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) }
+val savePinRoute = dispatchCommand { endpointHandler(Response::sendSuccessful, ::handleSavePinCommand) }
 
 suspend fun SavePinCommandDispatcher.handleSavePinCommand(request: Request) = request.savePinCommand()
     .perform()

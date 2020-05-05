@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.*
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val savePlayerRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleSavePlayer) }
+val savePlayerRoute = dispatchCommand { endpointHandler(Response::sendSuccessful, ::handleSavePlayer) }
 
 private suspend fun SavePlayerCommandDispatcher.handleSavePlayer(request: Request) = request.savePlayerCommand()
     .perform()

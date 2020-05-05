@@ -5,10 +5,9 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.tribe.TribeQuery
 import com.zegreatrob.coupling.server.action.tribe.TribeQueryDispatcher
 
-interface TribeQueryDispatcherJs : TribeQueryDispatcher {
-    suspend fun performTribeQueryGQL(id: String) = TribeQuery(TribeId(id))
-        .perform()
-        ?.let {
-            it.toJson().add(it.data.toJson())
-        }
-}
+suspend fun TribeQueryDispatcher.performTribeQueryGQL(id: String) = TribeQuery(TribeId(id))
+    .perform()
+    ?.let {
+        it.toJson().add(it.data.toJson())
+    }
+

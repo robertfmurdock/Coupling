@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAs
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.pairAssignmentDocumentId
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
 private val sendDeleteResults = ResponseHelpers.sendDeleteResults("Pair Assignments")
 
-val deletePairsRoute = dispatch { endpointHandler(sendDeleteResults, ::deleteAssignments) }
+val deletePairsRoute = dispatchCommand { endpointHandler(sendDeleteResults, ::deleteAssignments) }
 
 private suspend fun DeletePairAssignmentDocumentCommandDispatcher.deleteAssignments(request: Request) =
     request.command().perform()

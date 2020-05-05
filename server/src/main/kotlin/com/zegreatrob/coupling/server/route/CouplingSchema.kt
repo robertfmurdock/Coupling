@@ -1,8 +1,10 @@
 package com.zegreatrob.coupling.server.route
 
 import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.entity.verifyAuth
 import com.zegreatrob.coupling.server.entity.buildResolver
+import com.zegreatrob.coupling.server.entity.tribe.performTribeListQueryGQL
+import com.zegreatrob.coupling.server.entity.tribe.performTribeQueryGQL
+import com.zegreatrob.coupling.server.entity.verifyAuth
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.graphql.*
 import kotlin.js.Json

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.route
 
+import com.zegreatrob.coupling.server.entity.tribe.deleteTribeRoute
+import com.zegreatrob.coupling.server.entity.tribe.saveTribeRoute
 import com.zegreatrob.coupling.server.external.express.Router
 import com.zegreatrob.coupling.server.pairassignments.historyRouter
 import com.zegreatrob.coupling.server.pin.pinRouter
@@ -20,17 +22,18 @@ val tribeRouter = Router(routerParams(mergeParams = true)).apply {
         }
     })
 
-    route("/spin").post(dispatch { performProposeNewPairsCommand })
+    route("/spin").post(dispatchCommand { performProposeNewPairsCommand })
     use("/history", historyRouter)
     use("/players", playerRouter)
     use("/pins", pinRouter)
 }
 
-val tribeListRouter = Router(routerParams()).apply {
-    route("/")
-        .post(dispatch { performSaveTribeCommand })
-    route("/:tribeId")
-        .post(dispatch { performSaveTribeCommand })
-        .delete(dispatch { performDeleteTribeCommand })
-    use("/:tribeId", tribeRouter)
+val tribeListRouter by lazy {
+    Router(routerParams()).apply {
+        route("/").post(saveTribeRoute)
+        route("/:tribeId")
+            .post(saveTribeRoute)
+            .delete(deleteTribeRoute)
+        use("/:tribeId", tribeRouter)
+    }
 }

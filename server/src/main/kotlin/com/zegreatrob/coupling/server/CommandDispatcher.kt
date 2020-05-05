@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
-import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcherJs
+import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -29,7 +29,7 @@ class CommandDispatcher(
     override val scope: CoroutineScope,
     override val traceId: Uuid
 ) :
-    TribeDispatcherJs,
+    TribeDispatcher,
     PlayerDispatcher,
     PairAssignmentDispatcherJs,
     UserDispatcherJs,

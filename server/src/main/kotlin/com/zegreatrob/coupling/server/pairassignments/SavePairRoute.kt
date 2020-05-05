@@ -7,9 +7,9 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.external.express.*
-import com.zegreatrob.coupling.server.route.dispatch
+import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val savePairsRoute = dispatch { endpointHandler(Response::sendSuccessful, ::handleSave) }
+val savePairsRoute = dispatchCommand { endpointHandler(Response::sendSuccessful, ::handleSave) }
 
 private suspend fun SavePairAssignmentDocumentCommandDispatcher.handleSave(request: Request) =
     request.savePairAssignmentDocumentCommand()
