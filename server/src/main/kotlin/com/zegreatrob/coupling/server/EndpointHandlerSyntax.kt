@@ -12,20 +12,22 @@ interface EndpointHandlerSyntax : LoggingSyntax {
             handleRequestAndRespond(request, response, handler, responder)
         }
 
-    private fun <T> handleRequestAndRespond(
-        request: Request,
-        response: Response,
-        handler: suspend Request.() -> T,
-        responder: Response.(T) -> Unit
-    ) = request.scope.launch {
-        runCatching {
-            val result = request.handler()
-            response.responder(result)
-        }.getOrElse { error ->
-            logger.error(error) { "EXCEPTION!" }
-            response.sendStatus(500)
-        }
-    }
+
 }
 
 typealias EndpointHandler = (Request, Response) -> Job
+
+fun <T> LoggingSyntax.handleRequestAndRespond(
+    request: Request,
+    response: Response,
+    handler: suspend Request.() -> T,
+    responder: Response.(T) -> Unit
+) = request.scope.launch {
+    runCatching {
+        val result = request.handler()
+        response.responder(result)
+    }.getOrElse { error ->
+        logger.error(error) { "EXCEPTION!" }
+        response.sendStatus(500)
+    }
+}

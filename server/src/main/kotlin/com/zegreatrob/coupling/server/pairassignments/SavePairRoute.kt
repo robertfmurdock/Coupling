@@ -2,23 +2,25 @@ package com.zegreatrob.coupling.server.pairassignments
 
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
-import com.zegreatrob.coupling.server.external.express.*
+import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.external.express.jsonBody
+import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val savePairsRoute = dispatchCommand { endpointHandler(Response::sendSuccessful, ::handleSave) }
+val savePairsRoute = dispatchCommand(::savePairAssignmentDocumentCommand, { it.perform() }, ::toJson)
 
-private suspend fun SavePairAssignmentDocumentCommandDispatcher.handleSave(request: Request) =
-    request.savePairAssignmentDocumentCommand()
-        .perform()
-        .document
-        .toJson()
-
-private fun Request.savePairAssignmentDocumentCommand() = SavePairAssignmentDocumentCommand(
-    tribeId().with(
-        jsonBody().toPairAssignmentDocument()
+private fun savePairAssignmentDocumentCommand(request: Request) = with(request) {
+    SavePairAssignmentDocumentCommand(
+        tribeId().with(
+            jsonBody().toPairAssignmentDocument()
+        )
     )
-)
+}
+
+private fun toJson(result: TribeIdPairAssignmentDocument) = result
+    .document
+    .toJson()
