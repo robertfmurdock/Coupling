@@ -11,7 +11,7 @@ external class Router(params: RouterParams) {
 }
 
 external interface Route {
-    fun all(handler: (Request, Response, () -> Unit) -> Unit): Route
+    fun all(handler: Handler): Route
     fun get(handler: (Request, Response) -> Unit): Route
     fun put(handler: (Request, Response) -> Unit): Route
     fun post(handler: (Request, Response) -> Unit): Route

@@ -4,6 +4,6 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
 
-interface PinDispatcherJs : SavePinCommandDispatcher, DeletePinCommandDispatcher {
+interface PinDispatcher : SavePinCommandDispatcher, DeletePinCommandDispatcher {
     override val pinRepository: PinRepository
 }

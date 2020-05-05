@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
-import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcherJs
+import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
-import com.zegreatrob.coupling.server.entity.pin.PinDispatcherJs
+import com.zegreatrob.coupling.server.entity.pin.PinDispatcher
 import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
@@ -31,11 +31,12 @@ class CommandDispatcher(
 ) :
     TribeDispatcher,
     PlayerDispatcher,
-    PairAssignmentDispatcherJs,
+    PairAssignmentDispatcher,
     UserDispatcherJs,
     HandleWebsocketConnectionActionDispatcher,
     RepositoryCatalog by repositoryCatalog,
-    PinDispatcherJs {
+    EndpointHandlerSyntax,
+    PinDispatcher {
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
 
