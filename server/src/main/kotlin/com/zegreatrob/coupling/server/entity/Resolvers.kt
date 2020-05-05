@@ -25,3 +25,16 @@ suspend fun CommandDispatcher.verifyAuth(entity: Json, func: suspend CurrentTrib
 }
 
 private fun Json.tribeId() = this["id"].toString()
+
+fun <Q, R> dispatchTribeCommand(
+    toQuery: () -> Q,
+    dispatch: suspend CurrentTribeIdDispatcher.(Q) -> R,
+    toJson: (R) -> Any?
+): CommandResolver = { entity, more ->
+    val query = toQuery()
+
+    verifyAuth {
+        val result = dispatch(query)
+        toJson(result)
+    }(entity, more)
+}

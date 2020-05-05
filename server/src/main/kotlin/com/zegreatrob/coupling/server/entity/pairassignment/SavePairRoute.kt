@@ -19,6 +19,4 @@ private fun Request.command() = SavePairAssignmentDocumentCommand(
     )
 )
 
-private fun toJson(result: TribeIdPairAssignmentDocument) = result
-    .document
-    .toJson()
+private fun toJson(result: TribeIdPairAssignmentDocument) = result.document.toJson()
