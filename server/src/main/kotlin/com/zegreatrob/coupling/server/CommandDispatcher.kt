@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.TraceIdSyntax
-import com.zegreatrob.coupling.json.toJsonArray
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
@@ -70,9 +70,18 @@ class CurrentTribeIdDispatcher(
 
     private suspend fun TribeId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
-    private val playerDeferred = scope.async(start = CoroutineStart.LAZY) { PlayersQuery.perform() }
+    private fun nonCachingPlayerQueryDispatcher() = object : PlayersQueryDispatcher,
+        TraceIdSyntax by this,
+        CurrentTribeIdSyntax by this,
+        RepositoryCatalog by this {}
 
-    suspend fun performPlayerListQueryGQL() = playerDeferred.await().toJsonArray()
+    private val playerDeferred = scope.async(start = CoroutineStart.LAZY) {
+        with(nonCachingPlayerQueryDispatcher()) {
+            PlayersQuery.perform()
+        }
+    }
+
+    override suspend fun PlayersQuery.perform() = playerDeferred.await()
 
     private suspend fun userIsAuthorized(tribeId: TribeId) = user.authorizedTribeIds.contains(tribeId)
             || userIsAlsoPlayer()

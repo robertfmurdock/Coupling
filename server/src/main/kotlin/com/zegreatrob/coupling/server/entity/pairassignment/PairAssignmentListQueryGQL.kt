@@ -7,8 +7,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.entity.dispatchTribeCommand
 
-val pairAssignmentQueryRoute = dispatchTribeCommand({ PairAssignmentDocumentListQuery }, { it.perform() }, ::toJson)
+val pairAssignmentQueryRoute = dispatchTribeCommand(::query, { it.perform() }, ::toJson)
 
-private fun toJson(perform: List<TribeRecord<PairAssignmentDocument>>) = perform
+private fun query() = PairAssignmentDocumentListQuery
+
+private fun toJson(result: List<TribeRecord<PairAssignmentDocument>>) = result
     .map { it.toJson().add(it.data.document.toJson()) }
     .toTypedArray()

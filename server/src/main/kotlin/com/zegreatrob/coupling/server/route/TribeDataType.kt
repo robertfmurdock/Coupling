@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.server.route
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentType
 import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentQueryRoute
 import com.zegreatrob.coupling.server.entity.pin.PinType
-import com.zegreatrob.coupling.server.entity.pin.performPinListQueryGQL
+import com.zegreatrob.coupling.server.entity.pin.pinListQueryRoute
 import com.zegreatrob.coupling.server.entity.player.PlayerType
+import com.zegreatrob.coupling.server.entity.player.playersQueryRoute
 import com.zegreatrob.coupling.server.entity.tribe.TribeType
 import com.zegreatrob.coupling.server.entity.tribe.performTribeQueryGQL
-import com.zegreatrob.coupling.server.entity.verifyAuth
 import com.zegreatrob.coupling.server.external.graphql.*
 
 val TribeDataType by lazy {
@@ -17,8 +17,8 @@ val TribeDataType by lazy {
         fields = arrayOf(
             field("id", GraphQLNonNull(GraphQLString)),
             field("tribe", TribeType) { entity, _ -> performTribeQueryGQL(entity["id"].toString()) },
-            field("pinList", GraphQLList(PinType), verifyAuth { performPinListQueryGQL() }),
-            field("playerList", GraphQLList(PlayerType), verifyAuth { performPlayerListQueryGQL() }),
+            field("pinList", GraphQLList(PinType), pinListQueryRoute),
+            field("playerList", GraphQLList(PlayerType), playersQueryRoute),
             field("pairAssignmentDocumentList", GraphQLList(PairAssignmentDocumentType), pairAssignmentQueryRoute)
         )
     )
