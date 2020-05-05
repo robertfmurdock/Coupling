@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatch
 import com.zegreatrob.coupling.server.entity.pairassignment.spinRoute
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.pairassignments.historyRouter
-import com.zegreatrob.coupling.server.pin.pinRouter
+import com.zegreatrob.coupling.server.entity.pin.pinRouter
 import com.zegreatrob.coupling.server.entity.player.playerRouter
 import com.zegreatrob.coupling.server.route.routerParams
 import kotlinx.coroutines.launch

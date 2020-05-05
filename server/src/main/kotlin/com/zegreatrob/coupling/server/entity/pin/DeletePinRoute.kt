@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.pin
+package com.zegreatrob.coupling.server.entity.pin
 
 import com.zegreatrob.coupling.server.ResponseHelpers
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommand
