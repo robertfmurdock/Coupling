@@ -18,7 +18,7 @@ interface EndpointHandlerSyntax : ScopeSyntax, LoggingSyntax {
         response: Response,
         handler: suspend Request.() -> T,
         responder: Response.(T) -> Unit
-    ) = scope.launch {
+    ) = request.scope.launch {
         runCatching {
             val result = request.handler()
             response.responder(result)

@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.server.route
 
+import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
+import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.spinRoute
 import com.zegreatrob.coupling.server.entity.tribe.deleteTribeRoute
 import com.zegreatrob.coupling.server.entity.tribe.saveTribeRoute
-import com.zegreatrob.coupling.server.external.express.Next
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.Response
-import com.zegreatrob.coupling.server.external.express.Router
+import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.pairassignments.historyRouter
 import com.zegreatrob.coupling.server.pin.pinRouter
 import com.zegreatrob.coupling.server.player.playerRouter
@@ -22,15 +22,18 @@ val tribeRouter = Router(routerParams(mergeParams = true)).apply {
 }
 
 private fun authCheck(request: Request, response: Response, next: Next): Unit = with(request.commandDispatcher) {
-    scope.launch {
-        val isAuthorized = performUserIsAuthorizedAction(request.params["tribeId"].toString())
-        if (isAuthorized) {
+    request.scope.launch {
+        if (isUserAuthorized(request.tribeId())) {
             next()
         } else {
             response.sendStatus(404)
         }
     }
 }
+
+private suspend fun UserIsAuthorizedActionDispatcher.isUserAuthorized(tribeId: TribeId) =
+    UserIsAuthorizedAction(tribeId)
+        .perform()
 
 val tribeListRouter by lazy {
     Router(routerParams()).apply {

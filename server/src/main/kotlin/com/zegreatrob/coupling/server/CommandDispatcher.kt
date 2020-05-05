@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
-import com.zegreatrob.coupling.server.entity.user.UserDispatcherJs
+import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -32,7 +32,7 @@ class CommandDispatcher(
     TribeDispatcher,
     PlayerDispatcher,
     PairAssignmentDispatcher,
-    UserDispatcherJs,
+    UserDispatcher,
     HandleWebsocketConnectionActionDispatcher,
     RepositoryCatalog by repositoryCatalog,
     EndpointHandlerSyntax,
