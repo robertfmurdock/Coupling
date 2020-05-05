@@ -12,13 +12,14 @@ fun dispatchCommand(handler: CommandDispatcher.() -> EndpointHandler): ExpressHa
         .invoke(request, response)
 }
 
-fun <C, R> dispatchCommand(
+fun <C, R, J> dispatchCommand(
     toCommandFunc: (Request) -> C,
     dispatch: suspend CommandDispatcher.(C) -> R,
-    toResult: (R) -> Any?
+    toResult: (R) -> J,
+    responder: Response.(J) -> Unit = Response::sendSuccessful
 ): ExpressHandler = { request, response ->
     val command = toCommandFunc(request)
     with(request.commandDispatcher) {
-        handleRequestAndRespond(request, response, { toResult(dispatch(command)) }, Response::sendSuccessful)
+        handleRequestAndRespond(request, response, { toResult(dispatch(command)) }, responder)
     }
 }
