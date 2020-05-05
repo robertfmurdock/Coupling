@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.player
+package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.server.external.graphql.*
 

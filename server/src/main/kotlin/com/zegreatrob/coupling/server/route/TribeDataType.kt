@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.entity.verifyAuth
 import com.zegreatrob.coupling.server.external.graphql.*
 import com.zegreatrob.coupling.server.pairassignments.PairAssignmentDocumentType
 import com.zegreatrob.coupling.server.pin.PinType
-import com.zegreatrob.coupling.server.player.PlayerType
+import com.zegreatrob.coupling.server.entity.player.PlayerType
 
 val TribeDataType by lazy {
     objectType(
