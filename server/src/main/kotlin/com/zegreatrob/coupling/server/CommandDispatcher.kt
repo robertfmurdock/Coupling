@@ -7,13 +7,13 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
+import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
-import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentListQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcher
-import com.zegreatrob.coupling.server.entity.pin.PinsQueryDispatcherJs
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
@@ -29,6 +29,7 @@ class CommandDispatcher(
     override val scope: CoroutineScope,
     override val traceId: Uuid
 ) :
+    ScopeSyntax,
     TribeDispatcher,
     PlayerDispatcher,
     PairAssignmentDispatcher,
@@ -61,9 +62,9 @@ class CurrentTribeIdDispatcher(
     AuthenticatedUserSyntax by commandDispatcher,
     UserEmailSyntax by commandDispatcher,
     TraceIdSyntax by commandDispatcher,
-    PinsQueryDispatcherJs,
+    PinsQueryDispatcher,
     PlayersQueryDispatcher,
-    PairAssignmentDocumentListQueryDispatcherJs,
+    PairAssignmentDocumentListQueryDispatcher,
     UserIsAuthorizedActionDispatcher {
 
     suspend fun isAuthorized() = currentTribeId.validateAuthorized() != null

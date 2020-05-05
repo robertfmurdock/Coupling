@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.server.entity.tribe.tribeListRouter
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.express.isInDevMode

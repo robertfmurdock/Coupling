@@ -1,24 +1,25 @@
-package com.zegreatrob.coupling.server.route
+package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.spinRoute
-import com.zegreatrob.coupling.server.entity.tribe.deleteTribeRoute
-import com.zegreatrob.coupling.server.entity.tribe.saveTribeRoute
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.pairassignments.historyRouter
 import com.zegreatrob.coupling.server.pin.pinRouter
 import com.zegreatrob.coupling.server.player.playerRouter
+import com.zegreatrob.coupling.server.route.routerParams
 import kotlinx.coroutines.launch
 
 
-val tribeRouter = Router(routerParams(mergeParams = true)).apply {
-    route("/*").all(::authCheck)
-    route("/spin").post(spinRoute)
-    use("/history", historyRouter)
-    use("/players", playerRouter)
-    use("/pins", pinRouter)
+val tribeRouter by lazy {
+    Router(routerParams(mergeParams = true)).apply {
+        route("/*").all(::authCheck)
+        route("/spin").post(spinRoute)
+        use("/history", historyRouter)
+        use("/players", playerRouter)
+        use("/pins", pinRouter)
+    }
 }
 
 private fun authCheck(request: Request, response: Response, next: Next): Unit = with(request.commandDispatcher) {

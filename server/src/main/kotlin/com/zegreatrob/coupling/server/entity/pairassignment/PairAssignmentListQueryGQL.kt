@@ -5,10 +5,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
 
-interface PairAssignmentDocumentListQueryDispatcherJs : PairAssignmentDocumentListQueryDispatcher {
-
-    suspend fun performPairAssignmentListQueryGQL() = PairAssignmentDocumentListQuery
+suspend fun PairAssignmentDocumentListQueryDispatcher.performPairAssignmentListQueryGQL() =
+    PairAssignmentDocumentListQuery
         .perform()
         .map { it.toJson().add(it.data.document.toJson()) }
         .toTypedArray()
-}

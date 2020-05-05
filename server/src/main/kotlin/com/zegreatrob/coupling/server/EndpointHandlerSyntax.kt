@@ -1,13 +1,12 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.action.LoggingSyntax
-import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-interface EndpointHandlerSyntax : ScopeSyntax, LoggingSyntax {
+interface EndpointHandlerSyntax : LoggingSyntax {
     fun <T> endpointHandler(responder: Response.(T) -> Unit, handler: suspend Request.() -> T): EndpointHandler =
         { request: Request, response: Response ->
             handleRequestAndRespond(request, response, handler, responder)
