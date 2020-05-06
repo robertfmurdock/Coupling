@@ -1,20 +1,20 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.repository.tribe.TribeRecordSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object TribeListQuery : Action
+object TribeListQuery : SuspendAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
+    override suspend fun execute(dispatcher: TribeListQueryDispatcher) = with(dispatcher) { perform() }
+}
 
-interface TribeListQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax,
-    TribeRecordSyntax {
+interface TribeListQueryDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax, TribeRecordSyntax {
 
-    suspend fun TribeListQuery.perform() = logAsync { getTribesAndUserPlayerIds().onlyAuthenticatedTribes() }
+    suspend fun TribeListQuery.perform() = getTribesAndUserPlayerIds().onlyAuthenticatedTribes()
 
     private suspend fun getTribesAndUserPlayerIds() = getTribesAndPlayersDeferred()
         .let { (tribeDeferred, playerDeferred) -> tribeDeferred.await() to playerDeferred.await() }

@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.CurrentTribeIdDispatcher
+import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.express.route.loggedExecute
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise
 import kotlin.js.Json
@@ -36,3 +38,13 @@ fun <Q, R, J> dispatchCommand(
     dispatch: suspend CommandDispatcher.(Q) -> R,
     toJson: (R) -> J
 ): CommandResolver = { entity, _ -> toJson(dispatch(toQuery(entity))) }
+
+fun <D, Q : SuspendAction<D, R>, R, J> dispatchCommand(
+    dispatcher: (Request) -> D,
+    queryFunc: (Json) -> Q,
+    toJson: (R) -> J
+) = { entity: Json, _: Json, request: Request ->
+    request.scope.promise {
+        loggedExecute(request, dispatcher, queryFunc(entity), toJson)
+    }
+}
