@@ -34,3 +34,9 @@ fun <Q, R, J> dispatchTribeCommand(
     verifyAuth(entity) { dispatch(toQuery()) }
         ?.let(toJson)
 }
+
+fun <Q, R, J> dispatchCommand(
+    toQuery: (Json) -> Q,
+    dispatch: suspend CommandDispatcher.(Q) -> R,
+    toJson: (R) -> J
+): CommandResolver = { entity, _ -> toJson(dispatch(toQuery(entity))) }

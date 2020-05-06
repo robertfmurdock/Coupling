@@ -6,8 +6,6 @@ import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-typealias EndpointHandler = (Request, Response) -> Job
-
 fun <T> LoggingSyntax.handleRequestAndRespond(
     request: Request,
     response: Response,
