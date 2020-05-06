@@ -1,6 +1,7 @@
-package com.zegreatrob.coupling.server.express
+package com.zegreatrob.coupling.server.express.middleware
 
 import com.zegreatrob.coupling.server.UserDataService
+import com.zegreatrob.coupling.server.express.isInDevMode
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.passport.passport
 

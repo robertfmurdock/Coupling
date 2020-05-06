@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.express
+package com.zegreatrob.coupling.server.express.middleware
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.server.external.express.Handler

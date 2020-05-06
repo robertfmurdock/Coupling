@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.server.express
+package com.zegreatrob.coupling.server.express.middleware
 
+import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express_session.session
 import kotlin.js.json
 

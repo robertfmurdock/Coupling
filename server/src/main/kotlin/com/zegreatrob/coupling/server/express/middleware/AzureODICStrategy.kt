@@ -1,13 +1,17 @@
-package com.zegreatrob.coupling.server.express
+package com.zegreatrob.coupling.server.express.middleware
 
 import com.zegreatrob.coupling.server.UserDataService.findOrCreateUser
+import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.passportazuread.OIDCStrategy
 import kotlin.js.Json
 import kotlin.js.json
 
 fun azureODICStrategy() = OIDCStrategy(azureOidcConfig()) { request, _, _, profile, _, _, done ->
-    request.scope.async(done, findOrCreateUser(profile, request))
+    request.scope.async(done,
+        findOrCreateUser(profile, request)
+    )
 }
 
 private fun findOrCreateUser(profile: Json, request: Request) = suspend {
