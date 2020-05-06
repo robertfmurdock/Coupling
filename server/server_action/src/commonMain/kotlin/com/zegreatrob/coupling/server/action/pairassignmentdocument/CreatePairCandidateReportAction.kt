@@ -9,8 +9,7 @@ data class CreatePairCandidateReportAction(
     val allPlayers: List<Player>
 )
 
-interface CreatePairCandidateReportActionDispatcher :
-    PairingTimeCalculationSyntax {
+interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
 
     fun CreatePairCandidateReportAction.perform() = pairTimeMap()
         .candidateReport()

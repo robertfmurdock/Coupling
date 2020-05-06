@@ -32,3 +32,5 @@ fun Request.tribeId() = TribeId(params["tribeId"].toString())
 fun Request.pinId() = params["pinId"].toString()
 fun Request.playerId() = params["playerId"].toString()
 fun Request.pairAssignmentDocumentId() = params["id"].toString().let(::PairAssignmentDocumentId)
+
+fun commandDispatcher(request: Request) = request.commandDispatcher
