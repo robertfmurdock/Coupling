@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.entity.tribe.tribeListRouter
 import com.zegreatrob.coupling.server.express.Config
@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
 import com.zegreatrob.coupling.server.external.passport.passport
-import com.zegreatrob.coupling.server.route.*
+import com.zegreatrob.coupling.server.graphql.couplingSchema
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.js.json
@@ -22,7 +22,9 @@ fun Express.routes(webSocketServer: WebSocketServer) {
     all("/api/*", apiGuard())
     use("/api/tribes", tribeListRouter)
     use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
-    ws("/api/:tribeId/pairAssignments/current", websocketRoute(webSocketServer))
+    ws("/api/:tribeId/pairAssignments/current",
+        websocketRoute(webSocketServer)
+    )
     ws("*") { ws, _ -> ws.close() }
     get("*", indexRoute())
 }
@@ -32,9 +34,15 @@ private fun websocketRoute(webSocketServer: WebSocketServer): (WS, Request) -> U
 }
 
 private fun Express.authRoutes() {
-    post("/auth/google-token", authenticateCustomGoogle(), send200())
+    post("/auth/google-token",
+        authenticateCustomGoogle(),
+        send200()
+    )
     get("/microsoft-login", authenticateAzure())
-    post("/auth/signin-microsoft", authenticateAzureWithFailure(), redirectToRoot())
+    post("/auth/signin-microsoft",
+        authenticateAzureWithFailure(),
+        redirectToRoot()
+    )
     if (isInDevMode)
         get("/test-login", authenticateLocal())
 }
@@ -77,7 +85,11 @@ private fun apiGuard(): Handler = { request, response, next ->
     if (!request.isAuthenticated()) {
         handleNotAuthenticated(request, response)
     } else {
-        request.scope.launch(block = setupDispatcher(request, next))
+        request.scope.launch(block = setupDispatcher(
+            request,
+            next
+        )
+        )
     }
 }
 
@@ -86,7 +98,8 @@ private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScop
     next()
 }
 
-private suspend fun Request.commandDispatcher() = commandDispatcher(user, scope, traceId)
+private suspend fun Request.commandDispatcher() =
+    com.zegreatrob.coupling.server.commandDispatcher(user, scope, traceId)
 
 private fun handleNotAuthenticated(request: Request, response: Response) = if (request.isWebsocketConnection()) {
     request.close()

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.external.express
 
-import com.zegreatrob.coupling.server.route.WS
+import com.zegreatrob.coupling.server.express.route.WS
 
 @JsModule("express")
 @JsNonModule
@@ -21,3 +21,4 @@ external interface Express {
 typealias Handler = (Request, Response, Next) -> Unit
 typealias WSHandler = (WS, Request) -> Unit
 typealias Next = () -> Unit
+typealias ExpressHandler = (Request, Response) -> Unit

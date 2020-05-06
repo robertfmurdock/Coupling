@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.action.pin.SavePinCommand
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.jsonBody
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatchCommand
+import com.zegreatrob.coupling.server.express.route.dispatchCommand
 
 val savePinRoute = dispatchCommand(::command, { it.perform() }, Pin::toJson)
 

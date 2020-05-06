@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommand
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.jsonBody
-import com.zegreatrob.coupling.server.route.dispatchCommand
+import com.zegreatrob.coupling.server.express.route.dispatchCommand
 
 val saveTribeRoute = dispatchCommand(::saveTribeCommand, { it.perform() }, { it }, ::returnErrorOnFailure)
 

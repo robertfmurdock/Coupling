@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.route
+package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.external.express.RouterParams
 

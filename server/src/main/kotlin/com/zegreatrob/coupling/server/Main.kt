@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.express.middleware
 import com.zegreatrob.coupling.server.express.port
+import com.zegreatrob.coupling.server.express.route.routes
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.coupling.server.external.expressws.expressWs

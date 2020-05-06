@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.route
+package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDocumentType
 import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.server.external.express.Router
-import com.zegreatrob.coupling.server.route.routerParams
+import com.zegreatrob.coupling.server.express.route.routerParams
 
 val playerRouter by lazy {
     Router(routerParams(mergeParams = true)).apply {

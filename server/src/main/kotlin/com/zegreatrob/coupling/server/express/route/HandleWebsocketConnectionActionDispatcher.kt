@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.action.LoggingSyntax
 import com.zegreatrob.coupling.json.toJson
@@ -9,8 +9,6 @@ import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.external.express.OPEN
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.WS
-import com.zegreatrob.coupling.server.route.WebSocketServer
 import kotlinx.coroutines.launch
 import kotlin.js.json
 

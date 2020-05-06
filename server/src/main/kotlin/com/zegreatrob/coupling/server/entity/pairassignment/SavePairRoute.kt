@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssi
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.jsonBody
 import com.zegreatrob.coupling.server.external.express.tribeId
-import com.zegreatrob.coupling.server.route.dispatchCommand
+import com.zegreatrob.coupling.server.express.route.dispatchCommand
 
 val savePairsRoute = dispatchCommand(Request::command, { it.perform() }, ::toJson)
 

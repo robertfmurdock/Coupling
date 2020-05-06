@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
+import com.zegreatrob.coupling.server.express.route.HandleWebsocketConnectionActionDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred

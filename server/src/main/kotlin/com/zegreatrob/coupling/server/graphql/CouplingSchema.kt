@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.route
+package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.entity.tribe.TribeType
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
@@ -17,7 +17,8 @@ fun couplingSchema(): GraphQLSchema {
                 fields = arrayOf(
                     field("tribeList", GraphQLList(TribeType), tribeListResolve),
                     field("tribeData",
-                        TribeDataType, args = json("id" to field(GraphQLString)), resolve = entityWithId)
+                        TribeDataType, args = json("id" to field(GraphQLString)), resolve = entityWithId
+                    )
                 )
             )
         )

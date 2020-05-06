@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.external.expressws
 
 import com.zegreatrob.coupling.server.external.express.Express
-import com.zegreatrob.coupling.server.route.WebSocketServer
+import com.zegreatrob.coupling.server.express.route.WebSocketServer
 
 @JsModule("express-ws")
 @JsNonModule

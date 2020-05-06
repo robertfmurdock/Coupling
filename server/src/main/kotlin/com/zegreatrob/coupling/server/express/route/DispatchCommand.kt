@@ -1,10 +1,10 @@
-package com.zegreatrob.coupling.server.route
+package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.external.express.ExpressHandler
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.sendSuccessful
-import com.zegreatrob.coupling.server.handleRequestAndRespond
 
 fun <C, R, J> dispatchCommand(
     toCommandFunc: (Request) -> C,

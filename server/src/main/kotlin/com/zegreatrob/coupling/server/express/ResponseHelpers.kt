@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.server.express
 
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlin.js.json
@@ -12,15 +12,6 @@ object ResponseHelpers : JsonSendToResponseSyntax {
             json(
                 "message" to "$entityName could not be deleted."
             )
-                .sendTo(this, 404)
-        }
-    }
-
-    fun <T> sendQueryResults(entityName: String): Response.(T?) -> Unit = { result ->
-        if (result != null) {
-            send(result)
-        } else {
-            json("message" to "$entityName not found")
                 .sendTo(this, 404)
         }
     }
