@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -26,7 +25,6 @@ class SavePlayerCommandTest {
             email = "tim@tim.meat",
             imageURL = "italian.jpg"
         )
-        override val traceId = uuid4()
         override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
     }) exercise {
         SavePlayerCommand(tribe.with(player))

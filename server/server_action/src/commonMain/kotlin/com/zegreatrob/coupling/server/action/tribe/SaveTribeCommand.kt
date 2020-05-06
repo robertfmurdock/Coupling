@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -11,6 +9,7 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -18,20 +17,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-data class SaveTribeCommand(val tribe: Tribe) : Action
+data class SaveTribeCommand(val tribe: Tribe) : SuspendAction<SaveTribeCommandDispatcher, Boolean> {
+    override suspend fun execute(dispatcher: SaveTribeCommandDispatcher) = with(dispatcher) { perform() }
+}
 
-interface SaveTribeCommandDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSyntax,
+interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax,
     TribeIdGetSyntax,
     TribeSaveSyntax, UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
 
     override val tribeRepository: TribeRepository
 
-    suspend fun SaveTribeCommand.perform() = logAsync {
-        isAuthorizedToSave()
-            .whenTrue {
-                saveTribeAndUser()
-            }
-    }
+    suspend fun SaveTribeCommand.perform() = isAuthorizedToSave()
+        .whenTrue { saveTribeAndUser() }
 
     private suspend fun SaveTribeCommand.saveTribeAndUser() = withContext(coroutineContext) {
         launch { tribe.save() }

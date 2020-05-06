@@ -2,12 +2,13 @@ package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.server.action.tribe.SaveTribeCommand
+import com.zegreatrob.coupling.server.express.route.dispatchCommand
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.coupling.server.external.express.commandDispatcher
 import com.zegreatrob.coupling.server.external.express.jsonBody
-import com.zegreatrob.coupling.server.express.route.dispatchCommand
 
-val saveTribeRoute = dispatchCommand(::saveTribeCommand, { it.perform() }, { it }, ::returnErrorOnFailure)
+val saveTribeRoute = dispatchCommand(::saveTribeCommand, ::commandDispatcher, { it }, ::returnErrorOnFailure)
 
 private fun saveTribeCommand(request: Request) = with(request) { SaveTribeCommand(jsonBody().toTribe()) }
 

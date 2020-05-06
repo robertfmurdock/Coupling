@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -23,7 +22,6 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(
         object : ProposeNewPairsCommandDispatcher {
-            override val traceId = uuid4()
             override val actionDispatcher get() = throw NotImplementedError("Do not use")
             override val wheel: Wheel get() = throw NotImplementedError("Do not use")
             override val pairAssignmentDocumentRepository get() = stubRepository

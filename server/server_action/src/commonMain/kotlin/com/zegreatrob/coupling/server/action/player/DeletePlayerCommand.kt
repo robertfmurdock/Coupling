@@ -1,14 +1,17 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.player.TribeIdPlayerId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerIdDeleteSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 
-data class DeletePlayerCommand(val tribeId: TribeId, val playerId: String) : Action
-
-interface DeletePlayerCommandDispatcher : ActionLoggingSyntax, TribeIdPlayerIdDeleteSyntax {
-    suspend fun DeletePlayerCommand.perform() = logAsync { TribeIdPlayerId(tribeId, playerId).run { deletePlayer() } }
+data class DeletePlayerCommand(val tribeId: TribeId, val playerId: String) :
+    SuspendAction<DeletePlayerCommandDispatcher, Boolean> {
+    override suspend fun execute(dispatcher: DeletePlayerCommandDispatcher): Boolean = with(dispatcher) {
+        perform()
+    }
 }
 
+interface DeletePlayerCommandDispatcher : TribeIdPlayerIdDeleteSyntax {
+    suspend fun DeletePlayerCommand.perform() = TribeIdPlayerId(tribeId, playerId).run { deletePlayer() }
+}
