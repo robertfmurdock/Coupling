@@ -1,16 +1,17 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetRecordSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 
-data class TribeQuery(val tribeId: TribeId) : Action
+data class TribeQuery(val tribeId: TribeId) : SuspendAction<TribeQueryDispatcher, Record<Tribe>?> {
+    override suspend fun execute(dispatcher: TribeQueryDispatcher) = with(dispatcher) { perform() }
+}
 
-interface TribeQueryDispatcher : ActionLoggingSyntax, UserAuthenticatedTribeIdSyntax,
-    TribeIdGetRecordSyntax,
-    UserPlayerIdsSyntax {
+interface TribeQueryDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetRecordSyntax {
 
-    suspend fun TribeQuery.perform() = logAsync { tribeId.loadRecord() }
+    suspend fun TribeQuery.perform() = tribeId.loadRecord()
 
 }

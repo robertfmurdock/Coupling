@@ -1,22 +1,21 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 
-object PlayersQuery : Action
+object PlayersQuery : SuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
+    override suspend fun execute(dispatcher: PlayersQueryDispatcher) = with(dispatcher) { perform() }
+}
 
-interface PlayersQueryDispatcher : ActionLoggingSyntax, CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax,
-    FindCallSignActionDispatcher {
-    suspend fun PlayersQuery.perform() = logAsync {
+interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax, FindCallSignActionDispatcher {
+    suspend fun PlayersQuery.perform(): List<Record<TribeIdPlayer>> {
         val playerRecords = currentTribeId.getPlayerRecords()
 
         var updatedPlayers = emptyList<Record<TribeIdPlayer>>()
@@ -31,17 +30,12 @@ interface PlayersQueryDispatcher : ActionLoggingSyntax, CurrentTribeIdSyntax, Tr
                 )
 
                 updatedPlayers = updatedPlayers + record.copy(
-                    data = record.data.copy(element = record.data.player.withCallSign(callSign))
+                    data = record.data.copy(element = record.data.player)
                 )
 
             }
-        updatedPlayers
+        return updatedPlayers
     }
-
-    private fun Player.withCallSign(callSign: CallSign) = copy(
-        callSignAdjective = callSignAdjective,
-        callSignNoun = callSignNoun
-    )
 
     private fun findCallSign(updatedPlayers: List<Player>, players: List<Player>, index: Int, player: Player) =
         FindCallSignAction(

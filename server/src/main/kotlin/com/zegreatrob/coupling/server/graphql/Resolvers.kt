@@ -40,11 +40,20 @@ fun <Q, R, J> dispatchCommand(
 ): CommandResolver = { entity, _ -> toJson(dispatch(toQuery(entity))) }
 
 fun <D, Q : SuspendAction<D, R>, R, J> dispatchCommand(
-    dispatcher: (Request) -> D,
+    dispatcher: suspend (Request, Json) -> D?,
     queryFunc: (Json) -> Q,
     toJson: (R) -> J
 ) = { entity: Json, _: Json, request: Request ->
     request.scope.promise {
-        loggedExecute(request, dispatcher, queryFunc(entity), toJson)
+        dispatcher(request, entity)
+            ?.let {
+                loggedExecute(request, queryFunc(entity), toJson, it)
+            }
     }
 }
+
+suspend fun commandDispatcher(request: Request, entity: Json) = request.commandDispatcher
+
+suspend fun tribeCommandDispatcher(request: Request, entity: Json) =
+    request.commandDispatcher.authorizedTribeIdDispatcher(entity.tribeId())
+        .let { if (it.isAuthorized()) it else null }
