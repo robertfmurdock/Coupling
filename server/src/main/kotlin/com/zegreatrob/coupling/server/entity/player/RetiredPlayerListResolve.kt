@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.coupling.server.route.dispatchCommand
 
-val retiredPlayerRoute = dispatchCommand(::command, { it.perform() }, ::toJsonArray)
+val retiredPlayerListResolve = dispatchCommand(::command, { it.perform() }, ::toJsonArray)
 
 private fun toJsonArray(list: List<TribeRecord<Player>>) = list.map {
     it.toJson().add(it.data.player.toJson())

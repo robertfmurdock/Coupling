@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.external.graphql
 
 import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.entity.buildResolver
 import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.graphql.buildResolver
 import kotlin.js.Json
 import kotlin.js.json
 

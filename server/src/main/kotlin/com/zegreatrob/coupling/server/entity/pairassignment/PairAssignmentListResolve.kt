@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
-import com.zegreatrob.coupling.server.entity.dispatchTribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatchTribeCommand
 
-val pairAssignmentQueryRoute = dispatchTribeCommand(::query, { it.perform() }, ::toJson)
+val pairAssignmentListResolve = dispatchTribeCommand(::query, { it.perform() }, ::toJson)
 
 private fun query() = PairAssignmentDocumentListQuery
 

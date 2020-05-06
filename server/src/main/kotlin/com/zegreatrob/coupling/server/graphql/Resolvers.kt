@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity
+package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.CurrentTribeIdDispatcher
@@ -7,10 +7,6 @@ import kotlinx.coroutines.promise
 import kotlin.js.Json
 
 typealias CommandResolver = suspend CommandDispatcher.(Json, Json) -> Any?
-
-fun verifyAuth(dispatcher: suspend CurrentTribeIdDispatcher.() -> Any?): CommandResolver = { entity, _ ->
-    verifyAuth(entity, dispatcher)
-}
 
 fun buildResolver(func: CommandResolver) = { entity: Json, args: Json, request: Request ->
     request.scope.promise { func(request.commandDispatcher, entity, args) }
@@ -24,7 +20,7 @@ suspend fun <R : Any?> CommandDispatcher.verifyAuth(entity: Json, func: suspend 
     }
 }
 
-private fun Json.tribeId() = this["id"].toString()
+fun Json.tribeId() = this["id"].toString()
 
 fun <Q, R, J> dispatchTribeCommand(
     toQuery: () -> Q,
