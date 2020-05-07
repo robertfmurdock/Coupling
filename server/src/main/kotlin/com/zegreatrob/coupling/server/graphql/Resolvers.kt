@@ -45,10 +45,9 @@ fun <D, Q : SuspendAction<D, R>, R, J> dispatchCommand(
     toJson: (R) -> J
 ) = { entity: Json, _: Json, request: Request ->
     request.scope.promise {
-        dispatcher(request, entity)
-            ?.let {
-                loggedExecute(request, queryFunc(entity), toJson, it)
-            }
+        dispatcher(request, entity)?.let {
+            loggedExecute(request, queryFunc(entity), toJson, it)
+        }
     }
 }
 

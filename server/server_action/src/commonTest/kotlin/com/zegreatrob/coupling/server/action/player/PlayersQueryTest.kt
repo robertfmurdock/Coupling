@@ -19,7 +19,6 @@ class PlayersQueryTest {
 
     @Test
     fun willReturnPlayersFromRepository() = asyncSetup(object : PlayersQueryDispatcher {
-        override val traceId = uuid4()
         override val currentTribeId = TribeId("Excellent Tribe")
         val players = listOf(
             Player(
@@ -53,7 +52,6 @@ class PlayersQueryTest {
 
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object : PlayersQueryDispatcher {
-        override val traceId = uuid4()
         override val currentTribeId = TribeId("Excellent Tribe")
         val players = listOf(
             Player(id = "1"),
