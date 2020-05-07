@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.server.action.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -38,7 +39,7 @@ class PlayersQueryTest {
             .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
     }) exercise {
         PlayersQuery.perform()
-    } verify { result ->
+    } verifySuccess { result ->
         result.map { it.data.player }.assertIsEqualTo(players)
     }
 
@@ -62,7 +63,7 @@ class PlayersQueryTest {
             .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
     }) exercise {
         PlayersQuery.perform()
-    } verify { result ->
+    } verifySuccess { result ->
         result.map { it.data.player }
             .apply {
                 map(Player::id)
@@ -78,3 +79,4 @@ class PlayersQueryTest {
         override suspend fun getPlayers(tribeId: TribeId) = spyFunction(tribeId)
     }
 }
+

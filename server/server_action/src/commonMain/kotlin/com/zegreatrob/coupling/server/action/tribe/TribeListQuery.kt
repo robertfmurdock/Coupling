@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.repository.tribe.TribeRecordSyntax
 import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.action.successResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -14,7 +15,7 @@ object TribeListQuery : SuspendAction<TribeListQueryDispatcher, List<Record<Trib
 
 interface TribeListQueryDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax, TribeRecordSyntax {
 
-    suspend fun TribeListQuery.perform() = getTribesAndUserPlayerIds().onlyAuthenticatedTribes()
+    suspend fun TribeListQuery.perform() = getTribesAndUserPlayerIds().onlyAuthenticatedTribes().successResult()
 
     private suspend fun getTribesAndUserPlayerIds() = getTribesAndPlayersDeferred()
         .let { (tribeDeferred, playerDeferred) -> tribeDeferred.await() to playerDeferred.await() }

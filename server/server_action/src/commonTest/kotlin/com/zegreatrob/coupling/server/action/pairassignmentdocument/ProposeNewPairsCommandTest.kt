@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
+import com.zegreatrob.coupling.server.action.verifySuccess
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
@@ -51,7 +52,7 @@ class ProposeNewPairsCommandTest {
     ) exercise {
         ProposeNewPairsCommand(tribe.id, players, pins)
             .perform()
-    } verify { result ->
+    } verifySuccess { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
         spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
     }

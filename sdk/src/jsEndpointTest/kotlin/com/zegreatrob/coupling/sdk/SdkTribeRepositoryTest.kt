@@ -116,7 +116,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator {
                     sdk.save(tribe)
                 }
             } verify { result ->
-                result["status"].assertIsEqualTo(400)
+                result["status"].assertIsEqualTo(403)
             }
         }
     }

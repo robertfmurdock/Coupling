@@ -9,7 +9,10 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
+import com.zegreatrob.coupling.server.action.Result
 import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.action.UnauthorizedResult
+import com.zegreatrob.coupling.server.action.successResult
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -17,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-data class SaveTribeCommand(val tribe: Tribe) : SuspendAction<SaveTribeCommandDispatcher, Boolean> {
+data class SaveTribeCommand(val tribe: Tribe) : SuspendAction<SaveTribeCommandDispatcher, Unit> {
     override suspend fun execute(dispatcher: SaveTribeCommandDispatcher) = with(dispatcher) { perform() }
 }
 
@@ -27,7 +30,7 @@ interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGe
     override val tribeRepository: TribeRepository
 
     suspend fun SaveTribeCommand.perform() = isAuthorizedToSave()
-        .whenTrue { saveTribeAndUser() }
+        .whenAuthorized { saveTribeAndUser() }
 
     private suspend fun SaveTribeCommand.saveTribeAndUser() = withContext(coroutineContext) {
         launch { tribe.save() }
@@ -54,9 +57,11 @@ interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGe
 
     private fun tribeIsNew(existingTribe: Tribe?) = existingTribe == null
 
-    private suspend fun Boolean.whenTrue(block: suspend () -> Unit) = also {
+    private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit): Result<Unit> = let {
         if (it) {
-            block()
+            block().successResult()
+        } else {
+            UnauthorizedResult()
         }
     }
 }

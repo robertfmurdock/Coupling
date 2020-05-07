@@ -91,6 +91,6 @@ class CurrentTribeIdDispatcher(
         .map { it.email }
         .contains(user.email)
 
-    private suspend fun players() = playerDeferred.await().map { it.data.element }
+    private suspend fun players() = playerDeferred.await().value.map { it.data.element }
 
 }

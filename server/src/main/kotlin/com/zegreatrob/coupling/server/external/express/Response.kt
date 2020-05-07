@@ -15,8 +15,3 @@ external interface Response {
     fun redirect(path: String)
     fun render(view: String, json: Json)
 }
-
-fun Response.sendSuccessful(body: Any?) {
-    this.statusCode = 200
-    send(body)
-}

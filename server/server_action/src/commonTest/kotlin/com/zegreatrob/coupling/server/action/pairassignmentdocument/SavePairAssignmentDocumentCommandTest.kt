@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmen
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
+import com.zegreatrob.coupling.server.action.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -24,7 +25,7 @@ class SavePairAssignmentDocumentCommandTest {
     }) exercise {
         SavePairAssignmentDocumentCommand(pairAssignmentDocument)
             .perform()
-    } verify { result ->
+    } verifySuccess { result ->
         result.assertIsEqualTo(pairAssignmentDocument)
         pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
     }

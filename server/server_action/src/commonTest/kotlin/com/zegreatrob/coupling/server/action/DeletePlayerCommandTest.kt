@@ -18,8 +18,7 @@ class DeletePlayerCommandTest {
     }) exercise {
         DeletePlayerCommand(TribeId(""), playerId)
             .perform()
-    } verify { result ->
-        result.assertIsEqualTo(true)
+    } verifySuccess {
         playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
     }
 

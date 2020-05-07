@@ -8,33 +8,27 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.SuccessfulResult
 import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.action.successResult
 
 object PlayersQuery : SuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
     override suspend fun execute(dispatcher: PlayersQueryDispatcher) = with(dispatcher) { perform() }
 }
 
 interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax, FindCallSignActionDispatcher {
-    suspend fun PlayersQuery.perform(): List<Record<TribeIdPlayer>> {
+    suspend fun PlayersQuery.perform(): SuccessfulResult<List<Record<TribeIdPlayer>>> {
         val playerRecords = currentTribeId.getPlayerRecords()
 
         var updatedPlayers = emptyList<Record<TribeIdPlayer>>()
         playerRecords
             .forEachIndexed { index, record ->
-
-                val callSign = findCallSign(
-                    updatedPlayers.map { it.data.player },
-                    playerRecords.map { it.data.player },
-                    index,
-                    record.data.player
-                )
-
                 updatedPlayers = updatedPlayers + record.copy(
                     data = record.data.copy(element = record.data.player)
                 )
 
             }
-        return updatedPlayers
+        return updatedPlayers.successResult()
     }
 
     private fun findCallSign(updatedPlayers: List<Player>, players: List<Player>, index: Int, player: Player) =

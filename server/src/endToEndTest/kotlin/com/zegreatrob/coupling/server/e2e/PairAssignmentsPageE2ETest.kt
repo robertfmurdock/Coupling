@@ -28,7 +28,6 @@ class PairAssignmentsPageE2ETest {
     companion object {
         private suspend fun AuthorizedSdk.save(tribe: Tribe, players: List<Player>) {
             save(tribe)
-            delay(25)
             players.forEach { save(tribe.id.with(it)) }
         }
     }

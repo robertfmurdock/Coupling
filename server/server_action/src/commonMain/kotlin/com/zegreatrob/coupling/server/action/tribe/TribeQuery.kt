@@ -5,13 +5,12 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetRecordSyntax
 import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.action.successResult
 
 data class TribeQuery(val tribeId: TribeId) : SuspendAction<TribeQueryDispatcher, Record<Tribe>?> {
     override suspend fun execute(dispatcher: TribeQueryDispatcher) = with(dispatcher) { perform() }
 }
 
 interface TribeQueryDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetRecordSyntax {
-
-    suspend fun TribeQuery.perform() = tribeId.loadRecord()
-
+    suspend fun TribeQuery.perform() = tribeId.loadRecord().successResult()
 }

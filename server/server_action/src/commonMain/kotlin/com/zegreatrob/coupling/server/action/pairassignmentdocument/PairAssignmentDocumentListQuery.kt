@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentRecordsSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.action.successResult
 
 object PairAssignmentDocumentListQuery :
     SuspendAction<PairAssignmentDocumentListQueryDispatcher, List<TribeRecord<PairAssignmentDocument>>> {
@@ -12,5 +13,5 @@ object PairAssignmentDocumentListQuery :
 }
 
 interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentRecordsSyntax, CurrentTribeIdSyntax {
-    suspend fun PairAssignmentDocumentListQuery.perform() = currentTribeId.loadPairAssignmentRecords()
+    suspend fun PairAssignmentDocumentListQuery.perform() = currentTribeId.loadPairAssignmentRecords().successResult()
 }

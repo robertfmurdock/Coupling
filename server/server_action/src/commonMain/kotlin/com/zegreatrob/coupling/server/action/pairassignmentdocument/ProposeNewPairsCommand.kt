@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.server.action.successResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -24,6 +25,7 @@ interface ProposeNewPairsCommandDispatcher : RunGameActionDispatcher, TribeIdGet
     suspend fun ProposeNewPairsCommand.perform() = loadData()
         .let { (history, tribe) -> RunGameAction(players, pins, history, tribe) }
         .performThis()
+        .successResult()
 
     private fun RunGameAction.performThis() = perform()
 
