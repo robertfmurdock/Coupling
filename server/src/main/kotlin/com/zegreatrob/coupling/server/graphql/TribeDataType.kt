@@ -16,14 +16,10 @@ val TribeDataType by lazy {
         description = "Everything you wanted to know about a tribe but never asked.",
         fields = arrayOf(
             field("id", GraphQLNonNull(GraphQLString)),
-            field("tribe", TribeType, resolve = tribeResolve),
+            field("tribe", TribeType, tribeResolve),
             field("pinList", GraphQLList(PinType), pinListResolve),
-            field("playerList", GraphQLList(PlayerType), resolve = playerListResolve),
-            field(
-                "pairAssignmentDocumentList",
-                GraphQLList(PairAssignmentDocumentType),
-                resolve = pairAssignmentListResolve
-            )
+            field("playerList", GraphQLList(PlayerType), playerListResolve),
+            field("pairAssignmentDocumentList", GraphQLList(PairAssignmentDocumentType), pairAssignmentListResolve)
         )
     )
 }

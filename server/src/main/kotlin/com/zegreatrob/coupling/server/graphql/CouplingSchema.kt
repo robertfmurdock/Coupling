@@ -14,11 +14,8 @@ fun couplingSchema() = GraphQLSchema(
         "query" to objectType(
             name = "RootQueryType",
             fields = arrayOf(
-                field("tribeList", GraphQLList(TribeType), resolve = tribeListResolve),
-                field(
-                    "tribeData",
-                    TribeDataType, args = json("id" to field(GraphQLString)), resolve = entityWithId
-                )
+                field("tribeList", GraphQLList(TribeType), tribeListResolve),
+                field("tribeData", TribeDataType, entityWithId, json("id" to field(GraphQLString)))
             )
         )
     )

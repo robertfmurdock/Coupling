@@ -4,6 +4,11 @@ import com.zegreatrob.coupling.json.toJsonArray
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
-import com.zegreatrob.coupling.server.graphql.dispatchTribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatchCommand
+import com.zegreatrob.coupling.server.graphql.tribeCommandDispatcher
 
-val pinListResolve = dispatchTribeCommand({ PinsQuery }, { it.perform() }, List<Record<TribeIdPin>>::toJsonArray)
+val pinListResolve = dispatchCommand(
+    ::tribeCommandDispatcher,
+    { PinsQuery },
+    List<Record<TribeIdPin>>::toJsonArray
+)

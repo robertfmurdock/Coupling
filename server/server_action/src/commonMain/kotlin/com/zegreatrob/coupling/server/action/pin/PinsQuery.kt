@@ -1,14 +1,15 @@
 package com.zegreatrob.coupling.server.action.pin
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinRecordsSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 
-object PinsQuery : Action
+object PinsQuery : SuspendAction<PinsQueryDispatcher, List<TribeRecord<Pin>>> {
+    override suspend fun execute(dispatcher: PinsQueryDispatcher) = with(dispatcher) { perform() }
+}
 
-interface PinsQueryDispatcher : ActionLoggingSyntax, CurrentTribeIdSyntax, TribeIdPinRecordsSyntax {
-
-    suspend fun PinsQuery.perform() = logAsync { currentTribeId.getPinRecords() }
-
+interface PinsQueryDispatcher : CurrentTribeIdSyntax, TribeIdPinRecordsSyntax {
+    suspend fun PinsQuery.perform() = currentTribeId.getPinRecords()
 }
