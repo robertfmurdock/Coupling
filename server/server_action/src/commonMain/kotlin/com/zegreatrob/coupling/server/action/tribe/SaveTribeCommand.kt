@@ -21,9 +21,8 @@ data class SaveTribeCommand(val tribe: Tribe) : SuspendAction<SaveTribeCommandDi
     override suspend fun execute(dispatcher: SaveTribeCommandDispatcher) = with(dispatcher) { perform() }
 }
 
-interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax,
-    TribeIdGetSyntax,
-    TribeSaveSyntax, UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
+interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, TribeSaveSyntax,
+    UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
 
     override val tribeRepository: TribeRepository
 

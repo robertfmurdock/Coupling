@@ -17,7 +17,7 @@ fun <D, Q : SuspendAction<D, R>, R, J> dispatch(
 ) = { entity: Json, _: Json, request: Request ->
     request.scope.promise {
         dispatcher(request, entity)?.let {
-            loggedExecute(request, queryFunc(entity), toJson, it)
+            request.commandDispatcher.loggedExecute(it, queryFunc(entity), toJson)
         }
     }
 }

@@ -18,6 +18,7 @@ import com.zegreatrob.testmints.async.setupAsync
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 
@@ -27,13 +28,14 @@ class PairAssignmentsPageE2ETest {
     companion object {
         private suspend fun AuthorizedSdk.save(tribe: Tribe, players: List<Player>) {
             save(tribe)
+            delay(25)
             players.forEach { save(tribe.id.with(it)) }
         }
     }
 
     class GivenNoCurrentSetOfPairs {
-        companion object {
 
+        companion object {
             val tribe by lazy {
                 Tribe(
                     TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),

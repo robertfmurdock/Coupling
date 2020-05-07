@@ -16,4 +16,9 @@ object ResponseHelpers : JsonSendToResponseSyntax {
         }
     }
 
+    fun returnErrorOnFailure(response: Response, successful: Boolean) = if (successful)
+        response.sendStatus(200)
+    else
+        response.sendStatus(400)
+
 }
