@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.tribe.TribeQuery
-import com.zegreatrob.coupling.server.graphql.dispatchCommand
-import com.zegreatrob.coupling.server.graphql.commandDispatcher
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
+import com.zegreatrob.coupling.server.graphql.dispatch
 import com.zegreatrob.coupling.server.graphql.tribeId
 import kotlin.js.Json
 
-val tribeResolve = dispatchCommand(::commandDispatcher, ::toQuery, ::toJson)
+val tribeResolve = dispatch(command, ::toQuery, ::toJson)
 
 private fun toQuery(entity: Json) = TribeQuery(TribeId(entity.tribeId()))
 

@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
-import com.zegreatrob.coupling.server.graphql.dispatchCommand
-import com.zegreatrob.coupling.server.graphql.tribeCommandDispatcher
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatch
 
-val pairAssignmentListResolve = dispatchCommand(
-    ::tribeCommandDispatcher,
+val pairAssignmentListResolve = dispatch(
+    tribeCommand,
     { PairAssignmentDocumentListQuery },
     ::toJson
 )

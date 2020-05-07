@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.json.toJsonArray
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
-import com.zegreatrob.coupling.server.graphql.dispatchCommand
-import com.zegreatrob.coupling.server.graphql.tribeCommandDispatcher
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatch
 
-val playerListResolve = dispatchCommand(
-    ::tribeCommandDispatcher,
+val playerListResolve = dispatch(
+    tribeCommand,
     { PlayersQuery },
     List<Record<TribeIdPlayer>>::toJsonArray
 )

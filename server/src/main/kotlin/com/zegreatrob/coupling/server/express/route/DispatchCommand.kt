@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import com.zegreatrob.coupling.server.external.express.sendSuccessful
 
-fun <C : SuspendAction<D, R>, D, R, J> dispatchCommand(
-    toCommandFunc: (Request) -> C,
+fun <C : SuspendAction<D, R>, D, R, J> dispatch(
     dispatcher: (Request) -> D,
+    toCommandFunc: (Request) -> C,
     toResult: (R) -> J,
     responder: Response.(J) -> Unit = Response::sendSuccessful
 ): ExpressHandler = { request, response ->

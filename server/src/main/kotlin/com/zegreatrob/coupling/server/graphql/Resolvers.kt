@@ -8,8 +8,10 @@ import kotlin.js.Json
 
 fun Json.tribeId() = this["id"].toString()
 
-fun <D, Q : SuspendAction<D, R>, R, J> dispatchCommand(
-    dispatcher: suspend (Request, Json) -> D?,
+typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
+
+fun <D, Q : SuspendAction<D, R>, R, J> dispatch(
+    dispatcher: GraphQLDispatcherProvider<D>,
     queryFunc: (Json) -> Q,
     toJson: (R) -> J
 ) = { entity: Json, _: Json, request: Request ->
@@ -19,10 +21,3 @@ fun <D, Q : SuspendAction<D, R>, R, J> dispatchCommand(
         }
     }
 }
-
-@Suppress("RedundantSuspendModifier", "UNUSED_PARAMETER")
-suspend fun commandDispatcher(request: Request, entity: Json) = request.commandDispatcher
-
-suspend fun tribeCommandDispatcher(request: Request, entity: Json) =
-    request.commandDispatcher.authorizedTribeIdDispatcher(entity.tribeId())
-        .let { if (it.isAuthorized()) it else null }
