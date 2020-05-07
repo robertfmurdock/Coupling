@@ -19,7 +19,11 @@ val TribeDataType by lazy {
             field("tribe", TribeType, resolve = tribeResolve),
             field("pinList", GraphQLList(PinType), pinListResolve),
             field("playerList", GraphQLList(PlayerType), resolve = playerListResolve),
-            field("pairAssignmentDocumentList", GraphQLList(PairAssignmentDocumentType), pairAssignmentListResolve)
+            field(
+                "pairAssignmentDocumentList",
+                GraphQLList(PairAssignmentDocumentType),
+                resolve = pairAssignmentListResolve
+            )
         )
     )
 }

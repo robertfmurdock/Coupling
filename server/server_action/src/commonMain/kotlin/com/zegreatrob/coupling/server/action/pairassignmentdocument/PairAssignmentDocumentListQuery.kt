@@ -1,14 +1,16 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentRecordsSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.SuspendAction
 
-object PairAssignmentDocumentListQuery : Action
+object PairAssignmentDocumentListQuery :
+    SuspendAction<PairAssignmentDocumentListQueryDispatcher, List<TribeRecord<PairAssignmentDocument>>> {
+    override suspend fun execute(dispatcher: PairAssignmentDocumentListQueryDispatcher) = with(dispatcher) { perform() }
+}
 
-interface PairAssignmentDocumentListQueryDispatcher : ActionLoggingSyntax, TribeIdPairAssignmentRecordsSyntax,
-    CurrentTribeIdSyntax {
-    suspend fun PairAssignmentDocumentListQuery.perform() =
-        logAsync { currentTribeId.loadPairAssignmentRecords() }
+interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentRecordsSyntax, CurrentTribeIdSyntax {
+    suspend fun PairAssignmentDocumentListQuery.perform() = currentTribeId.loadPairAssignmentRecords()
 }

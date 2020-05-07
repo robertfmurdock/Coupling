@@ -21,7 +21,7 @@ fun Express.middleware() {
     use(favicon())
     use(tracer())
     use(scope())
-    if (Config.disableLogging) {
+    if (!Config.disableLogging) {
         use(logRequests())
     }
     use(urlencoded(json("extended" to true)))

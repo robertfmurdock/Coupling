@@ -5,11 +5,13 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
-import com.zegreatrob.coupling.server.graphql.dispatchTribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatchCommand
+import com.zegreatrob.coupling.server.graphql.tribeCommandDispatcher
+import kotlin.js.Json
 
-val pairAssignmentListResolve = dispatchTribeCommand(::query, { it.perform() }, ::toJson)
+val pairAssignmentListResolve = dispatchCommand(::tribeCommandDispatcher, ::query, ::toJson)
 
-private fun query() = PairAssignmentDocumentListQuery
+private fun query(it: Json) = PairAssignmentDocumentListQuery
 
 private fun toJson(result: List<TribeRecord<PairAssignmentDocument>>) = result
     .map { it.toJson().add(it.data.document.toJson()) }
