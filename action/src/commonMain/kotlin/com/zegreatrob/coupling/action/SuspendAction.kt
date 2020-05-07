@@ -1,6 +1,4 @@
-package com.zegreatrob.coupling.server.action
-
-import com.zegreatrob.coupling.action.Action
+package com.zegreatrob.coupling.action
 
 interface SuspendAction<T, R> : Action {
     suspend fun execute(dispatcher: T): Result<R>

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.server.action.Result
-import com.zegreatrob.coupling.server.action.SuccessfulResult
-import com.zegreatrob.coupling.server.action.SuspendAction
+import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.action.SuspendAction
 import com.zegreatrob.coupling.server.express.route.loggedExecute
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise

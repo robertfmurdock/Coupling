@@ -4,12 +4,13 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.repository.tribe.TribeRecordSyntax
-import com.zegreatrob.coupling.server.action.SuspendAction
-import com.zegreatrob.coupling.server.action.successResult
+import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.successResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object TribeListQuery : SuspendAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
+object TribeListQuery :
+    SuspendAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
     override suspend fun execute(dispatcher: TribeListQueryDispatcher) = with(dispatcher) { perform() }
 }
 

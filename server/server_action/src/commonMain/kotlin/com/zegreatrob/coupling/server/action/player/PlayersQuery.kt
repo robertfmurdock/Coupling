@@ -8,11 +8,12 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
-import com.zegreatrob.coupling.server.action.SuccessfulResult
-import com.zegreatrob.coupling.server.action.SuspendAction
-import com.zegreatrob.coupling.server.action.successResult
+import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.successResult
 
-object PlayersQuery : SuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
+object PlayersQuery :
+    SuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
     override suspend fun execute(dispatcher: PlayersQueryDispatcher) = with(dispatcher) { perform() }
 }
 

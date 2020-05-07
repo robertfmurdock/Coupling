@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
-import com.zegreatrob.coupling.server.action.SuspendAction
-import com.zegreatrob.coupling.server.action.successResult
+import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.successResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 

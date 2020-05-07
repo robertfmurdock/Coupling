@@ -4,10 +4,11 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
-import com.zegreatrob.coupling.server.action.SuspendAction
-import com.zegreatrob.coupling.server.action.successResult
+import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.successResult
 
-data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) : SuspendAction<SavePlayerCommandDispatcher, Player> {
+data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) :
+    SuspendAction<SavePlayerCommandDispatcher, Player> {
     override suspend fun execute(dispatcher: SavePlayerCommandDispatcher) = with(dispatcher) { perform() }
 }
 

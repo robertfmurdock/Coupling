@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.action.pin
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinDelete
-import com.zegreatrob.coupling.server.action.SuspendAction
-import com.zegreatrob.coupling.server.action.deletionResult
+import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.deletionResult
 
 data class DeletePinCommand(val tribeId: TribeId, val pinId: String) :
     SuspendAction<DeletePinCommandDispatcher, Unit> {

@@ -9,10 +9,10 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
-import com.zegreatrob.coupling.server.action.Result
-import com.zegreatrob.coupling.server.action.SuspendAction
-import com.zegreatrob.coupling.server.action.UnauthorizedResult
-import com.zegreatrob.coupling.server.action.successResult
+import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.UnauthorizedResult
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-data class SaveTribeCommand(val tribe: Tribe) : SuspendAction<SaveTribeCommandDispatcher, Unit> {
+data class SaveTribeCommand(val tribe: Tribe) :
+    SuspendAction<SaveTribeCommandDispatcher, Unit> {
     override suspend fun execute(dispatcher: SaveTribeCommandDispatcher) = with(dispatcher) { perform() }
 }
 
