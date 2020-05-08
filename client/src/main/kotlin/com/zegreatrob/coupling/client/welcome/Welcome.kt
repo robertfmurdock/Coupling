@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
+import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.client.CommandFunc2
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
@@ -30,7 +31,7 @@ val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
     val (show, setShow) = useState(false)
 
     if (!show) {
-        commandFunc.commandFunc { setShow(true) }()
+        commandFunc.makeItSo({ setShow(true) }, { SuccessfulResult(Unit) })()
     }
 
     val hiddenTag = if (show) "" else styles["hidden"]

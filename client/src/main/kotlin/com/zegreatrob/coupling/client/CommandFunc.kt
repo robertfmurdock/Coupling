@@ -11,17 +11,23 @@ fun <T> T.buildCommandFunc(scope: CoroutineScope): CommandFunc<T> = { runCommand
     { scope.launch { runCommands() } }
 }
 
-interface CommandFunc2<D1> {
-    val commandFunc: CommandFunc<D1>
+interface CommandFunc2<D> {
+    fun <R> makeItSo(
+        response: (Result<R>) -> Unit,
+        execute: suspend (D) -> Result<R>
+    ): () -> Unit
 }
 
-class DispatchFunc<D1>(override val commandFunc: CommandFunc<D1>) : CommandFunc2<D1>
+class DispatchFunc<D>(val commandFunc: CommandFunc<D>) : CommandFunc2<D> {
+    override fun <R> makeItSo(
+        response: (Result<R>) -> Unit,
+        execute: suspend (D) -> Result<R>
+    ) = commandFunc {
+        execute(this).let(response)
+    }
+}
 
 operator fun <C : SuspendAction<D2, R>, D1 : D2, D2, R> CommandFunc2<D1>.invoke(
     buildCommand: () -> C,
     response: (Result<R>) -> Unit
-) = commandFunc {
-    buildCommand()
-        .execute(this)
-        .let(response)
-}
+) = makeItSo(response, { dispatcher: D1 -> buildCommand().execute(dispatcher) })
