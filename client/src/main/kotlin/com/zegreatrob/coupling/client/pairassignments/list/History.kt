@@ -2,11 +2,12 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
-import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.CommandFunc2
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -15,7 +16,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
@@ -31,15 +31,13 @@ data class HistoryProps(
     val history: List<PairAssignmentDocument>,
     val reload: () -> Unit,
     val pathSetter: (String) -> Unit,
-    val commandFunc: CommandFunc<DeletePairAssignmentsCommandDispatcher>
+    val commandFunc: CommandFunc2<DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
 val History by lazy { HistoryComponent(WindowFunctions) }
 
 val HistoryComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc), windowFuncs ->
-    val onDeleteFunc = { documentId: PairAssignmentDocumentId ->
-        commandFunc { removeButtonOnClick(documentId, tribe.id, reload, windowFuncs) }
-    }
+    val onDeleteFunc = onDeleteFuncFactory(commandFunc, tribe, reload, windowFuncs)
 
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
@@ -50,6 +48,24 @@ val HistoryComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, 
             history.forEach {
                 pairAssignmentRow(it, onDeleteFunc)
             }
+        }
+    }
+}
+
+private fun onDeleteFuncFactory(
+    commandFunc: CommandFunc2<DeletePairAssignmentsCommandDispatcher>,
+    tribe: Tribe,
+    reload: () -> Unit,
+    windowFuncs: WindowFunctions
+) = { documentId: PairAssignmentDocumentId ->
+    val deleteFunc = commandFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
+    onDeleteClick(windowFuncs, deleteFunc)
+}
+
+private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit): () -> Unit = {
+    with(windowFuncs) {
+        if (window.confirm("Are you sure you want to delete these pair assignments?")) {
+            deleteFunc.invoke()
         }
     }
 }
@@ -74,18 +90,6 @@ private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = span(classes = "sma
         onClickFunction = { onClickFunc() }
     }
     +"DELETE"
-}
-
-private suspend fun DeletePairAssignmentsCommandDispatcher.removeButtonOnClick(
-    pairAssignmentDocumentId: PairAssignmentDocumentId,
-    tribeId: TribeId,
-    reload: () -> Unit,
-    windowFunctions: WindowFunctions
-) = with(windowFunctions) {
-    if (window.confirm("Are you sure you want to delete these pair assignments?")) {
-        DeletePairAssignmentsCommand(tribeId, pairAssignmentDocumentId).perform()
-        reload()
-    }
 }
 
 private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->

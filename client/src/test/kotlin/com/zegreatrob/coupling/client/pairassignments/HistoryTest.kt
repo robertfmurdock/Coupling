@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -30,7 +30,6 @@ class HistoryTest {
     private val styles = useStyles("pairassignments/History")
 
     private fun deleteDispatcher() = object : DeletePairAssignmentsCommandDispatcher {
-        override val traceId = uuid4()
         override val pairAssignmentDocumentRepository get() = throw NotImplementedError("")
         val removeSpy = SpyData<Unit, Promise<Unit>>().also { it.spyWillReturn(Promise.resolve(Unit)) }
         override suspend fun TribeIdPairAssignmentDocumentId.delete() = removeSpy.spyFunction(Unit).let { true }
@@ -55,7 +54,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             HistoryComponent(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DispatchFunc(commandFunc))
         )
     }, {
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -88,7 +87,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             HistoryComponent(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, commandFunc)
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DispatchFunc(commandFunc))
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
