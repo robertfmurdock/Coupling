@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeListQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeQueryDispatcher
-import com.zegreatrob.coupling.client.user.GoogleSignIn
+import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
@@ -38,7 +38,7 @@ class CommandDispatcher(override val traceId: Uuid) : PinCommandDispatcher,
     TribePlayerQueryDispatcher,
     TribePinQueryDispatcher,
     TribePinListQueryDispatcher,
-    GoogleSignIn,
+    GoogleSignInCommandDispatcher,
     LogoutCommandDispatcher,
     StatisticsQueryDispatcher {
     override val sdk = SdkSingleton

@@ -4,7 +4,7 @@ import ShallowWrapper
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.user.GoogleSignIn
+import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.coupling.client.welcome.RandomProvider
 import com.zegreatrob.coupling.client.welcome.Welcome
 import com.zegreatrob.coupling.client.welcome.WelcomeProps
@@ -24,7 +24,7 @@ class WelcomeTest {
     @Test
     fun doesNotShowInitially() = setup(object {
     }) exercise {
-        shallow(Welcome, WelcomeProps({ {} }))
+        shallow(Welcome, WelcomeProps(DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find<Any>(".${styles.className}")
             .hasClass(styles["hidden"])
@@ -33,10 +33,10 @@ class WelcomeTest {
 
     @Test
     fun willShowAfterZeroTimeoutSoThatAnimationWorks() = asyncSetup(object : ScopeMint() {
-        val dispatcher = object : GoogleSignIn {
+        val dispatcher = object : GoogleSignInCommandDispatcher {
             override val sdk: Sdk get() = TODO("Not yet implemented")
         }
-        val props = WelcomeProps(commandFunc = dispatcher.buildCommandFunc(exerciseScope))
+        val props = WelcomeProps(commandFunc = DispatchFunc(dispatcher.buildCommandFunc(exerciseScope)))
     }) exercise {
         shallow(Welcome, props)
     } verify { wrapper ->
@@ -52,7 +52,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 0
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps({ {} }, randomProvider))
+        shallow(Welcome, WelcomeProps(DispatchFunc { {} }, randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -83,7 +83,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps({ {} }, randomProvider))
+        shallow(Welcome, WelcomeProps(DispatchFunc { {} }, randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -114,7 +114,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps({ {} }, randomProvider))
+        shallow(Welcome, WelcomeProps(DispatchFunc { {} }, randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player

@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.CommandFunc2
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.user.GoogleSignIn
+import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
@@ -22,7 +22,7 @@ import react.dom.span
 private val styles = useStyles("Welcome")
 
 data class WelcomeProps(
-    val commandFunc: CommandFunc<GoogleSignIn>,
+    val commandFunc: CommandFunc2<GoogleSignInCommandDispatcher>,
     val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
@@ -30,7 +30,7 @@ val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
     val (show, setShow) = useState(false)
 
     if (!show) {
-        commandFunc { setShow(true) }()
+        commandFunc.commandFunc { setShow(true) }()
     }
 
     val hiddenTag = if (show) "" else styles["hidden"]
@@ -128,7 +128,7 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
     )
 }
 
-private fun RBuilder.comeOnIn(hiddenTag: String, commandFunc: CommandFunc<GoogleSignIn>) {
+private fun RBuilder.comeOnIn(hiddenTag: String, commandFunc: CommandFunc2<GoogleSignInCommandDispatcher>) {
     val (showLoginChooser, setShowLoginChooser) = useState(false)
     div(classes = styles["enterButtonContainer"]) {
         if (showLoginChooser) {
