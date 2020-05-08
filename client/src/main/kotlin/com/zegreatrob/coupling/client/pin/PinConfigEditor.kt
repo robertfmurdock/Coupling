@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.makeItSo
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
@@ -46,7 +47,7 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
 
     val updatedPin = values.toPin()
 
-    val onSubmitFunc = commandFunc { SavePinCommand(tribe.id, updatedPin).perform(); reload() }
+    val onSubmitFunc = commandFunc.makeItSo({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
     val onRemoveFunc = { pinId: String -> commandFunc { removePin(tribe, pinId, pathSetter) } }
 
     span(classes = styles.className) {
@@ -98,8 +99,6 @@ private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     `when` = shouldShowPrompt,
     message = "You have unsaved data. Would you like to save before you leave?"
 )
-
-
 
 
 private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "small red button") {
