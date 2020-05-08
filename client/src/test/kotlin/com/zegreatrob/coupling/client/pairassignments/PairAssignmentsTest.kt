@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import ShallowWrapper
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.RComponent
 import com.zegreatrob.coupling.client.player.PlayerRoster
@@ -53,7 +53,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, pairAssignments, { {} }, {})
+            PairAssignmentsProps(tribe, players, pairAssignments, DispatchFunc { {} }, {})
         )
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
@@ -78,7 +78,7 @@ class PairAssignmentsTest {
             Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, { {} }) {})
+        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, DispatchFunc { {} }) {})
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
             .props()
@@ -89,7 +89,6 @@ class PairAssignmentsTest {
     @Test
     fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = asyncSetup(object : ScopeMint() {
         val commandDispatcher = object : SavePairAssignmentsCommandDispatcher {
-            override val traceId = uuid4()
             override val pairAssignmentDocumentRepository get() = TODO("Not yet implemented")
             override suspend fun TribeIdPairAssignmentDocument.save() {
                 saveSpy.spyFunction(document.toJson())
@@ -106,7 +105,13 @@ class PairAssignmentsTest {
         val commandFunc = commandDispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, emptyList(), pairAssignments, commandFunc, pathSetterSpy::spyFunction)
+            PairAssignmentsProps(
+                tribe,
+                emptyList(),
+                pairAssignments,
+                DispatchFunc(commandFunc),
+                pathSetterSpy::spyFunction
+            )
         )
     }) {
         saveSpy.spyWillReturn(Promise.resolve(Unit))
@@ -136,7 +141,7 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -161,7 +166,7 @@ class PairAssignmentsTest {
             pairs = listOf(pair1, pair2)
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
@@ -193,7 +198,7 @@ class PairAssignmentsTest {
             )
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -222,7 +227,7 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
         )
     }) exercise {
         player4.dragTo(player3, wrapper)
@@ -255,7 +260,7 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
         shallow(
-            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, DispatchFunc { {} }) {}
         )
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)

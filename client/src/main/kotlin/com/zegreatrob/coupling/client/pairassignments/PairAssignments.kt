@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.CommandFunc2
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
+import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.player.playerRoster
@@ -19,6 +20,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -32,7 +34,7 @@ data class PairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
-    val commandFunc: CommandFunc<SavePairAssignmentsCommandDispatcher>,
+    val commandFunc: CommandFunc2<SavePairAssignmentsCommandDispatcher>,
     val pathSetter: (String) -> Unit
 ) : RProps
 
@@ -43,7 +45,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, ori
 
     val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
     val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
-    val onSave = commandFunc { handleOnClickSave(tribe, pairAssignments, pathSetter) }
+    val onSave = pairAssignments?.onSaveFunc(commandFunc, tribe, pathSetter) ?: {}
     DndProvider {
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
@@ -65,6 +67,14 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, ori
         }
     }
 }
+
+private fun PairAssignmentDocument.onSaveFunc(
+    commandFunc: CommandFunc2<SavePairAssignmentsCommandDispatcher>,
+    tribe: Tribe,
+    pathSetter: (String) -> Unit
+) = commandFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter(tribe.id.currentPairPage()) })
+
+private fun TribeId.currentPairPage() = "/$value/pairAssignments/current/"
 
 private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
     pA?.dropThePin(setPairAssignments)
@@ -165,18 +175,6 @@ private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
             +" Retirees!"
         }
     }
-
-
-private suspend fun SavePairAssignmentsCommandDispatcher.handleOnClickSave(
-    tribe: Tribe,
-    pairAssignments: PairAssignmentDocument?,
-    pathSetter: (String) -> Unit
-) {
-    if (pairAssignments != null) {
-        SavePairAssignmentsCommand(tribe.id, pairAssignments).perform()
-        pathSetter("/${tribe.id.value}/pairAssignments/current/")
-    }
-}
 
 private fun PairAssignmentDocument.swapPlayers(
     droppedPlayerId: String,
