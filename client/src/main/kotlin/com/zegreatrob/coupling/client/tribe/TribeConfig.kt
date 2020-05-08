@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.CommandFunc
-import com.zegreatrob.coupling.client.configFrame
-import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.editor
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
@@ -25,7 +22,7 @@ import react.dom.*
 data class TribeConfigProps(
     val tribe: Tribe,
     val pathSetter: (String) -> Unit,
-    val commandFunc: CommandFunc<TribeConfigDispatcher>
+    val commandFunc: CommandFunc2<TribeConfigDispatcher>
 ) : RProps
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
@@ -40,8 +37,8 @@ val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandF
     val (values, onChange) = useForm(tribe.toJson())
     val updatedTribe = values.toTribe()
 
-    val onSave = commandFunc { SaveTribeCommand(updatedTribe).perform(); pathSetter("/tribes/") }
-    val onDelete = commandFunc { DeleteTribeCommand(tribe.id).perform(); pathSetter("/tribes/") }
+    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter("/tribes/") }
+    val onDelete = commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter("/tribes/") }
 
     configFrame(styles.className) {
         configHeader(tribe, pathSetter) { +"Tribe Configuration" }

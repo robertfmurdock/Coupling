@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import ShallowWrapper
-import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -30,7 +30,7 @@ class TribeConfigTest {
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow(TribeConfig, TribeConfigProps(tribe, {}, { {} }))
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -61,7 +61,6 @@ class TribeConfigTest {
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = asyncSetup(object : ScopeMint() {
         val dispatcher = object : TribeConfigDispatcher {
             override val tribeRepository get() = throw NotImplementedError("Stubbed for testing.")
-            override val traceId = uuid4()
             val saveSpy = SpyData<Json, Promise<Unit>>()
             override suspend fun Tribe.save() {
                 saveSpy.spyFunction(toJson())
@@ -81,7 +80,7 @@ class TribeConfigTest {
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
             TribeConfig,
-            TribeConfigProps(tribe, pathSetterSpy::spyFunction, commandFunc)
+            TribeConfigProps(tribe, pathSetterSpy::spyFunction, DispatchFunc(commandFunc))
         )
     }, {
         dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
