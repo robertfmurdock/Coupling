@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -53,7 +54,7 @@ class PinConfigEditorTest {
             override val traceId = uuid4()
             val savePinSpy = SpyData<SavePinCommand, Unit>().apply { spyWillReturn(Unit) }
             override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
-            override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this)
+            override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this).successResult()
         }
         val tribe = Tribe(TribeId("dumb tribe"))
         val pin = Pin(_id = null, name = "")
