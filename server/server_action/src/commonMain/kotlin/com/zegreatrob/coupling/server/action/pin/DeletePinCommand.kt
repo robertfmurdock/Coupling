@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.server.action.pin
 
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.repository.pin.PinDelete
 import com.zegreatrob.coupling.action.SuspendAction
 import com.zegreatrob.coupling.action.deletionResult
+import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class DeletePinCommand(val tribeId: TribeId, val pinId: String) :
     SuspendAction<DeletePinCommandDispatcher, Unit> {
@@ -13,9 +12,3 @@ data class DeletePinCommand(val tribeId: TribeId, val pinId: String) :
 interface DeletePinCommandDispatcher : PinIdDeleteSyntax {
     suspend fun DeletePinCommand.perform() = TribeIdPinId(tribeId, pinId).deletePin().deletionResult("Pin")
 }
-
-interface PinIdDeleteSyntax {
-    val pinRepository: PinDelete
-    suspend fun TribeIdPinId.deletePin() = pinRepository.deletePin(tribeId, pinId)
-}
-

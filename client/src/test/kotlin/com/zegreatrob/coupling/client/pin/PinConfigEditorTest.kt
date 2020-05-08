@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -29,7 +29,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, { {} }))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -41,7 +41,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, { {} }))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -51,7 +51,6 @@ class PinConfigEditorTest {
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = asyncSetup(object : ScopeMint() {
         val stubDispatcher = object : PinCommandDispatcher {
-            override val traceId = uuid4()
             val savePinSpy = SpyData<SavePinCommand, Unit>().apply { spyWillReturn(Unit) }
             override val pinRepository: PinRepository get() = throw NotImplementedError("stubbed")
             override suspend fun SavePinCommand.perform() = savePinSpy.spyFunction(this).successResult()
@@ -62,7 +61,8 @@ class PinConfigEditorTest {
         val newIcon = "pin new icon"
 
         val wrapper = shallow(
-            PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, stubDispatcher.buildCommandFunc(exerciseScope))
+            PinConfigEditor,
+            PinConfigEditorProps(tribe, pin, {}, {}, DispatchFunc(stubDispatcher.buildCommandFunc(exerciseScope)))
         ).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)

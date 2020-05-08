@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
@@ -14,7 +15,7 @@ val PinPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = { TribePinQuery(tribeId, pinId).perform() },
         toProps = { reload, commandFunc, (tribe, pins, pin) ->
-            PinConfigProps(tribe!!, pin, pins, props.pathSetter, reload, commandFunc)
+            PinConfigProps(tribe!!, pin, pins, props.pathSetter, reload, DispatchFunc(commandFunc))
         }
     )) { pinId?.let { attrs { key = it } } }
 }

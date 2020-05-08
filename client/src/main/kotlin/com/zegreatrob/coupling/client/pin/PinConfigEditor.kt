@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.CommandFunc2
 import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.makeItSo
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
+import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
@@ -26,7 +26,7 @@ data class PinConfigEditorProps(
     val pin: Pin,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
-    val commandFunc: CommandFunc<PinCommandDispatcher>
+    val commandFunc: CommandFunc2<PinCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pin/PinConfigEditor")
@@ -34,7 +34,7 @@ private val styles = useStyles("pin/PinConfigEditor")
 fun RBuilder.pinConfigEditor(
     tribe: Tribe,
     pin: Pin,
-    commandFunc: CommandFunc<PinCommandDispatcher>,
+    commandFunc: CommandFunc2<PinCommandDispatcher>,
     pathSetter: (String) -> Unit,
     reload: () -> Unit
 ) = child(
@@ -47,8 +47,8 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
 
     val updatedPin = values.toPin()
 
-    val onSubmitFunc = commandFunc.makeItSo({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
-    val onRemoveFunc = { pinId: String -> commandFunc { removePin(tribe, pinId, pathSetter) } }
+    val onSubmitFunc = commandFunc({ SavePinCommand(tribe.id, updatedPin) }, { reload() })
+    val onRemoveFunc = { pinId: String -> deletePinFunc(commandFunc, tribe, pinId, pathSetter) }
 
     span(classes = styles.className) {
         configHeader(tribe, pathSetter) { +"Pin Configuration" }
@@ -62,12 +62,12 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
     }
 }
 
-private suspend fun PinCommandDispatcher.removePin(tribe: Tribe, pinId: String, pathSetter: (String) -> Unit) {
-    if (window.confirm("Are you sure you want to delete this pin?")) {
-        DeletePinCommand(tribe.id, pinId).perform()
-        pathSetter("/${tribe.id.value}/pins")
-    }
-}
+private fun deletePinFunc(
+    commandFunc: CommandFunc2<PinCommandDispatcher>,
+    tribe: Tribe,
+    pinId: String,
+    pathSetter: (String) -> Unit
+) = commandFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter("/${tribe.id.value}/pins") }
 
 private inline fun RBuilder.pinConfigForm(
     pin: Pin,
@@ -104,7 +104,11 @@ private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
 private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "small red button") {
     attrs {
         classes += styles["deleteButton"]
-        onClickFunction = { onRetire() }
+        onClickFunction = {
+            if (window.confirm("Are you sure you want to delete this pin?")) {
+                onRetire()
+            }
+        }
     }
     +"Retire"
 }
