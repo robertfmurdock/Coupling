@@ -1,16 +1,18 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.CommandFunc2
 import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.*
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
@@ -26,7 +28,7 @@ data class PlayerConfigEditorProps(
     val player: Player,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
-    val commandFunc: CommandFunc<PlayerConfigDispatcher>
+    val commandFunc: CommandFunc2<PlayerConfigDispatcher>
 ) : RProps
 
 fun RBuilder.playerConfigEditor(
@@ -34,7 +36,7 @@ fun RBuilder.playerConfigEditor(
     player: Player,
     pathSetter: (String) -> Unit,
     reload: () -> Unit,
-    commandFunc: CommandFunc<PlayerConfigDispatcher>
+    commandFunc: CommandFunc2<PlayerConfigDispatcher>
 ) = child(
     PlayerConfigEditor.component.rFunction,
     PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc)
@@ -47,8 +49,8 @@ val PlayerConfigEditorComponent = windowReactFunc<PlayerConfigEditorProps> { pro
     val (values, onChange) = useForm(player.toJson())
 
     val updatedPlayer = values.toPlayer()
-    val onSubmitFunc = preventDefault(commandFunc { savePlayer(tribe, updatedPlayer, reload) })
-    val onRemoveFunc = { playerId: String -> commandFunc { removePlayer(tribe, playerId, pathSetter, windowFuncs) } }
+    val onSubmitFunc = preventDefault(commandFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() }))
+    val onRemoveFunc = { playerId: String -> removePlayer(tribe, playerId, pathSetter, windowFuncs, commandFunc) }
     span(classes = styles.className) {
         configHeader(tribe, pathSetter) { +"Player Configuration" }
         div {
@@ -63,22 +65,20 @@ val PlayerConfigEditorComponent = windowReactFunc<PlayerConfigEditorProps> { pro
 
 val PlayerConfigEditor by lazy { PlayerConfigEditorComponent(WindowFunctions) }
 
-private suspend fun DeletePlayerCommandDispatcher.removePlayer(
+private fun removePlayer(
     tribe: Tribe,
     playerId: String,
     pathSetter: (String) -> Unit,
-    windowFunctions: WindowFunctions
-) {
+    windowFunctions: WindowFunctions,
+    commandFunc: CommandFunc2<PlayerConfigDispatcher>
+): () -> Unit = {
     if (windowFunctions.window.confirm("Are you sure you want to delete this player?")) {
-        DeletePlayerCommand(tribe.id, playerId).perform()
-        pathSetter("/${tribe.id.value}/pairAssignments/current/")
+        commandFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter(tribe.id.currentPairsPage()) })
+            .invoke()
     }
 }
 
-private suspend fun SavePlayerCommandDispatcher.savePlayer(tribe: Tribe, updatedPlayer: Player, reload: () -> Unit) {
-    SavePlayerCommand(tribe.id, updatedPlayer).perform()
-    reload()
-}
+private fun TribeId.currentPairsPage() = "/$value/pairAssignments/current/"
 
 private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     `when` = shouldShowPrompt,

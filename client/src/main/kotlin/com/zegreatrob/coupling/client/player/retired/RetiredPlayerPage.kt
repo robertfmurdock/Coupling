@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player.retired
 
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
@@ -28,6 +29,6 @@ private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, pla
         commander = props.commander,
         query = { RetiredPlayerQuery(tribeId, playerId).perform() },
         toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload, commandFunc)
+            PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload, DispatchFunc(commandFunc))
         }
     )) { attrs { key = playerId } }

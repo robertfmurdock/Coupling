@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -19,7 +20,7 @@ private fun RBuilder.loadedPlayer(tribeId: TribeId, props: PageProps) = with(pro
         commander = commander,
         query = { TribePlayerQuery(tribeId, playerId).perform() },
         toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfigProps(tribe!!, player, players, pathSetter, reload, commandFunc)
+            PlayerConfigProps(tribe!!, player, players, pathSetter, reload, DispatchFunc(commandFunc))
         }
     )) { playerId?.let { attrs { key = it } } }
 }

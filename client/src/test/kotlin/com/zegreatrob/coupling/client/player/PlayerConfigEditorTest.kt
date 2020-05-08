@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -40,7 +40,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -56,7 +56,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -67,7 +67,6 @@ class PlayerConfigEditorTest {
     fun submitWillSaveAndReload() = asyncSetup(object : ScopeMint() {
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
-            override val traceId = uuid4()
             val saveSpy = SpyData<Pair<Json, String>, Promise<Unit>>()
             override suspend fun TribeIdPlayer.save() {
                 saveSpy.spyFunction(player.toJson() to tribeId.value).await()
@@ -80,7 +79,7 @@ class PlayerConfigEditorTest {
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
             PlayerConfigEditor,
-            PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, commandFunc)
+            PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, DispatchFunc(commandFunc))
         )
     }, {
         dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
@@ -105,7 +104,6 @@ class PlayerConfigEditorTest {
         }
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
-            override val traceId = uuid4()
             val removeSpy = SpyData<Pair<String, String>, Promise<Unit>>()
 
             override suspend fun TribeIdPlayerId.deletePlayer(): Boolean {
@@ -121,7 +119,7 @@ class PlayerConfigEditorTest {
 
         val wrapper = shallow(
             PlayerConfigEditorComponent(windowFuncs),
-            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, commandFunc)
+            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, DispatchFunc(commandFunc))
         )
     }, {
         pathSetterSpy.spyWillReturn(Unit)
@@ -147,7 +145,6 @@ class PlayerConfigEditorTest {
         }
         val dispatcher = object : PlayerConfigDispatcher {
             override val playerRepository get() = throw NotImplementedError("stubbed")
-            override val traceId = uuid4()
             val removeSpy = SpyData<Pair<String, String>, Promise<Unit>>()
 
             override suspend fun TribeIdPlayerId.deletePlayer() = true.also {
@@ -162,7 +159,7 @@ class PlayerConfigEditorTest {
 
         val wrapper = shallow(
             PlayerConfigEditorComponent(windowFunctions),
-            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, commandFunc)
+            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, DispatchFunc(commandFunc))
         )
     }, {
         pathSetterSpy.spyWillReturn(Unit)
@@ -179,7 +176,7 @@ class PlayerConfigEditorTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
+        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -193,7 +190,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, { {} }))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`
             .assertIsEqualTo(false)
