@@ -31,7 +31,7 @@ val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
     val (show, setShow) = useState(false)
 
     if (!show) {
-        commandFunc.makeItSo({ setShow(true) }, { SuccessfulResult(Unit) })()
+        commandFunc.makeItSo({ setShow(true) }, {}, { SuccessfulResult(Unit) })()
     }
 
     val hiddenTag = if (show) "" else styles["hidden"]
