@@ -32,10 +32,10 @@ class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
     }
 
     suspend fun <C : Action, R> decoratedExecute(
-        d: D,
+        dispatcher: D,
         command: C,
         execute: suspend C.(D) -> Result<R>
-    ) = with(d) { command.logAsync { execute(command, d) } }
+    ) = with(dispatcher) { command.logAsync { execute(command, dispatcher) } }
 
 }
 
