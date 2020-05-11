@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useState
@@ -34,7 +34,7 @@ data class PairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
-    val commandFunc: CommandFunc2<SavePairAssignmentsCommandDispatcher>,
+    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     val pathSetter: (String) -> Unit
 ) : RProps
 
@@ -69,10 +69,10 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, ori
 }
 
 private fun PairAssignmentDocument.onSaveFunc(
-    commandFunc: CommandFunc2<SavePairAssignmentsCommandDispatcher>,
+    dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     tribe: Tribe,
     pathSetter: (String) -> Unit
-) = commandFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter(tribe.id.currentPairPage()) })
+) = dispatchFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter(tribe.id.currentPairPage()) })
 
 private fun TribeId.currentPairPage() = "/$value/pairAssignments/current/"
 

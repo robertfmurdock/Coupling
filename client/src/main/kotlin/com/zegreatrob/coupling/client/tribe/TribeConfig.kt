@@ -22,7 +22,7 @@ import react.dom.*
 data class TribeConfigProps(
     val tribe: Tribe,
     val pathSetter: (String) -> Unit,
-    val commandFunc: CommandFunc2<TribeConfigDispatcher>
+    val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>
 ) : RProps
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {

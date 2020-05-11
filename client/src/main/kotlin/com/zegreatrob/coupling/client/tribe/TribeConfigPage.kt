@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -17,7 +16,7 @@ val TribeConfigPage = reactFunction<PageProps> { props ->
         loadedTribeConfig(dataLoadProps(
             commander = commander,
             query = { performCorrectQuery(tribeId) },
-            toProps = { _, commandFunc, data -> TribeConfigProps(data!!, pathSetter, DispatchFunc(commandFunc)) }
+            toProps = { _, commandFunc, data -> TribeConfigProps(data!!, pathSetter, commandFunc) }
         ))
     }
 }

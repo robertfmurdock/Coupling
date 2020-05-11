@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import ShallowWrapper
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.RComponent
 import com.zegreatrob.coupling.client.player.PlayerRoster
@@ -53,7 +53,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, pairAssignments, DispatchFunc { {} }, {})
+            PairAssignmentsProps(tribe, players, pairAssignments, DecoratedDispatchFunc { {} }, {})
         )
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
@@ -78,7 +78,7 @@ class PairAssignmentsTest {
             Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, DispatchFunc { {} }) {})
+        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, DecoratedDispatchFunc { {} }) {})
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)
             .props()
@@ -109,7 +109,7 @@ class PairAssignmentsTest {
                 tribe,
                 emptyList(),
                 pairAssignments,
-                DispatchFunc(commandFunc),
+                DecoratedDispatchFunc(commandFunc),
                 pathSetterSpy::spyFunction
             )
         )
@@ -141,7 +141,7 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DecoratedDispatchFunc { {} }) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -166,7 +166,7 @@ class PairAssignmentsTest {
             pairs = listOf(pair1, pair2)
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DecoratedDispatchFunc { {} }) {}
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
@@ -198,7 +198,7 @@ class PairAssignmentsTest {
             )
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DecoratedDispatchFunc { {} }) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -227,7 +227,7 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DispatchFunc { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, DecoratedDispatchFunc { {} }) {}
         )
     }) exercise {
         player4.dragTo(player3, wrapper)
@@ -260,7 +260,7 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
         shallow(
-            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, DispatchFunc { {} }) {}
+            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, DecoratedDispatchFunc { {} }) {}
         )
     } verify { wrapper ->
         wrapper.findComponent(ServerMessage)

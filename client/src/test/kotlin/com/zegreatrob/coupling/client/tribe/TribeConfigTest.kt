@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import ShallowWrapper
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -30,7 +30,7 @@ class TribeConfigTest {
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow(TribeConfig, TribeConfigProps(tribe, {}, DispatchFunc { {} }))
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, DecoratedDispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -80,7 +80,7 @@ class TribeConfigTest {
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
             TribeConfig,
-            TribeConfigProps(tribe, pathSetterSpy::spyFunction, DispatchFunc(commandFunc))
+            TribeConfigProps(tribe, pathSetterSpy::spyFunction, DecoratedDispatchFunc(commandFunc))
         )
     }, {
         dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -40,7 +40,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DecoratedDispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -56,7 +56,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DecoratedDispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -79,7 +79,7 @@ class PlayerConfigEditorTest {
         val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         val wrapper = shallow(
             PlayerConfigEditor,
-            PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, DispatchFunc(commandFunc))
+            PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, DecoratedDispatchFunc(commandFunc))
         )
     }, {
         dispatcher.saveSpy.spyWillReturn(Promise.resolve(Unit))
@@ -119,7 +119,7 @@ class PlayerConfigEditorTest {
 
         val wrapper = shallow(
             PlayerConfigEditorComponent(windowFuncs),
-            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, DispatchFunc(commandFunc))
+            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, DecoratedDispatchFunc(commandFunc))
         )
     }, {
         pathSetterSpy.spyWillReturn(Unit)
@@ -159,7 +159,7 @@ class PlayerConfigEditorTest {
 
         val wrapper = shallow(
             PlayerConfigEditorComponent(windowFunctions),
-            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, DispatchFunc(commandFunc))
+            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, DecoratedDispatchFunc(commandFunc))
         )
     }, {
         pathSetterSpy.spyWillReturn(Unit)
@@ -176,7 +176,7 @@ class PlayerConfigEditorTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
+        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DecoratedDispatchFunc { {} }))
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -190,7 +190,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DispatchFunc { {} }))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, DecoratedDispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`
             .assertIsEqualTo(false)

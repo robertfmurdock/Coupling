@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -54,7 +54,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             HistoryComponent(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DispatchFunc(commandFunc))
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DecoratedDispatchFunc(commandFunc))
         )
     }, {
         dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
@@ -87,7 +87,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             HistoryComponent(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DispatchFunc(commandFunc))
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DecoratedDispatchFunc(commandFunc))
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
@@ -17,7 +17,7 @@ data class PinConfigProps(
     val pinList: List<Pin>,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
-    val commandFunc: CommandFunc2<PinCommandDispatcher>
+    val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pin/PinConfig")

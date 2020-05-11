@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.CommandFunc
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
@@ -18,7 +17,7 @@ data class PlayerConfigProps(
     val players: List<Player>,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
-    val commandFunc: CommandFunc2<PlayerConfigDispatcher>
+    val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : RProps
 
 interface PlayerConfigDispatcher : SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {

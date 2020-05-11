@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -29,7 +29,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, DispatchFunc { {} }))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, DecoratedDispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -41,7 +41,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, DispatchFunc { {} }))
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, DecoratedDispatchFunc { {} }))
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -62,7 +62,7 @@ class PinConfigEditorTest {
 
         val wrapper = shallow(
             PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, {}, DispatchFunc(stubDispatcher.buildCommandFunc(exerciseScope)))
+            PinConfigEditorProps(tribe, pin, {}, {}, DecoratedDispatchFunc(stubDispatcher.buildCommandFunc(exerciseScope)))
         ).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)

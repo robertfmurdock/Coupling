@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -30,6 +29,6 @@ private fun dataLoadProps(
     commander = commander,
     query = { NewPairAssignmentsQuery(tribeId, playerIds, pinIds).perform() },
     toProps = { _, commandFunc, (tribe, players, pairAssignments) ->
-        PairAssignmentsProps(tribe!!, players, pairAssignments, DispatchFunc(commandFunc), pathSetter)
+        PairAssignmentsProps(tribe!!, players, pairAssignments, commandFunc, pathSetter)
     }
 )

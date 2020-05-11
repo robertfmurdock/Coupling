@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
@@ -26,7 +26,7 @@ data class PinConfigEditorProps(
     val pin: Pin,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
-    val commandFunc: CommandFunc2<PinCommandDispatcher>
+    val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pin/PinConfigEditor")
@@ -34,12 +34,12 @@ private val styles = useStyles("pin/PinConfigEditor")
 fun RBuilder.pinConfigEditor(
     tribe: Tribe,
     pin: Pin,
-    commandFunc: CommandFunc2<PinCommandDispatcher>,
+    dispatchFunc: DispatchFunc<out PinCommandDispatcher>,
     pathSetter: (String) -> Unit,
     reload: () -> Unit
 ) = child(
     PinConfigEditor.component.rFunction,
-    PinConfigEditorProps(tribe, pin, pathSetter, reload, commandFunc)
+    PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatchFunc)
 )
 
 val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, commandFunc) ->
@@ -63,11 +63,11 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
 }
 
 private fun deletePinFunc(
-    commandFunc: CommandFunc2<PinCommandDispatcher>,
+    dispatchFunc: DispatchFunc<out DeletePinCommandDispatcher>,
     tribe: Tribe,
     pinId: String,
     pathSetter: (String) -> Unit
-) = commandFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter("/${tribe.id.value}/pins") }
+) = dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter("/${tribe.id.value}/pins") }
 
 private inline fun RBuilder.pinConfigForm(
     pin: Pin,

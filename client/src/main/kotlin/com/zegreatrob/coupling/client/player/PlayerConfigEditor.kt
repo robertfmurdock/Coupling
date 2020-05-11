@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
@@ -28,7 +28,7 @@ data class PlayerConfigEditorProps(
     val player: Player,
     val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
-    val commandFunc: CommandFunc2<PlayerConfigDispatcher>
+    val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : RProps
 
 fun RBuilder.playerConfigEditor(
@@ -36,10 +36,10 @@ fun RBuilder.playerConfigEditor(
     player: Player,
     pathSetter: (String) -> Unit,
     reload: () -> Unit,
-    commandFunc: CommandFunc2<PlayerConfigDispatcher>
+    dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) = child(
     PlayerConfigEditor.component.rFunction,
-    PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc)
+    PlayerConfigEditorProps(tribe, player, pathSetter, reload, dispatchFunc)
 )
 
 private val styles = useStyles("player/PlayerConfigEditor")
@@ -70,10 +70,10 @@ private fun removePlayer(
     playerId: String,
     pathSetter: (String) -> Unit,
     windowFunctions: WindowFunctions,
-    commandFunc: CommandFunc2<PlayerConfigDispatcher>
+    dispatchFunc: DispatchFunc<out DeletePlayerCommandDispatcher>
 ): () -> Unit = {
     if (windowFunctions.window.confirm("Are you sure you want to delete this player?")) {
-        commandFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter(tribe.id.currentPairsPage()) })
+        dispatchFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter(tribe.id.currentPairsPage()) })
             .invoke()
     }
 }

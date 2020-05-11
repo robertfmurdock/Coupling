@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
@@ -31,7 +31,7 @@ data class HistoryProps(
     val history: List<PairAssignmentDocument>,
     val reload: () -> Unit,
     val pathSetter: (String) -> Unit,
-    val commandFunc: CommandFunc2<DeletePairAssignmentsCommandDispatcher>
+    val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
 val History by lazy { HistoryComponent(WindowFunctions) }
@@ -53,12 +53,12 @@ val HistoryComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, 
 }
 
 private fun onDeleteFuncFactory(
-    commandFunc: CommandFunc2<DeletePairAssignmentsCommandDispatcher>,
+    dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>,
     tribe: Tribe,
     reload: () -> Unit,
     windowFuncs: WindowFunctions
 ) = { documentId: PairAssignmentDocumentId ->
-    val deleteFunc = commandFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
+    val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
     onDeleteClick(windowFuncs, deleteFunc)
 }
 

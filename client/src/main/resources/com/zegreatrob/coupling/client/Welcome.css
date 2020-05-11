@@ -17,18 +17,10 @@
     /* do not remove */
 }
 
-:local(.hidden) {
-    /* do not remove */
-}
-
 :local(.className) {
     transition: all ease-out 4s;
     animation: 4s curious-tilt;
     animation-iteration-count: 1;
-}
-
-:local(.className):local(.hidden) {
-    opacity: 0;
 }
 
 :local(.welcomeTitle) {

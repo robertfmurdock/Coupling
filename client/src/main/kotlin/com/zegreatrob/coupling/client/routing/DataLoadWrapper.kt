@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.CommandFunc
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
 import kotlinx.coroutines.CoroutineScope
@@ -74,9 +75,9 @@ fun <D, P : RProps> dataLoadProps(
 
 fun <D, P : RProps> dataLoadProps(
     query: suspend CommandDispatcher.() -> D,
-    toProps: (ReloadFunction, CommandFunc<CommandDispatcher>, D) -> P,
+    toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, D) -> P,
     commander: Commander
 ) = DataLoadProps { reload, scope ->
     val result = commander.runQuery(query)
-    toProps(reload, commander.buildCommandFunc(scope), result)
+    toProps(reload, DecoratedDispatchFunc(commander.buildCommandFunc(scope)), result)
 }

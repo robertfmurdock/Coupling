@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.client.CommandFunc2
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -23,23 +22,14 @@ import react.dom.span
 private val styles = useStyles("Welcome")
 
 data class WelcomeProps(
-    val commandFunc: CommandFunc2<GoogleSignInCommandDispatcher>,
+    val dispatchFunc: DispatchFunc<GoogleSignInCommandDispatcher>,
     val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
 val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
-    val (show, setShow) = useState(false)
-
-    if (!show) {
-        commandFunc.makeItSo({ setShow(true) }, {}, { SuccessfulResult(Unit) })()
-    }
-
-    val hiddenTag = if (show) "" else styles["hidden"]
-
     div(classes = styles.className) {
-        attrs { classes += hiddenTag }
-        div { welcomeSplash(hiddenTag, randomProvider) }
-        div { comeOnIn(hiddenTag, commandFunc) }
+        div { welcomeSplash(randomProvider) }
+        div { comeOnIn(commandFunc) }
     }
 }
 
@@ -67,7 +57,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 
 private data class Card(val name: String, val imagePath: String)
 
-private fun RBuilder.welcomeSplash(hiddenTag: String, randomProvider: RandomProvider) {
+private fun RBuilder.welcomeSplash(randomProvider: RandomProvider) {
     val (pairAndProverb) = useState { randomProvider.choosePairAndProverb() }
 
     val (pair, proverb) = pairAndProverb
@@ -76,7 +66,6 @@ private fun RBuilder.welcomeSplash(hiddenTag: String, randomProvider: RandomProv
         welcomeTitle()
         div { welcomePair(pair) }
         div(classes = styles["welcomeProverb"]) {
-            attrs { classes += hiddenTag }
             +proverb
         }
     }
@@ -129,16 +118,15 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
     )
 }
 
-private fun RBuilder.comeOnIn(hiddenTag: String, commandFunc: CommandFunc2<GoogleSignInCommandDispatcher>) {
+private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<GoogleSignInCommandDispatcher>) {
     val (showLoginChooser, setShowLoginChooser) = useState(false)
     div(classes = styles["enterButtonContainer"]) {
         if (showLoginChooser) {
-            loginChooser(commandFunc)
+            loginChooser(dispatchFunc)
         } else {
             a(classes = "enter-button super pink button") {
                 attrs {
                     classes += styles["enterButton"]
-                    classes += hiddenTag
                     onClickFunction = { setShowLoginChooser(true) }
                     target = "_self"
                 }

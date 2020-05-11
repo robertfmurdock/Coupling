@@ -11,7 +11,7 @@ fun <T> T.buildCommandFunc(scope: CoroutineScope): CommandFunc<T> = { runCommand
     { scope.launch { runCommands() } }
 }
 
-interface CommandFunc2<D> {
+interface DispatchFunc<D> {
     fun <C, R> makeItSo(
         response: (Result<R>) -> Unit,
         buildCommand: () -> C,
@@ -19,7 +19,7 @@ interface CommandFunc2<D> {
     ): () -> Unit
 }
 
-class DispatchFunc<D>(val commandFunc: CommandFunc<D>) : CommandFunc2<D> {
+class DecoratedDispatchFunc<D>(val commandFunc: CommandFunc<D>) : DispatchFunc<D> {
     override fun <C, R> makeItSo(
         response: (Result<R>) -> Unit,
         buildCommand: () -> C,
@@ -29,7 +29,7 @@ class DispatchFunc<D>(val commandFunc: CommandFunc<D>) : CommandFunc2<D> {
     }
 }
 
-operator fun <C : SuspendAction<D2, R>, D1 : D2, D2, R> CommandFunc2<D1>.invoke(
+operator fun <C : SuspendAction<D2, R>, D1 : D2, D2, R> DispatchFunc<D1>.invoke(
     buildCommand: () -> C,
     response: (Result<R>) -> Unit
 ) = makeItSo(response, buildCommand, SuspendAction<D2, R>::execute)
