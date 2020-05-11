@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
 import shallow
@@ -109,7 +108,7 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun clickingDeleteWhenNotConfirmedWillDoNothing() = asyncSetup(object {
+    fun clickingDeleteWhenNotConfirmedWillDoNothing() = setup(object {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
