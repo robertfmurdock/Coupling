@@ -15,7 +15,7 @@ val CurrentPairsPage = tribePageFunction { props, tribeId ->
 
 private fun dataLoadProps(tribeId: TribeId, pathSetter: (String) -> Unit, commander: Commander) = dataLoadProps(
     commander = commander,
-    query = { TribeDataSetQuery(tribeId).perform() },
+    query = TribeDataSetQuery(tribeId),
     toProps = { _, commandFunc, (tribe, players, history) ->
         PairAssignmentsProps(tribe, players, history.firstOrNull(), commandFunc, pathSetter)
     }

@@ -26,7 +26,7 @@ val RetiredPlayerPage = reactFunction<PageProps> { props ->
 private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, playerId: String) =
     loadedRetiredPlayer(dataLoadProps(
         commander = props.commander,
-        query = { RetiredPlayerQuery(tribeId, playerId).perform() },
+        query = RetiredPlayerQuery(tribeId, playerId),
         toProps = { reload, commandFunc, (tribe, players, player) ->
             PlayerConfigProps(tribe!!, player, players, props.pathSetter, reload, commandFunc)
         }

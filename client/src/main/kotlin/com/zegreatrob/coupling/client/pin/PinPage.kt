@@ -12,7 +12,7 @@ val PinPage = tribePageFunction { props, tribeId ->
     val pinId = props.pinId
     loadedPin(dataLoadProps(
         commander = props.commander,
-        query = { TribePinQuery(tribeId, pinId).perform() },
+        query = TribePinQuery(tribeId, pinId),
         toProps = { reload, commandFunc, (tribe, pins, pin) ->
             PinConfigProps(tribe!!, pin, pins, props.pathSetter, reload, commandFunc)
         }

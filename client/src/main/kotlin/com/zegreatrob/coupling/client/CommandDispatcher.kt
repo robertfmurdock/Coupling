@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.client.player.TribePlayerQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
+import com.zegreatrob.coupling.client.tribe.NewTribeCommandDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeListQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeQueryDispatcher
@@ -42,6 +43,7 @@ class CommandDispatcher(override val traceId: Uuid) : ActionLoggingSyntax,
     TribePinListQueryDispatcher,
     GoogleSignInCommandDispatcher,
     LogoutCommandDispatcher,
+    NewTribeCommandDispatcher,
     StatisticsQueryDispatcher {
     override val sdk = SdkSingleton
 }

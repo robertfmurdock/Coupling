@@ -17,7 +17,7 @@ val PlayerPage = tribePageFunction { props, tribeId ->
 private fun RBuilder.loadedPlayer(tribeId: TribeId, props: PageProps) = with(props) {
     loadedPlayer(dataLoadProps(
         commander = commander,
-        query = { TribePlayerQuery(tribeId, playerId).perform() },
+        query = TribePlayerQuery(tribeId, playerId),
         toProps = { reload, commandFunc, (tribe, players, player) ->
             PlayerConfigProps(tribe!!, player, players, pathSetter, reload, commandFunc)
         }

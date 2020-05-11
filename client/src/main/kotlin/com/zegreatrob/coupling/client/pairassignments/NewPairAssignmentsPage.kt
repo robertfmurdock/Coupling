@@ -27,7 +27,7 @@ private fun dataLoadProps(
     commander: Commander
 ) = dataLoadProps(
     commander = commander,
-    query = { NewPairAssignmentsQuery(tribeId, playerIds, pinIds).perform() },
+    query = NewPairAssignmentsQuery(tribeId, playerIds, pinIds),
     toProps = { _, commandFunc, (tribe, players, pairAssignments) ->
         PairAssignmentsProps(tribe!!, players, pairAssignments, commandFunc, pathSetter)
     }

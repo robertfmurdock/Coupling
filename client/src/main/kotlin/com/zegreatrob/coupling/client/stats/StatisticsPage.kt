@@ -11,7 +11,7 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(
 val StatisticsPage = tribePageFunction { props, tribeId ->
     loadedPairAssignments(dataLoadProps(
         commander = props.commander,
-        query = { StatisticsQuery(tribeId).perform() },
+        query = StatisticsQuery(tribeId),
         toProps = { _, _, queryResult -> TribeStatisticsProps(queryResult, props.pathSetter) }
     ))
 }

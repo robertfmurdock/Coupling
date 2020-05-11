@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.action.SuspendAction
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
@@ -67,17 +69,19 @@ typealias DataloadPropsFunc<P> = suspend (ReloadFunction, CoroutineScope) -> P
 
 data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : RProps
 
-fun <D, P : RProps> dataLoadProps(
-    query: suspend () -> D,
-    toProps: (ReloadFunction, CoroutineScope, D) -> P
-): DataLoadProps<P> = DataLoadProps { reload, scope -> toProps(reload, scope, query()) }
-
-
-fun <D, P : RProps> dataLoadProps(
-    query: suspend CommandDispatcher.() -> D,
-    toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, D) -> P,
+fun <Q: SuspendAction<in CommandDispatcher, R>, R, P : RProps> dataLoadProps(
+    query: Q,
+    toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
 ) = DataLoadProps { reload, scope ->
-    val result = commander.runQuery(query)
-    toProps(reload, DecoratedDispatchFunc(commander::tracingDispatcher, scope), result)
+    val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)
+
+    val result = dispatchFunc.decoratedExecute(
+        commander.tracingDispatcher(), query, SuspendAction<in CommandDispatcher, R>::execute
+    )
+
+    if(result is SuccessfulResult<R>) {
+        toProps(reload, dispatchFunc, result.value)
+    } else throw Exception(":-(")
+
 }

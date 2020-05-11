@@ -17,7 +17,7 @@ val RetiredPlayersPage = tribePageFunction { props, tribeId ->
 private fun RBuilder.loadedRetiredPlayers(tribeId: TribeId, props: PageProps) = with(props) {
     loadedRetiredPlayers(dataLoadProps(
         commander = commander,
-        query = { RetiredPlayerListQuery(tribeId).perform() },
+        query = RetiredPlayerListQuery(tribeId),
         toProps = { _, _, (tribe, retiredPlayers) -> RetiredPlayersProps(tribe!!, retiredPlayers, pathSetter) }
     ))
 }

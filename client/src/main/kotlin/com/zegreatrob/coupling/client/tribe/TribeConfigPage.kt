@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder
 
@@ -13,22 +12,26 @@ private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)
 
 val TribeConfigPage = reactFunction<PageProps> { props ->
     with(props) {
-        loadedTribeConfig(dataLoadProps(
-            commander = commander,
-            query = { performCorrectQuery(tribeId) },
-            toProps = { _, commandFunc, data -> TribeConfigProps(data!!, pathSetter, commandFunc) }
-        ))
+        loadedTribeConfig(
+            tribeId?.tribeQueryProps(this)
+                ?: newTribeProps(props)
+        )
     }
 }
 
-private suspend fun TribeQueryDispatcher.performCorrectQuery(tribeId: TribeId?) = if (tribeId != null)
-    TribeQuery(tribeId).perform()
-else
-    newTribe()
+private fun TribeId.tribeQueryProps(
+    pageProps: PageProps
+) = dataLoadProps(
+    commander = pageProps.commander,
+    query = TribeQuery(this),
+    toProps = { _, commandFunc, data -> TribeConfigProps(data!!, pageProps.pathSetter, commandFunc) }
+)
 
-private fun newTribe() = Tribe(
-    id = TribeId(""),
-    name = "New Tribe",
-    defaultBadgeName = "Default",
-    alternateBadgeName = "Alternate"
+
+private fun newTribeProps(
+    pageProps: PageProps
+) = dataLoadProps(
+    commander = pageProps.commander,
+    query = NewTribeCommand(),
+    toProps = { _, commandFunc, data -> TribeConfigProps(data, pageProps.pathSetter, commandFunc) }
 )

@@ -7,12 +7,6 @@ import com.zegreatrob.coupling.action.SuspendAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-typealias CommandFunc<T> = (suspend T.() -> Unit) -> () -> Unit
-
-fun <T> T.buildCommandFunc(scope: CoroutineScope): CommandFunc<T> = { runCommands ->
-    { scope.launch { runCommands() } }
-}
-
 interface DispatchFunc<D> {
     fun <C : Action, R> makeItSo(
         response: (Result<R>) -> Unit,
@@ -32,15 +26,16 @@ class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
         execute: suspend C.(D) -> Result<R>
     ): () -> Unit = {
         scope.launch {
-            with(dispatcherProvider()) {
-                buildCommand().let { command ->
-                    command.logAsync {
-                        execute(command, this).let(response)
-                    }
-                }
-            }
+            decoratedExecute(dispatcherProvider(), buildCommand(), execute)
+                .let(response)
         }
     }
+
+    suspend fun <C : Action, R> decoratedExecute(
+        d: D,
+        command: C,
+        execute: suspend C.(D) -> Result<R>
+    ) = with(d) { command.logAsync { execute(command, d) } }
 
 }
 

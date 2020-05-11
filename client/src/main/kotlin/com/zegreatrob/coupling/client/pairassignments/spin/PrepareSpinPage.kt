@@ -12,7 +12,7 @@ private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(
 val PrepareSpinPage = tribePageFunction { props, tribeId ->
     loadedPairAssignments(dataLoadProps(
         commander = props.commander,
-        query = { TribeDataSetQuery(tribeId).perform() },
+        query = TribeDataSetQuery(tribeId),
         toProps = { _, _, (tribe, players, history, pins) ->
             PrepareSpinProps(tribe, players, history, pins, props.pathSetter)
         }
