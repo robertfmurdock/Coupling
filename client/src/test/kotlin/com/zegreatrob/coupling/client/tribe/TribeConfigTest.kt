@@ -11,8 +11,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import shallow
 import kotlin.test.Test
@@ -53,7 +51,7 @@ class TribeConfigTest {
     }
 
     @Test
-    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = asyncSetup(object : ScopeMint() {
+    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = setup(object {
         val tribe = Tribe(
             TribeId("1"),
             name = "1",
@@ -63,14 +61,12 @@ class TribeConfigTest {
             pairingRule = PairingRule.PreferDifferentBadge
         )
 
-        val pathSetterSpy = SpyData<String, Unit>()
+        val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(
             TribeConfig,
             TribeConfigProps(tribe, pathSetterSpy::spyFunction, stubDispatchFunc)
         )
-    }, {
-        pathSetterSpy.spyWillReturn(Unit)
     }) exercise {
         wrapper.find<Any>(".${styles["saveButton"]}").simulate("click")
         stubDispatchFunc.simulateSuccess<SaveTribeCommand>()

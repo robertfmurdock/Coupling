@@ -18,8 +18,6 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import findComponent
 import shallow
@@ -86,8 +84,8 @@ class PairAssignmentsTest {
     }
 
     @Test
-    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = asyncSetup(object : ScopeMint() {
-        val pathSetterSpy = SpyData<String, Unit>()
+    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = setup(object {
+        val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
         val pairAssignments = PairAssignmentDocument(
             date = DateTime.now(),
             pairs = emptyList()
@@ -103,9 +101,7 @@ class PairAssignmentsTest {
                 pathSetterSpy::spyFunction
             )
         )
-    }) {
-        pathSetterSpy.spyWillReturn(Unit)
-    } exercise {
+    }) exercise {
         wrapper.findComponent(CurrentPairAssignmentsPanel).props()
             .onSave()
         dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()

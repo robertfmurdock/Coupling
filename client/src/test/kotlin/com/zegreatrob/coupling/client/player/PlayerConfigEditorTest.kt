@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
@@ -57,18 +56,16 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun submitWillSaveAndReload() = asyncSetup(object : ScopeMint() {
+    fun submitWillSaveAndReload() = setup(object {
         val tribe = Tribe(TribeId("party"))
         val player = Player(id = "blarg", badge = Badge.Default.value)
-        val reloaderSpy = SpyData<Unit, Unit>()
+        val reloaderSpy = SpyData<Unit, Unit>().apply { spyWillReturn(Unit) }
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
             PlayerConfigEditor,
             PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, stubDispatchFunc)
         )
-    }, {
-        reloaderSpy.spyWillReturn(Unit)
     }) exercise {
         wrapper.simulateInputChange("name", "nonsense")
         wrapper.find<Any>("form")
@@ -83,11 +80,11 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = asyncSetup(object : ScopeMint() {
+    fun clickingDeleteWhenConfirmedWillRemoveAndRerouteToCurrentPairAssignments() = setup(object {
         val windowFuncs = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         }
-        val pathSetterSpy = SpyData<String, Unit>()
+        val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
@@ -96,8 +93,6 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorComponent(windowFuncs),
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
         )
-    }, {
-        pathSetterSpy.spyWillReturn(Unit)
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}")
             .simulate("click")
@@ -114,12 +109,12 @@ class PlayerConfigEditorTest {
     }
 
     @Test
-    fun clickingDeleteWhenNotConfirmedWillDoNothing() = asyncSetup(object : ScopeMint() {
+    fun clickingDeleteWhenNotConfirmedWillDoNothing() = asyncSetup(object {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
 
-        val pathSetterSpy = SpyData<String, Unit>()
+        val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
@@ -128,8 +123,6 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorComponent(windowFunctions),
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
         )
-    }, {
-        pathSetterSpy.spyWillReturn(Unit)
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}")
             .simulate("click")

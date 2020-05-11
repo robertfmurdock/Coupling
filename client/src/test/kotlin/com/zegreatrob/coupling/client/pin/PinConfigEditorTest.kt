@@ -7,8 +7,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import findByClass
 import shallow
@@ -45,7 +43,7 @@ class PinConfigEditorTest {
     }
 
     @Test
-    fun whenSaveIsPressedWillSavePinWithUpdatedContent() = asyncSetup(object : ScopeMint() {
+    fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setup(object {
         val tribe = Tribe(TribeId("dumb tribe"))
         val pin = Pin(_id = null, name = "")
         val newName = "pin new name"
