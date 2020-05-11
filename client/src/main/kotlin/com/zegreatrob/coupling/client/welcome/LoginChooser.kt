@@ -13,7 +13,7 @@ import react.dom.div
 import kotlin.browser.window
 
 
-data class LoginChooserProps(val dispatchFunc: DispatchFunc<GoogleSignInCommandDispatcher>) : RProps
+data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) : RProps
 
 private val styles = useStyles("LoginChooser")
 
@@ -35,5 +35,5 @@ val LoginChooser = reactFunction<LoginChooserProps> { (commandFunc) ->
     }
 }
 
-fun RBuilder.loginChooser(dispatchFunc: DispatchFunc<GoogleSignInCommandDispatcher>) =
+fun RBuilder.loginChooser(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) =
     LoginChooser.render(this)(LoginChooserProps(dispatchFunc))

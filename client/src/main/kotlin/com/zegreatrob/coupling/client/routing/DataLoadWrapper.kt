@@ -79,5 +79,5 @@ fun <D, P : RProps> dataLoadProps(
     commander: Commander
 ) = DataLoadProps { reload, scope ->
     val result = commander.runQuery(query)
-    toProps(reload, DecoratedDispatchFunc(commander.buildCommandFunc(scope)), result)
+    toProps(reload, DecoratedDispatchFunc(commander::tracingDispatcher, scope), result)
 }

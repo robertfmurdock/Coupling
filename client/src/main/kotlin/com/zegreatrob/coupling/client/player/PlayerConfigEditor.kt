@@ -49,7 +49,7 @@ val PlayerConfigEditorComponent = windowReactFunc<PlayerConfigEditorProps> { pro
     val (values, onChange) = useForm(player.toJson())
 
     val updatedPlayer = values.toPlayer()
-    val onSubmitFunc = preventDefault(commandFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() }))
+    val onSubmitFunc = onSubmitFunc(tribe, updatedPlayer, commandFunc, reload)
     val onRemoveFunc = { playerId: String -> removePlayer(tribe, playerId, pathSetter, windowFuncs, commandFunc) }
     span(classes = styles.className) {
         configHeader(tribe, pathSetter) { +"Player Configuration" }
@@ -62,6 +62,13 @@ val PlayerConfigEditorComponent = windowReactFunc<PlayerConfigEditorProps> { pro
         }
     }
 }
+
+private fun onSubmitFunc(
+    tribe: Tribe,
+    updatedPlayer: Player,
+    commandFunc: DispatchFunc<out PlayerConfigDispatcher>,
+    reload: () -> Unit
+) = preventDefault(commandFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() }))
 
 val PlayerConfigEditor by lazy { PlayerConfigEditorComponent(WindowFunctions) }
 

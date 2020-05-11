@@ -3,10 +3,7 @@ package com.zegreatrob.coupling.client.routing
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.CommandFunc
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.w3c.dom.url.URLSearchParams
 import react.RProps
 
@@ -24,12 +21,8 @@ data class PageProps(
 interface Commander {
     fun getDispatcher(traceId: Uuid): CommandDispatcher
 
-    private fun tracingDispatcher() = getDispatcher(uuid4())
+    fun tracingDispatcher() = getDispatcher(uuid4())
     suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = tracingDispatcher().dispatch()
-
-    fun buildCommandFunc(scope: CoroutineScope): CommandFunc<CommandDispatcher> = { runCommands ->
-        { scope.launch { with(tracingDispatcher()) { runCommands() } } }
-    }
 
 }
 

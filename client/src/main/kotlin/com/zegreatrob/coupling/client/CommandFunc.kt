@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.action.Action
+import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuspendAction
 import kotlinx.coroutines.CoroutineScope
@@ -12,21 +14,34 @@ fun <T> T.buildCommandFunc(scope: CoroutineScope): CommandFunc<T> = { runCommand
 }
 
 interface DispatchFunc<D> {
-    fun <C, R> makeItSo(
+    fun <C : Action, R> makeItSo(
         response: (Result<R>) -> Unit,
         buildCommand: () -> C,
         execute: suspend C.(D) -> Result<R>
     ): () -> Unit
 }
 
-class DecoratedDispatchFunc<D>(val commandFunc: CommandFunc<D>) : DispatchFunc<D> {
-    override fun <C, R> makeItSo(
+class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
+    val dispatcherProvider: () -> D,
+    private val scope: CoroutineScope
+) : DispatchFunc<D> {
+
+    override fun <C : Action, R> makeItSo(
         response: (Result<R>) -> Unit,
         buildCommand: () -> C,
         execute: suspend C.(D) -> Result<R>
-    ) = commandFunc {
-        execute(buildCommand(), this).let(response)
+    ): () -> Unit = {
+        scope.launch {
+            with(dispatcherProvider()) {
+                buildCommand().let { command ->
+                    command.logAsync {
+                        execute(command, this).let(response)
+                    }
+                }
+            }
+        }
     }
+
 }
 
 operator fun <C : SuspendAction<D2, R>, D1 : D2, D2, R> DispatchFunc<D1>.invoke(

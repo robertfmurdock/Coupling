@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.DecoratedDispatchFunc
+import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.buildCommandFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryComponent
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
@@ -37,8 +38,6 @@ class HistoryTest {
 
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = asyncSetup(object : ScopeMint(), WindowFunctions {
-        val dispatcher = deleteDispatcher()
-        val commandFunc = dispatcher.buildCommandFunc(exerciseScope)
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
 
         val tribe = Tribe(TribeId("me"))
@@ -52,18 +51,19 @@ class HistoryTest {
                 emptyList()
             )
         )
+        val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             HistoryComponent(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DecoratedDispatchFunc(commandFunc))
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, stubDispatchFunc)
         )
     }, {
-        dispatcher.removeSpy.spyWillReturn(Promise.resolve(Unit))
         reloadSpy.spyWillReturn(Unit)
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
+        stubDispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
-        dispatcher.removeSpy.spyReceivedValues.isNotEmpty()
-            .assertIsEqualTo(true)
+        stubDispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
+            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, history[0].id!!)))
         reloadSpy.spyReceivedValues.isNotEmpty()
             .assertIsEqualTo(true)
     }
@@ -87,7 +87,7 @@ class HistoryTest {
         )
         val wrapper = shallow(
             HistoryComponent(this),
-            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, DecoratedDispatchFunc(commandFunc))
+            HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, StubDispatchFunc())
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")

@@ -11,5 +11,12 @@ private val LoadedWelcome = dataLoadWrapper(Welcome)
 private val RBuilder.loadedWelcome get() = LoadedWelcome.render(this)
 
 val WelcomePage = reactFunction<PageProps> { props ->
-    loadedWelcome(DataLoadProps { _, scope -> WelcomeProps(DecoratedDispatchFunc(props.commander.buildCommandFunc(scope))) })
+    loadedWelcome(DataLoadProps { _, scope ->
+        WelcomeProps(
+            DecoratedDispatchFunc(
+                props.commander::tracingDispatcher,
+                scope
+            )
+        )
+    })
 }

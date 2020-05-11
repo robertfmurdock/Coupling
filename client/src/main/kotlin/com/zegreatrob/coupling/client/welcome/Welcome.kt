@@ -22,7 +22,7 @@ import react.dom.span
 private val styles = useStyles("Welcome")
 
 data class WelcomeProps(
-    val dispatchFunc: DispatchFunc<GoogleSignInCommandDispatcher>,
+    val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
     val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
@@ -118,7 +118,7 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
     )
 }
 
-private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<GoogleSignInCommandDispatcher>) {
+private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) {
     val (showLoginChooser, setShowLoginChooser) = useState(false)
     div(classes = styles["enterButtonContainer"]) {
         if (showLoginChooser) {
