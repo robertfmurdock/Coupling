@@ -79,6 +79,7 @@ private fun removePlayer(
     windowFunctions: WindowFunctions,
     dispatchFunc: DispatchFunc<out DeletePlayerCommandDispatcher>
 ): () -> Unit = {
+    console.log("dlete")
     if (windowFunctions.window.confirm("Are you sure you want to delete this player?")) {
         dispatchFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter(tribe.id.currentPairsPage()) })
             .invoke()

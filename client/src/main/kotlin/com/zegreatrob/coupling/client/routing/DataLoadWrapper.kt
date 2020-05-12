@@ -69,7 +69,7 @@ typealias DataloadPropsFunc<P> = suspend (ReloadFunction, CoroutineScope) -> P
 
 data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : RProps
 
-fun <Q: SuspendAction<in CommandDispatcher, R>, R, P : RProps> dataLoadProps(
+fun <Q : SuspendAction<CommandDispatcher, R>, R, P : RProps> dataLoadProps(
     query: Q,
     toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
@@ -77,10 +77,10 @@ fun <Q: SuspendAction<in CommandDispatcher, R>, R, P : RProps> dataLoadProps(
     val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)
 
     val result = dispatchFunc.decoratedExecute(
-        commander.tracingDispatcher(), query, SuspendAction<in CommandDispatcher, R>::execute
+        commander.tracingDispatcher(), query, SuspendAction<CommandDispatcher, R>::execute
     )
 
-    if(result is SuccessfulResult<R>) {
+    if (result is SuccessfulResult<R>) {
         toProps(reload, dispatchFunc, result.value)
     } else throw Exception(":-(")
 

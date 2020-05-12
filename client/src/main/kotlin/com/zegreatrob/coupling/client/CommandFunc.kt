@@ -39,7 +39,7 @@ class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
 
 }
 
-operator fun <C : SuspendAction<D2, R>, D1 : D2, D2, R> DispatchFunc<D1>.invoke(
+operator fun <C : SuspendAction<D, R>, D, R> DispatchFunc<D>.invoke(
     buildCommand: () -> C,
     response: (Result<R>) -> Unit
-) = makeItSo(response, buildCommand, SuspendAction<D2, R>::execute)
+) = makeItSo(response, buildCommand, SuspendAction<D, R>::execute)
