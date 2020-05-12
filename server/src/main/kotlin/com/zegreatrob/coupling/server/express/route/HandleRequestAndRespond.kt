@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.action.CommandExecuteSyntax
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.launch
@@ -7,11 +8,11 @@ import kotlinx.coroutines.launch
 fun <T> handleRequestAndRespond(
     request: Request,
     response: Response,
-    handler: suspend Request.() -> T,
+    handler: suspend CommandExecuteSyntax.() -> T,
     responder: Response.(T) -> Unit
 ) = request.scope.launch {
     runCatching {
-        val result = request.handler()
+        val result = object : CommandExecuteSyntax {}.handler()
         response.responder(result)
     }.getOrElse { error ->
         request.commandDispatcher.logger.error(error) { "EXCEPTION!" }

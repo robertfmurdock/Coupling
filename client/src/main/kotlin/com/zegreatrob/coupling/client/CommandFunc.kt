@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.action.Action
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.action.CommandExecuteSyntax
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuspendAction
 import kotlinx.coroutines.CoroutineScope
@@ -12,23 +12,17 @@ interface DispatchFunc<D> {
 }
 
 class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
-    val dispatcherProvider: () -> D,
+    val dispatcherFunc: () -> D,
     private val scope: CoroutineScope
-) : DispatchFunc<D> {
+) : DispatchFunc<D>, CommandExecuteSyntax {
 
     override fun <C : SuspendAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit =
         {
             scope.launch {
-                decoratedExecute(dispatcherProvider(), commandFunc(), SuspendAction<D, R>::execute)
+                dispatcherFunc()
+                    .execute(commandFunc())
                     .let(response)
             }
         }
 
-    suspend fun <C : Action, R> decoratedExecute(
-        dispatcher: D,
-        command: C,
-        execute: suspend C.(D) -> Result<R>
-    ) = with(dispatcher) { command.logAsync { execute(command, dispatcher) } }
-
 }
-

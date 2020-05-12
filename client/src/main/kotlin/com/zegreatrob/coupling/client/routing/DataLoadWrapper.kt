@@ -76,9 +76,9 @@ fun <Q : SuspendAction<CommandDispatcher, R>, R, P : RProps> dataLoadProps(
 ) = DataLoadProps { reload, scope ->
     val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)
 
-    val result = dispatchFunc.decoratedExecute(
-        commander.tracingDispatcher(), query, SuspendAction<CommandDispatcher, R>::execute
-    )
+    val result = with(dispatchFunc) {
+        commander.tracingDispatcher().execute(query)
+    }
 
     if (result is SuccessfulResult<R>) {
         toProps(reload, dispatchFunc, result.value)

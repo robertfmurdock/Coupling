@@ -13,7 +13,6 @@ class StubDispatchFunc<D> : DispatchFunc<D> {
 
     class DispatchedFunc<C, R>(val command: C, val responseFunc: (Result<R>) -> Unit)
 
-
     private fun <C, R> commandFunctionsDispatched() = dispatchList.filterIsInstance<DispatchedFunc<C, R>>()
 
     inline fun <reified C> commandsDispatched() = dispatchList.map { it.command }.filterIsInstance<C>()
