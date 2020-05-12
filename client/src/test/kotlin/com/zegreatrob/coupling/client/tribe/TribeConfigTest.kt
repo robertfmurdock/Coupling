@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.tribe
 
 import ShallowWrapper
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -16,8 +15,6 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class TribeConfigTest {
-
-    private val styles = useStyles("tribe/TribeConfig")
 
     @Test
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
