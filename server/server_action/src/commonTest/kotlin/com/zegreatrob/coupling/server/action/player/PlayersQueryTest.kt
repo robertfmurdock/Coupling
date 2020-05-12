@@ -38,7 +38,7 @@ class PlayersQueryTest {
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
     }) exercise {
-        PlayersQuery.perform()
+        perform(PlayersQuery)
     } verifySuccess { result ->
         result.map { it.data.player }.assertIsEqualTo(players)
     }
@@ -62,7 +62,7 @@ class PlayersQueryTest {
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentTribeId, players.map { toRecord(it, currentTribeId) }) }
     }) exercise {
-        PlayersQuery.perform()
+        perform(PlayersQuery)
     } verifySuccess { result ->
         result.map { it.data.player }
             .apply {

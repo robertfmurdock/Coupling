@@ -12,7 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class RetiredPlayerListQuery(val tribeId: TribeId) :
-    SimpleSuspendAction<RetiredPlayerListQuery, RetiredPlayerListQueryDispatcher, Pair<Tribe?, List<Player>>> {
+    SimpleSuspendAction<RetiredPlayerListQueryDispatcher, Pair<Tribe?, List<Player>>> {
     override val perform = link(RetiredPlayerListQueryDispatcher::perform)
 }
 

@@ -50,8 +50,7 @@ class ProposeNewPairsCommandTest {
 
         }
     ) exercise {
-        ProposeNewPairsCommand(tribe.id, players, pins)
-            .perform()
+        perform(ProposeNewPairsCommand(tribe.id, players, pins))
     } verifySuccess { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
         spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))

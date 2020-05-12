@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-class NewTribeCommand : SimpleSuspendAction<NewTribeCommand, NewTribeCommandDispatcher, Tribe> {
+class NewTribeCommand : SimpleSuspendAction<NewTribeCommandDispatcher, Tribe> {
     override val perform = link(NewTribeCommandDispatcher::perform)
 }
 

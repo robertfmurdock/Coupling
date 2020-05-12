@@ -1,19 +1,20 @@
 package com.zegreatrob.coupling.server.action.pin
 
+import com.zegreatrob.coupling.action.SimpleSuspendAction
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.pin.TribeIdPinSaveSyntax
-import com.zegreatrob.coupling.action.SuspendAction
-import com.zegreatrob.coupling.action.successResult
 
-data class SavePinCommand(val tribeIdPin: TribeIdPin) :
-    SuspendAction<SavePinCommandDispatcher, Pin> {
-    override suspend fun execute(dispatcher: SavePinCommandDispatcher) = with(dispatcher) { perform() }
+data class SavePinCommand(val tribeIdPin: TribeIdPin) : SimpleSuspendAction<SavePinCommandDispatcher, Pin> {
+    override val perform = link(SavePinCommandDispatcher::perform)
 }
 
 interface SavePinCommandDispatcher : TribeIdPinSaveSyntax {
 
-    suspend fun SavePinCommand.perform() = tribeIdPin.save().let { tribeIdPin.pin }.successResult()
+    suspend fun perform(command: SavePinCommand) = command.skdfjsldkfj().successResult()
+
+    private suspend fun SavePinCommand.skdfjsldkfj() = tribeIdPin.save().let { tribeIdPin.pin }
 
 }

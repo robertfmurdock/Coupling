@@ -12,7 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class TribePinQuery(val tribeId: TribeId, val pinId: String?) :
-    SimpleSuspendAction<TribePinQuery, TribePinQueryDispatcher, Triple<Tribe?, List<Pin>, Pin>> {
+    SimpleSuspendAction<TribePinQueryDispatcher, Triple<Tribe?, List<Pin>, Pin>> {
     override val perform = link(TribePinQueryDispatcher::perform)
 }
 

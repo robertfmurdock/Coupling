@@ -28,8 +28,7 @@ class SavePlayerCommandTest {
         )
         override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
     }) exercise {
-        SavePlayerCommand(tribe.with(player))
-            .perform()
+        perform(SavePlayerCommand(tribe.with(player)))
     } verifySuccess { result ->
         result.assertIsEqualTo(player)
     }

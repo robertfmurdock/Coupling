@@ -17,7 +17,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
-    SimpleSuspendAction<NewPairAssignmentsQuery, NewPairAssignmentsQueryDispatcher, Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
+    SimpleSuspendAction<NewPairAssignmentsQueryDispatcher, Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
     override val perform = link(NewPairAssignmentsQueryDispatcher::perform)
 }
 

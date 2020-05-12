@@ -4,11 +4,11 @@ interface SuspendAction<T, R> : Action {
     suspend fun execute(dispatcher: T): Result<R>
 }
 
-interface SimpleSuspendAction<A, T, R> : SuspendAction<T, R> {
+interface SimpleSuspendAction<T, R> : SuspendAction<T, R> {
     override suspend fun execute(dispatcher: T) = perform(dispatcher)
     val perform: PerformFunc2<T, R>
 
-    fun A.link(performFunc: PerformFunc<A, T, R>): PerformFunc2<T, R> = { performFunc(it, this) }
+    fun <A> A.link(performFunc: PerformFunc<A, T, R>): PerformFunc2<T, R> = { performFunc(it, this) }
 }
 
 typealias PerformFunc<A, D, R> = suspend (D, A) -> Result<R>

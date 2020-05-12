@@ -1,17 +1,18 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.SimpleSuspendAction
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentRecordsSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
-import com.zegreatrob.coupling.action.SuspendAction
-import com.zegreatrob.coupling.action.successResult
 
 object PairAssignmentDocumentListQuery :
-    SuspendAction<PairAssignmentDocumentListQueryDispatcher, List<TribeRecord<PairAssignmentDocument>>> {
-    override suspend fun execute(dispatcher: PairAssignmentDocumentListQueryDispatcher) = with(dispatcher) { perform() }
+    SimpleSuspendAction<PairAssignmentDocumentListQueryDispatcher, List<TribeRecord<PairAssignmentDocument>>> {
+    override val perform = link(PairAssignmentDocumentListQueryDispatcher::perform)
 }
 
 interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentRecordsSyntax, CurrentTribeIdSyntax {
-    suspend fun PairAssignmentDocumentListQuery.perform() = currentTribeId.loadPairAssignmentRecords().successResult()
+    suspend fun perform(query: PairAssignmentDocumentListQuery) = currentTribeId.loadPairAssignmentRecords()
+        .successResult()
 }

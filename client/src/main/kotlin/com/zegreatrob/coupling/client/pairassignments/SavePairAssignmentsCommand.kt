@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
 
 data class SavePairAssignmentsCommand(val tribeId: TribeId, val pairAssignments: PairAssignmentDocument) :
-    SimpleSuspendAction<SavePairAssignmentsCommand, SavePairAssignmentsCommandDispatcher, Unit> {
+    SimpleSuspendAction<SavePairAssignmentsCommandDispatcher, Unit> {
     override val perform = link(SavePairAssignmentsCommandDispatcher::perform)
 }
 

@@ -78,11 +78,11 @@ class CurrentTribeIdDispatcher(
 
     private val playerDeferred = scope.async(start = CoroutineStart.LAZY) {
         with(nonCachingPlayerQueryDispatcher()) {
-            PlayersQuery.perform()
+            perform(PlayersQuery)
         }
     }
 
-    override suspend fun PlayersQuery.perform() = playerDeferred.await()
+    override suspend fun perform(query: PlayersQuery) = playerDeferred.await()
 
     private suspend fun userIsAuthorized(tribeId: TribeId) = user.authorizedTribeIds.contains(tribeId)
             || userIsAlsoPlayer()

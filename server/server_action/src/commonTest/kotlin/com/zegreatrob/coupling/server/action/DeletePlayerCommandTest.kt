@@ -16,8 +16,7 @@ class DeletePlayerCommandTest {
         val playerId = "ThatGuyGetHim"
         override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
     }) exercise {
-        DeletePlayerCommand(TribeId(""), playerId)
-            .perform()
+        perform(DeletePlayerCommand(TribeId(""), playerId))
     } verifySuccess {
         playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
     }

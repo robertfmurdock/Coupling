@@ -23,8 +23,7 @@ class SavePairAssignmentDocumentCommandTest {
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
             .apply { whenever(pairAssignmentDocument, Unit) }
     }) exercise {
-        SavePairAssignmentDocumentCommand(pairAssignmentDocument)
-            .perform()
+        perform(SavePairAssignmentDocumentCommand(pairAssignmentDocument))
     } verifySuccess { result ->
         result.assertIsEqualTo(pairAssignmentDocument)
         pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
