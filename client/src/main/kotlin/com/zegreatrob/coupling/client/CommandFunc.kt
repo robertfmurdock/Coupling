@@ -18,11 +18,12 @@ class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
 
     override fun <C : SuspendAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit =
         {
-            scope.launch {
-                dispatcherFunc()
-                    .execute(commandFunc())
-                    .let(response)
-            }
+            launchExecute(dispatcherFunc(), commandFunc(), response)
+        }
+
+    private fun <C : SuspendAction<D, R>, R> launchExecute(dispatcher: D, command: C, response: (Result<R>) -> Unit) =
+        scope.launch {
+            dispatcher.execute(command).let(response)
         }
 
 }
