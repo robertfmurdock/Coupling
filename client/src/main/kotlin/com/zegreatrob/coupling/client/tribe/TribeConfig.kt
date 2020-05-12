@@ -9,11 +9,10 @@ import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlinx.html.InputType
-import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.tabIndex
+import kotlinx.html.js.onSubmitFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -63,16 +62,6 @@ private inline fun RBuilder.retireButton(crossinline onDelete: () -> Unit) =
         +"Retire"
     }
 
-private inline fun RBuilder.saveButton(crossinline onSave: () -> Unit) =
-    input(InputType.button, classes = "super blue button") {
-        attrs {
-            classes += styles["saveButton"]
-            tabIndex = "0"
-            value = "Save"
-            onClickFunction = { onSave() }
-        }
-    }
-
 private fun RBuilder.configInputs(
     tribe: Tribe,
     isNew: Boolean,
@@ -80,53 +69,56 @@ private fun RBuilder.configInputs(
     onSave: () -> Unit,
     onDelete: () -> Unit
 ) {
-    div {
-        editor {
-            li {
-                nameInput(tribe, onChange)
-                span { +"The full tribe name!" }
-            }
-            li {
-                emailInput(tribe, onChange)
-                span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
-            }
+    form {
+        attrs { onSubmitFunction = { it.preventDefault(); onSave() } }
+        div {
+            editor {
+                li {
+                    nameInput(tribe, onChange)
+                    span { +"The full tribe name!" }
+                }
+                li {
+                    emailInput(tribe, onChange)
+                    span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
+                }
 
-            if (isNew) {
-                li { uniqueIdInput(tribe, onChange) }
-            }
-            li {
-                enableAnimationsInput(tribe, onChange)
-                span { +"Keep things wacky and springy, or still and deadly serious." }
-            }
-            li {
-                animationSpeedSelect(tribe, onChange)
-                span { +"In case you want things to move a little... faster." }
-            }
-            li {
-                enableCallSignsInput(tribe, onChange)
-                span { +"Every Couple needs a Call Sign. Makes things more fun!" }
-            }
-            li {
-                enableBadgesInput(tribe, onChange)
-                span { +"Advanced users only: this lets you divide your tribe into two groups." }
-            }
-            li {
-                defaultBadgeInput(tribe, onChange)
-                span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
-            }
-            li {
-                altBadgeInput(tribe, onChange)
-                span { +"The other badge a player can be given. A player can only have one badge at a time." }
-            }
-            li {
-                pairingRuleSelect(tribe, onChange)
-                span { +"Advanced users only: This rule affects how players are assigned." }
+                if (isNew) {
+                    li { uniqueIdInput(tribe, onChange) }
+                }
+                li {
+                    enableAnimationsInput(tribe, onChange)
+                    span { +"Keep things wacky and springy, or still and deadly serious." }
+                }
+                li {
+                    animationSpeedSelect(tribe, onChange)
+                    span { +"In case you want things to move a little... faster." }
+                }
+                li {
+                    enableCallSignsInput(tribe, onChange)
+                    span { +"Every Couple needs a Call Sign. Makes things more fun!" }
+                }
+                li {
+                    enableBadgesInput(tribe, onChange)
+                    span { +"Advanced users only: this lets you divide your tribe into two groups." }
+                }
+                li {
+                    defaultBadgeInput(tribe, onChange)
+                    span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
+                }
+                li {
+                    altBadgeInput(tribe, onChange)
+                    span { +"The other badge a player can be given. A player can only have one badge at a time." }
+                }
+                li {
+                    pairingRuleSelect(tribe, onChange)
+                    span { +"Advanced users only: This rule affects how players are assigned." }
+                }
             }
         }
-    }
-    saveButton(onSave)
-    if (!isNew) {
-        retireButton(onDelete)
+        configSaveButton(false, styles["saveButton"])
+        if (!isNew) {
+            retireButton(onDelete)
+        }
     }
 }
 

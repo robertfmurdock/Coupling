@@ -83,8 +83,6 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     )
 ).also { pairAssignmentDocumentCounter++ }
 
-fun stubPairAssignmentDocList(number: Int) = generateSequence { stubPairAssignmentDoc() }.take(number).toList()
-
 fun uuidString() = uuid4().toString()
 
 var userCounter = 1

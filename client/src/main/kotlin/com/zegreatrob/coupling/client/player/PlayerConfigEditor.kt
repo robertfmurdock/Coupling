@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.configSaveButton
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
@@ -12,7 +13,9 @@ import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.html.*
+import kotlinx.html.InputType
+import kotlinx.html.classes
+import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
@@ -122,7 +125,7 @@ private inline fun RBuilder.playerConfigForm(
                 }
             }
         }
-        saveButton(isSaving, styles["saveButton"])
+        configSaveButton(isSaving, styles["saveButton"])
         val playerId = player.id
         if (playerId != null) {
             retireButton(removePlayerFunc(playerId))
@@ -136,17 +139,6 @@ private fun RBuilder.retireButton(onRetire: () -> Unit) = div(classes = "small r
         onClickFunction = { onRetire() }
     }
     +"Retire"
-}
-
-private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(classes = "super blue button") {
-    attrs {
-        classes += className
-        type = ButtonType.submit
-        tabIndex = "0"
-        value = "Save"
-        disabled = isSaving
-    }
-    +"Save"
 }
 
 private fun RBuilder.nameInput(player: Player, onChange: (Event) -> Unit) {

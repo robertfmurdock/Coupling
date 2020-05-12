@@ -1,6 +1,7 @@
 import {browser, By, Config, element} from "protractor";
 import e2eHelper from './e2e-help'
-import {DataLoadWrapperStyles} from "./page-objects/Styles";
+
+const DataLoadWrapperStyles = require(`${"../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/routing/DataLoadWrapper.css`);
 
 let ScreenShotReporter = require("protractor-jasmine2-screenshot-reporter");
 

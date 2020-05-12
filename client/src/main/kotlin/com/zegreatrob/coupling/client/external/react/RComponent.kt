@@ -31,6 +31,6 @@ interface PropsClassProvider<T : RProps> {
     val kClass: KClass<T>
 }
 
-inline fun <reified P : RProps, C : Function<P>> provider() = object : PropsClassProvider<P> {
+inline fun <reified P : RProps> provider() = object : PropsClassProvider<P> {
     override val kClass: KClass<P> get() = P::class
 }

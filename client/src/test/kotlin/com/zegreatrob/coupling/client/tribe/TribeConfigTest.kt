@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.tribe
 
 import ShallowWrapper
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
@@ -13,6 +12,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import shallow
+import kotlin.js.json
 import kotlin.test.Test
 
 class TribeConfigTest {
@@ -68,7 +68,8 @@ class TribeConfigTest {
             TribeConfigProps(tribe, pathSetterSpy::spyFunction, stubDispatchFunc)
         )
     }) exercise {
-        wrapper.find<Any>(".${styles["saveButton"]}").simulate("click")
+        wrapper.find<Any>("form")
+            .simulate("submit", json("preventDefault" to {}))
         stubDispatchFunc.simulateSuccess<SaveTribeCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()

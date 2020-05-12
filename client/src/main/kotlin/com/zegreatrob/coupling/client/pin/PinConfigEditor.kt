@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.configSaveButton
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
@@ -10,7 +11,9 @@ import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
-import kotlinx.html.*
+import kotlinx.html.InputType
+import kotlinx.html.classes
+import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
@@ -87,7 +90,7 @@ private inline fun RBuilder.pinConfigForm(
             li { targetInput(onChange) }
         }
     }
-    saveButton(isSaving, styles["saveButton"])
+    configSaveButton(isSaving, styles["saveButton"])
     val pinId = pin._id
     if (pinId != null) {
         retireButtonElement(onRemoveFunc(pinId))
@@ -115,19 +118,6 @@ private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "
 
 private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Unit): (Event) -> Unit =
     { event -> setIsSaving(true); onSubmit(event) }
-
-private fun RBuilder.saveButton(isSaving: Boolean, className: String) = button(
-    classes = "super blue button"
-) {
-    attrs {
-        classes += className
-        type = ButtonType.submit
-        tabIndex = "0"
-        value = "Save"
-        disabled = isSaving
-    }
-    +"Save"
-}
 
 private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {
     configInput(
