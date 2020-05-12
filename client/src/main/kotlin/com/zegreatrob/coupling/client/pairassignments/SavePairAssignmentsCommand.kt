@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -8,10 +8,12 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
 
 data class SavePairAssignmentsCommand(val tribeId: TribeId, val pairAssignments: PairAssignmentDocument) :
-    SuspendAction<SavePairAssignmentsCommandDispatcher, Unit> {
-    override suspend fun execute(dispatcher: SavePairAssignmentsCommandDispatcher) = with(dispatcher) { perform() }
+    SimpleSuspendAction<SavePairAssignmentsCommand, SavePairAssignmentsCommandDispatcher, Unit> {
+    override val perform = link(SavePairAssignmentsCommandDispatcher::perform)
 }
 
 interface SavePairAssignmentsCommandDispatcher : TribeIdPairAssignmentDocumentSaveSyntax {
-    suspend fun SavePairAssignmentsCommand.perform() = tribeId.with(pairAssignments).save().successResult()
+    suspend fun perform(command: SavePairAssignmentsCommand) = with(command) {
+        tribeId.with(pairAssignments).save().successResult()
+    }
 }

@@ -23,8 +23,7 @@ class SavePinCommandTest {
         val pin = Pin("1", "one", "icon 1")
 
     }) exercise {
-        SavePinCommand(tribe.id, pin)
-            .perform()
+        perform(SavePinCommand(tribe.id, pin))
     } verify {
         saveSpy.spyReceivedValues
             .assertIsEqualTo(listOf(tribe.id.with(pin)))

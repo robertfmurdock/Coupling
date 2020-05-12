@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
@@ -18,21 +17,20 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
-    SuspendAction<NewPairAssignmentsQueryDispatcher, Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
-
-    override suspend fun execute(dispatcher: NewPairAssignmentsQueryDispatcher) = with(dispatcher) { perform() }
+    SimpleSuspendAction<NewPairAssignmentsQuery, NewPairAssignmentsQueryDispatcher, Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
+    override val perform = link(NewPairAssignmentsQueryDispatcher::perform)
 }
 
 interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     TribeIdPinsSyntax,
     TribeIdPlayersSyntax,
     RequestSpinActionDispatcher {
-    suspend fun NewPairAssignmentsQuery.perform(): SuccessfulResult<Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
+    suspend fun perform(query: NewPairAssignmentsQuery) = with(query) {
         val (tribe, players, pins) = getData()
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         val selectedPins = filterSelectedPins(pins, pinIds)
         val pairAssignments = performSpin(tribeId, selectedPlayers, selectedPins)
-        return Triple(tribe, players, pairAssignments)
+        Triple(tribe, players, pairAssignments)
             .successResult()
     }
 
