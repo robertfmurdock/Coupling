@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
@@ -14,21 +14,23 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
-    SuspendAction<TribePlayerQueryDispatcher, Triple<Tribe?, List<Player>, Player>> {
-    override suspend fun execute(dispatcher: TribePlayerQueryDispatcher) = with(dispatcher) { perform() }
+    SimpleSuspendAction<TribePlayerQuery, TribePlayerQueryDispatcher, Triple<Tribe?, List<Player>, Player>> {
+    override val perform = link(TribePlayerQueryDispatcher::perform)
 }
 
 interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     FindCallSignActionDispatcher {
-    suspend fun TribePlayerQuery.perform() = tribeId.getData()
+    suspend fun perform(query: TribePlayerQuery) = query.sdkfj().successResult()
+
+    private suspend fun TribePlayerQuery.sdkfj() = tribeId.getData()
         .let { (tribe, players) ->
             Triple(
                 tribe,
                 players,
                 players.findOrDefaultNew(playerId)
             )
-        }.successResult()
+        }
 
     private suspend fun TribeId.getData() = coroutineScope {
         await(async { get() }, async { getPlayerList() })

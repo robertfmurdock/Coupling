@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.action.SuspendAction
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.client.external.GoogleAuth
 import com.zegreatrob.coupling.client.external.GoogleAuth2
 import com.zegreatrob.coupling.client.external.GoogleUser
@@ -77,13 +75,4 @@ interface GoogleSignIn : SdkSyntax {
             redirect_uri = window.location.origin
         }
     )
-}
-
-
-object GoogleSignInCommand : SuspendAction<GoogleSignInCommandDispatcher, Unit> {
-    override suspend fun execute(dispatcher: GoogleSignInCommandDispatcher) = dispatcher.perform(this)
-}
-
-interface GoogleSignInCommandDispatcher : GoogleSignIn {
-    suspend fun perform(action: GoogleSignInCommand) = signIn().successResult()
 }

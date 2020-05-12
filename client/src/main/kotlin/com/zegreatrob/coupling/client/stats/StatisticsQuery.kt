@@ -8,8 +8,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-data class StatisticsQuery(val tribeId: TribeId) : SuspendAction<StatisticsQueryDispatcher, StatisticQueryResults> {
-    override suspend fun execute(dispatcher: StatisticsQueryDispatcher) = with(dispatcher) { perform() }
+data class StatisticsQuery(val tribeId: TribeId) :
+    SimpleSuspendAction<StatisticsQuery, StatisticsQueryDispatcher, StatisticQueryResults> {
+    override val perform = link(StatisticsQueryDispatcher::perform)
 }
 
 data class StatisticQueryResults(
@@ -24,13 +25,14 @@ interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher,
     TribeIdLoadAllSyntax {
 
-    suspend fun StatisticsQuery.perform(): SuccessfulResult<StatisticQueryResults> {
+    suspend fun perform(query: StatisticsQuery) = query.loadAll().successResult()
+
+    private suspend fun StatisticsQuery.loadAll(): StatisticQueryResults {
         val (tribe, players, history) = tribeId.loadAll()
 
         val (report, heatmapData) = calculateStats(tribe, players, history)
 
         return StatisticQueryResults(tribe, players, history, report, heatmapData)
-            .successResult()
     }
 
     private fun calculateStats(

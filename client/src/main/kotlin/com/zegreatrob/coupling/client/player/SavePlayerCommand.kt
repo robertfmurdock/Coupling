@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -8,10 +8,12 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 
 data class SavePlayerCommand(val tribeId: TribeId, val player: Player) :
-    SuspendAction<SavePlayerCommandDispatcher, Unit> {
-    override suspend fun execute(dispatcher: SavePlayerCommandDispatcher) = with(dispatcher) { perform() }
+    SimpleSuspendAction<SavePlayerCommand, SavePlayerCommandDispatcher, Unit> {
+    override val perform = link(SavePlayerCommandDispatcher::perform)
 }
 
 interface SavePlayerCommandDispatcher : TribeIdPlayerSaveSyntax {
-    suspend fun SavePlayerCommand.perform() = tribeId.with(player).save().successResult()
+    suspend fun perform(command: SavePlayerCommand) = command.tribeIdPlayer().save().successResult()
+
+    private fun SavePlayerCommand.tribeIdPlayer() = tribeId.with(player)
 }
