@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
@@ -64,6 +63,7 @@ private fun onDeleteFuncFactory(
 
 private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit): () -> Unit = {
     with(windowFuncs) {
+
         if (window.confirm("Are you sure you want to delete these pair assignments?")) {
             deleteFunc.invoke()
         }

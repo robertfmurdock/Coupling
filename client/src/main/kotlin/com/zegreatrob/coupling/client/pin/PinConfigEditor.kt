@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
-import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
@@ -105,6 +104,7 @@ private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "
     attrs {
         classes += styles["deleteButton"]
         onClickFunction = {
+
             if (window.confirm("Are you sure you want to delete this pin?")) {
                 onRetire()
             }

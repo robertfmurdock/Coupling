@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.invoke
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge

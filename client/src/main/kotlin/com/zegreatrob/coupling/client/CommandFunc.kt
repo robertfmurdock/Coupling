@@ -8,11 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 interface DispatchFunc<D> {
-    fun <C : Action, R> makeItSo(
-        response: (Result<R>) -> Unit,
-        buildCommand: () -> C,
-        execute: suspend C.(D) -> Result<R>
-    ): () -> Unit
+    operator fun <C : SuspendAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit
 }
 
 class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
@@ -20,16 +16,13 @@ class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
     private val scope: CoroutineScope
 ) : DispatchFunc<D> {
 
-    override fun <C : Action, R> makeItSo(
-        response: (Result<R>) -> Unit,
-        buildCommand: () -> C,
-        execute: suspend C.(D) -> Result<R>
-    ): () -> Unit = {
-        scope.launch {
-            decoratedExecute(dispatcherProvider(), buildCommand(), execute)
-                .let(response)
+    override fun <C : SuspendAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit =
+        {
+            scope.launch {
+                decoratedExecute(dispatcherProvider(), commandFunc(), SuspendAction<D, R>::execute)
+                    .let(response)
+            }
         }
-    }
 
     suspend fun <C : Action, R> decoratedExecute(
         dispatcher: D,
@@ -39,7 +32,3 @@ class DecoratedDispatchFunc<D : ActionLoggingSyntax>(
 
 }
 
-operator fun <C : SuspendAction<D, R>, D, R> DispatchFunc<D>.invoke(
-    buildCommand: () -> C,
-    response: (Result<R>) -> Unit
-) = makeItSo(response, buildCommand, SuspendAction<D, R>::execute)
