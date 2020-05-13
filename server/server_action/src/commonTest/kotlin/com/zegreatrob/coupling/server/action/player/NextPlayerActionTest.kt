@@ -1,17 +1,21 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
+import com.zegreatrob.coupling.testaction.PassthroughCommandExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
-class NextPlayerActionTest : NextPlayerActionDispatcher {
+class NextPlayerActionTest : NextPlayerActionDispatcher,
+    PassthroughCommandExecutor<CreatePairCandidateReportsActionDispatcher> {
+    override val executor = this
     override val actionDispatcher = StubCreatePairCandidateReportsActionDispatcher()
 
     private val bill = Player(id = "Bill")
@@ -39,15 +43,11 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
             shorty, emptyList(),
             TimeResultValue(5)
         )
-
-        init {
-            actionDispatcher.spyWillReturn(
-                listOf(
-                    billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates
-                )
-            )
-        }
-    }) exercise {
+    }) {
+        actionDispatcher.spyWillReturn(
+            listOf(billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+        )
+    } exercise {
         NextPlayerAction(longestTimeSpin(players))
             .perform()
     } verify { result ->
@@ -65,11 +65,9 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
             shorty, emptyList(),
             TimeResultValue(0)
         )
-
-        init {
-            actionDispatcher.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates))
-        }
-    }) exercise {
+    }) {
+        actionDispatcher.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates))
+    } exercise {
         NextPlayerAction(longestTimeSpin(players))
             .perform()
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
@@ -93,10 +91,9 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
 
         val pairCandidates = listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
 
-        init {
-            actionDispatcher.spyWillReturn(pairCandidates)
-        }
-    }) exercise {
+    }) {
+        actionDispatcher.spyWillReturn(pairCandidates)
+    } exercise {
         NextPlayerAction(longestTimeSpin(players))
             .perform()
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
@@ -117,13 +114,11 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
             shorty, emptyList(),
             NeverPaired
         )
-
-        init {
-            actionDispatcher.spyWillReturn(
-                listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-            )
-        }
-    }) exercise {
+    }) {
+        actionDispatcher.spyWillReturn(
+            listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+        )
+    } exercise {
         NextPlayerAction(longestTimeSpin(players))
             .perform()
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
@@ -149,13 +144,11 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
                 Player(), Player()
             ), NeverPaired
         )
-
-        init {
-            actionDispatcher.spyWillReturn(
-                listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-            )
-        }
-    }) exercise {
+    }) {
+        actionDispatcher.spyWillReturn(
+            listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+        )
+    } exercise {
         NextPlayerAction(longestTimeSpin(players))
             .perform()
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
@@ -167,5 +160,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
 class StubCreatePairCandidateReportsActionDispatcher : CreatePairCandidateReportsActionDispatcher,
     Spy<CreatePairCandidateReportsAction, List<PairCandidateReport>> by SpyData() {
     override val actionDispatcher get() = cancel()
-    override fun CreatePairCandidateReportsAction.perform() = spyFunction(this)
+
+    override fun perform(action: CreatePairCandidateReportsAction) = spyFunction(action)
+        .successResult()
 }

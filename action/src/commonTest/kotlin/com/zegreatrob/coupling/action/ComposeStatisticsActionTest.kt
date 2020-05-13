@@ -42,8 +42,7 @@ class ComposeStatisticsActionTest {
         companion object {
             private val history = emptyList<PairAssignmentDocument>()
 
-            fun composeStatisticsAction(players: List<Player>) =
-                ComposeStatisticsAction(tribe, players, history)
+            fun composeStatisticsAction(players: List<Player>) = ComposeStatisticsAction(tribe, players, history)
         }
 
         @Test
@@ -134,10 +133,7 @@ class ComposeStatisticsActionTest {
             } verifySuccess { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
                     listOf(
-                        PairReport(
-                            CouplingPair.Double(players[0], players[1]),
-                            NeverPaired
-                        )
+                        PairReport(CouplingPair.Double(players[0], players[1]), NeverPaired)
                     )
                 )
             }

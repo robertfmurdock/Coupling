@@ -21,8 +21,7 @@ data class StatisticQueryResults(
     val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher,
-    CalculateHeatMapActionDispatcher,
+interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher, CalculateHeatMapActionDispatcher,
     TribeIdLoadAllSyntax {
 
     suspend fun perform(query: StatisticsQuery) = query.loadAll().successResult()

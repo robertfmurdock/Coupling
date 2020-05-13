@@ -103,7 +103,8 @@ class StubWheel : Wheel, Spy<List<Player>, Player> by SpyData() {
 
 class StubNextPlayerActionDispatcher : NextPlayerActionDispatcher,
     Spy<NextPlayerAction, PairCandidateReport> by SpyData() {
-    override val actionDispatcher get() = throw NotImplementedError()
+    override val executor get() = throw NotImplementedError()
+
     override fun NextPlayerAction.perform() = spyFunction(this)
 }
 

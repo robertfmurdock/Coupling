@@ -1,9 +1,14 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 
-data class CreatePairCandidateReportsAction(val game: GameSpin)
+data class CreatePairCandidateReportsAction(val game: GameSpin) :
+    SimpleSuccessfulExecutableAction<CreatePairCandidateReportsActionDispatcher, List<PairCandidateReport>> {
+    override val perform = link(CreatePairCandidateReportsActionDispatcher::perform)
+}
 
 interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
 
@@ -11,8 +16,9 @@ interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
 
     private fun CreatePairCandidateReportAction.performThis() = with(actionDispatcher) { perform() }
 
-    fun CreatePairCandidateReportsAction.perform() = createReports()
-        .ifEmpty { createReportsUsingLongestRule() }
+    fun perform(action: CreatePairCandidateReportsAction) = action.createReports()
+        .ifEmpty { action.createReportsUsingLongestRule() }
+        .successResult()
 
     private fun CreatePairCandidateReportsAction.createReportsUsingLongestRule() =
         game.createReports(PairingRule.LongestTime)

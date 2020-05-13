@@ -6,9 +6,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.testaction.PassthroughCommandExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -20,9 +21,11 @@ class GameExamplesTest {
         NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
+        PassthroughCommandExecutor<CreatePairCandidateReportsActionDispatcher>,
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
+        override val executor = this
     }
 
     class WithUniformBadgesAndLongestTimeRule {
