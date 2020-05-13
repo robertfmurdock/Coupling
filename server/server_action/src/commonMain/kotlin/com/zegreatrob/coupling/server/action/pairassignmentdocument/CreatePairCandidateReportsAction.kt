@@ -12,9 +12,8 @@ data class CreatePairCandidateReportsAction(val game: GameSpin) :
 
 interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
 
-    val actionDispatcher: CreatePairCandidateReportActionDispatcher
-
-    private fun CreatePairCandidateReportAction.performThis() = with(actionDispatcher) { perform() }
+    val executor: CommandExecutor<CreatePairCandidateReportActionDispatcher>
+    private fun performThis(action: CreatePairCandidateReportAction) = executor.execute(action).value
 
     fun perform(action: CreatePairCandidateReportsAction) = action.createReports()
         .ifEmpty { action.createReportsUsingLongestRule() }
@@ -38,6 +37,5 @@ interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
     }
 
     private fun GameSpin.createReport(player: Player, candidates: Array<Player>) =
-        CreatePairCandidateReportAction(player, history, candidates.toList())
-            .performThis()
+        performThis(CreatePairCandidateReportAction(player, history, candidates.toList()))
 }

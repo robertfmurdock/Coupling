@@ -1,21 +1,22 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.coupling.server.action.StubCommandExecutor
+import com.zegreatrob.coupling.server.action.stubCommandExecutor
 import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minspy.Spy
-import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
-class CreatePairCandidateReportsActionDispatcherTest {
+class CreatePairCandidateReportsActionTest {
 
     class WhenTheTribePrefersPairingWithDifferentBadges : CreatePairCandidateReportsActionDispatcher {
-        override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
+        override val executor = stubCommandExecutor(CreatePairCandidateReportAction::class)
 
         @Test
         fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
@@ -36,7 +37,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
         }) {
             expectedReports.forEach { report ->
-                actionDispatcher.givenPlayerReturnReport(report, players.without(report.player), history)
+                executor.givenPlayerReturnReport(report, players.without(report.player), history)
             }
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
@@ -61,7 +62,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
 
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
         }) {
-            actionDispatcher.run {
+            executor.run {
                 givenPlayerReturnReport(billReport, listOf(altAmadeus, altShorty), history)
                 givenPlayerReturnReport(tedReport, listOf(altAmadeus, altShorty), history)
                 givenPlayerReturnReport(amadeusReport, listOf(bill, ted), history)
@@ -81,7 +82,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
         }) {
-            actionDispatcher.givenPlayerReturnReport(billReport, emptyList(), history)
+            executor.givenPlayerReturnReport(billReport, emptyList(), history)
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
         } verifySuccess {
@@ -92,7 +93,7 @@ class CreatePairCandidateReportsActionDispatcherTest {
 
     @Test
     fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
-        override val actionDispatcher = StubCreatePairCandidateReportActionDispatcher()
+        override val executor = stubCommandExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
         val bill = Player(id = "Bill", badge = 1)
         val ted = Player(id = "Ted", badge = 1)
@@ -105,16 +106,14 @@ class CreatePairCandidateReportsActionDispatcherTest {
         val amadeusReport = PairCandidateReport(altAmadeus, emptyList(), NeverPaired)
         val shortyReport = PairCandidateReport(altShorty, emptyList(), NeverPaired)
         val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
-
-        init {
-            actionDispatcher.run {
-                givenPlayerReturnReport(billReport, players.without(bill), history)
-                givenPlayerReturnReport(tedReport, players.without(ted), history)
-                givenPlayerReturnReport(amadeusReport, players.without(altAmadeus), history)
-                givenPlayerReturnReport(shortyReport, players.without(altShorty), history)
-            }
+    }) {
+        executor.run {
+            givenPlayerReturnReport(billReport, players.without(bill), history)
+            givenPlayerReturnReport(tedReport, players.without(ted), history)
+            givenPlayerReturnReport(amadeusReport, players.without(altAmadeus), history)
+            givenPlayerReturnReport(shortyReport, players.without(altShorty), history)
         }
-    }) exercise {
+    } exercise {
         perform(CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime)))
     } verifySuccess {
         it.assertIsEqualTo(expectedReports)
@@ -122,24 +121,19 @@ class CreatePairCandidateReportsActionDispatcherTest {
 
     companion object {
 
-        private fun StubCreatePairCandidateReportActionDispatcher.givenPlayerReturnReport(
+        private fun StubCommandExecutor<
+                CreatePairCandidateReportActionDispatcher,
+                CreatePairCandidateReportAction,
+                PairCandidateReport>.givenPlayerReturnReport(
             pairCandidateReport: PairCandidateReport,
             players: List<Player>,
             history: List<PairAssignmentDocument>
         ) = whenever(
-            receive = expectedAction(pairCandidateReport.player, history, players),
-            returnValue = pairCandidateReport
+            receive = CreatePairCandidateReportAction(pairCandidateReport.player, history, players),
+            returnValue = pairCandidateReport.successResult()
         )
-
-        private fun expectedAction(player: Player, history: List<PairAssignmentDocument>, players: List<Player>) =
-            CreatePairCandidateReportAction(player, history, players)
 
         private fun List<Player>.without(player: Player) = filterNot { it == player }
     }
 
-}
-
-class StubCreatePairCandidateReportActionDispatcher :
-    CreatePairCandidateReportActionDispatcher, Spy<CreatePairCandidateReportAction, PairCandidateReport> by SpyData() {
-    override fun CreatePairCandidateReportAction.perform() = spyFunction(this)
 }

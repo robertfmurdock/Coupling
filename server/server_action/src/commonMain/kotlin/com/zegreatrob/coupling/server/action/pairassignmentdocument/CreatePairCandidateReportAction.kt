@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 
@@ -7,12 +9,15 @@ data class CreatePairCandidateReportAction(
     val player: Player,
     val history: List<PairAssignmentDocument>,
     val allPlayers: List<Player>
-)
+) : SimpleSuccessfulExecutableAction<CreatePairCandidateReportActionDispatcher, PairCandidateReport> {
+    override val perform = link(CreatePairCandidateReportActionDispatcher::perform)
+}
 
 interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
 
-    fun CreatePairCandidateReportAction.perform() = pairTimeMap()
+    fun perform(action: CreatePairCandidateReportAction) = action.pairTimeMap()
         .candidateReport()
+        .successResult()
 
     private fun CreatePairCandidateReportAction.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
 

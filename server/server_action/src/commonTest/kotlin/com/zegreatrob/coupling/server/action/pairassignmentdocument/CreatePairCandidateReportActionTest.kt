@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -28,9 +29,8 @@ class CreatePairCandidateReportActionTest {
         val players: List<Player> = emptyList()
         val history: List<PairAssignmentDocument> = emptyList()
     }) exercise {
-        CreatePairCandidateReportAction(Player(id = "player"), history, players)
-            .perform()
-    } verify {
+        perform(CreatePairCandidateReportAction(Player(id = "player"), history, players))
+    } verifySuccess {
         assertTrue(it.partners.isEmpty())
     }
 
@@ -46,8 +46,7 @@ class CreatePairCandidateReportActionTest {
             private fun createPairCandidateReportAction(
                 history: List<PairAssignmentDocument>,
                 availablePlayers: List<Player>
-            ) =
-                CreatePairCandidateReportAction(bruce, history, availablePlayers)
+            ) = CreatePairCandidateReportAction(bruce, history, availablePlayers)
         }
 
         class WhoHasNeverPaired {
@@ -55,9 +54,8 @@ class CreatePairCandidateReportActionTest {
             fun withNoHistory() = setup(object {
                 val history = emptyList<PairAssignmentDocument>()
             }) exercise {
-                createPairCandidateReportAction(history, availableOtherPlayers)
-                    .perform()
-            } verify {
+                perform(createPairCandidateReportAction(history, availableOtherPlayers))
+            } verifySuccess {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, availableOtherPlayers,
@@ -70,9 +68,8 @@ class CreatePairCandidateReportActionTest {
             fun withHistoryDocumentThatHasNoPairs() = setup(object {
                 val history = listOf(pairAssignmentDocument(emptyList()))
             }) exercise {
-                createPairCandidateReportAction(history, availableOtherPlayers)
-                    .perform()
-            } verify {
+                perform(createPairCandidateReportAction(history, availableOtherPlayers))
+            } verifySuccess {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, availableOtherPlayers,
@@ -102,9 +99,8 @@ class CreatePairCandidateReportActionTest {
                     )
                 )
             }) exercise {
-                createPairCandidateReportAction(history, availableOtherPlayers)
-                    .perform()
-            } verify {
+                perform(createPairCandidateReportAction(history, availableOtherPlayers))
+            } verifySuccess {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, availableOtherPlayers,
@@ -123,9 +119,8 @@ class CreatePairCandidateReportActionTest {
                     )
                 )
             }) exercise {
-                CreatePairCandidateReportAction(bruce, history, listOf(selena))
-                    .perform()
-            } verify {
+                perform(CreatePairCandidateReportAction(bruce, history, listOf(selena)))
+            } verifySuccess {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, listOf(selena),
@@ -145,9 +140,8 @@ class CreatePairCandidateReportActionTest {
                     pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce)))
                 )
             }) exercise {
-                CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
-                    .perform()
-            } verify {
+                perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
+            } verifySuccess {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, listOf(expectedPartner),
@@ -162,9 +156,8 @@ class CreatePairCandidateReportActionTest {
                     pairAssignmentDocument(listOf(pinnedPair(bruce, selena)))
                 )
             }) exercise {
-                CreatePairCandidateReportAction(bruce, history, availableOtherPlayers)
-                    .perform()
-            } verify {
+                perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
+            } verifySuccess {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, listOf(talia, jezebel),

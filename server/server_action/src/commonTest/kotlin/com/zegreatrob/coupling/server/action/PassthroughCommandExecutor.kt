@@ -13,7 +13,7 @@ interface PassthroughCommandExecutor<out D> : CommandExecutor<D> {
     override fun <C : SuccessfulExecutableAction<D, R>, R> execute(command: C) = command.execute(actionDispatcher)
 }
 
-fun <D, C : ExecutableAction<D, R>, R> stubCommandExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<out ExecutableAction<D, R>>) =
+fun <D, C : ExecutableAction<D, R>, R> stubCommandExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<C>) =
     StubCommandExecutor<D, C, R>()
 
 class StubCommandExecutor<D, C : ExecutableAction<D, R>, R> : CommandExecutor<D>, Spy<C, Result<R>> by SpyData() {

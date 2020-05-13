@@ -8,7 +8,6 @@ data class NextPlayerAction(val gameSpin: GameSpin)
 interface NextPlayerActionDispatcher {
 
     val executor: CommandExecutor<CreatePairCandidateReportsActionDispatcher>
-
     private fun performThis(action: CreatePairCandidateReportsAction) = executor.execute(action).value
 
     fun NextPlayerAction.perform() = createPairCandidateReports()
