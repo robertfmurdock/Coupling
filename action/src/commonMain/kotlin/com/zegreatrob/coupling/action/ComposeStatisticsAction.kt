@@ -11,18 +11,20 @@ data class ComposeStatisticsAction(
     val tribe: Tribe,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>
-) : Action
+) : SimpleExecutableAction<ComposeStatisticsActionDispatcher, StatisticsReport> {
+    override val perform = link(ComposeStatisticsActionDispatcher::perform)
+}
 
 interface ComposeStatisticsActionDispatcher : ActionLoggingSyntax,
     PairingTimeCalculationSyntax {
 
-    fun ComposeStatisticsAction.perform() = log {
+    fun perform(action: ComposeStatisticsAction) = action.log {
         StatisticsReport(
-            spinsUntilFullRotation = calculateFullRotation(),
-            pairReports = pairReports(),
-            medianSpinDuration = history.medianSpinDuration()
+            spinsUntilFullRotation = action.calculateFullRotation(),
+            pairReports = action.pairReports(),
+            medianSpinDuration = action.history.medianSpinDuration()
         )
-    }
+    }.successResult()
 
     private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
         .map {

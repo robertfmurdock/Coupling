@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
-import com.zegreatrob.coupling.server.action.verifySuccess
+import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData

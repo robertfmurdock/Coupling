@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerListGet
-import com.zegreatrob.coupling.server.action.verifySuccess
+import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData

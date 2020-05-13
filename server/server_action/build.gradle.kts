@@ -28,6 +28,7 @@ kotlin {
         getByName("commonTest") {
             dependencies {
                 api(project(":stub-model"))
+                api(project(":action-test"))
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:async:+")
                 implementation("com.zegreatrob.testmints:minassert:+")

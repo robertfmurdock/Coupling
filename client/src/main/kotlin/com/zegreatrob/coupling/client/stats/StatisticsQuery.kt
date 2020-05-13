@@ -39,12 +39,25 @@ interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher,
         tribe: Tribe,
         players: List<Player>,
         history: List<PairAssignmentDocument>
-    ) = ComposeStatisticsAction(tribe, players, history).perform() to
-            CalculateHeatMapAction(
-                players,
-                history,
-                ComposeStatisticsAction(tribe, players, history).perform().spinsUntilFullRotation
-            )
-                .perform()
+    ) = composeStatistics(tribe, players, history).let { (statisticsResult) ->
+        statisticsResult to calculateHeatMap(players, history, statisticsResult)
+    }
+
+    private fun calculateHeatMap(
+        players: List<Player>,
+        history: List<PairAssignmentDocument>,
+        statisticsResult: StatisticsReport
+    ) = CalculateHeatMapAction(
+        players,
+        history,
+        statisticsResult.spinsUntilFullRotation
+    )
+        .perform()
+
+    private fun composeStatistics(
+        tribe: Tribe,
+        players: List<Player>,
+        history: List<PairAssignmentDocument>
+    ) = perform(ComposeStatisticsAction(tribe, players, history))
 }
 

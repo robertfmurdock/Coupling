@@ -12,8 +12,7 @@ data class CalculateHeatMapAction(
     val rotationPeriod: Int
 ) : Action
 
-interface CalculateHeatMapActionDispatcher : ActionLoggingSyntax,
-    CalculatePairHeatActionDispatcher {
+interface CalculateHeatMapActionDispatcher : ActionLoggingSyntax, CalculatePairHeatActionDispatcher {
 
     fun CalculateHeatMapAction.perform() = log { players.map { player -> heatForEachPair(player) } }
 

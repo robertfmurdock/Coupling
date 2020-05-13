@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -18,10 +19,7 @@ class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
         override val traceId = uuid4()
-        val tribe = Tribe(
-            TribeId("LOL"),
-            PairingRule.LongestTime
-        )
+        val tribe = Tribe(TribeId("LOL"), PairingRule.LongestTime)
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
             .map { number -> makePlayer("$number") }
@@ -52,9 +50,8 @@ class ComposeStatisticsActionTest {
         fun whenGivenOnePlayerWillReturnOne() = setup(object {
             val players = makePlayers(1)
         }) exercise {
-            composeStatisticsAction(players)
-                .perform()
-        } verify { (spinsUntilFullRotation) ->
+            perform(composeStatisticsAction(players))
+        } verifySuccess { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(1)
         }
 
@@ -62,9 +59,8 @@ class ComposeStatisticsActionTest {
         fun whenGivenTwoPlayersWillReturnOne() = setup(object {
             val players = makePlayers(2)
         }) exercise {
-            composeStatisticsAction(players)
-                .perform()
-        } verify { (spinsUntilFullRotation) ->
+            perform(composeStatisticsAction(players))
+        } verifySuccess { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(1)
         }
 
@@ -72,9 +68,8 @@ class ComposeStatisticsActionTest {
         fun whenGivenThreePlayersWillReturnThree() = setup(object {
             val players = makePlayers(3)
         }) exercise {
-            composeStatisticsAction(players)
-                .perform()
-        } verify { (spinsUntilFullRotation) ->
+            perform(composeStatisticsAction(players))
+        } verifySuccess { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(3)
         }
 
@@ -82,9 +77,8 @@ class ComposeStatisticsActionTest {
         fun whenGivenFourPlayersWillReturnThree() = setup(object {
             val players = makePlayers(4)
         }) exercise {
-            composeStatisticsAction(players)
-                .perform()
-        } verify { (spinsUntilFullRotation) ->
+            perform(composeStatisticsAction(players))
+        } verifySuccess { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(3)
         }
 
@@ -92,9 +86,8 @@ class ComposeStatisticsActionTest {
         fun whenGivenSevenPlayersWillReturnSeven() = setup(object {
             val players = makePlayers(7)
         }) exercise {
-            composeStatisticsAction(players)
-                .perform()
-        } verify { (spinsUntilFullRotation) ->
+            perform(composeStatisticsAction(players))
+        } verifySuccess { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(7)
         }
 
@@ -102,9 +95,8 @@ class ComposeStatisticsActionTest {
         fun whenGivenEightPlayersWillReturnSeven() = setup(object {
             val players = makePlayers(8)
         }) exercise {
-            composeStatisticsAction(players)
-                .perform()
-        } verify { (spinsUntilFullRotation) ->
+            perform(composeStatisticsAction(players))
+        } verifySuccess { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(7)
         }
     }
@@ -120,9 +112,8 @@ class ComposeStatisticsActionTest {
             fun withNoPlayersNoPairReportsWillBeCreated() = setup(object {
                 val players = makePlayers(0)
             }) exercise {
-                ComposeStatisticsAction(tribe, players, history)
-                    .perform()
-            } verify { (_, pairReports) ->
+                perform(ComposeStatisticsAction(tribe, players, history))
+            } verifySuccess { (_, pairReports) ->
                 pairReports.assertIsEqualTo(emptyList())
             }
 
@@ -130,9 +121,8 @@ class ComposeStatisticsActionTest {
             fun withOnePlayersNoPairReportsWillBeCreated() = setup(object {
                 val players = makePlayers(1)
             }) exercise {
-                ComposeStatisticsAction(tribe, players, history)
-                    .perform()
-            } verify { (_, pairReports) ->
+                perform(ComposeStatisticsAction(tribe, players, history))
+            } verifySuccess { (_, pairReports) ->
                 pairReports.assertIsEqualTo(emptyList())
             }
 
@@ -140,9 +130,8 @@ class ComposeStatisticsActionTest {
             fun withTwoPlayersOnePairReportWillBeCreated() = setup(object {
                 val players = makePlayers(2)
             }) exercise {
-                ComposeStatisticsAction(tribe, players, history)
-                    .perform()
-            } verify { (_, pairReports) ->
+                perform(ComposeStatisticsAction(tribe, players, history))
+            } verifySuccess { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
                     listOf(
                         PairReport(
@@ -157,9 +146,8 @@ class ComposeStatisticsActionTest {
             fun withFivePlayersOnePairReportWillBeCreated() = setup(object {
                 val players = makePlayers(5)
             }) exercise {
-                ComposeStatisticsAction(tribe, players, history)
-                    .perform()
-            } verify { (_, pairReports) ->
+                perform(ComposeStatisticsAction(tribe, players, history))
+            } verifySuccess { (_, pairReports) ->
                 val (player1, player2, player3, player4, player5) = players
                 pairReports.map { it.pair }
                     .assertMatch(
@@ -234,9 +222,8 @@ class ComposeStatisticsActionTest {
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
                 PairAssignmentDocument(date = stubDate, pairs = pairs)
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { (_, pairReports) ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { (_, pairReports) ->
             pairReports.map { it.timeSinceLastPair }
                 .assertIsEqualTo(
                     listOf(
@@ -263,10 +250,10 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun stillSortsCorrectlyWithLargeRealisticHistory() =
-            setup(loadJsonTribeSetup("realistic-sort-test-data/inputs.json")) exercise {
-                ComposeStatisticsAction(tribe, players, history)
-                    .perform()
-            } verify { result ->
+            setup(loadJsonTribeSetup("realistic-sort-test-data/inputs.json")) {
+            } exercise {
+                perform(ComposeStatisticsAction(tribe, players, history))
+            } verifySuccess { result ->
                 val expectedTimesResults = loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
                     .map { TimeResultValue(it) }
                 result.pairReports.map { it.timeSinceLastPair }
@@ -290,9 +277,8 @@ class ComposeStatisticsActionTest {
             val history = emptyList<PairAssignmentDocument>()
             val players = emptyList<Player>()
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(null)
         }
 
@@ -308,9 +294,8 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 12))
             )
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(1.days, "Got ${result.medianSpinDuration?.days} days")
         }
 
@@ -327,9 +312,8 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 3))
             )
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
 
@@ -345,9 +329,8 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 10))
             )
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
 
@@ -361,9 +344,8 @@ class ComposeStatisticsActionTest {
                 )
             )
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(null)
         }
 
@@ -379,9 +361,8 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 20, 9))
             )
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(2.hours, "Got ${result.medianSpinDuration?.hours} hours")
         }
 
@@ -398,9 +379,8 @@ class ComposeStatisticsActionTest {
             )
 
         }) exercise {
-            ComposeStatisticsAction(tribe, players, history)
-                .perform()
-        } verify { result ->
+            perform(ComposeStatisticsAction(tribe, players, history))
+        } verifySuccess { result ->
             result.medianSpinDuration.assertIsEqualTo(2.5.days, "Got ${result.medianSpinDuration?.days} days")
         }
 

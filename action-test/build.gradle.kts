@@ -16,45 +16,34 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation(project(":model"))
-                implementation("com.benasher44:uuid:0.1.0")
-                implementation("com.soywiz.korlibs.klock:klock:1.10.6")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.6")
-                implementation("io.github.microutils:kotlin-logging-common:1.7.9")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation(project(":json"))
-                implementation(project(":action-test"))
+                implementation(project(":action"))
+                implementation(project(":test-logging"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:+")
+                implementation("com.zegreatrob.testmints:async:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
-                implementation(project(":test-logging"))
+
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.6")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
             }
         }
 
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("io.github.microutils:kotlin-logging:1.7.9")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.11.0")
-            }
-        }
-
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.slf4j:slf4j-simple:1.7.5")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+                implementation("org.slf4j:slf4j-simple:1.7.5")
 
                 implementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+
+                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation("io.github.microutils:kotlin-logging:1.7.9")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.11.0")
             }
         }
 
@@ -64,11 +53,6 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.5")
                 implementation("io.github.microutils:kotlin-logging-js:1.7.9")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }

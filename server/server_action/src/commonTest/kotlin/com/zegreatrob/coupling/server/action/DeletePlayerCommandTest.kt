@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
