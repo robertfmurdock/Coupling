@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action
 
 import com.zegreatrob.coupling.action.*
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.CommandExecutor
+import com.zegreatrob.coupling.action.CommandExecutor
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import kotlin.reflect.KClass

@@ -3,19 +3,16 @@ package com.zegreatrob.coupling.action.heatmap
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
-import com.zegreatrob.coupling.model.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.model.pairassignmentdocument.AssignPinsActionDispatcher
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
 
-    companion object : CalculatePairHeatActionDispatcher,
-        AssignPinsActionDispatcher {
+    companion object : CalculatePairHeatActionDispatcher, AssignPinsActionDispatcher {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument() }
 
@@ -28,18 +25,13 @@ class CalculatePairHeatActionTest {
 
     @Test
     fun willReturnZeroWhenPairHasNeverOccurred() = setup(object {
-        val pair = CouplingPair.Double(
-            Player(
-                id = "bob"
-            ), Player(id = "fred")
-        )
+        val pair = pairOf(Player(id = "bob"), Player(id = "fred"))
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 60
-        val action =
-            CalculatePairHeatAction(pair, history, rotationPeriod)
+        val action = CalculatePairHeatAction(pair, history, rotationPeriod)
     }) exercise {
-        action.perform()
-    } verify { result ->
+        perform(action)
+    } verifySuccess { result ->
         result.assertIsEqualTo(0.toDouble())
     }
 
@@ -47,27 +39,22 @@ class CalculatePairHeatActionTest {
     fun willReturnOneWhenPairHasOccurredButDifferentPositions() = setup(object {
         private val player1 = Player(id = "bob")
         private val player2 = Player(id = "fred")
-        val pair = CouplingPair.Double(player1, player2)
+        val pair = pairOf(player1, player2)
         val history = listOf(
-            listOf(CouplingPair.Double(player2, player1)).pairAssignmentDocument()
+            listOf(pairOf(player2, player1)).pairAssignmentDocument()
         )
         val rotationPeriod = 60
-        val action =
-            CalculatePairHeatAction(pair, history, rotationPeriod)
+        val action = CalculatePairHeatAction(pair, history, rotationPeriod)
     }) exercise {
-        action.perform()
-    } verify { result ->
+        perform(action)
+    } verifySuccess { result ->
         result.assertIsEqualTo(1.0)
     }
 
     class WhenThereIsOnlyOnePossiblePair {
 
         private fun makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs: Int): CalculatePairHeatAction {
-            val pair = CouplingPair.Double(
-                Player(
-                    id = "bob"
-                ), Player(id = "fred")
-            )
+            val pair = pairOf(Player(id = "bob"), Player(id = "fred"))
             val rotationPeriod = 1
             val history = listOf(pair).buildHistoryByRepeating(numberOfHistoryDocs)
             return CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -77,8 +64,8 @@ class CalculatePairHeatActionTest {
         fun willReturn1WhenThePairHasOnePairing() = setup(object {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 1)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(1.0)
         }
 
@@ -86,8 +73,8 @@ class CalculatePairHeatActionTest {
         fun willReturnTwoAndHalfWhenThePairHasTwoConsecutivePairings() = setup(object {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 2)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(2.5)
         }
 
@@ -95,8 +82,8 @@ class CalculatePairHeatActionTest {
         fun willReturnFourAndHalfWhenThePairHasThreeConsecutivePairings() = setup(object {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 3)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(4.5)
         }
 
@@ -104,8 +91,8 @@ class CalculatePairHeatActionTest {
         fun willReturnSevenWhenThePairHasFourConsecutivePairings() = setup(object {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 4)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(7.toDouble())
         }
 
@@ -113,8 +100,8 @@ class CalculatePairHeatActionTest {
         fun willReturnTenWhenThePairHasFiveConsecutivePairings() = setup(object {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 5)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(10.toDouble())
         }
     }
@@ -126,26 +113,24 @@ class CalculatePairHeatActionTest {
             val player1 = Player(id = "bob")
             val player2 = Player(id = "fred")
             val player3 = Player(id = "latisha")
-            val pair = CouplingPair.Double(player1, player2)
+            val pair = pairOf(player1, player2)
         }
 
         @Test
         fun willReturn1WithOnePairingInFullRotation() = setup(object {
-            val expectedPairing = listOf(pair, CouplingPair.Single(player3))
-            val alternatePairing1 = listOf(CouplingPair.Double(player1, player3), CouplingPair.Single(player2))
-            val alternatePairing2 = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
+            val expectedPairing = listOf(pair, pairOf(player3))
+            val alternatePairing1 = listOf(pairOf(player1, player3), pairOf(player2))
+            val alternatePairing2 = listOf(pairOf(player2, player3), pairOf(player1))
 
             val history = listOf(
                 alternatePairing1,
                 expectedPairing,
                 alternatePairing2
-            )
-                .map { it.pairAssignmentDocument() }
-            val action =
-                CalculatePairHeatAction(pair, history, rotationPeriod)
+            ).map { it.pairAssignmentDocument() }
+            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(1.0)
         }
 
@@ -153,16 +138,15 @@ class CalculatePairHeatActionTest {
         fun willReturn0WithLastPairingIsOlderThanFiveRotations() = setup(object {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
-            val expectedPairing = listOf(pair, CouplingPair.Single(player3))
-            val history = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
+            val expectedPairing = listOf(pair, pairOf(player3))
+            val history = listOf(pairOf(player2, player3), pairOf(player1))
                 .buildHistoryByRepeating(intervalsUntilCooling)
                 .plus(expectedPairing.pairAssignmentDocument())
 
-            val action =
-                CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(0.0)
         }
 
@@ -170,17 +154,16 @@ class CalculatePairHeatActionTest {
         fun willNotGoHigherThanTenWhenPairingMoreThanOncePerRotation() = setup(object {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
-            val expectedPairing = listOf(pair, CouplingPair.Single(player3))
+            val expectedPairing = listOf(pair, pairOf(player3))
                 .buildHistoryByRepeating(rotationHeatWindow + 1)
-            val history = listOf(CouplingPair.Double(player2, player3), CouplingPair.Single(player1))
+            val history = listOf(pairOf(player2, player3), pairOf(player1))
                 .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
                 .plus(expectedPairing)
 
-            val action =
-                CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(10.0)
         }
     }
@@ -190,7 +173,7 @@ class CalculatePairHeatActionTest {
             const val rotationPeriod = 5
             val player1 = Player(id = "bob")
             val player2 = Player(id = "fred")
-            val pair = CouplingPair.Double(player1, player2)
+            val pair = pairOf(player1, player2)
             val player3 = Player(id = "latisha")
             val player4 = Player(id = "jane")
             val player5 = Player(id = "fievel")
@@ -198,30 +181,30 @@ class CalculatePairHeatActionTest {
 
         @Test
         fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = setup(object {
-            val expectedPairing = listOf(pair, CouplingPair.Single(player3)).pairAssignmentDocument()
+            val expectedPairing = listOf(pair, pairOf(player3)).pairAssignmentDocument()
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
             val history = listOf(
-                CouplingPair.Double(player2, player3),
-                CouplingPair.Double(player1, player4),
-                CouplingPair.Single(player5)
+                pairOf(player2, player3),
+                pairOf(player1, player4),
+                pairOf(player5)
             )
                 .buildHistoryByRepeating(intervalsUntilCooling - 1)
                 .plus(expectedPairing)
 
-            val action =
-                CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(1.0)
         }
 
         @Test
         fun willReturn7WhenSkippingOneRotationOutOfFive() = setup(object {
-            val intervalWithIntendedPair = listOf(pair, CouplingPair.Double(player3, player4)).pairAssignmentDocument()
+            val intervalWithIntendedPair = listOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
             val assignmentsWithoutIntendedPair = listOf(
-                CouplingPair.Double(player1, player3), CouplingPair.Double(player3, player4)
+                pairOf(player1, player3),
+                pairOf(player3, player4)
             )
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
 
@@ -230,19 +213,19 @@ class CalculatePairHeatActionTest {
 
             val history = goodRotation + absenteeRotation + goodRotation + goodRotation + goodRotation
 
-            val action =
-                CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(7.0)
         }
 
         @Test
         fun willReturnTwoAndHalfWhenSkippingThreeRotationOutOfFive() = setup(object {
-            val intervalWithIntendedPair = listOf(pair, CouplingPair.Double(player3, player4)).pairAssignmentDocument()
+            val intervalWithIntendedPair = listOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
             val assignmentsWithoutIntendedPair = listOf(
-                CouplingPair.Double(player1, player3), CouplingPair.Double(player3, player4)
+                pairOf(player1, player3),
+                pairOf(player3, player4)
             )
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
 
@@ -251,11 +234,10 @@ class CalculatePairHeatActionTest {
 
             val history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
 
-            val action =
-                CalculatePairHeatAction(pair, history, rotationPeriod)
+            val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
-            action.perform()
-        } verify { result ->
+            perform(action)
+        } verifySuccess { result ->
             result.assertIsEqualTo(2.5)
         }
     }

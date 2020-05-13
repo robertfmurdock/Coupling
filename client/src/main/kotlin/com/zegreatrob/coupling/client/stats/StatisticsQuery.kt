@@ -38,7 +38,7 @@ interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher, Calcula
         tribe: Tribe,
         players: List<Player>,
         history: List<PairAssignmentDocument>
-    ) = composeStatistics(tribe, players, history).let { (statisticsResult) ->
+    ) = composeStatistics(tribe, players, history).let { statisticsResult ->
         statisticsResult to calculateHeatMap(players, history, statisticsResult)
     }
 
@@ -57,6 +57,6 @@ interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher, Calcula
         tribe: Tribe,
         players: List<Player>,
         history: List<PairAssignmentDocument>
-    ) = perform(ComposeStatisticsAction(tribe, players, history))
+    ) = perform(ComposeStatisticsAction(tribe, players, history)).value
 }
 

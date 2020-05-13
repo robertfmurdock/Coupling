@@ -1,6 +1,4 @@
-package com.zegreatrob.coupling.server.action.pairassignmentdocument
-
-import com.zegreatrob.coupling.action.*
+package com.zegreatrob.coupling.action
 
 interface CommandExecutor<out D> {
     fun <C : ExecutableAction<D, R>, R> execute(command: C): Result<R>
@@ -15,5 +13,3 @@ interface AwesomeCommandExecutor<out D : ActionLoggingSyntax> : CommandExecutor<
     override fun <C : SuccessfulExecutableAction<D, R>, R> execute(command: C) = actionDispatcher.execute(command).value
 
 }
-
-
