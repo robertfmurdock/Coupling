@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -9,7 +11,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.testaction.PassthroughCommandExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -21,11 +22,13 @@ class GameExamplesTest {
         NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
-        PassthroughCommandExecutor<CreatePairCandidateReportsActionDispatcher>,
+        AwesomeCommandExecutor<Companion>,
+        ActionLoggingSyntax,
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
         override val executor = this
+        override val traceId = uuid4()
     }
 
     class WithUniformBadgesAndLongestTimeRule {
