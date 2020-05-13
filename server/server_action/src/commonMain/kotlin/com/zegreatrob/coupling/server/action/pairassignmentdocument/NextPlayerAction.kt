@@ -8,23 +8,20 @@ data class NextPlayerAction(val gameSpin: GameSpin)
 interface NextPlayerActionDispatcher {
 
     val executor: CommandExecutor<CreatePairCandidateReportsActionDispatcher>
-    private fun performThis(action: CreatePairCandidateReportsAction) = executor.execute(action).value
 
     fun NextPlayerAction.perform() = createPairCandidateReports()
         .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->
             when {
                 reportWithLongestTime == null -> report
-                reportWithLongestTime.timeResult == report.timeResult -> withFewestPartners(
-                    report,
-                    reportWithLongestTime
-                )
+                reportWithLongestTime.timeResult == report.timeResult ->
+                    withFewestPartners(report, reportWithLongestTime)
                 report.timeResult is NeverPaired -> report
                 timeSinceLastPairedIsLonger(report, reportWithLongestTime) -> report
                 else -> reportWithLongestTime
             }
         }
 
-    fun NextPlayerAction.createPairCandidateReports() = performThis(CreatePairCandidateReportsAction(gameSpin))
+    fun NextPlayerAction.createPairCandidateReports() = executor.execute(CreatePairCandidateReportsAction(gameSpin))
 
     private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
         when {
@@ -35,12 +32,12 @@ interface NextPlayerActionDispatcher {
     private fun timeSinceLastPairedIsLonger(
         report: PairCandidateReport,
         reportWithLongestTime: PairCandidateReport
-    ): Boolean {
-        return if (report.timeResult is TimeResultValue && reportWithLongestTime.timeResult is TimeResultValue) {
-            report.timeResult.time > reportWithLongestTime.timeResult.time
-        } else {
-            false
-        }
+    ) = if (
+        report.timeResult is TimeResultValue
+        && reportWithLongestTime.timeResult is TimeResultValue
+    ) {
+        report.timeResult.time > reportWithLongestTime.timeResult.time
+    } else {
+        false
     }
 }
-
