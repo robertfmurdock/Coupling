@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -31,7 +30,7 @@ class CalculatePairHeatActionTest {
         val action = CalculatePairHeatAction(pair, history, rotationPeriod)
     }) exercise {
         perform(action)
-    } verifySuccess { result ->
+    } verify { result ->
         result.assertIsEqualTo(0.toDouble())
     }
 
@@ -47,7 +46,7 @@ class CalculatePairHeatActionTest {
         val action = CalculatePairHeatAction(pair, history, rotationPeriod)
     }) exercise {
         perform(action)
-    } verifySuccess { result ->
+    } verify { result ->
         result.assertIsEqualTo(1.0)
     }
 
@@ -65,7 +64,7 @@ class CalculatePairHeatActionTest {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 1)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(1.0)
         }
 
@@ -74,7 +73,7 @@ class CalculatePairHeatActionTest {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 2)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(2.5)
         }
 
@@ -83,7 +82,7 @@ class CalculatePairHeatActionTest {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 3)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(4.5)
         }
 
@@ -92,7 +91,7 @@ class CalculatePairHeatActionTest {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 4)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(7.toDouble())
         }
 
@@ -101,7 +100,7 @@ class CalculatePairHeatActionTest {
             val action = makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs = 5)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(10.toDouble())
         }
     }
@@ -130,7 +129,7 @@ class CalculatePairHeatActionTest {
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(1.0)
         }
 
@@ -146,7 +145,7 @@ class CalculatePairHeatActionTest {
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(0.0)
         }
 
@@ -163,7 +162,7 @@ class CalculatePairHeatActionTest {
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(10.0)
         }
     }
@@ -195,7 +194,7 @@ class CalculatePairHeatActionTest {
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(1.0)
         }
 
@@ -216,7 +215,7 @@ class CalculatePairHeatActionTest {
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(7.0)
         }
 
@@ -237,7 +236,7 @@ class CalculatePairHeatActionTest {
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
             perform(action)
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(2.5)
         }
     }

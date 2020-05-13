@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 
@@ -17,7 +16,6 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
 
     fun perform(action: CreatePairCandidateReportAction) = action.pairTimeMap()
         .candidateReport()
-        .successResult()
 
     private fun CreatePairCandidateReportAction.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
 

@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.server.action.StubCommandExecutor
 import com.zegreatrob.coupling.server.action.stubCommandExecutor
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -41,7 +40,7 @@ class CreatePairCandidateReportsActionTest {
             }
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
 
@@ -70,7 +69,7 @@ class CreatePairCandidateReportsActionTest {
             }
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
-        } verifySuccess { result ->
+        } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
 
@@ -85,7 +84,7 @@ class CreatePairCandidateReportsActionTest {
             executor.givenPlayerReturnReport(billReport, emptyList(), history)
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
-        } verifySuccess {
+        } verify {
             it.assertIsEqualTo(listOf(billReport))
         }
 
@@ -115,7 +114,7 @@ class CreatePairCandidateReportsActionTest {
         }
     } exercise {
         perform(CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime)))
-    } verifySuccess {
+    } verify {
         it.assertIsEqualTo(expectedReports)
     }
 

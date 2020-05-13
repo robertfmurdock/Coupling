@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
@@ -20,8 +19,6 @@ import kotlin.test.Test
 
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
 
-    override val traceId = uuid4()
-
     @Test
     fun willShowTribeCard() = setup(object {
         val tribe = Tribe(TribeId("1"))
@@ -30,8 +27,8 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 tribe = tribe,
                 players = emptyList(),
                 history = emptyList(),
-                heatmapData = CalculateHeatMapAction(emptyList(), emptyList(), 0).perform(),
-                report = perform(ComposeStatisticsAction(tribe, emptyList(), emptyList())).value
+                heatmapData = perform(CalculateHeatMapAction(emptyList(), emptyList(), 0)),
+                report = perform(ComposeStatisticsAction(tribe, emptyList(), emptyList()))
             )
         ) {}
     }) exercise {
@@ -69,7 +66,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 players = players,
                 history = history,
                 heatmapData = emptyList(),
-                report = perform(ComposeStatisticsAction(tribe, players, history)).value
+                report = perform(ComposeStatisticsAction(tribe, players, history))
             )
 
         ) {}
@@ -133,12 +130,12 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             name = "Mathematica"
         )
 
-        val report = perform(ComposeStatisticsAction(tribe, players, history)).value
+        val report = perform(ComposeStatisticsAction(tribe, players, history))
         val props = TribeStatisticsProps(StatisticQueryResults(
             tribe = tribe,
             players = players,
             history = history,
-            heatmapData = CalculateHeatMapAction(players, history, report.spinsUntilFullRotation).perform(),
+            heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation)),
             report = report
         ),
             pathSetter = {}
@@ -177,7 +174,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 players = players,
                 history = emptyList(),
                 heatmapData = emptyList(),
-                report = perform(ComposeStatisticsAction(tribe, players, emptyList())).value
+                report = perform(ComposeStatisticsAction(tribe, players, emptyList()))
             ),
             pathSetter = {}
         )
@@ -228,7 +225,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 players = players,
                 history = history,
                 heatmapData = emptyList(),
-                report = perform(ComposeStatisticsAction(tribe, players, history)).value
+                report = perform(ComposeStatisticsAction(tribe, players, history))
             ),
             pathSetter = {}
         )

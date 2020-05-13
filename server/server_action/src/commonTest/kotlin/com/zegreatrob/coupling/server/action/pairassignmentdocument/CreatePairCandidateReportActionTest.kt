@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -30,7 +29,7 @@ class CreatePairCandidateReportActionTest {
         val history: List<PairAssignmentDocument> = emptyList()
     }) exercise {
         perform(CreatePairCandidateReportAction(Player(id = "player"), history, players))
-    } verifySuccess {
+    } verify {
         assertTrue(it.partners.isEmpty())
     }
 
@@ -55,7 +54,7 @@ class CreatePairCandidateReportActionTest {
                 val history = emptyList<PairAssignmentDocument>()
             }) exercise {
                 perform(createPairCandidateReportAction(history, availableOtherPlayers))
-            } verifySuccess {
+            } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, availableOtherPlayers,
@@ -69,7 +68,7 @@ class CreatePairCandidateReportActionTest {
                 val history = listOf(pairAssignmentDocument(emptyList()))
             }) exercise {
                 perform(createPairCandidateReportAction(history, availableOtherPlayers))
-            } verifySuccess {
+            } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, availableOtherPlayers,
@@ -100,7 +99,7 @@ class CreatePairCandidateReportActionTest {
                 )
             }) exercise {
                 perform(createPairCandidateReportAction(history, availableOtherPlayers))
-            } verifySuccess {
+            } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, availableOtherPlayers,
@@ -120,7 +119,7 @@ class CreatePairCandidateReportActionTest {
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, listOf(selena)))
-            } verifySuccess {
+            } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, listOf(selena),
@@ -141,7 +140,7 @@ class CreatePairCandidateReportActionTest {
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
-            } verifySuccess {
+            } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, listOf(expectedPartner),
@@ -157,7 +156,7 @@ class CreatePairCandidateReportActionTest {
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
-            } verifySuccess {
+            } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
                         bruce, listOf(talia, jezebel),

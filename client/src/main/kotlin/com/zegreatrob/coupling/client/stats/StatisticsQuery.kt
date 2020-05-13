@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.action.DispatchSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -21,7 +22,9 @@ data class StatisticQueryResults(
     val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher, CalculateHeatMapActionDispatcher,
+interface StatisticsQueryDispatcher : DispatchSyntax,
+    ComposeStatisticsActionDispatcher,
+    CalculateHeatMapActionDispatcher,
     TribeIdLoadAllSyntax {
 
     suspend fun perform(query: StatisticsQuery) = query.loadAll().successResult()
@@ -42,21 +45,16 @@ interface StatisticsQueryDispatcher : ComposeStatisticsActionDispatcher, Calcula
         statisticsResult to calculateHeatMap(players, history, statisticsResult)
     }
 
+    private fun composeStatistics(tribe: Tribe, players: List<Player>, history: List<PairAssignmentDocument>) =
+        execute(ComposeStatisticsAction(tribe, players, history))
+
     private fun calculateHeatMap(
         players: List<Player>,
         history: List<PairAssignmentDocument>,
         statisticsResult: StatisticsReport
-    ) = CalculateHeatMapAction(
-        players,
-        history,
-        statisticsResult.spinsUntilFullRotation
+    ) = execute(
+        CalculateHeatMapAction(players, history, statisticsResult.spinsUntilFullRotation)
     )
-        .perform()
 
-    private fun composeStatistics(
-        tribe: Tribe,
-        players: List<Player>,
-        history: List<PairAssignmentDocument>
-    ) = perform(ComposeStatisticsAction(tribe, players, history)).value
 }
 

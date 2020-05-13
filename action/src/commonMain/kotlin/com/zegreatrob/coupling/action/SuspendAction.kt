@@ -23,7 +23,7 @@ interface SimpleSuccessfulExecutableAction<T, R> : SuccessfulExecutableAction<T,
     override fun execute(dispatcher: T) = perform(dispatcher)
     val perform: (T) -> SuccessfulResult<R>
 
-    fun <A> A.link(performFunc: (T, A) -> SuccessfulResult<R>): (T) -> SuccessfulResult<R> = { performFunc(it, this) }
+    fun <A> A.link(performFunc: (T, A) -> R): (T) -> SuccessfulResult<R> = { performFunc(it, this).successResult() }
 }
 
 interface SimpleSuspendAction<T, R> : SuspendAction<T, R> {

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.CommandExecutor
 import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 
@@ -17,7 +16,6 @@ interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
 
     fun perform(action: CreatePairCandidateReportsAction) = action.createReports()
         .ifEmpty { action.createReportsUsingLongestRule() }
-        .successResult()
 
     private fun CreatePairCandidateReportsAction.createReportsUsingLongestRule() =
         game.createReports(PairingRule.LongestTime)
