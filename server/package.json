@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.674.0",
+    "aws-sdk": "2.675.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -60,7 +60,7 @@
     "supertest": "^4.0.2",
     "text-loader": "0.0.1",
     "ts-loader": "^7.0.4",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.2",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-cleanup-plugin": "^0.5.1",
