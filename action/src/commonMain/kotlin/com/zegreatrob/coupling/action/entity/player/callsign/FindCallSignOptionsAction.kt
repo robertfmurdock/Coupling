@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 
-data class FindCallSignOptionsAction(val players: List<Player>)
+data class FindCallSignOptionsAction(val players: List<Player>) : SimpleSuccessfulExecutableAction<
+        FindCallSignOptionsActionDispatcher, CallSignOptions> {
+    override val perform = link(FindCallSignOptionsActionDispatcher::perform)
+}
 
 data class CallSignOptions(val adjectives: Set<String>, val nouns: Set<String>)
 
@@ -42,9 +46,9 @@ val defaultCallSignOptions = CallSignOptions(
 )
 
 interface FindCallSignOptionsActionDispatcher {
-    fun FindCallSignOptionsAction.perform() = CallSignOptions(
-        adjectives = defaultCallSignOptions.adjectives - players.adjectives(),
-        nouns = defaultCallSignOptions.nouns - players.nouns()
+    fun perform(action: FindCallSignOptionsAction) = CallSignOptions(
+        adjectives = defaultCallSignOptions.adjectives - action.players.adjectives(),
+        nouns = defaultCallSignOptions.nouns - action.players.nouns()
     )
 
     private fun List<Player>.adjectives() = mapNotNull { it.callSignAdjective }

@@ -25,7 +25,7 @@ class FindCallSignActionTest {
 
         val command = FindCallSignAction(players, email)
     }) exercise {
-        command.perform()
+        perform(command)
     } verify { result ->
         result.assertIsEqualTo(expectedCallSign)
     }
@@ -37,7 +37,7 @@ class FindCallSignActionTest {
         )
         val command = FindCallSignAction(players, email)
     }) exercise {
-        command.perform()
+        perform(command)
     } verify { result ->
         result.assertIsEqualTo(expectedCallSign)
     }
@@ -52,7 +52,7 @@ class FindCallSignActionTest {
         )
         val command = FindCallSignAction(players, email)
     }) exercise {
-        command.perform()
+        perform(command)
     } verify { result ->
         result.assertIsEqualTo(
             CallSign(
@@ -72,7 +72,7 @@ class FindCallSignActionTest {
         )
         val command = FindCallSignAction(players, email)
     }) exercise {
-        command.perform()
+        perform(command)
     } verify { result ->
         result.assertIsEqualTo(
             CallSign(

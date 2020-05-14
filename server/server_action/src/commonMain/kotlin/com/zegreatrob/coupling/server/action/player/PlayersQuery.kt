@@ -33,10 +33,12 @@ interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsLis
     }
 
     private fun findCallSign(updatedPlayers: List<Player>, players: List<Player>, index: Int, player: Player) =
-        FindCallSignAction(
-            players = playersWithNamesSoFar(updatedPlayers, players, index),
-            email = player.email
-        ).perform()
+        perform(
+            FindCallSignAction(
+                players = playersWithNamesSoFar(updatedPlayers, players, index),
+                email = player.email
+            )
+        )
 
     private fun playersWithNamesSoFar(updatedPlayers: List<Player>, players: List<Player>, index: Int) =
         updatedPlayers + players.subList(index, players.lastIndex)

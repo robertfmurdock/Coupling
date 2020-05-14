@@ -20,7 +20,7 @@ class GenerateCallSignActionTest {
         val email = "robert.f.murdock@accenture.com"
         val action = GenerateCallSignAction(setOf(adjective), setOf(noun), email, emptyList())
     }) exercise {
-        action.perform()
+        perform(action)
     } verify { result ->
         result.assertIsEqualTo(CallSign("Excellent", "Tacos"))
     }
@@ -32,7 +32,7 @@ class GenerateCallSignActionTest {
         val email = "robert.f.murdock@accenture.com"
         val action = GenerateCallSignAction(adjectives, nouns, email, emptyList())
     }) exercise {
-        action.perform() to action.perform()
+        perform(action) to perform(action)
     } verify { (result1, result2) ->
         result1.assertIsEqualTo(result2)
     }
@@ -44,7 +44,7 @@ class GenerateCallSignActionTest {
         val action1 = GenerateCallSignAction(adjectives, nouns, "robert.f.murdock@accenture.com", emptyList())
         val action2 = GenerateCallSignAction(adjectives, nouns, "rmurdock@pillartechnology.com", emptyList())
     }) exercise {
-        action1.perform() to action2.perform()
+        perform(action1) to perform(action2)
     } verify { (result1, result2) ->
         result1.assertIsNotEqualTo(result2)
     }
@@ -59,7 +59,7 @@ class GenerateCallSignActionTest {
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
-        action.perform()
+        perform(action)
     } verify { result ->
         result.assertIsEqualTo(CallSign("Blue", "Bear"))
     }
@@ -74,7 +74,7 @@ class GenerateCallSignActionTest {
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
-        action.perform()
+        perform(action)
     } verify { result ->
         result.assertIsEqualTo(CallSign("Green", "Tiger"))
     }
@@ -92,7 +92,7 @@ class GenerateCallSignActionTest {
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
-        action.perform()
+        perform(action)
     } verify { result ->
         result.assertIsEqualTo(CallSign("Blank", "Blank"))
     }

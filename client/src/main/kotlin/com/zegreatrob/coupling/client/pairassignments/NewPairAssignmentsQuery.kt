@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -24,19 +23,29 @@ data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<Str
 interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     TribeIdPinsSyntax,
     TribeIdPlayersSyntax,
+    DispatchSyntax,
     RequestSpinActionDispatcher {
     suspend fun perform(query: NewPairAssignmentsQuery) = with(query) {
         val (tribe, players, pins) = getData()
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         val selectedPins = filterSelectedPins(pins, pinIds)
-        val pairAssignments = performSpin(tribeId, selectedPlayers, selectedPins)
-        Triple(tribe, players, pairAssignments)
+        val pairAssignmentsResult = performSpin(tribeId, selectedPlayers, selectedPins)
+
+        verifySuccess(pairAssignmentsResult, tribe, players)
+    }
+
+    private fun verifySuccess(
+        pairAssignmentsResult: Result<PairAssignmentDocument>,
+        tribe: Tribe?,
+        players: List<Player>
+    ) = when (pairAssignmentsResult) {
+        is SuccessfulResult -> Triple(tribe, players, pairAssignmentsResult.value)
             .successResult()
+        else -> throw Exception("Unhandled failure path")
     }
 
     private suspend fun performSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) =
-        RequestSpinAction(tribeId, players, pins)
-            .perform()
+        execute(RequestSpinAction(tribeId, players, pins))
 
     private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {
         playerIds.contains(it.id)

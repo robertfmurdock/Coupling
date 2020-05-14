@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.action.DispatchSyntax
 import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.await
@@ -20,10 +22,11 @@ data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
 
 interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
-    FindCallSignActionDispatcher {
-    suspend fun perform(query: TribePlayerQuery) = query.sdkfj().successResult()
+    FindCallSignActionDispatcher,
+    DispatchSyntax {
+    suspend fun perform(query: TribePlayerQuery) = query.get().successResult()
 
-    private suspend fun TribePlayerQuery.sdkfj() = tribeId.getData()
+    private suspend fun TribePlayerQuery.get() = tribeId.getData()
         .let { (tribe, players) ->
             Triple(
                 tribe,
@@ -39,12 +42,11 @@ interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
         ?: defaultWithCallSign()
 
-    private fun List<Player>.defaultWithCallSign() = FindCallSignAction(this, "")
-        .perform()
-        .let { callSign ->
-            Player(
-                callSignAdjective = callSign.adjective,
-                callSignNoun = callSign.noun
-            )
-        }
+    private fun List<Player>.defaultWithCallSign() = execute(FindCallSignAction(this, ""))
+        .let(::defaultPlayer)
+
+    private fun defaultPlayer(callSign: CallSign) = Player(
+        callSignAdjective = callSign.adjective,
+        callSignNoun = callSign.noun
+    )
 }

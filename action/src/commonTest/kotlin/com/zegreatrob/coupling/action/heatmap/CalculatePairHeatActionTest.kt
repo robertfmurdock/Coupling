@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.action.heatmap
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -11,14 +13,21 @@ import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
 
-    companion object : CalculatePairHeatActionDispatcher, AssignPinsActionDispatcher {
+    companion object : CalculatePairHeatActionDispatcher,
+        AssignPinsActionDispatcher {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument() }
 
         fun List<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
                 date = DateTime(2016, 3, 1),
-                pairs = AssignPinsAction(this, emptyList(), emptyList()).perform()
+                pairs = perform(
+                    AssignPinsAction(
+                        this,
+                        emptyList(),
+                        emptyList()
+                    )
+                )
             )
     }
 

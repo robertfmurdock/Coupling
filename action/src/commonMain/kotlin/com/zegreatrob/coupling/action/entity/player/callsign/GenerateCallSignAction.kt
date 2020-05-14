@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
+import com.zegreatrob.coupling.action.DispatchSyntax
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker
@@ -10,11 +12,15 @@ data class GenerateCallSignAction(
     val nouns: Set<String>,
     val email: String,
     val players: List<Player>
-)
+) : SimpleSuccessfulExecutableAction<GenerateCallSignActionDispatcher, CallSign> {
+    override val perform = link(GenerateCallSignActionDispatcher::perform)
+}
 
-interface GenerateCallSignActionDispatcher : PredictableWordPicker {
+interface GenerateCallSignActionDispatcher : PredictableWordPicker, DispatchSyntax {
 
-    fun GenerateCallSignAction.perform() = CallSign(
+    fun perform(action: GenerateCallSignAction) = action.callSign()
+
+    private fun GenerateCallSignAction.callSign() = CallSign(
         pickAdjective(),
         pickNoun()
     )
@@ -52,11 +58,10 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker {
         }
     }
 
-    private fun Int?.next() = if (this == null) {
+    private fun Int?.next() = if (this == null)
         1
-    } else {
+    else
         this + 1
-    }
 
     private fun String.with(offset: Int? = null) = if (offset == null) {
         this

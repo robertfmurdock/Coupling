@@ -12,12 +12,8 @@ interface PairAssignmentDispatcher : ProposeNewPairsCommandDispatcher,
     NextPlayerActionDispatcher,
     CreatePairCandidateReportsActionDispatcher,
     CreatePairCandidateReportActionDispatcher,
-    Meh,
     Wheel {
-    override val executor: CommandExecutor<Meh>
-    override val actionDispatcher get() = this
+    override val executor: CommandExecutor<PairAssignmentDispatcher>
     override val wheel: Wheel get() = this
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
-
-interface Meh : CreatePairCandidateReportsActionDispatcher, CreatePairCandidateReportActionDispatcher

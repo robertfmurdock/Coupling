@@ -12,13 +12,6 @@ interface SuccessfulExecutableAction<in T, R> : ExecutableAction<T, R>, Action {
     override fun execute(dispatcher: T): SuccessfulResult<R>
 }
 
-interface SimpleExecutableAction<T, R> : ExecutableAction<T, R> {
-    override fun execute(dispatcher: T) = perform(dispatcher)
-    val perform: PerformFunc2<T, R>
-
-    fun <A> A.link(performFunc: PerformFunc<A, T, R>): PerformFunc2<T, R> = { performFunc(it, this) }
-}
-
 interface SimpleSuccessfulExecutableAction<T, R> : SuccessfulExecutableAction<T, R> {
     override fun execute(dispatcher: T) = perform(dispatcher)
     val perform: (T) -> SuccessfulResult<R>

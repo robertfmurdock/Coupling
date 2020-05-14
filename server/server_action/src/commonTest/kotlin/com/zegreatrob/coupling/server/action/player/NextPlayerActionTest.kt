@@ -33,8 +33,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
                 .successResult()
         )
     } exercise {
-        NextPlayerAction(longestTimeSpin(players))
-            .perform()
+        perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { result ->
         result.assertIsEqualTo(tedsPairCandidates)
     }
@@ -47,8 +46,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
     }) {
         executor.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates).successResult())
     } exercise {
-        NextPlayerAction(longestTimeSpin(players))
-            .perform()
+        perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     @Test
@@ -64,8 +62,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
     }) {
         executor.spyWillReturn(pairCandidates.successResult())
     } exercise {
-        NextPlayerAction(longestTimeSpin(players))
-            .perform()
+        perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
@@ -81,8 +78,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
                 .successResult()
         )
     } exercise {
-        NextPlayerAction(longestTimeSpin(players))
-            .perform()
+        perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
@@ -104,8 +100,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
                 .successResult()
         )
     } exercise {
-        NextPlayerAction(longestTimeSpin(players))
-            .perform()
+        perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     private fun longestTimeSpin(players: List<Player>) = GameSpin(emptyList(), players, PairingRule.LongestTime)

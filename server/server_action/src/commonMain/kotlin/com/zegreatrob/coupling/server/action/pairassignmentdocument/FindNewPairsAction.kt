@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.CommandExecutor
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
@@ -15,15 +17,21 @@ data class GameSpin(
 
 private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
 
-data class FindNewPairsAction(val game: Game)
+data class FindNewPairsAction(val game: Game) :
+    SimpleSuccessfulExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {
+    override val perform = link(FindNewPairsActionDispatcher::perform)
+}
 
 interface FindNewPairsActionDispatcher {
 
-    val actionDispatcher: NextPlayerActionDispatcher
+    val executor: CommandExecutor<NextPlayerActionDispatcher>
+
     val wheel: Wheel
 
-    fun FindNewPairsAction.perform() = Round(listOf(), game.spinWith(game.players))
+    fun perform(action: FindNewPairsAction) = action.round()
         .spinForNextPair()
+
+    private fun FindNewPairsAction.round() = Round(listOf(), game.spinWith(game.players))
 
     private fun Game.spinWith(remainingPlayers: List<Player>) = GameSpin(history, remainingPlayers, rule)
 
@@ -38,8 +46,7 @@ interface FindNewPairsActionDispatcher {
     private fun Round.getNextPlayer() = if (gameSpin.remainingPlayers.isEmpty()) {
         null
     } else {
-        NextPlayerAction(gameSpin)
-            .performThis()
+        executor.execute(NextPlayerAction(gameSpin))
     }
 
     private fun Pair<Round, CouplingPair>.nextRound() = let { (round, newPair) ->
@@ -61,8 +68,6 @@ interface FindNewPairsActionDispatcher {
     }
 
     private fun List<Player>.spin() = with(wheel) { toTypedArray().spin() }
-
-    private fun NextPlayerAction.performThis() = with(actionDispatcher) { perform() }
 
 
 }

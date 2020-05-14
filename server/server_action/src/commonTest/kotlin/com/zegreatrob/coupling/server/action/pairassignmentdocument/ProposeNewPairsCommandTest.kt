@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
-import com.zegreatrob.coupling.testaction.verifySuccess
+import com.zegreatrob.coupling.server.action.stubCommandExecutor
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
@@ -23,7 +23,8 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(
         object : ProposeNewPairsCommandDispatcher {
-            override val actionDispatcher get() = throw NotImplementedError("Do not use")
+            override val executor = stubCommandExecutor(NextPlayerAction::class)
+
             override val wheel: Wheel get() = throw NotImplementedError("Do not use")
             override val pairAssignmentDocumentRepository get() = stubRepository
             override val tribeRepository get() = stubRepository
@@ -46,12 +47,14 @@ class ProposeNewPairsCommandTest {
             val spy = SpyData<RunGameAction, PairAssignmentDocument>()
                 .apply { spyReturnValues.add(expectedPairAssignmentDocument) }
 
-            override fun RunGameAction.perform() = spy.spyFunction(this)
+            override fun perform(action: RunGameAction) = spy.spyFunction(
+                action
+            )
 
         }
     ) exercise {
         perform(ProposeNewPairsCommand(tribe.id, players, pins))
-    } verifySuccess { result ->
+    } verify { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
         spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
     }

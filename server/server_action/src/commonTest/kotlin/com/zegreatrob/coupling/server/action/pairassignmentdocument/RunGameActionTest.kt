@@ -1,15 +1,13 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.action.stubCommandExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
@@ -19,7 +17,7 @@ class RunGameActionTest {
 
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
-        override val actionDispatcher: NextPlayerActionDispatcher get() = throw NotImplementedError("Stubbed")
+        override val executor = stubCommandExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 
         val expectedDate = DateTime.now()
@@ -29,17 +27,19 @@ class RunGameActionTest {
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = listOf(
-            CouplingPair.Single(Player()),
-            CouplingPair.Single(Player())
+            pairOf(Player()),
+            pairOf(Player())
         )
         val spy = SpyData<FindNewPairsAction, List<CouplingPair>>().apply {
             spyReturnValues.add(expectedPairingAssignments)
         }
 
-        override fun FindNewPairsAction.perform(): List<CouplingPair> = spy.spyFunction(this)
+        override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(
+            action
+        )
 
     }) exercise {
-        RunGameAction(players, pins, history, tribe).perform()
+        perform(RunGameAction(players, pins, history, tribe))
     } verify { result ->
         result.assertIsEqualTo(PairAssignmentDocument(
             date = expectedDate,

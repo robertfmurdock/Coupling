@@ -65,8 +65,7 @@ class GameExamplesTest {
                 PairingRule.LongestTime
             )
         }) exercise {
-            RunGameAction(allPlayers, emptyList(), history, tribe)
-                .perform()
+            perform(RunGameAction(allPlayers, emptyList(), history, tribe))
         } verify { result ->
             result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.players }
                 .flatten()
@@ -82,8 +81,7 @@ class GameExamplesTest {
                 PairingRule.LongestTime
             )
         }) exercise {
-            RunGameAction(listOf(clark, bruce, diana), emptyList(), history, tribe)
-                .perform()
+            perform(RunGameAction(listOf(clark, bruce, diana), emptyList(), history, tribe))
         } verify { result ->
             result.pairs.size.assertIsEqualTo(2)
         }
@@ -130,8 +128,7 @@ class GameExamplesTest {
                 )
             )
         }) exercise {
-            RunGameAction(allPlayers, emptyList(), history, tribe)
-                .perform()
+            perform(RunGameAction(allPlayers, emptyList(), history, tribe))
         } verify { result ->
             result.pairs.contains(CouplingPair.Double(bruce, john).toPinnedPair())
         }
@@ -195,8 +192,7 @@ class GameExamplesTest {
                 )
             )
         }) exercise {
-            RunGameAction(allPlayers, emptyList(), history, tribe)
-                .perform()
+            perform(RunGameAction(allPlayers, emptyList(), history, tribe))
         } verify { result ->
             result.pairs.contains(CouplingPair.Double(bruce, john).toPinnedPair())
         }
@@ -245,8 +241,7 @@ class GameExamplesTest {
             )
         )
     }) exercise {
-        RunGameAction(allPlayers, emptyList(), history, tribe)
-            .perform()
+        perform(RunGameAction(allPlayers, emptyList(), history, tribe))
     } verify { result ->
         result.pairs.contains(CouplingPair.Double(kamala, logan).toPinnedPair())
     }

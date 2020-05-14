@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.DispatchSyntax
 import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -20,16 +21,13 @@ data class ProposeNewPairsCommand(
     override val perform = link(ProposeNewPairsCommandDispatcher::perform)
 }
 
-interface ProposeNewPairsCommandDispatcher : RunGameActionDispatcher, TribeIdGetSyntax, TribeIdHistorySyntax {
+interface ProposeNewPairsCommandDispatcher : DispatchSyntax, RunGameActionDispatcher, TribeIdGetSyntax,
+    TribeIdHistorySyntax {
 
-    suspend fun perform(command: ProposeNewPairsCommand) = command.runGame()
-        .successResult()
+    suspend fun perform(command: ProposeNewPairsCommand) = command.runGame().successResult()
 
     private suspend fun ProposeNewPairsCommand.runGame() = loadData()
-        .let { (history, tribe) -> RunGameAction(players, pins, history, tribe) }
-        .performThis()
-
-    private fun RunGameAction.performThis() = perform()
+        .let { (history, tribe) -> execute(RunGameAction(players, pins, history, tribe)) }
 
     private suspend fun ProposeNewPairsCommand.loadData() = coroutineScope {
         await(

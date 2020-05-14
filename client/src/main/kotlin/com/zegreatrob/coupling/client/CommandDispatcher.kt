@@ -2,8 +2,9 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.ActionLoggingSyntax
-import com.zegreatrob.coupling.action.SuccessfulExecutableAction
 import com.zegreatrob.coupling.action.MasterDispatcher
+import com.zegreatrob.coupling.action.SuccessfulExecutableAction
+import com.zegreatrob.coupling.action.SuspendAction
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
@@ -50,6 +51,10 @@ class CommandDispatcher(override val traceId: Uuid) : ActionLoggingSyntax,
     MasterDispatcher {
     override val sdk = SdkSingleton
     override val masterDispatcher = this
+
     override fun <C : SuccessfulExecutableAction<D, R>, D, R> invoke(command: C, dispatcher: D) =
         command.log { command.execute(dispatcher) }.value
+
+    override suspend fun <C : SuspendAction<D, R>, D, R> invoke(command: C, dispatcher: D) =
+        command.logAsync { command.execute(dispatcher) }
 }

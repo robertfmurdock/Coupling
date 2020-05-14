@@ -1,16 +1,22 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.CommandExecutor
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 
-data class NextPlayerAction(val gameSpin: GameSpin)
+data class NextPlayerAction(val gameSpin: GameSpin) :
+    SimpleSuccessfulExecutableAction<NextPlayerActionDispatcher, PairCandidateReport?> {
+    override val perform = link(NextPlayerActionDispatcher::perform)
+}
 
 interface NextPlayerActionDispatcher {
 
     val executor: CommandExecutor<CreatePairCandidateReportsActionDispatcher>
 
-    fun NextPlayerAction.perform() = createPairCandidateReports()
+    fun perform(action: NextPlayerAction) = action.lsdkjflsjf()
+
+    private fun NextPlayerAction.lsdkjflsjf() = createPairCandidateReports()
         .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->
             when {
                 reportWithLongestTime == null -> report
@@ -22,7 +28,7 @@ interface NextPlayerActionDispatcher {
             }
         }
 
-    fun NextPlayerAction.createPairCandidateReports() = executor.execute(CreatePairCandidateReportsAction(gameSpin))
+    private fun NextPlayerAction.createPairCandidateReports() = executor.execute(CreatePairCandidateReportsAction(gameSpin))
 
     private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
         when {

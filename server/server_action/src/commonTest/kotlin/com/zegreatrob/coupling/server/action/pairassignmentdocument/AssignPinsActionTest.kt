@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -12,7 +14,8 @@ import kotlin.test.Test
 
 class AssignPinsActionTest {
 
-    companion object : AssignPinsActionDispatcher;
+    companion object :
+        AssignPinsActionDispatcher;
 
     @Test
     fun givenOnePinForAssigningToPairHasNeverBeenUsedWillAssignToFirstPair() = setup(object {
@@ -21,7 +24,13 @@ class AssignPinsActionTest {
         val alternatePair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair, alternatePair)
     }) exercise {
-        AssignPinsAction(pairs, listOf(pin), emptyList()).perform()
+        perform(
+            AssignPinsAction(
+                pairs,
+                listOf(pin),
+                emptyList()
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -42,7 +51,13 @@ class AssignPinsActionTest {
         val alternatePair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair, alternatePair)
     }) exercise {
-        AssignPinsAction(pairs, pins, emptyList()).perform()
+        perform(
+            AssignPinsAction(
+                pairs,
+                pins,
+                emptyList()
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -61,7 +76,13 @@ class AssignPinsActionTest {
         val expectedPair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair)
     }) exercise {
-        AssignPinsAction(pairs, pins, emptyList()).perform()
+        perform(
+            AssignPinsAction(
+                pairs,
+                pins,
+                emptyList()
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -85,7 +106,13 @@ class AssignPinsActionTest {
             stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(listOf(pin))))
         )
     }) exercise {
-        AssignPinsAction(pairs, listOf(pin), history).perform()
+        perform(
+            AssignPinsAction(
+                pairs,
+                listOf(pin),
+                history
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -110,7 +137,13 @@ class AssignPinsActionTest {
             stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(listOf(pin))))
         )
     }) exercise {
-        AssignPinsAction(pairs, listOf(pin), history).perform()
+        perform(
+            AssignPinsAction(
+                pairs,
+                listOf(pin),
+                history
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -134,7 +167,13 @@ class AssignPinsActionTest {
 
         val history = emptyList<PairAssignmentDocument>()
     }) exercise {
-        AssignPinsAction(pairs, listOf(pin1, pin2), history).perform()
+        perform(
+            AssignPinsAction(
+                pairs,
+                listOf(pin1, pin2),
+                history
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
@@ -149,7 +188,13 @@ class AssignPinsActionTest {
         val pins = listOf(Pin(name = "Lucky"))
         val players = emptyList<CouplingPair>()
     }) exercise {
-        AssignPinsAction(players, pins, emptyList()).perform()
+        perform(
+            AssignPinsAction(
+                players,
+                pins,
+                emptyList()
+            )
+        )
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }

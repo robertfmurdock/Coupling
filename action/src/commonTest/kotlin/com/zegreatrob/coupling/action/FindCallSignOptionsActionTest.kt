@@ -21,7 +21,7 @@ class FindCallSignOptionsActionTest {
         )
         val action = FindCallSignOptionsAction(players)
     }) exercise {
-        action.perform()
+        perform(action)
     } verify { result ->
         result.assertIsEqualTo(defaultCallSignOptions)
     }
@@ -34,7 +34,7 @@ class FindCallSignOptionsActionTest {
         )
         val action = FindCallSignOptionsAction(players)
     }) exercise {
-        action.perform()
+        perform(action)
     } verify { result ->
         result.assertIsEqualTo(
             CallSignOptions(

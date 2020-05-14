@@ -1,5 +1,7 @@
-package com.zegreatrob.coupling.model.pairassignmentdocument
+package com.zegreatrob.coupling.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 
@@ -7,17 +9,20 @@ data class AssignPinsAction(
     val pairs: List<CouplingPair>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>
-)
+) : SimpleSuccessfulExecutableAction<AssignPinsActionDispatcher, List<PinnedCouplingPair>> {
+    override val perform = link(AssignPinsActionDispatcher::perform)
+}
 
 interface AssignPinsActionDispatcher {
-    fun AssignPinsAction.perform(): List<PinnedCouplingPair> {
-        var pinnedPairs = pairs.map { it.withPins() }
+    fun perform(action: AssignPinsAction): List<PinnedCouplingPair> {
+        var pinnedPairs = action.pairs.map { it.withPins() }
 
-        pins.filter { it.target == PinTarget.Pair }
+        action.pins.filter { it.target == PinTarget.Pair }
             .forEach { pin ->
                 val pinIterator = listOf(pin).iterator()
 
-                val candidatePairs = findCandidatePairs(pinnedPairs, pin, history)
+                val candidatePairs =
+                    findCandidatePairs(pinnedPairs, pin, action.history)
 
                 pinnedPairs = pinnedPairs.map { pair ->
                     if (candidatePairs.contains(pair) && pinIterator.hasNext()) {
@@ -69,7 +74,8 @@ interface AssignPinsActionDispatcher {
     private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
         ?.asPlayers()
 
-    private fun PinnedCouplingPair.asPlayers() = players.map(PinnedPlayer::player)
+    private fun PinnedCouplingPair.asPlayers() = players.map(
+        PinnedPlayer::player)
 
     private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) =
         pairAssignmentDocument.pairs.find { docPair -> docPair.pins.contains(pin) }
