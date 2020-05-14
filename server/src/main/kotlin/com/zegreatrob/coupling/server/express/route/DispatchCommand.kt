@@ -36,7 +36,7 @@ private fun <T> handleRequestAndRespond(
     responder: Response.(T) -> Unit
 ) = request.scope.launch {
     runCatching {
-        val result = object : CommandExecuteSyntax {}.handler()
+        val result = request.commandDispatcher.handler()
         response.responder(result)
     }.getOrElse { error ->
         request.commandDispatcher.logger.error(error) { "EXCEPTION!" }

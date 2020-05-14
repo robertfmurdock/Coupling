@@ -8,9 +8,9 @@ interface Action
 
 interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
 
-    fun <I : Action, O> I.log(block: (I) -> O) = logBlock { block(this) }
+    fun <I : Action, O> log(action: I, block: (I) -> O) = action.logBlock { block(action) }
 
-    suspend fun <I : Action, O> I.logAsync(block: suspend (I) -> O) = logBlock { block(this) }
+    suspend fun <I : Action, O> logAsync(action: I, block: suspend (I) -> O) = action.logBlock { block(action) }
 
     private inline fun <I : Action, O> I.logBlock(anotherBlock: () -> O): O {
         val className = this::class.simpleName

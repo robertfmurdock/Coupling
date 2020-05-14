@@ -9,22 +9,20 @@ fun Json.tribeId() = this["id"].toString()
 
 typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
 
-fun <D : ActionLoggingSyntax, Q : SuspendAction<D, R>, R, J> dispatch(
+fun <D : CommandExecuteSyntax, Q : SuspendAction<D, R>, R, J> dispatch(
     dispatcherFunc: GraphQLDispatcherProvider<D>,
     queryFunc: (Json) -> Q,
     toJson: (R) -> J
 ) = { entity: Json, _: Json, request: Request ->
     request.scope.promise {
         val command = queryFunc(entity)
-        val dispatcher = dispatcherFunc(request, entity)
-
-        with(object : CommandExecuteSyntax {}) {
-            dispatcher?.execute(command)
-        }?.let { result -> successOrNull(result, toJson) }
+        dispatcherFunc(request, entity)
+            ?.execute(command)
+            ?.successOrNull(toJson)
     }
 }
 
-private fun <J, R> successOrNull(result: Result<R>, toJson: (R) -> J) = when (result) {
-    is SuccessfulResult -> toJson(result.value)
+private fun <J, R> Result<R>.successOrNull(toJson: (R) -> J) = when (this) {
+    is SuccessfulResult -> toJson(value)
     else -> null
 }

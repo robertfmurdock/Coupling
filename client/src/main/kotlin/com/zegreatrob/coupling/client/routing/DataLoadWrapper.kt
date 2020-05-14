@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.action.execute
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
@@ -76,9 +77,7 @@ fun <Q : SuspendAction<CommandDispatcher, R>, R, P : RProps> dataLoadProps(
 ) = DataLoadProps { reload, scope ->
     val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)
 
-    val result = with(dispatchFunc) {
-        commander.tracingDispatcher().execute(query)
-    }
+    val result = commander.tracingDispatcher().execute(query)
 
     if (result is SuccessfulResult<R>) {
         toProps(reload, dispatchFunc, result.value)
