@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server.express
 
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.action.UnauthorizedResult
+import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlin.js.json
 
@@ -13,6 +10,7 @@ object ResponseHelpers : JsonSendToResponseSyntax {
         is SuccessfulResult -> response.sendSuccessful(toJson(result.value))
         is NotFoundResult -> json("message" to "${result.entityName} could not be deleted.").sendTo(response, 404)
         is UnauthorizedResult -> response.sendStatus(403)
+        is ErrorResult -> response.sendStatus(500)
     }
 
 }

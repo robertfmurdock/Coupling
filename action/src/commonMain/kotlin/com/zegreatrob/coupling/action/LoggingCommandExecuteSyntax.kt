@@ -9,6 +9,17 @@ interface LoggingCommandExecuteSyntax : CommandExecuteSyntax, ActionLoggingSynta
         log(command) { command.execute(this) }.value
 
     override suspend fun <C : SuspendAction<D, R>, D, R> D.execute(command: C) =
-        logAsync(command) { command.execute(this) }
+        logAsync(command) { handledExecute(command) }
+
+    private suspend fun <C : SuspendAction<D, R>, D, R> D.handledExecute(command: C) = handleException(command) {
+        command.execute(this)
+    }
+
+    private inline fun <C : SuspendAction<D, R>, D, R> handleException(command: C, doIt: () -> Result<R>) = try {
+        doIt()
+    } catch (bad: Throwable) {
+        logger.error(bad) { "Error executing ${command::class.simpleName}" }
+        ErrorResult<R>(bad.message ?: "")
+    }
 
 }

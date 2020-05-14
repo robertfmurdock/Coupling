@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.*
+import com.zegreatrob.coupling.action.DispatchSyntax
+import com.zegreatrob.coupling.action.SimpleSuspendAction
+import com.zegreatrob.coupling.action.transform
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -25,27 +27,22 @@ interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     DispatchSyntax,
     RequestSpinActionDispatcher {
+
     suspend fun perform(query: NewPairAssignmentsQuery) = with(query) {
         val (tribe, players, pins) = getData()
+        execute(requestSpinAction(players, pins))
+            .transform(queryData(tribe, players))
+    }
+
+    private fun queryData(tribe: Tribe?, players: List<Player>) = { it: PairAssignmentDocument ->
+        Triple(tribe, players, it)
+    }
+
+    private fun NewPairAssignmentsQuery.requestSpinAction(players: List<Player>, pins: List<Pin>): RequestSpinAction {
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         val selectedPins = filterSelectedPins(pins, pinIds)
-        val pairAssignmentsResult = performSpin(tribeId, selectedPlayers, selectedPins)
-
-        verifySuccess(pairAssignmentsResult, tribe, players)
+        return RequestSpinAction(tribeId, selectedPlayers, selectedPins)
     }
-
-    private fun verifySuccess(
-        pairAssignmentsResult: Result<PairAssignmentDocument>,
-        tribe: Tribe?,
-        players: List<Player>
-    ) = when (pairAssignmentsResult) {
-        is SuccessfulResult -> Triple(tribe, players, pairAssignmentsResult.value)
-            .successResult()
-        else -> throw Exception("Unhandled failure path")
-    }
-
-    private suspend fun performSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) =
-        execute(RequestSpinAction(tribeId, players, pins))
 
     private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {
         playerIds.contains(it.id)
