@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.successValueOrNull
+import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.express.async
@@ -18,7 +18,7 @@ object UserDataService {
     fun deserializeUser(request: Request, userId: String, done: Done) = request.scope.async(done) {
         authActionDispatcher(userId, uuid4())
             .execute(FindOrCreateUserAction)
-            .successValueOrNull()
+            .valueOrNull()
     }
 
     private suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
@@ -29,6 +29,6 @@ object UserDataService {
 
     suspend fun findOrCreateUser(email: String, traceId: Uuid) = authActionDispatcher(email, traceId)
         .execute(FindOrCreateUserAction)
-        .successValueOrNull()
+        .valueOrNull()
 
 }

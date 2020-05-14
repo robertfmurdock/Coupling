@@ -15,7 +15,7 @@ fun Boolean.deletionResult(entityName: String): Result<Unit> = if (this)
 else
     NotFoundResult(entityName)
 
-fun <V> Result<V>.successValueOrNull() = when (this) {
+fun <V> Result<V>.valueOrNull() = when (this) {
     is SuccessfulResult -> value
     else -> null
 }
