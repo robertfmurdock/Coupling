@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.user
 
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
@@ -21,12 +20,12 @@ data class UserIsAuthorizedWithDataAction(val tribeId: TribeId) :
 }
 
 interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax,
-    TribeIdGetSyntax, TribeIdPlayersSyntax, ActionLoggingSyntax {
+    TribeIdGetSyntax, TribeIdPlayersSyntax {
     override val playerRepository: PlayerEmailRepository
 
-    suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf()
+    suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()
 
-    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf() = logAsync {
+    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<Tribe, List<Player>>? {
         val contains = getUserPlayerIds()
             .authenticatedTribeIds()
             .contains(tribeId)
@@ -35,11 +34,11 @@ interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyn
             val (tribe, players) = loadTribeAndPlayers()
 
             if (tribe != null) {
-                return@logAsync tribe to players
+                return tribe to players
             }
         }
-        null
-    }.successResult()
+        return null
+    }
 
     private suspend fun UserIsAuthorizedWithDataAction.loadTribeAndPlayers() = coroutineScope {
         await(

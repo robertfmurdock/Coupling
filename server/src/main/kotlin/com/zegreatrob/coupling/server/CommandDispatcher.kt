@@ -5,15 +5,12 @@ import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.AwesomeCommandExecutor
 import com.zegreatrob.coupling.action.TraceIdSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
-import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedActionDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcher
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
@@ -26,24 +23,26 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
-class CommandDispatcher(
-    override val user: User,
-    private val repositoryCatalog: RepositoryCatalog,
-    override val scope: CoroutineScope,
-    override val traceId: Uuid
-) :
+interface ICommandDispatcher :
+    ActionLoggingSyntax,
     ScopeSyntax,
     TribeDispatcher,
     PlayerDispatcher,
     PairAssignmentDispatcher,
     UserDispatcher,
     HandleWebsocketConnectionActionDispatcher,
-    RepositoryCatalog by repositoryCatalog,
-    PinDispatcher {
+    AwesomeCommandExecutor<CommandDispatcher>,
+    PinDispatcher,
+    RepositoryCatalog
 
-    override val executor = object : AwesomeCommandExecutor<CommandDispatcher> {
-        override val actionDispatcher = this@CommandDispatcher
-    }
+class CommandDispatcher(
+    override val user: User,
+    private val repositoryCatalog: RepositoryCatalog,
+    override val scope: CoroutineScope,
+    override val traceId: Uuid
+) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
+    override val executor = this
+    override val actionDispatcher = this
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
 
@@ -63,16 +62,11 @@ class CurrentTribeIdDispatcher(
     override val currentTribeId: TribeId,
     private val commandDispatcher: CommandDispatcher
 ) :
-    ActionLoggingSyntax,
-    RepositoryCatalog by commandDispatcher,
-    ScopeSyntax by commandDispatcher,
-    AuthenticatedUserSyntax by commandDispatcher,
-    UserEmailSyntax by commandDispatcher,
-    TraceIdSyntax by commandDispatcher,
+    ICommandDispatcher by commandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
-    PairAssignmentDocumentListQueryDispatcher,
-    UserIsAuthorizedActionDispatcher {
+    PairAssignmentDocumentListQueryDispatcher {
+    override val userId: String get() = commandDispatcher.userId
 
     suspend fun isAuthorized() = currentTribeId.validateAuthorized() != null
 
@@ -99,5 +93,6 @@ class CurrentTribeIdDispatcher(
         .contains(user.email)
 
     private suspend fun players() = playerDeferred.await().value.map { it.data.element }
+
 
 }
