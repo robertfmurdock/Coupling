@@ -10,7 +10,7 @@ interface PlayerCandidatesFinder {
         .filterByRule(rule, player.badge)
         .toTypedArray()
 
-    private inline fun List<Player>.filterByRule(rule: PairingRule, badge: Int) = when (rule) {
+    private fun List<Player>.filterByRule(rule: PairingRule, badge: Int) = when (rule) {
         PairingRule.PreferDifferentBadge -> filter { otherPlayer -> otherPlayer.badge != badge }
         else -> this
     }

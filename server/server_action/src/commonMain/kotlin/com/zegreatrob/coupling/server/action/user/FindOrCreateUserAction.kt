@@ -1,18 +1,22 @@
 package com.zegreatrob.coupling.server.action.user
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.Action
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
+import com.zegreatrob.coupling.action.SimpleSuspendAction
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 
-object FindOrCreateUserAction : Action
+object FindOrCreateUserAction : SimpleSuspendAction<FindOrCreateUserActionDispatcher, User> {
+    override val perform = link(FindOrCreateUserActionDispatcher::perform)
+}
 
-interface FindOrCreateUserActionDispatcher : ActionLoggingSyntax, UserEmailSyntax, UserSaveSyntax, UserGetSyntax {
+interface FindOrCreateUserActionDispatcher : UserEmailSyntax, UserSaveSyntax, UserGetSyntax {
 
-    suspend fun FindOrCreateUserAction.perform(): User = logAsync {
-        loadUser() ?: getFirstUserWithEmail() ?: newUser()
-    }
+    suspend fun perform(action: FindOrCreateUserAction) = findOrCreateUser().successResult()
+
+    private suspend fun findOrCreateUser() = loadUser()
+        ?: getFirstUserWithEmail()
+        ?: newUser()
 
     private suspend inline fun getFirstUserWithEmail() = userRepository.getUsersWithEmail(userId)
         .firstOrNull()

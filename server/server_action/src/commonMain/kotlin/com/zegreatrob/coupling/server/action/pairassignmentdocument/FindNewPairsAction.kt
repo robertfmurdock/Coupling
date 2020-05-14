@@ -7,6 +7,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 
+data class FindNewPairsAction(val game: Game) :
+    SimpleSuccessfulExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {
+    override val perform = link(FindNewPairsActionDispatcher::perform)
+}
+
 data class Game(val history: List<PairAssignmentDocument>, val players: List<Player>, val rule: PairingRule)
 
 data class GameSpin(
@@ -16,11 +21,6 @@ data class GameSpin(
 )
 
 private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
-
-data class FindNewPairsAction(val game: Game) :
-    SimpleSuccessfulExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {
-    override val perform = link(FindNewPairsActionDispatcher::perform)
-}
 
 interface FindNewPairsActionDispatcher {
 

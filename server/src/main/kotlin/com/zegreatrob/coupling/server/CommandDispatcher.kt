@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.action.AwesomeCommandExecutor
 import com.zegreatrob.coupling.action.TraceIdSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
-import com.zegreatrob.coupling.action.AwesomeCommandExecutor
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
@@ -40,8 +40,7 @@ class CommandDispatcher(
     RepositoryCatalog by repositoryCatalog,
     PinDispatcher {
 
-    override val executor = object :
-        AwesomeCommandExecutor<CommandDispatcher> {
+    override val executor = object : AwesomeCommandExecutor<CommandDispatcher> {
         override val actionDispatcher = this@CommandDispatcher
     }
 

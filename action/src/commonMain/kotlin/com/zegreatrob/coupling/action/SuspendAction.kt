@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.action
 
-interface SuspendAction<in T, R> : Action {
+interface DispatchableAction<in T, R> : Action
+
+interface SuspendAction<in T, R> : DispatchableAction<T, R> {
     suspend fun execute(dispatcher: T): Result<R>
 }
 
-interface ExecutableAction<in T, R> : Action {
+interface ExecutableAction<in T, R> : DispatchableAction<T, R> {
     fun execute(dispatcher: T): Result<R>
 }
 
