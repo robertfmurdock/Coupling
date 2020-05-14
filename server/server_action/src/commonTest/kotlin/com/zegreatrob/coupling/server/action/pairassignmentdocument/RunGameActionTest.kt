@@ -19,7 +19,7 @@ class RunGameActionTest {
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
         override val masterDispatcher = MasterDispatcher
-        override val executor = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubCommandExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 
         val expectedDate = DateTime.now()

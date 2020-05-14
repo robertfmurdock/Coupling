@@ -23,18 +23,13 @@ data class RunGameAction(
 
 interface RunGameActionDispatcher : Clock, DispatchSyntax, FindNewPairsActionDispatcher, AssignPinsActionDispatcher {
 
-    fun perform(action: RunGameAction) = action.assignPinsToPairs()
-        .let(::pairAssignmentDocument)
+    fun perform(action: RunGameAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-    private fun RunGameAction.assignPinsToPairs() = assignPinsToPairs(findNewPairs(), pins, history)
-
+    private fun RunGameAction.assignPinsToPairs() = assignPins(findNewPairs())
+    private fun RunGameAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
+    private fun RunGameAction.assignPinsAction(pairs: List<CouplingPair>) = AssignPinsAction(pairs, pins, history)
     private fun RunGameAction.findNewPairs() = execute(findNewPairsAction())
-
     private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, tribe.pairingRule))
-
-    private fun assignPinsToPairs(pairs: List<CouplingPair>, pins: List<Pin>, history: List<PairAssignmentDocument>) =
-        execute(AssignPinsAction(pairs, pins, history))
-
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
         date = currentDate(),
         pairs = pairAssignments

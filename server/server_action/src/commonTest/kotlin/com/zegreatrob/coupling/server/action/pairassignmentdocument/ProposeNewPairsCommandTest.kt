@@ -26,7 +26,7 @@ class ProposeNewPairsCommandTest {
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(object :
         ProposeNewPairsCommandDispatcher {
         override val masterDispatcher = MasterDispatcher
-        override val executor = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubCommandExecutor(NextPlayerAction::class)
 
         override val wheel: Wheel get() = throw NotImplementedError("Do not use")
         override val pairAssignmentDocumentRepository get() = stubRepository

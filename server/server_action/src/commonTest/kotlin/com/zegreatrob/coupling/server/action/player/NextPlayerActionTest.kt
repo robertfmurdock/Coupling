@@ -12,7 +12,7 @@ import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class NextPlayerActionTest : NextPlayerActionDispatcher {
-    override val executor = stubCommandExecutor(CreatePairCandidateReportsAction::class)
+    override val execute = stubCommandExecutor(CreatePairCandidateReportsAction::class)
 
     private val bill = Player(id = "Bill")
     private val ted = Player(id = "Ted")
@@ -28,7 +28,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
     }) {
-        executor.spyWillReturn(
+        execute.spyWillReturn(
             listOf(billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
                 .successResult()
         )
@@ -44,7 +44,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(5))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(0))
     }) {
-        executor.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates).successResult())
+        execute.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates).successResult())
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
@@ -60,7 +60,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val pairCandidates = listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
 
     }) {
-        executor.spyWillReturn(pairCandidates.successResult())
+        execute.spyWillReturn(pairCandidates.successResult())
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
@@ -73,7 +73,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), NeverPaired)
     }) {
-        executor.spyWillReturn(
+        execute.spyWillReturn(
             listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
                 .successResult()
         )
@@ -95,7 +95,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
             shorty, listOf(Player(), Player()), NeverPaired
         )
     }) {
-        executor.spyWillReturn(
+        execute.spyWillReturn(
             listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
                 .successResult()
         )

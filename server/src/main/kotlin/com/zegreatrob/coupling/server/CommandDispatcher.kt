@@ -42,7 +42,7 @@ class CommandDispatcher(
     override val scope: CoroutineScope,
     override val traceId: Uuid
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
-    override val executor = this
+    override val execute = this
     override val actionDispatcher = this
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null

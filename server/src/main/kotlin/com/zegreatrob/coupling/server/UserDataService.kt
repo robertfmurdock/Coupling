@@ -16,8 +16,7 @@ object UserDataService {
     }
 
     fun deserializeUser(request: Request, userId: String, done: Done) = request.scope.async(done) {
-        authActionDispatcher(userId, uuid4())
-            .execute(FindOrCreateUserAction)
+        authActionDispatcher(userId, uuid4())(FindOrCreateUserAction)
             .valueOrNull()
     }
 
@@ -27,8 +26,8 @@ object UserDataService {
         traceId
     )
 
-    suspend fun findOrCreateUser(email: String, traceId: Uuid) = authActionDispatcher(email, traceId)
-        .execute(FindOrCreateUserAction)
-        .valueOrNull()
+    suspend fun findOrCreateUser(email: String, traceId: Uuid) =
+        authActionDispatcher(email, traceId)(FindOrCreateUserAction)
+            .valueOrNull()
 
 }

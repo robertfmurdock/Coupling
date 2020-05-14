@@ -11,18 +11,18 @@ fun <D, C : DispatchableAction<D, R>, R> stubCommandExecutor(@Suppress("UNUSED_P
 class StubCommandExecutor<D, C : DispatchableAction<D, R>, R> : CommandExecutor<D>, Spy<C, Result<R>> by SpyData() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <C2 : ExecutableAction<D, R>, R> execute(command: C2) = (command as? C)
+    override fun <C2 : ExecutableAction<D, R>, R> invoke(command: C2) = (command as? C)
         ?.let { spyFunction(command) as? Result<R> }
         ?: NotFoundResult("Stub not prepared for $command")
 
     @Suppress("UNCHECKED_CAST")
-    override fun <C2 : SuccessfulExecutableAction<D, R>, R> execute(command: C2) = (command as? C)
+    override fun <C2 : SuccessfulExecutableAction<D, R>, R> invoke(command: C2) = (command as? C)
         ?.let { spyFunction(command) as? SuccessfulResult<R> }
         ?.value
         ?: throw Exception("Stub not prepared for $command")
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <C2 : SuspendAction<D, R>, R> execute(command: C2) = (command as? C)
+    override suspend fun <C2 : SuspendAction<D, R>, R> invoke(command: C2) = (command as? C)
         ?.let { spyFunction(command) as? Result<R> }
         ?: NotFoundResult("Stub not prepared for $command")
 }

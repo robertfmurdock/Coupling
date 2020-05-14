@@ -21,9 +21,9 @@ val tribeRouter by lazy {
     }
 }
 
-private fun authCheck(request: Request, response: Response, next: Next): Unit = with(request.executor) {
-    request.scope.launch {
-        if (execute(request.userIsAuthorizedAction()).valueOrNull() == true) {
+private fun authCheck(request: Request, response: Response, next: Next): Unit = with(request) {
+    scope.launch {
+        if (execute(userIsAuthorizedAction()).valueOrNull() == true) {
             next()
         } else {
             response.sendStatus(404)
@@ -31,7 +31,7 @@ private fun authCheck(request: Request, response: Response, next: Next): Unit = 
     }
 }
 
-private val Request.executor get() = commandDispatcher.executor
+private val Request.execute get() = commandDispatcher.execute
 
 private fun Request.userIsAuthorizedAction() = UserIsAuthorizedAction(tribeId())
 

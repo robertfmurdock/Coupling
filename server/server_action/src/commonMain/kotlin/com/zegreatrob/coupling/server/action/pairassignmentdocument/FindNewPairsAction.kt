@@ -24,7 +24,7 @@ private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
 
 interface FindNewPairsActionDispatcher {
 
-    val executor: CommandExecutor<NextPlayerActionDispatcher>
+    val execute: CommandExecutor<NextPlayerActionDispatcher>
 
     val wheel: Wheel
 
@@ -46,7 +46,7 @@ interface FindNewPairsActionDispatcher {
     private fun Round.getNextPlayer() = if (gameSpin.remainingPlayers.isEmpty()) {
         null
     } else {
-        executor.execute(NextPlayerAction(gameSpin))
+        execute(NextPlayerAction(gameSpin))
     }
 
     private fun Pair<Round, CouplingPair>.nextRound() = let { (round, newPair) ->

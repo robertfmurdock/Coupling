@@ -13,7 +13,7 @@ interface PairAssignmentDispatcher : ProposeNewPairsCommandDispatcher,
     CreatePairCandidateReportsActionDispatcher,
     CreatePairCandidateReportActionDispatcher,
     Wheel {
-    override val executor: CommandExecutor<PairAssignmentDispatcher>
+    override val execute: CommandExecutor<PairAssignmentDispatcher>
     override val wheel: Wheel get() = this
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }

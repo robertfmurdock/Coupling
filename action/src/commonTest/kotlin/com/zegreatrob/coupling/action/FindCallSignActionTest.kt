@@ -13,8 +13,7 @@ class FindCallSignActionTest {
     companion object : FindCallSignActionDispatcher {
         override val masterDispatcher = MasterDispatcher
         const val email = "robert.f.murdock@accenture.com"
-        val expectedCallSign =
-            CallSign(adjective = "Swift", noun = "Wildebeast")
+        val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeast")
     }
 
     @Test
@@ -23,10 +22,8 @@ class FindCallSignActionTest {
             Player(callSignAdjective = "Modest", callSignNoun = "Tiger"),
             Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
         )
-
-        val command = FindCallSignAction(players, email)
     }) exercise {
-        perform(command)
+        perform(FindCallSignAction(players, email))
     } verify { result ->
         result.assertIsEqualTo(expectedCallSign)
     }
@@ -36,9 +33,8 @@ class FindCallSignActionTest {
         val players = listOf(
             Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
         )
-        val command = FindCallSignAction(players, email)
     }) exercise {
-        perform(command)
+        perform(FindCallSignAction(players, email))
     } verify { result ->
         result.assertIsEqualTo(expectedCallSign)
     }
@@ -51,9 +47,8 @@ class FindCallSignActionTest {
                 callSignNoun = "Mongoose"
             )
         )
-        val command = FindCallSignAction(players, email)
     }) exercise {
-        perform(command)
+        perform(FindCallSignAction(players, email))
     } verify { result ->
         result.assertIsEqualTo(
             CallSign(
@@ -71,9 +66,8 @@ class FindCallSignActionTest {
                 callSignNoun = expectedCallSign.noun
             )
         )
-        val command = FindCallSignAction(players, email)
     }) exercise {
-        perform(command)
+        perform(FindCallSignAction(players, email))
     } verify { result ->
         result.assertIsEqualTo(
             CallSign(

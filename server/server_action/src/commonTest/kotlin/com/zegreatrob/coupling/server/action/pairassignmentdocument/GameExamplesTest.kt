@@ -25,7 +25,7 @@ class GameExamplesTest {
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
-        override val executor = this
+        override val execute = this
         override val traceId = uuid4()
     }
 

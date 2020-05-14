@@ -12,11 +12,9 @@ data class NextPlayerAction(val gameSpin: GameSpin) :
 
 interface NextPlayerActionDispatcher {
 
-    val executor: CommandExecutor<CreatePairCandidateReportsActionDispatcher>
+    val execute: CommandExecutor<CreatePairCandidateReportsActionDispatcher>
 
-    fun perform(action: NextPlayerAction) = action.lsdkjflsjf()
-
-    private fun NextPlayerAction.lsdkjflsjf() = createPairCandidateReports()
+    fun perform(action: NextPlayerAction) = action.createPairCandidateReports()
         .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->
             when {
                 reportWithLongestTime == null -> report
@@ -28,7 +26,7 @@ interface NextPlayerActionDispatcher {
             }
         }
 
-    private fun NextPlayerAction.createPairCandidateReports() = executor.execute(CreatePairCandidateReportsAction(gameSpin))
+    private fun NextPlayerAction.createPairCandidateReports() = execute(CreatePairCandidateReportsAction(gameSpin))
 
     private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
         when {

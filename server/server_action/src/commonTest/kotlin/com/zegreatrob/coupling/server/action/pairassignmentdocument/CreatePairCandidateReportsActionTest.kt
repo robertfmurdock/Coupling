@@ -15,7 +15,7 @@ import kotlin.test.Test
 class CreatePairCandidateReportsActionTest {
 
     class WhenTheTribePrefersPairingWithDifferentBadges : CreatePairCandidateReportsActionDispatcher {
-        override val executor = stubCommandExecutor(CreatePairCandidateReportAction::class)
+        override val execute = stubCommandExecutor(CreatePairCandidateReportAction::class)
 
         @Test
         fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
@@ -36,7 +36,7 @@ class CreatePairCandidateReportsActionTest {
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
         }) {
             expectedReports.forEach { report ->
-                executor.givenPlayerReturnReport(report, players.without(report.player), history)
+                execute.givenPlayerReturnReport(report, players.without(report.player), history)
             }
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
@@ -61,7 +61,7 @@ class CreatePairCandidateReportsActionTest {
 
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
         }) {
-            executor.run {
+            execute.run {
                 givenPlayerReturnReport(billReport, listOf(altAmadeus, altShorty), history)
                 givenPlayerReturnReport(tedReport, listOf(altAmadeus, altShorty), history)
                 givenPlayerReturnReport(amadeusReport, listOf(bill, ted), history)
@@ -81,7 +81,7 @@ class CreatePairCandidateReportsActionTest {
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
         }) {
-            executor.givenPlayerReturnReport(billReport, emptyList(), history)
+            execute.givenPlayerReturnReport(billReport, emptyList(), history)
         } exercise {
             perform(CreatePairCandidateReportsAction(gameSpin))
         } verify {
@@ -92,7 +92,7 @@ class CreatePairCandidateReportsActionTest {
 
     @Test
     fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
-        override val executor = stubCommandExecutor(CreatePairCandidateReportAction::class)
+        override val execute = stubCommandExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
         val bill = Player(id = "Bill", badge = 1)
         val ted = Player(id = "Ted", badge = 1)
@@ -106,7 +106,7 @@ class CreatePairCandidateReportsActionTest {
         val shortyReport = PairCandidateReport(altShorty, emptyList(), NeverPaired)
         val expectedReports = listOf(billReport, tedReport, amadeusReport, shortyReport)
     }) {
-        executor.run {
+        execute.run {
             givenPlayerReturnReport(billReport, players.without(bill), history)
             givenPlayerReturnReport(tedReport, players.without(ted), history)
             givenPlayerReturnReport(amadeusReport, players.without(altAmadeus), history)

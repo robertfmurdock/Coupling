@@ -12,7 +12,7 @@ data class FindCallSignAction(val players: List<Player>, val email: String) :
 
 interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher, DispatchSyntax {
 
-    fun perform(action: FindCallSignAction) = defaultCallSignOptions.let { (adjectives, nouns) ->
+    fun perform(action: FindCallSignAction) = with(defaultCallSignOptions) {
         action.generateCallSign(adjectives, nouns)
     }
 

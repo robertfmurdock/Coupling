@@ -20,7 +20,7 @@ class FindNewPairsActionTest {
 
     @Test
     fun withNoPlayersShouldReturnNoPairs() = setup(object : FindNewPairsActionDispatcher, Wheel {
-        override val executor = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubCommandExecutor(NextPlayerAction::class)
         override val wheel = this
     }) exercise {
         perform(FindNewPairsAction(Game(listOf(), listOf(), PairingRule.LongestTime)))
@@ -28,26 +28,26 @@ class FindNewPairsActionTest {
 
     @Test
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
-        override val executor = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubCommandExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill")
         val ted: Player = Player(id = "Ted")
         val players = listOf(bill, ted)
     }) {
         wheel.spyReturnValues.add(bill)
-        executor.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)).successResult())
+        execute.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)).successResult())
     } exercise {
         perform(FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime)))
     } verify { result ->
         result.assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
-        executor.spyReceivedValues.getOrNull(0)
+        execute.spyReceivedValues.getOrNull(0)
             .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
         wheel.spyReceivedValues.assertContains(listOf(bill))
     }
 
     @Test
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
-        override val executor = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubCommandExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill")
         val ted: Player = Player(id = "Ted")
@@ -59,7 +59,7 @@ class FindNewPairsActionTest {
         )
         val history: List<PairAssignmentDocument> = emptyList()
     }) {
-        executor.spyWillReturn(pairCandidateReports.map { it.successResult() })
+        execute.spyWillReturn(pairCandidateReports.map { it.successResult() })
         wheel.spyWillReturn(bill)
     } exercise {
         perform(FindNewPairsAction(Game(history, players, PairingRule.LongestTime)))
@@ -67,7 +67,7 @@ class FindNewPairsActionTest {
         result.assertIsEqualTo(
             listOf(pairOf(mozart, bill), pairOf(ted))
         )
-        executor.spyReceivedValues
+        execute.spyReceivedValues
             .assertIsEqualTo(
                 listOf(
                     NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
