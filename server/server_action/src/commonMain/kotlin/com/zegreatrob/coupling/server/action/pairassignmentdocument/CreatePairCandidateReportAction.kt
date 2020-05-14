@@ -9,7 +9,7 @@ data class CreatePairCandidateReportAction(
     val history: List<PairAssignmentDocument>,
     val allPlayers: List<Player>
 ) : SimpleSuccessfulExecutableAction<CreatePairCandidateReportActionDispatcher, PairCandidateReport> {
-    override val perform = link(CreatePairCandidateReportActionDispatcher::perform)
+    override val performFunc = link(CreatePairCandidateReportActionDispatcher::perform)
 }
 
 interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {

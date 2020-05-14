@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 
 object PlayersQuery : SimpleSuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
-    override val perform = link(PlayersQueryDispatcher::perform)
+    override val performFunc = link(PlayersQueryDispatcher::perform)
 }
 
 interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax, FindCallSignActionDispatcher {

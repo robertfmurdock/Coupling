@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 
 data class CreatePairCandidateReportsAction(val game: GameSpin) :
     SimpleSuccessfulExecutableAction<CreatePairCandidateReportsActionDispatcher, List<PairCandidateReport>> {
-    override val perform = link(CreatePairCandidateReportsActionDispatcher::perform)
+    override val performFunc = link(CreatePairCandidateReportsActionDispatcher::perform)
 }
 
 interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {

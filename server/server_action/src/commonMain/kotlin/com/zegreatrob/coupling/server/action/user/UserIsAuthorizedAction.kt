@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.action.tribe.UserPlayerIdsSyntax
 
 data class UserIsAuthorizedAction(val tribeId: TribeId) :
     SimpleSuspendAction<UserIsAuthorizedActionDispatcher, Boolean> {
-    override val perform = link(UserIsAuthorizedActionDispatcher::perform)
+    override val performFunc = link(UserIsAuthorizedActionDispatcher::perform)
 }
 
 interface UserIsAuthorizedActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax {

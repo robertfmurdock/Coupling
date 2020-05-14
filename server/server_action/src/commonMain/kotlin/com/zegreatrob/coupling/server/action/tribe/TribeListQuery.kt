@@ -10,7 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 object TribeListQuery : SimpleSuspendAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
-    override val perform = link(TribeListQueryDispatcher::perform)
+    override val performFunc = link(TribeListQueryDispatcher::perform)
 }
 
 interface TribeListQueryDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax, TribeRecordSyntax {

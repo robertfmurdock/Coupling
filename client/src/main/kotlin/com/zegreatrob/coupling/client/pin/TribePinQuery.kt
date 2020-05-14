@@ -13,7 +13,7 @@ import kotlinx.coroutines.coroutineScope
 
 data class TribePinQuery(val tribeId: TribeId, val pinId: String?) :
     SimpleSuspendAction<TribePinQueryDispatcher, Triple<Tribe?, List<Pin>, Pin>> {
-    override val perform = link(TribePinQueryDispatcher::perform)
+    override val performFunc = link(TribePinQueryDispatcher::perform)
 }
 
 interface TribePinQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {

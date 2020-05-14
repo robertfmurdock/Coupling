@@ -16,7 +16,7 @@ import kotlinx.coroutines.coroutineScope
 
 data class UserIsAuthorizedWithDataAction(val tribeId: TribeId) :
     SimpleSuspendAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Tribe, List<Player>>?> {
-    override val perform = link(UserIsAuthorizedWithDataActionDispatcher::perform)
+    override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
 }
 
 interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax,

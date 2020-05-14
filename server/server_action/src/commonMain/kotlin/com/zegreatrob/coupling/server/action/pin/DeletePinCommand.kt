@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class DeletePinCommand(val tribeId: TribeId, val pinId: String) :
     SimpleSuspendAction<DeletePinCommandDispatcher, Unit> {
-    override val perform = link(DeletePinCommandDispatcher::perform)
+    override val performFunc = link(DeletePinCommandDispatcher::perform)
 }
 
 interface DeletePinCommandDispatcher : PinIdDeleteSyntax {

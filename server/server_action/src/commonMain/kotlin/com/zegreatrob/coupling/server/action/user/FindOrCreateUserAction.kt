@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 
 object FindOrCreateUserAction : SimpleSuspendAction<FindOrCreateUserActionDispatcher, User> {
-    override val perform = link(FindOrCreateUserActionDispatcher::perform)
+    override val performFunc = link(FindOrCreateUserActionDispatcher::perform)
 }
 
 interface FindOrCreateUserActionDispatcher : UserEmailSyntax, UserSaveSyntax, UserGetSyntax {

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.sdk.SdkSyntax
 
 data class RequestSpinAction(val tribeId: TribeId, val players: List<Player>, val pins: List<Pin>) :
     SimpleSuspendAction<RequestSpinActionDispatcher, PairAssignmentDocument> {
-    override val perform = link(RequestSpinActionDispatcher::perform)
+    override val performFunc = link(RequestSpinActionDispatcher::perform)
 }
 
 interface RequestSpinActionDispatcher : SdkSyntax {

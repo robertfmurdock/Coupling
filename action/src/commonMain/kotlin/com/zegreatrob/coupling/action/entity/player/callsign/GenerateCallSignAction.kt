@@ -13,7 +13,7 @@ data class GenerateCallSignAction(
     val email: String,
     val players: List<Player>
 ) : SimpleSuccessfulExecutableAction<GenerateCallSignActionDispatcher, CallSign> {
-    override val perform = link(GenerateCallSignActionDispatcher::perform)
+    override val performFunc = link(GenerateCallSignActionDispatcher::perform)
 }
 
 interface GenerateCallSignActionDispatcher : PredictableWordPicker, DispatchSyntax {

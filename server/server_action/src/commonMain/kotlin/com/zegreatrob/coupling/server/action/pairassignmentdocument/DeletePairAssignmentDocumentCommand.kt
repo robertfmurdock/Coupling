@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 
 data class DeletePairAssignmentDocumentCommand(val tribeId: TribeId, val id: PairAssignmentDocumentId) :
     SimpleSuspendAction<DeletePairAssignmentDocumentCommandDispatcher, Unit> {
-    override val perform = link(DeletePairAssignmentDocumentCommandDispatcher::perform)
+    override val performFunc = link(DeletePairAssignmentDocumentCommandDispatcher::perform)
 }
 
 interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocumentIdDeleteSyntax {

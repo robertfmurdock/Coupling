@@ -12,7 +12,7 @@ data class ComposeStatisticsAction(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>
 ) : SimpleSuccessfulExecutableAction<ComposeStatisticsActionDispatcher, StatisticsReport> {
-    override val perform = link(ComposeStatisticsActionDispatcher::perform)
+    override val performFunc = link(ComposeStatisticsActionDispatcher::perform)
 }
 
 interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {

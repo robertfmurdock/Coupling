@@ -17,7 +17,7 @@ import kotlinx.coroutines.coroutineScope
 
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
     SimpleSuspendAction<NewPairAssignmentsQueryDispatcher, Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
-    override val perform = link(NewPairAssignmentsQueryDispatcher::perform)
+    override val performFunc = link(NewPairAssignmentsQueryDispatcher::perform)
 }
 
 interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,

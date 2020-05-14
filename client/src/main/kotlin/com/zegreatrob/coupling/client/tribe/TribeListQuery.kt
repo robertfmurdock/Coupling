@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeListSyntax
 
 object TribeListQuery : SimpleSuspendAction<TribeListQueryDispatcher, List<Tribe>> {
-    override val perform = link(TribeListQueryDispatcher::perform)
+    override val performFunc = link(TribeListQueryDispatcher::perform)
 }
 
 interface TribeListQueryDispatcher : TribeListSyntax {

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.player.TribeIdPlayerIdDeleteSyntax
 
 data class DeletePlayerCommand(val tribeId: TribeId, val playerId: String) :
     SimpleSuspendAction<DeletePlayerCommandDispatcher, Unit> {
-    override val perform = link(DeletePlayerCommandDispatcher::perform)
+    override val performFunc = link(DeletePlayerCommandDispatcher::perform)
 }
 
 interface DeletePlayerCommandDispatcher : TribeIdPlayerIdDeleteSyntax {

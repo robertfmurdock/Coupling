@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class StatisticsQuery(val tribeId: TribeId) :
     SimpleSuspendAction<StatisticsQueryDispatcher, StatisticQueryResults> {
-    override val perform = link(StatisticsQueryDispatcher::perform)
+    override val performFunc = link(StatisticsQueryDispatcher::perform)
 }
 
 data class StatisticQueryResults(

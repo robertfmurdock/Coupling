@@ -18,7 +18,7 @@ data class RunGameAction(
     val history: List<PairAssignmentDocument>,
     val tribe: Tribe
 ) : SimpleSuccessfulExecutableAction<RunGameActionDispatcher, PairAssignmentDocument> {
-    override val perform = link(RunGameActionDispatcher::perform)
+    override val performFunc = link(RunGameActionDispatcher::perform)
 }
 
 interface RunGameActionDispatcher : Clock, DispatchSyntax, FindNewPairsActionDispatcher, AssignPinsActionDispatcher {

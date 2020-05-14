@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
 
 data class SaveTribeCommand(val tribe: Tribe) : SimpleSuspendAction<SaveTribeCommandDispatcher, Unit> {
-    override val perform = link(SaveTribeCommandDispatcher::perform)
+    override val performFunc = link(SaveTribeCommandDispatcher::perform)
 }
 
 interface SaveTribeCommandDispatcher : TribeSaveSyntax {

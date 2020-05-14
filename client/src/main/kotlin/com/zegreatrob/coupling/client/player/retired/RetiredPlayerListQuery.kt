@@ -13,7 +13,7 @@ import kotlinx.coroutines.coroutineScope
 
 data class RetiredPlayerListQuery(val tribeId: TribeId) :
     SimpleSuspendAction<RetiredPlayerListQueryDispatcher, Pair<Tribe?, List<Player>>> {
-    override val perform = link(RetiredPlayerListQueryDispatcher::perform)
+    override val performFunc = link(RetiredPlayerListQueryDispatcher::perform)
 }
 
 interface RetiredPlayerListQueryDispatcher : TribeIdGetSyntax, TribeIdRetiredPlayersSyntax {

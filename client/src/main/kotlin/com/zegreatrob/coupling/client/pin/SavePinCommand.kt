@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pin.TribeIdPinSaveSyntax
 
 data class SavePinCommand(val id: TribeId, val updatedPin: Pin) : SimpleSuspendAction<SavePinCommandDispatcher, Unit> {
-    override val perform = link(SavePinCommandDispatcher::perform)
+    override val performFunc = link(SavePinCommandDispatcher::perform)
 }
 
 interface SavePinCommandDispatcher : TribeIdPinSaveSyntax {

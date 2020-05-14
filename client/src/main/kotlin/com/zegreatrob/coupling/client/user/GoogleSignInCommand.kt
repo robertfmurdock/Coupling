@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.SimpleSuspendAction
 import com.zegreatrob.coupling.action.successResult
 
 object GoogleSignInCommand : SimpleSuspendAction<GoogleSignInCommandDispatcher, Unit> {
-    override val perform = link(GoogleSignInCommandDispatcher::perform)
+    override val performFunc = link(GoogleSignInCommandDispatcher::perform)
 }
 
 interface GoogleSignInCommandDispatcher : GoogleSignIn {

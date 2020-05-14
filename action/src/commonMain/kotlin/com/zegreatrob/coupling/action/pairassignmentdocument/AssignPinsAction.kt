@@ -10,7 +10,7 @@ data class AssignPinsAction(
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>
 ) : SimpleSuccessfulExecutableAction<AssignPinsActionDispatcher, List<PinnedCouplingPair>> {
-    override val perform = link(AssignPinsActionDispatcher::perform)
+    override val performFunc = link(AssignPinsActionDispatcher::perform)
 }
 
 interface AssignPinsActionDispatcher {

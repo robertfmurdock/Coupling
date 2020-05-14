@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 
 data class TribeQuery(val tribeId: TribeId) : SimpleSuspendAction<TribeQueryDispatcher, Tribe?> {
-    override val perform = link(TribeQueryDispatcher::perform)
+    override val performFunc = link(TribeQueryDispatcher::perform)
 }
 
 interface TribeQueryDispatcher : TribeIdGetSyntax {

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 
 object PairAssignmentDocumentListQuery :
     SimpleSuspendAction<PairAssignmentDocumentListQueryDispatcher, List<TribeRecord<PairAssignmentDocument>>> {
-    override val perform = link(PairAssignmentDocumentListQueryDispatcher::perform)
+    override val performFunc = link(PairAssignmentDocumentListQueryDispatcher::perform)
 }
 
 interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentRecordsSyntax, CurrentTribeIdSyntax {

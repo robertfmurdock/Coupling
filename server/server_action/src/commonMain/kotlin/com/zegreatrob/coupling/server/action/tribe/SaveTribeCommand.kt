@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
 data class SaveTribeCommand(val tribe: Tribe) : SimpleSuspendAction<SaveTribeCommandDispatcher, Unit> {
-    override val perform = link(SaveTribeCommandDispatcher::perform)
+    override val performFunc = link(SaveTribeCommandDispatcher::perform)
 }
 
 interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, TribeSaveSyntax,

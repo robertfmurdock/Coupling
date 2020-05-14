@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinRecor
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 
 object PinsQuery : SimpleSuspendAction<PinsQueryDispatcher, List<TribeRecord<Pin>>> {
-    override val perform = link(PinsQueryDispatcher::perform)
+    override val performFunc = link(PinsQueryDispatcher::perform)
 }
 
 interface PinsQueryDispatcher : CurrentTribeIdSyntax, TribeIdPinRecordsSyntax {

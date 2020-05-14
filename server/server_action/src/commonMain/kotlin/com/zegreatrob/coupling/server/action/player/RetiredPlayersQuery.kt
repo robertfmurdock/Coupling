@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.player.TribeIdRetiredPlayerRecordsSynt
 
 data class RetiredPlayersQuery(val tribeId: TribeId) :
     SimpleSuspendAction<RetiredPlayersQueryDispatcher, List<TribeRecord<Player>>> {
-    override val perform = link(RetiredPlayersQueryDispatcher::perform)
+    override val performFunc = link(RetiredPlayersQueryDispatcher::perform)
 }
 
 interface RetiredPlayersQueryDispatcher : TribeIdRetiredPlayerRecordsSyntax {

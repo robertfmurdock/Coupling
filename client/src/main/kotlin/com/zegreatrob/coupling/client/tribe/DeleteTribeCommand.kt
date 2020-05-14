@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeIdDeleteSyntax
 
 data class DeleteTribeCommand(val tribeId: TribeId) : SimpleSuspendAction<DeleteTribeCommandDispatcher, Unit> {
-    override val perform = link(DeleteTribeCommandDispatcher::perform)
+    override val performFunc = link(DeleteTribeCommandDispatcher::perform)
 }
 
 interface DeleteTribeCommandDispatcher : TribeIdDeleteSyntax {

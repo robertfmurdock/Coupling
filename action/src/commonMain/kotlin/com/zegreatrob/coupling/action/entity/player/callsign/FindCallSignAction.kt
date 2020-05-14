@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.player.callsign.CallSign
 
 data class FindCallSignAction(val players: List<Player>, val email: String) :
     SimpleSuccessfulExecutableAction<FindCallSignActionDispatcher, CallSign> {
-    override val perform = link(FindCallSignActionDispatcher::perform)
+    override val performFunc = link(FindCallSignActionDispatcher::perform)
 }
 
 interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher, DispatchSyntax {

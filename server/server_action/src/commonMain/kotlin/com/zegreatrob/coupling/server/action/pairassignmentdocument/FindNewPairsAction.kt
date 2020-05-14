@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 
 data class FindNewPairsAction(val game: Game) :
     SimpleSuccessfulExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {
-    override val perform = link(FindNewPairsActionDispatcher::perform)
+    override val performFunc = link(FindNewPairsActionDispatcher::perform)
 }
 
 data class Game(val history: List<PairAssignmentDocument>, val players: List<Player>, val rule: PairingRule)

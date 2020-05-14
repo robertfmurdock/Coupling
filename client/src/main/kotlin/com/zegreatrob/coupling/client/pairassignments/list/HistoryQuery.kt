@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 data class HistoryQuery(val tribeId: TribeId) :
     SimpleSuspendAction<HistoryQueryDispatcher, Pair<Tribe?, List<PairAssignmentDocument>>> {
-    override val perform = link(HistoryQueryDispatcher::perform)
+    override val performFunc = link(HistoryQueryDispatcher::perform)
 }
 
 interface HistoryQueryDispatcher : TribeIdGetSyntax, TribeIdHistorySyntax {

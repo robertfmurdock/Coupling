@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 
 data class NextPlayerAction(val gameSpin: GameSpin) :
     SimpleSuccessfulExecutableAction<NextPlayerActionDispatcher, PairCandidateReport?> {
-    override val perform = link(NextPlayerActionDispatcher::perform)
+    override val performFunc = link(NextPlayerActionDispatcher::perform)
 }
 
 interface NextPlayerActionDispatcher {

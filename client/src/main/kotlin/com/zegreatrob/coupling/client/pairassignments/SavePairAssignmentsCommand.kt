@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssi
 
 data class SavePairAssignmentsCommand(val tribeId: TribeId, val pairAssignments: PairAssignmentDocument) :
     SimpleSuspendAction<SavePairAssignmentsCommandDispatcher, Unit> {
-    override val perform = link(SavePairAssignmentsCommandDispatcher::perform)
+    override val performFunc = link(SavePairAssignmentsCommandDispatcher::perform)
 }
 
 interface SavePairAssignmentsCommandDispatcher : TribeIdPairAssignmentDocumentSaveSyntax {

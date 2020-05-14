@@ -15,7 +15,7 @@ data class CalculatePairHeatAction(
     val history: List<PairAssignmentDocument>,
     val rotationPeriod: Int
 ) : SimpleSuccessfulExecutableAction<CalculatePairHeatActionDispatcher, Double> {
-    override val perform = link(CalculatePairHeatActionDispatcher::perform)
+    override val performFunc = link(CalculatePairHeatActionDispatcher::perform)
 }
 
 interface CalculatePairHeatActionDispatcher {

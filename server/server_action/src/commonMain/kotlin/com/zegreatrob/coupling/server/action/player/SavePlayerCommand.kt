@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 
 data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) :
     SimpleSuspendAction<SavePlayerCommandDispatcher, Player> {
-    override val perform = link(SavePlayerCommandDispatcher::perform)
+    override val performFunc = link(SavePlayerCommandDispatcher::perform)
 }
 
 interface SavePlayerCommandDispatcher : TribeIdPlayerSaveSyntax {

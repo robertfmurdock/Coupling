@@ -18,7 +18,7 @@ data class ProposeNewPairsCommand(
     val players: List<Player>,
     val pins: List<Pin>
 ) : SimpleSuspendAction<ProposeNewPairsCommandDispatcher, PairAssignmentDocument> {
-    override val perform = link(ProposeNewPairsCommandDispatcher::perform)
+    override val performFunc = link(ProposeNewPairsCommandDispatcher::perform)
 }
 
 interface ProposeNewPairsCommandDispatcher : DispatchSyntax, RunGameActionDispatcher, TribeIdGetSyntax,

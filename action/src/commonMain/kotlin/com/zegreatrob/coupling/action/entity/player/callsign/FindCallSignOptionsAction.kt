@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.player.Player
 
 data class FindCallSignOptionsAction(val players: List<Player>) : SimpleSuccessfulExecutableAction<
         FindCallSignOptionsActionDispatcher, CallSignOptions> {
-    override val perform = link(FindCallSignOptionsActionDispatcher::perform)
+    override val performFunc = link(FindCallSignOptionsActionDispatcher::perform)
 }
 
 data class CallSignOptions(val adjectives: Set<String>, val nouns: Set<String>)
