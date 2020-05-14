@@ -2,12 +2,9 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.AwesomeCommandExecutor
-import com.zegreatrob.coupling.action.LoggingCommandExecuteSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.action.DispatchingCommandExecutor
+import com.zegreatrob.coupling.action.GrandMasterDispatchSyntax
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -23,8 +20,8 @@ class GameExamplesTest {
         NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
-        AwesomeCommandExecutor<Companion>,
-        LoggingCommandExecuteSyntax,
+        DispatchingCommandExecutor<Companion>,
+        GrandMasterDispatchSyntax,
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
@@ -92,45 +89,25 @@ class GameExamplesTest {
             val history = listOf(
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 10),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            clark
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, clark)).withNoPins()
                 ),
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 9),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            diana
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, diana)).withNoPins()
                 ),
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 8),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            hal
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, hal)).withNoPins()
                 ),
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 7),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            barry
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, barry)).withNoPins()
                 )
             )
         }) exercise {
             perform(RunGameAction(allPlayers, emptyList(), history, tribe))
         } verify { result ->
-            result.pairs.contains(CouplingPair.Double(bruce, john).toPinnedPair())
+            result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
     }
 
@@ -156,45 +133,25 @@ class GameExamplesTest {
             val history = listOf(
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 10),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            clark
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, clark)).withNoPins()
                 ),
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 9),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            diana
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, diana)).withNoPins()
                 ),
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 8),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            hal
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, hal)).withNoPins()
                 ),
                 PairAssignmentDocument(
                     date = DateTime(2014, 1, 7),
-                    pairs = listOf(
-                        CouplingPair.Double(
-                            bruce,
-                            barry
-                        )
-                    ).withNoPins()
+                    pairs = listOf(pairOf(bruce, barry)).withNoPins()
                 )
             )
         }) exercise {
             perform(RunGameAction(allPlayers, emptyList(), history, tribe))
         } verify { result ->
-            result.pairs.contains(CouplingPair.Double(bruce, john).toPinnedPair())
+            result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
 
     }
@@ -214,42 +171,26 @@ class GameExamplesTest {
         val history = listOf(
             PairAssignmentDocument(
                 date = DateTime(2014, 1, 10),
-                pairs = listOf(
-                    CouplingPair.Double(
-                        kamala,
-                        thor
-                    )
-                ).withNoPins()
+                pairs = listOf(pairOf(kamala, thor)).withNoPins()
             ),
             PairAssignmentDocument(
                 date = DateTime(2014, 1, 9),
-                pairs = listOf(
-                    CouplingPair.Double(
-                        kamala,
-                        steve
-                    )
-                ).withNoPins()
+                pairs = listOf(pairOf(kamala, steve)).withNoPins()
             ),
             PairAssignmentDocument(
                 date = DateTime(2014, 1, 8),
-                pairs = listOf(
-                    CouplingPair.Double(
-                        kamala,
-                        logan
-                    )
-                ).withNoPins()
+                pairs = listOf(pairOf(kamala, logan)).withNoPins()
             )
         )
     }) exercise {
         perform(RunGameAction(allPlayers, emptyList(), history, tribe))
     } verify { result ->
-        result.pairs.contains(CouplingPair.Double(kamala, logan).toPinnedPair())
+        result.pairs.contains(pairOf(kamala, logan).toPinnedPair())
     }
 }
 
 private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
 
-private fun CouplingPair.toPinnedPair() =
-    PinnedCouplingPair(toPinnedPlayers())
+private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
 private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }

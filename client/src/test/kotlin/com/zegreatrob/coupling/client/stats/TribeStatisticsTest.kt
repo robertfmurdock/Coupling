@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
+import com.zegreatrob.coupling.action.MasterDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
@@ -18,6 +19,7 @@ import shallow
 import kotlin.test.Test
 
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
+    override val masterDispatcher = MasterDispatcher
 
     @Test
     fun willShowTribeCard() = setup(object {

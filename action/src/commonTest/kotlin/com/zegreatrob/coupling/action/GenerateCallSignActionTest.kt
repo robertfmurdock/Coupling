@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.action
 
+import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignAction
+import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignActionDispatcher
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignActionDispatcher
-import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignAction
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.setup
@@ -11,7 +11,9 @@ import kotlin.test.Test
 
 class GenerateCallSignActionTest {
 
-    companion object : GenerateCallSignActionDispatcher;
+    companion object : GenerateCallSignActionDispatcher {
+        override val masterDispatcher = MasterDispatcher
+    }
 
     @Test
     fun whenGivenOnlyOneAdjectiveAndOneNounWillSelectThem() = setup(object {

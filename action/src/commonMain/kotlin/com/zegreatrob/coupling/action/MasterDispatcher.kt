@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.action
 
 interface MasterDispatcher {
-    fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatcho(command: C, dispatcher: D): R
+    fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatch(command: C, dispatcher: D): R
 
-    suspend fun <C : SuspendAction<D, R>, D, R> dispatcho(command: C, dispatcher: D): Result<R>
+    suspend fun <C : SuspendAction<D, R>, D, R> dispatch(command: C, dispatcher: D): Result<R>
 
     companion object : MasterDispatcher {
-        override fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatcho(command: C, dispatcher: D) =
+        override fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatch(command: C, dispatcher: D) =
             command.execute(dispatcher).value
 
-        override suspend fun <C : SuspendAction<D, R>, D, R> dispatcho(command: C, dispatcher: D): Result<R> =
+        override suspend fun <C : SuspendAction<D, R>, D, R> dispatch(command: C, dispatcher: D) =
             command.execute(dispatcher)
     }
 }

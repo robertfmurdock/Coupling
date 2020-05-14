@@ -6,7 +6,7 @@ interface CommandExecutor<out D> {
     suspend fun <C : SuspendAction<D, R>, R> execute(command: C): Result<R>
 }
 
-interface AwesomeCommandExecutor<out D> : CommandExecutor<D>, CommandExecuteSyntax {
+interface DispatchingCommandExecutor<out D> : CommandExecutor<D>, CommandExecuteSyntax {
 
     val actionDispatcher: D
 

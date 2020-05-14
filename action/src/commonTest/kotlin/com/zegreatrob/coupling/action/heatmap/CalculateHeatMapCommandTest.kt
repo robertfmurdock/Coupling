@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.action.heatmap
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.MasterDispatcher
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
@@ -14,8 +15,8 @@ import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {
 
-    companion object : CalculateHeatMapActionDispatcher,
-        AssignPinsActionDispatcher {
+    companion object : CalculateHeatMapActionDispatcher, AssignPinsActionDispatcher {
+        override val masterDispatcher = MasterDispatcher
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
                 date = DateTime.now(),
@@ -34,8 +35,7 @@ class CalculateHeatMapCommandTest {
         val players = emptyList<Player>()
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 0
-        val action =
-            CalculateHeatMapAction(players, history, rotationPeriod)
+        val action = CalculateHeatMapAction(players, history, rotationPeriod)
     }) exercise {
         perform(action)
     } verify { result ->
