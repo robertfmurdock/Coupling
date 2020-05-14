@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.action.*
+import com.zegreatrob.coupling.action.GrandMasterDispatcher
+import com.zegreatrob.coupling.action.LoggingCommandExecuteSyntax
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
@@ -24,7 +25,7 @@ import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 
-class CommandDispatcher(override val traceId: Uuid) : ActionLoggingSyntax,
+class CommandDispatcher(override val traceId: Uuid) :
     LoggingCommandExecuteSyntax,
     PinCommandDispatcher,
     SavePairAssignmentsCommandDispatcher,
@@ -46,13 +47,7 @@ class CommandDispatcher(override val traceId: Uuid) : ActionLoggingSyntax,
     LogoutCommandDispatcher,
     NewTribeCommandDispatcher,
     StatisticsQueryDispatcher,
-    MasterDispatcher {
+    GrandMasterDispatcher {
     override val sdk = SdkSingleton
     override val masterDispatcher = this
-
-    override fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatcho(command: C, dispatcher: D) =
-        log(command) { command.execute(dispatcher) }.value
-
-    override suspend fun <C : SuspendAction<D, R>, D, R> dispatcho(command: C, dispatcher: D) =
-        logAsync(command) { command.execute(dispatcher) }
 }

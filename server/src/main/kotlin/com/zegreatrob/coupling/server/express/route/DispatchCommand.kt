@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.express.route
 
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.CommandExecuteSyntax
 import com.zegreatrob.coupling.action.SuspendAction
 import com.zegreatrob.coupling.server.express.ResponseHelpers
@@ -11,7 +10,7 @@ import kotlinx.coroutines.launch
 
 typealias ExpressDispatcherProvider<D> = (Request) -> D
 
-fun <C : SuspendAction<D, R>, D : ActionLoggingSyntax, R, J> dispatch(
+fun <C : SuspendAction<D, R>, D, R, J> dispatch(
     dispatcher: (Request) -> D,
     toCommandFunc: (Request) -> C,
     toJson: (R) -> J
@@ -24,7 +23,7 @@ fun <C : SuspendAction<D, R>, D : ActionLoggingSyntax, R, J> dispatch(
         { ResponseHelpers.response(this, it, toJson) })
 }
 
-fun <C : SuspendAction<D, R>, D : ActionLoggingSyntax, R> dispatch(
+fun <C : SuspendAction<D, R>, D, R> dispatch(
     dispatcher: (Request) -> D,
     toCommandFunc: (Request) -> C
 ): ExpressHandler = dispatch(dispatcher, toCommandFunc, {})

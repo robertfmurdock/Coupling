@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.AwesomeCommandExecutor
 import com.zegreatrob.coupling.action.LoggingCommandExecuteSyntax
 import com.zegreatrob.coupling.action.TraceIdSyntax
@@ -25,7 +24,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
 interface ICommandDispatcher :
-    ActionLoggingSyntax,
+    LoggingCommandExecuteSyntax,
     ScopeSyntax,
     TribeDispatcher,
     PlayerDispatcher,

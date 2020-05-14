@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.ActionLoggingSyntax
 import com.zegreatrob.coupling.action.AwesomeCommandExecutor
+import com.zegreatrob.coupling.action.LoggingCommandExecuteSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -24,7 +24,7 @@ class GameExamplesTest {
         CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         AwesomeCommandExecutor<Companion>,
-        ActionLoggingSyntax,
+        LoggingCommandExecuteSyntax,
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
