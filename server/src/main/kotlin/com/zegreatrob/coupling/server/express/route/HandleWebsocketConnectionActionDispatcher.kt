@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.action.DispatchSyntax
 import com.zegreatrob.coupling.action.LoggingSyntax
+import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -14,7 +16,8 @@ import kotlin.js.json
 
 data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
 
-interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataActionDispatcher, LoggingSyntax {
+interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataActionDispatcher, LoggingSyntax,
+    DispatchSyntax {
 
     fun HandleWebsocketConnectionAction.perform() = request.scope.launch {
         val tribeId = request.tribeId()
@@ -38,8 +41,8 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         broadcastConnectionCountForTribe(tribeId, result.second, wss)
     }
 
-    private suspend fun TribeId.getAuthorizationData(): Pair<Any, List<Player>>? = UserIsAuthorizedWithDataAction(this)
-        .perform()
+    private suspend fun TribeId.getAuthorizationData(): Pair<Any, List<Player>>? =
+        execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
 
     private fun broadcastConnectionCountForTribe(
         tribeId: TribeId,
