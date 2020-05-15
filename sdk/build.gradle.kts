@@ -58,7 +58,7 @@ kotlin {
                 implementation(npm("axios", "^0.19.0"))
                 implementation(npm("ws", "^7.2.0"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.5")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.6")
                 implementation("io.github.microutils:kotlin-logging-js:1.7.9")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
             }

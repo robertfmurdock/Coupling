@@ -41,7 +41,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.5")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.6")
                 implementation("io.github.microutils:kotlin-logging-js:1.7.9")
             }
         }

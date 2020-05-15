@@ -51,7 +51,7 @@ kotlin {
                 api(project(":logging"))
                 implementation(npm("aws-sdk", "2.615.0"))
                 implementation("io.github.microutils:kotlin-logging-js:1.7.9")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.5")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.6")
             }
         }
         val jsTest by getting {
