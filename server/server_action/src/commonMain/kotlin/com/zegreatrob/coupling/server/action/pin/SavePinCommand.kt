@@ -13,8 +13,8 @@ data class SavePinCommand(val tribeIdPin: TribeIdPin) : SimpleSuspendAction<Save
 
 interface SavePinCommandDispatcher : TribeIdPinSaveSyntax {
 
-    suspend fun perform(command: SavePinCommand) = command.skdfjsldkfj().successResult()
+    suspend fun perform(command: SavePinCommand) = command.save().successResult()
 
-    private suspend fun SavePinCommand.skdfjsldkfj() = tribeIdPin.save().let { tribeIdPin.pin }
+    private suspend fun SavePinCommand.save() = tribeIdPin.save().let { tribeIdPin.pin }
 
 }

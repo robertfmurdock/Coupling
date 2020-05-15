@@ -15,6 +15,6 @@ infix fun <C : Any, R : Result<V>, V> StandardMintDispatcher.Exercise<C, R>.veri
     verify { result -> result.assertSuccess { validations(this) } }
 }
 
-infix fun <C : Any, R : Result<V>, V> Exercise<C, R>.verifySuccess(validations: C.(V) -> Unit) {
-    verify { result -> result.assertSuccess { validations(this) } }
+infix fun <C : Any, R : Result<V>, V> Exercise<C, R>.verifySuccess(validations: C.(V) -> Unit) = verify { result ->
+    result.assertSuccess { validations(this) }
 }

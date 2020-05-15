@@ -8,8 +8,8 @@ object ResponseHelpers : JsonSendToResponseSyntax {
 
     fun <V> response(response: Response, result: Result<V>, toJson: (V) -> Any?) = when (result) {
         is SuccessfulResult -> response.sendSuccessful(toJson(result.value))
-        is NotFoundResult -> json("message" to "${result.entityName} could not be deleted.").sendTo(response, 404)
         is UnauthorizedResult -> response.sendStatus(403)
+        is NotFoundResult -> json("message" to "${result.entityName} could not be deleted.").sendTo(response, 404)
         is ErrorResult -> response.sendStatus(500)
     }
 

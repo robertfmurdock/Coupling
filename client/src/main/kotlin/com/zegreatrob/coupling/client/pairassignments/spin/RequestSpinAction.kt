@@ -14,9 +14,6 @@ data class RequestSpinAction(val tribeId: TribeId, val players: List<Player>, va
 }
 
 interface RequestSpinActionDispatcher : SdkSyntax {
-    suspend fun perform(action: RequestSpinAction) = sdk.requestSpin(
-        action.tribeId,
-        action.players,
-        action.pins
-    ).successResult()
+    suspend fun perform(action: RequestSpinAction) = with(action) { sdk.requestSpin(tribeId, players, pins) }
+        .successResult()
 }

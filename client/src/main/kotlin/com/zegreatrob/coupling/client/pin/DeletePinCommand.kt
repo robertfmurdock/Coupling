@@ -13,6 +13,7 @@ data class DeletePinCommand(val id: TribeId, val pinId: String) :
 interface DeletePinCommandDispatcher {
     val pinRepository: PinDelete
 
-    suspend fun perform(command: DeletePinCommand) = pinRepository.deletePin(command.id, command.pinId)
+    suspend fun perform(command: DeletePinCommand) = with(command) { pinRepository.deletePin(id, pinId) }
         .deletionResult("Pin")
+
 }

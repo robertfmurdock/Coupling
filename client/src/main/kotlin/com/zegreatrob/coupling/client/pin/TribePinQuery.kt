@@ -20,13 +20,10 @@ interface TribePinQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {
     suspend fun perform(query: TribePinQuery) = query.getData().successResult()
 
     private suspend fun TribePinQuery.getData() = tribeId.getData()
-        .let { (tribe, pins) ->
-            Triple(
-                tribe,
-                pins,
-                pins.findOrDefaultNew(pinId)
-            )
-        }
+        .let { (tribe, pins) -> plusPinWithId(tribe, pins, pinId) }
+
+    private fun plusPinWithId(tribe: Tribe?, pins: List<Pin>, pinId: String?) =
+        Triple(tribe, pins, pins.findOrDefaultNew(pinId))
 
     private suspend fun TribeId.getData() = coroutineScope {
         await(async { get() }, async { getPins() })

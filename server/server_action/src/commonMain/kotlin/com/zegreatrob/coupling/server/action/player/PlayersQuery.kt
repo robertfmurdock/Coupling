@@ -5,8 +5,10 @@ import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
@@ -18,19 +20,27 @@ object PlayersQuery : SimpleSuspendAction<PlayersQueryDispatcher, List<Record<Tr
 interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax, FindCallSignActionDispatcher {
     suspend fun perform(query: PlayersQuery) = doWork().successResult()
 
-    private suspend fun doWork(): List<Record<TribeIdPlayer>> {
-        val playerRecords = currentTribeId.getPlayerRecords()
+    private suspend fun doWork() = currentTribeId.getPlayerRecords().populateMissingCallSigns()
 
-        var updatedPlayers = emptyList<Record<TribeIdPlayer>>()
-        playerRecords
-            .forEachIndexed { _, record ->
-                updatedPlayers = updatedPlayers + record.copy(
-                    data = record.data.copy(element = record.data.player)
-                )
+    private fun List<TribeRecord<Player>>.populateMissingCallSigns() = foldIndexed(
+        emptyList<Record<TribeIdPlayer>>()
+    ) { index, acc, record ->
+        val callSign = findCallSign(
+            acc.map { it.data.player },
+            map { it.data.player },
+            index,
+            record.data.player
+        )
 
-            }
-        return updatedPlayers
+        acc + record.copy(
+            data = record.data.copy(element = record.data.player.withPopulatedCallSign(callSign))
+        )
     }
+
+    private fun Player.withPopulatedCallSign(callSign: CallSign) = copy(
+        callSignAdjective = callSignAdjective.ifEmpty { callSign.adjective },
+        callSignNoun = callSignNoun.ifEmpty { callSign.noun }
+    )
 
     private fun findCallSign(updatedPlayers: List<Player>, players: List<Player>, index: Int, player: Player) =
         perform(

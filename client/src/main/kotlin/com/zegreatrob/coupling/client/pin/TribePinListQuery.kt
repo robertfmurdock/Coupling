@@ -17,12 +17,12 @@ data class TribePinListQuery(val tribeId: TribeId) :
 }
 
 interface TribePinListQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {
-    suspend fun perform(query: TribePinListQuery) = query.tribeId.getData()
+    suspend fun perform(query: TribePinListQuery) = query.tribeId.getData().successResult()
 
     private suspend fun TribeId.getData() = coroutineScope {
         await(
             async { get() },
             async { getPins() }
         )
-    }.successResult()
+    }
 }

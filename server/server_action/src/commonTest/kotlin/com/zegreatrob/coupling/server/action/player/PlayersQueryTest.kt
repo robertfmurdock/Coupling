@@ -71,9 +71,9 @@ class PlayersQueryTest {
             .apply {
                 map(Player::id)
                     .assertIsEqualTo(players.map(Player::id))
-                mapNotNull(Player::callSignAdjective).size
+                map(Player::callSignAdjective).filterNot(String::isEmpty).size
                     .assertIsEqualTo(players.size)
-                mapNotNull(Player::callSignNoun).size
+                map(Player::callSignNoun).filterNot(String::isEmpty).size
                     .assertIsEqualTo(players.size)
             }
     }
