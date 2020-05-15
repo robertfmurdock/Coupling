@@ -25,30 +25,40 @@ interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsLis
     private fun List<TribeRecord<Player>>.populateMissingCallSigns() = foldIndexed(
         emptyList<Record<TribeIdPlayer>>()
     ) { index, acc, record ->
-        val callSign = findCallSign(
-            acc.map { it.data.player },
-            map { it.data.player },
-            index,
-            record.data.player
-        )
+        val callSign = findCallSign(index, acc, record)
 
         acc + record.copy(
             data = record.data.copy(element = record.data.player.withPopulatedCallSign(callSign))
         )
     }
 
+    private fun List<TribeRecord<Player>>.findCallSign(
+        index: Int,
+        acc: List<Record<TribeIdPlayer>>,
+        record: TribeRecord<Player>
+    ) = record.data.player.email.findCallSign(
+        mapPlayers(),
+        index,
+        acc.mapPlayers()
+    )
+
+    private fun List<Record<TribeIdPlayer>>.mapPlayers() = map { it.data.player }
+
     private fun Player.withPopulatedCallSign(callSign: CallSign) = copy(
         callSignAdjective = callSignAdjective.ifEmpty { callSign.adjective },
         callSignNoun = callSignNoun.ifEmpty { callSign.noun }
     )
 
-    private fun findCallSign(updatedPlayers: List<Player>, players: List<Player>, index: Int, player: Player) =
-        perform(
-            FindCallSignAction(
-                players = playersWithNamesSoFar(updatedPlayers, players, index),
-                email = player.email
-            )
+    private fun String.findCallSign(
+        players: List<Player>,
+        index: Int,
+        updatedPlayers: List<Player>
+    ) = perform(
+        FindCallSignAction(
+            players = playersWithNamesSoFar(updatedPlayers, players, index),
+            email = this
         )
+    )
 
     private fun playersWithNamesSoFar(updatedPlayers: List<Player>, players: List<Player>, index: Int) =
         updatedPlayers + players.subList(index, players.lastIndex)
