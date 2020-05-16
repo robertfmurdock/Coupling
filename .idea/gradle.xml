@@ -13,7 +13,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/action" />
-            <option value="$PROJECT_DIR$/action-test" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/export" />
@@ -31,6 +30,7 @@
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server/server_action" />
             <option value="$PROJECT_DIR$/stub-model" />
+            <option value="$PROJECT_DIR$/test-action" />
             <option value="$PROJECT_DIR$/test-logging" />
           </set>
         </option>

@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 
@@ -22,15 +23,14 @@ interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsLis
 
     private suspend fun doWork() = currentTribeId.getPlayerRecords().populateMissingCallSigns()
 
-    private fun List<TribeRecord<Player>>.populateMissingCallSigns() = foldIndexed(
-        emptyList<Record<TribeIdPlayer>>()
-    ) { index, acc, record ->
+    private fun List<TribeRecord<Player>>.populateMissingCallSigns() = foldIndexedToList { index, acc, record ->
         val callSign = findCallSign(index, acc, record)
 
-        acc + record.copy(
-            data = record.data.copy(element = record.data.player.withPopulatedCallSign(callSign))
-        )
+        record.copy(data = record.data.copy(element = record.data.player.withPopulatedCallSign(callSign)))
     }
+
+    private fun <T1> List<T1>.foldIndexedToList(operation: (index: Int, acc: List<T1>, T1) -> T1): List<T1> =
+        foldIndexed(emptyList()) { index, acc, record -> acc + operation(index, acc, record) }
 
     private fun List<TribeRecord<Player>>.findCallSign(
         index: Int,

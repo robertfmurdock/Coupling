@@ -29,7 +29,7 @@ kotlin {
         getByName("commonTest") {
             dependencies {
                 implementation(project(":json"))
-                implementation(project(":action-test"))
+                implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:+")
