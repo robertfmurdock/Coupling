@@ -17,7 +17,7 @@ kotlin {
                 api(project(":repository"))
                 api(project(":test-logging"))
                 api(project(":stub-model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.6")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("org.jetbrains.kotlin:kotlin-test")
@@ -29,7 +29,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -42,7 +42,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.6")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.7")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("com.zegreatrob.testmints:async:+")
             }
