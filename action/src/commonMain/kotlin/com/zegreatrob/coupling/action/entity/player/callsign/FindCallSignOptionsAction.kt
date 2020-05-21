@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 
 data class FindCallSignOptionsAction(val players: List<Player>) :
-    SimpleSuccessfulExecutableAction<FindCallSignOptionsActionDispatcher, CallSignOptions> {
+    SimpleExecutableAction<FindCallSignOptionsActionDispatcher, CallSignOptions> {
     override val performFunc = link(FindCallSignOptionsActionDispatcher::perform)
 }
 

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.heatmap
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Companion.equivalent
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -14,7 +14,7 @@ data class CalculatePairHeatAction(
     val pair: CouplingPair,
     val history: List<PairAssignmentDocument>,
     val rotationPeriod: Int
-) : SimpleSuccessfulExecutableAction<CalculatePairHeatActionDispatcher, Double> {
+) : SimpleExecutableAction<CalculatePairHeatActionDispatcher, Double> {
     override val performFunc = link(CalculatePairHeatActionDispatcher::perform)
 }
 
