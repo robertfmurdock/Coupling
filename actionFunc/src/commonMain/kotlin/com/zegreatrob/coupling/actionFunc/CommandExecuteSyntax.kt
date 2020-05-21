@@ -6,8 +6,6 @@ interface CommandExecuteSyntax {
 
     fun <C : ExecutableResultAction<D, R>, D, R> D.execute(command: C): Result<R>
 
-    fun <C : SuccessfulExecutableAction<D, R>, D, R> D.execute(command: C): R
-
     suspend fun <C : SuspendResultAction<D, R>, D, R> D.execute(command: C): Result<R>
 
 }

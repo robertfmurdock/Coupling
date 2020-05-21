@@ -10,7 +10,6 @@ interface DispatchingCommandExecutor<out D> : ResultCommandExecutor<D>, CommandE
     override suspend fun <C : SuspendAction<D, R>, R> invoke(command: C): R = TODO("Not yet implemented")
 
     override fun <C : ExecutableResultAction<D, R>, R> invoke(command: C) = actionDispatcher.execute(command)
-    override fun <C : SuccessfulExecutableAction<D, R>, R> invoke(command: C) = actionDispatcher.execute(command)
     override suspend fun <C : SuspendResultAction<D, R>, R> invoke(command: C) = actionDispatcher.execute(command)
 
 }

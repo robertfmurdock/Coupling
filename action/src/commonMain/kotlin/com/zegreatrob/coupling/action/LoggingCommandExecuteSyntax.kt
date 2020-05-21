@@ -9,9 +9,6 @@ interface LoggingCommandExecuteSyntax : CommandExecuteSyntax, ActionLoggingSynta
     override fun <C : ExecutableResultAction<D, R>, D, R> D.execute(command: C) =
         log(command) { command.execute(this) }
 
-    override fun <C : SuccessfulExecutableAction<D, R>, D, R> D.execute(command: C) =
-        log(command) { command.execute(this) }.value
-
     override suspend fun <C : SuspendResultAction<D, R>, D, R> D.execute(command: C) =
         logAsync(command) { handledExecute(command) }
 

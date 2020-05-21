@@ -14,13 +14,7 @@ class StubCommandExecutor<D, C : DispatchableAction<D, R>, R> : ResultCommandExe
     override fun <C2 : ExecutableResultAction<D, R>, R> invoke(command: C2) = (command as? C)
         ?.let { spyFunction(command) as? Result<R> }
         ?: NotFoundResult("Stub not prepared for $command")
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <C2 : SuccessfulExecutableAction<D, R>, R> invoke(command: C2) = (command as? C)
-        ?.let { spyFunction(command) as? SuccessfulResult<R> }
-        ?.value
-        ?: throw Exception("Stub not prepared for $command")
-
+    
     @Suppress("UNCHECKED_CAST")
     override suspend fun <C2 : SuspendResultAction<D, R>, R> invoke(command: C2) = (command as? C)
         ?.let { spyFunction(command) as? Result<R> }
