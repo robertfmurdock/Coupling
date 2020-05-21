@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.actionFunc
 
 interface CommandExecuteSyntax {
 
+    fun <C : ExecutableAction<D, R>, D, R> D.execute(command: C): R
+
     fun <C : ExecutableResultAction<D, R>, D, R> D.execute(command: C): Result<R>
 
     fun <C : SuccessfulExecutableAction<D, R>, D, R> D.execute(command: C): R

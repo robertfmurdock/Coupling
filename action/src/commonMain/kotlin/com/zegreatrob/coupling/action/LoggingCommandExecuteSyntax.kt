@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.actionFunc.*
 
 interface LoggingCommandExecuteSyntax : CommandExecuteSyntax, ActionLoggingSyntax {
 
+    override fun <C : ExecutableAction<D, R>, D, R> D.execute(command: C): R = log(command) { command.execute(this) }
+
     override fun <C : ExecutableResultAction<D, R>, D, R> D.execute(command: C) =
         log(command) { command.execute(this) }
 

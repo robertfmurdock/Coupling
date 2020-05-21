@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.DispatchSyntax
-import com.zegreatrob.coupling.actionFunc.MasterDispatcher
-import com.zegreatrob.coupling.actionFunc.SuccessfulExecutableAction
-import com.zegreatrob.coupling.actionFunc.SuspendResultAction
+import com.zegreatrob.coupling.actionFunc.*
 
 interface GrandMasterDispatcher : MasterDispatcher, LoggingCommandExecuteSyntax {
+
+    override fun <C : ExecutableAction<D, R>, D, R> dispatch(command: C, dispatcher: D): R = dispatcher.execute(command)
 
     override fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatch(command: C, dispatcher: D): R =
         dispatcher.execute(command)
@@ -15,7 +14,6 @@ interface GrandMasterDispatcher : MasterDispatcher, LoggingCommandExecuteSyntax 
 
 }
 
-interface GrandMasterDispatchSyntax: GrandMasterDispatcher,
-    DispatchSyntax {
+interface GrandMasterDispatchSyntax : GrandMasterDispatcher, DispatchSyntax {
     override val masterDispatcher get() = this
 }
