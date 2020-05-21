@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.actionFunc.SuspendAction
 
 interface GrandMasterDispatcher : MasterDispatcher, LoggingCommandExecuteSyntax {
 
-    override fun <C : ExecutableAction<D, R>, D, R> dispatch(command: C, dispatcher: D): R =
-        dispatcher.execute(command)
+    override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R =
+        dispatcher.execute(action)
 
-    override suspend fun <C : SuspendAction<D, R>, D, R> dispatch(command: C, dispatcher: D) =
-        dispatcher.execute(command)
+    override suspend fun <D, R> dispatch(action: SuspendAction<D, R>, dispatcher: D) =
+        dispatcher.execute(action)
 
 }
 

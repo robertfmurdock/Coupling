@@ -14,8 +14,7 @@ data class CalculateHeatMapAction(
     override val performFunc = link(CalculateHeatMapActionDispatcher::perform)
 }
 
-interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher,
-    MasterDispatchSyntax {
+interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher, MasterDispatchSyntax {
 
     fun perform(action: CalculateHeatMapAction) = action.players.map { player ->
         action.heatForEachPair(player)

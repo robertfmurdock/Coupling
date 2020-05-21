@@ -8,7 +8,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 interface DispatchFunc<D> {
-    operator fun <C : SuspendResultAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit
+    operator fun <C : SuspendResultAction<D, R>, R> invoke(
+        commandFunc: () -> C,
+        response: (Result<R>) -> Unit
+    ): () -> Unit
 }
 
 class DecoratedDispatchFunc<D : CommandExecuteSyntax>(
@@ -16,14 +19,17 @@ class DecoratedDispatchFunc<D : CommandExecuteSyntax>(
     private val scope: CoroutineScope
 ) : DispatchFunc<D> {
 
-    override fun <C : SuspendResultAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit =
-        {
+    override fun <C : SuspendResultAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit) =
+        fun() {
             launchExecute(dispatcherFunc(), commandFunc(), response)
         }
 
-    private fun <C : SuspendResultAction<D, R>, R> launchExecute(dispatcher: D, command: C, response: (Result<R>) -> Unit) =
-        scope.launch {
-            dispatcher.execute(command).let(response)
-        }
+    private fun <C : SuspendResultAction<D, R>, R> launchExecute(
+        dispatcher: D,
+        command: C,
+        response: (Result<R>) -> Unit
+    ) = scope.launch {
+        dispatcher.execute(command).let(response)
+    }
 
 }
