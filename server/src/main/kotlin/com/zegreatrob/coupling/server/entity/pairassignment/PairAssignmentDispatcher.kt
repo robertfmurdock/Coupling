@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
-import com.zegreatrob.coupling.actionFunc.ResultCommandExecutor
+import com.zegreatrob.coupling.actionFunc.CommandExecutor
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 
@@ -13,7 +13,7 @@ interface PairAssignmentDispatcher : ProposeNewPairsCommandDispatcher,
     CreatePairCandidateReportsActionDispatcher,
     CreatePairCandidateReportActionDispatcher,
     Wheel {
-    override val execute: ResultCommandExecutor<PairAssignmentDispatcher>
+    override val execute: CommandExecutor<PairAssignmentDispatcher>
     override val wheel: Wheel get() = this
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }

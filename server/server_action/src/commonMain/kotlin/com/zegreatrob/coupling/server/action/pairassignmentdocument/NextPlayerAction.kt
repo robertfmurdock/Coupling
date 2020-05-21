@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.ResultCommandExecutor
+import com.zegreatrob.coupling.actionFunc.CommandExecutor
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
@@ -12,7 +12,7 @@ data class NextPlayerAction(val gameSpin: GameSpin) :
 
 interface NextPlayerActionDispatcher {
 
-    val execute: ResultCommandExecutor<CreatePairCandidateReportsActionDispatcher>
+    val execute: CommandExecutor<CreatePairCandidateReportsActionDispatcher>
 
     fun perform(action: NextPlayerAction) = action.createPairCandidateReports()
         .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->

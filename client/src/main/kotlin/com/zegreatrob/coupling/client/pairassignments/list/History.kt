@@ -61,11 +61,9 @@ private fun onDeleteFuncFactory(
     onDeleteClick(windowFuncs, deleteFunc)
 }
 
-private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit): () -> Unit = {
-    with(windowFuncs) {
-        if (window.confirm("Are you sure you want to delete these pair assignments?")) {
-            deleteFunc.invoke()
-        }
+private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit) = fun() = with(windowFuncs) {
+    if (window.confirm("Are you sure you want to delete these pair assignments?")) {
+        deleteFunc.invoke()
     }
 }
 
