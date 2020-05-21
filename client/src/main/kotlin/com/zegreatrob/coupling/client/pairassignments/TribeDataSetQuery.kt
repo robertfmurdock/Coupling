@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
-import com.zegreatrob.coupling.actionFunc.successResult
+import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.client.stats.TribeData
 import com.zegreatrob.coupling.client.stats.TribeIdLoadAllSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId

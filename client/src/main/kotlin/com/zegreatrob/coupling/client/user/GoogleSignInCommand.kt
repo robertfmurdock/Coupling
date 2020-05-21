@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
-import com.zegreatrob.coupling.actionFunc.successResult
+import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.successResult
 
 object GoogleSignInCommand :
     SimpleSuspendResultAction<GoogleSignInCommandDispatcher, Unit> {

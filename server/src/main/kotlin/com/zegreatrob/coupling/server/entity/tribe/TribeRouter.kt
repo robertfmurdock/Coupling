@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.tribe
 
-import com.zegreatrob.coupling.actionFunc.valueOrNull
+import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.pairassignment.historyRouter
 import com.zegreatrob.coupling.server.entity.pairassignment.spinRoute

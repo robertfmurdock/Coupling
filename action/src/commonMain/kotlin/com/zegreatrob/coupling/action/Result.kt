@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.actionFunc
+package com.zegreatrob.coupling.action
 
 sealed class Result<V>
 data class SuccessfulResult<V>(val value: V) : Result<V>()

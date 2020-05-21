@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
-import com.zegreatrob.coupling.actionFunc.deletionResult
+import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pin.PinDelete
 

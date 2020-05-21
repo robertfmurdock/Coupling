@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
-import com.zegreatrob.coupling.actionFunc.successResult
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player

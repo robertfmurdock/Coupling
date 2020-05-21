@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.actionFunc.CommandExecuteSyntax
-import com.zegreatrob.coupling.actionFunc.Result
-import com.zegreatrob.coupling.actionFunc.SuccessfulResult
-import com.zegreatrob.coupling.actionFunc.SuspendResultAction
+import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.action.SuspendResultAction
 import com.zegreatrob.coupling.actionFunc.execute
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise

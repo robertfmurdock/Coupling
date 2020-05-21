@@ -1,10 +1,14 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.action.LoggingSyntax
+import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.actionFunc.DispatchSyntax
-import com.zegreatrob.coupling.actionFunc.valueOrNull
+import com.zegreatrob.coupling.actionFunc.SuspendAction
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
@@ -41,7 +45,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         broadcastConnectionCountForTribe(tribeId, result.second, wss)
     }
 
-    private suspend fun TribeId.getAuthorizationData(): Pair<Any, List<Player>>? =
+    private suspend fun TribeId.getAuthorizationData() =
         execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
 
     private fun broadcastConnectionCountForTribe(
