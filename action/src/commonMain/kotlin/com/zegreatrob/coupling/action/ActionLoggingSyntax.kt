@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.action
 import com.soywiz.klock.PerformanceCounter
 import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.microseconds
-
-interface Action
+import com.zegreatrob.coupling.actionFunc.Action
 
 interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
 

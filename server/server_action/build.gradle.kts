@@ -16,6 +16,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":action"))
+                api(project(":actionFunc"))
                 api(project(":repository"))
                 implementation("com.benasher44:uuid:0.1.0")
                 implementation("com.soywiz.korlibs.klock:klock:1.10.6")

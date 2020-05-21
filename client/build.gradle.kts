@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":json"))
     implementation(project(":sdk"))
     implementation(project(":action"))
+    implementation(project(":actionFunc"))
     implementation(project(":logging"))
     implementation("com.soywiz.korlibs.klock:klock:1.10.6")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")

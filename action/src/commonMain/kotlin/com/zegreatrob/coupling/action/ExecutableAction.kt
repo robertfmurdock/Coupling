@@ -1,10 +1,13 @@
 package com.zegreatrob.coupling.action
 
+import com.zegreatrob.coupling.actionFunc.Action
+
 interface ExecutableAction<in T, R> : DispatchableAction<T, R> {
     fun execute(dispatcher: T): Result<R>
 }
 
-interface SuccessfulExecutableAction<in T, R> : ExecutableAction<T, R>, Action {
+interface SuccessfulExecutableAction<in T, R> : ExecutableAction<T, R>,
+    Action {
     override fun execute(dispatcher: T): SuccessfulResult<R>
 }
 
