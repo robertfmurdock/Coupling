@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
@@ -30,7 +29,6 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
     }) {
         execute.spyWillReturn(
             listOf(billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-                .successResult()
         )
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
@@ -44,7 +42,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(5))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(0))
     }) {
-        execute.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates).successResult())
+        execute.spyWillReturn(listOf(amadeusPairCandidates, shortyPairCandidates))
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
@@ -60,7 +58,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val pairCandidates = listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
 
     }) {
-        execute.spyWillReturn(pairCandidates.successResult())
+        execute.spyWillReturn(pairCandidates)
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
@@ -75,7 +73,6 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
     }) {
         execute.spyWillReturn(
             listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-                .successResult()
         )
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
@@ -97,7 +94,6 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
     }) {
         execute.spyWillReturn(
             listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-                .successResult()
         )
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))

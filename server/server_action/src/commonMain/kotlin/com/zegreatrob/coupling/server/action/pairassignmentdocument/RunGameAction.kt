@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.actionFunc.DispatchSyntax
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
+import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -17,7 +17,7 @@ data class RunGameAction(
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
     val tribe: Tribe
-) : SimpleSuccessfulExecutableAction<RunGameActionDispatcher, PairAssignmentDocument> {
+) : SimpleExecutableAction<RunGameActionDispatcher, PairAssignmentDocument> {
     override val performFunc = link(RunGameActionDispatcher::perform)
 }
 

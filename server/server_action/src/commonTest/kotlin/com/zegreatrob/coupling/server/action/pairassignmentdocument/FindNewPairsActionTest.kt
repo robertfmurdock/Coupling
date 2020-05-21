@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
@@ -35,7 +34,7 @@ class FindNewPairsActionTest {
         val players = listOf(bill, ted)
     }) {
         wheel.spyReturnValues.add(bill)
-        execute.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)).successResult())
+        execute.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
     } exercise {
         perform(FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime)))
     } verify { result ->
@@ -59,7 +58,7 @@ class FindNewPairsActionTest {
         )
         val history: List<PairAssignmentDocument> = emptyList()
     }) {
-        execute.spyWillReturn(pairCandidateReports.map { it.successResult() })
+        execute.spyWillReturn(pairCandidateReports)
         wheel.spyWillReturn(bill)
     } exercise {
         perform(FindNewPairsAction(Game(history, players, PairingRule.LongestTime)))

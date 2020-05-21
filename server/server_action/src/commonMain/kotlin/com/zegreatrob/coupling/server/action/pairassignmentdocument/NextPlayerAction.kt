@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.actionFunc.ResultCommandExecutor
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 
 data class NextPlayerAction(val gameSpin: GameSpin) :
-    SimpleSuccessfulExecutableAction<NextPlayerActionDispatcher, PairCandidateReport?> {
+    SimpleExecutableAction<NextPlayerActionDispatcher, PairCandidateReport?> {
     override val performFunc = link(NextPlayerActionDispatcher::perform)
 }
 

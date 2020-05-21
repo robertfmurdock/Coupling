@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.actionFunc.ResultCommandExecutor
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 
 data class FindNewPairsAction(val game: Game) :
-    SimpleSuccessfulExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {
+    SimpleExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {
     override val performFunc = link(FindNewPairsActionDispatcher::perform)
 }
 
