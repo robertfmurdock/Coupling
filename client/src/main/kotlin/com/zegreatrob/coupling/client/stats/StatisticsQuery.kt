@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.actionFunc.DispatchSyntax
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class StatisticsQuery(val tribeId: TribeId) :
-    SimpleSuspendAction<StatisticsQueryDispatcher, StatisticQueryResults> {
+    SimpleSuspendResultAction<StatisticsQueryDispatcher, StatisticQueryResults> {
     override val performFunc = link(StatisticsQueryDispatcher::perform)
 }
 

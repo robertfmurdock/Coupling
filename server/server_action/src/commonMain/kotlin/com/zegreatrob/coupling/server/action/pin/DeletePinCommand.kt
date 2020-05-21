@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.action.pin
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.deletionResult
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 data class DeletePinCommand(val tribeId: TribeId, val pinId: String) :
-    SimpleSuspendAction<DeletePinCommandDispatcher, Unit> {
+    SimpleSuspendResultAction<DeletePinCommandDispatcher, Unit> {
     override val performFunc = link(DeletePinCommandDispatcher::perform)
 }
 

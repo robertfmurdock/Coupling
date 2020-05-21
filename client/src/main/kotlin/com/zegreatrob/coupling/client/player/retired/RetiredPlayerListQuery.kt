@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -12,7 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class RetiredPlayerListQuery(val tribeId: TribeId) :
-    SimpleSuspendAction<RetiredPlayerListQueryDispatcher, Pair<Tribe?, List<Player>>> {
+    SimpleSuspendResultAction<RetiredPlayerListQueryDispatcher, Pair<Tribe?, List<Player>>> {
     override val performFunc = link(RetiredPlayerListQueryDispatcher::perform)
 }
 

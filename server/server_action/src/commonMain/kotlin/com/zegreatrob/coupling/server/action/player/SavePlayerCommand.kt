@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 
 data class SavePlayerCommand(val tribeIdPlayer: TribeIdPlayer) :
-    SimpleSuspendAction<SavePlayerCommandDispatcher, Player> {
+    SimpleSuspendResultAction<SavePlayerCommandDispatcher, Player> {
     override val performFunc = link(SavePlayerCommandDispatcher::perform)
 }
 

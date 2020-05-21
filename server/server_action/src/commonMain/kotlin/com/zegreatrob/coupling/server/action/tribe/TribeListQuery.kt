@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -10,7 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 object TribeListQuery :
-    SimpleSuspendAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
+    SimpleSuspendResultAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
     override val performFunc = link(TribeListQueryDispatcher::perform)
 }
 

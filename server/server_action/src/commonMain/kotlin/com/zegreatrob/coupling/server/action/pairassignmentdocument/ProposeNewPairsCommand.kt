@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.actionFunc.DispatchSyntax
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -17,7 +17,7 @@ data class ProposeNewPairsCommand(
     val tribeId: TribeId,
     val players: List<Player>,
     val pins: List<Pin>
-) : SimpleSuspendAction<ProposeNewPairsCommandDispatcher, PairAssignmentDocument> {
+) : SimpleSuspendResultAction<ProposeNewPairsCommandDispatcher, PairAssignmentDocument> {
     override val performFunc = link(ProposeNewPairsCommandDispatcher::perform)
 }
 

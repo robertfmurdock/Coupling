@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -12,7 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class TribePinQuery(val tribeId: TribeId, val pinId: String?) :
-    SimpleSuspendAction<TribePinQueryDispatcher, Triple<Tribe?, List<Pin>, Pin>> {
+    SimpleSuspendResultAction<TribePinQueryDispatcher, Triple<Tribe?, List<Pin>, Pin>> {
     override val performFunc = link(TribePinQueryDispatcher::perform)
 }
 

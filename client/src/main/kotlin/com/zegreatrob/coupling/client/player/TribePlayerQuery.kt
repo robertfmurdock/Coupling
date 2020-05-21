@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.actionFunc.DispatchSyntax
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.actionFunc.successResult
@@ -16,7 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
-    SimpleSuspendAction<TribePlayerQueryDispatcher, Triple<Tribe?, List<Player>, Player>> {
+    SimpleSuspendResultAction<TribePlayerQueryDispatcher, Triple<Tribe?, List<Player>, Player>> {
     override val performFunc = link(TribePlayerQueryDispatcher::perform)
 }
 

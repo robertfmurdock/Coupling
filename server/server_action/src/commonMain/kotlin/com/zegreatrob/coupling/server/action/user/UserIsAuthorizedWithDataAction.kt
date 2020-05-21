@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.user
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -15,7 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class UserIsAuthorizedWithDataAction(val tribeId: TribeId) :
-    SimpleSuspendAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Tribe, List<Player>>?> {
+    SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Tribe, List<Player>>?> {
     override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
 }
 

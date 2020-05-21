@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.SdkSyntax
 
 data class RequestSpinAction(val tribeId: TribeId, val players: List<Player>, val pins: List<Pin>) :
-    SimpleSuspendAction<RequestSpinActionDispatcher, PairAssignmentDocument> {
+    SimpleSuspendResultAction<RequestSpinActionDispatcher, PairAssignmentDocument> {
     override val performFunc = link(RequestSpinActionDispatcher::perform)
 }
 

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendResultAction
 import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -13,7 +13,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 data class HistoryQuery(val tribeId: TribeId) :
-    SimpleSuspendAction<HistoryQueryDispatcher, Pair<Tribe?, List<PairAssignmentDocument>>> {
+    SimpleSuspendResultAction<HistoryQueryDispatcher, Pair<Tribe?, List<PairAssignmentDocument>>> {
     override val performFunc = link(HistoryQueryDispatcher::perform)
 }
 
