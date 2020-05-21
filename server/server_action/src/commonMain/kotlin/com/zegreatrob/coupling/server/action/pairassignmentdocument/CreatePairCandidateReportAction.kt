@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 
@@ -8,7 +8,7 @@ data class CreatePairCandidateReportAction(
     val player: Player,
     val history: List<PairAssignmentDocument>,
     val allPlayers: List<Player>
-) : SimpleSuccessfulExecutableAction<CreatePairCandidateReportActionDispatcher, PairCandidateReport> {
+) : SimpleExecutableAction<CreatePairCandidateReportActionDispatcher, PairCandidateReport> {
     override val performFunc = link(CreatePairCandidateReportActionDispatcher::perform)
 }
 

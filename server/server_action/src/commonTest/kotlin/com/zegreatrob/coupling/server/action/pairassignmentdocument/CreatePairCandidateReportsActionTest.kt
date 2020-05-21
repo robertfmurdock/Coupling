@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
@@ -129,7 +128,7 @@ class CreatePairCandidateReportsActionTest {
             history: List<PairAssignmentDocument>
         ) = whenever(
             receive = CreatePairCandidateReportAction(pairCandidateReport.player, history, players),
-            returnValue = pairCandidateReport.successResult()
+            returnValue = pairCandidateReport
         )
 
         private fun List<Player>.without(player: Player) = filterNot { it == player }

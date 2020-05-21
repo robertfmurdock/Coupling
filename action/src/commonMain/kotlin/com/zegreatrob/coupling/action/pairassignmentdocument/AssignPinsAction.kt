@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -9,7 +9,7 @@ data class AssignPinsAction(
     val pairs: List<CouplingPair>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>
-) : SimpleSuccessfulExecutableAction<AssignPinsActionDispatcher, List<PinnedCouplingPair>> {
+) : SimpleExecutableAction<AssignPinsActionDispatcher, List<PinnedCouplingPair>> {
     override val performFunc = link(AssignPinsActionDispatcher::perform)
 }
 
