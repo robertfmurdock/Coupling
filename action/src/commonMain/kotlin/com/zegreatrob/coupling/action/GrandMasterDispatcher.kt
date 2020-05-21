@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.DispatchSyntax
 import com.zegreatrob.coupling.actionFunc.ExecutableAction
+import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.actionFunc.MasterDispatcher
 import com.zegreatrob.coupling.actionFunc.SuspendAction
 
@@ -15,6 +15,8 @@ interface GrandMasterDispatcher : MasterDispatcher, LoggingCommandExecuteSyntax 
 
 }
 
-interface GrandMasterDispatchSyntax : GrandMasterDispatcher, DispatchSyntax {
-    override val masterDispatcher get() = this
+interface GrandMasterDispatchSyntax : MasterDispatchSyntax, TraceIdSyntax {
+    override val masterDispatcher: GrandMasterDispatcher
+        get() = object : GrandMasterDispatcher, TraceIdSyntax by this {
+        }
 }

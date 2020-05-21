@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
-import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
@@ -17,7 +17,7 @@ data class GenerateCallSignAction(
 }
 
 interface GenerateCallSignActionDispatcher : PredictableWordPicker,
-    DispatchSyntax {
+    MasterDispatchSyntax {
 
     fun perform(action: GenerateCallSignAction) = action.callSign()
 

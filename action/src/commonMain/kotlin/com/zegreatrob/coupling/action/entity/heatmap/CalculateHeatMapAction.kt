@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.heatmap
 
-import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -15,7 +15,7 @@ data class CalculateHeatMapAction(
 }
 
 interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher,
-    DispatchSyntax {
+    MasterDispatchSyntax {
 
     fun perform(action: CalculateHeatMapAction) = action.players.map { player ->
         action.heatForEachPair(player)

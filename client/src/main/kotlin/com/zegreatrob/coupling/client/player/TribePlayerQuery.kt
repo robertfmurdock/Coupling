@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
@@ -23,7 +23,7 @@ data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
 interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     FindCallSignActionDispatcher,
-    DispatchSyntax {
+    MasterDispatchSyntax {
     suspend fun perform(query: TribePlayerQuery) = query.get().successResult()
 
     private suspend fun TribePlayerQuery.get() = tribeId.getData()

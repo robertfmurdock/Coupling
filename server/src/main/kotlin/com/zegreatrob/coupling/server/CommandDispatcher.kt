@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingCommandExecutor
 import com.zegreatrob.coupling.action.GrandMasterDispatchSyntax
-import com.zegreatrob.coupling.action.LoggingCommandExecuteSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
@@ -24,7 +23,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
 interface ICommandDispatcher :
-    LoggingCommandExecuteSyntax,
     GrandMasterDispatchSyntax,
     ScopeSyntax,
     TribeDispatcher,
@@ -66,7 +64,6 @@ class CurrentTribeIdDispatcher(
     ICommandDispatcher by commandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
-    LoggingCommandExecuteSyntax,
     PairAssignmentDocumentListQueryDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
