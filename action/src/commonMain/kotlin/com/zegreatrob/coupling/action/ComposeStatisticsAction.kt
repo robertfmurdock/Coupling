@@ -26,10 +26,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
 
     private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
         .map {
-            PairReport(
-                it,
-                calculateTimeSinceLastPartnership(it, history)
-            )
+            PairReport(it, calculateTimeSinceLastPartnership(it, history))
         }
         .sortedWith(PairReportComparator)
 
