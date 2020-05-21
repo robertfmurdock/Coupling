@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.server.action.user
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 
-object FindOrCreateUserAction : SimpleSuspendAction<FindOrCreateUserActionDispatcher, User> {
+object FindOrCreateUserAction :
+    SimpleSuspendAction<FindOrCreateUserActionDispatcher, User> {
     override val performFunc = link(FindOrCreateUserActionDispatcher::perform)
 }
 

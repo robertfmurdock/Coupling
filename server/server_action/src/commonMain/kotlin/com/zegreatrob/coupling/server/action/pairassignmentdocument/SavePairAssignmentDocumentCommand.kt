@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
 

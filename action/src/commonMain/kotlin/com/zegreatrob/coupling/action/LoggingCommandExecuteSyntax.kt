@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.action
 
+import com.zegreatrob.coupling.actionFunc.*
+
 interface LoggingCommandExecuteSyntax : CommandExecuteSyntax, ActionLoggingSyntax {
 
     override fun <C : ExecutableAction<D, R>, D, R> D.execute(command: C) =

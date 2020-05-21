@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue

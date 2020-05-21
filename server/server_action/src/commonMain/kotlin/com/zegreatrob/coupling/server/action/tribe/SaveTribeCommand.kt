@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.UnauthorizedResult
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.Result
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.UnauthorizedResult
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-data class SaveTribeCommand(val tribe: Tribe) : SimpleSuspendAction<SaveTribeCommandDispatcher, Unit> {
+data class SaveTribeCommand(val tribe: Tribe) :
+    SimpleSuspendAction<SaveTribeCommandDispatcher, Unit> {
     override val performFunc = link(SaveTribeCommandDispatcher::perform)
 }
 

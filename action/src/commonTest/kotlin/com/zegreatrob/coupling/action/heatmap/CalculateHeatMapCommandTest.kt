@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action.heatmap
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.MasterDispatcher
+import com.zegreatrob.coupling.actionFunc.MasterDispatcher
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.DispatchSyntax
-import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair

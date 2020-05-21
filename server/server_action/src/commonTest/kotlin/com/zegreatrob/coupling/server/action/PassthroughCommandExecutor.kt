@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action
 
-import com.zegreatrob.coupling.action.*
+import com.zegreatrob.coupling.actionFunc.*
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import kotlin.reflect.KClass

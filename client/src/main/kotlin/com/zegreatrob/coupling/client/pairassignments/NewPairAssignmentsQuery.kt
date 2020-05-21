@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.DispatchSyntax
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.transform
+import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.transform
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

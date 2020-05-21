@@ -17,6 +17,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":action"))
+                implementation(project(":actionFunc"))
                 implementation(project(":test-logging"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")

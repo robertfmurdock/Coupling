@@ -1,20 +1,20 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.action.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 
-object PlayersQuery : SimpleSuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
+object PlayersQuery :
+    SimpleSuspendAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {
     override val performFunc = link(PlayersQueryDispatcher::perform)
 }
 

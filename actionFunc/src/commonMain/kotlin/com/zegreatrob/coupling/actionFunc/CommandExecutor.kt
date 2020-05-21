@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.actionFunc
 
 interface CommandExecutor<out D> {
     operator fun <C : ExecutableAction<D, R>, R> invoke(command: C): Result<R>

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.express.route
 
-import com.zegreatrob.coupling.action.DispatchSyntax
 import com.zegreatrob.coupling.action.LoggingSyntax
-import com.zegreatrob.coupling.action.valueOrNull
+import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.valueOrNull
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId

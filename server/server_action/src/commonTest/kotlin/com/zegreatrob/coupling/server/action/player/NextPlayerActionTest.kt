@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.player
 
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.deletionResult
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.deletionResult
 import com.zegreatrob.coupling.model.player.TribeIdPlayerId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerIdDeleteSyntax

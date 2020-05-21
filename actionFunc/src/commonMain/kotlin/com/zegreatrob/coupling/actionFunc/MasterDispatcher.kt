@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.actionFunc
 
 interface MasterDispatcher {
     fun <C : SuccessfulExecutableAction<D, R>, D, R> dispatch(command: C, dispatcher: D): R

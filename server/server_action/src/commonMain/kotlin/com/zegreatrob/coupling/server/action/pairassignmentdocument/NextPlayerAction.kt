@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.CommandExecutor
-import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.CommandExecutor
+import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 

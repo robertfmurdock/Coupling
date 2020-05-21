@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
-import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 
 data class FindCallSignOptionsAction(val players: List<Player>) :

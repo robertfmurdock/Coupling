@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.actionFunc.Result
+import com.zegreatrob.coupling.actionFunc.SuccessfulResult
+import com.zegreatrob.coupling.actionFunc.SuspendAction
 
 class StubDispatchFunc<D> : DispatchFunc<D> {
 

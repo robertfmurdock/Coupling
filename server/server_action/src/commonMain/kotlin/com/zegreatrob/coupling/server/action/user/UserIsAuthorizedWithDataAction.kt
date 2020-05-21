@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.user
 
-import com.zegreatrob.coupling.action.SimpleSuspendAction
-import com.zegreatrob.coupling.action.successResult
+import com.zegreatrob.coupling.actionFunc.SimpleSuspendAction
+import com.zegreatrob.coupling.actionFunc.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId

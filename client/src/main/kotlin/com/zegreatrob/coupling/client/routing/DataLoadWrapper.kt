@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.action.SuspendAction
-import com.zegreatrob.coupling.action.execute
+import com.zegreatrob.coupling.actionFunc.SuccessfulResult
+import com.zegreatrob.coupling.actionFunc.SuspendAction
+import com.zegreatrob.coupling.actionFunc.execute
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc

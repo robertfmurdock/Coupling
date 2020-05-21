@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action.entity.heatmap
 
-import com.zegreatrob.coupling.action.DispatchSyntax
-import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.DispatchSyntax
+import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
@@ -14,7 +14,8 @@ data class CalculateHeatMapAction(
     override val performFunc = link(CalculateHeatMapActionDispatcher::perform)
 }
 
-interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher, DispatchSyntax {
+interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher,
+    DispatchSyntax {
 
     fun perform(action: CalculateHeatMapAction) = action.players.map { player ->
         action.heatForEachPair(player)

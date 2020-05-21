@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.LoggingCommandExecuteSyntax
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SuspendAction
-import com.zegreatrob.coupling.action.execute
+import com.zegreatrob.coupling.actionFunc.Result
+import com.zegreatrob.coupling.actionFunc.SuspendAction
+import com.zegreatrob.coupling.actionFunc.execute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

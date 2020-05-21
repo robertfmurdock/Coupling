@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignActionDispatcher
+import com.zegreatrob.coupling.actionFunc.MasterDispatcher
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minassert.assertIsEqualTo

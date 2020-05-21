@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.MasterDispatcher
+import com.zegreatrob.coupling.actionFunc.MasterDispatcher
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin

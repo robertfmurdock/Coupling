@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.MasterDispatcher
+import com.zegreatrob.coupling.actionFunc.MasterDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player

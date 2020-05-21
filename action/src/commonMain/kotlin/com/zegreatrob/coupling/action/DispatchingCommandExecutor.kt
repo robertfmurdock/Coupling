@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.action
 
+import com.zegreatrob.coupling.actionFunc.*
+
 interface DispatchingCommandExecutor<out D> : CommandExecutor<D>, CommandExecuteSyntax {
 
     val actionDispatcher: D

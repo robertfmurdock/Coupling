@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.testaction
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.actionFunc.Result
+import com.zegreatrob.coupling.actionFunc.SuccessfulResult
 import com.zegreatrob.testmints.StandardMintDispatcher
 import com.zegreatrob.testmints.async.Exercise
 import kotlin.test.DefaultAsserter

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.actionFunc
 
 sealed class Result<V>
 data class SuccessfulResult<V>(val value: V) : Result<V>()
@@ -20,7 +20,11 @@ fun <V> Result<V>.valueOrNull() = when (this) {
 
 fun <V1, V2> Result<V1>.transform(transform: (V1) -> V2): Result<V2> = when (this) {
     is SuccessfulResult -> transform(value).successResult()
-    is NotFoundResult -> NotFoundResult(entityName)
+    is NotFoundResult -> NotFoundResult(
+        entityName
+    )
     is UnauthorizedResult -> UnauthorizedResult()
-    is ErrorResult -> ErrorResult(message)
+    is ErrorResult -> ErrorResult(
+        message
+    )
 }

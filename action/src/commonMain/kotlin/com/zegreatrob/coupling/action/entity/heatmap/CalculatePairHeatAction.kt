@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.heatmap
 
-import com.zegreatrob.coupling.action.SimpleSuccessfulExecutableAction
+import com.zegreatrob.coupling.actionFunc.SimpleSuccessfulExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Companion.equivalent
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

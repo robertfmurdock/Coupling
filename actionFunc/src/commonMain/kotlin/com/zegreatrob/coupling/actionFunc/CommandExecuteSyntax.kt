@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.actionFunc
 
 interface CommandExecuteSyntax {
 

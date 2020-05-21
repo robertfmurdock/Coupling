@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.express.route
 
-import com.zegreatrob.coupling.action.CommandExecuteSyntax
-import com.zegreatrob.coupling.action.SuspendAction
+import com.zegreatrob.coupling.actionFunc.CommandExecuteSyntax
+import com.zegreatrob.coupling.actionFunc.SuspendAction
 import com.zegreatrob.coupling.server.express.ResponseHelpers
 import com.zegreatrob.coupling.server.external.express.ExpressHandler
 import com.zegreatrob.coupling.server.external.express.Request
