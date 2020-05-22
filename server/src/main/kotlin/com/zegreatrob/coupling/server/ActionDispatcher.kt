@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.action.DispatchingCommandExecutor
+import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.GrandMasterDispatchSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
@@ -22,7 +22,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
-interface ICommandDispatcher :
+interface IActionDispatcher :
     GrandMasterDispatchSyntax,
     ScopeSyntax,
     TribeDispatcher,
@@ -30,16 +30,16 @@ interface ICommandDispatcher :
     PairAssignmentDispatcher,
     UserDispatcher,
     HandleWebsocketConnectionActionDispatcher,
-    DispatchingCommandExecutor<CommandDispatcher>,
+    DispatchingActionExecutor<ActionDispatcher>,
     PinDispatcher,
     RepositoryCatalog
 
-class CommandDispatcher(
+class ActionDispatcher(
     override val user: User,
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
     override val traceId: Uuid
-) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
+) : IActionDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
 
@@ -49,7 +49,7 @@ class CommandDispatcher(
         val preexistingJob = authorizedTribeIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentTribeIdDispatcher(TribeId(tribeId), this@CommandDispatcher)
+                CurrentTribeIdDispatcher(TribeId(tribeId), this@ActionDispatcher)
             }.also {
                 authorizedTribeIdDispatcherJob = it
             }.await()
@@ -59,9 +59,9 @@ class CommandDispatcher(
 
 class CurrentTribeIdDispatcher(
     override val currentTribeId: TribeId,
-    private val commandDispatcher: CommandDispatcher
+    private val commandDispatcher: ActionDispatcher
 ) :
-    ICommandDispatcher by commandDispatcher,
+    IActionDispatcher by commandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
     PairAssignmentDocumentListQueryDispatcher {

@@ -27,7 +27,7 @@ object UserDataService {
     )
 
     suspend fun findOrCreateUser(email: String, traceId: Uuid) =
-        authActionDispatcher(email, traceId)(FindOrCreateUserAction)
+        authActionDispatcher(email, traceId).invoke(FindOrCreateUserAction)
             .valueOrNull()
 
 }

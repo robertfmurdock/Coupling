@@ -14,12 +14,12 @@ fun <D, C : DispatchableAction<D, R>, R> stubCommandExecutor(@Suppress("UNUSED_P
 class StubCommandExecutor<D, C : DispatchableAction<D, R>, R> : CommandExecutor<D>, Spy<C, R> by SpyData() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <C2 : ExecutableAction<D, R>, R> invoke(command: C2): R = (command as? C)
+    override fun <R> invoke(command: ExecutableAction<D, R>): R = (command as? C)
         ?.let { spyFunction(command) as? R }
         ?: throw Exception("Not configured")
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <C2 : SuspendAction<D, R>, R> invoke(command: C2): R = (command as? C)
+    override suspend fun <R> invoke(command: SuspendAction<D, R>): R = (command as? C)
         ?.let { spyFunction(command) as? R }
         ?: throw Exception("Stub not prepared for $command")
 

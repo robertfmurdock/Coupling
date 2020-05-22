@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.actionFunc.MasterDispatcher
 import com.zegreatrob.coupling.actionFunc.SuspendAction
 
-interface GrandMasterDispatcher : MasterDispatcher, LoggingCommandExecuteSyntax {
+interface GrandMasterDispatcher : MasterDispatcher, LoggingActionExecuteSyntax {
 
     override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R =
         dispatcher.execute(action)

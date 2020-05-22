@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.actionFunc
 
-interface MasterDispatchSyntax : CommandExecuteSyntax {
+interface MasterDispatchSyntax : ActionExecuteSyntax {
     val masterDispatcher: MasterDispatcher
 
     override fun <D, R> D.execute(action: ExecutableAction<D, R>) = masterDispatcher.dispatch(action, this)

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.actionFunc.CommandExecuteSyntax
+import com.zegreatrob.coupling.actionFunc.ActionExecuteSyntax
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendResultAction
@@ -13,7 +13,7 @@ fun Json.tribeId() = this["id"].toString()
 
 typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
 
-fun <D : CommandExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
+fun <D : ActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
     dispatcherFunc: GraphQLDispatcherProvider<D>,
     queryFunc: (Json) -> Q,
     toJson: (R) -> J

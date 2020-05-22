@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendResultAction
 import com.zegreatrob.coupling.actionFunc.execute
-import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.ActionDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.animationsDisabledContext
@@ -70,9 +70,9 @@ typealias DataloadPropsFunc<P> = suspend (ReloadFunction, CoroutineScope) -> P
 
 data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : RProps
 
-fun <Q : SuspendResultAction<CommandDispatcher, R>, R, P : RProps> dataLoadProps(
+fun <Q : SuspendResultAction<ActionDispatcher, R>, R, P : RProps> dataLoadProps(
     query: Q,
-    toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, R) -> P,
+    toProps: (ReloadFunction, DispatchFunc<ActionDispatcher>, R) -> P,
     commander: Commander
 ) = DataLoadProps { reload, scope ->
     val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)

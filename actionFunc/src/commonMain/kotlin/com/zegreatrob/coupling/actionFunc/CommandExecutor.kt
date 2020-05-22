@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.actionFunc
 
 interface CommandExecutor<out D> {
-    operator fun <C : ExecutableAction<D, R>, R> invoke(command: C): R
-    suspend operator fun <C : SuspendAction<D, R>, R> invoke(command: C): R
+    operator fun <R> invoke(action: ExecutableAction<D, R>): R
+    suspend operator fun <R> invoke(action: SuspendAction<D, R>): R
 }

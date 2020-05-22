@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuspendResultAction
-import com.zegreatrob.coupling.actionFunc.CommandExecuteSyntax
+import com.zegreatrob.coupling.actionFunc.ActionExecuteSyntax
 import com.zegreatrob.coupling.actionFunc.execute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ interface DispatchFunc<D> {
     ): () -> Unit
 }
 
-class DecoratedDispatchFunc<D : CommandExecuteSyntax>(
+class DecoratedDispatchFunc<D : ActionExecuteSyntax>(
     val dispatcherFunc: () -> D,
     private val scope: CoroutineScope
 ) : DispatchFunc<D> {

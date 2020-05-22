@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.ActionDispatcher
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.coupling.client.external.react.useState
@@ -26,7 +26,7 @@ val Logout = reactFunction<PageProps> { props ->
     }
 }
 
-private suspend fun CommandDispatcher.waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
+private suspend fun ActionDispatcher.waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
     launch { LogoutCommand.perform() }
     launch { googleSignOut() }
 }.run { setIsLoggedOut(true) }

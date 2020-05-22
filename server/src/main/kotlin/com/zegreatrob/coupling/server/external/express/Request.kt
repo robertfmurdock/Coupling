@@ -4,7 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.ActionDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlin.js.Json
 
@@ -19,7 +19,7 @@ external interface Request {
     fun isAuthenticated(): Boolean
     fun close()
 
-    val commandDispatcher: CommandDispatcher
+    val commandDispatcher: ActionDispatcher
     val user: User
     val traceId: Uuid
     val scope: CoroutineScope
