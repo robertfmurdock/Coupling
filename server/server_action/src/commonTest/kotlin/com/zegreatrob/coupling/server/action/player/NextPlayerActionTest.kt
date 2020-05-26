@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
-import com.zegreatrob.coupling.server.action.stubCommandExecutor
+import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class NextPlayerActionTest : NextPlayerActionDispatcher {
-    override val execute = stubCommandExecutor(CreatePairCandidateReportsAction::class)
+    override val execute = stubActionExecutor(CreatePairCandidateReportsAction::class)
 
     private val bill = Player(id = "Bill")
     private val ted = Player(id = "Ted")

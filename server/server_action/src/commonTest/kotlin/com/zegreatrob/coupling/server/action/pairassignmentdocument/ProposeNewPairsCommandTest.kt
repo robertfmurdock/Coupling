@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
-import com.zegreatrob.coupling.server.action.stubCommandExecutor
+import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -26,7 +26,7 @@ class ProposeNewPairsCommandTest {
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(object :
         ProposeNewPairsCommandDispatcher {
         override val masterDispatcher = MasterDispatcher
-        override val execute = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubActionExecutor(NextPlayerAction::class)
 
         override val wheel: Wheel get() = throw NotImplementedError("Do not use")
         override val pairAssignmentDocumentRepository get() = stubRepository

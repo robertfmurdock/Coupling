@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.server.action.stubCommandExecutor
+import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
@@ -19,7 +19,7 @@ class FindNewPairsActionTest {
 
     @Test
     fun withNoPlayersShouldReturnNoPairs() = setup(object : FindNewPairsActionDispatcher, Wheel {
-        override val execute = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = this
     }) exercise {
         perform(FindNewPairsAction(Game(listOf(), listOf(), PairingRule.LongestTime)))
@@ -27,7 +27,7 @@ class FindNewPairsActionTest {
 
     @Test
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
-        override val execute = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill")
         val ted: Player = Player(id = "Ted")
@@ -46,7 +46,7 @@ class FindNewPairsActionTest {
 
     @Test
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
-        override val execute = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill")
         val ted: Player = Player(id = "Ted")

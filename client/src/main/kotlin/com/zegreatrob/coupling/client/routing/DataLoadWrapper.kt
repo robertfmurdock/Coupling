@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendResultAction
 import com.zegreatrob.coupling.actionFunc.execute
-import com.zegreatrob.coupling.client.ActionDispatcher
+import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.animationsDisabledContext
@@ -70,17 +71,18 @@ typealias DataloadPropsFunc<P> = suspend (ReloadFunction, CoroutineScope) -> P
 
 data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : RProps
 
-fun <Q : SuspendResultAction<ActionDispatcher, R>, R, P : RProps> dataLoadProps(
-    query: Q,
-    toProps: (ReloadFunction, DispatchFunc<ActionDispatcher>, R) -> P,
+fun <R, P : RProps> dataLoadProps(
+    query: SuspendResultAction<CommandDispatcher, R>,
+    toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
 ) = DataLoadProps { reload, scope ->
-    val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)
+    val dispatchFunc = dispatchFunc(commander, scope)
 
-    val result = commander.tracingDispatcher().execute(query)
-
-    if (result is SuccessfulResult<R>) {
-        toProps(reload, dispatchFunc, result.value)
-    } else throw Exception(":-(")
-
+    when (val result: Result<R> = commander.tracingDispatcher().execute(query)) {
+        is SuccessfulResult<R> -> toProps(reload, dispatchFunc, result.value)
+        else -> throw Exception(":-(")
+    }
 }
+
+private fun dispatchFunc(commander: Commander, scope: CoroutineScope) =
+    DecoratedDispatchFunc(commander::tracingDispatcher, scope)

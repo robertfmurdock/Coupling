@@ -5,4 +5,4 @@ interface ActionExecuteSyntax {
     suspend fun <D, R> D.execute(action: SuspendAction<D, R>): R
 }
 
-suspend fun <D : ActionExecuteSyntax, A : SuspendAction<D, R>, R> D.execute(action: A) = execute(action)
+suspend fun <D : ActionExecuteSyntax, R> D.execute(action: SuspendAction<D, R>) = execute(action)

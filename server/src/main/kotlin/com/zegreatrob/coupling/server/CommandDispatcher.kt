@@ -22,7 +22,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
-interface IActionDispatcher :
+interface ICommandDispatcher :
     GrandMasterDispatchSyntax,
     ScopeSyntax,
     TribeDispatcher,
@@ -30,16 +30,16 @@ interface IActionDispatcher :
     PairAssignmentDispatcher,
     UserDispatcher,
     HandleWebsocketConnectionActionDispatcher,
-    DispatchingActionExecutor<ActionDispatcher>,
+    DispatchingActionExecutor<CommandDispatcher>,
     PinDispatcher,
     RepositoryCatalog
 
-class ActionDispatcher(
+class CommandDispatcher(
     override val user: User,
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
     override val traceId: Uuid
-) : IActionDispatcher, RepositoryCatalog by repositoryCatalog {
+) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
 
@@ -49,7 +49,7 @@ class ActionDispatcher(
         val preexistingJob = authorizedTribeIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentTribeIdDispatcher(TribeId(tribeId), this@ActionDispatcher)
+                CurrentTribeIdDispatcher(TribeId(tribeId), this@CommandDispatcher)
             }.also {
                 authorizedTribeIdDispatcherJob = it
             }.await()
@@ -59,9 +59,9 @@ class ActionDispatcher(
 
 class CurrentTribeIdDispatcher(
     override val currentTribeId: TribeId,
-    private val commandDispatcher: ActionDispatcher
+    private val commandDispatcher: CommandDispatcher
 ) :
-    IActionDispatcher by commandDispatcher,
+    ICommandDispatcher by commandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
     PairAssignmentDocumentListQueryDispatcher {

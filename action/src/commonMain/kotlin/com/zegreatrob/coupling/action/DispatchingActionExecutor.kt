@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.actionFunc.ActionExecuteSyntax
-import com.zegreatrob.coupling.actionFunc.CommandExecutor
+import com.zegreatrob.coupling.actionFunc.ActionExecutor
 import com.zegreatrob.coupling.actionFunc.ExecutableAction
 import com.zegreatrob.coupling.actionFunc.SuspendAction
 
-interface DispatchingActionExecutor<out D> : CommandExecutor<D>, ActionExecuteSyntax {
+interface DispatchingActionExecutor<out D> : ActionExecutor<D>, ActionExecuteSyntax {
 
     val actionDispatcher: D
 

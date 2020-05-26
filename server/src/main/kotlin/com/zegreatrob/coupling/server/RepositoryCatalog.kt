@@ -19,9 +19,9 @@ interface RepositoryCatalog {
     val userRepository: UserRepository
 }
 
-suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid): ActionDispatcher {
+suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid): CommandDispatcher {
     val repositoryCatalog = repositoryCatalog(user)
-    return ActionDispatcher(user, repositoryCatalog, scope, traceId)
+    return CommandDispatcher(user, repositoryCatalog, scope, traceId)
 }
 
 private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory())

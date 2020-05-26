@@ -24,7 +24,7 @@ import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 
-class ActionDispatcher(override val traceId: Uuid) :
+class CommandDispatcher(override val traceId: Uuid) :
     PinCommandDispatcher,
     SavePairAssignmentsCommandDispatcher,
     NewPairAssignmentsQueryDispatcher,

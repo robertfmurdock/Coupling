@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.server.action.StubCommandExecutor
-import com.zegreatrob.coupling.server.action.stubCommandExecutor
+import com.zegreatrob.coupling.server.action.StubActionExecutor
+import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -14,7 +14,7 @@ import kotlin.test.Test
 class CreatePairCandidateReportsActionTest {
 
     class WhenTheTribePrefersPairingWithDifferentBadges : CreatePairCandidateReportsActionDispatcher {
-        override val execute = stubCommandExecutor(CreatePairCandidateReportAction::class)
+        override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
 
         @Test
         fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
@@ -91,7 +91,7 @@ class CreatePairCandidateReportsActionTest {
 
     @Test
     fun whenTheTribePrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
-        override val execute = stubCommandExecutor(CreatePairCandidateReportAction::class)
+        override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
         val bill = Player(id = "Bill", badge = 1)
         val ted = Player(id = "Ted", badge = 1)
@@ -119,7 +119,7 @@ class CreatePairCandidateReportsActionTest {
 
     companion object {
 
-        private fun StubCommandExecutor<
+        private fun StubActionExecutor<
                 CreatePairCandidateReportActionDispatcher,
                 CreatePairCandidateReportAction,
                 PairCandidateReport>.givenPlayerReturnReport(

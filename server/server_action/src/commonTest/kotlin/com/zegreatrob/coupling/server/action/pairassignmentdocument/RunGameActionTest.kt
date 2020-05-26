@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.action.stubCommandExecutor
+import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
@@ -19,7 +19,7 @@ class RunGameActionTest {
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
         override val masterDispatcher = MasterDispatcher
-        override val execute = stubCommandExecutor(NextPlayerAction::class)
+        override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 
         val expectedDate = DateTime.now()
