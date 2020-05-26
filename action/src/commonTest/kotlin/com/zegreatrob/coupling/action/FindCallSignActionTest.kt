@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
-import com.zegreatrob.coupling.actionFunc.MasterDispatcher
+import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcher
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -12,7 +12,7 @@ import kotlin.test.Test
 class FindCallSignActionTest {
 
     companion object : FindCallSignActionDispatcher {
-        override val masterDispatcher = MasterDispatcher
+        override val dispatcher = ExecutableActionDispatcher
         const val email = "robert.f.murdock@accenture.com"
         val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeast")
     }

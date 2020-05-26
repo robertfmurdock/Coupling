@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.GenerateCallSignActionDispatcher
-import com.zegreatrob.coupling.actionFunc.MasterDispatcher
+import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcher
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -13,7 +13,7 @@ import kotlin.test.Test
 class GenerateCallSignActionTest {
 
     companion object : GenerateCallSignActionDispatcher {
-        override val masterDispatcher = MasterDispatcher
+        override val dispatcher = ExecutableActionDispatcher
     }
 
     @Test

@@ -16,7 +16,7 @@ interface GrandMasterDispatcher : MasterDispatcher, LoggingActionExecuteSyntax {
 }
 
 interface GrandMasterDispatchSyntax : MasterDispatchSyntax, TraceIdSyntax {
-    override val masterDispatcher: GrandMasterDispatcher
+    override val dispatcher: GrandMasterDispatcher
         get() = object : GrandMasterDispatcher, TraceIdSyntax by this {
         }
 }

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.MasterDispatcher
+import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcher
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -25,7 +25,7 @@ class ProposeNewPairsCommandTest {
     @Test
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(object :
         ProposeNewPairsCommandDispatcher {
-        override val masterDispatcher = MasterDispatcher
+        override val dispatcher = ExecutableActionDispatcher
         override val execute = stubActionExecutor(NextPlayerAction::class)
 
         override val wheel: Wheel get() = throw NotImplementedError("Do not use")

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
-import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
+import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
@@ -16,8 +16,7 @@ data class GenerateCallSignAction(
     override val performFunc = link(GenerateCallSignActionDispatcher::perform)
 }
 
-interface GenerateCallSignActionDispatcher : PredictableWordPicker,
-    MasterDispatchSyntax {
+interface GenerateCallSignActionDispatcher : PredictableWordPicker, ExecutableActionDispatcherSyntax {
 
     fun perform(action: GenerateCallSignAction) = action.callSign()
 
