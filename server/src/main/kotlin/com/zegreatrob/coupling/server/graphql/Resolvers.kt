@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.actionFunc.ActionExecuteSyntax
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendResultAction
+import com.zegreatrob.coupling.actionFunc.SuspendActionExecuteSyntax
 import com.zegreatrob.coupling.actionFunc.execute
 import com.zegreatrob.coupling.server.external.express.Request
 import kotlinx.coroutines.promise
@@ -13,7 +13,7 @@ fun Json.tribeId() = this["id"].toString()
 
 typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
 
-fun <D : ActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
+fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
     dispatcherFunc: GraphQLDispatcherProvider<D>,
     queryFunc: (Json) -> Q,
     toJson: (R) -> J

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.action.SuspendResultAction
-import com.zegreatrob.coupling.actionFunc.ActionExecuteSyntax
+import com.zegreatrob.coupling.actionFunc.SuspendActionExecuteSyntax
 import com.zegreatrob.coupling.server.express.ResponseHelpers
 import com.zegreatrob.coupling.server.external.express.ExpressHandler
 import com.zegreatrob.coupling.server.external.express.Request
@@ -31,7 +31,7 @@ fun <C : SuspendResultAction<D, R>, D, R> dispatch(
 private fun <T> handleRequestAndRespond(
     request: Request,
     response: Response,
-    handler: suspend ActionExecuteSyntax.() -> T,
+    handler: suspend SuspendActionExecuteSyntax.() -> T,
     responder: Response.(T) -> Unit
 ) = request.scope.launch {
     runCatching {
