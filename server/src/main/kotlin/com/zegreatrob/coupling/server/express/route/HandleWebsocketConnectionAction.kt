@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.LoggingSyntax
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.valueOrNull
-import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.actionFunc.SuspendAction
+import com.zegreatrob.coupling.actionFunc.SuspendActionDispatcherSyntax
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -20,7 +20,7 @@ import kotlin.js.json
 data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
 
 interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataActionDispatcher, LoggingSyntax,
-    MasterDispatchSyntax {
+    SuspendActionDispatcherSyntax {
 
     fun HandleWebsocketConnectionAction.perform() = request.scope.launch {
         val tribeId = request.tribeId()

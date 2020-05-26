@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.actionFunc.MasterDispatchSyntax
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.transform
+import com.zegreatrob.coupling.actionFunc.SuspendActionDispatcherSyntax
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -25,7 +25,7 @@ data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<Str
 interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     TribeIdPinsSyntax,
     TribeIdPlayersSyntax,
-    MasterDispatchSyntax,
+    SuspendActionDispatcherSyntax,
     RequestSpinActionDispatcher {
 
     suspend fun perform(query: NewPairAssignmentsQuery) = with(query) {
