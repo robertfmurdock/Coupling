@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.ActionExecuteSyntax
 import com.zegreatrob.coupling.actionFunc.ExecutableAction
+import com.zegreatrob.coupling.actionFunc.ExecutableActionExecuteSyntax
 import com.zegreatrob.coupling.actionFunc.SuspendAction
+import com.zegreatrob.coupling.actionFunc.SuspendActionExecuteSyntax
 
-interface LoggingActionExecuteSyntax : ActionExecuteSyntax, ActionLoggingSyntax {
+interface LoggingActionExecuteSyntax : ExecutableActionExecuteSyntax, SuspendActionExecuteSyntax, ActionLoggingSyntax {
 
     override fun <D, R> D.execute(action: ExecutableAction<D, R>): R = log(action) { action.execute(this) }
 
