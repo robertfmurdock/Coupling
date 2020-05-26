@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.ActionExecutor
+import com.zegreatrob.coupling.actionFunc.ExecutableActionExecutor
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -12,7 +12,7 @@ data class CreatePairCandidateReportsAction(val game: GameSpin) :
 
 interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
 
-    val execute: ActionExecutor<CreatePairCandidateReportActionDispatcher>
+    val execute: ExecutableActionExecutor<CreatePairCandidateReportActionDispatcher>
 
     fun perform(action: CreatePairCandidateReportsAction) = action.createReports()
         .ifEmpty { action.createReportsUsingLongestRule() }

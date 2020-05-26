@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.ActionExecutor
+import com.zegreatrob.coupling.actionFunc.ExecutableActionExecutor
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -24,7 +24,7 @@ private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
 
 interface FindNewPairsActionDispatcher {
 
-    val execute: ActionExecutor<NextPlayerActionDispatcher>
+    val execute: ExecutableActionExecutor<NextPlayerActionDispatcher>
 
     val wheel: Wheel
 
