@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.server.action
 
 import com.zegreatrob.coupling.actionFunc.*
+import com.zegreatrob.coupling.actionFunc.async.SuspendAction
+import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecutor
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import kotlin.reflect.KClass
@@ -8,7 +10,8 @@ import kotlin.reflect.KClass
 fun <D, C : DispatchableAction<D, R>, R> stubActionExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<C>) =
     StubActionExecutor<D, C, R>()
 
-class StubActionExecutor<D, C : DispatchableAction<D, R>, R> : ExecutableActionExecutor<D>, SuspendActionExecutor<D>,
+class StubActionExecutor<D, C : DispatchableAction<D, R>, R> : ExecutableActionExecutor<D>,
+    SuspendActionExecutor<D>,
     Spy<C, R> by SpyData() {
 
     @Suppress("UNCHECKED_CAST")

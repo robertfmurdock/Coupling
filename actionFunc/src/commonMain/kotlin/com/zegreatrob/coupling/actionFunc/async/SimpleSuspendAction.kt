@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.actionFunc
+package com.zegreatrob.coupling.actionFunc.async
 
 interface SimpleSuspendAction<T, R> : SuspendAction<T, R> {
     override suspend fun execute(dispatcher: T) = performFunc(dispatcher)

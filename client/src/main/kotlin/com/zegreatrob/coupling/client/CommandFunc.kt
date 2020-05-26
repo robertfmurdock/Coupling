@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuspendResultAction
-import com.zegreatrob.coupling.actionFunc.SuspendActionExecuteSyntax
-import com.zegreatrob.coupling.actionFunc.execute
+import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecuteSyntax
+import com.zegreatrob.coupling.actionFunc.async.execute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
