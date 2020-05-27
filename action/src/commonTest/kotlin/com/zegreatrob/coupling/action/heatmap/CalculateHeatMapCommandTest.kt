@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
-import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcher
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
@@ -16,7 +16,7 @@ import kotlin.test.Test
 class CalculateHeatMapCommandTest {
 
     companion object : CalculateHeatMapActionDispatcher, AssignPinsActionDispatcher {
-        override val dispatcher = ExecutableActionDispatcher
+        override val generalDispatcher = GeneralExecutableActionDispatcher
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
                 date = DateTime.now(),

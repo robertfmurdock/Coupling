@@ -29,6 +29,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
+                implementation("com.zegreatrob.testmints:minspy:+")
             }
         }
 

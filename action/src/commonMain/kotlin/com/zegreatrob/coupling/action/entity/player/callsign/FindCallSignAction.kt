@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
-import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcherSyntax
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
@@ -10,7 +10,7 @@ data class FindCallSignAction(val players: List<Player>, val email: String) :
     override val performFunc = link(FindCallSignActionDispatcher::perform)
 }
 
-interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher, ExecutableActionDispatcherSyntax {
+interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher, GeneralExecutableActionDispatcherSyntax {
 
     fun perform(action: FindCallSignAction) = with(defaultCallSignOptions) {
         action.generateCallSign(adjectives, nouns)

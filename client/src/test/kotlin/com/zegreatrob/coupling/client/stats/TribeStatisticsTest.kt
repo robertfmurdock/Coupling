@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcher
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
@@ -19,7 +19,7 @@ import shallow
 import kotlin.test.Test
 
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
-    override val dispatcher = ExecutableActionDispatcher
+    override val generalDispatcher = GeneralExecutableActionDispatcher
 
     @Test
     fun willShowTribeCard() = setup(object {

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcher
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -18,7 +18,7 @@ class RunGameActionTest {
 
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
-        override val dispatcher = ExecutableActionDispatcher
+        override val generalDispatcher = GeneralExecutableActionDispatcher
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 

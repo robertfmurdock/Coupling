@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcherSyntax
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -23,7 +23,7 @@ data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
 interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     FindCallSignActionDispatcher,
-    ExecutableActionDispatcherSyntax {
+    GeneralExecutableActionDispatcherSyntax {
     suspend fun perform(query: TribePlayerQuery) = query.get().successResult()
 
     private suspend fun TribePlayerQuery.get() = tribeId.getData()

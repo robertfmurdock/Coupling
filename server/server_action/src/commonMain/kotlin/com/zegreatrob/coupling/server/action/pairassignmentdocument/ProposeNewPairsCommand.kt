@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.actionFunc.ExecutableActionDispatcherSyntax
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -21,7 +21,7 @@ data class ProposeNewPairsCommand(
     override val performFunc = link(ProposeNewPairsCommandDispatcher::perform)
 }
 
-interface ProposeNewPairsCommandDispatcher : ExecutableActionDispatcherSyntax, RunGameActionDispatcher,
+interface ProposeNewPairsCommandDispatcher : GeneralExecutableActionDispatcherSyntax, RunGameActionDispatcher,
     TribeIdGetSyntax, TribeIdHistorySyntax {
 
     suspend fun perform(command: ProposeNewPairsCommand) = command.runGame().successResult()

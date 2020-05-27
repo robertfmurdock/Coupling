@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.*
+import com.zegreatrob.coupling.actionFunc.ExecutableAction
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcher
+import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
+import com.zegreatrob.coupling.actionFunc.async.GeneralSuspendActionDispatcher
+import com.zegreatrob.coupling.actionFunc.async.GeneralSuspendActionDispatcherSyntax
 import com.zegreatrob.coupling.actionFunc.async.SuspendAction
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionDispatcher
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionDispatcherSyntax
 
-interface GrandMasterDispatcher : ExecutableActionDispatcher,
-    SuspendActionDispatcher, LoggingActionExecuteSyntax {
+interface GrandMasterDispatcher : GeneralExecutableActionDispatcher,
+    GeneralSuspendActionDispatcher, LoggingActionExecuteSyntax {
 
     override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R =
         dispatcher.execute(action)
@@ -16,10 +18,10 @@ interface GrandMasterDispatcher : ExecutableActionDispatcher,
 
 }
 
-interface GrandMasterDispatchSyntax : ExecutableActionDispatcherSyntax,
-    SuspendActionDispatcherSyntax,
+interface GrandMasterDispatchSyntax : GeneralExecutableActionDispatcherSyntax,
+    GeneralSuspendActionDispatcherSyntax,
     TraceIdSyntax {
-    override val dispatcher: GrandMasterDispatcher
+    override val generalDispatcher: GrandMasterDispatcher
         get() = object : GrandMasterDispatcher, TraceIdSyntax by this {
         }
 }
