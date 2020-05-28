@@ -17,22 +17,21 @@ class GeneralExecutableActionDispatcherTest {
     }
 
     @Test
-    fun generalDispatcherSyntaxAllowsInterceptionOfActionExecutionIncludingReplacingResult() =
-        setup(object : GeneralExecutableActionDispatcherSyntax {
-            val expectedReplacedResult = 127
-            override val generalDispatcher = generalDispatcherSpy()
-                .apply { spyWillReturn(expectedReplacedResult) }
-            val action = MultiplyAction(6, 7)
-            val multiplyDispatcher = multiplyDispatcherSpy()
-        }) exercise {
-            multiplyDispatcher.execute(action)
-        } verify { result ->
-            result.assertIsEqualTo(expectedReplacedResult)
-            generalDispatcher.spyReceivedValues
-                .assertIsEqualTo(listOf(action to multiplyDispatcher))
-            multiplyDispatcher.spyReceivedValues
-                .assertIsEqualTo(emptyList<Any>())
-        }
+    fun syntaxAllowsInterceptionOfActionExecutionIncludingReplacingResult() = setup(object :
+        GeneralExecutableActionDispatcherSyntax {
+        val expectedReplacedResult = 127
+        override val generalDispatcher = generalDispatcherSpy().apply { spyWillReturn(expectedReplacedResult) }
+        val action = MultiplyAction(6, 7)
+        val multiplyDispatcher = multiplyDispatcherSpy()
+    }) exercise {
+        multiplyDispatcher.execute(action)
+    } verify { result ->
+        result.assertIsEqualTo(expectedReplacedResult)
+        generalDispatcher.spyReceivedValues
+            .assertIsEqualTo(listOf(action to multiplyDispatcher))
+        multiplyDispatcher.spyReceivedValues
+            .assertIsEqualTo(emptyList<Any>())
+    }
 
     private fun multiplyDispatcherSpy() = object : MultiplyActionDispatcher, Spy<MultiplyAction, Int> by SpyData() {
         override fun perform(action: MultiplyAction) = spyFunction(action)

@@ -6,7 +6,7 @@ import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 
-class ExecutableActionTest {
+class ExecutableActionTest : ExecutableActionExecuteSyntax {
 
     data class MultiplyAction(val left: Int, val right: Int) : SimpleExecutableAction<MultiplyActionDispatcher, Int> {
         override val performFunc = link(MultiplyActionDispatcher::perform)
@@ -17,7 +17,7 @@ class ExecutableActionTest {
     }
 
     @Test
-    fun actionExecuteMerelyPassesActionToDispatcherWhereWorkCanBeDone() = setup(object {
+    fun executingActionMerelyPassesActionToDispatcherWhereWorkCanBeDone() = setup(object {
         val action = MultiplyAction(2, 3)
         val expectedReturn = 42
         val spy = SpyData<MultiplyAction, Int>().apply { spyWillReturn(expectedReturn) }
@@ -25,7 +25,7 @@ class ExecutableActionTest {
             override fun perform(action: MultiplyAction) = spy.spyFunction(action)
         }
     }) exercise {
-        action.execute(spyDispatcher)
+        spyDispatcher.execute(action)
     } verify { result ->
         result.assertIsEqualTo(expectedReturn)
         spy.spyReceivedValues.assertIsEqualTo(listOf(action))

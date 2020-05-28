@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.actionFunc.async.GeneralSuspendActionDispatcher
 import com.zegreatrob.coupling.actionFunc.async.GeneralSuspendActionDispatcherSyntax
 import com.zegreatrob.coupling.actionFunc.async.SuspendAction
 
-interface GrandMasterDispatcher : GeneralExecutableActionDispatcher,
-    GeneralSuspendActionDispatcher, LoggingActionExecuteSyntax {
+interface GrandMasterDispatcher : GeneralExecutableActionDispatcher, GeneralSuspendActionDispatcher,
+    LoggingActionExecuteSyntax {
 
     override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R =
         dispatcher.execute(action)
