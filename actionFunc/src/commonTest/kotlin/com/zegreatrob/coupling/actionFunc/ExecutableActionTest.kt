@@ -5,15 +5,12 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
+private typealias MultiplyActionDispatcher = (ExecutableActionTest.MultiplyAction) -> Int
 
 class ExecutableActionTest : ExecutableActionExecuteSyntax {
 
     data class MultiplyAction(val left: Int, val right: Int) : SimpleExecutableAction<MultiplyActionDispatcher, Int> {
-        override val performFunc = link(MultiplyActionDispatcher::perform)
-    }
-
-    interface MultiplyActionDispatcher {
-        fun perform(action: MultiplyAction): Int
+        override val performFunc = link(MultiplyActionDispatcher::invoke)
     }
 
     @Test
@@ -21,9 +18,7 @@ class ExecutableActionTest : ExecutableActionExecuteSyntax {
         val action = MultiplyAction(2, 3)
         val expectedReturn = 42
         val spy = SpyData<MultiplyAction, Int>().apply { spyWillReturn(expectedReturn) }
-        val spyDispatcher = object : MultiplyActionDispatcher {
-            override fun perform(action: MultiplyAction) = spy.spyFunction(action)
-        }
+        val spyDispatcher = spy::spyFunction
     }) exercise {
         spyDispatcher.execute(action)
     } verify { result ->
@@ -31,4 +26,3 @@ class ExecutableActionTest : ExecutableActionExecuteSyntax {
         spy.spyReceivedValues.assertIsEqualTo(listOf(action))
     }
 }
-

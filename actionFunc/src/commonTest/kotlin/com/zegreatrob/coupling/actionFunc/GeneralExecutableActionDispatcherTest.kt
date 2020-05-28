@@ -6,14 +6,12 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
+private typealias DivideActionDispatcher = (GeneralExecutableActionDispatcherTest.DivideAction) -> Int
+
 class GeneralExecutableActionDispatcherTest {
 
-    data class MultiplyAction(val left: Int, val right: Int) : SimpleExecutableAction<MultiplyActionDispatcher, Int> {
-        override val performFunc = link(MultiplyActionDispatcher::perform)
-    }
-
-    interface MultiplyActionDispatcher {
-        fun perform(action: MultiplyAction): Int
+    data class DivideAction(val left: Int, val right: Int) : SimpleExecutableAction<DivideActionDispatcher, Int> {
+        override val performFunc = link(DivideActionDispatcher::invoke)
     }
 
     @Test
@@ -21,20 +19,17 @@ class GeneralExecutableActionDispatcherTest {
         GeneralExecutableActionDispatcherSyntax {
         val expectedReplacedResult = 127
         override val generalDispatcher = generalDispatcherSpy().apply { spyWillReturn(expectedReplacedResult) }
-        val action = MultiplyAction(6, 7)
-        val multiplyDispatcher = multiplyDispatcherSpy()
+        val action = DivideAction(6, 7)
+        val divideDispatcherSpy = SpyData<DivideAction, Int>()
+        val divideDispatcher = divideDispatcherSpy::spyFunction
     }) exercise {
-        multiplyDispatcher.execute(action)
+        divideDispatcher.execute(action)
     } verify { result ->
         result.assertIsEqualTo(expectedReplacedResult)
         generalDispatcher.spyReceivedValues
-            .assertIsEqualTo(listOf(action to multiplyDispatcher))
-        multiplyDispatcher.spyReceivedValues
+            .assertIsEqualTo(listOf(action to divideDispatcher))
+        divideDispatcherSpy.spyReceivedValues
             .assertIsEqualTo(emptyList<Any>())
-    }
-
-    private fun multiplyDispatcherSpy() = object : MultiplyActionDispatcher, Spy<MultiplyAction, Int> by SpyData() {
-        override fun perform(action: MultiplyAction) = spyFunction(action)
     }
 
     private fun generalDispatcherSpy() = object : GeneralExecutableActionDispatcher,
