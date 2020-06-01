@@ -1,27 +1,27 @@
-package com.zegreatrob.coupling.actionFunc
+package com.zegreatrob.coupling.actionFunc.async
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
-private typealias DivideActionDispatcher = (GeneralExecutableActionDispatcherTest.DivideAction) -> Int
+private typealias DivideActionDispatcher = suspend (GeneralSuspendActionDispatcherTest.DivideAction) -> Int
 
-class GeneralExecutableActionDispatcherTest {
+class GeneralSuspendActionDispatcherTest {
 
-    data class DivideAction(val left: Int, val right: Int) : SimpleExecutableAction<DivideActionDispatcher, Int> {
+    data class DivideAction(val left: Int, val right: Int) : SimpleSuspendAction<DivideActionDispatcher, Int> {
         override val performFunc = link(DivideActionDispatcher::invoke)
     }
 
     @Test
-    fun syntaxAllowsInterceptionOfActionExecutionIncludingReplacingResult() = setup(object :
-        GeneralExecutableActionDispatcherSyntax {
+    fun syntaxAllowsInterceptionOfActionExecutionIncludingReplacingResult() = asyncSetup(object :
+        GeneralSuspendActionDispatcherSyntax {
         val expectedReplacedResult = 127
         override val generalDispatcher = generalDispatcherSpy().apply { spyWillReturn(expectedReplacedResult) }
         val action = DivideAction(6, 7)
         val divideDispatcherSpy = SpyData<DivideAction, Int>()
-        val divideDispatcher = divideDispatcherSpy::spyFunction
+        val divideDispatcher: DivideActionDispatcher = { divideDispatcherSpy.spyFunction(it) }
     }) exercise {
         divideDispatcher.execute(action)
     } verify { result ->
@@ -32,10 +32,10 @@ class GeneralExecutableActionDispatcherTest {
             .assertIsEqualTo(emptyList<Any>())
     }
 
-    private fun generalDispatcherSpy() = object : GeneralExecutableActionDispatcher,
-        Spy<Pair<ExecutableAction<*, *>, *>, Any> by SpyData() {
+    private fun generalDispatcherSpy() = object : GeneralSuspendActionDispatcher,
+        Spy<Pair<SuspendAction<*, *>, *>, Any> by SpyData() {
         @Suppress("UNCHECKED_CAST")
-        override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R =
+        override suspend fun <D, R> dispatch(action: SuspendAction<D, R>, dispatcher: D): R =
             spyFunction(action to dispatcher) as R
     }
 
