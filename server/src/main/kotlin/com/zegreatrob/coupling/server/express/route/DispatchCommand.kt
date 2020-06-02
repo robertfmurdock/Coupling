@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.action.SuspendResultAction
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecuteSyntax
 import com.zegreatrob.coupling.server.express.ResponseHelpers
 import com.zegreatrob.coupling.server.external.express.ExpressHandler
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
+import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.launch
 
 typealias ExpressDispatcherProvider<D> = (Request) -> D

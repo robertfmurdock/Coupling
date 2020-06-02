@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action.entity.player.callsign
 
-import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
-import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
+import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker

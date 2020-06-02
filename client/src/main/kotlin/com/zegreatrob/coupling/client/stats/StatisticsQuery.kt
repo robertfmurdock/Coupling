@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
+import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe

@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.action
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(

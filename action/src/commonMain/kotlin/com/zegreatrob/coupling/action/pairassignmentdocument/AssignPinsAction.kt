@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget

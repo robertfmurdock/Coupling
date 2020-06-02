@@ -4,6 +4,8 @@
     <bytecodeTargetLevel target="13">
       <module name="Coupling.action-test.jvmMain" target="1.8" />
       <module name="Coupling.action-test.jvmTest" target="1.8" />
+      <module name="Coupling.actionFunc.jvmMain" target="1.8" />
+      <module name="Coupling.actionFunc.jvmTest" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

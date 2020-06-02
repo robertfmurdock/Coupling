@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.async.SimpleSuspendAction
-import com.zegreatrob.coupling.actionFunc.async.SuspendAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.async.SuspendAction
 
 typealias SuspendResultAction<T, R> = SuspendAction<T, Result<R>>
 

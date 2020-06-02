@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.ExecutableAction
-import com.zegreatrob.coupling.actionFunc.ExecutableActionExecuteSyntax
-import com.zegreatrob.coupling.actionFunc.async.SuspendAction
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecuteSyntax
+import com.zegreatrob.testmints.action.ExecutableAction
+import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
+import com.zegreatrob.testmints.action.async.SuspendAction
+import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 interface LoggingActionExecuteSyntax : ExecutableActionExecuteSyntax,
     SuspendActionExecuteSyntax, ActionLoggingSyntax {

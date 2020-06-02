@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.ExecutableAction
-import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcher
-import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
-import com.zegreatrob.coupling.actionFunc.async.GeneralSuspendActionDispatcher
-import com.zegreatrob.coupling.actionFunc.async.GeneralSuspendActionDispatcherSyntax
-import com.zegreatrob.coupling.actionFunc.async.SuspendAction
+import com.zegreatrob.testmints.action.ExecutableAction
+import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcher
+import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
+import com.zegreatrob.testmints.action.async.GeneralSuspendActionDispatcher
+import com.zegreatrob.testmints.action.async.GeneralSuspendActionDispatcherSyntax
+import com.zegreatrob.testmints.action.async.SuspendAction
 
 interface GrandMasterDispatcher : GeneralExecutableActionDispatcher, GeneralSuspendActionDispatcher,
     LoggingActionExecuteSyntax {

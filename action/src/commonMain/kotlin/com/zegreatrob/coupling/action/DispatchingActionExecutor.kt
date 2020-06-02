@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.actionFunc.*
-import com.zegreatrob.coupling.actionFunc.async.SuspendAction
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecuteSyntax
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecutor
+import com.zegreatrob.testmints.action.*
+import com.zegreatrob.testmints.action.async.SuspendAction
+import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
+import com.zegreatrob.testmints.action.async.SuspendActionExecutor
 
 interface DispatchingActionExecutor<out D> : ExecutableActionExecutor<D>,
     SuspendActionExecutor<D>,

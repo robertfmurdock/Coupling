@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action.entity.heatmap
 
-import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcherSyntax
-import com.zegreatrob.coupling.actionFunc.SimpleExecutableAction
+import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player

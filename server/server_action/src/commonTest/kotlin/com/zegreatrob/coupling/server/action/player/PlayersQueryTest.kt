@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.actionFunc.GeneralExecutableActionDispatcher
+import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcher
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer

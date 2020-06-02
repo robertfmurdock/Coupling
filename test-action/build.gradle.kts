@@ -17,14 +17,14 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":action"))
-                implementation(project(":actionFunc"))
                 implementation(project(":test-logging"))
+                implementation("com.zegreatrob.testmints:action:+")
+                implementation("com.zegreatrob.testmints:action-async:+")
+                implementation("com.zegreatrob.testmints:async:+")
+                implementation("com.zegreatrob.testmints:standard:+")
+                implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:async:+")
-                implementation("com.zegreatrob.testmints:minassert:+")
-
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7")

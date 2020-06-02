@@ -17,7 +17,8 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":model"))
-                implementation(project(":actionFunc"))
+                implementation("com.zegreatrob.testmints:action:+")
+                implementation("com.zegreatrob.testmints:action-async:+")
                 implementation("com.benasher44:uuid:0.1.0")
                 implementation("com.soywiz.korlibs.klock:klock:1.10.6")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -38,7 +39,6 @@ kotlin {
                 implementation(project(":test-logging"))
             }
         }
-
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
@@ -46,7 +46,6 @@ kotlin {
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.11.0")
             }
         }
-
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
@@ -58,7 +57,6 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.6.2")
             }
         }
-
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")

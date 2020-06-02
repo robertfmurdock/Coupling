@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.action
 
-import com.zegreatrob.coupling.actionFunc.*
-import com.zegreatrob.coupling.actionFunc.async.SuspendAction
-import com.zegreatrob.coupling.actionFunc.async.SuspendActionExecutor
+import com.zegreatrob.testmints.action.*
+import com.zegreatrob.testmints.action.async.SuspendAction
+import com.zegreatrob.testmints.action.async.SuspendActionExecutor
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import kotlin.reflect.KClass
