@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
@@ -19,7 +18,6 @@ import shallow
 import kotlin.test.Test
 
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
-    override val generalDispatcher = GeneralExecutableActionDispatcher
 
     @Test
     fun willShowTribeCard() = setup(object {
@@ -241,11 +239,8 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }
 }
 
-
 private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
 
-private fun CouplingPair.toPinnedPair() =
-    PinnedCouplingPair(toPinnedPlayers())
+private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
 private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
-

@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 
 data class StatisticsQuery(val tribeId: TribeId) :
     SimpleSuspendResultAction<StatisticsQueryDispatcher, StatisticQueryResults> {
@@ -22,7 +22,7 @@ data class StatisticQueryResults(
     val heatmapData: List<List<Double?>>
 )
 
-interface StatisticsQueryDispatcher : GeneralExecutableActionDispatcherSyntax,
+interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher,
     TribeIdLoadAllSyntax {

@@ -3,14 +3,14 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
-import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class RunGameAction(
     val players: List<Player>,
@@ -21,7 +21,7 @@ data class RunGameAction(
     override val performFunc = link(RunGameActionDispatcher::perform)
 }
 
-interface RunGameActionDispatcher : Clock, GeneralExecutableActionDispatcherSyntax, FindNewPairsActionDispatcher,
+interface RunGameActionDispatcher : Clock, ExecutableActionExecuteSyntax, FindNewPairsActionDispatcher,
     AssignPinsActionDispatcher {
 
     fun perform(action: RunGameAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)

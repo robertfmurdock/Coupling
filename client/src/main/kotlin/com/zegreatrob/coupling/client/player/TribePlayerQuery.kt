@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcherSyntax
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -12,6 +11,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -23,7 +23,7 @@ data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
 interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     FindCallSignActionDispatcher,
-    GeneralExecutableActionDispatcherSyntax {
+    ExecutableActionExecuteSyntax {
     suspend fun perform(query: TribePlayerQuery) = query.get().successResult()
 
     private suspend fun TribePlayerQuery.get() = tribeId.getData()

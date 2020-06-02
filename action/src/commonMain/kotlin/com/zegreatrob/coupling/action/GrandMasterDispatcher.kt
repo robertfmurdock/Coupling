@@ -10,17 +10,14 @@ import com.zegreatrob.testmints.action.async.SuspendAction
 interface GrandMasterDispatcher : GeneralExecutableActionDispatcher, GeneralSuspendActionDispatcher,
     LoggingActionExecuteSyntax {
 
-    override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R =
-        dispatcher.execute(action)
+    override fun <D, R> dispatch(action: ExecutableAction<D, R>, dispatcher: D): R = dispatcher.execute(action)
 
-    override suspend fun <D, R> dispatch(action: SuspendAction<D, R>, dispatcher: D) =
-        dispatcher.execute(action)
+    override suspend fun <D, R> dispatch(action: SuspendAction<D, R>, dispatcher: D) = dispatcher.execute(action)
 
 }
 
 interface GrandMasterDispatchSyntax : GeneralExecutableActionDispatcherSyntax,
-    GeneralSuspendActionDispatcherSyntax,
-    TraceIdSyntax {
+    GeneralSuspendActionDispatcherSyntax, TraceIdSyntax {
     override val generalDispatcher: GrandMasterDispatcher
         get() = object : GrandMasterDispatcher, TraceIdSyntax by this {
         }
