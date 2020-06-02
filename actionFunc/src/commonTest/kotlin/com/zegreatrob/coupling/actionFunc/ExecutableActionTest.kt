@@ -67,4 +67,24 @@ class ExecutableActionTest : ExecutableActionExecuteSyntax {
             second.assertIsEqualTo(533)
         }
     }
+
+    @Test
+    fun usingExecutableActionSyntaxAllowsInterceptionOfAnyAction() = setup(object : ExecutableActionExecuteSyntax {
+        val dispatcher = object : AddActionDispatcher, MultiplyActionDispatcher {}
+        val addAction = AddAction(7, 22)
+        val multiplyAction = MultiplyAction(13, 41)
+
+        val allExecutedActions = mutableListOf<Action>()
+        override fun <D, R> D.execute(action: ExecutableAction<D, R>) = action.execute(this)
+            .also { allExecutedActions.add(action) }
+    }) exercise {
+        Pair(
+            dispatcher.execute(addAction),
+            dispatcher.execute(multiplyAction)
+        )
+    } verify {
+        allExecutedActions.assertIsEqualTo(
+            listOf(addAction, multiplyAction)
+        )
+    }
 }
