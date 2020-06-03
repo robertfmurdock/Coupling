@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.action.GrandMasterDispatchSyntax
+import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
@@ -45,6 +45,6 @@ class CommandDispatcher(override val traceId: Uuid) :
     LogoutCommandDispatcher,
     NewTribeCommandDispatcher,
     StatisticsQueryDispatcher,
-    GrandMasterDispatchSyntax {
+    LoggingActionExecuteSyntax {
     override val sdk = SdkSingleton
 }

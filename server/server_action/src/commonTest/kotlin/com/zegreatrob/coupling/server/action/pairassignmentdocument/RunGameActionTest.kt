@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcher
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
@@ -18,7 +17,6 @@ class RunGameActionTest {
 
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
-        override val generalDispatcher = GeneralExecutableActionDispatcher
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 

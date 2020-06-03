@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
-import com.zegreatrob.coupling.action.GrandMasterDispatchSyntax
+import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
@@ -23,7 +23,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
 interface ICommandDispatcher :
-    GrandMasterDispatchSyntax,
+    LoggingActionExecuteSyntax,
     ScopeSyntax,
     TribeDispatcher,
     PlayerDispatcher,
@@ -72,7 +72,7 @@ class CurrentTribeIdDispatcher(
     private suspend fun TribeId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
     private fun nonCachingPlayerQueryDispatcher() = object : PlayersQueryDispatcher,
-        GrandMasterDispatchSyntax by this,
+        LoggingActionExecuteSyntax by this,
         CurrentTribeIdSyntax by this,
         RepositoryCatalog by this {}
 

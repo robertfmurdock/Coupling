@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
-import com.zegreatrob.coupling.action.GrandMasterDispatchSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
@@ -21,12 +19,10 @@ class GameExamplesTest {
         CreatePairCandidateReportActionDispatcher,
         CreatePairCandidateReportsActionDispatcher,
         DispatchingActionExecutor<Companion>,
-        GrandMasterDispatchSyntax,
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
         override val execute = this
-        override val traceId = uuid4()
     }
 
     class WithUniformBadgesAndLongestTimeRule {

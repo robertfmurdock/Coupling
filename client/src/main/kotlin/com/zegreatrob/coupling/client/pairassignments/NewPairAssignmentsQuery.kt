@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.transform
-import com.zegreatrob.testmints.action.async.GeneralSuspendActionDispatcherSyntax
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -14,6 +13,7 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -25,7 +25,7 @@ data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<Str
 interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     TribeIdPinsSyntax,
     TribeIdPlayersSyntax,
-    GeneralSuspendActionDispatcherSyntax,
+    SuspendActionExecuteSyntax,
     RequestSpinActionDispatcher {
 
     suspend fun perform(query: NewPairAssignmentsQuery) = with(query) {

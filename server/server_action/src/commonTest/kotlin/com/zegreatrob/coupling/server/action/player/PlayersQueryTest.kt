@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.testmints.action.GeneralExecutableActionDispatcher
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
@@ -21,7 +20,6 @@ class PlayersQueryTest {
 
     @Test
     fun willReturnPlayersFromRepository() = asyncSetup(object : PlayersQueryDispatcher {
-        override val generalDispatcher = GeneralExecutableActionDispatcher
         override val currentTribeId = TribeId("Excellent Tribe")
         val players = listOf(
             Player(
@@ -55,7 +53,6 @@ class PlayersQueryTest {
 
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object : PlayersQueryDispatcher {
-        override val generalDispatcher = GeneralExecutableActionDispatcher
         override val currentTribeId = TribeId("Excellent Tribe")
         val players = listOf(
             Player(id = "1"),

@@ -37,12 +37,10 @@ interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
         return StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
-    private fun calculateStats(
-        tribe: Tribe,
-        players: List<Player>,
-        history: List<PairAssignmentDocument>
-    ) = composeStatistics(tribe, players, history).let { statisticsResult ->
-        statisticsResult to calculateHeatMap(players, history, statisticsResult)
+    private fun calculateStats(tribe: Tribe, players: List<Player>, history: List<PairAssignmentDocument>)
+            : Pair<StatisticsReport, List<List<Double?>>> {
+        val statisticsReport = composeStatistics(tribe, players, history)
+        return statisticsReport to calculateHeatMap(players, history, statisticsReport)
     }
 
     private fun composeStatistics(tribe: Tribe, players: List<Player>, history: List<PairAssignmentDocument>) =
@@ -57,4 +55,3 @@ interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
     )
 
 }
-

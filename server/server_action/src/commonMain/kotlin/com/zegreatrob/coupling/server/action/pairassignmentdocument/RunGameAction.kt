@@ -40,4 +40,3 @@ interface RunGameActionDispatcher : Clock, ExecutableActionExecuteSyntax, FindNe
 interface Clock {
     fun currentDate() = DateTime.now()
 }
-
