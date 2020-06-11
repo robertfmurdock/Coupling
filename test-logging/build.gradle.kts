@@ -36,7 +36,6 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging-js:1.7.10")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
         }
