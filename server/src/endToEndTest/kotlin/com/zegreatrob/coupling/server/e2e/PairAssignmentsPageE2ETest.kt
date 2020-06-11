@@ -14,7 +14,9 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.ElementSelector
 import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.Exercise
+import com.zegreatrob.testmints.async.Setup
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
@@ -73,88 +75,82 @@ class PairAssignmentsPageE2ETest {
         }
 
         @Test
-        fun showsTheTribeAndRoster() = testPairAssignmentsPage {
-            setupAsync(object {}) exerciseAsync {
-                CurrentPairAssignmentPage.goTo(tribe.id)
-            } verifyAsync {
-                TribeCard.header.getText().await()
-                    .assertIsEqualTo(tribe.name)
-                PlayerRoster.playerElements.map { it.getText() }.await().toList()
-                    .assertIsEqualTo(players.map { it.name })
-            }
+        fun showsTheTribeAndRoster() = currentPairAssignmentPageSetup {
+        } exercise {
+            goTo(tribe.id)
+        } verify {
+            TribeCard.header.getText().await()
+                .assertIsEqualTo(tribe.name)
+            PlayerRoster.playerElements.map { it.getText() }.await().toList()
+                .assertIsEqualTo(players.map { it.name })
         }
 
         @Test
-        fun willLetYouAddPlayers() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                goTo(tribe.id)
-            } exerciseAsync {
-                PlayerRoster.addPlayerButton.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/new/")
-            }
+        fun willLetYouAddPlayers() = currentPairAssignmentPageSetup {
+            goTo(tribe.id)
+        } exercise {
+            PlayerRoster.addPlayerButton.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/new/")
+        }
+
+        private fun currentPairAssignmentPageSetup(
+            setupFunc: suspend CurrentPairAssignmentPage.() -> Unit
+        ) = PageSetup(asyncSetup(CurrentPairAssignmentPage) {
+            setupProvider.await()
+            setupFunc()
+        })
+
+        @Test
+        fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
+            goTo(tribe.id)
+        } exercise {
+            PlayerRoster.playerElements.first().element(PlayerCard.headerLocator)
+                .performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/${players[0].id}/")
         }
 
         @Test
-        fun willLetYouEditAnExistingPlayer() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                goTo(tribe.id)
-            } exerciseAsync {
-                PlayerRoster.playerElements.first().element(PlayerCard.headerLocator)
-                    .performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/${players[0].id}/")
-            }
+        fun willLetYouViewHistory() = currentPairAssignmentPageSetup {
+            goTo(tribe.id)
+        } exercise {
+            viewHistoryButton.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/history/")
         }
 
         @Test
-        fun willLetYouViewHistory() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                goTo(tribe.id)
-            } exerciseAsync {
-                viewHistoryButton.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/history/")
-            }
+        fun willLetYouPrepareNewPairs() = currentPairAssignmentPageSetup {
+            goTo(tribe.id)
+        } exercise {
+            newPairsButton.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/prepare/")
         }
 
         @Test
-        fun willLetYouPrepareNewPairs() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                goTo(tribe.id)
-            } exerciseAsync {
-                newPairsButton.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/prepare/")
-            }
+        fun willLetYouGoToTheStatsPage() = currentPairAssignmentPageSetup {
+            goTo(tribe.id)
+        } exercise {
+            statisticsButton.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/statistics")
         }
 
         @Test
-        fun willLetYouGoToTheStatsPage() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                goTo(tribe.id)
-            } exerciseAsync {
-                statisticsButton.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/statistics")
-            }
-        }
-
-        @Test
-        fun willLetYouGoToTheRetiredPlayersPage() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                goTo(tribe.id)
-            } exerciseAsync {
-                retiredPlayersButton.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/players/retired")
-            }
+        fun willLetYouGoToTheRetiredPlayersPage() = currentPairAssignmentPageSetup {
+            goTo(tribe.id)
+        } exercise {
+            retiredPlayersButton.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/players/retired")
         }
 
     }
@@ -187,9 +183,9 @@ class PairAssignmentsPageE2ETest {
             )
         }
 
-        val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
+        private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
 
-        val beforeAllProvider by lazyDeferred {
+        private val beforeAllProvider by lazyDeferred {
             val sdk = sdkProvider.await()
             sdk.save(tribe)
             coroutineScope {
@@ -198,6 +194,13 @@ class PairAssignmentsPageE2ETest {
             }
             CouplingLogin.loginProvider.await()
         }
+
+        private fun currentPairAssignmentPageSetup(
+            setupFunc: suspend CurrentPairAssignmentPage.() -> Unit
+        ) = PageSetup(asyncSetup(CurrentPairAssignmentPage) {
+            beforeAllProvider.await()
+            setupFunc()
+        })
 
         private fun testPairAssignmentsPage(handler: suspend () -> Unit) = testAsync {
             beforeAllProvider.await()
@@ -209,13 +212,12 @@ class PairAssignmentsPageE2ETest {
         }
 
         @Test
-        fun willShowPlayersInCorrectPlaces() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) exerciseAsync {
-                goTo(tribe.id)
-            } verifyAsync {
-                assignedPairElements.assertTheMostRecentPairsAreShown()
-                PlayerRoster.playerElements.assertOnlyUnpairedPlayersAreShown()
-            }
+        fun willShowPlayersInCorrectPlaces() = currentPairAssignmentPageSetup {
+        } exercise {
+            goTo(tribe.id)
+        } verify {
+            assignedPairElements.assertTheMostRecentPairsAreShown()
+            PlayerRoster.playerElements.assertOnlyUnpairedPlayersAreShown()
         }
 
         private suspend fun ElementSelector.assertTheMostRecentPairsAreShown() {
@@ -231,33 +233,29 @@ class PairAssignmentsPageE2ETest {
         }
 
         @Test
-        fun whenTheTribeHasCallSignsTurnedOffTheyDoNotDisplay() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                val sdk = sdkProvider.await()
-                sdk.save(tribe.copy(callSignsEnabled = false))
-            } exerciseAsync {
-                goTo(tribe.id)
-            } verifyAsync {
-                assignedPairCallSigns.count().await()
-                    .assertIsEqualTo(0)
-            }
+        fun whenTheTribeHasCallSignsTurnedOffTheyDoNotDisplay() = currentPairAssignmentPageSetup {
+            val sdk = sdkProvider.await()
+            sdk.save(tribe.copy(callSignsEnabled = false))
+        } exercise {
+            goTo(tribe.id)
+        } verify {
+            assignedPairCallSigns.count().await()
+                .assertIsEqualTo(0)
         }
 
         @Test
-        fun whenTheTribeHasCallSignsTurnedOnTheyDisplay() = testPairAssignmentsPage {
-            setupAsync(CurrentPairAssignmentPage) {
-                val sdk = sdkProvider.await()
-                sdk.save(tribe.copy(callSignsEnabled = true))
-            } exerciseAsync {
-                goTo(tribe.id)
-            } verifyAsync {
-                val callSigns = assignedPairCallSigns.map { it.getText() }.await()
-                with(callSigns) {
-                    count().assertIsEqualTo(2)
-                    forEach {
-                        it.split(" ").count()
-                            .assertIsEqualTo(2)
-                    }
+        fun whenTheTribeHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
+            val sdk = sdkProvider.await()
+            sdk.save(tribe.copy(callSignsEnabled = true))
+        } exercise {
+            goTo(tribe.id)
+        } verify {
+            val callSigns = assignedPairCallSigns.map { it.getText() }.await()
+            with(callSigns) {
+                count().assertIsEqualTo(2)
+                forEach {
+                    it.split(" ").count()
+                        .assertIsEqualTo(2)
                 }
             }
         }
@@ -268,4 +266,15 @@ class PairAssignmentsPageE2ETest {
             .map { it.getText() }.await().toList()
     }
 
+}
+
+class PageSetup(private val setup: Setup<CurrentPairAssignmentPage>) {
+    infix fun exercise(exerciseFunc: suspend CurrentPairAssignmentPage.() -> Unit) =
+        PageExercise(setup.exercise(exerciseFunc))
+}
+
+class PageExercise(private val exercise: Exercise<CurrentPairAssignmentPage, Unit>) {
+    infix fun verify(verifyFunc: suspend CurrentPairAssignmentPage.(Unit) -> Unit) = exercise
+        .verifyAnd(verifyFunc)
+        .teardown { checkLogs() }
 }
