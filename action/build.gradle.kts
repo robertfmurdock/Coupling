@@ -17,6 +17,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":model"))
+                implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:action:+")
                 implementation("com.zegreatrob.testmints:action-async:+")
                 implementation("com.benasher44:uuid:0.1.0")
