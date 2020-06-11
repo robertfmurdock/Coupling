@@ -25,7 +25,7 @@ kotlin {
                 api(project(":json"))
                 api(project(":repository:mongo"))
                 api(project(":repository:dynamo"))
-                api("io.github.microutils:kotlin-logging-js:1.7.9")
+                api("io.github.microutils:kotlin-logging-js:1.7.10")
 
                 api(kotlin("stdlib-js", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
 

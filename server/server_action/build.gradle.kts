@@ -24,7 +24,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7")
-                implementation("io.github.microutils:kotlin-logging-common:1.7.9")
+                implementation("io.github.microutils:kotlin-logging-common:1.7.10")
             }
         }
         getByName("commonTest") {
@@ -44,7 +44,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.7")
-                implementation("io.github.microutils:kotlin-logging-js:1.7.9")
+                implementation("io.github.microutils:kotlin-logging-js:1.7.10")
             }
         }
         val jsTest by getting {

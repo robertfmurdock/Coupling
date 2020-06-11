@@ -44,7 +44,7 @@ dependencies {
     implementation("com.zegreatrob.testmints:action:+")
     implementation("com.zegreatrob.testmints:action-async:+")
     implementation("com.soywiz.korlibs.klock:klock:1.10.6")
-    implementation("io.github.microutils:kotlin-logging-js:1.7.9")
+    implementation("io.github.microutils:kotlin-logging-js:1.7.10")
     implementation("com.benasher44:uuid:0.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
