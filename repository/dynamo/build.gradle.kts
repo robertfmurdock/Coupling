@@ -50,16 +50,9 @@ kotlin {
             dependencies {
                 api(project(":logging"))
                 implementation(npm("aws-sdk", "2.615.0"))
-                implementation("io.github.microutils:kotlin-logging-js:1.7.10")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.7")
             }
         }
-        val jsTest by getting {
-            dependencies {
-
-            }
-        }
-
     }
 }
 
