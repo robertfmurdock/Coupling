@@ -268,13 +268,13 @@ class PairAssignmentsPageE2ETest {
 
 }
 
-class PageSetup(private val setup: Setup<CurrentPairAssignmentPage>) {
-    infix fun exercise(exerciseFunc: suspend CurrentPairAssignmentPage.() -> Unit) =
+class PageSetup<C : Any>(private val setup: Setup<C>) {
+    infix fun exercise(exerciseFunc: suspend C.() -> Unit) =
         PageExercise(setup.exercise(exerciseFunc))
 }
 
-class PageExercise(private val exercise: Exercise<CurrentPairAssignmentPage, Unit>) {
-    infix fun verify(verifyFunc: suspend CurrentPairAssignmentPage.(Unit) -> Unit) = exercise
+class PageExercise<C : Any>(private val exercise: Exercise<C, Unit>) {
+    infix fun verify(verifyFunc: suspend C.(Unit) -> Unit) = exercise
         .verifyAnd(verifyFunc)
         .teardown { checkLogs() }
 }
