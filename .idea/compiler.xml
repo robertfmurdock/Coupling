@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="13">
+    <bytecodeTargetLevel target="14">
       <module name="Coupling.action-test.jvmMain" target="1.8" />
       <module name="Coupling.action-test.jvmTest" target="1.8" />
       <module name="Coupling.actionFunc.jvmMain" target="1.8" />
