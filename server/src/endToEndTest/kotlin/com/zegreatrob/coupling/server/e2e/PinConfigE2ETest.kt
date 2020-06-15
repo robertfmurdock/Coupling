@@ -36,7 +36,7 @@ class PinConfigE2ETest {
                 .assertContains(newPinName)
         }
     }
-    
+
     private suspend fun PinConfigPage.waitForPinNameToAppear(newPinName: String) = browser.wait({
         MainScope().async { pinBagPinNames().contains(newPinName) }
             .asPromise().then({ it }) { false }
