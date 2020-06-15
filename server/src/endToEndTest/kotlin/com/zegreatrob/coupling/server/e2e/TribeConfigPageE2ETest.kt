@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClearSendKeys
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
@@ -115,8 +114,7 @@ class TribeConfigPageE2ETest {
 
     class NewTribe {
         @Test
-        fun idFieldShowsAndPersistsAsTextIsAdded() = asyncSetup(TribeConfigPage) {
-            CouplingLogin.loginProvider.await()
+        fun idFieldShowsAndPersistsAsTextIsAdded() = e2eSetup(TribeConfigPage) {
             goToNew()
         } exercise {
             tribeIdInput.performClearSendKeys("oopsie")
@@ -126,9 +124,7 @@ class TribeConfigPageE2ETest {
         }
 
         @Test
-        fun willDefaultPairingRuleToLongestTime() = asyncSetup(TribeConfigPage) {
-            CouplingLogin.loginProvider.await()
-        } exercise {
+        fun willDefaultPairingRuleToLongestTime() = e2eSetup(TribeConfigPage) exercise {
             goToNew()
         } verify {
             checkedOption.getAttribute("label").await()

@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
-import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class WelcomeE2ETest {
     @Test
-    fun whenTheEnterButtonIsPressedWillRedirectToGoogleLogin() = asyncSetup(WelcomePage) {
+    fun whenTheEnterButtonIsPressedWillRedirectToGoogleLogin() = e2eSetup(WelcomePage) {
         goTo()
         enterButton.performClick()
     } exercise {
@@ -16,7 +15,7 @@ class WelcomeE2ETest {
     }
 
     @Test
-    fun whenTheEnterButtonIsPressedWillRedirectToMicrosoftLogin() = asyncSetup(WelcomePage) {
+    fun whenTheEnterButtonIsPressedWillRedirectToMicrosoftLogin() = e2eSetup(WelcomePage) {
         goTo()
         enterButton.performClick()
     } exercise {

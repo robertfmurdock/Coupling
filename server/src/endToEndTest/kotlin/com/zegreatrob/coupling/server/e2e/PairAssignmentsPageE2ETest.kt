@@ -76,7 +76,7 @@ class PairAssignmentsPageE2ETest {
         }
 
         @Test
-        fun showsTheTribeAndRoster() = currentPairAssignmentPageSetup {
+        fun showsTheTribeAasndRoster() = currentPairAssignmentPageSetup {
         } exercise {
             goTo(tribe.id)
         } verify {
