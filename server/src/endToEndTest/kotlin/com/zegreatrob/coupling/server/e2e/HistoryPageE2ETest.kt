@@ -11,19 +11,31 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class HistoryPageE2ETest {
 
+    class Context(val pairAssignments: List<PairAssignmentDocument>) {
+        val page = HistoryPage
+    }
+
     class WithTwoAssignments {
         companion object {
-            private fun historyPageSetup() = asyncSetupTeardown(setupHistoryPageWithPairAssignments(), { checkLogs() })
+
+            val historyPageTemplateSetup = asyncTestTemplate(
+                sharedSetup = {},
+                sharedTeardown = { checkLogs() }
+            )
+
+            private fun historyPageSetup() = historyPageTemplateSetup(
+                contextProvider = setupHistoryPageWithPairAssignments()
+            )
 
             private fun setupHistoryPageWithPairAssignments() = suspend {
                 val (_, pairAssignments) = setupProvider.await()
-                HistoryPageSetup(pairAssignments)
+                Context(pairAssignments)
             }
 
             private val setupProvider by lazyDeferred {
@@ -87,24 +99,5 @@ class HistoryPageE2ETest {
             page.pairAssignments.count().await()
                 .assertIsEqualTo(1)
         }
-
     }
-
 }
-
-class HistoryPageSetup(val pairAssignments: List<PairAssignmentDocument>) {
-    val page = HistoryPage
-}
-
-private fun <C : Any> asyncSetupTeardown(contextProvider: suspend () -> C, teardownFunc: suspend C.(Unit) -> Unit) =
-    object {
-        infix fun exercise(exerciseFunc: suspend C.() -> Unit) = asyncSetup(contextProvider = contextProvider)
-            .exercise(exerciseFunc)
-            .let { verifyObj ->
-                object {
-                    infix fun verify(verify: suspend C.(Unit) -> Unit) {
-                        verifyObj.verifyAnd(verify) teardown teardownFunc
-                    }
-                }
-            }
-    }
