@@ -13,12 +13,10 @@ import kotlin.test.Test
 class RetiredPlayerConfigE2ETest {
 
     @Test
-    fun willShowThePlayerData() = asyncSetup(
-        contextProvider = attachSdk(object : SdkContext() {
-            val tribe = Tribe(TribeId("${randomInt()}-RetiredPlayerConfigE2E"))
-            val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
-        })
-    ) {
+    fun willShowThePlayerData() = sdkSetup(object : SdkContext() {
+        val tribe = Tribe(TribeId("${randomInt()}-RetiredPlayerConfigE2E"))
+        val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
+    }) {
         sdk.save(tribe)
         sdk.save(tribe.id.with(player))
         sdk.deletePlayer(tribe.id, player.id!!)
@@ -29,7 +27,5 @@ class RetiredPlayerConfigE2ETest {
         RetiredPlayerConfig.playerNameTextField.getAttribute("value").await()
             .assertIsEqualTo(player.name)
     }
-
-    private fun <C : SdkContext> attachSdk(context: C) = suspend { context.attach(sdkProvider.await()) }
 
 }
