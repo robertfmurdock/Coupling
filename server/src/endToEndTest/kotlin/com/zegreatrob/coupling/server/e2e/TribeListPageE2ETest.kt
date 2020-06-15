@@ -7,56 +7,63 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class TribeListPageE2ETest {
 
     @Test
-    fun shouldHaveSectionForEachTribe() = testTribeListPage { tribes ->
-        setupAsync(TribeListPage) exerciseAsync {
-            tribeCardElements.map { it.getText() }.await().toList()
-        } verifyAsync { listedTribeNames ->
-            tribes.map { it.name }
-                .forEach { expected ->
-                    listedTribeNames.assertContains(expected)
-                }
-        }
+    fun shouldHaveSectionForEachTribe() = testTribeListPage(object : TribesContext() {
+        val page = TribeListPage
+    }) exercise {
+        page.tribeCardElements.map { it.getText() }.await().toList()
+    } verify { listedTribeNames ->
+        tribes.map { it.name }
+            .forEach { expected ->
+                listedTribeNames.assertContains(expected)
+            }
     }
 
     @Test
-    fun canNavigateToSpecificTribePage() = testTribeListPage { tribes ->
-        setupAsync(TribeListPage) exerciseAsync {
+    fun canNavigateToSpecificTribePage() = testTribeListPage(object : TribesContext() {
+        val page = TribeListPage
+    }) exercise {
+        with(page) {
             tribeCardElement(tribes[0].id)
                 .element(tribeCardHeaderLocator)
                 .performClick()
-        } verifyAsync {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribes[0].id.value}/edit/")
         }
+    } verify {
+        browser.getCurrentUrl().await()
+            .assertIsEqualTo("${browser.baseUrl}/${tribes[0].id.value}/edit/")
     }
 
     @Test
-    fun canNavigateToTheNewTribePage() = testTribeListPage {
-        setupAsync(TribeListPage) exerciseAsync {
-            newTribeButton.performClick()
-        } verifyAsync {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/new-tribe/")
-        }
+    fun canNavigateToTheNewTribePage() = testTribeListPage(object : TribesContext() {
+        val page = TribeListPage
+    }) exercise {
+        page.newTribeButton.performClick()
+    } verify {
+        browser.getCurrentUrl().await()
+            .assertIsEqualTo("${browser.baseUrl}/new-tribe/")
     }
 
     companion object {
-        fun testTribeListPage(test: suspend (List<Tribe>) -> Unit) = testAsync {
-            val tribes = tribeListProvider.await()
-            TribeListPage.goTo()
-            try {
-                test(tribes)
-            } finally {
-                checkLogs()
-            }
+
+        val templateSetup = asyncTestTemplate(
+            sharedSetup = {},
+            sharedTeardown = { checkLogs() }
+        )
+
+        fun <C : TribesContext> testTribeListPage(context: C, additionalActions: suspend C.() -> Unit = {}) =
+            templateSetup(
+                contextProvider = { context.tribes = tribeListProvider.await(); context },
+                additionalActions = { TribeListPage.goTo();additionalActions() }
+            )
+
+        open class TribesContext {
+            lateinit var tribes: List<Tribe>
         }
 
         private val tribeListProvider by lazyDeferred {
