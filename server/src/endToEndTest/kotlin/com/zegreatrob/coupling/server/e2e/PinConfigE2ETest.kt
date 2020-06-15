@@ -4,12 +4,10 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.server.e2e.CouplingLogin.loginProvider
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.*
 import kotlin.random.Random
 import kotlin.test.Test
@@ -94,17 +92,12 @@ class PinConfigE2ETest {
         fun <C : TribeContext> testWithTribe(
             context: C,
             additionalActions: suspend C.() -> Unit
-        ) = pinTestTemplate()(contextProvider = {
+        ) = e2eSetup(contextProvider = {
             context.attachTribe(
                 tribeProvider.await(),
                 sdkProvider.await()
             )
         }, additionalActions = additionalActions)
-
-        private fun pinTestTemplate() = asyncTestTemplate(
-            sharedSetup = { loginProvider.await() },
-            sharedTeardown = { checkLogs() }
-        )
 
         private val tribeProvider by lazy {
             GlobalScope.async {

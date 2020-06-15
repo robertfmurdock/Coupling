@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
@@ -142,15 +141,10 @@ class PlayerConfigPageE2ETest {
 
         companion object {
 
-            val template = asyncTestTemplate(
-                sharedSetup = {},
-                sharedTeardown = { checkLogs() }
-            )
-
             fun <C : PlayersContext> testPlayerConfig(
                 context: C,
                 additionalActions: suspend C.() -> Unit = {}
-            ) = template(
+            ) = e2eSetup(
                 contextProvider = {
                     context.attachPlayers(
                         playersProvider.await(),
@@ -290,15 +284,11 @@ class PlayerConfigPageE2ETest {
     }
 
     class WithOneTribeNoPlayers {
-        val template = asyncTestTemplate(
-            sharedSetup = {},
-            sharedTeardown = { checkLogs() }
-        )
 
         private fun <C : TribeContext> testPlayerConfig(
             context: C,
             additionalActions: suspend C.() -> Unit = {}
-        ) = template(
+        ) = e2eSetup(
             contextProvider = { context.attachTribe(tribeProvider.await(), sdkProvider.await()) },
             additionalActions = additionalActions
         )
@@ -331,15 +321,10 @@ class PlayerConfigPageE2ETest {
 
 abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
 
-    val templateSetup = asyncTestTemplate(
-        sharedSetup = {},
-        sharedTeardown = { checkLogs() }
-    )
-
     fun <C : PlayerContext> testPlayerConfig(
         context: C,
         additionalActions: suspend C.() -> Unit = {}
-    ) = templateSetup(
+    ) = e2eSetup(
         contextProvider = { context.attachPlayer(playerProvider.await(), tribeProvider.await(), sdkProvider.await()) },
         additionalActions = additionalActions
     )

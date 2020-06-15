@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
@@ -24,14 +23,7 @@ class HistoryPageE2ETest {
     class WithTwoAssignments {
         companion object {
 
-            val historyPageTemplateSetup = asyncTestTemplate(
-                sharedSetup = {},
-                sharedTeardown = { checkLogs() }
-            )
-
-            private fun historyPageSetup() = historyPageTemplateSetup(
-                contextProvider = setupHistoryPageWithPairAssignments()
-            )
+            private fun historyPageSetup() = e2eSetup(contextProvider = setupHistoryPageWithPairAssignments())
 
             private fun setupHistoryPageWithPairAssignments() = suspend {
                 val (_, pairAssignments) = setupProvider.await()

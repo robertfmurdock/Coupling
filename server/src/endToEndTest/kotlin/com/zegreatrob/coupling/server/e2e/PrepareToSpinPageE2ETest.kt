@@ -8,18 +8,12 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class PrepareToSpinPageE2ETest {
 
     companion object {
-
-        val templateSetup = asyncTestTemplate(
-            sharedSetup = { CouplingLogin.loginProvider.await() },
-            sharedTeardown = { checkLogs() }
-        )
 
         private val beforeAllProvider by lazyDeferred {
             val tribe = Tribe(
@@ -42,7 +36,7 @@ class PrepareToSpinPageE2ETest {
         }
 
         fun <C : FullTribeContext> testPairAssignments(context: C, additionalActions: suspend C.() -> Unit = {}) =
-            templateSetup(
+            e2eSetup(
                 contextProvider = {
                     val (tribe, players, pin) = beforeAllProvider.await()
                     val sdk = sdkProvider.await()

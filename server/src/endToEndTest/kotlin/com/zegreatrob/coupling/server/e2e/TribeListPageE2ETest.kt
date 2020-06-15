@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
@@ -51,13 +50,8 @@ class TribeListPageE2ETest {
 
     companion object {
 
-        val templateSetup = asyncTestTemplate(
-            sharedSetup = {},
-            sharedTeardown = { checkLogs() }
-        )
-
         fun <C : TribesContext> testTribeListPage(context: C, additionalActions: suspend C.() -> Unit = {}) =
-            templateSetup(
+            e2eSetup(
                 contextProvider = { context.tribes = tribeListProvider.await(); context },
                 additionalActions = { TribeListPage.goTo();additionalActions() }
             )

@@ -199,16 +199,6 @@ class PairAssignmentsPageE2ETest {
         private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
             template(CurrentPairAssignmentPage, additionalSetup)
 
-
-        private fun testPairAssignmentsPage(handler: suspend () -> Unit) = testAsync {
-            beforeAllProvider.await()
-            try {
-                handler()
-            } finally {
-                checkLogs()
-            }
-        }
-
         @Test
         fun willShowPlayersInCorrectPlaces() = currentPairAssignmentPageSetup {
         } exercise {
