@@ -4,13 +4,12 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CoroutineScope
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
@@ -26,133 +25,144 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNothingHasChangedWillNotAlertOnLeaving() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) {
-                goTo(tribe.id, player.id)
-            } exerciseAsync {
-                TribeCard.element.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
-            }
+        fun whenNothingHasChangedWillNotAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
+            page.goTo(tribe.id, player.id)
+        } exercise {
+            TribeCard.element.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
         }
 
         @Test
-        fun whenNameIsChangedWillGetAlertOnLeaving() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) {
-                goTo(tribe.id, player.id)
-                with(playerNameTextField) {
-                    performClear()
-                    performSendKeys("completely different name")
-                }
-            } exerciseAsync {
-                TribeCard.element.performClick()
-                browser.switchTo().alert().await()
-            } verifyAsync { alert ->
-                val text = alert.getText().await()
-                    .also { alert.dismiss().await() }
-                text.assertIsEqualTo("You have unsaved data. Would you like to save before you leave?")
+        fun whenNameIsChangedWillGetAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
+            page.goTo(tribe.id, player.id)
+            with(page.playerNameTextField) {
+                performClear()
+                performSendKeys("completely different name")
             }
+        } exercise {
+            TribeCard.element.performClick()
+            browser.switchTo().alert().await()
+        } verify { alert ->
+            val text = alert.getText().await()
+                .also { alert.dismiss().await() }
+            text.assertIsEqualTo("You have unsaved data. Would you like to save before you leave?")
         }
 
         @Test
-        fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = testPlayerConfig { tribe, player ->
-            setupAsync(object {
-                val newName = "completely different name"
-            }) {
-                with(PlayerConfig) {
-                    goTo(tribe.id, player.id)
-                    with(playerNameTextField) {
-                        performClear()
-                        performSendKeys(newName)
-                    }
-                    saveButton.performClick()
-                    waitForSaveToComplete(newName)
-                }
-            } exerciseAsync {
-                TribeCard.element.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
-                PlayerConfig.goTo(tribe.id, player.id)
-                PlayerConfig.playerNameTextField.getAttribute("value").await()
-                    .assertIsEqualTo(newName)
-            }
-        }
-
-        @Test
-        fun savingWithNoNameWillShowDefaultName() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) {
+        fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+            val newName = "completely different name"
+        }::attachPlayer) {
+            with(page) {
                 goTo(tribe.id, player.id)
                 with(playerNameTextField) {
                     performClear()
-                    performSendKeys(" \b")
+                    performSendKeys(newName)
                 }
                 saveButton.performClick()
-                waitForSaveToComplete("Unknown")
-                waitForPage()
-            } exerciseAsync {
-                TribeCard.element.performClick()
-            } verifyAsync {
-                browser.getCurrentUrl().await()
-                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
-                goTo(tribe.id, player.id)
-                PlayerCard.header.getText().await()
-                    .assertIsEqualTo("Unknown")
+                waitForSaveToComplete(newName)
             }
+        } exercise {
+            TribeCard.element.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+            page.goTo(tribe.id, player.id)
+            page.playerNameTextField.getAttribute("value").await()
+                .assertIsEqualTo(newName)
         }
 
         @Test
-        fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) {
-                goTo(tribe.id, player.id)
-            } exerciseAsync {
-                deleteButton.performClick()
-                browser.switchTo().alert().await()
-                    .accept()
-            } verifyAsync {
-                waitToArriveAt("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+        fun savingWithNoNameWillShowDefaultName() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
+            page.goTo(tribe.id, player.id)
+            with(page.playerNameTextField) {
+                performClear()
+                performSendKeys(" \b")
             }
+            page.saveButton.performClick()
+            page.waitForSaveToComplete("Unknown")
+            page.waitForPage()
+        } exercise {
+            TribeCard.element.performClick()
+        } verify {
+            browser.getCurrentUrl().await()
+                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+            page.goTo(tribe.id, player.id)
+            PlayerCard.header.getText().await()
+                .assertIsEqualTo("Unknown")
         }
 
         @Test
-        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = testPlayerConfig { tribe, player ->
-            val sdk = sdkProvider.await()
+        fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
+            page.goTo(tribe.id, player.id)
+        } exercise {
+            page.deleteButton.performClick()
+            browser.switchTo().alert().await()
+                .accept()
+        } verify {
+            page.waitToArriveAt("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+        }
+
+        @Test
+        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
             sdk.save(tribe.copy(badgesEnabled = false))
-            setupAsync(PlayerConfig) {
-            } exerciseAsync {
-                goTo(tribe.id, player.id)
-            } verifyAsync {
-                defaultBadgeOption.isPresent().await()
-                    .assertIsEqualTo(false)
-                altBadgeOption.isPresent().await()
-                    .assertIsEqualTo(false)
-            }
+        } exercise {
+            page.goTo(tribe.id, player.id)
+        } verify {
+            page.defaultBadgeOption.isPresent().await()
+                .assertIsEqualTo(false)
+            page.altBadgeOption.isPresent().await()
+                .assertIsEqualTo(false)
         }
     }
 
     class WithTribeWithManyPlayers {
 
         @Test
-        fun willShowAllPlayers() = testPlayerConfig { tribe, players ->
-            setupAsync(PlayerConfig) {
-                goTo(tribe.id, players[0].id)
-            } exerciseAsync {
-                PlayerRoster.playerElements.map { element -> element.getText() }.await().toList()
-            } verifyAsync { result ->
-                result.assertIsEqualTo(players.map { it.name })
-            }
+        fun willShowAllPlayers() = testPlayerConfig(object : PlayersContext() {
+            val page = PlayerConfig
+        }::attachPlayers) {
+            page.goTo(tribe.id, players[0].id)
+        } exercise {
+            PlayerRoster.playerElements.map { element -> element.getText() }.await().toList()
+        } verify { result ->
+            result.assertIsEqualTo(players.map { it.name })
         }
 
         companion object {
-            fun testPlayerConfig(handler: suspend CoroutineScope.(Tribe, List<Player>) -> Unit) = testAsync {
-                val tribe = tribeProvider.await()
-                val players = playersProvider.await()
 
-                handler(tribe, players)
-            }
+            val template = asyncTestTemplate(
+                sharedSetup = {},
+                sharedTeardown = { checkLogs() }
+            )
 
-            val tribeProvider by lazy {
+            fun <C : Any> testPlayerConfig(
+                contextProvider: (List<Player>, Tribe, Sdk) -> C,
+                additionalActions: suspend C.() -> Unit = {}
+            ) = template(
+                contextProvider = {
+                    contextProvider(
+                        playersProvider.await(),
+                        tribeProvider.await(),
+                        sdkProvider.await()
+                    )
+                },
+                additionalActions = additionalActions
+            )
+
+            private val tribeProvider by lazy {
                 GlobalScope.async {
                     val sdk = sdkProvider.await()
                     Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E"))
@@ -160,7 +170,7 @@ class PlayerConfigPageE2ETest {
                 }
             }
 
-            val playersProvider by lazy {
+            private val playersProvider by lazy {
                 GlobalScope.async {
                     val sdk = sdkProvider.await()
                     val tribe = tribeProvider.await()
@@ -182,48 +192,48 @@ class PlayerConfigPageE2ETest {
     class WhenTribeHasBadgingEnabled : PlayerConfigOnePlayerTest(::buildTribe, ::buildPlayer) {
 
         @Test
-        fun willShowBadgeSelector() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) exerciseAsync {
-                goTo(tribe.id, player.id)
-            } verifyAsync {
-                defaultBadgeOption.isDisplayed().await()
-                    .assertIsEqualTo(true)
-                element(By.css("option[value=\"1\"]"))
-                    .getAttribute("label")
-                    .await()
-                    .assertIsEqualTo("Badge 1")
-                altBadgeOption.isDisplayed().await()
-                    .assertIsEqualTo(true)
-                element(By.css("option[value=\"2\"]"))
-                    .getAttribute("label")
-                    .await()
-                    .assertIsEqualTo("Badge 2")
-            }
+        fun willShowBadgeSelector() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) exercise {
+            page.goTo(tribe.id, player.id)
+        } verify {
+            page.defaultBadgeOption.isDisplayed().await()
+                .assertIsEqualTo(true)
+            element(By.css("option[value=\"1\"]"))
+                .getAttribute("label")
+                .await()
+                .assertIsEqualTo("Badge 1")
+            page.altBadgeOption.isDisplayed().await()
+                .assertIsEqualTo(true)
+            element(By.css("option[value=\"2\"]"))
+                .getAttribute("label")
+                .await()
+                .assertIsEqualTo("Badge 2")
         }
 
         @Test
-        fun willSelectTheDefaultBadge() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) exerciseAsync {
-                goTo(tribe.id, player.id)
-            } verifyAsync {
-                defaultBadgeOption.getAttribute("checked").await()
-                    .assertIsEqualTo("true")
-            }
+        fun willSelectTheDefaultBadge() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) exercise {
+            page.goTo(tribe.id, player.id)
+        } verify {
+            page.defaultBadgeOption.getAttribute("checked").await()
+                .assertIsEqualTo("true")
         }
 
         @Test
-        fun willRememberBadgeSelection() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) {
-                goTo(tribe.id, player.id)
-            } exerciseAsync {
-                altBadgeOption.performClick()
-                saveButton.performClick()
-                waitForSaveToComplete(player.name)
-            } verifyAsync {
-                goTo(tribe.id, player.id)
-                altBadgeOption.getAttribute("checked").await()
-                    .assertIsEqualTo("true")
-            }
+        fun willRememberBadgeSelection() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
+            page.goTo(tribe.id, player.id)
+        } exercise {
+            page.altBadgeOption.performClick()
+            page.saveButton.performClick()
+            page.waitForSaveToComplete(player.name)
+        } verify {
+            page.goTo(tribe.id, player.id)
+            page.altBadgeOption.getAttribute("checked").await()
+                .assertIsEqualTo("true")
         }
 
         companion object {
@@ -255,36 +265,44 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun adjectiveAndNounCanBeSaved() = testPlayerConfig { tribe, player ->
-            setupAsync(PlayerConfig) {
-                goTo(tribe.id, player.id)
-            } exerciseAsync {
-                with(adjectiveTextInput) {
-                    performClear()
-                    performSendKeys("Superior")
-                }
-                with(nounTextInput) {
-                    performClear()
-                    performSendKeys("Spider-Man")
-                }
-                saveButton.performClick()
-                waitForSaveToComplete(player.name)
-            } verifyAsync {
-                goTo(tribe.id, player.id)
-                adjectiveTextInput.getAttribute("value").await()
-                    .assertIsEqualTo("Superior")
-                nounTextInput.getAttribute("value").await()
-                    .assertIsEqualTo("Spider-Man")
+        fun adjectiveAndNounCanBeSaved() = testPlayerConfig(object : PlayerContext() {
+            val page = PlayerConfig
+        }::attachPlayer) {
+            page.goTo(tribe.id, player.id)
+        } exercise {
+            with(page.adjectiveTextInput) {
+                performClear()
+                performSendKeys("Superior")
             }
+            with(page.nounTextInput) {
+                performClear()
+                performSendKeys("Spider-Man")
+            }
+            page.saveButton.performClick()
+            page.waitForSaveToComplete(player.name)
+        } verify {
+            page.goTo(tribe.id, player.id)
+            page.adjectiveTextInput.getAttribute("value").await()
+                .assertIsEqualTo("Superior")
+            page.nounTextInput.getAttribute("value").await()
+                .assertIsEqualTo("Spider-Man")
         }
 
     }
 
     class WithOneTribeNoPlayers {
-        private fun testPlayerConfig(handler: suspend CoroutineScope.(Tribe) -> Unit) = testAsync {
-            val tribe = tribeProvider.await()
-            handler(tribe)
-        }
+        val template = asyncTestTemplate(
+            sharedSetup = {},
+            sharedTeardown = { checkLogs() }
+        )
+
+        private fun <C : Any> testPlayerConfig(
+            contextProvider: (Tribe, Sdk) -> C,
+            additionalActions: suspend C.() -> Unit = {}
+        ) = template(
+            contextProvider = { contextProvider(tribeProvider.await(), sdkProvider.await()) },
+            additionalActions = additionalActions
+        )
 
         private val tribeProvider by lazy {
             GlobalScope.async {
@@ -299,31 +317,33 @@ class PlayerConfigPageE2ETest {
         )
 
         @Test
-        fun willSuggestCallSign() = testPlayerConfig { tribe ->
-            setupAsync(PlayerConfig) exerciseAsync {
-                goToNew(tribe.id)
-            } verifyAsync {
-                adjectiveTextInput.getAttribute("value").await()
-                    .assertIsNotEqualTo("")
-                nounTextInput.getAttribute("value").await()
-                    .assertIsNotEqualTo("")
-            }
+        fun willSuggestCallSign() = testPlayerConfig(object : TribeContext() {
+            val page = PlayerConfig
+        }::attachTribe) exercise {
+            page.goToNew(tribe.id)
+        } verify {
+            page.adjectiveTextInput.getAttribute("value").await()
+                .assertIsNotEqualTo("")
+            page.nounTextInput.getAttribute("value").await()
+                .assertIsNotEqualTo("")
         }
     }
-
 }
 
 abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
-    fun testPlayerConfig(handler: suspend CoroutineScope.(Tribe, Player) -> Unit) = testAsync {
-        val tribe = tribeProvider.await()
-        val player = playerProvider.await()
 
-        try {
-            handler(tribe, player)
-        } finally {
-            checkLogs()
-        }
-    }
+    val template = asyncTestTemplate(
+        sharedSetup = {},
+        sharedTeardown = { checkLogs() }
+    )
+
+    fun <C : Any> testPlayerConfig(
+        contextProvider: (Player, Tribe, Sdk) -> C,
+        additionalActions: suspend C.() -> Unit = {}
+    ) = template(
+        contextProvider = { contextProvider(playerProvider.await(), tribeProvider.await(), sdkProvider.await()) },
+        additionalActions = additionalActions
+    )
 
     private val tribeProvider by lazy {
         GlobalScope.async {

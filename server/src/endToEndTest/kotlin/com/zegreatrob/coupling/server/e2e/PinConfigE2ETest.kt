@@ -15,19 +15,6 @@ import kotlinx.coroutines.*
 import kotlin.random.Random
 import kotlin.test.Test
 
-private fun <C1 : TribeContext> C1.attachTribe(tribe: Tribe, sdk: Sdk) = also {
-    this.tribe = tribe
-    this.sdk = sdk
-}
-
-abstract class TribeContext : SdkContext() {
-    lateinit var tribe: Tribe
-}
-
-abstract class SdkContext {
-    lateinit var sdk: Sdk
-}
-
 class PinConfigE2ETest {
 
     @Test
