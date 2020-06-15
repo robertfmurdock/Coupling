@@ -52,7 +52,6 @@ class PairAssignmentsPageE2ETest {
                 }
             }
 
-
             fun testPairAssignmentsPage(handler: suspend () -> Unit) = testAsync {
                 setupProvider.await()
 
