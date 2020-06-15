@@ -8,25 +8,20 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class PrepareToSpinPageE2ETest {
 
     companion object {
-        fun testPairAssignments(handler: suspend (Tribe, List<Player>, Pin) -> Unit) = testAsync {
-            val (tribe, players, pin) = beforeAllProvider.await()
-            CouplingLogin.loginProvider.await()
-            try {
-                handler(tribe, players, pin)
-            } finally {
-                checkLogs()
-            }
-        }
 
-        val beforeAllProvider by lazyDeferred {
+        val templateSetup = asyncTestTemplate(
+            sharedSetup = { CouplingLogin.loginProvider.await() },
+            sharedTeardown = { checkLogs() }
+        )
+
+        private val beforeAllProvider by lazyDeferred {
             val tribe = Tribe(
                 id = TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),
                 name = "Funkytown"
@@ -45,44 +40,54 @@ class PrepareToSpinPageE2ETest {
 
             Triple(tribe, players, pin)
         }
+
+        fun <C : FullTribeContext> testPairAssignments(context: C, additionalActions: suspend C.() -> Unit = {}) =
+            templateSetup(
+                contextProvider = {
+                    val (tribe, players, pin) = beforeAllProvider.await()
+                    val sdk = sdkProvider.await()
+                    context.attach(players, listOf(pin), tribe, sdk)
+                },
+                additionalActions = additionalActions
+            )
     }
 
     @Test
-    fun withNoHistory() = testPairAssignments { tribe, players, _ ->
-        setupAsync(PrepareToSpinPage) exerciseAsync {
-            goTo(tribe.id)
-        } verifyAsync {
-            PlayerCard.playerElements.map { it.getText() }.await().toList()
-                .assertIsEqualTo(players.map(Player::name))
-        }
+    fun withNoHistory() = testPairAssignments(object : FullTribeContext() {
+        val page = PrepareToSpinPage
+    }) exercise {
+        page.goTo(tribe.id)
+    } verify {
+        PlayerCard.playerElements.map { it.getText() }.await().toList()
+            .assertIsEqualTo(players.map(Player::name))
     }
 
     @Test
-    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = testPairAssignments { tribe, _, _ ->
-        setupAsync(PrepareToSpinPage) {
-            goTo(tribe.id)
-        } exerciseAsync {
-            spinButton.performClick()
-            CurrentPairAssignmentPage.waitForPage()
-        } verifyAsync {
-            CurrentPairAssignmentPage.assignedPairElements.count().await()
-                .assertIsEqualTo(3)
-        }
+    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = testPairAssignments(object : FullTribeContext() {
+        val page = PrepareToSpinPage
+    }) {
+        page.goTo(tribe.id)
+    } exercise {
+        page.spinButton.performClick()
+        CurrentPairAssignmentPage.waitForPage()
+    } verify {
+        CurrentPairAssignmentPage.assignedPairElements.count().await()
+            .assertIsEqualTo(3)
     }
 
     @Test
-    fun whenTwoPlayersAreDisabledSpinWillYieldOnePairAndSavingPersistsThePair() = testPairAssignments { tribe, _, _ ->
-        setupAsync(object {}) {
+    fun whenTwoPlayersAreDisabledSpinWillYieldOnePairAndSavingPersistsThePair() =
+        testPairAssignments(FullTribeContext()) {
             PrepareToSpinPage.goTo(tribe.id)
             with(PlayerCard) {
                 playerElements.get(0).element(iconLocator).performClick()
                 playerElements.get(2).element(iconLocator).performClick()
                 playerElements.get(3).element(iconLocator).performClick()
             }
-        } exerciseAsync {
+        } exercise {
             PrepareToSpinPage.spinButton.performClick()
             CurrentPairAssignmentPage.waitForPage()
-        } verifyAsync {
+        } verify {
             CurrentPairAssignmentPage.assignedPairElements.count().await()
                 .assertIsEqualTo(1)
             PlayerRoster.playerElements.count().await()
@@ -96,37 +101,33 @@ class PrepareToSpinPageE2ETest {
             PlayerRoster.playerElements.count().await()
                 .assertIsEqualTo(3)
         }
+
+    @Test
+    fun whenPinIsEnabledSpinWillIncludePinInAssignment() = testPairAssignments(object : FullTribeContext() {
+        val page = PrepareToSpinPage
+    }) {
+        page.goTo(tribe.id)
+        page.selectedPinElements.count().await()
+            .assertIsEqualTo(1)
+    } exercise {
+        PrepareToSpinPage.spinButton.performClick()
+        CurrentPairAssignmentPage.waitForPage()
+    } verify {
+        PinButton.pinElements.count().await()
+            .assertIsEqualTo(1)
     }
 
     @Test
-    fun whenPinIsEnabledSpinWillIncludePinInAssignment() = testPairAssignments { tribe, _, _ ->
-        setupAsync(object {
-        }) {
-            PrepareToSpinPage.goTo(tribe.id)
-            PrepareToSpinPage.selectedPinElements.count().await()
-                .assertIsEqualTo(1)
-        } exerciseAsync {
-            PrepareToSpinPage.spinButton.performClick()
-            CurrentPairAssignmentPage.waitForPage()
-        } verifyAsync {
-            PinButton.pinElements.count().await()
-                .assertIsEqualTo(1)
-        }
+    fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = testPairAssignments(object : FullTribeContext() {
+        val page = PrepareToSpinPage
+    }) {
+        page.goTo(tribe.id)
+        page.selectedPinElements.performClick()
+    } exercise {
+        page.spinButton.performClick()
+        CurrentPairAssignmentPage.waitForPage()
+    } verify {
+        PinButton.pinElements.count().await()
+            .assertIsEqualTo(0)
     }
-
-    @Test
-    fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = testPairAssignments { tribe, _, _ ->
-        setupAsync(object {
-        }) {
-            PrepareToSpinPage.goTo(tribe.id)
-            PrepareToSpinPage.selectedPinElements.performClick()
-        } exerciseAsync {
-            PrepareToSpinPage.spinButton.performClick()
-            CurrentPairAssignmentPage.waitForPage()
-        } verifyAsync {
-            PinButton.pinElements.count().await()
-                .assertIsEqualTo(0)
-        }
-    }
-
 }
