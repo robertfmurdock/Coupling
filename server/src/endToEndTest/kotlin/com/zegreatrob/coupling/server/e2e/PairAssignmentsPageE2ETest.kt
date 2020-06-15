@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.ElementSelector
 import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
@@ -69,9 +68,7 @@ class PairAssignmentsPageE2ETest {
                 CouplingLogin.loginProvider.await()
             }
 
-            private val template = asyncTestTemplate(
-                sharedSetup = { setupProvider.await() }, sharedTeardown = { checkLogs() }
-            )
+            private val template = e2eSetup.extend(sharedSetup = { setupProvider.await() })
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
                 template(CurrentPairAssignmentPage, additionalSetup)
@@ -192,9 +189,7 @@ class PairAssignmentsPageE2ETest {
             CouplingLogin.loginProvider.await()
         }
 
-        private val template = asyncTestTemplate(
-            sharedSetup = { beforeAllProvider.await() }, sharedTeardown = { checkLogs() }
-        )
+        private val template = e2eSetup.extend(sharedSetup = { beforeAllProvider.await() })
 
         private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
             template(CurrentPairAssignmentPage, additionalSetup)
