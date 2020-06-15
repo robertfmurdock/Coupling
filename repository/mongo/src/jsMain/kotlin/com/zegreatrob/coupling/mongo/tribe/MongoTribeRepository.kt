@@ -41,7 +41,7 @@ interface MongoTribeRepository : TribeRepository, DbRecordSaveSyntax, DbRecordLo
     override suspend fun getTribes() = getTribeRecordList()
         .onlyLatestVersion()
 
-    private inline fun List<Record<Tribe>>.onlyLatestVersion() = groupBy { it.data.id }
+    private fun List<Record<Tribe>>.onlyLatestVersion() = groupBy { it.data.id }
         .map { group -> group.value.asSequence().sortedByDescending { it.timestamp }.first() }
         .filterNot { it.isDeleted }
 

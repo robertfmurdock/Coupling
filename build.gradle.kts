@@ -35,7 +35,6 @@ allprojects {
             addTestListener(JsonLoggingTestListener(path))
         }
     }
-
 }
 
 docker {

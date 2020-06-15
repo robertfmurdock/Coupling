@@ -50,7 +50,7 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
         .map { it.await().toList() }
         .flatten()
 
-    private inline fun safeRawFindByMongoId(id: String, collection: dynamic): Promise<Array<Json>> = try {
+    private fun safeRawFindByMongoId(id: String, collection: dynamic): Promise<Array<Json>> = try {
         rawFindBy(json("_id" to id), collection)
     } catch (badId: Throwable) {
         Promise.resolve(emptyArray())

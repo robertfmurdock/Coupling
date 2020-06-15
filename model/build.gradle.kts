@@ -48,6 +48,9 @@ kotlin {
                 implementation(kotlin("test-js", BuildConstants.kotlinVersion))
             }
         }
+        all {
+            languageSettings.enableLanguageFeature("InlineClasses")
+        }
     }
 }
 

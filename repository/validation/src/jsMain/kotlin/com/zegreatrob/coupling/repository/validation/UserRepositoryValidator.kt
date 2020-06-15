@@ -27,7 +27,7 @@ interface UserRepositoryValidator {
     }
 
     @Test
-    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = testRepository { repository, user, _ ->
+    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = testRepository { repository, _, _ ->
         asyncSetup(object {
         }) exercise {
             repository.getUser()
@@ -37,7 +37,7 @@ interface UserRepositoryValidator {
     }
 
     @Test
-    fun getUsersWithEmailWillShowAllUsersWithEmail() = testRepository { repository, user, _ ->
+    fun getUsersWithEmailWillShowAllUsersWithEmail() = testRepository { repository, _, _ ->
         asyncSetup(object {
             val userWithEmail = stubUser()
         }) {
