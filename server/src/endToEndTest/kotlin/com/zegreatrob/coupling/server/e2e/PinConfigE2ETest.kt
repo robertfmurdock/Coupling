@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.loginProvider
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
@@ -20,7 +19,7 @@ class PinConfigE2ETest {
     @Test
     fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = testWithTribe(object : TribeContext() {
         val newPinName = "Excellent pin name${randomInt()}"
-    }::attachTribe) {
+    }) {
         with(PinConfigPage) {
             tribe.id.goToNew()
             nameTextField.performClear()
@@ -37,8 +36,7 @@ class PinConfigE2ETest {
                 .assertContains(newPinName)
         }
     }
-
-
+    
     private suspend fun PinConfigPage.waitForPinNameToAppear(newPinName: String) = browser.wait({
         MainScope().async { pinBagPinNames().contains(newPinName) }
             .asPromise().then({ it }) { false }
@@ -49,7 +47,7 @@ class PinConfigE2ETest {
         @Test
         fun attributesAreShownOnConfig() = testWithTribe(object : TribeContext() {
             val pin = randomPin()
-        }::attachTribe) {
+        }) {
             sdk.save(tribe.id.with(pin))
         } exercise {
             PinConfigPage.goTo(tribe.id, pin._id)
@@ -65,7 +63,7 @@ class PinConfigE2ETest {
         @Test
         fun clickingDeleteWillRemovePinFromPinList() = testWithTribe(object : TribeContext() {
             val pin = randomPin()
-        }::attachTribe) {
+        }) {
             sdk.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin._id)
         } exercise {
@@ -93,11 +91,11 @@ class PinConfigE2ETest {
             name = "name-${randomInt()}-$nameExt"
         )
 
-        fun <C : Any> testWithTribe(
-            contextProvider: (Tribe, Sdk) -> C,
+        fun <C : TribeContext> testWithTribe(
+            context: C,
             additionalActions: suspend C.() -> Unit
         ) = pinTestTemplate()(contextProvider = {
-            contextProvider(
+            context.attachTribe(
                 tribeProvider.await(),
                 sdkProvider.await()
             )

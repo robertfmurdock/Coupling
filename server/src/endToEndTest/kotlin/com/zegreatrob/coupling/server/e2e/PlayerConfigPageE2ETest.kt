@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -27,7 +26,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun whenNothingHasChangedWillNotAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             page.goTo(tribe.id, player.id)
         } exercise {
             TribeCard.element.performClick()
@@ -39,7 +38,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun whenNameIsChangedWillGetAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             page.goTo(tribe.id, player.id)
             with(page.playerNameTextField) {
                 performClear()
@@ -58,7 +57,7 @@ class PlayerConfigPageE2ETest {
         fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
             val newName = "completely different name"
-        }::attachPlayer) {
+        }) {
             with(page) {
                 goTo(tribe.id, player.id)
                 with(playerNameTextField) {
@@ -81,7 +80,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun savingWithNoNameWillShowDefaultName() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             page.goTo(tribe.id, player.id)
             with(page.playerNameTextField) {
                 performClear()
@@ -103,7 +102,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             page.goTo(tribe.id, player.id)
         } exercise {
             page.deleteButton.performClick()
@@ -116,7 +115,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             sdk.save(tribe.copy(badgesEnabled = false))
         } exercise {
             page.goTo(tribe.id, player.id)
@@ -133,7 +132,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun willShowAllPlayers() = testPlayerConfig(object : PlayersContext() {
             val page = PlayerConfig
-        }::attachPlayers) {
+        }) {
             page.goTo(tribe.id, players[0].id)
         } exercise {
             PlayerRoster.playerElements.map { element -> element.getText() }.await().toList()
@@ -148,12 +147,12 @@ class PlayerConfigPageE2ETest {
                 sharedTeardown = { checkLogs() }
             )
 
-            fun <C : Any> testPlayerConfig(
-                contextProvider: (List<Player>, Tribe, Sdk) -> C,
+            fun <C : PlayersContext> testPlayerConfig(
+                context: C,
                 additionalActions: suspend C.() -> Unit = {}
             ) = template(
                 contextProvider = {
-                    contextProvider(
+                    context.attachPlayers(
                         playersProvider.await(),
                         tribeProvider.await(),
                         sdkProvider.await()
@@ -194,7 +193,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun willShowBadgeSelector() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) exercise {
+        }) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
             page.defaultBadgeOption.isDisplayed().await()
@@ -214,7 +213,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun willSelectTheDefaultBadge() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) exercise {
+        }) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
             page.defaultBadgeOption.getAttribute("checked").await()
@@ -224,7 +223,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun willRememberBadgeSelection() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             page.goTo(tribe.id, player.id)
         } exercise {
             page.altBadgeOption.performClick()
@@ -267,7 +266,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun adjectiveAndNounCanBeSaved() = testPlayerConfig(object : PlayerContext() {
             val page = PlayerConfig
-        }::attachPlayer) {
+        }) {
             page.goTo(tribe.id, player.id)
         } exercise {
             with(page.adjectiveTextInput) {
@@ -296,11 +295,11 @@ class PlayerConfigPageE2ETest {
             sharedTeardown = { checkLogs() }
         )
 
-        private fun <C : Any> testPlayerConfig(
-            contextProvider: (Tribe, Sdk) -> C,
+        private fun <C : TribeContext> testPlayerConfig(
+            context: C,
             additionalActions: suspend C.() -> Unit = {}
         ) = template(
-            contextProvider = { contextProvider(tribeProvider.await(), sdkProvider.await()) },
+            contextProvider = { context.attachTribe(tribeProvider.await(), sdkProvider.await()) },
             additionalActions = additionalActions
         )
 
@@ -319,7 +318,7 @@ class PlayerConfigPageE2ETest {
         @Test
         fun willSuggestCallSign() = testPlayerConfig(object : TribeContext() {
             val page = PlayerConfig
-        }::attachTribe) exercise {
+        }) exercise {
             page.goToNew(tribe.id)
         } verify {
             page.adjectiveTextInput.getAttribute("value").await()
@@ -332,16 +331,16 @@ class PlayerConfigPageE2ETest {
 
 abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
 
-    val template = asyncTestTemplate(
+    val templateSetup = asyncTestTemplate(
         sharedSetup = {},
         sharedTeardown = { checkLogs() }
     )
 
-    fun <C : Any> testPlayerConfig(
-        contextProvider: (Player, Tribe, Sdk) -> C,
+    fun <C : PlayerContext> testPlayerConfig(
+        context: C,
         additionalActions: suspend C.() -> Unit = {}
-    ) = template(
-        contextProvider = { contextProvider(playerProvider.await(), tribeProvider.await(), sdkProvider.await()) },
+    ) = templateSetup(
+        contextProvider = { context.attachPlayer(playerProvider.await(), tribeProvider.await(), sdkProvider.await()) },
         additionalActions = additionalActions
     )
 
