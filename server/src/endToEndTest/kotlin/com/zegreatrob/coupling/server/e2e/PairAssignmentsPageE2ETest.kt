@@ -14,9 +14,7 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.ElementSelector
 import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.Exercise
-import com.zegreatrob.testmints.async.Setup
-import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
@@ -72,6 +70,13 @@ class PairAssignmentsPageE2ETest {
                 CouplingLogin.loginProvider.await()
             }
 
+            private val template = asyncTestTemplate(
+                sharedSetup = { setupProvider.await() }, sharedTeardown = { checkLogs() }
+            )
+
+            private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
+                template(CurrentPairAssignmentPage, additionalSetup)
+
         }
 
         @Test
@@ -94,13 +99,6 @@ class PairAssignmentsPageE2ETest {
             browser.getCurrentUrl().await()
                 .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/new/")
         }
-
-        private fun currentPairAssignmentPageSetup(
-            setupFunc: suspend CurrentPairAssignmentPage.() -> Unit
-        ) = PageSetup(asyncSetup(CurrentPairAssignmentPage) {
-            setupProvider.await()
-            setupFunc()
-        })
 
         @Test
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
@@ -163,7 +161,7 @@ class PairAssignmentsPageE2ETest {
             )
         }
 
-        val players by lazy {
+        private val players by lazy {
             (1..5).map {
                 Player(
                     id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
@@ -173,7 +171,7 @@ class PairAssignmentsPageE2ETest {
                 )
             }
         }
-        val pairAssignmentDocument by lazy {
+        private val pairAssignmentDocument by lazy {
             PairAssignmentDocument(
                 date = DateTime(year = 2015, month = 5, day = 30),
                 pairs = listOf(
@@ -195,12 +193,13 @@ class PairAssignmentsPageE2ETest {
             CouplingLogin.loginProvider.await()
         }
 
-        private fun currentPairAssignmentPageSetup(
-            setupFunc: suspend CurrentPairAssignmentPage.() -> Unit
-        ) = PageSetup(asyncSetup(CurrentPairAssignmentPage) {
-            beforeAllProvider.await()
-            setupFunc()
-        })
+        private val template = asyncTestTemplate(
+            sharedSetup = { beforeAllProvider.await() }, sharedTeardown = { checkLogs() }
+        )
+
+        private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
+            template(CurrentPairAssignmentPage, additionalSetup)
+
 
         private fun testPairAssignmentsPage(handler: suspend () -> Unit) = testAsync {
             beforeAllProvider.await()
@@ -266,15 +265,4 @@ class PairAssignmentsPageE2ETest {
             .map { it.getText() }.await().toList()
     }
 
-}
-
-class PageSetup<C : Any>(private val setup: Setup<C>) {
-    infix fun exercise(exerciseFunc: suspend C.() -> Unit) =
-        PageExercise(setup.exercise(exerciseFunc))
-}
-
-class PageExercise<C : Any>(private val exercise: Exercise<C, Unit>) {
-    infix fun verify(verifyFunc: suspend C.(Unit) -> Unit) = exercise
-        .verifyAnd(verifyFunc)
-        .teardown { checkLogs() }
 }
