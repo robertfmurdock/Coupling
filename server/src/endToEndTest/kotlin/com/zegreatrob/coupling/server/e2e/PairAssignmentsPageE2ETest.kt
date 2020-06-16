@@ -189,10 +189,10 @@ class PairAssignmentsPageE2ETest {
             CouplingLogin.loginProvider.await()
         }
 
-        private val template = e2eSetup.extend(sharedSetup = { beforeAllProvider.await() })
+        private val setup = e2eSetup.extend(sharedSetup = { beforeAllProvider.await() })
 
         private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
-            template(CurrentPairAssignmentPage, additionalSetup)
+            setup(CurrentPairAssignmentPage, additionalSetup)
 
         @Test
         fun willShowPlayersInCorrectPlaces() = currentPairAssignmentPageSetup {
