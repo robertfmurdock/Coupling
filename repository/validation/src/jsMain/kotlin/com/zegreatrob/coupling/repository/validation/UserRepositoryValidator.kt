@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.async.waitForTest
 import kotlin.test.Test
@@ -25,6 +26,8 @@ interface UserRepositoryValidator {
         val clock = MagicClock()
         withRepository(clock) { repository, user -> waitForTest { block(repository, user, clock) } }
     }
+
+    val template get() = asyncTestTemplate(sharedSetup = {}, sharedTeardown = {})
 
     @Test
     fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = testRepository { repository, _, _ ->
