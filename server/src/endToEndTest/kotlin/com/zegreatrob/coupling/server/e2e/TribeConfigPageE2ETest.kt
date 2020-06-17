@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClearSendKeys
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.invoke
 import com.zegreatrob.testmints.async.testAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await

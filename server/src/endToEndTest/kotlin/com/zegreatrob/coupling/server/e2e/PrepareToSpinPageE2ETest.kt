@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.await
 import kotlin.test.Test
 

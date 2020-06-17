@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
+import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
 class WelcomeE2ETest {

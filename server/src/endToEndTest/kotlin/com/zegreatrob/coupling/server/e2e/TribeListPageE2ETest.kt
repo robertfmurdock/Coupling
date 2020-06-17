@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
