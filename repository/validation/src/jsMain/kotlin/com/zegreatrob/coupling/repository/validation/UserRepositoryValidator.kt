@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
@@ -9,16 +8,13 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.asyncTestTemplate
-import com.zegreatrob.testmints.async.testAsync
-import com.zegreatrob.testmints.async.waitForTest
+import com.zegreatrob.testmints.async.*
 import kotlin.test.Test
 import kotlin.test.fail
 
-interface UserRepositoryValidator {
+interface UserRepositoryValidator<SC : UserRepositoryValidator.SharedContext> {
 
-    suspend fun withRepository(clock: TimeProvider, handler: suspend (UserRepository, User) -> Unit)
+    suspend fun withRepository(clock: MagicClock, handler: suspend (UserRepository, User) -> Unit)
 
     private fun testRepository(
         block: (UserRepository, User, MagicClock) -> dynamic
@@ -27,16 +23,26 @@ interface UserRepositoryValidator {
         withRepository(clock) { repository, user -> waitForTest { block(repository, user, clock) } }
     }
 
-    val template get() = asyncTestTemplate(sharedSetup = {}, sharedTeardown = {})
+    suspend fun setupRepository(clock: MagicClock): SC
+
+    suspend fun SC.teardown()
+
+    interface SharedContext {
+        val repository: UserRepository
+        val clock: MagicClock
+        val user: User
+    }
+
+    val userRepositorySetup
+        get() = asyncTestTemplate(
+            sharedSetup = { setupRepository(MagicClock()) },
+            sharedTeardown = { context -> context.teardown() })
 
     @Test
-    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = testRepository { repository, _, _ ->
-        asyncSetup(object {
-        }) exercise {
-            repository.getUser()
-        } verify { result ->
-            result.assertIsEqualTo(null)
-        }
+    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = userRepositorySetup(contextProvider = { it }) exercise {
+        repository.getUser()
+    } verify { result ->
+        result.assertIsEqualTo(null)
     }
 
     @Test

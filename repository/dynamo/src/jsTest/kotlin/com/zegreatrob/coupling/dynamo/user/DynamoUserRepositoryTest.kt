@@ -19,18 +19,32 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.test.Test
 
 @Suppress("unused")
-class DynamoUserRepositoryTest : UserRepositoryValidator {
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (UserRepository, User) -> Unit) {
+class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepositoryTest.SharedContext> {
+    data class SharedContext(
+        override val repository: DynamoUserRepository,
+        override val clock: MagicClock,
+        override val user: User
+    ) : UserRepositoryValidator.SharedContext
+
+    override suspend fun setupRepository(clock: MagicClock): SharedContext {
+        val userId = "${uuid4()}"
+        val user = User(userId, "${uuid4()}", emptySet())
+        val repository = DynamoUserRepository(userId, clock)
+        return SharedContext(repository, clock, user)
+    }
+
+    override suspend fun SharedContext.teardown() = Unit
+
+    override suspend fun withRepository(clock: MagicClock, handler: suspend (UserRepository, User) -> Unit) {
         withDynamoRepository(clock, handler)
     }
 
     private suspend fun withDynamoRepository(
-        clock: TimeProvider = TimeProvider,
+        clock: MagicClock,
         handler: suspend (DynamoUserRepository, User) -> Unit
     ) {
-        val userId = "${uuid4()}"
-        val user = User(userId, "${uuid4()}", emptySet())
-        handler(DynamoUserRepository(userId, clock), user)
+        val context = setupRepository(clock)
+        handler(context.repository, context.user)
     }
 
     private fun testDynamoRepository(
@@ -78,6 +92,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator {
             records.forEach { assertContains(it) }
         }
     }
+
 }
 
 private typealias Context = RepositoryContext<DynamoUserRepository>

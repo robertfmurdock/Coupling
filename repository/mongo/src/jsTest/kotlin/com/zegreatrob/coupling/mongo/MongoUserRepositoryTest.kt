@@ -21,14 +21,28 @@ import kotlin.test.Test
 private const val mongoUrl = "localhost/UsersRepositoryTest"
 
 @Suppress("unused")
-class MongoUserRepositoryTest : UserRepositoryValidator {
+class MongoUserRepositoryTest : UserRepositoryValidator<MongoUserRepositoryTest.SharedContext> {
 
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (UserRepository, User) -> Unit) {
+    data class SharedContext(
+        override val repository: MongoUserRepositoryTestAnchor,
+        override val clock: MagicClock,
+        override val user: User
+    ) : UserRepositoryValidator.SharedContext
+
+    override suspend fun withRepository(clock: MagicClock, handler: suspend (UserRepository, User) -> Unit) {
         val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
         withMongoRepository(currentUser.id, clock) {
             handler(it, currentUser)
         }
     }
+
+    override suspend fun setupRepository(clock: MagicClock): SharedContext {
+        val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
+        val repositoryWithDb = repositoryWithDb(currentUser.id, clock)
+        return SharedContext(repositoryWithDb, clock, currentUser)
+    }
+
+    override suspend fun SharedContext.teardown() = repository.close()
 
     companion object {
         private fun repositoryWithDb(email: String, clock: TimeProvider) = MongoUserRepositoryTestAnchor(email, clock)
