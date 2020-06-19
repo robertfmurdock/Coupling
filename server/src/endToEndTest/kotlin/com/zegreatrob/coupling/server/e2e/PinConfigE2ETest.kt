@@ -116,8 +116,10 @@ fun randomInt() = Random.nextInt()
 
 suspend fun checkLogs() {
     if (browser.getCapabilities().await()["browserName"] != "firefox") {
-        val browserLog = browser.manage().logs().get("browser").await()
+        val browserLog = getBrowserLogs()
         browserLog.toList()
             .assertIsEqualTo(emptyList(), JSON.stringify(browserLog))
     }
 }
+
+suspend fun getBrowserLogs() = browser.manage().logs().get("browser").await()

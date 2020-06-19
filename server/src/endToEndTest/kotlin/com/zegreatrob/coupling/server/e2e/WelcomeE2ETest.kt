@@ -11,8 +11,14 @@ class WelcomeE2ETest {
         enterButton.performClick()
     } exercise {
         googleButton.performClick()
-    } verify {
+    } verifyAnd {
         waitToArriveAt("https://accounts.google.com")
+    } teardown {
+        purgeBrowserLogsBecauseGoogleIsCreatingWarning()
+    }
+
+    private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() {
+        getBrowserLogs()
     }
 
     @Test
