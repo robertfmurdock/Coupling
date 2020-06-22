@@ -8,35 +8,36 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.*
+import com.zegreatrob.testmints.async.TestTemplate
+import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 import kotlin.test.fail
 
-interface UserRepositoryValidator<SC : UserRepositoryValidator.SharedContext> {
+interface UserRepositoryValidator<R : UserRepository> {
 
-    suspend fun withRepository(clock: MagicClock, handler: suspend (UserRepository, User) -> Unit)
-
-    private fun testRepository(
-        block: (UserRepository, User, MagicClock) -> dynamic
-    ) = testAsync {
-        val clock = MagicClock()
-        withRepository(clock) { repository, user -> waitForTest { block(repository, user, clock) } }
-    }
-
-    suspend fun setupRepository(clock: MagicClock): SC
-
-    suspend fun SC.teardown()
-
-    interface SharedContext {
-        val repository: UserRepository
+    interface SharedContext<R : UserRepository> {
+        val repository: R
         val clock: MagicClock
         val user: User
     }
 
-    val userRepositorySetup
-        get() = asyncTestTemplate(
-            sharedSetup = { setupRepository(MagicClock()) },
-            sharedTeardown = { context -> context.teardown() })
+    abstract class ContextMint<R : UserRepository> : SharedContext<R> {
+        override lateinit var repository: R
+        override lateinit var clock: MagicClock
+        override lateinit var user: User
+    }
+
+    fun <C : ContextMint<R>, R : UserRepository> C.bind(): suspend (SharedContext<R>) -> C =
+        { parent: SharedContext<R> ->
+            also {
+                println("init")
+                repository = parent.repository
+                clock = parent.clock
+                user = parent.user
+            }
+        }
+
+    val userRepositorySetup: TestTemplate<SharedContext<R>>
 
     @Test
     fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = userRepositorySetup(contextProvider = { it }) exercise {
@@ -46,38 +47,34 @@ interface UserRepositoryValidator<SC : UserRepositoryValidator.SharedContext> {
     }
 
     @Test
-    fun getUsersWithEmailWillShowAllUsersWithEmail() = testRepository { repository, _, _ ->
-        asyncSetup(object {
-            val userWithEmail = stubUser()
-        }) {
-            repository.save(userWithEmail)
-        } exercise {
-            repository.getUsersWithEmail(userWithEmail.email)
-        } verify { result ->
-            result.map { it.data }
-                .assertIsEqualTo(listOf(userWithEmail))
-        }
+    fun getUsersWithEmailWillShowAllUsersWithEmail() = userRepositorySetup(contextProvider = object : ContextMint<R>() {
+        val userWithEmail = stubUser()
+    }.bind()) {
+        repository.save(userWithEmail)
+    } exercise {
+        repository.getUsersWithEmail(userWithEmail.email)
+    } verify { result ->
+        result.map { it.data }
+            .assertIsEqualTo(listOf(userWithEmail))
     }
 
     @Test
-    fun saveUserThenGetWillContainAllSavedValues() = testRepository { repository, user, _ ->
-        asyncSetup(object {
-            val updatedUser = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
-        }) {
-            repository.save(updatedUser)
-        } exercise {
-            repository.getUser()
-        } verify { result ->
-            result?.data
-                .assertIsEqualTo(updatedUser)
-        }
+    fun saveUserThenGetWillContainAllSavedValues() = userRepositorySetup(contextProvider = object : ContextMint<R>() {
+        val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
+    }.bind()) {
+        repository.save(updatedUser)
+    } exercise {
+        repository.getUser()
+    } verify { result ->
+        result?.data
+            .assertIsEqualTo(updatedUser)
     }
 
     @Test
-    fun saveUserThenGetWillIncludeMarkingInformation() = testRepository { repository, user, clock ->
-        asyncSetup(object {
-            val updatedUser = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
-        }) {
+    fun saveUserThenGetWillIncludeMarkingInformation() =
+        userRepositorySetup(contextProvider = object : ContextMint<R>() {
+            val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
+        }.bind()) {
             clock.currentTime = DateTime.now().plus(10.days)
             repository.save(updatedUser)
         } exercise {
@@ -88,22 +85,21 @@ interface UserRepositoryValidator<SC : UserRepositoryValidator.SharedContext> {
             result.modifyingUserId.assertIsEqualTo(user.id)
             result.timestamp.assertIsEqualTo(clock.currentTime)
         }
-    }
 
     @Test
-    fun saveUserRepeatedlyGetsLatest() = testRepository { repository, user, _ ->
-        asyncSetup(object {
-            val updatedUser1 = user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
-            val updatedUser2 = user.copy(authorizedTribeIds = setOf(stubTribeId()))
-        }) {
-            repository.save(updatedUser1)
-            repository.save(updatedUser2)
-        } exercise {
-            repository.getUser()
-        } verify { result ->
-            result?.data
-                .assertIsEqualTo(updatedUser2)
-        }
+    fun saveUserRepeatedlyGetsLatest() = userRepositorySetup(contextProvider = { sharedContext ->
+        object : ContextMint<R>() {
+            val updatedUser1 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
+            val updatedUser2 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId()))
+        }.bind()(sharedContext)
+    }) {
+        repository.save(updatedUser1)
+        repository.save(updatedUser2)
+    } exercise {
+        repository.getUser()
+    } verify { result ->
+        result?.data
+            .assertIsEqualTo(updatedUser2)
     }
 
 }

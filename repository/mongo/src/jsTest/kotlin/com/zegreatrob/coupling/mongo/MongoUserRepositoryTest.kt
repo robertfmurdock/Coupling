@@ -9,40 +9,36 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
-import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.asyncTestTemplate
+import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/UsersRepositoryTest"
 
 @Suppress("unused")
-class MongoUserRepositoryTest : UserRepositoryValidator<MongoUserRepositoryTest.SharedContext> {
+class MongoUserRepositoryTest :
+    UserRepositoryValidator<MongoUserRepositoryTest.Companion.MongoUserRepositoryTestAnchor> {
 
-    data class SharedContext(
-        override val repository: MongoUserRepositoryTestAnchor,
-        override val clock: MagicClock,
-        override val user: User
-    ) : UserRepositoryValidator.SharedContext
+    override val userRepositorySetup
+        get() = asyncTestTemplate<UserRepositoryValidator.SharedContext<MongoUserRepositoryTestAnchor>>(
+            wrapper = { test ->
+                val clock = MagicClock()
+                val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
+                val repository = repositoryWithDb(currentUser.id, clock)
 
-    override suspend fun withRepository(clock: MagicClock, handler: suspend (UserRepository, User) -> Unit) {
-        val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
-        withMongoRepository(currentUser.id, clock) {
-            handler(it, currentUser)
-        }
-    }
+                test(object : UserRepositoryValidator.SharedContext<MongoUserRepositoryTestAnchor> {
+                    override val repository: MongoUserRepositoryTestAnchor = repository
+                    override val clock = clock
+                    override val user = currentUser
+                })
 
-    override suspend fun setupRepository(clock: MagicClock): SharedContext {
-        val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
-        val repositoryWithDb = repositoryWithDb(currentUser.id, clock)
-        return SharedContext(repositoryWithDb, clock, currentUser)
-    }
-
-    override suspend fun SharedContext.teardown() = repository.close()
+                repository.close()
+            }
+        )
 
     companion object {
         private fun repositoryWithDb(email: String, clock: TimeProvider) = MongoUserRepositoryTestAnchor(email, clock)
@@ -71,30 +67,25 @@ class MongoUserRepositoryTest : UserRepositoryValidator<MongoUserRepositoryTest.
     }
 
     @Test
-    fun getUserRecordsWillReturnAllRecordsForAllUsers() = testAsync {
-        val user = stubUser()
-        val clock = MagicClock()
-        withMongoRepository(user.email, clock) { repository ->
-            setupAsync(object {
-                val initialSaveTime = DateTime.now().minus(3.days)
-                val updatedUser = user.copy(authorizedTribeIds = setOf(TribeId("clone!")))
-                val updatedSaveTime = initialSaveTime.plus(2.hours)
-                val altUser = stubUser()
-            }) {
-                clock.currentTime = initialSaveTime
-                repository.save(user)
-                repository.save(altUser)
-                clock.currentTime = updatedSaveTime
-                repository.save(updatedUser)
-            } exerciseAsync {
-                repository.getUserRecords()
-            } verifyAsync { result ->
-                result
-                    .assertContains(Record(user, user.email, false, initialSaveTime))
-                    .assertContains(Record(altUser, user.email, false, initialSaveTime))
-                    .assertContains(Record(updatedUser, user.email, false, updatedSaveTime))
-            }
-        }
+    fun getUserRecordsWillReturnAllRecordsForAllUsers() = userRepositorySetup(contextProvider = object :
+        UserRepositoryValidator.ContextMint<MongoUserRepositoryTestAnchor>() {
+        val initialSaveTime = DateTime.now().minus(3.days)
+        val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(TribeId("clone!"))) }
+        val updatedSaveTime = initialSaveTime.plus(2.hours)
+        val altUser = stubUser()
+    }.bind()) {
+        clock.currentTime = initialSaveTime
+        repository.save(user)
+        repository.save(altUser)
+        clock.currentTime = updatedSaveTime
+        repository.save(updatedUser)
+    } exercise {
+        repository.getUserRecords()
+    } verify { result ->
+        result
+            .assertContains(Record(user, user.id, false, initialSaveTime))
+            .assertContains(Record(altUser, user.id, false, initialSaveTime))
+            .assertContains(Record(updatedUser, user.id, false, updatedSaveTime))
     }
 
 }

@@ -7,52 +7,31 @@ import com.zegreatrob.coupling.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
+import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CoroutineScope
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
 @Suppress("unused")
-class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepositoryTest.SharedContext> {
-    data class SharedContext(
-        override val repository: DynamoUserRepository,
-        override val clock: MagicClock,
-        override val user: User
-    ) : UserRepositoryValidator.SharedContext
+class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
-    override suspend fun setupRepository(clock: MagicClock): SharedContext {
-        val userId = "${uuid4()}"
-        val user = User(userId, "${uuid4()}", emptySet())
-        val repository = DynamoUserRepository(userId, clock)
-        return SharedContext(repository, clock, user)
-    }
-
-    override suspend fun SharedContext.teardown() = Unit
-
-    override suspend fun withRepository(clock: MagicClock, handler: suspend (UserRepository, User) -> Unit) {
-        withDynamoRepository(clock, handler)
-    }
-
-    private suspend fun withDynamoRepository(
-        clock: MagicClock,
-        handler: suspend (DynamoUserRepository, User) -> Unit
-    ) {
-        val context = setupRepository(clock)
-        handler(context.repository, context.user)
-    }
-
-    private fun testDynamoRepository(
-        block: suspend CoroutineScope.(DynamoUserRepository, User, MagicClock) -> Any?
-    ) = testAsync {
-        val clock = MagicClock()
-        withDynamoRepository(clock) { repository, user -> block(repository, user, clock) }
-    }
+    override val userRepositorySetup: TestTemplate<UserRepositoryValidator.SharedContext<DynamoUserRepository>>
+        get() = asyncTestTemplate<UserRepositoryValidator.SharedContext<DynamoUserRepository>> { test ->
+            val clock = MagicClock()
+            val userId = "${uuid4()}"
+            val user = User(userId, "${uuid4()}", emptySet())
+            val repository = DynamoUserRepository(userId, clock)
+            test(object : UserRepositoryValidator.SharedContext<DynamoUserRepository> {
+                override val repository = repository
+                override val clock = clock
+                override val user = user
+            })
+        }
 
     @Test
     fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(contextProvider = buildRepository { context ->
