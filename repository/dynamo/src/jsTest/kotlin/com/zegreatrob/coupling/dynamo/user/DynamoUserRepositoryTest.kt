@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.SharedContext
+import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
@@ -20,18 +22,14 @@ import kotlin.test.Test
 @Suppress("unused")
 class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
-    override val userRepositorySetup: TestTemplate<UserRepositoryValidator.SharedContext<DynamoUserRepository>>
-        get() = asyncTestTemplate<UserRepositoryValidator.SharedContext<DynamoUserRepository>> { test ->
+    override val userRepositorySetup: TestTemplate<SharedContext<DynamoUserRepository>>
+        get() = asyncTestTemplate(sharedSetup = {
             val clock = MagicClock()
             val userId = "${uuid4()}"
             val user = User(userId, "${uuid4()}", emptySet())
             val repository = DynamoUserRepository(userId, clock)
-            test(object : UserRepositoryValidator.SharedContext<DynamoUserRepository> {
-                override val repository = repository
-                override val clock = clock
-                override val user = user
-            })
-        }
+            SharedContextData(repository, clock, user)
+        })
 
     @Test
     fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(contextProvider = buildRepository { context ->

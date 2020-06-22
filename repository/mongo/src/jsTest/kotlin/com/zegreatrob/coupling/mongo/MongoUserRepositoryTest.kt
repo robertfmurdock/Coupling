@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.SharedContext
+import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
@@ -24,24 +26,19 @@ class MongoUserRepositoryTest :
     UserRepositoryValidator<MongoUserRepositoryTest.Companion.MongoUserRepositoryTestAnchor> {
 
     override val userRepositorySetup
-        get() = asyncTestTemplate<UserRepositoryValidator.SharedContext<MongoUserRepositoryTestAnchor>>(
+        get() = asyncTestTemplate<SharedContext<MongoUserRepositoryTestAnchor>>(
             wrapper = { test ->
                 val clock = MagicClock()
                 val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
-                val repository = repositoryWithDb(currentUser.id, clock)
-
-                test(object : UserRepositoryValidator.SharedContext<MongoUserRepositoryTestAnchor> {
-                    override val repository: MongoUserRepositoryTestAnchor = repository
-                    override val clock = clock
-                    override val user = currentUser
-                })
-
-                repository.close()
+                val repo = repositoryWithDb(currentUser.id, clock)
+                test(SharedContextData(repo, clock, currentUser))
+                repo.close()
             }
         )
 
     companion object {
-        private fun repositoryWithDb(email: String, clock: TimeProvider) = MongoUserRepositoryTestAnchor(email, clock)
+        private fun repositoryWithDb(email: String, clock: TimeProvider): MongoUserRepositoryTestAnchor =
+            MongoUserRepositoryTestAnchor(email, clock)
 
         class MongoUserRepositoryTestAnchor(override val userId: String, override val clock: TimeProvider) :
             MongoUserRepository,
@@ -49,7 +46,7 @@ class MongoUserRepositoryTest :
             private val db = getDb(mongoUrl)
             private val jsRepository: dynamic = jsRepository(db)
             override val userCollection = jsRepository.userCollection
-            fun close() = db.close()
+            fun close(): Unit = db.close()
         }
 
         private inline fun withMongoRepository(

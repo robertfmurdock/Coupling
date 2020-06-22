@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryUserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.SharedContext
+import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -14,14 +15,9 @@ import kotlin.test.Test
 
 @Suppress("unused")
 class CompoundUserRepositoryTest : UserRepositoryValidator<CompoundUserRepository> {
-    class SharedContext(
-        override val repository: CompoundUserRepository,
-        override val clock: MagicClock,
-        override val user: User
-    ) : UserRepositoryValidator.SharedContext<CompoundUserRepository>
 
-    override val userRepositorySetup: TestTemplate<UserRepositoryValidator.SharedContext<CompoundUserRepository>>
-        get() = asyncTestTemplate<UserRepositoryValidator.SharedContext<CompoundUserRepository>>(sharedSetup = {
+    override val userRepositorySetup: TestTemplate<SharedContext<CompoundUserRepository>>
+        get() = asyncTestTemplate(sharedSetup = {
             val clock = MagicClock()
             val stubUser = stubUser()
 
@@ -29,8 +25,8 @@ class CompoundUserRepositoryTest : UserRepositoryValidator<CompoundUserRepositor
             val repository2 = MemoryUserRepository(stubUser.id, clock)
 
             val compoundRepo = CompoundUserRepository(repository1, repository2)
-            SharedContext(compoundRepo, clock, stubUser)
-        }, sharedTeardown = {})
+            SharedContextData(compoundRepo, clock, stubUser)
+        })
 
     @Test
     fun saveWillSaveToSecondRepositoryAsWell() = asyncSetup(object {
