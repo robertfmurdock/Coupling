@@ -8,74 +8,61 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.tribe.MongoTribeRepository
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/MongoTribeRepositoryTest"
 
-class MongoTribeRepositoryTest : TribeRepositoryValidator {
+typealias MongoTribeMint = ContextMint<MongoTribeRepositoryTest.Companion.MongoTribeRepositoryTestAnchor>
 
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (TribeRepository, User) -> Unit) {
-        withMongoRepository(clock) { repository, user -> handler(repository, user) }
-    }
+class MongoTribeRepositoryTest :
+    TribeRepositoryValidator<MongoTribeRepositoryTest.Companion.MongoTribeRepositoryTestAnchor> {
 
-    private suspend fun withMongoRepository(
-        clock: TimeProvider,
-        handler: suspend (MongoTribeRepository, User) -> Unit
-    ) {
+    override val repositorySetup = asyncTestTemplate<SharedContext<MongoTribeRepositoryTestAnchor>> {
         val user = stubUser()
-        withMongoRepository(user, clock) { handler(this, user) }
-    }
-
-    private fun testMongoRepository(block: suspend CoroutineScope.(MongoTribeRepository, User, MagicClock) -> Any?) =
-        testAsync {
-            val clock = MagicClock()
-            withMongoRepository(clock) { repository, user -> block(repository, user, clock) }
+        val clock = MagicClock()
+        withMongoRepository(user, clock) {
+            it(SharedContextData(this, clock, user))
         }
+    }
 
     @Test
-    fun getTribeRecordListWillIncludeAllSavesOfTribeIncludingDelete() = testMongoRepository { repository, user, clock ->
-        setupAsync(object {
-            val tribe = stubTribe()
-            val updatedTribe = tribe.copy(name = "CLONE")
-            val firstSaveTime = DateTime.now().minus(3.days)
-            val secondSaveTime = firstSaveTime.plus(3.days)
-        }) {
-            clock.currentTime = firstSaveTime
-            repository.save(tribe)
-            clock.currentTime = secondSaveTime
-            repository.save(updatedTribe)
-            repository.delete(tribe.id)
-        } exerciseAsync {
-            repository.getTribeRecordList()
-        } verifyAsync { result ->
-            result.filter { it.data.id == tribe.id }.let {
-                it[0].apply {
-                    modifyingUserId.assertIsEqualTo(user.email)
-                    timestamp.assertIsEqualTo(firstSaveTime)
-                    isDeleted.assertIsEqualTo(false)
-                }
-                it[1].apply {
-                    modifyingUserId.assertIsEqualTo(user.email)
-                    timestamp.assertIsEqualTo(secondSaveTime)
-                    isDeleted.assertIsEqualTo(false)
-                }
-                it[2].apply {
-                    modifyingUserId.assertIsEqualTo(user.email)
-                    timestamp.assertIsEqualTo(secondSaveTime)
-                    isDeleted.assertIsEqualTo(true)
-                }
+    fun getTribeRecordListWillIncludeAllSavesOfTribeIncludingDelete() = repositorySetup(object : MongoTribeMint() {
+        val tribe = stubTribe()
+        val updatedTribe = tribe.copy(name = "CLONE")
+        val firstSaveTime = DateTime.now().minus(3.days)
+        val secondSaveTime = firstSaveTime.plus(3.days)
+    }.bind()) {
+        clock.currentTime = firstSaveTime
+        repository.save(tribe)
+        clock.currentTime = secondSaveTime
+        repository.save(updatedTribe)
+        repository.delete(tribe.id)
+    } exercise {
+        repository.getTribeRecordList()
+    } verify { result ->
+        result.filter { it.data.id == tribe.id }.let {
+            it[0].apply {
+                modifyingUserId.assertIsEqualTo(user.email)
+                timestamp.assertIsEqualTo(firstSaveTime)
+                isDeleted.assertIsEqualTo(false)
+            }
+            it[1].apply {
+                modifyingUserId.assertIsEqualTo(user.email)
+                timestamp.assertIsEqualTo(secondSaveTime)
+                isDeleted.assertIsEqualTo(false)
+            }
+            it[2].apply {
+                modifyingUserId.assertIsEqualTo(user.email)
+                timestamp.assertIsEqualTo(secondSaveTime)
+                isDeleted.assertIsEqualTo(true)
             }
         }
     }
@@ -108,35 +95,30 @@ class MongoTribeRepositoryTest : TribeRepositoryValidator {
     }
 
     @Test
-    fun canLoadTribeFromOldSchema() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val expectedTribe = Tribe(
-                    id = TribeId("safety"),
-                    pairingRule = PairingRule.LongestTime,
-                    defaultBadgeName = "Default",
-                    alternateBadgeName = "Alternate",
-                    name = "Safety Dance"
-                )
-            }) {
-                tribesCollection.insert(
-                    json(
-                        "pairingRule" to 1,
-                        "defaultBadgeName" to "Default",
-                        "alternateBadgeName" to "Alternate",
-                        "name" to "Safety Dance",
-                        "id" to "safety"
-                    )
-                ).unsafeCast<Promise<Unit>>().await()
-                Unit
-            } exerciseAsync {
-                getTribeRecord(expectedTribe.id)
-            } verifyAsync { result ->
-                result?.data
-                    .assertIsEqualTo(expectedTribe)
-            }
-        }
+    fun canLoadTribeFromOldSchema() = repositorySetup(object : MongoTribeMint() {
+        val expectedTribe = Tribe(
+            id = TribeId("safety"),
+            pairingRule = PairingRule.LongestTime,
+            defaultBadgeName = "Default",
+            alternateBadgeName = "Alternate",
+            name = "Safety Dance"
+        )
+    }.bind()) {
+        repository.tribesCollection.insert(
+            json(
+                "pairingRule" to 1,
+                "defaultBadgeName" to "Default",
+                "alternateBadgeName" to "Alternate",
+                "name" to "Safety Dance",
+                "id" to "safety"
+            )
+        ).unsafeCast<Promise<Unit>>().await()
+        Unit
+    } exercise {
+        repository.getTribeRecord(expectedTribe.id)
+    } verify { result ->
+        result?.data
+            .assertIsEqualTo(expectedTribe)
     }
-
 
 }

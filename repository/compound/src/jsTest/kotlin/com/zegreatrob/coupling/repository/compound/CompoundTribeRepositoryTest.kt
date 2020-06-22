@@ -1,26 +1,32 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryTribeRepository
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.SharedContext
+import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
-class CompoundTribeRepositoryTest : TribeRepositoryValidator {
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (TribeRepository, User) -> Unit) {
-        val stubUser = stubUser()
+class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundTribeRepository> {
 
-        val repository1 = MemoryTribeRepository(stubUser.email, clock)
-        val repository2 = MemoryTribeRepository(stubUser.email, clock)
+    override val repositorySetup: TestTemplate<SharedContext<CompoundTribeRepository>>
+        get() = asyncTestTemplate(sharedSetup = {
+            val stubUser = stubUser()
+            val clock = MagicClock()
 
-        val compoundRepo = CompoundTribeRepository(repository1, repository2)
-        handler(compoundRepo, stubUser)
-    }
+            val repository1 = MemoryTribeRepository(stubUser.email, clock)
+            val repository2 = MemoryTribeRepository(stubUser.email, clock)
+
+            val compoundRepo = CompoundTribeRepository(repository1, repository2)
+            SharedContextData(compoundRepo, clock, stubUser)
+        })
 
     @Test
     fun saveWillWriteToSecondRepositoryAsWell() = asyncSetup(object {

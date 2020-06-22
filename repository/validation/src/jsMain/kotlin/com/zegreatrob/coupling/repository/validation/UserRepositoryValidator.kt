@@ -15,22 +15,6 @@ import kotlin.test.fail
 
 interface UserRepositoryValidator<R : UserRepository> {
 
-    abstract class ContextMint<R : UserRepository> : SharedContext<R> {
-        override lateinit var repository: R
-        override lateinit var clock: MagicClock
-        override lateinit var user: User
-    }
-
-    fun <C : ContextMint<R>, R : UserRepository> C.bind(): suspend (SharedContext<R>) -> C =
-        { parent: SharedContext<R> ->
-            also {
-                println("init")
-                repository = parent.repository
-                clock = parent.clock
-                user = parent.user
-            }
-        }
-
     val userRepositorySetup: TestTemplate<SharedContext<R>>
 
     @Test
@@ -97,15 +81,3 @@ interface UserRepositoryValidator<R : UserRepository> {
     }
 
 }
-
-interface SharedContext<R : UserRepository> {
-    val repository: R
-    val clock: MagicClock
-    val user: User
-}
-
-data class SharedContextData<R : UserRepository>(
-    override val repository: R,
-    override val clock: MagicClock,
-    override val user: User
-) : SharedContext<R>
