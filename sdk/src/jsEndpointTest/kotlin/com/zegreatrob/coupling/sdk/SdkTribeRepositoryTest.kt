@@ -25,22 +25,33 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
         SharedContextData(sdk, clock, stubUser().copy(email = "$email._temp"))
     })
 
-    @Test
-    fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = asyncSetup(contextProvider = {
+    data class TwoSdkContext(
+        val sdk: Sdk,
+        val otherSdk: Sdk,
+        val tribe: Tribe,
+        val player: Player
+    )
+
+    private fun playerMatchingUserTwoSdksSetup(
+        additionalActions: suspend TwoSdkContext.() -> Unit
+    ) = asyncSetup(contextProvider = {
         val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
-        object {
-            val sdk = sdk
-            val otherSdk = otherSdk
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
-            val player = Player(
+        TwoSdkContext(
+            sdk,
+            otherSdk,
+            Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests"),
+            Player(
                 id = monk.id().toString(),
                 name = "delete-me",
-                email = "${username}._temp"
+                email = "$username._temp"
             )
-        }
-    }) {
+        )
+    }, additionalActions = additionalActions)
+
+    @Test
+    fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = playerMatchingUserTwoSdksSetup {
         otherSdk.save(tribe)
         otherSdk.save(tribe.id.with(player))
     } exercise {
@@ -50,32 +61,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
             .assertIsEqualTo(listOf(tribe))
     }
 
-    data class TwoSdkContext(
-        val sdk: Sdk,
-        val otherSdk: Sdk,
-        val tribe: Tribe,
-        val player: Player
-    )
-
-    private fun setupTwoSdksAndPlayerMatchingUser(additionalActions: suspend TwoSdkContext.() -> Unit) =
-        asyncSetup(contextProvider = {
-            val otherSdk = authorizedSdk(username = "eT-other-user-${uuid4()}")
-            val username = "eT-user-${uuid4()}"
-            val sdk = authorizedSdk(username = username)
-            TwoSdkContext(
-                sdk = sdk,
-                otherSdk = otherSdk,
-                tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests"),
-                player = Player(
-                    id = monk.id().toString(),
-                    name = "delete-me",
-                    email = "$username._temp"
-                )
-            )
-        }, additionalActions = additionalActions)
-
     @Test
-    fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = setupTwoSdksAndPlayerMatchingUser {
+    fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = playerMatchingUserTwoSdksSetup {
         otherSdk.save(tribe)
         otherSdk.save(tribe.id.with(player))
         otherSdk.save(tribe.id.with(player.copy(email = "something else")))
@@ -86,7 +73,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     }
 
     @Test
-    fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupTwoSdksAndPlayerMatchingUser {
+    fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = playerMatchingUserTwoSdksSetup {
         otherSdk.save(tribe)
         otherSdk.save(tribe.id.with(player))
         otherSdk.deletePlayer(tribe.id, player.id!!)
@@ -97,7 +84,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     }
 
     @Test
-    fun postWillFailWhenTribeAlreadyExistsForSomeoneElse() = setupTwoSdksAndPlayerMatchingUser {
+    fun postWillFailWhenTribeAlreadyExistsForSomeoneElse() = playerMatchingUserTwoSdksSetup {
         otherSdk.save(tribe)
     } exercise {
         catchAxiosError { sdk.save(tribe) }
