@@ -6,18 +6,9 @@ import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubTribes
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.TestTemplate
-import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
-interface TribeRepositoryValidator<R : TribeRepository> {
-
-    val repositorySetup: TestTemplate<SharedContext<R>>
-
-    fun <C : Any> repositorySetup(
-        contextProvider: suspend (SharedContext<R>) -> C,
-        additionalActions: suspend C.() -> Unit
-    ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
+interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup(object : ContextMint<R>() {

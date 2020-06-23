@@ -13,14 +13,7 @@ import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 import kotlin.test.fail
 
-interface UserRepositoryValidator<R : UserRepository> {
-
-    val repositorySetup: TestTemplate<SharedContext<R>>
-
-    fun <C : Any> repositorySetup(
-        contextProvider: suspend (SharedContext<R>) -> C,
-        additionalActions: suspend C.() -> Unit
-    ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
+interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
     fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = repositorySetup() exercise {
@@ -83,5 +76,15 @@ interface UserRepositoryValidator<R : UserRepository> {
         result?.data
             .assertIsEqualTo(updatedUser2)
     }
+
+}
+
+interface RepositoryValidator<R, SC : SharedContext<R>> {
+    val repositorySetup: TestTemplate<SC>
+
+    fun <C : Any> repositorySetup(
+        contextProvider: suspend (SC) -> C,
+        additionalActions: suspend C.() -> Unit = {}
+    ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
 
 }

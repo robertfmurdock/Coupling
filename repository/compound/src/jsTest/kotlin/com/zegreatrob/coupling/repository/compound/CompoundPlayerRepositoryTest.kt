@@ -2,32 +2,39 @@ package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.TribeSharedContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
-    override suspend fun withRepository(
-        clock: MagicClock,
-        handler: suspend (CompoundPlayerRepository, TribeId, User) -> Unit
-    ) {
-        val stubUser = stubUser()
 
-        val repository1 = MemoryPlayerRepository(stubUser.email, clock)
-        val repository2 = MemoryPlayerRepository(stubUser.email, clock)
+    override val repositorySetup = asyncTestTemplate<TribeSharedContext<CompoundPlayerRepository>>(
+        sharedSetup = {
+            val clock = MagicClock()
+            val stubUser = stubUser()
 
-        val compoundRepo = CompoundPlayerRepository(repository1, repository2)
-        handler(compoundRepo, stubTribeId(), stubUser)
-    }
+            val repository1 = MemoryPlayerRepository(stubUser.email, clock)
+            val repository2 = MemoryPlayerRepository(stubUser.email, clock)
+
+            val compoundRepo = CompoundPlayerRepository(repository1, repository2)
+
+            object : TribeSharedContext<CompoundPlayerRepository> {
+                override val tribeId = stubTribeId()
+                override val repository = compoundRepo
+                override val clock = clock
+                override val user = stubUser
+            }
+        }
+    )
 
     @Test
     fun saveWillWriteToSecondRepository() = asyncSetup(object {

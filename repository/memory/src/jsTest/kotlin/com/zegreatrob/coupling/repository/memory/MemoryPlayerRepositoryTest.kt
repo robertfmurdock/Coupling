@@ -1,19 +1,21 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.TribeSharedContext
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.testmints.async.asyncTestTemplate
 
 @Suppress("unused")
 class MemoryPlayerRepositoryTest : PlayerEmailRepositoryValidator<MemoryPlayerRepository> {
-    override suspend fun withRepository(
-        clock: MagicClock,
-        handler: suspend (MemoryPlayerRepository, TribeId, User) -> Unit
-    ) {
-        val user = stubUser()
-        handler(MemoryPlayerRepository(user.email, clock), stubTribeId(), user)
-    }
+
+    override val repositorySetup = asyncTestTemplate<TribeSharedContext<MemoryPlayerRepository>>(sharedSetup = {
+        object : TribeSharedContext<MemoryPlayerRepository> {
+            override val tribeId = stubTribeId()
+            override val user = stubUser()
+            override val clock = MagicClock()
+            override val repository = MemoryPlayerRepository(user.email, clock)
+        }
+    })
 }

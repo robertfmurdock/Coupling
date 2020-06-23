@@ -2,36 +2,38 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.testAsync
 import com.zegreatrob.testmints.async.waitForTest
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
-class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
+class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
 
-    override suspend fun withRepository(
-        clock: MagicClock,
-        handler: suspend (SdkPlayerRepository, TribeId, User) -> Unit
-    ) {
+    override val repositorySetup = asyncTestTemplate<TribeSharedContext<Sdk>>(sharedSetup = {
+
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         val tribe = stubTribe()
         sdk.save(tribe)
         val user = stubUser().copy(email = "$username._temp")
-        handler(sdk, tribe.id, user)
-    }
+
+        object : TribeSharedContext<Sdk> {
+            override val tribeId = tribe.id
+            override val repository = sdk
+            override val clock = MagicClock()
+            override val user = user
+        }
+    })
 
     companion object {
         inline fun catchAxiosError(function: () -> Any?) = try {
@@ -42,10 +44,11 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         }
     }
 
-    override fun deletedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
+    override fun deletedPlayersIncludeModificationDateAndUsername() =
+        repositorySetup(object : PlayerContextMint<Sdk>() {
             val player = stubPlayer()
-        }) exercise {
+        }.bind()) {
+        } exercise {
             repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, player.id!!)
             repository.getDeleted(tribeId)
@@ -57,20 +60,18 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
             }
         }
-    }
 
-    override fun savedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-        }) exercise {
-            repository.save(tribeId.with(player))
-            repository.getPlayers(tribeId)
-        } verify { result ->
-            result.size.assertIsEqualTo(1)
-            result.first().apply {
-                timestamp.assertIsCloseToNow()
-                modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
-            }
+    override fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<Sdk>() {
+        val player = stubPlayer()
+    }.bind()) {
+    } exercise {
+        repository.save(tribeId.with(player))
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            timestamp.assertIsCloseToNow()
+            modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
         }
     }
 

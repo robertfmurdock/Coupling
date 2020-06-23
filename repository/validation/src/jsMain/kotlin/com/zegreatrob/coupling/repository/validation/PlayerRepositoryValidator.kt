@@ -13,55 +13,62 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.testAsync
-import com.zegreatrob.testmints.async.waitForTest
 import kotlin.test.Test
 
-interface PlayerRepositoryValidator<T : PlayerRepository> {
+interface TribeSharedContext<R> : SharedContext<R> {
+    val tribeId: TribeId
+}
 
-    suspend fun withRepository(clock: MagicClock, handler: suspend (T, TribeId, User) -> Unit)
+abstract class PlayerContextMint<R : Any> : TribeSharedContext<R> {
+    override lateinit var repository: R
+    override lateinit var clock: MagicClock
+    override lateinit var user: User
+    override var tribeId: TribeId = TribeId("NO INIT")
+}
 
-    fun testRepository(block: (T, TribeId, User, MagicClock) -> dynamic) = testAsync {
-        val clock = MagicClock()
-        withRepository(clock) { repository, tribeId, user -> waitForTest { block(repository, tribeId, user, clock) } }
-    }
-
-    @Test
-    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val players = stubPlayers(3)
-        }) {
-            tribeId.with(players).forEach { repository.save(it) }
-        } exercise {
-            repository.getPlayers(tribeId)
-        } verify { result ->
-            result.map { it.data.player }
-                .assertIsEqualTo(players)
+fun <C : PlayerContextMint<R>, R> C.bind(): suspend (TribeSharedContext<R>) -> C =
+    { parent: TribeSharedContext<R> ->
+        also {
+            repository = parent.repository
+            clock = parent.clock
+            user = parent.user
+            tribeId = parent.tribeId
         }
     }
 
+interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, TribeSharedContext<R>> {
+
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val player = Player(
-                id = null,
-                callSignAdjective = "1",
-                callSignNoun = "2",
-                name = "",
-                email = "",
-                imageURL = null
-            )
-        }) {
-            repository.save(tribeId.with(player))
-        } exercise {
-            repository.getPlayers(tribeId)
-        } verify { result ->
-            result.map { it.data.player }
-                .also { it.assertHasIds() }
-                .map { it.copy(id = null) }
-                .assertIsEqualTo(listOf(player))
-        }
+    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = repositorySetup(object : PlayerContextMint<R>() {
+        val players = stubPlayers(3)
+    }.bind()) {
+        tribeId.with(players).forEach { repository.save(it) }
+    } exercise {
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(players)
+    }
+
+    @Test
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = Player(
+            id = null,
+            callSignAdjective = "1",
+            callSignNoun = "2",
+            name = "",
+            email = "",
+            imageURL = null
+        )
+    }.bind()) {
+        repository.save(tribeId.with(player))
+    } exercise {
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .also { it.assertHasIds() }
+            .map { it.copy(id = null) }
+            .assertIsEqualTo(listOf(player))
     }
 
     private fun List<Player>.assertHasIds() {
@@ -69,94 +76,83 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-            val updatedPlayer = player.copy(name = "Timmy!")
-        }) {
-            repository.save(tribeId.with(player))
-        } exercise {
-            repository.save(tribeId.with(updatedPlayer))
-            repository.getPlayers(tribeId)
-        } verify { result ->
-            result.map { it.data.player }
-                .assertIsEqualTo(listOf(updatedPlayer))
-        }
+    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = stubPlayer()
+        val updatedPlayer = player.copy(name = "Timmy!")
+    }.bind()) {
+        repository.save(tribeId.with(player))
+    } exercise {
+        repository.save(tribeId.with(updatedPlayer))
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(updatedPlayer))
     }
 
     @Test
-    fun deleteWillRemoveAGivenPlayer() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-        }) {
-            repository.save(tribeId.with(player))
-        } exercise {
-            repository.deletePlayer(tribeId, player.id!!)
-            repository.getPlayers(tribeId)
-        } verify { result ->
-            result.map { it.data.player }
-                .contains(player)
-                .assertIsEqualTo(false)
-        }
+    fun deleteWillRemoveAGivenPlayer() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = stubPlayer()
+    }.bind()) {
+        repository.save(tribeId.with(player))
+    } exercise {
+        repository.deletePlayer(tribeId, player.id!!)
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .contains(player)
+            .assertIsEqualTo(false)
     }
 
     @Test
-    fun deletedPlayersShowUpInGetDeleted() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-        }) {
-            repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, player.id!!)
-        } exercise {
-            repository.getDeleted(tribeId)
-        } verify { result ->
-            result.map { it.data.player }
-                .assertIsEqualTo(listOf(player))
-        }
+    fun deletedPlayersShowUpInGetDeleted() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = stubPlayer()
+    }.bind()) {
+        repository.save(tribeId.with(player))
+        repository.deletePlayer(tribeId, player.id!!)
+    } exercise {
+        repository.getDeleted(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(player))
     }
 
     @Test
-    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-            val playerId = player.id!!
-        }) {
-            repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, playerId)
-            repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, playerId)
-        } exercise {
-            repository.getDeleted(tribeId)
-        } verify { result ->
-            result.map { it.data.player }
-                .assertIsEqualTo(listOf(player))
-        }
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = stubPlayer()
+        val playerId = player.id!!
+    }.bind()) {
+        repository.save(tribeId.with(player))
+        repository.deletePlayer(tribeId, playerId)
+        repository.save(tribeId.with(player))
+        repository.deletePlayer(tribeId, playerId)
+    } exercise {
+        repository.getDeleted(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(player))
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = testRepository { repository, tribeId, _, _ ->
-        asyncSetup(object {
-            val playerId = "${uuid4()}"
-        }) exercise {
-            repository.deletePlayer(tribeId, playerId)
-        } verify { result ->
-            result.assertIsEqualTo(false)
-        }
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup(object : PlayerContextMint<R>() {
+        val playerId = "${uuid4()}"
+    }.bind()) exercise {
+        repository.deletePlayer(tribeId, playerId)
+    } verify { result ->
+        result.assertIsEqualTo(false)
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-        }) exercise {
-            repository.save(tribeId.with(player))
-            repository.getPlayers(tribeId)
-        } verify { result ->
-            result.size.assertIsEqualTo(1)
-            result.first().apply {
-                timestamp.assertIsCloseToNow()
-                modifyingUserId.assertIsEqualTo(user.email)
-            }
+    fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = stubPlayer()
+    }.bind()) {
+    } exercise {
+        repository.save(tribeId.with(player))
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            timestamp.assertIsCloseToNow()
+            modifyingUserId.assertIsEqualTo(user.email)
         }
     }
 
@@ -167,20 +163,19 @@ interface PlayerRepositoryValidator<T : PlayerRepository> {
     }
 
     @Test
-    fun deletedPlayersIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->
-        asyncSetup(object {
-            val player = stubPlayer()
-        }) exercise {
-            repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, player.id!!)
-            repository.getDeleted(tribeId)
-        } verify { result ->
-            result.size.assertIsEqualTo(1)
-            result.first().apply {
-                isDeleted.assertIsEqualTo(true)
-                timestamp.assertIsCloseToNow()
-                modifyingUserId.assertIsEqualTo(user.email)
-            }
+    fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<R>() {
+        val player = stubPlayer()
+    }.bind()) {
+    } exercise {
+        repository.save(tribeId.with(player))
+        repository.deletePlayer(tribeId, player.id!!)
+        repository.getDeleted(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            isDeleted.assertIsEqualTo(true)
+            timestamp.assertIsCloseToNow()
+            modifyingUserId.assertIsEqualTo(user.email)
         }
     }
 

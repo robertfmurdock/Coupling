@@ -4,30 +4,34 @@ import com.soywiz.klock.*
 import com.zegreatrob.coupling.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.TribeSharedContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
 @Suppress("unused")
 class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRepository> {
 
-    override suspend fun withRepository(
-        clock: MagicClock,
-        handler: suspend (DynamoPlayerRepository, TribeId, User) -> Unit
-    ) {
+    override val repositorySetup = asyncTestTemplate<TribeSharedContext<DynamoPlayerRepository>>(sharedSetup = {
         val user = stubUser()
-        handler(DynamoPlayerRepository(user.email, clock), stubTribeId(), user)
-    }
+        val clock = MagicClock()
+        val repo = DynamoPlayerRepository(user.email, clock)
+        object : TribeSharedContext<DynamoPlayerRepository> {
+            override val tribeId = stubTribeId()
+            override val clock = clock
+            override val user = user
+            override val repository = repo
+        }
+    })
 
     @Test
     fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() =

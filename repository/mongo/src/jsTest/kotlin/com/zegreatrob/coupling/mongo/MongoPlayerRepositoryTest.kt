@@ -11,13 +11,15 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.repository.validation.TribeSharedContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncTestTemplate
+import com.zegreatrob.testmints.async.setupAsync
+import com.zegreatrob.testmints.async.testAsync
+import kotlinx.coroutines.await
 import kotlin.js.*
 import kotlin.js.Date
 import kotlin.test.Test
@@ -26,12 +28,17 @@ private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
 class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepository> {
 
-    override suspend fun withRepository(
-        clock: MagicClock,
-        handler: suspend (MongoPlayerRepository, TribeId, User) -> Unit
-    ) {
+    override val repositorySetup= asyncTestTemplate<TribeSharedContext<MongoPlayerRepository>> { test ->
         val user = stubUser()
-        withMongoRepository(user, clock) { handler(this, stubTribeId(), user) }
+        val clock = MagicClock()
+        withMongoRepository(user, clock) {
+            test(object : TribeSharedContext<MongoPlayerRepository> {
+                override val tribeId = stubTribeId()
+                override val repository = this@withMongoRepository
+                override val clock = clock
+                override val user = user
+            })
+        }
     }
 
     companion object {
