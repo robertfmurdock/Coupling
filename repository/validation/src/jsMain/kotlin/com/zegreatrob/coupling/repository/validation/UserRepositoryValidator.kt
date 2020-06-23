@@ -15,17 +15,22 @@ import kotlin.test.fail
 
 interface UserRepositoryValidator<R : UserRepository> {
 
-    val userRepositorySetup: TestTemplate<SharedContext<R>>
+    val repositorySetup: TestTemplate<SharedContext<R>>
+
+    fun <C : Any> repositorySetup(
+        contextProvider: suspend (SharedContext<R>) -> C,
+        additionalActions: suspend C.() -> Unit
+    ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
 
     @Test
-    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = userRepositorySetup(contextProvider = { it }) exercise {
+    fun getUserWillNotExplodeWhenUserDoesNotExistInDatabase() = repositorySetup() exercise {
         repository.getUser()
     } verify { result ->
         result.assertIsEqualTo(null)
     }
 
     @Test
-    fun getUsersWithEmailWillShowAllUsersWithEmail() = userRepositorySetup(contextProvider = object : ContextMint<R>() {
+    fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup(object : ContextMint<R>() {
         val userWithEmail = stubUser()
     }.bind()) {
         repository.save(userWithEmail)
@@ -37,7 +42,7 @@ interface UserRepositoryValidator<R : UserRepository> {
     }
 
     @Test
-    fun saveUserThenGetWillContainAllSavedValues() = userRepositorySetup(contextProvider = object : ContextMint<R>() {
+    fun saveUserThenGetWillContainAllSavedValues() = repositorySetup(object : ContextMint<R>() {
         val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
     }.bind()) {
         repository.save(updatedUser)
@@ -49,27 +54,26 @@ interface UserRepositoryValidator<R : UserRepository> {
     }
 
     @Test
-    fun saveUserThenGetWillIncludeMarkingInformation() =
-        userRepositorySetup(contextProvider = object : ContextMint<R>() {
-            val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
-        }.bind()) {
-            clock.currentTime = DateTime.now().plus(10.days)
-            repository.save(updatedUser)
-        } exercise {
-            repository.getUser()
-        } verify { result: Record<User>? ->
-            if (result == null)
-                fail()
-            result.modifyingUserId.assertIsEqualTo(user.id)
-            result.timestamp.assertIsEqualTo(clock.currentTime)
-        }
+    fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup(object : ContextMint<R>() {
+        val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
+    }.bind()) {
+        clock.currentTime = DateTime.now().plus(10.days)
+        repository.save(updatedUser)
+    } exercise {
+        repository.getUser()
+    } verify { result: Record<User>? ->
+        if (result == null)
+            fail()
+        result.modifyingUserId.assertIsEqualTo(user.id)
+        result.timestamp.assertIsEqualTo(clock.currentTime)
+    }
 
     @Test
-    fun saveUserRepeatedlyGetsLatest() = userRepositorySetup(contextProvider = { sharedContext ->
-        object : ContextMint<R>() {
+    fun saveUserRepeatedlyGetsLatest() = repositorySetup({ sharedContext ->
+        object : SharedContext<R> by sharedContext {
             val updatedUser1 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
             val updatedUser2 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId()))
-        }.bind()(sharedContext)
+        }
     }) {
         repository.save(updatedUser1)
         repository.save(updatedUser2)

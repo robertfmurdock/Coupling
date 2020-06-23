@@ -12,7 +12,7 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 @Suppress("unused")
 class MemoryUserRepositoryTest : UserRepositoryValidator<MemoryUserRepository> {
 
-    override val userRepositorySetup: TestTemplate<SharedContext<MemoryUserRepository>>
+    override val repositorySetup: TestTemplate<SharedContext<MemoryUserRepository>>
         get() = asyncTestTemplate(sharedSetup = {
             val clock = MagicClock()
             val email = "${uuid4()}@mail.com"

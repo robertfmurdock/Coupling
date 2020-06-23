@@ -23,7 +23,7 @@ fun <C : ContextMint<R>, R> C.bind(): suspend (SharedContext<R>) -> C =
         }
     }
 
-abstract class ContextMint<R: Any> : SharedContext<R> {
+abstract class ContextMint<R : Any> : SharedContext<R> {
     override lateinit var repository: R
     override lateinit var clock: MagicClock
     override lateinit var user: User

@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
 private const val mongoUrl = "localhost/UsersRepositoryTest"
@@ -22,21 +21,7 @@ private const val mongoUrl = "localhost/UsersRepositoryTest"
 class MongoUserRepositoryTest :
     UserRepositoryValidator<MongoUserRepositoryTest.Companion.MongoUserRepositoryTestAnchor> {
 
-    override val userRepositorySetup
-        get() = asyncTestTemplate<SharedContext<MongoUserRepositoryTestAnchor>>(
-            wrapper = { test ->
-                val clock = MagicClock()
-                val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
-                val repo = repositoryWithDb(currentUser.id, clock)
-                test(SharedContextData(repo, clock, currentUser))
-                repo.close()
-            }
-        )
-
     companion object {
-        private fun repositoryWithDb(email: String, clock: TimeProvider): MongoUserRepositoryTestAnchor =
-            MongoUserRepositoryTestAnchor(email, clock)
-
         class MongoUserRepositoryTestAnchor(override val userId: String, override val clock: TimeProvider) :
             MongoUserRepository,
             MonkToolkit {
@@ -45,29 +30,25 @@ class MongoUserRepositoryTest :
             override val userCollection = jsRepository.userCollection
             fun close(): Unit = db.close().unsafeCast<Unit>()
         }
+    }
 
-        private inline fun withMongoRepository(
-            email: String,
-            clock: TimeProvider,
-            block: (MongoUserRepositoryTestAnchor) -> Unit
-        ) {
-            val repositoryWithDb = repositoryWithDb(email, clock)
-            try {
-                with(repositoryWithDb, block)
-            } finally {
-                repositoryWithDb.close()
-            }
-        }
+    override val repositorySetup = asyncTestTemplate<SharedContext<MongoUserRepositoryTestAnchor>> { test ->
+        val clock = MagicClock()
+        val currentUser = User("${uuid4()}", "${uuid4()}", emptySet())
+        val repo = MongoUserRepositoryTestAnchor(currentUser.id, clock)
+        test(SharedContextData(repo, clock, currentUser))
+        repo.close()
     }
 
     @Test
-    fun getUserRecordsWillReturnAllRecordsForAllUsers() = userRepositorySetup(contextProvider = object :
-        ContextMint<MongoUserRepositoryTestAnchor>() {
-        val initialSaveTime = DateTime.now().minus(3.days)
-        val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(TribeId("clone!"))) }
-        val updatedSaveTime = initialSaveTime.plus(2.hours)
-        val altUser = stubUser()
-    }.bind()) {
+    fun getUserRecordsWillReturnAllRecordsForAllUsers() = repositorySetup(
+        object : ContextMint<MongoUserRepositoryTestAnchor>() {
+            val initialSaveTime = DateTime.now().minus(3.days)
+            val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(TribeId("clone!"))) }
+            val updatedSaveTime = initialSaveTime.plus(2.hours)
+            val altUser = stubUser()
+        }.bind()
+    ) {
         clock.currentTime = initialSaveTime
         repository.save(user)
         repository.save(altUser)

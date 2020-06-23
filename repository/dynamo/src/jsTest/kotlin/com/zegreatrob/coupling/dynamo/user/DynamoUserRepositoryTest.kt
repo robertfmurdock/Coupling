@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
-import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
@@ -22,14 +21,13 @@ import kotlin.test.Test
 @Suppress("unused")
 class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
-    override val userRepositorySetup: TestTemplate<SharedContext<DynamoUserRepository>>
-        get() = asyncTestTemplate(sharedSetup = {
-            val clock = MagicClock()
-            val userId = "${uuid4()}"
-            val user = User(userId, "${uuid4()}", emptySet())
-            val repository = DynamoUserRepository(userId, clock)
-            SharedContextData(repository, clock, user)
-        })
+    override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
+        val clock = MagicClock()
+        val userId = "${uuid4()}"
+        val user = User(userId, "${uuid4()}", emptySet())
+        val repository = DynamoUserRepository(userId, clock)
+        SharedContextData(repository, clock, user)
+    })
 
     @Test
     fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(contextProvider = buildRepository { context ->

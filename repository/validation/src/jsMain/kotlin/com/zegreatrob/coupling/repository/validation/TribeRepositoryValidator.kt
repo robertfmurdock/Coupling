@@ -20,7 +20,7 @@ interface TribeRepositoryValidator<R : TribeRepository> {
     ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
 
     @Test
-    fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup(contextProvider = object : ContextMint<R>() {
+    fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup(object : ContextMint<R>() {
         val tribes = stubTribes(3)
     }.bind()) {
         tribes.forEach { repository.save(it) }
@@ -33,20 +33,19 @@ interface TribeRepositoryValidator<R : TribeRepository> {
     }
 
     @Test
-    fun saveMultipleThenGetEachByIdWillReturnSavedTribes() =
-        repositorySetup(contextProvider = object : ContextMint<R>() {
-            val tribes = stubTribes(3)
-        }.bind()) {
-            tribes.forEach { repository.save(it) }
-        } exercise {
-            tribes.map { repository.getTribeRecord(it.id)?.data }
-        } verify { result ->
-            result.takeLast(tribes.size)
-                .assertIsEqualTo(tribes)
-        }
+    fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup(object : ContextMint<R>() {
+        val tribes = stubTribes(3)
+    }.bind()) {
+        tribes.forEach { repository.save(it) }
+    } exercise {
+        tribes.map { repository.getTribeRecord(it.id)?.data }
+    } verify { result ->
+        result.takeLast(tribes.size)
+            .assertIsEqualTo(tribes)
+    }
 
     @Test
-    fun saveWillIncludeModificationInformation() = repositorySetup(contextProvider = object : ContextMint<R>() {
+    fun saveWillIncludeModificationInformation() = repositorySetup(object : ContextMint<R>() {
         val tribe = stubTribe()
     }.bind()) {
         clock.currentTime = DateTime.now().minus(3.days)
@@ -61,7 +60,7 @@ interface TribeRepositoryValidator<R : TribeRepository> {
     }
 
     @Test
-    fun deleteWillMakeTribeInaccessible() = repositorySetup(contextProvider = object : ContextMint<R>() {
+    fun deleteWillMakeTribeInaccessible() = repositorySetup(object : ContextMint<R>() {
         val tribe = stubTribe()
     }.bind()) {
         repository.save(tribe)
