@@ -9,7 +9,10 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
-import com.zegreatrob.coupling.repository.validation.*
+import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.SharedContext
+import com.zegreatrob.coupling.repository.validation.SharedContextData
+import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -41,14 +44,14 @@ class MongoUserRepositoryTest :
     }
 
     @Test
-    fun getUserRecordsWillReturnAllRecordsForAllUsers() = repositorySetup(
-        object : ContextMint<MongoUserRepositoryTestAnchor>() {
+    fun getUserRecordsWillReturnAllRecordsForAllUsers() = repositorySetup({
+        object : SharedContext<MongoUserRepositoryTestAnchor> by it {
             val initialSaveTime = DateTime.now().minus(3.days)
             val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(TribeId("clone!"))) }
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val altUser = stubUser()
-        }.bind()
-    ) {
+        }
+    }) {
         clock.currentTime = initialSaveTime
         repository.save(user)
         repository.save(altUser)

@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -37,13 +36,11 @@ class MongoPlayerRepositoryTest :
         override val repositorySetup = asyncTestTemplate<TribeContext<MongoPlayerRepositoryTestAnchor>> { test ->
             val user = stubUser()
             val clock = MagicClock()
-            withMongoRepository(user, clock) {
-                test(object : TribeContext<MongoPlayerRepositoryTestAnchor> {
-                    override val tribeId = stubTribeId()
-                    override val repository = this@withMongoRepository
-                    override val clock = clock
-                    override val user = user
-                })
+            val repositoryWithDb = MongoPlayerRepositoryTestAnchor(user.email, clock)
+            try {
+                test(TribeContextData(repositoryWithDb, stubTribeId(), clock, user))
+            } finally {
+                repositoryWithDb.db.close()
             }
         }
 
@@ -60,18 +57,6 @@ class MongoPlayerRepositoryTest :
                 playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         }
 
-        private inline fun withMongoRepository(
-            user: User = stubUser(),
-            clock: TimeProvider = TimeProvider,
-            block: MongoPlayerRepositoryTestAnchor.() -> Unit
-        ) {
-            val repositoryWithDb = MongoPlayerRepositoryTestAnchor(user.email, clock)
-            try {
-                with(repositoryWithDb, block)
-            } finally {
-                repositoryWithDb.db.close()
-            }
-        }
     }
 
     @Test
@@ -146,19 +131,22 @@ class MongoPlayerRepositoryTest :
 
     private fun DateTime.isCloseToNow() = (DateTime.now() - this) < 1.seconds
 
+    private fun mongoPlayerRepository(userId: String, jsRepository: dynamic) = object : MongoPlayerRepository {
+        override val userId = userId
+        override val clock: TimeProvider get() = TimeProvider
+        override val jsRepository = jsRepository
+    }
+
     @Test
-    fun deleteRecordWillIncludeUsername() = repositorySetup(object : MongoPlayerContextMint() {
-        val playerId by lazy { repository.id() }
-        val player by lazy { stubPlayer().copy(id = playerId) }
-        val userWhoSaved = "user that saved"
-    }.bind()) {
-        object : MongoPlayerRepository {
-            override val userId = userWhoSaved
-            override val clock: TimeProvider get() = TimeProvider
-            override val jsRepository = repository.jsRepository
-        }.apply {
-            save(tribeId.with(player))
+    fun deleteRecordWillIncludeUsername() = repositorySetup({
+        object : TribeContext<MongoPlayerRepositoryTestAnchor> by it {
+            val playerId = repository.id()
+            val player = stubPlayer().copy(id = playerId)
+            val userWhoSaved = "user that saved"
         }
+    }) {
+        mongoPlayerRepository(userId = userWhoSaved, jsRepository = repository.jsRepository)
+            .save(tribeId.with(player))
     } exercise {
         repository.deletePlayer(tribeId, playerId)
     } verify {
@@ -211,22 +199,20 @@ class MongoPlayerRepositoryTest :
         }
 
         @Test
-        fun saveThenGetWillOnlyReturnTheUpdatedPlayer() = repositorySetup(object : MongoPlayerContextMint() {
-            val playerId by lazy { repository.id() }
-            val playerDbJson by lazy {
-                json(
+        fun saveThenGetWillOnlyReturnTheUpdatedPlayer() = repositorySetup({
+            object : TribeContext<MongoPlayerRepositoryTestAnchor> by it {
+                val playerId = repository.id()
+                val playerDbJson = json(
                     "_id" to playerId,
                     "tribe" to tribeId.value,
                     "name" to "The Foul Monster"
                 )
-            }
-            val updatedPlayer by lazy {
-                Player(
+                val updatedPlayer = Player(
                     id = playerId,
                     name = "Clean Monster"
                 )
             }
-        }.bind()) {
+        }) {
             repository.playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
         } exercise {
             repository.save(tribeId.with(updatedPlayer))
@@ -237,9 +223,9 @@ class MongoPlayerRepositoryTest :
         }
 
         @Test
-        fun forRealisticLegacyData() = repositorySetup(object : MongoPlayerContextMint() {
-            val playerDbJson by lazy {
-                json(
+        fun forRealisticLegacyData() = repositorySetup({
+            object : TribeContext<MongoPlayerRepositoryTestAnchor> by it {
+                val playerDbJson = json(
                     "_id" to "5c59ca700e6e5e3cce737c6e",
                     "tribe" to tribeId.value,
                     "name" to "Guy guy",
@@ -250,7 +236,7 @@ class MongoPlayerRepositoryTest :
                     "timestamp" to Date(Date.parse("2019-02-05T17:40:00.058Z"))
                 )
             }
-        }.bind()) {
+        }) {
             repository.playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
             val tribeIdPlayer = Player(
                 id = "5c59ca700e6e5e3cce737c6e",
@@ -259,7 +245,6 @@ class MongoPlayerRepositoryTest :
                 badge = 2
             )
             repository.save(tribeId.with(tribeIdPlayer))
-
             repository.playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
         } exercise {
             repository.getPlayers(tribeId)

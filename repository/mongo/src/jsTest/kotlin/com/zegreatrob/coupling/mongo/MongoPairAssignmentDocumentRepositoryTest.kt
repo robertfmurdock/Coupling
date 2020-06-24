@@ -65,11 +65,11 @@ class MongoPairAssignmentDocumentRepositoryTest :
     }
 
     @Test
-    fun whenFindingLegacyFormatWillCorrectlyLoad() = repositorySetup(object : MongoDocumentContext() {
-        val documentId = "b1988bc3-2d58-4dcf-a51f-913d1cce3b50"
-        val todayDate = Date()
-        val data by lazy {
-            json(
+    fun whenFindingLegacyFormatWillCorrectlyLoad() = repositorySetup({
+        object : TribeContext<MongoPairAssignmentDocumentRepositoryTestAnchor> by it {
+            val documentId = "b1988bc3-2d58-4dcf-a51f-913d1cce3b50"
+            val todayDate = Date()
+            val data = json(
                 "id" to documentId,
                 "date" to todayDate,
                 "pairs" to arrayOf(
@@ -90,34 +90,31 @@ class MongoPairAssignmentDocumentRepositoryTest :
                 "timestamp" to todayDate,
                 "modifiedByUsername" to "user-147"
             )
+            val expectedDocument = PairAssignmentDocument(
+                PairAssignmentDocumentId(documentId),
+                todayDate.toDateTime(),
+                listOf(
+                    pairOf(
+                        Player(
+                            "d52b7390-6b65-4733-97e1-07190bf730a0",
+                            1,
+                            "Tim 9",
+                            "tim@tim.meat",
+                            "Spicy",
+                            "Meatball",
+                            "italian.jpg"
+                        )
+                    ).withPins()
+                )
+            )
         }
-    }.bind()) {
+    }) {
         repository.historyCollection.insert(data).unsafeCast<Promise<Unit>>().await()
     } exercise {
         repository.getPairAssignments(tribeId)
     } verify { result ->
         result.data().map { it.document }
-            .assertIsEqualTo(
-                listOf(
-                    PairAssignmentDocument(
-                        PairAssignmentDocumentId(documentId),
-                        todayDate.toDateTime(),
-                        listOf(
-                            pairOf(
-                                Player(
-                                    "d52b7390-6b65-4733-97e1-07190bf730a0",
-                                    1,
-                                    "Tim 9",
-                                    "tim@tim.meat",
-                                    "Spicy",
-                                    "Meatball",
-                                    "italian.jpg"
-                                )
-                            ).withPins()
-                        )
-                    )
-                )
-            )
+            .assertIsEqualTo(listOf(expectedDocument))
     }
 
     @Test
