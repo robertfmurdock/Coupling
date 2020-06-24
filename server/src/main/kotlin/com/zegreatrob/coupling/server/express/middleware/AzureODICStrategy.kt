@@ -9,9 +9,7 @@ import kotlin.js.Json
 import kotlin.js.json
 
 fun azureODICStrategy() = OIDCStrategy(azureOidcConfig()) { request, _, _, profile, _, _, done ->
-    request.scope.async(done,
-        findOrCreateUser(profile, request)
-    )
+    request.scope.async(done, findOrCreateUser(profile, request))
 }
 
 private fun findOrCreateUser(profile: Json, request: Request) = suspend {

@@ -122,4 +122,4 @@ suspend fun checkLogs() {
     }
 }
 
-suspend fun getBrowserLogs() = browser.manage().logs().get("browser").await()
+suspend fun getBrowserLogs() = browser.manage().logs()["browser"].await()

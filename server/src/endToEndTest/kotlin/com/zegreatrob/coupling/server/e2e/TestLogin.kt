@@ -22,7 +22,7 @@ object TestLogin : ProtractorSyntax {
 
     private suspend fun clearLogs() {
         if (browser.getCapabilities().await()["browserName"] != "firefox") {
-            browser.manage().logs().get("browser").await()
+            browser.manage().logs()["browser"].await()
         }
     }
 

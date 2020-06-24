@@ -13,4 +13,6 @@ import com.zegreatrob.coupling.server.external.express.tribeId
 
 val savePlayerRoute = dispatch(command, ::deletePlayerCommand, Player::toJson)
 
-private fun deletePlayerCommand(request: Request) = with(request) { SavePlayerCommand(tribeId().with(jsonBody().toPlayer())) }
+private fun deletePlayerCommand(request: Request) = with(request) {
+    SavePlayerCommand(tribeId().with(jsonBody().toPlayer()))
+}

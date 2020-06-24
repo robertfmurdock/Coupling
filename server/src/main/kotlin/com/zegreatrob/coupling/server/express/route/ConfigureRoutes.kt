@@ -22,9 +22,7 @@ fun Express.routes(webSocketServer: WebSocketServer) {
     all("/api/*", apiGuard())
     use("/api/tribes", tribeListRouter)
     use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
-    ws("/api/:tribeId/pairAssignments/current",
-        websocketRoute(webSocketServer)
-    )
+    ws("/api/:tribeId/pairAssignments/current", websocketRoute(webSocketServer))
     ws("*") { ws, _ -> ws.close() }
     get("*", indexRoute())
 }
@@ -34,15 +32,9 @@ private fun websocketRoute(webSocketServer: WebSocketServer): (WS, Request) -> U
 }
 
 private fun Express.authRoutes() {
-    post("/auth/google-token",
-        authenticateCustomGoogle(),
-        send200()
-    )
+    post("/auth/google-token", authenticateCustomGoogle(), send200())
     get("/microsoft-login", authenticateAzure())
-    post("/auth/signin-microsoft",
-        authenticateAzureWithFailure(),
-        redirectToRoot()
-    )
+    post("/auth/signin-microsoft", authenticateAzureWithFailure(), redirectToRoot())
     if (isInDevMode)
         get("/test-login", authenticateLocal())
 }
@@ -85,11 +77,7 @@ private fun apiGuard(): Handler = { request, response, next ->
     if (!request.isAuthenticated()) {
         handleNotAuthenticated(request, response)
     } else {
-        request.scope.launch(block = setupDispatcher(
-            request,
-            next
-        )
-        )
+        request.scope.launch(block = setupDispatcher(request, next))
     }
 }
 
@@ -108,4 +96,3 @@ private fun handleNotAuthenticated(request: Request, response: Response) = if (r
 }
 
 private fun Request.isWebsocketConnection() = originalUrl?.contains(".websocket") == true
-

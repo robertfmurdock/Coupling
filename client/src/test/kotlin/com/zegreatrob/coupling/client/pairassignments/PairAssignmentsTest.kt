@@ -50,7 +50,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc(), {})
+            PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc()) {}
         )
     } verify { wrapper ->
         wrapper.findComponent(PlayerRoster)

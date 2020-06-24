@@ -24,7 +24,7 @@ fun exportWithMongo() {
     val monkDb = default(mongoUrl())
     val jsRepo = jsRepository(monkDb)
     val repositoryCatalog = MongoRepositoryCatalog(
-        jsRepo.get("userCollection"),
+        jsRepo["userCollection"],
         jsRepo,
         user
     )

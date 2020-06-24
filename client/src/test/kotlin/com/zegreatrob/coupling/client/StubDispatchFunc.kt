@@ -8,8 +8,12 @@ class StubDispatchFunc<D> : DispatchFunc<D> {
 
     val dispatchList = mutableListOf<DispatchedFunc<*, *>>()
 
-    override fun <C : SuspendResultAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit): () -> Unit =
-        { dispatchList.add(DispatchedFunc(commandFunc(), response)) }
+    override fun <C : SuspendResultAction<D, R>, R> invoke(
+        commandFunc: () -> C,
+        response: (Result<R>) -> Unit
+    ): () -> Unit = {
+        dispatchList.add(DispatchedFunc(commandFunc(), response))
+    }
 
     class DispatchedFunc<C, R>(val command: C, val responseFunc: (Result<R>) -> Unit)
 

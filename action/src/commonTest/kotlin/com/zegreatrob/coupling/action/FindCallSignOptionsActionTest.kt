@@ -40,7 +40,7 @@ class FindCallSignOptionsActionTest {
             CallSignOptions(
                 adjectives = defaultCallSignOptions.adjectives - setOf("Modest", "Intense"),
                 nouns = defaultCallSignOptions.nouns - setOf("Tiger", "Mongoose")
-        )
+            )
         )
     }
 }

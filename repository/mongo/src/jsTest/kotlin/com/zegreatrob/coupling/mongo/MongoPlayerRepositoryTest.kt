@@ -28,7 +28,7 @@ private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
 class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepository> {
 
-    override val repositorySetup= asyncTestTemplate<TribeContext<MongoPlayerRepository>> { test ->
+    override val repositorySetup = asyncTestTemplate<TribeContext<MongoPlayerRepository>> { test ->
         val user = stubUser()
         val clock = MagicClock()
         withMongoRepository(user, clock) {

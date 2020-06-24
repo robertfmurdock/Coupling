@@ -19,10 +19,10 @@ class JsonLoggingTestListener(val taskName: String) : TestListener {
     private var lastStart: DateTime? = null
 
     override fun beforeTest(testDescriptor: TestDescriptor) = logger.info {
-            testInfo(testDescriptor)
-                .plus("type" to "TestStart")
-                .asMessage()
-        }
+        testInfo(testDescriptor)
+            .plus("type" to "TestStart")
+            .asMessage()
+    }
         .also { lastStart = DateTime.now() }
 
     private fun testInfo(testDescriptor: TestDescriptor) = mapOf(
@@ -36,10 +36,10 @@ class JsonLoggingTestListener(val taskName: String) : TestListener {
     override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {
         val duration = lastStart?.let { DateTime.now() - it }
         logger.info {
-                testInfo(testDescriptor)
-                    .plus(afterTestInfo(result, duration))
-                    .asMessage()
-            }
+            testInfo(testDescriptor)
+                .plus(afterTestInfo(result, duration))
+                .asMessage()
+        }
             .also { lastStart = null }
     }
 

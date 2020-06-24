@@ -59,12 +59,11 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
 
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
-            json(
-                "pins" to it.pins.map { pin -> pin.toDbJson() }.toTypedArray(),
-                "players" to it.players.map { player -> player.toJson() }.toTypedArray()
-            )
-        }
-        .toTypedArray()
+        json(
+            "pins" to it.pins.map { pin -> pin.toDbJson() }.toTypedArray(),
+            "players" to it.players.map { player -> player.toJson() }.toTypedArray()
+        )
+    }.toTypedArray()
 
     private fun PinnedPlayer.toJson(): Json = player.toDbJson().apply { this["pins"] = pins.toDbJson() }
 

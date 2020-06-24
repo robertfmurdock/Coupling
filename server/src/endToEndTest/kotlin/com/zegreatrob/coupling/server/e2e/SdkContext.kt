@@ -7,7 +7,7 @@ abstract class SdkContext {
     lateinit var sdk: Sdk
 }
 
-fun <C: SdkContext> C.attach(sdk: Sdk) = also {
+fun <C : SdkContext> C.attach(sdk: Sdk) = also {
     this.sdk = sdk
 }
 

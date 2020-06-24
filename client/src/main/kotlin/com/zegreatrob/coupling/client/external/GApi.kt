@@ -22,8 +22,10 @@ external interface GoogleAuth {
 external interface SignInOptions {
     var scope: String
     var prompt: String
+
     @Suppress("PropertyName")
     var ux_mode: String
+
     @Suppress("PropertyName")
     var redirect_uri: String
 }

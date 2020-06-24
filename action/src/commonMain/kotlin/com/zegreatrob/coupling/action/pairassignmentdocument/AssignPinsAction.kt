@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class AssignPinsAction(
     val pairs: List<CouplingPair>,
@@ -74,8 +74,7 @@ interface AssignPinsActionDispatcher {
     private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
         ?.asPlayers()
 
-    private fun PinnedCouplingPair.asPlayers() = players.map(
-        PinnedPlayer::player)
+    private fun PinnedCouplingPair.asPlayers() = players.map(PinnedPlayer::player)
 
     private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) =
         pairAssignmentDocument.pairs.find { docPair -> docPair.pins.contains(pin) }
