@@ -1,44 +1,46 @@
 package com.zegreatrob.coupling.repository.compound
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.pin.pin
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
-import com.zegreatrob.coupling.repository.pin.PinRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.TribeSharedContext
+import com.zegreatrob.coupling.repository.validation.TribeSharedContextData
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
+import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
-class CompoundPinRepositoryTest : PinRepositoryValidator {
+class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> {
 
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (PinRepository, TribeId, User) -> Unit) {
-        val stubUser = stubUser()
+    private val compoundRepositorySetup = asyncTestTemplate(sharedSetup = {
+        object {
+            val clock = MagicClock()
+            val stubUser = stubUser()
 
-        val repository1 = MemoryPinRepository(stubUser.email, clock)
-        val repository2 = MemoryPinRepository(stubUser.email, clock)
+            val repository1 = MemoryPinRepository(stubUser.email, clock)
+            val repository2 = MemoryPinRepository(stubUser.email, clock)
 
-        val compoundRepo = CompoundPinRepository(repository1, repository2)
-        handler(compoundRepo, stubTribeId(), stubUser)
-    }
+            val compoundRepo = CompoundPinRepository(repository1, repository2)
+
+            val tribeId = stubTribeId()
+            val pin = stubPin()
+        }
+    })
+
+    override val repositorySetup = compoundRepositorySetup
+        .extend<TribeSharedContext<CompoundPinRepository>>(sharedSetup = { parent ->
+            with(parent) {
+                TribeSharedContextData(compoundRepo, tribeId, clock, stubUser)
+            }
+        })
 
     @Test
-    fun saveWillWriteToSecondRepository() = asyncSetup(object {
-        val stubUser = stubUser()
-
-        val repository1 = MemoryPinRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPinRepository(stubUser.email, TimeProvider)
-
-        val compoundRepo = CompoundPinRepository(repository1, repository2)
-
-        val tribeId = stubTribeId()
-        val pin = stubPin()
-    }) exercise {
+    fun saveWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(tribeId.with(pin))
     } verify {
         repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
@@ -46,17 +48,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator {
     }
 
     @Test
-    fun deleteWillWriteToSecondRepository() = asyncSetup(object {
-        val stubUser = stubUser()
-
-        val repository1 = MemoryPinRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPinRepository(stubUser.email, TimeProvider)
-
-        val compoundRepo = CompoundPinRepository(repository1, repository2)
-
-        val tribeId = stubTribeId()
-        val pin = stubPin()
-    }) exercise {
+    fun deleteWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(tribeId.with(pin))
         compoundRepo.deletePin(tribeId, pin._id!!)
     } verify {

@@ -87,4 +87,6 @@ interface RepositoryValidator<R, SC : SharedContext<R>> {
         additionalActions: suspend C.() -> Unit = {}
     ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
 
+    fun repositorySetup(additionalActions: suspend SC.() -> Unit = {}) = repositorySetup.invoke(additionalActions = additionalActions)
+
 }

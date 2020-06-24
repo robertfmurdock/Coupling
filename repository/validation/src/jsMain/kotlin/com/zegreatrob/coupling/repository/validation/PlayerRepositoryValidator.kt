@@ -5,36 +5,13 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlin.test.Test
-
-interface TribeSharedContext<R> : SharedContext<R> {
-    val tribeId: TribeId
-}
-
-abstract class PlayerContextMint<R : Any> : TribeSharedContext<R> {
-    override lateinit var repository: R
-    override lateinit var clock: MagicClock
-    override lateinit var user: User
-    override var tribeId: TribeId = TribeId("NO INIT")
-}
-
-fun <C : PlayerContextMint<R>, R> C.bind(): suspend (TribeSharedContext<R>) -> C =
-    { parent: TribeSharedContext<R> ->
-        also {
-            repository = parent.repository
-            clock = parent.clock
-            user = parent.user
-            tribeId = parent.tribeId
-        }
-    }
 
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, TribeSharedContext<R>> {
 

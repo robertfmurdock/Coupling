@@ -4,26 +4,29 @@ import com.soywiz.klock.*
 import com.zegreatrob.coupling.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
-import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.pin.PinRepository
+import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.TribeSharedContext
+import com.zegreatrob.coupling.repository.validation.TribeSharedContextData
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
 @Suppress("unused")
-class DynamoPinRepositoryTest : PinRepositoryValidator {
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (PinRepository, TribeId, User) -> Unit) {
+class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
+
+    override val repositorySetup = asyncTestTemplate<TribeSharedContext<DynamoPinRepository>>(sharedSetup = {
+        val clock = MagicClock()
         val user = stubUser()
-        handler(DynamoPinRepository(user.email, clock), stubTribeId(), user)
-    }
+        TribeSharedContextData(DynamoPinRepository(user.email, clock), stubTribeId(), clock, user)
+    })
 
     @Test
     fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(contextProvider = buildRepository { context ->

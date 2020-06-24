@@ -2,29 +2,26 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
-class SdkPinRepositoryTest : PinRepositoryValidator {
+class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
 
-    override suspend fun withRepository(clock: TimeProvider, handler: suspend (PinRepository, TribeId, User) -> Unit) {
+    override val repositorySetup = asyncTestTemplate<TribeSharedContext<Sdk>>(sharedSetup = {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         val tribe = stubTribe()
         sdk.save(tribe)
-        handler(sdk, tribe.id, stubUser().copy(email = username))
-    }
+        TribeSharedContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = username))
+    })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup(contextProvider = {
@@ -44,19 +41,17 @@ class SdkPinRepositoryTest : PinRepositoryValidator {
         result.assertIsEqualTo(emptyList())
     }
 
-    override fun savedPinsIncludeModificationDateAndUsername() = testRepository { repository, tribeId, user, _ ->
-        asyncSetup(object {
-            val pin = stubPin()
-        }) {
-            repository.save(tribeId.with(pin))
-        } exercise {
-            repository.getPins(tribeId)
-        } verify { result ->
-            result.size.assertIsEqualTo(1)
-            result.first().apply {
-                modifyingUserId.assertIsEqualTo(user.email)
-                timestamp.isWithinOneSecondOfNow()
-            }
+    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<Sdk>() {
+        val pin = stubPin()
+    }.bind()) {
+        repository.save(tribeId.with(pin))
+    } exercise {
+        repository.getPins(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            modifyingUserId.assertIsEqualTo(user.email)
+            timestamp.isWithinOneSecondOfNow()
         }
     }
 
