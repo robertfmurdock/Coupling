@@ -9,9 +9,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
-import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
+import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -26,13 +24,17 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
-class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepository> {
+private typealias MongoPlayerContextMint =
+        TribeContextMint<MongoPlayerRepositoryTest.Companion.MongoPlayerRepositoryTestAnchor>
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<MongoPlayerRepository>> { test ->
+class MongoPlayerRepositoryTest :
+    PlayerEmailRepositoryValidator<MongoPlayerRepositoryTest.Companion.MongoPlayerRepositoryTestAnchor> {
+
+    override val repositorySetup = asyncTestTemplate<TribeContext<MongoPlayerRepositoryTestAnchor>> { test ->
         val user = stubUser()
         val clock = MagicClock()
         withMongoRepository(user, clock) {
-            test(object : TribeContext<MongoPlayerRepository> {
+            test(object : TribeContext<MongoPlayerRepositoryTestAnchor> {
                 override val tribeId = stubTribeId()
                 override val repository = this@withMongoRepository
                 override val clock = clock
@@ -42,8 +44,6 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
     }
 
     companion object {
-        private fun repositoryWithDb(userEmail: String, clock: TimeProvider) =
-            MongoPlayerRepositoryTestAnchor(userEmail, clock)
 
         class MongoPlayerRepositoryTestAnchor(override val userId: String, override val clock: TimeProvider) :
             MongoPlayerRepository, MonkToolkit {
@@ -63,7 +63,7 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
             clock: TimeProvider = TimeProvider,
             block: MongoPlayerRepositoryTestAnchor.() -> Unit
         ) {
-            val repositoryWithDb = repositoryWithDb(user.email, clock)
+            val repositoryWithDb = MongoPlayerRepositoryTestAnchor(user.email, clock)
             try {
                 with(repositoryWithDb, block)
             } finally {
@@ -73,128 +73,103 @@ class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepo
     }
 
     @Test
-    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = testAsync {
-        val clock = MagicClock()
-        val user = stubUser()
-        withMongoRepository(user = user, clock = clock) {
-            setupAsync(object {
-                val tribeId = stubTribeId()
-                val player = stubPlayer()
-                val initialSaveTime = DateTime.now().minus(3.days)
-                val updatedPlayer = player.copy(name = "CLONE")
-                val updatedSaveTime = initialSaveTime.plus(2.hours)
-            }) {
-                clock.currentTime = initialSaveTime
-                save(tribeId.with(player))
-                clock.currentTime = updatedSaveTime
-                save(tribeId.with(updatedPlayer))
-                deletePlayer(tribeId, player.id!!)
-            } exerciseAsync {
-                getPlayerRecords(tribeId)
-            } verifyAsync { result ->
-                result.assertIsEqualTo(
-                    listOf(
-                        Record(
-                            data = tribeId.with(player),
-                            modifyingUserId = user.email,
-                            isDeleted = false,
-                            timestamp = initialSaveTime
-                        ),
-                        Record(
-                            data = tribeId.with(updatedPlayer),
-                            modifyingUserId = user.email,
-                            isDeleted = false,
-                            timestamp = updatedSaveTime
-                        ),
-                        Record(
-                            data = tribeId.with(updatedPlayer),
-                            modifyingUserId = user.email,
-                            isDeleted = true,
-                            timestamp = updatedSaveTime
-                        )
-                    )
+    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = repositorySetup(object : MongoPlayerContextMint() {
+        val player = stubPlayer()
+        val initialSaveTime = DateTime.now().minus(3.days)
+        val updatedPlayer = player.copy(name = "CLONE")
+        val updatedSaveTime = initialSaveTime.plus(2.hours)
+    }.bind()) {
+        clock.currentTime = initialSaveTime
+        repository.save(tribeId.with(player))
+        clock.currentTime = updatedSaveTime
+        repository.save(tribeId.with(updatedPlayer))
+        repository.deletePlayer(tribeId, player.id!!)
+    } exercise {
+        repository.getPlayerRecords(tribeId)
+    } verify { result ->
+        result.assertIsEqualTo(
+            listOf(
+                Record(
+                    data = tribeId.with(player),
+                    modifyingUserId = user.email,
+                    isDeleted = false,
+                    timestamp = initialSaveTime
+                ),
+                Record(
+                    data = tribeId.with(updatedPlayer),
+                    modifyingUserId = user.email,
+                    isDeleted = false,
+                    timestamp = updatedSaveTime
+                ),
+                Record(
+                    data = tribeId.with(updatedPlayer),
+                    modifyingUserId = user.email,
+                    isDeleted = true,
+                    timestamp = updatedSaveTime
                 )
-            }
+            )
+        )
+    }
+
+    @Test
+    fun savedPlayersIncludeModificationDateAndUsernameInMongo() = repositorySetup(object : MongoPlayerContextMint() {
+        val player = stubPlayer()
+    }.bind()) exercise {
+        repository.save(tribeId.with(player))
+        repository.getDbPlayers(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            get("timestamp").unsafeCast<Date>().toDateTime()
+                .isCloseToNow()
+                .assertIsEqualTo(true)
+            get("modifiedByUsername").assertIsEqualTo(user.email)
         }
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsernameInMongo() = testAsync {
-        withMongoRepository {
-            dropPlayers()
-            setupAsync(object {
-                val tribeId = TribeId("woo")
-                val player = stubPlayer()
-            }) exerciseAsync {
-                save(tribeId.with(player))
-                getDbPlayers(tribeId)
-            } verifyAsync { result ->
-                result.size.assertIsEqualTo(1)
-                result.first().apply {
-                    get("timestamp").unsafeCast<Date>().toDateTime()
-                        .isCloseToNow()
-                        .assertIsEqualTo(true)
-                    get("modifiedByUsername").assertIsEqualTo(userId)
-                }
-            }
-        }
-    }
-
-    @Test
-    fun savingTwiceWillNotDeleteOriginalRecord() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val tribeId = TribeId("boo")
-                val player = stubPlayer()
-                val updatedPlayer = player.copy(name = "Timmy")
-            }) {
-                dropPlayers()
-                save(tribeId.with(player))
-            } exerciseAsync {
-                save(tribeId.with(updatedPlayer))
-                getDbPlayers(tribeId)
-            } verifyAsync { result ->
-                result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
-                    .map { it["name"] }
-                    .assertIsEqualTo(listOf("Timmy", player.name))
-            }
-        }
+    fun savingTwiceWillNotDeleteOriginalRecord() = repositorySetup(object : MongoPlayerContextMint() {
+        val player = stubPlayer()
+        val updatedPlayer = player.copy(name = "Timmy")
+    }.bind()) {
+        repository.save(tribeId.with(player))
+    } exercise {
+        repository.save(tribeId.with(updatedPlayer))
+        repository.getDbPlayers(tribeId)
+    } verify { result ->
+        result.toList().sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
+            .map { it["name"] }
+            .assertIsEqualTo(listOf("Timmy", player.name))
     }
 
     private fun DateTime.isCloseToNow() = (DateTime.now() - this) < 1.seconds
 
     @Test
-    fun deleteRecordWillIncludeUsername() = testAsync {
-        withMongoRepository {
-            dropPlayers()
-            setupAsync(object {
-                val tribeId = TribeId("hoo")
-                val playerId = id()
-                val player = stubPlayer().copy(id = playerId)
-                val userWhoSaved = "user that saved"
-            }) {
-                with(object : MongoPlayerRepository {
-                    override val userId = userWhoSaved
-                    override val clock: TimeProvider get() = TimeProvider
-                    override val jsRepository = this@withMongoRepository.jsRepository
-                }) {
-                    save(tribeId.with(player))
-                }
-            } exerciseAsync {
-                deletePlayer(tribeId, playerId)
-            } verifyAsync {
-                getDbPlayers(tribeId)
-                    .toList()
-                    .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
-                    .map { it["modifiedByUsername"].unsafeCast<String>() }
-                    .assertIsEqualTo(
-                        listOf(
-                            userId,
-                            userWhoSaved
-                        )
-                    )
-            }
+    fun deleteRecordWillIncludeUsername() = repositorySetup(object : MongoPlayerContextMint() {
+        val playerId by lazy { repository.id() }
+        val player by lazy { stubPlayer().copy(id = playerId) }
+        val userWhoSaved = "user that saved"
+    }.bind()) {
+        object : MongoPlayerRepository {
+            override val userId = userWhoSaved
+            override val clock: TimeProvider get() = TimeProvider
+            override val jsRepository = repository.jsRepository
+        }.apply {
+            save(tribeId.with(player))
         }
+    } exercise {
+        repository.deletePlayer(tribeId, playerId)
+    } verify {
+        repository.getDbPlayers(tribeId)
+            .toList()
+            .sortedByDescending { it["timestamp"].unsafeCast<Date>().toDateTime() }
+            .map { it["modifiedByUsername"].unsafeCast<String>() }
+            .assertIsEqualTo(
+                listOf(
+                    user.email,
+                    userWhoSaved
+                )
+            )
     }
 
     class ForLegacyData {
