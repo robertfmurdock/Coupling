@@ -8,8 +8,6 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.TestTemplate
-import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -76,17 +74,5 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
         result?.data
             .assertIsEqualTo(updatedUser2)
     }
-
-}
-
-interface RepositoryValidator<R, SC : SharedContext<R>> {
-    val repositorySetup: TestTemplate<SC>
-
-    fun <C : Any> repositorySetup(
-        contextProvider: suspend (SC) -> C,
-        additionalActions: suspend C.() -> Unit = {}
-    ) = repositorySetup.invoke(contextProvider = contextProvider, additionalActions = additionalActions)
-
-    fun repositorySetup(additionalActions: suspend SC.() -> Unit = {}) = repositorySetup.invoke(additionalActions = additionalActions)
 
 }

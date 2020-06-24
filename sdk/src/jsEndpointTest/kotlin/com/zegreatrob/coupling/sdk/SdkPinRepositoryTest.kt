@@ -15,12 +15,12 @@ import kotlin.test.Test
 
 class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
 
-    override val repositorySetup = asyncTestTemplate<TribeSharedContext<Sdk>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
         val tribe = stubTribe()
         sdk.save(tribe)
-        TribeSharedContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = username))
+        TribeContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = username))
     })
 
     @Test
@@ -41,7 +41,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
         result.assertIsEqualTo(emptyList())
     }
 
-    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<Sdk>() {
+    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
         val pin = stubPin()
     }.bind()) {
         repository.save(tribeId.with(pin))

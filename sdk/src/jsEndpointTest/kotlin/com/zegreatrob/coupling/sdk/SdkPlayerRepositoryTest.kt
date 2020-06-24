@@ -19,7 +19,7 @@ import kotlin.test.Test
 
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
 
-    override val repositorySetup = asyncTestTemplate<TribeSharedContext<Sdk>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
 
         val username = "eT-user-${uuid4()}"
         val sdk = authorizedSdk(username = username)
@@ -27,7 +27,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         sdk.save(tribe)
         val user = stubUser().copy(email = "$username._temp")
 
-        object : TribeSharedContext<Sdk> {
+        object : TribeContext<Sdk> {
             override val tribeId = tribe.id
             override val repository = sdk
             override val clock = MagicClock()
@@ -45,7 +45,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
     }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() =
-        repositorySetup(object : PlayerContextMint<Sdk>() {
+        repositorySetup(object : TribeContextMint<Sdk>() {
             val player = stubPlayer()
         }.bind()) {
         } exercise {
@@ -61,7 +61,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             }
         }
 
-    override fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<Sdk>() {
+    override fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
         val player = stubPlayer()
     }.bind()) {
     } exercise {

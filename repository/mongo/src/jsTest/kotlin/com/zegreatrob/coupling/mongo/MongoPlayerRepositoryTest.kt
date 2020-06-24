@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.player.MongoPlayerRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeSharedContext
+import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -28,11 +28,11 @@ private const val mongoUrl = "localhost/PlayersRepositoryTest"
 
 class MongoPlayerRepositoryTest : PlayerEmailRepositoryValidator<MongoPlayerRepository> {
 
-    override val repositorySetup= asyncTestTemplate<TribeSharedContext<MongoPlayerRepository>> { test ->
+    override val repositorySetup= asyncTestTemplate<TribeContext<MongoPlayerRepository>> { test ->
         val user = stubUser()
         val clock = MagicClock()
         withMongoRepository(user, clock) {
-            test(object : TribeSharedContext<MongoPlayerRepository> {
+            test(object : TribeContext<MongoPlayerRepository> {
                 override val tribeId = stubTribeId()
                 override val repository = this@withMongoRepository
                 override val clock = clock

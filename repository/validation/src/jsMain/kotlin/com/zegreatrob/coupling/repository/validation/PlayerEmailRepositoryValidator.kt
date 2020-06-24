@@ -12,7 +12,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         where R : PlayerRepository, R : PlayerListGetByEmail {
 
     @Test
-    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup(object : PlayerContextMint<R>() {
+    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup(object : TribeContextMint<R>() {
         val email = "test-${uuid4()}@zegreatrob.com"
         val player = stubPlayer().copy(email = email)
         val redHerring = stubPlayer().copy(email = "something else")
@@ -29,7 +29,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() =
-        repositorySetup(object : PlayerContextMint<R>() {
+        repositorySetup(object : TribeContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val updatedPlayer = player.copy(name = "Besto", email = "something else ")
@@ -44,7 +44,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() =
-        repositorySetup(object : PlayerContextMint<R>() {
+        repositorySetup(object : TribeContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
         }.bind()) {

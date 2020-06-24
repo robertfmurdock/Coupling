@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeSharedContext
+import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -21,11 +21,11 @@ import kotlin.test.Test
 @Suppress("unused")
 class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRepository> {
 
-    override val repositorySetup = asyncTestTemplate<TribeSharedContext<DynamoPlayerRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPlayerRepository>>(sharedSetup = {
         val user = stubUser()
         val clock = MagicClock()
         val repo = DynamoPlayerRepository(user.email, clock)
-        object : TribeSharedContext<DynamoPlayerRepository> {
+        object : TribeContext<DynamoPlayerRepository> {
             override val tribeId = stubTribeId()
             override val clock = clock
             override val user = user

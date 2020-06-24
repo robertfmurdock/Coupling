@@ -15,10 +15,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 
-interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeSharedContext<R>> {
+interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
 
     @Test
-    fun canSaveAndGetPins() = repositorySetup(object : PlayerContextMint<R>() {
+    fun canSaveAndGetPins() = repositorySetup(object : TribeContextMint<R>() {
         val pins = listOf(
             stubPin(),
             stubPin(),
@@ -34,7 +34,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
 
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : PlayerContextMint<R>() {
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {
         val pin = Pin(
             _id = null,
             name = "",
@@ -56,7 +56,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun saveThenDeleteWillNotShowThatPin() = repositorySetup(object : PlayerContextMint<R>() {
+    fun saveThenDeleteWillNotShowThatPin() = repositorySetup(object : TribeContextMint<R>() {
         val pins = listOf(
             stubPin(),
             stubPin(),
@@ -80,7 +80,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup(object : PlayerContextMint<R>() {
+    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup(object : TribeContextMint<R>() {
     }.bind()) {
     } exercise {
         repository.deletePin(tribeId, "${uuid4()}")
@@ -97,7 +97,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<R>() {
+    fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
         val pin = stubPin()
     }.bind()) {
         clock.currentTime = DateTime.now().plus(4.hours)

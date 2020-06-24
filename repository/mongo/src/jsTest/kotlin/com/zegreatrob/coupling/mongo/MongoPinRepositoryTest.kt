@@ -20,17 +20,17 @@ import kotlin.test.Test
 
 private const val mongoUrl = "localhost/PinsRepositoryTest"
 
-private typealias MongoPinContextMint = PlayerContextMint<MongoPinRepositoryTest.Companion.MongoPinRepositoryTestAnchor>
+private typealias MongoPinContextMint = TribeContextMint<MongoPinRepositoryTest.Companion.MongoPinRepositoryTestAnchor>
 
 @Suppress("unused")
 class MongoPinRepositoryTest : PinRepositoryValidator<MongoPinRepositoryTest.Companion.MongoPinRepositoryTestAnchor> {
 
-    override val repositorySetup = asyncTestTemplate<TribeSharedContext<MongoPinRepositoryTestAnchor>> { test ->
+    override val repositorySetup = asyncTestTemplate<TribeContext<MongoPinRepositoryTestAnchor>> { test ->
         val clock = MagicClock()
         val user = stubUser()
         val repositoryWithDb = MongoPinRepositoryTestAnchor(clock, user.email)
         try {
-            test(TribeSharedContextData(repositoryWithDb, stubTribeId(), clock, user))
+            test(TribeContextData(repositoryWithDb, stubTribeId(), clock, user))
         } finally {
             repositoryWithDb.close()
         }

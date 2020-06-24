@@ -13,10 +13,10 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlin.test.Test
 
-interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, TribeSharedContext<R>> {
+interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, TribeContext<R>> {
 
     @Test
-    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = repositorySetup(object : PlayerContextMint<R>() {
+    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = repositorySetup(object : TribeContextMint<R>() {
         val players = stubPlayers(3)
     }.bind()) {
         tribeId.with(players).forEach { repository.save(it) }
@@ -28,7 +28,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : PlayerContextMint<R>() {
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {
         val player = Player(
             id = null,
             callSignAdjective = "1",
@@ -53,7 +53,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup(object : PlayerContextMint<R>() {
+    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
         val updatedPlayer = player.copy(name = "Timmy!")
     }.bind()) {
@@ -67,7 +67,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deleteWillRemoveAGivenPlayer() = repositorySetup(object : PlayerContextMint<R>() {
+    fun deleteWillRemoveAGivenPlayer() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
         repository.save(tribeId.with(player))
@@ -81,7 +81,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedPlayersShowUpInGetDeleted() = repositorySetup(object : PlayerContextMint<R>() {
+    fun deletedPlayersShowUpInGetDeleted() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
         repository.save(tribeId.with(player))
@@ -94,7 +94,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup(object : PlayerContextMint<R>() {
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
         val playerId = player.id!!
     }.bind()) {
@@ -110,7 +110,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup(object : PlayerContextMint<R>() {
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup(object : TribeContextMint<R>() {
         val playerId = "${uuid4()}"
     }.bind()) exercise {
         repository.deletePlayer(tribeId, playerId)
@@ -119,7 +119,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<R>() {
+    fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
     } exercise {
@@ -140,7 +140,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : PlayerContextMint<R>() {
+    fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
     } exercise {

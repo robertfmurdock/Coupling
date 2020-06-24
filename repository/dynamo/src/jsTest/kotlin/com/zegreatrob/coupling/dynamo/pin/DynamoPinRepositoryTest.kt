@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeSharedContext
-import com.zegreatrob.coupling.repository.validation.TribeSharedContextData
+import com.zegreatrob.coupling.repository.validation.TribeContext
+import com.zegreatrob.coupling.repository.validation.TribeContextData
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -22,10 +22,10 @@ import kotlin.test.Test
 @Suppress("unused")
 class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
 
-    override val repositorySetup = asyncTestTemplate<TribeSharedContext<DynamoPinRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPinRepository>>(sharedSetup = {
         val clock = MagicClock()
         val user = stubUser()
-        TribeSharedContextData(DynamoPinRepository(user.email, clock), stubTribeId(), clock, user)
+        TribeContextData(DynamoPinRepository(user.email, clock), stubTribeId(), clock, user)
     })
 
     @Test

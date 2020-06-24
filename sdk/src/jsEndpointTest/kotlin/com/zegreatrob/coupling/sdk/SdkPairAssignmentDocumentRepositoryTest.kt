@@ -2,36 +2,31 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
 @Suppress("unused")
 val setJasmineTimeout = js("jasmine.DEFAULT_TIMEOUT_INTERVAL=10000")
 
-class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator {
+class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<Sdk> {
 
-    override suspend fun withRepository(
-        clock: TimeProvider,
-        handler: suspend (PairAssignmentDocumentRepository, TribeId, User) -> Unit
-    ) {
+    override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
         val user = stubUser().copy(email = "eT-user-${uuid4()}")
         val sdk = authorizedSdk(username = user.email)
         val tribe = stubTribe()
         sdk.save(tribe)
-        handler(sdk, tribe.id, user)
-    }
+        TribeContextData(sdk, tribe.id, MagicClock(), user)
+    })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup(contextProvider = {
@@ -51,19 +46,17 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         result.assertIsEqualTo(emptyList())
     }
 
-    override fun savedWillIncludeModificationDateAndUsername() = super.testRepository { repository, tribeId, user, _ ->
-        asyncSetup(object {
-            val pairAssignmentDoc = stubPairAssignmentDoc()
-        }) {
-            repository.save(tribeId.with(pairAssignmentDoc))
-        } exercise {
-            repository.getPairAssignments(tribeId)
-        } verify { result ->
-            result.size.assertIsEqualTo(1)
-            result.first().apply {
-                timestamp.assertIsRecentDateTime()
-                modifyingUserId.assertIsEqualTo(user.email)
-            }
+    override fun savedWillIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
+        val pairAssignmentDoc = stubPairAssignmentDoc()
+    }.bind()) {
+        repository.save(tribeId.with(pairAssignmentDoc))
+    } exercise {
+        repository.getPairAssignments(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            timestamp.assertIsRecentDateTime()
+            modifyingUserId.assertIsEqualTo(user.email)
         }
     }
 
