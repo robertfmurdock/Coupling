@@ -15,8 +15,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import com.zegreatrob.testmints.async.setupAsync
-import com.zegreatrob.testmints.async.testAsync
+import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.await
 import kotlin.js.*
 import kotlin.js.Date
@@ -30,20 +29,23 @@ private typealias MongoPlayerContextMint =
 class MongoPlayerRepositoryTest :
     PlayerEmailRepositoryValidator<MongoPlayerRepositoryTest.Companion.MongoPlayerRepositoryTestAnchor> {
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<MongoPlayerRepositoryTestAnchor>> { test ->
-        val user = stubUser()
-        val clock = MagicClock()
-        withMongoRepository(user, clock) {
-            test(object : TribeContext<MongoPlayerRepositoryTestAnchor> {
-                override val tribeId = stubTribeId()
-                override val repository = this@withMongoRepository
-                override val clock = clock
-                override val user = user
-            })
-        }
-    }
+    override val repositorySetup = Companion.repositorySetup
 
-    companion object {
+    companion object :
+        RepositoryValidator<Companion.MongoPlayerRepositoryTestAnchor, TribeContext<Companion.MongoPlayerRepositoryTestAnchor>> {
+
+        override val repositorySetup = asyncTestTemplate<TribeContext<MongoPlayerRepositoryTestAnchor>> { test ->
+            val user = stubUser()
+            val clock = MagicClock()
+            withMongoRepository(user, clock) {
+                test(object : TribeContext<MongoPlayerRepositoryTestAnchor> {
+                    override val tribeId = stubTribeId()
+                    override val repository = this@withMongoRepository
+                    override val clock = clock
+                    override val user = user
+                })
+            }
+        }
 
         class MongoPlayerRepositoryTestAnchor(override val userId: String, override val clock: TimeProvider) :
             MongoPlayerRepository, MonkToolkit {
@@ -174,83 +176,70 @@ class MongoPlayerRepositoryTest :
 
     class ForLegacyData {
 
-        companion object {
-            private suspend fun MongoPlayerRepositoryTestAnchor.setupLegacyPlayer() = setupAsync(object {
-                val playerId = id()
+        private val legacyPlayerSetup = repositorySetup.extend(sharedSetup = { parent ->
+            object {
+                val playerId = parent.repository.id()
                 val tribeId = TribeId("woo")
                 val playerDbJson = json(
                     "_id" to playerId,
                     "tribe" to tribeId.value,
                     "name" to "The Foul Monster"
                 )
-            }) {
-                dropPlayers()
-                playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
+                val repository = parent.repository
+            }.also {
+                parent.repository.dropPlayers()
+                parent.repository.playersCollection.insert(it.playerDbJson).unsafeCast<Promise<Unit>>().await()
             }
+        })
+
+        @Test
+        fun canGetPlayersThatLookHistorical() = legacyPlayerSetup() exercise {
+            repository.getPlayers(tribeId)
+        } verify { result ->
+            result.map { it.data.player }
+                .assertIsEqualTo(
+                    listOf(Player(id = playerId, name = playerDbJson["name"].toString()))
+                )
         }
 
         @Test
-        fun canGetPlayersThatLookHistorical() = testAsync {
-            withMongoRepository {
-                setupLegacyPlayer() exerciseAsync {
-                    getPlayers(tribeId)
-                } verifyAsync { result ->
-                    result.map { it.data.player }
-                        .assertIsEqualTo(
-                            listOf(Player(id = playerId, name = playerDbJson["name"].toString()))
-                        )
-                }
-            }
+        fun canDeletePlayersThatLookHistorical() = legacyPlayerSetup() exercise {
+            repository.deletePlayer(tribeId, playerId)
+            repository.getPlayers(tribeId)
+        } verify { result ->
+            result.assertIsEqualTo(emptyList())
         }
 
         @Test
-        fun canDeletePlayersThatLookHistorical() = testAsync {
-            withMongoRepository {
-                setupLegacyPlayer() exerciseAsync {
-                    deletePlayer(tribeId, playerId)
-                    getPlayers(tribeId)
-                } verifyAsync { result ->
-                    result.assertIsEqualTo(emptyList())
-                }
+        fun saveThenGetWillOnlyReturnTheUpdatedPlayer() = repositorySetup(object : MongoPlayerContextMint() {
+            val playerId by lazy { repository.id() }
+            val playerDbJson by lazy {
+                json(
+                    "_id" to playerId,
+                    "tribe" to tribeId.value,
+                    "name" to "The Foul Monster"
+                )
             }
+            val updatedPlayer by lazy {
+                Player(
+                    id = playerId,
+                    name = "Clean Monster"
+                )
+            }
+        }.bind()) {
+            repository.playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
+        } exercise {
+            repository.save(tribeId.with(updatedPlayer))
+            repository.getPlayers(tribeId)
+        } verify { result ->
+            result.map { it.data.player }
+                .assertIsEqualTo(listOf(updatedPlayer))
         }
 
         @Test
-        fun saveThenGetWillOnlyReturnTheUpdatedPlayer() = testAsync {
-            withMongoRepository {
-                setupAsync(object {
-                    val playerId = id()
-                    val tribeId = TribeId("woo")
-                    val playerDbJson = json(
-                        "_id" to playerId,
-                        "tribe" to tribeId.value,
-                        "name" to "The Foul Monster"
-                    )
-
-                    val updatedPlayer = Player(
-                        id = playerId,
-                        name = "Clean Monster"
-                    )
-                }) {
-                    dropPlayers()
-                    playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
-                } exerciseAsync {
-                    save(tribeId.with(updatedPlayer))
-                    getPlayers(tribeId)
-                } verifyAsync { result ->
-                    result.map { it.data.player }
-                        .assertIsEqualTo(listOf(updatedPlayer))
-                }
-            }
-        }
-    }
-
-    @Test
-    fun forRealisticLegacyData() = testAsync {
-        withMongoRepository {
-            setupAsync(object {
-                val tribeId = TribeId("nah")
-                val playerDbJson = json(
+        fun forRealisticLegacyData() = repositorySetup(object : MongoPlayerContextMint() {
+            val playerDbJson by lazy {
+                json(
                     "_id" to "5c59ca700e6e5e3cce737c6e",
                     "tribe" to tribeId.value,
                     "name" to "Guy guy",
@@ -260,24 +249,22 @@ class MongoPlayerRepositoryTest :
                     "id" to null,
                     "timestamp" to Date(Date.parse("2019-02-05T17:40:00.058Z"))
                 )
-            }) {
-                dropPlayers()
-                playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
-                val tribeIdPlayer = Player(
-                    id = "5c59ca700e6e5e3cce737c6e",
-                    name = "Guy guy",
-                    email = "duder",
-                    badge = 2
-                )
-                save(tribeId.with(tribeIdPlayer))
-
-                playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
-            } exerciseAsync {
-                getPlayers(tribeId)
-            } verifyAsync { result ->
-                result[0].data.player.badge.assertIsEqualTo(2)
             }
+        }.bind()) {
+            repository.playersCollection.insert(playerDbJson).unsafeCast<Promise<Unit>>().await()
+            val tribeIdPlayer = Player(
+                id = "5c59ca700e6e5e3cce737c6e",
+                name = "Guy guy",
+                email = "duder",
+                badge = 2
+            )
+            repository.save(tribeId.with(tribeIdPlayer))
+
+            repository.playersCollection.find(json("tribe" to tribeId.value)).unsafeCast<Promise<Array<Json>>>().await()
+        } exercise {
+            repository.getPlayers(tribeId)
+        } verify { result ->
+            result[0].data.player.badge.assertIsEqualTo(2)
         }
     }
-
 }
