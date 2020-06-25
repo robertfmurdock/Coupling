@@ -7,13 +7,13 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.691.0",
+    "aws-sdk": "2.704.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
     "cookie-parser": "^1.4.5",
-    "css-loader": "^3.5.3",
+    "css-loader": "^3.6.0",
     "date-fns": "^2.14.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
@@ -21,8 +21,8 @@
     "express-session": "^1.17.1",
     "express-statsd": "^0.3.0",
     "express-ws": "^4.0.0",
-    "google-auth-library": "^6.0.1",
-    "graphql": "^15.0.0",
+    "google-auth-library": "^6.0.2",
+    "graphql": "^15.1.0",
     "method-override": "^3.0.0",
     "minimist": "^1.2.5",
     "on-finished": "^2.3.0",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/es6-shim": "^0.31.40",
-    "@types/jasmine": "^3.5.10",
+    "@types/jasmine": "^3.5.11",
     "@types/jasminewd2": "^2.0.8",
     "@types/passport": "^1.0.3",
     "@types/ws": "7.2.5",
@@ -50,7 +50,7 @@
     "jasmine": "^3.5.0",
     "jasmine-core": "^3.5.0",
     "jasmine-reporters": "^2.3.2",
-    "npm-check-updates": "^6.0.1",
+    "npm-check-updates": "^7.0.1",
     "protractor": "^7.0.0",
     "protractor-jasmine2-screenshot-reporter": "^0.5.0",
     "protractor-screenshot-reporter": "0.0.5",
@@ -64,7 +64,7 @@
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
