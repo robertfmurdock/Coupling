@@ -6,7 +6,6 @@ jobs:
       - image: amazon/dynamodb-local
         command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
       - image: selenium/standalone-chrome
-    resource_class: medium+
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -16,9 +15,10 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-39-{{ .Branch }}
-      - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
+      - run: "./gradlew kotlinNodeJsSetup"
+      - run: "./gradlew packageJson kotlinNpmInstall"
+      - run: "./gradlew testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - save_cache:
           key: coupling-cache-39-{{ .Branch }}
           paths:
@@ -27,6 +27,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
+      - run: "./gradlew :client:check :server:check"
       - run: "./gradlew build check -x :repository:mongo:check"
       - run:
           name: Copy test results
