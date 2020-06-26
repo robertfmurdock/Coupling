@@ -84,8 +84,10 @@ private fun RBuilder.configInputs(
                 }
 
                 if (isNew) {
-                    li { uniqueIdInput(tribe, onChange) }
-                    span { +"This affects your tribe's URL. This is permanently assigned." }
+                    li {
+                        uniqueIdInput(tribe, onChange)
+                        span { +"This affects your tribe's URL. This is permanently assigned." }
+                    }
                 }
                 li {
                     enableAnimationsInput(tribe, onChange)
