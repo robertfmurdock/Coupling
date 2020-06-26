@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/openjdk:9-jdk
       - image: amazon/dynamodb-local
-        command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
+        command: -Xmx512M -jar DynamoDBLocal.jar -inMemory
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
@@ -15,13 +15,9 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-39-{{ .Branch }}
-      - run: "./gradlew yarn"
       - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew kotlinNpmInstall"
-      - run: "./gradlew :client:packageJson :client:packageJson kotlinNpmInstall"
-      - run: "./gradlew :server:packageJson kotlinNpmInstall"
-      - run: "./gradlew packageJson kotlinNpmInstall"
-      - run: "./gradlew testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+      - run: "./gradlew yarn"
       - save_cache:
           key: coupling-cache-39-{{ .Branch }}
           paths:
@@ -30,7 +26,6 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew :client:check :server:check"
       - run: "./gradlew build check -x :repository:mongo:check"
       - run:
           name: Copy test results
