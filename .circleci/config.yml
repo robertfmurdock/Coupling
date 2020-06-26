@@ -17,7 +17,8 @@ jobs:
           key: coupling-cache-39-{{ .Branch }}
       - run: "./gradlew yarn"
       - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew :client:packageJson kotlinNpmInstall"
+      - run: "./gradlew kotlinNpmInstall"
+      - run: "./gradlew :client:packageJson :client:packageJson kotlinNpmInstall"
       - run: "./gradlew :server:packageJson kotlinNpmInstall"
       - run: "./gradlew packageJson kotlinNpmInstall"
       - run: "./gradlew testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
