@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import shallow
@@ -73,6 +74,17 @@ class TribeConfigTest {
             .assertIsEqualTo(listOf(SaveTribeCommand(tribe)))
 
         pathSetterSpy.spyReceivedValues.assertContains("/tribes/")
+    }
+
+    @Test
+    fun whenTribeIsNewWillSuggestIdAutomatically() = setup(object {
+        val tribe = Tribe(TribeId(""))
+    }) exercise {
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
+    } verify { result ->
+        result.find<Any>("#tribe-id")
+            .prop("value")
+            .assertIsNotEqualTo("")
     }
 
 }

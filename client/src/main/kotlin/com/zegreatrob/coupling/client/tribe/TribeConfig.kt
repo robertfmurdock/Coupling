@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.json.toJson
@@ -84,6 +85,7 @@ private fun RBuilder.configInputs(
 
                 if (isNew) {
                     li { uniqueIdInput(tribe, onChange) }
+                    span { +"This affects your tribe's URL. This is permanently assigned." }
                 }
                 li {
                     enableAnimationsInput(tribe, onChange)
@@ -224,7 +226,7 @@ private fun RBuilder.uniqueIdInput(tribe: Tribe, onChange: (Event) -> Unit) = co
     labelText = "Unique Id",
     id = "tribe-id",
     name = "id",
-    value = tribe.id.value,
+    value = tribe.id.value.ifBlank { "${uuid4()}" },
     type = InputType.text,
     onChange = onChange
 )

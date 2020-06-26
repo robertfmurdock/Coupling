@@ -9,8 +9,7 @@ import com.zegreatrob.coupling.repository.tribe.TribeRecordSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object TribeListQuery :
-    SimpleSuspendResultAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
+object TribeListQuery : SimpleSuspendResultAction<TribeListQueryDispatcher, List<Record<Tribe>>> {
     override val performFunc = link(TribeListQueryDispatcher::perform)
 }
 
