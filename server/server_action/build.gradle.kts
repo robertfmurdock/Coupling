@@ -24,7 +24,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7")
-                implementation("io.github.microutils:kotlin-logging-common:1.7.10")
+                implementation("io.github.microutils:kotlin-logging-common:1.8.0.1")
             }
         }
         getByName("commonTest") {

@@ -6,6 +6,10 @@
       <module name="Coupling.action-test.jvmTest" target="1.8" />
       <module name="Coupling.actionFunc.jvmMain" target="1.8" />
       <module name="Coupling.actionFunc.jvmTest" target="1.8" />
+      <module name="Coupling.export.jvmMain" target="1.6" />
+      <module name="Coupling.export.jvmTest" target="1.6" />
+      <module name="Coupling.import.jvmMain" target="1.6" />
+      <module name="Coupling.import.jvmTest" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

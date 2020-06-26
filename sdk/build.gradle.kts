@@ -34,7 +34,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7")
                 api("com.soywiz.korlibs.klock:klock:1.10.6")
-                implementation("io.github.microutils:kotlin-logging-common:1.7.10")
+                implementation("io.github.microutils:kotlin-logging-common:1.8.0.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
             }
         }
