@@ -4,7 +4,7 @@ import ShallowWrapper
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import shallow
+import shallow2
 import kotlin.test.Test
 
 class PinButtonTest {
@@ -13,7 +13,7 @@ class PinButtonTest {
     fun whenGivenPinWithSimpleIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "angry")
     }) exercise {
-        shallow(PinButton, PinButtonProps(pin, onClick = {}))
+        shallow2(PinButton, PinButtonProps(pin, onClick = {}))
     } verify { wrapper ->
         wrapper.assertIconHasClasses("fa", "fa-angry")
     }
@@ -22,7 +22,7 @@ class PinButtonTest {
     fun whenGivenPinWithAlreadyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "fa-angry")
     }) exercise {
-        shallow(PinButton, PinButtonProps(pin, onClick = {}))
+        shallow2(PinButton, PinButtonProps(pin, onClick = {}))
     } verify { wrapper ->
         wrapper.assertIconHasClasses("fa", "fa-angry")
     }
@@ -31,7 +31,7 @@ class PinButtonTest {
     fun whenGivenPinWithFullyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "far fa-angry")
     }) exercise {
-        shallow(PinButton, PinButtonProps(pin, onClick = {}))
+        shallow2(PinButton, PinButtonProps(pin, onClick = {}))
     } verify { wrapper ->
         wrapper.assertIconHasClasses("far", "fa-angry")
             .hasClass("fa").assertIsEqualTo(false, "should not have fa")

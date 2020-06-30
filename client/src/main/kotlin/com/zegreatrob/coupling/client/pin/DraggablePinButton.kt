@@ -12,14 +12,14 @@ import react.dom.span
 const val pinDragItemType = "PAIR_PIN"
 
 fun RBuilder.draggablePinButton(pin: Pin, scale: PinButtonScale) = child(
-    DraggablePinButton.component.rFunction, DraggablePinButtonProps(pin, scale)
+    DraggablePinButton, DraggablePinButtonProps(pin, scale)
 )
 
 data class DraggablePinButtonProps(val pin: Pin, val scale: PinButtonScale) : RProps
 
 private val styles = useStyles("pin/DraggablePin")
 
-val DraggablePinButton = reactFunction<DraggablePinButtonProps> { (pin, scale) ->
+val DraggablePinButton = reactFunction2<DraggablePinButtonProps> { (pin, scale) ->
     val (_, drag) = useDrag(itemType = pinDragItemType, itemId = pin._id!!, collect = { })
     val draggableRef = useRef<Node>(null)
 

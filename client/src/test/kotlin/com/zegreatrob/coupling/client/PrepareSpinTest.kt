@@ -16,8 +16,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findByClass
-import findComponent
-import shallow
+import shallow2
 import kotlin.test.Test
 
 class PrepareSpinTest {
@@ -34,13 +33,13 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow2(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
     }) exercise {
         wrapper.findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
-        wrapper.findByClass(styles["deselectedPins"]).findComponent(PinButton)
+        wrapper.findByClass(styles["deselectedPins"]).find(PinButton)
             .props().pin
             .assertIsEqualTo(firstPin)
     }
@@ -53,7 +52,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow2(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
 
         init {
             wrapper.findByClass(styles["selectedPins"])
@@ -65,13 +64,13 @@ class PrepareSpinTest {
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
-        wrapper.findByClass(styles["selectedPins"]).findComponent(PinButton)
+        wrapper.findByClass(styles["selectedPins"]).find(PinButton)
             .at(0)
             .props().pin
             .assertIsEqualTo(firstPin)
     }
 
-    private fun ShallowWrapper<Any>.findPinButtonPropsFor(targetPin: Pin) = findComponent(PinButton)
+    private fun ShallowWrapper<Any>.findPinButtonPropsFor(targetPin: Pin) = find(PinButton)
         .also { println("size is ${it.length}") }
         .map(ShallowWrapper<PinButtonProps>::props)
         .first { it.pin == targetPin }

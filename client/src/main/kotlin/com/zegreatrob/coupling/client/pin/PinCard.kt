@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -18,10 +19,10 @@ data class PinCardProps(
 private val styles = useStyles("pin/PinCard")
 
 fun RBuilder.pinCard(tribeId: TribeId, pin: Pin, shouldLink: Boolean = true, key: String? = null) = child(
-    PinCard(PinCardProps(tribeId, pin, shouldLink), key = key)
+    PinCard, PinCardProps(tribeId, pin, shouldLink), key = key
 )
 
-val PinCard = reactFunction<PinCardProps> { (tribeId, pin, shouldLink) ->
+val PinCard = reactFunction2<PinCardProps> { (tribeId, pin, shouldLink) ->
     optionalLink(shouldLink, tribeId, pin) {
         div(styles.className) {
             pinButton(pin, key = null, showTooltip = false)

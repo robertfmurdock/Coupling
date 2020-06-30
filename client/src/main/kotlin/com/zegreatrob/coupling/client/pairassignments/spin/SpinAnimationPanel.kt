@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.assignedPair
@@ -42,10 +42,10 @@ private val styles = useStyles("pairassignments/SpinAnimation")
 
 fun RBuilder.spinAnimation(tribe: Tribe, rosteredPairAssignments: RosteredPairAssignments, state: SpinAnimationState) =
     child(
-        SpinAnimationPanel.component.rFunction, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
+        SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
     )
 
-val SpinAnimationPanel = reactFunction<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
+val SpinAnimationPanel = reactFunction2<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
 
