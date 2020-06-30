@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.marginLeft
@@ -23,11 +23,11 @@ fun RBuilder.pinSection(
     scale: PinButtonScale = PinButtonScale.Small,
     canDrag: Boolean = false,
     className: String = ""
-) = child(PinSection(PinSectionProps(pinList, scale, canDrag, className)))
+) = child(PinSection, PinSectionProps(pinList, scale, canDrag, className), {})
 
 private val styles = useStyles("pin/PinSection")
 
-val PinSection = reactFunction<PinSectionProps> { (pinList, scale, canDrag, className) ->
+val PinSection = reactFunction2<PinSectionProps> { (pinList, scale, canDrag, className) ->
     styledDiv {
         attrs {
             classes += styles.className

@@ -21,6 +21,13 @@ abstract class RComponent<P : RProps>(private val provider: PropsClassProvider<P
     }
 }
 
+class BuilderAdapter<P : RProps>(private val builder: RBuilder, private val component: RClass<P>) {
+    operator fun invoke(props: P, key: String? = null, ref: RReadableRef<Node>? = null, handler: RHandler<P> = {}) =
+        builder.child(component, props, key, ref, handler)
+}
+
+fun <P : RProps> RClass<P>.render(builder: RBuilder) = BuilderAdapter(builder, this)
+
 operator fun RComponent<EmptyProps>.invoke(
     key: String? = null,
     ref: RReadableRef<Node>? = null,

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -22,7 +22,7 @@ data class PinConfigProps(
 
 private val styles = useStyles("pin/PinConfig")
 
-val PinConfig = reactFunction<PinConfigProps> { (tribe, pin, pinList, pathSetter, reload, commandFunc) ->
+val PinConfig = reactFunction2<PinConfigProps> { (tribe, pin, pinList, pathSetter, reload, commandFunc) ->
     configFrame(styles.className) {
         pinConfigEditor(tribe, pin, commandFunc, pathSetter, reload)
         pinBag(tribe, pinList, styles["pinBag"])

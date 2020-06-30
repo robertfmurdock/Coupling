@@ -71,7 +71,6 @@ class PrepareSpinTest {
     }
 
     private fun ShallowWrapper<Any>.findPinButtonPropsFor(targetPin: Pin) = find(PinButton)
-        .also { println("size is ${it.length}") }
         .map(ShallowWrapper<PinButtonProps>::props)
         .first { it.pin == targetPin }
 

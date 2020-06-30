@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findByClass
-import findComponent
 import shallow2
 import kotlin.test.Test
 
@@ -280,12 +279,12 @@ class SpinAnimationTest {
         private val styles = useStyles("pairassignments/SpinAnimation")
 
         private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(styles["playerRoster"])
-            .findComponent(PlayerCard)
+            .find(PlayerCard)
             .map { it.props().player }
             .toList()
 
         private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass(styles["playerSpotlight"])
-            .findComponent(PlayerCard).run {
+            .find(PlayerCard).run {
                 if (length == 1) props().player else null
             }
 

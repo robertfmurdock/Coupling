@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import findComponent
 import shallow
 import kotlin.test.Test
 
@@ -33,7 +32,7 @@ class PlayerHeatmapBuilderTest {
         shallow(PlayerHeatmap, props)
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersSideRow"]}")
-            .findComponent(PlayerCard)
+            .find(PlayerCard)
             .map { it.props().player }
             .toList()
             .assertIsEqualTo(players)
@@ -56,7 +55,7 @@ class PlayerHeatmapBuilderTest {
         shallow(PlayerHeatmap, props)
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersTopRow"]}")
-            .findComponent(PlayerCard)
+            .find(PlayerCard)
             .map { it.props().player }
             .toList()
             .assertIsEqualTo(players)
