@@ -57,11 +57,11 @@ external val enzyme: Enzyme
 @JsModule("enzyme-adapter-react-16")
 external class Adapter
 
-fun <P : RProps> shallow(reactFunction: RClass<P>, props: P) = enzyme.shallow(buildElement {
+fun <P : RProps> shallow2(reactFunction: RClass<P>, props: P) = enzyme.shallow(buildElement {
     child(reactFunction, props) {}
 })
 
-fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallow(component.component.rFunction, props)
+fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallow2(component.component.rFunction, props)
 
 fun <P : RProps, T> ShallowWrapper<T>.findComponent(
     RComponent: RComponent<P>

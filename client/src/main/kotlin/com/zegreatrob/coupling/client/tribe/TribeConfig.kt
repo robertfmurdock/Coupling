@@ -31,7 +31,7 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 
 private val styles = useStyles("tribe/TribeConfig")
 
-val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandFunc) ->
+val TribeConfig = reactFunction2<TribeConfigProps> { (tribe, pathSetter, commandFunc) ->
     val isNew = tribe.id.value == ""
 
     val (values, onChange) = useForm(tribe.toJson())
