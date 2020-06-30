@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -24,7 +25,7 @@ data class PlayerRosterProps(
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster = reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
+val PlayerRoster = reactFunction2<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
     div(classes = className) {
         attrs { classes += styles.className }
         div {

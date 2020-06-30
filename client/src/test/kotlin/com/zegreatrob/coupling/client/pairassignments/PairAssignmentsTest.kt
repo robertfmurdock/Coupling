@@ -53,7 +53,7 @@ class PairAssignmentsTest {
             PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc()) {}
         )
     } verify { wrapper ->
-        wrapper.findComponent(PlayerRoster)
+        wrapper.find(PlayerRoster)
             .props()
             .players
             .assertIsEqualTo(
@@ -77,7 +77,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow2(PairAssignments, PairAssignmentsProps(tribe, players, null, StubDispatchFunc()) {})
     } verify { wrapper ->
-        wrapper.findComponent(PlayerRoster)
+        wrapper.find(PlayerRoster)
             .props()
             .players
             .assertIsEqualTo(players)

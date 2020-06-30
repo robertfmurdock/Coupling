@@ -21,7 +21,7 @@ private val styles = useStyles("routing/DataLoadWrapper")
 
 fun <P : RProps> dataLoadWrapper(rComponent: RComponent<P>) = dataLoadWrapper(rComponent.component.rFunction)
 
-fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction<DataLoadProps<P>> { props ->
+fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction2<DataLoadProps<P>> { props ->
     val (data, setData) = useState<P?>(null)
 
     val (animationState, setAnimationState) = useState(AnimationState.Start)

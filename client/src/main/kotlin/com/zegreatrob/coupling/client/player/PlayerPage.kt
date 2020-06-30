@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper

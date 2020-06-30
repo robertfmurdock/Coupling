@@ -23,7 +23,7 @@ object App : GoogleSignIn, Sdk by SdkSingleton {
             val animationsDisabled = window.sessionStorage.getItem("animationDisabled") == "true"
 
             render(
-                createElement(CouplingRouter.component.rFunction, CouplingRouterProps(isSignedIn, animationsDisabled)),
+                createElement(CouplingRouter, CouplingRouterProps(isSignedIn, animationsDisabled)),
                 document.getElementsByClassName("view-container")[0]
             )
         }
