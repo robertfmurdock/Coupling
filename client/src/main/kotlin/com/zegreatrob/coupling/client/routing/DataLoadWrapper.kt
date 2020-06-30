@@ -3,22 +3,25 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendResultAction
-import com.zegreatrob.testmints.action.async.execute
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
+import react.RClass
 import react.RProps
 import react.dom.div
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-fun <P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>) = reactFunction<DataLoadProps<P>> { props ->
+fun <P : RProps> dataLoadWrapper(rComponent: RComponent<P>) = dataLoadWrapper(rComponent.component.rFunction)
+
+fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction<DataLoadProps<P>> { props ->
     val (data, setData) = useState<P?>(null)
 
     val (animationState, setAnimationState) = useState(AnimationState.Start)
@@ -38,7 +41,11 @@ fun <P : RProps> dataLoadWrapper(wrappedRComponent: RComponent<P>) = reactFuncti
                 this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
             }
             if (data != null) {
-                wrappedRComponent.render(this)(data)
+                child(
+                    type = reactFunction,
+                    props = data,
+                    handler = { }
+                )
             }
         }
     }
