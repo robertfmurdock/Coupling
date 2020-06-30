@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useState
 import react.*
 import kotlin.browser.window
@@ -20,7 +20,7 @@ fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, ch
     })
 )
 
-val FrameRunner = reactFunction2<FrameRunnerProps> { props ->
+val FrameRunner = reactFunction<FrameRunnerProps> { props ->
     val (sequence, speed) = props
     val (state, setState) = useState(sequence.first().first)
     val scheduleStateFunc = scheduleStateFunc(setState, speed)

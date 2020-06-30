@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -30,7 +30,7 @@ val disconnectedMessage = json("text" to "Not connected", "players" to emptyArra
 
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-val ServerMessage = reactFunction2<ServerMessageProps> { (tribeId, useSsl) ->
+val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
     val (message, setMessage) = useState(disconnectedMessage)
     div {
         websocket {

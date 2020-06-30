@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -21,7 +21,7 @@ import styled.styledSpan
 
 private val styles = useStyles("About")
 
-val AboutPage = reactFunction2<PageProps> {
+val AboutPage = reactFunction<PageProps> {
     div(classes = styles.className) {
         div(classes = styles["content"]) {
             backButtonSection()

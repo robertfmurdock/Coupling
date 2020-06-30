@@ -44,7 +44,7 @@ fun RBuilder.pinConfigEditor(
     PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatchFunc)
 )
 
-val PinConfigEditor = reactFunction2<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, commandFunc) ->
+val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, commandFunc) ->
     val (values, onChange) = useForm(pin.toJson())
 
     val updatedPin = values.toPin()

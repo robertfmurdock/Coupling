@@ -23,7 +23,7 @@ data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit)
 
 private val styles = useStyles("tribe/TribeBrowser")
 
-val TribeBrowser = reactFunction2<TribeBrowserProps> { (tribe, pathSetter) ->
+val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
     div(styles.className) {
         configHeader(tribe, pathSetter) {
             span(styles["headerContents"]) {

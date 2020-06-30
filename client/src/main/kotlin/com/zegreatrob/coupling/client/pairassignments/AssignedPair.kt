@@ -56,7 +56,7 @@ fun RBuilder.assignedPair(
     key = key
 )
 
-val AssignedPair = reactFunction2<AssignedPairProps> { props ->
+val AssignedPair = reactFunction<AssignedPairProps> { props ->
     val (tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter) = props
     val callSign = pair.findCallSign()
 

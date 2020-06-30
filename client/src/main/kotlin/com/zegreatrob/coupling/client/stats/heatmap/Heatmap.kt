@@ -20,7 +20,7 @@ data class HeatmapProps(val data: List<List<Double?>>, val className: String) : 
 
 private val styles = useStyles("stats/heatmap/Heatmap")
 
-val Heatmap = reactFunction2<HeatmapProps> { (data, className) ->
+val Heatmap = reactFunction<HeatmapProps> { (data, className) ->
     val rowSize = data.size * 90
     val rootRef = useRef<Node>(null)
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }

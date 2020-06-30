@@ -19,7 +19,7 @@ data class DraggablePinButtonProps(val pin: Pin, val scale: PinButtonScale) : RP
 
 private val styles = useStyles("pin/DraggablePin")
 
-val DraggablePinButton = reactFunction2<DraggablePinButtonProps> { (pin, scale) ->
+val DraggablePinButton = reactFunction<DraggablePinButtonProps> { (pin, scale) ->
     val (_, drag) = useDrag(itemType = pinDragItemType, itemId = pin._id!!, collect = { })
     val draggableRef = useRef<Node>(null)
 

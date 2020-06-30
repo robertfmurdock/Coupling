@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -11,7 +11,7 @@ import react.RBuilder
 private val LoadedTribeConfig by lazy { dataLoadWrapper(TribeConfig) }
 private val RBuilder.loadedTribeConfig get() = LoadedTribeConfig.render(this)
 
-val TribeConfigPage = reactFunction2<PageProps> { props ->
+val TribeConfigPage = reactFunction<PageProps> { props ->
     with(props) {
         loadedTribeConfig(
             tribeId?.tribeQueryProps(this)

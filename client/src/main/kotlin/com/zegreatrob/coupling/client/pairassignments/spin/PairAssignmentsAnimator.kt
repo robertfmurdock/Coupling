@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.consumer
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
@@ -22,7 +22,7 @@ data class PairAssignmentsAnimatorProps(
 
 private val animationContextConsumer = animationsDisabledContext.Consumer
 
-val PairAssignmentsAnimator = reactFunction2<PairAssignmentsAnimatorProps> { props ->
+val PairAssignmentsAnimator = reactFunction<PairAssignmentsAnimatorProps> { props ->
     val (tribe, players, pairAssignments, enabled) = props
     consumer(animationContextConsumer) { animationsDisabled: Boolean ->
         if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.external.react.RComponent
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.render
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
@@ -14,7 +14,7 @@ import kotlin.js.Json
 
 data class CouplingRouteProps(val path: String, val component: RClass<PageProps>) : RProps
 
-val CouplingRoute = reactFunction2<CouplingRouteProps> { props ->
+val CouplingRoute = reactFunction<CouplingRouteProps> { props ->
     route<RProps>(props.path, exact = true) { routeProps ->
         createElement(
             props.component, pageProps(routeProps)

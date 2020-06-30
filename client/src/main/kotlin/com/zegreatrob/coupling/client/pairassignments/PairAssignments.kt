@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
@@ -39,7 +39,7 @@ data class PairAssignmentsProps(
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
-val PairAssignments = reactFunction2<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
+val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)

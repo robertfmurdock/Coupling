@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -26,7 +26,7 @@ data class CurrentPairAssignmentsPanelProps(
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
-val CurrentPairAssignmentsPanel = reactFunction2<CurrentPairAssignmentsPanelProps> { props ->
+val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { props ->
     val (tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter) = props
     div(classes = styles.className) {
         if (pairAssignments == null) {

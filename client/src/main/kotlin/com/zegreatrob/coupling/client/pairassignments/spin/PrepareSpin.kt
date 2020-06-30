@@ -34,7 +34,7 @@ data class PrepareSpinProps(
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin = reactFunction2<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
+val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
     val (playerSelections, setPlayerSelections) = useState(players.map { it to isInLastSetOfPairs(it, history) })
     val (pinSelections, setPinSelections) = useState(pins.map { it._id })
     div(classes = styles.className) {

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -20,7 +20,7 @@ data class RetiredPlayersProps(
 
 private val styles = useStyles("player/RetiredPlayers")
 
-val RetiredPlayers = reactFunction2<RetiredPlayersProps> { (tribe, players, pathSetter) ->
+val RetiredPlayers = reactFunction<RetiredPlayersProps> { (tribe, players, pathSetter) ->
     div(classes = styles.className) {
         tribeBrowser(tribe, pathSetter)
         div(classes = styles["header"]) { +"Retired Players" }

@@ -35,7 +35,7 @@ data class PlayerCardProps(
 
 private val styles = useStyles("player/PlayerCard")
 
-val PlayerCard = reactFunction2<PlayerCardProps> { props ->
+val PlayerCard = reactFunction<PlayerCardProps> { props ->
     val (tribeId, player, pathSetter, headerDisabled, className, size, onClick, deselected) = props
     styledDiv {
         attrs {

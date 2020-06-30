@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.child
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -13,7 +13,7 @@ data class PairAssignmentsHeaderProps(val pairAssignments: PairAssignmentDocumen
 
 private val styles = useStyles("pairassignments/PairAssignmentsHeader")
 
-val PairAssignmentsHeader = reactFunction2<PairAssignmentsHeaderProps> { (pairAssignments) ->
+val PairAssignmentsHeader = reactFunction<PairAssignmentsHeaderProps> { (pairAssignments) ->
     div(classes = styles.className) {
         +"Couples for ${pairAssignments.dateText()}"
     }

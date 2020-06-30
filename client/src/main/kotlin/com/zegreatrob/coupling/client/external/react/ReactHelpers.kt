@@ -76,30 +76,6 @@ interface RFunction<P : RProps> : RClass<P>
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
 fun <P : RProps> RBuilder.child(
-    rComponent: RComponent<P>,
-    props: P,
-    key: String? = null,
-    ref: RReadableRef<Node>? = null,
-    handler: RHandler<P> = {}
-) = child(rComponent.component, props, key, ref, handler)
-
-
-fun RBuilder.child(
-    rComponent: RComponent<EmptyProps>,
-    key: String? = null,
-    ref: RReadableRef<Node>? = null,
-    handler: RHandler<EmptyProps> = {}
-): ReactElement = child(rComponent.component, EmptyProps, key, ref, handler)
-
-fun <P : RProps> RBuilder.child(
-    component: ReactFunctionComponent<P>,
-    props: P,
-    key: String? = null,
-    ref: RReadableRef<Node>? = null,
-    handler: RHandler<P> = {}
-) = child(component.rFunction, props, key, ref, handler)
-
-fun <P : RProps> RBuilder.child(
     clazz: RClass<P>,
     props: P,
     key: String? = null,
@@ -115,16 +91,13 @@ fun <P : RProps> RBuilder.child(
     )
 }
 
-inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit): RComponent<T> =
+inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit): RClass<T> =
     object : RComponent<T>(provider()) {
         override fun build() = ReactFunctionComponent(kClass) { reactElement { function(it) } }
-    }
-
-inline fun <reified T : RProps> reactFunction2(crossinline function: RBuilder.(T) -> Unit): RClass<T> =
-    reactFunction(function).component.rFunction
+    }.component.rFunction
 
 inline fun <reified T : RProps> windowReactFunc(crossinline handler: RBuilder.(T, WindowFunctions) -> Unit) =
-    { windowFunctions: WindowFunctions -> reactFunction2<T> { handler(it, windowFunctions) } }
+    { windowFunctions: WindowFunctions -> reactFunction<T> { handler(it, windowFunctions) } }
 
 class ReactFunctionComponent<P : RProps>(
     private val clazz: KClass<P>,

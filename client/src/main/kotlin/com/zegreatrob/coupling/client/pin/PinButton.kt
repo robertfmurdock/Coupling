@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
@@ -39,7 +39,7 @@ fun RBuilder.pinButton(
 
 private val styles = useStyles("pin/PinButton")
 
-val PinButton = reactFunction2<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
+val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
     styledDiv {
         attrs {
             classes += listOf(className, styles.className)

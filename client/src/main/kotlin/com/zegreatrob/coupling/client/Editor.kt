@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.EmptyProps
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import react.RBuilder
 import react.RHandler
@@ -11,7 +11,7 @@ fun RBuilder.editor(handler: RHandler<EmptyProps>) = child(Editor, EmptyProps, h
 
 private val styles = useStyles("Editor")
 
-val Editor = reactFunction2<EmptyProps> { props ->
+val Editor = reactFunction<EmptyProps> { props ->
     ul(classes = styles.className) {
         props.children()
     }

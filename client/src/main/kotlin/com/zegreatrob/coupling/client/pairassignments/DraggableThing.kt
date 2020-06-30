@@ -17,7 +17,7 @@ data class DraggableThingProps(
 
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 
-val DraggableThing = reactFunction2<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
+val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
     val draggableRef = useRef<Node>(null)
 
     val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })

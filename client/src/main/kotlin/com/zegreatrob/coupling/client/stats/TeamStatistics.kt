@@ -16,7 +16,7 @@ data class TeamStatisticsProps(
 
 private val styles = useStyles("stats/TeamStatistics")
 
-val TeamStatistics = reactFunction2<TeamStatisticsProps> { props ->
+val TeamStatistics = reactFunction<TeamStatisticsProps> { props ->
     val (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) = props
     div(classes = styles.className) {
         statsHeader { +"Team Stats" }

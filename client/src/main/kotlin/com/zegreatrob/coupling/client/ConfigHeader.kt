@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
@@ -18,7 +18,7 @@ fun RBuilder.configHeader(tribe: Tribe, pathSetter: (String) -> Unit, handler: R
 
 private val styles = useStyles("ConfigHeader")
 
-val ConfigHeader = reactFunction2<ConfigHeaderProps> { props ->
+val ConfigHeader = reactFunction<ConfigHeaderProps> { props ->
     val (tribe, pathSetter) = props
 
     div(classes = styles.className) {

@@ -20,7 +20,7 @@ private val styles = useStyles("stats/PairReportTable")
 
 data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : RProps
 
-val PairReportTable = reactFunction2<PairReportTableProps> { (tribe, pairReports) ->
+val PairReportTable = reactFunction<PairReportTableProps> { (tribe, pairReports) ->
     div(classes = styles.className) {
         pairReports.mapIndexed { index, pairReport ->
             pairReport(index, pairReport, tribe)
