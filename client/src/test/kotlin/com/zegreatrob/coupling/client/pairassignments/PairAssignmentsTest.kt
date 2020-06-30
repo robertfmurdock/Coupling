@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments
 import ShallowWrapper
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.RComponent
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -19,6 +18,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
+import react.RClass
 import shallow
 import kotlin.test.Test
 
@@ -227,7 +227,7 @@ class PairAssignmentsTest {
             .assertIsEqualTo(listOf(player3, player4))
     }
 
-    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<RComponent<PairAssignmentsProps>>) {
+    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<RClass<PairAssignmentsProps>>) {
         val targetProps = wrapper.find(CurrentPairAssignmentsPanel).props()
 
         targetProps.run {
@@ -237,7 +237,7 @@ class PairAssignmentsTest {
         }
     }
 
-    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<RComponent<PairAssignmentsProps>>) {
+    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<RClass<PairAssignmentsProps>>) {
         val targetProps = wrapper.find(CurrentPairAssignmentsPanel).props()
         targetProps.onPinDrop(this._id!!, targetPair)
     }

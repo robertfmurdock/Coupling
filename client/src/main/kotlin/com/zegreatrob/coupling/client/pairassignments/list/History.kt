@@ -37,7 +37,6 @@ val History by lazy { HistoryComponent(WindowFunctions) }
 
 val HistoryComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc), windowFuncs ->
     val onDeleteFunc = onDeleteFuncFactory(commandFunc, tribe, reload, windowFuncs)
-
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
             tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
@@ -55,10 +54,10 @@ private fun onDeleteFuncFactory(
     dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>,
     tribe: Tribe,
     reload: () -> Unit,
-    windowFuncs: WindowFunctions
+    windowFunctions: WindowFunctions
 ) = { documentId: PairAssignmentDocumentId ->
     val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
-    onDeleteClick(windowFuncs, deleteFunc)
+    onDeleteClick(windowFunctions, deleteFunc)
 }
 
 private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit) = fun() = with(windowFuncs) {

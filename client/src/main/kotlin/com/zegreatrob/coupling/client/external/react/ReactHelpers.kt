@@ -71,8 +71,6 @@ fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> Unit) = 
         .unsafeCast<ReactElement>()
 )
 
-interface RFunction<P : RProps> : RClass<P>
-
 data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
 fun <P : RProps> RBuilder.child(
@@ -97,27 +95,18 @@ inline fun <reified P : RProps> reactFunction(crossinline function: RBuilder.(P)
 inline fun <reified P : RProps> windowReactFunc(crossinline handler: RBuilder.(P, WindowFunctions) -> Unit) =
     { windowFunctions: WindowFunctions -> reactFunction<P> { handler(it, windowFunctions) } }
 
-class ReactFunctionComponent<P : RProps>(
-    private val clazz: KClass<P>,
-    private val builder: (props: P) -> ReactElement
-) {
-    val rFunction by kotlin.lazy {
-        buildReactFunction(clazz, builder)
-    }
-}
-
 fun <P : RProps> buildReactFunction(kClass: KClass<P>, builder: (props: P) -> ReactElement) = { props: P ->
-    @Suppress("UNUSED_VARIABLE") val jsClass = kClass.js.unsafeCast<P>()
-    builder(
-        if (props::class.js == jsClass) {
-            props
-        } else {
-            val newProps = js("new jsClass()")
-            objectAssign(newProps, props)
-            newProps.unsafeCast<P>()
-        }
-    )
-}.unsafeCast<RFunction<P>>()
+    ensureKotlinClassProps(props, kClass.js.unsafeCast<P>())
+        .let(builder)
+}.unsafeCast<RClass<P>>()
+
+private fun <P : RProps> ensureKotlinClassProps(props: P, jsClass: P): P = if (props::class.js == jsClass) {
+    props
+} else {
+    val newProps = js("new jsClass()")
+    objectAssign(newProps, props)
+    newProps.unsafeCast<P>()
+}
 
 fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)
 
