@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findByClass
-import shallow2
+import shallow
 import kotlin.test.Test
 
 class PrepareSpinTest {
@@ -33,7 +33,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow2(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
     }) exercise {
         wrapper.findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
@@ -52,7 +52,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow2(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
 
         init {
             wrapper.findByClass(styles["selectedPins"])

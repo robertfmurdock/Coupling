@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import findComponent
 import shallow
 import kotlin.test.Test
 
@@ -34,7 +33,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
-        wrapper.findComponent(TribeCard)
+        wrapper.find(TribeCard)
             .props()
             .tribe.assertIsEqualTo(tribe)
     }
@@ -73,7 +72,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
-        wrapper.findComponent(PairReportTable)
+        wrapper.find(PairReportTable)
             .props()
             .pairReports
             .assertIsOrderedByLongestTimeSinceLastPairing()
@@ -143,7 +142,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
-        wrapper.findComponent(PlayerHeatmap)
+        wrapper.find(PlayerHeatmap)
             .props()
             .heatmapData
             .assertIsEqualTo(
@@ -181,7 +180,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
-        wrapper.findComponent(TeamStatistics)
+        wrapper.find(TeamStatistics)
             .props()
             .apply {
                 activePlayerCount
@@ -232,7 +231,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
-        wrapper.findComponent(TeamStatistics)
+        wrapper.find(TeamStatistics)
             .props()
             .medianSpinDuration
             .assertIsEqualTo("2 days")

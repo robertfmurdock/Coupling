@@ -26,7 +26,7 @@ val RBuilder.tribeCard get() = TribeCard.render(this)
 
 private val styles = useStyles("tribe/TribeCard")
 
-val TribeCard = reactFunction<TribeCardProps> { props ->
+val TribeCard = reactFunction2<TribeCardProps> { props ->
     val (tribe, size) = props
     styledSpan {
         attrs {

@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import findByClass
-import shallow2
+import shallow
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -61,7 +61,7 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersExceptExcluded() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            shallow2(
+            shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
             )
         } verify { result ->
@@ -94,7 +94,7 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            shallow2(
+            shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(
                     tribe,
                     rosteredPairAssignments,
@@ -147,7 +147,7 @@ class SpinAnimationTest {
             val firstAssignedPlayer = players[1]
             val state = ShowPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow2(
+            shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(
                     tribe,
                     rosteredPairAssignments,
@@ -172,7 +172,7 @@ class SpinAnimationTest {
             val midwayShownPlayer = pairAssignments.pairs[1].players[0].player
             val state = ShowPlayer(midwayShownPlayer)
         }) exercise {
-            shallow2(
+            shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(
                     tribe,
                     rosteredPairAssignments,
@@ -208,7 +208,7 @@ class SpinAnimationTest {
             val firstAssignedPlayer = pairAssignments.pairs[0].players[0].player
             val state = AssignedPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow2(
+            shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(
                     tribe,
                     rosteredPairAssignments,
@@ -233,7 +233,7 @@ class SpinAnimationTest {
             val midwayAssignedPlayer = pairAssignments.pairs[1].players[0].player
             val state = AssignedPlayer(midwayAssignedPlayer)
         }) exercise {
-            shallow2(
+            shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(
                     tribe,
                     rosteredPairAssignments,

@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -25,7 +26,7 @@ data class PlayerHeatmapProps(
 
 private val styles = useStyles("stats/PlayerHeatmap")
 
-val PlayerHeatmap = reactFunction<PlayerHeatmapProps> { (tribe, players, heatmapData) ->
+val PlayerHeatmap = reactFunction2<PlayerHeatmapProps> { (tribe, players, heatmapData) ->
     div(classes = styles["rightSection"]) {
         div(classes = styles["heatmapPlayersTopRow"]) {
             div(classes = styles["spacer"]) {}

@@ -26,7 +26,7 @@ data class WelcomeProps(
     val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
-val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
+val Welcome = reactFunction2<WelcomeProps> { (commandFunc, randomProvider) ->
     div(classes = styles.className) {
         div { welcomeSplash(randomProvider) }
         div { comeOnIn(commandFunc) }

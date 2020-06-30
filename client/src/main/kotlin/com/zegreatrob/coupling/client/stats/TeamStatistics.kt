@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.invoke
-import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.react.*
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -19,7 +16,7 @@ data class TeamStatisticsProps(
 
 private val styles = useStyles("stats/TeamStatistics")
 
-val TeamStatistics = reactFunction<TeamStatisticsProps> { props ->
+val TeamStatistics = reactFunction2<TeamStatisticsProps> { props ->
     val (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) = props
     div(classes = styles.className) {
         statsHeader { +"Team Stats" }

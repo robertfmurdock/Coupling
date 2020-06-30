@@ -26,6 +26,12 @@ class BuilderAdapter<P : RProps>(private val builder: RBuilder, private val comp
         builder.child(component, props, key, ref, handler)
 }
 
+operator fun BuilderAdapter<EmptyProps>.invoke(
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<EmptyProps> = {}
+) = invoke(EmptyProps, key, ref, handler)
+
 fun <P : RProps> RClass<P>.render(builder: RBuilder) = BuilderAdapter(builder, this)
 
 operator fun RComponent<EmptyProps>.invoke(

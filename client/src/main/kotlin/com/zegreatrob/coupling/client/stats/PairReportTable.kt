@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.PairReport
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.invoke
-import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
@@ -23,7 +20,7 @@ private val styles = useStyles("stats/PairReportTable")
 
 data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : RProps
 
-val PairReportTable = reactFunction<PairReportTableProps> { (tribe, pairReports) ->
+val PairReportTable = reactFunction2<PairReportTableProps> { (tribe, pairReports) ->
     div(classes = styles.className) {
         pairReports.mapIndexed { index, pairReport ->
             pairReport(index, pairReport, tribe)

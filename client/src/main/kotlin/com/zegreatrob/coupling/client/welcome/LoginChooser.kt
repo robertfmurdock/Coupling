@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
+import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.user.GoogleSignInCommand
 import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
@@ -16,7 +17,7 @@ data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInComm
 
 private val styles = useStyles("LoginChooser")
 
-val LoginChooser = reactFunction<LoginChooserProps> { (commandFunc) ->
+val LoginChooser = reactFunction2<LoginChooserProps> { (commandFunc) ->
     val googleSignInFunc = commandFunc({ GoogleSignInCommand }) { window.location.pathname = "/" }
     div(classes = styles.className) {
         div {

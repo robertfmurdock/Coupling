@@ -19,8 +19,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
-import findComponent
-import shallow2
+import shallow
 import kotlin.test.Test
 
 class PairAssignmentsTest {
@@ -48,7 +47,7 @@ class PairAssignmentsTest {
             ).withPins()
         )
     }) exercise {
-        shallow2(
+        shallow(
             PairAssignments,
             PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc()) {}
         )
@@ -75,7 +74,7 @@ class PairAssignmentsTest {
             Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow2(PairAssignments, PairAssignmentsProps(tribe, players, null, StubDispatchFunc()) {})
+        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, StubDispatchFunc()) {})
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()
@@ -91,7 +90,7 @@ class PairAssignmentsTest {
             pairs = emptyList()
         )
         val dispatchFunc = StubDispatchFunc<SavePairAssignmentsCommandDispatcher>()
-        val wrapper = shallow2(
+        val wrapper = shallow(
             PairAssignments,
             PairAssignmentsProps(
                 tribe,
@@ -127,7 +126,7 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
-        val wrapper = shallow2(
+        val wrapper = shallow(
             PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
         )
     }) exercise {
@@ -152,7 +151,7 @@ class PairAssignmentsTest {
             date = DateTime.now(),
             pairs = listOf(pair1, pair2)
         )
-        val wrapper = shallow2(
+        val wrapper = shallow(
             PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
         )
     }) exercise {
@@ -184,7 +183,7 @@ class PairAssignmentsTest {
                 pairOf(player3, player4).withPins(listOf(pin2))
             )
         )
-        val wrapper = shallow2(
+        val wrapper = shallow(
             PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
         )
     }) exercise {
@@ -213,7 +212,7 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
-        val wrapper = shallow2(
+        val wrapper = shallow(
             PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
         )
     }) exercise {
@@ -246,11 +245,11 @@ class PairAssignmentsTest {
     @Test
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
-        shallow2(
+        shallow(
             PairAssignments, PairAssignmentsProps(tribe, listOf(), null, StubDispatchFunc()) {}
         )
     } verify { wrapper ->
-        wrapper.findComponent(ServerMessage)
+        wrapper.find(ServerMessage)
             .props()
             .tribeId
             .assertIsEqualTo(tribe.id)

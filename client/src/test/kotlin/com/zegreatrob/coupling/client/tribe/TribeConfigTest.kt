@@ -11,7 +11,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
-import shallow2
+import shallow
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -21,7 +21,7 @@ class TribeConfigTest {
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow2(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -61,7 +61,7 @@ class TribeConfigTest {
 
         val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow2(
+        val wrapper = shallow(
             TribeConfig,
             TribeConfigProps(tribe, pathSetterSpy::spyFunction, stubDispatchFunc)
         )
@@ -80,7 +80,7 @@ class TribeConfigTest {
     fun whenTribeIsNewWillSuggestIdAutomatically() = setup(object {
         val tribe = Tribe(TribeId(""))
     }) exercise {
-        shallow2(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
     } verify { result ->
         result.find<Any>("#tribe-id")
             .prop("value")

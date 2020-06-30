@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.classes
@@ -15,7 +15,7 @@ data class TribeListProps(val tribes: List<Tribe>, val pathSetter: (String) -> U
 
 private val styles = useStyles("tribe/TribeList")
 
-val TribeList = reactFunction<TribeListProps> { (tribes, pathSetter) ->
+val TribeList = reactFunction2<TribeListProps> { (tribes, pathSetter) ->
     div(classes = styles.className) {
         div { aboutButton() }
         div {

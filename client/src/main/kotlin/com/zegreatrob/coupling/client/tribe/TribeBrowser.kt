@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.loadMarkdownString
-import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -26,7 +23,7 @@ data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit)
 
 private val styles = useStyles("tribe/TribeBrowser")
 
-val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
+val TribeBrowser = reactFunction2<TribeBrowserProps> { (tribe, pathSetter) ->
     div(styles.className) {
         configHeader(tribe, pathSetter) {
             span(styles["headerContents"]) {
