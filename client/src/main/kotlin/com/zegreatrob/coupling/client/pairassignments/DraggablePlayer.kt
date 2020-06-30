@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
 import react.RProps
 
-val RBuilder.draggablePlayer get() = DraggablePlayer.render(this)
+val RBuilder.draggablePlayer get() = { props: DraggablePlayerProps -> child(DraggablePlayer, props) {} }
 
 data class DraggablePlayerProps(
     val pinnedPlayer: PinnedPlayer,
@@ -23,7 +23,7 @@ const val playerDragItemType = "PLAYER"
 
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
-val DraggablePlayer = reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, onPlayerDrop) ->
+val DraggablePlayer = reactFunction2<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, onPlayerDrop) ->
     draggableThing(playerDragItemType, pinnedPlayer.player.id!!, onPlayerDrop) { isOver: Boolean ->
         playerCard(
             PlayerCardProps(

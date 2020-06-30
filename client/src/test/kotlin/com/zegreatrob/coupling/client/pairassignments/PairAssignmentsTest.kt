@@ -102,7 +102,7 @@ class PairAssignmentsTest {
             )
         )
     }) exercise {
-        wrapper.findComponent(CurrentPairAssignmentsPanel).props()
+        wrapper.find(CurrentPairAssignmentsPanel).props()
             .onSave()
         dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
@@ -135,7 +135,7 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
         pairs.pairs[0].toPair().asArray().toList()
             .assertIsEqualTo(listOf(player1, player3))
         pairs.pairs[1].toPair().asArray().toList()
@@ -160,7 +160,7 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
         pairs.pairs[0]
             .assertIsEqualTo(pair1.copy(pins = emptyList()))
         pairs.pairs[1]
@@ -192,7 +192,7 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
         pairs.pairs[0].pins
             .assertIsEqualTo(listOf(pin1))
         pairs.pairs[1].pins
@@ -221,7 +221,7 @@ class PairAssignmentsTest {
     } verify {
         wrapper.update()
 
-        val pairs = wrapper.findComponent(CurrentPairAssignmentsPanel).props().pairAssignments!!
+        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
         pairs.pairs[0].toPair().asArray().toList()
             .assertIsEqualTo(listOf(player1, player2))
         pairs.pairs[1].toPair().asArray().toList()
@@ -229,7 +229,7 @@ class PairAssignmentsTest {
     }
 
     private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<RComponent<PairAssignmentsProps>>) {
-        val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
+        val targetProps = wrapper.find(CurrentPairAssignmentsPanel).props()
 
         targetProps.run {
             val targetPair = pairAssignments?.pairs?.first { pair -> pair.players.map { it.player }.contains(target) }!!
@@ -239,7 +239,7 @@ class PairAssignmentsTest {
     }
 
     private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<RComponent<PairAssignmentsProps>>) {
-        val targetProps = wrapper.findComponent(CurrentPairAssignmentsPanel).props()
+        val targetProps = wrapper.find(CurrentPairAssignmentsPanel).props()
         targetProps.onPinDrop(this._id!!, targetPair)
     }
 

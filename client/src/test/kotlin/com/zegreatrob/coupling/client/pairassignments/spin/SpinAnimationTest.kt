@@ -290,7 +290,7 @@ class SpinAnimationTest {
             }
 
         private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
-            .findComponent(AssignedPair)
+            .find(AssignedPair)
             .map { it.props().pair }
             .toList()
     }
