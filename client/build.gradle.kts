@@ -54,10 +54,9 @@ dependencies {
     implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.109-kotlin-1.3.72")
     implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.107-kotlin-1.3.72")
 
-    packageJson.dependencies()
-        .forEach {
-            implementation(npm(it.first, it.second.asText()))
-        }
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
 
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))

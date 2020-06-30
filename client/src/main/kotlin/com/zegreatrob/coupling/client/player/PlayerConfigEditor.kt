@@ -125,8 +125,8 @@ private inline fun RBuilder.playerConfigForm(
             }
         }
         configSaveButton(isSaving, styles["saveButton"])
-        val playerId = player.id
-        if (playerId != null) {
+
+        player.id?.let { playerId ->
             retireButton(removePlayerFunc(playerId))
         }
     }

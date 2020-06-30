@@ -1,7 +1,4 @@
-import com.zegreatrob.coupling.client.external.react.ComponentBuilder
 import com.zegreatrob.coupling.client.external.react.RComponent
-import com.zegreatrob.coupling.client.external.react.child
-import react.RBuilder
 import react.RClass
 import react.RProps
 import react.buildElement
@@ -57,15 +54,14 @@ fun <T> ShallowWrapper<T>.findInputByName(inputName: String) = find<T>("input[na
 @JsModule("enzyme")
 external val enzyme: Enzyme
 
-
 @JsModule("enzyme-adapter-react-16")
 external class Adapter
 
-fun shallowRender(function: RBuilder.() -> Unit) = enzyme.shallow(buildElement(function))
+fun <P : RProps> shallow(reactFunction: RClass<P>, props: P) = enzyme.shallow(buildElement {
+    child(reactFunction, props) {}
+})
 
-fun <P : RProps> ComponentBuilder<P>.shallow(props: P) = shallowRender { child(build(), props) }
-
-fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallowRender { child(component, props) }
+fun <P : RProps> shallow(component: RComponent<P>, props: P) = shallow(component.component.rFunction, props)
 
 fun <P : RProps, T> ShallowWrapper<T>.findComponent(
     RComponent: RComponent<P>

@@ -40,11 +40,11 @@ fun RBuilder.pinConfigEditor(
     pathSetter: (String) -> Unit,
     reload: () -> Unit
 ) = child(
-    PinConfigEditor.component.rFunction,
+    PinConfigEditor,
     PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatchFunc)
 )
 
-val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, commandFunc) ->
+val PinConfigEditor = reactFunction2<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, commandFunc) ->
     val (values, onChange) = useForm(pin.toJson())
 
     val updatedPin = values.toPin()

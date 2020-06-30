@@ -120,6 +120,9 @@ inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T)
         override fun build() = ReactFunctionComponent(kClass) { reactElement { function(it) } }
     }
 
+inline fun <reified T : RProps> reactFunction2(crossinline function: RBuilder.(T) -> Unit): RClass<T> =
+    reactFunction(function).component.rFunction
+
 inline fun <reified T : RProps> windowReactFunc(crossinline handler: RBuilder.(T, WindowFunctions) -> Unit) =
     { windowFunctions: WindowFunctions -> reactFunction<T> { handler(it, windowFunctions) } }
 
