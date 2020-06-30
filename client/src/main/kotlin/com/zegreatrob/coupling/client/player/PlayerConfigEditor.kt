@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import kotlinx.html.FORM
 import kotlinx.html.InputType
 import kotlinx.html.classes
 import kotlinx.html.id
@@ -112,22 +113,28 @@ private inline fun RBuilder.playerConfigForm(
             name = "playerForm"
             onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) }
         }
-        div {
-            editor {
-                li { nameInput(player, onChange) }
-                li { emailInput(player, onChange) }
-                if (tribe.callSignsEnabled) {
-                    callSignConfig(player, onChange)
-                }
-                if (tribe.badgesEnabled) {
-                    badgeConfig(tribe, player, onChange, styles["badgeConfig"])
-                }
-            }
-        }
+        editorDiv(tribe, player, onChange)
         configSaveButton(isSaving, styles["saveButton"])
 
-        player.id?.let { playerId ->
-            retireButton(removePlayerFunc(playerId))
+        player.id?.let { retireButton(removePlayerFunc(it)) }
+    }
+}
+
+private fun RDOMBuilder<FORM>.editorDiv(
+    tribe: Tribe,
+    player: Player,
+    onChange: (Event) -> Unit
+) {
+    div {
+        editor {
+            li { nameInput(player, onChange) }
+            li { emailInput(player, onChange) }
+            if (tribe.callSignsEnabled) {
+                callSignConfig(player, onChange)
+            }
+            if (tribe.badgesEnabled) {
+                badgeConfig(tribe, player, onChange, styles["badgeConfig"])
+            }
         }
     }
 }

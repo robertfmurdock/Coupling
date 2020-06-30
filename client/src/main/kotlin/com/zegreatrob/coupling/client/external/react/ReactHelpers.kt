@@ -91,34 +91,33 @@ fun <P : RProps> RBuilder.child(
     )
 }
 
-inline fun <reified T : RProps> reactFunction(crossinline function: RBuilder.(T) -> Unit): RClass<T> =
-    object : RComponent<T>(provider()) {
-        override fun build() = ReactFunctionComponent(kClass) { reactElement { function(it) } }
-    }.component.rFunction
+inline fun <reified P : RProps> reactFunction(crossinline function: RBuilder.(P) -> Unit): RClass<P> =
+    buildReactFunction(P::class) { reactElement { function(it) } }
 
-inline fun <reified T : RProps> windowReactFunc(crossinline handler: RBuilder.(T, WindowFunctions) -> Unit) =
-    { windowFunctions: WindowFunctions -> reactFunction<T> { handler(it, windowFunctions) } }
+inline fun <reified P : RProps> windowReactFunc(crossinline handler: RBuilder.(P, WindowFunctions) -> Unit) =
+    { windowFunctions: WindowFunctions -> reactFunction<P> { handler(it, windowFunctions) } }
 
 class ReactFunctionComponent<P : RProps>(
     private val clazz: KClass<P>,
     private val builder: (props: P) -> ReactElement
 ) {
     val rFunction by kotlin.lazy {
-        { props: P ->
-            @Suppress("UNUSED_VARIABLE") val jsClass = clazz.js.unsafeCast<P>()
-            builder(
-                if (props::class.js == jsClass) {
-                    props
-                } else {
-                    val newProps = js("new jsClass()")
-                    objectAssign(newProps, props)
-                    newProps.unsafeCast<P>()
-                }
-            )
-        }.unsafeCast<RFunction<P>>()
+        buildReactFunction(clazz, builder)
     }
-
 }
+
+fun <P : RProps> buildReactFunction(kClass: KClass<P>, builder: (props: P) -> ReactElement) = { props: P ->
+    @Suppress("UNUSED_VARIABLE") val jsClass = kClass.js.unsafeCast<P>()
+    builder(
+        if (props::class.js == jsClass) {
+            props
+        } else {
+            val newProps = js("new jsClass()")
+            objectAssign(newProps, props)
+            newProps.unsafeCast<P>()
+        }
+    )
+}.unsafeCast<RFunction<P>>()
 
 fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)
 
