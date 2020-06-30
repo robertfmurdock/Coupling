@@ -18,7 +18,7 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
-import shallow
+import shallow2
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -42,7 +42,7 @@ class HistoryTest {
             )
         )
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
-        val wrapper = shallow(
+        val wrapper = shallow2(
             HistoryComponent(this),
             HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, stubDispatchFunc)
         )
@@ -74,7 +74,7 @@ class HistoryTest {
             )
         )
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
-        val wrapper = shallow(
+        val wrapper = shallow2(
             HistoryComponent(this),
             HistoryProps(tribe, history, { reloadSpy.spyFunction(Unit) }, {}, stubDispatchFunc)
         )

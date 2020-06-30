@@ -42,7 +42,7 @@ fun RBuilder.playerConfigEditor(
     reload: () -> Unit,
     dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) = child(
-    PlayerConfigEditor.component.rFunction,
+    PlayerConfigEditor,
     PlayerConfigEditorProps(tribe, player, pathSetter, reload, dispatchFunc)
 )
 

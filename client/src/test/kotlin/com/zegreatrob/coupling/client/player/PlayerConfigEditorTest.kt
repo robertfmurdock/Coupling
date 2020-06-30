@@ -13,7 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
-import shallow
+import shallow2
 import simulateInputChange
 import kotlin.js.json
 import kotlin.test.Test
@@ -31,7 +31,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow2(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -47,7 +47,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow2(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -61,7 +61,7 @@ class PlayerConfigEditorTest {
         val reloaderSpy = SpyData<Unit, Unit>().apply { spyWillReturn(Unit) }
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
-        val wrapper = shallow(
+        val wrapper = shallow2(
             PlayerConfigEditor,
             PlayerConfigEditorProps(tribe, player, {}, { reloaderSpy.spyFunction(Unit) }, stubDispatchFunc)
         )
@@ -88,7 +88,7 @@ class PlayerConfigEditorTest {
         val player = Player("blarg", badge = Badge.Alternate.value)
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
-        val wrapper = shallow(
+        val wrapper = shallow2(
             PlayerConfigEditorComponent(windowFuncs),
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
         )
@@ -118,7 +118,7 @@ class PlayerConfigEditorTest {
         val player = Player("blarg", badge = Badge.Alternate.value)
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
-        val wrapper = shallow(
+        val wrapper = shallow2(
             PlayerConfigEditorComponent(windowFunctions),
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
         )
@@ -134,7 +134,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper =
-            shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+            shallow2(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -148,7 +148,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow2(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`
             .assertIsEqualTo(false)

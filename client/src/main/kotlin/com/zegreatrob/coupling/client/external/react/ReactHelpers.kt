@@ -124,7 +124,7 @@ inline fun <reified T : RProps> reactFunction2(crossinline function: RBuilder.(T
     reactFunction(function).component.rFunction
 
 inline fun <reified T : RProps> windowReactFunc(crossinline handler: RBuilder.(T, WindowFunctions) -> Unit) =
-    { windowFunctions: WindowFunctions -> reactFunction<T> { handler(it, windowFunctions) } }
+    { windowFunctions: WindowFunctions -> reactFunction2<T> { handler(it, windowFunctions) } }
 
 class ReactFunctionComponent<P : RProps>(
     private val clazz: KClass<P>,
