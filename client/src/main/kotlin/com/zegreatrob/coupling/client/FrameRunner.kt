@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.reactFunction2
 import com.zegreatrob.coupling.client.external.react.useState
 import react.*
 import kotlin.browser.window
@@ -15,12 +15,12 @@ private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> tran
 private fun <I, O> ((I) -> O).curryOneArgToNoArgsFunc(): (I) -> () -> O = { it: I -> { this(it) } }
 
 fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
-    createElement(FrameRunner.component.rFunction, FrameRunnerProps(sequence, speed), { value: T ->
+    createElement(FrameRunner, FrameRunnerProps(sequence, speed), { value: T ->
         buildElements { children(value) }
     })
 )
 
-val FrameRunner = reactFunction<FrameRunnerProps> { props ->
+val FrameRunner = reactFunction2<FrameRunnerProps> { props ->
     val (sequence, speed) = props
     val (state, setState) = useState(sequence.first().first)
     val scheduleStateFunc = scheduleStateFunc(setState, speed)
