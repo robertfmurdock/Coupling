@@ -18,8 +18,8 @@ import com.zegreatrob.coupling.client.tribe.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import react.RBuilder
-import react.RElementBuilder
 import react.RProps
+import react.buildElement
 import react.dom.div
 import react.router.dom.*
 import kotlin.browser.window
@@ -57,7 +57,7 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/new-tribe/", TribeConfigPage)
-    route<RProps>("/:tribeId", exact = true, render = { props -> redirectToCurrentPairs(props) })
+    route<TribeRouteProps>("/:tribeId", exact = true, render = { props -> redirectToCurrentPairs(props) })
     couplingRoute("/:tribeId/prepare/", PrepareSpinPage)
     couplingRoute("/:tribeId/edit/", TribeConfigPage)
     couplingRoute("/:tribeId/history", HistoryPage)
@@ -73,9 +73,10 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/:tribeId/statistics", StatisticsPage)
 }
 
-private fun RElementBuilder<RProps>.redirectToCurrentPairs(props: RouteResultProps<RProps>) = redirect(
-    from = "",
-    to = "/${props.tribeId}/pairAssignments/current/"
-)
+private fun redirectToCurrentPairs(props: RouteResultProps<TribeRouteProps>) = buildElement {
+    redirect(from = "", to = "/${props.match.params.tribeId}/pairAssignments/current/")
+}
 
-private val RouteResultProps<RProps>.tribeId get() = match.params.asDynamic().tribeId
+external interface TribeRouteProps : RProps {
+    val tribeId: String
+}

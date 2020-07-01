@@ -11,6 +11,8 @@ private external val React: dynamic
 @JsModule("core-js/features/object/assign")
 external fun <T, R : T> objectAssign(dest: R, vararg src: T): R
 
+object EmptyProps : RProps
+
 fun <T> useStateWithSetterFunction(default: T): StateValueContentWithSetterFunction<T> {
     val stateArray = React.useState(default)
     return StateValueContentWithSetterFunction(
@@ -55,8 +57,6 @@ private fun <P : RProps> ensureKotlinClassProps(props: P, jsClass: JsClass<P>): 
     objectAssign(newProps, props)
     newProps.unsafeCast<P>()
 }
-
-object EmptyProps : RProps
 
 external interface SimpleStyle {
     val className: String

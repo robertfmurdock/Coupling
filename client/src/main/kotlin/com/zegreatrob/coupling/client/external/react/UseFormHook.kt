@@ -12,14 +12,17 @@ import kotlin.js.json
 
 fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
     .let { (values, setValues) ->
-        Pair(
-            values,
-            { event: Event ->
-                event.unsafeCast<dynamic>().persist()
-                setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
-            }
-        )
+        Pair(values, eventHandler(setValues))
     }
+
+private fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: Event ->
+    event.persist()
+    setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
+}
+
+private fun Event.persist() {
+    unsafeCast<dynamic>().persist()
+}
 
 private inline fun Json.copyWithChangeFrom(event: Event) = json()
     .add(this)
