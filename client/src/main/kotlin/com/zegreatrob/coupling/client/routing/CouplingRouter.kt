@@ -53,7 +53,7 @@ private fun RBuilder.lostRoute() = route<RProps>(
 )
 
 private fun RBuilder.authenticatedRoutes() = switch {
-    route(path = "/", exact = true, render = { redirect(from = "", to = "/tribes/") })
+    route(path = "/", exact = true, render = ::redirectToTribes)
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/new-tribe/", TribeConfigPage)
@@ -72,6 +72,8 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/:tribeId/players/retired", RetiredPlayersPage)
     couplingRoute("/:tribeId/statistics", StatisticsPage)
 }
+
+private fun redirectToTribes() = buildElement { redirect(from = "", to = "/tribes/") }
 
 private fun redirectToCurrentPairs(props: RouteResultProps<TribeRouteProps>) = buildElement {
     redirect(from = "", to = "/${props.match.params.tribeId}/pairAssignments/current/")
