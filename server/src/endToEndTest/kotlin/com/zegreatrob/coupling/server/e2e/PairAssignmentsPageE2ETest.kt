@@ -51,13 +51,9 @@ class PairAssignmentsPageE2ETest {
                 }
             }
 
-            private val setupProvider by lazyDeferred {
+            private val template = e2eSetup.extend(sharedSetup = {
                 sdkProvider.await().save(tribe, players)
-
-                CouplingLogin.loginProvider.await()
-            }
-
-            private val template = e2eSetup.extend(sharedSetup = { setupProvider.await() })
+            })
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
                 template(CurrentPairAssignmentPage, additionalSetup)

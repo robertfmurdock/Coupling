@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.browser
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
@@ -24,39 +25,23 @@ class HistoryPageE2ETest {
     class WithTwoAssignments {
         companion object {
 
-            private fun historyPageSetup() = e2eSetup(contextProvider = setupHistoryPageWithPairAssignments())
+            private fun historyPageSetup() = e2eSetup(contextProvider = suspend {
+                val sdk = sdkProvider.await()
+                val tribe = buildTribe()
+                sdk.save(tribe)
 
-            private fun setupHistoryPageWithPairAssignments() = suspend {
-                val (_, pairAssignments) = setupProvider.await()
-                Context(pairAssignments)
-            }
+                val pairAssignments = setupPairAssignments(tribe, sdk)
 
-            private val setupProvider by lazyDeferred {
-                val tribe = tribeProvider.await()
-                val pairAssignments = pairAssignmentsProvider.await()
-
-                CouplingLogin.loginProvider.await()
                 HistoryPage.goTo(tribe.id)
 
-                tribe to pairAssignments
-            }
+                Context(pairAssignments)
+            })
 
-            private val tribeProvider by lazyDeferred {
-                val sdk = sdkProvider.await()
-                buildTribe()
-                    .also { sdk.save(it) }
-            }
-
-            private val pairAssignmentsProvider by lazyDeferred {
-                val sdk = sdkProvider.await()
-                val tribe = tribeProvider.await()
-
-                listOf(
-                    buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
-                    buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth"))))
-                ).apply {
-                    forEach { sdk.save(tribe.id.with(it)) }
-                }
+            private suspend fun setupPairAssignments(tribe: Tribe, sdk: Sdk) = listOf(
+                buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
+                buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth"))))
+            ).apply {
+                forEach { sdk.save(tribe.id.with(it)) }
             }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
