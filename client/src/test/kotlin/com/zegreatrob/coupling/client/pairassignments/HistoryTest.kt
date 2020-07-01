@@ -29,11 +29,8 @@ class HistoryTest {
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = setup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
-
         val tribe = Tribe(TribeId("me"))
-
         val reloadSpy = SpyData<Unit, Unit>()
-
         val history = listOf(
             PairAssignmentDocument(
                 PairAssignmentDocumentId("RealId"),
@@ -52,18 +49,14 @@ class HistoryTest {
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, history[0].id!!)))
-        reloadSpy.spyReceivedValues.isNotEmpty()
-            .assertIsEqualTo(true)
+        reloadSpy.callCount.assertIsEqualTo(1)
     }
 
     @Test
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
-
         val tribe = Tribe(TribeId("me"))
-
         val reloadSpy = SpyData<Unit, Unit>()
-
         val history = listOf(
             PairAssignmentDocument(
                 PairAssignmentDocumentId("RealId"),
@@ -81,7 +74,6 @@ class HistoryTest {
     } verify {
         stubDispatchFunc.dispatchList.isEmpty()
             .assertIsEqualTo(true)
-        reloadSpy.spyReceivedValues.isEmpty()
-            .assertIsEqualTo(true)
+        reloadSpy.callCount.assertIsEqualTo(0)
     }
 }

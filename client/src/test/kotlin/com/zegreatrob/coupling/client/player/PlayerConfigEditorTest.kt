@@ -82,7 +82,7 @@ class PlayerConfigEditorTest {
             .assertIsEqualTo(
                 listOf(SavePlayerCommand(tribe.id, player.copy(name = "nonsense")))
             )
-        reloaderSpy.spyReceivedValues.size.assertIsEqualTo(1)
+        reloaderSpy.callCount.assertIsEqualTo(1)
     }
 
     @Test
