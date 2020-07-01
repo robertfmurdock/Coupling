@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.706.0",
+    "aws-sdk": "2.708.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -33,7 +33,7 @@
     "pug": "^3.0.0",
     "ramda": "^0.27.0",
     "serve-favicon": "^2.5.0",
-    "source-map-loader": "^1.0.0",
+    "source-map-loader": "^1.0.1",
     "ws": "^7.3.0"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "@types/jasmine": "^3.5.11",
     "@types/jasminewd2": "^2.0.8",
     "@types/passport": "^1.0.3",
-    "@types/ws": "7.2.5",
+    "@types/ws": "7.2.6",
     "axios": "^0.19.2",
     "expect.js": "^0.3.1",
     "file-loader": "^6.0.0",
