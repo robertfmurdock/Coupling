@@ -14,8 +14,10 @@ import org.w3c.dom.Node
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
+import react.buildElement
 import react.dom.div
 import react.dom.img
+import react.useLayoutEffect
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
@@ -71,7 +73,7 @@ private fun playerCardHeaderElement(
     pathSetter: (String) -> Unit,
     disabled: Boolean,
     size: Int
-) = reactElement {
+) = buildElement {
     val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
 

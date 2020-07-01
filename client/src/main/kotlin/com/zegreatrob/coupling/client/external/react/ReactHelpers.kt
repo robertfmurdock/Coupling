@@ -14,28 +14,6 @@ external fun <T, R : T> objectAssign(dest: R, vararg src: T): R
 
 fun <T> useRef(default: T?) = React.useRef(default).unsafeCast<RReadableRef<T>>()
 
-fun useLayoutEffect(callback: () -> Unit) {
-    React.useLayoutEffect {
-        callback()
-        undefined
-    }
-}
-
-fun useEffect(callback: () -> Unit) {
-    React.useEffect {
-        callback()
-        undefined
-    }
-}
-
-fun <T> useEffect(dependencies: Collection<T>, callback: () -> Unit) {
-    React.useEffect({ callback() }, dependencies.toTypedArray())
-}
-
-fun useEffectWithCleanup(dependencies: Array<Any>? = null, callback: () -> () -> Unit) {
-    React.useEffect({ return@useEffect callback() }, dependencies)
-}
-
 fun <T> useState(default: T): StateValueContent<T> {
     val stateArray = React.useState(default)
     return StateValueContent(
@@ -90,25 +68,23 @@ fun <P : RProps> RBuilder.child(
 }
 
 inline fun <reified P : RProps> reactFunction(crossinline function: RBuilder.(P) -> Unit): RClass<P> =
-    buildReactFunction(P::class) { reactElement { function(it) } }
+    buildReactFunction(P::class) { props -> buildElement { function(props) } }
 
 inline fun <reified P : RProps> windowReactFunc(crossinline handler: RBuilder.(P, WindowFunctions) -> Unit) =
     { windowFunctions: WindowFunctions -> reactFunction<P> { handler(it, windowFunctions) } }
 
 fun <P : RProps> buildReactFunction(kClass: KClass<P>, builder: (props: P) -> ReactElement) = { props: P ->
-    ensureKotlinClassProps(props, kClass.js.unsafeCast<P>())
+    ensureKotlinClassProps(props, kClass.js)
         .let(builder)
 }.unsafeCast<RClass<P>>()
 
-private fun <P : RProps> ensureKotlinClassProps(props: P, jsClass: P): P = if (props::class.js == jsClass) {
+private fun <P : RProps> ensureKotlinClassProps(props: P, jsClass: JsClass<P>): P = if (props::class.js == jsClass) {
     props
 } else {
     val newProps = js("new jsClass()")
     objectAssign(newProps, props)
     newProps.unsafeCast<P>()
 }
-
-fun reactElement(handler: RBuilder.() -> Unit): ReactElement = buildElement(handler)
 
 object EmptyProps : RProps
 

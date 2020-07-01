@@ -18,6 +18,7 @@ import react.RProps
 import react.dom.a
 import react.dom.div
 import react.dom.span
+import react.useLayoutEffect
 
 private val styles = useStyles("Welcome")
 

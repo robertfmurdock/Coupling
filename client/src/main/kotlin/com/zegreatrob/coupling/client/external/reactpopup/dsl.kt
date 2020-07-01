@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.external.reactpopup
 
-import com.zegreatrob.coupling.client.external.react.reactElement
 import react.RBuilder
+import react.buildElement
 import styled.StyledHandler
 import styled.styled
 import kotlin.js.Json
@@ -20,7 +20,7 @@ fun RBuilder.popup(
         this.modal = modal
         this.on = on
         this.open = open
-        this.trigger = { isOpen -> reactElement { trigger(isOpen) } }
+        this.trigger = { isOpen -> buildElement { trigger(isOpen) } }
         this.contentStyle = contentStyle
     }
     handler()

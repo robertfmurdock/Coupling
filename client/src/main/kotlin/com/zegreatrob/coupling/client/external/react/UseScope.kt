@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.external.react
 
 import kotlinx.coroutines.*
-import react.RProps
+import react.RCleanup
+import react.useEffectWithCleanup
 
 fun useScope(coroutineName: String): CoroutineScope {
     val (scope) = useState { MainScope() + CoroutineName(coroutineName) }
-    useEffectWithCleanup(arrayOf()) {
-        { scope.cancel() }
-    }
+    val cleanup: RCleanup = { scope.cancel() }
+    useEffectWithCleanup(dependencies = emptyList()) { cleanup }
     return scope
 }
