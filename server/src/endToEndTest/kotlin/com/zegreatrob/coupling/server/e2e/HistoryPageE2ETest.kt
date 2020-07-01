@@ -25,19 +25,21 @@ class HistoryPageE2ETest {
     class WithTwoAssignments {
         companion object {
 
-            private fun historyPageSetup() = e2eSetup(contextProvider = suspend {
+            private val beforeAll by lazyDeferred {
                 val sdk = sdkProvider.await()
                 val tribe = buildTribe()
                 sdk.save(tribe)
 
-                val pairAssignments = setupPairAssignments(tribe, sdk)
+                val pairAssignments = setupTwoPairAssignments(tribe, sdk)
 
                 HistoryPage.goTo(tribe.id)
 
                 Context(pairAssignments)
-            })
+            }
 
-            private suspend fun setupPairAssignments(tribe: Tribe, sdk: Sdk) = listOf(
+            private fun historyPageSetup() = e2eSetup(contextProvider = beforeAll::await)
+
+            private suspend fun setupTwoPairAssignments(tribe: Tribe, sdk: Sdk) = listOf(
                 buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
                 buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth"))))
             ).apply {
