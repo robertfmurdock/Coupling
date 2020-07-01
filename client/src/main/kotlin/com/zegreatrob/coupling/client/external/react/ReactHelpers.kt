@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import kotlinext.js.jsObject
 import org.w3c.dom.Node
 import react.*
 import kotlin.reflect.KClass
@@ -21,17 +20,6 @@ fun <T> useStateWithSetterFunction(default: T): StateValueContentWithSetterFunct
 }
 
 data class StateValueContentWithSetterFunction<T>(val value: T, val setter: ((T) -> T) -> Unit)
-
-fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> Unit) = child(
-    React.createElement(type, jsObject {}) { value: T ->
-        buildElement {
-            children(value)
-        }
-    }
-        .unsafeCast<ReactElement>()
-)
-
-data class StateValueContent<T>(val value: T, val setter: (T) -> Unit)
 
 fun <P : RProps> RBuilder.child(
     clazz: RClass<P>,
