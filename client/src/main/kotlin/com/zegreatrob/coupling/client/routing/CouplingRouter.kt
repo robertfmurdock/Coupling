@@ -57,7 +57,7 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/new-tribe/", TribeConfigPage)
-    route<TribeRouteProps>("/:tribeId", exact = true, render = { props -> redirectToCurrentPairs(props) })
+    route("/:tribeId", exact = true, render = ::redirectToCurrentPairs)
     couplingRoute("/:tribeId/prepare/", PrepareSpinPage)
     couplingRoute("/:tribeId/edit/", TribeConfigPage)
     couplingRoute("/:tribeId/history", HistoryPage)
