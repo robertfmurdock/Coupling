@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.pin.pinButton
@@ -20,6 +22,7 @@ import react.RProps
 import react.buildElement
 import react.dom.a
 import react.dom.div
+import react.useState
 import styled.css
 import styled.styledDiv
 
@@ -60,21 +63,21 @@ private fun RBuilder.optionalPinSelector(
 
 private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =
     buildElement {
-            flipper(flipKey = pinSelections.generateFlipKey(), classes = styles["pinSelector"]) {
-                div(classes = styles["selectedPins"]) {
-                    pins.selectByIds(pinSelections)
-                        .map { pin ->
-                            flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
-                        }
-                }
-                div(classes = styles["deselectedPins"]) {
-                    pins.removeByIds(pinSelections)
-                        .map { pin ->
-                            flippedPinButton(pin) { setPinSelections(pinSelections + pin._id) }
-                        }
-                }
+        flipper(flipKey = pinSelections.generateFlipKey(), classes = styles["pinSelector"]) {
+            div(classes = styles["selectedPins"]) {
+                pins.selectByIds(pinSelections)
+                    .map { pin ->
+                        flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
+                    }
+            }
+            div(classes = styles["deselectedPins"]) {
+                pins.removeByIds(pinSelections)
+                    .map { pin ->
+                        flippedPinButton(pin) { setPinSelections(pinSelections + pin._id) }
+                    }
             }
         }
+    }
 
 private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it._id) }
 

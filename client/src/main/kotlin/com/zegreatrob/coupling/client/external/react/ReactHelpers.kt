@@ -14,14 +14,6 @@ external fun <T, R : T> objectAssign(dest: R, vararg src: T): R
 
 fun <T> useRef(default: T?) = React.useRef(default).unsafeCast<RReadableRef<T>>()
 
-fun <T> useState(default: T): StateValueContent<T> {
-    val stateArray = React.useState(default)
-    return StateValueContent(
-        value = stateArray[0].unsafeCast<T>(),
-        setter = stateArray[1].unsafeCast<(T) -> Unit>()
-    )
-}
-
 fun <T> useStateWithSetterFunction(default: T): StateValueContentWithSetterFunction<T> {
     val stateArray = React.useState(default)
     return StateValueContentWithSetterFunction(
@@ -31,14 +23,6 @@ fun <T> useStateWithSetterFunction(default: T): StateValueContentWithSetterFunct
 }
 
 data class StateValueContentWithSetterFunction<T>(val value: T, val setter: ((T) -> T) -> Unit)
-
-fun <T> useState(default: () -> T): StateValueContent<T> {
-    val stateArray = React.useState(default)
-    return StateValueContent(
-        value = stateArray[0].unsafeCast<T>(),
-        setter = stateArray[1].unsafeCast<(T) -> Unit>()
-    )
-}
 
 fun <T> RBuilder.consumer(type: RConsumer<T>, children: RBuilder.(T) -> Unit) = child(
     React.createElement(type, jsObject {}) { value: T ->

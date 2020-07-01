@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useRef
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -19,6 +22,7 @@ import react.dom.a
 import react.dom.div
 import react.dom.span
 import react.useLayoutEffect
+import react.useState
 
 private val styles = useStyles("Welcome")
 

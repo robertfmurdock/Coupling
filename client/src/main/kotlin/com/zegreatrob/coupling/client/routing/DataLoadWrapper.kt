@@ -16,6 +16,7 @@ import kotlinx.html.classes
 import react.RClass
 import react.RProps
 import react.dom.div
+import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
 

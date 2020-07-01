@@ -25,6 +25,7 @@ import react.RBuilder
 import react.RProps
 import react.ReactElement
 import react.dom.*
+import react.useState
 
 data class PlayerConfigEditorProps(
     val tribe: Tribe,

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.render
-import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.json.toPlayer
@@ -12,6 +11,7 @@ import react.RClass
 import react.RProps
 import react.dom.div
 import react.dom.span
+import react.useState
 import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.js.json

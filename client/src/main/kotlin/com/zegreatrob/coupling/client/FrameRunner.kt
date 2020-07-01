@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.useState
 import react.*
 import kotlin.browser.window
 import kotlin.math.round

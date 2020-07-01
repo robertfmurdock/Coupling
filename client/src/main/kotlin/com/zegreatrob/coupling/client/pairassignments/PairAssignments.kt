@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.useState
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
@@ -27,6 +26,7 @@ import react.dom.button
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
+import react.useState
 import kotlin.browser.window
 
 data class PairAssignmentsProps(
