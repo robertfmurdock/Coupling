@@ -6,12 +6,12 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 
 object PrepareToSpinPage : ProtractorSyntax {
 
-    val prepareSpinStyles = loadStyles("PrepareSpin")
+    private val prepareSpinStyles = loadStyles("PrepareSpin")
 
-    val pageElement = prepareSpinStyles.element()
+    private val pageElement = prepareSpinStyles.element()
     val spinButton by prepareSpinStyles.getting()
 
-    val selectedPins by prepareSpinStyles.getting()
+    private val selectedPins by prepareSpinStyles.getting()
     val selectedPinElements = selectedPins.all(PinButton.pinButtonLocator)
 
     suspend fun goTo(tribeId: TribeId) {

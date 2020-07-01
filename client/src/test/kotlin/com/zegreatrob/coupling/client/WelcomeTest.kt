@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.client
 
-import ShallowWrapper
+import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.welcome.RandomProvider
 import com.zegreatrob.coupling.client.welcome.Welcome
@@ -10,7 +11,6 @@ import com.zegreatrob.coupling.client.welcome.WelcomeProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import shallow
 import kotlin.test.Test
 
 class WelcomeTest {
@@ -23,7 +23,10 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 0
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
+        shallow(
+            Welcome,
+            WelcomeProps(StubDispatchFunc(), randomProvider)
+        )
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -54,7 +57,10 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
+        shallow(
+            Welcome,
+            WelcomeProps(StubDispatchFunc(), randomProvider)
+        )
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -85,7 +91,10 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
+        shallow(
+            Welcome,
+            WelcomeProps(StubDispatchFunc(), randomProvider)
+        )
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player

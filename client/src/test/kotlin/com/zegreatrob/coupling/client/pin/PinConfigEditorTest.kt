@@ -8,9 +8,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import findByClass
-import shallow
-import simulateInputChange
+import com.zegreatrob.coupling.client.external.findByClass
+import com.zegreatrob.coupling.client.external.shallow
+import com.zegreatrob.coupling.client.external.simulateInputChange
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -23,7 +23,10 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc()))
+        shallow(
+            PinConfigEditor,
+            PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc())
+        )
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -35,7 +38,10 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(_id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc()))
+        shallow(
+            PinConfigEditor,
+            PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc())
+        )
     } verify { wrapper ->
         wrapper.findByClass(styles["deleteButton"])
             .length
@@ -51,7 +57,10 @@ class PinConfigEditorTest {
 
         val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
 
-        val wrapper = shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, {}, dispatchFunc)).apply {
+        val wrapper = shallow(
+            PinConfigEditor,
+            PinConfigEditorProps(tribe, pin, {}, {}, dispatchFunc)
+        ).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)
             update()

@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-import ShallowWrapper
+import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import shallow
+import com.zegreatrob.coupling.client.external.shallow
 import kotlin.test.Test
 
 class PinButtonTest {

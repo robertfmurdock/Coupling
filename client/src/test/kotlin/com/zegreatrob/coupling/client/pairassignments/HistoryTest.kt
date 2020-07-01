@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryComponent
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryProps
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -18,7 +19,6 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
-import shallow
 import kotlin.js.json
 import kotlin.test.Test
 

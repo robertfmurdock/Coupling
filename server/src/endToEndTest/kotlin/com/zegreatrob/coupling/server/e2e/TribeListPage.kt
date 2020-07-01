@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import kotlinx.coroutines.await
 
 object TribeListPage : ProtractorSyntax {
-    val tribeListStyles = loadStyles("tribe/TribeList")
-    val tribeCardStyles = loadStyles("tribe/TribeCard")
+    private val tribeListStyles = loadStyles("tribe/TribeList")
+    private val tribeCardStyles = loadStyles("tribe/TribeCard")
 
     val newTribeButton by tribeListStyles.getting()
     val tribeCardElements = all(By.className(tribeCardStyles.className))

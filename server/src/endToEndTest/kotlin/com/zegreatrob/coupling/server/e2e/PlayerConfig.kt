@@ -10,7 +10,7 @@ object PlayerConfig : ProtractorSyntax {
 
     private val playerConfigEditorStyles = loadStyles("player/PlayerConfigEditor")
 
-    val playerConfigPage = playerConfigStyles.element()
+    private val playerConfigPage = playerConfigStyles.element()
     val playerNameTextField = element(By.id("player-name"))
     val deleteButton by playerConfigEditorStyles.getting()
     val saveButton by playerConfigEditorStyles.getting()

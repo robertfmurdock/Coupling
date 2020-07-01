@@ -6,17 +6,17 @@ import kotlinx.coroutines.await
 
 object CurrentPairAssignmentPage : ProtractorSyntax {
 
-    val currentPairAssignmentsPanelStyles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
-    val pageElement = currentPairAssignmentsPanelStyles.element()
+    private val currentPairAssignmentsPanelStyles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
+    private val pageElement = currentPairAssignmentsPanelStyles.element()
     val saveButton by currentPairAssignmentsPanelStyles.getting()
 
-    val pairAssignmentsStyles = loadStyles("pairassignments/PairAssignments")
+    private val pairAssignmentsStyles = loadStyles("pairassignments/PairAssignments")
     val viewHistoryButton by pairAssignmentsStyles.getting()
     val newPairsButton by pairAssignmentsStyles.getting()
     val statisticsButton by pairAssignmentsStyles.getting()
     val retiredPlayersButton by pairAssignmentsStyles.getting()
 
-    val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
+    private val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
     val assignedPairElements = all(By.className(assignedPairStyles.className))
     val assignedPairCallSigns = all(By.className(assignedPairStyles["callSign"]))
 

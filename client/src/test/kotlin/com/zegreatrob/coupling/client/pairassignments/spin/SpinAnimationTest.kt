@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import ShallowWrapper
+import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.findByClass
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -13,8 +15,6 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import findByClass
-import shallow
 import kotlin.test.Test
 
 @Suppress("unused")

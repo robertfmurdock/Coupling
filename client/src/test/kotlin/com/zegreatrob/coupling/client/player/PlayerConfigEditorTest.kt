@@ -13,8 +13,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
-import shallow
-import simulateInputChange
+import com.zegreatrob.coupling.client.external.shallow
+import com.zegreatrob.coupling.client.external.simulateInputChange
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -31,7 +31,10 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow(
+            PlayerConfigEditor,
+            PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc())
+        )
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -47,7 +50,10 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow(
+            PlayerConfigEditor,
+            PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc())
+        )
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -134,7 +140,10 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper =
-            shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+            shallow(
+                PlayerConfigEditor,
+                PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc())
+            )
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -148,7 +157,10 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow(
+            PlayerConfigEditor,
+            PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc())
+        )
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`
             .assertIsEqualTo(false)

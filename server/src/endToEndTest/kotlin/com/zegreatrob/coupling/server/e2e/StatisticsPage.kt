@@ -12,7 +12,7 @@ object StatisticsPage : ProtractorSyntax {
     private val teamStatisticsStyles = loadStyles("stats/TeamStatistics")
     private val pairReportTableStyles = loadStyles("stats/PairReportTable")
 
-    val tribeStatisticsElement = tribeStatisticsStyles.element()
+    private val tribeStatisticsElement = tribeStatisticsStyles.element()
     val rotationNumber by teamStatisticsStyles.getting()
     val pairReports = all(By.className(pairReportTableStyles["pairReport"]))
 

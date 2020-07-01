@@ -1,6 +1,5 @@
-const clientTest = require('Coupling-client-test');
-
-clientTest.setLogLevel();
+require('Coupling-client-test').com.zegreatrob.coupling.client
+  .setLogLevel();
 
 require('./enzymeConfig');
 

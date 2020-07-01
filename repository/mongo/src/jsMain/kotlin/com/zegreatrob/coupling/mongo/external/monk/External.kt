@@ -14,5 +14,4 @@ external interface MonkDb {
 
 external interface MonkCollection {
     fun createIndex(config: Json)
-
 }

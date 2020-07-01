@@ -8,7 +8,7 @@ object PinConfigPage : ProtractorSyntax {
 
     private val pinConfigStyles = loadStyles("pin/PinConfig")
     private val pinConfigPage = pinConfigStyles.element()
-    val pinBag by pinConfigStyles.getting()
+    private val pinBag by pinConfigStyles.getting()
 
     private val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
 
@@ -36,14 +36,14 @@ object PinConfigPage : ProtractorSyntax {
         waitForLoad()
     }
 
-    suspend fun waitForLoad() {
+    private suspend fun waitForLoad() {
         browser.wait({ pinConfigPage.isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad").await()
     }
 }
 
 object PinListPage : ProtractorSyntax {
 
-    val pinListStyles = loadStyles("pin/PinList")
+    private val pinListStyles = loadStyles("pin/PinList")
 
     val page = pinListStyles.element()
 

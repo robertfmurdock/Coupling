@@ -1,9 +1,22 @@
+package com.zegreatrob.coupling.client.external
 
 import react.RClass
 import react.RProps
 import react.buildElement
 import kotlin.js.Json
 import kotlin.js.json
+
+@JsModule("enzyme")
+external val enzyme: Enzyme
+
+@JsModule("enzyme-adapter-react-16")
+external class Adapter
+
+val setup = object {
+    init {
+        enzyme.configure(json("adapter" to Adapter()))
+    }
+}
 
 external interface Enzyme {
     fun shallow(element: dynamic): ShallowWrapper<dynamic>
@@ -51,18 +64,6 @@ fun <T> ShallowWrapper<T>.simulateInputChange(fieldName: String, fieldValue: Str
 fun <T> ShallowWrapper<T>.findByClass(className: String) = find<T>(".${className}")
 fun <T> ShallowWrapper<T>.findInputByName(inputName: String) = find<T>("input[name='${inputName}']")
 
-@JsModule("enzyme")
-external val enzyme: Enzyme
-
-@JsModule("enzyme-adapter-react-16")
-external class Adapter
-
 fun <P : RProps> shallow(reactFunction: RClass<P>, props: P) = enzyme.shallow(buildElement {
     child(reactFunction, props) {}
 })
-
-val setup = object {
-    init {
-        enzyme.configure(json("adapter" to Adapter()))
-    }
-}

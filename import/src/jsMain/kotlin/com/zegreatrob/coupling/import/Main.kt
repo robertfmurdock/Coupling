@@ -81,7 +81,7 @@ suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     }
 }
 
-private suspend inline fun tryToImport(noinline errorMessage: () -> Any?, suspend: suspend () -> Unit) {
+private inline fun tryToImport(noinline errorMessage: () -> Any?, suspend: () -> Unit) {
     try {
         suspend()
     } catch (bad: Throwable) {

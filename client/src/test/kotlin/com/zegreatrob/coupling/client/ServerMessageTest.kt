@@ -1,3 +1,6 @@
+package com.zegreatrob.coupling.client
+
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.client.user.WebsocketProps
@@ -10,9 +13,7 @@ import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
-
 @JsModule("react-websocket")
-
 external val websocket: RClass<WebsocketProps>
 
 class ServerMessageTest {
@@ -76,9 +77,7 @@ class ServerMessageTest {
         wrapper.update()
     } verify {
         wrapper.find<Any>("span").text()
-            .assertIsEqualTo(
-                expectedMessage
-            )
+            .assertIsEqualTo(expectedMessage)
     }
 
 }

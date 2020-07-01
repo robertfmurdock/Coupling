@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import ShallowWrapper
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.player.PlayerRoster
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -19,7 +20,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.testmints.setup
 import react.RClass
-import shallow
 import kotlin.test.Test
 
 class PairAssignmentsTest {
@@ -74,7 +74,9 @@ class PairAssignmentsTest {
             Player(id = "5", name = "pantsmaster")
         )
     }) exercise {
-        shallow(PairAssignments, PairAssignmentsProps(tribe, players, null, StubDispatchFunc()) {})
+        shallow(
+            PairAssignments,
+            PairAssignmentsProps(tribe, players, null, StubDispatchFunc()) {})
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()

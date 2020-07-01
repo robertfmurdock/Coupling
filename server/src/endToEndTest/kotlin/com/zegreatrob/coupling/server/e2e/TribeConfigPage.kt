@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 
 object TribeConfigPage : ProtractorSyntax {
 
-    val tribeConfigStyles = loadStyles("tribe/TribeConfig")
-    val pageElement = tribeConfigStyles.element()
+    private val tribeConfigStyles = loadStyles("tribe/TribeConfig")
+    private val pageElement = tribeConfigStyles.element()
     val saveButton by tribeConfigStyles.getting()
 
     val tribeNameInput = element(By.id("tribe-name"))

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.all
 import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 
 object HistoryPage : ProtractorSyntax {
-    val historyStyles = loadStyles("pairassignments/History")
+    private val historyStyles = loadStyles("pairassignments/History")
 
     val historyView by historyStyles.getting()
 

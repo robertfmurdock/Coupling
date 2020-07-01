@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import shallow
+import com.zegreatrob.coupling.client.external.shallow
 import kotlin.test.Test
 
 class PlayerHeatmapBuilderTest {
