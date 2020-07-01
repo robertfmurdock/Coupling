@@ -1,10 +1,13 @@
 package com.zegreatrob.coupling.server.action
 
-import com.zegreatrob.testmints.action.*
-import com.zegreatrob.testmints.action.async.SuspendAction
-import com.zegreatrob.testmints.action.async.SuspendActionExecutor
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
+import com.zegreatrob.minspy.spyFunction
+import com.zegreatrob.testmints.action.DispatchableAction
+import com.zegreatrob.testmints.action.ExecutableAction
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
+import com.zegreatrob.testmints.action.async.SuspendAction
+import com.zegreatrob.testmints.action.async.SuspendActionExecutor
 import kotlin.reflect.KClass
 
 fun <D, C : DispatchableAction<D, R>, R> stubActionExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<C>) =

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
@@ -11,6 +11,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minspy.SpyData
+import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
 import kotlin.js.json
 import kotlin.test.Test
@@ -61,8 +62,7 @@ class TribeConfigTest {
             email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge
         )
-
-        val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
+        val pathSetterSpy = SpyData<String, Unit>()
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(
             TribeConfig,
@@ -83,10 +83,7 @@ class TribeConfigTest {
     fun whenTribeIsNewWillSuggestIdAutomatically() = setup(object {
         val tribe = Tribe(TribeId(""))
     }) exercise {
-        shallow(
-            TribeConfig,
-            TribeConfigProps(tribe, {}, StubDispatchFunc())
-        )
+        shallow(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
     } verify { result ->
         result.find<Any>("#tribe-id")
             .prop("value")

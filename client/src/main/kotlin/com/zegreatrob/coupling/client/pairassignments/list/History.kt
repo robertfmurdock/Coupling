@@ -33,9 +33,9 @@ data class HistoryProps(
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
-val History by lazy { HistoryComponent(WindowFunctions) }
+val History by lazy { historyComponent(WindowFunctions) }
 
-val HistoryComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc), windowFuncs ->
+val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc), windowFuncs ->
     val onDeleteFunc = onDeleteFuncFactory(commandFunc, tribe, reload, windowFuncs)
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {

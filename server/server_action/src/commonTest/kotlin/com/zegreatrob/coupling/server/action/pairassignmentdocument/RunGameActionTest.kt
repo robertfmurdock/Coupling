@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
+import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
@@ -34,9 +35,7 @@ class RunGameActionTest {
             spyReturnValues.add(expectedPairingAssignments)
         }
 
-        override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(
-            action
-        )
+        override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(action)
 
     }) exercise {
         perform(RunGameAction(players, pins, history, tribe))

@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.player.PlayerRoster
+import com.zegreatrob.coupling.client.external.ShallowWrapper
 import com.zegreatrob.coupling.client.external.shallow
+import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
+import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
 import react.RClass
 import kotlin.test.Test
@@ -86,7 +87,7 @@ class PairAssignmentsTest {
 
     @Test
     fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = setup(object {
-        val pathSetterSpy = SpyData<String, Unit>().apply { spyWillReturn(Unit) }
+        val pathSetterSpy = SpyData<String, Unit>()
         val pairAssignments = PairAssignmentDocument(
             date = DateTime.now(),
             pairs = emptyList()

@@ -55,9 +55,7 @@ class ServerMessageTest {
         wrapper.update()
     } verify {
         wrapper.find<Any>("span").text()
-            .assertIsEqualTo(
-                expectedMessage
-            )
+            .assertIsEqualTo(expectedMessage)
     }
 
     private fun socketMessage(expectedMessage: String) =

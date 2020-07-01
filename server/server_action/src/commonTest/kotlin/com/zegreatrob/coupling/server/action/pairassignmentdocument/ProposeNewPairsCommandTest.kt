@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
+import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.random.Random
 import kotlin.test.Test
@@ -48,9 +49,7 @@ class ProposeNewPairsCommandTest {
         val spy = SpyData<RunGameAction, PairAssignmentDocument>()
             .apply { spyReturnValues.add(expectedPairAssignmentDocument) }
 
-        override fun perform(action: RunGameAction) = spy.spyFunction(
-            action
-        )
+        override fun perform(action: RunGameAction) = spy.spyFunction(action)
     }) exercise {
         perform(ProposeNewPairsCommand(tribe.id, players, pins))
     } verifySuccess { result ->

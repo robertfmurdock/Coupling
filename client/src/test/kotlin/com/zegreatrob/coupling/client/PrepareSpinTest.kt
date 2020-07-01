@@ -33,9 +33,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(
-            PrepareSpin,
-            PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
     }) exercise {
         wrapper.findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
@@ -54,9 +52,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(
-            PrepareSpin,
-            PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
 
         init {
             wrapper.findByClass(styles["selectedPins"])

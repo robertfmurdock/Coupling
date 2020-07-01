@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
+import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 import kotlin.test.fail
@@ -26,7 +27,7 @@ class FindOrCreateUserActionTest {
         override suspend fun getUser(): Nothing? = null
         override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
 
-        val saveSpy = SpyData<User, Unit>().apply { spyWillReturn(Unit) }
+        val saveSpy = SpyData<User, Unit>()
         override suspend fun save(user: User) = saveSpy.spyFunction(user)
     }) exercise {
         perform(FindOrCreateUserAction)

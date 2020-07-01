@@ -35,7 +35,7 @@ data class PlayerConfigEditorProps(
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : RProps
 
-val PlayerConfigEditor by lazy { PlayerConfigEditorComponent(WindowFunctions) }
+val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
 
 fun RBuilder.playerConfigEditor(
     tribe: Tribe,
@@ -50,7 +50,7 @@ fun RBuilder.playerConfigEditor(
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val PlayerConfigEditorComponent = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->
+val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->
     val (tribe, player, pathSetter, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toJson())
 

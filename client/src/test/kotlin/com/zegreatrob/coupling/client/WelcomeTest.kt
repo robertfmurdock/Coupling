@@ -23,10 +23,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 0
         }
     }) exercise {
-        shallow(
-            Welcome,
-            WelcomeProps(StubDispatchFunc(), randomProvider)
-        )
+        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -57,10 +54,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        shallow(
-            Welcome,
-            WelcomeProps(StubDispatchFunc(), randomProvider)
-        )
+        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
@@ -91,10 +85,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        shallow(
-            Welcome,
-            WelcomeProps(StubDispatchFunc(), randomProvider)
-        )
+        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
     } verify { wrapper ->
         wrapper.findLeftCardProps()
             .player
