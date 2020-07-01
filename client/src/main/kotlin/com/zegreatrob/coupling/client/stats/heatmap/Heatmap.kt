@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.stats.heatmap
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.useStyles
 import kotlinx.css.height
 import kotlinx.css.px
 import kotlinx.css.width
@@ -9,6 +12,7 @@ import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
 import react.useLayoutEffect
+import react.useRef
 import styled.css
 import styled.styledDiv
 
@@ -23,7 +27,7 @@ private val styles = useStyles("stats/heatmap/Heatmap")
 
 val Heatmap = reactFunction<HeatmapProps> { (data, className) ->
     val rowSize = data.size * 90
-    val rootRef = useRef<Node>(null)
+    val rootRef = useRef<Node?>(null)
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
     styledDiv {

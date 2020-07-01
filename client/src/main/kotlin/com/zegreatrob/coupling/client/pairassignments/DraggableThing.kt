@@ -1,12 +1,16 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.SimpleStyle
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
 import react.dom.div
+import react.useRef
 
 data class DraggableThingProps(
     val itemType: String,
@@ -18,7 +22,7 @@ data class DraggableThingProps(
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 
 val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
-    val draggableRef = useRef<Node>(null)
+    val draggableRef = useRef<Node?>(null)
 
     val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })
     val (isOver, drop) = useDrop(

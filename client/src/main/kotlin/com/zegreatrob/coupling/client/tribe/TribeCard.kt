@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
@@ -16,6 +19,7 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.useLayoutEffect
+import react.useRef
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
@@ -53,7 +57,7 @@ private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
 }
 
 private fun RBuilder.tribeCardHeader(props: TribeCardProps) = with(props) {
-    val tribeNameRef = useRef<Node>(null)
+    val tribeNameRef = useRef<Node?>(null)
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
 
     styledDiv {

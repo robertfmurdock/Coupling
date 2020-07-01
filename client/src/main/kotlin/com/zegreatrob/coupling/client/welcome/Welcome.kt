@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.welcome
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.useRef
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -16,13 +15,10 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
-import react.RBuilder
-import react.RProps
+import react.*
 import react.dom.a
 import react.dom.div
 import react.dom.span
-import react.useLayoutEffect
-import react.useState
 
 private val styles = useStyles("Welcome")
 
@@ -92,7 +88,7 @@ private fun Card.toPlayer() = Player(
 )
 
 private fun RBuilder.welcomeTitle() {
-    val welcomeTitleRef = useRef<Node>(null)
+    val welcomeTitleRef = useRef<Node?>(null)
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
     }

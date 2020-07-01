@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
@@ -25,6 +28,7 @@ import react.ReactElement
 import react.dom.div
 import react.dom.key
 import react.dom.span
+import react.useRef
 import styled.css
 import styled.styledDiv
 
@@ -61,7 +65,7 @@ val AssignedPair = reactFunction<AssignedPairProps> { props ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
-    val pinDroppableRef = useRef<Node>(null)
+    val pinDroppableRef = useRef<Node?>(null)
     drop(pinDroppableRef)
 
     val playerCard = playerCardComponent(tribe, pair, swapCallback, canDrag, pathSetter)
