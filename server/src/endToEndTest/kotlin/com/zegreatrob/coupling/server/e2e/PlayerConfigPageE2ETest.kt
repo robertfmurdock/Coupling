@@ -12,30 +12,29 @@ import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
-
-abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
-
-    val playerSetup = e2eSetup.extend(beforeAll = {
-        val sdk = sdkProvider.await()
-        val tribe = buildTribe()
-        sdk.save(tribe)
-
-        val player = buildPlayer()
-        sdk.save(tribe.id.with(player))
-
-        Triple(player, tribe, sdkProvider.await())
-    })
-
-}
-
 @Suppress("unused")
 class PlayerConfigPageE2ETest {
-    class WithOneTribeOnePlayer : PlayerConfigOnePlayerTest(::buildTribe, ::buildPlayer) {
-        companion object {
-            fun buildTribe() = Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E"))
-            fun buildPlayer() =
-                Player("${randomInt()}-PlayerConfigPageE2E", name = "${randomInt()}-PlayerConfigPageE2E")
-        }
+
+    companion object {
+        private fun playerConfigOnePlayerSetup(buildTribe: () -> Tribe, buildPlayer: () -> Player) =
+            e2eSetup.extend(beforeAll = {
+                val sdk = sdkProvider.await()
+                val tribe = buildTribe()
+                sdk.save(tribe)
+
+                val player = buildPlayer()
+                sdk.save(tribe.id.with(player))
+
+                Triple(player, tribe, sdkProvider.await())
+            })
+    }
+
+    class WithOneTribeOnePlayer {
+
+        private val playerSetup = playerConfigOnePlayerSetup(
+            buildTribe = { Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E")) },
+            buildPlayer = { Player("${randomInt()}-PlayerConfigPageE2E", name = "${randomInt()}-PlayerConfigPageE2E") }
+        )
 
         @Test
         fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup(contextProvider = object : PlayerContext() {
@@ -165,10 +164,22 @@ class PlayerConfigPageE2ETest {
         } verify { result ->
             result.assertIsEqualTo(players.map { it.name })
         }
-        
+
     }
 
-    class WhenTribeHasBadgingEnabled : PlayerConfigOnePlayerTest(::buildTribe, ::buildPlayer) {
+    class WhenTribeHasBadgingEnabled {
+
+        private val playerSetup = playerConfigOnePlayerSetup(
+            buildTribe = {
+                Tribe(
+                    TribeId("${randomInt()}-PlayerConfigPageE2E"),
+                    badgesEnabled = true,
+                    defaultBadgeName = "Badge 1",
+                    alternateBadgeName = "Badge 2"
+                )
+            },
+            buildPlayer = { Player("${randomInt()}-PlayerConfigPageE2E", name = "${randomInt()}-PlayerConfigPageE2E") }
+        )
 
         @Test
         fun willShowBadgeSelector() = playerSetup(contextProvider = object : PlayerContext() {
@@ -215,33 +226,24 @@ class PlayerConfigPageE2ETest {
                 .assertIsEqualTo("true")
         }
 
-        companion object {
-            fun buildTribe() = Tribe(
-                TribeId("${randomInt()}-PlayerConfigPageE2E"),
-                badgesEnabled = true,
-                defaultBadgeName = "Badge 1",
-                alternateBadgeName = "Badge 2"
-            )
-
-            fun buildPlayer() =
-                Player("${randomInt()}-PlayerConfigPageE2E", name = "${randomInt()}-PlayerConfigPageE2E")
-
-        }
-
     }
 
-    class WhenTribeHasCallSignsEnabled : PlayerConfigOnePlayerTest(Companion::buildTribe, Companion::buildPlayer) {
-        companion object {
-            fun buildTribe() = Tribe(
-                TribeId("${randomInt()}-PlayerConfigPageE2E"),
-                callSignsEnabled = true
-            )
+    class WhenTribeHasCallSignsEnabled {
 
-            fun buildPlayer() = Player(
-                "${randomInt()}-PlayerConfigPageE2E",
-                name = "${randomInt()}-PlayerConfigPageE2E"
-            )
-        }
+        private val playerSetup = playerConfigOnePlayerSetup(
+            buildTribe = {
+                Tribe(
+                    TribeId("${randomInt()}-PlayerConfigPageE2E"),
+                    callSignsEnabled = true
+                )
+            },
+            buildPlayer = {
+                Player(
+                    "${randomInt()}-PlayerConfigPageE2E",
+                    name = "${randomInt()}-PlayerConfigPageE2E"
+                )
+            }
+        )
 
         @Test
         fun adjectiveAndNounCanBeSaved() = playerSetup(contextProvider = object : PlayerContext() {
@@ -271,22 +273,16 @@ class PlayerConfigPageE2ETest {
 
     class WithOneTribeNoPlayers {
 
-        private val emptyTribeSetup = e2eSetup.extend(beforeAll = {
-            val sdk = sdkProvider.await()
-            val tribe = buildTribe()
-            sdk.save(tribe)
-            object {
-                val tribe = tribe
-            }
-        })
-
-        private fun buildTribe() = Tribe(
-            id = TribeId("${randomInt()}-WithOneTribeNoPlayers"),
-            callSignsEnabled = true
-        )
-
         @Test
-        fun willSuggestCallSign() = emptyTribeSetup() exercise {
+        fun willSuggestCallSign() = e2eSetup(object {
+            val tribe = Tribe(
+                id = TribeId("${randomInt()}-WithOneTribeNoPlayers"),
+                callSignsEnabled = true
+            )
+        }) {
+            val sdk = sdkProvider.await()
+            sdk.save(tribe)
+        } exercise {
             PlayerConfig.goToNew(tribe.id)
         } verify {
             PlayerConfig.adjectiveTextInput.getAttribute("value").await()
