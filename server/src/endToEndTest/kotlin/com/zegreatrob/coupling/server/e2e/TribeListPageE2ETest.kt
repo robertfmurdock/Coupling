@@ -13,11 +13,24 @@ import kotlin.test.Test
 
 class TribeListPageE2ETest {
 
+    private val twoTribesSetup = e2eSetup.extend(beforeAll = {
+        val tribes = listOf(
+            "${randomInt()}-TribeListPageE2ETest-1".let { Tribe(it.let(::TribeId), name = it) },
+            "${randomInt()}-TribeListPageE2ETest-2".let { Tribe(it.let(::TribeId), name = it) }
+        )
+
+        val sdk = sdkProvider.await()
+        tribes.forEach { sdk.save(it) }
+
+        TribeListPage.goTo()
+        object {
+            val tribes = tribes
+        }
+    })
+
     @Test
-    fun shouldHaveSectionForEachTribe() = testTribeListPage(object : TribesContext() {
-        val page = TribeListPage
-    }) exercise {
-        page.tribeCardElements.map { it.getText() }.await().toList()
+    fun shouldHaveSectionForEachTribe() = twoTribesSetup() exercise {
+        TribeListPage.tribeCardElements.map { it.getText() }.await().toList()
     } verify { listedTribeNames ->
         tribes.map { it.name }
             .forEach { expected ->
@@ -26,47 +39,21 @@ class TribeListPageE2ETest {
     }
 
     @Test
-    fun canNavigateToSpecificTribePage() = testTribeListPage(object : TribesContext() {
-        val page = TribeListPage
-    }) exercise {
-        with(page) {
-            tribeCardElement(tribes[0].id)
-                .element(tribeCardHeaderLocator)
-                .performClick()
-        }
+    fun canNavigateToSpecificTribePage() = twoTribesSetup() exercise {
+        TribeListPage.tribeCardElement(tribes[0].id)
+            .element(TribeListPage.tribeCardHeaderLocator)
+            .performClick()
     } verify {
         browser.getCurrentUrl().await()
             .assertIsEqualTo("${browser.baseUrl}/${tribes[0].id.value}/edit/")
     }
 
     @Test
-    fun canNavigateToTheNewTribePage() = testTribeListPage(object : TribesContext() {
-        val page = TribeListPage
-    }) exercise {
-        page.newTribeButton.performClick()
+    fun canNavigateToTheNewTribePage() = twoTribesSetup() exercise {
+        TribeListPage.newTribeButton.performClick()
     } verify {
         browser.getCurrentUrl().await()
             .assertIsEqualTo("${browser.baseUrl}/new-tribe/")
     }
 
-    companion object {
-
-        fun <C : TribesContext> testTribeListPage(context: C, additionalActions: suspend C.() -> Unit = {}) =
-            e2eSetup(
-                contextProvider = { context.tribes = tribeListProvider.await(); context },
-                additionalActions = { TribeListPage.goTo();additionalActions() }
-            )
-
-        open class TribesContext {
-            lateinit var tribes: List<Tribe>
-        }
-
-        private val tribeListProvider by lazyDeferred {
-            val sdk = sdkProvider.await()
-            listOf(
-                "${randomInt()}-TribeListPageE2ETest-1".let { Tribe(it.let(::TribeId), name = it) },
-                "${randomInt()}-TribeListPageE2ETest-2".let { Tribe(it.let(::TribeId), name = it) }
-            ).apply { forEach { sdk.save(it) } }
-        }
-    }
 }
