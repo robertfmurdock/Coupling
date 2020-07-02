@@ -9,14 +9,28 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
+
+abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
+
+    val playerSetup = e2eSetup.extend(beforeAll = {
+        val sdk = sdkProvider.await()
+        val tribe = buildTribe()
+        sdk.save(tribe)
+
+        val player = buildPlayer()
+        sdk.save(tribe.id.with(player))
+
+        Triple(player, tribe, sdkProvider.await())
+    })
+
+}
+
 @Suppress("unused")
 class PlayerConfigPageE2ETest {
-    class WithOneTribeOnePlayer : PlayerConfigOnePlayerTest(Companion::buildTribe, Companion::buildPlayer) {
+    class WithOneTribeOnePlayer : PlayerConfigOnePlayerTest(::buildTribe, ::buildPlayer) {
         companion object {
             fun buildTribe() = Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E"))
             fun buildPlayer() =
@@ -132,65 +146,34 @@ class PlayerConfigPageE2ETest {
     class WithTribeWithManyPlayers {
 
         @Test
-        fun willShowAllPlayers() = testPlayerConfig(object : PlayersContext() {
+        fun willShowAllPlayers() = e2eSetup(object {
+            val tribe = Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E"))
+            val players = generateSequence {
+                Player(
+                    id = "${randomInt()}-PlayerConfigPageE2E",
+                    name = "${randomInt()}-PlayerConfigPageE2E"
+                )
+            }.take(5).toList()
             val page = PlayerConfig
         }) {
+            val sdk = sdkProvider.await()
+            sdk.save(tribe)
+            players.forEach { player -> sdk.save(tribe.id.with(player)) }
             page.goTo(tribe.id, players[0].id)
         } exercise {
             PlayerRoster.playerElements.map { element -> element.getText() }.await().toList()
         } verify { result ->
             result.assertIsEqualTo(players.map { it.name })
         }
-
-        companion object {
-
-            fun <C : PlayersContext> testPlayerConfig(
-                context: C,
-                additionalActions: suspend C.() -> Unit = {}
-            ) = e2eSetup(
-                contextProvider = {
-                    context.attachPlayers(
-                        playersProvider.await(),
-                        tribeProvider.await(),
-                        sdkProvider.await()
-                    )
-                },
-                additionalActions = additionalActions
-            )
-
-            private val tribeProvider by lazy {
-                GlobalScope.async {
-                    val sdk = sdkProvider.await()
-                    Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E"))
-                        .also { sdk.save(it) }
-                }
-            }
-
-            private val playersProvider by lazy {
-                GlobalScope.async {
-                    val sdk = sdkProvider.await()
-                    val tribe = tribeProvider.await()
-                    val players = generateSequence {
-                        Player(
-                            "${randomInt()}-PlayerConfigPageE2E",
-                            name = "${randomInt()}-PlayerConfigPageE2E"
-                        )
-                    }.take(5).toList()
-                    players.also {
-                        it.forEach { player -> sdk.save(tribe.id.with(player)) }
-                    }
-                }
-            }
-        }
-
+        
     }
 
     class WhenTribeHasBadgingEnabled : PlayerConfigOnePlayerTest(::buildTribe, ::buildPlayer) {
 
         @Test
-        fun willShowBadgeSelector() = testPlayerConfig(object : PlayerContext() {
+        fun willShowBadgeSelector() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) exercise {
+        }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
             page.defaultBadgeOption.isDisplayed().await()
@@ -208,9 +191,9 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun willSelectTheDefaultBadge() = testPlayerConfig(object : PlayerContext() {
+        fun willSelectTheDefaultBadge() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) exercise {
+        }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
             page.defaultBadgeOption.getAttribute("checked").await()
@@ -218,9 +201,9 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun willRememberBadgeSelection() = testPlayerConfig(object : PlayerContext() {
+        fun willRememberBadgeSelection() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) {
+        }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
             page.altBadgeOption.performClick()
@@ -261,9 +244,9 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun adjectiveAndNounCanBeSaved() = testPlayerConfig(object : PlayerContext() {
+        fun adjectiveAndNounCanBeSaved() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) {
+        }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
             with(page.adjectiveTextInput) {
@@ -288,68 +271,28 @@ class PlayerConfigPageE2ETest {
 
     class WithOneTribeNoPlayers {
 
-        private fun <C : TribeContext> testPlayerConfig(
-            context: C,
-            additionalActions: suspend C.() -> Unit = {}
-        ) = e2eSetup(
-            contextProvider = { context.attachTribe(tribeProvider.await(), sdkProvider.await()) },
-            additionalActions = additionalActions
-        )
-
-        private val tribeProvider by lazy {
-            GlobalScope.async {
-                val sdk = sdkProvider.await()
-                buildTribe().also { sdk.save(it) }
+        private val emptyTribeSetup = e2eSetup.extend(beforeAll = {
+            val sdk = sdkProvider.await()
+            val tribe = buildTribe()
+            sdk.save(tribe)
+            object {
+                val tribe = tribe
             }
-        }
+        })
 
         private fun buildTribe() = Tribe(
-            TribeId("${randomInt()}-WithOneTribeNoPlayers"),
+            id = TribeId("${randomInt()}-WithOneTribeNoPlayers"),
             callSignsEnabled = true
         )
 
         @Test
-        fun willSuggestCallSign() = testPlayerConfig(object : TribeContext() {
-            val page = PlayerConfig
-        }) exercise {
-            page.goToNew(tribe.id)
+        fun willSuggestCallSign() = emptyTribeSetup() exercise {
+            PlayerConfig.goToNew(tribe.id)
         } verify {
-            page.adjectiveTextInput.getAttribute("value").await()
+            PlayerConfig.adjectiveTextInput.getAttribute("value").await()
                 .assertIsNotEqualTo("")
-            page.nounTextInput.getAttribute("value").await()
+            PlayerConfig.nounTextInput.getAttribute("value").await()
                 .assertIsNotEqualTo("")
         }
     }
-}
-
-abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
-
-    val playerSetup = e2eSetup.extend(beforeAll = {
-
-        Triple(playerProvider.await(), tribeProvider.await(), sdkProvider.await())
-    })
-
-    fun <C : PlayerContext> testPlayerConfig(
-        context: C,
-        additionalActions: suspend C.() -> Unit = {}
-    ) = e2eSetup(
-        contextProvider = { context.attachPlayer(playerProvider.await(), tribeProvider.await(), sdkProvider.await()) },
-        additionalActions = additionalActions
-    )
-
-    private val tribeProvider by lazy {
-        GlobalScope.async {
-            val sdk = sdkProvider.await()
-            buildTribe().also { sdk.save(it) }
-        }
-    }
-
-    private val playerProvider by lazy {
-        GlobalScope.async {
-            val sdk = sdkProvider.await()
-            val tribe = tribeProvider.await()
-            buildPlayer().also { sdk.save(tribe.id.with(it)) }
-        }
-    }
-
 }
