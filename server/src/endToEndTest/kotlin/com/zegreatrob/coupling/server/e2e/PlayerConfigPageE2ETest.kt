@@ -24,9 +24,9 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNothingHasChangedWillNotAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
+        fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) {
+        }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
             TribeCard.element.performClick()
@@ -36,9 +36,9 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNameIsChangedWillGetAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
+        fun whenNameIsChangedWillGetAlertOnLeaving() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) {
+        }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
             with(page.playerNameTextField) {
                 performClear()
@@ -54,33 +54,34 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = testPlayerConfig(object : PlayerContext() {
-            val page = PlayerConfig
-            val newName = "completely different name"
-        }) {
-            with(page) {
-                goTo(tribe.id, player.id)
-                with(playerNameTextField) {
-                    performClear()
-                    performSendKeys(newName)
+        fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() =
+            playerSetup(contextProvider = object : PlayerContext() {
+                val page = PlayerConfig
+                val newName = "completely different name"
+            }.attachPlayer()) {
+                with(page) {
+                    goTo(tribe.id, player.id)
+                    with(playerNameTextField) {
+                        performClear()
+                        performSendKeys(newName)
+                    }
+                    saveButton.performClick()
+                    waitForSaveToComplete(newName)
                 }
-                saveButton.performClick()
-                waitForSaveToComplete(newName)
+            } exercise {
+                TribeCard.element.performClick()
+            } verify {
+                browser.getCurrentUrl().await()
+                    .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+                page.goTo(tribe.id, player.id)
+                page.playerNameTextField.getAttribute("value").await()
+                    .assertIsEqualTo(newName)
             }
-        } exercise {
-            TribeCard.element.performClick()
-        } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
-            page.goTo(tribe.id, player.id)
-            page.playerNameTextField.getAttribute("value").await()
-                .assertIsEqualTo(newName)
-        }
 
         @Test
-        fun savingWithNoNameWillShowDefaultName() = testPlayerConfig(object : PlayerContext() {
+        fun savingWithNoNameWillShowDefaultName() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) {
+        }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
             with(page.playerNameTextField) {
                 performClear()
@@ -100,9 +101,9 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = testPlayerConfig(object : PlayerContext() {
+        fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = playerSetup(contextProvider = object : PlayerContext() {
             val page = PlayerConfig
-        }) {
+        }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
             page.deleteButton.performClick()
@@ -113,18 +114,19 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = testPlayerConfig(object : PlayerContext() {
-            val page = PlayerConfig
-        }) {
-            sdk.save(tribe.copy(badgesEnabled = false))
-        } exercise {
-            page.goTo(tribe.id, player.id)
-        } verify {
-            page.defaultBadgeOption.isPresent().await()
-                .assertIsEqualTo(false)
-            page.altBadgeOption.isPresent().await()
-                .assertIsEqualTo(false)
-        }
+        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() =
+            playerSetup(contextProvider = object : PlayerContext() {
+                val page = PlayerConfig
+            }.attachPlayer()) {
+                sdk.save(tribe.copy(badgesEnabled = false))
+            } exercise {
+                page.goTo(tribe.id, player.id)
+            } verify {
+                page.defaultBadgeOption.isPresent().await()
+                    .assertIsEqualTo(false)
+                page.altBadgeOption.isPresent().await()
+                    .assertIsEqualTo(false)
+            }
     }
 
     class WithTribeWithManyPlayers {
@@ -321,6 +323,11 @@ class PlayerConfigPageE2ETest {
 }
 
 abstract class PlayerConfigOnePlayerTest(val buildTribe: () -> Tribe, val buildPlayer: () -> Player) {
+
+    val playerSetup = e2eSetup.extend(beforeAll = {
+
+        Triple(playerProvider.await(), tribeProvider.await(), sdkProvider.await())
+    })
 
     fun <C : PlayerContext> testPlayerConfig(
         context: C,
