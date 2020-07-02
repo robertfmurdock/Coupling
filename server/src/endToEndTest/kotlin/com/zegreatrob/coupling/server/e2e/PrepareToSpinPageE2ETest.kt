@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.await
 import kotlin.test.Test
@@ -36,21 +37,18 @@ class PrepareToSpinPageE2ETest {
             Triple(tribe, players, pin)
         }
 
-        fun <C : FullTribeContext> testPairAssignments(context: C, additionalActions: suspend C.() -> Unit = {}) =
-            e2eSetup(
-                contextProvider = {
-                    val (tribe, players, pin) = beforeAllProvider.await()
-                    val sdk = sdkProvider.await()
-                    context.attach(players, listOf(pin), tribe, sdk)
-                },
-                additionalActions = additionalActions
-            )
+        private val pinTribeSetup: TestTemplate<FullTribeData> = e2eSetup.extend(beforeAll = {
+            val (tribe, players, pin) = beforeAllProvider.await()
+            val sdk = sdkProvider.await()
+            FullTribeData(players, listOf(pin), tribe, sdk)
+        })
+
     }
 
     @Test
-    fun withNoHistory() = testPairAssignments(object : FullTribeContext() {
+    fun withNoHistory() = pinTribeSetup(contextProvider = object : FullTribeContext() {
         val page = PrepareToSpinPage
-    }) exercise {
+    }.attach()) exercise {
         page.goTo(tribe.id)
     } verify {
         PlayerCard.playerElements.map { it.getText() }.await().toList()
@@ -58,9 +56,9 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = testPairAssignments(object : FullTribeContext() {
+    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinTribeSetup(contextProvider = object : FullTribeContext() {
         val page = PrepareToSpinPage
-    }) {
+    }.attach()) {
         page.goTo(tribe.id)
     } exercise {
         page.spinButton.performClick()
@@ -72,7 +70,7 @@ class PrepareToSpinPageE2ETest {
 
     @Test
     fun whenTwoPlayersAreDisabledSpinWillYieldOnePairAndSavingPersistsThePair() =
-        testPairAssignments(FullTribeContext()) {
+        pinTribeSetup(contextProvider = FullTribeContext().attach()) {
             PrepareToSpinPage.goTo(tribe.id)
             with(PlayerCard) {
                 playerElements.get(0).element(iconLocator).performClick()
@@ -98,9 +96,9 @@ class PrepareToSpinPageE2ETest {
         }
 
     @Test
-    fun whenPinIsEnabledSpinWillIncludePinInAssignment() = testPairAssignments(object : FullTribeContext() {
+    fun whenPinIsEnabledSpinWillIncludePinInAssignment() = pinTribeSetup(contextProvider = object : FullTribeContext() {
         val page = PrepareToSpinPage
-    }) {
+    }.attach()) {
         page.goTo(tribe.id)
         page.selectedPinElements.count().await()
             .assertIsEqualTo(1)
@@ -113,16 +111,17 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = testPairAssignments(object : FullTribeContext() {
-        val page = PrepareToSpinPage
-    }) {
-        page.goTo(tribe.id)
-        page.selectedPinElements.performClick()
-    } exercise {
-        page.spinButton.performClick()
-        CurrentPairAssignmentPage.waitForPage()
-    } verify {
-        PinButton.pinElements.count().await()
-            .assertIsEqualTo(0)
-    }
+    fun whenPinIsDisabledSpinWillExcludePinFromAssignment() =
+        pinTribeSetup(contextProvider = object : FullTribeContext() {
+            val page = PrepareToSpinPage
+        }.attach()) {
+            page.goTo(tribe.id)
+            page.selectedPinElements.performClick()
+        } exercise {
+            page.spinButton.performClick()
+            CurrentPairAssignmentPage.waitForPage()
+        } verify {
+            PinButton.pinElements.count().await()
+                .assertIsEqualTo(0)
+        }
 }
