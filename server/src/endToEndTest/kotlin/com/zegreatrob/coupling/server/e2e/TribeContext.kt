@@ -8,6 +8,13 @@ fun <C1 : TribeContext> C1.attachTribe(tribe: Tribe, sdk: Sdk) = also {
     this.sdk = sdk
 }
 
+fun <C1 : TribeContext> C1.attachTribe(): suspend (Pair<Sdk, Tribe>) -> C1 = { pair: Pair<Sdk, Tribe> ->
+    also {
+        this.tribe = pair.second
+        this.sdk = pair.first
+    }
+}
+
 abstract class TribeContext : SdkContext() {
     lateinit var tribe: Tribe
 }
