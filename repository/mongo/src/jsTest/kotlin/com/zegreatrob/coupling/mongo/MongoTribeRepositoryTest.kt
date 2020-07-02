@@ -25,13 +25,13 @@ typealias MongoTribeMint = ContextMint<MongoTribeRepositoryTest.Companion.MongoT
 class MongoTribeRepositoryTest :
     TribeRepositoryValidator<MongoTribeRepositoryTest.Companion.MongoTribeRepositoryTestAnchor> {
 
-    override val repositorySetup = asyncTestTemplate<SharedContext<MongoTribeRepositoryTestAnchor>> {
+    override val repositorySetup = asyncTestTemplate<SharedContext<MongoTribeRepositoryTestAnchor>>(wrapper = {
         val user = stubUser()
         val clock = MagicClock()
         withMongoRepository(user, clock) {
             it(SharedContextData(this, clock, user))
         }
-    }
+    })
 
     @Test
     fun getTribeRecordListWillIncludeAllSavesOfTribeIncludingDelete() = repositorySetup(object : MongoTribeMint() {

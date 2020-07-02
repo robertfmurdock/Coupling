@@ -164,7 +164,7 @@ class PairAssignmentsPageE2ETest {
 
         private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
 
-        private val beforeAllProvider by lazyDeferred {
+        private val setup = e2eSetup.extend(beforeAll = {
             val sdk = sdkProvider.await()
             sdk.save(tribe)
             coroutineScope {
@@ -172,9 +172,7 @@ class PairAssignmentsPageE2ETest {
                 launch { sdk.save(tribe.id.with(pairAssignmentDocument)) }
             }
             CouplingLogin.loginProvider.await()
-        }
-
-        private val setup = e2eSetup.extend(sharedSetup = { beforeAllProvider.await() })
+        })
 
         private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
             setup(CurrentPairAssignmentPage, additionalSetup)
