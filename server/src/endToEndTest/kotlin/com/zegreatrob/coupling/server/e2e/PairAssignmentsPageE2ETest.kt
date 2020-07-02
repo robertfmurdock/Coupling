@@ -51,8 +51,8 @@ class PairAssignmentsPageE2ETest {
                 }
             }
 
-            private val template = e2eSetup.extend(sharedSetup = {
-                sdkProvider.await().save(tribe, players)
+            private val template = e2eSetup.extend(sharedSetup = { sdk ->
+                sdk.save(tribe, players)
             })
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =

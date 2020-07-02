@@ -9,6 +9,5 @@ val e2eSetup: TestTemplate<AuthorizedSdk> = asyncTestTemplate(beforeAll = {
             TestLogin.login(it.userEmail)
         }
 }).extend(
-    sharedSetup = { },
     sharedTeardown = { checkLogs() }
 )
