@@ -17,7 +17,6 @@ class StatisticsE2ETest {
     }) {
         sdk.save(tribe)
         players.forEach { player -> sdk.save(tribe.id.with(player)) }
-        CouplingLogin.loginProvider.await()
     } exercise {
         StatisticsPage.goTo(tribe.id)
     } verify {

@@ -171,7 +171,6 @@ class PairAssignmentsPageE2ETest {
                 launch { players.forEach { sdk.save(tribe.id.with(it)) } }
                 launch { sdk.save(tribe.id.with(pairAssignmentDocument)) }
             }
-            CouplingLogin.loginProvider.await()
         })
 
         private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =

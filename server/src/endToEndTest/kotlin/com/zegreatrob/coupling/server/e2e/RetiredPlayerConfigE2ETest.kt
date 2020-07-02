@@ -18,7 +18,6 @@ class RetiredPlayerConfigE2ETest {
         sdk.save(tribe)
         sdk.save(tribe.id.with(player))
         sdk.deletePlayer(tribe.id, player.id!!)
-        CouplingLogin.loginProvider.await()
     } exercise {
         RetiredPlayerConfig.goTo(tribe.id, player.id)
     } verify {

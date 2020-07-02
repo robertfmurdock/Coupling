@@ -2,15 +2,11 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClearSendKeys
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
-import com.zegreatrob.testmints.async.testAsync
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
 import kotlin.test.Test
 
@@ -97,15 +93,6 @@ class TribeConfigPageE2ETest {
         }
 
         companion object {
-            fun testWithSdk(handler: suspend CoroutineScope.(Sdk) -> Unit) = testAsync {
-                CouplingLogin.loginProvider.await()
-                try {
-                    handler(sdkProvider.await())
-                } finally {
-                    checkLogs()
-                }
-            }
-
             private fun buildTribe() = Tribe(
                 id = "${randomInt()}-TribeConfigPageE2ETest-tribeId".let(::TribeId),
                 name = "${randomInt()}-TribeConfigPageE2ETest-name"

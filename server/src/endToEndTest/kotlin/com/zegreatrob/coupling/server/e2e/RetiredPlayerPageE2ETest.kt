@@ -35,7 +35,6 @@ class RetiredPlayerPageE2ETest {
         sdk.save(tribe)
         players.forEach { sdk.save(tribe.id.with(it)) }
         delete(retiredPlayers, sdk, tribe)
-        CouplingLogin.loginProvider.await()
     } exercise {
         RetiredPlayersPage.goTo(tribe.id)
     } verify {
