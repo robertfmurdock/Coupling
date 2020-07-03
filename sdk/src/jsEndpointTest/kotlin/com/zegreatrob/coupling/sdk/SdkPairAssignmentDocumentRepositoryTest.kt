@@ -29,7 +29,7 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
     })
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = asyncSetup(contextProvider = {
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup({
         val sdk = authorizedSdk()
         val otherSdk = authorizedSdk(uuidString())
         object {

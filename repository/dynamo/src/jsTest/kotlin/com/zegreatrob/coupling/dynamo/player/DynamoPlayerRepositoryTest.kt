@@ -34,31 +34,30 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     })
 
     @Test
-    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() =
-        asyncSetup(contextProvider = buildRepository { context ->
-            object : Context by context {
-                val tribeId = stubTribeId()
-                val player = stubPlayer()
-                val initialSaveTime = DateTime.now().minus(3.days)
-                val updatedPlayer = player.copy(name = "CLONE")
-                val updatedSaveTime = initialSaveTime.plus(2.hours)
-                val updatedSaveTime2 = initialSaveTime.plus(4.hours)
-            }
-        }, additionalActions = {
-            clock.currentTime = initialSaveTime
-            repository.save(tribeId.with(player))
-            clock.currentTime = updatedSaveTime
-            repository.save(tribeId.with(updatedPlayer))
-            clock.currentTime = updatedSaveTime2
-            repository.deletePlayer(tribeId, player.id!!)
-        }) exercise {
-            repository.getPlayerRecords(tribeId)
-        } verify { result ->
-            result
-                .assertContains(Record(tribeId.with(player), user.email, false, initialSaveTime))
-                .assertContains(Record(tribeId.with(updatedPlayer), user.email, false, updatedSaveTime))
-                .assertContains(Record(tribeId.with(updatedPlayer), user.email, true, updatedSaveTime2))
+    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(buildRepository { context ->
+        object : Context by context {
+            val tribeId = stubTribeId()
+            val player = stubPlayer()
+            val initialSaveTime = DateTime.now().minus(3.days)
+            val updatedPlayer = player.copy(name = "CLONE")
+            val updatedSaveTime = initialSaveTime.plus(2.hours)
+            val updatedSaveTime2 = initialSaveTime.plus(4.hours)
         }
+    }, additionalActions = {
+        clock.currentTime = initialSaveTime
+        repository.save(tribeId.with(player))
+        clock.currentTime = updatedSaveTime
+        repository.save(tribeId.with(updatedPlayer))
+        clock.currentTime = updatedSaveTime2
+        repository.deletePlayer(tribeId, player.id!!)
+    }) exercise {
+        repository.getPlayerRecords(tribeId)
+    } verify { result ->
+        result
+            .assertContains(Record(tribeId.with(player), user.email, false, initialSaveTime))
+            .assertContains(Record(tribeId.with(updatedPlayer), user.email, false, updatedSaveTime))
+            .assertContains(Record(tribeId.with(updatedPlayer), user.email, true, updatedSaveTime2))
+    }
 
     @Test
     fun canSaveRawRecord() = asyncSetup(buildRepository { context ->

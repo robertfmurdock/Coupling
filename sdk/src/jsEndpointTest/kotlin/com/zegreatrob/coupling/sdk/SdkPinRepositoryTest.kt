@@ -24,7 +24,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
     })
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = asyncSetup(contextProvider = {
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup({
         val sdk = authorizedSdk()
         val otherSdk = authorizedSdk(uuidString())
         object {

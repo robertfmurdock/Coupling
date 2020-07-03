@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
@@ -18,7 +17,7 @@ import kotlin.test.Test
 class RequestCombineEndpointTest {
 
     @Test
-    fun postPlayersAndPinsThenGet() = asyncSetup(contextProvider = withSdk {
+    fun postPlayersAndPinsThenGet() = asyncSetup(withSdk {
         object {
             val sdk = it
             val tribe = Tribe(id = TribeId("et-${uuid4()}"))

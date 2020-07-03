@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.invoke
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
@@ -73,5 +72,6 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
 private typealias Context = RepositoryContext<DynamoUserRepository>
 
-private fun <T> buildRepository(setupContext: (Context) -> T): suspend () -> T =
-    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoUserRepository(user.id, clock) }
+private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
+    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoUserRepository(user.id, clock) }()
+}

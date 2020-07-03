@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asPromise
 import kotlinx.coroutines.async
@@ -35,7 +34,7 @@ class PinConfigE2ETest {
     }
 
     @Test
-    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup(contextProvider = object : TribeContext() {
+    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup(object : TribeContext() {
         val newPinName = "Excellent pin name${randomInt()}"
     }.attachTribe()) {
         with(PinConfigPage) {
@@ -63,7 +62,7 @@ class PinConfigE2ETest {
     class WhenThePinExists {
 
         @Test
-        fun attributesAreShownOnConfig() = tribeSetup(contextProvider = object : TribeContext() {
+        fun attributesAreShownOnConfig() = tribeSetup(object : TribeContext() {
             val pin = randomPin()
         }.attachTribe()) {
             sdk.save(tribe.id.with(pin))
@@ -79,7 +78,7 @@ class PinConfigE2ETest {
         }
 
         @Test
-        fun clickingDeleteWillRemovePinFromPinList() = tribeSetup(contextProvider = object : TribeContext() {
+        fun clickingDeleteWillRemovePinFromPinList() = tribeSetup(object : TribeContext() {
             val pin = randomPin()
         }.attachTribe()) {
             sdk.save(tribe.id.with(pin))

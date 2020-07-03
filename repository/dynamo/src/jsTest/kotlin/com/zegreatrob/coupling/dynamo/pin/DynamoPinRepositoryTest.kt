@@ -29,7 +29,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     })
 
     @Test
-    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(contextProvider = buildRepository { context ->
+    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val pin = stubPin()

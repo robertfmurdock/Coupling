@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.coupling.sdk.external.axios.axios
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.await
-import com.zegreatrob.coupling.stubmodel.uuidString
 import kotlin.js.json
 
 external val process: dynamic
@@ -47,7 +47,7 @@ suspend fun authorizedAxios(username: String = userEmail): Axios {
 
 suspend fun authorizedSdk(username: String = "${uuidString()}-$userEmail") = AuthorizedSdk(authorizedAxios(username))
 
-inline fun <T> withSdk(crossinline objectSetup: (AuthorizedSdk) -> T): suspend () -> T = {
+inline fun <T> withSdk(crossinline objectSetup: (AuthorizedSdk) -> T): suspend (Unit) -> T = {
     val sdk = authorizedSdk()
     objectSetup(sdk)
 }

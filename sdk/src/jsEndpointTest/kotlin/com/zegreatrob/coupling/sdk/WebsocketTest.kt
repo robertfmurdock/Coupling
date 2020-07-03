@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
 import kotlin.js.json
@@ -26,7 +25,7 @@ class WebsocketTest {
     private fun AuthorizedSdk.baseUrl() = URL(axios.defaults.baseURL.unsafeCast<String>())
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(contextProvider = sdkContext {
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -53,7 +52,7 @@ class WebsocketTest {
     private fun expectedUserList(username: String) = listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(contextProvider = sdkContext {
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -78,29 +77,28 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessageWithNewCount() =
-        asyncSetup(contextProvider = sdkContext {
-            object : SdkContext by it {
-                val tribe = stubTribe()
-            }
-        }) {
-            sdk.save(tribe)
-        } exercise {
-            val socket1 = openSocket(sdk, tribe).await()
-            val socket2 = openSocket(sdk, tribe).await()
-            listOf(socket1, socket2)
-        } verify { sockets ->
-            sockets[0].first.assertIsEqualTo(
-                mutableListOf(
-                    expectedConnectionMessage(1, expectedUserList(username)),
-                    expectedConnectionMessage(2, expectedUserList(username))
-                )
-            )
-            sockets.forEach { it.second.close() }
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessageWithNewCount() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
         }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val socket1 = openSocket(sdk, tribe).await()
+        val socket2 = openSocket(sdk, tribe).await()
+        listOf(socket1, socket2)
+    } verify { sockets ->
+        sockets[0].first.assertIsEqualTo(
+            mutableListOf(
+                expectedConnectionMessage(1, expectedUserList(username)),
+                expectedConnectionMessage(2, expectedUserList(username))
+            )
+        )
+        sockets.forEach { it.second.close() }
+    }
 
     @Test
-    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(contextProvider = sdkContext {
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(sdkContext {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -129,7 +127,7 @@ class WebsocketTest {
 
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(contextProvider = sdkContext { it }
+    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
     ) exercise {
         val baseUrl = sdk.baseUrl()
         val host = baseUrl.host
@@ -145,7 +143,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(contextProvider = sdkContext { it }
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(sdkContext { it }
     ) exercise {
         val socket = connectToSocket(sdk, stubTribe().id)
         CompletableDeferred<Unit>().also { deferred ->
@@ -159,7 +157,7 @@ class WebsocketTest {
 
 
     @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(contextProvider = sdkContext { it }
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
     ) exercise {
         val baseUrl = sdk.baseUrl()
         val host = baseUrl.host
@@ -175,7 +173,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(contextProvider = sdkContext {
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(sdkContext {
         object : SdkContext by it {
             val tribe = stubTribe()
         }

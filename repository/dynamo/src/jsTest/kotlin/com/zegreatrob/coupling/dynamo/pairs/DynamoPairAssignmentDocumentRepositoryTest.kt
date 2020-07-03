@@ -31,33 +31,32 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         })
 
     @Test
-    fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() =
-        asyncSetup(contextProvider = buildRepository { context ->
-            object : Context by context {
-                val tribeId = stubTribeId()
-                val pairAssignmentDocument = stubPairAssignmentDoc()
-                val initialSaveTime = DateTime.now().minus(3.days)
-                val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
-                    pairs = listOf(pairOf(stubPlayer()).withPins(emptyList()))
-                )
-                val updatedSaveTime = initialSaveTime.plus(2.hours)
-                val updatedSaveTime2 = initialSaveTime.plus(4.hours)
-            }
-        }, additionalActions = {
-            clock.currentTime = initialSaveTime
-            repository.save(tribeId.with(pairAssignmentDocument))
-            clock.currentTime = updatedSaveTime
-            repository.save(tribeId.with(updatedPairAssignmentDocument))
-            clock.currentTime = updatedSaveTime2
-            repository.delete(tribeId, pairAssignmentDocument.id!!)
-        }) exercise {
-            repository.getRecords(tribeId)
-        } verify { result ->
-            result
-                .assertContains(Record(tribeId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
-                .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
-                .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, true, updatedSaveTime2))
+    fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(buildRepository { context ->
+        object : Context by context {
+            val tribeId = stubTribeId()
+            val pairAssignmentDocument = stubPairAssignmentDoc()
+            val initialSaveTime = DateTime.now().minus(3.days)
+            val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
+                pairs = listOf(pairOf(stubPlayer()).withPins(emptyList()))
+            )
+            val updatedSaveTime = initialSaveTime.plus(2.hours)
+            val updatedSaveTime2 = initialSaveTime.plus(4.hours)
         }
+    }, additionalActions = {
+        clock.currentTime = initialSaveTime
+        repository.save(tribeId.with(pairAssignmentDocument))
+        clock.currentTime = updatedSaveTime
+        repository.save(tribeId.with(updatedPairAssignmentDocument))
+        clock.currentTime = updatedSaveTime2
+        repository.delete(tribeId, pairAssignmentDocument.id!!)
+    }) exercise {
+        repository.getRecords(tribeId)
+    } verify { result ->
+        result
+            .assertContains(Record(tribeId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
+            .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
+            .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, true, updatedSaveTime2))
+    }
 
     @Test
     fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
