@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.test.Test
-
 
 @Suppress("UNUSED_PARAMETER")
 fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(url, options)").unsafeCast<WS>()

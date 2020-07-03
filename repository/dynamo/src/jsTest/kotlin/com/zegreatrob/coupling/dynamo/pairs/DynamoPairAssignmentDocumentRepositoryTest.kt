@@ -76,10 +76,11 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         }
     }
 
-    private fun <T> buildRepository(setupContext: (Context) -> T): suspend () -> T =
+    private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
         buildRepository(setupContext) { user, clock ->
             DynamoPairAssignmentDocumentRepository(user.email, clock)
-        }
+        }.invoke()
+    }
 
 }
 

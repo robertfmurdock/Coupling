@@ -12,7 +12,7 @@ fun <C : SdkContext> C.attach(sdk: Sdk) = also {
 }
 
 fun <C : SdkContext> sdkSetup(context: C, additionalActions: suspend C.() -> Unit) = asyncSetup(
-    contextProvider = attachSdk(context), additionalActions = additionalActions
+    contextProvider = { context.attachSdk() }, additionalActions = additionalActions
 )
 
-private fun <C : SdkContext> attachSdk(context: C) = suspend { context.attach(CouplingLogin.sdkProvider.await()) }
+private suspend fun <C : SdkContext> C.attachSdk() = attach(CouplingLogin.sdkProvider.await())

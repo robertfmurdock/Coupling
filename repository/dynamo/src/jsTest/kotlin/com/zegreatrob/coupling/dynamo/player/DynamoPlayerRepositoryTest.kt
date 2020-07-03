@@ -81,5 +81,6 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
 
 private typealias Context = RepositoryContext<DynamoPlayerRepository>
 
-private fun <T> buildRepository(setupContext: (Context) -> T): suspend () -> T =
-    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPlayerRepository(user.email, clock) }
+private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
+    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPlayerRepository(user.email, clock) }()
+}

@@ -74,5 +74,6 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
 
 private typealias Context = RepositoryContext<DynamoPinRepository>
 
-private fun <T> buildRepository(setupContext: (Context) -> T): suspend () -> T =
-    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPinRepository(user.email, clock) }
+private fun <T> buildRepository(setupContext: (Context) -> T): suspend (Unit) -> T = {
+    RepositoryContext.buildRepository(setupContext) { user, clock -> DynamoPinRepository(user.email, clock) }()
+}
