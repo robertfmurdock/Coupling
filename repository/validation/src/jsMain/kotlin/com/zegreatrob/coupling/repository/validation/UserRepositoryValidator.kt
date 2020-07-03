@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 import kotlin.test.fail
 

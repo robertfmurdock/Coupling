@@ -99,9 +99,11 @@ class MongoPlayerRepositoryTest :
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsernameInMongo() = repositorySetup(object : MongoPlayerContextMint() {
-        val player = stubPlayer()
-    }.bind()) exercise {
+    fun savedPlayersIncludeModificationDateAndUsernameInMongo() = repositorySetup(
+        object : MongoPlayerContextMint() {
+            val player = stubPlayer()
+        }.bind()
+    ) exercise {
         repository.save(tribeId.with(player))
         repository.getDbPlayers(tribeId)
     } verify { result ->

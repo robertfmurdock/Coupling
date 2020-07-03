@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -34,8 +35,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         }
 
     @Test
-    fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup(object : TribeContextMint<R>() {
-    }.bind()) exercise {
+    fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
         repository.getPairAssignments(tribeId)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
