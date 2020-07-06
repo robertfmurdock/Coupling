@@ -30,7 +30,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     })
 
     @Test
-    fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(contextProvider = buildRepository { context ->
+    fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(buildRepository { context ->
         object : Context by context {
             val initialSaveTime = DateTime.now().minus(3.days)
             val updatedUser = user.copy(authorizedTribeIds = setOf(TribeId("clone!")))
