@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlinx.html.InputType
 import kotlinx.html.id
@@ -35,7 +36,7 @@ val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandF
     val isNew = tribe.id.value == ""
 
     val (values, onChange) = useForm(tribe.toJson())
-    val updatedTribe = values.toTribe()
+    val updatedTribe = values.toTribe().withDefaultTribeId()
 
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter("/tribes/") }
     val onDelete = commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter("/tribes/") }
@@ -56,6 +57,11 @@ val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandF
         }
     }
 }
+
+private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
+    this
+else
+    copy(id = TribeId("${uuid4()}"))
 
 private inline fun RBuilder.retireButton(crossinline onDelete: () -> Unit) =
     div("small red button delete-tribe-button") {
@@ -228,7 +234,7 @@ private fun RBuilder.uniqueIdInput(tribe: Tribe, onChange: (Event) -> Unit) = co
     labelText = "Unique Id",
     id = "tribe-id",
     name = "id",
-    value = tribe.id.value.ifBlank { "${uuid4()}" },
+    value = tribe.id.value,
     type = InputType.text,
     onChange = onChange
 )

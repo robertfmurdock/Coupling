@@ -80,14 +80,24 @@ class TribeConfigTest {
     }
 
     @Test
-    fun whenTribeIsNewWillSuggestIdAutomatically() = setup(object {
+    fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
         val tribe = Tribe(TribeId(""))
+        val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
+        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, {}, stubDispatchFunc))
+        val automatedTribeId = wrapper.find<Any>("#tribe-id").prop("value")
     }) exercise {
-        shallow(TribeConfig, TribeConfigProps(tribe, {}, StubDispatchFunc()))
-    } verify { result ->
-        result.find<Any>("#tribe-id")
+        wrapper.find<Any>("form")
+            .simulate("submit", json("preventDefault" to {}))
+    } verify {
+        stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
+            .first()
+            .tribe.id.value.run {
+                assertIsNotEqualTo("")
+                assertIsEqualTo(automatedTribeId)
+            }
+        wrapper.find<Any>("#tribe-id")
             .prop("value")
-            .assertIsNotEqualTo("")
+            .assertIsEqualTo(automatedTribeId)
     }
 
 }
