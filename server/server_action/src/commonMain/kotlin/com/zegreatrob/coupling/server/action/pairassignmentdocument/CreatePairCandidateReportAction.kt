@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class CreatePairCandidateReportAction(
     val player: Player,

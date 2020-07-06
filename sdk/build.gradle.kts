@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile

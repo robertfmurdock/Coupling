@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.repository.tribe.TribeDelete
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.repository.tribe.TribeDelete
 import kotlinx.coroutines.asDeferred
 import kotlin.js.Promise
 

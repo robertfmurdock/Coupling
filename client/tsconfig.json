@@ -1,19 +1,19 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "jsx": "react"
-    },
-    "include": [
-        "./typescript-settings/main.d.ts",
-        "./app/**/*.ts",
-        "./app/**/*.tsx",
-        "./common/**/*.ts",
-        "./test/**/*.ts",
-        "./test/**/*.tsx"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "jsx": "react"
+  },
+  "include": [
+    "./typescript-settings/main.d.ts",
+    "./app/**/*.ts",
+    "./app/**/*.tsx",
+    "./common/**/*.ts",
+    "./test/**/*.ts",
+    "./test/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

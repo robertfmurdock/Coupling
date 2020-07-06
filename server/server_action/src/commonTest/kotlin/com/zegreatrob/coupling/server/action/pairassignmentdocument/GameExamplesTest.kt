@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

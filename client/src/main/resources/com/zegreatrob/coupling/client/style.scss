@@ -34,6 +34,7 @@ input.button {
   text-stroke-width: initial;
   text-stroke-color: initial;
   margin: 2px;
+
   &:visited {
     background: #222222 url(./overlay.png) repeat-x;
     display: inline-block;
@@ -55,6 +56,7 @@ input.button {
 
 .small.button {
   font-size: 11px;
+
   &:visited {
     font-size: 11px;
   }
@@ -65,6 +67,7 @@ input.button {
   font-weight: bold;
   line-height: 1;
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
+
   &:visited {
     font-size: 13px;
     font-weight: bold;
@@ -76,6 +79,7 @@ input.button {
 .large.button {
   font-size: 14px;
   padding: 8px 14px 9px;
+
   &:visited {
     font-size: 14px;
     padding: 8px 14px 9px;
@@ -85,6 +89,7 @@ input.button {
 .super.button {
   font-size: 34px;
   padding: 8px 14px 9px;
+
   &:visited {
     font-size: 34px;
     padding: 8px 14px 9px;
@@ -101,9 +106,11 @@ input.button {
 
 .green.button {
   background-color: #42805e;
+
   &:visited {
     background-color: #42805e;
   }
+
   &:hover {
     background-color: #29533d;
   }
@@ -111,9 +118,11 @@ input.button {
 
 .red.button {
   background-color: #e62727;
+
   &:visited {
     background-color: #e62727;
   }
+
   &:hover {
     background-color: #cf2525;
   }
@@ -121,9 +130,11 @@ input.button {
 
 .orange.button {
   background-color: #ff5c00;
+
   &:visited {
     background-color: #ff5c00;
   }
+
   &:hover {
     background-color: #d45500;
   }
@@ -131,9 +142,11 @@ input.button {
 
 .blue.button {
   background-color: #2981e4;
+
   &:visited {
     background-color: #2981e4;
   }
+
   &:hover {
     background-color: #2575cf;
   }
@@ -143,9 +156,11 @@ input.button {
   background-color: #f3ffff;
   color: #3e474c;
   text-shadow: none;
+
   &:visited {
     background-color: #f3ffff;
   }
+
   &:hover {
     background-color: #dde9e9;
   }
@@ -153,9 +168,11 @@ input.button {
 
 .yellow.button {
   background-color: #ffb515;
+
   &:visited {
     background-color: #ffb515;
   }
+
   &:hover {
     background-color: #fc9200;
   }

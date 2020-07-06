@@ -15,13 +15,13 @@ module.exports = {
         });
     })
   },
-  watch: function(webpackConfig, handler, fs){
+  watch: function (webpackConfig, handler, fs) {
     const compiler = webpack(webpackConfig);
-    if(fs) {
+    if (fs) {
       compiler.outputFileSystem = fs;
     }
     let hash = undefined;
-    return compiler.watch({}, function(err, stats){
+    return compiler.watch({}, function (err, stats) {
       const newHash = stats.toJson().hash;
       if (!err && hash !== newHash) {
         hash = newHash;
@@ -29,7 +29,7 @@ module.exports = {
         return handler.apply(this, arguments);
       }
 
-      if(err) {
+      if (err) {
         console.log(err);
       }
     });

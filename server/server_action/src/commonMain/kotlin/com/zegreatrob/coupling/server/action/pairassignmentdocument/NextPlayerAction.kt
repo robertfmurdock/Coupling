@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class NextPlayerAction(val gameSpin: GameSpin) :
     SimpleExecutableAction<NextPlayerActionDispatcher, PairCandidateReport?> {

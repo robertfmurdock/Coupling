@@ -3,10 +3,11 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.setup
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
+import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class RosteredPairAssignmentsTest {

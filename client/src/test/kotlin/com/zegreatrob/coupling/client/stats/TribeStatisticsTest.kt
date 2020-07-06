@@ -6,14 +6,15 @@ import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import com.zegreatrob.coupling.client.external.shallow
 import kotlin.test.Test
 
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {

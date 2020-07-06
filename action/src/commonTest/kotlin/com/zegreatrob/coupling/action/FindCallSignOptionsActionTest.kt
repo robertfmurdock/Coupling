@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignOptions
 import com.zegreatrob.coupling.action.entity.player.callsign.defaultCallSignOptions
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

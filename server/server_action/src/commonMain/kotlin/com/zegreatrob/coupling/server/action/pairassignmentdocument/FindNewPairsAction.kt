@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class FindNewPairsAction(val game: Game) :
     SimpleExecutableAction<FindNewPairsActionDispatcher, List<CouplingPair>> {

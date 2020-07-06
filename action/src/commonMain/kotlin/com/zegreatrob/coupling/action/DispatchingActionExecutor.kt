@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.testmints.action.*
+import com.zegreatrob.testmints.action.ExecutableAction
+import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecutor

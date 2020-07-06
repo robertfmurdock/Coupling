@@ -1,10 +1,6 @@
 package com.zegreatrob.coupling.server.express
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.ErrorResult
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.action.UnauthorizedResult
+import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlin.js.json
 

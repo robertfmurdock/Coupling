@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

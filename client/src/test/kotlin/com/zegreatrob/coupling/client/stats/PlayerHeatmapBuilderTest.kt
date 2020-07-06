@@ -2,13 +2,14 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.shallow
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import com.zegreatrob.coupling.client.external.shallow
 import kotlin.test.Test
 
 class PlayerHeatmapBuilderTest {

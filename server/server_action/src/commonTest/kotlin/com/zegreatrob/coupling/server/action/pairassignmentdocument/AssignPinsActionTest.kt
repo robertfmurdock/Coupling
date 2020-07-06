@@ -2,20 +2,23 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
-import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.setup
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
+import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class AssignPinsActionTest {
 
-    companion object :
-        AssignPinsActionDispatcher;
+    companion object : AssignPinsActionDispatcher;
 
     @Test
     fun givenOnePinForAssigningToPairHasNeverBeenUsedWillAssignToFirstPair() = setup(object {

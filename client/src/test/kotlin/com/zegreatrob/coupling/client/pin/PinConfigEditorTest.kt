@@ -1,16 +1,17 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.external.findByClass
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.shallow
+import com.zegreatrob.coupling.client.external.simulateInputChange
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import com.zegreatrob.coupling.client.external.findByClass
-import com.zegreatrob.coupling.client.external.shallow
-import com.zegreatrob.coupling.client.external.simulateInputChange
 import kotlin.js.json
 import kotlin.test.Test
 

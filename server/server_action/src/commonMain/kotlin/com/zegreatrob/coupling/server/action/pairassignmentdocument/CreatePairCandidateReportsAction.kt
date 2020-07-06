@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class CreatePairCandidateReportsAction(val game: GameSpin) :
     SimpleExecutableAction<CreatePairCandidateReportsActionDispatcher, List<PairCandidateReport>> {

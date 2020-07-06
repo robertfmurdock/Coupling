@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.action.entity.heatmap
 
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Companion.equivalent
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlin.math.min
 
 const val rotationHeatWindow = 5

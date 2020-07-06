@@ -19,6 +19,7 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.RClass
 import kotlin.test.Test

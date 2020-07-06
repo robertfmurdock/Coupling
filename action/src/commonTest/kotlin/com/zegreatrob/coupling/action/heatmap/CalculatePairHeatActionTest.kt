@@ -5,9 +5,12 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
