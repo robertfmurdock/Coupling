@@ -3,7 +3,6 @@
 
 package com.zegreatrob.coupling.client.external.reactdndhtml5backend
 
-@JsName("default")
 external val HTML5Backend: DnDBackend
 
 external class DnDBackend
