@@ -104,8 +104,7 @@ jobs:
           key: coupling-cache-39-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
       - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson kotlinNpmInstall"
-      - run: "./gradlew jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - run: "./gradlew assemble"
       - run: "./gradlew build check --no-parallel"
@@ -147,8 +146,7 @@ jobs:
           key: coupling-cache-39-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
       - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson kotlinNpmInstall"
-      - run: "./gradlew jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
