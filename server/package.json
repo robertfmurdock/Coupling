@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.711.0",
+    "aws-sdk": "2.712.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -59,13 +59,13 @@
     "source-map-support": "^0.5.19",
     "supertest": "^4.0.2",
     "text-loader": "0.0.1",
-    "ts-loader": "^7.0.5",
+    "ts-loader": "^8.0.0",
     "typescript": "^3.9.6",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.12",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^2.3.0"
   },
   "scripts": {
     "start-built-app": "NODE_PATH='../build/js/node_modules' node ./startup.js",
