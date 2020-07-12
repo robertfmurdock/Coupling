@@ -13,7 +13,7 @@
     "@types/jasmine": "^3.5.11",
     "@types/jasminewd2": "^2.0.8",
     "@types/passport": "^1.0.4",
-    "@types/react": "^16.9.41",
+    "@types/react": "^16.9.43",
     "@types/ws": "7.2.6",
     "axios": "^0.19.2",
     "babel-preset-env": "^1.7.0",
@@ -51,7 +51,7 @@
     "webpack": "^4.43.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.12",
-    "webpack-node-externals": "^2.3.0"
+    "webpack-node-externals": "^2.5.0"
   },
   "scripts": {
     "webpack": "webpack",
