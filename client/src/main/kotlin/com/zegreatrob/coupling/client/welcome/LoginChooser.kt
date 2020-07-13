@@ -12,7 +12,6 @@ import react.RProps
 import react.dom.div
 import kotlin.browser.window
 
-
 data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) : RProps
 
 private val styles = useStyles("LoginChooser")

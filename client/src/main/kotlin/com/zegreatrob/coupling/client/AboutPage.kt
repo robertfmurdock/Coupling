@@ -11,9 +11,11 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.css.*
-import kotlinx.html.DIV
 import react.RBuilder
-import react.dom.*
+import react.dom.button
+import react.dom.div
+import react.dom.i
+import react.dom.span
 import react.router.dom.routeLink
 import styled.css
 import styled.styledDiv
@@ -31,7 +33,7 @@ val AboutPage = reactFunction<PageProps> {
     }
 }
 
-private fun RDOMBuilder<DIV>.backButtonSection() = styledDiv {
+private fun RBuilder.backButtonSection() = styledDiv {
     css { position = Position.relative }
     styledSpan {
         css { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
@@ -46,14 +48,19 @@ private fun RBuilder.backButton() = routeLink(to = "/tribes") {
     }
 }
 
-private fun RDOMBuilder<DIV>.playerHeader() = div {
+private fun RBuilder.playerHeader() = div {
     val tribeId = TribeId("developers")
     listOf(
         "left" to Player("1", name = "RoB", imageURL = "/images/icons/players/robcard.small.png"),
         "right" to Player("2", name = "Autumn", imageURL = "/images/icons/players/autumncard.small.png")
     ).forEach { (side, player) ->
         playerCard(
-            PlayerCardProps(tribeId, player, className = listOf(styles["player"], styles[side]).joinToString(" "))
+            PlayerCardProps(tribeId, player, className = playerCardStyles(side))
         )
     }
 }
+
+private fun playerCardStyles(sideClassName: String) = listOf(
+    styles["player"],
+    styles[sideClassName]
+).joinToString(" ")

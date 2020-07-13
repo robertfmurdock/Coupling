@@ -1,0 +1,20 @@
+package com.zegreatrob.coupling.client.external.react
+
+import org.w3c.dom.Node
+import react.*
+
+fun <P : RProps> RBuilder.child(
+    clazz: RClass<P>,
+    props: P,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<P> = {}
+): ReactElement {
+    key?.let { props.key = it }
+    ref?.let { props.ref = ref }
+    return child(
+        type = clazz,
+        props = props,
+        handler = handler
+    )
+}

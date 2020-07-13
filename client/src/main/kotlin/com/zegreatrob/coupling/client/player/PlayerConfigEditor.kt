@@ -209,33 +209,35 @@ private fun RBuilder.badgeConfig(
     player: Player,
     onChange: (Event) -> Unit,
     className: String
-) {
-    li(classes = className) {
-        label { attrs { htmlFor = "badge" }; +"Badge" }
-        select {
-            attrs {
-                id = "badge"
-                name = "badge"
-                this["value"] = "${player.badge}"
-                onChangeFunction = onChange
-            }
-            option {
-                attrs {
-                    id = "default-badge-option"
-                    key = "${Badge.Default.value}"
-                    value = "${Badge.Default.value}"
-                    label = tribe.defaultBadgeName
-                }
-            }
-            option {
-                attrs {
-                    id = "alt-badge-option"
-                    key = "${Badge.Alternate.value}"
-                    value = "${Badge.Alternate.value}"
-                    label = tribe.alternateBadgeName
-                }
-            }
+) = li(classes = className) {
+    label { attrs { htmlFor = "badge" }; +"Badge" }
+    select {
+        attrs {
+            id = "badge"
+            name = "badge"
+            this["value"] = "${player.badge}"
+            onChangeFunction = onChange
         }
-        span { +"Your badge makes you feel... different than the others." }
+        defaultBadgeOption(tribe)
+        altBadgeOption(tribe)
+    }
+    span { +"Your badge makes you feel... different than the others." }
+}
+
+private fun RBuilder.altBadgeOption(tribe: Tribe) = option {
+    attrs {
+        id = "alt-badge-option"
+        key = "${Badge.Alternate.value}"
+        value = "${Badge.Alternate.value}"
+        label = tribe.alternateBadgeName
+    }
+}
+
+private fun RBuilder.defaultBadgeOption(tribe: Tribe) = option {
+    attrs {
+        id = "default-badge-option"
+        key = "${Badge.Default.value}"
+        value = "${Badge.Default.value}"
+        label = tribe.defaultBadgeName
     }
 }
