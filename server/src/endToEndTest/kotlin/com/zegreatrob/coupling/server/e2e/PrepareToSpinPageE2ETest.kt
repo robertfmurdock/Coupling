@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectAllButton
 import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
@@ -63,13 +62,12 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun whenTwoPlayersAreDisabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinTribeSetup {
+    fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
         with(PlayerCard) {
-            selectAllButton.performClick()
-            playerElements.get(0).element(iconLocator).performClick()
-            playerElements.get(2).element(iconLocator).performClick()
-            playerElements.get(3).element(iconLocator).performClick()
+            PrepareToSpinPage.selectNoneButton.performClick()
+            playerElements.get(1).element(iconLocator).performClick()
+            playerElements.get(4).element(iconLocator).performClick()
         }
     } exercise {
         PrepareToSpinPage.spinButton.performClick()
