@@ -13,7 +13,7 @@ class FindCallSignActionTest {
 
     companion object : FindCallSignActionDispatcher {
         const val email = "robert.f.murdock@accenture.com"
-        val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeast")
+        val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeest")
     }
 
     @Test
