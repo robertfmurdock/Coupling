@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.712.0",
+    "aws-sdk": "2.713.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -21,7 +21,7 @@
     "express-session": "^1.17.1",
     "express-statsd": "^0.3.0",
     "express-ws": "^4.0.0",
-    "google-auth-library": "^6.0.3",
+    "google-auth-library": "^6.0.4",
     "graphql": "^15.3.0",
     "method-override": "^3.0.0",
     "minimist": "^1.2.5",
@@ -65,7 +65,7 @@
     "webpack": "^4.43.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.12",
-    "webpack-node-externals": "^2.3.0"
+    "webpack-node-externals": "^2.5.0"
   },
   "scripts": {
     "start-built-app": "NODE_PATH='../build/js/node_modules' node ./startup.js",

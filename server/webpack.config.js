@@ -20,7 +20,7 @@ const config = {
   externals: [
     nodeExternals({
       modulesDir: path.resolve(__dirname, '../build/js/node_modules'),
-      whitelist: ['Coupling-server', 'uuid']
+      allowlist: ['Coupling-server', 'uuid']
     })
   ],
   resolve: {
