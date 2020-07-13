@@ -27,10 +27,29 @@
 
 :local(.spinButton).button {
     margin-bottom: 10px;
+    animation: 2s pulsate;
+    animation-iteration-count: infinite;
+}
+
+:local(.selectAllButton) {
+    margin-bottom: 10px;
+}
+
+:local(.selectNoneButton) {
+    margin-bottom: 10px;
 }
 
 :local(.selectedPins) {
     margin: 5px
+}
+
+:local(.player-selector) {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 5px;
+    margin: 5px 0;
+    background-color: #fffbed;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 }
 
 :local(.deselectedPins) {

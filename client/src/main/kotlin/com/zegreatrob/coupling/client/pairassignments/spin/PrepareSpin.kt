@@ -15,13 +15,14 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.css.Display
 import kotlinx.css.display
+import kotlinx.css.paddingBottom
+import kotlinx.css.px
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.buildElement
-import react.dom.a
-import react.dom.div
+import react.dom.*
 import react.useState
 import styled.css
 import styled.styledDiv
@@ -46,8 +47,43 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
         div {
             div { spinButton(tribe, playerSelections, pins.selectByIds(pinSelections), pathSetter) }
             optionalPinSelector(pins, pinSelections, setPinSelections)
-            selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections)
+            div(styles["player-selector"]) {
+                h1 { +"Please select players to spin." }
+                h2 { +"Tap a player to include or exclude them." }
+                +"When you're done with your selections, hit the spin button!"
+                div {
+                    selectAllButton(playerSelections, setPlayerSelections)
+                    selectNoneButton(playerSelections, setPlayerSelections)
+                }
+                selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections)
+            }
         }
+    }
+}
+
+fun RBuilder.selectAllButton(
+    playerSelections: List<Pair<Player, Boolean>>,
+    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
+) {
+    button(classes = "button") {
+        attrs {
+            classes += styles["selectAllButton"]
+            onClickFunction = { playerSelections.map { it.copy(second = true) }.let(setPlayerSelections) }
+        }
+        +"All in!"
+    }
+}
+
+fun RBuilder.selectNoneButton(
+    playerSelections: List<Pair<Player, Boolean>>,
+    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
+) {
+    button(classes = "button") {
+        attrs {
+            classes += styles["selectNoneButton"]
+            onClickFunction = { playerSelections.map { it.copy(second = false) }.let(setPlayerSelections) }
+        }
+        +"All out!"
     }
 }
 
@@ -112,7 +148,10 @@ private fun RBuilder.selectablePlayerCardList(
     pathSetter: (String) -> Unit,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit
 ): List<Any> = playerSelections.map { (player, isSelected) ->
-    playerCard(tribe, player, pathSetter, isSelected, setPlayerSelections, playerSelections)
+    styledDiv {
+        css { paddingBottom = 30.px; display = Display.inlineBlock }
+        playerCard(tribe, player, pathSetter, isSelected, setPlayerSelections, playerSelections)
+    }
 }
 
 private fun RBuilder.playerCard(
@@ -173,12 +212,10 @@ private fun List<Pair<String, String?>>.toQueryString() = toList().joinToString(
 
 private fun List<String?>.toProperty(propName: String) = map { propName to it }
 
-private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty()) {
-    true
-} else {
-    history.first()
-        .pairs.map { it.players }
-        .flatten()
-        .map { it.player.id }
-        .contains(player.id)
-}
+private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty())
+    false
+else history.first()
+    .pairs.map { it.players }
+    .flatten()
+    .map { it.player.id }
+    .contains(player.id)

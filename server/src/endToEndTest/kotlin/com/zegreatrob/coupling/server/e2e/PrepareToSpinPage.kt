@@ -10,6 +10,8 @@ object PrepareToSpinPage : ProtractorSyntax {
 
     private val pageElement = prepareSpinStyles.element()
     val spinButton by prepareSpinStyles.getting()
+    val selectAllButton by prepareSpinStyles.getting()
+    val selectNoneButton by prepareSpinStyles.getting()
 
     private val selectedPins by prepareSpinStyles.getting()
     val selectedPinElements = selectedPins.all(PinButton.pinButtonLocator)
