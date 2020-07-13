@@ -50,7 +50,7 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
             div(styles["player-selector"]) {
                 h1 { +"Please select players to spin." }
                 h2 { +"Tap a player to include or exclude them." }
-                +"When you're done with your selections, hit the spin button!"
+                +"When you're done with your selections, hit the spin button above!"
                 div {
                     selectAllButton(playerSelections, setPlayerSelections)
                     selectNoneButton(playerSelections, setPlayerSelections)
@@ -64,28 +64,27 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
 fun RBuilder.selectAllButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-) {
-    button(classes = "button") {
-        attrs {
-            classes += styles["selectAllButton"]
-            onClickFunction = { playerSelections.map { it.copy(second = true) }.let(setPlayerSelections) }
-        }
-        +"All in!"
-    }
-}
+) = batchSelectButton(styles["selectAllButton"], "All in!", playerSelections, setPlayerSelections, true)
 
 fun RBuilder.selectNoneButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-) {
-    button(classes = "button") {
-        attrs {
-            classes += styles["selectNoneButton"]
-            onClickFunction = { playerSelections.map { it.copy(second = false) }.let(setPlayerSelections) }
-        }
-        +"All out!"
+) = batchSelectButton(styles["selectNoneButton"], "All out!", playerSelections, setPlayerSelections, false)
+
+private fun RBuilder.batchSelectButton(
+    className: String,
+    text: String,
+    playerSelections: List<Pair<Player, Boolean>>,
+    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
+    selectionValue: Boolean
+) = button(classes = "button") {
+    attrs {
+        classes += className
+        onClickFunction = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
     }
+    +text
 }
+
 
 private fun RBuilder.optionalPinSelector(
     pins: List<Pin>,
