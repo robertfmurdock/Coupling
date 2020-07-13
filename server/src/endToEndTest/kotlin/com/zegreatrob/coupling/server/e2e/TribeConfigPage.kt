@@ -2,15 +2,13 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.protractor.By
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
 import com.zegreatrob.coupling.server.e2e.external.protractor.element
 import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 
-object TribeConfigPage : ProtractorSyntax {
-
-    private val tribeConfigStyles = loadStyles("tribe/TribeConfig")
-    private val pageElement = tribeConfigStyles.element()
-    val saveButton by tribeConfigStyles.getting()
+object TribeConfigPage : StyleSyntax {
+    override val styles = loadStyles("tribe/TribeConfig")
+    private val pageElement = element
+    val saveButton by getting()
 
     val tribeNameInput = element(By.id("tribe-name"))
     val tribeEmailInput = element(By.id("tribe-email"))

@@ -40,7 +40,7 @@ data class PrepareSpinProps(
 private val styles = useStyles("PrepareSpin")
 
 val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
-    val (playerSelections, setPlayerSelections) = useState(players.map { it to isInLastSetOfPairs(it, history) })
+    val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
     val (pinSelections, setPinSelections) = useState(pins.map { it._id })
     div(classes = styles.className) {
         div { tribeBrowser(tribe, pathSetter) }
@@ -59,6 +59,10 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
             }
         }
     }
+}
+
+private fun defaultSelections(players: List<Player>, history: List<PairAssignmentDocument>) = players.map { player ->
+    player to isInLastSetOfPairs(player, history)
 }
 
 fun RBuilder.selectAllButton(

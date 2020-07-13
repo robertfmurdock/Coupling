@@ -5,12 +5,11 @@ import com.zegreatrob.coupling.server.e2e.PlayerCard.playerCardStyles
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import kotlinx.coroutines.await
 
-object PlayerConfig : ProtractorSyntax {
-    private val playerConfigStyles = loadStyles("player/PlayerConfig")
+object PlayerConfig : StyleSyntax {
+    override val styles = loadStyles("player/PlayerConfig")
 
     private val playerConfigEditorStyles = loadStyles("player/PlayerConfigEditor")
 
-    private val playerConfigPage = playerConfigStyles.element()
     val playerNameTextField = element(By.id("player-name"))
     val deleteButton by playerConfigEditorStyles.getting()
     val saveButton by playerConfigEditorStyles.getting()
@@ -30,7 +29,7 @@ object PlayerConfig : ProtractorSyntax {
     }
 
     suspend fun waitForPage() {
-        playerConfigPage.waitToBePresent()
+        element.waitToBePresent()
     }
 
     suspend fun waitForSaveToComplete(name: String?) {
@@ -41,7 +40,7 @@ object PlayerConfig : ProtractorSyntax {
         ).await()
 
         browser.wait({
-            all(By.css(".${playerConfigStyles["playerRoster"]} .${playerCardStyles["header"]}"))
+            all(By.css(".${styles["playerRoster"]} .${playerCardStyles["header"]}"))
                 .first()
                 .getText()
                 .then { it == name }
@@ -59,10 +58,8 @@ object PlayerCard {
     val iconLocator: ProtractorBy = By.className(playerCardStyles["playerIcon"])
 }
 
-object PlayerRoster : ProtractorSyntax {
-    private val playerRosterStyles = loadStyles("player/PlayerRoster")
-
-    val playerElements = all(By.css(".${playerRosterStyles.className} .${playerCardStyles["player"]}"))
-    val addPlayerButton by playerRosterStyles.getting()
-
+object PlayerRoster : StyleSyntax {
+    override val styles = loadStyles("player/PlayerRoster")
+    val playerElements = all(By.css(".${styles.className} .${playerCardStyles["player"]}"))
+    val addPlayerButton by getting()
 }

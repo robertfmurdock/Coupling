@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.server.e2e.PinListPage.element
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -90,7 +91,7 @@ class PinConfigE2ETest {
 
             PinListPage.waitForLoad()
         } verify {
-            PinListPage.page.all(By.className("pin-name"))
+            element.all(By.className("pin-name"))
                 .map { it.getText() }
                 .await()
                 .toList()

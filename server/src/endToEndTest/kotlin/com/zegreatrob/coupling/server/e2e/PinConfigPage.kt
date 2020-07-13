@@ -4,11 +4,10 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import kotlinx.coroutines.await
 
-object PinConfigPage : ProtractorSyntax {
+object PinConfigPage : StyleSyntax {
+    override val styles = loadStyles("pin/PinConfig")
 
-    private val pinConfigStyles = loadStyles("pin/PinConfig")
-    private val pinConfigPage = pinConfigStyles.element()
-    private val pinBag by pinConfigStyles.getting()
+    private val pinBag by getting()
 
     private val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
 
@@ -37,18 +36,16 @@ object PinConfigPage : ProtractorSyntax {
     }
 
     private suspend fun waitForLoad() {
-        browser.wait({ pinConfigPage.isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad").await()
+        browser.wait({ element.isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad").await()
     }
 }
 
-object PinListPage : ProtractorSyntax {
+object PinListPage : StyleSyntax {
 
-    private val pinListStyles = loadStyles("pin/PinList")
-
-    val page = pinListStyles.element()
+    override val styles = loadStyles("pin/PinList")
 
     suspend fun waitForLoad() {
-        browser.wait({ page.isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad").await()
+        browser.wait({ element.isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad").await()
     }
 
 }

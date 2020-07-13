@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
-
-object TribeCard : ProtractorSyntax {
-    private val tribeCardStyles = loadStyles("tribe/TribeCard")
-    val element = tribeCardStyles.element()
-    val header by tribeCardStyles.getting()
+object TribeCard : StyleSyntax {
+    override val styles = loadStyles("tribe/TribeCard")
+    val header by getting()
 }

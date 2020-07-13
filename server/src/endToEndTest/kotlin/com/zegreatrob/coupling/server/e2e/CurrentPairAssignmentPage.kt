@@ -4,11 +4,9 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.protractor.*
 import kotlinx.coroutines.await
 
-object CurrentPairAssignmentPage : ProtractorSyntax {
-
-    private val currentPairAssignmentsPanelStyles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
-    private val pageElement = currentPairAssignmentsPanelStyles.element()
-    val saveButton by currentPairAssignmentsPanelStyles.getting()
+object CurrentPairAssignmentPage : StyleSyntax {
+    override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
+    val saveButton by getting()
 
     private val pairAssignmentsStyles = loadStyles("pairassignments/PairAssignments")
     val viewHistoryButton by pairAssignmentsStyles.getting()
@@ -26,7 +24,7 @@ object CurrentPairAssignmentPage : ProtractorSyntax {
     }
 
     suspend fun waitForPage() {
-        pageElement.waitToBePresent()
+        element.waitToBePresent()
     }
 
     suspend fun waitForSaveButtonToNotBeDisplayed() {
@@ -41,4 +39,3 @@ object CurrentPairAssignmentPage : ProtractorSyntax {
 
     private fun ElementSelector.isNotPresent() = isPresent().then({ !it }, { false })
 }
-

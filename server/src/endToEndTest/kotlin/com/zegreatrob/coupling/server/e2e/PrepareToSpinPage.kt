@@ -1,19 +1,17 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
 import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 
-object PrepareToSpinPage : ProtractorSyntax {
+object PrepareToSpinPage : StyleSyntax {
+    override val styles: SimpleStyle = loadStyles("PrepareSpin")
 
-    private val prepareSpinStyles = loadStyles("PrepareSpin")
+    val spinButton by getting()
+    val selectAllButton by getting()
+    val selectNoneButton by getting()
 
-    private val pageElement = prepareSpinStyles.element()
-    val spinButton by prepareSpinStyles.getting()
-    val selectAllButton by prepareSpinStyles.getting()
-    val selectNoneButton by prepareSpinStyles.getting()
+    private val selectedPins by getting()
 
-    private val selectedPins by prepareSpinStyles.getting()
     val selectedPinElements = selectedPins.all(PinButton.pinButtonLocator)
 
     suspend fun goTo(tribeId: TribeId) {
@@ -22,6 +20,6 @@ object PrepareToSpinPage : ProtractorSyntax {
     }
 
     suspend fun waitForPage() {
-        pageElement.waitToBePresent()
+        element.waitToBePresent()
     }
 }
