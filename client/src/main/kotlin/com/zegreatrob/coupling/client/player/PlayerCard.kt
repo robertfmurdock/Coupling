@@ -22,13 +22,14 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
+typealias PathSetter = (String) -> Unit
+
 val RBuilder.playerCard get() = PlayerCard.render(this)
 
 data class PlayerCardProps(
     val tribeId: TribeId,
     val player: Player,
-    val pathSetter: (String) -> Unit = {},
-    val headerDisabled: Boolean = false,
+    val pathSetter: PathSetter? = null,
     val className: String? = null,
     val size: Int = 100,
     val onClick: ((Event) -> Unit) = {},
@@ -38,7 +39,7 @@ data class PlayerCardProps(
 private val styles = useStyles("player/PlayerCard")
 
 val PlayerCard = reactFunction<PlayerCardProps> { props ->
-    val (tribeId, player, pathSetter, headerDisabled, className, size, onClick, deselected) = props
+    val (tribeId, player, pathSetter, className, size, onClick, deselected) = props
     styledDiv {
         attrs {
             classes += additionalClasses(className, deselected)
@@ -46,7 +47,7 @@ val PlayerCard = reactFunction<PlayerCardProps> { props ->
             onClickFunction = onClick
         }
         playerGravatarImage(player, size)
-        child(playerCardHeaderElement(tribeId, player, pathSetter, headerDisabled, size))
+        child(playerCardHeaderElement(tribeId, player, pathSetter, size))
     }
 }
 
@@ -70,8 +71,7 @@ private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) = css {
 private fun playerCardHeaderElement(
     tribeId: TribeId,
     player: Player,
-    pathSetter: (String) -> Unit,
-    disabled: Boolean,
+    pathSetter: PathSetter?,
     size: Int
 ) = buildElement {
     val playerNameRef = useRef<Node?>(null)
@@ -80,7 +80,7 @@ private fun playerCardHeaderElement(
     styledDiv {
         attrs {
             classes += styles["header"]
-            onClickFunction = handleNameClick(tribeId, player, disabled, pathSetter)
+            onClickFunction = handleNameClick(tribeId, player, pathSetter)
         }
         css { margin(top = (size * 0.02).px) }
         div {
@@ -90,9 +90,9 @@ private fun playerCardHeaderElement(
     }
 }
 
-private fun handleNameClick(tribeId: TribeId, player: Player, disabled: Boolean, pathSetter: (String) -> Unit) =
+private fun handleNameClick(tribeId: TribeId, player: Player, pathSetter: PathSetter?) =
     { event: Event ->
-        if (!disabled) {
+        if (pathSetter != null) {
             event.stopPropagation()
 
             pathSetter("/${tribeId.value}/player/${player.id}/")

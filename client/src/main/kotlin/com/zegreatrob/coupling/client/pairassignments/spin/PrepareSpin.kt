@@ -55,7 +55,7 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
                     selectAllButton(playerSelections, setPlayerSelections)
                     selectNoneButton(playerSelections, setPlayerSelections)
                 }
-                selectablePlayerCardList(playerSelections, tribe, pathSetter, setPlayerSelections)
+                selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
             }
         }
     }
@@ -147,28 +147,25 @@ private fun RBuilder.spinButton(
 
 private fun RBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
-    tribe: Tribe,
-    pathSetter: (String) -> Unit,
-    setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit
-): List<Any> = playerSelections.map { (player, isSelected) ->
+    setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
+    tribe: Tribe
+) = playerSelections.map { (player, isSelected) ->
     styledDiv {
         css { paddingBottom = 30.px; display = Display.inlineBlock }
-        playerCard(tribe, player, pathSetter, isSelected, setPlayerSelections, playerSelections)
+        playerCard(tribe, player, isSelected, setPlayerSelections, playerSelections)
     }
 }
 
 private fun RBuilder.playerCard(
     tribe: Tribe,
     player: Player,
-    pathSetter: (String) -> Unit,
     isSelected: Boolean,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     playerSelections: List<Pair<Player, Boolean>>
 ) = playerCard(PlayerCardProps(
     tribe.id,
     player,
-    pathSetter,
-    true,
+    null,
     className = styles["playerCard"],
     deselected = !isSelected,
     onClick = {

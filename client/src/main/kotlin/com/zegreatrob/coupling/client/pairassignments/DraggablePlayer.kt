@@ -29,8 +29,6 @@ val DraggablePlayer = reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe
             PlayerCardProps(
                 tribeId = tribe.id,
                 player = pinnedPlayer.player,
-                pathSetter = {},
-                headerDisabled = false,
                 className = playerCardClassName(isOver, zoomOnHover)
             ),
             key = pinnedPlayer.player.id

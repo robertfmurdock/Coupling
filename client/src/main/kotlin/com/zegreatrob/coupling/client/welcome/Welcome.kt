@@ -104,8 +104,7 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
             tribeId = welcomeTribeId,
             player = pair.player1,
             className = "left ${styles["playerCard"]}",
-            size = 100,
-            headerDisabled = true
+            size = 100
         )
     )
     playerCard(
@@ -113,8 +112,7 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
             tribeId = welcomeTribeId,
             player = pair.player2,
             className = "right ${styles["playerCard"]}",
-            size = 100,
-            headerDisabled = true
+            size = 100
         )
     )
 }

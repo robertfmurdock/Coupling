@@ -140,8 +140,7 @@ private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Un
     PlayerCardProps(
         tribe.id,
         player,
-        pathSetter,
-        false
+        pathSetter
     )
 )
 

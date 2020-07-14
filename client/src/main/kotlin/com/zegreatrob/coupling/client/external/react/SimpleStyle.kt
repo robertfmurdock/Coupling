@@ -10,5 +10,5 @@ operator fun SimpleStyle.get(propertyName: String): String = let {
 }
 
 fun <T> useStyles(path: String): T = loadStyles(path)
-fun useStyles(path: String): SimpleStyle =
-    loadStyles(path)
+
+fun useStyles(path: String): SimpleStyle = loadStyles(path)

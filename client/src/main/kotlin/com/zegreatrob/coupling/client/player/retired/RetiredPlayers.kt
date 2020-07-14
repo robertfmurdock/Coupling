@@ -27,7 +27,7 @@ val RetiredPlayers = reactFunction<RetiredPlayersProps> { (tribe, players, pathS
         div {
             players.forEach { player ->
                 playerCard(
-                    PlayerCardProps(tribe.id, player, pathSetter, true, deselected = true),
+                    PlayerCardProps(tribe.id, player, pathSetter, deselected = true),
                     key = player.id
                 )
             }
