@@ -43,7 +43,7 @@ val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
         span { +message.text }
         div {
             message.players.map { it.toPlayer() }
-                .map { playerCard(PlayerCardProps(tribeId, it, size = 50, pathSetter = {})) }
+                .map { playerCard(PlayerCardProps(tribeId, it, size = 50)) }
         }
     }
 }

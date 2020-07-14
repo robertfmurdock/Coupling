@@ -64,7 +64,7 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
                 playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc, onRemoveFunc)
                 promptOnExit(shouldShowPrompt = updatedPlayer != player)
             }
-            playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250, pathSetter = {}))
+            playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250))
         }
     }
 }

@@ -48,7 +48,7 @@ private fun TimeResult.presentationString() = when (this) {
 
 private fun RBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div(styles["playerCard"]) {
     attrs { key = player.id ?: "" }
-    playerCard(PlayerCardProps(tribe.id, player, size = 50, pathSetter = {}))
+    playerCard(PlayerCardProps(tribe.id, player, size = 50))
 }
 
 
