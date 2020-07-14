@@ -80,8 +80,8 @@ private inline fun RBuilder.pinConfigForm(
 ) = form {
     val (isSaving, setIsSaving) = useState(false)
     attrs {
-        name = "pinForm"; onSubmitFunction =
-        onSubmitFunction(setIsSaving, { onSubmit() })
+        name = "pinForm"
+        onSubmitFunction = onSubmitFunction(setIsSaving, { onSubmit() })
     }
 
     div {
@@ -118,7 +118,7 @@ private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "
 }
 
 private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Unit): (Event) -> Unit =
-    { event -> setIsSaving(true); onSubmit(event) }
+    { event -> event.preventDefault(); setIsSaving(true); onSubmit(event) }
 
 private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {
     configInput(

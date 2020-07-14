@@ -29,7 +29,8 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
         command: C,
         response: (Result<R>) -> Unit
     ) = scope.launch {
-        dispatcher.execute(command).let(response)
+        dispatcher.execute(command)
+            .let(response)
     }
 
 }

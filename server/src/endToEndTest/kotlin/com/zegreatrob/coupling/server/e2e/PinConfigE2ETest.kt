@@ -49,16 +49,19 @@ class PinConfigE2ETest {
         }
     } verify {
         with(PinConfigPage) {
-            waitForPinNameToAppear(newPinName)
+            waitForPinNameToAppear(newPinName, tribe.id)
             pinBagPinNames()
                 .assertContains(newPinName)
         }
     }
 
-    private suspend fun PinConfigPage.waitForPinNameToAppear(newPinName: String) = browser.wait({
+    private suspend fun PinConfigPage.waitForPinNameToAppear(
+        newPinName: String,
+        id: TribeId
+    ) = browser.wait({
         MainScope().async { pinBagPinNames().contains(newPinName) }
             .asPromise().then({ it }) { false }
-    }, 2000, "PinConfigPage.waitForPinNameToAppear").await()
+    }, waitToBePresentDuration, "PinConfigPage.waitForPinNameToAppear in tribe ${id.value}").await()
 
     class WhenThePinExists {
 
