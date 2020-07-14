@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.configSaveButton
-import com.zegreatrob.coupling.client.editor
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -13,19 +10,15 @@ import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.html.FORM
 import kotlinx.html.InputType
 import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.js.onSubmitFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
-import react.RSetState
 import react.dom.*
-import react.useState
 
 data class PlayerConfigEditorProps(
     val tribe: Tribe,
@@ -102,39 +95,26 @@ private fun RBuilder.playerConfigForm(
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
     removePlayerFunc: (String) -> () -> Unit
-) = form {
-    val (isSaving, setIsSaving) = useState(false)
-    attrs {
-        name = "playerForm"
-        onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit)
-    }
+) = configForm("playerForm", onSubmit) { isSaving ->
     editorDiv(tribe, player, onChange)
     configSaveButton(isSaving, styles["saveButton"])
 
     player.id?.let { retireButton(removePlayerFunc(it)) }
 }
 
-private fun onSubmitFunction(setIsSaving: RSetState<Boolean>, onSubmit: () -> Unit) = { event: Event ->
-    event.preventDefault()
-    setIsSaving(true)
-    onSubmit()
-}
-
-private fun RDOMBuilder<FORM>.editorDiv(
+private fun RBuilder.editorDiv(
     tribe: Tribe,
     player: Player,
     onChange: (Event) -> Unit
-) {
-    div {
-        editor {
-            li { nameInput(player, onChange) }
-            li { emailInput(player, onChange) }
-            if (tribe.callSignsEnabled) {
-                callSignConfig(player, onChange)
-            }
-            if (tribe.badgesEnabled) {
-                badgeConfig(tribe, player, onChange, styles["badgeConfig"])
-            }
+) = div {
+    editor {
+        li { nameInput(player, onChange) }
+        li { emailInput(player, onChange) }
+        if (tribe.callSignsEnabled) {
+            callSignConfig(player, onChange)
+        }
+        if (tribe.badgesEnabled) {
+            badgeConfig(tribe, player, onChange, styles["badgeConfig"])
         }
     }
 }
