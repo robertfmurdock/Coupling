@@ -23,7 +23,7 @@ import kotlinx.html.js.onSubmitFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
-import react.ReactElement
+import react.RSetState
 import react.dom.*
 import react.useState
 
@@ -74,7 +74,7 @@ private fun onSubmitFunc(
     updatedPlayer: Player,
     commandFunc: DispatchFunc<out PlayerConfigDispatcher>,
     reload: () -> Unit
-) = preventDefault(commandFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() }))
+) = commandFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
 
 private fun removePlayer(
     tribe: Tribe,
@@ -96,29 +96,28 @@ private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     message = "You have unsaved data. Would you like to save before you leave?"
 )
 
-private inline fun preventDefault(crossinline handler: () -> Unit) = { event: Event ->
-    event.preventDefault()
-    handler()
-}
-
-private inline fun RBuilder.playerConfigForm(
+private fun RBuilder.playerConfigForm(
     player: Player,
     tribe: Tribe,
-    noinline onChange: (Event) -> Unit,
-    crossinline onSubmit: (Event) -> Unit,
-    crossinline removePlayerFunc: (String) -> () -> Unit
-): ReactElement {
+    onChange: (Event) -> Unit,
+    onSubmit: () -> Unit,
+    removePlayerFunc: (String) -> () -> Unit
+) = form {
     val (isSaving, setIsSaving) = useState(false)
-    return form {
-        attrs {
-            name = "playerForm"
-            onSubmitFunction = { event -> setIsSaving(true); onSubmit(event) }
-        }
-        editorDiv(tribe, player, onChange)
-        configSaveButton(isSaving, styles["saveButton"])
-
-        player.id?.let { retireButton(removePlayerFunc(it)) }
+    attrs {
+        name = "playerForm"
+        onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit)
     }
+    editorDiv(tribe, player, onChange)
+    configSaveButton(isSaving, styles["saveButton"])
+
+    player.id?.let { retireButton(removePlayerFunc(it)) }
+}
+
+private fun onSubmitFunction(setIsSaving: RSetState<Boolean>, onSubmit: () -> Unit) = { event: Event ->
+    event.preventDefault()
+    setIsSaving(true)
+    onSubmit()
 }
 
 private fun RDOMBuilder<FORM>.editorDiv(

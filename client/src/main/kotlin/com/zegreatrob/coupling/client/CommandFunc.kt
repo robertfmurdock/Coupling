@@ -5,7 +5,8 @@ import com.zegreatrob.coupling.action.SuspendResultAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 
 interface DispatchFunc<D> {
     operator fun <C : SuspendResultAction<D, R>, R> invoke(
@@ -19,18 +20,26 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
     private val scope: CoroutineScope
 ) : DispatchFunc<D> {
 
+    @ExperimentalCoroutinesApi
     override fun <C : SuspendResultAction<D, R>, R> invoke(commandFunc: () -> C, response: (Result<R>) -> Unit) =
         fun() {
             launchExecute(dispatcherFunc(), commandFunc(), response)
         }
 
+    @ExperimentalCoroutinesApi
     private fun <C : SuspendResultAction<D, R>, R> launchExecute(
         dispatcher: D,
         command: C,
         response: (Result<R>) -> Unit
-    ) = scope.launch {
-        dispatcher.execute(command)
-            .let(response)
+    ) {
+        val deferred = scope.async { dispatcher.execute(command) }
+        deferred.invokeOnCompletion { handler ->
+            if (handler != null) {
+                console.error("Failed to finish ${command::class.simpleName} because ${handler.message}")
+            } else {
+                deferred.getCompleted().let(response)
+            }
+        }
     }
 
 }

@@ -45,43 +45,40 @@ fun RBuilder.pinConfigEditor(
     PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatchFunc)
 )
 
-val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, commandFunc) ->
+val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, dispatchFunc) ->
     val (values, onChange) = useForm(pin.toJson())
 
     val updatedPin = values.toPin()
 
-    val onSubmitFunc = commandFunc({ SavePinCommand(tribe.id, updatedPin) }, { reload() })
-    val onRemoveFunc = { pinId: String -> deletePinFunc(commandFunc, tribe, pinId, pathSetter) }
+    val onSubmitFunc = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
+    val onRemoveFunc = { pinId: String ->
+        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter(tribe.pinListPath()) }
+    }
 
-    span(classes = styles.className) {
+    span(styles.className) {
         configHeader(tribe, pathSetter) { +"Pin Configuration" }
-        span(classes = styles["pin"]) {
+        span(styles["pin"]) {
             pinConfigForm(updatedPin, onChange, onSubmitFunc, onRemoveFunc)
             promptOnExit(shouldShowPrompt = updatedPin != pin)
         }
-        span(classes = styles["icon"]) {
+        span(styles["icon"]) {
             pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
         }
     }
 }
 
-private fun deletePinFunc(
-    dispatchFunc: DispatchFunc<out DeletePinCommandDispatcher>,
-    tribe: Tribe,
-    pinId: String,
-    pathSetter: (String) -> Unit
-) = dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter("/${tribe.id.value}/pins") }
+private fun Tribe.pinListPath() = "/${id.value}/pins"
 
-private inline fun RBuilder.pinConfigForm(
+private fun RBuilder.pinConfigForm(
     pin: Pin,
-    noinline onChange: (Event) -> Unit,
-    crossinline onSubmit: () -> Unit,
-    noinline onRemoveFunc: (String) -> () -> Unit
+    onChange: (Event) -> Unit,
+    onSubmit: () -> Unit,
+    onRemoveFunc: (String) -> () -> Unit
 ) = form {
     val (isSaving, setIsSaving) = useState(false)
     attrs {
         name = "pinForm"
-        onSubmitFunction = onSubmitFunction(setIsSaving, { onSubmit() })
+        onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit)
     }
 
     div {
@@ -103,7 +100,6 @@ private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     message = "You have unsaved data. Would you like to save before you leave?"
 )
 
-
 private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "small red button") {
     attrs {
         classes += styles["deleteButton"]
@@ -117,8 +113,11 @@ private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "
     +"Retire"
 }
 
-private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: (Event) -> Unit): (Event) -> Unit =
-    { event -> event.preventDefault(); setIsSaving(true); onSubmit(event) }
+private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: () -> Unit) = { event: Event ->
+    event.preventDefault()
+    setIsSaving(true)
+    onSubmit()
+}
 
 private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {
     configInput(
