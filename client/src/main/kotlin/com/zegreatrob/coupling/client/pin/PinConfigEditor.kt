@@ -9,10 +9,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
 import kotlinx.html.InputType
-import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
-import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -48,6 +46,7 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
     val onSubmitFunc = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
     val onRemoveFunc = { pinId: String ->
         dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter(tribe.pinListPath()) }
+            .requireConfirmation("Are you sure you want to delete this pin?")
     }
 
     span(styles.className) {
@@ -59,6 +58,12 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
         span(styles["icon"]) {
             pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
         }
+    }
+}
+
+private fun (() -> Unit).requireConfirmation(confirmMessage: String): () -> Unit = fun() {
+    if (window.confirm(confirmMessage)) {
+        invoke()
     }
 }
 
@@ -74,7 +79,7 @@ private fun RBuilder.pinConfigForm(
     configSaveButton(isSaving, styles["saveButton"])
     val pinId = pin._id
     if (pinId != null) {
-        retireButtonElement(onRemoveFunc(pinId))
+        retireButton(onRemoveFunc(pinId), styles["deleteButton"])
     }
 }
 
@@ -90,19 +95,6 @@ private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     `when` = shouldShowPrompt,
     message = "You have unsaved data. Would you like to save before you leave?"
 )
-
-private fun RBuilder.retireButtonElement(onRetire: () -> Unit) = div(classes = "small red button") {
-    attrs {
-        classes += styles["deleteButton"]
-        onClickFunction = {
-
-            if (window.confirm("Are you sure you want to delete this pin?")) {
-                onRetire()
-            }
-        }
-    }
-    +"Retire"
-}
 
 private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {
     configInput(

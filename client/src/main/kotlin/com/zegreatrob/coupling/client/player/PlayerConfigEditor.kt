@@ -11,10 +11,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.InputType
-import kotlinx.html.classes
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
-import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -94,12 +92,11 @@ private fun RBuilder.playerConfigForm(
     tribe: Tribe,
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
-    removePlayerFunc: (String) -> () -> Unit
+    onRemoveFunc: (String) -> () -> Unit
 ) = configForm("playerForm", onSubmit) { isSaving ->
     editorDiv(tribe, player, onChange)
     configSaveButton(isSaving, styles["saveButton"])
-
-    player.id?.let { retireButton(removePlayerFunc(it)) }
+    player.id?.let { retireButton(onRemoveFunc(it), styles["deleteButton"]) }
 }
 
 private fun RBuilder.editorDiv(
@@ -117,14 +114,6 @@ private fun RBuilder.editorDiv(
             badgeConfig(tribe, player, onChange, styles["badgeConfig"])
         }
     }
-}
-
-private fun RBuilder.retireButton(onRetire: () -> Unit) = div(classes = "small red button") {
-    attrs {
-        classes += styles["deleteButton"]
-        onClickFunction = { onRetire() }
-    }
-    +"Retire"
 }
 
 private fun RBuilder.nameInput(player: Player, onChange: (Event) -> Unit) {
