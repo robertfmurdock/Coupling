@@ -24,6 +24,6 @@ object TribeListPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        browser.wait({ newTribeButton.isPresent() }, 2000, "TribeListPage.waitForPage").await()
+        browser.wait({ element.isPresent() }, 2000, "TribeListPage.waitForPage").await()
     }
 }
