@@ -48,6 +48,11 @@ val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandF
     }
 }
 
+private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
+    this
+else
+    copy(id = TribeId("${uuid4()}"))
+
 private fun RBuilder.tribeConfigEditor(
     updatedTribe: Tribe,
     isNew: Boolean,
@@ -55,23 +60,10 @@ private fun RBuilder.tribeConfigEditor(
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
 ) = span(styles["tribeConfigEditor"]) {
-    tribeConfigForm(updatedTribe, isNew, onChange, onSave, onDelete)
+    configForm(onSubmit = onSave, onRemove = onDelete) {
+        editorDiv(updatedTribe, onChange, isNew)
+    }
 }
-
-private fun RBuilder.tribeConfigForm(
-    updatedTribe: Tribe,
-    isNew: Boolean,
-    onChange: (Event) -> Unit,
-    onSave: () -> Unit,
-    onDelete: (() -> Unit)?
-) = configForm(onSubmit = onSave, onRemove = onDelete) {
-    editorDiv(updatedTribe, onChange, isNew)
-}
-
-private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
-    this
-else
-    copy(id = TribeId("${uuid4()}"))
 
 private fun RBuilder.editorDiv(
     tribe: Tribe,
