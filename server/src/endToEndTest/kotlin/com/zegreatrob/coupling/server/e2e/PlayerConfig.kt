@@ -8,11 +8,7 @@ import kotlinx.coroutines.await
 object PlayerConfig : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
 
-    private val playerConfigEditorStyles = loadStyles("player/PlayerConfigEditor")
-
     val playerNameTextField = element(By.id("player-name"))
-    val deleteButton by playerConfigEditorStyles.getting()
-    val saveButton by playerConfigEditorStyles.getting()
     val defaultBadgeOption = element(By.id("default-badge-option"))
     val altBadgeOption = element(By.id("alt-badge-option"))
     val adjectiveTextInput = element(By.id("adjective-input"))
@@ -34,7 +30,7 @@ object PlayerConfig : StyleSyntax {
 
     suspend fun waitForSaveToComplete(name: String?) {
         browser.wait(
-            { saveButton.isEnabled().then({ it }, { false }) },
+            { ConfigForm.saveButton.isEnabled().then({ it }, { false }) },
             waitToBePresentDuration,
             "PlayerConfig.waitForSaveButtonDisable"
         ).await()

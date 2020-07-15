@@ -77,7 +77,7 @@ class PlayerConfigPageE2ETest {
                     performClear()
                     performSendKeys(newName)
                 }
-                saveButton.performClick()
+                ConfigForm.saveButton.performClick()
                 waitForSaveToComplete(newName)
             }
         } exercise {
@@ -99,7 +99,7 @@ class PlayerConfigPageE2ETest {
                 performClear()
                 performSendKeys(" \b")
             }
-            page.saveButton.performClick()
+            ConfigForm.saveButton.performClick()
             page.waitForSaveToComplete("Unknown")
             page.waitForPage()
         } exercise {
@@ -118,7 +118,7 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            page.deleteButton.performClick()
+            ConfigForm.deleteButton.performClick()
             browser.switchTo().alert().await()
                 .accept()
         } verify {
@@ -216,7 +216,7 @@ class PlayerConfigPageE2ETest {
             page.goTo(tribe.id, player.id)
         } exercise {
             page.altBadgeOption.performClick()
-            page.saveButton.performClick()
+            ConfigForm.saveButton.performClick()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)
@@ -257,7 +257,7 @@ class PlayerConfigPageE2ETest {
                 performClear()
                 performSendKeys("Spider-Man")
             }
-            page.saveButton.performClick()
+            ConfigForm.saveButton.performClick()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)

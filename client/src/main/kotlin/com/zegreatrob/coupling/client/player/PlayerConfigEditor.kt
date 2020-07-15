@@ -1,9 +1,13 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.configForm
+import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
@@ -46,37 +50,21 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
     val (values, onChange) = useForm(player.toJson())
 
     val updatedPlayer = values.toPlayer()
-    val onSubmitFunc = onSubmitFunc(tribe, updatedPlayer, dispatchFunc, reload)
-    val onRemoveFunc = { playerId: String -> removePlayer(tribe, playerId, pathSetter, windowFuncs, dispatchFunc) }
+    val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
+    val onRemove = player.id?.let {
+        dispatchFunc({ DeletePlayerCommand(tribe.id, it) }, { pathSetter(tribe.id.currentPairsPage()) })
+            .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
+    }
+
     span(classes = styles.className) {
         configHeader(tribe, pathSetter) { +"Player Configuration" }
         div {
             div(classes = styles["player"]) {
-                playerConfigForm(updatedPlayer, tribe, onChange, onSubmitFunc, onRemoveFunc)
+                playerConfigForm(updatedPlayer, tribe, onChange, onSubmit, onRemove)
                 promptOnExit(shouldShowPrompt = updatedPlayer != player)
             }
             playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250))
         }
-    }
-}
-
-private fun onSubmitFunc(
-    tribe: Tribe,
-    updatedPlayer: Player,
-    commandFunc: DispatchFunc<out PlayerConfigDispatcher>,
-    reload: () -> Unit
-) = commandFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
-
-private fun removePlayer(
-    tribe: Tribe,
-    playerId: String,
-    pathSetter: (String) -> Unit,
-    windowFunctions: WindowFunctions,
-    dispatchFunc: DispatchFunc<out DeletePlayerCommandDispatcher>
-): () -> Unit = {
-    if (windowFunctions.window.confirm("Are you sure you want to delete this player?")) {
-        dispatchFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter(tribe.id.currentPairsPage()) })
-            .invoke()
     }
 }
 
@@ -92,18 +80,12 @@ private fun RBuilder.playerConfigForm(
     tribe: Tribe,
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
-    onRemoveFunc: (String) -> () -> Unit
-) = configForm("playerForm", onSubmit) { isSaving ->
+    onRemoveFunc: (() -> Unit)?
+) = configForm("playerForm", onSubmit, onRemoveFunc) {
     editorDiv(tribe, player, onChange)
-    configSaveButton(isSaving, styles["saveButton"])
-    player.id?.let { retireButton(onRemoveFunc(it), styles["deleteButton"]) }
 }
 
-private fun RBuilder.editorDiv(
-    tribe: Tribe,
-    player: Player,
-    onChange: (Event) -> Unit
-) = div {
+private fun RBuilder.editorDiv(tribe: Tribe, player: Player, onChange: (Event) -> Unit) = div {
     editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }

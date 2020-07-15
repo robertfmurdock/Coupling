@@ -5,7 +5,7 @@ import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.dom.div
 
-fun RBuilder.retireButton(onRetire: () -> Unit, className: String) = div(classes = "small red button") {
+fun RBuilder.retireButton(className: String, onRetire: () -> Unit) = div(classes = "small red button") {
     attrs {
         classes += className
         onClickFunction = { onRetire() }

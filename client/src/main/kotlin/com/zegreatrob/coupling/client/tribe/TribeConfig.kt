@@ -78,56 +78,64 @@ private fun RBuilder.configInputs(
 ) {
     form {
         attrs { onSubmitFunction = { it.preventDefault(); onSave() } }
-        div {
-            editor {
-                li {
-                    nameInput(tribe, onChange)
-                    span { +"The full tribe name!" }
-                }
-                li {
-                    emailInput(tribe, onChange)
-                    span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
-                }
-
-                if (isNew) {
-                    li {
-                        uniqueIdInput(tribe, onChange)
-                        span { +"This affects your tribe's URL. This is permanently assigned." }
-                    }
-                }
-                li {
-                    enableAnimationsInput(tribe, onChange)
-                    span { +"Keep things wacky and springy, or still and deadly serious." }
-                }
-                li {
-                    animationSpeedSelect(tribe, onChange)
-                    span { +"In case you want things to move a little... faster." }
-                }
-                li {
-                    enableCallSignsInput(tribe, onChange)
-                    span { +"Every Couple needs a Call Sign. Makes things more fun!" }
-                }
-                li {
-                    enableBadgesInput(tribe, onChange)
-                    span { +"Advanced users only: this lets you divide your tribe into two groups." }
-                }
-                li {
-                    defaultBadgeInput(tribe, onChange)
-                    span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
-                }
-                li {
-                    altBadgeInput(tribe, onChange)
-                    span { +"The other badge a player can be given. A player can only have one badge at a time." }
-                }
-                li {
-                    pairingRuleSelect(tribe, onChange)
-                    span { +"Advanced users only: This rule affects how players are assigned." }
-                }
-            }
-        }
+        editorDiv(tribe, onChange, isNew)
         configSaveButton(false, styles["saveButton"])
         if (!isNew) {
             retireButton(onDelete)
+        }
+    }
+}
+
+private fun RBuilder.editorDiv(
+    tribe: Tribe,
+    onChange: (Event) -> Unit,
+    isNew: Boolean
+) {
+    div {
+        editor {
+            li {
+                nameInput(tribe, onChange)
+                span { +"The full tribe name!" }
+            }
+            li {
+                emailInput(tribe, onChange)
+                span { +"The tribe email address - Attach a Gravatar to this to cheese your tribe icon." }
+            }
+
+            if (isNew) {
+                li {
+                    uniqueIdInput(tribe, onChange)
+                    span { +"This affects your tribe's URL. This is permanently assigned." }
+                }
+            }
+            li {
+                enableAnimationsInput(tribe, onChange)
+                span { +"Keep things wacky and springy, or still and deadly serious." }
+            }
+            li {
+                animationSpeedSelect(tribe, onChange)
+                span { +"In case you want things to move a little... faster." }
+            }
+            li {
+                enableCallSignsInput(tribe, onChange)
+                span { +"Every Couple needs a Call Sign. Makes things more fun!" }
+            }
+            li {
+                enableBadgesInput(tribe, onChange)
+                span { +"Advanced users only: this lets you divide your tribe into two groups." }
+            }
+            li {
+                defaultBadgeInput(tribe, onChange)
+                span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
+            }
+            li {
+                altBadgeInput(tribe, onChange)
+                span { +"The other badge a player can be given. A player can only have one badge at a time." }
+            }
+            li {
+                pairingRuleSelect(tribe, onChange)
+                span { +"Advanced users only: This rule affects how players are assigned." }
+            }
         }
     }
 }

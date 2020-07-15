@@ -17,7 +17,7 @@ import kotlin.test.Test
 
 class PinConfigEditorTest {
 
-    private val styles = useStyles("pin/PinConfigEditor")
+    private val configFormStyles = useStyles("ConfigForm")
 
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
@@ -29,7 +29,7 @@ class PinConfigEditorTest {
             PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc())
         )
     } verify { wrapper ->
-        wrapper.findByClass(styles["deleteButton"])
+        wrapper.findByClass(configFormStyles["deleteButton"])
             .length
             .assertIsEqualTo(0)
     }
@@ -44,7 +44,7 @@ class PinConfigEditorTest {
             PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc())
         )
     } verify { wrapper ->
-        wrapper.findByClass(styles["deleteButton"])
+        wrapper.findByClass(configFormStyles["deleteButton"])
             .length
             .assertIsEqualTo(1)
     }

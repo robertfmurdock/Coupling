@@ -7,3 +7,12 @@ interface WindowFunctions {
 
     companion object : WindowFunctions
 }
+
+fun (() -> Unit).requireConfirmation(
+    confirmMessage: String,
+    windowFunctions: WindowFunctions = WindowFunctions
+): () -> Unit = fun() {
+    if (windowFunctions.window.confirm(confirmMessage)) {
+        invoke()
+    }
+}

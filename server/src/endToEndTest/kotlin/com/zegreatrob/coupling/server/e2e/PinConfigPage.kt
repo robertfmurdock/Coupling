@@ -9,11 +9,6 @@ object PinConfigPage : StyleSyntax {
 
     private val pinBag by getting()
 
-    private val pinConfigEditorStyles = loadStyles("pin/PinConfigEditor")
-
-    val saveButton by pinConfigEditorStyles.getting()
-    val deleteButton by pinConfigEditorStyles.getting()
-
     val nameTextField = element(By.id("pin-name"))
     val iconTextField = element(By.id("pin-icon"))
 

@@ -30,11 +30,3 @@
 :local(.className) :local(.badgeConfig) > div {
     display: inline-block;
 }
-
-:local(.saveButton) {
-    /*! Do not remove */
-}
-
-:local(.deleteButton) {
-    /*! Do not remove */
-}

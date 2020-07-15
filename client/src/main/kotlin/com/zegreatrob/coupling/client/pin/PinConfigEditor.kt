@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.configForm
+import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
+import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
@@ -15,7 +19,6 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.*
-import kotlin.browser.window
 
 data class PinConfigEditorProps(
     val tribe: Tribe,
@@ -43,8 +46,8 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
 
     val updatedPin = values.toPin()
 
-    val onSubmitFunc = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
-    val onRemoveFunc = { pinId: String ->
+    val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
+    val onRemove = pin._id?.let { pinId ->
         dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter(tribe.pinListPath()) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
@@ -52,18 +55,12 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
     span(styles.className) {
         configHeader(tribe, pathSetter) { +"Pin Configuration" }
         span(styles["pin"]) {
-            pinConfigForm(updatedPin, onChange, onSubmitFunc, onRemoveFunc)
+            pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
             promptOnExit(shouldShowPrompt = updatedPin != pin)
         }
         span(styles["icon"]) {
             pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
         }
-    }
-}
-
-private fun (() -> Unit).requireConfirmation(confirmMessage: String): () -> Unit = fun() {
-    if (window.confirm(confirmMessage)) {
-        invoke()
     }
 }
 
@@ -73,14 +70,9 @@ private fun RBuilder.pinConfigForm(
     pin: Pin,
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
-    onRemoveFunc: (String) -> () -> Unit
-) = configForm("pinForm", onSubmit) { isSaving ->
+    onRemove: (() -> Unit)?
+) = configForm("pinForm", onSubmit, onRemove) {
     editorDiv(pin, onChange)
-    configSaveButton(isSaving, styles["saveButton"])
-    val pinId = pin._id
-    if (pinId != null) {
-        retireButton(onRemoveFunc(pinId), styles["deleteButton"])
-    }
 }
 
 private fun RBuilder.editorDiv(pin: Pin, onChange: (Event) -> Unit) = div {

@@ -22,7 +22,7 @@ import kotlin.test.Test
 
 class PlayerConfigEditorTest {
 
-    private val styles = useStyles("player/PlayerConfigEditor")
+    private val configFormStyles = useStyles("ConfigForm")
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
@@ -101,7 +101,7 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
         )
     }) exercise {
-        wrapper.find<Any>(".${styles["deleteButton"]}")
+        wrapper.find<Any>(".${configFormStyles["deleteButton"]}")
             .simulate("click")
         stubDispatchFunc.simulateSuccess<DeletePlayerCommand>()
     } verify {
@@ -130,7 +130,7 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
         )
     }) exercise {
-        wrapper.find<Any>(".${styles["deleteButton"]}")
+        wrapper.find<Any>(".${configFormStyles["deleteButton"]}")
             .simulate("click")
     } verify {
         stubDispatchFunc.dispatchList.isEmpty().assertIsEqualTo(true)

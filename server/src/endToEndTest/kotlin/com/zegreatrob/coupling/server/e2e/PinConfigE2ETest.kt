@@ -44,9 +44,7 @@ class PinConfigE2ETest {
             nameTextField.performSendKeys(newPinName)
         }
     } exercise {
-        with(PinConfigPage) {
-            saveButton.performClick()
-        }
+        ConfigForm.saveButton.performClick()
     } verify {
         with(PinConfigPage) {
             waitForPinNameToAppear(newPinName, tribe.id)
@@ -88,7 +86,7 @@ class PinConfigE2ETest {
             sdk.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin._id)
         } exercise {
-            PinConfigPage.deleteButton.performClick()
+            ConfigForm.deleteButton.performClick()
             browser.switchTo().alert().await()
                 .accept().await()
 
