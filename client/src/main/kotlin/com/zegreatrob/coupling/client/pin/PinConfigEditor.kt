@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.configForm
-import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.editor
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
@@ -48,7 +45,7 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
 
     val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
     val onRemove = pin._id?.let { pinId ->
-        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter(tribe.pinListPath()) }
+        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter.pinList(tribe.id) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
 
@@ -63,8 +60,6 @@ val PinConfigEditor = reactFunction<PinConfigEditorProps> { (tribe, pin, pathSet
         }
     }
 }
-
-private fun Tribe.pinListPath() = "/${id.value}/pins"
 
 private fun RBuilder.pinConfigForm(
     pin: Pin,

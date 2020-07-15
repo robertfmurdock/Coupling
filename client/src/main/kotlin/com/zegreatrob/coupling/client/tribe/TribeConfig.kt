@@ -36,18 +36,26 @@ val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandF
     val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
     val updatedTribe = values.toTribe()
 
-    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter("/tribes/") }
-    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter("/tribes/") }
+    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter.tribeList() }
+    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter.tribeList() }
 
     configFrame(styles.className) {
         configHeader(tribe, pathSetter) { +"Tribe Configuration" }
         div {
-            span(styles["tribeConfigEditor"]) {
-                tribeConfigForm(updatedTribe, isNew, onChange, onSave, onDelete)
-            }
+            tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
             tribeCard(TribeCardProps(updatedTribe, pathSetter = pathSetter))
         }
     }
+}
+
+private fun RBuilder.tribeConfigEditor(
+    updatedTribe: Tribe,
+    isNew: Boolean,
+    onChange: (Event) -> Unit,
+    onSave: () -> Unit,
+    onDelete: (() -> Unit)?
+) = span(styles["tribeConfigEditor"]) {
+    tribeConfigForm(updatedTribe, isNew, onChange, onSave, onDelete)
 }
 
 private fun RBuilder.tribeConfigForm(

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -18,7 +19,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -71,9 +71,7 @@ private fun PairAssignmentDocument.onSaveFunc(
     dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     tribe: Tribe,
     pathSetter: (String) -> Unit
-) = dispatchFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter(tribe.id.currentPairPage()) })
-
-private fun TribeId.currentPairPage() = "/$value/pairAssignments/current/"
+) = dispatchFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter.currentPairs(tribe.id) })
 
 private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
     pA?.dropThePin(setPairAssignments)

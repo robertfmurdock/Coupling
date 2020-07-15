@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.render
@@ -7,8 +8,8 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
+import com.zegreatrob.coupling.client.tribeConfig
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
@@ -36,7 +37,7 @@ val TribeCard = reactFunction<TribeCardProps> { props ->
     styledSpan {
         attrs {
             classes = setOf(styles.className)
-            onClickFunction = { goToPairAssignments(props.pathSetter, props.tribe.id) }
+            onClickFunction = { props.pathSetter.currentPairs(props.tribe.id) }
             tabIndex = "0"
             tribeCardCss(size)
             setProp("data-tribe-id", tribe.id.value)
@@ -45,9 +46,6 @@ val TribeCard = reactFunction<TribeCardProps> { props ->
         tribeGravatar(tribe, size)
     }
 }
-
-private fun goToPairAssignments(pathSetter: (String) -> Unit, tribeId: TribeId) =
-    pathSetter("/${tribeId.value}/pairAssignments/current/")
 
 private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
     width = size.px
@@ -75,7 +73,8 @@ private fun RBuilder.tribeCardHeader(props: TribeCardProps) = with(props) {
 }
 
 private fun TribeCardProps.goToConfigTribe(event: Event) {
-    event.stopPropagation(); pathSetter("/${tribe.id.value}/edit/")
+    event.stopPropagation()
+    pathSetter.tribeConfig(tribe)
 }
 
 private fun Node.fitTribeName(size: Int) = fitty(

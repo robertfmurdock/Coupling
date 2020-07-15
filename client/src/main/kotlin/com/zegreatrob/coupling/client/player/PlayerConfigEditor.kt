@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.configForm
-import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.editor
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -13,7 +10,6 @@ import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
@@ -52,7 +48,7 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
     val updatedPlayer = values.toPlayer()
     val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
     val onRemove = player.id?.let {
-        dispatchFunc({ DeletePlayerCommand(tribe.id, it) }, { pathSetter(tribe.id.currentPairsPage()) })
+        dispatchFunc({ DeletePlayerCommand(tribe.id, it) }, { pathSetter.currentPairs(tribe.id) })
             .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
     }
 
@@ -67,8 +63,6 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
         }
     }
 }
-
-private fun TribeId.currentPairsPage() = "/$value/pairAssignments/current/"
 
 private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     `when` = shouldShowPrompt,

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.PathSetter
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.render
@@ -7,6 +8,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
+import com.zegreatrob.coupling.client.playerConfig
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.css.*
@@ -21,8 +23,6 @@ import react.dom.img
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
-
-typealias PathSetter = (String) -> Unit
 
 val RBuilder.playerCard get() = PlayerCard.render(this)
 
@@ -95,7 +95,7 @@ private fun handleNameClick(tribeId: TribeId, player: Player, pathSetter: PathSe
         if (pathSetter != null) {
             event.stopPropagation()
 
-            pathSetter("/${tribeId.value}/player/${player.id}/")
+            pathSetter.playerConfig(tribeId, player)
         }
     }
 

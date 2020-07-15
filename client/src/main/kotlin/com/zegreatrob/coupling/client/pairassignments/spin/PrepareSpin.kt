@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
+import com.zegreatrob.coupling.client.newPairAssignments
 import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -140,7 +141,7 @@ private fun RBuilder.spinButton(
 ) = a(classes = "super pink button") {
     attrs {
         classes += styles["spinButton"]
-        onClickFunction = { goToNewPairAssignments(pathSetter, tribe, playerSelections, selectedPins) }
+        onClickFunction = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) }
     }
     +"Spin!"
 }
@@ -187,30 +188,6 @@ private fun flipSelectionForPlayer(
     }
 }
 
-private fun goToNewPairAssignments(
-    pathSetter: (String) -> Unit,
-    tribe: Tribe,
-    playerSelections: List<Pair<Player, Boolean>>,
-    pinSelections: List<Pin>
-) = pathSetter(
-    "/${tribe.id.value}/pairAssignments/new?${buildQueryString(playerSelections, pinSelections)}"
-)
-
-private fun buildQueryString(playerSelections: List<Pair<Player, Boolean>>, pinSelections: List<Pin>) =
-    (playerSelections.buildQueryParameters() + pinSelections.buildQueryParameters())
-        .toQueryString()
-
-private fun List<Pair<Player, Boolean>>.buildQueryParameters() = filter { (_, isSelected) -> isSelected }
-    .map { it.first.id }.toProperty("player")
-
-
-private fun List<Pin>.buildQueryParameters() = map { it._id }.toProperty("pin")
-
-private fun List<Pair<String, String?>>.toQueryString() = toList().joinToString("&") { (propName, id) ->
-    "$propName=${encodeURIComponent(id)}"
-}
-
-private fun List<String?>.toProperty(propName: String) = map { propName to it }
 
 private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty())
     false
