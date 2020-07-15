@@ -79,7 +79,6 @@ class TribeConfigPageE2ETest {
             val tribe = buildTribe()
         }) {
             sdk.save(tribe)
-
             TribeConfigPage.goTo(tribe.id)
         } exercise {
             ConfigForm.deleteButton.performClick()
