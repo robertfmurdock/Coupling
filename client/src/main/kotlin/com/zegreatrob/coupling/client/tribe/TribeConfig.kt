@@ -13,8 +13,6 @@ import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
-import kotlinx.html.js.onClickFunction
-import kotlinx.html.js.onSubmitFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
@@ -35,56 +33,37 @@ private val styles = useStyles("tribe/TribeConfig")
 val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandFunc) ->
     val isNew = tribe.id.value == ""
 
-    val (values, onChange) = useForm(tribe.toJson())
-    val updatedTribe = values.toTribe().withDefaultTribeId()
+    val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
+    val updatedTribe = values.toTribe()
 
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter("/tribes/") }
-    val onDelete = commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter("/tribes/") }
+    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter("/tribes/") }
 
     configFrame(styles.className) {
         configHeader(tribe, pathSetter) { +"Tribe Configuration" }
         div {
             span(styles["tribeConfigEditor"]) {
-                configInputs(
-                    tribe = updatedTribe,
-                    isNew = isNew,
-                    onChange = onChange,
-                    onSave = onSave,
-                    onDelete = onDelete
-                )
+                tribeConfigForm(updatedTribe, isNew, onChange, onSave, onDelete)
             }
             tribeCard(TribeCardProps(updatedTribe, pathSetter = pathSetter))
         }
     }
 }
 
+private fun RBuilder.tribeConfigForm(
+    updatedTribe: Tribe,
+    isNew: Boolean,
+    onChange: (Event) -> Unit,
+    onSave: () -> Unit,
+    onDelete: (() -> Unit)?
+) = configForm(onSubmit = onSave, onRemove = onDelete) {
+    editorDiv(updatedTribe, onChange, isNew)
+}
+
 private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
     this
 else
     copy(id = TribeId("${uuid4()}"))
-
-private inline fun RBuilder.retireButton(crossinline onDelete: () -> Unit) =
-    div("small red button delete-tribe-button") {
-        attrs { onClickFunction = { onDelete() } }
-        +"Retire"
-    }
-
-private fun RBuilder.configInputs(
-    tribe: Tribe,
-    isNew: Boolean,
-    onChange: (Event) -> Unit,
-    onSave: () -> Unit,
-    onDelete: () -> Unit
-) {
-    form {
-        attrs { onSubmitFunction = { it.preventDefault(); onSave() } }
-        editorDiv(tribe, onChange, isNew)
-        configSaveButton(false, styles["saveButton"])
-        if (!isNew) {
-            retireButton(onDelete)
-        }
-    }
-}
 
 private fun RBuilder.editorDiv(
     tribe: Tribe,

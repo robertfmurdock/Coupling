@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
 object TribeConfigPage : StyleSyntax {
     override val styles = loadStyles("tribe/TribeConfig")
     private val pageElement = element
-    val saveButton by getting()
 
     val tribeNameInput = element(By.id("tribe-name"))
     val tribeEmailInput = element(By.id("tribe-email"))
@@ -19,7 +18,6 @@ object TribeConfigPage : StyleSyntax {
     val altBadgeNameInput = element(By.id("alt-badge-name"))
     val differentBadgesOption = element(By.css("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]"))
 
-    val deleteButton = element(By.className("delete-tribe-button"))
     val checkedOption = element(By.css("#pairing-rule option:checked"))
 
     suspend fun goTo(tribeId: TribeId) {

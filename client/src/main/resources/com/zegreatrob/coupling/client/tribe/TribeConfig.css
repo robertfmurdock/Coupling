@@ -7,10 +7,6 @@
     display: flex;
 }
 
-:local(.saveButton) {
-    /*! Do not remove */
-}
-
 :local(.tribeConfigEditor) {
     display: inline-block;
     flex-grow: 2;

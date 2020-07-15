@@ -37,7 +37,7 @@ class TribeConfigPageE2ETest {
                 differentBadgesOption.performClick()
             }
         } exercise {
-            page.saveButton.performClick()
+            ConfigForm.saveButton.performClick()
             TribeListPage.waitForPage()
             page.goTo(tribe.id)
         } verify {
@@ -82,7 +82,7 @@ class TribeConfigPageE2ETest {
 
             TribeConfigPage.goTo(tribe.id)
         } exercise {
-            TribeConfigPage.deleteButton.performClick()
+            ConfigForm.deleteButton.performClick()
             TribeListPage.waitForPage()
         } verify {
             TribeListPage.tribeCardElements

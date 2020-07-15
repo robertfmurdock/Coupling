@@ -11,7 +11,7 @@ import react.useState
 private val styles = useStyles("ConfigForm")
 
 fun RBuilder.configForm(
-    name: String,
+    name: String = "",
     onSubmit: () -> Unit,
     onRemove: (() -> Unit)?,
     entityEditor: RBuilder.() -> Unit
