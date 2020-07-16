@@ -28,7 +28,7 @@ private val styles = useStyles("player/PlayerConfig")
 
 val PlayerConfig = reactFunction<PlayerConfigProps> { (tribe, player, players, pathSetter, reload, commandFunc) ->
     configFrame(styles.className) {
-        playerConfigEditor(tribe, player, pathSetter, reload, commandFunc)
+        playerConfigEditor(PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc))
         div {
             playerRoster(
                 PlayerRosterProps(

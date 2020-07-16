@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
 
 private val LoadedPinList = dataLoadWrapper(PinList)
-private val RBuilder.loadedPinList get() = LoadedPinList.render(this)
+private val RBuilder.loadedPinList get() = builder(LoadedPinList)
 
 val PinListPage = tribePageFunction { props, tribeId ->
     loadedPinList(dataLoadProps(

@@ -35,7 +35,7 @@ val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
 }
 
 fun RBuilder.tribeBrowser(tribe: Tribe, pathSetter: (String) -> Unit) =
-    TribeBrowser.render(this)(TribeBrowserProps(tribe, pathSetter))
+    (this.builder(TribeBrowser))(TribeBrowserProps(tribe, pathSetter))
 
 private fun RBuilder.notificationSection() = styledSpan {
     css { position = Position.relative }

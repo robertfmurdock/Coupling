@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.json.toPlayer
@@ -48,7 +48,7 @@ val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
     }
 }
 
-val RBuilder.serverMessage get() = ServerMessage.render(this)
+val RBuilder.serverMessage get() = this.builder(ServerMessage)
 
 interface WebsocketMessage {
     val text: String

@@ -14,7 +14,7 @@ import react.RProps
 import react.dom.div
 import react.dom.span
 
-val RBuilder.pairReportTable get() = PairReportTable.render(this)
+val RBuilder.pairReportTable get() = this.builder(PairReportTable)
 
 private val styles = useStyles("stats/PairReportTable")
 

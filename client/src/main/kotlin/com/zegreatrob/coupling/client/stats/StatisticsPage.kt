@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import react.RBuilder
 
 private val LoadedPairAssignments by lazy { dataLoadWrapper(TribeStatistics) }
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
+private val RBuilder.loadedPairAssignments get() = this.builder(LoadedPairAssignments)
 
 val StatisticsPage = tribePageFunction { props, tribeId ->
     loadedPairAssignments(dataLoadProps(

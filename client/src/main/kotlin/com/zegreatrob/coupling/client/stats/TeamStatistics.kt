@@ -6,7 +6,7 @@ import react.RProps
 import react.dom.div
 import react.dom.span
 
-val RBuilder.teamStatistics get() = TeamStatistics.render(this)
+val RBuilder.teamStatistics get() = this.builder(TeamStatistics)
 
 data class TeamStatisticsProps(
     val spinsUntilFullRotation: Int,

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
@@ -10,7 +10,7 @@ import react.RBuilder
 
 private val LoadedPairAssignments by lazy { dataLoadWrapper(PairAssignments) }
 
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
+private val RBuilder.loadedPairAssignments get() = builder(LoadedPairAssignments)
 
 val NewPairAssignmentsPage = tribePageFunction { props, tribeId ->
     with(props) {

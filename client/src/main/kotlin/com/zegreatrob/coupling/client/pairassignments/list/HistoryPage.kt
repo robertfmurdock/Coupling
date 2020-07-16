@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import react.RBuilder
 
 private val LoadedPairAssignments by lazy { dataLoadWrapper(History) }
-private val RBuilder.loadedPairAssignments get() = LoadedPairAssignments.render(this)
+private val RBuilder.loadedPairAssignments get() = builder(LoadedPairAssignments)
 
 val HistoryPage = tribePageFunction { props, tribeId ->
     loadedPairAssignments(dataLoadProps(

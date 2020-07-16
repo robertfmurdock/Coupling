@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -13,7 +13,7 @@ import react.dom.button
 import react.dom.div
 import react.router.dom.routeLink
 
-val RBuilder.playerRoster get() = PlayerRoster.render(this)
+val RBuilder.playerRoster get() = this.builder(PlayerRoster)
 
 data class PlayerRosterProps(
     val label: String? = null,

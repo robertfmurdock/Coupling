@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -16,7 +16,7 @@ import react.RProps
 import react.dom.RDOMBuilder
 import react.dom.div
 
-val RBuilder.playerHeatmap get() = PlayerHeatmap.render(this)
+val RBuilder.playerHeatmap get() = this.builder(PlayerHeatmap)
 
 data class PlayerHeatmapProps(
     val tribe: Tribe,

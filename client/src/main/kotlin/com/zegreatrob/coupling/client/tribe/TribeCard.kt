@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -28,7 +28,7 @@ import styled.styledSpan
 
 data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
-val RBuilder.tribeCard get() = TribeCard.render(this)
+val RBuilder.tribeCard get() = this.builder(TribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 

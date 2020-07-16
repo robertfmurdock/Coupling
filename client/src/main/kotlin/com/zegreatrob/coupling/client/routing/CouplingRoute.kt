@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
 import react.RClass
@@ -21,7 +21,7 @@ val CouplingRoute = reactFunction<CouplingRouteProps> { props ->
     }
 }
 
-fun RBuilder.couplingRoute(path: String, rComponent: RClass<PageProps>) = CouplingRoute.render(this)(
+fun RBuilder.couplingRoute(path: String, rComponent: RClass<PageProps>) = (this.builder(CouplingRoute))(
     CouplingRouteProps(path, rComponent)
 )
 

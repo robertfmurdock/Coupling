@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.PathSetter
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -24,7 +24,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-val RBuilder.playerCard get() = PlayerCard.render(this)
+val RBuilder.playerCard get() = builder(PlayerCard)
 
 data class PlayerCardProps(
     val tribeId: TribeId,

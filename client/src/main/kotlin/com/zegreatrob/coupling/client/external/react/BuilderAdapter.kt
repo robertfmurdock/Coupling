@@ -14,4 +14,4 @@ operator fun BuilderAdapter<EmptyProps>.invoke(
     handler: RHandler<EmptyProps> = {}
 ) = invoke(EmptyProps, key, ref, handler)
 
-fun <P : RProps> RClass<P>.render(builder: RBuilder) = BuilderAdapter(builder, this)
+fun <P : RProps> RBuilder.builder(component: RClass<P>) = BuilderAdapter(this, component)

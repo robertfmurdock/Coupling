@@ -28,16 +28,7 @@ data class PlayerConfigEditorProps(
 
 val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
 
-fun RBuilder.playerConfigEditor(
-    tribe: Tribe,
-    player: Player,
-    pathSetter: (String) -> Unit,
-    reload: () -> Unit,
-    dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) = child(
-    PlayerConfigEditor,
-    PlayerConfigEditorProps(tribe, player, pathSetter, reload, dispatchFunc)
-)
+val RBuilder.playerConfigEditor get() = builder(PlayerConfigEditor)
 
 private val styles = useStyles("player/PlayerConfigEditor")
 

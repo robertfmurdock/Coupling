@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.reactFunction
-import com.zegreatrob.coupling.client.external.react.render
+import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.user.GoogleSignInCommand
 import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
@@ -35,4 +35,4 @@ val LoginChooser = reactFunction<LoginChooserProps> { (commandFunc) ->
 }
 
 fun RBuilder.loginChooser(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) =
-    LoginChooser.render(this)(LoginChooserProps(dispatchFunc))
+    (this.builder(LoginChooser))(LoginChooserProps(dispatchFunc))
