@@ -27,7 +27,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
             }
         }
@@ -43,7 +43,7 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("io.github.microutils:kotlin-logging:1.8.0.1")
+                implementation("io.github.microutils:kotlin-logging:1.8.3")
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.11.1")
             }
         }
