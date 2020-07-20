@@ -4,14 +4,14 @@ import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.minenzyme.external.shallow
-import com.zegreatrob.minenzyme.external.simulateInputChange
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minenzyme.simulateInputChange
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.invoke
@@ -33,10 +33,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(
-            PlayerConfigEditor,
-            PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc())
-        )
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -52,10 +49,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(
-            PlayerConfigEditor,
-            PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc())
-        )
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -109,7 +103,6 @@ class PlayerConfigEditorTest {
             .assertIsEqualTo(
                 listOf(DeletePlayerCommand(tribe.id, player.id!!))
             )
-
         pathSetterSpy.spyReceivedValues.contains(
             "/${tribe.id.value}/pairAssignments/current/"
         )

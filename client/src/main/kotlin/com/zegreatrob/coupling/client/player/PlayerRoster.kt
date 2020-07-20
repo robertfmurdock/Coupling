@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
+import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -13,7 +13,7 @@ import react.dom.button
 import react.dom.div
 import react.router.dom.routeLink
 
-val RBuilder.playerRoster get() = this.builder(PlayerRoster)
+val RBuilder.playerRoster get() = builder(PlayerRoster)
 
 data class PlayerRosterProps(
     val label: String? = null,
@@ -25,19 +25,18 @@ data class PlayerRosterProps(
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster =
-    reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
-        div(classes = className) {
-            attrs { classes += styles.className }
-            div {
-                div(classes = styles["header"]) {
-                    +(label ?: "Players")
-                }
-                renderPlayers(players, tribeId, pathSetter)
+val PlayerRoster = reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
+    div(classes = className) {
+        attrs { classes += styles.className }
+        div {
+            div(classes = styles["header"]) {
+                +(label ?: "Players")
             }
-            addPlayerButton(tribeId)
+            renderPlayers(players, tribeId, pathSetter)
         }
+        addPlayerButton(tribeId)
     }
+}
 
 private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${tribeId.value}/player/new/") {
     button(classes = "large orange button") {

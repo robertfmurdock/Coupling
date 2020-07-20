@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.EmptyProps
-import com.zegreatrob.minreact.external.react.reactFunction
+import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import react.RBuilder
 import react.RHandler

@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.minenzyme.external.ShallowWrapper
-import com.zegreatrob.minenzyme.external.shallow
+import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

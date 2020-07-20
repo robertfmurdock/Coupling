@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.external.react.reactFunction
+import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.tribe.TribeId
 import react.RBuilder

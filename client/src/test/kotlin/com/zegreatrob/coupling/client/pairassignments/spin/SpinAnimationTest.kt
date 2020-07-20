@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.minenzyme.external.ShallowWrapper
-import com.zegreatrob.minenzyme.external.findByClass
+import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minenzyme.external.shallow
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.client.player.PlayerCard

@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.minenzyme.external.findByClass
+import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minenzyme.external.shallow
-import com.zegreatrob.minenzyme.external.simulateInputChange
+import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minenzyme.simulateInputChange
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId

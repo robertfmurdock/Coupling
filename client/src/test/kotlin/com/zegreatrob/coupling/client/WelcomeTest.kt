@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minenzyme.external.ShallowWrapper
+import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minenzyme.external.shallow
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.welcome.RandomProvider
 import com.zegreatrob.coupling.client.welcome.Welcome
