@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe

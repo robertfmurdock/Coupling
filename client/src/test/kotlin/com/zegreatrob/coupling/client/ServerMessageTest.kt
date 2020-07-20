@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.enzyme.external.shallow
+import com.zegreatrob.minenzyme.external.shallow
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.client.user.WebsocketProps

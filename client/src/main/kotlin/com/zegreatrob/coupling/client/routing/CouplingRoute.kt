@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder

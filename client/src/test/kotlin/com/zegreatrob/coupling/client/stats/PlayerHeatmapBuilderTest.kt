@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.enzyme.external.shallow
+import com.zegreatrob.minenzyme.external.shallow
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe

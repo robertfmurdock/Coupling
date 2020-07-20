@@ -41,7 +41,7 @@ dependencies {
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
-    implementation(project(":react"))
+    implementation("com.zegreatrob.testmints:minreact:+")
     implementation("com.zegreatrob.testmints:action:+")
     implementation("com.zegreatrob.testmints:action-async:+")
     implementation("com.soywiz.korlibs.klock:klock:1.10.6")
@@ -60,8 +60,8 @@ dependencies {
     }
 
     testImplementation(project(":stub-model"))
-    testImplementation(project(":enzyme"))
     testImplementation(project(":test-logging"))
+    testImplementation("com.zegreatrob.testmints:minenzyme:+")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")

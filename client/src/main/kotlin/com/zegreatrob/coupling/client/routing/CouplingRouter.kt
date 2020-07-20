@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage

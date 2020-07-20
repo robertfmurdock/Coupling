@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.coupling.enzyme.external.shallow
-import com.zegreatrob.coupling.enzyme.external.simulateInputChange
+import com.zegreatrob.minenzyme.external.shallow
+import com.zegreatrob.minenzyme.external.simulateInputChange
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player

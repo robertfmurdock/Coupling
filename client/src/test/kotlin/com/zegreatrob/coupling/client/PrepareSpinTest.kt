@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.enzyme.external.ShallowWrapper
-import com.zegreatrob.coupling.enzyme.external.findByClass
+import com.zegreatrob.minenzyme.external.ShallowWrapper
+import com.zegreatrob.minenzyme.external.findByClass
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.enzyme.external.shallow
+import com.zegreatrob.minenzyme.external.shallow
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinProps
 import com.zegreatrob.coupling.client.pin.PinButton

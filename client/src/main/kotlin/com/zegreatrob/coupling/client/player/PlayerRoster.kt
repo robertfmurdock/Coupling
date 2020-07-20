@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player

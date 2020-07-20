@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.enzyme.external.ShallowWrapper
-import com.zegreatrob.coupling.enzyme.external.shallow
+import com.zegreatrob.minenzyme.external.ShallowWrapper
+import com.zegreatrob.minenzyme.external.shallow
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.invoke

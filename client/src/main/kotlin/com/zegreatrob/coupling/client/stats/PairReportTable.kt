@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import react.RBuilder
 import react.RProps
 import react.dom.div

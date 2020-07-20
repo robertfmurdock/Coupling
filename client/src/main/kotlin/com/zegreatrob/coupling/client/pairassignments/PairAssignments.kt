@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend

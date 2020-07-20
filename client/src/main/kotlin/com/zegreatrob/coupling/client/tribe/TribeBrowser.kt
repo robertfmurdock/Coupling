@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.react.external.react.reactFunction
+import com.zegreatrob.minreact.external.react.reactFunction
 import kotlinx.css.*
 import kotlinx.html.classes
 import react.RBuilder
