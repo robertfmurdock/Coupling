@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minreact.reactFunction
 import react.RProps
 import react.dom.div
@@ -20,25 +19,20 @@ data class PlayerConfigProps(
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : RProps
 
-interface PlayerConfigDispatcher : SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
-    override val playerRepository: PlayerRepository
-}
-
 private val styles = useStyles("player/PlayerConfig")
 
-val PlayerConfig =
-    reactFunction<PlayerConfigProps> { (tribe, player, players, pathSetter, reload, commandFunc) ->
-        configFrame(styles.className) {
-            playerConfigEditor(PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc))
-            div {
-                playerRoster(
-                    PlayerRosterProps(
-                        players = players,
-                        tribeId = tribe.id,
-                        pathSetter = pathSetter,
-                        className = styles["playerRoster"]
-                    )
+val PlayerConfig = reactFunction<PlayerConfigProps> { (tribe, player, players, pathSetter, reload, commandFunc) ->
+    configFrame(styles.className) {
+        playerConfigEditor(PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc))
+        div {
+            playerRoster(
+                PlayerRosterProps(
+                    players = players,
+                    tribeId = tribe.id,
+                    pathSetter = pathSetter,
+                    className = styles["playerRoster"]
                 )
-            }
+            )
         }
     }
+}
