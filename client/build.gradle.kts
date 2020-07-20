@@ -60,6 +60,7 @@ dependencies {
     }
 
     testImplementation(project(":stub-model"))
+    testImplementation(project(":enzyme"))
     testImplementation(project(":test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")

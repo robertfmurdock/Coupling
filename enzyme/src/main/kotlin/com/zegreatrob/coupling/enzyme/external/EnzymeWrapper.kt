@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external
+package com.zegreatrob.coupling.enzyme.external
 
 import react.RClass
 import react.RProps

@@ -11,15 +11,10 @@ kotlin {
 }
 
 dependencies {
-    api(npm("core-js", "^3.6.5"))
-    api("org.jetbrains:kotlin-react:16.13.1-pre.110-kotlin-1.3.72")
-    api("org.jetbrains:kotlin-react-dom:16.13.1-pre.110-kotlin-1.3.72")
-
-    testImplementation(project(":enzyme"))
-    testImplementation("org.jetbrains.kotlin:kotlin-test-common")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-js")
+    implementation(npm("enzyme", "^3.11.0"))
+    implementation(npm("enzyme-adapter-react-16", "^1.15.2"))
+    implementation("org.jetbrains:kotlin-react:16.13.1-pre.110-kotlin-1.3.72")
     testImplementation("com.zegreatrob.testmints:standard:+")
-    testImplementation("com.zegreatrob.testmints:minassert:+")
 }
 
 tasks {

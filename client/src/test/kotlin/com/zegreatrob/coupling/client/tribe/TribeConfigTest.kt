@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.ShallowWrapper
-import com.zegreatrob.coupling.client.external.shallow
+import com.zegreatrob.coupling.enzyme.external.ShallowWrapper
+import com.zegreatrob.coupling.enzyme.external.shallow
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
