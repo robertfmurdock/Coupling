@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
+    implementation(project(":react"))
     implementation("com.zegreatrob.testmints:action:+")
     implementation("com.zegreatrob.testmints:action-async:+")
     implementation("com.soywiz.korlibs.klock:klock:1.10.6")

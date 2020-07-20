@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.user.GoogleSignInCommand
@@ -16,23 +16,24 @@ data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInComm
 
 private val styles = useStyles("LoginChooser")
 
-val LoginChooser = reactFunction<LoginChooserProps> { (commandFunc) ->
-    val googleSignInFunc = commandFunc({ GoogleSignInCommand }) { window.location.pathname = "/" }
-    div(classes = styles.className) {
-        div {
-            div(classes = "google-login super white button") {
-                attrs { onClickFunction = { googleSignInFunc() } }
-                +"Google"
+val LoginChooser =
+    reactFunction<LoginChooserProps> { (commandFunc) ->
+        val googleSignInFunc = commandFunc({ GoogleSignInCommand }) { window.location.pathname = "/" }
+        div(classes = styles.className) {
+            div {
+                div(classes = "google-login super white button") {
+                    attrs { onClickFunction = { googleSignInFunc() } }
+                    +"Google"
+                }
             }
-        }
-        div {
-            div(classes = "ms-login super blue button") {
-                attrs { onClickFunction = { window.location.pathname = "/microsoft-login" } }
-                +"Microsoft"
+            div {
+                div(classes = "ms-login super blue button") {
+                    attrs { onClickFunction = { window.location.pathname = "/microsoft-login" } }
+                    +"Microsoft"
+                }
             }
         }
     }
-}
 
 fun RBuilder.loginChooser(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) =
     (this.builder(LoginChooser))(LoginChooserProps(dispatchFunc))

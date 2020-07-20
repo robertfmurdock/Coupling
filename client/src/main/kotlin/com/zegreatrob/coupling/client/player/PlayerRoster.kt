@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
@@ -25,18 +25,19 @@ data class PlayerRosterProps(
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster = reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
-    div(classes = className) {
-        attrs { classes += styles.className }
-        div {
-            div(classes = styles["header"]) {
-                +(label ?: "Players")
+val PlayerRoster =
+    reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
+        div(classes = className) {
+            attrs { classes += styles.className }
+            div {
+                div(classes = styles["header"]) {
+                    +(label ?: "Players")
+                }
+                renderPlayers(players, tribeId, pathSetter)
             }
-            renderPlayers(players, tribeId, pathSetter)
+            addPlayerButton(tribeId)
         }
-        addPlayerButton(tribeId)
     }
-}
 
 private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${tribeId.value}/player/new/") {
     button(classes = "large orange button") {

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
@@ -14,15 +14,16 @@ import react.dom.div
 private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
 private val RBuilder.loadedRetiredPlayer get() = this.builder(LoadedRetiredPlayer)
 
-val RetiredPlayerPage = reactFunction<PageProps> { props ->
-    val tribeId = props.tribeId
-    val playerId = props.playerId
+val RetiredPlayerPage =
+    reactFunction<PageProps> { props ->
+        val tribeId = props.tribeId
+        val playerId = props.playerId
 
-    if (tribeId != null && playerId != null)
-        loadedRetiredPlayer(props, tribeId, playerId)
-    else
-        div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
-}
+        if (tribeId != null && playerId != null)
+            loadedRetiredPlayer(props, tribeId, playerId)
+        else
+            div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
+    }
 
 private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, playerId: String) =
     loadedRetiredPlayer(dataLoadProps(

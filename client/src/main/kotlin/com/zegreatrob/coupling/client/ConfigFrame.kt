@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import kotlinx.html.classes
 import react.RBuilder
@@ -18,9 +18,10 @@ fun RBuilder.configFrame(className: String? = null, handler: RHandler<ConfigFram
 
 data class ConfigFrameProps(val className: String?) : RProps
 
-val ConfigFrame = reactFunction<ConfigFrameProps> { props ->
-    div(classes = styles.className) {
-        attrs { props.className?.let { classes += it } }
-        div { props.children() }
+val ConfigFrame =
+    reactFunction<ConfigFrameProps> { props ->
+        div(classes = styles.className) {
+            attrs { props.className?.let { classes += it } }
+            div { props.children() }
+        }
     }
-}

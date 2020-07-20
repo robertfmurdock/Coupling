@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
@@ -40,27 +40,28 @@ data class PrepareSpinProps(
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
-    val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
-    val (pinSelections, setPinSelections) = useState(pins.map { it._id })
-    div(classes = styles.className) {
-        div { tribeBrowser(tribe, pathSetter) }
-        div {
-            div { spinButton(tribe, playerSelections, pins.selectByIds(pinSelections), pathSetter) }
-            optionalPinSelector(pins, pinSelections, setPinSelections)
-            div(styles["player-selector"]) {
-                h1 { +"Please select players to spin." }
-                h2 { +"Tap a player to include or exclude them." }
-                +"When you're done with your selections, hit the spin button above!"
-                div {
-                    selectAllButton(playerSelections, setPlayerSelections)
-                    selectNoneButton(playerSelections, setPlayerSelections)
+val PrepareSpin =
+    reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
+        val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
+        val (pinSelections, setPinSelections) = useState(pins.map { it._id })
+        div(classes = styles.className) {
+            div { tribeBrowser(tribe, pathSetter) }
+            div {
+                div { spinButton(tribe, playerSelections, pins.selectByIds(pinSelections), pathSetter) }
+                optionalPinSelector(pins, pinSelections, setPinSelections)
+                div(styles["player-selector"]) {
+                    h1 { +"Please select players to spin." }
+                    h2 { +"Tap a player to include or exclude them." }
+                    +"When you're done with your selections, hit the spin button above!"
+                    div {
+                        selectAllButton(playerSelections, setPlayerSelections)
+                        selectNoneButton(playerSelections, setPlayerSelections)
+                    }
+                    selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
                 }
-                selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
             }
         }
     }
-}
 
 private fun defaultSelections(players: List<Player>, history: List<PairAssignmentDocument>) = players.map { player ->
     player to isInLastSetOfPairs(player, history)

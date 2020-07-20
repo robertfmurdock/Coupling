@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -30,23 +30,24 @@ val disconnectedMessage = json("text" to "Not connected", "players" to emptyArra
 
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
-    val (message, setMessage) = useState(disconnectedMessage)
-    div {
-        websocket {
-            attrs {
-                url = buildSocketUrl(tribeId, useSsl)
-                onMessage = { setMessage(JSON.parse(it)) }
-                onClose = { setMessage(disconnectedMessage) }
+val ServerMessage =
+    reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
+        val (message, setMessage) = useState(disconnectedMessage)
+        div {
+            websocket {
+                attrs {
+                    url = buildSocketUrl(tribeId, useSsl)
+                    onMessage = { setMessage(JSON.parse(it)) }
+                    onClose = { setMessage(disconnectedMessage) }
+                }
+            }
+            span { +message.text }
+            div {
+                message.players.map { it.toPlayer() }
+                    .map { playerCard(PlayerCardProps(tribeId, it, size = 50)) }
             }
         }
-        span { +message.text }
-        div {
-            message.players.map { it.toPlayer() }
-                .map { playerCard(PlayerCardProps(tribeId, it, size = 50)) }
-        }
     }
-}
 
 val RBuilder.serverMessage get() = this.builder(ServerMessage)
 

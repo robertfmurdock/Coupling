@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.assignedPair
@@ -45,19 +45,20 @@ fun RBuilder.spinAnimation(tribe: Tribe, rosteredPairAssignments: RosteredPairAs
         SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
     )
 
-val SpinAnimationPanel = reactFunction<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
-    val pairAssignments = rosteredPairAssignments.pairAssignments
-    val players = rosteredPairAssignments.selectedPlayers
+val SpinAnimationPanel =
+    reactFunction<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
+        val pairAssignments = rosteredPairAssignments.pairAssignments
+        val players = rosteredPairAssignments.selectedPlayers
 
-    val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
+        val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
 
-    div(classes = styles.className) {
-        pairAssignmentsHeader(pairAssignments)
-        assignedPairs(tribe, revealedPairs)
-        playerSpotlight(shownPlayer)
-        playerRoster(rosterPlayers)
+        div(classes = styles.className) {
+            pairAssignmentsHeader(pairAssignments)
+            assignedPairs(tribe, revealedPairs)
+            playerSpotlight(shownPlayer)
+            playerRoster(rosterPlayers)
+        }
     }
-}
 
 private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) = div(
     classes = styles["pairAssignments"]

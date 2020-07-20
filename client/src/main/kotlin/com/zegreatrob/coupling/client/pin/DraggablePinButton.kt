@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.model.pin.Pin
@@ -23,17 +23,18 @@ data class DraggablePinButtonProps(val pin: Pin, val scale: PinButtonScale) : RP
 
 private val styles = useStyles("pin/DraggablePin")
 
-val DraggablePinButton = reactFunction<DraggablePinButtonProps> { (pin, scale) ->
-    val (_, drag) = useDrag(itemType = pinDragItemType, itemId = pin._id!!, collect = { })
-    val draggableRef = useRef<Node?>(null)
+val DraggablePinButton =
+    reactFunction<DraggablePinButtonProps> { (pin, scale) ->
+        val (_, drag) = useDrag(itemType = pinDragItemType, itemId = pin._id!!, collect = { })
+        val draggableRef = useRef<Node?>(null)
 
-    drag(draggableRef)
+        drag(draggableRef)
 
-    span {
-        attrs {
-            ref = draggableRef
-            classes += listOf(styles.className, styles["hoverZoom"])
+        span {
+            attrs {
+                ref = draggableRef
+                classes += listOf(styles.className, styles["hoverZoom"])
+            }
+            pinButton(pin, scale, key = null, showTooltip = true)
         }
-        pinButton(pin, scale, key = null, showTooltip = true)
     }
-}

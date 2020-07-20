@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/json" />
             <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/model" />
+            <option value="$PROJECT_DIR$/react" />
             <option value="$PROJECT_DIR$/repository" />
             <option value="$PROJECT_DIR$/repository/compound" />
             <option value="$PROJECT_DIR$/repository/dynamo" />

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -26,22 +26,23 @@ data class PlayerHeatmapProps(
 
 private val styles = useStyles("stats/PlayerHeatmap")
 
-val PlayerHeatmap = reactFunction<PlayerHeatmapProps> { (tribe, players, heatmapData) ->
-    div(classes = styles["rightSection"]) {
-        div(classes = styles["heatmapPlayersTopRow"]) {
-            div(classes = styles["spacer"]) {}
-            players.map { player ->
-                keyedPlayerCard(player, tribe)
+val PlayerHeatmap =
+    reactFunction<PlayerHeatmapProps> { (tribe, players, heatmapData) ->
+        div(classes = styles["rightSection"]) {
+            div(classes = styles["heatmapPlayersTopRow"]) {
+                div(classes = styles["spacer"]) {}
+                players.map { player ->
+                    keyedPlayerCard(player, tribe)
+                }
             }
-        }
-        div(classes = styles["heatmapPlayersSideRow"]) {
-            players.map { player ->
-                keyedPlayerCard(player, tribe)
+            div(classes = styles["heatmapPlayersSideRow"]) {
+                players.map { player ->
+                    keyedPlayerCard(player, tribe)
+                }
             }
+            heatmap(HeatmapProps(heatmapData, styles["heatmap"]))
         }
-        heatmap(HeatmapProps(heatmapData, styles["heatmap"]))
     }
-}
 
 private fun RDOMBuilder<DIV>.keyedPlayerCard(player: Player, tribe: Tribe) = div(classes = styles["playerCard"]) {
     attrs { key = player.id ?: "" }

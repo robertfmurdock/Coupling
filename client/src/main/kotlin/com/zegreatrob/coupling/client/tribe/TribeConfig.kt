@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlinx.html.InputType
 import kotlinx.html.id
@@ -30,23 +31,24 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 
 private val styles = useStyles("tribe/TribeConfig")
 
-val TribeConfig = reactFunction<TribeConfigProps> { (tribe, pathSetter, commandFunc) ->
-    val isNew = tribe.id.value == ""
+val TribeConfig =
+    reactFunction<TribeConfigProps> { (tribe, pathSetter, commandFunc) ->
+        val isNew = tribe.id.value == ""
 
-    val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
-    val updatedTribe = values.toTribe()
+        val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
+        val updatedTribe = values.toTribe()
 
-    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter.tribeList() }
-    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter.tribeList() }
+        val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter.tribeList() }
+        val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter.tribeList() }
 
-    configFrame(styles.className) {
-        configHeader(tribe, pathSetter) { +"Tribe Configuration" }
-        div {
-            tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
-            tribeCard(TribeCardProps(updatedTribe, pathSetter = pathSetter))
+        configFrame(styles.className) {
+            configHeader(tribe, pathSetter) { +"Tribe Configuration" }
+            div {
+                tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
+                tribeCard(TribeCardProps(updatedTribe, pathSetter = pathSetter))
+            }
         }
     }
-}
 
 private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
     this

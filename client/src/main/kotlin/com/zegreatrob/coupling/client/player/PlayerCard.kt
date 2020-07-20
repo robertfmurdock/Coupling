@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.PathSetter
 import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -38,18 +38,19 @@ data class PlayerCardProps(
 
 private val styles = useStyles("player/PlayerCard")
 
-val PlayerCard = reactFunction<PlayerCardProps> { props ->
-    val (tribeId, player, pathSetter, className, size, onClick, deselected) = props
-    styledDiv {
-        attrs {
-            classes += additionalClasses(className, deselected)
-            playerCardStyle(size)
-            onClickFunction = onClick
+val PlayerCard =
+    reactFunction<PlayerCardProps> { props ->
+        val (tribeId, player, pathSetter, className, size, onClick, deselected) = props
+        styledDiv {
+            attrs {
+                classes += additionalClasses(className, deselected)
+                playerCardStyle(size)
+                onClickFunction = onClick
+            }
+            playerGravatarImage(player, size)
+            child(playerCardHeaderElement(tribeId, player, pathSetter, size))
         }
-        playerGravatarImage(player, size)
-        child(playerCardHeaderElement(tribeId, player, pathSetter, size))
     }
-}
 
 private fun additionalClasses(className: String?, deselected: Boolean) = setOf(className, styles["player"])
     .filterNotNull()

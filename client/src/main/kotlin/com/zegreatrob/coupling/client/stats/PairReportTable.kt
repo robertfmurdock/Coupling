@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -20,13 +21,14 @@ private val styles = useStyles("stats/PairReportTable")
 
 data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : RProps
 
-val PairReportTable = reactFunction<PairReportTableProps> { (tribe, pairReports) ->
-    div(classes = styles.className) {
-        pairReports.mapIndexed { index, pairReport ->
-            pairReport(index, pairReport, tribe)
+val PairReportTable =
+    reactFunction<PairReportTableProps> { (tribe, pairReports) ->
+        div(classes = styles.className) {
+            pairReports.mapIndexed { index, pairReport ->
+                pairReport(index, pairReport, tribe)
+            }
         }
     }
-}
 
 private fun RBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div(styles["pairReport"]) {
     attrs { key = "$index" }

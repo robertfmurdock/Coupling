@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.css.*
@@ -39,20 +39,21 @@ fun RBuilder.pinButton(
 
 private val styles = useStyles("pin/PinButton")
 
-val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
-    styledDiv {
-        attrs {
-            classes += listOf(className, styles.className)
-            css { scaledStyles(scale) }
-            onClickFunction = { onClick() }
-        }
+val PinButton =
+    reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
+        styledDiv {
+            attrs {
+                classes += listOf(className, styles.className)
+                css { scaledStyles(scale) }
+                onClickFunction = { onClick() }
+            }
 
-        if (showTooltip) {
-            span(classes = styles["tooltip"]) { +pin.name }
+            if (showTooltip) {
+                span(classes = styles["tooltip"]) { +pin.name }
+            }
+            i(scale.faTag) { attrs { classes += targetIcon(pin) } }
         }
-        i(scale.faTag) { attrs { classes += targetIcon(pin) } }
     }
-}
 
 private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
     padding((3.2 * scale.factor).px)

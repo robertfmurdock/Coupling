@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import kotlinx.css.*
 import kotlinx.html.classes
 import react.RBuilder
@@ -23,16 +24,17 @@ data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit)
 
 private val styles = useStyles("tribe/TribeBrowser")
 
-val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
-    div(styles.className) {
-        configHeader(tribe, pathSetter) {
-            span(styles["headerContents"]) {
-                span(styles["headerText"]) { +(tribe.name ?: "") }
-                tribeControlButtons()
+val TribeBrowser =
+    reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
+        div(styles.className) {
+            configHeader(tribe, pathSetter) {
+                span(styles["headerContents"]) {
+                    span(styles["headerText"]) { +(tribe.name ?: "") }
+                    tribeControlButtons()
+                }
             }
         }
     }
-}
 
 fun RBuilder.tribeBrowser(tribe: Tribe, pathSetter: (String) -> Unit) =
     (this.builder(TribeBrowser))(TribeBrowserProps(tribe, pathSetter))

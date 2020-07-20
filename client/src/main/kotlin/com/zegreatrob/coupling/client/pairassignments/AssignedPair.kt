@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
@@ -60,26 +60,27 @@ fun RBuilder.assignedPair(
     key = key
 )
 
-val AssignedPair = reactFunction<AssignedPairProps> { props ->
-    val (tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter) = props
-    val callSign = pair.findCallSign()
+val AssignedPair =
+    reactFunction<AssignedPairProps> { props ->
+        val (tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter) = props
+        val callSign = pair.findCallSign()
 
-    val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
-    val pinDroppableRef = useRef<Node?>(null)
-    drop(pinDroppableRef)
+        val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
+        val pinDroppableRef = useRef<Node?>(null)
+        drop(pinDroppableRef)
 
-    val playerCard = playerCardComponent(tribe, pair, swapCallback, canDrag, pathSetter)
+        val playerCard = playerCardComponent(tribe, pair, swapCallback, canDrag, pathSetter)
 
-    span(classes = styles.className) {
-        attrs {
-            ref = pinDroppableRef
-            if (isOver) classes += styles["pairPinOver"]
+        span(classes = styles.className) {
+            attrs {
+                ref = pinDroppableRef
+                if (isOver) classes += styles["pairPinOver"]
+            }
+            callSign(tribe, callSign, styles["callSign"])
+            pair.players.map { player -> playerCard(player) }
+            pinSection(pinList = pair.pins, canDrag = canDrag)
         }
-        callSign(tribe, callSign, styles["callSign"])
-        pair.players.map { player -> playerCard(player) }
-        pinSection(pinList = pair.pins, canDrag = canDrag)
     }
-}
 
 private fun PinnedCouplingPair.findCallSign(): CallSign? {
     val nounPlayer = toPair().asArray().getOrNull(0)

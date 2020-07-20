@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
@@ -39,33 +39,34 @@ data class PairAssignmentsProps(
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
-val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
-    val (pairAssignments, setPairAssignments) = useState(originalPairs)
+val PairAssignments =
+    reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
+        val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
-    val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
-    val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
-    val onSave = pairAssignments?.onSaveFunc(commandFunc, tribe, pathSetter) ?: {}
-    DndProvider {
-        attrs { backend = HTML5Backend }
-        div(classes = styles.className) {
-            div {
-                tribeBrowser(tribe, pathSetter)
-                animator(tribe, players, pairAssignments, tribe.animationEnabled) {
-                    currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
+        val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
+        val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
+        val onSave = pairAssignments?.onSaveFunc(commandFunc, tribe, pathSetter) ?: {}
+        DndProvider {
+            attrs { backend = HTML5Backend }
+            div(classes = styles.className) {
+                div {
+                    tribeBrowser(tribe, pathSetter)
+                    animator(tribe, players, pairAssignments, tribe.animationEnabled) {
+                        currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
+                    }
                 }
+                div(classes = styles["controlPanel"]) {
+                    div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
+                    viewHistoryButton(tribe, styles["viewHistoryButton"])
+                    pinListButton(tribe, styles["pinListButton"])
+                    statisticsButton(tribe, styles["statisticsButton"])
+                    viewRetireesButton(tribe, styles["retiredPlayersButton"])
+                }
+                unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
+                serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
             }
-            div(classes = styles["controlPanel"]) {
-                div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
-                viewHistoryButton(tribe, styles["viewHistoryButton"])
-                pinListButton(tribe, styles["pinListButton"])
-                statisticsButton(tribe, styles["statisticsButton"])
-                viewRetireesButton(tribe, styles["retiredPlayersButton"])
-            }
-            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
-            serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
         }
     }
-}
 
 private fun PairAssignmentDocument.onSaveFunc(
     dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.testmints.action.async.execute
@@ -23,35 +23,36 @@ import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction<DataLoadProps<P>> { props ->
-    val (data, setData) = useState<P?>(null)
+fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) =
+    reactFunction<DataLoadProps<P>> { props ->
+        val (data, setData) = useState<P?>(null)
 
-    val (animationState, setAnimationState) = useState(AnimationState.Start)
-    val shouldStartAnimation = data != null && animationState === AnimationState.Start
+        val (animationState, setAnimationState) = useState(AnimationState.Start)
+        val shouldStartAnimation = data != null && animationState === AnimationState.Start
 
-    val scope = useScope("Data load")
+        val scope = useScope("Data load")
 
-    invokeOnScope(props.getDataAsync, scope, setData)
+        invokeOnScope(props.getDataAsync, scope, setData)
 
-    animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
-        div {
-            attrs {
-                classes += styles["viewFrame"]
-                if (shouldStartAnimation && !animationsDisabled) {
-                    classes += "ng-enter"
+        animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
+            div {
+                attrs {
+                    classes += styles["viewFrame"]
+                    if (shouldStartAnimation && !animationsDisabled) {
+                        classes += "ng-enter"
+                    }
+                    this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
                 }
-                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
-            }
-            if (data != null) {
-                child(
-                    type = reactFunction,
-                    props = data,
-                    handler = { }
-                )
+                if (data != null) {
+                    child(
+                        type = reactFunction,
+                        props = data,
+                        handler = { }
+                    )
+                }
             }
         }
     }
-}
 
 private fun <P> invokeOnScope(
     getDataAsync: suspend (ReloadFunction, CoroutineScope) -> P,

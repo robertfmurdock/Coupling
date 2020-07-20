@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -27,12 +27,13 @@ data class WelcomeProps(
     val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
-val Welcome = reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
-    div(classes = styles.className) {
-        div { welcomeSplash(randomProvider) }
-        div { comeOnIn(commandFunc) }
+val Welcome =
+    reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
+        div(classes = styles.className) {
+            div { welcomeSplash(randomProvider) }
+            div { comeOnIn(commandFunc) }
+        }
     }
-}
 
 val welcomeTribeId = TribeId("welcome")
 

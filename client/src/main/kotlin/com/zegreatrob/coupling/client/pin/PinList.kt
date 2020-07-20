@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.reactFunction
+import com.zegreatrob.coupling.react.external.react.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
@@ -18,20 +18,21 @@ data class PinListProps(val tribe: Tribe, val pins: List<Pin>, val pathSetter: (
 
 private val styles = useStyles("pin/PinList")
 
-val PinList = reactFunction<PinListProps> { (tribe, pins, pathSetter) ->
-    div(classes = styles.className) {
-        div(classes = styles["tribeBrowser"]) {
-            tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
-        }
-        h2 { +"These are your pins." }
-        h3 { +"There are many like them, but these are yours." }
-        div {
-            pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it._id) }
-        }
-        div {
-            routeLink(to = "/${tribe.id.value}/pin/new") {
-                button(classes = "large orange button") { +"Add a new pin." }
+val PinList =
+    reactFunction<PinListProps> { (tribe, pins, pathSetter) ->
+        div(classes = styles.className) {
+            div(classes = styles["tribeBrowser"]) {
+                tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+            }
+            h2 { +"These are your pins." }
+            h3 { +"There are many like them, but these are yours." }
+            div {
+                pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it._id) }
+            }
+            div {
+                routeLink(to = "/${tribe.id.value}/pin/new") {
+                    button(classes = "large orange button") { +"Add a new pin." }
+                }
             }
         }
     }
-}
