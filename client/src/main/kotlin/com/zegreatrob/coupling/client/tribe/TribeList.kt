@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps

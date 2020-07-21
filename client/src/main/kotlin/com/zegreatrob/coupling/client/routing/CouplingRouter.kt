@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -17,6 +16,7 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigPage
 import com.zegreatrob.coupling.client.tribe.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
+import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.RProps
 import react.buildElement

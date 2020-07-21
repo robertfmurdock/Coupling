@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.assignedPair
@@ -13,6 +11,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display

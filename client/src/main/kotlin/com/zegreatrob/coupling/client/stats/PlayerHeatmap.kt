@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.DIV
 import react.RBuilder

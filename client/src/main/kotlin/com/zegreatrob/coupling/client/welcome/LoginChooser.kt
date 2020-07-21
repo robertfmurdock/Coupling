@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.user.GoogleSignInCommand
 import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.js.onClickFunction
 import react.RBuilder

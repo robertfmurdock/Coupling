@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import react.RBuilder
 import react.RHandler

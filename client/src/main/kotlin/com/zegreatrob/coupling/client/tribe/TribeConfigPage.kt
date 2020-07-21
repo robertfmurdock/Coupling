@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 
 private val LoadedTribeConfig by lazy { dataLoadWrapper(TribeConfig) }

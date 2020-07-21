@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.player.PlayerCardProps
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import react.RBuilder
 import react.dom.button

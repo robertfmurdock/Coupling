@@ -8,9 +8,9 @@ import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

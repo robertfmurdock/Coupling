@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.child
 import react.RBuilder
 
 private val LoadedRetiredPlayers by lazy { dataLoadWrapper(RetiredPlayers) }

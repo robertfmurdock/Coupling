@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder

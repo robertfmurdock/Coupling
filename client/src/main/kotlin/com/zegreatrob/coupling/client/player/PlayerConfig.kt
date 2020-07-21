@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
-import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import react.RProps
 import react.dom.div

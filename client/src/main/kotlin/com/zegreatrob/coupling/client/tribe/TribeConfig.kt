@@ -2,15 +2,18 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.configInput
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useForm
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toTribe
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
