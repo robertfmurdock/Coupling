@@ -77,10 +77,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          coupling-cache-41-{{ .Branch }}
+          key: coupling-cache-41-{{ .Branch }}
       - coupling-orb/setup
       - save_cache:
-          coupling-cache-41-{{ .Branch }}
+          key: coupling-cache-41-{{ .Branch }}
           paths:
             - "~/.gradle"
             - "~/.cache"
@@ -107,7 +107,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          coupling-cache-41-{{ .Branch }}
+          key: coupling-cache-41-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -128,7 +128,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          coupling-cache-41-{{ .Branch }}
+          key: coupling-cache-41-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
       - coupling-orb/setup
       - run: "./gradlew assemble"
@@ -146,7 +146,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          coupling-cache-41-{{ .Branch }}
+          key: coupling-cache-41-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
       - coupling-orb/setup
       - run: "./gradlew assemble"
@@ -164,7 +164,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          coupling-cache-41-{{ .Branch }}
+          key: coupling-cache-41-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: "./gradlew assemble"
