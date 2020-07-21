@@ -176,9 +176,9 @@ workflows:
   build-deploy:
     jobs:
       - justsetup
-      - build
-        requires:
-          - justsetup
+      - build:
+          requires:
+            - justsetup
       - buildMongo
       - deploy-prod:
           requires:
