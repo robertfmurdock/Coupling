@@ -1,11 +1,30 @@
-version: 2.0
+version: 2.1
+
+orbs:
+  coupling-orb:
+    executors:
+      standard:
+        docker:
+          - image: circleci/openjdk:9-jdk
+          - image: circleci/mongo:latest
+          - image: amazon/dynamodb-local
+            command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
+          - image: selenium/standalone-chrome
+      nomongo:
+        docker:
+          - image: circleci/openjdk:9-jdk
+          - image: amazon/dynamodb-local
+            command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
+          - image: selenium/standalone-chrome
+    commands:
+      setup:
+        steps:
+          - run: "./gradlew kotlinNodeJsSetup"
+          - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+          - run: "./gradlew yarn"
 jobs:
   build:
-    docker:
-      - image: circleci/openjdk:9-jdk
-      - image: amazon/dynamodb-local
-        command: -Xmx512M -jar DynamoDBLocal.jar -inMemory
-      - image: selenium/standalone-chrome
+    executor: coupling-orb/nomongo
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -15,9 +34,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-39-{{ .Branch }}
-      - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
-      - run: "./gradlew yarn"
+      - coupling-orb/setup
       - save_cache:
           key: coupling-cache-39-{{ .Branch }}
           paths:
@@ -103,9 +120,7 @@ jobs:
       - restore_cache:
           key: coupling-cache-39-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
-      - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
-      - run: "./gradlew yarn"
+      - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check --no-parallel"
       - run:
@@ -145,9 +160,7 @@ jobs:
       - restore_cache:
           key: coupling-cache-39-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
-      - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
-      - run: "./gradlew yarn"
+      - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - run:
@@ -170,48 +183,46 @@ jobs:
       - run: "git config user.name \"CircleCI in a RoB Suit\""
       - run: "git commit -m 'Automatic server dependency update.' || echo 'Ignoring no changes'"
       - run: "git push"
-update-gradle-deps:
-  docker:
-    - image: circleci/openjdk:9-jdk
-    - image: circleci/mongo:latest
-    - image: amazon/dynamodb-local
-      command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
-    - image: selenium/standalone-chrome
-  environment:
-    SELENIUM_ADDRESS: http://localhost:4444/wd/hub
-    JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
-    GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
-    COUPLING_IN_MEMORY: true
-  steps:
-    - checkout
-    - restore_cache:
-        key: coupling-cache-39-{{ .Branch }}
-    - run: "./gradlew useLatestVersions"
-    - run: "./gradlew kotlinNodeJsSetup"
-    - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
-    - run: "./gradlew yarn"
-    - run: "./gradlew assemble"
-    - run: "./gradlew build check"
-    - run:
-        name: Copy test results
-        command: |
-          mkdir -p build/test-output/junit/
-          find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-        when: always
-    - run:
-        name: Copy test reports
-        command: |
-          ./gradlew copyReportsToCircleCIDirectory
-        when: always
-    - store_artifacts:
-        path: build/test-output
-    - store_test_results:
-        path: build/test-output
-    - run: "git add ."
-    - run: "git config user.email \"robert.f.murdock@gmail.com\""
-    - run: "git config user.name \"CircleCI in a RoB Suit\""
-    - run: "git commit -m 'Automatic gradle dependency update.' || echo 'Ignoring no changes'"
-    - run: "git push"
+  update-gradle-deps:
+    docker:
+      - image: circleci/openjdk:9-jdk
+      - image: circleci/mongo:latest
+      - image: amazon/dynamodb-local
+        command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
+      - image: selenium/standalone-chrome
+    environment:
+      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
+      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
+      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
+      COUPLING_IN_MEMORY: true
+    steps:
+      - checkout
+      - restore_cache:
+          key: coupling-cache-39-{{ .Branch }}
+      - run: "./gradlew useLatestVersions"
+      - coupling-orb/setup
+      - run: "./gradlew assemble"
+      - run: "./gradlew build check"
+      - run:
+          name: Copy test results
+          command: |
+            mkdir -p build/test-output/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
+          when: always
+      - run:
+          name: Copy test reports
+          command: |
+            ./gradlew copyReportsToCircleCIDirectory
+          when: always
+      - store_artifacts:
+          path: build/test-output
+      - store_test_results:
+          path: build/test-output
+      - run: "git add ."
+      - run: "git config user.email \"robert.f.murdock@gmail.com\""
+      - run: "git config user.name \"CircleCI in a RoB Suit\""
+      - run: "git commit -m 'Automatic gradle dependency update.' || echo 'Ignoring no changes'"
+      - run: "git push"
 workflows:
   version: 2
   build-deploy:
