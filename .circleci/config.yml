@@ -22,6 +22,23 @@ orbs:
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
           - run: "./gradlew yarn"
+      collect-results:
+        steps:
+          - run:
+              name: Copy test results
+              command: |
+                mkdir -p build/test-output/junit/
+                find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
+              when: always
+          - run:
+              name: Copy test reports
+              command: |
+                ./gradlew copyReportsToCircleCIDirectory
+              when: always
+          - store_artifacts:
+              path: build/test-output
+          - store_test_results:
+              path: build/test-output
 jobs:
   build:
     executor: coupling-orb/nomongo
@@ -44,21 +61,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew build check -x :repository:mongo:check"
-      - run:
-          name: Copy test results
-          command: |
-            mkdir -p build/test-output/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-          when: always
-      - run:
-          name: Copy test reports
-          command: |
-            ./gradlew copyReportsToCircleCIDirectory
-          when: always
-      - store_artifacts:
-          path: build/test-output
-      - store_test_results:
-          path: build/test-output
+      - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
           paths:
@@ -70,21 +73,7 @@ jobs:
     steps:
       - checkout
       - run: "./gradlew :repository:mongo:check --no-parallel -Dorg.gradle.configureondemand=false"
-      - run:
-          name: Copy test results
-          command: |
-            mkdir -p build/test-output/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-          when: always
-      - run:
-          name: Copy test reports
-          command: |
-            ./gradlew copyReportsToCircleCIDirectory
-          when: always
-      - store_artifacts:
-          path: build/test-output
-      - store_test_results:
-          path: build/test-output
+      - coupling-orb/collect-results
   deploy-prod:
     docker:
       - image: openjdk:13-jdk
@@ -104,12 +93,7 @@ jobs:
     steps:
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
   update-client:
-    docker:
-      - image: circleci/openjdk:9-jdk
-      - image: circleci/mongo:latest
-      - image: amazon/dynamodb-local
-        command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
-      - image: selenium/standalone-chrome
+    executor: coupling-orb/standard
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -123,33 +107,14 @@ jobs:
       - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check --no-parallel"
-      - run:
-          name: Copy test results
-          command: |
-            mkdir -p build/test-output/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-          when: always
-      - run:
-          name: Copy test reports
-          command: |
-            ./gradlew copyReportsToCircleCIDirectory
-          when: always
-      - store_artifacts:
-          path: build/test-output
-      - store_test_results:
-          path: build/test-output
+      - coupling-orb/collect-results
       - run: "git add ."
       - run: "git config user.email \"robert.f.murdock@gmail.com\""
       - run: "git config user.name \"CircleCI in a RoB Suit\""
       - run: "git commit -m 'Automatic client dependency update.' || echo 'Ignoring no changes'"
       - run: "git push"
   update-server:
-    docker:
-      - image: circleci/openjdk:9-jdk
-      - image: circleci/mongo:latest
-      - image: amazon/dynamodb-local
-        command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
-      - image: selenium/standalone-chrome
+    executor: coupling-orb/nomongo
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -163,33 +128,14 @@ jobs:
       - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
-      - run:
-          name: Copy test results
-          command: |
-            mkdir -p build/test-output/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-          when: always
-      - run:
-          name: Copy test reports
-          command: |
-            ./gradlew copyReportsToCircleCIDirectory
-          when: always
-      - store_artifacts:
-          path: build/test-output
-      - store_test_results:
-          path: build/test-output
+      - coupling-orb/collect-results
       - run: "git add ."
       - run: "git config user.email \"robert.f.murdock@gmail.com\""
       - run: "git config user.name \"CircleCI in a RoB Suit\""
       - run: "git commit -m 'Automatic server dependency update.' || echo 'Ignoring no changes'"
       - run: "git push"
   update-gradle-deps:
-    docker:
-      - image: circleci/openjdk:9-jdk
-      - image: circleci/mongo:latest
-      - image: amazon/dynamodb-local
-        command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
-      - image: selenium/standalone-chrome
+    executor: coupling-orb/nomongo
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -203,21 +149,7 @@ jobs:
       - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
-      - run:
-          name: Copy test results
-          command: |
-            mkdir -p build/test-output/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-          when: always
-      - run:
-          name: Copy test reports
-          command: |
-            ./gradlew copyReportsToCircleCIDirectory
-          when: always
-      - store_artifacts:
-          path: build/test-output
-      - store_test_results:
-          path: build/test-output
+      - coupling-orb/collect-results
       - run: "git add ."
       - run: "git config user.email \"robert.f.murdock@gmail.com\""
       - run: "git config user.name \"CircleCI in a RoB Suit\""
