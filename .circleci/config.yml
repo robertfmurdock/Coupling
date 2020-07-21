@@ -61,18 +61,8 @@ jobs:
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
     steps:
-      - checkout
-      - restore_cache:
-          key: coupling-cache-39-{{ .Branch }}
-      - coupling-orb/setup
-      - save_cache:
-          key: coupling-cache-39-{{ .Branch }}
-          paths:
-            - "~/.gradle"
-            - ".gradle"
-            - "client/.gradle"
-            - "node_modules"
-            - "/root/.konan"
+      - attach_workspace:
+          at: ./
       - run: "./gradlew build check -x :repository:mongo:check"
       - coupling-orb/collect-results
       - persist_to_workspace:
@@ -97,6 +87,10 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - "*"
   buildMongo:
     docker:
       - image: circleci/openjdk:9-jdk
@@ -183,6 +177,8 @@ workflows:
     jobs:
       - justsetup
       - build
+        requires:
+          - justsetup
       - buildMongo
       - deploy-prod:
           requires:
