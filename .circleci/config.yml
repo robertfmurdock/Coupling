@@ -16,6 +16,9 @@ orbs:
           - image: amazon/dynamodb-local
             command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
           - image: selenium/standalone-chrome
+      noservices:
+        docker:
+          - image: circleci/openjdk:9-jdk
     commands:
       setup:
         steps:
@@ -76,6 +79,24 @@ jobs:
           root: ./
           paths:
             - "*"
+  justsetup:
+    executor: coupling-orb/noservices
+    environment:
+      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
+      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
+    steps:
+      - checkout
+      - restore_cache:
+          key: coupling-cache-39-{{ .Branch }}
+      - coupling-orb/setup
+      - save_cache:
+          key: coupling-cache-39-{{ .Branch }}
+          paths:
+            - "~/.gradle"
+            - ".gradle"
+            - "client/.gradle"
+            - "node_modules"
+            - "/root/.konan"
   buildMongo:
     docker:
       - image: circleci/openjdk:9-jdk
@@ -160,6 +181,7 @@ workflows:
   version: 2
   build-deploy:
     jobs:
+      - justsetup
       - build
       - buildMongo
       - deploy-prod:
