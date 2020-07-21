@@ -64,6 +64,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-41-{{ .Branch }}
+      - coupling-orb/setup
       - run: "./gradlew build check -x :repository:mongo:check"
       - coupling-orb/collect-results
       - persist_to_workspace:
