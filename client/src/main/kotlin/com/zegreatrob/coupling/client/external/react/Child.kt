@@ -18,3 +18,19 @@ fun <P : RProps> RBuilder.child(
         handler = handler
     )
 }
+
+fun RBuilder.child(
+    clazz: RClass<EmptyProps>,
+    key: String? = null,
+    ref: RReadableRef<Node>? = null,
+    handler: RHandler<EmptyProps> = {}
+): ReactElement {
+    val props = EmptyProps()
+    key?.let { props.key = it }
+    ref?.let { props.ref = ref }
+    return child(
+        type = clazz,
+        props = props,
+        handler = handler
+    )
+}

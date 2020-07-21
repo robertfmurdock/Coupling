@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats.heatmap
 
-import com.zegreatrob.coupling.client.external.react.childFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.reactFunction
@@ -9,7 +8,6 @@ import kotlinx.css.px
 import kotlinx.css.width
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.RBuilder
 import react.RProps
 import react.useLayoutEffect
 import react.useRef

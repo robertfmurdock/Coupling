@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.currentPairs
-import com.zegreatrob.coupling.client.external.react.childFunc
+import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
@@ -28,7 +28,7 @@ import styled.styledSpan
 
 data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
-val RBuilder.tribeCard get() = childFunc(TribeCard)
+val RBuilder.tribeCard get() = childCurry(TribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 

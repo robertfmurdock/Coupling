@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.PathSetter
-import com.zegreatrob.coupling.client.external.react.childFunc
+import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
@@ -24,7 +24,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-val RBuilder.playerCard get() = childFunc(PlayerCard)
+val RBuilder.playerCard get() = childCurry(PlayerCard)
 
 data class PlayerCardProps(
     val tribeId: TribeId,

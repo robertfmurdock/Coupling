@@ -1,11 +1,9 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.childFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.invoke
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.reactFunction
-import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.dom.span

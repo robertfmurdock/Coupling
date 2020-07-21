@@ -12,6 +12,6 @@ operator fun BuilderAdapter<EmptyProps>.invoke(
     key: String? = null,
     ref: RReadableRef<Node>? = null,
     handler: RHandler<EmptyProps> = {}
-) = builder.child(component, EmptyProps, key, ref, handler)
+) = builder.child(component, key, ref, handler)
 
-fun <P : RProps> RBuilder.childFunc(component: RClass<P>) = BuilderAdapter(this, component)
+fun <P : RProps> RBuilder.childCurry(component: RClass<P>) = BuilderAdapter(this, component)
