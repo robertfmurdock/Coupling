@@ -1,4 +1,12 @@
-version: 2.0
+version: 2.1
+orbs:
+  couplingOrb:
+    commands:
+      couplingSetup:
+        steps:
+          - run: "./gradlew kotlinNodeJsSetup"
+          - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
+          - run: "./gradlew yarn"
 jobs:
   build:
     docker:
@@ -15,9 +23,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-39-{{ .Branch }}
-      - run: "./gradlew kotlinNodeJsSetup"
-      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
-      - run: "./gradlew yarn"
+      - couplingOrb/couplingSetup:
       - save_cache:
           key: coupling-cache-39-{{ .Branch }}
           paths:
