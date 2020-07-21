@@ -39,6 +39,16 @@ orbs:
               path: build/test-output
           - store_test_results:
               path: build/test-output
+      commit-push:
+        parameters:
+          update_type:
+            type: string
+        steps:
+          - run: "git add ."
+          - run: "git config user.email \"robert.f.murdock@gmail.com\""
+          - run: "git config user.name \"CircleCI in a RoB Suit\""
+          - run: "git commit -m 'Automatic <<parameters.update_type>> update.' || echo 'Ignoring no changes'"
+          - run: "git push"
 jobs:
   build:
     executor: coupling-orb/nomongo
@@ -108,11 +118,8 @@ jobs:
       - run: "./gradlew assemble"
       - run: "./gradlew build check --no-parallel"
       - coupling-orb/collect-results
-      - run: "git add ."
-      - run: "git config user.email \"robert.f.murdock@gmail.com\""
-      - run: "git config user.name \"CircleCI in a RoB Suit\""
-      - run: "git commit -m 'Automatic client dependency update.' || echo 'Ignoring no changes'"
-      - run: "git push"
+      - coupling-orb/commit-push:
+          update_type: client dependency
   update-server:
     executor: coupling-orb/nomongo
     environment:
@@ -129,11 +136,8 @@ jobs:
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - coupling-orb/collect-results
-      - run: "git add ."
-      - run: "git config user.email \"robert.f.murdock@gmail.com\""
-      - run: "git config user.name \"CircleCI in a RoB Suit\""
-      - run: "git commit -m 'Automatic server dependency update.' || echo 'Ignoring no changes'"
-      - run: "git push"
+      - coupling-orb/commit-push:
+          update_type: server dependency
   update-gradle-deps:
     executor: coupling-orb/nomongo
     environment:
@@ -150,11 +154,8 @@ jobs:
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - coupling-orb/collect-results
-      - run: "git add ."
-      - run: "git config user.email \"robert.f.murdock@gmail.com\""
-      - run: "git config user.name \"CircleCI in a RoB Suit\""
-      - run: "git commit -m 'Automatic gradle dependency update.' || echo 'Ignoring no changes'"
-      - run: "git push"
+      - coupling-orb/commit-push:
+          update_type: gradle dependency
 workflows:
   version: 2
   build-deploy:
