@@ -1,12 +1,10 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.minreact.reactFunction
-import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
-import react.RBuilder
+import com.zegreatrob.minreact.reactFunction
 import react.RClass
 import react.RProps
 import react.dom.div
@@ -48,8 +46,6 @@ val ServerMessage =
             }
         }
     }
-
-val RBuilder.serverMessage get() = this.builder(ServerMessage)
 
 interface WebsocketMessage {
     val text: String

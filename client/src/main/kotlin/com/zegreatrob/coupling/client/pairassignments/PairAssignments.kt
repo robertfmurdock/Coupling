@@ -2,23 +2,24 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.currentPairs
+import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.spin.animator
+import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
-import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
-import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -63,7 +64,7 @@ val PairAssignments =
                     viewRetireesButton(tribe, styles["retiredPlayersButton"])
                 }
                 unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
-                serverMessage(ServerMessageProps(tribe.id, "https:" == window.location.protocol))
+                child(ServerMessage, ServerMessageProps(tribe.id, "https:" == window.location.protocol))
             }
         }
     }
@@ -105,8 +106,8 @@ private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
 private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
 
 private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
-    playerRoster(
-        PlayerRosterProps(
+    child(
+        PlayerRoster, PlayerRosterProps(
             label = "Unpaired players",
             players = players,
             tribeId = tribe.id,

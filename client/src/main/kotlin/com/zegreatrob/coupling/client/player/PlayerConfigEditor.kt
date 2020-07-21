@@ -28,8 +28,6 @@ data class PlayerConfigEditorProps(
 
 val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
 
-val RBuilder.playerConfigEditor get() = builder(PlayerConfigEditor)
-
 private val styles = useStyles("player/PlayerConfigEditor")
 
 val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->

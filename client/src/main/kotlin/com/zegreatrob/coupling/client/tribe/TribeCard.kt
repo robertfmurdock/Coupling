@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.currentPairs
+import com.zegreatrob.coupling.client.external.react.childFunc
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
-import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.tribeConfig
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
@@ -28,7 +28,7 @@ import styled.styledSpan
 
 data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
 
-val RBuilder.tribeCard get() = this.builder(TribeCard)
+val RBuilder.tribeCard get() = childFunc(TribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 

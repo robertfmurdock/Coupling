@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.PathSetter
-import com.zegreatrob.coupling.client.external.react.builder
+import com.zegreatrob.coupling.client.external.react.childFunc
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -11,6 +10,7 @@ import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.playerConfig
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import kotlinx.html.DIV
 import kotlinx.html.classes
@@ -24,7 +24,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-val RBuilder.playerCard get() = builder(PlayerCard)
+val RBuilder.playerCard get() = childFunc(PlayerCard)
 
 data class PlayerCardProps(
     val tribeId: TribeId,
@@ -38,19 +38,18 @@ data class PlayerCardProps(
 
 private val styles = useStyles("player/PlayerCard")
 
-val PlayerCard =
-    reactFunction<PlayerCardProps> { props ->
-        val (tribeId, player, pathSetter, className, size, onClick, deselected) = props
-        styledDiv {
-            attrs {
-                classes += additionalClasses(className, deselected)
-                playerCardStyle(size)
-                onClickFunction = onClick
-            }
-            playerGravatarImage(player, size)
-            child(playerCardHeaderElement(tribeId, player, pathSetter, size))
+val PlayerCard = reactFunction<PlayerCardProps> { props ->
+    val (tribeId, player, pathSetter, className, size, onClick, deselected) = props
+    styledDiv {
+        attrs {
+            classes += additionalClasses(className, deselected)
+            playerCardStyle(size)
+            onClickFunction = onClick
         }
+        playerGravatarImage(player, size)
+        child(playerCardHeaderElement(tribeId, player, pathSetter, size))
     }
+}
 
 private fun additionalClasses(className: String?, deselected: Boolean) = setOf(className, styles["player"])
     .filterNotNull()

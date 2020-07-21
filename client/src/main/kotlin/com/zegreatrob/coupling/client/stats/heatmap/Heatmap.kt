@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.stats.heatmap
 
+import com.zegreatrob.coupling.client.external.react.childFunc
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.minreact.reactFunction
-import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.height
 import kotlinx.css.px
 import kotlinx.css.width
@@ -18,8 +18,6 @@ import styled.styledDiv
 
 @JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic
-
-val RBuilder.heatmap get() = this.builder(Heatmap)
 
 data class HeatmapProps(val data: List<List<Double?>>, val className: String) : RProps
 

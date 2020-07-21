@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.builder
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
@@ -12,8 +11,6 @@ import react.RProps
 import react.dom.button
 import react.dom.div
 import react.router.dom.routeLink
-
-val RBuilder.playerRoster get() = builder(PlayerRoster)
 
 data class PlayerRosterProps(
     val label: String? = null,

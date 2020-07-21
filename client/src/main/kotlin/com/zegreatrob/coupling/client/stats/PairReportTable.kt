@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.PairReport
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.invoke
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
@@ -14,8 +16,6 @@ import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.dom.span
-
-val RBuilder.pairReportTable get() = this.builder(PairReportTable)
 
 private val styles = useStyles("stats/PairReportTable")
 

@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.loadMarkdownString
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -37,7 +40,7 @@ val TribeBrowser =
     }
 
 fun RBuilder.tribeBrowser(tribe: Tribe, pathSetter: (String) -> Unit) =
-    (this.builder(TribeBrowser))(TribeBrowserProps(tribe, pathSetter))
+    child(TribeBrowser, TribeBrowserProps(tribe, pathSetter))
 
 private fun RBuilder.notificationSection() = styledSpan {
     css { position = Position.relative }

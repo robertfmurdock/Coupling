@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.EmptyProps
-import com.zegreatrob.minreact.reactFunction
-import com.zegreatrob.coupling.client.external.react.builder
+import com.zegreatrob.coupling.client.external.react.childFunc
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.dom.span
 
@@ -13,4 +13,4 @@ val StatLabel = reactFunction<EmptyProps> { props ->
     span(classes = styles.className) { props.children() }
 }
 
-val RBuilder.statLabel get() = this.builder(StatLabel)
+val RBuilder.statLabel get() = childFunc(StatLabel)
