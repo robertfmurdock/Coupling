@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles

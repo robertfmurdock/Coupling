@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
-import com.zegreatrob.coupling.client.external.react.child
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.reactFunction
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
@@ -21,23 +21,22 @@ data class DraggableThingProps(
 
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 
-val DraggableThing =
-    reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
-        val draggableRef = useRef<Node?>(null)
+val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
+    val draggableRef = useRef<Node?>(null)
 
-        val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })
-        val (isOver, drop) = useDrop(
-            acceptItemType = itemType,
-            drop = { item -> dropCallback(item["id"].unsafeCast<String>()) },
-            collect = { monitor -> monitor.isOver() }
-        )
-        drag(drop(draggableRef))
+    val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })
+    val (isOver, drop) = useDrop(
+        acceptItemType = itemType,
+        drop = { item -> dropCallback(item["id"].unsafeCast<String>()) },
+        collect = { monitor -> monitor.isOver() }
+    )
+    drag(drop(draggableRef))
 
-        div(classes = styles.className) {
-            attrs { ref = draggableRef }
-            handler(isOver)
-        }
+    div(classes = styles.className) {
+        attrs { ref = draggableRef }
+        handler(isOver)
     }
+}
 
 fun RBuilder.draggableThing(
     itemType: String,

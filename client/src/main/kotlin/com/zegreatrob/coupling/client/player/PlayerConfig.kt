@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
-import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper

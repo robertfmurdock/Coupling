@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.react.configInput
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useForm
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.toJson
@@ -9,6 +12,7 @@ import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.InputType
 import kotlinx.html.id

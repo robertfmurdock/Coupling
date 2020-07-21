@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.child
+import com.zegreatrob.minreact.child
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQuery
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper

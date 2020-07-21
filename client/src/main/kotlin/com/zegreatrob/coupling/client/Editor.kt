@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.EmptyProps
-import com.zegreatrob.coupling.client.external.react.child
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.EmptyProps
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.RHandler
