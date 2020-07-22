@@ -33,7 +33,6 @@ config.module.rules.push({
           modules: 'global'
         }
       },
-      'sass-loader',
     ],
   }, {
     test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,

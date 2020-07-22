@@ -43,29 +43,28 @@ fun RBuilder.pinConfigEditor(
     PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatchFunc)
 )
 
-val PinConfigEditor =
-    reactFunction<PinConfigEditorProps> { (tribe, pin, pathSetter, reload, dispatchFunc) ->
-        val (values, onChange) = useForm(pin.toJson())
+val PinConfigEditor = reactFunction { (tribe, pin, pathSetter, reload, dispatchFunc): PinConfigEditorProps ->
+    val (values, onChange) = useForm(pin.toJson())
 
-        val updatedPin = values.toPin()
+    val updatedPin = values.toPin()
 
-        val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
-        val onRemove = pin._id?.let { pinId ->
-            dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter.pinList(tribe.id) }
-                .requireConfirmation("Are you sure you want to delete this pin?")
+    val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
+    val onRemove = pin._id?.let { pinId ->
+        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter.pinList(tribe.id) }
+            .requireConfirmation("Are you sure you want to delete this pin?")
+    }
+
+    span(styles.className) {
+        configHeader(tribe, pathSetter) { +"Pin Configuration" }
+        span(styles["pin"]) {
+            pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
+            promptOnExit(shouldShowPrompt = updatedPin != pin)
         }
-
-        span(styles.className) {
-            configHeader(tribe, pathSetter) { +"Pin Configuration" }
-            span(styles["pin"]) {
-                pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
-                promptOnExit(shouldShowPrompt = updatedPin != pin)
-            }
-            span(styles["icon"]) {
-                pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
-            }
+        span(styles["icon"]) {
+            pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
         }
     }
+}
 
 private fun RBuilder.pinConfigForm(
     pin: Pin,

@@ -1,13 +1,16 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.newPairAssignments
 import com.zegreatrob.coupling.client.pin.pinButton
+import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -23,7 +26,10 @@ import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.buildElement
-import react.dom.*
+import react.dom.div
+import react.dom.h1
+import react.dom.h2
+import react.dom.key
 import react.useState
 import styled.css
 import styled.styledDiv
@@ -83,7 +89,7 @@ private fun RBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = button(classes = "button") {
+) = couplingButton {
     attrs {
         classes += className
         onClickFunction = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
@@ -139,7 +145,7 @@ private fun RBuilder.spinButton(
     playerSelections: List<Pair<Player, Boolean>>,
     selectedPins: List<Pin>,
     pathSetter: (String) -> Unit
-) = a(classes = "super pink button") {
+) = couplingButton(supersize, pink) {
     attrs {
         classes += styles["spinButton"]
         onClickFunction = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) }

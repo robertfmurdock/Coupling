@@ -65,7 +65,6 @@ const config = {
               modules: 'global'
             }
           },
-          'sass-loader',
         ],
       },
       {

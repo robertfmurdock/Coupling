@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.pink
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
@@ -16,7 +19,6 @@ import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
 import react.*
-import react.dom.a
 import react.dom.div
 import react.dom.span
 
@@ -124,11 +126,11 @@ private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<out GoogleSignInCommand
         if (showLoginChooser) {
             loginChooser(dispatchFunc)
         } else {
-            a(classes = "enter-button super pink button") {
+            couplingButton(supersize, pink) {
                 attrs {
+                    classes += "enter-button"
                     classes += styles["enterButton"]
                     onClickFunction = { setShowLoginChooser(true) }
-                    target = "_self"
                 }
                 +"Come on in!"
             }

@@ -3,12 +3,15 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
+import com.zegreatrob.coupling.client.dom.red
+import com.zegreatrob.coupling.client.dom.small
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -80,7 +83,7 @@ private fun RBuilder.pairAssignmentRow(
     }
 }
 
-private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = span(classes = "small red button") {
+private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = couplingButton(small, red) {
     attrs {
         classes += styles["deleteButton"]
         onClickFunction = { onClickFunc() }

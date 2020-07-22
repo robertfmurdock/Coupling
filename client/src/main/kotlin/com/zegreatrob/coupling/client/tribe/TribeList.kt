@@ -1,13 +1,16 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.dom.green
+import com.zegreatrob.coupling.client.dom.orange
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
-import react.dom.button
 import react.dom.div
 import react.router.dom.routeLink
 
@@ -29,11 +32,11 @@ val TribeList =
     }
 
 private fun RBuilder.aboutButton() = routeLink(to = "/about") {
-    button(classes = "super orange button") { +"About Coupling" }
+    couplingButton(supersize, orange) { +"About Coupling" }
 }
 
 private fun RBuilder.newTribeButton(className: String) = routeLink(to = "/new-tribe/") {
-    button(classes = "super green button") {
+    couplingButton(supersize, green) {
         attrs { classes += className }
         +"Add a new tribe!"
     }

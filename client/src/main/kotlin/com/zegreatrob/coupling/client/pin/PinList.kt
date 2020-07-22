@@ -1,14 +1,16 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.dom.large
+import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
 import react.RProps
-import react.dom.button
 import react.dom.div
 import react.dom.h2
 import react.dom.h3
@@ -31,7 +33,7 @@ val PinList =
             }
             div {
                 routeLink(to = "/${tribe.id.value}/pin/new") {
-                    button(classes = "large orange button") { +"Add a new pin." }
+                    couplingButton(large, orange) { +"Add a new pin." }
                 }
             }
         }

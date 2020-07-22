@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.dom.blue
+import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -12,7 +15,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import react.RBuilder
-import react.dom.button
 import react.dom.div
 import react.dom.i
 import react.dom.span
@@ -42,7 +44,7 @@ private fun RBuilder.backButtonSection() = styledDiv {
 }
 
 private fun RBuilder.backButton() = routeLink(to = "/tribes") {
-    button(classes = "large blue button") {
+    couplingButton(large, blue) {
         i(classes = "fa fa-step-backward") {}
         span { +"Back to Coupling!" }
     }

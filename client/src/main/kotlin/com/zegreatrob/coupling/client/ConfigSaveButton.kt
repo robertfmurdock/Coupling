@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.dom.blue
+import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.supersize
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
 import kotlinx.html.tabIndex
 import react.RBuilder
-import react.dom.button
 
-fun RBuilder.configSaveButton(isSaving: Boolean, className: String) = button(classes = "super blue button") {
+fun RBuilder.configSaveButton(isSaving: Boolean, className: String) = couplingButton(supersize, blue) {
     attrs {
         classes += className
         type = ButtonType.submit

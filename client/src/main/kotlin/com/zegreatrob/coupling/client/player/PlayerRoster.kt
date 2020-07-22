@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.dom.large
+import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
@@ -9,7 +12,6 @@ import kotlinx.css.RuleSet
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
-import react.dom.button
 import react.dom.div
 import react.router.dom.routeLink
 import styled.css
@@ -44,7 +46,7 @@ val PlayerRoster = reactFunction { (label, players, tribeId, pathSetter, classNa
 }
 
 private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${tribeId.value}/player/new/") {
-    button(classes = "large orange button") {
+    couplingButton(large, orange) {
         attrs { classes += styles["addPlayerButton"] }
         +"Add a new player!"
     }

@@ -1,0 +1,19 @@
+body {
+  font-size: 14px;
+  font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #9fb7c6;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.view-container {
+  text-align: center;
+}
+
+input.button {
+  border: 0;
+}

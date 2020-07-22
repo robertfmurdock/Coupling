@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.currentPairs
+import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
@@ -23,7 +23,6 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
-import react.dom.button
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
@@ -134,7 +133,7 @@ private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { 
 
 private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
     routeLink(to = "/${tribe.id.value}/prepare/") {
-        button(classes = "super pink button") {
+        couplingButton(supersize, pink) {
             attrs { classes += className }
             +"Prepare to spin!"
         }
@@ -142,7 +141,7 @@ private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) =
 
 private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
     routeLink(to = "/${tribe.id.value}/history/") {
-        button(classes = "large green button") {
+        couplingButton(large, green) {
             attrs { classes += className }
             i(classes = "fa fa-history") {}
             +" History!"
@@ -150,7 +149,7 @@ private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) =
     }
 
 private fun RBuilder.pinListButton(tribe: Tribe, className: String) = routeLink(to = "/${tribe.id.value}/pins/") {
-    button(classes = "large white button") {
+    couplingButton(large, white) {
         attrs { classes += className }
         i(classes = "fa fa-peace") {}
         +" Pin Bag!"
@@ -159,7 +158,7 @@ private fun RBuilder.pinListButton(tribe: Tribe, className: String) = routeLink(
 
 private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
     routeLink(to = "/${tribe.id.value}/statistics") {
-        button(classes = "large gray button") {
+        couplingButton(large) {
             attrs { this.classes += className }
             i(classes = "fa fa-database") {}
             +" Statistics!"
@@ -168,7 +167,7 @@ private fun RBuilder.statisticsButton(tribe: Tribe, className: String) =
 
 private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
     routeLink("/${tribe.id.value}/players/retired") {
-        button(classes = "large yellow button") {
+        couplingButton(large, yellow) {
             attrs { classes += className }
             i(classes = "fa fa-user-slash") {}
             +" Retirees!"

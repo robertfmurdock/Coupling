@@ -1,11 +1,16 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.dom.blue
+import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.supersize
+import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.user.GoogleSignInCommand
 import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
@@ -20,14 +25,20 @@ val LoginChooser = reactFunction { (commandFunc): LoginChooserProps ->
     val googleSignInFunc = commandFunc({ GoogleSignInCommand }) { window.location.pathname = "/" }
     div(classes = styles.className) {
         div {
-            div(classes = "google-login super white button") {
-                attrs { onClickFunction = { googleSignInFunc() } }
+            couplingButton(supersize, white) {
+                attrs {
+                    classes += "google-login"
+                    onClickFunction = { googleSignInFunc() }
+                }
                 +"Google"
             }
         }
         div {
-            div(classes = "ms-login super blue button") {
-                attrs { onClickFunction = { window.location.pathname = "/microsoft-login" } }
+            couplingButton(supersize, blue) {
+                attrs {
+                    classes += "ms-login"
+                    onClickFunction = { window.location.pathname = "/microsoft-login" }
+                }
                 +"Microsoft"
             }
         }

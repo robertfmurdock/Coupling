@@ -22,13 +22,12 @@ data class PinConfigProps(
 
 private val styles = useStyles("pin/PinConfig")
 
-val PinConfig =
-    reactFunction<PinConfigProps> { (tribe, pin, pinList, pathSetter, reload, commandFunc) ->
-        configFrame(styles.className) {
-            pinConfigEditor(tribe, pin, commandFunc, pathSetter, reload)
-            pinBag(tribe, pinList, styles["pinBag"])
-        }
+val PinConfig = reactFunction { (tribe, pin, pinList, pathSetter, reload, commandFunc): PinConfigProps ->
+    configFrame(styles.className) {
+        pinConfigEditor(tribe, pin, commandFunc, pathSetter, reload)
+        pinBag(tribe, pinList, styles["pinBag"])
     }
+}
 
 private fun RBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: String) = div(classes = className) {
     pinList.map { pin -> pinCard(tribe.id, pin, key = pin._id) }

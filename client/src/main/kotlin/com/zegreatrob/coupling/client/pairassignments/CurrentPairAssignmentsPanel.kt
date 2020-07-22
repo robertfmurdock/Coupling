@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.dom.green
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -12,7 +15,6 @@ import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
-import react.dom.a
 import react.dom.div
 
 data class CurrentPairAssignmentsPanelProps(
@@ -68,7 +70,7 @@ private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument, 
 
 private fun PairAssignmentDocument.isNotSaved() = id == null
 
-private fun RBuilder.saveButton(onSave: () -> Unit) = a(classes = "super green button") {
+private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green) {
     attrs {
         classes += styles["saveButton"]
         onClickFunction = { onSave() }
