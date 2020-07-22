@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.CoroutineScope
@@ -22,13 +23,13 @@ import react.useState
 private val styles = useStyles("routing/DataLoadWrapper")
 
 fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: DataLoadProps<P> ->
-    val (data, setData) = useState<P?>(null)
+    val (result, setResult) = useState<Result<P>?>(null)
     val (animationState, setAnimationState) = useState(AnimationState.Start)
-    val shouldStartAnimation = data != null && animationState === AnimationState.Start
+    val shouldStartAnimation = result != null && animationState === AnimationState.Start
 
     val scope = useScope("Data load")
 
-    invokeOnScope(props.getDataAsync, scope, setData)
+    invokeOnScope(scope, setResult) { reloadFunc -> props.getDataAsync.invoke(reloadFunc, scope) }
 
     animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
         div {
@@ -39,37 +40,36 @@ fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { pro
                 }
                 this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
             }
-            if (data != null) {
-                child(
-                    type = reactFunction,
-                    props = data,
-                    handler = { }
-                )
+            when (result) {
+                is SuccessfulResult -> child(reactFunction, result.value)
+                is NotFoundResult -> console.error("${result.entityName} was not found.")
+                is ErrorResult -> console.error("Error: ${result.message}")
+                is UnauthorizedResult -> console.error("Unauthorized")
             }
         }
     }
 }
 
 private fun <P> invokeOnScope(
-    getDataAsync: suspend (ReloadFunction, CoroutineScope) -> Result<P>,
     scope: CoroutineScope,
-    setData: (P?) -> Unit
+    setResult: (Result<P>?) -> Unit,
+    performQuery: suspend (ReloadFunction) -> Result<P>
 ) {
     val (loadingJob, setLoadingJob) = useState<Job?>(null)
-
     if (loadingJob == null) {
-        val reloadFunction = { setData(null); setLoadingJob(null) }
+        val reloadFunction = { setResult(null); setLoadingJob(null) }
         setLoadingJob(
-            scope.launch {
-                when (val result = getDataAsync.invoke(reloadFunction, scope)) {
-                    is SuccessfulResult -> setData(result.value)
-                    is NotFoundResult -> console.error("${result.entityName} Not Found")
-                    is ErrorResult -> console.error(result.message)
-                    is UnauthorizedResult -> console.error("Not Authorized")
-                }
-            }
+            loadingJob(scope, setResult) { performQuery(reloadFunction) }
         )
     }
+}
+
+private fun <P> loadingJob(
+    scope: CoroutineScope,
+    setResult: (Result<P>?) -> Unit,
+    queryFunc: suspend () -> Result<P>
+) = scope.launch {
+    queryFunc().let(setResult)
 }
 
 enum class AnimationState {

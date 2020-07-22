@@ -10,23 +10,17 @@ import com.zegreatrob.minreact.reactFunction
 private val LoadedTribeConfig by lazy { dataLoadWrapper(TribeConfig) }
 
 val TribeConfigPage = reactFunction<PageProps> { props ->
-    with(props) {
-        child(LoadedTribeConfig, tribeId?.tribeQueryProps(this) ?: newTribeProps(props))
-    }
+    child(LoadedTribeConfig, props.tribeId?.tribeQueryProps(props) ?: newTribeProps(props))
 }
 
-private fun TribeId.tribeQueryProps(
-    pageProps: PageProps
-) = dataLoadProps(
+private fun TribeId.tribeQueryProps(pageProps: PageProps) = dataLoadProps(
     commander = pageProps.commander,
     query = TribeQuery(this),
-    toProps = { _, commandFunc, data -> TribeConfigProps(data!!, pageProps.pathSetter, commandFunc) }
+    toProps = { _, commandFunc, data -> TribeConfigProps(data, pageProps.pathSetter, commandFunc) }
 )
 
 
-private fun newTribeProps(
-    pageProps: PageProps
-) = dataLoadProps(
+private fun newTribeProps(pageProps: PageProps) = dataLoadProps(
     commander = pageProps.commander,
     query = NewTribeCommand(),
     toProps = { _, commandFunc, data -> TribeConfigProps(data, pageProps.pathSetter, commandFunc) }
