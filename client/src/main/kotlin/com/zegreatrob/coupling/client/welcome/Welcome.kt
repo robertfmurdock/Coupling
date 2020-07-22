@@ -29,13 +29,12 @@ data class WelcomeProps(
     val randomProvider: RandomProvider = RandomProvider
 ) : RProps
 
-val Welcome =
-    reactFunction<WelcomeProps> { (commandFunc, randomProvider) ->
-        div(classes = styles.className) {
-            div { welcomeSplash(randomProvider) }
-            div { comeOnIn(commandFunc) }
-        }
+val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
+    div(classes = styles.className) {
+        div { welcomeSplash(randomProvider) }
+        div { comeOnIn(commandFunc) }
     }
+}
 
 val welcomeTribeId = TribeId("welcome")
 
