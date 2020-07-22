@@ -15,21 +15,29 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.html.classes
-import react.RClass
-import react.RProps
+import react.*
 import react.dom.div
-import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: DataLoadProps<P> ->
-    val (result, setResult) = useState<Result<P>?>(null)
-    val (animationState, setAnimationState) = useState(AnimationState.Start)
-    val shouldStartAnimation = result != null && animationState === AnimationState.Start
+sealed class DataLoadState<P : RProps>
 
+class EmptyState<P : RProps> : DataLoadState<P>()
+
+data class PendingState<P : RProps>(val job: Job) : DataLoadState<P>()
+
+data class ResolvedState<P : RProps>(val result: Result<P>) : DataLoadState<P>()
+
+fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: DataLoadProps<P> ->
+    val (state, setState) = useState<DataLoadState<P>> { EmptyState() }
+    val (animationState, setAnimationState) = useState(AnimationState.Start)
     val scope = useScope("Data load")
 
-    invokeOnScope(scope, setResult) { reloadFunc -> props.getDataAsync.invoke(reloadFunc, scope) }
+    if (state is EmptyState) {
+        startPendingJob(setState, scope, props.getDataAsync)
+    }
+
+    val shouldStartAnimation = state !is EmptyState && animationState === AnimationState.Start
 
     animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
         div {
@@ -40,36 +48,45 @@ fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { pro
                 }
                 this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
             }
-            when (result) {
-                is SuccessfulResult -> child(reactFunction, result.value)
-                is NotFoundResult -> console.error("${result.entityName} was not found.")
-                is ErrorResult -> console.error("Error: ${result.message}")
-                is UnauthorizedResult -> console.error("Unauthorized")
+            if (state is ResolvedState) {
+                resolvedComponent(state, reactFunction)
             }
         }
     }
 }
 
-private fun <P> invokeOnScope(
-    scope: CoroutineScope,
-    setResult: (Result<P>?) -> Unit,
-    performQuery: suspend (ReloadFunction) -> Result<P>
+private fun <P : RProps> RBuilder.resolvedComponent(
+    state: ResolvedState<P>,
+    reactFunction: RClass<P>
 ) {
-    val (loadingJob, setLoadingJob) = useState<Job?>(null)
-    if (loadingJob == null) {
-        val reloadFunction = { setResult(null); setLoadingJob(null) }
-        setLoadingJob(
-            loadingJob(scope, setResult) { performQuery(reloadFunction) }
-        )
+    when (val result = state.result) {
+        is SuccessfulResult -> child(reactFunction, result.value)
+        is NotFoundResult -> console.error("${result.entityName} was not found.")
+        is ErrorResult -> console.error("Error: ${result.message}")
+        is UnauthorizedResult -> console.error("Unauthorized")
     }
 }
 
-private fun <P> loadingJob(
+private fun <P : RProps> startPendingJob(
+    setState: RSetState<DataLoadState<P>>,
     scope: CoroutineScope,
-    setResult: (Result<P>?) -> Unit,
+    getDataAsync: DataloadPropsFunc<Result<P>>
+) {
+    val setPending = setState.pending()
+    val job = loadingJob(scope, setState.resolved(), { getDataAsync(setState.empty(), scope) })
+    setPending(job)
+}
+
+private fun <P : RProps> RSetState<DataLoadState<P>>.empty(): () -> Unit = { this(EmptyState()) }
+private fun <P : RProps> RSetState<DataLoadState<P>>.pending(): (Job) -> Unit = { this(PendingState(it)) }
+private fun <P : RProps> RSetState<DataLoadState<P>>.resolved(): (Result<P>) -> Unit = { this(ResolvedState(it)) }
+
+private fun <P : RProps> loadingJob(
+    scope: CoroutineScope,
+    setResolved: (Result<P>) -> Unit,
     queryFunc: suspend () -> Result<P>
 ) = scope.launch {
-    queryFunc().let(setResult)
+    queryFunc().let(setResolved)
 }
 
 enum class AnimationState {
