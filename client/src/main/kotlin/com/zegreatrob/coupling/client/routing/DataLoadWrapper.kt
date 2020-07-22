@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SuccessfulResult
-import com.zegreatrob.coupling.action.SuspendResultAction
+import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
@@ -23,39 +21,37 @@ import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) =
-    reactFunction<DataLoadProps<P>> { props ->
-        val (data, setData) = useState<P?>(null)
+fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: DataLoadProps<P> ->
+    val (data, setData) = useState<P?>(null)
+    val (animationState, setAnimationState) = useState(AnimationState.Start)
+    val shouldStartAnimation = data != null && animationState === AnimationState.Start
 
-        val (animationState, setAnimationState) = useState(AnimationState.Start)
-        val shouldStartAnimation = data != null && animationState === AnimationState.Start
+    val scope = useScope("Data load")
 
-        val scope = useScope("Data load")
+    invokeOnScope(props.getDataAsync, scope, setData)
 
-        invokeOnScope(props.getDataAsync, scope, setData)
-
-        animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
-            div {
-                attrs {
-                    classes += styles["viewFrame"]
-                    if (shouldStartAnimation && !animationsDisabled) {
-                        classes += "ng-enter"
-                    }
-                    this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
+    animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
+        div {
+            attrs {
+                classes += styles["viewFrame"]
+                if (shouldStartAnimation && !animationsDisabled) {
+                    classes += "ng-enter"
                 }
-                if (data != null) {
-                    child(
-                        type = reactFunction,
-                        props = data,
-                        handler = { }
-                    )
-                }
+                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
+            }
+            if (data != null) {
+                child(
+                    type = reactFunction,
+                    props = data,
+                    handler = { }
+                )
             }
         }
     }
+}
 
 private fun <P> invokeOnScope(
-    getDataAsync: suspend (ReloadFunction, CoroutineScope) -> P,
+    getDataAsync: suspend (ReloadFunction, CoroutineScope) -> Result<P>,
     scope: CoroutineScope,
     setData: (P?) -> Unit
 ) {
@@ -65,7 +61,12 @@ private fun <P> invokeOnScope(
         val reloadFunction = { setData(null); setLoadingJob(null) }
         setLoadingJob(
             scope.launch {
-                setData(getDataAsync.invoke(reloadFunction, scope))
+                when (val result = getDataAsync.invoke(reloadFunction, scope)) {
+                    is SuccessfulResult -> setData(result.value)
+                    is NotFoundResult -> console.error("${result.entityName} Not Found")
+                    is ErrorResult -> console.error(result.message)
+                    is UnauthorizedResult -> console.error("Not Authorized")
+                }
             }
         )
     }
@@ -79,7 +80,12 @@ typealias ReloadFunction = () -> Unit
 
 typealias DataloadPropsFunc<P> = suspend (ReloadFunction, CoroutineScope) -> P
 
-data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<P>) : RProps
+data class DataLoadProps<P : RProps>(val getDataAsync: DataloadPropsFunc<Result<P>>) : RProps
+
+fun <P : RProps> dataLoadProps(getDataSync: (ReloadFunction, CoroutineScope) -> P) = DataLoadProps { reload, scope ->
+    getDataSync(reload, scope)
+        .successResult()
+}
 
 fun <R, P : RProps> dataLoadProps(
     query: SuspendResultAction<CommandDispatcher, R>,
@@ -88,9 +94,8 @@ fun <R, P : RProps> dataLoadProps(
 ) = DataLoadProps { reload, scope ->
     val dispatchFunc = dispatchFunc(commander, scope)
 
-    when (val result: Result<R> = commander.tracingDispatcher().execute(query)) {
-        is SuccessfulResult<R> -> toProps(reload, dispatchFunc, result.value)
-        else -> throw Exception(":-(")
+    commander.tracingDispatcher().execute(query).transform { value ->
+        toProps(reload, dispatchFunc, value)
     }
 }
 

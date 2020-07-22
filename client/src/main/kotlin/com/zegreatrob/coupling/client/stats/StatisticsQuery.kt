@@ -27,14 +27,11 @@ interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
     CalculateHeatMapActionDispatcher,
     TribeIdLoadAllSyntax {
 
-    suspend fun perform(query: StatisticsQuery) = query.loadAll().successResult()
+    suspend fun perform(query: StatisticsQuery) = query.loadAll()
 
-    private suspend fun StatisticsQuery.loadAll(): StatisticQueryResults {
-        val (tribe, players, history) = tribeId.loadAll()
-
+    private suspend fun StatisticsQuery.loadAll() = tribeId.loadAll().transform { (tribe, players, history) ->
         val (report, heatmapData) = calculateStats(tribe, players, history)
-
-        return StatisticQueryResults(tribe, players, history, report, heatmapData)
+        StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
     private fun calculateStats(tribe: Tribe, players: List<Player>, history: List<PairAssignmentDocument>)

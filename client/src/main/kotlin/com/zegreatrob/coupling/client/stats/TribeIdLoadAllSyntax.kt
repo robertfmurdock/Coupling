@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -16,7 +19,7 @@ import kotlinx.coroutines.coroutineScope
 interface TribeIdLoadAllSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeIdHistorySyntax, TribeIdPinsSyntax {
     suspend fun TribeId.loadAll() = coroutineScope {
         await(
-            async { get()!! },
+            async { get() },
             async { getPlayerList() },
             async { loadHistory() },
             async { getPins() }
@@ -24,12 +27,24 @@ interface TribeIdLoadAllSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeId
     }
 
     private suspend fun await(
-        tribeDeferred: Deferred<Tribe>,
+        tribeDeferred: Deferred<Tribe?>,
+        playerListDeferred: Deferred<List<Player>>,
+        historyDeferred: Deferred<List<PairAssignmentDocument>>,
+        pinListDeferred: Deferred<List<Pin>>
+    ): Result<TribeData> {
+        return (tribeDeferred.await() ?: return NotFoundResult("Tribe")).let { tribe ->
+            awaitTribeData(tribe, playerListDeferred, historyDeferred, pinListDeferred)
+                .successResult()
+        }
+    }
+
+    suspend fun awaitTribeData(
+        tribe: Tribe,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
         pinListDeferred: Deferred<List<Pin>>
     ) = TribeData(
-        tribeDeferred.await(),
+        tribe,
         playerListDeferred.await(),
         historyDeferred.await(),
         pinListDeferred.await()
