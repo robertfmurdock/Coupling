@@ -2,12 +2,13 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.configFrame
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.css.*
+import kotlinx.css.Color.Companion.wheat
 import react.RProps
 import react.dom.div
 
@@ -31,7 +32,13 @@ val PlayerConfig = reactFunction { (tribe, player, players, pathSetter, reload, 
                     players = players,
                     tribeId = tribe.id,
                     pathSetter = pathSetter,
-                    className = styles["playerRoster"]
+                    cssOverrides = {
+                        display = Display.inlineBlock
+                        borderRadius = 20.px
+                        padding = "10px"
+                        border = "11px outset tan"
+                        backgroundColor = wheat
+                    }
                 )
             )
         }

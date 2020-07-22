@@ -36,7 +36,7 @@ object PlayerConfig : StyleSyntax {
         ).await()
 
         browser.wait({
-            all(By.css(".${styles["playerRoster"]} .${playerCardStyles["header"]}"))
+            PlayerRoster.element.all(By.className(playerCardStyles["header"]))
                 .first()
                 .getText()
                 .then { it == name }

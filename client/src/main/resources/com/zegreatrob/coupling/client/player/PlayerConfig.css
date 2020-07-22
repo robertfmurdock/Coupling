@@ -1,11 +1,3 @@
 :local(.className) {
     /*! Do not remove */
 }
-
-:local(.playerRoster) {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 10px;
-    border: 11px outset tan;
-    background-color: wheat;
-}
