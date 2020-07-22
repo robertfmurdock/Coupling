@@ -72,22 +72,24 @@ private fun <P : RProps> startPendingJob(
     scope: CoroutineScope,
     getDataAsync: DataloadPropsFunc<Result<P>>
 ) {
+    val setEmpty = setState.empty()
     val setPending = setState.pending()
-    val job = loadingJob(scope, setState.resolved(), { getDataAsync(setState.empty(), scope) })
-    setPending(job)
+    val setResolved = setState.resolved()
+    setPending(
+        scope.launch { getDataAsync(setEmpty, scope).let(setResolved) }
+            .also { job -> job.errorOnJobFailure(setResolved) }
+    )
+}
+
+private fun <P : RProps> Job.errorOnJobFailure(setResolved: (Result<P>) -> Unit) = invokeOnCompletion { cause ->
+    if (cause != null) {
+        setResolved(ErrorResult(cause.message ?: "Data load error ${cause::class}"))
+    }
 }
 
 private fun <P : RProps> RSetState<DataLoadState<P>>.empty(): () -> Unit = { this(EmptyState()) }
 private fun <P : RProps> RSetState<DataLoadState<P>>.pending(): (Job) -> Unit = { this(PendingState(it)) }
 private fun <P : RProps> RSetState<DataLoadState<P>>.resolved(): (Result<P>) -> Unit = { this(ResolvedState(it)) }
-
-private fun <P : RProps> loadingJob(
-    scope: CoroutineScope,
-    setResolved: (Result<P>) -> Unit,
-    queryFunc: suspend () -> Result<P>
-) = scope.launch {
-    queryFunc().let(setResolved)
-}
 
 enum class AnimationState {
     Start, Stop
