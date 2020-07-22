@@ -36,8 +36,8 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
 
     val updatedPlayer = values.toPlayer()
     val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
-    val onRemove = player.id?.let {
-        dispatchFunc({ DeletePlayerCommand(tribe.id, it) }, { pathSetter.currentPairs(tribe.id) })
+    val onRemove = player.id?.let { playerId ->
+        dispatchFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter.currentPairs(tribe.id) })
             .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
     }
 
@@ -104,7 +104,12 @@ private fun RBuilder.emailInput(player: Player, onChange: (Event) -> Unit) {
         onChange = onChange,
         placeholder = "email"
     )
-    span { +"Email provides access privileges, so you can see all Tribes you're in!" }
+    span {
+        +"Email provides access privileges, so you can see all Tribes you're in!"
+        +"To change your player picture, assign a"
+        gravatarLink()
+        +"to this email."
+    }
 }
 
 private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {

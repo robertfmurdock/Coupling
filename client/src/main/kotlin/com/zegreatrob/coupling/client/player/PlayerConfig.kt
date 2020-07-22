@@ -22,7 +22,7 @@ data class PlayerConfigProps(
 
 private val styles = useStyles("player/PlayerConfig")
 
-val PlayerConfig = reactFunction<PlayerConfigProps> { (tribe, player, players, pathSetter, reload, commandFunc) ->
+val PlayerConfig = reactFunction { (tribe, player, players, pathSetter, reload, commandFunc): PlayerConfigProps ->
     configFrame(styles.className) {
         child(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, pathSetter, reload, commandFunc))
         div {

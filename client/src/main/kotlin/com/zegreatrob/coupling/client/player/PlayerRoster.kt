@@ -22,7 +22,7 @@ data class PlayerRosterProps(
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster = reactFunction<PlayerRosterProps> { (label, players, tribeId, pathSetter, className) ->
+val PlayerRoster = reactFunction { (label, players, tribeId, pathSetter, className): PlayerRosterProps ->
     div(classes = className) {
         attrs { classes += styles.className }
         div {
