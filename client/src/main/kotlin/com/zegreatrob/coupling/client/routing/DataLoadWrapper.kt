@@ -1,22 +1,19 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.action.*
-import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Paths
 import com.zegreatrob.coupling.client.external.react.useScope
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.html.classes
 import react.*
-import react.dom.div
 import react.router.dom.redirect
-
-private val styles = useStyles("routing/DataLoadWrapper")
 
 sealed class DataLoadState<D>
 
@@ -27,7 +24,7 @@ data class PendingState<D>(val job: Job) : DataLoadState<D>()
 data class ResolvedState<D>(val result: D) : DataLoadState<D>()
 
 fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: DataLoadProps<P> ->
-    wappa(
+    dLW(
         getDataAsync = props.getDataAsync,
         jobErrorState = { ErrorResult(it.message ?: "Data load error ${it::class}") },
         resolvedHandler = { state -> animationFrame(state, reactFunction) }
@@ -35,26 +32,14 @@ fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { pro
 }
 
 private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<Result<P>>, reactFunction: RClass<P>) {
-    val (animationState, setAnimationState) = useState(AnimationState.Start)
-    val shouldStartAnimation = state !is EmptyState && animationState === AnimationState.Start
-
-    animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
-        div {
-            attrs {
-                classes += styles["viewFrame"]
-                if (shouldStartAnimation && !animationsDisabled) {
-                    classes += "ng-enter"
-                }
-                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
-            }
-            if (state is ResolvedState) {
-                resolvedComponent(state, reactFunction)
-            }
+    child(animationFrame, AnimationFrameProps(state)) {
+        if (state is ResolvedState) {
+            resolvedComponent(state, reactFunction)
         }
     }
 }
 
-private fun <D> RBuilder.wappa(
+private fun <D> RBuilder.dLW(
     getDataAsync: DataloadPropsFunc<D>,
     jobErrorState: (Throwable) -> D,
     resolvedHandler: RBuilder.(DataLoadState<D>) -> Unit
