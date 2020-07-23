@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.transform
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
@@ -17,8 +19,10 @@ import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
+typealias DataPack = Triple<Tribe, List<Player>, PairAssignmentDocument>
+
 data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
-    SimpleSuspendResultAction<NewPairAssignmentsQueryDispatcher, Triple<Tribe?, List<Player>, PairAssignmentDocument>> {
+    SimpleSuspendResultAction<NewPairAssignmentsQueryDispatcher, DataPack> {
     override val performFunc = link(NewPairAssignmentsQueryDispatcher::perform)
 }
 
@@ -28,13 +32,17 @@ interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     SuspendActionExecuteSyntax,
     RequestSpinActionDispatcher {
 
-    suspend fun perform(query: NewPairAssignmentsQuery) = with(query) {
+    suspend fun perform(query: NewPairAssignmentsQuery): Result<DataPack> = with(query) {
         val (tribe, players, pins) = getData()
-        execute(requestSpinAction(players, pins))
-            .transform(queryData(tribe, players))
+        if (tribe == null)
+            NotFoundResult("Tribe")
+        else {
+            execute(requestSpinAction(players, pins))
+                .transform(queryData(tribe, players))
+        }
     }
 
-    private fun queryData(tribe: Tribe?, players: List<Player>) = { it: PairAssignmentDocument ->
+    private fun queryData(tribe: Tribe, players: List<Player>) = { it: PairAssignmentDocument ->
         Triple(tribe, players, it)
     }
 
@@ -51,13 +59,11 @@ interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it._id) }
 
     private suspend fun NewPairAssignmentsQuery.getData() = coroutineScope {
-        with(tribeId) {
-            await(
-                async { get() },
-                async { getPlayerList() },
-                async { getPins() }
-            )
-        }
+        await(
+            async { tribeId.get() },
+            async { tribeId.getPlayerList() },
+            async { tribeId.getPins() }
+        )
     }
 
 }

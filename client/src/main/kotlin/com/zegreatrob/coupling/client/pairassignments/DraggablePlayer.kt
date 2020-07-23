@@ -23,19 +23,18 @@ const val playerDragItemType = "PLAYER"
 
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
-val DraggablePlayer =
-    reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, onPlayerDrop) ->
-        draggableThing(playerDragItemType, pinnedPlayer.player.id!!, onPlayerDrop) { isOver: Boolean ->
-            playerCard(
-                PlayerCardProps(
-                    tribeId = tribe.id,
-                    player = pinnedPlayer.player,
-                    className = playerCardClassName(isOver, zoomOnHover)
-                ),
-                key = pinnedPlayer.player.id
-            )
-        }
+val DraggablePlayer = reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, onPlayerDrop) ->
+    draggableThing(playerDragItemType, pinnedPlayer.player.id!!, onPlayerDrop) { isOver: Boolean ->
+        playerCard(
+            PlayerCardProps(
+                tribeId = tribe.id,
+                player = pinnedPlayer.player,
+                className = playerCardClassName(isOver, zoomOnHover)
+            ),
+            key = pinnedPlayer.player.id
+        )
     }
+}
 
 private fun playerCardClassName(isOver: Boolean, zoomOnHover: Boolean) = mapOf(
     styles["hoverZoom"] to zoomOnHover,
