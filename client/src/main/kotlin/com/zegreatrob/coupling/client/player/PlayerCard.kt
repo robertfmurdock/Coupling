@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
+import kotlinx.css.properties.boxShadow
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -66,6 +67,7 @@ private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) = css {
     padding(all = (size * 0.06).px)
     borderWidth = (size * 0.04).px
     borderRadius = (size * 0.08).px
+    boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)
 }
 
 private fun playerCardHeaderElement(
