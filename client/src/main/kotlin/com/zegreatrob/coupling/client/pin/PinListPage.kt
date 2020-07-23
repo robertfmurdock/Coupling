@@ -17,6 +17,6 @@ val PinListPage = tribePageFunction { props, tribeId ->
     ))
 }
 
-private fun Pair<Tribe?, List<Pin>>.toPinListProps(pathSetter: (String) -> Unit) = let { (tribe, pins) ->
-    PinListProps(tribe!!, pins, pathSetter)
+private fun Pair<Tribe, List<Pin>>.toPinListProps(pathSetter: (String) -> Unit) = let { (tribe, pins) ->
+    PinListProps(tribe, pins, pathSetter)
 }
