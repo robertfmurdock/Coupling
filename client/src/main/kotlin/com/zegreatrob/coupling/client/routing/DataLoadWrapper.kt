@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.action.*
-import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.DecoratedDispatchFunc
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -17,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.html.classes
 import react.*
 import react.dom.div
+import react.router.dom.redirect
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
@@ -55,16 +53,23 @@ fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { pro
     }
 }
 
-private fun <P : RProps> RBuilder.resolvedComponent(
-    state: ResolvedState<P>,
-    reactFunction: RClass<P>
-) {
+private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<P>, reactFunction: RClass<P>) {
     when (val result = state.result) {
         is SuccessfulResult -> child(reactFunction, result.value)
-        is NotFoundResult -> console.error("${result.entityName} was not found.")
+        is NotFoundResult -> notFoundContent(result)
         is ErrorResult -> console.error("Error: ${result.message}")
-        is UnauthorizedResult -> console.error("Unauthorized")
+        is UnauthorizedResult -> unauthorizedContent()
     }
+}
+
+private fun <P : RProps> RBuilder.notFoundContent(result: NotFoundResult<P>) {
+    console.error("${result.entityName} was not found.")
+    redirect(to = Paths.tribeList())
+}
+
+private fun RBuilder.unauthorizedContent() {
+    console.error("Unauthorized")
+    redirect(to = Paths.welcome())
 }
 
 private fun <P : RProps> startPendingJob(
