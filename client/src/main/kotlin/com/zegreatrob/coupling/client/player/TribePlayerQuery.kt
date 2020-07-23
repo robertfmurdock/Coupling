@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
@@ -15,8 +17,10 @@ import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
+typealias TribePlayerData = Triple<Tribe, List<Player>, Player>
+
 data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
-    SimpleSuspendResultAction<TribePlayerQueryDispatcher, Triple<Tribe?, List<Player>, Player>> {
+    SimpleSuspendResultAction<TribePlayerQueryDispatcher, TribePlayerData> {
     override val performFunc = link(TribePlayerQueryDispatcher::perform)
 }
 
@@ -24,15 +28,20 @@ interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     FindCallSignActionDispatcher,
     ExecutableActionExecuteSyntax {
-    suspend fun perform(query: TribePlayerQuery) = query.get().successResult()
+    suspend fun perform(query: TribePlayerQuery): Result<TribePlayerData> = query.get()
+        ?.successResult()
+        ?: NotFoundResult("Tribe")
 
     private suspend fun TribePlayerQuery.get() = tribeId.getData()
         .let { (tribe, players) ->
-            Triple(
-                tribe,
-                players,
-                players.findOrDefaultNew(playerId)
-            )
+            if (tribe == null)
+                null
+            else
+                Triple(
+                    tribe,
+                    players,
+                    players.findOrDefaultNew(playerId)
+                )
         }
 
     private suspend fun TribeId.getData() = coroutineScope {

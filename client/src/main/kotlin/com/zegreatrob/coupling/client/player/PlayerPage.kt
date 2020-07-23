@@ -5,20 +5,16 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.dataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
-import react.RBuilder
 
 private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
 
-val PlayerPage = tribePageFunction { props, tribeId ->
-    loadedPlayer(tribeId, props)
-}
-
-private fun RBuilder.loadedPlayer(tribeId: TribeId, props: PageProps) = with(props) {
+val PlayerPage = tribePageFunction { props: PageProps, tribeId: TribeId ->
     child(LoadedPlayer, dataLoadProps(
-        commander = commander,
-        query = TribePlayerQuery(tribeId, playerId),
+        commander = props.commander,
+        query = TribePlayerQuery(tribeId, props.playerId),
         toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfigProps(tribe!!, player, players, pathSetter, reload, commandFunc)
+            PlayerConfigProps(tribe, player, players, props.pathSetter, reload, commandFunc)
         }
-    )) { playerId?.let { attrs { key = it } } }
+    )) { props.playerId?.let { attrs { key = it } } }
+
 }
