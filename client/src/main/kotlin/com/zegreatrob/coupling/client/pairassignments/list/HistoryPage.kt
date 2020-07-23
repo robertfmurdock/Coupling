@@ -12,7 +12,7 @@ val HistoryPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = HistoryQuery(tribeId),
         toProps = { reload, commandFunc, (tribe, history) ->
-            HistoryProps(tribe!!, history, reload, props.pathSetter, commandFunc)
+            HistoryProps(tribe, history, reload, props.pathSetter, commandFunc)
         }
     ))
 }
