@@ -18,6 +18,6 @@ private fun RBuilder.loadedRetiredPlayers(tribeId: TribeId, props: PageProps) = 
     child(LoadedRetiredPlayers, dataLoadProps(
         commander = commander,
         query = RetiredPlayerListQuery(tribeId),
-        toProps = { _, _, (tribe, retiredPlayers) -> RetiredPlayersProps(tribe!!, retiredPlayers, pathSetter) }
+        toProps = { _, _, (tribe, retiredPlayers) -> RetiredPlayersProps(tribe, retiredPlayers, pathSetter) }
     ))
 }
