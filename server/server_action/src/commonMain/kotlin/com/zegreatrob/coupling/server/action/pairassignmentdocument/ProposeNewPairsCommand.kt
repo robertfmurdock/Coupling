@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -24,16 +26,18 @@ data class ProposeNewPairsCommand(
 interface ProposeNewPairsCommandDispatcher : ExecutableActionExecuteSyntax, RunGameActionDispatcher,
     TribeIdGetSyntax, TribeIdHistorySyntax {
 
-    suspend fun perform(command: ProposeNewPairsCommand) = command.runGame().successResult()
+    suspend fun perform(command: ProposeNewPairsCommand): Result<PairAssignmentDocument> = command.runGame()
+        ?.successResult()
+        ?: NotFoundResult("Tribe")
 
     private suspend fun ProposeNewPairsCommand.runGame() = loadData()
-        .let { (history, tribe) -> execute(RunGameAction(players, pins, history, tribe)) }
+        ?.let { (history, tribe) -> execute(RunGameAction(players, pins, history, tribe)) }
 
     private suspend fun ProposeNewPairsCommand.loadData() = coroutineScope {
         await(
             async { tribeId.loadHistory() },
-            async { tribeId.get()!! }
+            async { tribeId.get() }
         )
-    }
+    }.let { (history, tribe) -> if (tribe == null) null else history to tribe }
 
 }

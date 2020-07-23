@@ -9,7 +9,7 @@ import kotlin.js.json
 
 fun Json.toTribe(): Tribe =
     Tribe(
-        id = TribeId(stringValue("id")!!),
+        id = TribeId(stringValue("id") ?: ""),
         name = stringValue("name"),
         email = stringValue("email"),
         pairingRule = PairingRule.fromValue(this["pairingRule"]?.toIntFromStringOrInt()),
