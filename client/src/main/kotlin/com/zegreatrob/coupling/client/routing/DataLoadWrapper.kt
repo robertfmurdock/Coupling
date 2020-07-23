@@ -17,6 +17,7 @@ data class ResolvedState<D>(val result: D) : DataLoadState<D>()
 
 typealias ReloadFunction = () -> Unit
 typealias DataLoadFunc<D> = suspend (ReloadFunction, CoroutineScope) -> D
+
 data class DataLoadWrapperProps<D>(val getDataAsync: DataLoadFunc<D>, val errorData: (Throwable) -> D) : RProps
 
 fun <D> dataLoadWrapper() = reactFunction<DataLoadWrapperProps<D>> { props ->
@@ -47,11 +48,7 @@ private fun <D> startPendingJob(
 }
 
 private fun <D> Job.errorOnJobFailure(setResolved: (D) -> Unit, errorResult: (Throwable) -> D) =
-    invokeOnCompletion { cause ->
-        if (cause != null) {
-            setResolved(errorResult(cause))
-        }
-    }
+    invokeOnCompletion { cause -> if (cause != null) setResolved(errorResult(cause)) }
 
 private fun <D> RSetState<DataLoadState<D>>.empty(): () -> Unit = { this(EmptyState()) }
 
