@@ -13,6 +13,10 @@ private val styles = useStyles("routing/DataLoadWrapper")
 
 data class AnimationFrameProps<D>(val state: DataLoadState<D>) : RProps
 
+enum class AnimationState {
+    Start, Stop
+}
+
 val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
     val (animationState, setAnimationState) = useState(AnimationState.Start)
     val shouldStartAnimation = props.state !is EmptyState && animationState === AnimationState.Start

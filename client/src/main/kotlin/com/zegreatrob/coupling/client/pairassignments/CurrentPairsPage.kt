@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.routing.couplingDataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 
-private val LoadedPairAssignments by lazy { dataLoadWrapper(PairAssignments) }
+private val LoadedPairAssignments by lazy { couplingDataLoadWrapper(PairAssignments) }
 
 val CurrentPairsPage = tribePageFunction { props, tribeId ->
     child(LoadedPairAssignments, dataLoadProps(tribeId, props.pathSetter, props.commander))

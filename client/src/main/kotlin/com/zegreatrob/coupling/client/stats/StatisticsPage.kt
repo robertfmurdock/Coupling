@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.routing.couplingDataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.minreact.child
 
-private val LoadedPairAssignments by lazy { dataLoadWrapper(TribeStatistics) }
+private val LoadedPairAssignments by lazy { couplingDataLoadWrapper(TribeStatistics) }
 
 val StatisticsPage = tribePageFunction { props, tribeId ->
     child(LoadedPairAssignments, dataLoadProps(

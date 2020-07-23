@@ -4,13 +4,13 @@ import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.routing.couplingDataLoadWrapper
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.dom.div
 
-private val LoadedRetiredPlayer = dataLoadWrapper(PlayerConfig)
+private val LoadedRetiredPlayer = couplingDataLoadWrapper(PlayerConfig)
 
 val RetiredPlayerPage =
     reactFunction<PageProps> { props ->

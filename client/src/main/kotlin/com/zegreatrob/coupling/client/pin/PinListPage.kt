@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.routing.couplingDataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 
-private val LoadedPinList = dataLoadWrapper(PinList)
+private val LoadedPinList = couplingDataLoadWrapper(PinList)
 
 val PinListPage = tribePageFunction { props, tribeId ->
     child(LoadedPinList, dataLoadProps(

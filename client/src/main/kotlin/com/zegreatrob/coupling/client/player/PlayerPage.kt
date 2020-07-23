@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.routing.couplingDataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-private val LoadedPlayer = dataLoadWrapper(PlayerConfig)
+private val LoadedPlayer = couplingDataLoadWrapper(PlayerConfig)
 
 val PlayerPage = tribePageFunction { props: PageProps, tribeId: TribeId ->
     child(LoadedPlayer, dataLoadProps(

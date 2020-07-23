@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.routing.dataLoadWrapper
+import com.zegreatrob.coupling.client.routing.couplingDataLoadWrapper
 import com.zegreatrob.coupling.client.tribePageFunction
 
-private val LoadedPin by lazy { dataLoadWrapper(PinConfig) }
+private val LoadedPin by lazy { couplingDataLoadWrapper(PinConfig) }
 
 val PinPage = tribePageFunction { props, tribeId ->
     val pinId = props.pinId
