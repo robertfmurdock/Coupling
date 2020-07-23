@@ -18,23 +18,24 @@ import react.router.dom.redirect
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-sealed class DataLoadState<P : RProps>
+sealed class DataLoadState<D>
 
-class EmptyState<P : RProps> : DataLoadState<P>()
+class EmptyState<D> : DataLoadState<D>()
 
-data class PendingState<P : RProps>(val job: Job) : DataLoadState<P>()
+data class PendingState<D>(val job: Job) : DataLoadState<D>()
 
-data class ResolvedState<P : RProps>(val result: Result<P>) : DataLoadState<P>()
+data class ResolvedState<D>(val result: D) : DataLoadState<D>()
 
 fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: DataLoadProps<P> ->
-    val (state, setState) = useState<DataLoadState<P>> { EmptyState() }
+    wappa(
+        getDataAsync = props.getDataAsync,
+        jobErrorState = { ErrorResult(it.message ?: "Data load error ${it::class}") },
+        resolvedHandler = { state -> animationFrame(state, reactFunction) }
+    )
+}
+
+private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<Result<P>>, reactFunction: RClass<P>) {
     val (animationState, setAnimationState) = useState(AnimationState.Start)
-    val scope = useScope("Data load")
-
-    if (state is EmptyState) {
-        startPendingJob(setState, scope, props.getDataAsync)
-    }
-
     val shouldStartAnimation = state !is EmptyState && animationState === AnimationState.Start
 
     animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
@@ -53,7 +54,23 @@ fun <P : RProps> dataLoadWrapper(reactFunction: RClass<P>) = reactFunction { pro
     }
 }
 
-private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<P>, reactFunction: RClass<P>) {
+private fun <D> RBuilder.wappa(
+    getDataAsync: DataloadPropsFunc<D>,
+    jobErrorState: (Throwable) -> D,
+    resolvedHandler: RBuilder.(DataLoadState<D>) -> Unit
+) {
+    val (state, setState) = useState<DataLoadState<D>> { EmptyState() }
+
+    val scope = useScope("Data load")
+
+    if (state is EmptyState) {
+        startPendingJob(setState, scope, getDataAsync, jobErrorState)
+    }
+
+    resolvedHandler(state)
+}
+
+private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<Result<P>>, reactFunction: RClass<P>) {
     when (val result = state.result) {
         is SuccessfulResult -> child(reactFunction, result.value)
         is NotFoundResult -> notFoundContent(result)
@@ -72,29 +89,31 @@ private fun RBuilder.unauthorizedContent() {
     redirect(to = Paths.welcome())
 }
 
-private fun <P : RProps> startPendingJob(
-    setState: RSetState<DataLoadState<P>>,
+private fun <D> startPendingJob(
+    setState: RSetState<DataLoadState<D>>,
     scope: CoroutineScope,
-    getDataAsync: DataloadPropsFunc<Result<P>>
+    getDataAsync: DataloadPropsFunc<D>,
+    jobErrorState: (Throwable) -> D
 ) {
     val setEmpty = setState.empty()
     val setPending = setState.pending()
     val setResolved = setState.resolved()
     setPending(
         scope.launch { getDataAsync(setEmpty, scope).let(setResolved) }
-            .also { job -> job.errorOnJobFailure(setResolved) }
+            .also { job -> job.errorOnJobFailure(setResolved, jobErrorState) }
     )
 }
 
-private fun <P : RProps> Job.errorOnJobFailure(setResolved: (Result<P>) -> Unit) = invokeOnCompletion { cause ->
-    if (cause != null) {
-        setResolved(ErrorResult(cause.message ?: "Data load error ${cause::class}"))
+private fun <D> Job.errorOnJobFailure(setResolved: (D) -> Unit, errorResult: (Throwable) -> D) =
+    invokeOnCompletion { cause ->
+        if (cause != null) {
+            setResolved(errorResult(cause))
+        }
     }
-}
 
-private fun <P : RProps> RSetState<DataLoadState<P>>.empty(): () -> Unit = { this(EmptyState()) }
-private fun <P : RProps> RSetState<DataLoadState<P>>.pending(): (Job) -> Unit = { this(PendingState(it)) }
-private fun <P : RProps> RSetState<DataLoadState<P>>.resolved(): (Result<P>) -> Unit = { this(ResolvedState(it)) }
+private fun <D> RSetState<DataLoadState<D>>.empty(): () -> Unit = { this(EmptyState()) }
+private fun <D> RSetState<DataLoadState<D>>.pending(): (Job) -> Unit = { this(PendingState(it)) }
+private fun <D> RSetState<DataLoadState<D>>.resolved(): (D) -> Unit = { this(ResolvedState(it)) }
 
 enum class AnimationState {
     Start, Stop
