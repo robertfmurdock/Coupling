@@ -12,7 +12,7 @@ val PinPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = TribePinQuery(tribeId, pinId),
         toProps = { reload, commandFunc, (tribe, pins, pin) ->
-            PinConfigProps(tribe!!, pin, pins, props.pathSetter, reload, commandFunc)
+            PinConfigProps(tribe, pin, pins, props.pathSetter, reload, commandFunc)
         }
     )) { pinId?.let { attrs { key = it } } }
 }
