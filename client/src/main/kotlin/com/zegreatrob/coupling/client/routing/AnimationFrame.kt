@@ -11,8 +11,7 @@ import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-data class AnimationFrameProps<D>(val state: DataLoadState<D>) :
-    RProps
+data class AnimationFrameProps<D>(val state: DataLoadState<D>) : RProps
 
 val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
     val (animationState, setAnimationState) = useState(AnimationState.Start)
@@ -25,8 +24,7 @@ val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
                 if (shouldStartAnimation && !animationsDisabled) {
                     classes += "ng-enter"
                 }
-                this["onAnimationEnd"] =
-                    { setAnimationState(AnimationState.Stop) }
+                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
             }
             props.children()
         }
