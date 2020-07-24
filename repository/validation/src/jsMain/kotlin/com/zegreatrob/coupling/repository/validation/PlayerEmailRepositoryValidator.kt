@@ -24,7 +24,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
     } exercise {
         repository.getPlayerIdsByEmail(email)
     } verify { result ->
-        result.assertIsEqualTo(listOf(tribeId.with(player.id)))
+        result.assertIsEqualTo(listOf(tribeId.with(player.id)), "Could not find by email <$email>")
     }
 
     @Test

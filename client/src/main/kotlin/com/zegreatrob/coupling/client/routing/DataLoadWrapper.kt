@@ -20,9 +20,9 @@ typealias DataLoadFunc<D> = suspend (ReloadFunction, CoroutineScope) -> D
 
 data class DataLoadWrapperProps<D>(val getDataAsync: DataLoadFunc<D>, val errorData: (Throwable) -> D) : RProps
 
-fun <D> dataLoadWrapper() = reactFunction<DataLoadWrapperProps<D>> { props ->
+private val cachedComponent = reactFunction<DataLoadWrapperProps<out Any>> { props ->
     val (getDataAsync, errorData) = props
-    val (state, setState) = useState<DataLoadState<D>> { EmptyState() }
+    val (state, setState) = useState<DataLoadState<out Any>> { EmptyState() }
     val scope = useScope("Data load")
 
     if (state is EmptyState) {
@@ -30,7 +30,9 @@ fun <D> dataLoadWrapper() = reactFunction<DataLoadWrapperProps<D>> { props ->
     }
 
     props.children(state)
-}.unsafeCast<FunctionalComponent<DataLoadWrapperProps<D>>>()
+}
+
+fun <D> dataLoadWrapper() = cachedComponent.unsafeCast<FunctionalComponent<DataLoadWrapperProps<D>>>()
 
 private fun <D> startPendingJob(
     scope: CoroutineScope,

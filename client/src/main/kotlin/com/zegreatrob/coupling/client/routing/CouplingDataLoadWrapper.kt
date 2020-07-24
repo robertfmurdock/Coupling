@@ -35,22 +35,23 @@ fun <R, P : RProps> dataLoadProps(
     }
 }
 
-fun <P : RProps> couplingDataLoadWrapper(reactFunction: RClass<P>) = reactFunction { props: CouplingLoaderProps<P> ->
+fun <P : RProps> couplingDataLoadWrapper(component: RClass<P>) = reactFunction { props: CouplingLoaderProps<P> ->
     childFunction(
         component = dataLoadWrapper(),
-        props = DataLoadWrapperProps(props.getDataAsync, { ErrorResult(it.message ?: "Data load error ${it::class}") })
+        props = DataLoadWrapperProps(props.getDataAsync, ::onError)
     ) { state: DataLoadState<Result<P>> ->
-        animationFrame(state, reactFunction)
+        animationFrame(state, component)
     }
 }
 
-private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<Result<P>>, reactFunction: RClass<P>) {
+private fun <P> onError(it: Throwable) = ErrorResult<P>(it.message ?: "Data load error ${it::class}")
+
+private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<Result<P>>, reactFunction: RClass<P>) =
     child(animationFrame, AnimationFrameProps(state)) {
         if (state is ResolvedState) {
             resolvedComponent(state, reactFunction)
         }
     }
-}
 
 private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<Result<P>>, reactFunction: RClass<P>) {
     when (val result = state.result) {
