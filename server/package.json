@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.718.0",
+    "aws-sdk": "2.719.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -47,8 +47,8 @@
     "file-loader": "^6.0.0",
     "fork-promise": "^2.0.0",
     "fs-extra": "^9.0.1",
-    "jasmine": "^3.5.0",
-    "jasmine-core": "^3.5.0",
+    "jasmine": "^3.6.0",
+    "jasmine-core": "^3.6.0",
     "jasmine-reporters": "^2.3.2",
     "npm-check-updates": "^7.0.2",
     "protractor": "^7.0.0",
