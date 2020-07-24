@@ -41,4 +41,3 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
     ).also { console.error(it.message) }
 
 }
-
