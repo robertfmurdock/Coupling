@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.client.DataLoadComponentTools
 import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,7 @@ data class PendingState<D>(val job: Job) : DataLoadState<D>()
 data class ResolvedState<D>(val result: D) : DataLoadState<D>()
 
 typealias ReloadFunction = () -> Unit
-typealias DataLoadFunc<D> = suspend (ReloadFunction, CoroutineScope) -> D
+typealias DataLoadFunc<D> = suspend (DataLoadComponentTools) -> D
 
 data class DataLoadWrapperProps<D>(val getDataAsync: DataLoadFunc<D>, val errorData: (Throwable) -> D) : RProps
 
@@ -43,8 +44,9 @@ private fun <D> startPendingJob(
     val setEmpty = setState.empty()
     val setPending = setState.pending()
     val setResolved = setState.resolved()
+    val tools = DataLoadComponentTools(scope, setEmpty)
     setPending(
-        scope.launch { getDataAsync(setEmpty, scope).let(setResolved) }
+        scope.launch { getDataAsync(tools).let(setResolved) }
             .also { job -> job.errorOnJobFailure(setResolved, errorData) }
     )
 }

@@ -1,14 +1,10 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.action.*
-import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.DecoratedDispatchFunc
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.Paths
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.execute
-import kotlinx.coroutines.CoroutineScope
 import react.RBuilder
 import react.RClass
 import react.RProps
@@ -17,21 +13,18 @@ import react.router.dom.redirect
 
 data class CouplingLoaderProps<P : RProps>(val getDataAsync: DataLoadFunc<Result<P>>) : RProps
 
-fun <P : RProps> dataLoadProps(getDataSync: (ReloadFunction, CoroutineScope) -> P) =
-    CouplingLoaderProps { reload, scope ->
-        getDataSync(reload, scope)
-            .successResult()
-    }
+fun <P : RProps> dataLoadProps(getDataSync: (DataLoadComponentTools) -> P) =
+    CouplingLoaderProps { tools -> getDataSync(tools).successResult() }
 
 fun <R, P : RProps> dataLoadProps(
     query: SuspendResultAction<CommandDispatcher, R>,
     toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
-) = CouplingLoaderProps { reload, scope ->
-    val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, scope)
+) = CouplingLoaderProps { tools ->
+    val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
 
     commander.tracingDispatcher().execute(query).transform { value ->
-        toProps(reload, dispatchFunc, value)
+        toProps(tools.reloadData, dispatchFunc, value)
     }
 }
 

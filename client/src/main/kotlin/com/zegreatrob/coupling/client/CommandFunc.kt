@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.action.ErrorResult
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuspendResultAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.execute
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 
 interface DispatchFunc<D> {
     operator fun <C : SuspendResultAction<D, R>, R> invoke(
@@ -17,7 +16,7 @@ interface DispatchFunc<D> {
 
 class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
     val dispatcherFunc: () -> D,
-    private val scope: CoroutineScope
+    private val bridge: DataLoadComponentTools
 ) : DispatchFunc<D> {
 
     @ExperimentalCoroutinesApi
@@ -30,16 +29,16 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
     private fun <C : SuspendResultAction<D, R>, R> launchExecute(
         dispatcher: D,
         command: C,
-        response: (Result<R>) -> Unit
-    ) {
-        val deferred = scope.async { dispatcher.execute(command) }
-        deferred.invokeOnCompletion { handler ->
-            if (handler != null) {
-                console.error("Failed to finish ${command::class.simpleName} because ${handler.message}")
-            } else {
-                deferred.getCompleted().let(response)
-            }
-        }
-    }
+        onResponse: (Result<R>) -> Unit
+    ) = bridge.performSuspendWork(
+        { dispatcher.execute(command) },
+        { handler: Throwable -> makeErrorResult(command, handler) },
+        onResponse
+    )
+
+    private fun <C : SuspendResultAction<D, R>, R> makeErrorResult(command: C, handler: Throwable) = ErrorResult<R>(
+        "Failed to finish ${command::class.simpleName} because ${handler.message}"
+    ).also { console.error(it.message) }
 
 }
+
