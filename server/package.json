@@ -7,13 +7,13 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.719.0",
+    "aws-sdk": "2.721.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
     "cookie-parser": "^1.4.5",
-    "css-loader": "^3.6.0",
+    "css-loader": "^4.0.0",
     "date-fns": "^2.15.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
@@ -47,7 +47,7 @@
     "file-loader": "^6.0.0",
     "fork-promise": "^2.0.0",
     "fs-extra": "^9.0.1",
-    "jasmine": "^3.6.0",
+    "jasmine": "^3.6.1",
     "jasmine-core": "^3.6.0",
     "jasmine-reporters": "^2.3.2",
     "npm-check-updates": "^7.0.2",
@@ -62,7 +62,7 @@
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",
     "url-loader": "^4.1.0",
-    "webpack": "^4.43.0",
+    "webpack": "^4.44.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^2.5.0"

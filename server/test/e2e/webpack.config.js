@@ -14,10 +14,11 @@ config.module.rules.push({
   test: /\.(css)$/,
   loader: 'css-loader',
   options: {
+    esModule: false,
     modules: {
-      context: path.resolve(__dirname, '../../../build/js/packages/Coupling-client/'),
+      localIdentContext: path.resolve(__dirname, '../../../build/js/packages/Coupling-client/'),
+      exportOnlyLocals: true,
     },
-    onlyLocals: true,
   }
 });
 
