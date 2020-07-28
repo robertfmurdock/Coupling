@@ -37,8 +37,8 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
     )
 
     fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        id = getDynamoStringValue("id")!!.let(::PairAssignmentDocumentId),
-        date = DateTime(getDynamoStringValue("date")!!.toLong()),
+        id = getDynamoStringValue("id")?.let(::PairAssignmentDocumentId),
+        date = getDynamoStringValue("date")?.toLong()?.let { DateTime(it) } ?: throw Exception("Date missing."),
         pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList()
     )
 
