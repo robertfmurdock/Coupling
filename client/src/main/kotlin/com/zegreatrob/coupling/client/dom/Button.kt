@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.dom
 
+import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.TextDecoration
@@ -9,6 +10,8 @@ import kotlinx.html.ButtonType
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
+import react.RHandler
+import react.RProps
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledButton
@@ -108,16 +111,32 @@ fun RBuilder.couplingButton(
     colorRuleSet: RuleSet = black,
     className: String = "",
     onClick: () -> Unit = {},
-    block: StyledDOMBuilder<BUTTON>.() -> Unit = {}
-) = styledButton {
-    css(buttonRuleset)
-    css(sizeRuleSet)
-    css(colorRuleSet)
-    attrs {
-        classes += "button"
-        classes += className
-        type = ButtonType.button
-        onClickFunction = { onClick() }
+    block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
+    handler: RHandler<CouplingButtonProps> = {}
+) = child(CouplingButton, CouplingButtonProps(sizeRuleSet, colorRuleSet, className, onClick, block), handler)
+
+data class CouplingButtonProps(
+    val sizeRuleSet: RuleSet = medium,
+    val colorRuleSet: RuleSet = black,
+    val className: String = "",
+    val onClick: () -> Unit = {},
+    val block: StyledDOMBuilder<BUTTON>.() -> Unit = {}
+) : RProps
+
+val CouplingButton = reactFunction<CouplingButtonProps> { props ->
+    val (sizeRuleSet, colorRuleSet, className, onClick, block) = props
+    styledButton {
+        css(buttonRuleset)
+        css(sizeRuleSet)
+        css(colorRuleSet)
+        attrs {
+            classes += "button"
+            classes += className
+            type = ButtonType.button
+            onClickFunction = { onClick() }
+        }
+        block()
+        props.children()
     }
-    block()
+
 }

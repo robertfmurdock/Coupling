@@ -7,12 +7,18 @@ import kotlinx.html.ButtonType
 import kotlinx.html.tabIndex
 import react.RBuilder
 
-fun RBuilder.configSaveButton(isSaving: Boolean, className: String) = couplingButton(supersize, blue, className) {
-    attrs {
-        type = ButtonType.submit
-        tabIndex = "0"
-        value = "Save"
-        disabled = isSaving
+fun RBuilder.configSaveButton(isSaving: Boolean, className: String) = couplingButton(
+    sizeRuleSet = supersize,
+    colorRuleSet = blue,
+    className = className,
+    block = {
+        attrs {
+            type = ButtonType.submit
+            tabIndex = "0"
+            value = "Save"
+            disabled = isSaving
+        }
     }
+) {
     +"Save"
 }
