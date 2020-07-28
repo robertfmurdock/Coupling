@@ -26,7 +26,7 @@ export function renderD3Heatmap(element, data, cellClassName) {
         cellElement.setAttribute('class', cellClassName);
         return cellElement;
     })
-        .style("background-color", function (dataNumber: number) {
+        .style("background-color", function (dataNumber) {
             if (dataNumber === null) {
                 return '#EEE'
             }

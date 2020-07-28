@@ -6,7 +6,7 @@ const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const jsPath = path.resolve(__dirname, './build/processedResources/Js/main');
 
 const config = {
-  entry: path.resolve(jsPath, './com/zegreatrob/coupling/client/app.ts'),
+  entry: path.resolve(jsPath, './com/zegreatrob/coupling/client/app.js'),
   mode: process.env.NODE_ENV,
   output: {
     path: path.resolve(__dirname, 'build/lib/main'),
@@ -32,9 +32,6 @@ const config = {
         use: [
           'cache-loader',
           'babel-loader',
-          'ts-loader?' + JSON.stringify({
-            silent: true
-          })
         ]
       },
       {
