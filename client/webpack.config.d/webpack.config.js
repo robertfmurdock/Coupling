@@ -7,16 +7,9 @@ config.externals = {jquery: "jQuery"};
 config.resolve.modules.push(
   resourcesPath
 );
-config.resolve.extensions = ['.js', '.ts'];
+config.resolve.extensions = ['.js'];
 
-config.module.rules.push({
-    test: /\.ts(x?)$/,
-    use: [
-      'cache-loader',
-      'babel-loader',
-      'ts-loader?' + JSON.stringify({silent: true})
-    ]
-  },
+config.module.rules.push(
   {test: /\.md$/i, use: 'raw-loader'}, {
     test: /\.(sa|sc|c)ss$/,
     use: [

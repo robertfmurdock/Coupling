@@ -19,7 +19,7 @@ const config = {
       path.resolve(__dirname, 'node_modules'),
       jsPath
     ],
-    extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
+    extensions: ['.webpack.js', '.web.js', '.js', '.json'],
   },
   externals: {
     ws: {},
@@ -27,13 +27,6 @@ const config = {
   },
   module: {
     rules: [
-      {
-        test: /\.ts(x?)$/,
-        use: [
-          'cache-loader',
-          'babel-loader',
-        ]
-      },
       {
         test: /\.js$/,
         use: [

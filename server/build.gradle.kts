@@ -152,7 +152,6 @@ tasks {
         inputs.file(compileKotlinJs.outputFile)
         inputs.dir("node_modules")
         inputs.file(file("package.json"))
-        inputs.file(file("tsconfig.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("src/main/javascript")
         inputs.dir("public")

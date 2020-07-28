@@ -5,7 +5,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const config = {
   mode: "production",
-  entry: path.resolve(jsPath, './src/main/javascript/app.ts'),
+  entry: path.resolve(jsPath, './src/main/javascript/app.js'),
   output: {
     path: path.resolve(__dirname, 'build/executable'),
     filename: 'app.js',
@@ -24,7 +24,7 @@ const config = {
     })
   ],
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js'],
     modules: [
       path.resolve(__dirname, '../build/js/node_modules'),
       path.resolve(__dirname, 'build/processedResources/Js/main'),
@@ -33,10 +33,6 @@ const config = {
   },
   module: {
     rules: [
-      {
-        test: /\.ts$/,
-        loader: 'ts-loader'
-      },
       {
         test: /\.js$/,
         use: ["source-map-loader"],

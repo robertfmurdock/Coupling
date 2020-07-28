@@ -1,4 +1,4 @@
-import {browser, By, Config, element} from "protractor";
+import {browser, By, element} from "protractor";
 import e2eHelper from './e2e-help'
 
 const DataLoadWrapperStyles = require(`${"../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client"}/routing/DataLoadWrapper.css`).locals;
@@ -10,7 +10,7 @@ function disableDotReporter() {
     };
 }
 
-export let config: Config = {
+export let config = {
 
     allScriptsTimeout: 31000,
 

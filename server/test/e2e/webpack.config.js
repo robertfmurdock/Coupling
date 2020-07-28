@@ -6,7 +6,7 @@ const nodeExternals = require('webpack-node-externals');
 const jsPath = path.resolve(__dirname, './');
 
 config.entry = {
-  config: path.resolve(jsPath, './protractor-conf.ts'),
+  config: path.resolve(jsPath, './protractor-conf.js'),
   test: path.resolve(jsPath, './test.js')
 };
 
