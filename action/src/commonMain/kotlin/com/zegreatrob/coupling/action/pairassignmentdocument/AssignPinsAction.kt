@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.action.pairassignmentdocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class AssignPinsAction(
@@ -21,8 +22,7 @@ interface AssignPinsActionDispatcher {
             .forEach { pin ->
                 val pinIterator = listOf(pin).iterator()
 
-                val candidatePairs =
-                    findCandidatePairs(pinnedPairs, pin, action.history)
+                val candidatePairs = findPairCandidates(pin, pinnedPairs, action.history)
 
                 pinnedPairs = pinnedPairs.map { pair ->
                     if (candidatePairs.contains(pair) && pinIterator.hasNext()) {
@@ -36,37 +36,40 @@ interface AssignPinsActionDispatcher {
         return pinnedPairs
     }
 
-    private fun findCandidatePairs(
-        pinnedPairs: List<PinnedCouplingPair>,
+    private inline fun findPairCandidates(
         pin: Pin,
+        pinnedPairs: List<PinnedCouplingPair>,
         history: List<PairAssignmentDocument>
     ): List<PinnedCouplingPair> {
-        val groupByLastTime = pinnedPairs.groupBy { pair ->
-            val players = pair.asPlayers()
-
-            val lastTimePlayerInPairHadPin = history.indexOfFirst { pairAssignmentDocument ->
-                val pairWithPinPlayers = pairWithPinPlayers(pairAssignmentDocument, pin)
-                players.fold(false) { foundOne, player ->
-                    foundOne || pairWithPinPlayers.contains(player)
-                }
-            }
-
-            lastTimePlayerInPairHadPin
+        val pairsGroupedByLastTime = pinnedPairs.groupBy { pair ->
+            lastTimePlayerInPairHadPin(pin, history, pair.asPlayers())
         }
 
-        val neverPinnedGroup = groupByLastTime[-1]
-        if (neverPinnedGroup != null && neverPinnedGroup.isNotEmpty()) {
-            val groupByCurrentlyAssignedPins = neverPinnedGroup.groupBy { it.pins.count() }
-            return groupByCurrentlyAssignedPins[groupByCurrentlyAssignedPins.keys.min()]!!
+        val candidatePairsWhoNeverHadPin = pairsGroupedByLastTime[-1]
+            ?.candidatesWithFewestPins()
+        if (candidatePairsWhoNeverHadPin != null) {
+            return candidatePairsWhoNeverHadPin
         }
 
-        val lastTimePairs = groupByLastTime[groupByLastTime.keys.min()]
-            ?: return emptyList()
-
-        val numberOfPinsGroup = lastTimePairs.groupBy { it.pins.count() }
-        val leastPinnedOptions = numberOfPinsGroup[numberOfPinsGroup.keys.min()]
-        return leastPinnedOptions ?: emptyList()
+        return pairsGroupedByLastTime.minKeyValue()
+            ?.candidatesWithFewestPins()
+            ?: emptyList()
     }
+
+    private fun List<PinnedCouplingPair>.candidatesWithFewestPins() = groupBy { it.pins.count() }.minKeyValue()
+
+    private fun lastTimePlayerInPairHadPin(
+        pin: Pin,
+        history: List<PairAssignmentDocument>,
+        players: List<Player>
+    ) = history.indexOfFirst { pairAssignmentDocument ->
+        val pairWithPinPlayers = pairWithPinPlayers(pairAssignmentDocument, pin)
+        players.fold(false) { foundOne, player ->
+            foundOne || pairWithPinPlayers.contains(player)
+        }
+    }
+
+    private fun Map<Int, List<PinnedCouplingPair>>.minKeyValue() = this[keys.min()]
 
     private fun pairWithPinPlayers(doc: PairAssignmentDocument, pin: Pin) = playersWithPin(doc, pin)
         ?: emptyList()
