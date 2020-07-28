@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
-import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
 import react.*
@@ -125,10 +124,8 @@ private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<out GoogleSignInCommand
         if (showLoginChooser) {
             loginChooser(dispatchFunc)
         } else {
-            couplingButton(supersize, pink) {
+            couplingButton(supersize, pink, "enter-button ${styles["enterButton"]}") {
                 attrs {
-                    classes += "enter-button"
-                    classes += styles["enterButton"]
                     onClickFunction = { setShowLoginChooser(true) }
                 }
                 +"Come on in!"

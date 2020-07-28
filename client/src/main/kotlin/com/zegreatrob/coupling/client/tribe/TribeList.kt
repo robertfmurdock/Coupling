@@ -1,14 +1,13 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.dom.couplingButton
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.dom.green
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.dom.supersize
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
-import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -36,8 +35,7 @@ private fun RBuilder.aboutButton() = routeLink(to = "/about") {
 }
 
 private fun RBuilder.newTribeButton(className: String) = routeLink(to = "/new-tribe/") {
-    couplingButton(supersize, green) {
-        attrs { classes += className }
+    couplingButton(supersize, green, className) {
         +"Add a new tribe!"
     }
 }

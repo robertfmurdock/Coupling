@@ -83,9 +83,8 @@ private fun RBuilder.pairAssignmentRow(
     }
 }
 
-private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = couplingButton(small, red) {
+private fun RBuilder.deleteButton(onClickFunc: () -> Unit) = couplingButton(small, red, styles["deleteButton"]) {
     attrs {
-        classes += styles["deleteButton"]
         onClickFunction = { onClickFunc() }
     }
     +"DELETE"

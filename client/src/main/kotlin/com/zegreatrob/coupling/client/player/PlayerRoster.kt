@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.dom.couplingButton
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
@@ -46,8 +46,7 @@ val PlayerRoster = reactFunction { (label, players, tribeId, pathSetter, classNa
 }
 
 private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${tribeId.value}/player/new/") {
-    couplingButton(large, orange) {
-        attrs { classes += styles["addPlayerButton"] }
+    couplingButton(large, orange, styles["addPlayerButton"]) {
         +"Add a new player!"
     }
 }

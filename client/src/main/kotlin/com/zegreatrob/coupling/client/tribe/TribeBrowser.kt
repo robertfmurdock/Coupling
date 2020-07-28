@@ -2,18 +2,17 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.large
+import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
-import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -100,16 +99,14 @@ private fun RBuilder.tribeControlButtons() = span(classes = styles["controlButto
 }
 
 private fun RBuilder.logoutButton() = routeLink(to = "/logout") {
-    couplingButton(large, red) {
-        attrs { classes += styles["logoutButton"] }
+    couplingButton(large, red, styles["logoutButton"]) {
         i(classes = "fa fa-sign-out-alt") {}
         span { +"Sign Out" }
     }
 }
 
 private fun RBuilder.tribeSelectButton() = routeLink(to = "/tribes/") {
-    couplingButton(large) {
-        attrs { classes += styles["tribeSelectButton"] }
+    couplingButton(large, className = styles["tribeSelectButton"]) {
         i(classes = "fa fa-arrow-circle-up") {}
         span { +"Tribe select" }
     }

@@ -1,16 +1,16 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.pink
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.newPairAssignments
 import com.zegreatrob.coupling.client.pin.pinButton
-import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -21,7 +21,6 @@ import kotlinx.css.Display
 import kotlinx.css.display
 import kotlinx.css.paddingBottom
 import kotlinx.css.px
-import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
@@ -89,9 +88,8 @@ private fun RBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = couplingButton {
+) = couplingButton(className = className) {
     attrs {
-        classes += className
         onClickFunction = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
     }
     +text
@@ -145,9 +143,8 @@ private fun RBuilder.spinButton(
     playerSelections: List<Pair<Player, Boolean>>,
     selectedPins: List<Pin>,
     pathSetter: (String) -> Unit
-) = couplingButton(supersize, pink) {
+) = couplingButton(supersize, pink, styles["spinButton"]) {
     attrs {
-        classes += styles["spinButton"]
         onClickFunction = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) }
     }
     +"Spin!"

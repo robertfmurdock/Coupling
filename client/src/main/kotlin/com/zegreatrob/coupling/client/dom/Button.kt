@@ -105,6 +105,7 @@ val black: RuleSet = {
 fun RBuilder.couplingButton(
     sizeRuleSet: RuleSet = medium,
     colorRuleSet: RuleSet = black,
+    className: String = "",
     block: StyledDOMBuilder<BUTTON>.() -> Unit
 ) = styledButton {
     css(buttonRuleset)
@@ -112,6 +113,7 @@ fun RBuilder.couplingButton(
     css(colorRuleSet)
     attrs {
         classes += "button"
+        classes += className
         type = ButtonType.button
     }
     block()
