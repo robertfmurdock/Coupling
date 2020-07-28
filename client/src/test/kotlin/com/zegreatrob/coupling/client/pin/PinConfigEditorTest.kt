@@ -22,7 +22,7 @@ class PinConfigEditorTest {
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
-        val pin = Pin(_id = null)
+        val pin = Pin(id = null)
     }) exercise {
         shallow(
             PinConfigEditor,
@@ -37,7 +37,7 @@ class PinConfigEditorTest {
     @Test
     fun whenGivenPinHasIdWillShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
-        val pin = Pin(_id = "excellent id")
+        val pin = Pin(id = "excellent id")
     }) exercise {
         shallow(
             PinConfigEditor,
@@ -52,7 +52,7 @@ class PinConfigEditorTest {
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setup(object {
         val tribe = Tribe(TribeId("dumb tribe"))
-        val pin = Pin(_id = null, name = "")
+        val pin = Pin(id = null, name = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"
 

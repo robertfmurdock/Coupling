@@ -49,7 +49,7 @@ val PinConfigEditor = reactFunction { (tribe, pin, pathSetter, reload, dispatchF
     val updatedPin = values.toPin()
 
     val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
-    val onRemove = pin._id?.let { pinId ->
+    val onRemove = pin.id?.let { pinId ->
         dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter.pinList(tribe.id) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }

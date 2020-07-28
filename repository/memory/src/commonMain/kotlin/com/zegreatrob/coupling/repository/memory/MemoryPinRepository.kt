@@ -16,7 +16,7 @@ class MemoryPinRepository(
     RecordBackend<TribeIdPin> by recordBackend {
 
     override suspend fun save(tribeIdPin: TribeIdPin) =
-        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(_id = _id ?: "${com.benasher44.uuid.uuid4()}") })
+        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(id = id ?: "${com.benasher44.uuid.uuid4()}") })
             .record().save()
 
     override suspend fun getPins(tribeId: TribeId) = tribeId.recordList()
@@ -24,7 +24,7 @@ class MemoryPinRepository(
 
     private fun TribeId.recordList() = records.asSequence()
         .filter { (data) -> data.tribeId == this }
-        .groupBy { (data) -> data.pin._id }
+        .groupBy { (data) -> data.pin.id }
         .map { it.value.last() }
 
     override suspend fun deletePin(tribeId: TribeId, pinId: String) = recordWithId(tribeId, pinId)?.data
@@ -38,6 +38,6 @@ class MemoryPinRepository(
     }
 
     private fun recordWithId(tribeId: TribeId, pinId: String) = tribeId.recordList()
-        .find { (data) -> data.pin._id == pinId }
+        .find { (data) -> data.pin.id == pinId }
 
 }

@@ -61,7 +61,7 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
 }
 
 private fun JsonNode.toPin() = Pin(
-    _id = this["_id"].textValue(),
+    id = this["_id"].textValue(),
     name = this["name"].textValue()
 )
 

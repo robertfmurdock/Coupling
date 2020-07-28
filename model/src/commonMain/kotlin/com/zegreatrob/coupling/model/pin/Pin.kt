@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.model.pin
 import com.zegreatrob.coupling.model.tribe.TribeElement
 
 data class Pin(
-    val _id: String? = null,
+    val id: String? = null,
     val name: String = "",
     val icon: String = "",
     val target: PinTarget = PinTarget.Pair
 )
 
-val defaultPin = Pin(_id = "DEFAULT")
+val defaultPin = Pin(id = "DEFAULT")
 
 typealias TribeIdPin = TribeElement<Pin>
 

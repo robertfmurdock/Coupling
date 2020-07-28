@@ -25,7 +25,7 @@ object Paths {
     private fun List<Pair<Player, Boolean>>.buildQueryParameters() = filter { (_, isSelected) -> isSelected }
         .map { it.first.id }.toProperty("player")
 
-    private fun List<Pin>.buildQueryParameters() = map { it._id }.toProperty("pin")
+    private fun List<Pin>.buildQueryParameters() = map { it.id }.toProperty("pin")
     private fun List<Pair<String, String?>>.toQueryString() = toList().joinToString("&") { (propName, id) ->
         "$propName=${encodeURIComponent(id)}"
     }

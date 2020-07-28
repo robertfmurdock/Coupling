@@ -36,7 +36,7 @@ val PinCard =
 
 private fun RBuilder.optionalLink(shouldLink: Boolean, tribeId: TribeId, pin: Pin, handler: RBuilder.() -> Unit) {
     if (shouldLink) {
-        routeLink(to = "/${tribeId.value}/pin/${pin._id}", handler = handler)
+        routeLink(to = "/${tribeId.value}/pin/${pin.id}", handler = handler)
     } else {
         handler()
     }

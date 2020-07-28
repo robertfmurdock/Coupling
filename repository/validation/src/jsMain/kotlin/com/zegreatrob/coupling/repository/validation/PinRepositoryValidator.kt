@@ -37,7 +37,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {
         val pin = Pin(
-            _id = null,
+            id = null,
             name = "",
             icon = ""
         )
@@ -48,12 +48,12 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     } verify { result ->
         result.map { it.data.pin }
             .also { it.assertHasIds() }
-            .map { it.copy(_id = null) }
+            .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(pin))
     }
 
     private fun List<Pin>.assertHasIds() {
-        forEach { pin -> pin._id.assertIsNotEqualTo(null) }
+        forEach { pin -> pin.id.assertIsNotEqualTo(null) }
     }
 
     @Test
@@ -70,7 +70,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
             }
         }
     } exercise {
-        repository.deletePin(tribeId, pins[1]._id!!)
+        repository.deletePin(tribeId, pins[1].id!!)
         repository.getPins(tribeId)
     } verify { result ->
         result.map { it.data.pin }

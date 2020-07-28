@@ -30,5 +30,5 @@ val PinConfig = reactFunction { (tribe, pin, pinList, pathSetter, reload, comman
 }
 
 private fun RBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: String) = div(classes = className) {
-    pinList.map { pin -> pinCard(tribe.id, pin, key = pin._id) }
+    pinList.map { pin -> pinCard(tribe.id, pin, key = pin.id) }
 }

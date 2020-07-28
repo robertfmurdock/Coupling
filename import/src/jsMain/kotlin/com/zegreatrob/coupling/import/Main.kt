@@ -65,7 +65,7 @@ suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     }
     jsonLine.getArray("pinRecords").forEach { recordJson ->
         val pin = recordJson.toPin()
-        tryToImport({ "Failed to save pin ${pin._id} in tribe $tribeId" }) {
+        tryToImport({ "Failed to save pin ${pin.id} in tribe $tribeId" }) {
             catalog.pinRepository.saveRawRecord(
                 recordJson.recordFor(tribeId.with(pin))
             )

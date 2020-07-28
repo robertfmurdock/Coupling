@@ -44,7 +44,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPin))
         clock.currentTime = updatedSaveTime2
-        repository.deletePin(tribeId, pin._id!!)
+        repository.deletePin(tribeId, pin.id!!)
     }) exercise {
         repository.getPinRecords(tribeId)
     } verify { result ->

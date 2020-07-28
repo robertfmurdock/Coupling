@@ -21,7 +21,7 @@ class PinConfigE2ETest {
     companion object {
 
         private fun randomPin(nameExt: String = "") = Pin(
-            _id = "${randomInt()}-pin",
+            id = "${randomInt()}-pin",
             icon = "icon-${randomInt()}",
             name = "name-${randomInt()}-$nameExt"
         )
@@ -69,7 +69,7 @@ class PinConfigE2ETest {
         }.attachTribe()) {
             sdk.save(tribe.id.with(pin))
         } exercise {
-            PinConfigPage.goTo(tribe.id, pin._id)
+            PinConfigPage.goTo(tribe.id, pin.id)
         } verify {
             with(PinConfigPage) {
                 nameTextField.getAttribute("value").await()
@@ -84,7 +84,7 @@ class PinConfigE2ETest {
             val pin = randomPin()
         }.attachTribe()) {
             sdk.save(tribe.id.with(pin))
-            PinConfigPage.goTo(tribe.id, pin._id)
+            PinConfigPage.goTo(tribe.id, pin.id)
         } exercise {
             ConfigForm.deleteButton.performClick()
             browser.switchTo().alert().await()

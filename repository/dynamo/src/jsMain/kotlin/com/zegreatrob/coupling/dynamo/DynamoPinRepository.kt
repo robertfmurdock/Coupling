@@ -30,7 +30,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
     }
 
     override suspend fun save(tribeIdPin: TribeIdPin) = performPutItem(
-        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(_id = _id ?: "${uuid4()}") })
+        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(id = id ?: "${uuid4()}") })
             .toRecord()
             .asDynamoJson()
     )

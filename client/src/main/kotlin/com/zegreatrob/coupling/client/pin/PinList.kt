@@ -29,7 +29,7 @@ val PinList =
             h2 { +"These are your pins." }
             h3 { +"There are many like them, but these are yours." }
             div {
-                pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it._id) }
+                pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it.id) }
             }
             div {
                 routeLink(to = "/${tribe.id.value}/pin/new") {

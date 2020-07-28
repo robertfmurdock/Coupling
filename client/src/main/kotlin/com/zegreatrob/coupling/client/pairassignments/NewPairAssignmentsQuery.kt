@@ -56,7 +56,7 @@ interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
         playerIds.contains(it.id)
     }
 
-    private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it._id) }
+    private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
     private suspend fun NewPairAssignmentsQuery.getData() = coroutineScope {
         await(

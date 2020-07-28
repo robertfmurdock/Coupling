@@ -43,16 +43,16 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
     fun saveWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(tribeId.with(pin))
     } verify {
-        repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
+        repository2.getPins(tribeId).map { it.data.pin }.find { it.id == pin.id }
             .assertIsEqualTo(pin)
     }
 
     @Test
     fun deleteWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(tribeId.with(pin))
-        compoundRepo.deletePin(tribeId, pin._id!!)
+        compoundRepo.deletePin(tribeId, pin.id!!)
     } verify {
-        repository2.getPins(tribeId).map { it.data.pin }.find { it._id == pin._id }
+        repository2.getPins(tribeId).map { it.data.pin }.find { it.id == pin.id }
             .assertIsEqualTo(null)
     }
 

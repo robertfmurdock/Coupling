@@ -33,4 +33,4 @@ interface TribePinQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {
     }.let { (tribe, pins) -> if (tribe == null) null else Pair(tribe, pins) }
 }
 
-private fun List<Pin>.findOrDefaultNew(pinId: String?) = find { it._id == pinId } ?: Pin()
+private fun List<Pin>.findOrDefaultNew(pinId: String?) = find { it.id == pinId } ?: Pin()

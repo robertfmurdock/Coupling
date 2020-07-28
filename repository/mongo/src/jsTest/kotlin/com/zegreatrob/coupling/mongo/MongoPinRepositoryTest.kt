@@ -38,11 +38,11 @@ class MongoPinRepositoryTest : PinRepositoryValidator<MongoPinRepositoryTest.Com
 
     @Test
     fun saveThenDeleteWith12CharacterStringPinIdWillWorkCorrectly() = repositorySetup(object : MongoPinContextMint() {
-        val pin = stubPin().copy(_id = "19377906-pin")
+        val pin = stubPin().copy(id = "19377906-pin")
     }.bind()) {
         repository.save(tribeId.with(pin))
     } exercise {
-        repository.deletePin(tribeId, pin._id!!)
+        repository.deletePin(tribeId, pin.id!!)
         repository.getPins(tribeId)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
@@ -57,7 +57,7 @@ class MongoPinRepositoryTest : PinRepositoryValidator<MongoPinRepositoryTest.Com
     }.bind()) {
         clock.currentTime = initialTimestamp
         repository.save(tribeId.with(pin))
-        repository.deletePin(tribeId, pin._id!!)
+        repository.deletePin(tribeId, pin.id!!)
         clock.currentTime = updatedTimestamp
         repository.save(tribeId.with(updatedPin))
     } exercise {

@@ -49,7 +49,7 @@ private val styles = useStyles("PrepareSpin")
 val PrepareSpin =
     reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
         val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
-        val (pinSelections, setPinSelections) = useState(pins.map { it._id })
+        val (pinSelections, setPinSelections) = useState(pins.map { it.id })
         div(classes = styles.className) {
             div { tribeBrowser(tribe, pathSetter) }
             div {
@@ -114,25 +114,25 @@ private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<St
             div(classes = styles["selectedPins"]) {
                 pins.selectByIds(pinSelections)
                     .map { pin ->
-                        flippedPinButton(pin) { setPinSelections(pinSelections - pin._id) }
+                        flippedPinButton(pin) { setPinSelections(pinSelections - pin.id) }
                     }
             }
             div(classes = styles["deselectedPins"]) {
                 pins.removeByIds(pinSelections)
                     .map { pin ->
-                        flippedPinButton(pin) { setPinSelections(pinSelections + pin._id) }
+                        flippedPinButton(pin) { setPinSelections(pinSelections + pin.id) }
                     }
             }
         }
     }
 
-private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it._id) }
+private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it.id) }
 
-private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pinSelections.contains(it._id) }
+private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pinSelections.contains(it.id) }
 
-private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flipped(pin._id) {
+private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flipped(pin.id) {
     styledDiv {
-        attrs { key = pin._id ?: "" }
+        attrs { key = pin.id ?: "" }
         css { display = Display.inlineBlock }
         pinButton(pin, onClick = onClick, showTooltip = true)
     }
