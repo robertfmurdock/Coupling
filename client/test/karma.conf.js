@@ -30,7 +30,6 @@ module.exports = function (config) {
     },
 
     files: [
-      'node_modules/jquery/dist/jquery.min.js',
       'test/tests.bundle.js',
     ],
 

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "aws-sdk": "2.721.0",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",

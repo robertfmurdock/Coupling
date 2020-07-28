@@ -4,8 +4,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpackConfig = clone(require('../webpack.config'));
 const path = require('path');
 
-webpackConfig.externals.jquery = 'jQuery';
-
 function testResolve() {
   let resolve = clone(webpackConfig.resolve);
   resolve.modules = [
@@ -31,7 +29,6 @@ const config = {
     new MiniCssExtractPlugin({
       filename: './styles.css'
     }),
-    new webpack.ProvidePlugin({'window.jQuery': 'jquery', $: 'jquery', 'jQuery': 'jquery'})
   ],
   optimization: {
     removeAvailableModules: false,

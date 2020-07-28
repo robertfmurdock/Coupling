@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/Js/main');
 
-config.externals = {jquery: "jQuery"};
 config.resolve.modules.push(
   resourcesPath
 );
