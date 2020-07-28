@@ -21,7 +21,6 @@ import kotlinx.css.Display
 import kotlinx.css.display
 import kotlinx.css.paddingBottom
 import kotlinx.css.px
-import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.buildElement
@@ -88,13 +87,10 @@ private fun RBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = couplingButton(className = className) {
-    attrs {
-        onClickFunction = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
-    }
-    +text
-}
-
+) = couplingButton(
+    className = className,
+    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
+) { +text }
 
 private fun RBuilder.optionalPinSelector(
     pins: List<Pin>,
@@ -143,12 +139,12 @@ private fun RBuilder.spinButton(
     playerSelections: List<Pair<Player, Boolean>>,
     selectedPins: List<Pin>,
     pathSetter: (String) -> Unit
-) = couplingButton(supersize, pink, styles["spinButton"]) {
-    attrs {
-        onClickFunction = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) }
-    }
-    +"Spin!"
-}
+) = couplingButton(
+    supersize,
+    pink,
+    styles["spinButton"],
+    onClick = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) }
+) { +"Spin!" }
 
 private fun RBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,

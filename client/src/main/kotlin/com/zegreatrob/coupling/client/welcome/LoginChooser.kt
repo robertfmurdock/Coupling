@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.client.user.GoogleSignInCommand
 import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
-import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -24,18 +23,12 @@ val LoginChooser = reactFunction { (commandFunc): LoginChooserProps ->
     val googleSignInFunc = commandFunc({ GoogleSignInCommand }) { window.location.pathname = "/" }
     div(classes = styles.className) {
         div {
-            couplingButton(supersize, white, "google-login") {
-                attrs {
-                    onClickFunction = { googleSignInFunc() }
-                }
+            couplingButton(supersize, white, "google-login", googleSignInFunc) {
                 +"Google"
             }
         }
         div {
-            couplingButton(supersize, blue, "ms-login") {
-                attrs {
-                    onClickFunction = { window.location.pathname = "/microsoft-login" }
-                }
+            couplingButton(supersize, blue, "ms-login", { window.location.pathname = "/microsoft-login" }) {
                 +"Microsoft"
             }
         }

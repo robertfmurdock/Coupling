@@ -7,6 +7,7 @@ import kotlinx.css.properties.boxShadow
 import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
+import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import styled.StyledDOMBuilder
 import styled.css
@@ -106,7 +107,8 @@ fun RBuilder.couplingButton(
     sizeRuleSet: RuleSet = medium,
     colorRuleSet: RuleSet = black,
     className: String = "",
-    block: StyledDOMBuilder<BUTTON>.() -> Unit
+    onClick: () -> Unit = {},
+    block: StyledDOMBuilder<BUTTON>.() -> Unit = {}
 ) = styledButton {
     css(buttonRuleset)
     css(sizeRuleSet)
@@ -115,6 +117,7 @@ fun RBuilder.couplingButton(
         classes += "button"
         classes += className
         type = ButtonType.button
+        onClickFunction = { onClick() }
     }
     block()
 }
