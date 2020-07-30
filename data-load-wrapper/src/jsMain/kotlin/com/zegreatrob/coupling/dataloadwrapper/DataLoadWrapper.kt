@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.client.routing
+package com.zegreatrob.coupling.dataloadwrapper
 
-import com.zegreatrob.coupling.client.DataLoadComponentTools
-import com.zegreatrob.coupling.client.external.react.useScope
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

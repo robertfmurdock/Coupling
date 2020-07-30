@@ -4,8 +4,34 @@
     <bytecodeTargetLevel target="14">
       <module name="Coupling.action-test.jvmMain" target="1.8" />
       <module name="Coupling.action-test.jvmTest" target="1.8" />
+      <module name="Coupling.action.jvmMain" target="1.8" />
+      <module name="Coupling.action.jvmTest" target="1.8" />
       <module name="Coupling.actionFunc.jvmMain" target="1.8" />
       <module name="Coupling.actionFunc.jvmTest" target="1.8" />
+      <module name="Coupling.export.jvmMain" target="1.6" />
+      <module name="Coupling.export.jvmTest" target="1.6" />
+      <module name="Coupling.import.jvmMain" target="1.6" />
+      <module name="Coupling.import.jvmTest" target="1.6" />
+      <module name="Coupling.json.jvmMain" target="1.6" />
+      <module name="Coupling.json.jvmTest" target="1.6" />
+      <module name="Coupling.logging.jvmMain" target="1.6" />
+      <module name="Coupling.logging.jvmTest" target="1.6" />
+      <module name="Coupling.model.jvmMain" target="1.6" />
+      <module name="Coupling.model.jvmTest" target="1.6" />
+      <module name="Coupling.repository.compound.jvmMain" target="1.6" />
+      <module name="Coupling.repository.compound.jvmTest" target="1.6" />
+      <module name="Coupling.repository.jvmMain" target="1.6" />
+      <module name="Coupling.repository.jvmTest" target="1.6" />
+      <module name="Coupling.repository.memory.jvmMain" target="1.6" />
+      <module name="Coupling.repository.memory.jvmTest" target="1.6" />
+      <module name="Coupling.repository.validation.jvmMain" target="1.6" />
+      <module name="Coupling.repository.validation.jvmTest" target="1.6" />
+      <module name="Coupling.stub-model.jvmMain" target="1.8" />
+      <module name="Coupling.stub-model.jvmTest" target="1.8" />
+      <module name="Coupling.test-action.jvmMain" target="1.8" />
+      <module name="Coupling.test-action.jvmTest" target="1.8" />
+      <module name="Coupling.test-logging.jvmMain" target="1.6" />
+      <module name="Coupling.test-logging.jvmTest" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
+    implementation(project(":data-load-wrapper"))
     implementation("com.zegreatrob.testmints:minreact:+")
     implementation("com.zegreatrob.testmints:action:+")
     implementation("com.zegreatrob.testmints:action-async:+")

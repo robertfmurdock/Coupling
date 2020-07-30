@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.external.react.useScope
+import com.zegreatrob.coupling.dataloadwrapper.useScope
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.coroutines.coroutineScope

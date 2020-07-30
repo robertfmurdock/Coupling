@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.action.*
 import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.dataloadwrapper.*
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.execute
@@ -31,7 +32,10 @@ fun <R, P : RProps> dataLoadProps(
 fun <P : RProps> couplingDataLoadWrapper(component: RClass<P>) = reactFunction { props: CouplingLoaderProps<P> ->
     childFunction(
         component = dataLoadWrapper(),
-        props = DataLoadWrapperProps(props.getDataAsync, ::onError)
+        props = DataLoadWrapperProps(
+            props.getDataAsync,
+            ::onError
+        )
     ) { state: DataLoadState<Result<P>> ->
         animationFrame(state, component)
     }

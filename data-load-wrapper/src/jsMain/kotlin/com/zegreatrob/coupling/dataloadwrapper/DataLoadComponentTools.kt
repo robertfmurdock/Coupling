@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.dataloadwrapper
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred

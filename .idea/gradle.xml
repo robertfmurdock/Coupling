@@ -8,20 +8,19 @@
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="/usr/local/Cellar/gradle/2.6/libexec" />
+        <option name="gradleJvm" value="14" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/action" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
-            <option value="$PROJECT_DIR$/enzyme" />
+            <option value="$PROJECT_DIR$/data-load-wrapper" />
             <option value="$PROJECT_DIR$/export" />
             <option value="$PROJECT_DIR$/import" />
             <option value="$PROJECT_DIR$/json" />
             <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/model" />
-            <option value="$PROJECT_DIR$/react" />
             <option value="$PROJECT_DIR$/repository" />
             <option value="$PROJECT_DIR$/repository/compound" />
             <option value="$PROJECT_DIR$/repository/dynamo" />
@@ -36,7 +35,6 @@
             <option value="$PROJECT_DIR$/test-logging" />
           </set>
         </option>
-        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

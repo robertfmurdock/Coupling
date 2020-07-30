@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.react
+package com.zegreatrob.coupling.dataloadwrapper
 
 import kotlinx.coroutines.*
 import react.RCleanup
