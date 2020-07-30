@@ -23,6 +23,7 @@ dynamodb_data
 .idea/**/shelf
 .idea/**/sonarlint
 .idea/**/artifacts
+.idea/misc.xml
 
 # Generated files
 .idea/**/contentModel.xml
