@@ -26,12 +26,11 @@ import kotlin.browser.window
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
-val CouplingRouter =
-    reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
-        browserRouter {
-            animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
-        }
+val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
+    browserRouter {
+        animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
     }
+}
 
 private fun RBuilder.routes(isSignedIn: Boolean) {
     couplingRoute("/welcome/", WelcomePage)

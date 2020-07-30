@@ -1,5 +1,5 @@
 @file:JsModule("body-parser")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.server.external.bodyparser
 

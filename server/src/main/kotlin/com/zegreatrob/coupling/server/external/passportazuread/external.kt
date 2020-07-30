@@ -1,5 +1,5 @@
 @file:JsModule("passport-azure-ad")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.server.external.passportazuread
 

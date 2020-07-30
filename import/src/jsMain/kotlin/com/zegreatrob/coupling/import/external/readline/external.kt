@@ -1,5 +1,5 @@
 @file:JsModule("readline")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.import.external.readline
 

@@ -1,5 +1,5 @@
 @file:JsModule("graphql")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.server.external.graphql
 

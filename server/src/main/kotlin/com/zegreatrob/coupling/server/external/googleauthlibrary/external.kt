@@ -1,5 +1,5 @@
 @file:JsModule("google-auth-library")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.server.external.googleauthlibrary
 

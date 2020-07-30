@@ -1,5 +1,5 @@
 @file:JsModule("monk")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.mongo.external.monk
 

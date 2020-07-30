@@ -58,7 +58,7 @@ kotlin {
 
 tasks {
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }

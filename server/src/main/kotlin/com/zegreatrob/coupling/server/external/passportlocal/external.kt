@@ -1,5 +1,5 @@
 @file:JsModule("passport-local")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.server.external.passportlocal
 

@@ -39,16 +39,16 @@ fun <P : RProps> couplingDataLoadWrapper(component: RClass<P>) = reactFunction {
 
 private fun <P> onError(it: Throwable) = ErrorResult<P>(it.message ?: "Data load error ${it::class}")
 
-private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<Result<P>>, reactFunction: RClass<P>) =
+private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<Result<P>>, component: RClass<P>) =
     child(animationFrame, AnimationFrameProps(state)) {
         if (state is ResolvedState) {
-            resolvedComponent(state, reactFunction)
+            resolvedComponent(state, component)
         }
     }
 
-private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<Result<P>>, reactFunction: RClass<P>) {
+private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<Result<P>>, component: RClass<P>) {
     when (val result = state.result) {
-        is SuccessfulResult -> child(reactFunction, result.value)
+        is SuccessfulResult -> child(component, result.value)
         is NotFoundResult -> notFoundContent(result)
         is ErrorResult -> console.error("Error: ${result.message}")
         is UnauthorizedResult -> unauthorizedContent()

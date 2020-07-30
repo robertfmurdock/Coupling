@@ -1,5 +1,5 @@
 @file:JsModule("react-router-dom")
-@file:JsNonModule
+
 
 package com.zegreatrob.coupling.client.external.reactrouter
 

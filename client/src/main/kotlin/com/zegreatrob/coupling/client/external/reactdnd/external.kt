@@ -1,5 +1,4 @@
 @file:JsModule("react-dnd")
-@file:JsNonModule
 
 package com.zegreatrob.coupling.client.external.reactdnd
 
@@ -21,7 +20,6 @@ external val DndProvider: RClass<DnDProviderProps>
 external interface DnDProviderProps : RProps {
     var backend: DnDBackend
 }
-
 
 external interface DragOptions {
     fun collect(monitor: DragSourceMonitor)
