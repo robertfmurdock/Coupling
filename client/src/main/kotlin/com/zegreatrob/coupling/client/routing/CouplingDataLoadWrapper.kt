@@ -1,10 +1,13 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.action.*
-import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.dataloadwrapper.*
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.DecoratedDispatchFunc
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Paths
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.react.dataloader.*
 import com.zegreatrob.testmints.action.async.execute
 import react.RBuilder
 import react.RClass
@@ -14,12 +17,12 @@ import react.router.dom.redirect
 
 data class CouplingLoaderProps<P : RProps>(val getDataAsync: DataLoadFunc<Result<P>>) : RProps
 
-fun <P : RProps> dataLoadProps(getDataSync: (DataLoadComponentTools) -> P) =
+fun <P : RProps> dataLoadProps(getDataSync: (DataLoaderTools) -> P) =
     CouplingLoaderProps { tools -> getDataSync(tools).successResult() }
 
 fun <R, P : RProps> dataLoadProps(
     query: SuspendResultAction<CommandDispatcher, R>,
-    toProps: (ReloadFunction, DispatchFunc<CommandDispatcher>, R) -> P,
+    toProps: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
 ) = CouplingLoaderProps { tools ->
     val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
@@ -29,14 +32,8 @@ fun <R, P : RProps> dataLoadProps(
     }
 }
 
-fun <P : RProps> couplingDataLoadWrapper(component: RClass<P>) = reactFunction { props: CouplingLoaderProps<P> ->
-    childFunction(
-        component = dataLoadWrapper(),
-        props = DataLoadWrapperProps(
-            props.getDataAsync,
-            ::onError
-        )
-    ) { state: DataLoadState<Result<P>> ->
+fun <P : RProps> couplingDataLoader(component: RClass<P>) = reactFunction { (getDataAsync): CouplingLoaderProps<P> ->
+    childFunction(dataLoader(), DataLoadWrapperProps(getDataAsync, ::onError)) { state: DataLoadState<Result<P>> ->
         animationFrame(state, component)
     }
 }

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.action.ErrorResult
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuspendResultAction
-import com.zegreatrob.coupling.dataloadwrapper.DataLoadComponentTools
+import com.zegreatrob.react.dataloader.DataLoaderTools
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -16,7 +16,7 @@ interface DispatchFunc<D> {
 
 class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
     val dispatcherFunc: () -> D,
-    private val tools: DataLoadComponentTools
+    private val tools: DataLoaderTools
 ) : DispatchFunc<D> {
 
     private val dispatcher get() = dispatcherFunc()

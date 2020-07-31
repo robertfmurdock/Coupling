@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.dataloadwrapper.useScope
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.react.dataloader.useScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import react.dom.div
