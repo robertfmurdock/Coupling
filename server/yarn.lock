@@ -590,10 +590,10 @@ aws-sdk@*:
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@2.723.0:
-  version "2.723.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.723.0.tgz#c9f5f21513ffade05c64b5ad64f6b9d7c39ab251"
-  integrity sha512-GmyMacu1x1BOA8tYZuZS1DKcdn7QQX+DJFdFgZ3IilMzlX3cdinMXkBc5onEnhbwHx657XHoPigJynTRGGNuWQ==
+aws-sdk@2.725.0:
+  version "2.725.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.725.0.tgz#287ef3b55aa66f10c88671ec62300e96015aaf6a"
+  integrity sha512-Qd/MlxfQC9NpTxFUQ7u2BdsjiwNtbn5oVp04NPfXEc0xyT216TtcIs+jNyiJ9WaH7AgkHouU1BbBcReO8byYzg==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -1472,10 +1472,10 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-css-loader@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-4.1.1.tgz#48342f098784e75bbfc0933dea2853314fb737d8"
-  integrity sha512-nZ4OC2g88+wOOdkVQ0yYy7T6uXSkb7I7UyMNnaevQQvVWskTSDRAz08ETl91et4ghVL6jfnzWUt0o2XaY0gyRg==
+css-loader@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-4.2.0.tgz#b57efb92ac8f0cd85bf92d89df9634ef1f51b8bf"
+  integrity sha512-ko7a9b0iFpWtk9eSI/C8IICvZeGtYnjxYjw45rJprokXj/+kBd/siX4vAIBq9Uij8Jubc4jL1EvSnTjCEwaHSw==
   dependencies:
     camelcase "^6.0.0"
     cssesc "^3.0.0"
