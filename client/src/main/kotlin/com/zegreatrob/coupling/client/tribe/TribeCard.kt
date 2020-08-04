@@ -83,10 +83,14 @@ private fun Node.fitTribeName(size: Int) = fitty(
     multiLine = true
 )
 
-private fun StyledDOMBuilder<SPAN>.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
+val noTribeImagePath = js("require('no-tribe.png')")
+    .default.unsafeCast<String>()
+    .let { "/app/build/$it" }
+
+private fun RBuilder.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
     email = tribe.email,
     alt = "tribe-img",
-    fallback = "/images/icons/tribes/no-tribe.png",
+    fallback = noTribeImagePath,
     options = object : GravatarOptions {
         override val size = size
         override val default = "identicon"

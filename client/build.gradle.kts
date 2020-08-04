@@ -63,6 +63,8 @@ dependencies {
 
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
+    testImplementation(npm("react-refresh"))
+    testImplementation(npm("@pmmmwh/react-refresh-webpack-plugin"))
     testImplementation("com.zegreatrob.testmints:minenzyme:+")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
