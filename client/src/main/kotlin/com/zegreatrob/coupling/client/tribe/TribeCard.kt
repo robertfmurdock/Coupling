@@ -36,10 +36,10 @@ val TribeCard = reactFunction<TribeCardProps> { props ->
     val (tribe, size) = props
     styledSpan {
         attrs {
-            classes = setOf(styles.className)
+            tribeCardCss(size)
+            classes += styles.className
             onClickFunction = { props.pathSetter.currentPairs(props.tribe.id) }
             tabIndex = "0"
-            tribeCardCss(size)
             setProp("data-tribe-id", tribe.id.value)
         }
         tribeCardHeader(props)

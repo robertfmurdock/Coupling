@@ -50,11 +50,18 @@ private fun RBuilder.backButton() = routeLink(to = "/tribes") {
     }
 }
 
+val robCardPath = kotlinext.js.require("players/robcard.small.png").default.unsafeCast<String>()
+    .let { "/app/build/$it" }
+
+val autumnCardPath = kotlinext.js.require("players/autumncard.small.png").default.unsafeCast<String>()
+    .let { "/app/build/$it" }
+
+
 private fun RBuilder.playerHeader() = div {
     val tribeId = TribeId("developers")
     listOf(
-        "left" to Player("1", name = "RoB", imageURL = "/images/icons/players/robcard.small.png"),
-        "right" to Player("2", name = "Autumn", imageURL = "/images/icons/players/autumncard.small.png")
+        "left" to Player("1", name = "RoB", imageURL = robCardPath),
+        "right" to Player("2", name = "Autumn", imageURL = autumnCardPath)
     ).forEach { (side, player) ->
         playerCard(
             PlayerCardProps(tribeId, player, className = playerCardStyles(side))

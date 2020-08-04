@@ -18,12 +18,11 @@ fun RBuilder.configHeader(tribe: Tribe, pathSetter: (String) -> Unit, handler: R
 
 private val styles = useStyles("ConfigHeader")
 
-val ConfigHeader =
-    reactFunction<ConfigHeaderProps> { props ->
-        val (tribe, pathSetter) = props
+val ConfigHeader = reactFunction<ConfigHeaderProps> { props ->
+    val (tribe, pathSetter) = props
 
-        div(classes = styles.className) {
-            div { tribeCard(TribeCardProps(tribe, 50, pathSetter)) }
-            h1 { props.children() }
-        }
+    div(classes = styles.className) {
+        div { tribeCard(TribeCardProps(tribe, 50, pathSetter)) }
+        h1 { props.children() }
     }
+}

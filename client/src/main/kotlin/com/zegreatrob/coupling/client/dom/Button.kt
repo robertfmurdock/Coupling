@@ -16,8 +16,11 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledButton
 
+val overlay = kotlinext.js.require("overlay.png").default.unsafeCast<String>()
+    .let { "/app/build/$it" }
+
 val buttonRuleset: RuleSet = {
-    background = "url(./overlay.png) repeat-x"
+    background = "url($overlay) repeat-x"
     display = Display.inlineBlock
     padding = "5px 10px 6px"
     color = Color.white
