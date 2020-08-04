@@ -2,10 +2,16 @@ package com.zegreatrob.coupling.client.routing
 
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
+import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.MemoryRepositoryBackend
+import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.SdkSingleton
+import org.w3c.dom.get
 import org.w3c.dom.url.URLSearchParams
 import react.RProps
+import kotlin.browser.window
 
 data class PageProps(
     val pathParams: Map<String, String>,
@@ -27,5 +33,14 @@ interface Commander {
 }
 
 object MasterCommander : Commander {
-    override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(traceId)
+    private val backend = MemoryRepositoryBackend()
+
+    override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
+        traceId,
+        if (window["inMemory"] == true) {
+            MemoryRepositoryCatalog("test-user", backend, TimeProvider)
+        } else {
+            SdkSingleton
+        }
+    )
 }

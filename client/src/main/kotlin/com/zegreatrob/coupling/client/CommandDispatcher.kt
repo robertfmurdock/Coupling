@@ -24,14 +24,14 @@ import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.SdkSingleton
 
-class CommandDispatcher(override val traceId: Uuid) :
+class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: RepositoryCatalog = SdkSingleton) :
     PinCommandDispatcher,
     SavePairAssignmentsCommandDispatcher,
     NewPairAssignmentsQueryDispatcher,
     PlayerConfigDispatcher,
     TribeConfigDispatcher,
     DeletePairAssignmentsCommandDispatcher,
-    RepositoryCatalog by SdkSingleton,
+    RepositoryCatalog by repositoryCatalog,
     TribeDataSetQueryDispatcher,
     HistoryQueryDispatcher,
     RetiredPlayerQueryDispatcher,
@@ -48,3 +48,4 @@ class CommandDispatcher(override val traceId: Uuid) :
     LoggingActionExecuteSyntax {
     override val sdk = SdkSingleton
 }
+

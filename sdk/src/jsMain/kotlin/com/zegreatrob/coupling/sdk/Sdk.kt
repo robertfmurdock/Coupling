@@ -10,10 +10,10 @@ import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 
 interface RepositoryCatalog {
-    val tribeRepository: SdkTribeRepository
-    val playerRepository: SdkPlayerRepository
-    val pinRepository: SdkPinRepository
-    val pairAssignmentDocumentRepository: SdkPairAssignmentsRepository
+    val tribeRepository: TribeRepository
+    val playerRepository: PlayerRepository
+    val pinRepository: PinRepository
+    val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
 interface SdkTribeRepository : SdkTribeGet, SdkTribeListGet,

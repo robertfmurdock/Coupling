@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
+    implementation(project(":repository:memory"))
     implementation("com.zegreatrob.testmints:minreact:+")
     implementation("com.zegreatrob.testmints:react-data-loader:+")
     implementation("com.zegreatrob.testmints:action:+")
