@@ -12,7 +12,6 @@ import com.zegreatrob.testmints.action.async.execute
 import react.RBuilder
 import react.RClass
 import react.RProps
-import react.childFunction
 import react.router.dom.redirect
 
 data class CouplingLoaderProps<P : RProps>(val getDataAsync: DataLoadFunc<Result<P>>) : RProps
@@ -33,7 +32,7 @@ fun <R, P : RProps> dataLoadProps(
 }
 
 fun <P : RProps> couplingDataLoader(component: RClass<P>) = reactFunction { (getDataAsync): CouplingLoaderProps<P> ->
-    childFunction(dataLoader(), DataLoadWrapperProps(getDataAsync, ::onError)) { state: DataLoadState<Result<P>> ->
+    dataLoader(getDataAsync, ::onError) { state: DataLoadState<Result<P>> ->
         animationFrame(state, component)
     }
 }

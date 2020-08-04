@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.client.stats.TribeData
 import com.zegreatrob.coupling.client.stats.TribeIdLoadAllSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-data class TribeDataSetQuery(val tribeId: TribeId) :
-    SimpleSuspendResultAction<TribeDataSetQueryDispatcher, TribeData> {
+data class TribeDataSetQuery(val tribeId: TribeId) : SimpleSuspendResultAction<TribeDataSetQueryDispatcher, TribeData> {
     override val performFunc = link(TribeDataSetQueryDispatcher::perform)
 }
 

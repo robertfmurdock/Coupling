@@ -27,10 +27,10 @@ class RosteredPairAssignmentsTest {
         )
     }) exercise {
         rosteredPairAssignments(pairAssignments, players)
-    } verify { result ->
-        result.run {
-            pairAssignments.assertIsEqualTo(pairAssignments)
-            selectedPlayers.assertIsEqualTo(listOf(players[0], players[2]))
+    } verify { rosteredPairAssignmentResult ->
+        rosteredPairAssignmentResult.let {
+            it.pairAssignments.assertIsEqualTo(pairAssignments)
+            it.selectedPlayers.assertIsEqualTo(listOf(players[0], players[2]))
         }
     }
 
