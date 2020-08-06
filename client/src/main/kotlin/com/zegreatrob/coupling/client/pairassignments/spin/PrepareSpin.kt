@@ -17,17 +17,13 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
-import kotlinx.css.Display
-import kotlinx.css.display
-import kotlinx.css.paddingBottom
-import kotlinx.css.px
+import kotlinx.css.*
+import kotlinx.css.properties.boxShadow
+import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
 import react.buildElement
-import react.dom.div
-import react.dom.h1
-import react.dom.h2
-import react.dom.key
+import react.dom.*
 import react.useState
 import styled.css
 import styled.styledDiv
@@ -44,28 +40,71 @@ data class PrepareSpinProps(
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin =
-    reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
-        val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
-        val (pinSelections, setPinSelections) = useState(pins.map { it.id })
-        div(classes = styles.className) {
-            div { tribeBrowser(tribe, pathSetter) }
-            div {
-                div { spinButton(tribe, playerSelections, pins.selectByIds(pinSelections), pathSetter) }
-                optionalPinSelector(pins, pinSelections, setPinSelections)
-                div(styles["player-selector"]) {
+val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
+    val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
+    val (pinSelections, setPinSelections) = useState(pins.map { it.id })
+    div(classes = styles.className) {
+        div { tribeBrowser(tribe, pathSetter) }
+        div {
+            div { spinButton(tribe, playerSelections, pins.selectByIds(pinSelections), pathSetter) }
+
+            styledDiv {
+                css {
+                    display = Display.flex
+                    borderSpacing = 5.px
+                    borderCollapse = BorderCollapse.separate
+                }
+                playerSelectorDiv {
                     h1 { +"Please select players to spin." }
                     h2 { +"Tap a player to include or exclude them." }
                     +"When you're done with your selections, hit the spin button above!"
-                    div {
+                    styledDiv {
+                        css { margin(10.px, null) }
                         selectAllButton(playerSelections, setPlayerSelections)
                         selectNoneButton(playerSelections, setPlayerSelections)
                     }
                     selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
                 }
+                if (pins.isNotEmpty()) {
+                    pinSelectorDiv {
+                        h1 { br {} }
+                        h2 { +"Also, Pins." }
+                        +"Tap any pins to skip."
+                        child(pinSelector(pinSelections, setPinSelections, pins))
+                    }
+                }
             }
         }
     }
+}
+
+private fun RBuilder.playerSelectorDiv(children: RBuilder.() -> Unit) = styledDiv {
+    css {
+        display = Display.inlineBlock
+        flex(1.0)
+        margin(5.px)
+        borderRadius = 20.px
+        padding(5.px)
+
+        backgroundColor = Color("#fffbed")
+        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+    }
+    children()
+}
+
+private fun RBuilder.pinSelectorDiv(children: RBuilder.() -> Unit) = styledDiv {
+    css {
+        display = Display.inlineFlex
+        flexDirection = FlexDirection.column
+        margin(5.px)
+        borderRadius = 20.px
+        padding(5.px)
+        backgroundColor = Color("#fffbed")
+        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+        width = 125.px
+    }
+    children()
+}
 
 private fun defaultSelections(players: List<Player>, history: List<PairAssignmentDocument>) = players.map { player ->
     player to isInLastSetOfPairs(player, history)
@@ -92,26 +131,16 @@ private fun RBuilder.batchSelectButton(
     onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
 ) { +text }
 
-private fun RBuilder.optionalPinSelector(
-    pins: List<Pin>,
-    selectedPins: List<String?>,
-    setPinSelections: (List<String?>) -> Unit
-) {
-    if (pins.isNotEmpty()) {
-        child(pinSelector(selectedPins, setPinSelections, pins))
-    }
-}
-
 private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =
     buildElement {
         flipper(flipKey = pinSelections.generateFlipKey(), classes = styles["pinSelector"]) {
-            div(classes = styles["selectedPins"]) {
+            selectedPinsDiv {
                 pins.selectByIds(pinSelections)
                     .map { pin ->
                         flippedPinButton(pin) { setPinSelections(pinSelections - pin.id) }
                     }
             }
-            div(classes = styles["deselectedPins"]) {
+            deselectedPinsDiv {
                 pins.removeByIds(pinSelections)
                     .map { pin ->
                         flippedPinButton(pin) { setPinSelections(pinSelections + pin.id) }
@@ -119,6 +148,26 @@ private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<St
             }
         }
     }
+
+private fun RBuilder.selectedPinsDiv(children: RBuilder.() -> Unit) = styledDiv {
+    attrs { classes += styles["selectedPins"] }
+    css {
+        margin(5.px)
+        flex(1.0)
+    }
+    children()
+}
+
+private fun RBuilder.deselectedPinsDiv(children: RBuilder.() -> Unit) = styledDiv {
+    attrs { classes += styles["deselectedPins"] }
+    css {
+        flex(1.0)
+        margin(5.px)
+        backgroundColor = Color("#de8286")
+        borderRadius = 15.px
+    }
+    children()
+}
 
 private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it.id) }
 

@@ -32,30 +32,23 @@
 }
 
 :local(.selectAllButton) {
-    margin-bottom: 10px;
+    /*! Do not remove */
 }
 
 :local(.selectNoneButton) {
-    margin-bottom: 10px;
+    /*! Do not remove */
 }
 
 :local(.selectedPins) {
-    margin: 5px
-}
-
-:local(.player-selector) {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 5px;
-    margin: 5px 0;
-    background-color: #fffbed;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    /*! Do not remove */
 }
 
 :local(.deselectedPins) {
-    margin: 2px;
-    background: #de8286;
-    display: inline-block;
-    padding: 4px;
-    border-radius: 15px;
+    /*! Do not remove */
+}
+
+:local(.pinSelector) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }

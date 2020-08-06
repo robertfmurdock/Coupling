@@ -17,7 +17,10 @@ import styled.css
 import styled.styledDiv
 
 enum class PinButtonScale(val faTag: String, val factor: Double) {
-    Normal("fa-3x", 3.0), Large("fa-10x", 10.0), Small("fa-1x", 1.0), ExtraSmall("fa-xs", 0.75)
+    Normal("fa-3x", 3.0), Large("fa-10x", 10.0), Small("fa-1x", 1.0), ExtraSmall("fa-xs", 0.75);
+
+    fun diameterInPixels() = 14 * factor
+
 }
 
 data class PinButtonProps(
@@ -60,8 +63,8 @@ private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
     borderWidth = (2 * scale.factor).px
     borderRadius = (12 * scale.factor).px
     lineHeight = LineHeight((4.6 * scale.factor).px.value)
-    height = (14 * scale.factor).px
-    width = (14 * scale.factor).px
+    height = scale.diameterInPixels().px
+    width = scale.diameterInPixels().px
 }
 
 private fun targetIcon(pin: Pin): String {
