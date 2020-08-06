@@ -3,16 +3,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/Js/main');
 
-config.resolve.modules.push(
-  resourcesPath
-);
+config.resolve.modules.push(resourcesPath);
 config.resolve.extensions = ['.js'];
 
 config.module.rules.push(
   {test: /\.md$/i, use: 'raw-loader'}, {
     test: /\.(sa|sc|c)ss$/,
     use: [
-      'cache-loader',
       {
         loader: MiniCssExtractPlugin.loader,
         options: {
@@ -29,7 +26,6 @@ config.module.rules.push(
   }, {
     test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
     loader: [
-      'cache-loader',
       'url-loader?limit=100000'
     ]
   }
@@ -45,5 +41,4 @@ if (config.devServer) {
   config.devServer.historyApiFallback = {
     index: 'index.html'
   }
-
 }
