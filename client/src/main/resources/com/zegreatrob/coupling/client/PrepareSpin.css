@@ -25,10 +25,8 @@
     transition: all ease-in .2s;
 }
 
-:local(.spinButton).button {
-    margin-bottom: 10px;
-    animation: 2s pulsate;
-    animation-iteration-count: infinite;
+:local(.spinButton) {
+    /*! Do not remove */
 }
 
 :local(.selectAllButton) {

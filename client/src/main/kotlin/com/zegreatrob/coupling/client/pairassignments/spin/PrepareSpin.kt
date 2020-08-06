@@ -18,7 +18,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
+import kotlinx.css.properties.IterationCount
+import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
+import kotlinx.css.properties.s
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
@@ -69,7 +72,7 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
                     pinSelectorDiv {
                         h1 { br {} }
                         h2 { +"Also, Pins." }
-                        +"Tap any pins to skip."
+                        +"Tap any pin to skip."
                         child(pinSelector(pinSelections, setPinSelections, pins))
                     }
                 }
@@ -192,8 +195,16 @@ private fun RBuilder.spinButton(
     supersize,
     pink,
     styles["spinButton"],
-    onClick = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) }
-) { +"Spin!" }
+    onClick = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) },
+    block = {
+        css {
+            marginBottom = 10.px
+            animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
+        }
+    }
+) {
+    +"Spin!"
+}
 
 private fun RBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
