@@ -19,10 +19,8 @@ interface RepositoryCatalog {
     val userRepository: UserRepository
 }
 
-suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid): CommandDispatcher {
-    val repositoryCatalog = repositoryCatalog(user)
-    return CommandDispatcher(user, repositoryCatalog, scope, traceId)
-}
+suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid) =
+    CommandDispatcher(user, repositoryCatalog(user), scope, traceId)
 
 private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory())
     memoryRepositoryCatalog(user.id)
@@ -31,11 +29,7 @@ else
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
 
-private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(
-    userId,
-    memoryBackend,
-    TimeProvider
-)
+private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(userId, memoryBackend, TimeProvider)
 
 suspend fun userRepository(userId: String): UserRepository = if (useInMemory())
     memoryRepositoryCatalog(userId).userRepository

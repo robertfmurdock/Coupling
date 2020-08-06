@@ -4,7 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.client.CommandDispatcher
-import com.zegreatrob.coupling.client.MemoryRepositoryBackend
+import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.SdkSingleton
@@ -33,7 +33,7 @@ interface Commander {
 }
 
 object MasterCommander : Commander {
-    private val backend = MemoryRepositoryBackend()
+    private val backend = LocalStorageRepositoryBackend()
 
     override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
         traceId,

@@ -25,15 +25,13 @@ class MemoryRepositoryCatalog private constructor(
     UserEmailSyntax,
     ClockSyntax {
 
-    companion object {
-        operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: TimeProvider) =
-            MemoryRepositoryCatalog(
-                userEmail,
-                clock,
-                MemoryTribeRepository(userEmail, clock, backend.tribe),
-                MemoryPlayerRepository(userEmail, clock, backend.player),
-                MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
-                MemoryPinRepository(userEmail, clock, backend.pin)
-            )
-    }
+    constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: TimeProvider) : this(
+        userEmail,
+        clock,
+        MemoryTribeRepository(userEmail, clock, backend.tribe),
+        MemoryPlayerRepository(userEmail, clock, backend.player),
+        MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
+        MemoryPinRepository(userEmail, clock, backend.pin)
+    )
+
 }
