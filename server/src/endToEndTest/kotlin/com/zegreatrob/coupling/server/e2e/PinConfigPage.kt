@@ -8,8 +8,8 @@ object PinConfigPage : StyleSyntax {
 
     private suspend fun pinBag() = getting("pinBag")
 
-    suspend fun getNameTextField() = element(By.id("pin-name"))
-    suspend fun getIconTextField() = element(By.id("pin-icon"))
+    suspend fun getNameTextField() = WebdriverBrowser.element(By.id("pin-name"))
+    suspend fun getIconTextField() = WebdriverBrowser.element(By.id("pin-icon"))
 
     suspend fun pinBagPinNames(): List<String> {
         pinBag().waitToBePresent()
@@ -29,7 +29,7 @@ object PinConfigPage : StyleSyntax {
     }
 
     private suspend fun waitForLoad() {
-        waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad")
+        WebdriverBrowser.waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad")
     }
 }
 
@@ -38,7 +38,7 @@ object PinListPage : StyleSyntax {
     override val styles = loadStyles("pin/PinList")
 
     suspend fun waitForLoad() {
-        waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad")
+        WebdriverBrowser.waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad")
     }
 
 }

@@ -61,10 +61,10 @@ class HistoryPageE2ETest {
         @Test
         fun pairingCanBeDeleted() = historyPageSetup().exercise {
             page.getDeleteButtons()[0].performClick()
-            waitForAlert()
-            acceptAlert()
+            WebdriverBrowser.waitForAlert()
+            WebdriverBrowser.acceptAlert()
         } verify {
-            waitUntil(
+            WebdriverBrowser.waitUntil(
                 { page.getPairAssignments().count() == pairAssignments.size - 1 },
                 waitToBePresentDuration,
                 "HistoryPageE2ETest.pairingCanBeDeleted"

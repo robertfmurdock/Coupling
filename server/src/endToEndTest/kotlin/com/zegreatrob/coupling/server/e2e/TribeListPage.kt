@@ -8,11 +8,11 @@ object TribeListPage : StyleSyntax {
     private val tribeCardStyles = loadStyles("tribe/TribeCard")
 
     suspend fun getNewTribeButton() = getting("newTribeButton")
-    suspend fun getTribeCardElements() = all(By.className(tribeCardStyles.className))
+    suspend fun getTribeCardElements() = WebdriverBrowser.all(By.className(tribeCardStyles.className))
     val tribeCardHeaderLocator = By.className(tribeCardStyles["header"])
 
     suspend fun tribeCardElement(tribeId: TribeId) =
-        element(".${tribeCardStyles.className}[data-tribe-id=\"${tribeId.value}\"]")
+        WebdriverBrowser.element(".${tribeCardStyles.className}[data-tribe-id=\"${tribeId.value}\"]")
 
     suspend fun goTo() {
         setLocation("/tribes/")
@@ -20,6 +20,6 @@ object TribeListPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        waitUntil({ element().isPresent() }, 2000, "TribeListPage.waitForPage")
+        WebdriverBrowser.waitUntil({ element().isPresent() }, 2000, "TribeListPage.waitForPage")
     }
 }

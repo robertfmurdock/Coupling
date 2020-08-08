@@ -74,7 +74,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             PlayerRoster.getAddPlayerButton().performClick()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/player/new/")
         }
 
@@ -85,7 +85,7 @@ class PairAssignmentsPageE2ETest {
             PlayerRoster.getPlayerElements().first().element(PlayerCard.headerLocator)
                 .performClick()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/player/${players[0].id}/")
         }
 
@@ -95,7 +95,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             viewHistoryButton().performClick()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/history/")
         }
 
@@ -105,7 +105,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             newPairsButton().performClick()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/prepare/")
         }
 
@@ -115,7 +115,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             statisticsButton().performClick()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/statistics")
         }
 
@@ -125,7 +125,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             retiredPlayersButton().performClick()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/players/retired")
         }
 

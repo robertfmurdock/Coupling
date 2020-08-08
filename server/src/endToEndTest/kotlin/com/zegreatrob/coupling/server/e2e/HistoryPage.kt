@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.all
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object HistoryPage : StyleSyntax {
@@ -10,8 +10,8 @@ object HistoryPage : StyleSyntax {
 
     private suspend fun getHistoryView() = getting("historyView")
 
-    suspend fun getPairAssignments() = all(By.className(styles["pairAssignments"]))
-    suspend fun getDeleteButtons() = all(By.className(styles["deleteButton"]))
+    suspend fun getPairAssignments() = WebdriverBrowser.all(By.className(styles["pairAssignments"]))
+    suspend fun getDeleteButtons() = WebdriverBrowser.all(By.className(styles["deleteButton"]))
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/history")

@@ -3,10 +3,7 @@ package com.zegreatrob.coupling.server.e2e
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.element
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.getUrl
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.text
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
@@ -46,7 +43,7 @@ class TribeListPageE2ETest {
             .performClick()
         TribeConfigPage.waitForPage()
     } verify {
-        getUrl().pathname
+        WebdriverBrowser.getUrl().pathname
             .assertIsEqualTo("/${tribes[0].id.value}/edit/")
     }
 
@@ -55,7 +52,7 @@ class TribeListPageE2ETest {
         TribeListPage.getNewTribeButton().performClick()
         TribeConfigPage.waitForPage()
     } verify {
-        getUrl().pathname
+        WebdriverBrowser.getUrl().pathname
             .assertIsEqualTo("/new-tribe/")
     }
 

@@ -15,8 +15,8 @@ object CurrentPairAssignmentPage : StyleSyntax {
     suspend fun retiredPlayersButton() = pairAssignmentsStyles.element("retiredPlayersButton")
 
     private val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
-    suspend fun getAssignedPairElements() = all(By.className(assignedPairStyles.className))
-    suspend fun getAssignedPairCallSigns() = all(By.className(assignedPairStyles["callSign"]))
+    suspend fun getAssignedPairElements() = WebdriverBrowser.all(By.className(assignedPairStyles.className))
+    suspend fun getAssignedPairCallSigns() = WebdriverBrowser.all(By.className(assignedPairStyles["callSign"]))
 
     suspend fun goTo(id: TribeId) {
         setLocation("/${id.value}/pairAssignments/current/")
@@ -29,7 +29,7 @@ object CurrentPairAssignmentPage : StyleSyntax {
 
     suspend fun waitForSaveButtonToNotBeDisplayed() {
         waitForPage()
-        waitUntil(
+        WebdriverBrowser.waitUntil(
             { saveButton().isNotPresent() },
             2000,
             "CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed"

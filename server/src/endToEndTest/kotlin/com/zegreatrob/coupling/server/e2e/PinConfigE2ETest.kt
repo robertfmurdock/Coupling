@@ -52,7 +52,7 @@ class PinConfigE2ETest {
     private suspend fun PinConfigPage.waitForPinNameToAppear(
         newPinName: String,
         id: TribeId
-    ) = waitUntil(
+    ) = WebdriverBrowser.waitUntil(
         { pinBagPinNames().contains(newPinName) },
         waitToBePresentDuration,
         "PinConfigPage.waitForPinNameToAppear in tribe ${id.value}"

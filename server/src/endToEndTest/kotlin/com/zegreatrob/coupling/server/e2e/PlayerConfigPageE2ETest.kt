@@ -55,7 +55,7 @@ class PlayerConfigPageE2ETest {
             TribeCard.element().performClick()
             CurrentPairAssignmentPage.waitForPage()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
         }
 
@@ -67,9 +67,9 @@ class PlayerConfigPageE2ETest {
             page.playerNameTextField().performSetValue("completely different name")
         } exercise {
             TribeCard.element().performClick()
-            waitForAlert()
-            alertText().also {
-                acceptAlert()
+            WebdriverBrowser.waitForAlert()
+            WebdriverBrowser.alertText().also {
+                WebdriverBrowser.acceptAlert()
                 CurrentPairAssignmentPage.waitForPage()
             }
         } verify { alertText ->
@@ -91,7 +91,7 @@ class PlayerConfigPageE2ETest {
             TribeCard.element().performClick()
             CurrentPairAssignmentPage.waitForPage()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
             page.playerNameTextField().attribute("value")
@@ -112,7 +112,7 @@ class PlayerConfigPageE2ETest {
             TribeCard.element().performClick()
             CurrentPairAssignmentPage.waitForPage()
         } verify {
-            getUrl().pathname
+            WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
             PlayerCard.getHeader().text()
@@ -126,7 +126,7 @@ class PlayerConfigPageE2ETest {
             page.goTo(tribe.id, player.id)
         } exercise {
             ConfigForm.getDeleteButton().performClick()
-            acceptAlert()
+            WebdriverBrowser.acceptAlert()
         } verify {
             page.waitToArriveAt("/${tribe.id.value}/pairAssignments/current/")
         }
@@ -200,12 +200,12 @@ class PlayerConfigPageE2ETest {
         } verify {
             page.defaultBadgeOption().displayed()
                 .assertIsEqualTo(true)
-            element("option[value=\"1\"]")
+            WebdriverBrowser.element("option[value=\"1\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 1")
             page.altBadgeOption().displayed()
                 .assertIsEqualTo(true)
-            element("option[value=\"2\"]")
+            WebdriverBrowser.element("option[value=\"2\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 2")
         }

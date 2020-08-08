@@ -1,33 +1,12 @@
 package com.zegreatrob.coupling.server.e2e.external.webdriverio
 
+import com.soywiz.klock.measureTimeWithResult
 import kotlinx.coroutines.*
+import mu.KotlinLogging
 import org.w3c.dom.url.URL
 import kotlin.js.Promise
 import kotlin.js.json
-
-suspend fun isAlertOpen() = browser.isAlertOpen().await()
-suspend fun acceptAlert() = browser.acceptAlert().await()
-suspend fun dismissAlert() = browser.dismissAlert().await()
-suspend fun alertText() = browser.getAlertText().await()
-suspend fun element(selector: String) = browser.`$`(selector).await()
-suspend fun all(selector: String) = browser.`$$`(selector).await()
-suspend fun waitUntil(
-    condition: suspend () -> Boolean,
-    timeout: Int = waitToBePresentDuration,
-    timeoutMessage: String = ""
-) = browser.waitUntil(
-    {
-        GlobalScope.async { condition() }.asPromise()
-    }, json(
-        "timeout" to timeout,
-        "timeoutMsg" to timeoutMessage,
-        "interval" to 50
-    )
-).await()
-
-suspend fun waitForAlert() = waitUntil({ isAlertOpen() })
-
-suspend fun getUrl() = URL(browser.getUrl().await())
+import kotlin.reflect.KCallable
 
 object By {
     fun className(className: String): String = ".$className"
@@ -99,3 +78,49 @@ suspend fun <T> Promise<Array<Element>>.mapSuspend(transform: suspend (Element) 
     .toTypedArray()
 
 fun Promise<Array<Element>>.first() = then { it[0] }
+
+private val theLogger by lazy { KotlinLogging.logger("webdriverioLogger") }
+
+interface BrowserLoggingSyntax {
+    val logger get() = theLogger
+
+    suspend fun <T> log(workType: KCallable<*>, browserWork: suspend () -> T) = log(workType.name, browserWork)
+
+    suspend fun <T> log(workType: String, browserWork: suspend () -> T): T {
+        val measureTimeWithResult = measureTimeWithResult { browserWork() }
+        logger.info {
+            json("workType" to workType, "duration" to "${measureTimeWithResult.time}")
+        }
+        return measureTimeWithResult.result
+    }
+}
+
+object WebdriverBrowser : BrowserLoggingSyntax {
+
+    suspend fun waitUntil(
+        condition: suspend () -> Boolean,
+        timeout: Int = waitToBePresentDuration,
+        timeoutMessage: String = ""
+    ): Unit = log(this::waitUntil.name) {
+        browser.waitUntil(
+            {
+                GlobalScope.async { condition() }.asPromise()
+            }, json(
+                "timeout" to timeout,
+                "timeoutMsg" to timeoutMessage,
+                "interval" to 50
+            )
+        ).await()
+    }
+
+    suspend fun waitForAlert(): Unit = log(this::waitForAlert) { waitUntil({ isAlertOpen() }) }
+    suspend fun isAlertOpen(): Boolean = log(this::isAlertOpen) { browser.isAlertOpen().await() }
+    suspend fun acceptAlert(): Unit = log(this::acceptAlert) { browser.acceptAlert().await() }
+    suspend fun dismissAlert(): Unit = log(this::dismissAlert) { browser.dismissAlert().await() }
+    suspend fun alertText(): String = log(this::alertText) { browser.getAlertText().await() }
+    suspend fun element(selector: String): Element = log(this::element) { browser.`$`(selector).await() }
+    suspend fun all(selector: String): Array<Element> = log(this::all) { browser.`$$`(selector).await() }
+    suspend fun getUrl(): URL = log(this::getUrl) { URL(browser.getUrl().await()) }
+
+
+}
