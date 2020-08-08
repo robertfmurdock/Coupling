@@ -23,7 +23,7 @@ class StatisticsE2ETest {
         with(StatisticsPage) {
             TribeCard.element().text()
                 .assertIsEqualTo(tribe.name)
-            getRotationNumber().text()
+            rotationNumber.text()
                 .assertIsEqualTo("5")
             getPairReports().count()
                 .assertIsEqualTo(15)

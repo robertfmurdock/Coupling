@@ -6,6 +6,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectAllButton
+import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectNoneButton
+import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.spinButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
@@ -52,9 +55,9 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectAllButton().performClick()
+        selectAllButton.performClick()
     } exercise {
-        PrepareToSpinPage.getSpinButton().performClick()
+        spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         CurrentPairAssignmentPage.getAssignedPairElements().count()
@@ -65,12 +68,12 @@ class PrepareToSpinPageE2ETest {
     fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
         with(PlayerCard) {
-            PrepareToSpinPage.getSelectNoneButton().performClick()
+            selectNoneButton.performClick()
             getPlayerElements().get(1).element(iconLocator).performClick()
             getPlayerElements().get(4).element(iconLocator).performClick()
         }
     } exercise {
-        PrepareToSpinPage.getSpinButton().performClick()
+        spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         CurrentPairAssignmentPage.getAssignedPairElements().count()
@@ -93,7 +96,7 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.getSelectedPinElements().count().await()
             .assertIsEqualTo(1)
     } exercise {
-        PrepareToSpinPage.getSpinButton().performClick()
+        spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         PinButton.getPinElements().count()
@@ -105,7 +108,7 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.goTo(tribe.id)
         PrepareToSpinPage.getSelectedPinElements().get(0).performClick()
     } exercise {
-        PrepareToSpinPage.getSpinButton().performClick()
+        spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         PinButton.getPinElements().count()

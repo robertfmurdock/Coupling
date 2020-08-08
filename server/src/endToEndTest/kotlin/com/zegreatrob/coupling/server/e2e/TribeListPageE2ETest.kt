@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.e2e
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.server.e2e.TribeListPage.newTribeButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -49,7 +50,7 @@ class TribeListPageE2ETest {
 
     @Test
     fun canNavigateToTheNewTribePage() = twoTribesSetup() exercise {
-        TribeListPage.getNewTribeButton().performClick()
+        newTribeButton.performClick()
         TribeConfigPage.waitForPage()
     } verify {
         WebdriverBrowser.getUrl().pathname

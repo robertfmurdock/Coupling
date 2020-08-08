@@ -10,7 +10,7 @@ object StatisticsPage : StyleSyntax {
     private val teamStatisticsStyles = loadStyles("stats/TeamStatistics")
     private val pairReportTableStyles = loadStyles("stats/PairReportTable")
 
-    suspend fun getRotationNumber() = teamStatisticsStyles.element("rotationNumber")
+    val rotationNumber by teamStatisticsStyles.getting()
     suspend fun getPairReports() = WebdriverBrowser.all(By.className(pairReportTableStyles["pairReport"]))
 
     suspend fun goTo(tribeId: TribeId) {
