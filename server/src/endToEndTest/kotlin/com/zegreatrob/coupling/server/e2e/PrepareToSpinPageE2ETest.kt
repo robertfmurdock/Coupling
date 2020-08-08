@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.server.e2e.CurrentPairAssignmentPage.saveButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectAllButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectNoneButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.spinButton
@@ -81,7 +82,7 @@ class PrepareToSpinPageE2ETest {
         PlayerRoster.getPlayerElements().count()
             .assertIsEqualTo(3)
 
-        CurrentPairAssignmentPage.saveButton().performClick()
+        saveButton.performClick()
         CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed()
 
         CurrentPairAssignmentPage.getAssignedPairElements().count()

@@ -3,12 +3,11 @@ package com.zegreatrob.coupling.server.e2e
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object HistoryPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/History")
 
-    private suspend fun getHistoryView() = getting("historyView")
+    private val historyView by getting()
 
     suspend fun getPairAssignments() = WebdriverBrowser.all(By.className(styles["pairAssignments"]))
     suspend fun getDeleteButtons() = WebdriverBrowser.all(By.className(styles["deleteButton"]))
@@ -19,7 +18,7 @@ object HistoryPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        getHistoryView().waitToBePresent()
+        historyView.waitToBePresent()
     }
 
 }

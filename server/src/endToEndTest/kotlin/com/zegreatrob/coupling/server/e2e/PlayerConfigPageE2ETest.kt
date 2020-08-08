@@ -5,6 +5,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.server.e2e.ConfigForm.deleteButton
+import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.PlayerCard.header
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
@@ -85,7 +87,7 @@ class PlayerConfigPageE2ETest {
             with(page) {
                     goTo(tribe.id, player.id)
                     playerNameTextField().performSetValue(newName)
-                    ConfigForm.getSaveButton().performClick()
+                    saveButton.performClick()
                 waitForSaveToComplete(newName)
             }
         } exercise {
@@ -106,7 +108,7 @@ class PlayerConfigPageE2ETest {
             page.goTo(tribe.id, player.id)
             page.playerNameTextField().performClearSetValue(" ")
             page.playerNameTextField().performClearSetValue("")
-            ConfigForm.getSaveButton().performClick()
+            saveButton.performClick()
             page.waitForSaveToComplete("Unknown")
             page.waitForPage()
         } exercise {
@@ -126,7 +128,7 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            ConfigForm.getDeleteButton().performClick()
+            deleteButton.performClick()
             WebdriverBrowser.acceptAlert()
         } verify {
             page.waitToArriveAt("/${tribe.id.value}/pairAssignments/current/")
@@ -228,7 +230,7 @@ class PlayerConfigPageE2ETest {
             page.goTo(tribe.id, player.id)
         } exercise {
             page.altBadgeOption().performClick()
-            ConfigForm.getSaveButton().performClick()
+            saveButton.performClick()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)
@@ -265,7 +267,7 @@ class PlayerConfigPageE2ETest {
         } exercise {
             page.adjectiveTextInput().performClearSetValue("Superior")
             page.nounTextInput().performClearSetValue("Spider-Man")
-            ConfigForm.getSaveButton().performClick()
+            saveButton.performClick()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)

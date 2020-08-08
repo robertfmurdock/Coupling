@@ -6,14 +6,14 @@ import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 object PinConfigPage : StyleSyntax {
     override val styles = loadStyles("pin/PinConfig")
 
-    private suspend fun pinBag() = getting("pinBag")
+    private val pinBag by getting()
 
     suspend fun getNameTextField() = WebdriverBrowser.element(By.id("pin-name"))
     suspend fun getIconTextField() = WebdriverBrowser.element(By.id("pin-icon"))
 
     suspend fun pinBagPinNames(): List<String> {
-        pinBag().waitToBePresent()
-        return pinBag().all(By.className("pin-name"))
+        pinBag.waitToBePresent()
+        return pinBag.all(By.className("pin-name"))
             .mapSuspend { it.text() }
             .toList()
     }

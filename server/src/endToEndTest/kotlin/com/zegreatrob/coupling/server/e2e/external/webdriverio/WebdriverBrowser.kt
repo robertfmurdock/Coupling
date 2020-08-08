@@ -44,5 +44,8 @@ class WebdriverElement(val selector: String) {
     suspend fun performClick() = element().performClick()
     suspend fun text() = element().text()
     suspend fun all(selector: String) = element().all(selector)
+    suspend fun waitToBePresent() = element().waitToBePresent()
+    suspend fun isNotPresent() = element().isNotPresent()
+    suspend fun enabled() = element().enabled()
 
 }

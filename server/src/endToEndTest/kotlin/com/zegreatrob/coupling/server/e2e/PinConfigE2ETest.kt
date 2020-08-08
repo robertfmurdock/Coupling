@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.server.e2e.ConfigForm.deleteButton
+import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.PinListPage.element
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
@@ -40,7 +42,7 @@ class PinConfigE2ETest {
             getNameTextField().performSetValue(newPinName)
         }
     } exercise {
-        ConfigForm.getSaveButton().performClick()
+        saveButton.performClick()
     } verify {
         with(PinConfigPage) {
             waitForPinNameToAppear(newPinName, tribe.id)
@@ -83,7 +85,7 @@ class PinConfigE2ETest {
             sdk.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin.id)
         } exercise {
-            ConfigForm.getDeleteButton().performClick()
+            deleteButton.performClick()
             browser.acceptAlert().await()
 
             PinListPage.waitForLoad()

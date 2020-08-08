@@ -10,6 +10,10 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.server.e2e.PairAssignments.newPairsButton
+import com.zegreatrob.coupling.server.e2e.PairAssignments.retiredPlayersButton
+import com.zegreatrob.coupling.server.e2e.PairAssignments.statisticsButton
+import com.zegreatrob.coupling.server.e2e.PairAssignments.viewHistoryButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
@@ -93,7 +97,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouViewHistory() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            viewHistoryButton().performClick()
+            viewHistoryButton.performClick()
         } verify {
             WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/history/")
@@ -103,7 +107,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouPrepareNewPairs() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            newPairsButton().performClick()
+            newPairsButton.performClick()
         } verify {
             WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/prepare/")
@@ -113,7 +117,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouGoToTheStatsPage() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            statisticsButton().performClick()
+            statisticsButton.performClick()
         } verify {
             WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/statistics")
@@ -123,7 +127,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouGoToTheRetiredPlayersPage() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            retiredPlayersButton().performClick()
+            retiredPlayersButton.performClick()
         } verify {
             WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/players/retired")

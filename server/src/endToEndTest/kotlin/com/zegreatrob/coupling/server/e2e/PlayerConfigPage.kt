@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 
 object PlayerConfigPage : StyleSyntax {
@@ -28,7 +29,7 @@ object PlayerConfigPage : StyleSyntax {
 
     suspend fun waitForSaveToComplete(expectedName: String?) {
         WebdriverBrowser.waitUntil(
-            { ConfigForm.getSaveButton().enabled() },
+            { saveButton.enabled() },
             waitToBePresentDuration,
             "PlayerConfig.waitForSaveButtonEnable"
         )

@@ -1,18 +1,13 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
-import kotlin.js.Promise
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object CurrentPairAssignmentPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
-    suspend fun saveButton() = getting("saveButton")
-
-    private val pairAssignmentsStyles = loadStyles("pairassignments/PairAssignments")
-    suspend fun viewHistoryButton() = pairAssignmentsStyles.element("viewHistoryButton")
-    suspend fun newPairsButton() = pairAssignmentsStyles.element("newPairsButton")
-    suspend fun statisticsButton() = pairAssignmentsStyles.element("statisticsButton")
-    suspend fun retiredPlayersButton() = pairAssignmentsStyles.element("retiredPlayersButton")
+    val saveButton by getting()
 
     private val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
     suspend fun getAssignedPairElements() = WebdriverBrowser.all(By.className(assignedPairStyles.className))
@@ -30,13 +25,19 @@ object CurrentPairAssignmentPage : StyleSyntax {
     suspend fun waitForSaveButtonToNotBeDisplayed() {
         waitForPage()
         WebdriverBrowser.waitUntil(
-            { saveButton().isNotPresent() },
+            { saveButton.isNotPresent() },
             2000,
             "CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed"
         )
         waitForPage()
     }
 
-    private suspend fun Promise<Element>.isNotPresent() = !isPresent()
+}
 
+object PairAssignments : StyleSyntax {
+    override val styles = loadStyles("pairassignments/PairAssignments")
+    val viewHistoryButton by getting()
+    val newPairsButton by getting()
+    val statisticsButton by getting()
+    val retiredPlayersButton by getting()
 }

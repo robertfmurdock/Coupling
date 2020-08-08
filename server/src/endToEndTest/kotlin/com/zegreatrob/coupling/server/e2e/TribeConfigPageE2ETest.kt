@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.e2e.ConfigForm.deleteButton
+import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -35,7 +37,7 @@ class TribeConfigPageE2ETest {
                 getDifferentBadgesOption().performClick()
             }
         } exercise {
-            ConfigForm.getSaveButton().performClick()
+            saveButton.performClick()
             TribeListPage.waitForPage()
             page.goTo(tribe.id)
         } verify {
@@ -79,7 +81,7 @@ class TribeConfigPageE2ETest {
             sdk.save(tribe)
             TribeConfigPage.goTo(tribe.id)
         } exercise {
-            ConfigForm.getDeleteButton().performClick()
+            deleteButton.performClick()
             TribeListPage.waitForPage()
         } verify {
             TribeListPage.getTribeCardElements()
