@@ -25,7 +25,7 @@ val LoginChooser = reactFunction { (commandFunc): LoginChooserProps ->
     val msSignInFunc = { window.location.pathname = "/microsoft-login" }
     div(classes = styles.className) {
         div {
-            couplingButton(supersize, white, "google-login", googleSignInFunc) {
+            couplingButton(supersize, white, styles["googleLoginButton"], googleSignInFunc) {
                 +"Google"
             }
         }

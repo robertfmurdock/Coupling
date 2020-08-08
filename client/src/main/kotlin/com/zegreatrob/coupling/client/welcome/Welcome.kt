@@ -123,7 +123,7 @@ private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<out GoogleSignInCommand
         if (showLoginChooser) {
             loginChooser(dispatchFunc)
         } else {
-            couplingButton(supersize, pink, "enter-button ${styles["enterButton"]}", { setShowLoginChooser(true) }) {
+            couplingButton(supersize, pink, "${styles["enterButton"]}", { setShowLoginChooser(true) }) {
                 +"Come on in!"
             }
         }

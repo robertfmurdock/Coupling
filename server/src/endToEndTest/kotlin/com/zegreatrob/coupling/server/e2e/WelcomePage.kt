@@ -1,15 +1,13 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object WelcomePage : StyleSyntax {
     override val styles = loadStyles("Welcome")
-    suspend fun getEnterButton() = WebdriverBrowser.element(By.className("enter-button"))
-    suspend fun getGoogleButton() = WebdriverBrowser.element(By.className("google-login"))
-
-    val loginChooserStyles = loadStyles("LoginChooser")
+    val enterButton by getting()
+    
+    private val loginChooserStyles = loadStyles("LoginChooser")
+    val googleLoginButton by loginChooserStyles.getting()
     val microsoftLoginButton by loginChooserStyles.getting()
 
     suspend fun goTo() {
