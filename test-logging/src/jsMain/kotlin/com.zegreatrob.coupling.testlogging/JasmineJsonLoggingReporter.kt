@@ -7,12 +7,19 @@ import mu.KotlinLogging
 @Suppress("unused")
 @JsName("JasmineJsonLoggingReporter")
 class JasmineJsonLoggingReporter {
+
+    companion object {
+        fun initialize() {
+            initializeLogging(true)
+            JsonLoggingTestMintsReporter.initialize()
+        }
+    }
+
     private val logger by lazy { KotlinLogging.logger("JasmineJsonLoggingReporter") }
     private var lastStart: DateTime? = null
 
     init {
-        initializeLogging(true)
-        JsonLoggingTestMintsReporter.initialize()
+        initialize()
     }
 
     @Suppress("unused")
