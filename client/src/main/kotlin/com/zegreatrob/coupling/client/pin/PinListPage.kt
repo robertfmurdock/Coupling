@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -14,7 +14,7 @@ val PinListPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = TribePinListQuery(tribeId),
         toProps = { _, _, it -> it.toPinListProps(props.pathSetter) }
-    ))
+    ), key = tribeId.value)
 }
 
 private fun Pair<Tribe, List<Pin>>.toPinListProps(pathSetter: (String) -> Unit) = let { (tribe, pins) ->

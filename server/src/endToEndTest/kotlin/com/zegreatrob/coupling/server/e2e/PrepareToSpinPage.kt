@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.all
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object PrepareToSpinPage : StyleSyntax {
     override val styles: SimpleStyle = loadStyles("PrepareSpin")
 
-    val spinButton by getting()
-    val selectAllButton by getting()
-    val selectNoneButton by getting()
+    suspend fun getSpinButton() = getting("spinButton")
+    suspend fun getSelectAllButton() = getting("selectAllButton")
+    suspend fun getSelectNoneButton() = getting("selectNoneButton")
+    suspend private fun getSelectedPins() = getting("selectedPins")
 
-    private val selectedPins by getting()
-
-    val selectedPinElements = selectedPins.all(PinButton.pinButtonLocator)
+    suspend fun getSelectedPinElements() = getSelectedPins().all(PinButton.pinButtonLocator)
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/prepare/")
@@ -20,6 +20,6 @@ object PrepareToSpinPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element.waitToBePresent()
+        element().waitToBePresent()
     }
 }

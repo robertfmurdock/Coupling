@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.BrowserSyntax
 
-object RetiredPlayerConfig : ProtractorSyntax {
+object RetiredPlayerConfig : BrowserSyntax {
 
-    val playerNameTextField = PlayerConfig.playerNameTextField
+    suspend fun getPlayerNameTextField() = PlayerConfig.playerNameTextField()
 
     suspend fun goTo(tribeId: TribeId, id: String?) {
         setLocation("/${tribeId.value}/retired-player/${id}")

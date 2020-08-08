@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.server.e2e
 
+import com.soywiz.klock.measureTimeWithResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.external.protractor.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.await
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -18,23 +18,33 @@ class PlayerConfigPageE2ETest {
     companion object {
         private fun playerConfigOnePlayerSetup(buildTribe: () -> Tribe, buildPlayer: () -> Player) =
             e2eSetup.extend(beforeAll = {
-                val sdk = sdkProvider.await()
-                val tribe = buildTribe()
-                sdk.save(tribe)
+                measureTimeWithResult {
+                    val sdk = sdkProvider.await()
+                    val tribe = buildTribe()
+                    sdk.save(tribe)
 
-                val player = buildPlayer()
-                sdk.save(tribe.id.with(player))
+                    val player = buildPlayer()
+                    sdk.save(tribe.id.with(player))
 
-                Triple(player, tribe, sdkProvider.await())
+                    Triple(player, tribe, sdkProvider.await())
+                }.also { console.log("playerConfigOnePlayerSetup", it.time) }
+                    .result
             })
     }
 
     class WithOneTribeOnePlayer {
 
-        private val playerSetup = playerConfigOnePlayerSetup(
-            buildTribe = { Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E")) },
-            buildPlayer = { Player("${randomInt()}-PlayerConfigPageE2E", name = "${randomInt()}-PlayerConfigPageE2E") }
-        )
+        companion object {
+            private val playerSetup = playerConfigOnePlayerSetup(
+                buildTribe = { Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E")) },
+                buildPlayer = {
+                    Player(
+                        "${randomInt()}-PlayerConfigPageE2E",
+                        name = "${randomInt()}-PlayerConfigPageE2E"
+                    )
+                }
+            )
+        }
 
         @Test
         fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup(object : PlayerContext() {
@@ -42,10 +52,11 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            TribeCard.element.performClick()
+            TribeCard.element().performClick()
+            CurrentPairAssignmentPage.waitForPage()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
         }
 
         @Test
@@ -53,17 +64,16 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfig
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
-            with(page.playerNameTextField) {
-                performClear()
-                performSendKeys("completely different name")
-            }
+            page.playerNameTextField().performSetValue("completely different name")
         } exercise {
-            TribeCard.element.performClick()
-            browser.switchTo().alert().await()
-        } verify { alert ->
-            val text = alert.getText().await()
-                .also { alert.dismiss().await() }
-            text.assertIsEqualTo("You have unsaved data. Would you like to save before you leave?")
+            TribeCard.element().performClick()
+            waitForAlert()
+            alertText().also {
+                acceptAlert()
+                CurrentPairAssignmentPage.waitForPage()
+            }
+        } verify { alertText ->
+            alertText.assertIsEqualTo("You have unsaved data. Would you like to save before you leave?")
         }
 
         @Test
@@ -72,21 +82,19 @@ class PlayerConfigPageE2ETest {
             val newName = "completely different name"
         }.attachPlayer()) {
             with(page) {
-                goTo(tribe.id, player.id)
-                with(playerNameTextField) {
-                    performClear()
-                    performSendKeys(newName)
-                }
-                ConfigForm.saveButton.performClick()
+                    goTo(tribe.id, player.id)
+                    playerNameTextField().performSetValue(newName)
+                    ConfigForm.getSaveButton().performClick()
                 waitForSaveToComplete(newName)
             }
         } exercise {
-            TribeCard.element.performClick()
+            TribeCard.element().performClick()
+            CurrentPairAssignmentPage.waitForPage()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
-            page.playerNameTextField.getAttribute("value").await()
+            page.playerNameTextField().attribute("value")
                 .assertIsEqualTo(newName)
         }
 
@@ -95,20 +103,19 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfig
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
-            with(page.playerNameTextField) {
-                performClear()
-                performSendKeys(" \b")
-            }
-            ConfigForm.saveButton.performClick()
+            page.playerNameTextField().performClearSetValue(" ")
+            page.playerNameTextField().performClearSetValue("")
+            ConfigForm.getSaveButton().performClick()
             page.waitForSaveToComplete("Unknown")
             page.waitForPage()
         } exercise {
-            TribeCard.element.performClick()
+            TribeCard.element().performClick()
+            CurrentPairAssignmentPage.waitForPage()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
-            PlayerCard.header.getText().await()
+            PlayerCard.getHeader().text()
                 .assertIsEqualTo("Unknown")
         }
 
@@ -118,11 +125,10 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            ConfigForm.deleteButton.performClick()
-            browser.switchTo().alert().await()
-                .accept()
+            ConfigForm.getDeleteButton().performClick()
+            acceptAlert()
         } verify {
-            page.waitToArriveAt("${browser.baseUrl}/${tribe.id.value}/pairAssignments/current/")
+            page.waitToArriveAt("/${tribe.id.value}/pairAssignments/current/")
         }
 
         @Test
@@ -133,9 +139,9 @@ class PlayerConfigPageE2ETest {
         } exercise {
             page.goTo(tribe.id, player.id)
         } verify {
-            page.defaultBadgeOption.isPresent().await()
+            page.defaultBadgeOption().isPresent()
                 .assertIsEqualTo(false)
-            page.altBadgeOption.isPresent().await()
+            page.altBadgeOption().isPresent()
                 .assertIsEqualTo(false)
         }
     }
@@ -158,7 +164,7 @@ class PlayerConfigPageE2ETest {
             players.forEach { player -> sdk.save(tribe.id.with(player)) }
             page.goTo(tribe.id, players[0].id)
         } exercise {
-            PlayerRoster.playerElements.map { element -> element.getText() }.await().toList()
+            PlayerRoster.getPlayerElements().map { element -> element.text() }.toList()
         } verify { result ->
             result.assertIsEqualTo(players.map { it.name })
         }
@@ -167,17 +173,24 @@ class PlayerConfigPageE2ETest {
 
     class WhenTribeHasBadgingEnabled {
 
-        private val playerSetup = playerConfigOnePlayerSetup(
-            buildTribe = {
-                Tribe(
-                    TribeId("${randomInt()}-PlayerConfigPageE2E"),
-                    badgesEnabled = true,
-                    defaultBadgeName = "Badge 1",
-                    alternateBadgeName = "Badge 2"
-                )
-            },
-            buildPlayer = { Player("${randomInt()}-PlayerConfigPageE2E", name = "${randomInt()}-PlayerConfigPageE2E") }
-        )
+        companion object {
+            private val playerSetup = playerConfigOnePlayerSetup(
+                buildTribe = {
+                    Tribe(
+                        TribeId("${randomInt()}-PlayerConfigPageE2E"),
+                        badgesEnabled = true,
+                        defaultBadgeName = "Badge 1",
+                        alternateBadgeName = "Badge 2"
+                    )
+                },
+                buildPlayer = {
+                    Player(
+                        "${randomInt()}-PlayerConfigPageE2E",
+                        name = "${randomInt()}-PlayerConfigPageE2E"
+                    )
+                }
+            )
+        }
 
         @Test
         fun willShowBadgeSelector() = playerSetup(object : PlayerContext() {
@@ -185,17 +198,15 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
-            page.defaultBadgeOption.isDisplayed().await()
+            page.defaultBadgeOption().displayed()
                 .assertIsEqualTo(true)
-            element(By.css("option[value=\"1\"]"))
-                .getAttribute("label")
-                .await()
+            element("option[value=\"1\"]")
+                .attribute("label")
                 .assertIsEqualTo("Badge 1")
-            page.altBadgeOption.isDisplayed().await()
+            page.altBadgeOption().displayed()
                 .assertIsEqualTo(true)
-            element(By.css("option[value=\"2\"]"))
-                .getAttribute("label")
-                .await()
+            element("option[value=\"2\"]")
+                .attribute("label")
                 .assertIsEqualTo("Badge 2")
         }
 
@@ -205,7 +216,7 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
-            page.defaultBadgeOption.getAttribute("checked").await()
+            page.defaultBadgeOption().attribute("checked")
                 .assertIsEqualTo("true")
         }
 
@@ -215,12 +226,12 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            page.altBadgeOption.performClick()
-            ConfigForm.saveButton.performClick()
+            page.altBadgeOption().performClick()
+            ConfigForm.getSaveButton().performClick()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)
-            page.altBadgeOption.getAttribute("checked").await()
+            page.altBadgeOption().attribute("checked")
                 .assertIsEqualTo("true")
         }
 
@@ -228,20 +239,22 @@ class PlayerConfigPageE2ETest {
 
     class WhenTribeHasCallSignsEnabled {
 
-        private val playerSetup = playerConfigOnePlayerSetup(
-            buildTribe = {
-                Tribe(
-                    TribeId("${randomInt()}-PlayerConfigPageE2E"),
-                    callSignsEnabled = true
-                )
-            },
-            buildPlayer = {
-                Player(
-                    "${randomInt()}-PlayerConfigPageE2E",
-                    name = "${randomInt()}-PlayerConfigPageE2E"
-                )
-            }
-        )
+        companion object {
+            private val playerSetup = playerConfigOnePlayerSetup(
+                buildTribe = {
+                    Tribe(
+                        TribeId("${randomInt()}-PlayerConfigPageE2E"),
+                        callSignsEnabled = true
+                    )
+                },
+                buildPlayer = {
+                    Player(
+                        "${randomInt()}-PlayerConfigPageE2E",
+                        name = "${randomInt()}-PlayerConfigPageE2E"
+                    )
+                }
+            )
+        }
 
         @Test
         fun adjectiveAndNounCanBeSaved() = playerSetup(object : PlayerContext() {
@@ -249,21 +262,15 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            with(page.adjectiveTextInput) {
-                performClear()
-                performSendKeys("Superior")
-            }
-            with(page.nounTextInput) {
-                performClear()
-                performSendKeys("Spider-Man")
-            }
-            ConfigForm.saveButton.performClick()
+            page.adjectiveTextInput().performClearSetValue("Superior")
+            page.nounTextInput().performClearSetValue("Spider-Man")
+            ConfigForm.getSaveButton().performClick()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)
-            page.adjectiveTextInput.getAttribute("value").await()
+            page.adjectiveTextInput().attribute("value")
                 .assertIsEqualTo("Superior")
-            page.nounTextInput.getAttribute("value").await()
+            page.nounTextInput().attribute("value")
                 .assertIsEqualTo("Spider-Man")
         }
 
@@ -283,9 +290,9 @@ class PlayerConfigPageE2ETest {
         } exercise {
             PlayerConfig.goToNew(tribe.id)
         } verify {
-            PlayerConfig.adjectiveTextInput.getAttribute("value").await()
+            PlayerConfig.adjectiveTextInput().attribute("value")
                 .assertIsNotEqualTo("")
-            PlayerConfig.nounTextInput.getAttribute("value").await()
+            PlayerConfig.nounTextInput().attribute("value")
                 .assertIsNotEqualTo("")
         }
     }

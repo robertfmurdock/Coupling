@@ -10,12 +10,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.external.protractor.ElementSelector
-import com.zegreatrob.coupling.server.e2e.external.protractor.browser
-import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
@@ -65,9 +62,9 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            TribeCard.header.getText().await()
+            TribeCard.getHeader().text()
                 .assertIsEqualTo(tribe.name)
-            PlayerRoster.playerElements.map { it.getText() }.await().toList()
+            PlayerRoster.getPlayerElements().map { it.text() }.toList()
                 .assertIsEqualTo(players.map { it.name })
         }
 
@@ -75,114 +72,119 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouAddPlayers() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            PlayerRoster.addPlayerButton.performClick()
+            PlayerRoster.getAddPlayerButton().performClick()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/new/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/player/new/")
         }
 
         @Test
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            PlayerRoster.playerElements.first().element(PlayerCard.headerLocator)
+            PlayerRoster.getPlayerElements().first().element(PlayerCard.headerLocator)
                 .performClick()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/player/${players[0].id}/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/player/${players[0].id}/")
         }
 
         @Test
         fun willLetYouViewHistory() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            viewHistoryButton.performClick()
+            viewHistoryButton().performClick()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/history/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/history/")
         }
 
         @Test
         fun willLetYouPrepareNewPairs() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            newPairsButton.performClick()
+            newPairsButton().performClick()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/prepare/")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/prepare/")
         }
 
         @Test
         fun willLetYouGoToTheStatsPage() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            statisticsButton.performClick()
+            statisticsButton().performClick()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/statistics")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/statistics")
         }
 
         @Test
         fun willLetYouGoToTheRetiredPlayersPage() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            retiredPlayersButton.performClick()
+            retiredPlayersButton().performClick()
         } verify {
-            browser.getCurrentUrl().await()
-                .assertIsEqualTo("${browser.baseUrl}/${tribe.id.value}/players/retired")
+            getUrl().pathname
+                .assertIsEqualTo("/${tribe.id.value}/players/retired")
         }
 
     }
 
     class GivenCurrentSetOfPairsExists {
-        val tribe by lazy {
-            Tribe(
-                TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),
-                name = "${randomInt()}-PairAssignmentsPageE2ETest"
-            )
-        }
 
-        private val players by lazy {
-            (1..5).map {
-                Player(
-                    id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
-                    name = "player$it",
-                    callSignAdjective = "nimble",
-                    callSignNoun = "thimble"
+        companion object {
+            val tribe by lazy {
+                Tribe(
+                    TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),
+                    name = "${randomInt()}-PairAssignmentsPageE2ETest"
                 )
             }
-        }
-        private val pairAssignmentDocument by lazy {
-            PairAssignmentDocument(
-                date = DateTime(year = 2015, month = 5, day = 30),
-                pairs = listOf(
-                    pairOf(players[0], players[2]).withPins(emptyList()),
-                    pairOf(players[4]).withPins(emptyList())
-                )
-            )
-        }
 
-        private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
-
-        private val setup = e2eSetup.extend(beforeAll = {
-            val sdk = sdkProvider.await()
-            sdk.save(tribe)
-            coroutineScope {
-                launch { players.forEach { sdk.save(tribe.id.with(it)) } }
-                launch { sdk.save(tribe.id.with(pairAssignmentDocument)) }
+            private val players by lazy {
+                (1..5).map {
+                    Player(
+                        id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
+                        name = "player$it",
+                        callSignAdjective = "nimble",
+                        callSignNoun = "thimble"
+                    )
+                }
             }
-        })
+            private val pairAssignmentDocument by lazy {
+                PairAssignmentDocument(
+                    date = DateTime(year = 2015, month = 5, day = 30),
+                    pairs = listOf(
+                        pairOf(players[0], players[2]).withPins(emptyList()),
+                        pairOf(players[4]).withPins(emptyList())
+                    )
+                )
+            }
 
-        private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
-            setup(CurrentPairAssignmentPage, additionalSetup)
+            private fun PinnedCouplingPair.players() = toPair().asArray().toList()
+
+            private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
+
+            private val setup = e2eSetup.extend(beforeAll = {
+                val sdk = sdkProvider.await()
+                sdk.save(tribe)
+                coroutineScope {
+                    launch { players.forEach { sdk.save(tribe.id.with(it)) } }
+                    launch { sdk.save(tribe.id.with(pairAssignmentDocument)) }
+                }
+            })
+
+            private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
+                setup(CurrentPairAssignmentPage, additionalSetup)
+        }
 
         @Test
         fun willShowPlayersInCorrectPlaces() = currentPairAssignmentPageSetup {
         } exercise {
             goTo(tribe.id)
         } verify {
-            assignedPairElements.assertTheMostRecentPairsAreShown()
-            PlayerRoster.playerElements.assertOnlyUnpairedPlayersAreShown()
+            getAssignedPairElements().assertTheMostRecentPairsAreShown()
+            PlayerRoster.getPlayerElements().assertOnlyUnpairedPlayersAreShown()
         }
 
         private suspend fun ElementSelector.assertTheMostRecentPairsAreShown() {
@@ -193,7 +195,7 @@ class PairAssignmentsPageE2ETest {
         }
 
         private suspend fun ElementSelector.assertOnlyUnpairedPlayersAreShown() {
-            map { it.getText() }.await().toList()
+            map { it.text() }.toList()
                 .assertIsEqualTo(unpairedPlayers.map { it.name })
         }
 
@@ -204,7 +206,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            assignedPairCallSigns.count().await()
+            getAssignedPairCallSigns().count()
                 .assertIsEqualTo(0)
         }
 
@@ -215,7 +217,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            val callSigns = assignedPairCallSigns.map { it.getText() }.await()
+            val callSigns = getAssignedPairCallSigns().map { it.text() }
             with(callSigns) {
                 count().assertIsEqualTo(2)
                 forEach {
@@ -225,10 +227,9 @@ class PairAssignmentsPageE2ETest {
             }
         }
 
-        private fun PinnedCouplingPair.players() = toPair().asArray().toList()
-
-        private suspend fun ElementSelector.getPairPlayerNames() = all(PlayerCard.playerLocator)
-            .map { it.getText() }.await().toList()
+        private suspend fun Element.getPairPlayerNames() = all(PlayerCard.playerLocator)
+            .mapSuspend { it.text() }
+            .toList()
     }
 
 }

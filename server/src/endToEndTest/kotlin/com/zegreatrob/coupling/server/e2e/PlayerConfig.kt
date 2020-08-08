@@ -2,17 +2,16 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.PlayerCard.playerCardStyles
-import com.zegreatrob.coupling.server.e2e.external.protractor.*
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 
 object PlayerConfig : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
 
-    val playerNameTextField = element(By.id("player-name"))
-    val defaultBadgeOption = element(By.id("default-badge-option"))
-    val altBadgeOption = element(By.id("alt-badge-option"))
-    val adjectiveTextInput = element(By.id("adjective-input"))
-    val nounTextInput = element(By.id("noun-input"))
+    suspend fun playerNameTextField() = element(By.id("player-name"))
+    suspend fun defaultBadgeOption() = element(By.id("default-badge-option"))
+    suspend fun altBadgeOption() = element(By.id("alt-badge-option"))
+    suspend fun adjectiveTextInput() = element(By.id("adjective-input"))
+    suspend fun nounTextInput() = element(By.id("noun-input"))
 
     suspend fun goTo(tribeId: TribeId, playerId: String?) {
         setLocation("/${tribeId.value}/player/${playerId}")
@@ -25,22 +24,23 @@ object PlayerConfig : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element.waitToBePresent()
+        element().waitToBePresent()
     }
 
-    suspend fun waitForSaveToComplete(name: String?) {
-        browser.wait(
-            { ConfigForm.saveButton.isEnabled().then({ it }, { false }) },
-            waitToBePresentDuration,
-            "PlayerConfig.waitForSaveButtonDisable"
-        ).await()
+    suspend fun waitForSaveToComplete(expectedName: String?) {
+            waitUntil(
+            { ConfigForm.getSaveButton().enabled() },
+                waitToBePresentDuration,
+                "PlayerConfig.waitForSaveButtonEnable"
+            )
 
-        browser.wait({
-            PlayerRoster.element.all(By.className(playerCardStyles["header"]))
-                .first()
-                .getText()
-                .then { it == name }
-        }, 100, "PlayerConfig.waitForSave.nameIncluded").await()
+            waitUntil({
+                val playerName = PlayerRoster.element().all(By.className(playerCardStyles["header"]))
+                    .first()
+                    .text()
+
+                (playerName == expectedName)
+            }, 100, "PlayerConfig.waitForSave.nameIncluded")
     }
 
 }
@@ -49,13 +49,13 @@ object PlayerCard {
     val playerCardStyles = loadStyles("player/PlayerCard")
     val playerLocator = By.className(playerCardStyles["player"])
     val headerLocator = By.className(playerCardStyles["header"])
-    val header = element(headerLocator)
-    val playerElements = all(playerLocator)
-    val iconLocator: ProtractorBy = By.className(playerCardStyles["playerIcon"])
+    suspend fun getHeader() = element(headerLocator)
+    suspend fun getPlayerElements() = all(playerLocator)
+    val iconLocator = By.className(playerCardStyles["playerIcon"])
 }
 
 object PlayerRoster : StyleSyntax {
     override val styles = loadStyles("player/PlayerRoster")
-    val playerElements = all(By.css(".${styles.className} .${playerCardStyles["player"]}"))
-    val addPlayerButton by getting()
+    suspend fun getPlayerElements() = all(".${styles.className} .${playerCardStyles["player"]}")
+    suspend fun getAddPlayerButton() = getting("addPlayerButton")
 }

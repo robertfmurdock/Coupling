@@ -78,7 +78,7 @@ tasks {
 
     val copyEndToEndScreenshotResults by creating(Copy::class, copyForTask(findByPath(":server:endToEndTest")) {
         from("server/build/reports/e2e")
-        into("build/test-output/e2e-screenshots")
+        into("build/test-output/e2e/reports")
     })
 
     val copyTestResultsForCircle by creating {

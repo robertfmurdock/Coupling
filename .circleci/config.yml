@@ -5,14 +5,14 @@ orbs:
     executors:
       standard:
         docker:
-          - image: circleci/openjdk:9-jdk
+          - image: circleci/openjdk:jdk
           - image: circleci/mongo:latest
           - image: amazon/dynamodb-local
             command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
           - image: selenium/standalone-chrome
       nomongo:
         docker:
-          - image: circleci/openjdk:9-jdk
+          - image: circleci/openjdk:jdk
           - image: amazon/dynamodb-local
             command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
           - image: selenium/standalone-chrome

@@ -1,24 +1,22 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.By
-import com.zegreatrob.coupling.server.e2e.external.protractor.element
-import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.element
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object TribeConfigPage : StyleSyntax {
     override val styles = loadStyles("tribe/TribeConfig")
-    private val pageElement = element
 
-    val tribeNameInput = element(By.id("tribe-name"))
-    val tribeEmailInput = element(By.id("tribe-email"))
-    val tribeIdInput = element(By.id("tribe-id"))
-    val callSignCheckbox = element(By.id("call-sign-checkbox"))
-    val badgeCheckbox = element(By.id("badge-checkbox"))
-    val defaultBadgeNameInput = element(By.id("default-badge-name"))
-    val altBadgeNameInput = element(By.id("alt-badge-name"))
-    val differentBadgesOption = element(By.css("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]"))
-
-    val checkedOption = element(By.css("#pairing-rule option:checked"))
+    suspend fun getTribeNameInput() = element(By.id("tribe-name"))
+    suspend fun getTribeEmailInput() = element(By.id("tribe-email"))
+    suspend fun getTribeIdInput() = element(By.id("tribe-id"))
+    suspend fun getCallSignCheckbox() = element(By.id("call-sign-checkbox"))
+    suspend fun getBadgeCheckbox() = element(By.id("badge-checkbox"))
+    suspend fun getDefaultBadgeNameInput() = element(By.id("default-badge-name"))
+    suspend fun getAltBadgeNameInput() = element(By.id("alt-badge-name"))
+    suspend fun getDifferentBadgesOption() = element("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]")
+    suspend fun getCheckedOption() = element("#pairing-rule option:checked")
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/edit/")
@@ -31,6 +29,6 @@ object TribeConfigPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        pageElement.waitToBePresent()
+        element().waitToBePresent()
     }
 }

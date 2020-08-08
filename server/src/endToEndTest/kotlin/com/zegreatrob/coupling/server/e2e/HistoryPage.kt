@@ -1,17 +1,17 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.By
-import com.zegreatrob.coupling.server.e2e.external.protractor.all
-import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.all
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object HistoryPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/History")
 
-    private val historyView by getting()
+    private suspend fun getHistoryView() = getting("historyView")
 
-    val pairAssignments = all(By.className(styles["pairAssignments"]))
-    val deleteButtons = all(By.className(styles["deleteButton"]))
+    suspend fun getPairAssignments() = all(By.className(styles["pairAssignments"]))
+    suspend fun getDeleteButtons() = all(By.className(styles["deleteButton"]))
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/history")
@@ -19,7 +19,7 @@ object HistoryPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        historyView.waitToBePresent()
+        getHistoryView().waitToBePresent()
     }
 
 }

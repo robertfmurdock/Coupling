@@ -179,15 +179,8 @@ tasks {
         args = listOf("run", "serverTest")
     }
 
-    val updateWebdriver by creating(YarnTask::class) {
-        dependsOn(yarn)
-        inputs.file("package.json")
-        outputs.dir("node_modules/webdriver-manager/selenium/")
-        args = listOf("run", "update-webdriver", "--silent")
-    }
-
     val endToEndTest by creating(YarnTask::class) {
-        dependsOn(assemble, updateWebdriver, compileEndToEndTestKotlinJs)
+        dependsOn(assemble, compileEndToEndTestKotlinJs)
         mustRunAfter(serverTest, ":client:test", ":sdk:endpointTest")
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
@@ -199,7 +192,7 @@ tasks {
         outputs.dir("${project.buildDir}/test-results/e2e")
 
         setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:node_modules"))
-        args = listOf("run", "protractor", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
+        args = listOf("run", "e2e", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
     val updateDependencies by creating(YarnTask::class) {

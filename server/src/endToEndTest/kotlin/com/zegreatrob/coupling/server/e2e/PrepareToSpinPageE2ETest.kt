@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
@@ -45,19 +45,19 @@ class PrepareToSpinPageE2ETest {
     fun withNoHistory() = pinTribeSetup() exercise {
         PrepareToSpinPage.goTo(tribe.id)
     } verify {
-        PlayerCard.playerElements.map { it.getText() }.await().toList()
+        PlayerCard.getPlayerElements().map { it.text() }.toList()
             .assertIsEqualTo(players.map(Player::name))
     }
 
     @Test
     fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.selectAllButton.performClick()
+        PrepareToSpinPage.getSelectAllButton().performClick()
     } exercise {
-        PrepareToSpinPage.spinButton.performClick()
+        PrepareToSpinPage.getSpinButton().performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        CurrentPairAssignmentPage.assignedPairElements.count().await()
+        CurrentPairAssignmentPage.getAssignedPairElements().count()
             .assertIsEqualTo(3)
     }
 
@@ -65,50 +65,50 @@ class PrepareToSpinPageE2ETest {
     fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
         with(PlayerCard) {
-            PrepareToSpinPage.selectNoneButton.performClick()
-            playerElements.get(1).element(iconLocator).performClick()
-            playerElements.get(4).element(iconLocator).performClick()
+            PrepareToSpinPage.getSelectNoneButton().performClick()
+            getPlayerElements().get(1).element(iconLocator).performClick()
+            getPlayerElements().get(4).element(iconLocator).performClick()
         }
     } exercise {
-        PrepareToSpinPage.spinButton.performClick()
+        PrepareToSpinPage.getSpinButton().performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        CurrentPairAssignmentPage.assignedPairElements.count().await()
+        CurrentPairAssignmentPage.getAssignedPairElements().count()
             .assertIsEqualTo(1)
-        PlayerRoster.playerElements.count().await()
+        PlayerRoster.getPlayerElements().count()
             .assertIsEqualTo(3)
 
-        CurrentPairAssignmentPage.saveButton.performClick()
+        CurrentPairAssignmentPage.saveButton().performClick()
         CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed()
 
-        CurrentPairAssignmentPage.assignedPairElements.count().await()
+        CurrentPairAssignmentPage.getAssignedPairElements().count()
             .assertIsEqualTo(1)
-        PlayerRoster.playerElements.count().await()
+        PlayerRoster.getPlayerElements().count()
             .assertIsEqualTo(3)
     }
 
     @Test
     fun whenPinIsEnabledSpinWillIncludePinInAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.selectedPinElements.count().await()
+        PrepareToSpinPage.getSelectedPinElements().count().await()
             .assertIsEqualTo(1)
     } exercise {
-        PrepareToSpinPage.spinButton.performClick()
+        PrepareToSpinPage.getSpinButton().performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        PinButton.pinElements.count().await()
+        PinButton.getPinElements().count()
             .assertIsEqualTo(1)
     }
 
     @Test
     fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.selectedPinElements.performClick()
+        PrepareToSpinPage.getSelectedPinElements().get(0).performClick()
     } exercise {
-        PrepareToSpinPage.spinButton.performClick()
+        PrepareToSpinPage.getSpinButton().performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        PinButton.pinElements.count().await()
+        PinButton.getPinElements().count()
             .assertIsEqualTo(0)
     }
 

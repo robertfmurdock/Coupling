@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.text
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
@@ -38,9 +38,9 @@ class RetiredPlayerPageE2ETest {
     } exercise {
         RetiredPlayersPage.goTo(tribe.id)
     } verify {
-        PlayerCard.playerElements.map { it.getText() }.await().toList()
+        PlayerCard.getPlayerElements().map { it.text() }.toList()
             .assertIsEqualTo(retiredPlayers.map { it.name })
-        TribeCard.element.getText().await()
+        TribeCard.element().text()
             .assertIsEqualTo(tribe.name)
     }
 }

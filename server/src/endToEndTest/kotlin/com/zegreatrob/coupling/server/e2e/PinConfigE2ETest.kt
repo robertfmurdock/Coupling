@@ -6,12 +6,9 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.PinListPage.element
-import com.zegreatrob.coupling.server.e2e.external.protractor.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.asPromise
-import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlin.random.Random
 import kotlin.test.Test
@@ -40,11 +37,10 @@ class PinConfigE2ETest {
     }.attachTribe()) {
         with(PinConfigPage) {
             tribe.id.goToNew()
-            nameTextField.performClear()
-            nameTextField.performSendKeys(newPinName)
+            getNameTextField().performSetValue(newPinName)
         }
     } exercise {
-        ConfigForm.saveButton.performClick()
+        ConfigForm.getSaveButton().performClick()
     } verify {
         with(PinConfigPage) {
             waitForPinNameToAppear(newPinName, tribe.id)
@@ -56,10 +52,11 @@ class PinConfigE2ETest {
     private suspend fun PinConfigPage.waitForPinNameToAppear(
         newPinName: String,
         id: TribeId
-    ) = browser.wait({
-        MainScope().async { pinBagPinNames().contains(newPinName) }
-            .asPromise().then({ it }) { false }
-    }, waitToBePresentDuration, "PinConfigPage.waitForPinNameToAppear in tribe ${id.value}").await()
+    ) = waitUntil(
+        { pinBagPinNames().contains(newPinName) },
+        waitToBePresentDuration,
+        "PinConfigPage.waitForPinNameToAppear in tribe ${id.value}"
+    )
 
     class WhenThePinExists {
 
@@ -72,9 +69,9 @@ class PinConfigE2ETest {
             PinConfigPage.goTo(tribe.id, pin.id)
         } verify {
             with(PinConfigPage) {
-                nameTextField.getAttribute("value").await()
+                getNameTextField().attribute("value")
                     .assertIsEqualTo(pin.name)
-                iconTextField.getAttribute("value").await()
+                getIconTextField().attribute("value")
                     .assertIsEqualTo(pin.icon)
             }
         }
@@ -86,15 +83,13 @@ class PinConfigE2ETest {
             sdk.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin.id)
         } exercise {
-            ConfigForm.deleteButton.performClick()
-            browser.switchTo().alert().await()
-                .accept().await()
+            ConfigForm.getDeleteButton().performClick()
+            browser.acceptAlert().await()
 
             PinListPage.waitForLoad()
         } verify {
-            element.all(By.className("pin-name"))
-                .map { it.getText() }
-                .await()
+            element().all(By.className("pin-name"))
+                .mapSuspend { it.text() }
                 .toList()
                 .contains(pin.name)
                 .assertIsEqualTo(false)
@@ -104,13 +99,3 @@ class PinConfigE2ETest {
 }
 
 fun randomInt() = Random.nextInt()
-
-suspend fun checkLogs() {
-    if (browser.getCapabilities().await()["browserName"] != "firefox") {
-        val browserLog = getBrowserLogs()
-        browserLog.toList()
-            .assertIsEqualTo(emptyList(), JSON.stringify(browserLog))
-    }
-}
-
-suspend fun getBrowserLogs() = browser.manage().logs()["browser"].await()

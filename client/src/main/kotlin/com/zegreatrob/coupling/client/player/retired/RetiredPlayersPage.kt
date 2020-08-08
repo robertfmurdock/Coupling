@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
@@ -19,5 +19,5 @@ private fun RBuilder.loadedRetiredPlayers(tribeId: TribeId, props: PageProps) = 
         commander = commander,
         query = RetiredPlayerListQuery(tribeId),
         toProps = { _, _, (tribe, retiredPlayers) -> RetiredPlayersProps(tribe, retiredPlayers, pathSetter) }
-    ))
+    ), key = tribeId.value)
 }

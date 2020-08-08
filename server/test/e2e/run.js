@@ -37,9 +37,9 @@ let promise = Promise.all([
 promise = promise
   .then(function () {
     return new Promise(function (resolve, reject) {
-      const process = childProcess.fork(__dirname + '/forkProtractor', [], {stdio: "pipe"});
+      const process = childProcess.fork(__dirname + '/forkE2E', [], {stdio: "pipe"});
       process.on('exit', function (code) {
-        console.log('protractor fork code ' + code);
+        console.log('e2e fork code ' + code);
         if (code === 0)
           resolve(code);
         else {

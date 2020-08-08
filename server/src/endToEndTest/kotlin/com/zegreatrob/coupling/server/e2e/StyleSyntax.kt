@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.BrowserSyntax
 
-interface StyleSyntax : ProtractorSyntax {
+interface StyleSyntax : BrowserSyntax {
     val styles: SimpleStyle
-    fun getting() = styles.getting()
-    val element get() = styles.element()
+    suspend fun getting(propertyName: String) = styles.element(propertyName)
+    suspend fun element() = styles.element()
 }

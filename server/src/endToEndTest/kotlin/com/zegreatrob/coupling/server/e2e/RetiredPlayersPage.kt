@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresent
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object RetiredPlayersPage : StyleSyntax {
     override val styles = loadStyles("player/RetiredPlayers")
@@ -12,6 +12,6 @@ object RetiredPlayersPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element.waitToBePresent()
+        element().waitToBePresent()
     }
 }

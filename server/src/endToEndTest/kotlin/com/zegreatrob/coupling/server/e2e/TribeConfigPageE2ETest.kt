@@ -2,12 +2,10 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.ProtractorSyntax
-import com.zegreatrob.coupling.server.e2e.external.protractor.performClearSendKeys
-import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.BrowserSyntax
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.await
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -16,7 +14,7 @@ class TribeConfigPageE2ETest {
     class GivenExistingTribe {
 
         @Test
-        fun canSaveEditsCorrectly() = sdkSetup(object : ProtractorSyntax, SdkContext() {
+        fun canSaveEditsCorrectly() = sdkSetup(object : BrowserSyntax, SdkContext() {
             val tribe = buildTribe()
             val expectedNewName = "Different name"
             val expectedDefaultBadgeName = "New Default Badge Name"
@@ -29,30 +27,30 @@ class TribeConfigPageE2ETest {
             with(page) {
                 goTo(tribe.id)
 
-                tribeNameInput.performClearSendKeys(expectedNewName)
-                callSignCheckbox.performClick()
-                badgeCheckbox.performClick()
-                defaultBadgeNameInput.performClearSendKeys(expectedDefaultBadgeName)
-                altBadgeNameInput.performClearSendKeys(expectedAltBadgeName)
-                differentBadgesOption.performClick()
+                getTribeNameInput().performClearSetValue(expectedNewName)
+                getCallSignCheckbox().performClick()
+                getBadgeCheckbox().performClick()
+                getDefaultBadgeNameInput().performClearSetValue(expectedDefaultBadgeName)
+                getAltBadgeNameInput().performClearSetValue(expectedAltBadgeName)
+                getDifferentBadgesOption().performClick()
             }
         } exercise {
-            ConfigForm.saveButton.performClick()
+            ConfigForm.getSaveButton().performClick()
             TribeListPage.waitForPage()
             page.goTo(tribe.id)
         } verify {
             with(page) {
-                tribeNameInput.getAttribute("value").await()
+                getTribeNameInput().attribute("value")
                     .assertIsEqualTo(expectedNewName)
-                callSignCheckbox.getAttribute("checked").await()
+                getCallSignCheckbox().attribute("checked")
                     .assertIsEqualTo(expectedCallSignSelection)
-                badgeCheckbox.getAttribute("checked").await()
+                getBadgeCheckbox().attribute("checked")
                     .assertIsEqualTo(expectedBadgeSelection)
-                defaultBadgeNameInput.getAttribute("value").await()
+                getDefaultBadgeNameInput().attribute("value")
                     .assertIsEqualTo(expectedDefaultBadgeName)
-                altBadgeNameInput.getAttribute("value").await()
+                getAltBadgeNameInput().attribute("value")
                     .assertIsEqualTo(expectedAltBadgeName)
-                checkedOption.getAttribute("label").await()
+                getCheckedOption().attribute("label")
                     .assertIsEqualTo("Prefer Different Badges (Beta)")
             }
         }
@@ -67,9 +65,9 @@ class TribeConfigPageE2ETest {
             page.goTo(tribe.id)
         } verify {
             with(page) {
-                tribeNameInput.getAttribute("value").await()
+                getTribeNameInput().attribute("value")
                     .assertIsEqualTo(tribe.name)
-                tribeEmailInput.getAttribute("value").await()
+                getTribeEmailInput().attribute("value")
                     .assertIsEqualTo(tribe.email)
             }
         }
@@ -81,12 +79,11 @@ class TribeConfigPageE2ETest {
             sdk.save(tribe)
             TribeConfigPage.goTo(tribe.id)
         } exercise {
-            ConfigForm.deleteButton.performClick()
+            ConfigForm.getDeleteButton().performClick()
             TribeListPage.waitForPage()
         } verify {
-            TribeListPage.tribeCardElements
-                .map { it.getText() }
-                .await()
+            TribeListPage.getTribeCardElements()
+                .map { it.text() }
                 .contains(tribe.name)
                 .assertIsEqualTo(false)
         }
@@ -104,9 +101,9 @@ class TribeConfigPageE2ETest {
         fun idFieldShowsAndPersistsAsTextIsAdded() = e2eSetup(TribeConfigPage) {
             goToNew()
         } exercise {
-            tribeIdInput.performClearSendKeys("oopsie")
+            getTribeIdInput().performClearSetValue("oopsie")
         } verify {
-            tribeIdInput.isDisplayed().await()
+            getTribeIdInput().displayed()
                 .assertIsEqualTo(true)
         }
 
@@ -114,7 +111,7 @@ class TribeConfigPageE2ETest {
         fun willDefaultPairingRuleToLongestTime() = e2eSetup(TribeConfigPage) exercise {
             goToNew()
         } verify {
-            checkedOption.getAttribute("label").await()
+            getCheckedOption().attribute("label")
                 .assertIsEqualTo("Prefer Longest Time")
         }
     }

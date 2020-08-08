@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.text
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class StatisticsE2ETest {
@@ -21,11 +21,11 @@ class StatisticsE2ETest {
         StatisticsPage.goTo(tribe.id)
     } verify {
         with(StatisticsPage) {
-            TribeCard.element.getText().await()
+            TribeCard.element().text()
                 .assertIsEqualTo(tribe.name)
-            rotationNumber.getText().await()
+            getRotationNumber().text()
                 .assertIsEqualTo("5")
-            pairReports.count().await()
+            getPairReports().count()
                 .assertIsEqualTo(15)
         }
     }

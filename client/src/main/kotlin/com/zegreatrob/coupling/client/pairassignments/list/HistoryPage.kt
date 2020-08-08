@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.minreact.child
 
@@ -14,5 +14,5 @@ val HistoryPage = tribePageFunction { props, tribeId ->
         toProps = { reload, commandFunc, (tribe, history) ->
             HistoryProps(tribe, history, reload, props.pathSetter, commandFunc)
         }
-    ))
+    ), key = tribeId.value)
 }

@@ -1,22 +1,20 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.*
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 
 object PinConfigPage : StyleSyntax {
     override val styles = loadStyles("pin/PinConfig")
 
-    private val pinBag by getting()
+    private suspend fun pinBag() = getting("pinBag")
 
-    val nameTextField = element(By.id("pin-name"))
-    val iconTextField = element(By.id("pin-icon"))
+    suspend fun getNameTextField() = element(By.id("pin-name"))
+    suspend fun getIconTextField() = element(By.id("pin-icon"))
 
     suspend fun pinBagPinNames(): List<String> {
-        pinBag.waitToBePresent()
-        return pinBag.all(By.className("pin-name"))
-            .map { it.getText() }
-            .await()
+        pinBag().waitToBePresent()
+        return pinBag().all(By.className("pin-name"))
+            .mapSuspend { it.text() }
             .toList()
     }
 
@@ -31,7 +29,7 @@ object PinConfigPage : StyleSyntax {
     }
 
     private suspend fun waitForLoad() {
-        browser.wait({ element.isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad").await()
+        waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad")
     }
 }
 
@@ -40,7 +38,7 @@ object PinListPage : StyleSyntax {
     override val styles = loadStyles("pin/PinList")
 
     suspend fun waitForLoad() {
-        browser.wait({ element.isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad").await()
+        waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad")
     }
 
 }

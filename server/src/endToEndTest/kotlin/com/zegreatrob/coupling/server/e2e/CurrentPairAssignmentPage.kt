@@ -1,22 +1,22 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.protractor.*
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import kotlin.js.Promise
 
 object CurrentPairAssignmentPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
-    val saveButton by getting()
+    suspend fun saveButton() = getting("saveButton")
 
     private val pairAssignmentsStyles = loadStyles("pairassignments/PairAssignments")
-    val viewHistoryButton by pairAssignmentsStyles.getting()
-    val newPairsButton by pairAssignmentsStyles.getting()
-    val statisticsButton by pairAssignmentsStyles.getting()
-    val retiredPlayersButton by pairAssignmentsStyles.getting()
+    suspend fun viewHistoryButton() = pairAssignmentsStyles.element("viewHistoryButton")
+    suspend fun newPairsButton() = pairAssignmentsStyles.element("newPairsButton")
+    suspend fun statisticsButton() = pairAssignmentsStyles.element("statisticsButton")
+    suspend fun retiredPlayersButton() = pairAssignmentsStyles.element("retiredPlayersButton")
 
     private val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
-    val assignedPairElements = all(By.className(assignedPairStyles.className))
-    val assignedPairCallSigns = all(By.className(assignedPairStyles["callSign"]))
+    suspend fun getAssignedPairElements() = all(By.className(assignedPairStyles.className))
+    suspend fun getAssignedPairCallSigns() = all(By.className(assignedPairStyles["callSign"]))
 
     suspend fun goTo(id: TribeId) {
         setLocation("/${id.value}/pairAssignments/current/")
@@ -24,18 +24,19 @@ object CurrentPairAssignmentPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element.waitToBePresent()
+        element().waitToBePresent()
     }
 
     suspend fun waitForSaveButtonToNotBeDisplayed() {
         waitForPage()
-        browser.wait(
-            { saveButton.isNotPresent() },
+        waitUntil(
+            { saveButton().isNotPresent() },
             2000,
             "CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed"
-        ).await()
+        )
         waitForPage()
     }
 
-    private fun ElementSelector.isNotPresent() = isPresent().then({ !it }, { false })
+    private suspend fun Promise<Element>.isNotPresent() = !isPresent()
+
 }

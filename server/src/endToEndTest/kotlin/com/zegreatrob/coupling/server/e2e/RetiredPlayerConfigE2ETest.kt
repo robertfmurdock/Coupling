@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.attribute
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class RetiredPlayerConfigE2ETest {
@@ -21,7 +21,7 @@ class RetiredPlayerConfigE2ETest {
     } exercise {
         RetiredPlayerConfig.goTo(tribe.id, player.id)
     } verify {
-        RetiredPlayerConfig.playerNameTextField.getAttribute("value").await()
+        RetiredPlayerConfig.getPlayerNameTextField().attribute("value")
             .assertIsEqualTo(player.name)
     }
 

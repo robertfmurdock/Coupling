@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQuery
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.minreact.child
 
@@ -15,5 +15,5 @@ val PrepareSpinPage = tribePageFunction { props, tribeId ->
         toProps = { _, _, (tribe, players, history, pins) ->
             PrepareSpinProps(tribe, players, history, pins, props.pathSetter)
         }
-    ))
+    ), key = tribeId.value)
 }

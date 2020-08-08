@@ -8,12 +8,9 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.external.protractor.browser
-import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
-import com.zegreatrob.coupling.server.e2e.external.protractor.waitToBePresentDuration
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class HistoryPageE2ETest {
@@ -24,7 +21,6 @@ class HistoryPageE2ETest {
 
     class WithTwoAssignments {
         companion object {
-
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
                 val sdk = sdkProvider.await()
                 val tribe = buildTribe()
@@ -58,23 +54,22 @@ class HistoryPageE2ETest {
         @Test
         fun showsRecentPairings() = historyPageSetup().exercise {
         } verify {
-            page.pairAssignments.count().await()
+            page.getPairAssignments().count()
                 .assertIsEqualTo(pairAssignments.size)
         }
 
         @Test
-        fun pairingCanBeDeleted() = historyPageSetup()
-            .exercise {
-                page.deleteButtons.get(0).performClick()
-                browser.switchTo().alert().await()
-                    .accept().await()
-            } verify {
-            browser.wait(
-                { page.pairAssignments.count().then { it == pairAssignments.size - 1 } },
+        fun pairingCanBeDeleted() = historyPageSetup().exercise {
+            page.getDeleteButtons()[0].performClick()
+            waitForAlert()
+            acceptAlert()
+        } verify {
+            waitUntil(
+                { page.getPairAssignments().count() == pairAssignments.size - 1 },
                 waitToBePresentDuration,
                 "HistoryPageE2ETest.pairingCanBeDeleted"
             )
-            page.pairAssignments.count().await()
+            page.getPairAssignments().count()
                 .assertIsEqualTo(1)
         }
     }

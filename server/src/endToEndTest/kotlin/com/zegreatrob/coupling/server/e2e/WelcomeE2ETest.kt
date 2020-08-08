@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.zegreatrob.coupling.server.e2e.external.protractor.performClick
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
@@ -8,11 +8,11 @@ class WelcomeE2ETest {
     @Test
     fun whenTheEnterButtonIsPressedWillRedirectToGoogleLogin() = e2eSetup(WelcomePage) {
         goTo()
-        enterButton.performClick()
+        getEnterButton().performClick()
     } exercise {
-        googleButton.performClick()
+        getGoogleButton().performClick()
     } verifyAnd {
-        waitToArriveAt("https://accounts.google.com")
+        waitToArriveAtUrl("https://accounts.google.com")
     } teardown {
         purgeBrowserLogsBecauseGoogleIsCreatingWarning()
     }
@@ -24,10 +24,10 @@ class WelcomeE2ETest {
     @Test
     fun whenTheEnterButtonIsPressedWillRedirectToMicrosoftLogin() = e2eSetup(WelcomePage) {
         goTo()
-        enterButton.performClick()
+        getEnterButton().performClick()
     } exercise {
-        microsoftButton.performClick()
+        getMicrosoftButton().performClick()
     } verify {
-        waitToArriveAt("https://login.microsoftonline.com")
+        waitToArriveAtUrl("https://login.microsoftonline.com")
     }
 }

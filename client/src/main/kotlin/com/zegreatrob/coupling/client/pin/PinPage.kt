@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
+import com.zegreatrob.minreact.child
 
 private val LoadedPin by lazy { couplingDataLoader(PinConfig) }
 
@@ -14,5 +15,5 @@ val PinPage = tribePageFunction { props, tribeId ->
         toProps = { reload, commandFunc, (tribe, pins, pin) ->
             PinConfigProps(tribe, pin, pins, props.pathSetter, reload, commandFunc)
         }
-    )) { pinId?.let { attrs { key = it } } }
+    ), key = pinId)
 }

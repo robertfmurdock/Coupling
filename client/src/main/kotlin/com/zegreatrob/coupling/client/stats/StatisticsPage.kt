@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.minreact.child
 
@@ -12,5 +12,5 @@ val StatisticsPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = StatisticsQuery(tribeId),
         toProps = { _, _, queryResult -> TribeStatisticsProps(queryResult, props.pathSetter) }
-    ))
+    ), key = tribeId.value)
 }
