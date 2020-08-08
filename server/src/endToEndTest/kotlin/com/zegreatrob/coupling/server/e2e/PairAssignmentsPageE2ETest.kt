@@ -82,7 +82,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            PlayerRoster.getPlayerElements().first().element(PlayerCard.headerLocator)
+            PlayerRoster.getPlayerElements().first().element(PlayerCard.header.selector)
                 .performClick()
         } verify {
             WebdriverBrowser.getUrl().pathname

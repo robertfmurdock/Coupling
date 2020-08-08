@@ -38,7 +38,7 @@ object WebdriverBrowser : BrowserLoggingSyntax {
 
 }
 
-class WebdriverElement(private val selector: String) {
+class WebdriverElement(val selector: String) {
     private suspend fun element() = WebdriverBrowser.element(selector)
 
     suspend fun performClick() = element().performClick()

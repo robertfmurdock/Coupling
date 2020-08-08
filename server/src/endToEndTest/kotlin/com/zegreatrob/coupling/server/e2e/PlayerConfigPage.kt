@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.PlayerCard.playerCardStyles
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 
-object PlayerConfig : StyleSyntax {
+object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
 
     suspend fun playerNameTextField() = WebdriverBrowser.element(By.id("player-name"))
@@ -35,27 +34,26 @@ object PlayerConfig : StyleSyntax {
         )
 
         WebdriverBrowser.waitUntil({
-                        val playerName = PlayerRoster.element().all(By.className(playerCardStyles["header"]))
-                            .first()
-                            .text()
+            val playerName = PlayerRoster.element().all(By.className(PlayerCard.styles["header"]))
+                .first()
+                .text()
 
-                        (playerName == expectedName)
-                    }, 100, "PlayerConfig.waitForSave.nameIncluded")
+            (playerName == expectedName)
+        }, 100, "PlayerConfig.waitForSave.nameIncluded")
     }
 
 }
 
-object PlayerCard {
-    val playerCardStyles = loadStyles("player/PlayerCard")
-    val playerLocator = By.className(playerCardStyles["player"])
-    val headerLocator = By.className(playerCardStyles["header"])
-    suspend fun getHeader() = WebdriverBrowser.element(headerLocator)
+object PlayerCard : StyleSyntax {
+    override val styles = loadStyles("player/PlayerCard")
+    val playerLocator = By.className(styles["player"])
+    val header by getting()
     suspend fun getPlayerElements() = WebdriverBrowser.all(playerLocator)
-    val iconLocator = By.className(playerCardStyles["playerIcon"])
+    val iconLocator = By.className(styles["playerIcon"])
 }
 
 object PlayerRoster : StyleSyntax {
     override val styles = loadStyles("player/PlayerRoster")
-    suspend fun getPlayerElements() = WebdriverBrowser.all(".${styles.className} .${playerCardStyles["player"]}")
+    suspend fun getPlayerElements() = WebdriverBrowser.all(".${styles.className} .${PlayerCard.styles["player"]}")
     suspend fun getAddPlayerButton() = getting("addPlayerButton")
 }

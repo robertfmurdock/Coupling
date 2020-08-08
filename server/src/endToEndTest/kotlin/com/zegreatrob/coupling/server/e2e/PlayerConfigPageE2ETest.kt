@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.server.e2e.PlayerCard.header
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -48,7 +49,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
@@ -61,7 +62,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun whenNameIsChangedWillGetAlertOnLeaving() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
             page.playerNameTextField().performSetValue("completely different name")
@@ -78,7 +79,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
             val newName = "completely different name"
         }.attachPlayer()) {
             with(page) {
@@ -100,7 +101,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun savingWithNoNameWillShowDefaultName() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
             page.playerNameTextField().performClearSetValue(" ")
@@ -115,13 +116,13 @@ class PlayerConfigPageE2ETest {
             WebdriverBrowser.getUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
-            PlayerCard.getHeader().text()
+            header.text()
                 .assertIsEqualTo("Unknown")
         }
 
         @Test
         fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
@@ -133,7 +134,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             sdk.save(tribe.copy(badgesEnabled = false))
         } exercise {
@@ -157,7 +158,7 @@ class PlayerConfigPageE2ETest {
                     name = "${randomInt()}-PlayerConfigPageE2E"
                 )
             }.take(5).toList()
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }) {
             val sdk = sdkProvider.await()
             sdk.save(tribe)
@@ -194,7 +195,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willShowBadgeSelector() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
@@ -212,7 +213,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willSelectTheDefaultBadge() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
@@ -222,7 +223,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willRememberBadgeSelection() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
@@ -258,7 +259,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun adjectiveAndNounCanBeSaved() = playerSetup(object : PlayerContext() {
-            val page = PlayerConfig
+            val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
@@ -288,11 +289,11 @@ class PlayerConfigPageE2ETest {
             val sdk = sdkProvider.await()
             sdk.save(tribe)
         } exercise {
-            PlayerConfig.goToNew(tribe.id)
+            PlayerConfigPage.goToNew(tribe.id)
         } verify {
-            PlayerConfig.adjectiveTextInput().attribute("value")
+            PlayerConfigPage.adjectiveTextInput().attribute("value")
                 .assertIsNotEqualTo("")
-            PlayerConfig.nounTextInput().attribute("value")
+            PlayerConfigPage.nounTextInput().attribute("value")
                 .assertIsNotEqualTo("")
         }
     }
