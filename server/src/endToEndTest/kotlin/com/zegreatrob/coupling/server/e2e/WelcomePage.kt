@@ -8,7 +8,9 @@ object WelcomePage : StyleSyntax {
     override val styles = loadStyles("Welcome")
     suspend fun getEnterButton() = WebdriverBrowser.element(By.className("enter-button"))
     suspend fun getGoogleButton() = WebdriverBrowser.element(By.className("google-login"))
-    suspend fun getMicrosoftButton() = WebdriverBrowser.element(By.className("ms-login"))
+
+    val loginChooserStyles = loadStyles("LoginChooser")
+    val microsoftLoginButton by loginChooserStyles.getting()
 
     suspend fun goTo() {
         setLocation("/welcome")

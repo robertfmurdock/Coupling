@@ -7,8 +7,11 @@ import kotlinx.coroutines.await
 import org.w3c.dom.url.URL
 import kotlin.js.json
 
-object WebdriverBrowser :
-    BrowserLoggingSyntax {
+object WebdriverBrowser : BrowserLoggingSyntax {
+
+    suspend fun element(selector: String) = log(this::element) { browser.`$`(selector).await() }
+
+    suspend fun all(selector: String): Array<Element> = log(this::all) { browser.`$$`(selector).await() }
 
     suspend fun waitUntil(
         condition: suspend () -> Boolean,
@@ -26,18 +29,16 @@ object WebdriverBrowser :
         ).await()
     }
 
-    suspend fun waitForAlert(): Unit = log(this::waitForAlert) { waitUntil({ isAlertOpen() }) }
-    suspend fun isAlertOpen(): Boolean = log(this::isAlertOpen) { browser.isAlertOpen().await() }
-    suspend fun acceptAlert(): Unit = log(this::acceptAlert) { browser.acceptAlert().await() }
-    suspend fun dismissAlert(): Unit = log(this::dismissAlert) { browser.dismissAlert().await() }
-    suspend fun alertText(): String = log(this::alertText) { browser.getAlertText().await() }
-    suspend fun element(selector: String): Element = log(this::element) { browser.`$`(selector).await() }
-    suspend fun all(selector: String): Array<Element> = log(this::all) { browser.`$$`(selector).await() }
-    suspend fun getUrl(): URL = log(this::getUrl) {
-        URL(
-            browser.getUrl().await()
-        )
-    }
+    suspend fun waitForAlert() = log(this::waitForAlert) { waitUntil({ isAlertOpen() }) }
+    suspend fun isAlertOpen() = log(this::isAlertOpen) { browser.isAlertOpen().await() }
+    suspend fun acceptAlert() = log(this::acceptAlert) { browser.acceptAlert().await() }
+    suspend fun dismissAlert() = log(this::dismissAlert) { browser.dismissAlert().await() }
+    suspend fun alertText() = log(this::alertText) { browser.getAlertText().await() }
+    suspend fun getUrl() = log(this::getUrl) { URL(browser.getUrl().await()) }
 
+}
+
+class WebdriverElement(private val selector: String) {
+    suspend fun performClick() = WebdriverBrowser.element(selector).performClick()
 
 }

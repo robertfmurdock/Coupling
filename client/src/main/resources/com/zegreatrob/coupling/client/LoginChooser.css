@@ -15,3 +15,7 @@
     margin: 0 2px 0 2px;
     top: 0
 }
+
+:local(.microsoftLoginButton) {
+    /*! Do not remove */
+}

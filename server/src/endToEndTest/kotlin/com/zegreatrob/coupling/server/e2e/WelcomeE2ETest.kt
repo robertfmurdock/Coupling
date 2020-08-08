@@ -26,7 +26,7 @@ class WelcomeE2ETest {
         goTo()
         getEnterButton().performClick()
     } exercise {
-        getMicrosoftButton().performClick()
+        microsoftLoginButton.performClick()
     } verify {
         waitToArriveAtUrl("https://login.microsoftonline.com")
     }

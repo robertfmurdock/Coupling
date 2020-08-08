@@ -7,6 +7,7 @@ fun loadStyles(@Suppress("UNUSED_PARAMETER") name: String): SimpleStyle {
 }
 
 external interface SimpleStyle {
+
     val className: String
 }
 
