@@ -39,14 +39,14 @@ object WebdriverBrowser : BrowserLoggingSyntax {
 }
 
 class WebdriverElement(
-    val selector: String,
+    val selector: String = "",
     private val finder: suspend () -> Element = { WebdriverBrowser.element(selector) }
 ) {
     private suspend fun element() = finder()
 
     suspend fun performClick() = element().performClick()
     suspend fun text() = element().text()
-    suspend fun all(selector: String) = element().all(selector)
+    suspend fun all(selector: String) = element().all(selector).await().map { WebdriverElement { it } }.toList()
     suspend fun waitToBePresent() = element().waitToBePresent()
     suspend fun isNotPresent() = element().isNotPresent()
     suspend fun enabled() = element().enabled()
@@ -59,7 +59,7 @@ class WebdriverElementArray(val selector: String) {
     private suspend fun all() = WebdriverBrowser.all(selector)
 
     suspend fun <T> map(transform: suspend (WebdriverElement) -> T) =
-        all().map { transform(WebdriverElement("") { it }) }.toList()
+        all().map { transform(WebdriverElement { it }) }.toList()
 
     suspend fun count() = all().count()
 

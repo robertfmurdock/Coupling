@@ -2,7 +2,9 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
 
 object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
@@ -35,7 +37,7 @@ object PlayerConfigPage : StyleSyntax {
         )
 
         WebdriverBrowser.waitUntil({
-            val playerName = PlayerRoster.element().all(By.className(PlayerCard.styles["header"]))
+            val playerName = PlayerRoster.element().all(PlayerCard.header.selector)
                 .first()
                 .text()
 

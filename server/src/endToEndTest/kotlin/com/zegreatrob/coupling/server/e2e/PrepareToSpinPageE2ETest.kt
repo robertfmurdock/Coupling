@@ -10,11 +10,12 @@ import com.zegreatrob.coupling.server.e2e.CurrentPairAssignmentPage.saveButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectAllButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectNoneButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.spinButton
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.element
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.text
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.await
 import kotlin.test.Test
 
 class PrepareToSpinPageE2ETest {
@@ -94,7 +95,7 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsEnabledSpinWillIncludePinInAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectedPinElements().count().await()
+        PrepareToSpinPage.getSelectedPinElements().count()
             .assertIsEqualTo(1)
     } exercise {
         spinButton.performClick()
@@ -107,7 +108,7 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectedPinElements().get(0).performClick()
+        PrepareToSpinPage.getSelectedPinElements()[0].performClick()
     } exercise {
         spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()

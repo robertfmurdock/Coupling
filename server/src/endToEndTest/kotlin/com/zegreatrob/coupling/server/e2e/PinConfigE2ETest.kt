@@ -91,8 +91,7 @@ class PinConfigE2ETest {
             PinListPage.waitForLoad()
         } verify {
             element().all(By.className("pin-name"))
-                .mapSuspend { it.text() }
-                .toList()
+                .map { it.text() }
                 .contains(pin.name)
                 .assertIsEqualTo(false)
         }

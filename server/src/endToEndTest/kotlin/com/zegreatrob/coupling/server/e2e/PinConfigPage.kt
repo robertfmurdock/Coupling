@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
 
 object PinConfigPage : StyleSyntax {
     override val styles = loadStyles("pin/PinConfig")
@@ -14,8 +16,7 @@ object PinConfigPage : StyleSyntax {
     suspend fun pinBagPinNames(): List<String> {
         pinBag.waitToBePresent()
         return pinBag.all(By.className("pin-name"))
-            .mapSuspend { it.text() }
-            .toList()
+            .map { it.text() }
     }
 
     suspend fun TribeId.goToNew() {

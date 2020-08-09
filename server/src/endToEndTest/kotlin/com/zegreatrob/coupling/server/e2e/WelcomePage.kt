@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
-
 object WelcomePage : StyleSyntax {
     override val styles = loadStyles("Welcome")
     val enterButton by getting()
