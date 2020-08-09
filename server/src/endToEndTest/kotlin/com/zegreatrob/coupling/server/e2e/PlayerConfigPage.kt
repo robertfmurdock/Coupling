@@ -14,12 +14,12 @@ object PlayerConfigPage : StyleSyntax {
     fun nounTextInput() = WebdriverElement(By.id("noun-input"))
 
     suspend fun goTo(tribeId: TribeId, playerId: String?) {
-        setLocation("/${tribeId.value}/player/${playerId}")
+        WebdriverBrowser.setLocation("/${tribeId.value}/player/${playerId}")
         waitForPage()
     }
 
     suspend fun goToNew(tribeId: TribeId) {
-        setLocation("/${tribeId.value}/player/new")
+        WebdriverBrowser.setLocation("/${tribeId.value}/player/new")
         waitForPage()
     }
 

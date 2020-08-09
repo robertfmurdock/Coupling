@@ -44,5 +44,45 @@ object WebdriverBrowser : BrowserLoggingSyntax {
     suspend fun executeAsync(argument: dynamic, arg: (dynamic, () -> Unit) -> dynamic) =
         browser.executeAsync(arg, argument).await()
 
+    suspend fun setLocation(location: String) {
+        val currentUrl = currentUrl()
+        if (currentUrl.pathname == location) {
+            refresh()
+        } else if (currentUrl.isNotFromBaseHost()) {
+            setUrl(location)
+        } else {
+            alternateImplementation(location)
+        }
+    }
+
+    private fun URL.isNotFromBaseHost() = hostname != baseUrl.hostname
+
+    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
+    private suspend fun alternateImplementation(location: String) {
+        executeAsync(location) { loc, done ->
+            js(
+                """
+                        var wait = function() {
+                            window.setTimeout(function() {
+                                if (loc === window.location.pathname) {
+                                    done()
+                                } else {
+                                    wait()
+                                }
+                            }, 5)
+                        }
+                        
+                        if(window.pathSetter){
+                            window.pathSetter(loc)
+                            wait()
+                        } else {
+                            done()
+                            window.location.pathname = loc
+                        }
+                    """
+            )
+        }
+    }
+
 }
 

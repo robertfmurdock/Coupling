@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 
 object PrepareToSpinPage : StyleSyntax {
     override val styles: SimpleStyle = loadStyles("PrepareSpin")
@@ -13,7 +14,7 @@ object PrepareToSpinPage : StyleSyntax {
     suspend fun getSelectedPinElements() = selectedPins.all(PinButton.pinButtonLocator)
 
     suspend fun goTo(tribeId: TribeId) {
-        setLocation("/${tribeId.value}/prepare/")
+        WebdriverBrowser.setLocation("/${tribeId.value}/prepare/")
         waitForPage()
     }
 

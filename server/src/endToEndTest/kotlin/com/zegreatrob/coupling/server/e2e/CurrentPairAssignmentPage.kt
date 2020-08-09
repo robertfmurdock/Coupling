@@ -14,7 +14,7 @@ object CurrentPairAssignmentPage : StyleSyntax {
     val assignedPairCallSigns = WebdriverElementArray(By.className(assignedPairStyles["callSign"]))
 
     suspend fun goTo(id: TribeId) {
-        setLocation("/${id.value}/pairAssignments/current/")
+        WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
         waitForPage()
     }
 

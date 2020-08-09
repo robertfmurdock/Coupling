@@ -16,7 +16,7 @@ object TribeListPage : StyleSyntax {
     )
 
     suspend fun goTo() {
-        setLocation("/tribes/")
+        WebdriverBrowser.setLocation("/tribes/")
         waitForPage()
     }
 

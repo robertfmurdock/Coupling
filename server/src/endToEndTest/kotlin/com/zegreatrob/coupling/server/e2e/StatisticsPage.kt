@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 
 object StatisticsPage : StyleSyntax {
     override val styles = loadStyles("stats/TribeStatistics")
@@ -11,7 +12,7 @@ object StatisticsPage : StyleSyntax {
     val pairReport by pairReportTableStyles.getAll()
 
     suspend fun goTo(tribeId: TribeId) {
-        setLocation("/${tribeId.value}/statistics")
+        WebdriverBrowser.setLocation("/${tribeId.value}/statistics")
         waitForPage()
     }
 

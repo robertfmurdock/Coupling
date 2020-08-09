@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElement
 
 object TribeConfigPage : StyleSyntax {
@@ -18,12 +19,12 @@ object TribeConfigPage : StyleSyntax {
     fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
 
     suspend fun goTo(tribeId: TribeId) {
-        setLocation("/${tribeId.value}/edit/")
+        WebdriverBrowser.setLocation("/${tribeId.value}/edit/")
         waitForPage()
     }
 
     suspend fun goToNew() {
-        setLocation("/new-tribe/")
+        WebdriverBrowser.setLocation("/new-tribe/")
         waitForPage()
     }
 

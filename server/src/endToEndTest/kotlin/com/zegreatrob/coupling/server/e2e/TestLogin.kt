@@ -24,7 +24,7 @@ object TestLogin : BrowserSyntax {
     }
 
     private suspend fun tryLogin(userEmail: String) {
-        WebdriverBrowser.setUrl("${Config.publicUrl}/test-login?username=${userEmail}&password=pw")
+        WebdriverBrowser.setUrl("/test-login?username=${userEmail}&password=pw")
         TribeListPage.waitForPage()
     }
 }

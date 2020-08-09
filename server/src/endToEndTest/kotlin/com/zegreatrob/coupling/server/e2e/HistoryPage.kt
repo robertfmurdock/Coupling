@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
 
 object HistoryPage : StyleSyntax {
@@ -13,7 +14,7 @@ object HistoryPage : StyleSyntax {
     val deleteButtons = WebdriverElementArray(By.className(styles["deleteButton"]))
 
     suspend fun goTo(tribeId: TribeId) {
-        setLocation("/${tribeId.value}/history")
+        WebdriverBrowser.setLocation("/${tribeId.value}/history")
         waitForPage()
     }
 

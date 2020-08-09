@@ -21,12 +21,12 @@ object PinConfigPage : StyleSyntax {
     }
 
     suspend fun TribeId.goToNew() {
-        setLocation("/$value/pin/new")
+        WebdriverBrowser.setLocation("/$value/pin/new")
         waitForLoad()
     }
 
     suspend fun goTo(tribeId: TribeId, pinId: String?) {
-        setLocation("/${tribeId.value}/pin/$pinId")
+        WebdriverBrowser.setLocation("/${tribeId.value}/pin/$pinId")
         waitForLoad()
     }
 

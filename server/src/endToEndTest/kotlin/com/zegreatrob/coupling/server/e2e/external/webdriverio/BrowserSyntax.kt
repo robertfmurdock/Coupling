@@ -3,51 +3,9 @@ package com.zegreatrob.coupling.server.e2e.external.webdriverio
 import com.zegreatrob.coupling.server.e2e.SimpleStyle
 import com.zegreatrob.coupling.server.e2e.get
 import com.zegreatrob.minassert.assertIsEqualTo
-import org.w3c.dom.url.URL
 import kotlin.reflect.KProperty
 
 interface BrowserSyntax {
-
-    suspend fun setLocation(location: String) {
-        val currentUrl = WebdriverBrowser.currentUrl()
-        if (currentUrl.pathname == location) {
-            WebdriverBrowser.refresh()
-        } else if (currentUrl.isNotFromBaseHost()) {
-            WebdriverBrowser.setUrl(location)
-        } else {
-            alternateImplementation(location)
-        }
-    }
-
-    private fun URL.isNotFromBaseHost() = hostname != WebdriverBrowser.baseUrl.hostname
-
-    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-    private suspend fun alternateImplementation(location: String) {
-        WebdriverBrowser.executeAsync(location) { loc, done ->
-            js(
-                """
-                        var wait = function() {
-                            window.setTimeout(function() {
-                                if (loc === window.location.pathname) {
-                                    done()
-                                } else {
-                                    wait()
-                                }
-                            }, 5)
-                        }
-                        
-                        if(window.pathSetter){
-                            window.pathSetter(loc)
-                            wait()
-                        } else {
-                            done()
-                            window.location.pathname = loc
-                        }
-                    """
-            )
-        }
-    }
-
 
     val SimpleStyle.locator get() = By.className(className)
 
