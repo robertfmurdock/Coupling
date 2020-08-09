@@ -29,7 +29,8 @@ let config = {
   logLevel: 'warn',
   bail: 0,
   baseUrl: 'http://localhost:3001',
-  waitforTimeout: 30000,
+  waitforTimeout: 6000,
+  waitforInterval: 15, //THIS IS INCREDIBLY IMPORTANT FOR PERFORMANCE
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
   services: ['chromedriver'],

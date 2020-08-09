@@ -19,9 +19,7 @@ object WebdriverBrowser : BrowserLoggingSyntax {
         timeoutMessage: String = ""
     ): Unit = log(this::waitUntil.name) {
         browser.waitUntil(
-            {
-                GlobalScope.async { condition() }.asPromise()
-            }, json(
+            { GlobalScope.async { condition() }.asPromise() }, json(
                 "timeout" to timeout,
                 "timeoutMsg" to timeoutMessage,
                 "interval" to 50
@@ -29,7 +27,7 @@ object WebdriverBrowser : BrowserLoggingSyntax {
         ).await()
     }
 
-    val baseUrl get() = URL(browser.config["baseUrl"].unsafeCast<String>())
+    private val baseUrl get() = URL(browser.config["baseUrl"].unsafeCast<String>())
 
     suspend fun waitForAlert() = log(this::waitForAlert) { waitUntil({ isAlertOpen() }) }
     suspend fun isAlertOpen() = log(this::isAlertOpen) { browser.isAlertOpen().await() }

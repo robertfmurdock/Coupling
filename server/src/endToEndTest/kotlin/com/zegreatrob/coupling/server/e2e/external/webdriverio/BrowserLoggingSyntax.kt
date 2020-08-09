@@ -4,10 +4,10 @@ import com.soywiz.klock.measureTimeWithResult
 import mu.KotlinLogging
 import kotlin.reflect.KCallable
 
-private val theLogger by lazy { KotlinLogging.logger("webdriverioLogger") }
+private val webdriverBrowserLogger by lazy { KotlinLogging.logger("webdriverioLogger") }
 
 interface BrowserLoggingSyntax {
-    val logger get() = theLogger
+    val logger get() = webdriverBrowserLogger
 
     suspend fun <T> log(workType: KCallable<*>, browserWork: suspend () -> T) = log(workType.name, browserWork)
 
