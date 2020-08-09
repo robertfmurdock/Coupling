@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.e2e.external.webdriverio
 import com.zegreatrob.coupling.server.e2e.SimpleStyle
 import com.zegreatrob.coupling.server.e2e.get
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.await
 import org.w3c.dom.url.URL
 import kotlin.reflect.KProperty
 
@@ -12,51 +11,43 @@ interface BrowserSyntax {
     suspend fun setLocation(location: String) {
         val currentUrl = WebdriverBrowser.currentUrl()
         if (currentUrl.pathname == location) {
-            browser.refresh().await()
+            WebdriverBrowser.refresh()
         } else if (currentUrl.isNotFromBaseHost()) {
-            browser.url(location).await()
+            WebdriverBrowser.setUrl(location)
         } else {
             alternateImplementation(location)
         }
     }
 
-    private fun URL.isNotFromBaseHost(): Boolean {
-        val baseUrlHostname = URL(browser.config["baseUrl"].unsafeCast<String>()).hostname
-        return hostname != baseUrlHostname
-    }
+    private fun URL.isNotFromBaseHost() = hostname != WebdriverBrowser.baseUrl.hostname
 
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     private suspend fun alternateImplementation(location: String) {
-        browser.executeAsync(
-            { loc, done ->
-                js(
-                    """
-                    var wait = function() {
-                        window.setTimeout(function() {
-                            if (loc === window.location.pathname) {
-                                done()
-                            } else {
-                                wait()
-                            }
-                        }, 5)
-                    }
-                    
-                    if(window.pathSetter){
-                        window.pathSetter(loc)
-                        wait()
-                    } else {
-                        done()
-                        window.location.pathname = loc
-                    }
+        WebdriverBrowser.executeAsync(location) { loc, done ->
+            js(
                 """
-                )
-            },
-            location
-        ).await()
+                        var wait = function() {
+                            window.setTimeout(function() {
+                                if (loc === window.location.pathname) {
+                                    done()
+                                } else {
+                                    wait()
+                                }
+                            }, 5)
+                        }
+                        
+                        if(window.pathSetter){
+                            window.pathSetter(loc)
+                            wait()
+                        } else {
+                            done()
+                            window.location.pathname = loc
+                        }
+                    """
+            )
+        }
     }
 
-
-    suspend fun browserGoTo(url: String) = browser.url(url).await()
 
     val SimpleStyle.locator get() = By.className(className)
 

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.e2e
 
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
@@ -16,9 +17,7 @@ class WelcomeE2ETest {
         purgeBrowserLogsBecauseGoogleIsCreatingWarning()
     }
 
-    private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() {
-        getBrowserLogs()
-    }
+    private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() = WebdriverBrowser.getLogs()
 
     @Test
     fun whenTheEnterButtonIsPressedWillRedirectToMicrosoftLogin() = e2eSetup(WelcomePage) {

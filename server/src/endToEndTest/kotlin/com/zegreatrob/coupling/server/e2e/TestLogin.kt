@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.browser
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 
 object TestLogin : BrowserSyntax {
     suspend fun login(userEmail: String) {
@@ -14,18 +13,18 @@ object TestLogin : BrowserSyntax {
             } catch (throwable: Throwable) {
                 println("Failed login attempt $attempt")
                 if (attempt == 3) throw throwable
-                browserGoTo("/")
+                WebdriverBrowser.setUrl("/")
             }
         }
         clearLogs()
     }
 
     private suspend fun clearLogs() {
-        browser.getLogs("browser").await()
+        WebdriverBrowser.getLogs()
     }
 
     private suspend fun tryLogin(userEmail: String) {
-        browserGoTo("${Config.publicUrl}/test-login?username=${userEmail}&password=pw")
+        WebdriverBrowser.setUrl("${Config.publicUrl}/test-login?username=${userEmail}&password=pw")
         TribeListPage.waitForPage()
     }
 }

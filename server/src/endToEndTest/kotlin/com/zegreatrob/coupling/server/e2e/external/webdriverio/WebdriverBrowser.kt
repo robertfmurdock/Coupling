@@ -29,12 +29,20 @@ object WebdriverBrowser : BrowserLoggingSyntax {
         ).await()
     }
 
+    val baseUrl get() = URL(browser.config["baseUrl"].unsafeCast<String>())
+
     suspend fun waitForAlert() = log(this::waitForAlert) { waitUntil({ isAlertOpen() }) }
     suspend fun isAlertOpen() = log(this::isAlertOpen) { browser.isAlertOpen().await() }
     suspend fun acceptAlert() = log(this::acceptAlert) { browser.acceptAlert().await() }
     suspend fun dismissAlert() = log(this::dismissAlert) { browser.dismissAlert().await() }
     suspend fun alertText() = log(this::alertText) { browser.getAlertText().await() }
     suspend fun currentUrl() = log(this::currentUrl) { URL(browser.getUrl().await()) }
+    suspend fun refresh() = browser.refresh().await()
+    suspend fun setUrl(url: String) = browser.url(url).await()
+    suspend fun getLogs() = browser.getLogs("browser").await().toList()
+
+    suspend fun executeAsync(argument: dynamic, arg: (dynamic, () -> Unit) -> dynamic) =
+        browser.executeAsync(arg, argument).await()
 
 }
 
