@@ -53,6 +53,10 @@ class WebdriverElement(
 
     fun all() = WebdriverElementArray(selector)
     fun all(selector: String) = WebdriverElementArray("${this.selector} $selector")
+    fun element(selector: String): WebdriverElement = WebdriverElement("${this.selector} $selector")
+    suspend fun performClearSetValue(value: String) = element().performClearSetValue(value)
+    suspend fun attribute(name: String) = element().attribute(name)
+    suspend fun displayed() = element().displayed()
 }
 
 class WebdriverElementArray(val selector: String) {
@@ -63,5 +67,4 @@ class WebdriverElementArray(val selector: String) {
     suspend fun count() = all().count()
     suspend fun first() = all().first()
     suspend fun get(index: Int) = all().get(index)
-
 }

@@ -2,20 +2,20 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElement
 
 object TribeConfigPage : StyleSyntax {
     override val styles = loadStyles("tribe/TribeConfig")
 
-    suspend fun getTribeNameInput() = WebdriverBrowser.element(By.id("tribe-name"))
-    suspend fun getTribeEmailInput() = WebdriverBrowser.element(By.id("tribe-email"))
-    suspend fun getTribeIdInput() = WebdriverBrowser.element(By.id("tribe-id"))
-    suspend fun getCallSignCheckbox() = WebdriverBrowser.element(By.id("call-sign-checkbox"))
-    suspend fun getBadgeCheckbox() = WebdriverBrowser.element(By.id("badge-checkbox"))
-    suspend fun getDefaultBadgeNameInput() = WebdriverBrowser.element(By.id("default-badge-name"))
-    suspend fun getAltBadgeNameInput() = WebdriverBrowser.element(By.id("alt-badge-name"))
-    suspend fun getDifferentBadgesOption() = WebdriverBrowser.element("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]")
-    suspend fun getCheckedOption() = WebdriverBrowser.element("#pairing-rule option:checked")
+    fun getTribeNameInput() = WebdriverElement(By.id("tribe-name"))
+    fun getTribeEmailInput() = WebdriverElement(By.id("tribe-email"))
+    fun getTribeIdInput() = WebdriverElement(By.id("tribe-id"))
+    fun getCallSignCheckbox() = WebdriverElement(By.id("call-sign-checkbox"))
+    fun getBadgeCheckbox() = WebdriverElement(By.id("badge-checkbox"))
+    fun getDefaultBadgeNameInput() = WebdriverElement(By.id("default-badge-name"))
+    fun getAltBadgeNameInput() = WebdriverElement(By.id("alt-badge-name"))
+    fun getDifferentBadgesOption() = WebdriverElement("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]")
+    fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/edit/")
