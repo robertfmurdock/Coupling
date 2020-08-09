@@ -52,14 +52,17 @@ class WebdriverElement(
     suspend fun isPresent() = element().isPresent()
 
     fun all() = WebdriverElementArray(selector)
-    fun all(selector: String): WebdriverElementArray {
-        if (this.selector == "") {
-            return WebdriverElementArray { element().all(selector).await().map { WebdriverElement { it } } }
-        } else
-            return WebdriverElementArray("${this.selector} $selector")
-    }
+    fun all(selector: String) = if (this.selector == "") {
+        WebdriverElementArray { element().all(selector).await().map { WebdriverElement { it } } }
+    } else
+        WebdriverElementArray("${this.selector} $selector")
 
-    fun element(selector: String): WebdriverElement = WebdriverElement("${this.selector} $selector")
+    fun element(selector: String): WebdriverElement = if (this.selector == "") {
+        WebdriverElement { element().element(selector).await() }
+    } else
+        WebdriverElement("${this.selector} $selector")
+
+
     suspend fun performClearSetValue(value: String) = element().performClearSetValue(value)
     suspend fun attribute(name: String) = element().attribute(name)
     suspend fun displayed() = element().displayed()

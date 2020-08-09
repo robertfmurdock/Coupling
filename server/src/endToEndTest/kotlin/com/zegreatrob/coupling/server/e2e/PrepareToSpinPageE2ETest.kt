@@ -10,9 +10,6 @@ import com.zegreatrob.coupling.server.e2e.CurrentPairAssignmentPage.saveButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectAllButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.selectNoneButton
 import com.zegreatrob.coupling.server.e2e.PrepareToSpinPage.spinButton
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.element
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.text
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
@@ -50,7 +47,7 @@ class PrepareToSpinPageE2ETest {
     fun withNoHistory() = pinTribeSetup() exercise {
         PrepareToSpinPage.goTo(tribe.id)
     } verify {
-        PlayerCard.getPlayerElements().map { it.text() }.toList()
+        PlayerCard.playerElements.map { it.text() }.toList()
             .assertIsEqualTo(players.map(Player::name))
     }
 
@@ -71,8 +68,8 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.goTo(tribe.id)
         with(PlayerCard) {
             selectNoneButton.performClick()
-            getPlayerElements().get(1).element(iconLocator).performClick()
-            getPlayerElements().get(4).element(iconLocator).performClick()
+            playerElements.get(1).element(iconLocator).performClick()
+            playerElements.get(4).element(iconLocator).performClick()
         }
     } exercise {
         spinButton.performClick()
@@ -80,7 +77,7 @@ class PrepareToSpinPageE2ETest {
     } verify {
         CurrentPairAssignmentPage.assignedPairElements.count()
             .assertIsEqualTo(1)
-        PlayerRoster.getPlayerElements().count()
+        PlayerRoster.playerElements.count()
             .assertIsEqualTo(3)
 
         saveButton.performClick()
@@ -88,7 +85,7 @@ class PrepareToSpinPageE2ETest {
 
         CurrentPairAssignmentPage.assignedPairElements.count()
             .assertIsEqualTo(1)
-        PlayerRoster.getPlayerElements().count()
+        PlayerRoster.playerElements.count()
             .assertIsEqualTo(3)
     }
 

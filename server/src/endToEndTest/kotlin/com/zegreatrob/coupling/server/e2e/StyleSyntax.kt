@@ -8,5 +8,5 @@ interface StyleSyntax : BrowserSyntax {
 
     fun getting() = styles.getting()
 
-    fun element() = styles.element()
+    fun element() = styles.element
 }

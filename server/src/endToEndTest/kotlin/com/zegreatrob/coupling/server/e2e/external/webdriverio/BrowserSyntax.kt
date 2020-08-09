@@ -58,9 +58,9 @@ interface BrowserSyntax {
 
     suspend fun browserGoTo(url: String) = browser.url(url).await()
 
-    fun SimpleStyle.locator() = By.className(className)
+    val SimpleStyle.locator get() = By.className(className)
 
-    fun SimpleStyle.element() = WebdriverElement(locator())
+    val SimpleStyle.element get() = WebdriverElement(locator)
 
     suspend fun SimpleStyle.elementWithClass(className: String) =
         WebdriverBrowser.element(By.className(this[className]))

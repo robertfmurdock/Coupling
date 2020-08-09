@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
 
 object PlayerConfigPage : StyleSyntax {
@@ -51,12 +52,12 @@ object PlayerCard : StyleSyntax {
     override val styles = loadStyles("player/PlayerCard")
     val playerLocator = By.className(styles["player"])
     val header by getting()
-    suspend fun getPlayerElements() = WebdriverBrowser.all(playerLocator)
+    val playerElements = WebdriverElementArray(playerLocator)
     val iconLocator = By.className(styles["playerIcon"])
 }
 
 object PlayerRoster : StyleSyntax {
     override val styles = loadStyles("player/PlayerRoster")
-    suspend fun getPlayerElements() = WebdriverBrowser.all(".${styles.className} .${PlayerCard.styles["player"]}")
+    val playerElements = styles.element.all(PlayerCard.playerElements.selector)
     suspend fun getAddPlayerButton() = getting("addPlayerButton")
 }

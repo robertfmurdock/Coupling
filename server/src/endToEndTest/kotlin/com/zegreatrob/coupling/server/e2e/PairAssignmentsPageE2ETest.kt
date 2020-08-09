@@ -15,7 +15,10 @@ import com.zegreatrob.coupling.server.e2e.PairAssignments.retiredPlayersButton
 import com.zegreatrob.coupling.server.e2e.PairAssignments.statisticsButton
 import com.zegreatrob.coupling.server.e2e.PairAssignments.viewHistoryButton
 import com.zegreatrob.coupling.server.e2e.TribeCard.header
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElement
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.coroutineScope
@@ -69,7 +72,7 @@ class PairAssignmentsPageE2ETest {
         } verify {
             header.text()
                 .assertIsEqualTo(tribe.name)
-            PlayerRoster.getPlayerElements().map { it.text() }.toList()
+            PlayerRoster.playerElements.map { it.text() }.toList()
                 .assertIsEqualTo(players.map { it.name })
         }
 
@@ -87,7 +90,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            PlayerRoster.getPlayerElements().first().element(PlayerCard.header.selector)
+            PlayerRoster.playerElements.first().element(PlayerCard.header.selector)
                 .performClick()
         } verify {
             WebdriverBrowser.getUrl().pathname
@@ -189,7 +192,7 @@ class PairAssignmentsPageE2ETest {
             goTo(tribe.id)
         } verify {
             assignedPairElements.assertTheMostRecentPairsAreShown()
-            PlayerRoster.getPlayerElements().assertOnlyUnpairedPlayersAreShown()
+            PlayerRoster.playerElements.assertOnlyUnpairedPlayersAreShown()
         }
 
         private suspend fun WebdriverElementArray.assertTheMostRecentPairsAreShown() {
@@ -199,7 +202,7 @@ class PairAssignmentsPageE2ETest {
                 .assertIsEqualTo(pairAssignmentDocument.pairs[1].players().map { it.name })
         }
 
-        private suspend fun ElementSelector.assertOnlyUnpairedPlayersAreShown() {
+        private suspend fun WebdriverElementArray.assertOnlyUnpairedPlayersAreShown() {
             map { it.text() }.toList()
                 .assertIsEqualTo(unpairedPlayers.map { it.name })
         }

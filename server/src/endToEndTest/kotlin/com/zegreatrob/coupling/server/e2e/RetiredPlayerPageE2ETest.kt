@@ -38,7 +38,7 @@ class RetiredPlayerPageE2ETest {
     } exercise {
         RetiredPlayersPage.goTo(tribe.id)
     } verify {
-        PlayerCard.getPlayerElements().map { it.text() }.toList()
+        PlayerCard.playerElements.map { it.text() }.toList()
             .assertIsEqualTo(retiredPlayers.map { it.name })
         TribeCard.element().text()
             .assertIsEqualTo(tribe.name)

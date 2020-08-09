@@ -167,7 +167,7 @@ class PlayerConfigPageE2ETest {
             players.forEach { player -> sdk.save(tribe.id.with(player)) }
             page.goTo(tribe.id, players[0].id)
         } exercise {
-            PlayerRoster.getPlayerElements().map { element -> element.text() }.toList()
+            PlayerRoster.playerElements.map { element -> element.text() }.toList()
         } verify { result ->
             result.assertIsEqualTo(players.map { it.name })
         }

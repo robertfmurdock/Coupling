@@ -4,6 +4,6 @@ import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementA
 
 object PinButton : StyleSyntax {
     override val styles = loadStyles("pin/PinButton")
-    val pinButtonLocator = styles.locator()
+    val pinButtonLocator = styles.locator
     val pinElements = WebdriverElementArray(pinButtonLocator)
 }
