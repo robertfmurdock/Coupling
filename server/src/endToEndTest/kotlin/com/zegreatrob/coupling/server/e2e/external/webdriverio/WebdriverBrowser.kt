@@ -50,7 +50,9 @@ class WebdriverElement(
     suspend fun waitToBePresent() = element().waitToBePresent()
     suspend fun isNotPresent() = element().isNotPresent()
     suspend fun enabled() = element().enabled()
+    suspend fun isPresent() = element().isPresent()
 
+    fun all() = WebdriverElementArray(selector)
 }
 
 class WebdriverElementArray(val selector: String) {

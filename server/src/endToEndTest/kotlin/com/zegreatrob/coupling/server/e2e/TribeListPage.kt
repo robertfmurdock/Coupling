@@ -1,17 +1,14 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.isPresent
 
 object TribeListPage : StyleSyntax {
     override val styles = loadStyles("tribe/TribeList")
 
     val newTribeButton by getting()
 
-    val tribeCardElements get() = WebdriverElementArray(By.className(TribeCard.styles.className))
+    val tribeCardElements get() = TribeCard.element().all()
 
     suspend fun tribeCardElement(tribeId: TribeId) =
         WebdriverBrowser.element(".${TribeCard.styles.className}[data-tribe-id=\"${tribeId.value}\"]")

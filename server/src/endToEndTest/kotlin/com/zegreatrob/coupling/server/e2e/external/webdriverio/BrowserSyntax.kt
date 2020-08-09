@@ -60,7 +60,7 @@ interface BrowserSyntax {
 
     fun SimpleStyle.locator() = By.className(className)
 
-    suspend fun SimpleStyle.element() = WebdriverBrowser.element(locator())
+    fun SimpleStyle.element() = WebdriverElement(locator())
 
     suspend fun SimpleStyle.elementWithClass(className: String) =
         WebdriverBrowser.element(By.className(this[className]))
