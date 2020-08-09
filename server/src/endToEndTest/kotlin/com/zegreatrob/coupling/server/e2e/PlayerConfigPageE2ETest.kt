@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.e2e
 
-import com.soywiz.klock.measureTimeWithResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -22,17 +21,14 @@ class PlayerConfigPageE2ETest {
     companion object {
         private fun playerConfigOnePlayerSetup(buildTribe: () -> Tribe, buildPlayer: () -> Player) =
             e2eSetup.extend(beforeAll = {
-                measureTimeWithResult {
-                    val sdk = sdkProvider.await()
-                    val tribe = buildTribe()
-                    sdk.save(tribe)
+                val sdk = sdkProvider.await()
+                val tribe = buildTribe()
+                sdk.save(tribe)
 
-                    val player = buildPlayer()
-                    sdk.save(tribe.id.with(player))
+                val player = buildPlayer()
+                sdk.save(tribe.id.with(player))
 
-                    Triple(player, tribe, sdkProvider.await())
-                }.also { console.log("playerConfigOnePlayerSetup", it.time) }
-                    .result
+                Triple(player, tribe, sdkProvider.await())
             })
     }
 
