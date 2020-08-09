@@ -3,15 +3,15 @@ package com.zegreatrob.coupling.server.e2e
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
 
 object CurrentPairAssignmentPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
     val saveButton by getting()
 
     private val assignedPairStyles = loadStyles("pairassignments/AssignedPair")
-    suspend fun getAssignedPairElements() = WebdriverBrowser.all(By.className(assignedPairStyles.className))
-    suspend fun getAssignedPairCallSigns() = WebdriverBrowser.all(By.className(assignedPairStyles["callSign"]))
+    val assignedPairElements = WebdriverElementArray(By.className(assignedPairStyles.className))
+    val assignedPairCallSigns = WebdriverElementArray(By.className(assignedPairStyles["callSign"]))
 
     suspend fun goTo(id: TribeId) {
         setLocation("/${id.value}/pairAssignments/current/")

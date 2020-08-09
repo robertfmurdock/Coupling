@@ -188,11 +188,11 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            getAssignedPairElements().assertTheMostRecentPairsAreShown()
+            assignedPairElements.assertTheMostRecentPairsAreShown()
             PlayerRoster.getPlayerElements().assertOnlyUnpairedPlayersAreShown()
         }
 
-        private suspend fun ElementSelector.assertTheMostRecentPairsAreShown() {
+        private suspend fun WebdriverElementArray.assertTheMostRecentPairsAreShown() {
             get(0).getPairPlayerNames()
                 .assertIsEqualTo(pairAssignmentDocument.pairs[0].players().map { it.name })
             get(1).getPairPlayerNames()
@@ -211,7 +211,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            getAssignedPairCallSigns().count()
+            assignedPairCallSigns.count()
                 .assertIsEqualTo(0)
         }
 
@@ -222,7 +222,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            val callSigns = getAssignedPairCallSigns().map { it.text() }
+            val callSigns = assignedPairCallSigns.map { it.text() }
             with(callSigns) {
                 count().assertIsEqualTo(2)
                 forEach {
@@ -232,9 +232,7 @@ class PairAssignmentsPageE2ETest {
             }
         }
 
-        private suspend fun Element.getPairPlayerNames() = all(PlayerCard.playerLocator)
-            .mapSuspend { it.text() }
-            .toList()
+        private suspend fun WebdriverElement.getPairPlayerNames() = all(PlayerCard.playerLocator).map { it.text() }
     }
 
 }

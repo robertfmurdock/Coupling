@@ -62,7 +62,7 @@ class PrepareToSpinPageE2ETest {
         spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        CurrentPairAssignmentPage.getAssignedPairElements().count()
+        CurrentPairAssignmentPage.assignedPairElements.count()
             .assertIsEqualTo(3)
     }
 
@@ -78,7 +78,7 @@ class PrepareToSpinPageE2ETest {
         spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        CurrentPairAssignmentPage.getAssignedPairElements().count()
+        CurrentPairAssignmentPage.assignedPairElements.count()
             .assertIsEqualTo(1)
         PlayerRoster.getPlayerElements().count()
             .assertIsEqualTo(3)
@@ -86,7 +86,7 @@ class PrepareToSpinPageE2ETest {
         saveButton.performClick()
         CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed()
 
-        CurrentPairAssignmentPage.getAssignedPairElements().count()
+        CurrentPairAssignmentPage.assignedPairElements.count()
             .assertIsEqualTo(1)
         PlayerRoster.getPlayerElements().count()
             .assertIsEqualTo(3)
@@ -101,7 +101,7 @@ class PrepareToSpinPageE2ETest {
         spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        PinButton.getPinElements().count()
+        PinButton.pinElements.count()
             .assertIsEqualTo(1)
     }
 
@@ -113,7 +113,7 @@ class PrepareToSpinPageE2ETest {
         spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
-        PinButton.getPinElements().count()
+        PinButton.pinElements.count()
             .assertIsEqualTo(0)
     }
 

@@ -8,7 +8,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
@@ -54,22 +55,22 @@ class HistoryPageE2ETest {
         @Test
         fun showsRecentPairings() = historyPageSetup().exercise {
         } verify {
-            page.getPairAssignments().count()
+            page.pairAssignments.count()
                 .assertIsEqualTo(pairAssignments.size)
         }
 
         @Test
         fun pairingCanBeDeleted() = historyPageSetup().exercise {
-            page.getDeleteButtons()[0].performClick()
+            page.deleteButtons.get(0).performClick()
             WebdriverBrowser.waitForAlert()
             WebdriverBrowser.acceptAlert()
         } verify {
             WebdriverBrowser.waitUntil(
-                { page.getPairAssignments().count() == pairAssignments.size - 1 },
+                { page.pairAssignments.count() == pairAssignments.size - 1 },
                 waitToBePresentDuration,
                 "HistoryPageE2ETest.pairingCanBeDeleted"
             )
-            page.getPairAssignments().count()
+            page.pairAssignments.count()
                 .assertIsEqualTo(1)
         }
     }

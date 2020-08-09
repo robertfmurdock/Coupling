@@ -52,19 +52,30 @@ class WebdriverElement(
     suspend fun isPresent() = element().isPresent()
 
     fun all() = WebdriverElementArray(selector)
-    fun all(selector: String) = WebdriverElementArray("${this.selector} $selector")
+    fun all(selector: String): WebdriverElementArray {
+        if (this.selector == "") {
+            return WebdriverElementArray { element().all(selector).await().map { WebdriverElement { it } } }
+        } else
+            return WebdriverElementArray("${this.selector} $selector")
+    }
+
     fun element(selector: String): WebdriverElement = WebdriverElement("${this.selector} $selector")
     suspend fun performClearSetValue(value: String) = element().performClearSetValue(value)
     suspend fun attribute(name: String) = element().attribute(name)
     suspend fun displayed() = element().displayed()
 }
 
-class WebdriverElementArray(val selector: String) {
-    private suspend fun all() = WebdriverBrowser.all(selector).map { WebdriverElement { it } }
+class WebdriverElementArray(
+    val selector: String = "",
+    private val finder: suspend () -> List<WebdriverElement> = {
+        WebdriverBrowser.all(selector).map { WebdriverElement { it } }
+    }
+) {
+    private suspend fun all() = finder()
 
     suspend fun <T> map(transform: suspend (WebdriverElement) -> T) = all().map { transform(it) }.toList()
 
     suspend fun count() = all().count()
     suspend fun first() = all().first()
-    suspend fun get(index: Int) = all().get(index)
+    suspend fun get(index: Int) = all()[index]
 }
