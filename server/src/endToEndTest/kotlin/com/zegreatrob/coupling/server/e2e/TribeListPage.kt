@@ -8,15 +8,13 @@ import com.zegreatrob.coupling.server.e2e.external.webdriverio.isPresent
 
 object TribeListPage : StyleSyntax {
     override val styles = loadStyles("tribe/TribeList")
-    private val tribeCardStyles = loadStyles("tribe/TribeCard")
 
     val newTribeButton by getting()
 
-    suspend fun getTribeCardElements() = WebdriverElementArray(By.className(tribeCardStyles.className))
-    val tribeCardHeaderLocator = By.className(tribeCardStyles["header"])
+    val tribeCardElements get() = WebdriverElementArray(By.className(TribeCard.styles.className))
 
     suspend fun tribeCardElement(tribeId: TribeId) =
-        WebdriverBrowser.element(".${tribeCardStyles.className}[data-tribe-id=\"${tribeId.value}\"]")
+        WebdriverBrowser.element(".${TribeCard.styles.className}[data-tribe-id=\"${tribeId.value}\"]")
 
     suspend fun goTo() {
         setLocation("/tribes/")

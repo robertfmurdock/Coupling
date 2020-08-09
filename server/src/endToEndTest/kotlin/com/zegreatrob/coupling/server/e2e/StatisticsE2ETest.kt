@@ -25,7 +25,7 @@ class StatisticsE2ETest {
                 .assertIsEqualTo(tribe.name)
             rotationNumber.text()
                 .assertIsEqualTo("5")
-            getPairReports().count()
+            pairReport.count()
                 .assertIsEqualTo(15)
         }
     }

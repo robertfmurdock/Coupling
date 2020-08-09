@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresent
 
 object StatisticsPage : StyleSyntax {
@@ -11,7 +9,8 @@ object StatisticsPage : StyleSyntax {
     private val pairReportTableStyles = loadStyles("stats/PairReportTable")
 
     val rotationNumber by teamStatisticsStyles.getting()
-    suspend fun getPairReports() = WebdriverBrowser.all(By.className(pairReportTableStyles["pairReport"]))
+
+    val pairReport by pairReportTableStyles.getAll()
 
     suspend fun goTo(tribeId: TribeId) {
         setLocation("/${tribeId.value}/statistics")
@@ -21,5 +20,4 @@ object StatisticsPage : StyleSyntax {
     suspend fun waitForPage() {
         element().waitToBePresent()
     }
-
 }

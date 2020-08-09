@@ -31,7 +31,7 @@ class TribeListPageE2ETest {
 
     @Test
     fun shouldHaveSectionForEachTribe() = twoTribesSetup() exercise {
-        TribeListPage.getTribeCardElements().map { it.text() }
+        TribeListPage.tribeCardElements.map { it.text() }
     } verify { listedTribeNames ->
         tribes.map { it.name }
             .forEach { expected ->
@@ -42,7 +42,7 @@ class TribeListPageE2ETest {
     @Test
     fun canNavigateToSpecificTribePage() = twoTribesSetup() exercise {
         TribeListPage.tribeCardElement(tribes[0].id)
-            .element(TribeListPage.tribeCardHeaderLocator)
+            .element(TribeCard.header.selector)
             .performClick()
         TribeConfigPage.waitForPage()
     } verify {

@@ -59,4 +59,6 @@ class WebdriverElementArray(val selector: String) {
     suspend fun <T> map(transform: suspend (WebdriverElement) -> T) =
         all().map { transform(WebdriverElement("") { it }) }.toList()
 
+    suspend fun count() = all().count()
+
 }

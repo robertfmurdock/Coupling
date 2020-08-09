@@ -84,7 +84,7 @@ class TribeConfigPageE2ETest {
             deleteButton.performClick()
             TribeListPage.waitForPage()
         } verify {
-            TribeListPage.getTribeCardElements()
+            TribeListPage.tribeCardElements
                 .map { it.text() }
                 .contains(tribe.name)
                 .assertIsEqualTo(false)

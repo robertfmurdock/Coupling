@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.server.e2e.PairAssignments.newPairsButton
 import com.zegreatrob.coupling.server.e2e.PairAssignments.retiredPlayersButton
 import com.zegreatrob.coupling.server.e2e.PairAssignments.statisticsButton
 import com.zegreatrob.coupling.server.e2e.PairAssignments.viewHistoryButton
+import com.zegreatrob.coupling.server.e2e.TribeCard.header
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
@@ -66,7 +67,7 @@ class PairAssignmentsPageE2ETest {
         } exercise {
             goTo(tribe.id)
         } verify {
-            TribeCard.getHeader().text()
+            header.text()
                 .assertIsEqualTo(tribe.name)
             PlayerRoster.getPlayerElements().map { it.text() }.toList()
                 .assertIsEqualTo(players.map { it.name })
