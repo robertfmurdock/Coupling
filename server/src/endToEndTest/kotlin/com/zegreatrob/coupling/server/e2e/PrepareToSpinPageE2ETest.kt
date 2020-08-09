@@ -108,7 +108,7 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectedPinElements()[0].performClick()
+        PrepareToSpinPage.getSelectedPinElements().get(0).performClick()
     } exercise {
         spinButton.performClick()
         CurrentPairAssignmentPage.waitForPage()

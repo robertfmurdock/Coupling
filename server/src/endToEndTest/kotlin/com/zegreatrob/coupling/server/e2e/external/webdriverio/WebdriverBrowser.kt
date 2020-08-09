@@ -46,21 +46,22 @@ class WebdriverElement(
 
     suspend fun performClick() = element().performClick()
     suspend fun text() = element().text()
-    suspend fun all(selector: String) = element().all(selector).await().map { WebdriverElement { it } }.toList()
     suspend fun waitToBePresent() = element().waitToBePresent()
     suspend fun isNotPresent() = element().isNotPresent()
     suspend fun enabled() = element().enabled()
     suspend fun isPresent() = element().isPresent()
 
     fun all() = WebdriverElementArray(selector)
+    fun all(selector: String) = WebdriverElementArray("${this.selector} $selector")
 }
 
 class WebdriverElementArray(val selector: String) {
-    private suspend fun all() = WebdriverBrowser.all(selector)
+    private suspend fun all() = WebdriverBrowser.all(selector).map { WebdriverElement { it } }
 
-    suspend fun <T> map(transform: suspend (WebdriverElement) -> T) =
-        all().map { transform(WebdriverElement { it }) }.toList()
+    suspend fun <T> map(transform: suspend (WebdriverElement) -> T) = all().map { transform(it) }.toList()
 
     suspend fun count() = all().count()
+    suspend fun first() = all().first()
+    suspend fun get(index: Int) = all().get(index)
 
 }
