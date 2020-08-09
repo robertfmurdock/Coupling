@@ -14,7 +14,7 @@ class WebdriverElementArray(
         all().map { transform(it) }.toList()
     }
 
-    suspend fun count() = log(this::count) { all().count() }
-    suspend fun first() = log(this::first) { all().first() }
+    suspend fun count() = log(::count) { all().count() }
+    suspend fun first() = log(::first) { all().first() }
 
 }

@@ -9,9 +9,9 @@ import kotlin.js.json
 
 object WebdriverBrowser : BrowserLoggingSyntax {
 
-    suspend fun element(selector: String) = log(this::element) { browser.`$`(selector).await() }
+    suspend fun element(selector: String) = log(::element) { browser.`$`(selector).await() }
 
-    suspend fun all(selector: String): Array<Element> = log(this::all) { browser.`$$`(selector).await() }
+    suspend fun all(selector: String): Array<Element> = log(::all) { browser.`$$`(selector).await() }
 
     suspend fun waitUntil(
         condition: suspend () -> Boolean,
@@ -29,12 +29,12 @@ object WebdriverBrowser : BrowserLoggingSyntax {
 
     private val baseUrl get() = URL(browser.config["baseUrl"].unsafeCast<String>())
 
-    suspend fun waitForAlert() = log(this::waitForAlert) { waitUntil({ isAlertOpen() }) }
-    suspend fun isAlertOpen() = log(this::isAlertOpen) { browser.isAlertOpen().await() }
-    suspend fun acceptAlert() = log(this::acceptAlert) { browser.acceptAlert().await() }
-    suspend fun dismissAlert() = log(this::dismissAlert) { browser.dismissAlert().await() }
-    suspend fun alertText() = log(this::alertText) { browser.getAlertText().await() }
-    suspend fun currentUrl() = log(this::currentUrl) { URL(browser.getUrl().await()) }
+    suspend fun waitForAlert() = log(::waitForAlert) { waitUntil({ isAlertOpen() }) }
+    suspend fun isAlertOpen() = log(::isAlertOpen) { browser.isAlertOpen().await() }
+    suspend fun acceptAlert() = log(::acceptAlert) { browser.acceptAlert().await() }
+    suspend fun dismissAlert() = log(::dismissAlert) { browser.dismissAlert().await() }
+    suspend fun alertText() = log(::alertText) { browser.getAlertText().await() }
+    suspend fun currentUrl() = log(::currentUrl) { URL(browser.getUrl().await()) }
     suspend fun refresh() = browser.refresh().await()
     suspend fun setUrl(url: String) = browser.url(url).await()
     suspend fun getLogs() = browser.getLogs("browser").await().toList()
