@@ -18,6 +18,6 @@ object PrepareToSpinPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element().waitToBePresent()
+        element().waitToExist()
     }
 }

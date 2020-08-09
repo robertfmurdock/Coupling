@@ -42,10 +42,10 @@ class PinConfigE2ETest {
     }.attachTribe()) {
         with(PinConfigPage) {
             tribe.id.goToNew()
-            getNameTextField().performSetValue(newPinName)
+            getNameTextField().setValue(newPinName)
         }
     } exercise {
-        saveButton.performClick()
+        saveButton.click()
     } verify {
         with(PinConfigPage) {
             waitForPinNameToAppear(newPinName, tribe.id)
@@ -88,7 +88,7 @@ class PinConfigE2ETest {
             sdk.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin.id)
         } exercise {
-            deleteButton.performClick()
+            deleteButton.click()
             browser.acceptAlert().await()
 
             PinListPage.waitForLoad()

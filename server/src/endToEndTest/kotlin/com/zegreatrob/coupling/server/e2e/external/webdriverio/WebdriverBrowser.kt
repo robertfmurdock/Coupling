@@ -34,7 +34,7 @@ object WebdriverBrowser : BrowserLoggingSyntax {
     suspend fun acceptAlert() = log(this::acceptAlert) { browser.acceptAlert().await() }
     suspend fun dismissAlert() = log(this::dismissAlert) { browser.dismissAlert().await() }
     suspend fun alertText() = log(this::alertText) { browser.getAlertText().await() }
-    suspend fun getUrl() = log(this::getUrl) { URL(browser.getUrl().await()) }
+    suspend fun currentUrl() = log(this::currentUrl) { URL(browser.getUrl().await()) }
 
 }
 

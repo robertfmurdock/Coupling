@@ -10,7 +10,7 @@ import kotlin.reflect.KProperty
 interface BrowserSyntax {
 
     suspend fun setLocation(location: String) {
-        val currentUrl = WebdriverBrowser.getUrl()
+        val currentUrl = WebdriverBrowser.currentUrl()
         if (currentUrl.pathname == location) {
             browser.refresh().await()
         } else if (currentUrl.isNotFromBaseHost()) {
@@ -67,25 +67,25 @@ interface BrowserSyntax {
     suspend fun waitToArriveAt(expectedPath: String) {
         WebdriverBrowser.waitUntil({
             try {
-                WebdriverBrowser.getUrl().pathname.startsWith(expectedPath)
+                WebdriverBrowser.currentUrl().pathname.startsWith(expectedPath)
             } catch (bad: Throwable) {
                 false
             }
         }, 5000, "")
 
-        WebdriverBrowser.getUrl().pathname.startsWith(expectedPath).assertIsEqualTo(true)
+        WebdriverBrowser.currentUrl().pathname.startsWith(expectedPath).assertIsEqualTo(true)
     }
 
     suspend fun waitToArriveAtUrl(expectedUrl: String) {
         WebdriverBrowser.waitUntil({
             try {
-                WebdriverBrowser.getUrl().toString().startsWith(expectedUrl)
+                WebdriverBrowser.currentUrl().toString().startsWith(expectedUrl)
             } catch (bad: Throwable) {
                 false
             }
         }, 5000, "")
 
-        WebdriverBrowser.getUrl().toString().startsWith(expectedUrl).assertIsEqualTo(true)
+        WebdriverBrowser.currentUrl().toString().startsWith(expectedUrl).assertIsEqualTo(true)
     }
 
     suspend fun SimpleStyle.element(propertyName: String) = elementWithClass(propertyName)

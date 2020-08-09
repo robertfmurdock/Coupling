@@ -15,7 +15,7 @@ object PinConfigPage : StyleSyntax {
     fun getIconTextField() = WebdriverElement(By.id("pin-icon"))
 
     suspend fun pinBagPinNames(): List<String> {
-        pinBag.waitToBePresent()
+        pinBag.waitToExist()
         return pinBag.all(By.className("pin-name"))
             .map { it.text() }
     }

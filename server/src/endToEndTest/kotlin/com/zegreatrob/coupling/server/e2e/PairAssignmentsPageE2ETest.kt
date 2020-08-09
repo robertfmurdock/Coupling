@@ -79,9 +79,9 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouAddPlayers() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            PlayerRoster.getAddPlayerButton().performClick()
+            PlayerRoster.getAddPlayerButton().click()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/player/new/")
         }
 
@@ -90,9 +90,9 @@ class PairAssignmentsPageE2ETest {
             goTo(tribe.id)
         } exercise {
             PlayerRoster.playerElements.first().element(PlayerCard.header.selector)
-                .performClick()
+                .click()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/player/${players[0].id}/")
         }
 
@@ -100,9 +100,9 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouViewHistory() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            viewHistoryButton.performClick()
+            viewHistoryButton.click()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/history/")
         }
 
@@ -110,9 +110,9 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouPrepareNewPairs() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            newPairsButton.performClick()
+            newPairsButton.click()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/prepare/")
         }
 
@@ -120,9 +120,9 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouGoToTheStatsPage() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            statisticsButton.performClick()
+            statisticsButton.click()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/statistics")
         }
 
@@ -130,9 +130,9 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouGoToTheRetiredPlayersPage() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            retiredPlayersButton.performClick()
+            retiredPlayersButton.click()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/players/retired")
         }
 

@@ -41,19 +41,19 @@ class TribeListPageE2ETest {
     fun canNavigateToSpecificTribePage() = twoTribesSetup() exercise {
         TribeListPage.tribeCardElement(tribes[0].id)
             .element(TribeCard.header.selector)
-            .performClick()
+            .click()
         TribeConfigPage.waitForPage()
     } verify {
-        WebdriverBrowser.getUrl().pathname
+        WebdriverBrowser.currentUrl().pathname
             .assertIsEqualTo("/${tribes[0].id.value}/edit/")
     }
 
     @Test
     fun canNavigateToTheNewTribePage() = twoTribesSetup() exercise {
-        newTribeButton.performClick()
+        newTribeButton.click()
         TribeConfigPage.waitForPage()
     } verify {
-        WebdriverBrowser.getUrl().pathname
+        WebdriverBrowser.currentUrl().pathname
             .assertIsEqualTo("/new-tribe/")
     }
 

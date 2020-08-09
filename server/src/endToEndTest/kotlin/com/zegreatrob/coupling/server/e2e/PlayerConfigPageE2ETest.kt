@@ -56,10 +56,10 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            TribeCard.element().performClick()
+            TribeCard.element().click()
             CurrentPairAssignmentPage.waitForPage()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
         }
 
@@ -68,9 +68,9 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
-            page.playerNameTextField().performSetValue("completely different name")
+            page.playerNameTextField().setValue("completely different name")
         } exercise {
-            TribeCard.element().performClick()
+            TribeCard.element().click()
             WebdriverBrowser.waitForAlert()
             WebdriverBrowser.alertText().also {
                 WebdriverBrowser.acceptAlert()
@@ -87,15 +87,15 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             with(page) {
                 goTo(tribe.id, player.id)
-                playerNameTextField().performSetValue(newName)
-                saveButton.performClick()
+                playerNameTextField().setValue(newName)
+                saveButton.click()
                 waitForSaveToComplete(newName)
             }
         } exercise {
-            TribeCard.element().performClick()
+            TribeCard.element().click()
             CurrentPairAssignmentPage.waitForPage()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
             page.playerNameTextField().attribute("value")
@@ -107,16 +107,16 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
-            page.playerNameTextField().performClearSetValue(" ")
-            page.playerNameTextField().performClearSetValue("")
-            saveButton.performClick()
+            page.playerNameTextField().clearSetValue(" ")
+            page.playerNameTextField().clearSetValue("")
+            saveButton.click()
             page.waitForSaveToComplete("Unknown")
             page.waitForPage()
         } exercise {
-            TribeCard.element().performClick()
+            TribeCard.element().click()
             CurrentPairAssignmentPage.waitForPage()
         } verify {
-            WebdriverBrowser.getUrl().pathname
+            WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
             page.goTo(tribe.id, player.id)
             header.text()
@@ -129,7 +129,7 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            deleteButton.performClick()
+            deleteButton.click()
             WebdriverBrowser.acceptAlert()
         } verify {
             page.waitToArriveAt("/${tribe.id.value}/pairAssignments/current/")
@@ -202,12 +202,12 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) exercise {
             page.goTo(tribe.id, player.id)
         } verify {
-            page.defaultBadgeOption().displayed()
+            page.defaultBadgeOption().isDisplayed()
                 .assertIsEqualTo(true)
             WebdriverElement("option[value=\"1\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 1")
-            page.altBadgeOption().displayed()
+            page.altBadgeOption().isDisplayed()
                 .assertIsEqualTo(true)
             WebdriverElement("option[value=\"2\"]")
                 .attribute("label")
@@ -230,8 +230,8 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            page.altBadgeOption().performClick()
-            saveButton.performClick()
+            page.altBadgeOption().click()
+            saveButton.click()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)
@@ -266,9 +266,9 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) {
             page.goTo(tribe.id, player.id)
         } exercise {
-            page.adjectiveTextInput().performClearSetValue("Superior")
-            page.nounTextInput().performClearSetValue("Spider-Man")
-            saveButton.performClick()
+            page.adjectiveTextInput().clearSetValue("Superior")
+            page.nounTextInput().clearSetValue("Spider-Man")
+            saveButton.click()
             page.waitForSaveToComplete(player.name)
         } verify {
             page.goTo(tribe.id, player.id)

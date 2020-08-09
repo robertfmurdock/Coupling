@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.ConfigForm.deleteButton
 import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
@@ -29,15 +28,15 @@ class TribeConfigPageE2ETest {
             with(page) {
                 goTo(tribe.id)
 
-                getTribeNameInput().performClearSetValue(expectedNewName)
-                getCallSignCheckbox().performClick()
-                getBadgeCheckbox().performClick()
-                getDefaultBadgeNameInput().performClearSetValue(expectedDefaultBadgeName)
-                getAltBadgeNameInput().performClearSetValue(expectedAltBadgeName)
-                getDifferentBadgesOption().performClick()
+                getTribeNameInput().clearSetValue(expectedNewName)
+                getCallSignCheckbox().click()
+                getBadgeCheckbox().click()
+                getDefaultBadgeNameInput().clearSetValue(expectedDefaultBadgeName)
+                getAltBadgeNameInput().clearSetValue(expectedAltBadgeName)
+                getDifferentBadgesOption().click()
             }
         } exercise {
-            saveButton.performClick()
+            saveButton.click()
             TribeListPage.waitForPage()
             page.goTo(tribe.id)
         } verify {
@@ -81,7 +80,7 @@ class TribeConfigPageE2ETest {
             sdk.save(tribe)
             TribeConfigPage.goTo(tribe.id)
         } exercise {
-            deleteButton.performClick()
+            deleteButton.click()
             TribeListPage.waitForPage()
         } verify {
             TribeListPage.tribeCardElements
@@ -103,9 +102,9 @@ class TribeConfigPageE2ETest {
         fun idFieldShowsAndPersistsAsTextIsAdded() = e2eSetup(TribeConfigPage) {
             goToNew()
         } exercise {
-            getTribeIdInput().performClearSetValue("oopsie")
+            getTribeIdInput().clearSetValue("oopsie")
         } verify {
-            getTribeIdInput().displayed()
+            getTribeIdInput().isDisplayed()
                 .assertIsEqualTo(true)
         }
 

@@ -24,12 +24,12 @@ object PlayerConfigPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element().waitToBePresent()
+        element().waitToExist()
     }
 
     suspend fun waitForSaveToComplete(expectedName: String?) {
         WebdriverBrowser.waitUntil(
-            { saveButton.enabled() },
+            { saveButton.isEnabled() },
             waitToBePresentDuration,
             "PlayerConfig.waitForSaveButtonEnable"
         )

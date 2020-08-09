@@ -28,20 +28,19 @@ class WebdriverElement(
     private fun Element.element(selector: String): Promise<Element> = `$`(selector)
         .unsafeCast<Promise<Element>>()
 
-    suspend fun performClick() = log(this::performClick) { element().click().await() }
+    suspend fun click() = log(this::click) { element().click().await() }
     suspend fun text() = log(this::text) { element().getText().await() }
-    suspend fun isNotPresent() = log(this::isNotPresent) { !element().isExisting().await() }
-    suspend fun enabled() = log(this::enabled) { element().isEnabled().await() }
-    suspend fun isPresent() = log(this::isPresent) { element().isExisting().await() }
     suspend fun attribute(name: String) = log(this::attribute) { element().getAttribute(name).await() }
-    suspend fun displayed() = log(this::displayed) { element().isDisplayed().await() }
-    suspend fun performSetValue(value: String) = log(this::performSetValue) { element().setValue(value).await() }
-    suspend fun performClearSetValue(value: String) = log(this::performClearSetValue) {
+    suspend fun isPresent() = log(this::isPresent) { element().isExisting().await() }
+    suspend fun isEnabled() = log(this::isEnabled) { element().isEnabled().await() }
+    suspend fun isDisplayed() = log(this::isDisplayed) { element().isDisplayed().await() }
+    suspend fun setValue(value: String) = log(this::setValue) { element().setValue(value).await() }
+    suspend fun clearSetValue(value: String) = log(this::clearSetValue) {
         element().clearValue().await()
         element().setValue(value).await()
     }
 
-    suspend fun waitToBePresent() = log(this::waitToBePresent) {
+    suspend fun waitToExist() = log(this::waitToExist) {
         element().waitForExist(json("timeout" to waitToBePresentDuration)).await()
     }
 

@@ -54,9 +54,9 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        selectAllButton.performClick()
+        selectAllButton.click()
     } exercise {
-        spinButton.performClick()
+        spinButton.click()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         CurrentPairAssignmentPage.assignedPairElements.count()
@@ -67,12 +67,12 @@ class PrepareToSpinPageE2ETest {
     fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
         with(PlayerCard) {
-            selectNoneButton.performClick()
-            playerElements.get(1).element(iconLocator).performClick()
-            playerElements.get(4).element(iconLocator).performClick()
+            selectNoneButton.click()
+            playerElements.get(1).element(iconLocator).click()
+            playerElements.get(4).element(iconLocator).click()
         }
     } exercise {
-        spinButton.performClick()
+        spinButton.click()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         CurrentPairAssignmentPage.assignedPairElements.count()
@@ -80,7 +80,7 @@ class PrepareToSpinPageE2ETest {
         PlayerRoster.playerElements.count()
             .assertIsEqualTo(3)
 
-        saveButton.performClick()
+        saveButton.click()
         CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed()
 
         CurrentPairAssignmentPage.assignedPairElements.count()
@@ -95,7 +95,7 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.getSelectedPinElements().count()
             .assertIsEqualTo(1)
     } exercise {
-        spinButton.performClick()
+        spinButton.click()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         PinButton.pinElements.count()
@@ -105,9 +105,9 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectedPinElements().get(0).performClick()
+        PrepareToSpinPage.getSelectedPinElements().get(0).click()
     } exercise {
-        spinButton.performClick()
+        spinButton.click()
         CurrentPairAssignmentPage.waitForPage()
     } verify {
         PinButton.pinElements.count()

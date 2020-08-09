@@ -28,6 +28,6 @@ object TribeConfigPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element().waitToBePresent()
+        element().waitToExist()
     }
 }

@@ -11,6 +11,6 @@ object RetiredPlayersPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element().waitToBePresent()
+        element().waitToExist()
     }
 }

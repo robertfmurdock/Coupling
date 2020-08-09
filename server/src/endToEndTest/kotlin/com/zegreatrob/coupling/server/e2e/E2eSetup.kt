@@ -18,7 +18,7 @@ val e2eSetup: TestTemplate<AuthorizedSdk> by lazy {
                     { _, done -> js("window.sessionStorage.setItem('animationDisabled', true)"); done() },
                     undefined
                 ).await()
-                DataLoadWrapper.getViewFrame().waitToBePresent()
+                DataLoadWrapper.getViewFrame().waitToExist()
 
                 TestLogin.login(it.userEmail)
                 browser.getLogs("browser").await()

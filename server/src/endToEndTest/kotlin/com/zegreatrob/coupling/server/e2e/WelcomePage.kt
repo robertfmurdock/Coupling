@@ -10,7 +10,7 @@ object WelcomePage : StyleSyntax {
 
     suspend fun goTo() {
         setLocation("/welcome")
-        element().waitToBePresent()
+        element().waitToExist()
     }
 
 }

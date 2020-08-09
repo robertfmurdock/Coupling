@@ -19,13 +19,13 @@ object CurrentPairAssignmentPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element().waitToBePresent()
+        element().waitToExist()
     }
 
     suspend fun waitForSaveButtonToNotBeDisplayed() {
         waitForPage()
         WebdriverBrowser.waitUntil(
-            { saveButton.isNotPresent() },
+            { !saveButton.isPresent() },
             2000,
             "CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed"
         )

@@ -7,9 +7,9 @@ class WelcomeE2ETest {
     @Test
     fun whenTheEnterButtonIsPressedWillRedirectToGoogleLogin() = e2eSetup(WelcomePage) {
         goTo()
-        enterButton.performClick()
+        enterButton.click()
     } exercise {
-        googleLoginButton.performClick()
+        googleLoginButton.click()
     } verifyAnd {
         waitToArriveAtUrl("https://accounts.google.com")
     } teardown {
@@ -23,9 +23,9 @@ class WelcomeE2ETest {
     @Test
     fun whenTheEnterButtonIsPressedWillRedirectToMicrosoftLogin() = e2eSetup(WelcomePage) {
         goTo()
-        enterButton.performClick()
+        enterButton.click()
     } exercise {
-        microsoftLoginButton.performClick()
+        microsoftLoginButton.click()
     } verify {
         waitToArriveAtUrl("https://login.microsoftonline.com")
     }
