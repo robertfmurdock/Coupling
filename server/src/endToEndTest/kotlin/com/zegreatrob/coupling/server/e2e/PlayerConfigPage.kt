@@ -2,19 +2,16 @@ package com.zegreatrob.coupling.server.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
 
 object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
 
-    suspend fun playerNameTextField() = WebdriverBrowser.element(By.id("player-name"))
-    suspend fun defaultBadgeOption() = WebdriverBrowser.element(By.id("default-badge-option"))
-    suspend fun altBadgeOption() = WebdriverBrowser.element(By.id("alt-badge-option"))
-    suspend fun adjectiveTextInput() = WebdriverBrowser.element(By.id("adjective-input"))
-    suspend fun nounTextInput() = WebdriverBrowser.element(By.id("noun-input"))
+    fun playerNameTextField() = WebdriverElement(By.id("player-name"))
+    fun defaultBadgeOption() = WebdriverElement(By.id("default-badge-option"))
+    fun altBadgeOption() = WebdriverElement(By.id("alt-badge-option"))
+    fun adjectiveTextInput() = WebdriverElement(By.id("adjective-input"))
+    fun nounTextInput() = WebdriverElement(By.id("noun-input"))
 
     suspend fun goTo(tribeId: TribeId, playerId: String?) {
         setLocation("/${tribeId.value}/player/${playerId}")

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.e2e
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElement
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
 
 object PinConfigPage : StyleSyntax {
@@ -10,8 +11,8 @@ object PinConfigPage : StyleSyntax {
 
     private val pinBag by getting()
 
-    suspend fun getNameTextField() = WebdriverBrowser.element(By.id("pin-name"))
-    suspend fun getIconTextField() = WebdriverBrowser.element(By.id("pin-icon"))
+    fun getNameTextField() = WebdriverElement(By.id("pin-name"))
+    fun getIconTextField() = WebdriverElement(By.id("pin-icon"))
 
     suspend fun pinBagPinNames(): List<String> {
         pinBag.waitToBePresent()

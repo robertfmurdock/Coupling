@@ -8,7 +8,10 @@ import com.zegreatrob.coupling.server.e2e.ConfigForm.deleteButton
 import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.PinListPage.element
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.browser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.waitToBePresentDuration
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.await

@@ -18,7 +18,6 @@ import com.zegreatrob.coupling.server.e2e.TribeCard.header
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElement
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.coroutineScope

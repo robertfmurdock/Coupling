@@ -5,8 +5,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.TribeListPage.newTribeButton
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.element
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke

@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.text
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch

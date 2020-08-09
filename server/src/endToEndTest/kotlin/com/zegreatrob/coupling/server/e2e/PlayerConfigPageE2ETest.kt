@@ -9,7 +9,8 @@ import com.zegreatrob.coupling.server.e2e.ConfigForm.deleteButton
 import com.zegreatrob.coupling.server.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.PlayerCard.header
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElement
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.invoke
@@ -85,9 +86,9 @@ class PlayerConfigPageE2ETest {
             val newName = "completely different name"
         }.attachPlayer()) {
             with(page) {
-                    goTo(tribe.id, player.id)
-                    playerNameTextField().performSetValue(newName)
-                    saveButton.performClick()
+                goTo(tribe.id, player.id)
+                playerNameTextField().performSetValue(newName)
+                saveButton.performClick()
                 waitForSaveToComplete(newName)
             }
         } exercise {
@@ -203,12 +204,12 @@ class PlayerConfigPageE2ETest {
         } verify {
             page.defaultBadgeOption().displayed()
                 .assertIsEqualTo(true)
-            WebdriverBrowser.element("option[value=\"1\"]")
+            WebdriverElement("option[value=\"1\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 1")
             page.altBadgeOption().displayed()
                 .assertIsEqualTo(true)
-            WebdriverBrowser.element("option[value=\"2\"]")
+            WebdriverElement("option[value=\"2\"]")
                 .attribute("label")
                 .assertIsEqualTo("Badge 2")
         }
