@@ -56,11 +56,6 @@ tasks {
         into("build/test-output/action")
     })
 
-    val copyServerTestResults by creating(Copy::class, copyForTask(findByPath(":server:serverTest")) {
-        from("server/build/test-results/server")
-        into("build/test-output/server")
-    })
-
     val copyEndpointTestResults by creating(Copy::class, copyForTask(findByPath(":sdk:endpointTest")) {
         from("sdk/build/test-results/jsTest")
         into("build/test-output/endpoint")
@@ -84,7 +79,6 @@ tasks {
     val copyTestResultsForCircle by creating {
         dependsOn(
             copyClientTestResults,
-            copyServerTestResults,
             copyEndpointTestResults,
             copyActionTestResults,
             copyEngineTestResults,

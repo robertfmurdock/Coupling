@@ -1,4 +1,4 @@
-import com.moowork.gradle.node.task.NodeTask
+
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
@@ -31,21 +31,18 @@ kotlin {
         val main by getting {
             resources.srcDir("src/main/javascript")
         }
-
-        val test by getting {
-            dependencies {
-                implementation(npm("uuid", "^3.3.2"))
-            }
-        }
-
         val endToEndTest by getting {
-            dependsOn(test)
-
             dependencies {
                 implementation(project(":sdk"))
+                implementation(project(":test-logging"))
+                implementation(kotlin("test-js"))
                 implementation(npm("axios-cookiejar-support", "^0.5.0"))
                 implementation(npm("tough-cookie", "^3.0.1"))
                 implementation(npm("uuid", "^3.3.2"))
+                implementation("io.github.microutils:kotlin-logging-js:1.8.3")
+                implementation("com.zegreatrob.testmints:standard:+")
+                implementation("com.zegreatrob.testmints:minassert:+")
+                implementation("com.zegreatrob.testmints:async:+")
             }
         }
     }
@@ -88,12 +85,6 @@ dependencies {
             implementation(npm(it.first, it.second.asText()))
         }
 
-    testImplementation(kotlin("test-js"))
-    testImplementation(project(":test-logging"))
-    testImplementation("com.zegreatrob.testmints:standard:+")
-    testImplementation("com.zegreatrob.testmints:minassert:+")
-    testImplementation("com.zegreatrob.testmints:async:+")
-
 }
 
 tasks {
@@ -109,11 +100,6 @@ tasks {
     }
 
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
     }
@@ -162,29 +148,11 @@ tasks {
         dependsOn(serverCompile, copyClient)
     }
 
-    val serverTest by creating(YarnTask::class) {
-        dependsOn(
-            yarn,
-            compileKotlinJs,
-            compileTestKotlinJs,
-            copyClient
-        )
-        inputs.file(file("package.json"))
-        inputs.files(serverCompile.inputs.files)
-        inputs.files(serverCompile.outputs.files)
-        inputs.dir("test/unit")
-        outputs.dir("build/test-results/server.unit")
-
-        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:node_modules"))
-        args = listOf("run", "serverTest")
-    }
-
     val endToEndTest by creating(YarnTask::class) {
         dependsOn(assemble, compileEndToEndTestKotlinJs)
-        mustRunAfter(serverTest, ":client:test", ":sdk:endpointTest")
+        mustRunAfter(":client:test", ":sdk:endpointTest")
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
-        inputs.files(serverTest.inputs.files)
         inputs.files(serverCompile.outputs.files)
         inputs.files(compileEndToEndTestKotlinJs.outputs.files)
         inputs.file(file("package.json"))
@@ -200,17 +168,9 @@ tasks {
         args = listOf("run", "ncu", "-u")
     }
 
-    val test by getting {
-        dependsOn(serverTest)
-    }
-
     val start by creating(YarnTask::class) {
         dependsOn(assemble)
         args = listOf("run", "start-built-app")
-    }
-
-    val testWatch by creating(NodeTask::class) {
-        setArgs(listOf("test/continuous-run.js"))
     }
 
     task<YarnTask>("stats") {
