@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.server.e2e.TribeListPage.newTribeButton
-import com.zegreatrob.coupling.server.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.element
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.performClick
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
@@ -29,7 +31,7 @@ class TribeListPageE2ETest {
 
     @Test
     fun shouldHaveSectionForEachTribe() = twoTribesSetup() exercise {
-        TribeListPage.getTribeCardElements().map { it.text() }.toList()
+        TribeListPage.getTribeCardElements().map { it.text() }
     } verify { listedTribeNames ->
         tribes.map { it.name }
             .forEach { expected ->

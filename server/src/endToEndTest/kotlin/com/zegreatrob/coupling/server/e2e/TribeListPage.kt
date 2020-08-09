@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.e2e
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.By
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.server.e2e.external.webdriverio.WebdriverElementArray
 import com.zegreatrob.coupling.server.e2e.external.webdriverio.isPresent
 
 object TribeListPage : StyleSyntax {
@@ -11,7 +12,7 @@ object TribeListPage : StyleSyntax {
 
     val newTribeButton by getting()
 
-    suspend fun getTribeCardElements() = WebdriverBrowser.all(By.className(tribeCardStyles.className))
+    suspend fun getTribeCardElements() = WebdriverElementArray(By.className(tribeCardStyles.className))
     val tribeCardHeaderLocator = By.className(tribeCardStyles["header"])
 
     suspend fun tribeCardElement(tribeId: TribeId) =
