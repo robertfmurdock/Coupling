@@ -25,14 +25,11 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./data/db:/data/db
+      - mongo_data:/data/db
   dynamo:
     image: amazon/dynamodb-local
     ports:
       - "8000:8000"
-    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
-    volumes:
-      - ./dynamodb_data:/home/dynamodblocal/data
   statsd:
     image: hopsoft/graphite-statsd
     ports:
@@ -66,6 +63,13 @@ services:
       - statsd
     ports:
       - "4001:3000"
+  chrome:
+    image: selenium/standalone-chrome
+    network_mode: host
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
   seleniumhub:
     image: selenium/hub
   chromenode:
@@ -76,6 +80,8 @@ services:
       - "seleniumhub:hub"
       - "web:web"
 volumes:
+  mongo_data:
+    driver: local
   es_data:
     driver: local
   graylog_journal:

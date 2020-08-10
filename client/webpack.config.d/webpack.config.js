@@ -7,7 +7,10 @@ config.resolve.modules.push(resourcesPath);
 config.resolve.extensions = ['.js'];
 
 config.module.rules.push(
-  {test: /\.md$/i, use: 'raw-loader'}, {
+  {
+    test: /\.md$/i, use: 'raw-loader'
+  },
+  {
     test: /\.(sa|sc|c)ss$/,
     use: [
       {

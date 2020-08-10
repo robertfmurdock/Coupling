@@ -4,21 +4,14 @@ orbs:
   coupling-orb:
     executors:
       standard:
-        docker:
-          - image: circleci/openjdk:jdk
-          - image: circleci/mongo:latest
-          - image: amazon/dynamodb-local
-            command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
-          - image: selenium/standalone-chrome
+        machine:
+          image: ubuntu-1604:201903-01
       nomongo:
-        docker:
-          - image: circleci/openjdk:jdk
-          - image: amazon/dynamodb-local
-            command: -Xmx1G -jar DynamoDBLocal.jar -inMemory
-          - image: selenium/standalone-chrome
+        machine:
+          image: ubuntu-1604:201903-01
       noservices:
-        docker:
-          - image: circleci/openjdk:9-jdk
+        machine:
+          image: ubuntu-1604:201903-01
     commands:
       setup:
         steps:
@@ -63,26 +56,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-45-{{ .Branch }}
-      - coupling-orb/setup
-      - run: "./gradlew build check -x :repository:mongo:check"
-      - coupling-orb/collect-results
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - "*"
-  justsetup:
-    executor: coupling-orb/noservices
-    environment:
-      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
-      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
-    steps:
-      - checkout
+          key: coupling-cache-46-{{ .Branch }}
+      - run: docker-compose up -d dynamo chrome
       - restore_cache:
-          key: coupling-cache-45-{{ .Branch }}
+          key: coupling-cache-46-{{ .Branch }}
       - coupling-orb/setup
       - save_cache:
-          key: coupling-cache-45-{{ .Branch }}
+          key: coupling-cache-46-{{ .Branch }}
           paths:
             - "~/.gradle"
             - "~/.cache"
@@ -90,12 +70,18 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
+      - run: "./gradlew build check -x :repository:mongo:check"
+      - coupling-orb/collect-results
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - "*"
   buildMongo:
-    docker:
-      - image: circleci/openjdk:9-jdk
-      - image: circleci/mongo:latest
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - run: docker-compose up -d mongo
       - run: "./gradlew :repository:mongo:check --no-parallel -Dorg.gradle.configureondemand=false"
       - coupling-orb/collect-results
   deploy-prod:
@@ -105,7 +91,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-45-{{ .Branch }}
+          key: coupling-cache-46-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -119,15 +105,15 @@ jobs:
   update-client:
     executor: coupling-orb/standard
     environment:
-      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-45-{{ .Branch }}
+          key: coupling-cache-46-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
+      - run: docker-compose up -d dynamo mongo
       - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check --no-parallel"
@@ -137,15 +123,15 @@ jobs:
   update-server:
     executor: coupling-orb/standard
     environment:
-      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-45-{{ .Branch }}
+          key: coupling-cache-46-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
+      - run: docker-compose up -d dynamo mongo
       - coupling-orb/setup
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
@@ -155,14 +141,13 @@ jobs:
   update-gradle-deps:
     executor: coupling-orb/standard
     environment:
-      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-45-{{ .Branch }}
+          key: coupling-cache-46-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: "./gradlew assemble"
@@ -174,10 +159,7 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - justsetup
-      - build:
-          requires:
-            - justsetup
+      - build
       - buildMongo
       - deploy-prod:
           requires:

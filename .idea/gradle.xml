@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/action" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
+            <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/export" />
             <option value="$PROJECT_DIR$/import" />
             <option value="$PROJECT_DIR$/json" />

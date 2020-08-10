@@ -17,8 +17,6 @@ val serverScope = MainScope() + CoroutineName("Server")
 fun start() = startDeferred.asPromise()
 
 private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
-    println("KT Start.")
-
     val expressWs = expressWs(express())
     val app = expressWs.app
 
@@ -26,6 +24,7 @@ private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
     expressWs.routes()
 
     app.startListening()
+    Process.send("ready")
 }
 
 private suspend fun Express.startListening() = CompletableDeferred<Unit>()
@@ -37,6 +36,5 @@ private suspend fun Express.startListening() = CompletableDeferred<Unit>()
     }.await()
 
 fun main() {
-
     serverScope.launch { startDeferred.await() }
 }

@@ -60,7 +60,6 @@
   "scripts": {
     "start-built-app": "NODE_PATH='../build/js/node_modules' node ./startup.js",
     "webpack": "webpack",
-    "e2e": "node test/e2e/run.js",
     "ncu": "ncu -u"
   },
   "repository": {

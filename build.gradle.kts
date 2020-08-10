@@ -66,13 +66,13 @@ tasks {
         into("build/test-output/engine")
     })
 
-    val copyEndToEndResults by creating(Copy::class, copyForTask(findByPath(":server:endToEndTest")) {
-        from("server/build/test-results/e2e")
-        into("build/test-output/e2e")
+    val copyEndToEndResults by creating(Copy::class, copyForTask(findByPath(":e2e:nodeRun")) {
+        from("e2e/build/logs")
+        into("build/test-output/e2e/logs")
     })
 
-    val copyEndToEndScreenshotResults by creating(Copy::class, copyForTask(findByPath(":server:endToEndTest")) {
-        from("server/build/reports/e2e")
+    val copyEndToEndScreenshotResults by creating(Copy::class, copyForTask(findByPath(":e2e:nodeRun")) {
+        from("e2e/build/reports/e2e")
         into("build/test-output/e2e/reports")
     })
 
@@ -115,7 +115,7 @@ tasks {
     }
 
     val check by getting {
-        dependsOn(test, ":sdk:endpointTest", ":server:endToEndTest")
+        dependsOn(test, ":sdk:endpointTest")
     }
 
     val build by getting {

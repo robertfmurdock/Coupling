@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
@@ -22,28 +21,11 @@ kotlin {
     target {
         nodejs()
         useCommonJs()
-        compilations {
-            val endToEndTest by compilations.creating
-        }
     }
 
     sourceSets {
         val main by getting {
             resources.srcDir("src/main/javascript")
-        }
-        val endToEndTest by getting {
-            dependencies {
-                implementation(project(":sdk"))
-                implementation(project(":test-logging"))
-                implementation(kotlin("test-js"))
-                implementation(npm("axios-cookiejar-support", "^0.5.0"))
-                implementation(npm("tough-cookie", "^3.0.1"))
-                implementation(npm("uuid", "^3.3.2"))
-                implementation("io.github.microutils:kotlin-logging-js:1.8.3")
-                implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("com.zegreatrob.testmints:async:+")
-            }
         }
     }
 }
@@ -104,11 +86,6 @@ tasks {
         kotlinOptions.sourceMapEmbedSources = "always"
     }
 
-    val compileEndToEndTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
     val copyServerIcons by creating(Copy::class) {
         from("public")
         into("build/executable/public")
@@ -146,21 +123,6 @@ tasks {
 
     val assemble by getting {
         dependsOn(serverCompile, copyClient)
-    }
-
-    val endToEndTest by creating(YarnTask::class) {
-        dependsOn(assemble, compileEndToEndTestKotlinJs)
-        mustRunAfter(":client:test", ":sdk:endpointTest")
-        inputs.files(findByPath(":client:test")?.inputs?.files)
-        inputs.files(findByPath(":client:assemble")?.outputs?.files)
-        inputs.files(serverCompile.outputs.files)
-        inputs.files(compileEndToEndTestKotlinJs.outputs.files)
-        inputs.file(file("package.json"))
-        inputs.dir("test/e2e")
-        outputs.dir("${project.buildDir}/test-results/e2e")
-
-        setEnvironment(mapOf("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:node_modules"))
-        args = listOf("run", "e2e", "--silent", "--seleniumAddress", System.getenv("SELENIUM_ADDRESS") ?: "")
     }
 
     val updateDependencies by creating(YarnTask::class) {
