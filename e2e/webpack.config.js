@@ -46,8 +46,8 @@ const config = {
 };
 
 config.entry = {
-  config2: path.resolve(jsPath, './wdio.conf.js'),
-  test: path.resolve(jsPath, './test.js')
+  config: path.resolve(jsPath, './wdio.conf.js'),
+  test: "Coupling-e2e-endToEndTest"
 };
 
 config.output = {
