@@ -4708,10 +4708,10 @@ mini-create-react-context@^0.4.0:
     "@babel/runtime" "^7.5.5"
     tiny-warning "^1.0.3"
 
-mini-css-extract-plugin@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-0.9.0.tgz#47f2cf07aa165ab35733b1fc97d4c46c0564339e"
-  integrity sha512-lp3GeY7ygcgAmVIcRPBVhIkf8Us7FZjA+ILpal44qLdSu11wmjKQ3d9k15lfD7pO4esu9eUIAW7qiYIBppv40A==
+mini-css-extract-plugin@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-0.10.0.tgz#a0e6bfcad22a9c73f6c882a3c7557a98e2d3d27d"
+  integrity sha512-QgKgJBjaJhxVPwrLNqqwNS0AGkuQQ31Hp4xGXEK/P7wehEg6qmNtReHKai3zRXqY60wGVWLYcOMJK2b98aGc3A==
   dependencies:
     loader-utils "^1.1.0"
     normalize-url "1.9.1"
@@ -5035,10 +5035,10 @@ npm-bundled@^1.1.1:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-7.0.3.tgz#26fbe8f7079fb06a5ff665838d08735479c8298b"
-  integrity sha512-20R5Zp5H/3Uw3VAeYAwuEECtA4ML5QxaMVCsKviFZtN5p2ONDeXQT18+31vughQEDexDyNWRDU7JwwPeao2apA==
+npm-check-updates@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-7.0.4.tgz#05c79702b17642441364f97e80eeba03462a5d9f"
+  integrity sha512-k3qcNK6hDJzPiRmszGb0NbkrCzVGk90hUQiszTVySilbocMuG+EGwsPFfICjpbce9nOTDDjvHvf6liS5i3UZNw==
   dependencies:
     chalk "^4.1.0"
     cint "^8.2.1"
