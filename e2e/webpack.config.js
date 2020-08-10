@@ -47,7 +47,7 @@ const config = {
 
 config.entry = {
   config: path.resolve(jsPath, './wdio.conf.js'),
-  test: "Coupling-e2e-endToEndTest"
+  test: "Coupling-e2e-test"
 };
 
 config.output = {
@@ -59,7 +59,7 @@ config.output = {
 config.externals = [
   nodeExternals({
     modulesDir: path.resolve(__dirname, '../build/js/node_modules'),
-    allowlist: ["Coupling-e2e-endToEndTest"]
+    allowlist: ["Coupling-e2e-test"]
   }),
   nodeExternals()
 ];

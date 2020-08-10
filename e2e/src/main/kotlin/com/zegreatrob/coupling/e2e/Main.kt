@@ -23,7 +23,6 @@ fun main() {
 
 private fun WebpackConfig.wdioConfig() = "${output.path}/config.js"
 
-
 private suspend fun runWebpackAndStartServer(config: WebpackConfig) = coroutineScope {
     launch { runWebpack(config) }
     startServer()
@@ -39,4 +38,3 @@ class ServerWithWebpackDisposable(private val process: ChildProcess, private val
 }
 
 private fun reportError(error: Throwable) = (-1).also { console.log("Error", error) }
-

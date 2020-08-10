@@ -7,27 +7,8 @@ plugins {
 
 kotlin {
     target {
-        nodejs()
+        nodejs { testTask { enabled = false } }
         useCommonJs()
-        compilations {
-            val endToEndTest by compilations.creating
-        }
-    }
-    sourceSets {
-        val endToEndTest by getting {
-            dependencies {
-                implementation(project(":sdk"))
-                implementation(project(":test-logging"))
-                implementation(kotlin("test-js"))
-                implementation(npm("axios-cookiejar-support", "^0.5.0"))
-                implementation(npm("tough-cookie", "^3.0.1"))
-                implementation(npm("uuid", "^3.3.2"))
-                implementation("io.github.microutils:kotlin-logging-js:1.8.3")
-                implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:minassert:+")
-                implementation("com.zegreatrob.testmints:async:+")
-            }
-        }
     }
 }
 
@@ -49,21 +30,33 @@ dependencies {
     implementation(npm("wdio-chromedriver-service"))
     implementation(npm("css-loader"))
     implementation(npm("url-loader"))
+
+    testImplementation(project(":sdk"))
+    testImplementation(project(":test-logging"))
+    testImplementation(kotlin("test-js"))
+    testImplementation(npm("axios-cookiejar-support", "^0.5.0"))
+    testImplementation(npm("tough-cookie", "^3.0.1"))
+    testImplementation(npm("uuid", "^3.3.2"))
+    testImplementation("io.github.microutils:kotlin-logging-js:1.8.3")
+    testImplementation("com.zegreatrob.testmints:standard:+")
+    testImplementation("com.zegreatrob.testmints:minassert:+")
+    testImplementation("com.zegreatrob.testmints:async:+")
+
 }
 
 tasks {
-    val compileEndToEndTestKotlinJs by getting(Kotlin2JsCompile::class) {
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
     }
 
     val nodeRun by getting(NodeJsExec::class) {
-        dependsOn(compileEndToEndTestKotlinJs)
+        dependsOn(compileTestKotlinJs)
         dependsOn(":server:assemble")
         mustRunAfter(":client:test", ":sdk:endpointTest")
 
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
         inputs.files(findByPath(":server:serverCompile")?.outputs?.files)
-        inputs.files(compileEndToEndTestKotlinJs.outputs.files)
+        inputs.files(compileTestKotlinJs.outputs.files)
         outputs.dir("${project.buildDir}/reports/e2e")
 
         environment("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:${project.projectDir.path}")
