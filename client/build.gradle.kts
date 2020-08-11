@@ -1,7 +1,6 @@
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import java.io.FileOutputStream
 
@@ -21,7 +20,7 @@ kotlin {
     target {
         browser {
             testTask {
-                enabled = false
+                enabled = true
             }
         }
     }
@@ -62,8 +61,19 @@ dependencies {
         implementation(npm(it.first, it.second.asText()))
     }
 
+    val inclusions = listOf(
+        "enzyme",
+        "enzyme-adapter-react-16"
+    )
+
+    packageJson.devDependencies().forEach {
+        if (inclusions.contains(it.first))
+            testImplementation(npm(it.first, it.second.asText()))
+    }
+
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
+
     testImplementation("com.zegreatrob.testmints:minenzyme:+")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
@@ -119,7 +129,7 @@ tasks {
     }
 
     val test by getting {
-        dependsOn(karma)
+//        dependsOn(karma)
     }
 
     task<YarnTask>("testWatch") {

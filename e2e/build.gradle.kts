@@ -51,6 +51,7 @@ tasks {
     val nodeRun by getting(NodeJsExec::class) {
         dependsOn(compileTestKotlinJs)
         dependsOn(":server:assemble")
+        mustRunAfter(":client:check")
 
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
