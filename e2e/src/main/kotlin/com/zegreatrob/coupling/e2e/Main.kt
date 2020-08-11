@@ -8,7 +8,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 fun main() {
-    js("process.env.PORT = 3001")
     val config = webpackConfig()
 
     MainScope().launch {

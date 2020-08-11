@@ -4,6 +4,8 @@ const log4js = require('@log4js-node/log4js-api');
 const logger = log4js.getLogger('default');
 const path = require('path');
 
+console.log('wdio base url', `http://localhost:${process.env.PORT}`);
+
 let config = {
   runner: 'local',
   specs: [
@@ -28,7 +30,7 @@ let config = {
   }],
   logLevel: 'warn',
   bail: 0,
-  baseUrl: 'http://localhost:3001',
+  baseUrl: `http://localhost:${process.env.PORT}`,
   waitforTimeout: 6000,
   waitforInterval: 15, //THIS IS INCREDIBLY IMPORTANT FOR PERFORMANCE
   connectionRetryTimeout: 120000,

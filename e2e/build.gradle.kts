@@ -51,7 +51,6 @@ tasks {
     val nodeRun by getting(NodeJsExec::class) {
         dependsOn(compileTestKotlinJs)
         dependsOn(":server:assemble")
-        mustRunAfter(":client:test", ":sdk:endpointTest")
 
         inputs.files(findByPath(":client:test")?.inputs?.files)
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
@@ -60,6 +59,7 @@ tasks {
         outputs.dir("${project.buildDir}/reports/e2e")
 
         environment(
+            "PORT" to "3099",
             "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:${project.projectDir.path}",
             "APP_PATH" to "${project(":server").buildDir.absolutePath}/executable/app.js",
             "BUILD_DIR" to project.buildDir.absolutePath
