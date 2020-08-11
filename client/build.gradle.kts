@@ -63,7 +63,8 @@ dependencies {
 
     val inclusions = listOf(
         "enzyme",
-        "enzyme-adapter-react-16"
+        "enzyme-adapter-react-16",
+        "karma-webdriver-launcher"
     )
 
     packageJson.devDependencies().forEach {
