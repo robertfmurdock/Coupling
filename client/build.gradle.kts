@@ -72,7 +72,6 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
     testImplementation("com.zegreatrob.testmints:minspy:+")
-
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"

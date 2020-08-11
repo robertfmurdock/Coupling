@@ -1,5 +1,5 @@
 require('source-map-support').install();
-const runHelpers = require('../server/test/run-helpers');
+const runHelpers = require('./run-helpers');
 
 const args = process.argv;
 
