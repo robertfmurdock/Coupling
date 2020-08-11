@@ -1,27 +1,13 @@
-import com.moowork.gradle.node.yarn.YarnTask
-import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 
 plugins {
     kotlin("js")
-    id("com.github.node-gradle.node")
-}
-
-node {
-    version = BuildConstants.nodeVersion
-    npmVersion = BuildConstants.npmVersion
-    yarnVersion = BuildConstants.yarnVersion
-    download = true
 }
 
 kotlin {
     target {
         useCommonJs()
-        browser {
-            testTask {
-                enabled = true
-            }
-        }
+        browser()
     }
 
     sourceSets {
@@ -77,10 +63,5 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
-
-    val updateDependencies by creating(YarnTask::class) {
-        dependsOn(yarn)
-        args = listOf("run", "ncu", "-u")
-    }
 
 }

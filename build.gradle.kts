@@ -105,8 +105,6 @@ tasks {
     }
 
     val serverYarn = getByPath(":server:yarn")
-    val clientYarn = getByPath(":client:yarn")
-    serverYarn.mustRunAfter(clientYarn)
     val sdkYarn = getByPath(":sdk:yarn")
     sdkYarn.mustRunAfter(serverYarn)
 

@@ -127,7 +127,15 @@ tasks {
 
     val updateDependencies by creating(YarnTask::class) {
         dependsOn(yarn)
-        args = listOf("run", "ncu", "-u")
+
+        val packageJson: String? by rootProject
+
+        args = if (packageJson == null) {
+            listOf("run", "ncu", "-u")
+        } else {
+            listOf("run", "ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
+        }
+
     }
 
     val start by creating(YarnTask::class) {

@@ -7,13 +7,13 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.727.1",
+    "aws-sdk": "2.730.0",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
     "cookie-parser": "^1.4.5",
-    "css-loader": "^4.2.0",
+    "css-loader": "^4.2.1",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "express-graphql": "^0.11.0",
@@ -41,18 +41,17 @@
     "jasmine": "^3.6.1",
     "jasmine-core": "^3.6.0",
     "jasmine-reporters": "^2.3.2",
-    "npm-check-updates": "^7.0.3",
+    "npm-check-updates": "^7.0.4",
     "source-map-support": "^0.5.19",
     "url-loader": "^4.1.0",
     "webpack": "^4.44.1",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.12",
-    "webpack-node-externals": "^2.5.0"
+    "webpack-node-externals": "^2.5.1"
   },
   "scripts": {
     "start-built-app": "NODE_PATH='../build/js/node_modules' node ./startup.js",
-    "webpack": "webpack",
-    "ncu": "ncu -u"
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
