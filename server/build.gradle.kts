@@ -1,5 +1,6 @@
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.getNodeBinDir
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import java.io.FileOutputStream
@@ -125,17 +126,20 @@ tasks {
         dependsOn(serverCompile, copyClient)
     }
 
-    val updateDependencies by creating(YarnTask::class) {
-        dependsOn(yarn)
+    val updateDependencies by creating(Exec::class) {
+        val nodeBinDir = getNodeBinDir(project.rootProject)
 
         val packageJson: String? by rootProject
 
-        args = if (packageJson == null) {
-            listOf("run", "ncu", "-u")
-        } else {
-            listOf("run", "ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
-        }
-
+        val nodeModulesDir = "${rootProject.buildDir.resolve("js/node_modules")}"
+        environment("NODE_PATH" to nodeModulesDir)
+        commandLine = listOf(
+            "$nodeBinDir/node",
+            "$nodeModulesDir/.bin/ncu",
+            "-u",
+            "--packageFile",
+            "${System.getenv("PWD")}/$packageJson"
+        )
     }
 
     val start by creating(YarnTask::class) {
