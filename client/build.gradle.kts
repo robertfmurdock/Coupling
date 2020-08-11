@@ -1,8 +1,6 @@
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import java.io.FileOutputStream
 
 plugins {
     kotlin("js")
@@ -18,6 +16,7 @@ node {
 
 kotlin {
     target {
+        useCommonJs()
         browser {
             testTask {
                 enabled = true
@@ -42,6 +41,9 @@ dependencies {
     implementation(project(":action"))
     implementation(project(":logging"))
     implementation(project(":repository:memory"))
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
     implementation("com.zegreatrob.testmints:minreact:+")
     implementation("com.zegreatrob.testmints:react-data-loader:+")
     implementation("com.zegreatrob.testmints:action:+")
@@ -57,24 +59,11 @@ dependencies {
     implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.110-kotlin-1.3.72")
     implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.107-kotlin-1.3.72")
 
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-
-    val inclusions = listOf(
-        "enzyme",
-        "enzyme-adapter-react-16",
-        "karma-webdriver-launcher"
-    )
-
-    packageJson.devDependencies().forEach {
-        if (inclusions.contains(it.first))
-            testImplementation(npm(it.first, it.second.asText()))
-    }
-
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
-
+    packageJson.devDependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
     testImplementation("com.zegreatrob.testmints:minenzyme:+")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
@@ -90,66 +79,9 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
 
-    val clean by getting {
-        doLast {
-            delete(file("build/lib"))
-            delete(file("build/report"))
-        }
-    }
-
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
-    val karma by creating(YarnTask::class) {
-        dependsOn(
-            yarn,
-            ":action:jsTest",
-            compileTestKotlinJs
-        )
-        inputs.file(file("package.json"))
-        inputs.file(file("webpack.config.js"))
-        inputs.dir("test")
-        inputs.file(compileKotlinJs.outputFile)
-        inputs.file(compileTestKotlinJs.outputFile)
-        outputs.dir(file("build/test-results"))
-
-        args = listOf("run", "test", "--silent")
-    }
-
     val updateDependencies by creating(YarnTask::class) {
         dependsOn(yarn)
         args = listOf("run", "ncu", "-u")
     }
-
-    val test by getting {
-//        dependsOn(karma)
-    }
-
-    task<YarnTask>("testWatch") {
-        args = listOf("run", "testWatch")
-    }
-
-    task<YarnTask>("testStats") {
-        dependsOn(yarn)
-
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-
-        args = listOf("-s", "webpack", "--json", "--profile", "--config", "test/webpack.config.js")
-
-        setExecOverrides(closureOf<ExecSpec> {
-            file("build/report").mkdirs()
-            standardOutput = FileOutputStream(file("build/report/test-stats.json"))
-        })
-    }
-
-    forEach { if (!it.name.startsWith("clean")) it.mustRunAfter("clean") }
 
 }
