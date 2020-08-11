@@ -1,5 +1,5 @@
+
 import com.moowork.gradle.node.task.NodeTask
-import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -18,7 +18,6 @@ node {
 }
 
 val packageJson = loadPackageJson()
-
 
 kotlin {
 
