@@ -59,7 +59,11 @@ tasks {
         inputs.files(compileTestKotlinJs.outputs.files)
         outputs.dir("${project.buildDir}/reports/e2e")
 
-        environment("NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:${project.projectDir.path}")
+        environment(
+            "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:${project.projectDir.path}",
+            "APP_PATH" to "${project(":server").buildDir.absolutePath}/executable/app.js",
+            "BUILD_DIR" to project.buildDir.absolutePath
+        )
 
         val logFile = file("build/logs/run.log")
         logFile.parentFile.mkdirs()

@@ -8,7 +8,7 @@ import kotlin.js.Promise
 import kotlin.js.json
 
 suspend fun startServer() = fork(
-    "../server/build/executable/app",
+    process.env["APP_PATH"]?.toString() ?: throw Exception("No APP_PATH"),
     emptyArray(),
     json("stdio" to "pipe")
 )
@@ -40,9 +40,10 @@ private fun connectToServerProcess(
 
     process.stdin.pipe(serverProcess.stdin);
 
-    fs.mkdirSync("./build/logs", json("recursive" to true));
-    val serverOut = fs.createWriteStream("./build/logs/server.out.log")
-    val serverErr = fs.createWriteStream("./build/logs/server.err.log")
+    val buildDirPath = process.env["BUILD_DIR"]
+    fs.mkdirSync("$buildDirPath/logs", json("recursive" to true));
+    val serverOut = fs.createWriteStream("$buildDirPath/logs/server.out.log")
+    val serverErr = fs.createWriteStream("$buildDirPath/logs/server.err.log")
     serverProcess.stdout.pipe(serverOut)
     serverProcess.stderr.pipe(serverErr)
 }
