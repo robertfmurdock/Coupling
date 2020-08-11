@@ -50,8 +50,6 @@
     "webpack-node-externals": "^2.5.1"
   },
   "scripts": {
-    "start-built-app": "NODE_PATH='../build/js/node_modules' node ./startup.js",
-    "webpack": "webpack"
   },
   "repository": {
     "type": "git",

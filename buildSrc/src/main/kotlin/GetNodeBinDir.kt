@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import java.io.File
 
 
-fun getNodeBinDir(rootProject: Project): File {
+fun Project.getNodeBinDir(): File {
     val props = System.getProperties()
     fun property(name: String) = props.getProperty(name) ?: System.getProperty(name)
     val WIN = "win"
@@ -45,7 +45,7 @@ fun getNodeBinDir(rootProject: Project): File {
             else -> X86
         }
     }
-    val nodeJs = NodeJsRootPlugin.apply(rootProject)
+    val nodeJs = NodeJsRootPlugin.apply(this)
     val installationDir = nodeJs.installationDir
     val nodeDir = installationDir.resolve("node-v${nodeJs.nodeVersion}-$platform-$architecture")
 

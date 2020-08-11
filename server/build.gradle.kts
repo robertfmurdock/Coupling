@@ -1,21 +1,10 @@
-import com.moowork.gradle.node.yarn.YarnTask
-import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.getNodeBinDir
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import java.io.FileOutputStream
 
 plugins {
     kotlin("js")
-    id("com.github.node-gradle.node")
     id("kotlinx-serialization") version "1.3.72"
-}
-
-node {
-    version = BuildConstants.nodeVersion
-    npmVersion = BuildConstants.npmVersion
-    yarnVersion = BuildConstants.yarnVersion
-    download = true
 }
 
 kotlin {
@@ -71,11 +60,6 @@ dependencies {
 }
 
 tasks {
-    val yarn by getting {
-        inputs.file(file("package.json"))
-        outputs.dir(file("node_modules"))
-    }
-
     val clean by getting {
         doLast {
             delete(file("build"))
@@ -107,8 +91,8 @@ tasks {
         into("build/executable/public/app/build")
     }
 
-    val serverCompile by creating(YarnTask::class) {
-        dependsOn(yarn, copyServerResources, compileKotlinJs)
+    val serverCompile by creating(Exec::class) {
+        dependsOn(copyServerResources, compileKotlinJs)
         mustRunAfter(clean)
         inputs.file(compileKotlinJs.outputFile)
         inputs.dir("node_modules")
@@ -118,8 +102,17 @@ tasks {
         inputs.dir("public")
         inputs.dir("views")
         outputs.dir(file("build/executable"))
-        setEnvironment(mapOf("NODE_ENV" to "production"))
-        args = listOf("webpack", "--config", "webpack.config.js")
+
+        environment(
+            "NODE_ENV" to "production",
+            "NODE_PATH" to nodeModulesDir
+        )
+        commandLine = listOf(
+            nodeExecPath,
+            "$nodeModulesDir/.bin/webpack",
+            "--config",
+            "webpack.config.js"
+        )
     }
 
     val assemble by getting {
@@ -127,14 +120,10 @@ tasks {
     }
 
     val updateDependencies by creating(Exec::class) {
-        val nodeBinDir = getNodeBinDir(project.rootProject)
-
         val packageJson: String? by rootProject
-
-        val nodeModulesDir = "${rootProject.buildDir.resolve("js/node_modules")}"
         environment("NODE_PATH" to nodeModulesDir)
         commandLine = listOf(
-            "$nodeBinDir/node",
+            nodeExecPath,
             "$nodeModulesDir/.bin/ncu",
             "-u",
             "--packageFile",
@@ -142,21 +131,19 @@ tasks {
         )
     }
 
-    val start by creating(YarnTask::class) {
+    val start by creating(Exec::class) {
         dependsOn(assemble)
-        args = listOf("run", "start-built-app")
+        environment(
+            "NODE_ENV" to "production",
+            "NODE_PATH" to nodeModulesDir
+        )
+        commandLine = listOf(nodeExecPath, project.relativePath("startup"))
     }
-
-    task<YarnTask>("stats") {
-        dependsOn(yarn)
-
-        args = listOf("-s", "webpack", "--json", "--profile", "--config", "webpack.config.js")
-
-        setExecOverrides(closureOf<ExecSpec> {
-            file("build/report").mkdirs()
-            standardOutput = FileOutputStream(file("build/report/stats.json"))
-        })
-    }
-
 
 }
+
+val Project.nodeModulesDir get() = "${rootProject.buildDir.resolve("js/node_modules")}"
+
+val Exec.nodeExecPath get() = "${nodeBinDir}/node"
+
+val Exec.nodeBinDir get() = project.rootProject.getNodeBinDir()
