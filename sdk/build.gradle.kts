@@ -69,7 +69,7 @@ kotlin {
             dependencies {
                 implementation(project(":server"))
                 implementation(npm("axios-cookiejar-support", "^0.5.0"))
-                implementation(npm("fs-extra", "^8.1.0"))
+                implementation(npm("fs-extra", "^9.0.1"))
                 implementation(npm("monk", "^7.1.1"))
                 implementation(npm("tough-cookie", "^3.0.1"))
                 implementation(npm("jasmine", "^3.5.0"))
