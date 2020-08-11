@@ -160,7 +160,6 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - buildMongo
       - deploy-prod:
           requires:
             - build
