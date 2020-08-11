@@ -57,7 +57,7 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-46-{{ .Branch }}
-      - run: docker-compose up -d dynamo chrome
+      - run: docker-compose up -d dynamo chrome mongo
       - restore_cache:
           key: coupling-cache-46-{{ .Branch }}
       - coupling-orb/setup
@@ -70,7 +70,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew build check -x :repository:mongo:check"
+      - run: "./gradlew build check"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
@@ -164,7 +164,6 @@ workflows:
       - deploy-prod:
           requires:
             - build
-            - buildMongo
           filters:
             branches:
               only: master
