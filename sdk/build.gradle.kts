@@ -1,5 +1,7 @@
 import com.moowork.gradle.node.task.NodeTask
+import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -14,6 +16,9 @@ node {
     yarnVersion = BuildConstants.yarnVersion
     download = true
 }
+
+val packageJson = loadPackageJson()
+
 
 kotlin {
 
@@ -54,11 +59,13 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation(project(":json"))
-                implementation(npm("axios", "^0.19.0"))
-                implementation(npm("ws", "^7.2.0"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+
+                packageJson.dependencies().forEach {
+                    implementation(npm(it.first, it.second.asText()))
+                }
             }
         }
 
@@ -68,17 +75,15 @@ kotlin {
 
             dependencies {
                 implementation(project(":server"))
-                implementation(npm("axios-cookiejar-support", "^0.5.0"))
-                implementation(npm("fs-extra", "^9.0.1"))
-                implementation(npm("monk", "^7.1.1"))
-                implementation(npm("tough-cookie", "^3.0.1"))
-                implementation(npm("jasmine", "^3.5.0"))
-                implementation(npm("jasmine-reporters", "^2.3.2"))
-                implementation(npm("source-map-support", "^0.5.13"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async:+")
+
+                packageJson.devDependencies().forEach {
+                    implementation(npm(it.first, it.second.asText()))
+                }
+
             }
         }
 
@@ -88,6 +93,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async:+")
+
             }
         }
     }

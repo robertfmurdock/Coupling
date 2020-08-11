@@ -3,8 +3,17 @@
   "version": "1.0.0",
   "main": "",
   "license": "MIT",
-  "devDependencies": {
-  },
   "dependencies": {
+    "axios": "^0.19.2",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {
+    "axios-cookiejar-support": "^1.0.0",
+    "fs-extra": "^9.0.1",
+    "jasmine": "^3.6.1",
+    "jasmine-reporters": "^2.3.2",
+    "monk": "^7.3.1",
+    "source-map-support": "^0.5.19",
+    "tough-cookie": "^4.0.0"
   }
 }
