@@ -91,7 +91,6 @@ tasks {
             "PATH" to "$nodeBinDir"
         )
 
-
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
 
         commandLine = listOf("$nodeModulesDir/.bin/webpack", "--config", project.projectDir.resolve("webpack.config.js").absolutePath)

@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
+import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.client.tribeConfig
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
@@ -83,7 +84,7 @@ private fun Node.fitTribeName(size: Int) = fitty(
     multiLine = true
 )
 
-val noTribeImagePath = kotlinext.js.require("no-tribe.png").default.unsafeCast<String>()
+val noTribeImagePath = pngPath("tribes/no-tribe")
 
 private fun RBuilder.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
     email = tribe.email,

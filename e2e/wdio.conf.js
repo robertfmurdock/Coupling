@@ -65,9 +65,9 @@ let config = {
   },
 
   afterTest: function (test, context, result) {
-    // if (result.passed) {
-    //   return;
-    // }
+    if (result.passed) {
+      return;
+    }
     const timestamp = new Date().toISOString();
     const filepath = path.join('./build/reports/e2e/screenshots/', timestamp + '.png');
     browser.saveScreenshot(filepath);

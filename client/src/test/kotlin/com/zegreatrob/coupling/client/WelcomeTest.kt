@@ -28,11 +28,11 @@ class WelcomeTest {
     } verify { wrapper ->
         wrapper.leftCard().props().player
             .assertIsEqualTo(
-                Player(id = "Frodo", name = "Frodo", imageURL = imagePath("players/frodo"))
+                Player(id = "Frodo", name = "Frodo", imageURL = pngPath("players/frodo"))
             )
         wrapper.rightCard().props().player
             .assertIsEqualTo(
-                Player(id = "Sam", name = "Sam", imageURL = imagePath("players/samwise"))
+                Player(id = "Sam", name = "Sam", imageURL = pngPath("players/samwise"))
             )
         wrapper.welcomeProverb().text()
             .assertIsEqualTo("Together, climb mountains.")
@@ -48,11 +48,11 @@ class WelcomeTest {
     } verify { wrapper ->
         wrapper.leftCard().props().player
             .assertIsEqualTo(
-                Player(id = "Batman", name = "Batman", imageURL = imagePath("players/grayson"))
+                Player(id = "Batman", name = "Batman", imageURL = pngPath("players/grayson"))
             )
         wrapper.rightCard().props().player
             .assertIsEqualTo(
-                Player(id = "Robin", name = "Robin", imageURL = imagePath("players/wayne"))
+                Player(id = "Robin", name = "Robin", imageURL = pngPath("players/wayne"))
             )
         wrapper.welcomeProverb().text()
             .assertIsEqualTo("Clean up the city, together.")
@@ -68,11 +68,11 @@ class WelcomeTest {
     } verify { wrapper ->
         wrapper.leftCard().props().player
             .assertIsEqualTo(
-                Player(id = "Rosie", name = "Rosie", imageURL = imagePath("players/rosie"))
+                Player(id = "Rosie", name = "Rosie", imageURL = pngPath("players/rosie"))
             )
         wrapper.rightCard().props().player
             .assertIsEqualTo(
-                Player(id = "Wendy", name = "Wendy", imageURL = imagePath("players/wendy"))
+                Player(id = "Wendy", name = "Wendy", imageURL = pngPath("players/wendy"))
             )
         wrapper.welcomeProverb().text()
             .assertIsEqualTo("Team up. Get things done.")

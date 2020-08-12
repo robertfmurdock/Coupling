@@ -5,5 +5,5 @@ import kotlin.reflect.KProperty
 fun playerImage() = PlayerImageProperty()
 
 class PlayerImageProperty {
-    operator fun getValue(thisRef: Any?, property: KProperty<*>) = imagePath("players/${property.name}")
+    operator fun getValue(thisRef: Any?, property: KProperty<*>) = pngPath("players/${property.name}")
 }
