@@ -3,6 +3,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/Js/main');
 
+if (config.output)
+  config.output.publicPath = '/app/build/'
+
 config.resolve.modules.push(resourcesPath);
 config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_modules'));
 

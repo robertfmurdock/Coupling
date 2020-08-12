@@ -28,24 +28,23 @@ val disconnectedMessage = json("text" to "Not connected", "players" to emptyArra
 
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-val ServerMessage =
-    reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
-        val (message, setMessage) = useState(disconnectedMessage)
-        div {
-            websocket {
-                attrs {
-                    url = buildSocketUrl(tribeId, useSsl)
-                    onMessage = { setMessage(JSON.parse(it)) }
-                    onClose = { setMessage(disconnectedMessage) }
-                }
-            }
-            span { +message.text }
-            div {
-                message.players.map { it.toPlayer() }
-                    .map { playerCard(PlayerCardProps(tribeId, it, size = 50)) }
+val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
+    val (message, setMessage) = useState(disconnectedMessage)
+    div {
+        websocket {
+            attrs {
+                url = buildSocketUrl(tribeId, useSsl)
+                onMessage = { setMessage(JSON.parse(it)) }
+                onClose = { setMessage(disconnectedMessage) }
             }
         }
+        span { +message.text }
+        div {
+            message.players.map { it.toPlayer() }
+                .map { playerCard(PlayerCardProps(tribeId, it, size = 50)) }
+        }
     }
+}
 
 interface WebsocketMessage {
     val text: String

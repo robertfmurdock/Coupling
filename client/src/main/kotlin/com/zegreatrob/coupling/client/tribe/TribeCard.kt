@@ -84,7 +84,6 @@ private fun Node.fitTribeName(size: Int) = fitty(
 )
 
 val noTribeImagePath = kotlinext.js.require("no-tribe.png").default.unsafeCast<String>()
-    .let { "/app/build/$it" }
 
 private fun RBuilder.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
     email = tribe.email,

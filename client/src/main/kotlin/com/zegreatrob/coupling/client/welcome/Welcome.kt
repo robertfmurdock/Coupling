@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.playerImage
 import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -36,20 +37,27 @@ val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
 
 val welcomeTribeId = TribeId("welcome")
 
-private val candidates = listOf(
+val frodo by playerImage()
+val samwise by playerImage()
+val grayson by playerImage()
+val wayne by playerImage()
+val rosie by playerImage()
+val wendy by playerImage()
+
+private val candidates: List<WelcomeCardSet> = listOf(
     WelcomeCardSet(
-        left = Card(name = "Frodo", imagePath = "frodo-icon.png"),
-        right = Card(name = "Sam", imagePath = "samwise-icon.png"),
+        left = Card(name = "Frodo", imagePath = frodo),
+        right = Card(name = "Sam", imagePath = samwise),
         proverb = "Together, climb mountains."
     ),
     WelcomeCardSet(
-        left = Card(name = "Batman", imagePath = "grayson-icon.png"),
-        right = Card(name = "Robin", imagePath = "wayne-icon.png"),
+        left = Card(name = "Batman", imagePath = grayson),
+        right = Card(name = "Robin", imagePath = wayne),
         proverb = "Clean up the city, together."
     ),
     WelcomeCardSet(
-        left = Card(name = "Rosie", imagePath = "rosie-icon.png"),
-        right = Card(name = "Wendy", imagePath = "wendy-icon.png"),
+        left = Card(name = "Rosie", imagePath = rosie),
+        right = Card(name = "Wendy", imagePath = wendy),
         proverb = "Team up. Get things done."
     )
 )
@@ -81,11 +89,7 @@ private fun WelcomeCardSet.toPairAndProverb() = pairOf(
 
 private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
-private fun Card.toPlayer() = Player(
-    id = name,
-    name = name,
-    imageURL = "/images/icons/players/$imagePath"
-)
+private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
 private fun RBuilder.welcomeTitle() {
     val welcomeTitleRef = useRef<Node?>(null)
@@ -123,7 +127,7 @@ private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<out GoogleSignInCommand
         if (showLoginChooser) {
             loginChooser(dispatchFunc)
         } else {
-            couplingButton(supersize, pink, "${styles["enterButton"]}", { setShowLoginChooser(true) }) {
+            couplingButton(supersize, pink, styles["enterButton"], { setShowLoginChooser(true) }) {
                 +"Come on in!"
             }
         }
