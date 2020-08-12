@@ -102,6 +102,8 @@ tasks {
     }
 
     val updateDependencies by creating(Exec::class) {
+        dependsOn(compileKotlinJs)
+
         val packageJson: String? by rootProject
         environment("NODE_PATH" to nodeModulesDir)
         commandLine = listOf(
