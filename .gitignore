@@ -2,6 +2,9 @@
 test-output
 **/sandbox/*.json
 node_modules
+
+#Ignore yarn lock. Kotlin builds don't use them, so they're misleading.
+yarn.lock
 .tmp
 *.log
 *.log.*

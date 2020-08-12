@@ -1,5 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/Js/main');
 
@@ -37,8 +40,20 @@ config.module.rules.push(
   }
 );
 config.plugins.push(new MiniCssExtractPlugin({
-  filename: './styles.css'
-}));
+    filename: 'styles.css'
+  }),
+  new HtmlWebpackPlugin({
+    alwaysWriteToDisk: true,
+    title: 'Coupling Dev Server',
+    file: "index.html",
+    template: path.resolve(resourcesPath, 'template.html')
+  }),
+  new HtmlWebpackHarddiskPlugin(),
+  new FaviconsWebpackPlugin({
+    logo: path.resolve(resourcesPath, 'images/tribes/no-tribe.png'),
+    cache: true
+  })
+);
 
 if (config.devServer) {
   config.devServer.port = 3001
@@ -47,4 +62,6 @@ if (config.devServer) {
   config.devServer.historyApiFallback = {
     index: 'index.html'
   }
+  let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
+  config.devServer.contentBase.push(distributionPath)
 }
