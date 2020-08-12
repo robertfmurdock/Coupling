@@ -9,7 +9,7 @@ ENV \
   NODE_ENV=production \
   NODE_PATH=build/node_modules
 
-COPY server/package.json server/yarn.lock /usr/src/app/server/
+COPY server/package.json /usr/src/app/server/
 
 RUN yarn install --production
 
