@@ -5,8 +5,6 @@ const startJasmine = function () {
   return require('../buildSrc/test-wrapper')
 };
 
-process.env.PORT = "4001";
-
 const serverProcess = childProcess.fork(__dirname + '/forkStartup', [], {stdio: "pipe"});
 
 process.on('exit', () => serverProcess.kill());

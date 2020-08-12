@@ -1,20 +1,12 @@
-
-import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
+import com.zegreatrob.coupling.build.nodeExecPath
+import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization") version "1.3.72"
-    id("com.github.node-gradle.node")
-}
-
-node {
-    version = BuildConstants.nodeVersion
-    npmVersion = BuildConstants.npmVersion
-    yarnVersion = BuildConstants.yarnVersion
-    download = true
 }
 
 val packageJson = loadPackageJson()
@@ -92,7 +84,6 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:+")
                 implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("com.zegreatrob.testmints:async:+")
-
             }
         }
     }
@@ -120,7 +111,7 @@ tasks {
         kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
-    val endpointTest by creating(NodeTask::class) {
+    val endpointTest by creating(Exec::class) {
         dependsOn(
             "assemble",
             compileKotlinJs,
@@ -128,28 +119,29 @@ tasks {
             compileEndpointTestKotlinJs,
             ":server:build"
         )
-        val script = projectDir.path + "/endpoint-wrapper.js"
-        inputs.file(script)
+        inputs.file(projectDir.path + "/endpoint-wrapper.js")
         inputs.files(findByPath(":server:serverCompile")!!.outputs)
 
-        setScript(File(script))
         outputs.dir("build/test-results/jsTest")
 
         val processResources = withType(ProcessResources::class.java)
 
         dependsOn(processResources)
 
-        val relevantPaths = listOf(
-            "../build/js/node_modules"
-        ) + processResources.map { it.destinationDir.path }
-
         inputs.files(compileEndpointTestKotlinJs.outputFile)
 
+        val relevantPaths = listOf(nodeModulesDir) + processResources.map { it.destinationDir.path }
         relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
 
-        setEnvironment(mapOf("NODE_PATH" to relevantPaths.joinToString(":")))
-
-        setArgs(listOf("${compileEndpointTestKotlinJs.outputFile}"))
+        environment(
+            "NODE_PATH" to relevantPaths.joinToString(":"),
+            "PORT" to "4001"
+        )
+        commandLine = listOf(
+            nodeExecPath,
+            project.relativePath("endpoint-wrapper"),
+            "${compileEndpointTestKotlinJs.outputFile}"
+        )
     }
 
     val check by getting {

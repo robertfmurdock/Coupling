@@ -104,7 +104,6 @@ tasks {
         images.add("zegreatrob/coupling:latest")
     }
 
-    val sdkYarn = getByPath(":sdk:yarn")
 
     val test by creating {
         dependsOn(":server:test", ":client:test")

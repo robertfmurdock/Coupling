@@ -1,5 +1,7 @@
-import com.zegreatrob.coupling.build.getNodeBinDir
+
 import com.zegreatrob.coupling.build.loadPackageJson
+import com.zegreatrob.coupling.build.nodeExecPath
+import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -95,7 +97,6 @@ tasks {
         dependsOn(copyServerResources, compileKotlinJs)
         mustRunAfter(clean)
         inputs.file(compileKotlinJs.outputFile)
-        inputs.dir("node_modules")
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("src/main/javascript")
@@ -107,12 +108,7 @@ tasks {
             "NODE_ENV" to "production",
             "NODE_PATH" to nodeModulesDir
         )
-        commandLine = listOf(
-            nodeExecPath,
-            "$nodeModulesDir/.bin/webpack",
-            "--config",
-            "webpack.config.js"
-        )
+        commandLine = listOf(nodeExecPath, "$nodeModulesDir/.bin/webpack", "--config", "webpack.config.js")
     }
 
     val assemble by getting {
@@ -142,8 +138,3 @@ tasks {
 
 }
 
-val Project.nodeModulesDir get() = "${rootProject.buildDir.resolve("js/node_modules")}"
-
-val Exec.nodeExecPath get() = "${nodeBinDir}/node"
-
-val Exec.nodeBinDir get() = project.rootProject.getNodeBinDir()

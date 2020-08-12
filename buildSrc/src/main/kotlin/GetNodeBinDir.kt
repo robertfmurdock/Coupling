@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.build
 
 import org.gradle.api.Project
+import org.gradle.api.tasks.Exec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import java.io.File
 
@@ -52,3 +53,9 @@ fun Project.getNodeBinDir(): File {
     val isWindows = platform == WIN
     return if (isWindows) nodeDir else nodeDir.resolve("bin")
 }
+
+val Project.nodeModulesDir get() = "${rootProject.buildDir.resolve("js/node_modules")}"
+
+val Exec.nodeExecPath get() = "${nodeBinDir}/node"
+
+val Exec.nodeBinDir get() = project.rootProject.getNodeBinDir()
