@@ -17,7 +17,6 @@ orbs:
         steps:
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall"
-          - run: "./gradlew yarn"
       collect-results:
         steps:
           - run:
