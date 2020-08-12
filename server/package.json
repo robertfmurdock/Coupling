@@ -33,9 +33,7 @@
     "ramda": "^0.27.1",
     "serve-favicon": "^2.5.0",
     "source-map-loader": "^1.0.1",
-    "ws": "^7.3.1"
-  },
-  "devDependencies": {
+    "ws": "^7.3.1",
     "axios": "^0.19.2",
     "fs-extra": "^9.0.1",
     "jasmine": "^3.6.1",
@@ -48,6 +46,8 @@
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^2.5.1"
+  },
+  "devDependencies": {
   },
   "scripts": {
   },

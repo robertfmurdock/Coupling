@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
@@ -35,29 +34,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
     implementation("com.benasher44:uuid:0.1.0")
 
-    val includeOnly = listOf(
-        "graphql",
-        "express-session",
-        "express-statsd",
-        "serve-favicon",
-        "connect-dynamodb",
-        "method-override",
-        "cookie-parser",
-        "passport-azure-ad",
-        "google-auth-library",
-        "passport",
-        "passport-local",
-        "passport-custom",
-        "express-graphql",
-        "express-ws",
-        "errorhandler"
-    )
-
-    packageJson.dependencies()
-        .filter { includeOnly.contains(it.first) }
-        .forEach {
-            implementation(npm(it.first, it.second.asText()))
-        }
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
 
 }
 
