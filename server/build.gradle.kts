@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.loadPackageJson
+import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
@@ -50,6 +51,7 @@ tasks {
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
+
     }
 
     val copyServerIcons by creating(Copy::class) {
@@ -85,9 +87,14 @@ tasks {
 
         environment(
             "NODE_ENV" to "production",
-            "NODE_PATH" to nodeModulesDir
+            "NODE_PATH" to nodeModulesDir,
+            "PATH" to "$nodeBinDir"
         )
-        commandLine = listOf(nodeExecPath, "$nodeModulesDir/.bin/webpack", "--config", "webpack.config.js")
+
+
+        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+
+        commandLine = listOf("$nodeModulesDir/.bin/webpack", "--config", project.projectDir.resolve("webpack.config.js").absolutePath)
     }
 
     val assemble by getting {
