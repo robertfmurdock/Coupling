@@ -15,10 +15,7 @@ interface BrowserSyntax {
 
     val SimpleStyle.element get() = WebdriverElement(locator)
 
-    fun SimpleStyle.elementWithClass(className: String) =
-        WebdriverElement(
-            By.className(this[className])
-        )
+    fun SimpleStyle.elementWithClass(className: String) = WebdriverElement(By.className(this[className]))
 
     suspend fun waitToArriveAt(expectedPath: String) {
         WebdriverBrowser.waitUntil({

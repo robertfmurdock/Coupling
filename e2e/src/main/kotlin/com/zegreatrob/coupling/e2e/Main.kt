@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.e2e.external.childprocess.ChildProcess
 import com.zegreatrob.coupling.e2e.external.fsextras.removeDirectory
 import com.zegreatrob.coupling.e2e.external.webpack.WebpackConfig
 import com.zegreatrob.coupling.e2e.external.webpack.runWebpack
+import com.zegreatrob.coupling.wdio.cli.runWebdriverIO
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
