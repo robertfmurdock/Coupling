@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.e2e
 import com.zegreatrob.coupling.e2e.external.childprocess.ChildProcess
 import com.zegreatrob.coupling.e2e.external.fsextras.removeDirectory
 import com.zegreatrob.coupling.e2e.external.webpack.WebpackConfig
+import com.zegreatrob.coupling.e2e.external.webpack.runWebpack
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -19,6 +20,11 @@ fun main() {
             process.exit(reportError(huh))
     }
 }
+
+private fun webpackConfig() =
+    com.zegreatrob.coupling.e2e.external.webpack.webpackConfig(process.envString("WEBPACK_CONFIG"))
+
+private fun Process.envString(key: String) = env[key].unsafeCast<String>()
 
 private fun WebpackConfig.wdioConfig() = "${output.path}/config.js"
 

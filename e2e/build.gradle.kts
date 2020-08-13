@@ -63,9 +63,9 @@ tasks {
 
         environment(
             "PORT" to "3099",
-            "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules:${project.projectDir.path}",
             "APP_PATH" to "${project(":server").buildDir.absolutePath}/executable/app.js",
-            "BUILD_DIR" to project.buildDir.absolutePath
+            "BUILD_DIR" to project.buildDir.absolutePath,
+            "WEBPACK_CONFIG" to project.projectDir.resolve("webpack.config.js")
         )
 
         val logFile = file("build/logs/run.log")
