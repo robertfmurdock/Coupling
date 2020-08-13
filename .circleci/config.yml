@@ -15,6 +15,7 @@ orbs:
     commands:
       setup:
         steps:
+          - run: "apt-get install node -y"
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall"
       collect-results:
@@ -52,7 +53,6 @@ jobs:
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
-      SHARP_IGNORE_GLOBAL_LIBVIPS: true
     steps:
       - checkout
       - restore_cache:
