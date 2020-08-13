@@ -56,6 +56,6 @@ fun Project.getNodeBinDir(): File {
 
 val Project.nodeModulesDir get() = "${rootProject.buildDir.resolve("js/node_modules")}"
 
-val Exec.nodeExecPath get() = "${nodeBinDir}/node"
+val Exec.nodeExecPath get() = "${nodeBinDir}/node".also { println("node path is: $it") }
 
 val Exec.nodeBinDir get() = project.rootProject.getNodeBinDir()
