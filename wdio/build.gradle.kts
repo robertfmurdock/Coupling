@@ -19,6 +19,3 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-js:1.8.3")
     implementation(npm("@wdio/cli"))
 }
-
-tasks {
-}
