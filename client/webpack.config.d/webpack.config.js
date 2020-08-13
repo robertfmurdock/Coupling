@@ -40,13 +40,31 @@ config.module.rules.push(
     ]
   }
 );
+
+
+if (config.devServer) {
+  config.devServer.port = 3001
+  config.devServer.publicPath = '/app/build'
+  config.devServer.hot = true
+  config.devServer.historyApiFallback = {index: 'index.html'}
+  let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
+  config.devServer.contentBase.push(distributionPath)
+}
+
 config.plugins.push(
   new HtmlWebpackPlugin({
     alwaysWriteToDisk: true,
     title: 'Coupling Dev Server',
     file: "index.html",
     scriptLoading: 'defer',
-    template: path.resolve(resourcesPath, 'template.html')
+    template: path.resolve(resourcesPath, 'template.html'),
+    devServer: config.devServer ? config.devServer.port : undefined,
+    appMountClass: 'view-container',
+    window: config.devServer ? {
+      isAuthenticated: true,
+      expressEnv: "dev",
+      inMemory: true,
+    } : {}
   }),
   new ScriptExtHtmlWebpackPlugin({
     defaultAttribute: 'async'
@@ -60,14 +78,3 @@ config.plugins.push(
     filename: 'styles.css'
   }),
 );
-
-if (config.devServer) {
-  config.devServer.port = 3001
-  config.devServer.publicPath = '/app/build'
-  config.devServer.hot = true
-  config.devServer.historyApiFallback = {
-    index: 'index.html'
-  }
-  let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
-  config.devServer.contentBase.push(distributionPath)
-}

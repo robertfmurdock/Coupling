@@ -7,14 +7,23 @@
     <meta name="viewport" content="width=device-width">
     <script>var iosDragDropShim = {enableEnterLeave: true};</script>
     <script src="/javascripts/ios-drag-drop.js"></script>
-<!--    <script>-->
-<!--      window.isAuthenticated = true-->
-<!--      window.expressEnv = "dev"-->
-<!--      window.inMemory = true-->
-<!--    </script>-->
 
+    <% if (htmlWebpackPlugin.options.window) { %>
+    <script>
+      <% for (var varName in htmlWebpackPlugin.options.window) { %>
+        window['<%=varName%>'] = <%= JSON.stringify(htmlWebpackPlugin.options.window[varName]) %>;
+      <% } %>
+    </script>
+    <% } %>
+
+    <% if (htmlWebpackPlugin.options.devServer) { %>
+    <script src="/webpack-dev-server.js"></script>
+    <% } %>
 </head>
 <body>
-<span class="view-container"></span>
+
+<% if (htmlWebpackPlugin.options.appMountClass) { %>
+<div class="<%= htmlWebpackPlugin.options.appMountClass%>"></div>
+<% } %>
 </body>
 </html>
