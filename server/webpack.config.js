@@ -5,7 +5,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const config = {
   mode: "production",
-  entry: path.resolve(jsPath, './src/main/javascript/app.js'),
+  entry: "Coupling-server",
   output: {
     path: path.resolve(__dirname, 'build/executable'),
     filename: 'app.js',
