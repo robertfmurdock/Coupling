@@ -6,7 +6,6 @@
     <script src="https://apis.google.com/js/platform.js"></script>
     <meta name="viewport" content="width=device-width">
     <script>var iosDragDropShim = {enableEnterLeave: true};</script>
-    <script src="/javascripts/ios-drag-drop.js"></script>
 
     <% if (htmlWebpackPlugin.options.window) { %>
     <script>
@@ -16,9 +15,6 @@
     </script>
     <% } %>
 
-    <% if (htmlWebpackPlugin.options.devServer) { %>
-    <script src="/webpack-dev-server.js"></script>
-    <% } %>
 </head>
 <body>
 

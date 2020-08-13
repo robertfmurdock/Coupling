@@ -39,6 +39,7 @@
     "d3-color": "^1.4.1",
     "d3-selection": "^1.4.1",
     "date-fns": "^2.15.0",
+    "drag-drop-webkit-mobile": "^1.4.1",
     "favicons-webpack-plugin": "^4.2.0",
     "file-loader": "^6.0.0",
     "fitty": "^2.3.2",

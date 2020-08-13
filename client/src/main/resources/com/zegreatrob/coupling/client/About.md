@@ -16,7 +16,7 @@ Check out this editorial I wrote on the subject - [Pairing for Outsiders](https:
 
 ## Tech Notes
 
-As present time, this application is written in Kotlin (both server and client), compiled to Javascript, and hosted in AWS. Historically, it was originally written in pure javascript, then rebuilt with Webpack, then ported to Typescript, then ported to Kotlin. It is a living example of being able to completely rewrite an application *incrementally*, *repeatedly* with zero downtime *even with* every valid commit being pushed to production immediately. If you don't believe me, look at the commit history. Its all there, including warts. So many warts.
+As present time, this application is written in Kotlin (both server and client), compiled to Javascript, and hosted in AWS. Historically, it was originally written in pure Javascript, then rebuilt with Webpack, then ported to Typescript, then ported to Kotlin. It is a living example of being able to completely rewrite an application *incrementally*, *repeatedly* with zero downtime *even with* every valid commit being pushed to production immediately. If you don't believe me, look at the commit history. Its all there, including warts. So many warts.
 
 Only information explicitly keyed by the user is consumed by the application. Email addresses are used to provide access to tribes, and nothing more... auth is provided by third party vendors so I don't have to manage any of that nonsense.
 
