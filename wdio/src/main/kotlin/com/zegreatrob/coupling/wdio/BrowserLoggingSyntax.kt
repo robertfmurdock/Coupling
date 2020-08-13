@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.e2e.external.webdriverio
+package com.zegreatrob.coupling.wdio
 
 import com.soywiz.klock.measureTimeWithResult
 import mu.KotlinLogging

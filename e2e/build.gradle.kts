@@ -33,6 +33,7 @@ dependencies {
 
     testImplementation(project(":sdk"))
     testImplementation(project(":test-logging"))
+    testImplementation(project(":wdio"))
     testImplementation(kotlin("test-js"))
     testImplementation(npm("axios-cookiejar-support", "^0.5.0"))
     testImplementation(npm("tough-cookie", "^3.0.1"))

@@ -7,13 +7,15 @@ import kotlin.reflect.KProperty
 
 interface BrowserSyntax {
 
-    val SimpleStyle.locator get() = By.className(
-        className
-    )
+    val SimpleStyle.locator
+        get() = By.className(
+            className
+        )
 
-    val SimpleStyle.element get() = WebdriverElement(
-        locator
-    )
+    val SimpleStyle.element
+        get() = WebdriverElement(
+            locator
+        )
 
     fun SimpleStyle.elementWithClass(className: String) =
         WebdriverElement(
@@ -23,9 +25,7 @@ interface BrowserSyntax {
     suspend fun waitToArriveAt(expectedPath: String) {
         WebdriverBrowser.waitUntil({
             try {
-                WebdriverBrowser.currentUrl().pathname.startsWith(
-                    expectedPath
-                )
+                WebdriverBrowser.currentUrl().pathname.startsWith(expectedPath)
             } catch (bad: Throwable) {
                 false
             }
@@ -54,6 +54,7 @@ interface BrowserSyntax {
             this,
             this@BrowserSyntax
         )
+
     fun SimpleStyle.getAll() =
         StyledElementArrayDelegate(
             this,

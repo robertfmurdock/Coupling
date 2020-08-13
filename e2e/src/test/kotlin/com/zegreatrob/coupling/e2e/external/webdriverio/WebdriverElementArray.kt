@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.e2e.external.webdriverio
 
+import com.zegreatrob.coupling.wdio.BrowserLoggingSyntax
+
 class WebdriverElementArray(
     val selector: String = "",
     private val finder: suspend () -> List<WebdriverElement> = {

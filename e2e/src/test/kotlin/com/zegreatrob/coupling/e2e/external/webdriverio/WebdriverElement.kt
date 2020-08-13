@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.external.webdriverio
 
+import com.zegreatrob.coupling.wdio.BrowserLoggingSyntax
 import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.js.json

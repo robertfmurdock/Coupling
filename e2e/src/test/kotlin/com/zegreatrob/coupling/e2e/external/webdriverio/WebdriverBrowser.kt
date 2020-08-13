@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.external.webdriverio
 
+import com.zegreatrob.coupling.wdio.BrowserLoggingSyntax
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asPromise
 import kotlinx.coroutines.async
@@ -34,12 +35,17 @@ object WebdriverBrowser : BrowserLoggingSyntax {
     suspend fun waitForAlert() = log(WebdriverBrowser::waitForAlert) {
         waitUntil({ isAlertOpen() })
     }
+
     suspend fun isAlertOpen() = log(WebdriverBrowser::isAlertOpen) { browser.isAlertOpen().await() }
     suspend fun acceptAlert() = log(WebdriverBrowser::acceptAlert) { browser.acceptAlert().await() }
     suspend fun dismissAlert() = log(WebdriverBrowser::dismissAlert) { browser.dismissAlert().await() }
     suspend fun alertText() = log(WebdriverBrowser::alertText) { browser.getAlertText().await() }
-    suspend fun currentUrl() = log(WebdriverBrowser::currentUrl) { URL(
-        browser.getUrl().await()) }
+    suspend fun currentUrl() = log(WebdriverBrowser::currentUrl) {
+        URL(
+            browser.getUrl().await()
+        )
+    }
+
     suspend fun refresh() = browser.refresh().await()
     suspend fun setUrl(url: String) = browser.url(url).await()
     suspend fun getLogs() = browser.getLogs("browser").await().toList()
