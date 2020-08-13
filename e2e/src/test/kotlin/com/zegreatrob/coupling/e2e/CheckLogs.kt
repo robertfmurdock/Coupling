@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e
 
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.js.Json
 import kotlin.js.json

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.e2e.external.webdriverio
 
 import com.zegreatrob.coupling.wdio.BrowserLoggingSyntax
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 
 class WebdriverElementArray(
     val selector: String = "",

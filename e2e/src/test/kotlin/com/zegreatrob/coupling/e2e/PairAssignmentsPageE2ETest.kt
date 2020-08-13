@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.e2e.PairAssignments.retiredPlayersButton
 import com.zegreatrob.coupling.e2e.PairAssignments.statisticsButton
 import com.zegreatrob.coupling.e2e.PairAssignments.viewHistoryButton
 import com.zegreatrob.coupling.e2e.TribeCard.header
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElement
 import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElementArray
 import com.zegreatrob.minassert.assertIsEqualTo

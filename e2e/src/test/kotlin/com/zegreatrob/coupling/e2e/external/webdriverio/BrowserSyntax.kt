@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.e2e.external.webdriverio
 
 import com.zegreatrob.coupling.e2e.SimpleStyle
 import com.zegreatrob.coupling.e2e.get
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.reflect.KProperty
 

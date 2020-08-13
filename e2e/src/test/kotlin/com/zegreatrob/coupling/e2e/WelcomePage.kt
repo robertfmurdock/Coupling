@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e
 
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 
 object WelcomePage : StyleSyntax {
     override val styles = loadStyles("Welcome")

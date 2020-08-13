@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.e2e.external.webdriverio
+package com.zegreatrob.coupling.wdio
 
 import kotlin.js.Json
 import kotlin.js.Promise

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.coupling.e2e.external.webdriverio.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke

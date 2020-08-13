@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.e2e.external.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate

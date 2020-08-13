@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.e2e
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.external.webdriverio.*
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 
 object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")

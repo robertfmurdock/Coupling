@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.e2e.external.webdriverio
+package com.zegreatrob.coupling.wdio
 
-import com.zegreatrob.coupling.wdio.BrowserLoggingSyntax
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asPromise
 import kotlinx.coroutines.async
@@ -18,16 +17,13 @@ object WebdriverBrowser : BrowserLoggingSyntax {
 
     suspend fun waitUntil(
         condition: suspend () -> Boolean,
-        timeout: Int = waitToBePresentDuration,
+        timeout: Int? = null,
         timeoutMessage: String = ""
     ): Unit = log(this::waitUntil.name) {
-        browser.waitUntil(
-            { GlobalScope.async { condition() }.asPromise() }, json(
-                "timeout" to timeout,
-                "timeoutMsg" to timeoutMessage,
-                "interval" to 50
-            )
-        ).await()
+        val options = json("timeoutMsg" to timeoutMessage)
+            .let { if (timeout != null) it.add(json("timeout" to timeout)) else it }
+        browser.waitUntil({ GlobalScope.async { condition() }.asPromise() }, options)
+            .await()
     }
 
     private val baseUrl get() = URL(browser.config["baseUrl"].unsafeCast<String>())

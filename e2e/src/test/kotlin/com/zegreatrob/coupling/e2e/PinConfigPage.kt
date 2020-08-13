@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.e2e.external.webdriverio.By
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElement
 import com.zegreatrob.coupling.e2e.external.webdriverio.waitToBePresentDuration
 

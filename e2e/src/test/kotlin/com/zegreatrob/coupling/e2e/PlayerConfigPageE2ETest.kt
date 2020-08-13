@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.e2e.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.PlayerCard.header
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverBrowser
+import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElement
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
