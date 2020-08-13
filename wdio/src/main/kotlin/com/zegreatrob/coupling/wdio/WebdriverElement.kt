@@ -6,21 +6,16 @@ import kotlin.js.json
 
 class WebdriverElement(
     val selector: String = "",
-    private val finder: suspend () -> Element = {
-        WebdriverBrowser.element(
-            selector
-        )
-    }
+    private val finder: suspend () -> Element = selector.defaultElementFinder()
 ) : BrowserLoggingSyntax {
+
     internal suspend fun element() = finder()
 
     fun all() = WebdriverElementArray(selector)
 
     fun all(selector: String) = if (this.selector == "")
         WebdriverElementArray {
-            element().all(
-                selector
-            ).await()
+            element().all(selector).await()
                 .map { WebdriverElement { it } }
         }
     else
@@ -28,9 +23,7 @@ class WebdriverElement(
 
     fun element(selector: String): WebdriverElement = if (this.selector == "")
         WebdriverElement {
-            element().element(
-                selector
-            ).await()
+            element().element(selector).await()
         }
     else
         WebdriverElement("${this.selector} $selector")
@@ -59,3 +52,4 @@ class WebdriverElement(
 
 }
 
+private fun String.defaultElementFinder(): suspend () -> Element = { WebdriverBrowser.element(this) }

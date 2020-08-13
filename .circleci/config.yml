@@ -16,10 +16,8 @@ orbs:
       setup:
         steps:
           - run: echo "export PATH=home/circleci/.gradle/nodejs/node-v12.14.0-linux-x64/bin:$PATH" >> $BASH_ENV
-          - run: sudo rm -r /opt/circleci/.nvm
-          - run: echo $PATH
           - run: "./gradlew kotlinNodeJsSetup"
-          - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall"
+          - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall --no-daemon"
       collect-results:
         steps:
           - run:

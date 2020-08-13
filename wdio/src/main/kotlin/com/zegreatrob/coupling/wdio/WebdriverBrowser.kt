@@ -90,4 +90,3 @@ object WebdriverBrowser : BrowserLoggingSyntax {
     }
 
 }
-

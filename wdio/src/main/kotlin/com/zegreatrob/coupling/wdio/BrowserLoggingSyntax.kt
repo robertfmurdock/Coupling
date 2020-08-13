@@ -4,7 +4,7 @@ import com.soywiz.klock.measureTimeWithResult
 import mu.KotlinLogging
 import kotlin.reflect.KCallable
 
-private val webdriverBrowserLogger by lazy { KotlinLogging.logger("webdriverioLogger") }
+private val webdriverBrowserLogger by lazy { KotlinLogging.logger("wdio-logger") }
 
 interface BrowserLoggingSyntax {
     val logger get() = webdriverBrowserLogger
