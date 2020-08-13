@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+var ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -39,20 +40,25 @@ config.module.rules.push(
     ]
   }
 );
-config.plugins.push(new MiniCssExtractPlugin({
-    filename: 'styles.css'
-  }),
+config.plugins.push(
   new HtmlWebpackPlugin({
     alwaysWriteToDisk: true,
     title: 'Coupling Dev Server',
     file: "index.html",
+    scriptLoading: 'defer',
     template: path.resolve(resourcesPath, 'template.html')
+  }),
+  new ScriptExtHtmlWebpackPlugin({
+    defaultAttribute: 'async'
   }),
   new HtmlWebpackHarddiskPlugin(),
   new FaviconsWebpackPlugin({
     logo: path.resolve(resourcesPath, 'images/tribes/no-tribe.png'),
     cache: true
-  })
+  }),
+  new MiniCssExtractPlugin({
+    filename: 'styles.css'
+  }),
 );
 
 if (config.devServer) {

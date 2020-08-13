@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <meta name="viewport" content="width=device-width">
+    <script>var iosDragDropShim = {enableEnterLeave: true};</script>
+    <script src="/javascripts/ios-drag-drop.js"></script>
+<!--    <script>-->
+<!--      window.isAuthenticated = true-->
+<!--      window.expressEnv = "dev"-->
+<!--      window.inMemory = true-->
+<!--    </script>-->
 
-    <script>
-      window.isAuthenticated = true
-      window.expressEnv = "dev"
-      window.inMemory = true
-    </script>
 </head>
 <body>
-<div class="view-container"></div>
+<span class="view-container"></span>
 </body>
 </html>

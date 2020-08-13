@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.external.express
 
+import com.zegreatrob.coupling.server.external.fs.Stream
 import kotlin.js.Json
 
 external interface Response {
@@ -14,4 +15,10 @@ external interface Response {
     fun sendStatus(statusCode: Int)
     fun redirect(path: String)
     fun render(view: String, json: Json)
+    fun pipe(stream: Stream): Pipe
+    fun setEncoding(encoding: String)
+}
+
+external interface Pipe {
+    fun pipe(stream: Stream): Pipe
 }
