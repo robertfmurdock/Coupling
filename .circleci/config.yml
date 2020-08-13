@@ -56,9 +56,6 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-47-{{ .Branch }}
-      - run: docker-compose up -d dynamo chrome mongo
-      - restore_cache:
-          key: coupling-cache-47-{{ .Branch }}
       - coupling-orb/setup
       - save_cache:
           key: coupling-cache-47-{{ .Branch }}
@@ -69,6 +66,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
+      - run: docker-compose up -d dynamo chrome mongo
       - run: "./gradlew build check"
       - coupling-orb/collect-results
       - persist_to_workspace:
@@ -112,8 +110,8 @@ jobs:
       - restore_cache:
           key: coupling-cache-47-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
-      - run: docker-compose up -d dynamo chrome mongo
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo chrome mongo
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - coupling-orb/collect-results
@@ -130,8 +128,8 @@ jobs:
       - restore_cache:
           key: coupling-cache-47-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
-      - run: docker-compose up -d dynamo chrome mongo
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo chrome mongo
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - coupling-orb/collect-results
@@ -148,8 +146,8 @@ jobs:
       - restore_cache:
           key: coupling-cache-47-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
-      - run: docker-compose up -d dynamo chrome mongo
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo chrome mongo
       - run: "./gradlew assemble"
       - run: "./gradlew build check"
       - coupling-orb/collect-results
