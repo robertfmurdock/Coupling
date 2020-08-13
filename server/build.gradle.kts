@@ -76,7 +76,6 @@ tasks {
         inputs.file(compileKotlinJs.outputFile)
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
-        inputs.dir("src/main/javascript")
         inputs.dir("public")
         outputs.dir(file("build/executable"))
 
