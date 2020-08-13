@@ -3,6 +3,9 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.coupling.build.JsonLoggingTestListener
+import com.zegreatrob.coupling.build.getNodeBinDir
+import com.zegreatrob.coupling.build.nodeExecPath
+import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -115,6 +118,12 @@ tasks {
 
     val build by getting {
         dependsOn(test, ":client:assemble", ":server:build")
+    }
+
+    println("Node bin dir ${getNodeBinDir()}")
+
+    val kotlinNpmInstall by getting(KotlinNpmInstallTask::class) {
+
     }
 
 }
