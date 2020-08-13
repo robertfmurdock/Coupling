@@ -33,6 +33,7 @@
             <option value="$PROJECT_DIR$/stub-model" />
             <option value="$PROJECT_DIR$/test-action" />
             <option value="$PROJECT_DIR$/test-logging" />
+            <option value="$PROJECT_DIR$/wdio" />
           </set>
         </option>
       </GradleProjectSettings>
