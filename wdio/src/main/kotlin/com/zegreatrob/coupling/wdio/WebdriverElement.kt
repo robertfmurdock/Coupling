@@ -1,8 +1,5 @@
-package com.zegreatrob.coupling.e2e.external.webdriverio
+package com.zegreatrob.coupling.wdio
 
-import com.zegreatrob.coupling.wdio.BrowserLoggingSyntax
-import com.zegreatrob.coupling.wdio.Element
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.js.json
@@ -57,7 +54,8 @@ class WebdriverElement(
     }
 
     suspend fun waitToExist() = log(::waitToExist) {
-        element().waitForExist(json("timeout" to waitToBePresentDuration)).await()
+        element().waitForExist(json()).await()
     }
 
 }
+

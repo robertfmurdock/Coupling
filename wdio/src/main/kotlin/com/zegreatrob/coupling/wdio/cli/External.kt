@@ -1,6 +1,6 @@
 @file:JsModule("@wdio/cli")
 
-package com.zegreatrob.coupling.e2e.external.wdio
+package com.zegreatrob.coupling.wdio.cli
 
 import kotlin.js.Json
 import kotlin.js.Promise

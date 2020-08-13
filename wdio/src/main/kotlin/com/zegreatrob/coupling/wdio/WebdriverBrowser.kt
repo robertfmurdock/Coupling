@@ -50,16 +50,13 @@ object WebdriverBrowser : BrowserLoggingSyntax {
         browser.executeAsync(arg, argument).await()
 
     suspend fun setLocation(location: String) {
-        val currentUrl =
-            currentUrl()
+        val currentUrl = currentUrl()
         if (currentUrl.pathname == location) {
             refresh()
         } else if (currentUrl.isNotFromBaseHost()) {
             setUrl(location)
         } else {
-            alternateImplementation(
-                location
-            )
+            alternateImplementation(location)
         }
     }
 

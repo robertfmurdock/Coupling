@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.e2e
 
-import com.zegreatrob.coupling.e2e.external.webdriverio.By
+import com.zegreatrob.coupling.wdio.By
 import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElementArray
+import com.zegreatrob.coupling.wdio.WebdriverElementArray
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 object HistoryPage : StyleSyntax {
@@ -10,8 +10,10 @@ object HistoryPage : StyleSyntax {
 
     private val historyView by getting()
 
-    val pairAssignments = WebdriverElementArray(By.className(styles["pairAssignments"]))
-    val deleteButtons = WebdriverElementArray(By.className(styles["deleteButton"]))
+    val pairAssignments =
+        WebdriverElementArray(By.className(styles["pairAssignments"]))
+    val deleteButtons =
+        WebdriverElementArray(By.className(styles["deleteButton"]))
 
     suspend fun goTo(tribeId: TribeId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/history")

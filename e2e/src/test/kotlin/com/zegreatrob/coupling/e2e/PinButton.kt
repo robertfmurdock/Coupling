@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e
 
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElementArray
+import com.zegreatrob.coupling.wdio.WebdriverElementArray
 
 object PinButton : StyleSyntax {
     override val styles = loadStyles("pin/PinButton")

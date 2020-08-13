@@ -16,8 +16,8 @@ import com.zegreatrob.coupling.e2e.PairAssignments.statisticsButton
 import com.zegreatrob.coupling.e2e.PairAssignments.viewHistoryButton
 import com.zegreatrob.coupling.e2e.TribeCard.header
 import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElement
-import com.zegreatrob.coupling.e2e.external.webdriverio.WebdriverElementArray
+import com.zegreatrob.coupling.wdio.WebdriverElement
+import com.zegreatrob.coupling.wdio.WebdriverElementArray
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.coroutineScope

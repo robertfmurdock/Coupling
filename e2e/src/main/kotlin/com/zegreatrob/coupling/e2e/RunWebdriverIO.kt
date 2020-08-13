@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e
 
-import com.zegreatrob.coupling.e2e.external.wdio.Launcher
+import com.zegreatrob.coupling.wdio.cli.Launcher
 import kotlinx.coroutines.await
 import kotlin.js.json
 
