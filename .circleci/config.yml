@@ -15,7 +15,7 @@ orbs:
     commands:
       setup:
         steps:
-          - run: "sudo apt-get install nodejs -y"
+          - run: "sudo apt-get purge --auto-remove nodejs"
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall"
       collect-results:
