@@ -15,7 +15,7 @@ orbs:
     commands:
       setup:
         steps:
-          - run: nvm install node
+          - run: sudo rm -r /opt/circleci/.nvm
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall"
       collect-results:
