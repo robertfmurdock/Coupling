@@ -16,8 +16,6 @@ fun Express.middleware() {
     use(compression())
     use(statsD())
     set("port", Config.port)
-    set("views", viewResources())
-    set("view engine", "pug")
     use(tracer())
     use(scope())
     if (!Config.disableLogging) {

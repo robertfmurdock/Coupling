@@ -48,11 +48,7 @@ tasks {
         }
     }
 
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-
-    }
+    val compileKotlinJs by getting(Kotlin2JsCompile::class)
 
     val copyServerIcons by creating(Copy::class) {
         from("public")
@@ -82,7 +78,6 @@ tasks {
         inputs.file(file("webpack.config.js"))
         inputs.dir("src/main/javascript")
         inputs.dir("public")
-        inputs.dir("views")
         outputs.dir(file("build/executable"))
 
         environment(

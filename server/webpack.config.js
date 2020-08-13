@@ -15,7 +15,7 @@ const config = {
     __filename: false,
     __dirname: false
   },
-  devtool: 'eval',
+  devtool: 'source-map',
   target: 'node',
   externals: [
     nodeExternals({
@@ -35,6 +35,11 @@ const config = {
     rules: [
       {
         test: /\.js$/,
+        use: ["kotlin-source-map-loader"],
+        enforce: "pre"
+      },
+      {
+        test: /\.js$/,
         use: ["source-map-loader"],
         enforce: "pre"
       },
@@ -48,5 +53,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.optimize.OccurrenceOrderPlugin()
   ]);
 }
+
 
 module.exports = config;

@@ -1,17 +1,11 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.entity.tribe.tribeListRouter
-import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.express.isInDevMode
-import com.zegreatrob.coupling.server.express.middleware.resourcePath
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
-import com.zegreatrob.coupling.server.external.fs.fs
-import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.passport.passport
-import com.zegreatrob.coupling.server.external.stream.Readable
 import com.zegreatrob.coupling.server.graphql.couplingSchema
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -60,50 +54,6 @@ private fun authenticateAzureWithFailure() = passport.authenticate(
 )
 
 private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/") }
-
-
-val indexHtml = fs.readFileSync(resourcePath("public") + "/app/build/index.html", "utf8")
-
-
-private fun Express.indexRoute(): Handler = { request, response, _ ->
-    val indexStream = Readable.from(arrayOf(indexHtml))
-
-    val rewritingStream = RewritingStream()
-    var replaceNextText: String? = null
-    rewritingStream.on("startTag") { tag ->
-        rewritingStream.emitStartTag(tag)
-
-        if (tag.tagName == "title") {
-            replaceNextText = "Coupling"
-        }
-    }
-
-    rewritingStream.on("text") { tag, raw ->
-        val text = replaceNextText
-        if (text != null)
-            rewritingStream.emitRaw(text).also { replaceNextText = null }
-        else
-            rewritingStream.emitRaw(raw)
-    }
-
-    rewritingStream.on("endTag") { tag ->
-
-        if (tag.tagName == "head") {
-            rewritingStream.emitRaw(
-                """<script>
-                    window.googleClientId = "${Config.googleClientID}";
-                    window.expressEnv = "$env";
-                    window.isAuthenticated = ${request.isAuthenticated()}
-                    </script>
-                """.trimIndent()
-            )
-        }
-
-        rewritingStream.emitEndTag(tag)
-    }
-
-    indexStream.pipe(rewritingStream).pipe(response)
-}
 
 private fun apiGuard(): Handler = { request, response, next ->
     request.statsdkey = listOf("http", request.method.toLowerCase(), request.path).joinToString(".")
