@@ -4,8 +4,6 @@ const log4js = require('@log4js-node/log4js-api');
 const logger = log4js.getLogger('default');
 const path = require('path');
 
-console.log('wdio base url', `http://localhost:${process.env.PORT}`);
-
 let config = {
   runner: 'local',
   specs: [
