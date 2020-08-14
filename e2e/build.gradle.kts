@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
+
+import com.zegreatrob.coupling.build.configureWdioRun
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -47,46 +48,27 @@ dependencies {
 }
 
 tasks {
+    val compileKotlinJs by getting(Kotlin2JsCompile::class)
     val compileTestKotlinJs by getting(Kotlin2JsCompile::class)
 
-    val nodeRun by wdioRun(
-        pathToNodeApp = "${project(":server").buildDir.absolutePath}/executable/app.js",
-        wdioConfig = project.projectDir.resolve("wdio.conf.js"),
-        webpackConfig = project.projectDir.resolve("webpack.config.js"),
-        webpackedWdioConfigOutput = "config"
-    ) {
-        dependsOn(compileTestKotlinJs)
+    val wdioRun by creating(Exec::class) {
+        mustRunAfter(":client:check")
+        configureWdioRun(
+            compileKotlinJs = compileKotlinJs,
+            pathToNodeApp = "${project(":server").buildDir.absolutePath}/executable/app.js",
+            wdioConfig = project.projectDir.resolve("wdio.conf.js"),
+            webpackConfig = project.projectDir.resolve("webpack.config.js"),
+            webpackedWdioConfigOutput = "config"
+        )
+        dependsOn(compileKotlinJs, compileTestKotlinJs)
+        inputs.files(compileKotlinJs.outputs.files)
         inputs.files(compileTestKotlinJs.outputs.files)
         dependsOn(":server:assemble")
-        mustRunAfter(":client:check")
         environment("PORT" to "3099")
     }
 
     val check by getting {
-        dependsOn(nodeRun)
+        dependsOn(wdioRun)
     }
 }
 
-fun TaskContainerScope.wdioRun(
-    pathToNodeApp: String,
-    wdioConfig: File,
-    webpackConfig: File,
-    webpackedWdioConfigOutput: String,
-    block: NodeJsExec.() -> Unit
-) = getting(NodeJsExec::class) {
-    inputs.files(file(pathToNodeApp).parent)
-    inputs.files(wdioConfig)
-    outputs.dir("${project.buildDir}/reports/e2e")
-    environment(
-        "APP_PATH" to pathToNodeApp,
-        "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules",
-        "BUILD_DIR" to project.buildDir.absolutePath,
-        "WEBPACK_CONFIG" to webpackConfig,
-        "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput
-    )
-    val logFile = file("build/logs/run.log")
-    logFile.parentFile.mkdirs()
-    standardOutput = logFile.outputStream()
-
-    block()
-}

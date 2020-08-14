@@ -130,7 +130,7 @@ tasks {
 
         inputs.files(compileEndpointTestKotlinJs.outputFile)
 
-        val relevantPaths = listOf(nodeModulesDir) + processResources.map { it.destinationDir.path }
+        val relevantPaths = listOf("$nodeModulesDir") + processResources.map { it.destinationDir.path }
         relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
 
         environment(
