@@ -47,35 +47,46 @@ dependencies {
 }
 
 tasks {
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-    }
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class)
 
-    val nodeRun by getting(NodeJsExec::class) {
+    val nodeRun by wdioRun(
+        pathToNodeApp = "${project(":server").buildDir.absolutePath}/executable/app.js",
+        wdioConfig = project.projectDir.resolve("wdio.conf.js"),
+        webpackConfig = project.projectDir.resolve("webpack.config.js"),
+        webpackedWdioConfigOutput = "config"
+    ) {
         dependsOn(compileTestKotlinJs)
+        inputs.files(compileTestKotlinJs.outputs.files)
         dependsOn(":server:assemble")
         mustRunAfter(":client:check")
-
-        inputs.files(findByPath(":client:test")?.inputs?.files)
-        inputs.files(findByPath(":client:assemble")?.outputs?.files)
-        inputs.files(findByPath(":server:serverCompile")?.outputs?.files)
-        inputs.files(compileTestKotlinJs.outputs.files)
-        inputs.files(project.projectDir.resolve("wdio.conf.js"))
-        outputs.dir("${project.buildDir}/reports/e2e")
-
-        environment(
-            "PORT" to "3099",
-            "APP_PATH" to "${project(":server").buildDir.absolutePath}/executable/app.js",
-            "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules",
-            "BUILD_DIR" to project.buildDir.absolutePath,
-            "WEBPACK_CONFIG" to project.projectDir.resolve("webpack.config.js")
-        )
-
-        val logFile = file("build/logs/run.log")
-        logFile.parentFile.mkdirs()
-        standardOutput = logFile.outputStream()
+        environment("PORT" to "3099")
     }
 
     val check by getting {
         dependsOn(nodeRun)
     }
+}
+
+fun TaskContainerScope.wdioRun(
+    pathToNodeApp: String,
+    wdioConfig: File,
+    webpackConfig: File,
+    webpackedWdioConfigOutput: String,
+    block: NodeJsExec.() -> Unit
+) = getting(NodeJsExec::class) {
+    inputs.files(file(pathToNodeApp).parent)
+    inputs.files(wdioConfig)
+    outputs.dir("${project.buildDir}/reports/e2e")
+    environment(
+        "APP_PATH" to pathToNodeApp,
+        "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules",
+        "BUILD_DIR" to project.buildDir.absolutePath,
+        "WEBPACK_CONFIG" to webpackConfig,
+        "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput
+    )
+    val logFile = file("build/logs/run.log")
+    logFile.parentFile.mkdirs()
+    standardOutput = logFile.outputStream()
+
+    block()
 }

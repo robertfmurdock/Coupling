@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.e2e.external.childprocess.ChildProcess
 import com.zegreatrob.coupling.e2e.external.fsextras.removeDirectory
 import com.zegreatrob.coupling.e2e.external.webpack.WebpackConfig
 import com.zegreatrob.coupling.e2e.external.webpack.runWebpack
+import com.zegreatrob.coupling.e2e.external.webpack.webpackConfig
 import com.zegreatrob.wrapper.wdio.cli.runWebdriverIO
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
@@ -22,12 +23,11 @@ fun main() {
     }
 }
 
-private fun webpackConfig() =
-    com.zegreatrob.coupling.e2e.external.webpack.webpackConfig(process.envString("WEBPACK_CONFIG"))
+private fun webpackConfig() = webpackConfig(process.envString("WEBPACK_CONFIG"))
 
 private fun Process.envString(key: String) = env[key].unsafeCast<String>()
 
-private fun WebpackConfig.wdioConfig() = "${output.path}/config.js"
+private fun WebpackConfig.wdioConfig() = "${output.path}/${process.envString("WEBPACKED_WDIO_CONFIG_OUTPUT")}.js"
 
 private suspend fun runWebpackAndStartServer(config: WebpackConfig) = coroutineScope {
     launch { runWebpack(config) }
