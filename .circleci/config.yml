@@ -6,12 +6,6 @@ orbs:
       standard:
         machine:
           image: ubuntu-1604:201903-01
-      nomongo:
-        machine:
-          image: ubuntu-1604:201903-01
-      noservices:
-        machine:
-          image: ubuntu-1604:201903-01
     commands:
       setup:
         steps:
@@ -56,7 +50,7 @@ orbs:
           - run: "git push"
 jobs:
   build:
-    executor: coupling-orb/nomongo
+    executor: coupling-orb/standard
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
@@ -112,6 +106,7 @@ jobs:
   update-client:
     executor: coupling-orb/standard
     environment:
+      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
@@ -130,6 +125,7 @@ jobs:
   update-server:
     executor: coupling-orb/standard
     environment:
+      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
@@ -148,6 +144,7 @@ jobs:
   update-gradle-deps:
     executor: coupling-orb/standard
     environment:
+      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: true
