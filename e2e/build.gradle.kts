@@ -64,6 +64,7 @@ tasks {
         environment(
             "PORT" to "3099",
             "APP_PATH" to "${project(":server").buildDir.absolutePath}/executable/app.js",
+            "NODE_PATH" to "${rootProject.buildDir.path}/js/node_modules",
             "BUILD_DIR" to project.buildDir.absolutePath,
             "WEBPACK_CONFIG" to project.projectDir.resolve("webpack.config.js")
         )
