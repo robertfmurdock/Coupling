@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.build
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import java.io.File
 
 
@@ -59,3 +60,9 @@ val Project.nodeModulesDir get() = "${rootProject.buildDir.resolve("js/node_modu
 val Exec.nodeExecPath get() = "${nodeBinDir}/node"
 
 val Exec.nodeBinDir get() = project.rootProject.getNodeBinDir()
+
+fun Exec.nodeExec(compileKotlinJs: Kotlin2JsCompile, arguments: List<String>) {
+    dependsOn(compileKotlinJs)
+    environment("NODE_PATH", project.nodeModulesDir)
+    commandLine = listOf(nodeExecPath) + arguments
+}

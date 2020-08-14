@@ -1,6 +1,6 @@
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
-import com.zegreatrob.coupling.build.nodeExecPath
+import com.zegreatrob.coupling.build.nodeExec
 import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -87,34 +87,30 @@ tasks {
 
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
 
-        commandLine = listOf("$nodeModulesDir/.bin/webpack", "--config", project.projectDir.resolve("webpack.config.js").absolutePath)
+        commandLine = listOf(
+            "$nodeModulesDir/.bin/webpack",
+            "--config",
+            project.projectDir.resolve("webpack.config.js").absolutePath
+        )
     }
 
     val assemble by getting {
         dependsOn(serverCompile, copyClient)
     }
 
-    val updateDependencies by creating(Exec::class) {
-        dependsOn(compileKotlinJs)
+    val packageJson: String? by rootProject
 
-        val packageJson: String? by rootProject
-        environment("NODE_PATH" to nodeModulesDir)
-        commandLine = listOf(
-            nodeExecPath,
-            "$nodeModulesDir/.bin/ncu",
-            "-u",
-            "--packageFile",
-            "${System.getenv("PWD")}/$packageJson"
+    create<Exec>("updateDependencies") {
+        nodeExec(
+            compileKotlinJs,
+            listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
         )
     }
 
-    val start by creating(Exec::class) {
+    create<Exec>("start") {
+        nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
         dependsOn(assemble)
-        environment(
-            "NODE_ENV" to "production",
-            "NODE_PATH" to nodeModulesDir
-        )
-        commandLine = listOf(nodeExecPath, project.relativePath("startup"))
+        environment("NODE_ENV", "production")
     }
 
 }
