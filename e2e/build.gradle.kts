@@ -59,6 +59,7 @@ tasks {
         inputs.files(findByPath(":client:assemble")?.outputs?.files)
         inputs.files(findByPath(":server:serverCompile")?.outputs?.files)
         inputs.files(compileTestKotlinJs.outputs.files)
+        inputs.files(project.projectDir.resolve("wdio.conf.js"))
         outputs.dir("${project.buildDir}/reports/e2e")
 
         environment(
