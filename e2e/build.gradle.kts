@@ -17,6 +17,7 @@ dependencies {
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.110-kotlin-1.3.72")
+    implementation("com.zegreatrob.testmints:wdio:+")
     implementation(npm("@log4js-node/log4js-api"))
     implementation(npm("@rpii/wdio-html-reporter"))
     implementation(npm("@wdio/cli"))
@@ -30,7 +31,6 @@ dependencies {
     implementation(npm("wdio-chromedriver-service"))
     implementation(npm("css-loader"))
     implementation(npm("url-loader"))
-    implementation(project(":wdio"))
 
     testImplementation(project(":sdk"))
     testImplementation(project(":test-logging"))

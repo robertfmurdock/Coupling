@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.e2e.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.PinListPage.element
-import com.zegreatrob.coupling.wdio.By
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
 import com.zegreatrob.coupling.e2e.external.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -13,6 +11,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.wrapper.wdio.By
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.random.Random
 import kotlin.test.Test
 

@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.e2e
 
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.e2e.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.PlayerCard.header
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.wdio.WebdriverElement
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.invoke
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 import kotlin.test.Test
 
 @Suppress("unused")

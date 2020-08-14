@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.e2e.external.webdriverio
 
 import com.zegreatrob.coupling.e2e.SimpleStyle
 import com.zegreatrob.coupling.e2e.get
-import com.zegreatrob.coupling.wdio.By
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.wdio.WebdriverElement
-import com.zegreatrob.coupling.wdio.WebdriverElementArray
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.wrapper.wdio.By
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
+import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 import kotlin.reflect.KProperty
 
 interface BrowserSyntax {

@@ -1,17 +1,17 @@
 package com.zegreatrob.coupling.e2e
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.external.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.e2e.external.webdriverio.waitToBePresentDuration
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 
 class HistoryPageE2ETest {

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.wdio.WebdriverElement
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 
 object TribeListPage : StyleSyntax {
     override val styles = loadStyles("tribe/TribeList")

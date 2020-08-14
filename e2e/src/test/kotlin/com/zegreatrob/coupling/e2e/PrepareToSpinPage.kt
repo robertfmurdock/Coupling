@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 
 object PrepareToSpinPage : StyleSyntax {
     override val styles: SimpleStyle = loadStyles("PrepareSpin")

@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.wdio.By
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.wdio.WebdriverElement
 import com.zegreatrob.coupling.e2e.external.webdriverio.waitToBePresentDuration
+import com.zegreatrob.wrapper.wdio.By
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 
 object PinConfigPage : StyleSyntax {
     override val styles = loadStyles("pin/PinConfig")

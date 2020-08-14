@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.e2e.external.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 
 object TestLogin : BrowserSyntax {
     suspend fun login(userEmail: String) {

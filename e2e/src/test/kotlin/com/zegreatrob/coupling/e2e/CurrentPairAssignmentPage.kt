@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.wdio.By
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.wdio.WebdriverElementArray
+import com.zegreatrob.wrapper.wdio.By
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 
 object CurrentPairAssignmentPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")

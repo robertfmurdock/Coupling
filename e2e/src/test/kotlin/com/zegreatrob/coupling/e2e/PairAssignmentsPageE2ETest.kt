@@ -1,6 +1,12 @@
 package com.zegreatrob.coupling.e2e
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.PairAssignments.newPairsButton
+import com.zegreatrob.coupling.e2e.PairAssignments.retiredPlayersButton
+import com.zegreatrob.coupling.e2e.PairAssignments.statisticsButton
+import com.zegreatrob.coupling.e2e.PairAssignments.viewHistoryButton
+import com.zegreatrob.coupling.e2e.TribeCard.header
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -9,17 +15,11 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.PairAssignments.newPairsButton
-import com.zegreatrob.coupling.e2e.PairAssignments.retiredPlayersButton
-import com.zegreatrob.coupling.e2e.PairAssignments.statisticsButton
-import com.zegreatrob.coupling.e2e.PairAssignments.viewHistoryButton
-import com.zegreatrob.coupling.e2e.TribeCard.header
-import com.zegreatrob.coupling.wdio.WebdriverBrowser
-import com.zegreatrob.coupling.wdio.WebdriverElement
-import com.zegreatrob.coupling.wdio.WebdriverElementArray
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
+import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
