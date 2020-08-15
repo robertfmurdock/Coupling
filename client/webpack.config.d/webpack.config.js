@@ -71,7 +71,7 @@ config.plugins.push(
   }),
   new HtmlWebpackHarddiskPlugin(),
   new FaviconsWebpackPlugin({
-    logo: path.resolve(resourcesPath, 'images/tribes/no-tribe.png'),
+    logo: path.resolve(resourcesPath, 'images/logo.svg'),
     cache: true
   }),
   new MiniCssExtractPlugin({
