@@ -71,7 +71,7 @@ config.plugins.push(
   }),
   new HtmlWebpackHarddiskPlugin(),
   new FaviconsWebpackPlugin({
-    logo: path.resolve(resourcesPath, 'images/logo.svg'),
+    logo: path.resolve(resourcesPath, 'images/logo.png'),
     cache: true
   }),
   new MiniCssExtractPlugin({
