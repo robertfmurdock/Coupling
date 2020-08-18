@@ -18,8 +18,8 @@ kotlin {
                 api(project(":test-logging"))
                 api(project(":stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
-                implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:minassert:+")
+                implementation("com.zegreatrob.testmints:standard:2.2.14")
+                implementation("com.zegreatrob.testmints:minassert:2.2.14")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -44,7 +44,7 @@ kotlin {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async:+")
+                implementation("com.zegreatrob.testmints:async:2.2.14")
             }
         }
     }

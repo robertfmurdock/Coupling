@@ -18,7 +18,7 @@ dependencies {
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.110-kotlin-1.3.72")
-    implementation("com.zegreatrob.testmints:wdio:+")
+    implementation("com.zegreatrob.testmints:wdio:2.2.14")
     implementation(npm("@log4js-node/log4js-api"))
     implementation(npm("@rpii/wdio-html-reporter"))
     implementation(npm("@wdio/cli"))
@@ -41,9 +41,9 @@ dependencies {
     testImplementation(npm("tough-cookie", "^3.0.1"))
     testImplementation(npm("uuid", "^3.3.2"))
     testImplementation("io.github.microutils:kotlin-logging-js:1.8.3")
-    testImplementation("com.zegreatrob.testmints:standard:+")
-    testImplementation("com.zegreatrob.testmints:minassert:+")
-    testImplementation("com.zegreatrob.testmints:async:+")
+    testImplementation("com.zegreatrob.testmints:standard:2.2.14")
+    testImplementation("com.zegreatrob.testmints:minassert:2.2.14")
+    testImplementation("com.zegreatrob.testmints:async:2.2.14")
 
 }
 

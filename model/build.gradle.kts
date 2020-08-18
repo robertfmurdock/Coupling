@@ -25,8 +25,8 @@ kotlin {
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-common", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-annotations-common", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:minassert:+")
+                implementation("com.zegreatrob.testmints:standard:2.2.14")
+                implementation("com.zegreatrob.testmints:minassert:2.2.14")
             }
         }
 
