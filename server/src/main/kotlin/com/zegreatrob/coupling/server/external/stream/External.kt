@@ -7,7 +7,3 @@ import com.zegreatrob.coupling.server.external.fs.Stream
 external object Readable {
     fun from(input: Array<String>): Stream
 }
-
-external object Writable {
-    fun from(input: String): Stream
-}

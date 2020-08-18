@@ -8,8 +8,12 @@
       <module name="Coupling.action.jvmTest" target="1.8" />
       <module name="Coupling.actionFunc.jvmMain" target="1.8" />
       <module name="Coupling.actionFunc.jvmTest" target="1.8" />
+      <module name="Coupling.export.commonMain" target="1.6" />
+      <module name="Coupling.export.commonTest" target="1.6" />
       <module name="Coupling.export.jvmMain" target="1.6" />
       <module name="Coupling.export.jvmTest" target="1.6" />
+      <module name="Coupling.import.commonMain" target="1.6" />
+      <module name="Coupling.import.commonTest" target="1.6" />
       <module name="Coupling.import.jvmMain" target="1.6" />
       <module name="Coupling.import.jvmTest" target="1.6" />
       <module name="Coupling.json.jvmMain" target="1.6" />

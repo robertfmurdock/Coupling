@@ -95,6 +95,7 @@ tasks {
 
     val buildProductionImage by creating(DockerBuildImage::class) {
         mustRunAfter("pullProductionImage")
+        dependsOn(":server:assemble")
         inputDir.set(file("./"))
         dockerFile.set(file("Dockerfile.prod"))
         remove.set(false)
@@ -105,7 +106,6 @@ tasks {
         mustRunAfter("buildProductionImage")
         images.add("zegreatrob/coupling:latest")
     }
-
 
     val test by creating {
         dependsOn(":server:test", ":client:test")
