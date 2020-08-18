@@ -11,7 +11,7 @@ import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.yield
 import org.w3c.dom.get
-import kotlin.browser.window
+import kotlinx.browser.window
 
 interface GoogleSignIn : SdkSyntax {
 

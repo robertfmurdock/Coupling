@@ -35,11 +35,6 @@ const config = {
     rules: [
       {
         test: /\.js$/,
-        use: ["kotlin-source-map-loader"],
-        enforce: "pre"
-      },
-      {
-        test: /\.js$/,
         use: ["source-map-loader"],
         enforce: "pre"
       },

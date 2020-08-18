@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.logging
 
 import com.soywiz.klock.DateTime
-import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.json.Json
 import mu.Formatter
 import mu.KotlinLoggingLevel
@@ -9,10 +8,9 @@ import mu.Marker
 
 class JsonFormatter : Formatter {
 
-    @OptIn(UnstableDefault::class)
     override fun formatMessage(level: KotlinLoggingLevel, loggerName: String, msg: () -> Any?): Any? {
         val (message, properties) = extractProperties(msg)
-        return Json.stringify(
+        return Json.encodeToString(
             Message.serializer(),
             Message(
                 level = level.name,
@@ -24,7 +22,6 @@ class JsonFormatter : Formatter {
         )
     }
 
-    @OptIn(UnstableDefault::class)
     override fun formatMessage(
         level: KotlinLoggingLevel,
         loggerName: String,
@@ -32,7 +29,7 @@ class JsonFormatter : Formatter {
         msg: () -> Any?
     ): Any? {
         val (message, properties) = extractProperties(msg)
-        return Json.stringify(
+        return Json.encodeToString(
             Message.serializer(),
             Message(
                 level = level.name,
@@ -45,7 +42,6 @@ class JsonFormatter : Formatter {
         )
     }
 
-    @OptIn(UnstableDefault::class)
     override fun formatMessage(
         level: KotlinLoggingLevel,
         loggerName: String,
@@ -53,7 +49,7 @@ class JsonFormatter : Formatter {
         msg: () -> Any?
     ): Any? {
         val (message, properties) = extractProperties(msg)
-        return Json.stringify(
+        return Json.encodeToString(
             Message.serializer(),
             Message(
                 level = level.name,
@@ -66,7 +62,6 @@ class JsonFormatter : Formatter {
         )
     }
 
-    @OptIn(UnstableDefault::class)
     override fun formatMessage(
         level: KotlinLoggingLevel,
         loggerName: String,
@@ -75,7 +70,7 @@ class JsonFormatter : Formatter {
         msg: () -> Any?
     ): Any? {
         val (message, properties) = extractProperties(msg)
-        return Json.stringify(
+        return Json.encodeToString(
             Message.serializer(),
             Message(
                 level = level.name,

@@ -1,9 +1,10 @@
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.3.72"
+    id("kotlinx-serialization") version "1.4.0"
 }
 
 kotlin {
@@ -18,15 +19,14 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:2.2.14")
-                implementation("com.zegreatrob.testmints:action-async:2.2.14")
-                implementation("com.benasher44:uuid:0.1.0")
-                implementation("com.soywiz.korlibs.klock:klock:1.10.6")
+                implementation("com.zegreatrob.testmints:action:+")
+                implementation("com.zegreatrob.testmints:action-async:+")
+                implementation("com.benasher44:uuid:0.2.0")
+                implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
                 implementation("io.github.microutils:kotlin-logging-common:1.8.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
             }
         }
         getByName("commonTest") {
@@ -35,8 +35,8 @@ kotlin {
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:2.2.14")
-                implementation("com.zegreatrob.testmints:minassert:2.2.14")
+                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
                 implementation(project(":test-logging"))
             }
         }
@@ -61,8 +61,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
             }
         }
         val jsTest by getting {

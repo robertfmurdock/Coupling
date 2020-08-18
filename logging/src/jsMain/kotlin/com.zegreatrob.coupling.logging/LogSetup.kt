@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.logging
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UnstableDefault
 import mu.KotlinLoggingConfiguration
 import mu.KotlinLoggingLevel
 
@@ -20,7 +19,6 @@ data class Message(
 
 fun DateTime.logFormat() = toString(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
 
-@OptIn(UnstableDefault::class)
 @Suppress("unused")
 @JsName("initializeLogging")
 fun initializeLogging(developmentMode: Boolean) {
@@ -33,4 +31,3 @@ fun initializeLogging(developmentMode: Boolean) {
     @Suppress("CAST_NEVER_SUCCEEDS")
     KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
 }
-

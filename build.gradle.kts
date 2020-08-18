@@ -34,7 +34,7 @@ allprojects {
     afterEvaluate {
         mkdir(file(rootProject.buildDir.toPath().resolve("test-output")))
         tasks.withType(KotlinJsTest::class) {
-            addTestListener(JsonLoggingTestListener(path))
+//            addTestListener(JsonLoggingTestListener(path))
         }
     }
 }

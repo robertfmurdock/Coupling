@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.get
 import react.createElement
 import react.dom.render
-import kotlin.browser.document
-import kotlin.browser.window
+import kotlinx.browser.document
+import kotlinx.browser.window
 
 object App : GoogleSignIn, Sdk by SdkSingleton {
 

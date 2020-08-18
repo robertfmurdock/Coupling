@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -17,9 +18,9 @@ kotlin {
                 api(project(":repository"))
                 api(project(":test-logging"))
                 api(project(":stub-model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
-                implementation("com.zegreatrob.testmints:standard:2.2.14")
-                implementation("com.zegreatrob.testmints:minassert:2.2.14")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                implementation("com.zegreatrob.testmints:standard:+")
+                implementation("com.zegreatrob.testmints:minassert:+")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -29,7 +30,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -42,9 +42,8 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async:2.2.14")
+                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
             }
         }
     }

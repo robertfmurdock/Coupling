@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -26,10 +27,9 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
-                implementation("com.soywiz.korlibs.klock:klock:1.10.6")
-                implementation("com.benasher44:uuid:0.1.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                implementation("com.soywiz.korlibs.klock:klock:1.12.0")
+                implementation("com.benasher44:uuid:0.2.0")
                 implementation("io.github.microutils:kotlin-logging-common:1.8.3")
             }
         }
@@ -37,9 +37,9 @@ kotlin {
             dependencies {
                 api(project(":repository:validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:2.2.14")
-                implementation("com.zegreatrob.testmints:minassert:2.2.14")
-                implementation("com.zegreatrob.testmints:async:2.2.14")
+                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
@@ -50,7 +50,6 @@ kotlin {
             dependencies {
                 api(project(":logging"))
                 implementation(npm("aws-sdk", "2.615.0"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
             }
         }
     }
