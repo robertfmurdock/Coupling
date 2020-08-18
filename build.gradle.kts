@@ -95,7 +95,6 @@ tasks {
 
     val buildProductionImage by creating(DockerBuildImage::class) {
         mustRunAfter("pullProductionImage")
-        dependsOn(":server:assemble")
         inputDir.set(file("./"))
         dockerFile.set(file("Dockerfile.prod"))
         remove.set(false)
