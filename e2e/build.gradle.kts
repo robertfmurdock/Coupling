@@ -32,7 +32,6 @@ dependencies {
     implementation(npm("wdio-chromedriver-service", "6.0.3"))
     implementation(npm("css-loader", "4.2.1"))
     implementation(npm("url-loader", "4.1.0"))
-    implementation(npm("source-map-support", "0.5.19"))
 
     testImplementation(project(":sdk"))
     testImplementation(project(":test-logging"))
