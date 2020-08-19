@@ -1,5 +1,5 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -9,7 +9,10 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js { nodejs() }
+        js {
+            nodejs()
+            useCommonJs()
+        }
     }
 
     sourceSets {
@@ -31,12 +34,6 @@ kotlin {
 }
 
 tasks {
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
     }
