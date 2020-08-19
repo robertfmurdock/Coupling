@@ -33,7 +33,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation("com.soywiz.korlibs.klock:klock:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
-    implementation("com.benasher44:uuid:0.2.0")
+    implementation("com.benasher44:uuid:0.2.1")
 
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
