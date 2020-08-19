@@ -38,10 +38,10 @@ private fun connectToServerProcess(
         reject(Exception(message))
     }
 
-    process.stdin.pipe(serverProcess.stdin);
+    process.stdin.pipe(serverProcess.stdin)
 
     val buildDirPath = process.env["BUILD_DIR"]
-    fs.mkdirSync("$buildDirPath/logs", json("recursive" to true));
+    fs.mkdirSync("$buildDirPath/logs", json("recursive" to true))
     val serverOut = fs.createWriteStream("$buildDirPath/logs/server.out.log")
     val serverErr = fs.createWriteStream("$buildDirPath/logs/server.err.log")
     serverProcess.stdout.pipe(serverOut)

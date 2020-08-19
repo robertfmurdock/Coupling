@@ -92,7 +92,7 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsEnabledSpinWillIncludePinInAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectedPinElements().count()
+        PrepareToSpinPage.selectedPinElements.count()
             .assertIsEqualTo(1)
     } exercise {
         spinButton.click()
@@ -105,7 +105,7 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinTribeSetup {
         PrepareToSpinPage.goTo(tribe.id)
-        PrepareToSpinPage.getSelectedPinElements().get(0).click()
+        PrepareToSpinPage.selectedPinElements.get(0).click()
     } exercise {
         spinButton.click()
         CurrentPairAssignmentPage.waitForPage()

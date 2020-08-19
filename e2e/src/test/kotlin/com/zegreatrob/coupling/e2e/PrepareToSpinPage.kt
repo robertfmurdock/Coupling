@@ -11,7 +11,7 @@ object PrepareToSpinPage : StyleSyntax {
     val selectNoneButton by getting()
     private val selectedPins by getting()
 
-    suspend fun getSelectedPinElements() = selectedPins.all(PinButton.pinButtonLocator)
+    val selectedPinElements get() = selectedPins.all(PinButton.pinButtonLocator)
 
     suspend fun goTo(tribeId: TribeId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/prepare/")

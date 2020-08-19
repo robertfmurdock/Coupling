@@ -69,7 +69,7 @@ interface AssignPinsActionDispatcher {
         }
     }
 
-    private fun Map<Int, List<PinnedCouplingPair>>.minKeyValue() = this[keys.min()]
+    private fun Map<Int, List<PinnedCouplingPair>>.minKeyValue() = this[keys.minOrNull()]
 
     private fun pairWithPinPlayers(doc: PairAssignmentDocument, pin: Pin) = playersWithPin(doc, pin)
         ?: emptyList()

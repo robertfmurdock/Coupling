@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.minreact.reactFunction
-import react.*
 import kotlinx.browser.window
+import react.*
 import kotlin.math.round
 
 data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Double) : RProps
@@ -30,7 +30,7 @@ val FrameRunner =
     }
 
 private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
-    .join(pairTransformSecondFunc<Int, Int, () -> Unit> { it.applySpeed(speed) })
+    .join(pairTransformSecondFunc { it.applySpeed(speed) })
     .join { args -> args.let(::setTimeout); Unit }
 
 private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
