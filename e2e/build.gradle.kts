@@ -43,7 +43,7 @@ dependencies {
     testImplementation("io.github.microutils:kotlin-logging-js:1.8.3")
     testImplementation("com.zegreatrob.testmints:standard:$testmintsVersion")
     testImplementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
-    testImplementation("com.zegreatrob.testmints:async:+")
+    testImplementation("com.zegreatrob.testmints:async:$testmintsVersion")
 }
 
 tasks {
