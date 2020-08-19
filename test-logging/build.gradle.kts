@@ -1,5 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -8,21 +8,18 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js {
-            nodejs()
-            useCommonJs()
-        }
+        js { nodejs() }
     }
 
     sourceSets {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:report:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:2.2.14")
+                implementation("com.zegreatrob.testmints:report:2.2.14")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging-common:1.8.3")
-                implementation("com.soywiz.korlibs.klock:klock:1.12.0")
+                implementation("com.soywiz.korlibs.klock:klock:1.10.6")
             }
         }
 
@@ -46,4 +43,9 @@ kotlin {
 }
 
 tasks {
+    getByName<Kotlin2JsCompile>("compileKotlinJs") {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
 }

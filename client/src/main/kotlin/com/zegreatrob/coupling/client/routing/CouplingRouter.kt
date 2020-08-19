@@ -22,12 +22,12 @@ import react.RProps
 import react.buildElement
 import react.dom.div
 import react.router.dom.*
-import kotlinx.browser.window
+import kotlin.browser.window
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
 val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
-    browserRouter(getUserConfirmation = { message, callback -> window.confirm(message).let { callback(it) } }) {
+    browserRouter {
         animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
     }
 }

@@ -1,5 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -8,10 +8,7 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js {
-            nodejs()
-            useCommonJs()
-        }
+        js { nodejs() }
     }
 
     sourceSets {
@@ -19,7 +16,7 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:1.12.0")
+                api("com.soywiz.korlibs.klock:klock:1.10.6")
             }
         }
         val commonTest by getting {
@@ -28,8 +25,8 @@ kotlin {
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-common", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-annotations-common", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:2.2.14")
+                implementation("com.zegreatrob.testmints:minassert:2.2.14")
             }
         }
 
@@ -58,4 +55,14 @@ kotlin {
 }
 
 tasks {
+    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "commonjs"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
 }

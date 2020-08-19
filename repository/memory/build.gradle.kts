@@ -1,6 +1,5 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -9,10 +8,7 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js {
-            nodejs()
-            useCommonJs()
-        }
+        js { nodejs() }
     }
 
     sourceSets {
@@ -20,16 +16,16 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-                api("com.benasher44:uuid:0.2.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
+                api("com.benasher44:uuid:0.1.0")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(project(":repository:validation"))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:2.2.14")
+                implementation("com.zegreatrob.testmints:minassert:2.2.14")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -40,6 +36,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
             }
         }
 
@@ -57,16 +54,27 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
             }
         }
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:async:2.2.14")
             }
         }
     }
 }
 
 tasks {
+    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "umd"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
+        kotlinOptions.moduleKind = "commonjs"
+        kotlinOptions.sourceMap = true
+        kotlinOptions.sourceMapEmbedSources = "always"
+    }
 }

@@ -10,3 +10,4 @@ fun RBuilder.prompt(`when`: Boolean, message: String) = child(PromptComponent, j
     }
 
 }
+

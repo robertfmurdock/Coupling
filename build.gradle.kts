@@ -3,6 +3,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
@@ -33,7 +34,7 @@ allprojects {
     afterEvaluate {
         mkdir(file(rootProject.buildDir.toPath().resolve("test-output")))
         tasks.withType(KotlinJsTest::class) {
-//            addTestListener(JsonLoggingTestListener(path))
+            addTestListener(JsonLoggingTestListener(path))
         }
     }
 }
@@ -47,32 +48,32 @@ docker {
 }
 
 tasks {
-    val copyClientTestResults by creating(Copy::class, getByPath(":client:test").copyForTask {
+    val copyClientTestResults by creating(Copy::class, copyForTask(findByPath(":client:test")) {
         from("client/build/test-results")
         into("build/test-output/client")
     })
 
-    val copyActionTestResults by creating(Copy::class, getByPath(":action:check").copyForTask {
+    val copyActionTestResults by creating(Copy::class, copyForTask(findByPath(":action:jsTest")) {
         from("action/build/test-results/jsTest")
         into("build/test-output/action")
     })
 
-    val copyEndpointTestResults by creating(Copy::class, getByPath(":sdk:endpointTest").copyForTask {
+    val copyEndpointTestResults by creating(Copy::class, copyForTask(findByPath(":sdk:endpointTest")) {
         from("sdk/build/test-results/jsTest")
         into("build/test-output/endpoint")
     })
 
-    val copyEngineTestResults by creating(Copy::class, getByPath(":server:server_action:jsTest").copyForTask {
+    val copyEngineTestResults by creating(Copy::class, copyForTask(findByPath(":server:server_action:jsTest")) {
         from("engine/build/test-results/jsTest")
         into("build/test-output/engine")
     })
 
-    val copyEndToEndResults by creating(Copy::class, getByPath(":e2e:wdioRun").copyForTask {
+    val copyEndToEndResults by creating(Copy::class, copyForTask(findByPath(":e2e:nodeRun")) {
         from("e2e/build/logs")
         into("build/test-output/e2e/logs")
     })
 
-    val copyEndToEndScreenshotResults by creating(Copy::class, getByPath(":e2e:wdioRun").copyForTask {
+    val copyEndToEndScreenshotResults by creating(Copy::class, copyForTask(findByPath(":e2e:nodeRun")) {
         from("e2e/build/reports/e2e")
         into("build/test-output/e2e/reports")
     })
@@ -123,12 +124,12 @@ tasks {
 
 }
 
-fun Task.copyForTask(block: Copy.() -> Unit): Copy.() -> Unit {
+fun copyForTask(testTask: Task?, block: Copy.() -> Unit): Copy.() -> Unit {
     return {
-        mustRunAfter(this@copyForTask)
+        mustRunAfter(testTask)
 
         block()
-        this@copyForTask.finalizedBy(this)
+        testTask?.finalizedBy(this)
     }
 }
 

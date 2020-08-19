@@ -27,7 +27,7 @@ import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
 import react.useState
-import kotlinx.browser.window
+import kotlin.browser.window
 
 data class PairAssignmentsProps(
     val tribe: Tribe,

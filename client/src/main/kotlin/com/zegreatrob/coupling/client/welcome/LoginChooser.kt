@@ -14,7 +14,7 @@ import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.RProps
 import react.dom.div
-import kotlinx.browser.window
+import kotlin.browser.window
 
 data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) : RProps
 

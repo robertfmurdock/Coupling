@@ -10,7 +10,7 @@ import react.RProps
 import react.dom.div
 import react.dom.span
 import react.useState
-import kotlinx.browser.window
+import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.js.json
 

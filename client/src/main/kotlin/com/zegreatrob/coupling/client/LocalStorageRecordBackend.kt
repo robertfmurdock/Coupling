@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.memory.RecordBackend
 import org.w3c.dom.get
 import org.w3c.dom.set
-import kotlinx.browser.window
+import kotlin.browser.window
 import kotlin.js.Json
 
 class LocalStorageRecordBackend<T>(

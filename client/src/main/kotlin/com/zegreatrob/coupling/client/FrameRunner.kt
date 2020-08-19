@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.minreact.reactFunction
 import react.*
-import kotlinx.browser.window
+import kotlin.browser.window
 import kotlin.math.round
 
 data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Double) : RProps
