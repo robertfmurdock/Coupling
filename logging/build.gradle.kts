@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -9,7 +8,10 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js { nodejs() }
+        js {
+            nodejs()
+            useCommonJs()
+        }
     }
 
     sourceSets {
@@ -35,9 +37,4 @@ kotlin {
 }
 
 tasks {
-    getByName<Kotlin2JsCompile>("compileKotlinJs") {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
 }

@@ -10,7 +10,7 @@ plugins {
 }
 
 kotlin {
-    target {
+    js {
         nodejs()
         useCommonJs()
     }

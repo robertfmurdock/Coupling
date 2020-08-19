@@ -1,6 +1,6 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -8,7 +8,10 @@ plugins {
 
 kotlin {
     targets {
-        js { nodejs() }
+        js {
+            nodejs()
+            useCommonJs()
+        }
     }
 
     sourceSets {
@@ -50,14 +53,4 @@ kotlin {
 }
 
 tasks {
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
 }

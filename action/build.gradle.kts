@@ -1,6 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("multiplatform")
@@ -10,7 +9,10 @@ plugins {
 kotlin {
 
     targets {
-        js { nodejs() }
+        js {
+            nodejs()
+            useCommonJs()
+        }
         jvm()
     }
 
@@ -19,8 +21,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:+")
-                implementation("com.zegreatrob.testmints:action-async:+")
+                implementation("com.zegreatrob.testmints:action:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:action-async:$testmintsVersion")
                 implementation("com.benasher44:uuid:0.2.0")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -74,19 +76,6 @@ kotlin {
 }
 
 tasks {
-
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
-    }
 
     val jvmTest by getting(Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")

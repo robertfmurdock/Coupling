@@ -32,10 +32,10 @@ dependencies {
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
-    implementation("com.zegreatrob.testmints:minreact:+")
-    implementation("com.zegreatrob.testmints:react-data-loader:+")
-    implementation("com.zegreatrob.testmints:action:+")
-    implementation("com.zegreatrob.testmints:action-async:+")
+    implementation("com.zegreatrob.testmints:minreact:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:react-data-loader:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:action:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:action-async:$testmintsVersion")
     implementation("com.soywiz.korlibs.klock:klock:1.12.0")
     implementation("com.benasher44:uuid:0.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")

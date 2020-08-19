@@ -8,7 +8,10 @@ plugins {
 
 kotlin {
     targets {
-        js { nodejs() }
+        js {
+            nodejs()
+            useCommonJs()
+        }
     }
 
     sourceSets {
@@ -17,8 +20,8 @@ kotlin {
                 api(project(":model"))
                 api(project(":action"))
                 api(project(":repository"))
-                api("com.zegreatrob.testmints:action:+")
-                api("com.zegreatrob.testmints:action-async:+")
+                api("com.zegreatrob.testmints:action:$testmintsVersion")
+                api("com.zegreatrob.testmints:action-async:$testmintsVersion")
                 implementation("com.benasher44:uuid:0.2.0")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")

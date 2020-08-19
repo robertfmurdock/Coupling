@@ -1,3 +1,4 @@
+import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import com.zegreatrob.coupling.build.configureWdioRun
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -6,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    target {
+    js {
         nodejs { testTask { enabled = false } }
         useCommonJs()
     }
@@ -16,7 +17,7 @@ dependencies {
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.110-kotlin-1.4.0")
-    implementation("com.zegreatrob.testmints:wdio:+")
+    implementation("com.zegreatrob.testmints:wdio:$testmintsVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation(npm("@log4js-node/log4js-api", "1.0.2"))
     implementation(npm("@rpii/wdio-html-reporter", "6.1.1"))
@@ -40,8 +41,8 @@ dependencies {
     testImplementation(npm("tough-cookie", "^3.0.1"))
     testImplementation(npm("uuid", "^3.3.2"))
     testImplementation("io.github.microutils:kotlin-logging-js:1.8.3")
-    testImplementation("com.zegreatrob.testmints:standard:+")
-    testImplementation("com.zegreatrob.testmints:minassert:+")
+    testImplementation("com.zegreatrob.testmints:standard:$testmintsVersion")
+    testImplementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
     testImplementation("com.zegreatrob.testmints:async:+")
 }
 

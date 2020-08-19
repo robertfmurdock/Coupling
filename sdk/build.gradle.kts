@@ -16,11 +16,11 @@ kotlin {
 
     js {
         nodejs {}
+        useCommonJs()
         compilations {
             val endpointTest by compilations.creating
         }
     }
-
     sourceSets {
         getByName("commonMain") {
             dependencies {
@@ -41,8 +41,8 @@ kotlin {
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:+")
-                implementation("com.zegreatrob.testmints:minassert:+")
+                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
                 implementation("com.benasher44:uuid:0.2.0")
             }
         }
