@@ -35,7 +35,6 @@
     "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0",
     "source-map-loader": "^1.0.1",
-    "source-map-support": "^0.5.19",
     "webpack": "^4.44.1",
     "webpack-node-externals": "^2.5.1",
     "ws": "^7.3.1"

@@ -1,15 +1,18 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.3.72"
+    id("kotlinx-serialization") version "1.4.0"
 }
 
 kotlin {
 
     targets {
-        js { nodejs() }
+        js {
+            nodejs()
+            useCommonJs()
+        }
         jvm()
     }
 
@@ -18,17 +21,16 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:2.2.14")
-                implementation("com.zegreatrob.testmints:action-async:2.2.14")
-                implementation("com.zegreatrob.testmints:async:2.2.14")
-                implementation("com.zegreatrob.testmints:standard:2.2.14")
-                implementation("com.zegreatrob.testmints:minassert:2.2.14")
+                implementation("com.zegreatrob.testmints:action:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:action-async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
             }
         }
 
@@ -51,8 +53,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
@@ -60,19 +61,6 @@ kotlin {
 }
 
 tasks {
-
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
-    }
 
     val jvmTest by getting(Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")

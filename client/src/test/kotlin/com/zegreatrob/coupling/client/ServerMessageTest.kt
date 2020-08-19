@@ -9,7 +9,7 @@ import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.RClass
-import kotlin.browser.window
+import kotlinx.browser.window
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test

@@ -1,11 +1,13 @@
+import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import com.zegreatrob.coupling.build.loadPackageJson
 
 plugins {
     kotlin("js")
+    kotlin("plugin.serialization") version "1.4.0"
 }
 
 kotlin {
-    target {
+    js {
         useCommonJs()
         browser()
     }
@@ -30,34 +32,34 @@ dependencies {
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
-    implementation("com.zegreatrob.testmints:minreact:2.2.14")
-    implementation("com.zegreatrob.testmints:react-data-loader:2.2.14")
-    implementation("com.zegreatrob.testmints:action:2.2.14")
-    implementation("com.zegreatrob.testmints:action-async:2.2.14")
-    implementation("com.soywiz.korlibs.klock:klock:1.10.6")
-    implementation("com.benasher44:uuid:0.1.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+    implementation("com.zegreatrob.testmints:minreact:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:react-data-loader:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:action:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:action-async:$testmintsVersion")
+    implementation("com.soywiz.korlibs.klock:klock:1.12.0")
+    implementation("com.benasher44:uuid:0.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.110-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-css:1.0.0-pre.110-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.110-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-react:16.13.1-pre.110-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.110-kotlin-1.3.72")
-    implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.107-kotlin-1.3.72")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.111-kotlin-1.4.0")
+    implementation("org.jetbrains:kotlin-css:1.0.0-pre.111-kotlin-1.4.0")
+    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.111-kotlin-1.4.0")
+    implementation("org.jetbrains:kotlin-react:16.13.1-pre.111-kotlin-1.4.0")
+    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.111-kotlin-1.4.0")
+    implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.111-kotlin-1.4.0")
 
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
     packageJson.devDependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
-    testImplementation("com.zegreatrob.testmints:minenzyme:2.2.14")
+    testImplementation("com.zegreatrob.testmints:minenzyme:$testmintsVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    testImplementation("com.zegreatrob.testmints:standard:2.2.14")
-    testImplementation("com.zegreatrob.testmints:async:2.2.14")
-    testImplementation("com.zegreatrob.testmints:minassert:2.2.14")
-    testImplementation("com.zegreatrob.testmints:minspy:2.2.14")
+    testImplementation("com.zegreatrob.testmints:standard:$testmintsVersion")
+    testImplementation("com.zegreatrob.testmints:async:$testmintsVersion")
+    testImplementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+    testImplementation("com.zegreatrob.testmints:minspy:$testmintsVersion")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"

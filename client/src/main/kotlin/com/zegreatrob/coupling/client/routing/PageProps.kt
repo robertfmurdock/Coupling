@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import org.w3c.dom.get
 import org.w3c.dom.url.URLSearchParams
 import react.RProps
-import kotlin.browser.window
+import kotlinx.browser.window
 
 data class PageProps(
     val pathParams: Map<String, String>,

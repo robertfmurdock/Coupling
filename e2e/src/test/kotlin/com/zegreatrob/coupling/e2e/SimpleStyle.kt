@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e
 
 fun loadStyles(@Suppress("UNUSED_PARAMETER") name: String): SimpleStyle =
-    js("require('../../../../../client/build/processedResources/Js/main/com/zegreatrob/coupling/client/'+ name +'.css')")
+    js("require('../../../../../client/build/processedResources/js/main/com/zegreatrob/coupling/client/'+ name +'.css')")
         .unsafeCast<SimpleStyle>()
 
 external interface SimpleStyle {

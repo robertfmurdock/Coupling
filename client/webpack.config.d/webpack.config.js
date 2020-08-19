@@ -5,7 +5,7 @@ var ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/Js/main');
+let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
 
 if (config.output)
   config.output.publicPath = '/app/build/'

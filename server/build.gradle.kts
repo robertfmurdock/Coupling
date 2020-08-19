@@ -6,11 +6,11 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
-    id("kotlinx-serialization") version "1.3.72"
+    id("kotlinx-serialization") version "1.4.0"
 }
 
 kotlin {
-    target {
+    js {
         nodejs()
         useCommonJs()
     }
@@ -30,10 +30,10 @@ dependencies {
     implementation(project(":repository:dynamo"))
     implementation(project(":repository:memory"))
     implementation(project("server_action"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
-    implementation("com.soywiz.korlibs.klock:klock:1.10.6")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
-    implementation("com.benasher44:uuid:0.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+    implementation("com.soywiz.korlibs.klock:klock:1.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
+    implementation("com.benasher44:uuid:0.2.0")
 
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))

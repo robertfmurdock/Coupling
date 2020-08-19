@@ -9,7 +9,7 @@ import react.RProps
 import react.createElement
 import react.router.dom.RouteResultProps
 import react.router.dom.route
-import kotlin.browser.window
+import kotlinx.browser.window
 import kotlin.js.Json
 
 data class CouplingRouteProps(val path: String, val component: RClass<PageProps>) : RProps

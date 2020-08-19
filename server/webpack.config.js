@@ -27,17 +27,12 @@ const config = {
     extensions: ['.js'],
     modules: [
       process.env.NODE_PATH,
-      path.resolve(__dirname, 'build/processedResources/Js/main'),
+      path.resolve(__dirname, 'build/processedResources/js/main'),
       path.resolve(__dirname, 'node_modules')
     ]
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        use: ["kotlin-source-map-loader"],
-        enforce: "pre"
-      },
       {
         test: /\.js$/,
         use: ["source-map-loader"],
