@@ -51,7 +51,6 @@ kotlin {
             dependencies {
                 implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
 
                 packageJson.dependencies().forEach {
