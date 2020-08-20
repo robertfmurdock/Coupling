@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
-import kotlinx.css.properties.boxShadow
+import kotlinx.css.properties.*
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
@@ -34,19 +34,27 @@ data class PlayerCardProps(
     val className: String? = null,
     val size: Int = 100,
     val onClick: ((Event) -> Unit) = {},
-    val deselected: Boolean = false
+    val deselected: Boolean = false,
+    val tilt: Angle = 0.deg
 ) : RProps
 
 private val styles = useStyles("player/PlayerCard")
 
 val PlayerCard = reactFunction<PlayerCardProps> { props ->
-    val (tribeId, player, pathSetter, className, size, onClick, deselected) = props
+    val (tribeId, player, pathSetter, className, size, onClick, deselected, tilt) = props
     styledDiv {
         attrs {
             classes += additionalClasses(className, deselected)
             playerCardStyle(size)
             onClickFunction = onClick
         }
+        css {
+            transition(duration = 0.25.s)
+            transform {
+                rotate(tilt)
+            }
+        }
+
         playerGravatarImage(player, size)
         child(playerCardHeaderElement(tribeId, player, pathSetter, size))
     }

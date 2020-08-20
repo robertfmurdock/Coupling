@@ -24,6 +24,7 @@ data class CurrentPairAssignmentsPanelProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
+
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
 val CurrentPairAssignmentsPanel =

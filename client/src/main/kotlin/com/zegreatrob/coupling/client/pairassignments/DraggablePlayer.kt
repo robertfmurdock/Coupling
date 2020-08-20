@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.css.properties.Angle
 import react.RBuilder
 import react.RProps
 
@@ -16,6 +17,7 @@ data class DraggablePlayerProps(
     val pinnedPlayer: PinnedPlayer,
     val tribe: Tribe,
     val zoomOnHover: Boolean,
+    val tilt: Angle,
     val onPlayerDrop: (String) -> Unit
 ) : RProps
 
@@ -23,13 +25,14 @@ const val playerDragItemType = "PLAYER"
 
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
-val DraggablePlayer = reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, onPlayerDrop) ->
+val DraggablePlayer = reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, tilt, onPlayerDrop) ->
     draggableThing(playerDragItemType, pinnedPlayer.player.id!!, onPlayerDrop) { isOver: Boolean ->
         playerCard(
             PlayerCardProps(
                 tribeId = tribe.id,
                 player = pinnedPlayer.player,
-                className = playerCardClassName(isOver, zoomOnHover)
+                className = playerCardClassName(isOver, zoomOnHover),
+                tilt = tilt
             ),
             key = pinnedPlayer.player.id
         )

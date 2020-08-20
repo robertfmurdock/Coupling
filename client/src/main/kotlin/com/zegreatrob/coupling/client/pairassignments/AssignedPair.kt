@@ -19,6 +19,8 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
+import kotlinx.css.properties.Angle
+import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import kotlinx.html.classes
 import org.w3c.dom.Node
@@ -60,27 +62,26 @@ fun RBuilder.assignedPair(
     key = key
 )
 
-val AssignedPair =
-    reactFunction<AssignedPairProps> { props ->
-        val (tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter) = props
-        val callSign = pair.findCallSign()
+val AssignedPair = reactFunction<AssignedPairProps> { props ->
+    val (tribe, pair, swapCallback, pinMoveCallback, canDrag, pathSetter) = props
+    val callSign = pair.findCallSign()
 
-        val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
-        val pinDroppableRef = useRef<Node?>(null)
-        drop(pinDroppableRef)
+    val (isOver, drop) = usePinDrop(pinMoveCallback, pair)
+    val pinDroppableRef = useRef<Node?>(null)
+    drop(pinDroppableRef)
 
-        val playerCard = playerCardComponent(tribe, pair, swapCallback, canDrag, pathSetter)
+    val playerCard = playerCardComponent(tribe, pair, swapCallback, canDrag, pathSetter)
 
-        span(classes = styles.className) {
-            attrs {
-                ref = pinDroppableRef
-                if (isOver) classes += styles["pairPinOver"]
-            }
-            callSign(tribe, callSign, styles["callSign"])
-            pair.players.map { player -> playerCard(player) }
-            pinSection(pinList = pair.pins, canDrag = canDrag)
+    span(classes = styles.className) {
+        attrs {
+            ref = pinDroppableRef
+            if (isOver) classes += styles["pairPinOver"]
         }
+        callSign(tribe, callSign, styles["callSign"])
+        pair.players.mapIndexed { index, player -> playerCard(player, if (index % 2 == 0) (-8).deg else 8.deg) }
+        pinSection(pinList = pair.pins, canDrag = canDrag)
     }
+}
 
 private fun PinnedCouplingPair.findCallSign(): CallSign? {
     val nounPlayer = toPair().asArray().getOrNull(0)
@@ -107,20 +108,14 @@ private fun playerCardComponent(
     swapCallback: SwapCallback,
     canDrag: Boolean,
     pathSetter: (String) -> Unit
-): RBuilder.(PinnedPlayer) -> ReactElement =
-    if (canDrag) { player ->
+): RBuilder.(PinnedPlayer, Angle) -> ReactElement =
+    if (canDrag) { player, tilt ->
         playerFlipped(player.player) {
-            swappablePlayer(
-                tribe,
-                player,
-                pair,
-                swapCallback,
-                canDrag
-            )
+            swappablePlayer(tribe, player, pair, swapCallback, canDrag, tilt)
         }
-    } else { player ->
+    } else { player, tilt ->
         playerFlipped(player.player) {
-            notSwappablePlayer(tribe, pathSetter, player.player)
+            notSwappablePlayer(tribe, pathSetter, player.player, tilt)
         }
     }
 
@@ -137,25 +132,19 @@ private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> React
     }
 }
 
-private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player) = playerCard(
-    PlayerCardProps(
-        tribe.id,
-        player,
-        pathSetter
-    )
-)
+private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player, tilt: Angle) =
+    playerCard(PlayerCardProps(tribe.id, player, pathSetter, tilt = tilt))
 
 private fun RBuilder.swappablePlayer(
     tribe: Tribe,
     pinnedPlayer: PinnedPlayer,
     pair: PinnedCouplingPair,
     swapCallback: SwapCallback,
-    zoomOnHover: Boolean
-) = draggablePlayer(DraggablePlayerProps(
-    pinnedPlayer,
-    tribe,
-    zoomOnHover
-) { droppedPlayerId -> swapCallback(droppedPlayerId, pinnedPlayer, pair) })
+    zoomOnHover: Boolean,
+    tilt: Angle
+) = draggablePlayer(DraggablePlayerProps(pinnedPlayer, tribe, zoomOnHover, tilt) { droppedPlayerId ->
+    swapCallback(droppedPlayerId, pinnedPlayer, pair)
+})
 
 private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
     if (tribe.callSignsEnabled && callSign != null) {
