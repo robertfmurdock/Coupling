@@ -3,8 +3,10 @@
 }
 
 :local(.hoverZoom):hover {
-    transition: all ease-in 0.4s;
+    transition: all ease-in 0.2s;
+    transform: rotate(0deg);
     animation: 0.5s twitch;
+    animation-delay: 0.2s;
     animation-iteration-count: infinite;
 }
 
