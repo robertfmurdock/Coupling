@@ -3,6 +3,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
@@ -15,6 +16,8 @@ plugins {
 }
 
 allprojects {
+    apply(plugin = "se.patrikerdes.use-latest-versions")
+    apply(plugin = "com.github.ben-manes.versions")    
     repositories {
         mavenCentral()
         jcenter()
@@ -28,12 +31,20 @@ allprojects {
             from("build/reports")
             into("${rootProject.buildDir.path}/test-output/${project.path}")
         }
+
+        withType<DependencyUpdatesTask> {
+            checkForGradleUpdate = true
+            outputFormatter = "json"
+            outputDir = "build/dependencyUpdates"
+            reportfileName = "report"
+            revision = "release"
+        }
     }
 
     afterEvaluate {
         mkdir(file(rootProject.buildDir.toPath().resolve("test-output")))
         tasks.withType(KotlinJsTest::class) {
-//            addTestListener(JsonLoggingTestListener(path))
+            addTestListener(JsonLoggingTestListener(path))
         }
     }
 }
@@ -163,4 +174,5 @@ tasks.withType<DependencyUpdatesTask> {
     outputFormatter = "json"
     outputDir = "build/dependencyUpdates"
     reportfileName = "report"
+    revision = "release"
 }
