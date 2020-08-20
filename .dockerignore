@@ -4,5 +4,6 @@ data/**/*
 **/.gradle/**/*
 .git/**/*
 **/node_modules/**/*
+!build/js/node_modules
 docker-compose.yml
 .DS_Store
