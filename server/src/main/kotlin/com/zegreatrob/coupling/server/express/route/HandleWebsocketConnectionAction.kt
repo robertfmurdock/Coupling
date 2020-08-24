@@ -35,6 +35,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
     ) {
         websocket.tribeId = tribeId.value
         websocket.user = request.user
+        websocket.on("message") { logger.info { "Websocket message: $it" } }
         websocket.on("close") { broadcastConnectionCountForTribe(tribeId, result.second, wss) }
         websocket.on("error") { logger.error { it } }
 

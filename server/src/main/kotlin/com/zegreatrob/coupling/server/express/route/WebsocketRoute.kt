@@ -3,11 +3,7 @@ package com.zegreatrob.coupling.server.express.route
 import com.zegreatrob.coupling.server.external.express.Request
 
 val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) = with(request.commandDispatcher) {
-    HandleWebsocketConnectionAction(
-        websocket,
-        request,
-        wss
-    )
+    HandleWebsocketConnectionAction(websocket, request, wss)
         .perform()
 }
 
