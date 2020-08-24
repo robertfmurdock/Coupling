@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
+import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlin.test.Test
@@ -64,6 +65,21 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     } verify { result ->
         result.map { it.data.player }
             .assertIsEqualTo(listOf(updatedPlayer))
+    }
+
+    @Test
+    fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() = repositorySetup(object : TribeContextMint<R>() {
+        val player1 = stubPlayer()
+        val tribe2 = stubTribeId()
+        val player2 = player1.copy(id = player1.id)
+    }.bind()) {
+        repository.save(tribeId.with(player1))
+        repository.save(tribe2.with(player2))
+    } exercise {
+        repository.getPlayers(tribeId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(player1))
     }
 
     @Test

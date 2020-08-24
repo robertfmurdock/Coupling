@@ -2,10 +2,12 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -41,22 +43,37 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         }
     }
 
-    override fun deletedPlayersIncludeModificationDateAndUsername() =
+    override fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() =
         repositorySetup(object : TribeContextMint<Sdk>() {
-            val player = stubPlayer()
+            val player1 = stubPlayer()
+            val tribeId2 = stubTribeId()
+            val player2 = player1.copy(id = player1.id)
         }.bind()) {
+            repository.save(stubTribe().copy(id = tribeId2))
+            repository.save(tribeId.with(player1))
+            repository.save(tribeId2.with(player2))
         } exercise {
-            repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, player.id!!)
-            repository.getDeleted(tribeId)
+            repository.getPlayers(tribeId)
         } verify { result ->
-            result.size.assertIsEqualTo(1)
-            result.first().apply {
-                isDeleted.assertIsEqualTo(true)
-                timestamp.assertIsCloseToNow()
-                modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
-            }
+            result.map { it.data.player }
+                .assertIsEqualTo(listOf<Player>(player1))
         }
+
+    override fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
+        val player = stubPlayer()
+    }.bind()) {
+    } exercise {
+        repository.save(tribeId.with(player))
+        repository.deletePlayer(tribeId, player.id!!)
+        repository.getDeleted(tribeId)
+    } verify { result ->
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            isDeleted.assertIsEqualTo(true)
+            timestamp.assertIsCloseToNow()
+            modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+        }
+    }
 
     override fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
         val player = stubPlayer()
