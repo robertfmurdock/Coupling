@@ -22,6 +22,9 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
         if (tag.tagName == "title") {
             replaceNextText = "Coupling"
         }
+        if (tag.tagName == "head") {
+            rewritingStream.emitRaw(injectVariablesForClient(request))
+        }
     }
 
     rewritingStream.on("text") { _, raw ->
@@ -33,9 +36,6 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
     }
 
     rewritingStream.on("endTag") { tag ->
-        if (tag.tagName == "head") {
-            rewritingStream.emitRaw(injectVariablesForClient(request))
-        }
         rewritingStream.emitEndTag(tag)
     }
 
