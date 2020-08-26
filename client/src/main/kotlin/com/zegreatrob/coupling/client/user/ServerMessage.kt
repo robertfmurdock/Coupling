@@ -20,11 +20,7 @@ val disconnectedMessage = json("text" to "Not connected", "players" to emptyArra
 data class ServerMessageProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
 val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
-    val (message, setMessage) = useState(disconnectedMessage)
-    div {
-        couplingWebsocket(tribeId, useSsl, setMessage) { sendMessage: (Any) -> Unit ->
-
-        }
+    couplingWebsocket(tribeId, useSsl) { message, _ ->
         span { +message.text }
         div {
             message.players.map { it.toPlayer() }
@@ -36,9 +32,9 @@ val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, useSsl) ->
 private fun RBuilder.couplingWebsocket(
     tribeId: TribeId,
     useSsl: Boolean,
-    setMessage: RSetState<CouplingSocketMessage>,
-    children: ((Any) -> Unit) -> Unit
+    children: RBuilder.(CouplingSocketMessage, (Any) -> Unit) -> Unit
 ): ReactElement {
+    val (message, setMessage) = useState(disconnectedMessage)
     val ref = useRef<WebsocketComponent?>(null)
     return div {
         websocket {
@@ -49,7 +45,7 @@ private fun RBuilder.couplingWebsocket(
                 this.ref = { ref.current = it }
             }
         }
-        children {
+        children(message) {
             val websocket = ref.current
             if (websocket != null)
                 websocket.sendMessage(it)

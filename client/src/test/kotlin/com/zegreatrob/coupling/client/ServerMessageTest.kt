@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
-import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import react.RClass
 import kotlinx.browser.window
+import react.RClass
 import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
