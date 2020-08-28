@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -17,10 +15,13 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
+import kotlinext.js.jsObject
 import react.RClass
 import kotlin.test.Test
 
@@ -51,18 +52,14 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc()) {}
+            PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc(), jsObject()) {}
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()
             .players
             .assertIsEqualTo(
-                listOf(
-                    rigby,
-                    nerd,
-                    pantsmaster
-                )
+                listOf(rigby, nerd, pantsmaster)
             )
     }
 
@@ -78,7 +75,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, null, StubDispatchFunc()) {})
+            PairAssignmentsProps(tribe, players, null, StubDispatchFunc(), jsObject()) {})
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()
@@ -101,6 +98,7 @@ class PairAssignmentsTest {
                 emptyList(),
                 pairAssignments,
                 dispatchFunc,
+                jsObject(),
                 pathSetterSpy::spyFunction
             )
         )
@@ -131,7 +129,8 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {
+            }
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -156,7 +155,8 @@ class PairAssignmentsTest {
             pairs = listOf(pair1, pair2)
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
+            PairAssignments,
+            PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {}
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
@@ -188,7 +188,8 @@ class PairAssignmentsTest {
             )
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {
+            }
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -217,7 +218,8 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc()) {}
+            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {
+            }
         )
     }) exercise {
         player4.dragTo(player3, wrapper)
@@ -250,7 +252,7 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
         shallow(
-            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, StubDispatchFunc()) {}
+            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, StubDispatchFunc(), jsObject()) {}
         )
     } verify { wrapper ->
         wrapper.find(ServerMessage)

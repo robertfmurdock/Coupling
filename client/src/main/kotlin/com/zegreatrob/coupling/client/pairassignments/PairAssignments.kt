@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.couplingWebsocket
 import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
@@ -11,6 +12,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.user.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -21,15 +23,27 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.browser.window
 import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
 import react.useState
-import kotlinx.browser.window
 
 data class PairAssignmentsProps(
+    val tribe: Tribe,
+    val players: List<Player>,
+    val pairAssignments: PairAssignmentDocument?,
+    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
+    val message: CouplingSocketMessage,
+    val pathSetter: (String) -> Unit
+) : RProps
+
+private val styles = useStyles("pairassignments/PairAssignments")
+
+
+data class SocketedPairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
@@ -37,9 +51,15 @@ data class PairAssignmentsProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-private val styles = useStyles("pairassignments/PairAssignments")
+val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
+    val (tribe, players, originalPairs, commandFunc, pathSetter) = props
+    couplingWebsocket(props.tribe.id, "https:" == window.location.protocol) { message, _ ->
+        child(PairAssignments, PairAssignmentsProps(tribe, players, originalPairs, commandFunc, message, pathSetter))
+    }
+}
 
-val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, originalPairs, commandFunc, pathSetter) ->
+val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
+    val (tribe, players, originalPairs, commandFunc, message, pathSetter) = props
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
@@ -62,7 +82,9 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { (tribe, players, ori
                 viewRetireesButton(tribe, styles["retiredPlayersButton"])
             }
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
-            child(ServerMessage, ServerMessageProps(tribe.id, "https:" == window.location.protocol))
+
+
+            child(ServerMessage, ServerMessageProps(tribe.id, message))
         }
     }
 }
