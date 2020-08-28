@@ -42,7 +42,7 @@
     "fitty": "^2.3.2",
     "html-webpack-harddisk-plugin": "^1.0.2",
     "html-webpack-plugin": "^4.3.0",
-    "mini-css-extract-plugin": "^0.10.0",
+    "mini-css-extract-plugin": "^0.11.0",
     "prefixfree": "^1.0.0",
     "raw-loader": "^4.0.1",
     "react": "^16.13.1",
