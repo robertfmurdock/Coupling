@@ -3,16 +3,15 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketComponent
 import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
 import com.zegreatrob.coupling.client.user.CouplingSocketMessage
+import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import react.*
 import react.dom.div
 import kotlin.js.Json
-import kotlin.js.json
 
-val disconnectedMessage = json("text" to "Not connected", "players" to emptyArray<Json>())
-    .unsafeCast<CouplingSocketMessage>()
+val disconnectedMessage = CouplingSocketMessage(text = "Not connected", players = emptyList())
 
 fun RBuilder.couplingWebsocket(
     tribeId: TribeId,
@@ -33,7 +32,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
         websocket {
             attrs {
                 url = buildSocketUrl(tribeId, useSsl)
-                onMessage = { setMessage(JSON.parse(it)) }
+                onMessage = { setMessage(toCouplingServerMessage(JSON.parse(it))) }
                 onClose = { setMessage(disconnectedMessage) }
                 this.ref = { ref.current = it }
             }
@@ -49,6 +48,10 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
         props.children(message to sendMessageFunc)
     }
 }.unsafeCast<FunctionalComponent<CouplingWebsocketProps>>()
+
+private fun toCouplingServerMessage(json: Json) = CouplingSocketMessage(
+    json["text"].toString(),
+    json["players"].unsafeCast<Array<Json>>().map { it.toPlayer() })
 
 data class CouplingWebsocketProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 

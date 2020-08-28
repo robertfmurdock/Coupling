@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.player.PlayerRoster
+import com.zegreatrob.coupling.client.user.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -21,7 +22,6 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import kotlinext.js.jsObject
 import react.RClass
 import kotlin.test.Test
 
@@ -52,7 +52,13 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, pairAssignments, StubDispatchFunc(), jsObject()) {}
+            PairAssignmentsProps(
+                tribe,
+                players,
+                pairAssignments,
+                StubDispatchFunc(),
+                CouplingSocketMessage("", emptyList())
+            ) {}
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
@@ -75,7 +81,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, null, StubDispatchFunc(), jsObject()) {})
+            PairAssignmentsProps(tribe, players, null, StubDispatchFunc(), CouplingSocketMessage("", emptyList())) {})
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()
@@ -98,7 +104,7 @@ class PairAssignmentsTest {
                 emptyList(),
                 pairAssignments,
                 dispatchFunc,
-                jsObject(),
+                CouplingSocketMessage("", emptyList()),
                 pathSetterSpy::spyFunction
             )
         )
@@ -129,8 +135,14 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {
-            }
+            PairAssignments,
+            PairAssignmentsProps(
+                tribe,
+                emptyList(),
+                pairAssignments,
+                StubDispatchFunc(),
+                CouplingSocketMessage("", emptyList())
+            ) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -156,7 +168,13 @@ class PairAssignmentsTest {
         )
         val wrapper = shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {}
+            PairAssignmentsProps(
+                tribe,
+                emptyList(),
+                pairAssignments,
+                StubDispatchFunc(),
+                CouplingSocketMessage("", emptyList())
+            ) {}
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
@@ -188,8 +206,14 @@ class PairAssignmentsTest {
             )
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {
-            }
+            PairAssignments,
+            PairAssignmentsProps(
+                tribe,
+                emptyList(),
+                pairAssignments,
+                StubDispatchFunc(),
+                CouplingSocketMessage("", emptyList())
+            ) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -218,8 +242,14 @@ class PairAssignmentsTest {
             ).withPins()
         )
         val wrapper = shallow(
-            PairAssignments, PairAssignmentsProps(tribe, emptyList(), pairAssignments, StubDispatchFunc(), jsObject()) {
-            }
+            PairAssignments,
+            PairAssignmentsProps(
+                tribe,
+                emptyList(),
+                pairAssignments,
+                StubDispatchFunc(),
+                CouplingSocketMessage("", emptyList())
+            ) {}
         )
     }) exercise {
         player4.dragTo(player3, wrapper)
@@ -252,7 +282,8 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
         shallow(
-            PairAssignments, PairAssignmentsProps(tribe, listOf(), null, StubDispatchFunc(), jsObject()) {}
+            PairAssignments,
+            PairAssignmentsProps(tribe, listOf(), null, StubDispatchFunc(), CouplingSocketMessage("", emptyList())) {}
         )
     } verify { wrapper ->
         wrapper.find(ServerMessage)

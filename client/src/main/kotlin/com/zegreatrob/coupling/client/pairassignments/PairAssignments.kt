@@ -83,8 +83,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
             }
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
 
-
-            child(ServerMessage, ServerMessageProps(tribe.id, message))
+            child(ServerMessage, ServerMessageProps(tribe.id, message), key = message.text + " " + message.players.size)
         }
     }
 }

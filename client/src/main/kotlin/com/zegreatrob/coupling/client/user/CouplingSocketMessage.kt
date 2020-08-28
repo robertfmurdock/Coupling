@@ -1,8 +1,5 @@
 package com.zegreatrob.coupling.client.user
 
-import kotlin.js.Json
+import com.zegreatrob.coupling.model.player.Player
 
-external interface CouplingSocketMessage {
-    var text: String
-    var players: Array<Json>
-}
+data class CouplingSocketMessage(var text: String, var players: List<Player>)
