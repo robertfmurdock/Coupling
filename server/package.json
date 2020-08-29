@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.741.0",
+    "aws-sdk": "2.742.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
@@ -26,7 +26,7 @@
     "jasmine-reporters": "^2.3.2",
     "method-override": "^3.0.0",
     "minimist": "^1.2.5",
-    "npm-check-updates": "^7.1.1",
+    "npm-check-updates": "^8.0.1",
     "on-finished": "^2.3.0",
     "parse5": "^6.0.1",
     "parse5-html-rewriting-stream": "^6.0.1",
