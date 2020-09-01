@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.client.gravatar
 
 import com.zegreatrob.coupling.client.external.blueimpMd5.md5
+import kotlinx.html.Draggable
 import kotlinx.html.classes
+import kotlinx.html.draggable
 import react.RBuilder
 import react.dom.img
 
@@ -26,6 +28,7 @@ fun RBuilder.gravatarImage(
     alt = alt
 ) {
     attrs {
+        draggable = Draggable.htmlFalse
         width = options.size.toString()
         height = options.size.toString()
         className?.let {
