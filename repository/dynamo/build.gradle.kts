@@ -1,6 +1,5 @@
 
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -38,9 +37,9 @@ kotlin {
             dependencies {
                 api(project(":repository:validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.4")
+                implementation("com.zegreatrob.testmints:minassert:3.1.4")
+                implementation("com.zegreatrob.testmints:async:3.1.4")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")

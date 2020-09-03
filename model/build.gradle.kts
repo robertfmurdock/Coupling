@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -28,8 +27,8 @@ kotlin {
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-common", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-annotations-common", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.4")
+                implementation("com.zegreatrob.testmints:minassert:3.1.4")
             }
         }
 

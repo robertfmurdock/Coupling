@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -22,8 +21,8 @@ kotlin {
                 api(project(":test-logging"))
                 api(project(":stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.4")
+                implementation("com.zegreatrob.testmints:minassert:3.1.4")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -46,7 +45,7 @@ kotlin {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:async:3.1.4")
             }
         }
     }

@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -20,8 +19,8 @@ kotlin {
                 api(project(":model"))
                 api(project(":action"))
                 api(project(":repository"))
-                api("com.zegreatrob.testmints:action:$testmintsVersion")
-                api("com.zegreatrob.testmints:action-async:$testmintsVersion")
+                api("com.zegreatrob.testmints:action:3.1.4")
+                api("com.zegreatrob.testmints:action-async:3.1.4")
                 implementation("com.benasher44:uuid:0.2.2")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
@@ -33,10 +32,10 @@ kotlin {
             dependencies {
                 api(project(":stub-model"))
                 api(project(":test-action"))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minspy:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.4")
+                implementation("com.zegreatrob.testmints:async:3.1.4")
+                implementation("com.zegreatrob.testmints:minassert:3.1.4")
+                implementation("com.zegreatrob.testmints:minspy:3.1.4")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")

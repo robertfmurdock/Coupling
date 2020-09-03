@@ -1,4 +1,3 @@
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -33,10 +32,10 @@ dependencies {
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
-    implementation("com.zegreatrob.testmints:minreact:$testmintsVersion")
-    implementation("com.zegreatrob.testmints:react-data-loader:$testmintsVersion")
-    implementation("com.zegreatrob.testmints:action:$testmintsVersion")
-    implementation("com.zegreatrob.testmints:action-async:$testmintsVersion")
+    implementation("com.zegreatrob.testmints:minreact:3.1.1")
+    implementation("com.zegreatrob.testmints:react-data-loader:3.1.1")
+    implementation("com.zegreatrob.testmints:action:3.1.1")
+    implementation("com.zegreatrob.testmints:action-async:3.1.1")
     implementation("com.soywiz.korlibs.klock:klock:1.12.0")
     implementation("com.benasher44:uuid:0.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
@@ -53,14 +52,14 @@ dependencies {
     packageJson.devDependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
-    testImplementation("com.zegreatrob.testmints:minenzyme:$testmintsVersion")
+    testImplementation("com.zegreatrob.testmints:minenzyme:3.1.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    testImplementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-    testImplementation("com.zegreatrob.testmints:async:$testmintsVersion")
-    testImplementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
-    testImplementation("com.zegreatrob.testmints:minspy:$testmintsVersion")
+    testImplementation("com.zegreatrob.testmints:standard:3.1.1")
+    testImplementation("com.zegreatrob.testmints:async:3.1.1")
+    testImplementation("com.zegreatrob.testmints:minassert:3.1.1")
+    testImplementation("com.zegreatrob.testmints:minspy:3.1.1")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"

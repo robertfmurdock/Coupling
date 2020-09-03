@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
@@ -41,8 +40,8 @@ kotlin {
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.1")
+                implementation("com.zegreatrob.testmints:minassert:3.1.1")
                 implementation("com.benasher44:uuid:0.2.1")
             }
         }
@@ -66,9 +65,9 @@ kotlin {
             dependencies {
                 implementation(project(":server"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.1")
+                implementation("com.zegreatrob.testmints:minassert:3.1.1")
+                implementation("com.zegreatrob.testmints:async:3.1.1")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -80,9 +79,9 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:minassert:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:async:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.1")
+                implementation("com.zegreatrob.testmints:minassert:3.1.1")
+                implementation("com.zegreatrob.testmints:async:3.1.1")
             }
         }
     }

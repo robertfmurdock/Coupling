@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.BuildConstants.testmintsVersion
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -18,8 +17,8 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard:$testmintsVersion")
-                implementation("com.zegreatrob.testmints:report:$testmintsVersion")
+                implementation("com.zegreatrob.testmints:standard:3.1.4")
+                implementation("com.zegreatrob.testmints:report:3.1.4")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging-common:1.8.3")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
