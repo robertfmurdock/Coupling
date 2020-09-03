@@ -1,31 +1,27 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.coupling.client.routing.CouplingRouterProps
 import com.zegreatrob.coupling.client.user.GoogleSignIn
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.browser.document
+import org.w3c.dom.Document
 import org.w3c.dom.get
 import react.createElement
-import react.dom.render
-import kotlinx.browser.document
-import kotlinx.browser.window
 
 object App : GoogleSignIn, Sdk by SdkSingleton {
 
-    fun bootstrapApp() {
+    suspend fun bootstrapApp() {
         initializeLogging(developmentMode = false)
-        MainScope().launch {
-            val isSignedIn = checkForSignedIn()
-            val animationsDisabled = window.sessionStorage.getItem("animationDisabled") == "true"
-
-            render(
-                createElement(CouplingRouter, CouplingRouterProps(isSignedIn, animationsDisabled)),
-                document.getElementsByClassName("view-container")[0]
-            )
-        }
+        val isSignedIn = checkForSignedIn()
+        react.dom.render(couplingRouterElement(isSignedIn, animationsDisabled), document.viewContainerNode)
     }
+
+    private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]
+
+    private fun couplingRouterElement(isSignedIn: Boolean, animationsDisabled: Boolean) =
+        createElement(CouplingRouter, CouplingRouterProps(isSignedIn, animationsDisabled))
 }

@@ -3,7 +3,10 @@ package com.zegreatrob.coupling.client
 import kotlin.js.Json
 import kotlin.js.json
 
-fun main() {
+suspend fun main() {
+    if (isTestRun())
+        return
+
     js("require('prefixfree')")
     js("require('com/zegreatrob/coupling/client/animations.css')")
     js("require('@fortawesome/fontawesome-free/css/all.css')")
