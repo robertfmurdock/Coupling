@@ -33,8 +33,17 @@ private fun Express.authRoutes() {
     post("/auth/google-token", authenticateCustomGoogle(), send200())
     get("/microsoft-login", authenticateAzure())
     post("/auth/signin-microsoft", authenticateAzureWithFailure(), redirectToRoot())
+    get("/auth0-login", authenticateAuth0())
+    get("/auth/signin-auth0", auth0Callback())
+
     if (isInDevMode)
         get("/test-login", authenticateLocal())
+}
+
+private fun auth0Callback(): Handler = { request, response, next ->
+    passport.authenticate("auth0")(request, response) {
+        redirectToRoot()(request, response, next)
+    }
 }
 
 private fun authenticateLocal() = passport.authenticate(
@@ -45,6 +54,9 @@ private fun authenticateLocal() = passport.authenticate(
 private fun send200(): Handler = { _, response, _ -> response.sendStatus(200) }
 
 private fun authenticateCustomGoogle() = passport.authenticate("custom")
+
+private fun authenticateAuth0() = passport.authenticate("auth0", json("scope" to "openid email profile"))
+private fun authenticateAuth0Callback() = passport.authenticate("auth0")
 
 private fun authenticateAzure() = passport.authenticate("azuread-openidconnect")
 

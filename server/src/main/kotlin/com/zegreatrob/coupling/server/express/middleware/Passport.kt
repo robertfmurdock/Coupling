@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.UserDataService
 import com.zegreatrob.coupling.server.express.isInDevMode
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.passport.passport
+import com.zegreatrob.coupling.server.external.passportauth0.auth0Strategy
 
 fun Express.passport() {
     use(passport.initialize())
@@ -14,6 +15,7 @@ fun Express.passport() {
 
     passport.use(googleAuthTransferStrategy())
     passport.use(azureODICStrategy())
+    passport.use(auth0Strategy())
 
     if (isInDevMode) {
         passport.use(localStrategy())
