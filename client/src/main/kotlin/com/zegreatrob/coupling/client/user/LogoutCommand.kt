@@ -7,4 +7,3 @@ object LogoutCommand
 interface LogoutCommandDispatcher : SdkSyntax {
     suspend fun LogoutCommand.perform() = with(sdk) { logout() }
 }
-

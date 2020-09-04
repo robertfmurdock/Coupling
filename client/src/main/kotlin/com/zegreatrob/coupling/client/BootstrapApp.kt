@@ -3,20 +3,20 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.coupling.client.routing.CouplingRouterProps
-import com.zegreatrob.coupling.client.user.GoogleSignIn
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import kotlinx.browser.document
+import kotlinx.browser.window
 import org.w3c.dom.Document
 import org.w3c.dom.get
 import react.createElement
 
-object App : GoogleSignIn, Sdk by SdkSingleton {
+object App : Sdk by SdkSingleton {
 
     suspend fun bootstrapApp() {
         initializeLogging(developmentMode = false)
-        val isSignedIn = checkForSignedIn()
+        val isSignedIn = window["isAuthenticated"] == true
         react.dom.render(couplingRouterElement(isSignedIn, animationsDisabled), document.viewContainerNode)
     }
 

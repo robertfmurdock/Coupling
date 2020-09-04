@@ -44,7 +44,9 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
 
 private fun Express.injectVariablesForClient(request: Request) = """<script>
     window.googleClientId = "${Config.googleClientID}";
+    window.auth0ClientId = "${Config.AUTH0_CLIENT_ID}";
+    window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.expressEnv = "$env";
-    window.isAuthenticated = ${request.isAuthenticated()}
+    window.isAuthenticated = ${request.isAuthenticated()};
     </script>
 """.trimIndent()

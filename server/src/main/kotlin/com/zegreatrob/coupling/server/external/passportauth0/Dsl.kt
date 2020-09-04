@@ -26,4 +26,3 @@ private suspend fun findOrCreateUser(
 ) = profile.emails.firstOrNull()?.value?.let {
     UserDataService.findOrCreateUser(it, request.traceId)
 } ?: throw Exception("Auth succeeded but no email found")
-

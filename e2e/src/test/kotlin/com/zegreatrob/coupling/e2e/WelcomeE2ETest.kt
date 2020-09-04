@@ -6,13 +6,13 @@ import kotlin.test.Test
 
 class WelcomeE2ETest {
     @Test
-    fun whenTheEnterButtonIsPressedWillRedirectToGoogleLogin() = e2eSetup(WelcomePage) {
+    fun whenTheEnterButtonIsPressedWillRedirectToAuth0() = e2eSetup(WelcomePage) {
         goTo()
         enterButton.click()
     } exercise {
         googleLoginButton.click()
     } verifyAnd {
-        waitToArriveAtUrl("https://accounts.google.com")
+        waitToArriveAtUrl("https://zegreatrob.us.auth0.com")
     } teardown {
         purgeBrowserLogsBecauseGoogleIsCreatingWarning()
     }

@@ -4,10 +4,12 @@ import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.react.dataloader.useScope
+import kotlinx.browser.window
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.w3c.dom.get
+import org.w3c.dom.url.URL
 import react.dom.div
-import react.router.dom.redirect
 import react.useState
 
 val Logout = reactFunction<PageProps> { props ->
@@ -20,11 +22,19 @@ val Logout = reactFunction<PageProps> { props ->
         )
     }
     if (isLoggedOut) {
-        redirect(to = "/welcome", from = "")
+        window.location.assign("$authLogoutUrl")
     } else {
         div { }
     }
 }
+
+private val authLogoutUrl: URL
+    get() = URL("https://${window["auth0Domain"]}/v2/logout").apply {
+        searchParams.apply {
+            append("client_id", window["auth0ClientId"].toString())
+            append("returnTo", URL(window.location.toString()).origin)
+        }
+    }
 
 private suspend fun CommandDispatcher.waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
     launch { LogoutCommand.perform() }
