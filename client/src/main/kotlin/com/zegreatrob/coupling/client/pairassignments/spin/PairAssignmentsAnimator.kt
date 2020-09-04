@@ -21,20 +21,19 @@ data class PairAssignmentsAnimatorProps(
 
 private val animationContextConsumer = animationsDisabledContext.Consumer
 
-val PairAssignmentsAnimator =
-    reactFunction<PairAssignmentsAnimatorProps> { props ->
-        val (tribe, players, pairAssignments, enabled) = props
-        animationContextConsumer { animationsDisabled: Boolean ->
-            if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
-                frameRunner(SpinAnimationState.sequence(pairAssignments), speed = tribe.animationSpeed) { state ->
-                    val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
-                    flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
-                }
-            } else {
-                props.children()
+val PairAssignmentsAnimator = reactFunction<PairAssignmentsAnimatorProps> { props ->
+    val (tribe, players, pairAssignments, enabled) = props
+    animationContextConsumer { animationsDisabled: Boolean ->
+        if (!animationsDisabled && enabled && pairAssignments != null && pairAssignments.id == null) {
+            frameRunner(SpinAnimationState.sequence(pairAssignments), speed = tribe.animationSpeed) { state ->
+                val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+                flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
             }
+        } else {
+            props.children()
         }
     }
+}
 
 fun RBuilder.animator(
     tribe: Tribe,

@@ -81,7 +81,8 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, null, StubDispatchFunc(), CouplingSocketMessage("", emptyList())) {})
+            PairAssignmentsProps(tribe, players, null, StubDispatchFunc(), CouplingSocketMessage("", emptyList())) {}
+        )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()
@@ -105,7 +106,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 dispatchFunc,
                 CouplingSocketMessage("", emptyList()),
-                pathSetterSpy::spyFunction
+                pathSetter = pathSetterSpy::spyFunction
             )
         )
     }) exercise {
@@ -283,7 +284,13 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, listOf(), null, StubDispatchFunc(), CouplingSocketMessage("", emptyList())) {}
+            PairAssignmentsProps(
+                tribe,
+                listOf(),
+                null,
+                StubDispatchFunc(),
+                CouplingSocketMessage("", emptyList())
+            ) {}
         )
     } verify { wrapper ->
         wrapper.find(ServerMessage)

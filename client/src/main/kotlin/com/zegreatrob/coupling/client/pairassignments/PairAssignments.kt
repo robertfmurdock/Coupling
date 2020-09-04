@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
+import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -26,22 +27,12 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import react.RBuilder
 import react.RProps
+import react.RSetState
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
 import react.useState
-
-data class PairAssignmentsProps(
-    val tribe: Tribe,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument?,
-    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
-    val message: CouplingSocketMessage,
-    val pathSetter: (String) -> Unit
-) : RProps
-
-private val styles = useStyles("pairassignments/PairAssignments")
-
+import kotlin.js.json
 
 data class SocketedPairAssignmentsProps(
     val tribe: Tribe,
@@ -53,17 +44,35 @@ data class SocketedPairAssignmentsProps(
 
 val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
     val (tribe, players, originalPairs, commandFunc, pathSetter) = props
-    couplingWebsocket(props.tribe.id, "https:" == window.location.protocol) { message, _ ->
-        child(PairAssignments, PairAssignmentsProps(tribe, players, originalPairs, commandFunc, message, pathSetter))
+    couplingWebsocket(props.tribe.id, "https:" == window.location.protocol) { message, sendMessage ->
+        fun updatePairs(updated: PairAssignmentDocument) {
+            sendMessage(JSON.stringify(json("updatedPairs" to updated.toJson())))
+        }
+        child(
+            PairAssignments,
+            PairAssignmentsProps(tribe, players, originalPairs, commandFunc, message, ::updatePairs, pathSetter)
+        )
     }
 }
 
-val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
-    val (tribe, players, originalPairs, commandFunc, message, pathSetter) = props
-    val (pairAssignments, setPairAssignments) = useState(originalPairs)
+data class PairAssignmentsProps(
+    val tribe: Tribe,
+    val players: List<Player>,
+    val pairAssignments: PairAssignmentDocument?,
+    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
+    val message: CouplingSocketMessage,
+    val sendUpdatedPairs: (PairAssignmentDocument) -> Unit = {},
+    val pathSetter: (String) -> Unit
+) : RProps
 
-    val onSwap = makeSwapCallback(pairAssignments, setPairAssignments)
-    val onPinDrop = makePinCallback(pairAssignments, setPairAssignments)
+private val styles = useStyles("pairassignments/PairAssignments")
+
+val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
+    val (tribe, players, originalPairs, commandFunc, message, sendUpdatedPairs, pathSetter) = props
+    val (pairAssignments, setPairAssignments) = useState(originalPairs)
+    val updatePairAssignments = setAndUpdateFunc(setPairAssignments, sendUpdatedPairs)
+    val onSwap = pairAssignments?.makeSwapCallback(updatePairAssignments) ?: { _, _, _ -> }
+    val onPinDrop = pairAssignments?.makePinCallback(updatePairAssignments) ?: { _, _ -> }
     val onSave = pairAssignments?.onSaveFunc(commandFunc, tribe, pathSetter) ?: {}
     DndProvider {
         attrs { backend = HTML5Backend }
@@ -88,17 +97,23 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
     }
 }
 
+private fun setAndUpdateFunc(
+    setPairAssignments: RSetState<PairAssignmentDocument?>, sendUpdatedPairs: (PairAssignmentDocument) -> Unit
+) = { new: PairAssignmentDocument ->
+    setPairAssignments(new)
+    sendUpdatedPairs(new)
+}
+
 private fun PairAssignmentDocument.onSaveFunc(
     dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     tribe: Tribe,
     pathSetter: (String) -> Unit
 ) = dispatchFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter.currentPairs(tribe.id) })
 
-private fun makePinCallback(pA: PairAssignmentDocument?, setPairAssignments: (PairAssignmentDocument?) -> Unit) =
-    pA?.dropThePin(setPairAssignments)
-        ?: { _, _ -> }
+private fun PairAssignmentDocument.makePinCallback(setPairAssignments: (PairAssignmentDocument) -> Unit) =
+    dropThePin(setPairAssignments)
 
-private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument?) -> Unit) =
+private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument) -> Unit) =
     { pinId: String, droppedPair: PinnedCouplingPair ->
         setPairAssignments(
             copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
@@ -134,12 +149,10 @@ private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, 
         )
     )
 
-private fun makeSwapCallback(
-    pairAssignments: PairAssignmentDocument?,
-    setPairAssignments: (PairAssignmentDocument?) -> Unit
-) = { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
-    setPairAssignments(pairAssignments?.swapPlayers(droppedPlayerId, targetPlayer, targetPair))
-}
+private fun PairAssignmentDocument.makeSwapCallback(setPairAssignments: (PairAssignmentDocument) -> Unit) =
+    { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
+        setPairAssignments(swapPlayers(droppedPlayerId, targetPlayer, targetPair))
+    }
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
