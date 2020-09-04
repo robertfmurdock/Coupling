@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minspy.SpyData
@@ -40,12 +41,10 @@ class PairAssignmentsTest {
 
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
-        val pairAssignments = PairAssignmentDocument(
+        var pairAssignments = PairAssignmentDocument(
             date = DateTime.now(),
             pairs = listOf(
-                pairOf(
-                    Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")
-                ),
+                pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),
                 pairOf(fellow, guy)
             ).withPins()
         )
@@ -56,8 +55,9 @@ class PairAssignmentsTest {
                 tribe,
                 players,
                 pairAssignments,
-                StubDispatchFunc(),
-                CouplingSocketMessage("", emptyList())
+                { pairAssignments = it },
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
             ) {}
         )
     } verify { wrapper ->
@@ -81,7 +81,14 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, null, StubDispatchFunc(), CouplingSocketMessage("", emptyList())) {}
+            PairAssignmentsProps(
+                tribe,
+                players,
+                null,
+                {},
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
+            ) {}
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
@@ -104,6 +111,7 @@ class PairAssignmentsTest {
                 tribe,
                 emptyList(),
                 pairAssignments,
+                {},
                 dispatchFunc,
                 CouplingSocketMessage("", emptyList()),
                 pathSetter = pathSetterSpy::spyFunction
@@ -135,26 +143,27 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
+        var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             PairAssignments,
             PairAssignmentsProps(
                 tribe,
                 emptyList(),
                 pairAssignments,
-                StubDispatchFunc(),
-                CouplingSocketMessage("", emptyList())
+                { lastSetPairAssignments = it },
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
             ) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
-        wrapper.update()
-
-        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
-        pairs.pairs[0].toPair().asArray().toList()
-            .assertIsEqualTo(listOf(player1, player3))
-        pairs.pairs[1].toPair().asArray().toList()
-            .assertIsEqualTo(listOf(player2, player4))
+        lastSetPairAssignments.assertNotNull {
+            it.pairs[0].toPair().asArray().toList()
+                .assertIsEqualTo(listOf(player1, player3))
+            it.pairs[1].toPair().asArray().toList()
+                .assertIsEqualTo(listOf(player2, player4))
+        }
     }
 
     @Test
@@ -167,26 +176,27 @@ class PairAssignmentsTest {
             date = DateTime.now(),
             pairs = listOf(pair1, pair2)
         )
+        var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             PairAssignments,
             PairAssignmentsProps(
                 tribe,
                 emptyList(),
                 pairAssignments,
-                StubDispatchFunc(),
-                CouplingSocketMessage("", emptyList())
+                { lastSetPairAssignments = it },
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
             ) {}
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
     } verify {
-        wrapper.update()
-
-        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
-        pairs.pairs[0]
-            .assertIsEqualTo(pair1.copy(pins = emptyList()))
-        pairs.pairs[1]
-            .assertIsEqualTo(pair2.copy(pins = listOf(pin2, pin1)))
+        lastSetPairAssignments.assertNotNull { pairs ->
+            pairs.pairs[0]
+                .assertIsEqualTo(pair1.copy(pins = emptyList()))
+            pairs.pairs[1]
+                .assertIsEqualTo(pair2.copy(pins = listOf(pin2, pin1)))
+        }
     }
 
     @Test
@@ -206,26 +216,27 @@ class PairAssignmentsTest {
                 pairOf(player3, player4).withPins(listOf(pin2))
             )
         )
+        var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             PairAssignments,
             PairAssignmentsProps(
                 tribe,
                 emptyList(),
                 pairAssignments,
-                StubDispatchFunc(),
-                CouplingSocketMessage("", emptyList())
+                { lastSetPairAssignments = it },
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
             ) {}
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
     } verify {
-        wrapper.update()
-
-        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
-        pairs.pairs[0].pins
-            .assertIsEqualTo(listOf(pin1))
-        pairs.pairs[1].pins
-            .assertIsEqualTo(listOf(pin2))
+        lastSetPairAssignments.assertNotNull {
+            it.pairs[0].pins
+                .assertIsEqualTo(listOf(pin1))
+            it.pairs[1].pins
+                .assertIsEqualTo(listOf(pin2))
+        }
     }
 
     @Test
@@ -242,26 +253,25 @@ class PairAssignmentsTest {
                 pairOf(player3, player4)
             ).withPins()
         )
+        var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             PairAssignments,
             PairAssignmentsProps(
                 tribe,
                 emptyList(),
                 pairAssignments,
-                StubDispatchFunc(),
-                CouplingSocketMessage("", emptyList())
+                { lastSetPairAssignments = it },
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
             ) {}
         )
     }) exercise {
         player4.dragTo(player3, wrapper)
     } verify {
-        wrapper.update()
-
-        val pairs = wrapper.find(CurrentPairAssignmentsPanel).props().pairAssignments!!
-        pairs.pairs[0].toPair().asArray().toList()
-            .assertIsEqualTo(listOf(player1, player2))
-        pairs.pairs[1].toPair().asArray().toList()
-            .assertIsEqualTo(listOf(player3, player4))
+        lastSetPairAssignments.assertNotNull {
+            it.pairs[0].toPair().assertIsEqualTo(pairOf(player1, player2))
+            it.pairs[1].toPair().assertIsEqualTo(pairOf(player3, player4))
+        }
     }
 
     private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<RClass<PairAssignmentsProps>>) {
@@ -288,8 +298,9 @@ class PairAssignmentsTest {
                 tribe,
                 listOf(),
                 null,
-                StubDispatchFunc(),
-                CouplingSocketMessage("", emptyList())
+                {},
+                dispatchFunc = StubDispatchFunc(),
+                message = CouplingSocketMessage("", emptyList())
             ) {}
         )
     } verify { wrapper ->
@@ -299,4 +310,9 @@ class PairAssignmentsTest {
             .assertIsEqualTo(tribe.id)
     }
 
+}
+
+fun <T> T?.assertNotNull(callback: (T) -> Unit = {}) {
+    this.assertIsNotEqualTo(null)
+    callback(this!!)
 }

@@ -44,13 +44,24 @@ data class SocketedPairAssignmentsProps(
 
 val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
     val (tribe, players, originalPairs, commandFunc, pathSetter) = props
+
+    val (pairAssignments, setPairAssignments) = useState(originalPairs)
+
     couplingWebsocket(props.tribe.id, "https:" == window.location.protocol) { message, sendMessage ->
-        fun updatePairs(updated: PairAssignmentDocument) {
-            sendMessage(JSON.stringify(json("updatedPairs" to updated.toJson())))
-        }
+        val updatePairAssignments = setAndUpdateFunc(setPairAssignments, {
+            sendMessage(JSON.stringify(json("updatedPairs" to it.toJson())))
+        })
         child(
             PairAssignments,
-            PairAssignmentsProps(tribe, players, originalPairs, commandFunc, message, ::updatePairs, pathSetter)
+            PairAssignmentsProps(
+                tribe,
+                players,
+                pairAssignments,
+                updatePairAssignments,
+                commandFunc,
+                message,
+                pathSetter
+            )
         )
     }
 }
@@ -59,20 +70,18 @@ data class PairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
+    val sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
     val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
-    val sendUpdatedPairs: (PairAssignmentDocument) -> Unit = {},
     val pathSetter: (String) -> Unit
 ) : RProps
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
 val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
-    val (tribe, players, originalPairs, commandFunc, message, sendUpdatedPairs, pathSetter) = props
-    val (pairAssignments, setPairAssignments) = useState(originalPairs)
-    val updatePairAssignments = setAndUpdateFunc(setPairAssignments, sendUpdatedPairs)
-    val onSwap = pairAssignments?.makeSwapCallback(updatePairAssignments) ?: { _, _, _ -> }
-    val onPinDrop = pairAssignments?.makePinCallback(updatePairAssignments) ?: { _, _ -> }
+    val (tribe, players, pairAssignments, sendUpdatedPairs, commandFunc, message, pathSetter) = props
+    val onSwap = pairAssignments?.makeSwapCallback(sendUpdatedPairs) ?: { _, _, _ -> }
+    val onPinDrop = pairAssignments?.makePinCallback(sendUpdatedPairs) ?: { _, _ -> }
     val onSave = pairAssignments?.onSaveFunc(commandFunc, tribe, pathSetter) ?: {}
     DndProvider {
         attrs { backend = HTML5Backend }
