@@ -22,11 +22,15 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.css.*
+import kotlinx.css.properties.boxShadow
 import react.RBuilder
 import react.RProps
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
+import styled.css
+import styled.styledDiv
 
 
 fun RBuilder.pairAssignments(
@@ -66,24 +70,67 @@ private val styles = useStyles("pairassignments/PairAssignments")
 
 val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
     val (tribe, players, pairAssignments, sendUpdatedPairs, commandFunc, message, pathSetter) = props
-    val onSwap = pairAssignments?.makeSwapCallback(sendUpdatedPairs) ?: { _, _, _ -> }
-    val onPinDrop = pairAssignments?.makePinCallback(sendUpdatedPairs) ?: { _, _ -> }
-    val onSave = pairAssignments?.onSaveFunc(commandFunc, tribe, pathSetter) ?: {}
     DndProvider {
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
             div {
                 tribeBrowser(tribe, pathSetter)
-                animator(tribe, players, pairAssignments, tribe.animationEnabled) {
-                    currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
-                }
+                currentPairSection(tribe, players, pairAssignments, pathSetter, sendUpdatedPairs, commandFunc)
             }
             controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
 
-            child(ServerMessage, ServerMessageProps(tribe.id, message), key = message.text + " " + message.players.size)
+            child(ServerMessage, ServerMessageProps(tribe.id, message), key = "${message.text} ${message.players.size}")
         }
     }
+}
+
+private fun RBuilder.currentPairSection(
+    tribe: Tribe,
+    players: List<Player>,
+    pairAssignments: PairAssignmentDocument?,
+    pathSetter: (String) -> Unit,
+    sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
+    commandFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>
+) = styledDiv {
+    css {
+        display = Display.inlineBlock
+        borderRadius = 20.px
+        padding(5.px)
+        margin(5.px, 0.px)
+        backgroundColor = hsla(146, 17, 80, 1.0)
+        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+    }
+    if (pairAssignments == null) {
+        noPairsHeader()
+    } else {
+        animator(tribe, players, pairAssignments, tribe.animationEnabled) {
+            currentPairAssignments(
+                tribe = tribe,
+                pairAssignments = pairAssignments,
+                onPlayerSwap = pairAssignments.makeSwapCallback(sendUpdatedPairs),
+                onPinDrop = pairAssignments.makePinCallback(sendUpdatedPairs),
+                onSave = pairAssignments.onSaveFunc(commandFunc, tribe, pathSetter),
+                pathSetter = pathSetter
+            )
+        }
+    }
+}
+
+private fun RBuilder.noPairsHeader() = styledDiv {
+    css {
+        border = "8px outset dimgray"
+        backgroundColor = Color.aliceBlue
+        display = Display.inlineBlock
+        borderRadius = 40.px
+        fontSize = LinearDimension("xx-large")
+        fontWeight = FontWeight.bold
+        width = 500.px
+        height = 150.px
+        padding(100.px, 5.px, 5.px)
+        margin(0.px, 2.px, 5.px)
+    }
+    +"No pair assignments yet!"
 }
 
 private fun RBuilder.controlPanel(tribe: Tribe) = div(classes = styles["controlPanel"]) {

@@ -17,7 +17,7 @@ import react.dom.div
 
 data class CurrentPairAssignmentsPanelProps(
     val tribe: Tribe,
-    val pairAssignments: PairAssignmentDocument?,
+    val pairAssignments: PairAssignmentDocument,
     val onPlayerSwap: SwapCallback,
     val onPinDrop: PinMoveCallback,
     val onSave: () -> Unit,
@@ -27,21 +27,14 @@ data class CurrentPairAssignmentsPanelProps(
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
-val CurrentPairAssignmentsPanel =
-    reactFunction<CurrentPairAssignmentsPanelProps> { props ->
-        val (tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter) = props
-        div(classes = styles.className) {
-            if (pairAssignments == null) {
-                noPairsHeader()
-            } else {
-                dateHeader(pairAssignments)
-                pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
-                saveButtonSection(pairAssignments, onSave)
-            }
-        }
+val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { props ->
+    val (tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter) = props
+    div(classes = styles.className) {
+        dateHeader(pairAssignments)
+        pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
+        saveButtonSection(pairAssignments, onSave)
     }
-
-private fun RBuilder.noPairsHeader() = div(classes = styles["noPairsNotice"]) { +"No pair assignments yet!" }
+}
 
 private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
     div {
@@ -75,7 +68,7 @@ private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, 
 
 fun RBuilder.currentPairAssignments(
     tribe: Tribe,
-    pairAssignments: PairAssignmentDocument?,
+    pairAssignments: PairAssignmentDocument,
     onPlayerSwap: SwapCallback,
     onPinDrop: PinMoveCallback,
     onSave: () -> Unit,

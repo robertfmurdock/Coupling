@@ -1,11 +1,9 @@
 package com.zegreatrob.coupling.e2e
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairCallSigns
+import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.PairAssignments.newPairsButton
-import com.zegreatrob.coupling.e2e.PairAssignments.retiredPlayersButton
-import com.zegreatrob.coupling.e2e.PairAssignments.statisticsButton
-import com.zegreatrob.coupling.e2e.PairAssignments.viewHistoryButton
 import com.zegreatrob.coupling.e2e.TribeCard.header
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -59,8 +57,8 @@ class PairAssignmentsPageE2ETest {
                 sdk.save(tribe, players)
             })
 
-            private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
-                template(CurrentPairAssignmentPage, additionalSetup)
+            private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
+                template(PairAssignmentsPage, additionalSetup)
 
         }
 
@@ -181,8 +179,8 @@ class PairAssignmentsPageE2ETest {
                 }
             })
 
-            private fun currentPairAssignmentPageSetup(additionalSetup: suspend CurrentPairAssignmentPage.() -> Unit) =
-                setup(CurrentPairAssignmentPage, additionalSetup)
+            private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
+                setup(PairAssignmentsPage, additionalSetup)
         }
 
         @Test

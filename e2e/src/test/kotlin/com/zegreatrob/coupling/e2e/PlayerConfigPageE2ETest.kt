@@ -53,7 +53,7 @@ class PlayerConfigPageE2ETest {
             page.goTo(tribe.id, player.id)
         } exercise {
             TribeCard.element().click()
-            CurrentPairAssignmentPage.waitForPage()
+            PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
@@ -70,7 +70,7 @@ class PlayerConfigPageE2ETest {
             WebdriverBrowser.waitForAlert()
             WebdriverBrowser.alertText().also {
                 WebdriverBrowser.acceptAlert()
-                CurrentPairAssignmentPage.waitForPage()
+                PairAssignmentsPage.waitForPage()
             }
         } verify { alertText ->
             alertText.assertIsEqualTo("You have unsaved data. Would you like to save before you leave?")
@@ -89,7 +89,7 @@ class PlayerConfigPageE2ETest {
             }
         } exercise {
             TribeCard.element().click()
-            CurrentPairAssignmentPage.waitForPage()
+            PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
@@ -110,7 +110,7 @@ class PlayerConfigPageE2ETest {
             page.waitForPage()
         } exercise {
             TribeCard.element().click()
-            CurrentPairAssignmentPage.waitForPage()
+            PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")

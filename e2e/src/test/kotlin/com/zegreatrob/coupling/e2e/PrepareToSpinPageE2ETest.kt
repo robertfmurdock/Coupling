@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.e2e
 
+import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.CurrentPairAssignmentPage.saveButton
+import com.zegreatrob.coupling.e2e.CurrentPairAssignmentsPanel.saveButton
 import com.zegreatrob.coupling.e2e.PrepareToSpinPage.selectAllButton
 import com.zegreatrob.coupling.e2e.PrepareToSpinPage.selectNoneButton
 import com.zegreatrob.coupling.e2e.PrepareToSpinPage.spinButton
@@ -57,9 +58,9 @@ class PrepareToSpinPageE2ETest {
         selectAllButton.click()
     } exercise {
         spinButton.click()
-        CurrentPairAssignmentPage.waitForPage()
+        PairAssignmentsPage.waitForPage()
     } verify {
-        CurrentPairAssignmentPage.assignedPairElements.count()
+        assignedPairElements.count()
             .assertIsEqualTo(3)
     }
 
@@ -73,17 +74,17 @@ class PrepareToSpinPageE2ETest {
         }
     } exercise {
         spinButton.click()
-        CurrentPairAssignmentPage.waitForPage()
+        PairAssignmentsPage.waitForPage()
     } verify {
-        CurrentPairAssignmentPage.assignedPairElements.count()
+        assignedPairElements.count()
             .assertIsEqualTo(1)
         PlayerRoster.playerElements.count()
             .assertIsEqualTo(3)
 
         saveButton.click()
-        CurrentPairAssignmentPage.waitForSaveButtonToNotBeDisplayed()
+        CurrentPairAssignmentsPanel.waitForSaveButtonToNotBeDisplayed()
 
-        CurrentPairAssignmentPage.assignedPairElements.count()
+        assignedPairElements.count()
             .assertIsEqualTo(1)
         PlayerRoster.playerElements.count()
             .assertIsEqualTo(3)
@@ -96,7 +97,7 @@ class PrepareToSpinPageE2ETest {
             .assertIsEqualTo(1)
     } exercise {
         spinButton.click()
-        CurrentPairAssignmentPage.waitForPage()
+        PairAssignmentsPage.waitForPage()
     } verify {
         PinButton.pinElements.count()
             .assertIsEqualTo(1)
@@ -108,7 +109,7 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.selectedPinElements.get(0).click()
     } exercise {
         spinButton.click()
-        CurrentPairAssignmentPage.waitForPage()
+        PairAssignmentsPage.waitForPage()
     } verify {
         PinButton.pinElements.count()
             .assertIsEqualTo(0)
