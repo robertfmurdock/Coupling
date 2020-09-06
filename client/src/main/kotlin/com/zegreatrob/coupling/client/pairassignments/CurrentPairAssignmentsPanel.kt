@@ -15,6 +15,18 @@ import react.RBuilder
 import react.RProps
 import react.dom.div
 
+fun RBuilder.currentPairAssignments(
+    tribe: Tribe,
+    pairAssignments: PairAssignmentDocument,
+    onPlayerSwap: SwapCallback,
+    onPinDrop: PinMoveCallback,
+    onSave: () -> Unit,
+    pathSetter: (String) -> Unit
+) = child(
+    CurrentPairAssignmentsPanel,
+    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter)
+)
+
 data class CurrentPairAssignmentsPanelProps(
     val tribe: Tribe,
     val pairAssignments: PairAssignmentDocument,
@@ -23,7 +35,6 @@ data class CurrentPairAssignmentsPanelProps(
     val onSave: () -> Unit,
     val pathSetter: (String) -> Unit
 ) : RProps
-
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
@@ -65,15 +76,3 @@ private fun PairAssignmentDocument.isNotSaved() = id == null
 private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green, styles["saveButton"], onSave) {
     +"Save!"
 }
-
-fun RBuilder.currentPairAssignments(
-    tribe: Tribe,
-    pairAssignments: PairAssignmentDocument,
-    onPlayerSwap: SwapCallback,
-    onPinDrop: PinMoveCallback,
-    onSave: () -> Unit,
-    pathSetter: (String) -> Unit
-) = child(
-    CurrentPairAssignmentsPanel,
-    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter)
-)

@@ -24,32 +24,21 @@ data class SocketedPairAssignmentsProps(
 
 val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
     val (tribe, players, originalPairs, commandFunc, pathSetter) = props
-
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     couplingWebsocket(props.tribe.id, "https:" == window.location.protocol) { message, sendMessage ->
         val updatePairAssignments = useMemo(
-            { updatePairAssignments(setPairAssignments, sendMessage) },
+            { updatePairAssignmentsFunc(setPairAssignments, sendMessage) },
             arrayOf(sendMessage)
         )
-        pairAssignments(
-            tribe,
-            players,
-            pairAssignments,
-            updatePairAssignments,
-            commandFunc,
-            message,
-            pathSetter
-        )
+        pairAssignments(tribe, players, pairAssignments, updatePairAssignments, commandFunc, message, pathSetter)
     }
 }
 
-private fun updatePairAssignments(
+private fun updatePairAssignmentsFunc(
     setPairAssignments: RSetState<PairAssignmentDocument?>,
     sendMessage: (Any) -> Unit
-): (PairAssignmentDocument) -> Unit {
-    return { new: PairAssignmentDocument ->
-        setPairAssignments(new)
-        sendMessage(JSON.stringify(json("updatedPairs" to new.toJson())))
-    }
+) = { new: PairAssignmentDocument ->
+    setPairAssignments(new)
+    sendMessage(JSON.stringify(json("updatedPairs" to new.toJson())))
 }
