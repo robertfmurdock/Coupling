@@ -28,6 +28,9 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     val (tribeId, useSsl) = props
     val (message, setMessage) = useState(disconnectedMessage)
     val ref = useRef<WebsocketComponent?>(null)
+
+    val sendMessageFunc = useMemo({ sendMessageWithSocketFunc(ref) }, emptyArray())
+
     div {
         websocket {
             attrs {
@@ -38,16 +41,17 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
             }
         }
 
-        val sendMessageFunc = { it: Any ->
-            val websocket = ref.current
-            if (websocket != null)
-                websocket.sendMessage(it)
-            else
-                console.error("Message not sent, websocket not initialized", it)
-        }
         props.children(message to sendMessageFunc)
     }
 }.unsafeCast<FunctionalComponent<CouplingWebsocketProps>>()
+
+private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent?>) = { message: Any ->
+    val websocket = ref.current
+    if (websocket != null)
+        websocket.sendMessage(message)
+    else
+        console.error("Message not sent, websocket not initialized", message)
+}
 
 private fun toCouplingServerMessage(json: Json) = CouplingSocketMessage(
     json["text"].toString(),

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.couplingWebsocket
 import com.zegreatrob.coupling.client.currentPairs
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
@@ -15,7 +14,6 @@ import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
-import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -24,46 +22,34 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
-import kotlinx.browser.window
 import react.RBuilder
 import react.RProps
-import react.RSetState
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
-import react.useState
-import kotlin.js.json
 
-data class SocketedPairAssignmentsProps(
-    val tribe: Tribe,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument?,
-    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
-    val pathSetter: (String) -> Unit
-) : RProps
 
-val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
-    val (tribe, players, originalPairs, commandFunc, pathSetter) = props
-
-    val (pairAssignments, setPairAssignments) = useState(originalPairs)
-
-    couplingWebsocket(props.tribe.id, "https:" == window.location.protocol) { message, sendMessage ->
-        val updatePairAssignments = setAndUpdateFunc(setPairAssignments, {
-            sendMessage(JSON.stringify(json("updatedPairs" to it.toJson())))
-        })
-        child(
-            PairAssignments,
-            PairAssignmentsProps(
-                tribe,
-                players,
-                pairAssignments,
-                updatePairAssignments,
-                commandFunc,
-                message,
-                pathSetter
-            )
+fun RBuilder.pairAssignments(
+    tribe: Tribe,
+    players: List<Player>,
+    pairAssignments: PairAssignmentDocument?,
+    updatePairAssignments: (PairAssignmentDocument) -> Unit,
+    commandFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
+    message: CouplingSocketMessage,
+    pathSetter: (String) -> Unit
+) {
+    child(
+        PairAssignments,
+        PairAssignmentsProps(
+            tribe,
+            players,
+            pairAssignments,
+            updatePairAssignments,
+            commandFunc,
+            message,
+            pathSetter
         )
-    }
+    )
 }
 
 data class PairAssignmentsProps(
@@ -92,13 +78,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
                     currentPairAssignments(tribe, pairAssignments, onSwap, onPinDrop, onSave, pathSetter)
                 }
             }
-            div(classes = styles["controlPanel"]) {
-                div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
-                viewHistoryButton(tribe, styles["viewHistoryButton"])
-                pinListButton(tribe, styles["pinListButton"])
-                statisticsButton(tribe, styles["statisticsButton"])
-                viewRetireesButton(tribe, styles["retiredPlayersButton"])
-            }
+            controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
 
             child(ServerMessage, ServerMessageProps(tribe.id, message), key = message.text + " " + message.players.size)
@@ -106,11 +86,12 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
     }
 }
 
-private fun setAndUpdateFunc(
-    setPairAssignments: RSetState<PairAssignmentDocument?>, sendUpdatedPairs: (PairAssignmentDocument) -> Unit
-) = { new: PairAssignmentDocument ->
-    setPairAssignments(new)
-    sendUpdatedPairs(new)
+private fun RBuilder.controlPanel(tribe: Tribe) = div(classes = styles["controlPanel"]) {
+    div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
+    viewHistoryButton(tribe, styles["viewHistoryButton"])
+    pinListButton(tribe, styles["pinListButton"])
+    statisticsButton(tribe, styles["statisticsButton"])
+    viewRetireesButton(tribe, styles["retiredPlayersButton"])
 }
 
 private fun PairAssignmentDocument.onSaveFunc(
