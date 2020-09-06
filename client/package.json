@@ -29,7 +29,7 @@
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
-    "blueimp-md5": "^2.17.0",
+    "blueimp-md5": "^2.18.0",
     "core-js": "^3.6.5",
     "css-loader": "^4.2.2",
     "d3": "^6.1.1",
