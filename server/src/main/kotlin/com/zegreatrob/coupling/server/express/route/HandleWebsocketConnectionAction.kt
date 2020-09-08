@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.server.express.route
 import com.zegreatrob.coupling.action.LoggingSyntax
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
@@ -12,6 +14,7 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.launch
+import kotlin.js.Json
 import kotlin.js.json
 
 data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
@@ -35,11 +38,19 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
     ) {
         websocket.tribeId = tribeId.value
         websocket.user = request.user
-        websocket.on("message") { logger.info { "Websocket message: $it" } }
-        websocket.on("close") { broadcastConnectionCountForTribe(tribeId, result.second, wss) }
+        websocket.on("message") {
+            logger.info { "Websocket message: $it" }
+            broadcastConnectionCountForTribe(
+                tribeId = tribeId,
+                players = result.second,
+                doc = JSON.parse<Json>(it).toPairAssignmentDocument(),
+                wss = wss
+            )
+        }
+        websocket.on("close") { broadcastConnectionCountForTribe(tribeId, result.second, null, wss) }
         websocket.on("error") { logger.error { it } }
 
-        broadcastConnectionCountForTribe(tribeId, result.second, wss)
+        broadcastConnectionCountForTribe(tribeId, result.second, null, wss)
     }
 
     private suspend fun TribeId.getAuthorizationData() = execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
@@ -47,6 +58,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
     private fun broadcastConnectionCountForTribe(
         tribeId: TribeId,
         players: List<Player>,
+        doc: PairAssignmentDocument?,
         wss: WebSocketServer
     ) {
         val matchingConnection = mutableListOf<WS>()
@@ -58,7 +70,8 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
                 json(
                     "type" to "LivePlayers",
                     "text" to "Users viewing this page: ${matchingConnection.size}",
-                    "players" to toUserPlayerList(matchingConnection, players).map(Player::toJson)
+                    "players" to toUserPlayerList(matchingConnection, players).map(Player::toJson),
+                    "currentPairAssignments" to doc?.toJson()
                 )
             ).also { logger.debug { "Broadcasting '$it'" } }
         )

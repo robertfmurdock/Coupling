@@ -216,7 +216,8 @@ class WebsocketTest {
     private fun expectedConnectionMessage(count: Int, players: List<Player>) = json(
         "type" to "LivePlayers",
         "text" to "Users viewing this page: $count",
-        "players" to players.map { it.toJson() }
+        "players" to players.map { it.toJson() },
+        "currentPairAssignments" to null
     ).let { JSON.stringify(it) }
 
     private fun connectToSocket(sdk: Sdk, tribeId: TribeId): WS {
