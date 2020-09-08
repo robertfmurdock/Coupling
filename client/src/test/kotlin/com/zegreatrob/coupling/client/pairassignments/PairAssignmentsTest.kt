@@ -278,7 +278,7 @@ class PairAssignmentsTest {
         val targetProps = wrapper.find(CurrentPairAssignmentsPanel).props()
 
         targetProps.run {
-            val targetPair = pairAssignments?.pairs?.first { pair -> pair.players.map { it.player }.contains(target) }!!
+            val targetPair = pairAssignments.pairs.first { pair -> pair.players.map { it.player }.contains(target) }
 
             onPlayerSwap(id!!, targetPair.players.first { it.player == target }, targetPair)
         }
@@ -292,17 +292,16 @@ class PairAssignmentsTest {
     @Test
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
-        shallow(
-            PairAssignments,
-            PairAssignmentsProps(
+        shallow {
+            pairAssignments(
                 tribe,
                 listOf(),
                 null,
                 {},
-                dispatchFunc = StubDispatchFunc(),
+                commandFunc = StubDispatchFunc(),
                 message = CouplingSocketMessage("", emptyList())
             ) {}
-        )
+        }
     } verify { wrapper ->
         wrapper.find(ServerMessage)
             .props()
