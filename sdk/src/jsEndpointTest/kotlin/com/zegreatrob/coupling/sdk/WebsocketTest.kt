@@ -226,10 +226,7 @@ class WebsocketTest {
         val url = "ws://$host/api/${tribeId.value}/pairAssignments/current"
         val cookieStringSync =
             sdk.axios.defaults.jar.getCookieStringSync(baseUrl.href).unsafeCast<String>()
-        return newWebsocket(
-            url,
-            json("headers" to json("cookie" to cookieStringSync))
-        )
+        return newWebsocket(url, json("headers" to json("cookie" to cookieStringSync)))
     }
 
 }

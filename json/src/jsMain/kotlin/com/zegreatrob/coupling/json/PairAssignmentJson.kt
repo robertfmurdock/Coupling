@@ -27,9 +27,15 @@ fun historyFromArray(history: Array<Json>) =
 
 fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
     id = this["_id"].unsafeCast<String?>()?.let { PairAssignmentDocumentId(it) },
-    date = this["date"].let { if (it is String) Date(it) else it.unsafeCast<Date>() }.toDateTime(),
+    date = this["date"].let(::toDate).toDateTime(),
     pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map(::pairFromJson) ?: emptyList()
 )
+
+private fun toDate(it: Any?) = if (it is String)
+    Date(it)
+else {
+    it.unsafeCast<Date>()
+}
 
 fun pairFromJson(json: Any) = if (json is Array<*>) {
     PinnedCouplingPair(
