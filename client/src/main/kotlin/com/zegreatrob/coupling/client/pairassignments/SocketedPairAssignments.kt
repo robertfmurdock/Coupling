@@ -31,7 +31,15 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
             { updatePairAssignmentsFunc(setPairAssignments, sendMessage) },
             arrayOf(sendMessage)
         )
-        pairAssignments(tribe, players, pairAssignments, updatePairAssignments, commandFunc, message, pathSetter)
+        pairAssignments(
+            tribe,
+            players,
+            message.currentPairAssignments ?: pairAssignments,
+            updatePairAssignments,
+            commandFunc,
+            message,
+            pathSetter
+        )
     }
 }
 
@@ -40,5 +48,5 @@ private fun updatePairAssignmentsFunc(
     sendMessage: (Any) -> Unit
 ) = { new: PairAssignmentDocument ->
     setPairAssignments(new)
-    sendMessage(JSON.stringify(json("updatedPairs" to new.toJson())))
+    sendMessage(JSON.stringify(json("currentPairAssignments" to new.toJson())))
 }

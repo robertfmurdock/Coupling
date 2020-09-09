@@ -20,7 +20,7 @@ class ServerMessageTest {
     @Test
     fun displaysServerMessage(): Unit = setup(object {
         val expectedMessage = "Hi it me"
-        val props = ServerMessageProps(TribeId("bwahahahaha"), CouplingSocketMessage(expectedMessage, listOf()))
+        val props = ServerMessageProps(TribeId("bwahahahaha"), CouplingSocketMessage(expectedMessage, listOf(), null))
         val wrapper = shallow(ServerMessage, props)
     }) exercise {
         wrapper.update()

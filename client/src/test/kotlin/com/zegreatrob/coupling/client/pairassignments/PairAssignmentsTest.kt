@@ -57,7 +57,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { pairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         )
     } verify { wrapper ->
@@ -87,7 +87,7 @@ class PairAssignmentsTest {
                 null,
                 {},
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         )
     } verify { wrapper ->
@@ -113,7 +113,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 {},
                 dispatchFunc,
-                CouplingSocketMessage("", emptyList()),
+                CouplingSocketMessage("", emptyList(), null),
                 pathSetter = pathSetterSpy::spyFunction
             )
         )
@@ -152,7 +152,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         )
     }) exercise {
@@ -185,7 +185,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         )
     }) exercise {
@@ -225,7 +225,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         )
     }) exercise {
@@ -262,7 +262,7 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         )
     }) exercise {
@@ -299,7 +299,7 @@ class PairAssignmentsTest {
                 null,
                 {},
                 commandFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList())
+                message = CouplingSocketMessage("", emptyList(), null)
             ) {}
         }
     } verify { wrapper ->

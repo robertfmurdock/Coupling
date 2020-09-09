@@ -43,7 +43,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
             broadcastConnectionCountForTribe(
                 tribeId = tribeId,
                 players = result.second,
-                doc = JSON.parse<Json>(it)["updatedPairs"]?.unsafeCast<Json>()?.toPairAssignmentDocument(),
+                doc = JSON.parse<Json>(it)["currentPairAssignments"]?.unsafeCast<Json>()?.toPairAssignmentDocument(),
                 wss = wss
             )
         }
