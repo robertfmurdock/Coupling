@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -17,16 +17,14 @@ import kotlin.test.Test
 class RequestCombineTest {
 
     @Test
-    fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object : ScopeMint() {
+    fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
         val allPostCalls = mutableListOf<Pair<String, dynamic>>()
         val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(mockAxios(allPostCalls)) {}
         val tribeId = TribeId("Random")
     }) exercise {
-        with(exerciseScope) {
-            val a1 = async { sdk.getPlayers(tribeId) }
-            val a2 = async { sdk.getPins(tribeId) }
-            a1.await()
-            a2.await()
+        coroutineScope {
+            launch { sdk.getPlayers(tribeId) }
+            launch { sdk.getPins(tribeId) }
         }
     } verify {
         allPostCalls.size.assertIsEqualTo(1)
