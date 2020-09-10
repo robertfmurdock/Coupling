@@ -168,11 +168,3 @@ buildtimetracker {
         }
     }
 }
-
-tasks.withType<DependencyUpdatesTask> {
-    checkForGradleUpdate = true
-    outputFormatter = "json"
-    outputDir = "build/dependencyUpdates"
-    reportfileName = "report"
-    revision = "release"
-}
