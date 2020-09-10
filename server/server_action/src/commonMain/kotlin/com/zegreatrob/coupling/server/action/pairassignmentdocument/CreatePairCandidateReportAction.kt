@@ -42,7 +42,7 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
         )
 
     private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
-        maxBy { (key, _) -> if (key is TimeResultValue) key.time else -1 }
+        maxByOrNull { (key, _) -> if (key is TimeResultValue) key.time else -1 }
 }
 
 data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult)

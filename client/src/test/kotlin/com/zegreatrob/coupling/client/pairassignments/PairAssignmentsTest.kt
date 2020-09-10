@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.player.PlayerRoster
-import com.zegreatrob.coupling.client.user.CouplingSocketMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair

@@ -34,7 +34,7 @@ interface DbRecordLoadSyntax : JsonTimestampSyntax {
         this["_id"] = this[idProperty].unsafeCast<String?>() ?: this["_id"]
     }
 
-    fun List<Json>.latestByTimestamp() = maxBy { it.timeStamp() }
+    fun List<Json>.latestByTimestamp() = maxByOrNull { it.timeStamp() }
 
     suspend fun getLatestRecordWithId(id: String, collection: dynamic, usesRawId: Boolean = true) =
         getAllRecordsWithId(id, collection, usesRawId)

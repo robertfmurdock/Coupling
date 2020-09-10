@@ -15,5 +15,5 @@ class MemoryUserRepository(
     override suspend fun getUser() = records.lastOrNull { it.data.id == userId }
     override suspend fun getUsersWithEmail(email: String) = records.filter { it.data.email == email }
         .groupBy { it.data.id }
-        .mapNotNull { group -> group.value.maxBy { it.timestamp } }
+        .mapNotNull { group -> group.value.maxByOrNull { it.timestamp } }
 }

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
-import com.zegreatrob.coupling.client.user.CouplingSocketMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.model.tribe.TribeId

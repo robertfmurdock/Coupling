@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
-import com.zegreatrob.coupling.client.user.CouplingSocketMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

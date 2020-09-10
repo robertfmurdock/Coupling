@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.action.LoggingSyntax
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -15,7 +17,6 @@ import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.launch
 import kotlin.js.Json
-import kotlin.js.json
 
 data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
 
@@ -65,15 +66,14 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
             .apply { wss.clients.forEach { add(it) } }
             .filter { connectionIsOpenAndForSameTribe(it, tribeId) }
 
-        matchingConnection.broadcast(
-            JSON.stringify(
-                json(
-                    "type" to "LivePlayers",
-                    "text" to "Users viewing this page: ${matchingConnection.size}",
-                    "players" to toUserPlayerList(matchingConnection, players).map(Player::toJson),
-                    "currentPairAssignments" to doc?.toJson()
-                )
-            ).also { logger.debug { "Broadcasting '$it'" } }
+        val message: Message = CouplingSocketMessage(
+            "Users viewing this page: ${matchingConnection.size}",
+            toUserPlayerList(matchingConnection, players),
+            doc
+        )
+
+        matchingConnection.broadcast(JSON.stringify(message.toJson())
+            .also { logger.debug { "Broadcasting '$it'" } }
         )
     }
 

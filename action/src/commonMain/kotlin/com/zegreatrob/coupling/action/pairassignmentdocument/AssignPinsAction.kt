@@ -36,7 +36,7 @@ interface AssignPinsActionDispatcher {
         return pinnedPairs
     }
 
-    private inline fun findPairCandidates(
+    private fun findPairCandidates(
         pin: Pin,
         pinnedPairs: List<PinnedCouplingPair>,
         history: List<PairAssignmentDocument>

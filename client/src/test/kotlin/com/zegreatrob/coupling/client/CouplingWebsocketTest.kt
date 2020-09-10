@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
 import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
-import com.zegreatrob.coupling.client.user.CouplingSocketMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
