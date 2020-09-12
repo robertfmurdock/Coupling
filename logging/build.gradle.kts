@@ -21,14 +21,14 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging-common:1.8.3")
+                implementation("io.github.microutils:kotlin-logging-common:1.10.7")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                api("io.github.microutils:kotlin-logging-js:1.8.3")
+                api("io.github.microutils:kotlin-logging-js:1.10.7")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
