@@ -42,6 +42,7 @@ class CommandDispatcher(
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
+    override val liveInfoRepository get() = MemoryLiveInfoRepository()
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
 
