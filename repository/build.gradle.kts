@@ -24,8 +24,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:3.1.11")
-                implementation("com.zegreatrob.testmints:minassert:3.1.11")
+                implementation("com.zegreatrob.testmints:standard:3.1.13")
+                implementation("com.zegreatrob.testmints:minassert:3.1.13")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -46,8 +46,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
-                implementation("org.junit.jupiter:junit-jupiter-api:5.7.0-RC1")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.0-RC1")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
             }
         }
 

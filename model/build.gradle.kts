@@ -27,16 +27,16 @@ kotlin {
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-common", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-annotations-common", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:3.1.11")
-                implementation("com.zegreatrob.testmints:minassert:3.1.11")
+                implementation("com.zegreatrob.testmints:standard:3.1.13")
+                implementation("com.zegreatrob.testmints:minassert:3.1.13")
             }
         }
 
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit5", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.7.0-RC1")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.0-RC1")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
             }
         }
 
