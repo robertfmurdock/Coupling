@@ -64,7 +64,8 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
     }
 
     private fun updatePairAssignments(tribeId: TribeId, doc: PairAssignmentDocument?) = liveInfoRepository.get(tribeId)
-        .copy(currentPairAssignmentDocument = doc)
+// Knocking this out for now - This is hanging around, and I need better tests to illustrate the problem.
+//        .copy(currentPairAssignmentDocument = doc)
         .also { liveInfoRepository.save(tribeId, it) }
 
     private fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
