@@ -29,9 +29,17 @@ data class WelcomeProps(
 ) : RProps
 
 val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
+    val (showLoginChooser, setShowLoginChooser) = useState(false)
+    val welcomeTitleRef = useRef<Node?>(null)
+    useLayoutEffect {
+        welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
+    }
+    val (pairAndProverb) = useState { randomProvider.choosePairAndProverb() }
+    val (pair, proverb) = pairAndProverb
+
     div(classes = styles.className) {
-        div { welcomeSplash(randomProvider) }
-        div { comeOnIn(commandFunc) }
+        div { welcomeSplash(welcomeTitleRef, pair, proverb) }
+        div { comeOnIn(commandFunc, showLoginChooser, setShowLoginChooser) }
     }
 }
 
@@ -66,17 +74,15 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 
 private data class Card(val name: String, val imagePath: String)
 
-private fun RBuilder.welcomeSplash(randomProvider: RandomProvider) {
-    val (pairAndProverb) = useState { randomProvider.choosePairAndProverb() }
-
-    val (pair, proverb) = pairAndProverb
-
-    span(classes = styles["welcome"]) {
-        welcomeTitle()
-        div { welcomePair(pair) }
-        div(classes = styles["welcomeProverb"]) {
-            +proverb
-        }
+private fun RBuilder.welcomeSplash(
+    welcomeTitleRef: RMutableRef<Node?>,
+    pair: CouplingPair.Double,
+    proverb: String
+) = span(classes = styles["welcome"]) {
+    welcomeTitle(welcomeTitleRef)
+    div { welcomePair(pair) }
+    div(classes = styles["welcomeProverb"]) {
+        +proverb
     }
 }
 
@@ -91,11 +97,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
-private fun RBuilder.welcomeTitle() {
-    val welcomeTitleRef = useRef<Node?>(null)
-    useLayoutEffect {
-        welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
-    }
+private fun RBuilder.welcomeTitle(welcomeTitleRef: RMutableRef<Node?>) {
     div(classes = styles["welcomeTitle"]) {
         attrs { ref = welcomeTitleRef }
         +"Coupling!"
@@ -121,8 +123,11 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
     )
 }
 
-private fun RBuilder.comeOnIn(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) {
-    val (showLoginChooser, setShowLoginChooser) = useState(false)
+private fun RBuilder.comeOnIn(
+    dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
+    showLoginChooser: Boolean,
+    setShowLoginChooser: RSetState<Boolean>
+) {
     div(classes = styles["enterButtonContainer"]) {
         if (showLoginChooser) {
             loginChooser(dispatchFunc)

@@ -4,10 +4,8 @@ import com.zegreatrob.coupling.client.PathSetter
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
-import com.zegreatrob.coupling.client.playerConfig
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
@@ -16,10 +14,9 @@ import kotlinx.css.properties.*
 import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.Node
 import org.w3c.dom.events.Event
-import react.*
-import react.dom.div
+import react.RBuilder
+import react.RProps
 import react.dom.img
 import styled.StyledDOMBuilder
 import styled.css
@@ -56,7 +53,7 @@ val PlayerCard = reactFunction<PlayerCardProps> { props ->
         }
 
         playerGravatarImage(player, size)
-        child(playerCardHeaderElement(tribeId, player, pathSetter, size))
+        playerCardHeader(tribeId, player, size, pathSetter)
     }
 }
 
@@ -78,36 +75,6 @@ private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) = css {
     boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)
 }
 
-private fun playerCardHeaderElement(
-    tribeId: TribeId,
-    player: Player,
-    pathSetter: PathSetter?,
-    size: Int
-) = buildElement {
-    val playerNameRef = useRef<Node?>(null)
-    useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
-
-    styledDiv {
-        attrs {
-            classes += styles["header"]
-            onClickFunction = handleNameClick(tribeId, player, pathSetter)
-        }
-        css { margin(top = (size * 0.02).px) }
-        div {
-            attrs { ref = playerNameRef }
-            +(if (player.name.isBlank()) "Unknown" else player.name)
-        }
-    }
-}
-
-private fun handleNameClick(tribeId: TribeId, player: Player, pathSetter: PathSetter?) =
-    { event: Event ->
-        if (pathSetter != null) {
-            event.stopPropagation()
-
-            pathSetter.playerConfig(tribeId, player)
-        }
-    }
 
 private fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
     img(src = player.imageURL, classes = styles["playerIcon"], alt = "icon") {
@@ -134,8 +101,3 @@ private fun Player.emailWithFallback() = when {
     else -> "name"
 }
 
-private fun Node.fitPlayerName(size: Int) {
-    val maxFontHeight = (size * 0.31)
-    val minFontHeight = (size * 0.16)
-    fitty(maxFontHeight, minFontHeight, true)
-}
