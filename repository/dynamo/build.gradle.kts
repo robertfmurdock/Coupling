@@ -30,16 +30,16 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("com.benasher44:uuid:0.2.2")
-                implementation("io.github.microutils:kotlin-logging-common:1.11.5")
+                implementation("io.github.microutils:kotlin-logging-common:1.12.0")
             }
         }
         getByName("commonTest") {
             dependencies {
                 api(project(":repository:validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:3.1.15")
-                implementation("com.zegreatrob.testmints:minassert:3.1.15")
-                implementation("com.zegreatrob.testmints:async:3.1.15")
+                implementation("com.zegreatrob.testmints:standard:3.1.16")
+                implementation("com.zegreatrob.testmints:minassert:3.1.16")
+                implementation("com.zegreatrob.testmints:async:3.1.16")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
