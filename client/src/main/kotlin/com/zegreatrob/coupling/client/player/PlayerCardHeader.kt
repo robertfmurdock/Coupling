@@ -37,13 +37,15 @@ data class PlayerCardHeaderProps(
 
 private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
     val (tribeId, player, pathSetter, size) = props
+    val nameClickHandler = pathSetter?.nameClickHandler(tribeId, player)
+
     val playerNameRef = useRef<Node?>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
 
     styledDiv {
         attrs {
             classes += styles["header"]
-            onClickFunction = handleNameClick(tribeId, player, pathSetter)
+            nameClickHandler?.let { onClickFunction = it }
         }
         css { margin(top = (size * 0.02).px) }
         div {
@@ -53,14 +55,11 @@ private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
     }
 }
 
-private fun handleNameClick(tribeId: TribeId, player: Player, pathSetter: PathSetter?) =
-    { event: Event ->
-        if (pathSetter != null) {
-            event.stopPropagation()
+private fun PathSetter.nameClickHandler(tribeId: TribeId, player: Player) = { event: Event ->
+    event.stopPropagation()
 
-            pathSetter.playerConfig(tribeId, player)
-        }
-    }
+    playerConfig(tribeId, player)
+}
 
 private fun Node.fitPlayerName(size: Int) {
     val maxFontHeight = (size * 0.31)

@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.json.toPlayer
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.child
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
@@ -107,7 +108,7 @@ private fun RBuilder.emailInput(player: Player, onChange: (Event) -> Unit) {
     span {
         +"Email provides access privileges, so you can see all Tribes you're in!"
         +"To change your player picture, assign a"
-        gravatarLink()
+        child(gravatarLink)
         +"to this email."
     }
 }

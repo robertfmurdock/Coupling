@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.InputType
 import kotlinx.html.id
@@ -36,7 +37,6 @@ private val styles = useStyles("tribe/TribeConfig")
 
 val TribeConfig = reactFunction { (tribe, pathSetter, commandFunc): TribeConfigProps ->
     val isNew = tribe.id.value == ""
-
     val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
     val updatedTribe = values.toTribe()
 
@@ -79,7 +79,7 @@ private fun RBuilder.editorDiv(tribe: Tribe, onChange: (Event) -> Unit, isNew: B
             emailInput(tribe, onChange)
             span {
                 +"The tribe email address - Attach a"
-                gravatarLink()
+                child(gravatarLink)
                 +"to this to cheese your tribe icon."
             }
         }
