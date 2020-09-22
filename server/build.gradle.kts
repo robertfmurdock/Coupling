@@ -32,7 +32,7 @@ dependencies {
     implementation(project("server_action"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation("com.soywiz.korlibs.klock:klock:1.12.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC2")
     implementation("com.benasher44:uuid:0.2.2")
 
     packageJson.dependencies().forEach {
