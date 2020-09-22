@@ -8,7 +8,9 @@ kotlin {
     targets {
         jvm()
         js {
-            nodejs()
+            nodejs {
+                binaries.executable()
+            }
             useCommonJs()
         }
     }

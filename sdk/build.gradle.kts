@@ -12,7 +12,6 @@ plugins {
 val packageJson = loadPackageJson()
 
 kotlin {
-
     js {
         nodejs {}
         useCommonJs()

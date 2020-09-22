@@ -34,8 +34,8 @@ dependencies {
     }
     implementation("com.zegreatrob.testmints:minreact:3.1.17")
     implementation("com.zegreatrob.testmints:react-data-loader:3.1.17")
-    implementation("com.zegreatrob.testmints:action:3.1.16")
-    implementation("com.zegreatrob.testmints:action-async:3.1.16")
+    implementation("com.zegreatrob.testmints:action:3.1.17")
+    implementation("com.zegreatrob.testmints:action-async:3.1.17")
     implementation("com.soywiz.korlibs.klock:klock:1.12.0")
     implementation("com.benasher44:uuid:0.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
