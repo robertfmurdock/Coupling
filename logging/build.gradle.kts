@@ -8,7 +8,7 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js {
+        js(BOTH) {
             nodejs()
             useCommonJs()
         }
@@ -21,14 +21,13 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging-common:1.12.0")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
+                api("io.github.microutils:kotlin-logging:2.0.3")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                api("io.github.microutils:kotlin-logging-js:1.11.5")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")

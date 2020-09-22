@@ -20,7 +20,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard:3.1.16")
                 implementation("com.zegreatrob.testmints:report:3.1.16")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging-common:1.12.0")
+                implementation("io.github.microutils:kotlin-logging:2.0.3")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
             }
         }
