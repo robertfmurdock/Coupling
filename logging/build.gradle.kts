@@ -29,7 +29,8 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("io.github.microutils:kotlin-logging-js:1.11.5")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
         }
