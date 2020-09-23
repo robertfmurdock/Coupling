@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.757.0",
+    "aws-sdk": "2.758.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
@@ -19,7 +19,7 @@
     "express-statsd": "^0.3.0",
     "express-ws": "^4.0.0",
     "fs-extra": "^9.0.1",
-    "google-auth-library": "^6.0.6",
+    "google-auth-library": "^6.1.0",
     "graphql": "^15.3.0",
     "jasmine": "^3.6.1",
     "jasmine-core": "^3.6.0",
