@@ -41,7 +41,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.111-kotlin-1.4.10")
-    implementation("org.jetbrains:kotlin-css:1.0.0-pre.116-kotlin-1.4.10")
+    implementation("org.jetbrains:kotlin-css:1.0.0-pre.118-kotlin-1.4.10")
     implementation("org.jetbrains:kotlin-styled:5.2.0-pre.117-kotlin-1.4.10")
     implementation("org.jetbrains:kotlin-react:16.13.1-pre.111-kotlin-1.4.0")
     implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.111-kotlin-1.4.0")
