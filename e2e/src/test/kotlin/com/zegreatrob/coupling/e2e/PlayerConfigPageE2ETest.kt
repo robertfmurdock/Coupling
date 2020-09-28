@@ -73,7 +73,7 @@ class PlayerConfigPageE2ETest {
                 PairAssignmentsPage.waitForPage()
             }
         } verify { alertText ->
-            alertText.assertIsEqualTo("You have unsaved data. Would you like to save before you leave?")
+            alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
         }
 
         @Test

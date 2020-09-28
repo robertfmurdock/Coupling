@@ -85,7 +85,7 @@ private fun RBuilder.editorDiv(pin: Pin, onChange: (Event) -> Unit) = div {
 
 private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
     `when` = shouldShowPrompt,
-    message = "You have unsaved data. Would you like to save before you leave?"
+    message = "You have unsaved data. Press OK to leave without saving."
 )
 
 private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {

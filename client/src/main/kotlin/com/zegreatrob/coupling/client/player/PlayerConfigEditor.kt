@@ -55,8 +55,8 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
 }
 
 private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
-    `when` = shouldShowPrompt.also { println("prompt on exit $it") },
-    message = "You have unsaved data. Would you like to save before you leave?"
+    `when` = shouldShowPrompt,
+    message = "You have unsaved data. Press OK to leave without saving."
 )
 
 private fun RBuilder.playerConfigForm(
