@@ -14,7 +14,7 @@ fun RBuilder.popup(
     on: Array<String>,
     open: Boolean? = false,
     handler: StyledHandler<PopupProps>,
-    contentStyle: Json
+    contentStyle: Json? = null
 ) = styledPopup {
     attrs {
         this.modal = modal
@@ -24,4 +24,10 @@ fun RBuilder.popup(
         this.contentStyle = contentStyle
     }
     handler()
+}.also {
+    loadDefaultCss()
+}
+
+private fun loadDefaultCss() {
+    js("require('reactjs-popup/dist/index.css')")
 }

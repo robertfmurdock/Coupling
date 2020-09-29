@@ -14,5 +14,5 @@ external interface PopupProps : WithClassName {
     var trigger: (Boolean) -> ReactElement
     var open: Boolean?
     var on: Array<String>
-    var contentStyle: Json
+    var contentStyle: Json?
 }
