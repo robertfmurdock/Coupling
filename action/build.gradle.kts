@@ -45,7 +45,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:2.0.3")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.11.2")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.11.3")
             }
         }
         val jvmTest by getting {
