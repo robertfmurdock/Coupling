@@ -31,6 +31,6 @@ private fun dataLoadProps(
     commander = commander,
     query = NewPairAssignmentsQuery(tribeId, playerIds, pinIds),
     toProps = { _, commandFunc, (tribe, players, pairAssignments) ->
-        SocketedPairAssignmentsProps(tribe, players, pairAssignments, commandFunc, pathSetter)
+        SocketedPairAssignmentsProps(tribe, players, pairAssignments, commandFunc, true, pathSetter)
     }
 )

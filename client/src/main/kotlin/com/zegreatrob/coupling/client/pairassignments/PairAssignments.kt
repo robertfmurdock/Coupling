@@ -11,9 +11,8 @@ import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.client.user.ServerMessage
-import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -40,21 +39,21 @@ fun RBuilder.pairAssignments(
     updatePairAssignments: (PairAssignmentDocument) -> Unit,
     commandFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     message: CouplingSocketMessage,
+    allowSave: Boolean,
     pathSetter: (String) -> Unit
-) {
-    child(
-        PairAssignments,
-        PairAssignmentsProps(
-            tribe,
-            players,
-            pairAssignments,
-            updatePairAssignments,
-            commandFunc,
-            message,
-            pathSetter
-        )
+) = child(
+    PairAssignments,
+    PairAssignmentsProps(
+        tribe,
+        players,
+        pairAssignments,
+        updatePairAssignments,
+        commandFunc,
+        message,
+        allowSave,
+        pathSetter
     )
-}
+)
 
 data class PairAssignmentsProps(
     val tribe: Tribe,
@@ -63,24 +62,33 @@ data class PairAssignmentsProps(
     val sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
     val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
+    val allowSave: Boolean,
     val pathSetter: (String) -> Unit
 ) : RProps
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
 val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
-    val (tribe, players, pairAssignments, sendUpdatedPairs, commandFunc, message, pathSetter) = props
+    val (tribe, players, pairAssignments, sendUpdatedPairs, commandFunc, message, allowSave, pathSetter) = props
     DndProvider {
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
             div {
                 tribeBrowser(tribe, pathSetter)
-                currentPairSection(tribe, players, pairAssignments, pathSetter, sendUpdatedPairs, commandFunc)
+                currentPairSection(
+                    tribe,
+                    players,
+                    pairAssignments,
+                    pathSetter,
+                    allowSave,
+                    sendUpdatedPairs,
+                    commandFunc
+                )
             }
             controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
 
-            child(ServerMessage, ServerMessageProps(tribe.id, message), key = "${message.text} ${message.players.size}")
+            serverMessage(tribe, message)
         }
     }
 }
@@ -90,6 +98,7 @@ private fun RBuilder.currentPairSection(
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     pathSetter: (String) -> Unit,
+    allowSave: Boolean,
     sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
     commandFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>
 ) = styledDiv {
@@ -110,6 +119,7 @@ private fun RBuilder.currentPairSection(
                 pairAssignments = pairAssignments,
                 onPlayerSwap = pairAssignments.makeSwapCallback(sendUpdatedPairs),
                 onPinDrop = pairAssignments.makePinCallback(sendUpdatedPairs),
+                allowSave = allowSave,
                 onSave = pairAssignments.onSaveFunc(commandFunc, tribe, pathSetter),
                 pathSetter = pathSetter
             )

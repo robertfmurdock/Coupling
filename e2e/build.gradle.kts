@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.configureWdioRun
+import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -12,37 +13,28 @@ kotlin {
     }
 }
 
+val packageJson = loadPackageJson()
+
 dependencies {
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.110-kotlin-1.4.0")
     implementation("com.zegreatrob.testmints:wdio:3.1.18")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-    implementation(npm("@log4js-node/log4js-api", "1.0.2"))
-    implementation(npm("@rpii/wdio-html-reporter", "6.1.1"))
-    implementation(npm("@wdio/cli", "6.4.0"))
-    implementation(npm("@wdio/dot-reporter", "6.4.0"))
-    implementation(npm("@wdio/jasmine-framework", "6.4.0"))
-    implementation(npm("@wdio/local-runner", "6.4.0"))
-    implementation(npm("chromedriver", "84.0.1"))
-    implementation(npm("fs-extra", "9.0.1"))
-    implementation(npm("webpack", "4.44.1"))
-    implementation(npm("webpack-node-externals", "2.5.1"))
-    implementation(npm("wdio-chromedriver-service", "6.0.3"))
-    implementation(npm("css-loader", "4.2.1"))
-    implementation(npm("url-loader", "4.1.0"))
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
 
     testImplementation(project(":sdk"))
     testImplementation(project(":test-logging"))
-
     testImplementation(kotlin("test-js"))
-    testImplementation(npm("axios-cookiejar-support", "^0.5.0"))
-    testImplementation(npm("tough-cookie", "^3.0.1"))
-    testImplementation(npm("uuid", "^3.3.2"))
     testImplementation("io.github.microutils:kotlin-logging:2.0.3")
     testImplementation("com.zegreatrob.testmints:standard:3.1.18")
     testImplementation("com.zegreatrob.testmints:minassert:3.1.18")
     testImplementation("com.zegreatrob.testmints:async:3.1.18")
+    packageJson.dependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
 }
 
 tasks {
@@ -69,4 +61,3 @@ tasks {
         dependsOn(wdioRun)
     }
 }
-

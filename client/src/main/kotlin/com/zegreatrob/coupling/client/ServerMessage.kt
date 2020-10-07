@@ -20,7 +20,7 @@ val disconnectedMessage = CouplingSocketMessage(
 
 fun RBuilder.couplingWebsocket(
     tribeId: TribeId,
-    useSsl: Boolean,
+    useSsl: Boolean = "https:" == window.location.protocol,
     children: RBuilder.(CouplingSocketMessage, ((Message) -> Unit)?) -> Unit
 ) = childFunction(
     CouplingWebsocket,

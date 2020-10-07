@@ -20,11 +20,12 @@ fun RBuilder.currentPairAssignments(
     pairAssignments: PairAssignmentDocument,
     onPlayerSwap: SwapCallback,
     onPinDrop: PinMoveCallback,
+    allowSave: Boolean,
     onSave: () -> Unit,
     pathSetter: (String) -> Unit
 ) = child(
     CurrentPairAssignmentsPanel,
-    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter)
+    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, onPlayerSwap, onPinDrop, allowSave, onSave, pathSetter)
 )
 
 data class CurrentPairAssignmentsPanelProps(
@@ -32,6 +33,7 @@ data class CurrentPairAssignmentsPanelProps(
     val pairAssignments: PairAssignmentDocument,
     val onPlayerSwap: SwapCallback,
     val onPinDrop: PinMoveCallback,
+    val allowSave: Boolean,
     val onSave: () -> Unit,
     val pathSetter: (String) -> Unit
 ) : RProps
@@ -39,11 +41,11 @@ data class CurrentPairAssignmentsPanelProps(
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
 val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { props ->
-    val (tribe, pairAssignments, onPlayerSwap, onPinDrop, onSave, pathSetter) = props
+    val (tribe, pairAssignments, onPlayerSwap, onPinDrop, allowSave, onSave, pathSetter) = props
     div(classes = styles.className) {
         dateHeader(pairAssignments)
         pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
-        saveButtonSection(pairAssignments, onSave)
+        saveButtonSection(onSave, allowSave)
     }
 }
 
@@ -65,8 +67,8 @@ private fun RBuilder.pairAssignmentList(
     }
 }
 
-private fun RBuilder.saveButtonSection(pairAssignments: PairAssignmentDocument, onSave: () -> Unit) = div {
-    if (pairAssignments.isNotSaved()) {
+private fun RBuilder.saveButtonSection(onSave: () -> Unit, allowSave: Boolean) = div {
+    if (allowSave) {
         saveButton(onSave)
     }
 }

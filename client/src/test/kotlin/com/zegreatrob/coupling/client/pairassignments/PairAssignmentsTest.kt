@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.player.PlayerRoster
-import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.client.user.ServerMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -57,7 +57,8 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { pairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         )
     } verify { wrapper ->
@@ -87,7 +88,8 @@ class PairAssignmentsTest {
                 null,
                 {},
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         )
     } verify { wrapper ->
@@ -114,7 +116,8 @@ class PairAssignmentsTest {
                 {},
                 dispatchFunc,
                 CouplingSocketMessage("", emptyList(), null),
-                pathSetter = pathSetterSpy::spyFunction
+                pathSetter = pathSetterSpy::spyFunction,
+                allowSave = true
             )
         )
     }) exercise {
@@ -152,7 +155,8 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         )
     }) exercise {
@@ -185,7 +189,8 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         )
     }) exercise {
@@ -225,7 +230,8 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         )
     }) exercise {
@@ -262,7 +268,8 @@ class PairAssignmentsTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         )
     }) exercise {
@@ -299,7 +306,8 @@ class PairAssignmentsTest {
                 null,
                 {},
                 commandFunc = StubDispatchFunc(),
-                message = CouplingSocketMessage("", emptyList(), null)
+                message = CouplingSocketMessage("", emptyList(), null),
+                allowSave = false
             ) {}
         }
     } verify { wrapper ->

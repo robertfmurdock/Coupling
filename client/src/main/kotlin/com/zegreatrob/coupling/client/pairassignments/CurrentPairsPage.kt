@@ -17,6 +17,6 @@ private fun dataLoadProps(tribeId: TribeId, pathSetter: (String) -> Unit, comman
     commander = commander,
     query = TribeDataSetQuery(tribeId),
     toProps = { _, commandFunc, (tribe, players, history) ->
-        SocketedPairAssignmentsProps(tribe, players, history.firstOrNull(), commandFunc, pathSetter)
+        SocketedPairAssignmentsProps(tribe, players, history.firstOrNull(), commandFunc, false, pathSetter)
     }
 )
