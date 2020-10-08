@@ -9,9 +9,10 @@ import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDisp
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.await
+import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
@@ -19,34 +20,29 @@ import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-typealias DataPack = Triple<Tribe, List<Player>, PairAssignmentDocument>
-
-data class NewPairAssignmentsQuery(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
-    SimpleSuspendResultAction<NewPairAssignmentsQueryDispatcher, DataPack> {
-    override val performFunc = link(NewPairAssignmentsQueryDispatcher::perform)
+data class NewPairAssignmentsCommand(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
+    SimpleSuspendResultAction<NewPairAssignmentsCommandDispatcher, Unit> {
+    override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
 }
 
-interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
+interface NewPairAssignmentsCommandDispatcher : TribeIdGetSyntax,
     TribeIdPinsSyntax,
     TribeIdPlayersSyntax,
     SuspendActionExecuteSyntax,
-    RequestSpinActionDispatcher {
+    RequestSpinActionDispatcher,
+    TribeIdPairAssignmentDocumentSaveSyntax {
 
-    suspend fun perform(query: NewPairAssignmentsQuery): Result<DataPack> = with(query) {
+    suspend fun perform(query: NewPairAssignmentsCommand): Result<Unit> = with(query) {
         val (tribe, players, pins) = getData()
         if (tribe == null)
             NotFoundResult("Tribe")
         else {
-            execute(requestSpinAction(players, pins))
-                .transform(queryData(tribe, players))
+            val result: Result<PairAssignmentDocument> = execute(requestSpinAction(players, pins))
+            result.transform { tribe.id.with(it).save() }
         }
     }
 
-    private fun queryData(tribe: Tribe, players: List<Player>) = { it: PairAssignmentDocument ->
-        Triple(tribe, players, it)
-    }
-
-    private fun NewPairAssignmentsQuery.requestSpinAction(players: List<Player>, pins: List<Pin>): RequestSpinAction {
+    private fun NewPairAssignmentsCommand.requestSpinAction(players: List<Player>, pins: List<Pin>): RequestSpinAction {
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         val selectedPins = filterSelectedPins(pins, pinIds)
         return RequestSpinAction(tribeId, selectedPlayers, selectedPins)
@@ -58,7 +54,7 @@ interface NewPairAssignmentsQueryDispatcher : TribeIdGetSyntax,
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
-    private suspend fun NewPairAssignmentsQuery.getData() = coroutineScope {
+    private suspend fun NewPairAssignmentsCommand.getData() = coroutineScope {
         await(
             async { tribeId.get() },
             async { tribeId.getPlayerList() },

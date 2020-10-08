@@ -12,11 +12,8 @@ object Paths {
     fun TribeId.pinListPath() = "/$value/pins"
     fun TribeId.currentPairsPage() = "/$value/pairAssignments/current/"
     fun Tribe.tribeConfigPath() = "/${id.value}/edit/"
-    fun newPairAssignmentsPath(
-        tribe: Tribe,
-        playerSelections: List<Pair<Player, Boolean>>,
-        pinSelections: List<Pin>
-    ) = "/${tribe.id.value}/pairAssignments/new?${buildQueryString(playerSelections, pinSelections)}"
+    fun newPairAssignmentsPath(tribe: Tribe, playerSelections: List<Pair<Player, Boolean>>, pinSelections: List<Pin>) =
+        "/${tribe.id.value}/pairAssignments/new?${buildQueryString(playerSelections, pinSelections)}"
 
     private fun buildQueryString(playerSelections: List<Pair<Player, Boolean>>, pinSelections: List<Pin>) =
         (playerSelections.buildQueryParameters() + pinSelections.buildQueryParameters())

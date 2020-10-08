@@ -113,7 +113,7 @@ private fun RBuilder.currentPairSection(
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
-        animator(tribe, players, pairAssignments, tribe.animationEnabled) {
+        animator(tribe, players, pairAssignments, tribe.animationEnabled, allowSave) {
             currentPairAssignments(
                 tribe = tribe,
                 pairAssignments = pairAssignments,

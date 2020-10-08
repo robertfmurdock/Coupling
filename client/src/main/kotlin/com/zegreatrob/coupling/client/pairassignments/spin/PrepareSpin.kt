@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -8,6 +9,8 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.newPairAssignments
+import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommand
+import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -38,19 +41,26 @@ data class PrepareSpinProps(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val pins: List<Pin>,
+    val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>,
     val pathSetter: (String) -> Unit
 ) : RProps
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, pathSetter) ->
+val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, dispatchFunc, pathSetter) ->
     val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
     val (pinSelections, setPinSelections) = useState(pins.map { it.id })
+
+    val generateNewPairsFunc = dispatchFunc({
+        NewPairAssignmentsCommand(tribe.id, playerSelections.playerIds(), pinSelections.filterNotNull())
+    }, { pathSetter.newPairAssignments(tribe, emptyList(), emptyList()) })
+
     div(classes = styles.className) {
         div { tribeBrowser(tribe, pathSetter) }
         div {
-            div { spinButton(tribe, playerSelections, pins.selectByIds(pinSelections), pathSetter) }
-
+            div {
+                spinButton(generateNewPairsFunc)
+            }
             styledDiv {
                 css {
                     display = Display.flex
@@ -80,6 +90,9 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
         }
     }
 }
+
+private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -> isSelected }
+    .mapNotNull { it.first.id }
 
 private fun RBuilder.playerSelectorDiv(children: RBuilder.() -> Unit) = styledDiv {
     css {
@@ -186,16 +199,11 @@ private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flip
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun RBuilder.spinButton(
-    tribe: Tribe,
-    playerSelections: List<Pair<Player, Boolean>>,
-    selectedPins: List<Pin>,
-    pathSetter: (String) -> Unit
-) = couplingButton(
+private fun RBuilder.spinButton(generateNewPairsFunc: () -> Unit) = couplingButton(
     supersize,
     pink,
     styles["spinButton"],
-    onClick = { pathSetter.newPairAssignments(tribe, playerSelections, selectedPins) },
+    onClick = generateNewPairsFunc,
     block = {
         css {
             marginBottom = 10.px

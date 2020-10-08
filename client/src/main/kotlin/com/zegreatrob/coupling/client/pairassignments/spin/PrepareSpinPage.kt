@@ -12,8 +12,8 @@ val PrepareSpinPage = tribePageFunction { props, tribeId ->
     child(LoadedPairAssignments, dataLoadProps(
         commander = props.commander,
         query = TribeDataSetQuery(tribeId),
-        toProps = { _, _, (tribe, players, history, pins) ->
-            PrepareSpinProps(tribe, players, history, pins, props.pathSetter)
+        toProps = { _, dispatcher, (tribe, players, history, pins) ->
+            PrepareSpinProps(tribe, players, history, pins, dispatcher, props.pathSetter)
         }
     ), key = tribeId.value)
 }

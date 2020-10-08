@@ -10,27 +10,13 @@ import com.zegreatrob.minreact.child
 private val LoadedPairAssignments by lazy { couplingDataLoader(SocketedPairAssignments) }
 
 val NewPairAssignmentsPage = tribePageFunction { props, tribeId ->
-    with(props) {
-        val playerIds = search.getAll("player").toList()
-        val pinIds = search.getAll("pin").toList()
-        child(
-            LoadedPairAssignments,
-            dataLoadProps(tribeId, playerIds, pinIds, pathSetter, commander),
-            key = tribeId.value
-        )
-    }
+    child(LoadedPairAssignments, dataLoadProps(tribeId, props.pathSetter, props.commander), key = tribeId.value)
 }
 
-private fun dataLoadProps(
-    tribeId: TribeId,
-    playerIds: List<String>,
-    pinIds: List<String>,
-    pathSetter: (String) -> Unit,
-    commander: Commander
-) = dataLoadProps(
+private fun dataLoadProps(tribeId: TribeId, pathSetter: (String) -> Unit, commander: Commander) = dataLoadProps(
     commander = commander,
-    query = NewPairAssignmentsQuery(tribeId, playerIds, pinIds),
+    query = TribeDataSetQuery(tribeId),
     toProps = { _, commandFunc, (tribe, players, pairAssignments) ->
-        SocketedPairAssignmentsProps(tribe, players, pairAssignments, commandFunc, true, pathSetter)
+        SocketedPairAssignmentsProps(tribe, players, pairAssignments.firstOrNull(), commandFunc, true, pathSetter)
     }
 )

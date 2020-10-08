@@ -16,15 +16,16 @@ data class PairAssignmentsAnimatorProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
-    val enabled: Boolean
+    val enabled: Boolean,
+    val allowSave: Boolean
 ) : RProps
 
 private val animationContextConsumer = animationsDisabledContext.Consumer
 
 val PairAssignmentsAnimator = reactFunction<PairAssignmentsAnimatorProps> { props ->
-    val (tribe, players, pairAssignments, enabled) = props
+    val (tribe, players, pairAssignments, enabled, allowSave) = props
     animationContextConsumer { animationsDisabled: Boolean ->
-        if (!animationsDisabled && enabled && pairAssignments.id == null) {
+        if (!animationsDisabled && enabled && allowSave) {
             frameRunner(SpinAnimationState.sequence(pairAssignments), speed = tribe.animationSpeed) { state ->
                 val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
                 flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
@@ -40,10 +41,11 @@ fun RBuilder.animator(
     players: List<Player>,
     pairAssignments: PairAssignmentDocument,
     enabled: Boolean,
+    allowSave: Boolean,
     handler: RHandler<PairAssignmentsAnimatorProps>
 ) = child(
     PairAssignmentsAnimator,
-    PairAssignmentsAnimatorProps(tribe, players, pairAssignments, enabled), handler = handler
+    PairAssignmentsAnimatorProps(tribe, players, pairAssignments, enabled, allowSave), handler = handler
 )
 
 private fun RBuilder.flipperSpinAnimation(

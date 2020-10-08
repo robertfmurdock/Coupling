@@ -18,7 +18,7 @@ fun <V> Result<V>.valueOrNull() = when (this) {
     else -> null
 }
 
-fun <V1, V2> Result<V1>.transform(transform: (V1) -> V2): Result<V2> = when (this) {
+inline fun <V1, V2> Result<V1>.transform(transform: (V1) -> V2): Result<V2> = when (this) {
     is SuccessfulResult -> transform(value).successResult()
     is NotFoundResult -> NotFoundResult(
         entityName

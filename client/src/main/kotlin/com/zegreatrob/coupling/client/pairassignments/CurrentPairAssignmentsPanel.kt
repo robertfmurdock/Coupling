@@ -44,7 +44,7 @@ val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps
     val (tribe, pairAssignments, onPlayerSwap, onPinDrop, allowSave, onSave, pathSetter) = props
     div(classes = styles.className) {
         dateHeader(pairAssignments)
-        pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, pathSetter)
+        pairAssignmentList(tribe, pairAssignments, onPlayerSwap, onPinDrop, allowSave, pathSetter)
         saveButtonSection(onSave, allowSave)
     }
 }
@@ -60,10 +60,11 @@ private fun RBuilder.pairAssignmentList(
     pairAssignments: PairAssignmentDocument,
     onPlayerSwap: (String, PinnedPlayer, PinnedCouplingPair) -> Unit,
     onPinDrop: (String, PinnedCouplingPair) -> Unit,
+    allowSave: Boolean,
     pathSetter: (String) -> Unit
 ) = div(classes = styles["pairAssignmentsContent"]) {
     pairAssignments.pairs.mapIndexed { index, pair ->
-        assignedPair(tribe, pair, onPlayerSwap, onPinDrop, pairAssignments.isNotSaved(), pathSetter, key = "$index")
+        assignedPair(tribe, pair, onPlayerSwap, onPinDrop, allowSave, pathSetter, key = "$index")
     }
 }
 
@@ -72,8 +73,6 @@ private fun RBuilder.saveButtonSection(onSave: () -> Unit, allowSave: Boolean) =
         saveButton(onSave)
     }
 }
-
-private fun PairAssignmentDocument.isNotSaved() = id == null
 
 private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green, styles["saveButton"], onSave) {
     +"Save!"

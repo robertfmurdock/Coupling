@@ -1,12 +1,9 @@
 package com.zegreatrob.coupling.client
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinProps
 import com.zegreatrob.coupling.client.pin.PinButton
@@ -21,6 +18,9 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.findByClass
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -39,7 +39,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()) {})
     }) exercise {
         wrapper.findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
@@ -58,7 +58,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()) {})
 
         init {
             wrapper.findByClass(styles["selectedPins"])
@@ -82,7 +82,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val history = emptyList<PairAssignmentDocument>()
     }) exercise {
-        shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList()) {})
+        shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {})
     } verify { wrapper ->
         wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
     }
@@ -92,7 +92,9 @@ class PrepareSpinTest {
         val tribe = stubTribe()
         val players = stubPlayers(3)
         val history = emptyList<PairAssignmentDocument>()
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList()) {})
+        val wrapper = shallow(
+            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {}
+        )
     }) exercise {
         wrapper.findByClass(styles["selectAllButton"]).simulate("click")
     } verify {
@@ -106,7 +108,9 @@ class PrepareSpinTest {
         val history = listOf(
             PairAssignmentDocument(date = DateTime.now(), pairs = players.map { pairOf(it).withPins(emptyList()) })
         )
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList()) {})
+        val wrapper = shallow(
+            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {}
+        )
     }) exercise {
         wrapper.findByClass(styles["selectNoneButton"]).simulate("click")
     } verify {

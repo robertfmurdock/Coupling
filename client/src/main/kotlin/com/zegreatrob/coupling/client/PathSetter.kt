@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-
 typealias PathSetter = (String) -> Unit
 
 fun PathSetter.tribeList() = this(Paths.tribeList())
