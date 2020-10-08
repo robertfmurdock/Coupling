@@ -37,7 +37,7 @@ fun RBuilder.pairAssignments(
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     updatePairAssignments: (PairAssignmentDocument) -> Unit,
-    commandFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
+    dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
     message: CouplingSocketMessage,
     allowSave: Boolean,
     pathSetter: (String) -> Unit
@@ -48,7 +48,7 @@ fun RBuilder.pairAssignments(
         players,
         pairAssignments,
         updatePairAssignments,
-        commandFunc,
+        dispatchFunc,
         message,
         allowSave,
         pathSetter
@@ -113,13 +113,13 @@ private fun RBuilder.currentPairSection(
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
-        animator(tribe, players, pairAssignments, tribe.animationEnabled, allowSave) {
+        animator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
             currentPairAssignments(
                 tribe = tribe,
                 pairAssignments = pairAssignments,
+                allowSave = allowSave,
                 onPlayerSwap = pairAssignments.makeSwapCallback(sendUpdatedPairs),
                 onPinDrop = pairAssignments.makePinCallback(sendUpdatedPairs),
-                allowSave = allowSave,
                 onSave = pairAssignments.onSaveFunc(commandFunc, tribe, pathSetter),
                 pathSetter = pathSetter
             )

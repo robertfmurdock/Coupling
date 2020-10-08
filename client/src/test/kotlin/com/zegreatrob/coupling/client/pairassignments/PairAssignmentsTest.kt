@@ -305,7 +305,7 @@ class PairAssignmentsTest {
                 listOf(),
                 null,
                 {},
-                commandFunc = StubDispatchFunc(),
+                dispatchFunc = StubDispatchFunc(),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
             ) {}

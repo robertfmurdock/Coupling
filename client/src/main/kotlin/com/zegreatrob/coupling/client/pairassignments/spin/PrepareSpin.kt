@@ -34,8 +34,6 @@ import react.useState
 import styled.css
 import styled.styledDiv
 
-external fun encodeURIComponent(input: String?)
-
 data class PrepareSpinProps(
     val tribe: Tribe,
     val players: List<Player>,
@@ -50,23 +48,13 @@ private val styles = useStyles("PrepareSpin")
 val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, dispatchFunc, pathSetter) ->
     val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
     val (pinSelections, setPinSelections) = useState(pins.map { it.id })
-
-    val generateNewPairsFunc = dispatchFunc({
-        NewPairAssignmentsCommand(tribe.id, playerSelections.playerIds(), pinSelections.filterNotNull())
-    }, { pathSetter.newPairAssignments(tribe, emptyList(), emptyList()) })
+    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, pathSetter)
 
     div(classes = styles.className) {
         div { tribeBrowser(tribe, pathSetter) }
         div {
-            div {
-                spinButton(generateNewPairsFunc)
-            }
-            styledDiv {
-                css {
-                    display = Display.flex
-                    borderSpacing = 5.px
-                    borderCollapse = BorderCollapse.separate
-                }
+            div { spinButton(onSpin) }
+            selectorAreaDiv {
                 playerSelectorDiv {
                     h1 { +"Please select players to spin." }
                     h2 { +"Tap a player to include or exclude them." }
@@ -89,6 +77,26 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
             }
         }
     }
+}
+
+private fun onSpin(
+    dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>,
+    tribe: Tribe,
+    playerSelections: List<Pair<Player, Boolean>>,
+    pinSelections: List<String?>,
+    pathSetter: (String) -> Unit
+) = dispatchFunc(
+    { NewPairAssignmentsCommand(tribe.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
+    { pathSetter.newPairAssignments(tribe) }
+)
+
+private fun RBuilder.selectorAreaDiv(children: RBuilder.() -> Unit) = styledDiv {
+    css {
+        display = Display.flex
+        borderSpacing = 5.px
+        borderCollapse = BorderCollapse.separate
+    }
+    children()
 }
 
 private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -> isSelected }
