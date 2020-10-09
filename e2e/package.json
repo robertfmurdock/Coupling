@@ -19,7 +19,7 @@
     "webpack-node-externals": "2.5.2",
     "wdio-chromedriver-service": "6.0.4",
     "css-loader": "4.3.0",
-    "url-loader": "4.1.0"
+    "url-loader": "4.1.1"
   },
   "devDependencies": {
     "axios-cookiejar-support": "^1.0.0",
