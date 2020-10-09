@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.couplingWebsocket
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -17,13 +17,12 @@ data class SocketedPairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
-    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
-    val allowSave: Boolean,
-    val pathSetter: (String) -> Unit
+    val controls: Controls<PairAssignmentsCommandDispatcher>,
+    val allowSave: Boolean
 ) : RProps
 
 val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
-    val (tribe, players, originalPairs, commandFunc, allowSave, pathSetter) = props
+    val (tribe, players, originalPairs, controls, allowSave) = props
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     couplingWebsocket(props.tribe.id) { message, sendMessage ->
@@ -34,10 +33,9 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
             players,
             message.currentPairAssignments ?: pairAssignments,
             updatePairAssignments,
-            commandFunc,
+            controls,
             message,
-            allowSave,
-            pathSetter
+            allowSave
         )
     }
 }

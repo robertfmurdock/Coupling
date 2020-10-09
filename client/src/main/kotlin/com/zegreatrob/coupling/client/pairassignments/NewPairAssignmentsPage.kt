@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -16,7 +17,8 @@ val NewPairAssignmentsPage = tribePageFunction { props, tribeId ->
 private fun dataLoadProps(tribeId: TribeId, pathSetter: (String) -> Unit, commander: Commander) = dataLoadProps(
     commander = commander,
     query = TribeDataSetQuery(tribeId),
-    toProps = { _, commandFunc, (tribe, players, pairAssignments) ->
-        SocketedPairAssignmentsProps(tribe, players, pairAssignments.firstOrNull(), commandFunc, true, pathSetter)
+    toProps = { reload, commandFunc, (tribe, players, pairAssignments) ->
+        val controls = Controls(commandFunc, pathSetter, reload)
+        SocketedPairAssignmentsProps(tribe, players, pairAssignments.firstOrNull(), controls, true)
     }
 )

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
@@ -12,7 +13,7 @@ val HistoryPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = HistoryQuery(tribeId),
         toProps = { reload, commandFunc, (tribe, history) ->
-            HistoryProps(tribe, history, reload, props.pathSetter, commandFunc)
+            HistoryProps(tribe, history, Controls(commandFunc, props.pathSetter, reload))
         }
     ), key = tribeId.value)
 }

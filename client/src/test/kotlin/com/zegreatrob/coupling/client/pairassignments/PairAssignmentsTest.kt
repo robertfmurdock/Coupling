@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
@@ -14,13 +15,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.RClass
@@ -56,10 +54,10 @@ class PairAssignmentsTest {
                 players,
                 pairAssignments,
                 { pairAssignments = it },
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
@@ -87,49 +85,16 @@ class PairAssignmentsTest {
                 players,
                 null,
                 {},
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
             .props()
             .players
             .assertIsEqualTo(players)
-    }
-
-    @Test
-    fun onClickSaveWillUseCouplingToSaveAndRedirectToCurrentPairAssignmentsPage() = setup(object {
-        val pathSetterSpy = SpyData<String, Unit>()
-        val pairAssignments = PairAssignmentDocument(
-            date = DateTime.now(),
-            pairs = emptyList()
-        )
-        val dispatchFunc = StubDispatchFunc<SavePairAssignmentsCommandDispatcher>()
-        val wrapper = shallow(
-            PairAssignments,
-            PairAssignmentsProps(
-                tribe,
-                emptyList(),
-                pairAssignments,
-                {},
-                dispatchFunc,
-                CouplingSocketMessage("", emptyList(), null),
-                pathSetter = pathSetterSpy::spyFunction,
-                allowSave = true
-            )
-        )
-    }) exercise {
-        wrapper.find(CurrentPairAssignmentsPanel).props()
-            .onSave()
-        dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
-    } verify {
-        dispatchFunc.commandsDispatched<SavePairAssignmentsCommand>().size
-            .assertIsEqualTo(1)
-
-        pathSetterSpy.spyReceivedValues
-            .assertContains("/${tribe.id.value}/pairAssignments/current/")
     }
 
     @Test
@@ -154,10 +119,10 @@ class PairAssignmentsTest {
                 emptyList(),
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -188,10 +153,10 @@ class PairAssignmentsTest {
                 emptyList(),
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
@@ -229,10 +194,10 @@ class PairAssignmentsTest {
                 emptyList(),
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -267,10 +232,10 @@ class PairAssignmentsTest {
                 emptyList(),
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         )
     }) exercise {
         player4.dragTo(player3, wrapper)
@@ -305,10 +270,10 @@ class PairAssignmentsTest {
                 listOf(),
                 null,
                 {},
-                dispatchFunc = StubDispatchFunc(),
+                controls = Controls(StubDispatchFunc(), {}, {}),
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
-            ) {}
+            )
         }
     } verify { wrapper ->
         wrapper.find(ServerMessage)

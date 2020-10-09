@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.invoke
@@ -42,7 +43,7 @@ class HistoryTest {
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             historyComponent(this),
-            HistoryProps(tribe, history, reloadSpy::spyFunction, {}, stubDispatchFunc)
+            HistoryProps(tribe, history, Controls(stubDispatchFunc, {}, reloadSpy::spyFunction))
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
@@ -68,7 +69,7 @@ class HistoryTest {
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             historyComponent(this),
-            HistoryProps(tribe, history, reloadSpy::spyFunction, {}, stubDispatchFunc)
+            HistoryProps(tribe, history, Controls(stubDispatchFunc, {}, reloadSpy::spyFunction))
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")

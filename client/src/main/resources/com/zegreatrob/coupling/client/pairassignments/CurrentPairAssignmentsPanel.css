@@ -9,3 +9,6 @@
 :local(.saveButton) {
     margin: 4px;
 }
+:local(.deleteButton) {
+    /* do not remove */
+}

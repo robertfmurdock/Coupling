@@ -3,9 +3,8 @@ package com.zegreatrob.coupling.client
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.TribePinListQueryDispatcher
@@ -26,11 +25,10 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 
 class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: RepositoryCatalog) :
     PinCommandDispatcher,
-    SavePairAssignmentsCommandDispatcher,
+    PairAssignmentsCommandDispatcher,
     NewPairAssignmentsCommandDispatcher,
     PlayerConfigDispatcher,
     TribeConfigDispatcher,
-    DeletePairAssignmentsCommandDispatcher,
     RepositoryCatalog by repositoryCatalog,
     TribeDataSetQueryDispatcher,
     HistoryQueryDispatcher,

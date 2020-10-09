@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.currentPairs
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
+import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.PlayerRosterProps
@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
@@ -31,28 +32,21 @@ import react.router.dom.routeLink
 import styled.css
 import styled.styledDiv
 
+interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatcher, DeletePairAssignmentsCommandDispatcher {
+    override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
+}
 
 fun RBuilder.pairAssignments(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     updatePairAssignments: (PairAssignmentDocument) -> Unit,
-    dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
+    controls: Controls<PairAssignmentsCommandDispatcher>,
     message: CouplingSocketMessage,
     allowSave: Boolean,
-    pathSetter: (String) -> Unit
 ) = child(
     PairAssignments,
-    PairAssignmentsProps(
-        tribe,
-        players,
-        pairAssignments,
-        updatePairAssignments,
-        dispatchFunc,
-        message,
-        allowSave,
-        pathSetter
-    )
+    PairAssignmentsProps(tribe, players, pairAssignments, updatePairAssignments, controls, message, allowSave)
 )
 
 data class PairAssignmentsProps(
@@ -60,33 +54,24 @@ data class PairAssignmentsProps(
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
-    val dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
+    val controls: Controls<PairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
-    val allowSave: Boolean,
-    val pathSetter: (String) -> Unit
+    val allowSave: Boolean
 ) : RProps
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
 val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
-    val (tribe, players, pairAssignments, sendUpdatedPairs, commandFunc, message, allowSave, pathSetter) = props
+    val (tribe, players, pairAssignments, setPairs, controls, message, allowSave) = props
     DndProvider {
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
             div {
-                tribeBrowser(tribe, pathSetter)
-                currentPairSection(
-                    tribe,
-                    players,
-                    pairAssignments,
-                    pathSetter,
-                    allowSave,
-                    sendUpdatedPairs,
-                    commandFunc
-                )
+                tribeBrowser(tribe, controls.pathSetter)
+                currentPairSection(tribe, players, pairAssignments, allowSave, setPairs, controls)
             }
             controlPanel(tribe)
-            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), pathSetter)
+            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), controls.pathSetter)
 
             serverMessage(tribe, message)
         }
@@ -97,10 +82,9 @@ private fun RBuilder.currentPairSection(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
-    pathSetter: (String) -> Unit,
     allowSave: Boolean,
     sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
-    commandFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>
+    controls: Controls<PairAssignmentsCommandDispatcher>
 ) = styledDiv {
     css {
         display = Display.inlineBlock
@@ -116,12 +100,11 @@ private fun RBuilder.currentPairSection(
         animator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
             currentPairAssignments(
                 tribe = tribe,
-                pairAssignments = pairAssignments,
                 allowSave = allowSave,
+                pairAssignments = pairAssignments,
                 onPlayerSwap = pairAssignments.makeSwapCallback(sendUpdatedPairs),
                 onPinDrop = pairAssignments.makePinCallback(sendUpdatedPairs),
-                onSave = pairAssignments.onSaveFunc(commandFunc, tribe, pathSetter),
-                pathSetter = pathSetter
+                controls = controls
             )
         }
     }
@@ -151,11 +134,6 @@ private fun RBuilder.controlPanel(tribe: Tribe) = div(classes = styles["controlP
     viewRetireesButton(tribe, styles["retiredPlayersButton"])
 }
 
-private fun PairAssignmentDocument.onSaveFunc(
-    dispatchFunc: DispatchFunc<out SavePairAssignmentsCommandDispatcher>,
-    tribe: Tribe,
-    pathSetter: (String) -> Unit
-) = dispatchFunc({ SavePairAssignmentsCommand(tribe.id, this) }, { pathSetter.currentPairs(tribe.id) })
 
 private fun PairAssignmentDocument.makePinCallback(setPairAssignments: (PairAssignmentDocument) -> Unit) =
     dropThePin(setPairAssignments)

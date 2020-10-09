@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.client.dom.small
@@ -29,18 +29,16 @@ private val styles = useStyles("pairassignments/History")
 data class HistoryProps(
     val tribe: Tribe,
     val history: List<PairAssignmentDocument>,
-    val reload: () -> Unit,
-    val pathSetter: (String) -> Unit,
-    val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
 val History by lazy { historyComponent(WindowFunctions) }
 
-val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, pathSetter, commandFunc), windowFuncs ->
-    val onDeleteFunc = onDeleteFuncFactory(commandFunc, tribe, reload, windowFuncs)
+val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls), windowFuncs ->
+    val onDeleteFunc = onDeleteFuncFactory(controls, tribe, windowFuncs)
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
-            tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+            tribeCard(TribeCardProps(tribe, pathSetter = controls.pathSetter))
         }
         span(classes = styles["historyView"]) {
             div(classes = styles["header"]) { +"History!" }
@@ -52,11 +50,11 @@ val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, reload, 
 }
 
 private fun onDeleteFuncFactory(
-    dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>,
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     tribe: Tribe,
-    reload: () -> Unit,
     windowFunctions: WindowFunctions
 ) = { documentId: PairAssignmentDocumentId ->
+    val (dispatchFunc, _, reload) = controls
     val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
     onDeleteClick(windowFunctions, deleteFunc)
 }
