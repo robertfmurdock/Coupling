@@ -14,9 +14,6 @@ import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -32,7 +29,8 @@ import react.router.dom.routeLink
 import styled.css
 import styled.styledDiv
 
-interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatcher, DeletePairAssignmentsCommandDispatcher {
+interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatcher,
+    DeletePairAssignmentsCommandDispatcher {
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
@@ -100,10 +98,9 @@ private fun RBuilder.currentPairSection(
         animator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
             currentPairAssignments(
                 tribe = tribe,
-                allowSave = allowSave,
                 pairAssignments = pairAssignments,
-                onPlayerSwap = pairAssignments.makeSwapCallback(sendUpdatedPairs),
-                onPinDrop = pairAssignments.makePinCallback(sendUpdatedPairs),
+                setPairAssignments = sendUpdatedPairs,
+                allowSave = allowSave,
                 controls = controls
             )
         }
@@ -134,50 +131,14 @@ private fun RBuilder.controlPanel(tribe: Tribe) = div(classes = styles["controlP
     viewRetireesButton(tribe, styles["retiredPlayersButton"])
 }
 
-
-private fun PairAssignmentDocument.makePinCallback(setPairAssignments: (PairAssignmentDocument) -> Unit) =
-    dropThePin(setPairAssignments)
-
-private fun PairAssignmentDocument.dropThePin(setPairAssignments: (PairAssignmentDocument) -> Unit) =
-    { pinId: String, droppedPair: PinnedCouplingPair ->
-        setPairAssignments(
-            copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
-        )
-    }
-
-private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
-    .pairs
-    .map(PinnedCouplingPair::pins)
-    .flatten()
-    .first { it.id == id }
-
-
-private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
-    when {
-        pair == droppedPair -> pair.addPin(pin)
-        pair.pins.contains(pin) -> pair.removePin(pin)
-        else -> pair
-    }
-}
-
-private fun PinnedCouplingPair.addPin(pin: Pin) = copy(pins = pins + pin)
-
-private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
-
-private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) =
-    child(
-        PlayerRoster, PlayerRosterProps(
-            label = "Unpaired players",
-            players = players,
-            tribeId = tribe.id,
-            pathSetter = pathSetter
-        )
+private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) = child(
+    PlayerRoster, PlayerRosterProps(
+        label = "Unpaired players",
+        players = players,
+        tribeId = tribe.id,
+        pathSetter = pathSetter
     )
-
-private fun PairAssignmentDocument.makeSwapCallback(setPairAssignments: (PairAssignmentDocument) -> Unit) =
-    { droppedPlayerId: String, targetPlayer: PinnedPlayer, targetPair: PinnedCouplingPair ->
-        setPairAssignments(swapPlayers(droppedPlayerId, targetPlayer, targetPair))
-    }
+)
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
@@ -226,39 +187,3 @@ private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) =
             +" Retirees!"
         }
     }
-
-private fun PairAssignmentDocument.swapPlayers(
-    droppedPlayerId: String,
-    targetPlayer: PinnedPlayer,
-    targetPair: PinnedCouplingPair
-): PairAssignmentDocument {
-    val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
-    val droppedPlayer = sourcePair?.players?.firstOrNull { it.player.id == droppedPlayerId }
-
-    if (sourcePair == targetPair || droppedPlayer == null) {
-        return this
-    }
-
-    return copy(
-        pairs = pairs.map { pair ->
-            when (pair) {
-                targetPair -> pair.replacePlayer(targetPlayer, droppedPlayer)
-                sourcePair -> pair.replacePlayer(droppedPlayer, targetPlayer)
-                else -> pair
-            }
-        }
-    )
-}
-
-private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
-    copy(players = players.map { pinnedPlayer ->
-        if (pinnedPlayer == playerToReplace) {
-            replacement
-        } else {
-            pinnedPlayer
-        }
-    })
-
-private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
-    pair.players.any { player -> player.player.id == droppedPlayerId }
-}
