@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispa
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -18,13 +19,10 @@ class CalculateHeatMapCommandTest {
     companion object : CalculateHeatMapActionDispatcher, AssignPinsActionDispatcher {
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId(""),
                 date = DateTime.now(),
                 pairs = perform(
-                    AssignPinsAction(
-                        listOf(
-                            pairOf(player1, player2)
-                        ), emptyList(), emptyList()
-                    )
+                    AssignPinsAction(listOf(pairOf(player1, player2)), emptyList(), emptyList())
                 )
             )
     }

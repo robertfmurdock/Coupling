@@ -214,7 +214,7 @@ class ComposeStatisticsActionTest {
             )
 
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
-                PairAssignmentDocument(date = stubDate, pairs = pairs)
+                PairAssignmentDocument(date = stubDate, pairs = pairs, id = PairAssignmentDocumentId(""))
         }) exercise {
             perform(ComposeStatisticsAction(tribe, players, history))
         } verify { (_, pairReports) ->
@@ -260,10 +260,7 @@ class ComposeStatisticsActionTest {
 
         companion object {
             private fun pairAssignmentDocument(dateTime: DateTime) =
-                PairAssignmentDocument(
-                    date = dateTime,
-                    pairs = emptyList()
-                )
+                PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = dateTime, pairs = emptyList())
         }
 
         @Test
@@ -334,6 +331,7 @@ class ComposeStatisticsActionTest {
             val history = listOf(
                 PairAssignmentDocument(
                     date = DateTime(2017, 2, 17),
+                    id = PairAssignmentDocumentId(""),
                     pairs = emptyList()
                 )
             )

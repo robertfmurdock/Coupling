@@ -1,18 +1,19 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -53,6 +54,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         )
         val history = listOf(
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime.now(),
                 pairs = listOf<CouplingPair>(
                     CouplingPair.Double(players[0], players[1]),
@@ -118,6 +120,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         )
         val history = listOf(
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime.now(),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
@@ -205,6 +208,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         )
         val history = listOf(
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2017, 3, 14),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
@@ -212,6 +216,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             ),
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2017, 3, 12),
                 pairs = listOf(
                     pairOf(players[0], players[1]),

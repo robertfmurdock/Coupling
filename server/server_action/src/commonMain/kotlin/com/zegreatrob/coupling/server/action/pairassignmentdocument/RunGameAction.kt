@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -32,6 +34,7 @@ interface RunGameActionDispatcher : Clock, ExecutableActionExecuteSyntax, FindNe
     private fun RunGameAction.findNewPairs() = execute(findNewPairsAction())
     private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, tribe.pairingRule))
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
+        id = PairAssignmentDocumentId("${uuid4()}"),
         date = currentDate(),
         pairs = pairAssignments
     )

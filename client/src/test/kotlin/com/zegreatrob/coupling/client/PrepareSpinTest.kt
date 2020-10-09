@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
@@ -10,6 +11,7 @@ import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonProps
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
@@ -106,7 +108,10 @@ class PrepareSpinTest {
         val tribe = stubTribe()
         val players = stubPlayers(3)
         val history = listOf(
-            PairAssignmentDocument(date = DateTime.now(), pairs = players.map { pairOf(it).withPins(emptyList()) })
+            PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
+                date = DateTime.now(),
+                pairs = players.map { pairOf(it).withPins(emptyList()) })
         )
         val wrapper = shallow(
             PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {}

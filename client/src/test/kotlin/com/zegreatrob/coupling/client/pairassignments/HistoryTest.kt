@@ -50,7 +50,7 @@ class HistoryTest {
         stubDispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, history[0].id!!)))
+            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, history[0].id)))
         reloadSpy.callCount.assertIsEqualTo(1)
     }
 

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
@@ -7,6 +8,7 @@ import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
@@ -34,6 +36,7 @@ class PairAssignmentsTest {
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
         var pairAssignments = PairAssignmentDocument(
+            id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
             pairs = listOf(
                 pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),

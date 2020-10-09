@@ -2,10 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
@@ -53,12 +50,12 @@ class SpinTest {
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    date = DateTime(2014, 1, 10), pairs = listOf(
+                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 10), pairs = listOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins()
                     )
                 ), PairAssignmentDocument(
-                    date = DateTime(2014, 1, 9), pairs = listOf(
+                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 9), pairs = listOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins()
                     )
@@ -85,12 +82,12 @@ class SpinTest {
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
-                date = DateTime(2014, 2, 10), pairs = listOf(
+                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 10), pairs = listOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins()
                 )
             ), PairAssignmentDocument(
-                date = DateTime(2014, 2, 9), pairs = listOf(
+                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 9), pairs = listOf(
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins()
                 )

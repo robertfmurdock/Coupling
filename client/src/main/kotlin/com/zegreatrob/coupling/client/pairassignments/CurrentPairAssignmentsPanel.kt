@@ -145,7 +145,7 @@ private fun RBuilder.controlSection(
     val (dispatchFunc, pathSetter, _) = controls
     val redirectToCurrentFunc: (Result<Unit>) -> Unit = { pathSetter.currentPairs(tribe.id) }
     saveButton(dispatchFunc({ SavePairAssignmentsCommand(tribe.id, pairAssignments) }, redirectToCurrentFunc))
-    cancelButton(dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, pairAssignments.id!!) }, redirectToCurrentFunc))
+    cancelButton(dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, redirectToCurrentFunc))
 }
 
 private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green, styles["saveButton"], onSave) {

@@ -5,10 +5,7 @@ import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairCallSigns
 import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.TribeCard.header
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -158,6 +155,7 @@ class PairAssignmentsPageE2ETest {
             }
             private val pairAssignmentDocument by lazy {
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId(""),
                     date = DateTime(year = 2015, month = 5, day = 30),
                     pairs = listOf(
                         pairOf(players[0], players[2]).withPins(emptyList()),

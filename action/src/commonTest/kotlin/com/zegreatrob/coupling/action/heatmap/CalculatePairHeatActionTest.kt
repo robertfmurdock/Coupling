@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -23,14 +24,9 @@ class CalculatePairHeatActionTest {
 
         fun List<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId(""),
                 date = DateTime(2016, 3, 1),
-                pairs = perform(
-                    AssignPinsAction(
-                        this,
-                        emptyList(),
-                        emptyList()
-                    )
-                )
+                pairs = perform(AssignPinsAction(this, emptyList(), emptyList()))
             )
     }
 

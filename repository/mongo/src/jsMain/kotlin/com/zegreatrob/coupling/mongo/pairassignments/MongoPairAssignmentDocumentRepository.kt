@@ -45,7 +45,7 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             .sortedByDescending { it.data.document.date }
 
     private fun TribeIdPairAssignmentDocument.toDbJson() = json(
-        "id" to document.id?.value,
+        "id" to document.id.value,
         "date" to document.date.toDate(),
         "pairs" to document.toDbJsPairs(),
         "tribe" to tribeId.value

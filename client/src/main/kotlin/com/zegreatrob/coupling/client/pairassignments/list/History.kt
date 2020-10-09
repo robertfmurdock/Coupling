@@ -68,15 +68,11 @@ private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit) 
 private fun RBuilder.pairAssignmentRow(
     document: PairAssignmentDocument,
     onDeleteFunc: (PairAssignmentDocumentId) -> () -> Unit
-) {
-    val pairAssignmentDocumentId = document.id ?: return
-
-    div(classes = styles["pairAssignments"]) {
-        attrs { key = pairAssignmentDocumentId.value }
-        span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
-        deleteButton(onClickFunc = onDeleteFunc(pairAssignmentDocumentId))
-        div { showPairs(document) }
-    }
+) = div(classes = styles["pairAssignments"]) {
+    attrs { key = document.id.value }
+    span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
+    deleteButton(onClickFunc = onDeleteFunc(document.id))
+    div { showPairs(document) }
 }
 
 private fun RBuilder.deleteButton(onClickFunc: () -> Unit) =

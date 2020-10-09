@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -20,15 +19,9 @@ class MemoryPairAssignmentDocumentRepository(
     RecordBackend<TribeIdPairAssignmentDocument> by recordBackend {
 
     override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) =
-        tribeIdPairAssignmentDocument.addMissingId()
+        tribeIdPairAssignmentDocument
             .record()
             .save()
-
-    private fun TribeIdPairAssignmentDocument.addMissingId() = copy(
-        element = document.copy(
-            id = document.id ?: "${uuid4()}".let(::PairAssignmentDocumentId)
-        )
-    )
 
     override suspend fun getPairAssignments(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
         tribeId.records()

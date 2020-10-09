@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
@@ -85,18 +86,22 @@ class GameExamplesTest {
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
             val history = listOf(
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 10),
                     pairs = listOf(pairOf(bruce, clark)).withNoPins()
                 ),
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 9),
                     pairs = listOf(pairOf(bruce, diana)).withNoPins()
                 ),
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 8),
                     pairs = listOf(pairOf(bruce, hal)).withNoPins()
                 ),
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 7),
                     pairs = listOf(pairOf(bruce, barry)).withNoPins()
                 )
@@ -129,18 +134,22 @@ class GameExamplesTest {
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
             val history = listOf(
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 10),
                     pairs = listOf(pairOf(bruce, clark)).withNoPins()
                 ),
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 9),
                     pairs = listOf(pairOf(bruce, diana)).withNoPins()
                 ),
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 8),
                     pairs = listOf(pairOf(bruce, hal)).withNoPins()
                 ),
                 PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 7),
                     pairs = listOf(pairOf(bruce, barry)).withNoPins()
                 )
@@ -167,14 +176,17 @@ class GameExamplesTest {
 
         val history = listOf(
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2014, 1, 10),
                 pairs = listOf(pairOf(kamala, thor)).withNoPins()
             ),
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2014, 1, 9),
                 pairs = listOf(pairOf(kamala, steve)).withNoPins()
             ),
             PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2014, 1, 8),
                 pairs = listOf(pairOf(kamala, logan)).withNoPins()
             )

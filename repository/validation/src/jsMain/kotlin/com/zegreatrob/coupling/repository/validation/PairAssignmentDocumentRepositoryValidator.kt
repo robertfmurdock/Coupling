@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
-import kotlin.test.assertNotNull
 
 interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> :
     RepositoryValidator<R, TribeContext<R>> {
@@ -42,19 +41,6 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun saveWillAssignIdWhenDocumentHasNone() = repositorySetup(object : TribeContextMint<R>() {
-        val pairAssignmentDoc = stubPairAssignmentDoc().copy(id = null)
-    }.bind()) exercise {
-        repository.save(tribeId.with(pairAssignmentDoc))
-        repository.getPairAssignments(tribeId)
-    } verify { result ->
-        val resultDocument = result.data().map { it.document }.getOrNull(0)
-        val resultId = resultDocument?.id
-        assertNotNull(resultId)
-        resultDocument.assertIsEqualTo(pairAssignmentDoc.copy(id = resultId))
-    }
-
-    @Test
     fun savedWillIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
         val pairAssignmentDoc = stubPairAssignmentDoc()
     }.bind()) {
@@ -73,11 +59,10 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     @Test
     fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup(object : TribeContextMint<R>() {
         val document = stubPairAssignmentDoc()
-        val id = document.id!!
     }.bind()) {
         repository.save(tribeId.with(document))
     } exercise {
-        repository.delete(tribeId, id)
+        repository.delete(tribeId, document.id)
     } verify { result ->
         result.assertIsEqualTo(true)
         repository.getPairAssignments(tribeId)

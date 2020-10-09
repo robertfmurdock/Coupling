@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
@@ -10,7 +11,7 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
     DynamoPinJsonMapping {
 
     private fun PairAssignmentDocument.toDynamoJson() = json(
-        "id" to id?.value,
+        "id" to id.value,
         "date" to "${date.unixMillisLong}",
         "pairs" to pairs.map { it.toDynamoJson() }
             .toTypedArray()
@@ -20,7 +21,7 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
         .add(
             json(
                 "tribeId" to data.tribeId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id?.value}"
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id.value}"
             )
         )
         .add(data.element.toDynamoJson())
@@ -37,7 +38,7 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
     )
 
     fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        id = getDynamoStringValue("id")?.let(::PairAssignmentDocumentId),
+        id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: "${uuid4()}"),
         date = getDynamoStringValue("date")?.toLong()?.let { DateTime(it) } ?: throw Exception("Date missing."),
         pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList()
     )

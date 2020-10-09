@@ -1,15 +1,13 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -37,8 +35,7 @@ class CurrentPairAssignmentsPanelTest {
         val tribe = stubTribe()
         val pathSetterSpy = SpyData<String, Unit>()
         val pairAssignments = PairAssignmentDocument(
-            date = DateTime.now(),
-            pairs = emptyList()
+            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
@@ -82,7 +79,7 @@ class CurrentPairAssignmentsPanelTest {
         dispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         dispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, pairAssignments.id!!)))
+            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, pairAssignments.id)))
         pathSetterSpy.spyReceivedValues.assertIsEqualTo(
             listOf("/${tribe.id.value}/pairAssignments/current/")
         )
@@ -97,7 +94,7 @@ class CurrentPairAssignmentsPanelTest {
         val player4 = Player("4", name = "4")
 
         val pairAssignments = PairAssignmentDocument(
-            date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2),
                 pairOf(player3, player4)
@@ -133,7 +130,7 @@ class CurrentPairAssignmentsPanelTest {
         val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(listOf(pin1))
         val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(listOf(pin2))
         val pairAssignments = PairAssignmentDocument(
-            date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
             pairs = listOf(pair1, pair2)
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
@@ -170,7 +167,7 @@ class CurrentPairAssignmentsPanelTest {
         val pin2 = stubPin()
 
         val pairAssignments = PairAssignmentDocument(
-            date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2).withPins(listOf(pin1)),
                 pairOf(player3, player4).withPins(listOf(pin2))
@@ -207,7 +204,7 @@ class CurrentPairAssignmentsPanelTest {
         val player4 = Player("4", name = "4")
 
         val pairAssignments = PairAssignmentDocument(
-            date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2),
                 pairOf(player3, player4)
