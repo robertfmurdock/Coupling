@@ -56,7 +56,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             repository.getPlayers(tribeId)
         } verify { result ->
             result.map { it.data.player }
-                .assertIsEqualTo(listOf<Player>(player1))
+                .assertIsEqualTo(listOf(player1))
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {

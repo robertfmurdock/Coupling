@@ -17,17 +17,17 @@ import com.zegreatrob.coupling.client.tribe.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.browser.window
 import react.RBuilder
 import react.RProps
 import react.buildElement
 import react.dom.div
 import react.router.dom.*
-import kotlinx.browser.window
 
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
 val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
-    browserRouter(getUserConfirmation = { message, callback -> window.confirm(message).let { callback(it) } }) {
+    browserRouter(getUserConfirmation = { message, callback -> window.confirm(message).let(callback) }) {
         animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
     }
 }

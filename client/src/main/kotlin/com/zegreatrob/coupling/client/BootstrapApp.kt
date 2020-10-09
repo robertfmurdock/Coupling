@@ -14,7 +14,7 @@ import react.createElement
 
 object App : Sdk by SdkSingleton {
 
-    suspend fun bootstrapApp() {
+    fun bootstrapApp() {
         initializeLogging(developmentMode = false)
         val isSignedIn = window["isAuthenticated"] == true
         react.dom.render(couplingRouterElement(isSignedIn, animationsDisabled), document.viewContainerNode)

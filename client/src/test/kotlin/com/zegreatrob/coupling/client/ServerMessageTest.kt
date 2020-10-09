@@ -12,9 +12,6 @@ import com.zegreatrob.testmints.setup
 import react.RClass
 import kotlin.test.Test
 
-@JsModule("react-websocket")
-external val websocket: RClass<WebsocketProps>
-
 class ServerMessageTest {
 
     @Test

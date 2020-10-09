@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client
 import kotlin.js.Json
 import kotlin.js.json
 
-suspend fun main() {
+fun main() {
     if (isTestRun())
         return
 

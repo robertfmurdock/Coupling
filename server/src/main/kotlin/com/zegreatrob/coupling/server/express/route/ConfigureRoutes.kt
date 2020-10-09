@@ -56,7 +56,6 @@ private fun send200(): Handler = { _, response, _ -> response.sendStatus(200) }
 private fun authenticateCustomGoogle() = passport.authenticate("custom")
 
 private fun authenticateAuth0() = passport.authenticate("auth0", json("scope" to "openid email profile"))
-private fun authenticateAuth0Callback() = passport.authenticate("auth0")
 
 private fun authenticateAzure() = passport.authenticate("azuread-openidconnect")
 

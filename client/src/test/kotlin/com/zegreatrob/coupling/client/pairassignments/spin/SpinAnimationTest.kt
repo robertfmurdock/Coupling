@@ -162,8 +162,7 @@ class SpinAnimationTest {
             shallow(
                 SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
             )
-        } verify { result ->
-            val it = result
+        } verify {
             it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer)
             it.playersInRoster().assertIsEqualTo(
                 listOf(pairAssignments.pairs[1].players[1].player)

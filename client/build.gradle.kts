@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.loadPackageJson
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")

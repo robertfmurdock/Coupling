@@ -21,20 +21,19 @@ data class HeatmapProps(val data: List<List<Double?>>, val className: String) : 
 
 private val styles = useStyles("stats/heatmap/Heatmap")
 
-val Heatmap =
-    reactFunction<HeatmapProps> { (data, className) ->
-        val rowSize = data.size * 90
-        val rootRef = useRef<Node?>(null)
-        useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
+val Heatmap = reactFunction<HeatmapProps> { (data, className) ->
+    val rowSize = data.size * 90
+    val rootRef = useRef<Node?>(null)
+    useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
-        styledDiv {
-            attrs { ref = rootRef; classes += styles.className; classes += className }
-            css {
-                width = rowSize.px
-                height = rowSize.px
-            }
+    styledDiv {
+        attrs { ref = rootRef; classes += styles.className; classes += className }
+        css {
+            width = rowSize.px
+            height = rowSize.px
         }
     }
+}
 
 private fun Node.renderD3Heatmap(flatten: List<Double?>) {
     d3Heatmap.renderD3Heatmap(this, flatten.toTypedArray(), styles["cell"])
