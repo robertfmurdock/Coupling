@@ -18,14 +18,14 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:3.1.18")
-                implementation("com.zegreatrob.testmints:minassert:3.1.18")
+                implementation("com.zegreatrob.testmints:standard:3.1.19")
+                implementation("com.zegreatrob.testmints:minassert:3.1.19")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -36,7 +36,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1")
             }
         }
 

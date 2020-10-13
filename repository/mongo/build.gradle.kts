@@ -21,16 +21,16 @@ kotlin {
                 implementation("com.benasher44:uuid:0.2.2")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1")
             }
         }
         getByName("commonTest") {
             dependencies {
                 api(project(":repository:validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:3.1.18")
-                implementation("com.zegreatrob.testmints:minassert:3.1.18")
-                implementation("com.zegreatrob.testmints:async:3.1.18")
+                implementation("com.zegreatrob.testmints:standard:3.1.19")
+                implementation("com.zegreatrob.testmints:minassert:3.1.19")
+                implementation("com.zegreatrob.testmints:async:3.1.19")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")

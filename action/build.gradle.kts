@@ -20,12 +20,12 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:3.1.18")
-                implementation("com.zegreatrob.testmints:action-async:3.1.18")
+                implementation("com.zegreatrob.testmints:action:3.1.19")
+                implementation("com.zegreatrob.testmints:action-async:3.1.19")
                 implementation("com.benasher44:uuid:0.2.2")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1")
                 implementation("io.github.microutils:kotlin-logging:2.0.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
             }
