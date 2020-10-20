@@ -42,21 +42,20 @@ fun RBuilder.pinButton(
 
 private val styles = useStyles("pin/PinButton")
 
-val PinButton =
-    reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
-        styledDiv {
-            attrs {
-                classes += listOf(className, styles.className)
-                css { scaledStyles(scale) }
-                onClickFunction = { onClick() }
-            }
-
-            if (showTooltip) {
-                span(classes = styles["tooltip"]) { +pin.name }
-            }
-            i(scale.faTag) { attrs { classes += targetIcon(pin) } }
+val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
+    styledDiv {
+        attrs {
+            classes += listOf(className, styles.className)
+            css { scaledStyles(scale) }
+            onClickFunction = { onClick() }
         }
+
+        if (showTooltip) {
+            span(classes = styles["tooltip"]) { +pin.name }
+        }
+        i(scale.faTag) { attrs { classes += targetIcon(pin) } }
     }
+}
 
 private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
     padding((3.2 * scale.factor).px)
