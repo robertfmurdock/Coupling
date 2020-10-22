@@ -48,7 +48,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPairAssignmentDocument))
         clock.currentTime = updatedSaveTime2
-        repository.delete(tribeId, pairAssignmentDocument.id!!)
+        repository.delete(tribeId, pairAssignmentDocument.id)
     }) exercise {
         repository.getRecords(tribeId)
     } verify { result ->

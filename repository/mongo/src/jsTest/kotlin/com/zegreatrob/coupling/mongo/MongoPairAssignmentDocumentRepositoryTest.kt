@@ -149,7 +149,7 @@ class MongoPairAssignmentDocumentRepositoryTest :
         clock.currentTime = initialTimestamp
         repository.save(tribeId.with(pairAssignmentDocument))
         clock.currentTime = updatedTimestamp
-        repository.delete(tribeId, pairAssignmentDocument.id!!)
+        repository.delete(tribeId, pairAssignmentDocument.id)
         repository.save(tribeId.with(updatedDocument))
     } exercise {
         repository.getPairAssignmentRecords(tribeId)

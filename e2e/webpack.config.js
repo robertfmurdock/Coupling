@@ -28,7 +28,10 @@ const config = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=100000'
+        loader: 'url-loader',
+        options: {
+          limit: 100000
+        }
       }
     ]
   },

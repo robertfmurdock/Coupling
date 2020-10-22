@@ -9,16 +9,16 @@
   "dependencies": {
     "@log4js-node/log4js-api": "1.0.2",
     "@rpii/wdio-html-reporter": "6.1.1",
-    "@wdio/cli": "6.6.2",
-    "@wdio/dot-reporter": "6.6.0",
-    "@wdio/jasmine-framework": "6.6.0",
-    "@wdio/local-runner": "6.6.2",
+    "@wdio/cli": "6.6.7",
+    "@wdio/dot-reporter": "6.6.6",
+    "@wdio/jasmine-framework": "6.6.6",
+    "@wdio/local-runner": "6.6.7",
     "chromedriver": "86.0.0",
     "fs-extra": "9.0.1",
-    "webpack": "4.44.2",
+    "webpack": "5.2.0",
     "webpack-node-externals": "2.5.2",
     "wdio-chromedriver-service": "6.0.4",
-    "css-loader": "4.3.0",
+    "css-loader": "5.0.0",
     "url-loader": "4.1.1"
   },
   "devDependencies": {
