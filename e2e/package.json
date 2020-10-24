@@ -22,7 +22,7 @@
     "url-loader": "4.1.1"
   },
   "devDependencies": {
-    "axios-cookiejar-support": "^1.0.0",
+    "axios-cookiejar-support": "^1.0.1",
     "tough-cookie": "^4.0.0",
     "uuid": "^8.3.1"
   },
