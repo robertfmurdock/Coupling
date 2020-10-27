@@ -25,7 +25,7 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
                 api("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("io.github.microutils:kotlin-logging:2.0.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
