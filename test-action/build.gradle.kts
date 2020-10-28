@@ -29,7 +29,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
             }
         }
 
@@ -52,7 +52,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }

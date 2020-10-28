@@ -28,7 +28,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
                 api("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("io.github.microutils:kotlin-logging:2.0.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
             }
         }
         val commonTest by getting {
@@ -49,7 +49,7 @@ kotlin {
             dependencies {
                 implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
 
                 packageJson.dependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
