@@ -16,7 +16,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
             }
         }
         val commonTest by getting {
