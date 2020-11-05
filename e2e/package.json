@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@log4js-node/log4js-api": "1.0.2",
-    "@rpii/wdio-html-reporter": "6.2.4",
+    "@rpii/wdio-html-reporter": "6.2.5",
     "@wdio/cli": "6.7.2",
     "@wdio/dot-reporter": "6.7.0",
     "@wdio/jasmine-framework": "6.7.2",
@@ -18,7 +18,7 @@
     "webpack": "5.4.0",
     "webpack-node-externals": "2.5.2",
     "wdio-chromedriver-service": "6.0.4",
-    "css-loader": "5.0.0",
+    "css-loader": "5.0.1",
     "url-loader": "4.1.1"
   },
   "devDependencies": {
