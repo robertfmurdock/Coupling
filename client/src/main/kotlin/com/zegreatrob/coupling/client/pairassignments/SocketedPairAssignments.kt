@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.couplingWebsocket
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import react.RProps
 import react.RSetState
@@ -26,7 +28,12 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     couplingWebsocket(props.tribe.id) { message, sendMessage ->
-        val updatePairAssignments = useUpdatePairAssignmentsMemo(setPairAssignments, sendMessage)
+        val updatePairAssignments = useUpdatePairAssignmentsMemo(
+            setPairAssignments,
+            sendMessage,
+            controls.dispatchFunc,
+            tribe.id
+        )
 
         pairAssignments(
             tribe,
@@ -42,17 +49,25 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
 
 private fun useUpdatePairAssignmentsMemo(
     setPairAssignments: RSetState<PairAssignmentDocument?>,
-    sendMessage: ((Message) -> Unit)?
+    sendMessage: ((Message) -> Unit)?,
+    dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
+    tribeId: TribeId
 ) = useMemo(
-    { updatePairAssignmentsFunc(setPairAssignments, sendMessage) },
-    arrayOf(sendMessage)
+    { updatePairAssignmentsFunc(setPairAssignments, sendMessage, dispatchFunc, tribeId) },
+    arrayOf(sendMessage, dispatchFunc)
 )
 
 private fun updatePairAssignmentsFunc(
     setPairAssignments: RSetState<PairAssignmentDocument?>,
-    sendMessage: ((Message) -> Unit)?
+    sendMessage: ((Message) -> Unit)?,
+    dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
+    tribeId: TribeId
 ) = { new: PairAssignmentDocument ->
     setPairAssignments(new)
+    dispatchFunc(
+        commandFunc = { SavePairAssignmentsCommand(tribeId, new) },
+        response = {}
+    ).invoke()
     if (sendMessage != null)
         sendMessage(PairAssignmentAdjustmentMessage(new))
 }

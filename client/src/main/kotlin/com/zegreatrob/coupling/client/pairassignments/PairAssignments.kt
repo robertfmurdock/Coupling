@@ -38,21 +38,21 @@ fun RBuilder.pairAssignments(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
-    updatePairAssignments: (PairAssignmentDocument) -> Unit,
-    controls: Controls<PairAssignmentsCommandDispatcher>,
+    setPairAssignments: (PairAssignmentDocument) -> Unit,
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     message: CouplingSocketMessage,
     allowSave: Boolean,
 ) = child(
     PairAssignments,
-    PairAssignmentsProps(tribe, players, pairAssignments, updatePairAssignments, controls, message, allowSave)
+    PairAssignmentsProps(tribe, players, pairAssignments, setPairAssignments, controls, message, allowSave)
 )
 
 data class PairAssignmentsProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
-    val sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<PairAssignmentsCommandDispatcher>,
+    val setPairAssignments: (PairAssignmentDocument) -> Unit,
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
     val allowSave: Boolean
 ) : RProps
@@ -66,7 +66,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
         div(classes = styles.className) {
             div {
                 tribeBrowser(tribe, controls.pathSetter)
-                currentPairSection(tribe, players, pairAssignments, allowSave, setPairs, controls)
+                currentPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls)
             }
             controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), controls.pathSetter)
@@ -80,9 +80,9 @@ private fun RBuilder.currentPairSection(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
+    setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean,
-    sendUpdatedPairs: (PairAssignmentDocument) -> Unit,
-    controls: Controls<PairAssignmentsCommandDispatcher>
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) = styledDiv {
     css {
         display = Display.inlineBlock
@@ -99,7 +99,7 @@ private fun RBuilder.currentPairSection(
             currentPairAssignments(
                 tribe = tribe,
                 pairAssignments = pairAssignments,
-                setPairAssignments = sendUpdatedPairs,
+                setPairAssignments = setPairAssignments,
                 allowSave = allowSave,
                 controls = controls
             )

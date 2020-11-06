@@ -31,7 +31,7 @@ class CurrentPairAssignmentsPanelTest {
     private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
     @Test
-    fun clickingSaveButtonWillPerformSaveCommandAndRedirectToCurrentPairAssignmentsPage() = setup(object {
+    fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = setup(object {
         val tribe = stubTribe()
         val pathSetterSpy = SpyData<String, Unit>()
         val pairAssignments = PairAssignmentDocument(
@@ -53,7 +53,7 @@ class CurrentPairAssignmentsPanelTest {
         dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
         dispatchFunc.commandsDispatched<SavePairAssignmentsCommand>().size
-            .assertIsEqualTo(1)
+            .assertIsEqualTo(0)
         pathSetterSpy.spyReceivedValues
             .assertContains("/${tribe.id.value}/pairAssignments/current/")
     }

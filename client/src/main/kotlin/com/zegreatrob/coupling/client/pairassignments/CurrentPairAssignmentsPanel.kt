@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -23,7 +24,7 @@ fun RBuilder.currentPairAssignments(
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean,
-    controls: Controls<PairAssignmentsCommandDispatcher>
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) = child(
     CurrentPairAssignmentsPanel,
     CurrentPairAssignmentsPanelProps(tribe, pairAssignments, setPairAssignments, allowSave, controls)
@@ -34,7 +35,7 @@ data class CurrentPairAssignmentsPanelProps(
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
-    val controls: Controls<PairAssignmentsCommandDispatcher>
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
@@ -86,7 +87,6 @@ private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) 
     .map(PinnedCouplingPair::pins)
     .flatten()
     .first { it.id == id }
-
 
 private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
     when {
@@ -140,11 +140,11 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 private fun RBuilder.controlSection(
     tribe: Tribe,
     pairAssignments: PairAssignmentDocument,
-    controls: Controls<PairAssignmentsCommandDispatcher>
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) = div {
     val (dispatchFunc, pathSetter, _) = controls
     val redirectToCurrentFunc: (Result<Unit>) -> Unit = { pathSetter.currentPairs(tribe.id) }
-    saveButton(dispatchFunc({ SavePairAssignmentsCommand(tribe.id, pairAssignments) }, redirectToCurrentFunc))
+    saveButton { pathSetter.currentPairs(tribe.id) }
     cancelButton(dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, redirectToCurrentFunc))
 }
 
