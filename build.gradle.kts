@@ -11,7 +11,7 @@ plugins {
     id("com.github.node-gradle.node") apply false
     id("com.bmuschko.docker-remote-api") version "6.6.1"
     id("se.patrikerdes.use-latest-versions") version "0.2.15"
-    id("com.github.ben-manes.versions") version "0.35.0"
+    id("com.github.ben-manes.versions") version "0.36.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
 }
 
