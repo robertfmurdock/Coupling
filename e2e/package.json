@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@log4js-node/log4js-api": "1.0.2",
-    "@rpii/wdio-html-reporter": "6.2.5",
+    "@rpii/wdio-html-reporter": "6.3.0",
     "@wdio/cli": "6.7.4",
     "@wdio/dot-reporter": "6.7.0",
     "@wdio/jasmine-framework": "6.7.3",
