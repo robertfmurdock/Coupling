@@ -7,14 +7,14 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.795.0",
+    "aws-sdk": "2.796.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
     "cookie-parser": "^1.4.5",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
-    "express-graphql": "^0.11.0",
+    "express-graphql": "^0.12.0",
     "express-session": "^1.17.1",
     "express-statsd": "^0.3.0",
     "express-ws": "^4.0.0",
