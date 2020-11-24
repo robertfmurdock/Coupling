@@ -29,7 +29,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
-                implementation("com.benasher44:uuid:0.2.2")
+                implementation("com.benasher44:uuid:0.2.3")
                 implementation("io.github.microutils:kotlin-logging:2.0.3")
             }
         }

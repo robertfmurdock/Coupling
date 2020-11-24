@@ -21,7 +21,7 @@ kotlin {
                 api(project(":repository"))
                 api("com.zegreatrob.testmints:action:3.1.25")
                 api("com.zegreatrob.testmints:action-async:3.1.25")
-                implementation("com.benasher44:uuid:0.2.2")
+                implementation("com.benasher44:uuid:0.2.3")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
