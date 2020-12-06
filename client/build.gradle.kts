@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.loadPackageJson
 
 plugins {
     kotlin("js")
-    kotlin("plugin.serialization") version "1.4.10"
+    kotlin("plugin.serialization") version "1.4.20"
 }
 
 kotlin {
