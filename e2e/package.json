@@ -24,7 +24,7 @@
   "devDependencies": {
     "axios-cookiejar-support": "^1.0.1",
     "tough-cookie": "^4.0.0",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.2"
   },
   "scripts": {},
   "repository": {
