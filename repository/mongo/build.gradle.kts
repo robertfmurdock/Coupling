@@ -28,9 +28,9 @@ kotlin {
             dependencies {
                 api(project(":repository:validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:3.1.27")
-                implementation("com.zegreatrob.testmints:minassert:3.1.27")
-                implementation("com.zegreatrob.testmints:async:3.1.27")
+                implementation("com.zegreatrob.testmints:standard:3.1.28")
+                implementation("com.zegreatrob.testmints:minassert:3.1.28")
+                implementation("com.zegreatrob.testmints:async:3.1.28")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")

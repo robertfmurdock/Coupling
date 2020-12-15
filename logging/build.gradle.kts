@@ -22,7 +22,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
-                api("io.github.microutils:kotlin-logging:2.0.3")
+                api("io.github.microutils:kotlin-logging:2.0.4")
             }
         }
 
