@@ -45,7 +45,7 @@ kotlin {
 
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:2.0.4")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.12.0")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.12.1")
             }
         }
 
