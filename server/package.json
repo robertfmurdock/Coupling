@@ -21,7 +21,7 @@
     "fs-extra": "^9.0.1",
     "google-auth-library": "^6.1.4",
     "graphql": "^15.4.0",
-    "jasmine": "^3.6.3",
+    "jasmine": "^3.6.4",
     "jasmine-core": "^3.6.0",
     "jasmine-reporters": "^2.3.2",
     "method-override": "^3.0.0",
