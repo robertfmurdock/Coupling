@@ -15,7 +15,7 @@
     "@wdio/local-runner": "6.12.1",
     "chromedriver": "88.0.0",
     "fs-extra": "9.1.0",
-    "webpack": "5.18.0",
+    "webpack": "5.19.0",
     "webpack-node-externals": "2.5.2",
     "wdio-chromedriver-service": "6.0.4",
     "css-loader": "5.0.1",
