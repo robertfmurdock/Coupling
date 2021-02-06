@@ -13,7 +13,7 @@ import react.dom.div
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic
 
-val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> String>()
+val formatDistance = formatDistanceModule.unsafeCast<(Int?, Int) -> String>()
 
 private val styles = useStyles("stats/TribeStatistics")
 
@@ -22,24 +22,23 @@ data class TribeStatisticsProps(
     val pathSetter: (String) -> Unit
 ) : RProps
 
-val TribeStatistics =
-    reactFunction<TribeStatisticsProps> { props ->
-        val (tribe, players, _, allStats, heatmapData) = props.queryResults
-        val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
-        div(classes = styles.className) {
-            div {
-                tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
-                child(TeamStatistics, TeamStatisticsProps(
-                    spinsUntilFullRotation = spinsUntilFullRotation,
-                    activePlayerCount = players.size,
-                    medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
-                ))
+val TribeStatistics = reactFunction<TribeStatisticsProps> { props ->
+    val (tribe, players, _, allStats, heatmapData) = props.queryResults
+    val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
+    div(classes = styles.className) {
+        div {
+            tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
+            child(TeamStatistics, TeamStatisticsProps(
+                spinsUntilFullRotation = spinsUntilFullRotation,
+                activePlayerCount = players.size,
+                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
+            ))
+        }
+        div {
+            div(classes = styles["leftSection"]) {
+                child(PairReportTable, PairReportTableProps(tribe, pairReports))
             }
-            div {
-                div(classes = styles["leftSection"]) {
-                    child(PairReportTable, PairReportTableProps(tribe, pairReports))
-                }
-                playerHeatmap(PlayerHeatmapProps(tribe, players, heatmapData))
-            }
+            playerHeatmap(PlayerHeatmapProps(tribe, players, heatmapData))
         }
     }
+}

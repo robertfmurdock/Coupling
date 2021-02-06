@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
-    id("kotlinx-serialization") version "1.4.20"
+    id("kotlinx-serialization") version "1.4.30"
 }
 
 kotlin {

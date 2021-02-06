@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.loadPackageJson
 
 plugins {
     kotlin("js")
-    kotlin("plugin.serialization") version "1.4.20"
+    kotlin("plugin.serialization") version "1.4.30"
 }
 
 kotlin {
@@ -51,14 +51,14 @@ dependencies {
     packageJson.devDependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
-    testImplementation("com.zegreatrob.testmints:minenzyme:3.1.18")
+    testImplementation("com.zegreatrob.testmints:minenzyme:3.1.28")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
     testImplementation("com.zegreatrob.testmints:standard:3.1.18")
-    testImplementation("com.zegreatrob.testmints:async:3.1.20")
-    testImplementation("com.zegreatrob.testmints:minassert:3.1.20")
-    testImplementation("com.zegreatrob.testmints:minspy:3.1.20")
+    testImplementation("com.zegreatrob.testmints:async:3.1.28")
+    testImplementation("com.zegreatrob.testmints:minassert:3.1.28")
+    testImplementation("com.zegreatrob.testmints:minspy:3.1.28")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
