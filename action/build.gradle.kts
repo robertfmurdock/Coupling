@@ -20,14 +20,14 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:3.2.0")
-                implementation("com.zegreatrob.testmints:action-async:3.2.0")
+                implementation("com.zegreatrob.testmints:action:3.2.1")
+                implementation("com.zegreatrob.testmints:action-async:3.2.1")
                 implementation("com.benasher44:uuid:0.2.3")
                 implementation("com.soywiz.korlibs.klock:klock:1.12.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 implementation("io.github.microutils:kotlin-logging:2.0.4")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0-RC")
             }
         }
         getByName("commonTest") {
@@ -62,7 +62,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0-RC")
             }
         }
         val jsTest by getting {

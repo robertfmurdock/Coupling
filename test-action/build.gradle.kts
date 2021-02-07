@@ -20,16 +20,16 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:3.2.0")
-                implementation("com.zegreatrob.testmints:action-async:3.2.0")
-                implementation("com.zegreatrob.testmints:async:3.2.0")
-                implementation("com.zegreatrob.testmints:standard:3.2.0")
-                implementation("com.zegreatrob.testmints:minassert:3.2.0")
+                implementation("com.zegreatrob.testmints:action:3.2.1")
+                implementation("com.zegreatrob.testmints:action-async:3.2.1")
+                implementation("com.zegreatrob.testmints:async:3.2.1")
+                implementation("com.zegreatrob.testmints:standard:3.2.1")
+                implementation("com.zegreatrob.testmints:minassert:3.2.1")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0-RC")
             }
         }
 
@@ -40,8 +40,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha1")
 
-                implementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
 
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:2.0.4")
@@ -52,7 +52,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0-RC")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
