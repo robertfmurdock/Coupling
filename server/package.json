@@ -19,7 +19,7 @@
     "express-statsd": "^0.3.0",
     "express-ws": "^4.0.0",
     "fs-extra": "^9.1.0",
-    "google-auth-library": "^7.0.1",
+    "google-auth-library": "^7.0.2",
     "graphql": "^15.5.0",
     "jasmine": "^3.6.4",
     "jasmine-core": "^3.6.0",
