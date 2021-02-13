@@ -27,8 +27,8 @@ kotlin {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(project(":repository:validation"))
-                implementation("com.zegreatrob.testmints:standard:3.2.0")
-                implementation("com.zegreatrob.testmints:minassert:3.2.0")
+                implementation("com.zegreatrob.testmints:standard:3.2.2")
+                implementation("com.zegreatrob.testmints:minassert:3.2.2")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
@@ -61,7 +61,7 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async:3.2.0")
+                implementation("com.zegreatrob.testmints:async:3.2.2")
             }
         }
     }

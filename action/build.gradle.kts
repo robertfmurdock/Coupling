@@ -36,8 +36,8 @@ kotlin {
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:3.2.0")
-                implementation("com.zegreatrob.testmints:minassert:3.2.0")
+                implementation("com.zegreatrob.testmints:standard:3.2.2")
+                implementation("com.zegreatrob.testmints:minassert:3.2.2")
                 implementation(project(":test-logging"))
             }
         }

@@ -29,7 +29,7 @@ dependencies {
     testImplementation(project(":test-logging"))
     testImplementation(kotlin("test-js"))
     testImplementation("io.github.microutils:kotlin-logging:2.0.3")
-    testImplementation("com.zegreatrob.testmints:standard:3.2.0")
+    testImplementation("com.zegreatrob.testmints:standard:3.2.2")
     testImplementation("com.zegreatrob.testmints:minassert:3.2.2")
     testImplementation("com.zegreatrob.testmints:async:3.2.2")
     packageJson.dependencies().forEach {
