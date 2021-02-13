@@ -18,9 +18,9 @@ val packageJson = loadPackageJson()
 dependencies {
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.110-kotlin-1.4.0")
-    implementation("com.zegreatrob.testmints:wdio:3.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.144-kotlin-1.4.30")
+    implementation("com.zegreatrob.testmints:wdio:3.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
@@ -30,8 +30,8 @@ dependencies {
     testImplementation(kotlin("test-js"))
     testImplementation("io.github.microutils:kotlin-logging:2.0.3")
     testImplementation("com.zegreatrob.testmints:standard:3.2.0")
-    testImplementation("com.zegreatrob.testmints:minassert:3.2.0")
-    testImplementation("com.zegreatrob.testmints:async:3.2.0")
+    testImplementation("com.zegreatrob.testmints:minassert:3.2.2")
+    testImplementation("com.zegreatrob.testmints:async:3.2.2")
     packageJson.dependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
