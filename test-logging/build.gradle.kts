@@ -21,7 +21,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:report:3.2.2")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging:2.0.4")
-                implementation("com.soywiz.korlibs.klock:klock:1.12.0")
+                implementation("com.soywiz.korlibs.klock:klock:2.0.6")
             }
         }
 

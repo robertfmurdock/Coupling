@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:1.12.0")
+                api("com.soywiz.korlibs.klock:klock:2.0.6")
             }
         }
         val commonTest by getting {
