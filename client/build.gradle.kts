@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.loadPackageJson
 
 plugins {
     kotlin("js")
-    kotlin("plugin.serialization") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.31"
 }
 
 kotlin {
@@ -39,26 +39,26 @@ dependencies {
     implementation("com.benasher44:uuid:0.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.111-kotlin-1.4.10")
-    implementation("org.jetbrains:kotlin-css:1.0.0-pre.126-kotlin-1.4.10")
-    implementation("org.jetbrains:kotlin-styled:5.2.0-pre.117-kotlin-1.4.10")
-    implementation("org.jetbrains:kotlin-react:16.13.1-pre.111-kotlin-1.4.0")
-    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.111-kotlin-1.4.0")
-    implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.111-kotlin-1.4.0")
+    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.21")
+    implementation("org.jetbrains:kotlin-css:1.0.0-pre.148-kotlin-1.4.21")
+    implementation("org.jetbrains:kotlin-styled:5.2.1-pre.148-kotlin-1.4.21")
+    implementation("org.jetbrains:kotlin-react:17.0.1-pre.148-kotlin-1.4.21")
+    implementation("org.jetbrains:kotlin-react-dom:17.0.1-pre.148-kotlin-1.4.21")
+    implementation("org.jetbrains:kotlin-react-router-dom:5.2.0-pre.148-kotlin-1.4.21")
 
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
     packageJson.devDependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
-    testImplementation("com.zegreatrob.testmints:minenzyme:3.2.2")
+    testImplementation("com.zegreatrob.testmints:minenzyme:3.2.3")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    testImplementation("com.zegreatrob.testmints:standard:3.2.2")
-    testImplementation("com.zegreatrob.testmints:async:3.2.2")
-    testImplementation("com.zegreatrob.testmints:minassert:3.2.2")
-    testImplementation("com.zegreatrob.testmints:minspy:3.2.2")
+    testImplementation("com.zegreatrob.testmints:standard:3.2.3")
+    testImplementation("com.zegreatrob.testmints:async:3.2.3")
+    testImplementation("com.zegreatrob.testmints:minassert:3.2.3")
+    testImplementation("com.zegreatrob.testmints:minspy:3.2.3")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"

@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("kotlinx-serialization") version "1.4.30"
+    id("kotlinx-serialization") version "1.4.31"
 }
 
 kotlin {
