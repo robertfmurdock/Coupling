@@ -20,8 +20,8 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:3.2.3")
-                implementation("com.zegreatrob.testmints:action-async:3.2.3")
+                implementation("com.zegreatrob.testmints:action:3.2.4")
+                implementation("com.zegreatrob.testmints:action-async:3.2.4")
                 implementation("com.zegreatrob.testmints:async:3.2.3")
                 implementation("com.zegreatrob.testmints:standard:3.2.3")
                 implementation("com.zegreatrob.testmints:minassert:3.2.3")
