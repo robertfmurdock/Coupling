@@ -20,8 +20,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:3.2.29")
-                implementation("com.zegreatrob.testmints:action-async:3.2.29")
+                implementation("com.zegreatrob.testmints:action:3.3.0")
+                implementation("com.zegreatrob.testmints:action-async:3.3.0")
                 implementation("com.benasher44:uuid:0.2.3")
                 implementation("com.soywiz.korlibs.klock:klock:2.0.6")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -36,8 +36,8 @@ kotlin {
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:3.2.29")
-                implementation("com.zegreatrob.testmints:minassert:3.2.29")
+                implementation("com.zegreatrob.testmints:standard:3.3.0")
+                implementation("com.zegreatrob.testmints:minassert:3.3.0")
                 implementation(project(":test-logging"))
             }
         }
