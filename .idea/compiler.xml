@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="14" />
+    <bytecodeTargetLevel target="14">
+      <module name="Coupling.export.commonMain" target="1.6" />
+      <module name="Coupling.export.commonTest" target="1.6" />
+      <module name="Coupling.export.jvmMain" target="1.6" />
+      <module name="Coupling.export.jvmTest" target="1.6" />
+      <module name="Coupling.import.commonMain" target="1.6" />
+      <module name="Coupling.import.commonTest" target="1.6" />
+      <module name="Coupling.import.jvmMain" target="1.6" />
+      <module name="Coupling.import.jvmTest" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
 </project>
