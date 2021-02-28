@@ -9,8 +9,6 @@ import kotlin.js.Promise
 
 external val config: AwsConfig
 
-external class ResourceNotFoundException : Throwable
-
 external interface AwsConfig {
     fun update(data: Json)
 }

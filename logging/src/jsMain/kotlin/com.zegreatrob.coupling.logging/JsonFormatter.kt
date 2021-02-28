@@ -8,7 +8,7 @@ import mu.Marker
 
 class JsonFormatter : Formatter {
 
-    override fun formatMessage(level: KotlinLoggingLevel, loggerName: String, msg: () -> Any?): Any? {
+    override fun formatMessage(level: KotlinLoggingLevel, loggerName: String, msg: () -> Any?): Any {
         val (message, properties) = extractProperties(msg)
         return Json.encodeToString(
             Message.serializer(),
@@ -27,7 +27,7 @@ class JsonFormatter : Formatter {
         loggerName: String,
         t: Throwable?,
         msg: () -> Any?
-    ): Any? {
+    ): Any {
         val (message, properties) = extractProperties(msg)
         return Json.encodeToString(
             Message.serializer(),
@@ -47,7 +47,7 @@ class JsonFormatter : Formatter {
         loggerName: String,
         marker: Marker?,
         msg: () -> Any?
-    ): Any? {
+    ): Any {
         val (message, properties) = extractProperties(msg)
         return Json.encodeToString(
             Message.serializer(),
@@ -68,7 +68,7 @@ class JsonFormatter : Formatter {
         marker: Marker?,
         t: Throwable?,
         msg: () -> Any?
-    ): Any? {
+    ): Any {
         val (message, properties) = extractProperties(msg)
         return Json.encodeToString(
             Message.serializer(),

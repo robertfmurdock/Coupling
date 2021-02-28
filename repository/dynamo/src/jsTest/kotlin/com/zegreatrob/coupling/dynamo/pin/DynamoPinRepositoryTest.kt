@@ -65,10 +65,9 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         }
     }) exercise {
         records.forEach { repository.saveRawRecord(it) }
-    } verify {
-        with(repository.getPinRecords(tribeId)) {
-            records.forEach { assertContains(it) }
-        }
+        repository.getPinRecords(tribeId)
+    } verify { loadedRecords ->
+        records.forEach { loadedRecords.assertContains(it) }
     }
 }
 

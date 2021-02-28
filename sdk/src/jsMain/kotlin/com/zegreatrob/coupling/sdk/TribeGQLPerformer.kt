@@ -21,7 +21,7 @@ interface TribeGQLPerformer : AxiosSyntax {
         }.toMap()
     }
 
-    private fun getNodeAtPath(data: dynamic, component: TribeGQLComponent): Any? {
+    private fun getNodeAtPath(data: dynamic, component: TribeGQLComponent): Any {
         var node = data
         component.jsonPath.split("/").filterNot(String::isBlank).forEach { bit ->
             node = node.unsafeCast<Json?>()?.get(bit)

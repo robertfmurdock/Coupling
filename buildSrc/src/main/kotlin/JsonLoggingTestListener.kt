@@ -10,7 +10,7 @@ import org.gradle.api.tasks.testing.TestListener
 import org.gradle.api.tasks.testing.TestResult
 
 
-class JsonLoggingTestListener(val taskName: String) : TestListener {
+class JsonLoggingTestListener(private val taskName: String) : TestListener {
 
     companion object {
         val logger: Logger = LogManager.getLogger("test")

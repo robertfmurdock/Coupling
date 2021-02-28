@@ -113,7 +113,6 @@ class MongoTribeRepositoryTest :
                 "id" to "safety"
             )
         ).unsafeCast<Promise<Unit>>().await()
-        Unit
     } exercise {
         repository.getTribeRecord(expectedTribe.id)
     } verify { result ->
