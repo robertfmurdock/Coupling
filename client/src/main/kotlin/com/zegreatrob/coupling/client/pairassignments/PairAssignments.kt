@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.dom.*
+import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
@@ -19,15 +20,24 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
+import kotlinx.html.tabIndex
+import org.w3c.dom.DataTransfer
+import org.w3c.dom.Node
+import org.w3c.files.Blob
 import react.RBuilder
+import react.RMutableRef
 import react.RProps
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
+import react.useRef
 import styled.css
 import styled.styledDiv
+import kotlin.js.Json
+import kotlin.js.json
 
 interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher {
@@ -61,12 +71,22 @@ private val styles = useStyles("pairassignments/PairAssignments")
 
 val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
     val (tribe, players, pairAssignments, setPairs, controls, message, allowSave) = props
+
+    val pairSectionNode = useRef<Node?>(null)
+
     DndProvider {
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
             div {
                 tribeBrowser(tribe, controls.pathSetter)
-                currentPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls)
+                styledDiv {
+                    css { verticalAlign = VerticalAlign.top }
+                    currentPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
+                    styledDiv {
+                        css { float = Float.right; width = 0.px }
+                        copyToClipboardButton(pairSectionNode)
+                    }
+                }
             }
             controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), controls.pathSetter)
@@ -82,8 +102,12 @@ private fun RBuilder.currentPairSection(
     pairAssignments: PairAssignmentDocument?,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    pairSectionNode: RMutableRef<Node?>
 ) = styledDiv {
+    attrs {
+        ref = pairSectionNode
+    }
     css {
         display = Display.inlineBlock
         borderRadius = 20.px
@@ -123,13 +147,25 @@ private fun RBuilder.noPairsHeader() = styledDiv {
     +"No pair assignments yet!"
 }
 
-private fun RBuilder.controlPanel(tribe: Tribe) = div(classes = styles["controlPanel"]) {
-    div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
-    viewHistoryButton(tribe, styles["viewHistoryButton"])
-    pinListButton(tribe, styles["pinListButton"])
-    statisticsButton(tribe, styles["statisticsButton"])
-    viewRetireesButton(tribe, styles["retiredPlayersButton"])
+private fun RBuilder.controlPanel(tribe: Tribe) = div {
+    div(classes = styles["controlPanel"]) {
+        div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
+        viewHistoryButton(tribe, styles["viewHistoryButton"])
+        pinListButton(tribe, styles["pinListButton"])
+        statisticsButton(tribe, styles["statisticsButton"])
+        viewRetireesButton(tribe, styles["retiredPlayersButton"])
+    }
 }
+
+private fun RBuilder.copyToClipboardButton(ref: RMutableRef<Node?>) = ref.current?.let { node ->
+    couplingButton(large, black, styles["copyToClipboardButton"], onClick = {
+        domToImage.toBlob(node).then { window.navigator.clipboard.write(dataTransfer(it)) }
+    }, block = { attrs { tabIndex = "-1" } }) { i(classes = "fa fa-clipboard") {} }
+}
+
+private fun dataTransfer(it: Blob) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
+
+external class ClipboardItem(params: Json)
 
 private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) = child(
     PlayerRoster, PlayerRosterProps(
