@@ -48,10 +48,8 @@ fun RBuilder.spinAnimation(tribe: Tribe, rosteredPairAssignments: RosteredPairAs
 val SpinAnimationPanel = reactFunction<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
-
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
-
-    div(classes = styles.className) {
+    div {
         pairAssignmentsHeader(pairAssignments)
         assignedPairs(tribe, revealedPairs)
         playerSpotlight(shownPlayer)

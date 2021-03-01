@@ -19,15 +19,14 @@ fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, ch
     })
 )
 
-val FrameRunner =
-    reactFunction<FrameRunnerProps> { props ->
-        val (sequence, speed) = props
-        val (state, setState) = useState(sequence.first().first)
-        val scheduleStateFunc = scheduleStateFunc(setState, speed)
+val FrameRunner = reactFunction<FrameRunnerProps> { props ->
+    val (sequence, speed) = props
+    val (state, setState) = useState(sequence.first().first)
+    val scheduleStateFunc = scheduleStateFunc(setState, speed)
 
-        useEffect(emptyList()) { sequence.forEach(scheduleStateFunc) }
-        children(state, props)
-    }
+    useEffect(emptyList()) { sequence.forEach(scheduleStateFunc) }
+    children(state, props)
+}
 
 private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
     .join(pairTransformSecondFunc { it.applySpeed(speed) })
