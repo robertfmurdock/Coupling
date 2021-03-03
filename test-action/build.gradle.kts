@@ -20,15 +20,15 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:3.3.2")
-                implementation("com.zegreatrob.testmints:action-async:3.3.2")
-                implementation("com.zegreatrob.testmints:async:3.3.2")
-                implementation("com.zegreatrob.testmints:standard:3.3.2")
-                implementation("com.zegreatrob.testmints:minassert:3.3.2")
+                implementation("com.zegreatrob.testmints:action:3.3.3")
+                implementation("com.zegreatrob.testmints:action-async:3.3.3")
+                implementation("com.zegreatrob.testmints:async:3.3.3")
+                implementation("com.zegreatrob.testmints:standard:3.3.3")
+                implementation("com.zegreatrob.testmints:minassert:3.3.3")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0")
             }
         }

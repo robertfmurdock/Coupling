@@ -30,7 +30,7 @@ dependencies {
     implementation(project(":repository:dynamo"))
     implementation(project(":repository:memory"))
     implementation(project("server_action"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("com.soywiz.korlibs.klock:klock:2.0.6")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
     implementation("com.benasher44:uuid:0.2.3")
