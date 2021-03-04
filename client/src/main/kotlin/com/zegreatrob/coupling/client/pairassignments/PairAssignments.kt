@@ -26,7 +26,6 @@ import kotlinx.css.properties.boxShadow
 import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
-import org.w3c.files.Blob
 import react.RBuilder
 import react.RMutableRef
 import react.RProps
@@ -158,12 +157,33 @@ private fun RBuilder.controlPanel(tribe: Tribe) = div {
 }
 
 private fun RBuilder.copyToClipboardButton(ref: RMutableRef<Node?>) = ref.current?.let { node ->
-    couplingButton(large, black, styles["copyToClipboardButton"], onClick = {
-        domToImage.toBlob(node).then { window.navigator.clipboard.write(dataTransfer(it)) }
-    }, block = { attrs { tabIndex = "-1" } }) { i(classes = "fa fa-clipboard") {} }
+    if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
+        couplingButton(
+            large,
+            black,
+            styles["copyToClipboardButton"],
+            onClick = node.copyToClipboardOnClick(),
+            block = { attrs { tabIndex = "-1" } }) { i(classes = "fa fa-clipboard") {} }
+    }
 }
 
-private fun dataTransfer(it: Blob) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
+private fun Node.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari())
+    writeImageToClipboardAsPromise()
+else
+    collectImageThenWriteToClipboard()
+
+private fun Node.collectImageThenWriteToClipboard(): () -> Unit = {
+    domToImage.toBlob(this).then { window.navigator.clipboard.write(dataTransfer(it)) }
+}
+
+private fun Node.writeImageToClipboardAsPromise(): () -> Unit = {
+    window.navigator.clipboard.write(dataTransfer(domToImage.toBlob(this)))
+}
+
+private fun isReallyTrulySafari() = window.navigator.userAgent.indexOf("Safari") != -1 &&
+        window.navigator.userAgent.indexOf("Chrome") == -1
+
+private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
 
 external class ClipboardItem(params: Json)
 
