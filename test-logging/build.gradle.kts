@@ -17,17 +17,17 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard:3.3.3")
-                implementation("com.zegreatrob.testmints:report:3.3.3")
+                implementation("com.zegreatrob.testmints:standard:3.3.6")
+                implementation("com.zegreatrob.testmints:report:3.3.6")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging:2.0.4")
+                implementation("io.github.microutils:kotlin-logging:2.0.6")
                 implementation("com.soywiz.korlibs.klock:klock:2.0.6")
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging:2.0.4")
+                implementation("io.github.microutils:kotlin-logging:2.0.6")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.0-M1")

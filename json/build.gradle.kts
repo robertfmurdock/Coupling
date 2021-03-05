@@ -26,8 +26,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:3.3.0")
-                implementation("com.zegreatrob.testmints:minassert:3.3.0")
+                implementation("com.zegreatrob.testmints:standard:3.3.6")
+                implementation("com.zegreatrob.testmints:minassert:3.3.6")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
