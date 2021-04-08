@@ -22,7 +22,7 @@ kotlin {
                 api(kotlin("stdlib", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.0.6")
-                api("com.benasher44:uuid:0.2.3")
+                api("com.benasher44:uuid:0.2.4")
             }
         }
         val jsMain by getting {

@@ -20,7 +20,7 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                api("com.benasher44:uuid:0.2.3")
+                api("com.benasher44:uuid:0.2.4")
             }
         }
         val commonTest by getting {
