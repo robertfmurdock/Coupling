@@ -13,7 +13,7 @@ import react.dom.div
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic
 
-val formatDistance = formatDistanceModule.unsafeCast<(Int?, Int) -> String>()
+val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> String>()
 
 private val styles = useStyles("stats/TribeStatistics")
 

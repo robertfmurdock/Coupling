@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.0.6")
+                api("com.soywiz.korlibs.klock:klock:2.0.7")
             }
         }
         val commonTest by getting {
@@ -27,8 +27,8 @@ kotlin {
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-common", BuildConstants.kotlinVersion))
                 implementation(kotlin("test-annotations-common", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:3.3.8")
-                implementation("com.zegreatrob.testmints:minassert:3.3.8")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
             }
         }
 

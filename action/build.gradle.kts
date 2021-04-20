@@ -20,10 +20,10 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:3.3.8")
-                implementation("com.zegreatrob.testmints:action-async:3.3.8")
+                implementation("com.zegreatrob.testmints:action:3.3.11")
+                implementation("com.zegreatrob.testmints:action-async:3.3.11")
                 implementation("com.benasher44:uuid:0.2.4")
-                implementation("com.soywiz.korlibs.klock:klock:2.0.6")
+                implementation("com.soywiz.korlibs.klock:klock:2.0.7")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
@@ -36,8 +36,8 @@ kotlin {
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:3.3.6")
-                implementation("com.zegreatrob.testmints:minassert:3.3.6")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
                 implementation(project(":test-logging"))
             }
         }
@@ -45,7 +45,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.12.2")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
             }
         }
         val jvmTest by getting {

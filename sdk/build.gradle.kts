@@ -26,7 +26,7 @@ kotlin {
                 api(project(":repository"))
                 api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                api("com.soywiz.korlibs.klock:klock:2.0.6")
+                api("com.soywiz.korlibs.klock:klock:2.0.7")
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0")
             }
@@ -39,8 +39,8 @@ kotlin {
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:3.3.0")
-                implementation("com.zegreatrob.testmints:minassert:3.3.0")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
                 implementation("com.benasher44:uuid:0.2.1")
             }
         }
@@ -64,9 +64,9 @@ kotlin {
             dependencies {
                 implementation(project(":server"))
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:standard:3.3.0")
-                implementation("com.zegreatrob.testmints:minassert:3.3.0")
-                implementation("com.zegreatrob.testmints:async:3.3.0")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
+                implementation("com.zegreatrob.testmints:async:3.3.11")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -78,9 +78,9 @@ kotlin {
         val jsTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:standard:3.3.0")
-                implementation("com.zegreatrob.testmints:minassert:3.3.0")
-                implementation("com.zegreatrob.testmints:async:3.3.0")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
+                implementation("com.zegreatrob.testmints:async:3.3.11")
             }
         }
     }

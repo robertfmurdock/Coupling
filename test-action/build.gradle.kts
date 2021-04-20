@@ -20,11 +20,11 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:3.3.8")
-                implementation("com.zegreatrob.testmints:action-async:3.3.8")
-                implementation("com.zegreatrob.testmints:async:3.3.8")
-                implementation("com.zegreatrob.testmints:standard:3.3.8")
-                implementation("com.zegreatrob.testmints:minassert:3.3.8")
+                implementation("com.zegreatrob.testmints:action:3.3.11")
+                implementation("com.zegreatrob.testmints:action-async:3.3.11")
+                implementation("com.zegreatrob.testmints:async:3.3.11")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -45,7 +45,7 @@ kotlin {
 
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.12.2")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
             }
         }
 

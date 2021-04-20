@@ -20,14 +20,14 @@ kotlin {
                 api(project(":model"))
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.0.6")
+                api("com.soywiz.korlibs.klock:klock:2.0.7")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:3.3.6")
-                implementation("com.zegreatrob.testmints:minassert:3.3.6")
+                implementation("com.zegreatrob.testmints:standard:3.3.11")
+                implementation("com.zegreatrob.testmints:minassert:3.3.11")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
