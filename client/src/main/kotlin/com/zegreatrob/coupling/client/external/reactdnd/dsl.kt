@@ -3,12 +3,11 @@ package com.zegreatrob.coupling.client.external.reactdnd
 import kotlin.js.Json
 import kotlin.js.json
 
-fun <T> useDrag(itemType: String, itemId: Any, collect: (DragSourceMonitor) -> T): DragDropValueContent<T> {
-
+fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
     val results = useDragFunc(
         json(
-            "item" to json("type" to itemType, "id" to itemId),
-            "collect" to collect
+            "type" to itemType,
+            "item" to json("id" to itemId),
         )
     ).unsafeCast<Array<dynamic>>()
 

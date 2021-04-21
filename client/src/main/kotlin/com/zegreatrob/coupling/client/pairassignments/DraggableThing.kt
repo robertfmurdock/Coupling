@@ -24,7 +24,7 @@ private val styles = useStyles<SimpleStyle>("DraggableThing")
 val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
     val draggableRef = useRef<Node?>(null)
 
-    val (_, drag) = useDrag(itemType = itemType, itemId = itemId, collect = { })
+    val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId)
     val (isOver, drop) = useDrop(
         acceptItemType = itemType,
         drop = { item -> dropCallback(item["id"].unsafeCast<String>()) },
