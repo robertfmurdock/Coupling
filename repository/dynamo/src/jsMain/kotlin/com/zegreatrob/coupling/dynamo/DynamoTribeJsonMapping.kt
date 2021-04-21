@@ -13,12 +13,12 @@ interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
     fun Record<Tribe>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 
     fun Json.toTribe() = Tribe(
-        id = TribeId(getDynamoStringValue("id")!!),
+        id = TribeId(getDynamoStringValue("id")),
         name = getDynamoStringValue("name"),
         email = getDynamoStringValue("email"),
         pairingRule = getDynamoNumberValue("pairingRule")?.toInt().let { PairingRule.fromValue(it) },
-        defaultBadgeName = getDynamoStringValue("defaultBadgeName") ?: defaultTribe.defaultBadgeName,
-        alternateBadgeName = getDynamoStringValue("alternateBadgeName") ?: defaultTribe.alternateBadgeName,
+        defaultBadgeName = getDynamoStringValue("defaultBadgeName"),
+        alternateBadgeName = getDynamoStringValue("alternateBadgeName"),
         badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: defaultTribe.badgesEnabled,
         callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: defaultTribe.callSignsEnabled,
         animationEnabled = getDynamoBoolValue("animationEnabled") ?: defaultTribe.animationEnabled,

@@ -37,10 +37,8 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
 
     val updatedPlayer = values.toPlayer()
     val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
-    val onRemove = player.id?.let { playerId ->
-        dispatchFunc({ DeletePlayerCommand(tribe.id, playerId) }, { pathSetter.currentPairs(tribe.id) })
+    val onRemove = dispatchFunc({ DeletePlayerCommand(tribe.id, player.id) }, { pathSetter.currentPairs(tribe.id) })
             .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
-    }
 
     span(classes = styles.className) {
         configHeader(tribe, pathSetter) { +"Player Configuration" }

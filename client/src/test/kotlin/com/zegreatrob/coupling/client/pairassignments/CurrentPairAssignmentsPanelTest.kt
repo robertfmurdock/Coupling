@@ -235,7 +235,7 @@ class CurrentPairAssignmentsPanelTest {
             .first { props -> props.pair.players.map { it.player }.contains(target) }
         val pair = targetPairProps.pair
         val swapCallback = targetPairProps.swapPlayersFunc
-        swapCallback.invoke(pair.players.first { it.player == target }, id!!)
+        swapCallback.invoke(pair.players.first { it.player == target }, id)
     }
 
     private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<RClass<PairAssignmentsProps>>) {

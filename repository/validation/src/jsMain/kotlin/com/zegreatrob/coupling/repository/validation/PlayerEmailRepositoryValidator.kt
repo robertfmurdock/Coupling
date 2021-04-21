@@ -49,7 +49,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             val player = stubPlayer().copy(email = email)
         }.bind()) {
             repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, player.id!!)
+            repository.deletePlayer(tribeId, player.id)
         } exercise {
             repository.getPlayerIdsByEmail(email)
         } verify { result ->

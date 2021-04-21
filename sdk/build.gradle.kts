@@ -41,7 +41,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("com.zegreatrob.testmints:standard:3.3.11")
                 implementation("com.zegreatrob.testmints:minassert:3.3.11")
-                implementation("com.benasher44:uuid:0.2.1")
+                implementation("com.benasher44:uuid:0.2.4")
             }
         }
 

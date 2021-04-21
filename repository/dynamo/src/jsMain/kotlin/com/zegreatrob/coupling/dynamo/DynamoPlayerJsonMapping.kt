@@ -31,11 +31,11 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
 
     fun Json.toPlayer() = Player(
         id = getDynamoStringValue("id"),
-        name = getDynamoStringValue("name") ?: defaultPlayer.name,
-        email = getDynamoStringValue("email") ?: defaultPlayer.email,
+        name = getDynamoStringValue("name"),
+        email = getDynamoStringValue("email"),
         badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
-        callSignAdjective = getDynamoStringValue("callSignAdjective") ?: defaultPlayer.callSignAdjective,
-        callSignNoun = getDynamoStringValue("callSignNoun") ?: defaultPlayer.callSignNoun,
+        callSignAdjective = getDynamoStringValue("callSignAdjective"),
+        callSignNoun = getDynamoStringValue("callSignNoun"),
         imageURL = getDynamoStringValue("imageURL")
     )
 }

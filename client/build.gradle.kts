@@ -36,7 +36,7 @@ dependencies {
     implementation("com.zegreatrob.testmints:action:3.3.11")
     implementation("com.zegreatrob.testmints:action-async:3.3.11")
     implementation("com.soywiz.korlibs.klock:klock:2.0.7")
-    implementation("com.benasher44:uuid:0.2.2")
+    implementation("com.benasher44:uuid:0.2.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.21")

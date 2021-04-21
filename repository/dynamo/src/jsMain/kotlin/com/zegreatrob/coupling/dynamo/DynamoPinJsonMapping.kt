@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.pin.*
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.TribeIdPin
+import com.zegreatrob.coupling.model.pin.pin
+import com.zegreatrob.coupling.model.pin.tribeId
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -24,8 +27,8 @@ interface DynamoPinJsonMapping : TribeIdDynamoRecordJsonMapping {
 
     fun Json.toPin() = Pin(
         id = getDynamoStringValue("id"),
-        name = getDynamoStringValue("name") ?: defaultPin.name,
-        icon = getDynamoStringValue("icon") ?: defaultPin.icon
+        name = getDynamoStringValue("name"),
+        icon = getDynamoStringValue("icon")
     )
 
 }

@@ -49,7 +49,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPlayer))
         clock.currentTime = updatedSaveTime2
-        repository.deletePlayer(tribeId, player.id!!)
+        repository.deletePlayer(tribeId, player.id)
     }) exercise {
         repository.getPlayerRecords(tribeId)
     } verify { result ->

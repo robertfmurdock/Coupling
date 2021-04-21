@@ -15,7 +15,7 @@ class RetiredPlayerPageE2ETest {
     companion object {
         private suspend fun delete(players: List<Player>, sdk: Sdk, tribe: Tribe) {
             coroutineScope {
-                players.forEach { launch { sdk.deletePlayer(tribe.id, it.id!!) } }
+                players.forEach { launch { sdk.deletePlayer(tribe.id, it.id) } }
             }
         }
     }

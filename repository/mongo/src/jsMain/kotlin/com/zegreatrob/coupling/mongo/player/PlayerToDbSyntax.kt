@@ -30,7 +30,7 @@ interface PlayerToDbSyntax : JsonRecordSyntax {
         )
 
     fun Json.fromDbToPlayer() = Player(
-        id = stringValue("id") ?: stringValue("_id"),
+        id = stringValue("id") ?: stringValue("_id") ?: "",
         badge = this["badge"]?.unsafeCast<Int>() ?: defaultPlayer.badge,
         name = stringValue("name") ?: defaultPlayer.name,
         email = stringValue("email") ?: defaultPlayer.email,

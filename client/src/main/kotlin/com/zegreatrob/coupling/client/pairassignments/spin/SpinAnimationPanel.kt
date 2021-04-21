@@ -77,7 +77,7 @@ private fun RBuilder.placeholderPlayerCard() = styledDiv {
     flippedPlayer(placeholderPlayer)
 }
 
-private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id ?: "") {
+private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flipped(player.id) {
     styledDiv {
         attrs { this.key = key ?: "" }
         css { display = Display.inlineBlock }

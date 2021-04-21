@@ -101,7 +101,7 @@ class PlayerConfigEditorTest {
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePlayerCommand>()
             .assertIsEqualTo(
-                listOf(DeletePlayerCommand(tribe.id, player.id!!))
+                listOf(DeletePlayerCommand(tribe.id, player.id))
             )
         pathSetterSpy.spyReceivedValues.contains(
             "/${tribe.id.value}/pairAssignments/current/"

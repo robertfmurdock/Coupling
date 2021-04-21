@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
@@ -38,8 +37,8 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
     )
 
     fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: "${uuid4()}"),
-        date = getDynamoStringValue("date")?.toLong()?.let { DateTime(it) } ?: throw Exception("Date missing."),
+        id = PairAssignmentDocumentId(getDynamoStringValue("id")),
+        date = DateTime(getDynamoStringValue("date").toLong()),
         pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList()
     )
 

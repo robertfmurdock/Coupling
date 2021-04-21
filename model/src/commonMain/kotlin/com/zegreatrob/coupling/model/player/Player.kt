@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.model.player
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.tribe.TribeElement
 
 data class Player(
-    val id: String? = null,
+    val id: String = "${uuid4()}",
     val badge: Int = Badge.Default.value,
     val name: String = "",
     val email: String = "",

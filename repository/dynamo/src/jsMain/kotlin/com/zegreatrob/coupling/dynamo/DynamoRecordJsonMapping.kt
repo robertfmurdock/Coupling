@@ -22,7 +22,7 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserEmailSyntax, Clock
 
     fun <T> Json.toRecord(data: T) = Record(
         data,
-        getDynamoStringValue("modifyingUserEmail")!!,
+        getDynamoStringValue("modifyingUserEmail"),
         getDynamoBoolValue("isDeleted") ?: false,
         getDynamoDateTimeValue("timestamp")?.utc!!
     )

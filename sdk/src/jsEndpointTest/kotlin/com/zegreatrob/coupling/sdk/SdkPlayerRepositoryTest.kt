@@ -64,7 +64,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
     }.bind()) {
     } exercise {
         repository.save(tribeId.with(player))
-        repository.deletePlayer(tribeId, player.id!!)
+        repository.deletePlayer(tribeId, player.id)
         repository.getDeleted(tribeId)
     } verify { result ->
         result.size.assertIsEqualTo(1)

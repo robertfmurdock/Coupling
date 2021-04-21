@@ -54,7 +54,7 @@ interface MongoPlayerRepository : PlayerRepository,
             .map { it.toPlayerRecord() }
             .filter { it.data.player.email == email && !it.isDeleted }
             .map { it.data }
-            .map { it.id.with(it.player.id!!) }
+            .map { it.id.with(it.player.id) }
 
     private suspend fun getLatestRecordsRelatedToAsync(query: Json, collection: dynamic) =
         rawFindBy(query, collection).await()

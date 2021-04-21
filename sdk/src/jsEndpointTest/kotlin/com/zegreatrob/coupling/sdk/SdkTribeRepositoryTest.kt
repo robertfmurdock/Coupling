@@ -61,7 +61,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.save(tribe)
         sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.deletePlayer(tribe.id, playerMatchingSdkUser.id!!)
+        sdkForOtherUser.deletePlayer(tribe.id, playerMatchingSdkUser.id)
     } exercise {
         sdk.getTribes()
     } verify { result ->

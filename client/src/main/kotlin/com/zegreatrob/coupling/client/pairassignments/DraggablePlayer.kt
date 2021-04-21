@@ -26,7 +26,7 @@ const val playerDragItemType = "PLAYER"
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
 val DraggablePlayer = reactFunction<DraggablePlayerProps> { (pinnedPlayer, tribe, zoomOnHover, tilt, onPlayerDrop) ->
-    draggableThing(playerDragItemType, pinnedPlayer.player.id!!, onPlayerDrop) { isOver: Boolean ->
+    draggableThing(playerDragItemType, pinnedPlayer.player.id, onPlayerDrop) { isOver: Boolean ->
         playerCard(
             PlayerCardProps(
                 tribeId = tribe.id,

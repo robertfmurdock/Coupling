@@ -18,6 +18,7 @@ val packageJson = loadPackageJson()
 dependencies {
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
+    implementation("com.benasher44:uuid:0.2.4")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.30")
     implementation("com.zegreatrob.testmints:wdio:3.3.11")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")

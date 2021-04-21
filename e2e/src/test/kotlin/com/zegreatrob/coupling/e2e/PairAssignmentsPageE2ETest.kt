@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e
 
+import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairCallSigns
 import com.zegreatrob.coupling.e2e.AssignedPair.assignedPairElements
@@ -155,7 +156,7 @@ class PairAssignmentsPageE2ETest {
             }
             private val pairAssignmentDocument by lazy {
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId(""),
+                    id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(year = 2015, month = 5, day = 30),
                     pairs = listOf(
                         pairOf(players[0], players[2]).withPins(emptyList()),

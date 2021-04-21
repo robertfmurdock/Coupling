@@ -24,7 +24,7 @@ fun List<Record<TribeIdPlayer>>.toJsonArray() = map { it.toJson().add(it.data.pl
 
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
-    id = stringValue("_id"),
+    id = stringValue("_id") ?: "",
     badge = this["badge"]?.toIntFromStringOrInt() ?: defaultPlayer.badge,
     name = stringValue("name") ?: defaultPlayer.name,
     email = stringValue("email") ?: defaultPlayer.email,

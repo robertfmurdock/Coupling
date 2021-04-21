@@ -68,7 +68,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
         val player = stubPlayer()
     }) exercise {
         compoundRepo.save(tribeId.with(player))
-        compoundRepo.deletePlayer(tribeId, player.id!!)
+        compoundRepo.deletePlayer(tribeId, player.id)
     } verify {
         repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
             .assertIsEqualTo(null)

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
@@ -111,7 +110,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     )
 
     private fun TribeIdPlayer.copyWithIdCorrection() = copy(element = with(element) {
-        copy(id = id ?: "${uuid4()}")
+        copy(id = id)
     })
 
     suspend fun saveRawRecord(record: TribeRecord<Player>) = performPutItem(record.asDynamoJson())
@@ -128,7 +127,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
             val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
                 performQuery(emailQueryParams(email))
                     .itemsNode()
-                    .mapNotNull { it.getDynamoStringValue("id") }
+                    .map { it.getDynamoStringValue("id") }
             }
 
             logAsync("recordsWithIds") {
@@ -139,8 +138,8 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                     .map { it.value.last() }
                     .filter { it["email"] == email && it["isDeleted"] != true }
                     .map {
-                        TribeId(it.getDynamoStringValue("tribeId")!!)
-                            .with(it.getDynamoStringValue("id")!!)
+                        TribeId(it.getDynamoStringValue("tribeId"))
+                            .with(it.getDynamoStringValue("id"))
                     }
             }
         }

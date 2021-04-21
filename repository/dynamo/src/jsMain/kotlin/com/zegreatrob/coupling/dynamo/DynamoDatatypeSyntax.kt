@@ -18,7 +18,7 @@ interface DynamoDatatypeSyntax {
     fun Json.getDynamoDateTimeValue(property: String) = this[property].unsafeCast<String?>()
         ?.let(dateFormat::parse)
 
-    fun Json.getDynamoStringValue(property: String) = this[property].unsafeCast<String?>()
+    fun Json.getDynamoStringValue(property: String) = this[property].unsafeCast<String>()
 
     fun Json.getDynamoNumberValue(property: String) = this[property].unsafeCast<Number?>()
 

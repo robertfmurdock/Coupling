@@ -19,6 +19,7 @@ kotlin {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.0.7")
+                implementation("com.benasher44:uuid:0.2.4")
             }
         }
         val commonTest by getting {

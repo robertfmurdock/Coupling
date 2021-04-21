@@ -70,7 +70,7 @@ class MongoPlayerRepositoryTest :
         repository.save(tribeId.with(player))
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPlayer))
-        repository.deletePlayer(tribeId, player.id!!)
+        repository.deletePlayer(tribeId, player.id)
     } exercise {
         repository.getPlayerRecords(tribeId)
     } verify { result ->

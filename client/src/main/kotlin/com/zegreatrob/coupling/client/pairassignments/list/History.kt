@@ -91,7 +91,7 @@ private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pair
 }
 
 private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span(classes = styles["player"]) {
-    attrs { key = "${pinnedPlayer.player.id}" }
+    attrs { key = pinnedPlayer.player.id }
     div(classes = styles["playerHeader"]) {
         +pinnedPlayer.player.name
     }

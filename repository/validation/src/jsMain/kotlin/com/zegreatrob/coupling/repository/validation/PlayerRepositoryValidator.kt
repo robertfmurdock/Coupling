@@ -31,7 +31,6 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {
         val player = Player(
-            id = null,
             callSignAdjective = "1",
             callSignNoun = "2",
             name = "",
@@ -45,7 +44,6 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     } verify { result ->
         result.map { it.data.player }
             .also { it.assertHasIds() }
-            .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(player))
     }
 
@@ -88,7 +86,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }.bind()) {
         repository.save(tribeId.with(player))
     } exercise {
-        repository.deletePlayer(tribeId, player.id!!)
+        repository.deletePlayer(tribeId, player.id)
         repository.getPlayers(tribeId)
     } verify { result ->
         result.map { it.data.player }
@@ -101,7 +99,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
         val player = stubPlayer()
     }.bind()) {
         repository.save(tribeId.with(player))
-        repository.deletePlayer(tribeId, player.id!!)
+        repository.deletePlayer(tribeId, player.id)
     } exercise {
         repository.getDeleted(tribeId)
     } verify { result ->
@@ -112,7 +110,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     @Test
     fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup(object : TribeContextMint<R>() {
         val player = stubPlayer()
-        val playerId = player.id!!
+        val playerId = player.id
     }.bind()) {
         repository.save(tribeId.with(player))
         repository.deletePlayer(tribeId, playerId)
@@ -161,7 +159,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }.bind()) {
     } exercise {
         repository.save(tribeId.with(player))
-        repository.deletePlayer(tribeId, player.id!!)
+        repository.deletePlayer(tribeId, player.id)
         repository.getDeleted(tribeId)
     } verify { result ->
         result.size.assertIsEqualTo(1)
