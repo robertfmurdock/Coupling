@@ -26,7 +26,16 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
 
     private fun ComposeStatisticsAction.pairReports() = players.allPairCombinations()
         .map { PairReport(it, calculateTimeSinceLastPartnership(it, history)) }
-        .sortedWith(PairReportComparator)
+        .sortedWith { a, b -> compare(a.timeSinceLastPair, b.timeSinceLastPair) }
+
+    fun compare(a: TimeResult, b: TimeResult) = when (a) {
+        b -> 0
+        is NeverPaired -> -1
+        is TimeResultValue -> when (b) {
+            is NeverPaired -> 1
+            is TimeResultValue -> b.time.compareTo(a.time)
+        }
+    }
 
     private fun List<Player>.allPairCombinations() = mapIndexed { index, player ->
         slice(index + 1..lastIndex).toPairsWith(player)
@@ -55,25 +64,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
 
     private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date }
 
-}
 
-object PairReportComparator : Comparator<PairReport> {
-
-    override fun compare(a: PairReport, b: PairReport) =
-        a.timeSinceLastPair.compareTo(b.timeSinceLastPair)
-
-    private fun TimeResult.compareTo(other: TimeResult) = TimeResultComparator.compare(this, other)
-}
-
-object TimeResultComparator : Comparator<TimeResult> {
-    override fun compare(a: TimeResult, b: TimeResult) = when (a) {
-        b -> 0
-        is NeverPaired -> -1
-        is TimeResultValue -> when (b) {
-            is NeverPaired -> 1
-            is TimeResultValue -> b.time.compareTo(a.time)
-        }
-    }
 }
 
 data class StatisticsReport(
