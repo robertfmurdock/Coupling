@@ -19,28 +19,22 @@ data class ComposeStatisticsAction(
 interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
 
     fun perform(action: ComposeStatisticsAction) = StatisticsReport(
-        spinsUntilFullRotation = action.calculateFullRotation(),
+        spinsUntilFullRotation = action.players.calculateFullRotation(),
         pairReports = action.pairReports(),
         medianSpinDuration = action.history.medianSpinDuration()
     )
 
-    private fun ComposeStatisticsAction.pairReports() = allPairCombinations()
-        .map {
-            PairReport(it, calculateTimeSinceLastPartnership(it, history))
-        }
+    private fun ComposeStatisticsAction.pairReports() = players.allPairCombinations()
+        .map { PairReport(it, calculateTimeSinceLastPartnership(it, history)) }
         .sortedWith(PairReportComparator)
 
+    private fun List<Player>.allPairCombinations() = mapIndexed { index, player ->
+        slice(index + 1..lastIndex).toPairsWith(player)
+    }.flatten()
 
-    private fun ComposeStatisticsAction.allPairCombinations() =
-        players.mapIndexed { index, player -> players.sliceFrom(index + 1).toPairsWith(player) }
-            .flatten()
+    private fun List<Player>.toPairsWith(player: Player) = map { otherPlayer -> pairOf(player, otherPlayer) }
 
-    private fun List<Player>.sliceFrom(startIndex: Int) = slice(startIndex..lastIndex)
-
-    private fun List<Player>.toPairsWith(player: Player) =
-        map { otherPlayer -> CouplingPair.Double(player, otherPlayer) }
-
-    private fun ComposeStatisticsAction.calculateFullRotation() = players.size.ifEvenSubtractOne()
+    private fun List<Player>.calculateFullRotation() = size.ifEvenSubtractOne()
 
     private fun Int.ifEvenSubtractOne() = if (this % 2 == 0) {
         this - 1
@@ -53,15 +47,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
         .sorted()
         .halfwayValue()
 
-    private fun List<TimeSpan>.halfwayValue() = safeGet(indexOfMedian())
-
-    fun List<TimeSpan>.safeGet(indexOfMedian: Int) = indexOfMedian
-        .let {
-            when {
-                it < size -> this[it]
-                else -> null
-            }
-        }
+    private fun List<TimeSpan>.halfwayValue() = getOrNull(indexOfMedian())
 
     private fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()
 
