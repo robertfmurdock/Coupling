@@ -3,12 +3,9 @@ package com.zegreatrob.coupling.model.pairassignmentdocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 
+fun pairOf(player1: Player) = CouplingPair.Single(player1)
 
-fun pairOf(player1: Player) =
-    CouplingPair.Single(player1)
-
-fun pairOf(player1: Player, player2: Player) =
-    CouplingPair.Double(player1, player2)
+fun pairOf(player1: Player, player2: Player) = CouplingPair.Double(player1, player2)
 
 sealed class CouplingPair {
 
@@ -38,11 +35,8 @@ data class PinnedPlayer(val player: Player, val pins: List<Pin>)
 data class PinnedCouplingPair(val players: List<PinnedPlayer>, val pins: List<Pin> = emptyList()) {
 
     fun toPair() = when (this.players.size) {
-        2 -> CouplingPair.Double(
-            players[0].player,
-            players[1].player
-        )
-        1 -> CouplingPair.Single(players[0].player)
+        2 -> pairOf(players[0].player, players[1].player)
+        1 -> pairOf(players[0].player)
         else -> CouplingPair.Empty
     }
 }

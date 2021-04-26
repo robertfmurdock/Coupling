@@ -25,8 +25,7 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
         calculateTimeSinceLastPartnership(pair(availablePartner), history)
     }
 
-    private fun CreatePairCandidateReportAction.pair(availablePartner: Player) =
-        CouplingPair.Double(player, availablePartner)
+    private fun CreatePairCandidateReportAction.pair(availablePartner: Player) = pairOf(player, availablePartner)
 
     private fun PairTimeMap.candidateReport() = neverPairedReport() ?: longestTimeReport()
 

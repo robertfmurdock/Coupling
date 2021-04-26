@@ -28,7 +28,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
         .map { PairReport(it, calculateTimeSinceLastPartnership(it, history)) }
         .sortedWith { a, b -> compare(a.timeSinceLastPair, b.timeSinceLastPair) }
 
-    fun compare(a: TimeResult, b: TimeResult) = when (a) {
+    private fun compare(a: TimeResult, b: TimeResult) = when (a) {
         b -> 0
         is NeverPaired -> -1
         is TimeResultValue -> when (b) {
@@ -63,7 +63,6 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     private fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
 
     private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date }
-
 
 }
 

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
@@ -61,13 +62,12 @@ interface FindNewPairsActionDispatcher {
     )
 
     private fun PairCandidateReport.spinForPartner() = if (partners.isEmpty()) {
-        CouplingPair.Single(player)
+        pairOf(player)
     } else {
-        partners.spin()
-            .let { partner -> CouplingPair.Double(player, partner) }
+        pairOf(player, partners.nextPlayer())
     }
 
-    private fun List<Player>.spin() = with(wheel) { toTypedArray().spin() }
+    private fun List<Player>.nextPlayer() = with(wheel) { toTypedArray().spin() }
 
 
 }

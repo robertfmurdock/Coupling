@@ -13,8 +13,8 @@ class CouplingPairTest {
     fun pairsWithSwappedPositionShouldBeEquivalent() = setup(object {
         private val player1 = Player(id = "1")
         private val player2 = Player(id = "2")
-        val pair1 = CouplingPair.Double(player1, player2)
-        val pair2 = CouplingPair.Double(player2, player1)
+        val pair1 = pairOf(player1, player2)
+        val pair2 = pairOf(player2, player1)
     }) exercise {
         equivalent(pair1, pair2)
     } verify { result ->
@@ -26,8 +26,8 @@ class CouplingPairTest {
         private val player1 = Player(id = "1")
         private val player2 = Player(id = "2")
         private val player3 = Player(id = "3")
-        val pair1 = CouplingPair.Double(player1, player2)
-        val pair2 = CouplingPair.Double(player1, player3)
+        val pair1 = pairOf(player1, player2)
+        val pair2 = pairOf(player1, player3)
     }) exercise {
         equivalent(pair1, pair2)
     } verify { result ->

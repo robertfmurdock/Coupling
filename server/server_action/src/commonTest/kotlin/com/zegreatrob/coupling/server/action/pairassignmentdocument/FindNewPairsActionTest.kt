@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -40,7 +39,7 @@ class FindNewPairsActionTest {
     } exercise {
         perform(FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime)))
     } verify { result ->
-        result.assertIsEqualTo(listOf(CouplingPair.Double(ted, bill)))
+        result.assertIsEqualTo(listOf(pairOf(ted, bill)))
         execute.spyReceivedValues.getOrNull(0)
             .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
         wheel.spyReceivedValues.assertContains(listOf(bill))

@@ -57,8 +57,8 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime.now(),
                 pairs = listOf<CouplingPair>(
-                    CouplingPair.Double(players[0], players[1]),
-                    CouplingPair.Double(players[2], players[3])
+                    pairOf(players[0], players[1]),
+                    pairOf(players[2], players[3])
                 ).withNoPins()
             )
         )

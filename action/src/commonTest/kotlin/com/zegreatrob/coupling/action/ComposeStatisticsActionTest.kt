@@ -131,7 +131,7 @@ class ComposeStatisticsActionTest {
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
                     listOf(
-                        PairReport(CouplingPair.Double(players[0], players[1]), NeverPaired)
+                        PairReport(pairOf(players[0], players[1]), NeverPaired)
                     )
                 )
             }
@@ -146,17 +146,17 @@ class ComposeStatisticsActionTest {
                 pairReports.map { it.pair }
                     .assertMatch(
                         listOf(
-                            CouplingPair.Double(player1, player2),
-                            CouplingPair.Double(player1, player3),
-                            CouplingPair.Double(player1, player4),
-                            CouplingPair.Double(player1, player5),
+                            pairOf(player1, player2),
+                            pairOf(player1, player3),
+                            pairOf(player1, player4),
+                            pairOf(player1, player5),
 
-                            CouplingPair.Double(player2, player3),
-                            CouplingPair.Double(player2, player4),
-                            CouplingPair.Double(player2, player5),
-                            CouplingPair.Double(player3, player4),
-                            CouplingPair.Double(player3, player5),
-                            CouplingPair.Double(player4, player5)
+                            pairOf(player2, player3),
+                            pairOf(player2, player4),
+                            pairOf(player2, player5),
+                            pairOf(player3, player4),
+                            pairOf(player3, player5),
+                            pairOf(player4, player5)
                         )
                     )
             }
@@ -232,12 +232,12 @@ class ComposeStatisticsActionTest {
             pairReports.map { it.pair }
                 .assertMatch(
                     listOf(
-                        CouplingPair.Double(player1, player4),
-                        CouplingPair.Double(player2, player3),
-                        CouplingPair.Double(player1, player2),
-                        CouplingPair.Double(player3, player4),
-                        CouplingPair.Double(player1, player3),
-                        CouplingPair.Double(player2, player4)
+                        pairOf(player1, player4),
+                        pairOf(player2, player3),
+                        pairOf(player1, player2),
+                        pairOf(player3, player4),
+                        pairOf(player1, player3),
+                        pairOf(player2, player4)
                     )
                 )
         }
