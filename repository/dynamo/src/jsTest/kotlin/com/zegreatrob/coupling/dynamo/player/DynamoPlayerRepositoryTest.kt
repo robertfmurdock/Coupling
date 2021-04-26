@@ -80,7 +80,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun willIgnorePlayerRecordsWithoutId() = asyncSetup(buildRepository { context ->
+    fun getPlayerRecordsWillIgnorePlayerRecordsWithoutId() = asyncSetup(buildRepository { context ->
         object : Context by context, DynamoRecordJsonMapping {
             val tribeId = stubTribeId()
             override val userId: String = "test user"
@@ -98,6 +98,29 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         )
     } exercise {
         repository.getPlayerRecords(tribeId)
+    } verify { result ->
+        result.assertIsEqualTo(emptyList())
+    }
+
+    @Test
+    fun getPlayersWillIgnorePlayerRecordsWithout() = asyncSetup(buildRepository { context ->
+        object : Context by context, DynamoRecordJsonMapping {
+            val tribeId = stubTribeId()
+            override val userId: String = "test user"
+        }
+    }) {
+        DynamoPlayerRepository.performPutItem(
+            recordJson(DateTime.now())
+                .add(
+                    json(
+                        "tribeId" to tribeId.value,
+                        "timestamp+id" to "20210426135844.172+",
+                        "name" to "Dead player"
+                    )
+                )
+        )
+    } exercise {
+        repository.getPlayers(tribeId)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }

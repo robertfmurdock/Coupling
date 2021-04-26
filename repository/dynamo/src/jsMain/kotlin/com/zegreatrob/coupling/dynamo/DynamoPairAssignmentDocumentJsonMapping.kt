@@ -37,22 +37,24 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
     )
 
     fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        id = PairAssignmentDocumentId(getDynamoStringValue("id")?:""),
+        id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: ""),
         date = getDynamoStringValue("date")?.toLong()?.let { DateTime(it) } ?: DateTime.EPOCH,
         pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList()
     )
 
     private fun toPinnedCouplingPair(pair: Json) = PinnedCouplingPair(
         players = pair.getDynamoListValue("players")
-            ?.map { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() } ?: emptyList(),
+            ?.mapNotNull { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() } ?: emptyList(),
         pins = pair.getDynamoListValue("pins")
             ?.map { pinJson -> pinJson.toPin() } ?: emptyList()
     )
 
-    private fun Json.toPinnedPlayer() = PinnedPlayer(
-        player = this["player"].unsafeCast<Json>().toPlayer(),
-        pins = emptyList()
-    )
+    private fun Json.toPinnedPlayer() = this["player"].unsafeCast<Json>().toPlayer()?.let {
+        PinnedPlayer(
+            player = it,
+            pins = emptyList()
+        )
+    }
 
 
 }

@@ -11,7 +11,7 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
         id: String,
         tribeId: TribeId? = null,
         now: DateTime,
-        toRecord: Json.() -> Record<T>,
+        toRecord: Json.() -> Record<T>?,
         recordToJson: Record<T>.() -> Json
     ) = logAsync("deleteItem") {
         try {
@@ -20,10 +20,10 @@ interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoT
                 false
             } else {
                 logAsync("delete record add") {
-                    val updatedCurrent = toRecord(current)
-                        .copy(isDeleted = true, timestamp = now)
-                        .recordToJson()
-                    performPutItem(updatedCurrent)
+                    toRecord(current)
+                        ?.copy(isDeleted = true, timestamp = now)
+                        ?.recordToJson()
+                        ?.let { performPutItem(it) }
                 }
                 true
             }

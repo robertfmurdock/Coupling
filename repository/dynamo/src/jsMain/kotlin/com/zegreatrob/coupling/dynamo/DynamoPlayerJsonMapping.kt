@@ -29,13 +29,15 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
         "imageURL" to imageURL
     )
 
-    fun Json.toPlayer() = Player(
-        id = getDynamoStringValue("id") ?: "",
-        name = getDynamoStringValue("name") ?: "",
-        email = getDynamoStringValue("email") ?: "",
-        badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
-        callSignAdjective = getDynamoStringValue("callSignAdjective") ?: "",
-        callSignNoun = getDynamoStringValue("callSignNoun") ?: "",
-        imageURL = getDynamoStringValue("imageURL")
-    )
+    fun Json.toPlayer() = getDynamoStringValue("id")?.let {
+        Player(
+            id = it,
+            name = getDynamoStringValue("name") ?: "",
+            email = getDynamoStringValue("email") ?: "",
+            badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
+            callSignAdjective = getDynamoStringValue("callSignAdjective") ?: "",
+            callSignNoun = getDynamoStringValue("callSignNoun") ?: "",
+            imageURL = getDynamoStringValue("imageURL")
+        )
+    }
 }

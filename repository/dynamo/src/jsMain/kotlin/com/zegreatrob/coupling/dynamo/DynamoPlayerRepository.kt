@@ -92,16 +92,13 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
             )
     }
 
-    override suspend fun getPlayers(tribeId: TribeId) = tribeId.queryForItemList().map { it.toPlayerRecord() }
+    override suspend fun getPlayers(tribeId: TribeId) = tribeId.queryForItemList().mapNotNull { it.toPlayerRecord() }
 
     suspend fun getPlayerRecords(tribeId: TribeId) = tribeId.logAsync("itemList") {
         performQuery(tribeId.itemListQueryParams()).itemsNode()
-    }.map { it.toPlayerRecord() }.filter { it.data.player.id.isNotEmpty() }
+    }.mapNotNull { it.toPlayerRecord() }
 
-    private fun Json.toPlayerRecord(): Record<TribeElement<Player>> {
-        val player = toPlayer()
-        return toRecord(tribeId().with(player))
-    }
+    private fun Json.toPlayerRecord() = toPlayer()?.let { toRecord(tribeId().with(it)) }
 
     private fun Json.tribeId() = TribeId(this["tribeId"].unsafeCast<String>())
 
@@ -120,7 +117,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     )
 
     override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.queryForDeletedItemList()
-        .map { it.toPlayerRecord() }
+        .mapNotNull { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> =
         logAsync("getPlayerIdsByEmail") {
