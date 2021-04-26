@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -95,8 +96,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     suspend fun getPlayerRecords(tribeId: TribeId) = tribeId.logAsync("itemList") {
         performQuery(tribeId.itemListQueryParams()).itemsNode()
-    }.map { it.toPlayerRecord() }
-
+    }.map { it.toPlayerRecord() }.filter { it.data.player.id.isNotEmpty() }
 
     private fun Json.toPlayerRecord(): Record<TribeElement<Player>> {
         val player = toPlayer()
@@ -127,7 +127,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
             val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
                 performQuery(emailQueryParams(email))
                     .itemsNode()
-                    .map { it.getDynamoStringValue("id") }
+                    .mapNotNull { it.getDynamoStringValue("id") }
             }
 
             logAsync("recordsWithIds") {
@@ -138,8 +138,8 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                     .map { it.value.last() }
                     .filter { it["email"] == email && it["isDeleted"] != true }
                     .map {
-                        TribeId(it.getDynamoStringValue("tribeId"))
-                            .with(it.getDynamoStringValue("id"))
+                        TribeId(it.getDynamoStringValue("tribeId") ?: "")
+                            .with(it.getDynamoStringValue("id") ?: "")
                     }
             }
         }

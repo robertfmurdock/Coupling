@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.dynamo.player
 
 import com.soywiz.klock.*
 import com.zegreatrob.coupling.dynamo.DynamoPlayerRepository
+import com.zegreatrob.coupling.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.with
@@ -14,8 +15,10 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
+import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlin.js.json
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -74,6 +77,29 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         with(repository.getPlayerRecords(tribeId)) {
             records.forEach { assertContains(it) }
         }
+    }
+
+    @Test
+    fun willIgnorePlayerRecordsWithoutId() = asyncSetup(buildRepository { context ->
+        object : Context by context, DynamoRecordJsonMapping {
+            val tribeId = stubTribeId()
+            override val userId: String = "test user"
+        }
+    }) {
+        DynamoPlayerRepository.performPutItem(
+            recordJson(DateTime.now())
+                .add(
+                    json(
+                        "tribeId" to tribeId.value,
+                        "timestamp+id" to "lol",
+                        "name" to "Dead player"
+                    )
+                )
+        )
+    } exercise {
+        repository.getPlayerRecords(tribeId)
+    } verify { result ->
+        result.assertIsEqualTo(emptyList())
     }
 
 }

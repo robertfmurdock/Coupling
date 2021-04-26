@@ -27,8 +27,8 @@ interface DynamoPinJsonMapping : TribeIdDynamoRecordJsonMapping {
 
     fun Json.toPin() = Pin(
         id = getDynamoStringValue("id"),
-        name = getDynamoStringValue("name"),
-        icon = getDynamoStringValue("icon")
+        name = getDynamoStringValue("name") ?: "",
+        icon = getDynamoStringValue("icon") ?: ""
     )
 
 }
