@@ -7,7 +7,7 @@
     "../test": "test"
   },
   "dependencies": {
-    "aws-sdk": "2.892.0",
+    "aws-sdk": "2.893.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
@@ -35,7 +35,7 @@
     "passport-azure-ad": "^4.3.0",
     "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0",
-    "webpack": "^5.35.1",
+    "webpack": "^5.36.0",
     "webpack-node-externals": "^3.0.0",
     "ws": "^7.4.5"
   },
