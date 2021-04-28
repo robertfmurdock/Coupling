@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
-    id("kotlinx-serialization") version "1.4.31"
+    id("kotlinx-serialization") version "1.5.0"
 }
 
 kotlin {
@@ -30,10 +30,10 @@ dependencies {
     implementation(project(":repository:dynamo"))
     implementation(project(":repository:memory"))
     implementation(project("server_action"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
     implementation("com.soywiz.korlibs.klock:klock:2.0.7")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
-    implementation("com.benasher44:uuid:0.2.4")
+    implementation("com.benasher44:uuid:0.3.0")
 
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))

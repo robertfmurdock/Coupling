@@ -43,10 +43,4 @@ const config = {
   plugins: []
 };
 
-if (process.env.NODE_ENV === 'production') {
-  config.plugins = config.plugins.concat([
-    new webpack.optimize.OccurrenceOrderPlugin()
-  ]);
-}
-
 module.exports = config;

@@ -16,7 +16,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
             }
         }
         val commonTest by getting {
@@ -24,12 +24,9 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":repository:memory"))
                 implementation(project(":repository:validation"))
-                implementation("com.zegreatrob.testmints:standard:3.3.0")
-                implementation("com.zegreatrob.testmints:minassert:3.3.0")
+                implementation("com.zegreatrob.testmints:standard:4.0.1")
+                implementation("com.zegreatrob.testmints:minassert:4.0.1")
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
 
@@ -42,11 +39,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-                implementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
             }
         }
 
@@ -57,8 +51,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:async:3.3.0")
+                implementation("com.zegreatrob.testmints:async:4.0.1")
             }
         }
     }

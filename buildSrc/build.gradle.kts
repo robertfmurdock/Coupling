@@ -7,12 +7,12 @@ plugins {
     id("java")
     id("java-gradle-plugin")
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm").version("1.4.31")
+    id("org.jetbrains.kotlin.jvm").version("1.5.0")
     id("com.jfrog.bintray") version "1.7.3"
     id("net.researchgate.release") version "2.6.0"
 }
 
-val kotlinVersion = "1.4.31"
+val kotlinVersion = "1.5.0"
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))

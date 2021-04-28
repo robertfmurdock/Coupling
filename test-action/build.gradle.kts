@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.4.31"
+    id("kotlinx-serialization") version "1.5.0"
 }
 
 kotlin {
@@ -20,24 +20,21 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:3.3.13")
-                implementation("com.zegreatrob.testmints:action-async:3.3.13")
-                implementation("com.zegreatrob.testmints:async:3.3.13")
-                implementation("com.zegreatrob.testmints:standard:3.3.13")
-                implementation("com.zegreatrob.testmints:minassert:3.3.13")
-                implementation("org.jetbrains.kotlin:kotlin-test-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+                implementation("com.zegreatrob.testmints:action:4.0.1")
+                implementation("com.zegreatrob.testmints:action-async:4.0.1")
+                implementation("com.zegreatrob.testmints:async:4.0.1")
+                implementation("com.zegreatrob.testmints:standard:4.0.1")
+                implementation("com.zegreatrob.testmints:minassert:4.0.1")
+                implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0")
             }
         }
 
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha1")
 
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.0-M1")
@@ -52,8 +49,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0")
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0")
             }
         }
     }
