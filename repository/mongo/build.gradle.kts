@@ -19,7 +19,7 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 implementation("com.benasher44:uuid:0.3.0")
-                implementation("com.soywiz.korlibs.klock:klock:2.0.7")
+                implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
             }
@@ -28,9 +28,9 @@ kotlin {
             dependencies {
                 api(project(":repository:validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:4.0.1")
-                implementation("com.zegreatrob.testmints:minassert:4.0.1")
-                implementation("com.zegreatrob.testmints:async:4.0.1")
+                implementation("com.zegreatrob.testmints:standard:4.0.3")
+                implementation("com.zegreatrob.testmints:minassert:4.0.3")
+                implementation("com.zegreatrob.testmints:async:4.0.3")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")

@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.0.7")
+                api("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("com.benasher44:uuid:0.3.0")
             }
         }
@@ -26,8 +26,8 @@ kotlin {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:4.0.1")
-                implementation("com.zegreatrob.testmints:minassert:4.0.1")
+                implementation("com.zegreatrob.testmints:standard:4.0.3")
+                implementation("com.zegreatrob.testmints:minassert:4.0.3")
             }
         }
 
