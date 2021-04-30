@@ -20,7 +20,7 @@ dependencies {
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.3.0")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.30")
-    implementation("com.zegreatrob.testmints:wdio:4.0.3")
+    implementation("com.zegreatrob.testmints:wdio:4.0.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
@@ -30,9 +30,9 @@ dependencies {
     testImplementation(project(":test-logging"))
     testImplementation(kotlin("test-js"))
     testImplementation("io.github.microutils:kotlin-logging:2.0.6")
-    testImplementation("com.zegreatrob.testmints:standard:4.0.3")
-    testImplementation("com.zegreatrob.testmints:minassert:4.0.3")
-    testImplementation("com.zegreatrob.testmints:async:4.0.3")
+    testImplementation("com.zegreatrob.testmints:standard:4.0.4")
+    testImplementation("com.zegreatrob.testmints:minassert:4.0.4")
+    testImplementation("com.zegreatrob.testmints:async:4.0.4")
     packageJson.dependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
