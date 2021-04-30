@@ -87,8 +87,8 @@ class JsonFormatter : Formatter {
     private fun extractProperties(msg: () -> Any?): Pair<String?, Map<String, String>?> {
         val result = msg()
         return if (result is Map<*, *>) {
-            val map = result.unsafeCast<Map<String, String>>()
-            map["message"] to map.filterKeys { it != "message" }
+            val map = result.unsafeCast<Map<String, Any>>()
+            map["message"].toString() to map.filterKeys { it != "message" }.mapValues { it.toString() }
         } else
             result.toString() to null
     }
