@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.zegreatrob.coupling.client.external.domtoimage
 
 import org.w3c.dom.Node

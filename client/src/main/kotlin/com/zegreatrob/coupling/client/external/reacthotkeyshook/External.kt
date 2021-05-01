@@ -1,4 +1,5 @@
 @file:JsModule("react-hotkeys-hook")
+@file:Suppress("unused")
 
 package com.zegreatrob.coupling.client.external.reacthotkeyshook
 

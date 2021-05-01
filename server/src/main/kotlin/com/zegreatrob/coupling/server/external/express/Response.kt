@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.zegreatrob.coupling.server.external.express
 
 import com.zegreatrob.coupling.server.external.fs.Stream

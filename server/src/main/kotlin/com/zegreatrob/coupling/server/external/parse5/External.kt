@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.zegreatrob.coupling.server.external.parse5
 
 import org.w3c.dom.Document

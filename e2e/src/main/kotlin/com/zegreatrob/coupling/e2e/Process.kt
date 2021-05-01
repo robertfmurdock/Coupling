@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.zegreatrob.coupling.e2e
 
 import com.zegreatrob.coupling.e2e.external.childprocess.Writable

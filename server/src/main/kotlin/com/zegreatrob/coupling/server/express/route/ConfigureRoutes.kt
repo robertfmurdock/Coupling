@@ -67,7 +67,7 @@ private fun authenticateAzureWithFailure() = passport.authenticate(
 private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/") }
 
 private fun apiGuard(): Handler = { request, response, next ->
-    request.statsdkey = listOf("http", request.method.toLowerCase(), request.path).joinToString(".")
+    request.statsdkey = listOf("http", request.method.lowercase(), request.path).joinToString(".")
 
     if (!request.isAuthenticated()) {
         handleNotAuthenticated(request, response)

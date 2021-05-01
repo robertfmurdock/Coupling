@@ -1,4 +1,5 @@
 @file:JsModule("react-dnd")
+@file:Suppress("unused")
 
 package com.zegreatrob.coupling.client.external.reactdnd
 

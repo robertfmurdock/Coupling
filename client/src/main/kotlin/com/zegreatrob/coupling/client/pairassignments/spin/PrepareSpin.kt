@@ -99,8 +99,7 @@ private fun RBuilder.selectorAreaDiv(children: RBuilder.() -> Unit) = styledDiv 
     children()
 }
 
-private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -> isSelected }
-    .mapNotNull { it.first.id }
+private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -> isSelected }.map { it.first.id }
 
 private fun RBuilder.playerSelectorDiv(children: RBuilder.() -> Unit) = styledDiv {
     css {

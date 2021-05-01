@@ -1,4 +1,5 @@
 @file:JsModule("monk")
+@file:Suppress("unused")
 
 
 package com.zegreatrob.coupling.mongo.external.monk

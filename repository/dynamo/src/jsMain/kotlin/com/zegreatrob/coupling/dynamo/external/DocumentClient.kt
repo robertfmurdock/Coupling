@@ -1,6 +1,7 @@
 @file:JsModule("aws-sdk")
 
 @file:JsQualifier("DynamoDB")
+@file:Suppress("unused")
 
 package com.zegreatrob.coupling.dynamo.external
 

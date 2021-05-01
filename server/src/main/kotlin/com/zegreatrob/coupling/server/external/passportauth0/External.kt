@@ -1,3 +1,5 @@
+@file:Suppress("PropertyName", "unused")
+
 package com.zegreatrob.coupling.server.external.passportauth0
 
 import com.zegreatrob.coupling.server.external.express.Request
