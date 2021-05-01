@@ -1,11 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -14,13 +10,14 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 typealias TribePlayerData = Triple<Tribe, List<Player>, Player>
 
 data class TribePlayerQuery(val tribeId: TribeId, val playerId: String?) :
-    SimpleSuspendResultAction<TribePlayerQueryDispatcher, TribePlayerData> {
+    SimpleSuspendAction<TribePlayerQueryDispatcher, TribePlayerData?> {
     override val performFunc = link(TribePlayerQueryDispatcher::perform)
 }
 
@@ -28,9 +25,7 @@ interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
     TribeIdPlayersSyntax,
     FindCallSignActionDispatcher,
     ExecutableActionExecuteSyntax {
-    suspend fun perform(query: TribePlayerQuery): Result<TribePlayerData> = query.get()
-        ?.successResult()
-        ?: NotFoundResult("Tribe")
+    suspend fun perform(query: TribePlayerQuery) = query.get()
 
     private suspend fun TribePlayerQuery.get() = tribeId.getData()
         .let { (tribe, players) ->

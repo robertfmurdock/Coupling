@@ -1,8 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -31,11 +28,8 @@ interface TribeIdLoadAllSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeId
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
         pinListDeferred: Deferred<List<Pin>>
-    ): Result<TribeData> {
-        return (tribeDeferred.await() ?: return NotFoundResult("Tribe")).let { tribe ->
-            awaitTribeData(tribe, playerListDeferred, historyDeferred, pinListDeferred)
-                .successResult()
-        }
+    ): TribeData? {
+        return awaitTribeData((tribeDeferred.await() ?: return null), playerListDeferred, historyDeferred, pinListDeferred)
     }
 
     suspend fun awaitTribeData(

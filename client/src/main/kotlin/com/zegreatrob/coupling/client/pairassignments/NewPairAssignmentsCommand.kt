@@ -1,12 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
-import com.zegreatrob.coupling.action.transform
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -16,12 +11,13 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssi
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class NewPairAssignmentsCommand(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
-    SimpleSuspendResultAction<NewPairAssignmentsCommandDispatcher, Unit> {
+    SimpleSuspendAction<NewPairAssignmentsCommandDispatcher, Unit?> {
     override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
 }
 
@@ -32,13 +28,13 @@ interface NewPairAssignmentsCommandDispatcher : TribeIdGetSyntax,
     RequestSpinActionDispatcher,
     TribeIdPairAssignmentDocumentSaveSyntax {
 
-    suspend fun perform(query: NewPairAssignmentsCommand): Result<Unit> = with(query) {
+    suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
         val (tribe, players, pins) = getData()
         if (tribe == null)
-            NotFoundResult("Tribe")
+            null
         else {
-            val result: Result<PairAssignmentDocument> = execute(requestSpinAction(players, pins))
-            result.transform { tribe.id.with(it).save() }
+            execute(requestSpinAction(players, pins))
+                .let { tribe.id.with(it).save() }
         }
     }
 

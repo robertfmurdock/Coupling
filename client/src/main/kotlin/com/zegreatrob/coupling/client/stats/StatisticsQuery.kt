@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.action.*
+import com.zegreatrob.coupling.action.ComposeStatisticsAction
+import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
+import com.zegreatrob.coupling.action.StatisticsReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -8,9 +10,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class StatisticsQuery(val tribeId: TribeId) :
-    SimpleSuspendResultAction<StatisticsQueryDispatcher, StatisticQueryResults> {
+    SimpleSuspendAction<StatisticsQueryDispatcher, StatisticQueryResults?> {
     override val performFunc = link(StatisticsQueryDispatcher::perform)
 }
 
@@ -29,7 +32,7 @@ interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
 
     suspend fun perform(query: StatisticsQuery) = query.loadAll()
 
-    private suspend fun StatisticsQuery.loadAll() = tribeId.loadAll().transform { (tribe, players, history) ->
+    private suspend fun StatisticsQuery.loadAll() = tribeId.loadAll()?.let { (tribe, players, history) ->
         val (report, heatmapData) = calculateStats(tribe, players, history)
         StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
