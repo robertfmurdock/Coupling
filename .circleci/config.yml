@@ -4,8 +4,8 @@ orbs:
   coupling-orb:
     executors:
       standard:
-        machine:
-          image: ubuntu-2004:202104-01
+        docker:
+          - image: cimg/openjdk:14.0
     commands:
       setup:
         steps:
