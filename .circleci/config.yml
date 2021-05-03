@@ -5,7 +5,7 @@ orbs:
     executors:
       standard:
         machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202104-01
     commands:
       setup:
         steps:
@@ -79,7 +79,7 @@ jobs:
             - "*"
   buildMongo:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202104-01
     steps:
       - checkout
       - run: docker-compose up -d mongo
