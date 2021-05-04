@@ -14,10 +14,8 @@ import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
 import org.w3c.dom.events.Event
-import react.RBuilder
-import react.RProps
-import react.useLayoutEffect
-import react.useRef
+import react.*
+import react.router.dom.redirect
 import styled.css
 import styled.styledDiv
 
@@ -31,11 +29,12 @@ fun RBuilder.tribeCardHeader(
 
 data class TribeCardHeaderProps(val tribe: Tribe, val size: Int, val pathSetter: (String) -> Unit) : RProps
 
-val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size, pathSetter) ->
+val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
     val tribeNameRef = useRef<Node?>(null)
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
 
-    val onClick = { event: Event -> goToConfigTribe(event, pathSetter, tribe) }
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    val onClick = { event: Event -> goToConfigTribe(event, setRedirectUrl, tribe) }
 
     styledDiv {
         attrs {
@@ -48,6 +47,7 @@ val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size, pathSe
             onClickFunction = onClick
         }
         +(tribe.name ?: "Unknown")
+        redirectUrl?.let { redirect(to = it) }
     }
 }
 
