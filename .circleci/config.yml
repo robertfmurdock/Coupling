@@ -4,13 +4,21 @@ orbs:
   coupling-orb:
     executors:
       standard:
-        docker:
-          - image: cimg/node:15.0.1-browsers
-          - image: amazon/dynamodb-local
-          - image: circleci/mongo:latest
+        machine:
+          image: ubuntu-1604:201903-01
     commands:
       setup:
         steps:
+          - run: |
+              set +e
+              curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+              export NVM_DIR="/opt/circleci/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+              nvm install node
+              nvm alias default node
+
+              echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+              echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall --no-daemon"
       collect-results:
@@ -44,9 +52,10 @@ jobs:
   build:
     executor: coupling-orb/standard
     environment:
+      SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
-      COUPLING_IN_MEMORY: "true"
+      COUPLING_IN_MEMORY: true
     steps:
       - checkout
       - restore_cache:
@@ -61,6 +70,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
+      - run: docker-compose up -d dynamo chrome mongo
       - run: "./gradlew build check"
       - coupling-orb/collect-results
       - persist_to_workspace:
@@ -69,9 +79,10 @@ jobs:
             - "*"
   buildMongo:
     machine:
-      image: ubuntu-2004:202104-01
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - run: docker-compose up -d mongo
       - run: "./gradlew :repository:mongo:check --no-parallel -Dorg.gradle.configureondemand=false"
       - coupling-orb/collect-results
   deploy-prod:
