@@ -14,6 +14,7 @@ orbs:
       setup:
         steps:
           - browser-tools/install-chrome
+          - browser-tools/install-chromedriver
           - run: "./gradlew kotlinNodeJsSetup"
           - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall --no-daemon"
       collect-results:
