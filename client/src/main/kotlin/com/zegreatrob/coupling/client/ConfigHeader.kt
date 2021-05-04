@@ -11,18 +11,16 @@ import react.RProps
 import react.dom.div
 import react.dom.h1
 
-data class ConfigHeaderProps(val tribe: Tribe, val pathSetter: (String) -> Unit) : RProps
+data class ConfigHeaderProps(val tribe: Tribe) : RProps
 
-fun RBuilder.configHeader(tribe: Tribe, pathSetter: (String) -> Unit, handler: RHandler<ConfigHeaderProps> = {}) =
-    child(ConfigHeader, ConfigHeaderProps(tribe, pathSetter), handler)
+fun RBuilder.configHeader(tribe: Tribe, handler: RHandler<ConfigHeaderProps> = {}) =
+    child(ConfigHeader, ConfigHeaderProps(tribe), handler)
 
 private val styles = useStyles("ConfigHeader")
 
 val ConfigHeader = reactFunction<ConfigHeaderProps> { props ->
-    val (tribe, pathSetter) = props
-
     div(classes = styles.className) {
-        div { tribeCard(TribeCardProps(tribe, 50, pathSetter)) }
+        div { tribeCard(TribeCardProps(props.tribe, 50)) }
         h1 { props.children() }
     }
 }

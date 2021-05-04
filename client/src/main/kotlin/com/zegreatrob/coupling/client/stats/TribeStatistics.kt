@@ -27,7 +27,7 @@ val TribeStatistics = reactFunction<TribeStatisticsProps> { props ->
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div(classes = styles.className) {
         div {
-            tribeCard(TribeCardProps(tribe, pathSetter = props.pathSetter))
+            tribeCard(TribeCardProps(tribe))
             child(TeamStatistics, TeamStatisticsProps(
                 spinsUntilFullRotation = spinsUntilFullRotation,
                 activePlayerCount = players.size,

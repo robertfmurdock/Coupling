@@ -24,7 +24,7 @@ val PinList =
     reactFunction<PinListProps> { (tribe, pins, pathSetter) ->
         div(classes = styles.className) {
             div(classes = styles["tribeBrowser"]) {
-                tribeCard(TribeCardProps(tribe, pathSetter = pathSetter))
+                tribeCard(TribeCardProps(tribe))
             }
             h2 { +"These are your pins." }
             h3 { +"There are many like them, but these are yours." }

@@ -21,13 +21,9 @@ import styled.styledDiv
 
 private val styles = useStyles("tribe/TribeCard")
 
-fun RBuilder.tribeCardHeader(
-    tribe: Tribe,
-    size: Int,
-    pathSetter: (String) -> Unit
-) = child(tribeCardHeader, TribeCardHeaderProps(tribe, size, pathSetter))
+fun RBuilder.tribeCardHeader(tribe: Tribe, size: Int) = child(tribeCardHeader, TribeCardHeaderProps(tribe, size))
 
-data class TribeCardHeaderProps(val tribe: Tribe, val size: Int, val pathSetter: (String) -> Unit) : RProps
+data class TribeCardHeaderProps(val tribe: Tribe, val size: Int) : RProps
 
 val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
     val tribeNameRef = useRef<Node?>(null)

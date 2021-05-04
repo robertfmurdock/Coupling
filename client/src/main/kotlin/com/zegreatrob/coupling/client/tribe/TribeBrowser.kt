@@ -30,7 +30,7 @@ private val styles = useStyles("tribe/TribeBrowser")
 
 val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
     div(styles.className) {
-        configHeader(tribe, pathSetter) {
+        configHeader(tribe) {
             span(styles["headerContents"]) {
                 span(styles["headerText"]) { +(tribe.name ?: "") }
                 tribeControlButtons()

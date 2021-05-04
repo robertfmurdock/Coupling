@@ -44,10 +44,10 @@ val TribeConfig = reactFunction { (tribe, pathSetter, commandFunc): TribeConfigP
     val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter.tribeList() }
 
     configFrame(styles.className) {
-        configHeader(tribe, pathSetter) { +"Tribe Configuration" }
+        configHeader(tribe) { +"Tribe Configuration" }
         div {
             tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
-            tribeCard(TribeCardProps(updatedTribe, pathSetter = pathSetter))
+            tribeCard(TribeCardProps(updatedTribe))
         }
     }
 }

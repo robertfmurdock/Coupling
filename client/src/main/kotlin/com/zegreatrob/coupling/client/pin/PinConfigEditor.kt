@@ -55,7 +55,7 @@ val PinConfigEditor = reactFunction { (tribe, pin, pathSetter, reload, dispatchF
     }
 
     span(styles.className) {
-        configHeader(tribe, pathSetter) { +"Pin Configuration" }
+        configHeader(tribe) { +"Pin Configuration" }
         span(styles["pin"]) {
             pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
             promptOnExit(shouldShowPrompt = updatedPin != pin)

@@ -48,7 +48,7 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
 
     span(classes = styles.className) {
         redirectUrl?.let { redirect(to = it) }
-        configHeader(tribe, pathSetter) { +"Player Configuration" }
+        configHeader(tribe) { +"Player Configuration" }
         div {
             div(classes = styles["player"]) {
                 playerConfigForm(updatedPlayer, tribe, onChange, onSubmit, onRemove)

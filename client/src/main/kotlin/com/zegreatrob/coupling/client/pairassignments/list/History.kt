@@ -38,7 +38,7 @@ val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls
     val onDeleteFunc = onDeleteFuncFactory(controls, tribe, windowFuncs)
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
-            tribeCard(TribeCardProps(tribe, pathSetter = controls.pathSetter))
+            tribeCard(TribeCardProps(tribe))
         }
         span(classes = styles["historyView"]) {
             div(classes = styles["header"]) { +"History!" }

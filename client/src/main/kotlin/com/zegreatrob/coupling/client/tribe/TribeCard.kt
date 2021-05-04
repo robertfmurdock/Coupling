@@ -21,7 +21,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledSpan
 
-data class TribeCardProps(val tribe: Tribe, val size: Int = 150, val pathSetter: (String) -> Unit) : RProps
+data class TribeCardProps(val tribe: Tribe, val size: Int = 150) : RProps
 
 val RBuilder.tribeCard get() = childCurry(TribeCard)
 
@@ -39,7 +39,7 @@ val TribeCard = reactFunction<TribeCardProps> { props ->
             setProp("data-tribe-id", tribe.id.value)
         }
         redirectUrl?.let { redirect(to = it) }
-        tribeCardHeader(tribe, size, props.pathSetter)
+        tribeCardHeader(tribe, size)
         tribeGravatar(tribe, size)
     }
 }

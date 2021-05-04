@@ -22,7 +22,7 @@ val TribeList = reactFunction<TribeListProps> { (tribes, pathSetter) ->
         div { aboutButton() }
         div {
             tribes.forEach { tribe ->
-                tribeCard(TribeCardProps(tribe, pathSetter = pathSetter), key = tribe.id.value)
+                tribeCard(TribeCardProps(tribe), key = tribe.id.value)
             }
         }
         div { newTribeButton(styles["newTribeButton"]) }
