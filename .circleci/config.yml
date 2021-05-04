@@ -54,10 +54,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-49-{{ .Branch }}
+          key: coupling-cache-50-{{ .Branch }}
       - coupling-orb/setup
       - save_cache:
-          key: coupling-cache-49-{{ .Branch }}
+          key: coupling-cache-50-{{ .Branch }}
           paths:
             - "~/.gradle"
             - "~/.cache"
@@ -78,7 +78,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-49-{{ .Branch }}
+          key: coupling-cache-50-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
@@ -99,7 +99,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-49-{{ .Branch }}
+          key: coupling-cache-50-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
       - run: docker-compose up -d dynamo chrome mongo
@@ -118,7 +118,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-49-{{ .Branch }}
+          key: coupling-cache-50-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
@@ -138,7 +138,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-49-{{ .Branch }}
+          key: coupling-cache-50-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: docker-compose up -d dynamo chrome mongo
