@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -18,6 +19,8 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.*
+import react.router.dom.redirect
+import react.useState
 
 data class PlayerConfigEditorProps(
     val tribe: Tribe,
@@ -35,12 +38,16 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
     val (tribe, player, pathSetter, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toJson())
 
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+
     val updatedPlayer = values.toPlayer()
     val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
-    val onRemove = dispatchFunc({ DeletePlayerCommand(tribe.id, player.id) }, { pathSetter.currentPairs(tribe.id) })
-            .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
+    val onRemove = dispatchFunc({ DeletePlayerCommand(tribe.id, player.id) },
+        { setRedirectUrl(tribe.id.currentPairsPage()) })
+        .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
     span(classes = styles.className) {
+        redirectUrl?.let { redirect(to = it) }
         configHeader(tribe, pathSetter) { +"Player Configuration" }
         div {
             div(classes = styles["player"]) {
