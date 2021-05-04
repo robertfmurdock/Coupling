@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.currentPairs
+import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -15,6 +15,8 @@ import kotlinx.html.js.onClickFunction
 import kotlinx.html.tabIndex
 import react.RBuilder
 import react.RProps
+import react.router.dom.redirect
+import react.useState
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledSpan
@@ -27,14 +29,16 @@ private val styles = useStyles("tribe/TribeCard")
 
 val TribeCard = reactFunction<TribeCardProps> { props ->
     val (tribe, size) = props
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     styledSpan {
         attrs {
             tribeCardCss(size)
             classes += styles.className
-            onClickFunction = { props.pathSetter.currentPairs(props.tribe.id) }
+            onClickFunction = { setRedirectUrl(props.tribe.id.currentPairsPage()) }
             tabIndex = "0"
             setProp("data-tribe-id", tribe.id.value)
         }
+        redirectUrl?.let { redirect(to = it) }
         tribeCardHeader(tribe, size, props.pathSetter)
         tribeGravatar(tribe, size)
     }
