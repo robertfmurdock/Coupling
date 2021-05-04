@@ -71,13 +71,6 @@ jobs:
           root: ./
           paths:
             - "*"
-  buildMongo:
-    machine:
-      image: ubuntu-2004:202104-01
-    steps:
-      - checkout
-      - run: "./gradlew :repository:mongo:check --no-parallel -Dorg.gradle.configureondemand=false"
-      - coupling-orb/collect-results
   deploy-prod:
     docker:
       - image: openjdk:13-jdk
