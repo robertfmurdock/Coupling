@@ -12,6 +12,6 @@ val TribeListPage = reactFunction<PageProps> { props ->
     child(LoadedTribeList, dataLoadProps(
         commander = props.commander,
         query = TribeListQuery,
-        toProps = { _, _, tribes -> TribeListProps(tribes, props.pathSetter) }
+        toProps = { _, _, tribes -> TribeListProps(tribes) }
     ))
 }

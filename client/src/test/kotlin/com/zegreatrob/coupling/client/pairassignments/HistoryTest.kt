@@ -33,13 +33,7 @@ class HistoryTest {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         val tribe = Tribe(TribeId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val history = listOf(
-            PairAssignmentDocument(
-                PairAssignmentDocumentId("RealId"),
-                DateTime.now(),
-                emptyList()
-            )
-        )
+        val history = listOf(PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList()))
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             historyComponent(this),

@@ -13,11 +13,11 @@ import react.RProps
 import react.dom.div
 import react.router.dom.routeLink
 
-data class TribeListProps(val tribes: List<Tribe>, val pathSetter: (String) -> Unit) : RProps
+data class TribeListProps(val tribes: List<Tribe>) : RProps
 
 private val styles = useStyles("tribe/TribeList")
 
-val TribeList = reactFunction<TribeListProps> { (tribes, pathSetter) ->
+val TribeList = reactFunction<TribeListProps> { (tribes) ->
     div(classes = styles.className) {
         div { aboutButton() }
         div {

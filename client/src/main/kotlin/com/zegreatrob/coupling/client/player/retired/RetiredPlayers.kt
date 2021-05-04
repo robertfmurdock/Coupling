@@ -23,7 +23,7 @@ private val styles = useStyles("player/RetiredPlayers")
 val RetiredPlayers =
     reactFunction<RetiredPlayersProps> { (tribe, players, pathSetter) ->
         div(classes = styles.className) {
-            tribeBrowser(tribe, pathSetter)
+            tribeBrowser(tribe)
             div(classes = styles["header"]) { +"Retired Players" }
             div {
                 players.forEach { player ->

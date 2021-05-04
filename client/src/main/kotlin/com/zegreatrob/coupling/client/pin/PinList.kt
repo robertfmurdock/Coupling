@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.dom.couplingButton
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pin.Pin
@@ -16,12 +16,11 @@ import react.dom.h2
 import react.dom.h3
 import react.router.dom.routeLink
 
-data class PinListProps(val tribe: Tribe, val pins: List<Pin>, val pathSetter: (String) -> Unit) : RProps
+data class PinListProps(val tribe: Tribe, val pins: List<Pin>) : RProps
 
 private val styles = useStyles("pin/PinList")
 
-val PinList =
-    reactFunction<PinListProps> { (tribe, pins, pathSetter) ->
+val PinList = reactFunction<PinListProps> { (tribe, pins) ->
         div(classes = styles.className) {
             div(classes = styles["tribeBrowser"]) {
                 tribeCard(TribeCardProps(tribe))

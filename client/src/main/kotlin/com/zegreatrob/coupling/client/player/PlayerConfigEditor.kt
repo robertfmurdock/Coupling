@@ -25,7 +25,6 @@ import react.useState
 data class PlayerConfigEditorProps(
     val tribe: Tribe,
     val player: Player,
-    val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : RProps
@@ -35,7 +34,7 @@ val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
 private val styles = useStyles("player/PlayerConfigEditor")
 
 val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->
-    val (tribe, player, pathSetter, reload, dispatchFunc) = props
+    val (tribe, player, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toJson())
 
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)

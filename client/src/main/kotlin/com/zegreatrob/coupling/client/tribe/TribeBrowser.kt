@@ -24,11 +24,11 @@ import styled.styledDiv
 import styled.styledSpan
 import kotlin.js.json
 
-data class TribeBrowserProps(val tribe: Tribe, val pathSetter: (String) -> Unit) : RProps
+data class TribeBrowserProps(val tribe: Tribe) : RProps
 
 private val styles = useStyles("tribe/TribeBrowser")
 
-val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
+val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe) ->
     div(styles.className) {
         configHeader(tribe) {
             span(styles["headerContents"]) {
@@ -39,8 +39,7 @@ val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe, pathSetter) ->
     }
 }
 
-fun RBuilder.tribeBrowser(tribe: Tribe, pathSetter: (String) -> Unit) =
-    child(TribeBrowser, TribeBrowserProps(tribe, pathSetter))
+fun RBuilder.tribeBrowser(tribe: Tribe) = child(TribeBrowser, TribeBrowserProps(tribe))
 
 private fun RBuilder.notificationSection() = styledSpan {
     css { position = Position.relative }

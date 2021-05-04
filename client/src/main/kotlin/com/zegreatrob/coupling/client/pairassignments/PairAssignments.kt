@@ -77,7 +77,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
             div {
-                tribeBrowser(tribe, controls.pathSetter)
+                tribeBrowser(tribe)
                 styledDiv {
                     css { verticalAlign = VerticalAlign.top }
                     currentPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)

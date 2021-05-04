@@ -51,7 +51,7 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
     val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, pathSetter)
 
     div(classes = styles.className) {
-        div { tribeBrowser(tribe, pathSetter) }
+        div { tribeBrowser(tribe) }
         div {
             div { spinButton(onSpin) }
             selectorAreaDiv {

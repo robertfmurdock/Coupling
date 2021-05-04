@@ -33,7 +33,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -49,7 +49,7 @@ class PlayerConfigEditorTest {
         )
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -65,7 +65,7 @@ class PlayerConfigEditorTest {
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
             PlayerConfigEditor,
-            PlayerConfigEditorProps(tribe, player, {}, reloaderSpy::spyFunction, stubDispatchFunc)
+            PlayerConfigEditorProps(tribe, player, reloaderSpy::spyFunction, stubDispatchFunc)
         )
     }) exercise {
         wrapper.simulateInputChange("name", "nonsense")
@@ -92,7 +92,7 @@ class PlayerConfigEditorTest {
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
             playerConfigEditor(windowFuncs),
-            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
+            PlayerConfigEditorProps(tribe, player, {}, stubDispatchFunc)
         )
     }) exercise {
         wrapper.find<Any>(".${configFormStyles["deleteButton"]}")
@@ -120,7 +120,7 @@ class PlayerConfigEditorTest {
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
             playerConfigEditor(windowFunctions),
-            PlayerConfigEditorProps(tribe, player, pathSetterSpy::spyFunction, {}, stubDispatchFunc)
+            PlayerConfigEditorProps(tribe, player, {}, stubDispatchFunc)
         )
     }) exercise {
         wrapper.find<Any>(".${configFormStyles["deleteButton"]}")
@@ -133,7 +133,7 @@ class PlayerConfigEditorTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, StubDispatchFunc()))
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -147,7 +147,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(PromptComponent).props().`when`
             .assertIsEqualTo(false)
