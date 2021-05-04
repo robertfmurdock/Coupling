@@ -30,7 +30,16 @@ object CurrentPairAssignmentsPanel : StyleSyntax {
     suspend fun waitForSaveButtonToNotBeDisplayed() {
         element().waitToExist()
         WebdriverBrowser.waitUntil(
-            { !saveButton.isPresent() },
+            {
+
+                try {
+                    val b = !saveButton.isPresent()
+                    b
+                } catch (e: Error) {
+                    console.log("error ${e}")
+                    throw e
+                }
+            },
             2000,
             "CurrentPairAssignmentsPanel.waitForSaveButtonToNotBeDisplayed"
         )

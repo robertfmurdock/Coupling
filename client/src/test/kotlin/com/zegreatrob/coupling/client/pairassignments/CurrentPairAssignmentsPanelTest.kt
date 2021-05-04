@@ -13,17 +13,15 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribe
-import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.RClass
+import react.router.dom.RedirectProps
 import kotlin.test.Test
 
 class CurrentPairAssignmentsPanelTest {
@@ -33,7 +31,6 @@ class CurrentPairAssignmentsPanelTest {
     @Test
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = setup(object {
         val tribe = stubTribe()
-        val pathSetterSpy = SpyData<String, Unit>()
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
@@ -45,7 +42,7 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
-                controls = Controls(dispatchFunc, pathSetterSpy::spyFunction) {}
+                controls = Controls(dispatchFunc, {}) {}
             )
         )
     }) exercise {
@@ -54,14 +51,13 @@ class CurrentPairAssignmentsPanelTest {
     } verify {
         dispatchFunc.commandsDispatched<SavePairAssignmentsCommand>().size
             .assertIsEqualTo(0)
-        pathSetterSpy.spyReceivedValues
-            .assertContains("/${tribe.id.value}/pairAssignments/current/")
+        wrapper.find<RedirectProps>("Redirect")
+            .props().to.assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
     }
 
     @Test
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = setup(object {
         val tribe = stubTribe()
-        val pathSetterSpy = SpyData<String, Unit>()
         val pairAssignments = stubPairAssignmentDoc()
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
@@ -71,7 +67,7 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
-                controls = Controls(dispatchFunc, pathSetterSpy::spyFunction) {}
+                controls = Controls(dispatchFunc, {}) {}
             )
         )
     }) exercise {
@@ -80,9 +76,8 @@ class CurrentPairAssignmentsPanelTest {
     } verify {
         dispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, pairAssignments.id)))
-        pathSetterSpy.spyReceivedValues.assertIsEqualTo(
-            listOf("/${tribe.id.value}/pairAssignments/current/")
-        )
+        wrapper.find<RedirectProps>("Redirect")
+            .props().to.assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
     }
 
     @Test

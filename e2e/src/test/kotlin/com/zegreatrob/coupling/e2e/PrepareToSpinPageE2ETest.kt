@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
+import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 
 class PrepareToSpinPageE2ETest {
@@ -30,6 +31,12 @@ class PrepareToSpinPageE2ETest {
             sdk.save(tribe.id.with(pin))
 
             FullTribeData(players, listOf(pin), tribe, sdk)
+        }).extend(sharedTeardown = {
+            if (saveButton.isDisplayed()) {
+                saveButton.click()
+            }
+            if (WebdriverBrowser.isAlertOpen())
+                WebdriverBrowser.dismissAlert()
         })
 
         private fun buildFunkyTribe() = Tribe(
@@ -62,6 +69,25 @@ class PrepareToSpinPageE2ETest {
     } verify {
         assignedPairElements.count()
             .assertIsEqualTo(3)
+    }
+
+    @Test
+    fun spinningWillAlertOnExitIfNotSavedAndIfAcceptedPairsAreNotSaved() = pinTribeSetup {
+        PrepareToSpinPage.goTo(tribe.id)
+        selectNoneButton.click()
+        PlayerCard.playerElements.get(0).element(PlayerCard.iconLocator).click()
+        spinButton.click()
+        PairAssignmentsPage.waitForPage()
+    } exercise {
+        WebdriverBrowser.setLocation("/welcome")
+        WebdriverBrowser.waitForAlert()
+        WebdriverBrowser.alertText().also {
+            WebdriverBrowser.dismissAlert()
+        }
+    } verify { alertText ->
+        alertText.assertIsEqualTo("Press OK to save these pairs.")
+        assignedPairElements.count().assertIsEqualTo(1)
+        saveButton.isDisplayed().assertIsEqualTo(true)
     }
 
     @Test

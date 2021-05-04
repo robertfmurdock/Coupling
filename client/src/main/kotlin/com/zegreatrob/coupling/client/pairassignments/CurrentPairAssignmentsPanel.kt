@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.currentPairs
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -18,6 +19,8 @@ import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.RProps
 import react.dom.div
+import react.router.dom.redirect
+import react.useState
 
 fun RBuilder.currentPairAssignments(
     tribe: Tribe,
@@ -46,7 +49,7 @@ val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps
         dateHeader(pairAssignments)
         pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave, controls.pathSetter)
         if (allowSave) {
-            controlSection(tribe, pairAssignments, controls)
+            controlSection(tribe, pairAssignments, controls.dispatchFunc)
         }
     }
 }
@@ -140,13 +143,22 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 private fun RBuilder.controlSection(
     tribe: Tribe,
     pairAssignments: PairAssignmentDocument,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) = div {
-    val (dispatchFunc, pathSetter, _) = controls
-    val redirectToCurrentFunc: (Result<Unit>) -> Unit = { pathSetter.currentPairs(tribe.id) }
-    saveButton { pathSetter.currentPairs(tribe.id) }
-    cancelButton(dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, redirectToCurrentFunc))
+    val (shouldPrompt, setShouldPrompt) = useState(true)
+    promptOnExit(shouldPrompt)
+    if(!shouldPrompt) {
+        redirect(to = tribe.id.currentPairsPage())
+    }
+    val redirectToCurrentFunc = { setShouldPrompt(false) }
+    saveButton(redirectToCurrentFunc)
+    cancelButton(dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, { redirectToCurrentFunc() }))
 }
+
+private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
+    `when` = shouldShowPrompt,
+    message = "Press OK to save these pairs."
+)
 
 private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green, styles["saveButton"], onSave) {
     +"Save!"
