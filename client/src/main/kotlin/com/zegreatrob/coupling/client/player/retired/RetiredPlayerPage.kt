@@ -28,6 +28,6 @@ private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, pla
         commander = props.commander,
         query = RetiredPlayerQuery(tribeId, playerId),
         toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfigProps(tribe, player, players, props.pathSetter, reload, commandFunc)
+            PlayerConfigProps(tribe, player, players, reload, commandFunc)
         }
     )) { attrs { key = playerId } }

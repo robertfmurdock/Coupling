@@ -16,12 +16,12 @@ val TribeConfigPage = reactFunction<PageProps> { props ->
 private fun TribeId.tribeQueryProps(pageProps: PageProps) = dataLoadProps(
     commander = pageProps.commander,
     query = TribeQuery(this),
-    toProps = { _, commandFunc, data -> TribeConfigProps(data, pageProps.pathSetter, commandFunc) }
+    toProps = { _, commandFunc, data -> TribeConfigProps(data, commandFunc) }
 )
 
 
 private fun newTribeProps(pageProps: PageProps) = dataLoadProps(
     commander = pageProps.commander,
     query = NewTribeCommand(),
-    toProps = { _, commandFunc, data -> TribeConfigProps(data, pageProps.pathSetter, commandFunc) }
+    toProps = { _, commandFunc, data -> TribeConfigProps(data, commandFunc) }
 )

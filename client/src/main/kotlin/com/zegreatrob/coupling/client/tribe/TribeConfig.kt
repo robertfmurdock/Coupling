@@ -22,12 +22,10 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.*
+import react.router.dom.redirect
+import react.useState
 
-data class TribeConfigProps(
-    val tribe: Tribe,
-    val pathSetter: (String) -> Unit,
-    val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>
-) : RProps
+data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : RProps
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
     override val tribeRepository: TribeRepository
@@ -35,15 +33,17 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 
 private val styles = useStyles("tribe/TribeConfig")
 
-val TribeConfig = reactFunction { (tribe, pathSetter, commandFunc): TribeConfigProps ->
+val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
     val isNew = tribe.id.value == ""
     val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
     val updatedTribe = values.toTribe()
-
-    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }) { pathSetter.tribeList() }
-    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }) { pathSetter.tribeList() }
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    val redirectToTribeList = { setRedirectUrl(Paths.tribeList()) }
+    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })
+    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }, { redirectToTribeList() })
 
     configFrame(styles.className) {
+        redirectUrl?.let { redirect(to = it) }
         configHeader(tribe) { +"Tribe Configuration" }
         div {
             tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)

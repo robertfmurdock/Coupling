@@ -1,11 +1,9 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.PathSetter
 import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
-import com.zegreatrob.coupling.client.playerConfig
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -42,15 +40,15 @@ private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
     val playerNameRef = useRef<Node?>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
 
+    val nameClickHandler = if (linkToConfig) { event: Event ->
+        event.stopPropagation()
+        setRedirectUrl(tribeId.with(player).playerConfigPage())
+    } else ({})
+
     styledDiv {
         attrs {
             classes += styles["header"]
-            if(linkToConfig) {
-                onClickFunction = { event: Event ->
-                    event.stopPropagation()
-                    setRedirectUrl(tribeId.with(player).playerConfigPage())
-                }
-            }
+            onClickFunction = nameClickHandler
         }
         redirectUrl?.let { redirect(to = it) }
         css { margin(top = (size * 0.02).px) }
@@ -59,12 +57,6 @@ private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
             +(if (player.name.isBlank()) "Unknown" else player.name)
         }
     }
-}
-
-private fun PathSetter.nameClickHandler(tribeId: TribeId, player: Player) = { event: Event ->
-    event.stopPropagation()
-
-    playerConfig(tribeId, player)
 }
 
 private fun Node.fitPlayerName(size: Int) {

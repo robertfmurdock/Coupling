@@ -14,7 +14,7 @@ val PlayerPage = tribePageFunction { props: PageProps, tribeId: TribeId ->
         commander = props.commander,
         query = TribePlayerQuery(tribeId, props.playerId),
         toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfigProps(tribe, player, players, props.pathSetter, reload, commandFunc)
+            PlayerConfigProps(tribe, player, players, reload, commandFunc)
         }
     ), key = "${tribeId.value}-${props.playerId}")
 

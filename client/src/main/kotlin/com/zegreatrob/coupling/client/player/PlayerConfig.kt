@@ -16,14 +16,13 @@ data class PlayerConfigProps(
     val tribe: Tribe,
     val player: Player,
     val players: List<Player>,
-    val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : RProps
 
 private val styles = useStyles("player/PlayerConfig")
 
-val PlayerConfig = reactFunction { (tribe, player, players, pathSetter, reload, commandFunc): PlayerConfigProps ->
+val PlayerConfig = reactFunction { (tribe, player, players, reload, commandFunc): PlayerConfigProps ->
     configFrame(styles.className) {
         child(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, reload, commandFunc))
         div {

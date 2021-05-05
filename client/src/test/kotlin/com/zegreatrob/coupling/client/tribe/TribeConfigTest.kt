@@ -1,19 +1,17 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minspy.SpyData
-import com.zegreatrob.minspy.spyFunction
+import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
+import react.router.dom.RedirectProps
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -25,7 +23,7 @@ class TribeConfigTest {
     }) exercise {
         shallow(
             TribeConfig,
-            TribeConfigProps(tribe, {}, StubDispatchFunc())
+            TribeConfigProps(tribe, StubDispatchFunc())
         )
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
@@ -63,11 +61,10 @@ class TribeConfigTest {
             email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge
         )
-        val pathSetterSpy = SpyData<String, Unit>()
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(
             TribeConfig,
-            TribeConfigProps(tribe, pathSetterSpy::spyFunction, stubDispatchFunc)
+            TribeConfigProps(tribe, stubDispatchFunc)
         )
     }) exercise {
         wrapper.find<Any>("form")
@@ -76,15 +73,15 @@ class TribeConfigTest {
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
             .assertIsEqualTo(listOf(SaveTribeCommand(tribe)))
-
-        pathSetterSpy.spyReceivedValues.assertContains("/tribes/")
+        wrapper.find<RedirectProps>("Redirect").props().to
+            .assertIsEqualTo("/tribes/")
     }
 
     @Test
     fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
         val tribe = Tribe(TribeId(""))
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, {}, stubDispatchFunc))
+        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
         val automatedTribeId = wrapper.find<Any>("#tribe-id").prop("value")
     }) exercise {
         wrapper.find<Any>("form")
