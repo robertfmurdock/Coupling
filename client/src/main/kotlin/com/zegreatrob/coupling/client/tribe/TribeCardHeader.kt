@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.Paths.tribeConfigPath
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
-import com.zegreatrob.coupling.client.tribeConfig
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
@@ -30,7 +30,10 @@ val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
 
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onClick = { event: Event -> goToConfigTribe(event, setRedirectUrl, tribe) }
+    val onClick = { event: Event ->
+        event.stopPropagation()
+        setRedirectUrl(tribe.tribeConfigPath())
+    }
 
     styledDiv {
         attrs {
@@ -45,11 +48,6 @@ val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
         +(tribe.name ?: "Unknown")
         redirectUrl?.let { redirect(to = it) }
     }
-}
-
-private fun goToConfigTribe(event: Event, pathSetter: (String) -> Unit, tribe: Tribe) {
-    event.stopPropagation()
-    pathSetter.tribeConfig(tribe)
 }
 
 private fun Node.fitTribeName(size: Int) = fitty(

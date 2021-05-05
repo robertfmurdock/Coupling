@@ -62,10 +62,7 @@ class TribeConfigTest {
             pairingRule = PairingRule.PreferDifferentBadge
         )
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow(
-            TribeConfig,
-            TribeConfigProps(tribe, stubDispatchFunc)
-        )
+        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
     }) exercise {
         wrapper.find<Any>("form")
             .simulate("submit", json("preventDefault" to {}))

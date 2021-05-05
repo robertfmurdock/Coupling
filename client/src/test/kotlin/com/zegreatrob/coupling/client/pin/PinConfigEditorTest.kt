@@ -26,7 +26,7 @@ class PinConfigEditorTest {
     }) exercise {
         shallow(
             PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc())
+            PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc())
         )
     } verify { wrapper ->
         wrapper.findByClass(configFormStyles["deleteButton"])
@@ -41,7 +41,7 @@ class PinConfigEditorTest {
     }) exercise {
         shallow(
             PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, {}, StubDispatchFunc())
+            PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc())
         )
     } verify { wrapper ->
         wrapper.findByClass(configFormStyles["deleteButton"])
@@ -60,7 +60,7 @@ class PinConfigEditorTest {
 
         val wrapper = shallow(
             PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, {}, dispatchFunc)
+            PinConfigEditorProps(tribe, pin, {}, dispatchFunc)
         ).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)

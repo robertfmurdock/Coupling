@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Paths.pinListPath
+import com.zegreatrob.coupling.client.configForm
+import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useForm
@@ -21,11 +25,12 @@ import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
 import react.dom.*
+import react.router.dom.redirect
+import react.useState
 
 data class PinConfigEditorProps(
     val tribe: Tribe,
     val pin: Pin,
-    val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
 ) : RProps
@@ -36,25 +41,22 @@ fun RBuilder.pinConfigEditor(
     tribe: Tribe,
     pin: Pin,
     dispatchFunc: DispatchFunc<out PinCommandDispatcher>,
-    pathSetter: (String) -> Unit,
     reload: () -> Unit
-) = child(
-    PinConfigEditor,
-    PinConfigEditorProps(tribe, pin, pathSetter, reload, dispatchFunc)
-)
+) = child(PinConfigEditor, PinConfigEditorProps(tribe, pin, reload, dispatchFunc))
 
-val PinConfigEditor = reactFunction { (tribe, pin, pathSetter, reload, dispatchFunc): PinConfigEditorProps ->
+val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditorProps ->
     val (values, onChange) = useForm(pin.toJson())
 
     val updatedPin = values.toPin()
-
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
     val onRemove = pin.id?.let { pinId ->
-        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { pathSetter.pinList(tribe.id) }
+        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { setRedirectUrl(tribe.id.pinListPath()) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
 
     span(styles.className) {
+        redirectUrl?.let { redirect(to = it) }
         configHeader(tribe) { +"Pin Configuration" }
         span(styles["pin"]) {
             pinConfigForm(updatedPin, onChange, onSubmit, onRemove)

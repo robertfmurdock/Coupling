@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -8,7 +9,6 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
-import com.zegreatrob.coupling.client.newPairAssignments
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pin.pinButton
@@ -30,6 +30,7 @@ import react.RBuilder
 import react.RProps
 import react.buildElement
 import react.dom.*
+import react.router.dom.redirect
 import react.useState
 import styled.css
 import styled.styledDiv
@@ -39,18 +40,19 @@ data class PrepareSpinProps(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val pins: List<Pin>,
-    val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>,
-    val pathSetter: (String) -> Unit
+    val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, dispatchFunc, pathSetter) ->
+val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, dispatchFunc) ->
     val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
     val (pinSelections, setPinSelections) = useState(pins.map { it.id })
-    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, pathSetter)
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, setRedirectUrl)
 
     div(classes = styles.className) {
+        redirectUrl?.let { redirect(to = it) }
         div { tribeBrowser(tribe) }
         div {
             div { spinButton(onSpin) }
@@ -84,10 +86,10 @@ private fun onSpin(
     tribe: Tribe,
     playerSelections: List<Pair<Player, Boolean>>,
     pinSelections: List<String?>,
-    pathSetter: (String) -> Unit
+    setRedirectUrl: (String) -> Unit
 ) = dispatchFunc(
     { NewPairAssignmentsCommand(tribe.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
-    { pathSetter.newPairAssignments(tribe) }
+    { setRedirectUrl(tribe.newPairAssignmentsPath()) }
 )
 
 private fun RBuilder.selectorAreaDiv(children: RBuilder.() -> Unit) = styledDiv {

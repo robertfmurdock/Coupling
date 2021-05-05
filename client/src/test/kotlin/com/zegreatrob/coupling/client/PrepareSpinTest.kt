@@ -41,7 +41,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()))
     }) exercise {
         wrapper.findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
@@ -60,7 +60,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()) {})
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()))
 
         init {
             wrapper.findByClass(styles["selectedPins"])
@@ -84,7 +84,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val history = emptyList<PairAssignmentDocument>()
     }) exercise {
-        shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {})
+        shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
     }
@@ -95,7 +95,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val history = emptyList<PairAssignmentDocument>()
         val wrapper = shallow(
-            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {}
+            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc())
         )
     }) exercise {
         wrapper.findByClass(styles["selectAllButton"]).simulate("click")
@@ -114,7 +114,7 @@ class PrepareSpinTest {
                 pairs = players.map { pairOf(it).withPins(emptyList()) })
         )
         val wrapper = shallow(
-            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()) {}
+            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc())
         )
     }) exercise {
         wrapper.findByClass(styles["selectNoneButton"]).simulate("click")

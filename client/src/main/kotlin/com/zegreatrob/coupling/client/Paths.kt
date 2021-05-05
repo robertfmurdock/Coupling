@@ -11,7 +11,6 @@ object Paths {
     fun TribeId.pinListPath() = "/$value/pins"
     fun TribeId.currentPairsPage() = "/$value/pairAssignments/current/"
     fun Tribe.tribeConfigPath() = "/${id.value}/edit/"
-    fun newPairAssignmentsPath(tribe: Tribe) = "/${tribe.id.value}/pairAssignments/new"
-
+    fun Tribe.newPairAssignmentsPath() = "/${id.value}/pairAssignments/new"
     fun TribeElement<Player>.playerConfigPage() = "/${id.value}/player/${element.id}/"
 }

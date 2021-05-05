@@ -13,7 +13,7 @@ val PrepareSpinPage = tribePageFunction { props, tribeId ->
         commander = props.commander,
         query = TribeDataSetQuery(tribeId),
         toProps = { _, dispatcher, (tribe, players, history, pins) ->
-            PrepareSpinProps(tribe, players, history, pins, dispatcher, props.pathSetter)
+            PrepareSpinProps(tribe, players, history, pins, dispatcher)
         }
     ), key = tribeId.value)
 }

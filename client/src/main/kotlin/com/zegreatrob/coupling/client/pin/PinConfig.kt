@@ -24,7 +24,7 @@ private val styles = useStyles("pin/PinConfig")
 
 val PinConfig = reactFunction { (tribe, pin, pinList, pathSetter, reload, commandFunc): PinConfigProps ->
     configFrame(styles.className) {
-        pinConfigEditor(tribe, pin, commandFunc, pathSetter, reload)
+        pinConfigEditor(tribe, pin, commandFunc, reload)
         pinBag(tribe, pinList, styles["pinBag"])
     }
 }
